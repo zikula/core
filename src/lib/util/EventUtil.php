@@ -43,15 +43,14 @@ class EventUtil
      *
      * @return Zikula_EventManager
      */
-    static public function getManager(Zikula_ServiceManager $serviceManager = null)
+    static public function getManager(Zikula $core = null)
     {
         if (self::$eventManager) {
             return self::$eventManager;
         }
-
-        self::$eventManager = new Zikula_EventManager($serviceManager);
-        $serviceManager->attachService('zikula.eventmanager', self::$eventManager);
-
+        
+        self::$eventManager = $core->getEventManager();
+        
         return self::$eventManager;
     }
 

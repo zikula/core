@@ -39,13 +39,13 @@ class ServiceUtil
      *
      * @return Zikula_ServiceManager
      */
-    public static function getManager()
+    public static function getManager(Zikula $core = null)
     {
         if (self::$serviceManager) {
             return self::$serviceManager;
         }
 
-        self::$serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
+        self::$serviceManager = $core->getServiceManager();
         return self::$serviceManager;
     }
 }

@@ -12,6 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+// For < PHP 5.3.0
+if (!defined('E_DEPRECATED')) {
+    define('E_DEPRECATED', 8192);
+}
+if (!defined('E_USER_DEPRECATED')) {
+    define('E_USER_DEPRECATED', 16384);
+}
+
 include 'lib/i18n/ZGettextFunctions.php';
 include 'lib/Zikula/KernelClassLoader.php';
 include 'lib/debug.php';
@@ -53,28 +61,10 @@ class ZLoader
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloaders = new Zikula_KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
-
-        // Setup EventManager and ServiceManager
-        $serviceManager = ServiceUtil::getManager();
-        $eventManager = EventUtil::getManager(ServiceUtil::getManager());
-
-        self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
-        self::addAutoloader('Categories', 'system/Categories/lib');
-        self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
-        
-        include ZLOADER_PATH. 'legacy/Loader.php';
-
-        // load eventhandlers from config/EventHandlers directory if any.
-        EventUtil::attachCustomHandlers('config/EventHandlers');
-
-        $eventManager->attach('setup.errorreporting', array('SystemListenersUtil', 'defaultErrorReporting'));
-        $eventManager->attach('core.init', array('SystemListenersUtil', 'setupLoggers'));
-        $eventManager->attach('log', array('SystemListenersUtil', 'errorLog'));
-        $eventManager->attach('core.init', array('SystemListenersUtil', 'sessionLogging'));
-        $eventManager->attach('core.init', array('SystemListenersUtil', 'systemPlugins'));
-        $eventManager->attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
-        $eventManager->attach('core.init', array('SystemListenersUtil', 'setupDebugToolbar'));
-        $eventManager->attach('log.sql', array('SystemListenersUtil', 'logSqlQueries'));
+        include ZLOADER_PATH . 'legacy/Loader.php';
+        ZLoader::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
+        ZLoader::addAutoloader('Categories', 'system/Categories/lib');
+        ZLoader::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
     }
 
     /**

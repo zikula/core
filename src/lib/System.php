@@ -11,28 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-// For < PHP 5.3.0
-if (!defined('E_DEPRECATED')) {
-    define('E_DEPRECATED', 8192);
-}
-if (!defined('E_USER_DEPRECATED')) {
-    define('E_USER_DEPRECATED', 16384);
-}
-
-// Defines for access levels
-define('ACCESS_INVALID', -1);
-define('ACCESS_NONE', 0);
-define('ACCESS_OVERVIEW', 100);
-define('ACCESS_READ', 200);
-define('ACCESS_COMMENT', 300);
-define('ACCESS_MODERATE', 400);
-define('ACCESS_EDIT', 500);
-define('ACCESS_ADD', 600);
-define('ACCESS_DELETE', 700);
-define('ACCESS_ADMIN', 800);
-ini_set('mbstring.internal_encoding', 'UTF-8');
-ini_set('default_charset', 'UTF-8');
-mb_regex_encoding('UTF-8');
 
 /**
  * System class.
@@ -45,28 +23,20 @@ class System
     const VERSION_ID = 'Zikula';
     const VERSION_SUB = 'vai';
 
-    const CORE_STAGES_NONE = 0;
-    const CORE_STAGES_PRE = 1;
-    const CORE_STAGES_POST = 2;
-    const CORE_STAGES_CONFIG = 4;
-    const CORE_STAGES_DB = 8;
-    const CORE_STAGES_TABLES = 16;
-    const CORE_STAGES_SESSIONS = 32;
-    const CORE_STAGES_LANGS = 64;
-    const CORE_STAGES_MODS = 128;
-    const CORE_STAGES_DECODEURLS = 1024;
-    const CORE_STAGES_THEME = 2048;
-    const CORE_STAGES_ALL = 4095;
-    const CORE_STAGES_AJAX = 4096;
-
-    // needs to be set explicitly, CORE_STAGES_ALL | CORE_STAGES_AJAX
-
-    protected static $stages = 0;
-
-    public static function getStages()
-    {
-        return self::$stages;
-    }
+    const STAGES_NONE = 0;
+    const STAGES_PRE = 1;
+    const STAGES_POST = 2;
+    const STAGES_CONFIG = 4;
+    const STAGES_DB = 8;
+    const STAGES_TABLES = 16;
+    const STAGES_SESSIONS = 32;
+    const STAGES_LANGS = 64;
+    const STAGES_MODS = 128;
+    const STAGES_DECODEURLS = 1024;
+    const STAGES_THEME = 2048;
+    const STAGES_ALL = 4095;
+    const STAGES_AJAX = 4096;
+    // needs to be set explicitly, STAGES_ALL | STAGES_AJAX
 
     /**
      * Get a configuration variable.
@@ -158,196 +128,6 @@ class System
 
         // success
         return $val;
-    }
-
-    /**
-     * Initialise Zikula.
-     *
-     * Carries out a number of initialisation tasks to get Zikula up and
-     * running.
-     *
-     * @param integer $stages Stages to load.
-     *
-     * @return boolean True initialisation successful false otherwise.
-     */
-    public static function init($stages = self::CORE_STAGES_ALL)
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $eventManager = EventUtil::getManager();
-        $coreInitEvent = new Zikula_Event('core.init');
-
-        if (!is_numeric($stages)) {
-            $stages = self::CORE_STAGES_ALL;
-        }
-
-        // store the load stages in a global so other API's can check whats loaded
-        self::$stages = self::$stages | $stages;
-
-        if (($stages & self::CORE_STAGES_PRE) && (self::$stages & ~self::CORE_STAGES_PRE)) {
-            $eventManager->notify(new Zikula_Event('core.preinit'));
-        }
-
-        // Initialise and load configuration
-        if ($stages & self::CORE_STAGES_CONFIG) {
-            // initialise time to render
-            if ($GLOBALS['ZConfig']['Debug']['debug.pagerendertime']) {
-                $GLOBALS['ZRuntime']['dbg_starttime'] = microtime(true);
-            }
-
-            if (self::isLegacyMode()) {
-                require_once 'lib/legacy/Compat.php';
-            }
-
-            // error reporting
-            if (!self::isInstalling()) {
-                // this is here because it depends on the config.php loading.
-                $event = new Zikula_Event('setup.errorreporting', null, array('stage' => $stages));
-                $eventManager->notifyUntil($event);
-            }
-
-            // initialise custom event listeners from config.php settings
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_CONFIG);
-            $eventManager->notify($coreInitEvent);
-        }
-
-        // Check that Zikula is installed before continuing
-        if (self::getVar('installed') == 0 && !self::isInstalling()) {
-            header('HTTP/1.1 503 Service Unavailable');
-            if (file_exists('config/templates/notinstalled.tpl')) {
-                require_once 'config/templates/notinstalled.tpl';
-            } else {
-                require_once 'system/Theme/templates/system/notinstalled.tpl';
-            }
-            self::shutDown();
-        }
-
-        if ($stages & self::CORE_STAGES_DB) {
-            try {
-                DBConnectionStack::init();
-            } catch (PDOException $e) {
-                if (!self::isInstalling()) {
-                    header('HTTP/1.1 503 Service Unavailable');
-                    $templateFile = 'dbconnectionerror.tpl';
-                    if (file_exists('config/templates/' . $templateFile)) {
-                        include 'config/templates/' . $templateFile;
-                    } else {
-                        include 'system/Theme/templates/system/' . $templateFile;
-                    }
-                    self::shutDown();
-                } else {
-                    return false;
-                }
-            }
-
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_DB);
-            $eventManager->notify($coreInitEvent);
-        }
-
-        if ($stages & self::CORE_STAGES_TABLES) {
-            // Initialise dbtables
-            $GLOBALS['dbtables'] = isset($GLOBALS['dbtables']) ? $GLOBALS['dbtables'] : array();
-            // ensure that the base modules info is available
-            ModUtil::dbInfoLoad('Modules', 'Modules');
-            ModUtil::initCoreVars();
-            ModUtil::dbInfoLoad('Settings', 'Settings');
-            ModUtil::dbInfoLoad('Theme', 'Theme');
-            ModUtil::dbInfoLoad('Users', 'Users');
-            ModUtil::dbInfoLoad('Groups', 'Groups');
-            ModUtil::dbInfoLoad('Permissions', 'Permissions');
-
-            if (!System::isInstalling()) {
-                ModUtil::registerAutoloaders();
-            }
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_TABLES);
-            $eventManager->notify($coreInitEvent);
-        }
-
-        // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
-        // start block
-        if ($stages & self::CORE_STAGES_LANGS) {
-            $lang = ZLanguage::getInstance();
-        }
-
-        if ($stages & self::CORE_STAGES_DECODEURLS) {
-            self::queryStringDecode();
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_DECODEURLS);
-            $eventManager->notify($coreInitEvent);
-        }
-
-        if ($stages & self::CORE_STAGES_LANGS) {
-            $lang->setup();
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_LANGS);
-            $eventManager->notify($coreInitEvent);
-        }
-        // end block
-
-        self::_checks();
-
-        if ($stages & self::CORE_STAGES_SESSIONS) {
-            // Other includes
-            // ensure that the sesssions table info is available
-            ModUtil::dbInfoLoad('Users', 'Users');
-            $anonymoussessions = self::getVar('anonymoussessions');
-            if ($anonymoussessions == '1' || !empty($_COOKIE[SessionUtil::getCookieName()])) {
-                // we need to create a session for guests as configured or
-                // a cookie exists which means we have been here before
-                // Start session
-                SessionUtil::requireSession();
-
-                // Auto-login via HTTP(S) REMOTE_USER property
-                if (self::getVar('session_http_login') && !UserUtil::isLoggedIn()) {
-                    UserUtil::loginHttp();
-                }
-            }
-
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_SESSIONS);
-            $eventManager->notify($coreInitEvent);
-        }
-
-        if ($stages & self::CORE_STAGES_MODS) {
-            // Set compression on if desired
-            if (self::getVar('UseCompression') == 1) {
-                //ob_start("ob_gzhandler");
-            }
-
-            ModUtil::load('SecurityCenter');
-
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_MODS);
-            $eventManager->notify($coreInitEvent);
-        }
-
-        if ($stages & self::CORE_STAGES_THEME) {
-            // register default page vars
-            PageUtil::registerVar('title');
-            PageUtil::registerVar('description', false, self::getVar('slogan'));
-            PageUtil::registerVar('keywords', true);
-            PageUtil::registerVar('stylesheet', true);
-            PageUtil::registerVar('javascript', true);
-            PageUtil::registerVar('jsgettext', true);
-            PageUtil::registerVar('body', true);
-            PageUtil::registerVar('rawtext', true);
-            PageUtil::registerVar('footer', true);
-
-            Zikula_View_Theme::getInstance();
-
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_THEME);
-            $eventManager->notify($coreInitEvent);
-        }
-
-        // check the users status, if not 1 then log him out
-        if (UserUtil::isLoggedIn()) {
-            $userstatus = UserUtil::getVar('activated');
-            if ($userstatus != 1) {
-                UserUtil::logout();
-                LogUtil::registerStatus(__('You have been logged out.'));
-                $params = ($userstatus == 2) ? array('confirmtou' => 1) : array();
-                self::redirect(ModUtil::url('Users', 'user', 'loginscreen', $params));
-            }
-        }
-
-        if (($stages & self::CORE_STAGES_POST) && (self::$stages & ~self::CORE_STAGES_POST)) {
-            $eventManager->notify(new Zikula_Event('core.postinit', null, array('stages' => $stages)));
-        }
     }
 
     /**
@@ -1000,13 +780,11 @@ class System
     }
 
     /**
-     * When in development mode, perform some checks that might result in a die() upon failure.
-     *
-     * @todo D: extend this when needed.
+     * Perform some checks that might result in a die() upon failure.
      *
      * @return void
      */
-    public static function _checks()
+    public static function checks()
     {
         $die = false;
 

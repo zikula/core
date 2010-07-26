@@ -54,7 +54,7 @@ class ModUtil
 
     /**
      * Module vars.
-     * 
+     *
      * @var array
      */
     protected static $modvars = array();
@@ -952,13 +952,13 @@ class ModUtil
         }
 
         $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
-
+        $eventManager = EventUtil::getManager();
         if ($loaded) {
             $preExecuteEvent = new Zikula_Event('module.preexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
             $postExecuteEvent = new Zikula_Event('module.postexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
 
             if (is_callable($modfunc)) {
-                EventUtil::notify($preExecuteEvent);
+                $eventManager->notify($preExecuteEvent);
 
                 // Check $modfunc is an object instance (OO) or a function (old)
                 if (is_array($modfunc)) {
@@ -977,11 +977,11 @@ class ModUtil
                     $postExecuteEvent->setData($modfunc($args));
                 }
 
-                return EventUtil::notify($postExecuteEvent)->getData();
+                return $eventManager->notify($postExecuteEvent)->getData();
             }
 
             // get the theme
-            if (System::getStages() & System::CORE_STAGES_THEME) {
+            if (ServiceUtil::getManager()->getService('zikula')->getStages() & System::STAGES_THEME) {
                 $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
                 if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php") || file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                     include_once $file;
@@ -996,18 +996,18 @@ class ModUtil
             if (file_exists($file = "config/functions/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
                 include_once $file;
                 if (is_callable($modfunc)) {
-                    EventUtil::notify($preExecuteEvent);
+                    $eventManager->notify($preExecuteEvent);
                     $postExecuteEvent->setData($modfunc($args));
-                    return EventUtil::notify($postExecuteEvent)->getData();
+                    return $eventManager->notify($postExecuteEvent)->getData();
                 }
             }
 
             if (file_exists($file = "$path/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
                 include_once $file;
                 if (is_callable($modfunc)) {
-                    EventUtil::notify($preExecuteEvent);
+                    $eventManager->notify($preExecuteEvent);
                     $postExecuteEvent->setData($modfunc($args));
-                    return EventUtil::notify($postExecuteEvent)->getData();
+                    return $eventManager->notify($postExecuteEvent)->getData();
                 }
             }
 
@@ -1021,7 +1021,7 @@ class ModUtil
 
             // This event means that no $type was found
             $event = new Zikula_Event('module.type_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
-            EventUtil::notifyUntil($event);
+            $eventManager->notifyUntil($event);
 
             if ($preExecuteEvent->hasNotified()) {
                 return $preExecuteEvent->getData();

@@ -13,7 +13,7 @@
  */
 
 include 'lib/bootstrap.php';
-System::init();
+$core->init();
 
 if (SessionUtil::hasExpired()) {
     // Session has expired, display warning

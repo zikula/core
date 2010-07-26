@@ -18,6 +18,13 @@
 class DBUtil
 {
     /**
+     * Cache enabled.
+     * 
+     * @var boolean
+     */
+    protected static $cache_enabled;
+
+    /**
      * Constructor of DBUtil class.
      */
     private function __construct()
@@ -33,7 +40,10 @@ class DBUtil
      */
     public static function hasObjectCache($tablename)
     {
-        return ($tablename != 'session_info' && !System::isInstalling() && DBConnectionStack::isDefaultConnection() && System::getVar('CACHE_ENABLE'));
+        if (!self::$cache_enabled) {
+            self::$cache_enabled = ServiceUtil::getManager()->getArgument('dbcache.enable');
+        }
+        return ($tablename != 'session_info' && !System::isInstalling() && DBConnectionStack::isDefaultConnection() && self::$cache_enabled);
     }
 
     /**

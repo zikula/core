@@ -24,12 +24,17 @@ function install()
 
     $installbySQL = (file_exists('install/sql/custom.sql') ? true : false);
 
+    require_once 'install/modify_config.php';
+
     // start the basics of Zikula
     include 'lib/ZLoader.php';
     ZLoader::register();
 
-    $serviceManager = ServiceUtil::getManager();
-    require_once 'install/modify_config.php';
+    $core = new Zikula();
+    $core->boot();
+    $eventManager = $core->getEventManager();
+    $serviceManager = $core->getServiceManager();
+
     require 'config/config.php';
     $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
     $serviceManager->loadArguments($GLOBALS['ZConfig']['Debug']);
@@ -39,7 +44,7 @@ function install()
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
     DBConnectionStack::init('default', true);
 
-    System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_THEME & ~System::CORE_STAGES_MODS & ~System::CORE_STAGES_LANGS & ~System::CORE_STAGES_DECODEURLS & ~System::CORE_STAGES_SESSIONS);
+    $core->init(System::STAGES_ALL & ~System::STAGES_THEME & ~System::STAGES_MODS & ~System::STAGES_LANGS & ~System::STAGES_DECODEURLS & ~System::STAGES_SESSIONS);
 
     // get our input
     $vars = array(
@@ -667,7 +672,7 @@ function _forcelogin($action = '')
             self::shutDown();
         }
 
-        System::init(System::CORE_STAGES_SESSIONS);
+        ServiceUtil::getManager()->getService('zikula')->init(System::STAGES_SESSIONS);
         if (UserUtil::isLoggedIn()) {
             if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                 UserUtil::logout(); // not administrator user so boot them.

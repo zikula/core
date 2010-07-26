@@ -27,7 +27,7 @@ class SystemListenersUtil
      */
     public static function sessionLogging(Zikula_Event $event)
     {
-        if ($event['stage'] & System::CORE_STAGES_SESSIONS) {
+        if ($event['stage'] & System::STAGES_SESSIONS) {
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
             if (isset($GLOBALS['ZConfig']['Log']['log.apache_uname']) && UserUtil::isLoggedIn()) {
                 if (function_exists('apache_setenv')) {
@@ -66,7 +66,7 @@ class SystemListenersUtil
      */
     public static function systemPlugins(Zikula_Event $event)
     {
-        if ($event['stage'] & System::CORE_STAGES_LANGS) {
+        if ($event['stage'] & System::STAGES_LANGS) {
             if (!System::isInstalling()) {
                 PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");
                 EventUtil::loadPersistentEvents();
@@ -88,16 +88,16 @@ class SystemListenersUtil
         if (!$serviceManager['log.enabled']) {
             return;
         }
-        
+
         if ($serviceManager->hasService('system.errorreporting')) {
             return;
         }
 
         $class = 'Zikula_ErrorHandler_Standard';
-        if ($event['stage'] & System::CORE_STAGES_AJAX) {
+        if ($event['stage'] & System::STAGES_AJAX) {
             $class = 'Zikula_ErrorHandler_Ajax';
         }
-        
+
         $errorHandler = new $class($serviceManager);
         $serviceManager->attachService('system.errorreporting', $errorHandler);
         set_error_handler(array($errorHandler, 'handler'));
@@ -106,7 +106,7 @@ class SystemListenersUtil
 
     public static function setupLoggers(Zikula_Event $event)
     {
-        if (!($event['stage'] & System::CORE_STAGES_CONFIG)) {
+        if (!($event['stage'] & System::STAGES_CONFIG)) {
             return;
         }
 
@@ -114,7 +114,7 @@ class SystemListenersUtil
         if (!$serviceManager['log.enabled']) {
             return;
         }
-        
+
         if ($serviceManager['log.to_display'] || $serviceManager['log.sql.to_display']) {
             $displayLogger = $serviceManager->attachService('zend.logger.display', new Zend_Log());
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
@@ -129,7 +129,7 @@ class SystemListenersUtil
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream($filename);
             $formatter = new Zend_Log_Formatter_Simple('%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL);
-            
+
             $writer->setFormatter($formatter);
             $fileLogger->addWriter($writer);
         }
@@ -214,9 +214,8 @@ class SystemListenersUtil
      */
     public static function setupDebugToolbar(Zikula_Event $event)
     {
-        if ($event['stage'] == System::CORE_STAGES_CONFIG && System::isDevelopmentMode()
-            && $GLOBALS['ZConfig']['Debug']['debug.toolbar']) {
-
+        if ($event['stage'] == System::STAGES_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
+            $sm = $event->getSubject()->getServiceManager();
             // create definitions
             $toolbar = new Zikula_ServiceManager_Definition(
                     'Zikula_DebugToolbar',
@@ -241,11 +240,10 @@ class SystemListenersUtil
             $logsPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Log');
 
             // save start time (required by rendertime panel)
-            $sm = ServiceUtil::getManager();
             $sm->setArgument('debug.toolbar.panel.rendertime.start', microtime(true));
 
             // register services
-            
+
             $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.version', $versionPanel, true));
             $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.config', $configPanel, true));
             $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.momory', $momoryPanel, true));

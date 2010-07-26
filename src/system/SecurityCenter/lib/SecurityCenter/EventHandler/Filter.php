@@ -26,7 +26,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
      */
     public function idsInputFilter(Zikula_Event $event)
     {
-        if ($event['stage'] & System::CORE_STAGES_MODS && System::getVar('useids') == 1) {
+        if ($event['stage'] & System::STAGES_MODS && System::getVar('useids') == 1) {
             // Run IDS if desired
             try {
                 // build request array defining what to scan

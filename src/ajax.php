@@ -13,7 +13,7 @@
  */
 
 include 'lib/bootstrap.php';
-System::init(System::CORE_STAGES_ALL | System::CORE_STAGES_AJAX & ~System::CORE_STAGES_DECODEURLS);
+$core->init(System::STAGES_ALL | System::STAGES_AJAX & ~System::STAGES_DECODEURLS);
 
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);

@@ -226,7 +226,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $this->default_resource_type = 'z';
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
-        if ((System::getStages() & System::CORE_STAGES_AJAX) && System::getVar('shorturls')) {
+        if (($this->serviceManager->getService('zikula')->getStages() & System::STAGES_AJAX) && System::getVar('shorturls')) {
             $this->load_filter('output', 'shorturls');
         }
 
@@ -791,8 +791,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @param string $auto_source The file name (optional).
      * @param string $auto_id     The ID (optional).
      *
+<<<<<<< Updated upstream
      * @return string The concrete path and file name to the content.
-     * 
+     *
+=======
+     * @return string
+     *
+>>>>>>> Stashed changes
      * @staticvar string|null
      * @staticvar string|null
      */

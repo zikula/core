@@ -54,7 +54,7 @@ if (version_compare($installedVersion, '1.3.0-dev') === -1) {
     $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = true;
 }
 
-System::init(System::CORE_STAGES_ALL);
+$core->init(System::STAGES_ALL);
 
 $action = FormUtil::getPassedValue('action', false, 'GETPOST');
 
@@ -399,7 +399,7 @@ function upgrade_clear_caches()
  */
 function upgrade_suppressErrors(Zikula_Event $event)
 {
-    if (!$event['stage'] == System::CORE_STAGES_CONFIG) {
+    if (!$event['stage'] == System::STAGES_CONFIG) {
         return;
     }
 
@@ -667,7 +667,7 @@ CHANGE pn_language z_language VARCHAR( 30 ) NOT NULL DEFAULT  ''";
         try {
             $stmt->execute();
         } catch (Exception $e) {
-            
+
         }
     }
 }

@@ -69,8 +69,8 @@ class DBConnectionStack
             self::$manager = Doctrine_Manager::getInstance();
             self::configureDoctrine(self::$manager);
             // setup caching
-            if (!System::isInstalling() && System::getVar('CACHE_ENABLE')) {
-                $type = System::getVar('CACHE_TYPE');
+            if (!System::isInstalling() && $serviceManager['dbcache.enable']) {
+                $type = $serviceManager['dbcache.type'];
 
                 // Setup Doctrine Caching
                 $type = ucfirst(strtolower($type));
@@ -78,8 +78,8 @@ class DBConnectionStack
                 $r = new ReflectionClass($doctrineCacheClass);
                 $options = array('prefix' => 'dd');
                 if (strpos($type, 'Memcache') === 0) {
-                    $servers = System::getVar('CACHE_SERVERS');
-                    $options = array_merge($options, array('servers' => $servers, 'compression' => System::getVar('CACHE_COMPRESSION')));
+                    $servers = $serviceManager['dbcache.servers'];
+                    $options = array_merge($options, array('servers' => $servers, 'compression' => $serviceManager['dbcache.compression']));
                 }
 
                 self::$cacheDriver = $r->newInstance($options);
@@ -87,7 +87,7 @@ class DBConnectionStack
                 self::$manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, self::$cacheDriver);
 
                 // implment resultcache lifespan configuration variable
-                self::$manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, System::getVar('CACHE_RESULT_TTL'));
+                self::$manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, $serviceManager['dbcache.cache_result_ttl']);
             }
         }
 
@@ -103,7 +103,7 @@ class DBConnectionStack
         $connInfo['dbname'] = $dsnParts['database'];
         $connInfo['prefix'] = System::getVar('prefix') . '_';
 
-        if (!System::isInstalling() && System::getVar('CACHE_ENABLE')) {
+        if (!System::isInstalling() && $serviceManager['dbcache.enable']) {
             // Support for multisites to prevent clashes
             self::$cacheDriver->setOption('prefix', md5($connInfo['dsn']));
         }
