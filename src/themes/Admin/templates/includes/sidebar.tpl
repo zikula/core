@@ -11,22 +11,22 @@
 						<div class="portlet-content">
 							<ul id="style-switcher" class="side-menu">
 								<li>
-									<a class="set_theme" id="black" href="#" title="Black Theme">Black Theme</a>
+									<a class="set_theme" id="black" href="#" title="{gt text='Black'}">{gt text='Black'}</a>
 								</li>
 								<li>
-									<a class="set_theme" id="gray" href="#" title="Gray">Gray Standard Theme</a>
+									<a class="set_theme" id="gray" href="#" title="{gt text='Gray Standard'}">{gt text='Gray Standard'} </a>
 								</li>
 								<li>
-									<a class="set_theme" id="gray_light" href="#" title="Gray Light Theme">Light Gray Theme</a>
+									<a class="set_theme" id="gray_light" href="#" title="{gt text='Light Gray'}">{gt text='Light Gray'}</a>
 								</li>
 								<li>
-									<a class="set_theme" id="green" href="#" title="green">Green Theme</a>
+									<a class="set_theme" id="green" href="#" title="{gt text='Green'}">{gt text='Green'}</a>
 								</li>
 								<li>
-									<a class="set_theme" id="blue" href="#" title="Blue">Blue Theme</a>
+									<a class="set_theme" id="blue" href="#" title="{gt text='Blue'}">{gt text='Blue'}</a>
 								</li>
 								<li>
-									<a class="set_theme" id="hot" href="#" title="Hot">Hot Theme</a>
+									<a class="set_theme" id="hot" href="#" title="{gt text='Hot'}">{gt text='Hot'}</a>
 								</li>
 							</ul>
 						</div>
@@ -37,32 +37,32 @@
 					</a>
 					
 					<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-						<div class="portlet-header ui-widget-header">Change layout width<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+						<div class="portlet-header ui-widget-header">{gt text='Change layout width'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 						<div class="portlet-content">
 							<ul class="side-menu layout-options">
 								<li>
-									What width would you like ?<br /><br />
+									{gt text='What width would you like ?'}<br /><br />
 								</li>
 								<li>
-									<a href="javascript:void(0);" title="#"><strong>100%</strong> width</a>
+									<a href="javascript:void(0);" title="#"><strong>100%</strong> {gt text='width'}</a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" id="layout90" title="#"><strong>90%</strong> width</a>
+									<a href="javascript:void(0);" id="layout90" title="#"><strong>90%</strong> {gt text='width'}</a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" id="layout75" title="#"><strong>75%</strong> width</a>
+									<a href="javascript:void(0);" id="layout75" title="#"><strong>75%</strong> {gt text='width'}</a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" id="layout980" title="#"><strong>980px</strong> width</a>
+									<a href="javascript:void(0);" id="layout980" title="#"><strong>980px</strong> {gt text='width'}</a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" id="layout1280" title="#"><strong>1280px</strong> width</a>
+									<a href="javascript:void(0);" id="layout1280" title="#"><strong>1280px</strong> {gt text='width'}</a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" id="layout1400" title="#"><strong>1400px</strong> width</a>
+									<a href="javascript:void(0);" id="layout1400" title="#"><strong>1400px</strong> {gt text='width'}</a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" id="layout1600" title="Switch to 1600px layout"><strong>1600px</strong> width</a>
+									<a href="javascript:void(0);" id="layout1600" title="Switch to 1600px layout"><strong>1600px</strong> {gt text='width'}</a>
 								</li>
 							</ul>
 						</div>

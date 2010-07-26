@@ -27,7 +27,7 @@
 <script type="text/javascript" src="javascript/helpers/Zikula.UI.js"></script>
 
 <link type="text/css" href="{$themepath}/style/ui/ui.base.css" rel="stylesheet" media="all" />
-<link type="text/css" href="{$themepath}/style/themes/black_rose/ui.css" rel="stylesheet" title="style" media="all" />
+<link type="text/css" href="{$themepath}/style/themes/gray/ui.css" rel="stylesheet" title="style" media="all" />
 
 {browserhack condition="if IE"}
     <link href="{$themepath}/style/ie6.css" rel="stylesheet" media="all" />
@@ -43,7 +43,7 @@
 		<div id="page-header">
 			<div id="page-header-wrapper">
 				<div id="top">
-					<p class="logo">Zikula Administration</p>
+					<p class="logo">{gt text='Zikula Administration'}</p>
 					<div class="welcome">
 						<span class="note">{gt text='Welcome back'}, <a href="#" title="{usergetvar name="uname" uid=$uid}">{usergetvar name="uname" uid=$uid}</a></span>
 						<a class="btn ui-state-default ui-corner-all" href="#">
@@ -107,7 +107,7 @@
 		<a href="#navigation" title="{gt text='Back to top'}">{gt text='Back to top'}</a>
 	</div>
 	<div id="copyright">
-		Powered by <a href="http://www.zikula.org" title="Zikula Version {version}">Zikula {version}</a>
+		{gt text='Powered by'} <a href="http://www.zikula.org" title="Zikula Version {version}">Zikula {version}</a>
 	</div>
 </div>
 </body>
