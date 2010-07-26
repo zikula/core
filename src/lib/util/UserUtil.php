@@ -18,57 +18,121 @@
 class UserUtil
 {
     // Activated states
-    // -32768 = Pending registration (not able to log on). Moderation and/or e-mail verification are in use
-    //              in the registration process, and one or more of the required steps has not yet been
-    //              completed.
+
+    /**
+     * Pending registration (not able to log in).
+     * 
+     * Moderation and/or e-mail verification are in use in the registration process, and one or more of the required steps has not yet
+     * been completed.
+     */
     const ACTIVATED_PENDING_REG = -32768;
-    // 0 = Inactive (Not able to log in.) This state may be set by the site administrator to prevent
-    //      any attempt to log in with this account.
+
+    /**
+     * Inactive (Not able to log in).
+     *
+     * This state may be set by the site administrator to prevent any attempt to log in with this account.
+     */
     const ACTIVATED_INACTIVE = 0;
-    // 1 = Active (Able to log in.)
+
+    /**
+     * Active (Able to log in).
+     */
     const ACTIVATED_ACTIVE = 1;
-    // 2 = Inactive until Terms of Use and/or Privacy Policy accepted (Able to start log-in, but must accept TOU/PP to complete.)
+
+    /**
+     * Inactive until Terms of Use and/or Privacy Policy accepted (able to start log-in, but must accept TOU/PP to complete).
+     */
     const ACTIVATED_INACTIVE_TOUPP = 2;
-    // 4 = Inactive until password changed (Able to start log-in, but must change web site account password to complete.)
-    //      Note, if the user attempts to log in using an alternate means of authentication (e.g., LDAP, OpenID, etc.) then
-    //      the login attempt will proceed without asking the user for a new password.
+
+    /**
+     * Inactive until password changed (able to start log-in, but must change web site account password to complete).
+     *
+     * Note, if the user attempts to log in using an alternate means of authentication (e.g., LDAP, OpenID, etc.) then the login
+     * attempt will proceed without asking the user for a new password.
+     */
     const ACTIVATED_INACTIVE_PWD = 4;
-    // 6 = Inactive until Terms of Use and/or Privacy Policy accepted and password changed (See above.)
+
+    /**
+     * Inactive until Terms of Use and/or Privacy Policy accepted and password changed (aee above).
+     */
     const ACTIVATED_INACTIVE_PWD_TOUPP = 6;
-    // 16384 = Marked for deletion (not able to log on). Similar to inactive, but with the expectation that
-    //              the account could be removed at any time. This state can also be used to simulate deletion without
-    //              actually deleting the account.
+
+    /**
+     * Marked for deletion (not able to log on)--FUTURE USE.
+     *
+     * Similar to inactive, but with the expectation that the account could be removed at any time. This state can also be used to
+     * simulate deletion without actually deleting the account.
+     */
     const ACTIVATED_PENDING_DELETE = 16384;
 
     // Registration verification and pasword generation options
-    // 0 = User chooses password, no verification by e-mail.
+
+    /**
+     * User chooses password, no verification by e-mail.
+     */
     const VERIFY_NO = 0;
-    // 1 = System-generated password is sent directly to e-mail address
-    // NOTE: Use of system-generated passwords is deprecated due to security concerns when sending passwords via e-mail
+
+    /**
+     * System-generated password is sent directly to e-mail address.
+     *
+     * NOTE: Use of system-generated passwords is deprecated due to security concerns when sending passwords via e-mail.
+     *
+     * @deprecated since 1.3.0
+     */
     const VERIFY_SYSTEMPWD = 1;
-    // 2 = User chooses password, then activates account via e-mail
+
+    /**
+     * User chooses password, then activates account via e-mail.
+     */
     const VERIFY_USERPWD = 2;
 
     // Determines the allowed order of approval (moderation) and e-mail verification (activation)
-    // 0 = A moderator must approve the registration application, then the user can verify his e-mail.
+
+    /**
+     * A moderator must approve the registration application, then the user can verify his e-mail.
+     */
     const APPROVAL_BEFORE = 0;
-    // 1 = The user must verify his e-mail address first, then the moderator can approve the account (but the admin can override this)
+
+    /**
+     * The user must verify his e-mail address first, then the moderator can approve the account (but the admin can override this).
+     */
     const APPROVAL_AFTER = 1;
-    // 2 = Verification and approval can happen in any order
+
+    /**
+     * Verification and approval can happen in any order.
+     */
     const APPROVAL_ANY = 2;
 
-    // 1 = Change of password request
+    // Change verification type for the users_verifychg table.
+
+    /**
+     * Change of password request.
+     */
     const VERIFYCHGTYPE_PWD = 1;
-    // 2 = change of e-mail address request, pending e-mail address verification
+
+    /**
+     * Change of e-mail address request, pending e-mail address verification.
+     */
     const VERIFYCHGTYPE_EMAIL = 2;
-    // 3 = registration e-mail verification
+
+    /**
+     * Registration e-mail verification.
+     */
     const VERIFYCHGTYPE_REGEMAIL = 3;
 
-    // Default salt delimeter character
+    /**
+     * Default salt delimeter character.
+     */
     const SALT_DELIM = '$';
 
-    // Date-time format for use with DateTime#format(), date() and gmdate()
+    /**
+     * Date-time format for use with DateTime#format(), date() and gmdate() for database storage.
+     */
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
+
+    /**
+     * A date/time indicating that a change request verification has expired.
+     */
     const EXPIRED = '1901-12-21 20:45:52';
 
     /**
