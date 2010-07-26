@@ -342,17 +342,13 @@ class Users_Controller_Admin extends Zikula_Controller
                 $userGroupsView = array();
             }
             // format the dates
-            if (!empty($item['user_regdate']) && ($item['user_regdate'] != '0000-00-00 00:00:00')
-                && ($item['user_regdate'] != '1970-01-01 00:00:00'))
-            {
+            if (!empty($item['user_regdate']) && ($item['user_regdate'] != '0000-00-00 00:00:00') && ($item['user_regdate'] != '1970-01-01 00:00:00')) {
                 $items[$key]['user_regdate'] = DateUtil::formatDatetime($item['user_regdate'], $this->__('%m-%d-%Y'));
             } else {
                 $items[$key]['user_regdate'] = '---';
             }
 
-            if (!empty($item['lastlogin']) && ($item['lastlogin'] != '0000-00-00 00:00:00')
-                && ($item['lastlogin'] != '1970-01-01 00:00:00'))
-            {
+            if (!empty($item['lastlogin']) && ($item['lastlogin'] != '0000-00-00 00:00:00') && ($item['lastlogin'] != '1970-01-01 00:00:00')) {
                 $items[$key]['lastlogin'] = DateUtil::formatDatetime($item['lastlogin'], $this->__('%m-%d-%Y'));
             } else {
                 $items[$key]['lastlogin'] = '---';
@@ -485,10 +481,12 @@ class Users_Controller_Admin extends Zikula_Controller
                 'deleteUrl'    => false,
             );
             if ($userinfo['uid'] != 1) {
-                if (SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_EDIT)){
+                if (SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_EDIT)) {
                     $actions[$key]['modifyUrl'] = ModUtil::url($this->getName(), 'admin', 'modify', array('userid' => $userinfo['uid']));
                 }
-                if (($currentUid != $userinfo['uid']) && SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_DELETE)){
+                if (($currentUid != $userinfo['uid']) 
+                        && SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_DELETE)) {
+                    
                     $actions[$key]['deleteUrl'] = ModUtil::url($this->getName(), 'admin', 'deleteusers', array('userid' => $userinfo['uid']));
                 }
             }
@@ -1023,8 +1021,8 @@ class Users_Controller_Admin extends Zikula_Controller
             if ($limitNumRows < 1) {
                 unset($returnArgs['startnum']);
             } elseif (!isset($returnArgs['startnum']) || !is_numeric($returnArgs['startnum']) || empty($returnArgs['startnum'])
-                || ((int)$returnArgs['startnum'] != $returnArgs['startnum']) || ($returnArgs['startnum'] < 1))
-            {
+                    || ((int)$returnArgs['startnum'] != $returnArgs['startnum']) || ($returnArgs['startnum'] < 1)) {
+
                 $returnArgs['startnum'] = 1;
             } elseif ($returnArgs['startnum'] > $regCount) {
                 // Probably deleted something. Reset to last page.
@@ -1713,8 +1711,9 @@ class Users_Controller_Admin extends Zikula_Controller
             $this->registerError($this->__('You must provide a display name for anonymous users.'));
         }
         if (!isset($config['itemsperpage']) || empty($config['itemsperpage']) || !is_numeric($config['itemsperpage'])
-            || ((int)$config['itemsperpage'] != $config['itemsperpage']) || (($config['itemsperpage'] < 1) && ($config['itemsperpage'] != -1)))
-        {
+                || ((int)$config['itemsperpage'] != $config['itemsperpage'])
+                || (($config['itemsperpage'] < 1) && ($config['itemsperpage'] != -1))) {
+
             $errorFields['users_itemsperpage'] = true;
             $this->registerError($this->__('The number of items displayed per page must be a positive integer, or -1 to display all items.'));
         }
@@ -1731,32 +1730,32 @@ class Users_Controller_Admin extends Zikula_Controller
             $this->registerError($this->__('You must provide a path to account page images.'));
         }
         if (!isset($config['accountitemsperpage']) || empty($config['accountitemsperpage']) || !is_numeric($config['accountitemsperpage'])
-            || ((int)$config['accountitemsperpage'] != $config['accountitemsperpage']) || ($config['accountitemsperpage'] < 1))
-        {
+                || ((int)$config['accountitemsperpage'] != $config['accountitemsperpage']) || ($config['accountitemsperpage'] < 1)) {
+
             $errorFields['users_accountitemsperpage'] = true;
             $this->registerError($this->__('The number of links per account page must be a positive integer.'));
         }
         if (!isset($config['accountitemsperrow']) || empty($config['accountitemsperrow']) || !is_numeric($config['accountitemsperrow'])
-            || ((int)$config['accountitemsperrow'] != $config['accountitemsperrow']) || ($config['accountitemsperrow'] < 1))
-        {
+                || ((int)$config['accountitemsperrow'] != $config['accountitemsperrow']) || ($config['accountitemsperrow'] < 1)) {
+
             $errorFields['users_accountitemsperrow'] = true;
             $this->registerError($this->__('The number of links per account page row must be a positive integer.'));
         }
         if (!isset($config['minpass']) || empty($config['minpass']) || !is_numeric($config['minpass'])
-            || ((int)$config['minpass'] != $config['minpass']) || ($config['minpass'] < 1))
-        {
+                || ((int)$config['minpass'] != $config['minpass']) || ($config['minpass'] < 1)) {
+
             $errorFields['users_minpass'] = true;
             $this->registerError($this->__('The minimum password length must be a positive integer.'));
         }
-        if (!isset($config['minage']) || !is_numeric($config['minage'])
-            || ((int)$config['minage'] != $config['minage']) || ($config['minage'] < 0))
-        {
+        if (!isset($config['minage']) || !is_numeric($config['minage']) || ((int)$config['minage'] != $config['minage'])
+                || ($config['minage'] < 0)) {
+
             $errorFields['users_minage'] = true;
             $this->registerError($this->__('The minimum age permitted to register must be zero (0) or a positive integer.'));
         }
         if (!isset($config['reg_expiredays']) || !is_numeric($config['reg_expiredays'])
-            || ((int)$config['reg_expiredays'] != $config['reg_expiredays']) || ($config['reg_expiredays'] < 0))
-        {
+                || ((int)$config['reg_expiredays'] != $config['reg_expiredays']) || ($config['reg_expiredays'] < 0)) {
+
             $errorFields['reg_expiredays'] = true;
             $this->registerError($this->__('The number of days before a registration pending verification is expired must be zero (0) or a positive integer.'));
         }
@@ -1767,14 +1766,14 @@ class Users_Controller_Admin extends Zikula_Controller
             }
         }
         if (!isset($config['chgemail_expiredays']) || !is_numeric($config['chgemail_expiredays'])
-            || ((int)$config['chgemail_expiredays'] != $config['chgemail_expiredays']) || ($config['chgemail_expiredays'] < 0))
-        {
+                || ((int)$config['chgemail_expiredays'] != $config['chgemail_expiredays']) || ($config['chgemail_expiredays'] < 0)) {
+
             $errorFields['chgemail_expiredays'] = true;
             $this->registerError($this->__('The number of days before an e-mail change request pending verification is expired must be zero (0) or a positive integer.'));
         }
-        if (!isset($config['chgpass_expiredays']) || !is_numeric($config['chgpass_expiredays'])
-            || ((int)$config['chgpass_expiredays'] != $config['chgpass_expiredays']) || ($config['chgpass_expiredays'] < 0))
-        {
+        if (!isset($config['chgpass_expiredays']) || !is_numeric($config['chgpass_expiredays']) 
+                || ((int)$config['chgpass_expiredays'] != $config['chgpass_expiredays']) || ($config['chgpass_expiredays'] < 0)) {
+
             $errorFields['chgpass_expiredays'] = true;
             $this->registerError($this->__('The number of days before a password reset request pending verification is expired must be zero (0) or a positive integer.'));
         }
