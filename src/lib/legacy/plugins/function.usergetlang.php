@@ -25,11 +25,11 @@
  *   {usergetlang name="foobar"}
  *
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty     Reference to the Smarty object
  * @param        string      $assign      (optional) The name of the variable to assign the result to
  * @return       string      The recent users language
  */
-function smarty_function_usergetlang($params,&$smarty)
+function smarty_function_usergetlang($params, $smarty)
 {
     LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('usergetlang', 'lang')), E_USER_DEPRECATED);
     $assign = isset($params['assign'])  ? $params['assign']  : null;

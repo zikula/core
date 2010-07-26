@@ -21,11 +21,12 @@
  *
  * @see          function.themeinfo.php::smarty_function_themeinfo()
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty     Reference to the Smarty object
  * @return       string      the themeinfo
  */
-function smarty_function_themeinfo($params, &$smarty)
+function smarty_function_themeinfo($params, $smarty)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('themeinfo', '$themeinfo')), E_USER_DEPRECATED);
     $thistheme = UserUtil::getTheme();
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($thistheme));
 

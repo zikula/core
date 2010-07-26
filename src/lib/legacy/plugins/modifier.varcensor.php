@@ -45,5 +45,6 @@
  */
 function smarty_modifier_varcensor($string)
 {
+    LogUtil::log(__f('Warning! Template modifier {%s} is deprecated.', array('varcensor')), E_USER_DEPRECATED);
     return pnVarCensor($string);
 }

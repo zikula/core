@@ -29,6 +29,7 @@ require_once 'javascript/phplayersmenu/lib/layersmenu.inc.php';
  */
 function smarty_function_layersmenu ($params, &$smarty)
 {
+    LogUtil::log(__f('Warning! Template plugin {%s} is deprecated.', array('layersmenu')), E_USER_DEPRECATED);
     $menuString = isset($params['menuString']) ? $params['menuString'] : '';
     $cssFile    = isset($params['cssFile'])    ? $params['cssFile']    : '';
 

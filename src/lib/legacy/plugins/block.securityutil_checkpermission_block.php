@@ -38,6 +38,7 @@
  */
 function smarty_block_securityutil_checkpermission_block($params, $content, &$smarty)
 {
+    LogUtil::log(__f('Warning! Template block {%1$s} is deprecated, please use {%2$s} instead.', array('securityutil_checkpermission_block', 'checkpermissionblock')), E_USER_DEPRECATED);
     if (is_null($content)) {
         return;
     }

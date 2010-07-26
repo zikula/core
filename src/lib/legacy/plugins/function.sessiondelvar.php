@@ -26,15 +26,14 @@
  * Example
  *   {sessiondelvar name='foobar'}
  *
- * @author       Michael Nagy
- * @since        23/12/2004
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty     Reference to the Smarty object
  * @param        string      $name        The name of the session variable to delete
  * @return       string      The session variable
  */
-function smarty_function_sessiondelvar($params, &$smarty)
+function smarty_function_sessiondelvar($params, $smarty)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated.', array('sessiondelvar')), E_USER_DEPRECATED);
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $name    = isset($params['name'])    ? $params['name']    : null;
     $default = isset($params['default']) ? $params['default'] : null;

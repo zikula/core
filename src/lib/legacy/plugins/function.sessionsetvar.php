@@ -31,12 +31,13 @@
  *   {sessionsetvar name='foo' value='bar'}
  *
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty     Reference to the Smarty object
  * @param        string      $name        The name of the session variable to obtain
  * @return       null
  */
-function smarty_function_sessionsetvar($params, &$smarty)
+function smarty_function_sessionsetvar($params, $smarty)
 {
+    LogUtil::log(__f('Warning! Template plugin {%s} is deprecated.', array('sessionsetvar')), E_USER_DEPRECATED);
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $name    = isset($params['name'])    ? $params['name']    : null;
     $value   = isset($params['value'])   ? $params['value']   : null;

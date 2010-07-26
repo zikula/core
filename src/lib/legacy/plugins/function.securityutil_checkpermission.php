@@ -21,11 +21,12 @@
  *
  * This file is a plugin for Zikula_View, the Zikula implementation of Smarty
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty      Reference to the Smarty object
  * @return       boolean     authorized?
  */
-function smarty_function_securityutil_checkpermission($params, &$smarty)
+function smarty_function_securityutil_checkpermission($params, $smarty)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('securityutil_checkpermission', 'checkpermission')), E_USER_DEPRECATED);
     if (!isset($params['component'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('securityutil_checkpermission', 'component')));
         return false;

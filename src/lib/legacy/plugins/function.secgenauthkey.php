@@ -30,12 +30,13 @@
  *
  * @todo         prevent this function from being cached (Smarty 2.6.0)
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty     Reference to the Smarty object
  * @return       string      the authentication key
  * @deprecated
  */
-function smarty_function_secgenauthkey ($params, &$smarty)
+function smarty_function_secgenauthkey($params, $smarty)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('secgenauthkey', 'generateauthkey')), E_USER_DEPRECATED);
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $module = isset($params['module']) ? $params['module'] : null;
 

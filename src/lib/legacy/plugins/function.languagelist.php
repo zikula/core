@@ -20,12 +20,13 @@
  *
  * @deprecated
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$smarty Reference to the Smarty object.
+ * @param object $smarty Reference to the Smarty object.
  *
  * @return string The value of the last status message posted, or void if no status message exists.
  */
-function smarty_function_languagelist($params, &$smarty)
+function smarty_function_languagelist($params, $smarty)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('languagelist', 'html_select_languages')), E_USER_DEPRECATED);
     require_once $smarty->_get_plugin_filepath('function','html_select_languages');
     return smarty_function_html_select_languages($params, $smarty);
 }
