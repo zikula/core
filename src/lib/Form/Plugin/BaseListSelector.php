@@ -137,8 +137,8 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
-     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * @param Form_View $render  Reference to Form render object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
@@ -172,8 +172,8 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
     /**
      * Load event handler.
      *
-     * @param Form_View $render Reference to Form_View object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_View $render  Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -218,7 +218,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * Uses the group parameter to decide where to store data.
      *
      * @param Form_View $render Reference to Form render object.
-     * @param array       &$data   Data object.
+     * @param array     &$data  Data object.
      *
      * @return void
      */
@@ -242,8 +242,8 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Form_View::setValues.
      *
-     * @param Form_View $render Reference to Form_View object.
-     * @param array       &$values Values to load.
+     * @param Form_View $render  Reference to Form_View object.
+     * @param array     &$values Values to load.
      *
      * @return void
      */
