@@ -143,8 +143,8 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
     /**
      * Load event handler.
      *
-     * @param Form_View $render Reference to Form render object.
-     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * @param Form_View $render  Reference to Form render object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -153,7 +153,7 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         $this->includeEmptyElement = (isset($params['includeEmptyElement']) ? $params['includeEmptyElement'] : false);
         $this->enableDBUtil = (isset($params['enableDBUtil']) ? $params['enableDBUtil'] : false);
 
-        Form_Plugin_CategorySelector::loadParameters($this, $this->includeEmptyElement, $params);
+        self::loadParameters($this, $this->includeEmptyElement, $params);
 
         parent::load($render, $params);
     }
@@ -184,7 +184,7 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
      * Uses the group parameter to decide where to store data.
      *
      * @param Form_View $render Reference to Form render object.
-     * @param array       &$data   Data object.
+     * @param array     &$data  Data object.
      *
      * @return void
      */
@@ -210,8 +210,8 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Form_View::setValues.
      *
-     * @param Form_View $render Reference to Form_View render object.
-     * @param array       &$values Values to load.
+     * @param Form_View $render  Reference to Form_View render object.
+     * @param array     &$values Values to load.
      *
      * @return void
      */
