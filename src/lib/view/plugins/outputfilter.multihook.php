@@ -18,7 +18,7 @@
  *
  * Security check is done in the MultiHook function called here.
  *
- * @param string $text    Output source.
+ * @param string      $text Output source.
  * @param Zikula_View $view Reference to Zikula_View instance.
  *
  * @return string

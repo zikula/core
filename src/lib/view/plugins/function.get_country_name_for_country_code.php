@@ -23,8 +23,8 @@
  * Example
  *   {get_country_name_for_country_code  code=ZZ}
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param object $view Reference to the Zikula_View object.
+ * @param array  $params All attributes passed to this function from the template.
+ * @param object $view   Reference to the Zikula_View object.
  *
  * @return      string      the value of the last status message posted, or void if no status message exists
  */

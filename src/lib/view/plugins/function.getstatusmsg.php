@@ -39,12 +39,13 @@
  *   {getstatusmsg style='color:red;'}
  *   {getstatusmsg class='statusmessage' tag='span'}
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @todo prevent this function from being cached
  * @deprecated
- * @return string The value of the last status message posted, or void if no status message exists.
+ *
+ * @return string|void The value of the last status message posted, or void if no status message exists.
  */
 function smarty_function_getstatusmsg($params, $view)
 {

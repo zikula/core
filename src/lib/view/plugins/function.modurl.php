@@ -41,8 +41,8 @@
  * ssl - set to constant null,true,false NOTE: $ssl = true not $ssl = 'true'  null - leave the current status untouched, true - create a ssl url, false - create a non-ssl url
  *   <a href="{modurl modname='News' type='user' func='display' sid='3' ssl=true}">Link</a>
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @return string The URL.
  */

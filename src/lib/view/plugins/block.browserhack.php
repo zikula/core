@@ -20,9 +20,9 @@
  * {browserhack condition="if lte IE 7"}something goes here{/browserhack}
  * {browserhack condition="if lte IE 7" assign="var"}something goes here{/browserhack}
  *
- * @param array    $params  Array with keys 'condition' whatever goes in the browserhack,
- *                          and 'assign' to assign rather than display.
- * @param string   $content Content of the block.
+ * @param array       $params  Array with keys 'condition' whatever goes in the browserhack,
+ *                                 and 'assign' to assign rather than display.
+ * @param string      $content Content of the block.
  * @param Zikula_View &$render Instance of Zikula_View object.
  *
  * @return string|void

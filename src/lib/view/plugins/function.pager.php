@@ -46,8 +46,8 @@
  *  processDetailLinks Should the single page links be processed? (default: false if using pagerimage.tpl, otherwise true)
  *  optimize           Only deliver page links which are actually displayed to the template (default: false)
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @return string
  */

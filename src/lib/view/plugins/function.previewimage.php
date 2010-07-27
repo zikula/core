@@ -25,10 +25,11 @@
  * Example
  * {previewimage name=andreas08 size=large}
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @see    function.title.php::smarty_function_previewimage()
+ *
  * @return string The markup to display the theme image.
  */
 function smarty_function_previewimage($params, $view)

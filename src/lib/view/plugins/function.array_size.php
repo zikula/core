@@ -45,8 +45,8 @@
  *
  *  <samp>{array_size array=$myvar assign='mycount'}</samp>
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
  * @return integer The number of elements in the specified array, or 0 (zero)
  *                 if the array is empty, or 0 (zero) if the specified

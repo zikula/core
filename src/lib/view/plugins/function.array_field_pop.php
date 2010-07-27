@@ -38,8 +38,8 @@
  *
  *  <samp>{array_field_pop array='myarray' field='arraykey' unset=1 assign='myValue'}</samp>
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
  * @return null The value of the specified array element is return
  *              in the specified template variable if it is set,

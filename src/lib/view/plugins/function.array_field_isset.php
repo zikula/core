@@ -47,8 +47,8 @@
  *
  *  <samp>{array_field_isset array=$myarray field='arraykey' returnValue=1 assign='myValue'}</samp>
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
  * @return boolean|mixed if returnValue is not set, then returns true if the array
  *                       element is set, otherwise false; if returnValue is set,

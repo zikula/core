@@ -35,10 +35,11 @@
  * Example
  * {modcallhooks hookobject='item' hookaction='modify' hookid=$tid $modname='ThisModule' $objectid=$tid}
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @see    function.modcallhooks.php::smarty_function_modcallhooks()
+ * 
  * @return string The results of the module function.
  */
 function smarty_function_modcallhooks($params, $view)

@@ -71,8 +71,8 @@
  *
  * <samp>{button src='button_cancel.gif' set='medium' mode='input' value='cancel' id='cancelbutton'}</samp>
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
  * @return string The rendered <button ...><img ...></button> or <input ...>
  *                element for the form button.

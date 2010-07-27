@@ -29,8 +29,8 @@
  *
  * <samp>{blockposition name='left'}</samp>
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
  * @return string The rendered ouput of all of the blocks assigned to this position.
  */

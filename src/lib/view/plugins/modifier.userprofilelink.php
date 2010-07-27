@@ -33,7 +33,7 @@
  * @param string  $string    The users name.
  * @param string  $class     The class name for the link (optional).
  * @param mixed   $image     The image to show instead of the username (optional).
- *                            May be an array as created by pnimg.
+ *                              May be an array as created by pnimg.
  * @param integer $maxLength If set then user names are truncated to x chars.
  *
  * @return string The output.

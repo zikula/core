@@ -19,10 +19,11 @@
  * Example
  * {user}
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @see    function.userwelcome.php::smarty_function_user()
+ * 
  * @return string The username.
  */
 function smarty_function_user($params, $view)

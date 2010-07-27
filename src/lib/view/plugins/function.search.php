@@ -46,8 +46,8 @@
  *   display: inline;
  * to this class in your style sheet.
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param object $view Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @return string The search box.
  */

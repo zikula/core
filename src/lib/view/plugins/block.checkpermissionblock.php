@@ -28,9 +28,9 @@
  * {/checkpermissionblock}
  * </pre>.
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param string $content The content between the block tags.
- * @param Zikula_View $view Reference to the {@link Zikula_View} object.
+ * @param array       $params  All attributes passed to this function from the template.
+ * @param string      $content The content between the block tags.
+ * @param Zikula_View $view    Reference to the {@link Zikula_View} object.
  *
  * @return mixed The content of the block, if the user has the specified
  *               access level for the component and instance;

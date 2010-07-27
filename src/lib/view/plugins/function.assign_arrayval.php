@@ -38,8 +38,8 @@
  *
  *  <samp>{assign_arrayval array=$myArray key=4 assign='myVar'}</samp>
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
  * @return void
  */

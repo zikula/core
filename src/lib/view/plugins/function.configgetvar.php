@@ -36,8 +36,8 @@
  * <samp>{configgetvar name='sitename' assign='thename'}</samp><br>
  * <samp><p>Welcome to {$thename|safetext}!</p></samp>
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
  * @return mixed The value of the configuration variable.
  */

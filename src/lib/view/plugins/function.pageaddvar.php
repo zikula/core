@@ -39,8 +39,8 @@
  *   {pageaddvar name='javascript' value='path/to/myscript.js'}
  *   {pageaddvar name='javascript' value='path/to/myscript.js,path/to/another/script.js'}
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View $view Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template.
+ * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @return string
  */
