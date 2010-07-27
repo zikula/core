@@ -154,7 +154,7 @@ abstract class Form_Plugin implements Zikula_Translatable
     public $attributes = array();
 
     /**
-     * Form_View property
+     * Form_View property.
      *
      * @var Form_View
      */
@@ -261,7 +261,7 @@ abstract class Form_Plugin implements Zikula_Translatable
     /**
      * Set translation domain.
      *
-     * @param string $domain
+     * @param string $domain The translation domain.
      *
      * @return void
      */
@@ -270,46 +270,94 @@ abstract class Form_Plugin implements Zikula_Translatable
         $this->domain = $domain;
     }
 
+    /**
+     * Retrieve the Form_View property.
+     *
+     * @return Form_View The Form_View property.
+     */
     public function getView()
     {
         return $this->view;
     }
 
+    /**
+     * Retrieve the plugin identifier (see {@link $id}).
+     *
+     * @return string The id.
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * Indicates whether or not this plugin should be rendered.
+     *
+     * @return boolean True if this plugin should be rendered, otherwise false.
+     */
     public function getVisible()
     {
         return $this->visible;
     }
 
+    /**
+     * Retrieve the reference to the parent plugin if this is a sub-plugin used inside a block.
+     *
+     * @return FormHandler The parent plugin.
+     */
     public function getParentPlugin()
     {
         return $this->parentPlugin;
     }
 
+    /**
+     * Retrieve the HTML attributes.
+     *
+     * @return array An associative array of attributes to add to the plugin.
+     */
     public function getAttributes()
     {
         return $this->attributes;
     }
 
+    /**
+     * Retrieve the name of function to call in form event handler when plugin is loaded (see {@link $onDataBound}).
+     *
+     * @return string The name of the onDataBound function.
+     */
     public function getOnDataBound()
     {
         return $this->onDataBound;
     }
 
+    /**
+     * Retrieve the reference to sub-plugins.
+     *
+     * This variable contains an array of references to sub-plugins when this plugin is
+     * a block plugin containing other plugins.
+     *
+     * @return array The reference to sub-plugins.
+     */
     public function getPlugins()
     {
         return $this->plugins;
     }
 
+    /**
+     * Retrieves the temporary storage of the output from renderBegin in blocks.
+     *
+     * @return string The temporary output storage contents.
+     */
     public function getBlockBeginOutput()
     {
         return $this->blockBeginOutput;
     }
 
+    /**
+     * Retrieves the volatile indicator (if true, state management in sub-plugins is disabled).
+     *
+     * @return boolean The volatile indicator.
+     */
     public function getVolatile()
     {
         return $this->volatile;
@@ -322,8 +370,8 @@ abstract class Form_Plugin implements Zikula_Translatable
      * or attributes (all unknown parameters go into the "attribues" array).
      * You can override this for special situations.
      *
-     * @param Form_View $view   Reference to Form_View object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -354,7 +402,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to do nothing.
      *
-     * @param Form_View $view   Reference to Form_View object.
+     * @param Form_View $view    Reference to Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -368,7 +416,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to do nothing.
      *
-     * @param Form_View $view   Reference to Form_View object.
+     * @param Form_View $view    Reference to Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -440,7 +488,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to call onDataBound handler in form event handler.
      *
-     * @param Form_View $view Reference to Form_View object.
+     * @param Form_View $view    Reference to Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -505,7 +553,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to return the content unmodified.
      *
-     * @param Form_View $view Reference to Form_View object.
+     * @param Form_View $view    Reference to Form_View object.
      * @param string    $content The content to handle.
      *
      * @return string The (optionally) modified content.
@@ -547,7 +595,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to add the plugin to $this->plugins.
      *
-     * @param Form_View   $view  Reference to Form_View object.
+     * @param Form_View   $view   Reference to Form_View object.
      * @param Form_Plugin $plugin A Form plugin to add.
      *
      * @return void
