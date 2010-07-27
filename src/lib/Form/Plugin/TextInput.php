@@ -231,8 +231,8 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
@@ -257,8 +257,8 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Load event handler.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -435,8 +435,8 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Called by the render when doing $view->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param array       &$data   Data object.
+     * @param Form_View $view  Reference to Form_View object.
+     * @param array     &$data Data object.
      *
      * @return void
      */
@@ -462,7 +462,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Override this function in inherited plugins if other format is needed.
      *
      * @param Form_View $view Reference to Form_View object.
-     * @param string      $text    Text.
+     * @param string    $text Text.
      *
      * @return string Parsed Text.
      */
@@ -477,8 +477,8 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Form_ViewetValues.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param array       &$values Values to load.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param array     &$values Values to load.
      *
      * @return void
      */
@@ -510,8 +510,8 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * Override this function in inherited plugins if other format is needed.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param string      $value   The value to format.
+     * @param Form_View $view  Reference to Form_View object.
+     * @param string    $value The value to format.
      *
      * @return string Formatted value.
      */
