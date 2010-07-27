@@ -1087,7 +1087,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     public function add_core_data()
     {
-        $core = array();
+        $core = new ArrayObject(array());
         $core['version_num'] = System::VERSION_NUM;
         $core['version_id'] = System::VERSION_ID;
         $core['version_sub'] = System::VERSION_SUB;
