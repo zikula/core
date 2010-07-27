@@ -792,13 +792,8 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @param string $auto_source The file name (optional).
      * @param string $auto_id     The ID (optional).
      *
-<<<<<<< Updated upstream
      * @return string The concrete path and file name to the content.
-     *
-=======
-     * @return string
-     *
->>>>>>> Stashed changes
+     * 
      * @staticvar string|null
      * @staticvar string|null
      */
