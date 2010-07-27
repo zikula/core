@@ -1,10 +1,9 @@
 /* $Id: unipagercssadvanced.css 18547 2006-04-02 21:33:59Z markwest $ */
-
 div.z-pager {
     color: #000;
     font: normal 82% "Trebuchet MS", "Myriad Web", Tahoma, Geneva, Arial, Helvetica, sans-serif;
     margin: 0 auto;
-/*        padding: 4em 10px 0; */
+    /*        padding: 4em 10px 0; */
     font-size: .9em;
     text-align: right;
     margin: 0 0 1em 0;
@@ -73,7 +72,7 @@ div.z-pager a, div.z-pager strong {
 div.z-pager strong {
     background-color: #f1eed7;
     color: #CE4D0E;
-    border-color: #808080 #C9C7BC #C9C7BC #808080!important;
+    border-color: #808080 #C9C7BC #C9C7BC #808080 !important;
 }
 
 div.z-pager .skip {
@@ -215,4 +214,6 @@ div.z-pager > span.select a {
     margin: 2px 1px;
 }
 
-a img,:link img,:visited img { border:none }
+a img,:link img,:visited img {
+    border: none
+}
