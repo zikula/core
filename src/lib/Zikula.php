@@ -164,7 +164,7 @@ class Zikula
      *
      * @return float
      */
-    public function getUptime()
+    public function getBoottime()
     {
         return $this->bootime;
     }
