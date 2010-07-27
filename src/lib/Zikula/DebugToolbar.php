@@ -121,11 +121,11 @@ class Zikula_DebugToolbar
                 if ($content) {
                     // show title with a link to the content
                     $id = 'DebugToolbarPanel'.$name.'Content';
-                    $links[]         = '<li><a href="#" onclick="defaultZikulaDebugToolbar.toggleContentForPanel(\''.$id.'\');return false;">'.$title.'</a></li>';
+                    $links[]         = '<li title="'.$panel->getPanelTitle().'" class="'.$name.'"><a href="#" onclick="defaultZikulaDebugToolbar.toggleContentForPanel(\''.$id.'\');return false;">'.$title.'</a></li>';
                     $panelContents[] = '<div id="'.$id.'" class="DebugToolbarPanel" style="display:none;"><h1>'.$panel->getPanelTitle().'</h1>'.$panel->getPanelContent().'</div>';
                 } else {
                     // show title without a link
-                    $links[] = '<li>'.$title.'</li>';
+                    $links[] = '<li title="'.$panel->getPanelTitle().'" class="'.$name.'">'.$title.'</li>';
                 }
             }
         }

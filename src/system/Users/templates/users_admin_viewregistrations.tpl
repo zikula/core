@@ -18,8 +18,8 @@
             </tr>
         </thead>
         <tbody>
-            {gt assign='titleIfSent' text='Send a new e-mail verification code.'}
-            {gt assign='titleIfNotSent' text='Send an e-mail verification code.'}
+            {gt assign='titleIfSent' text='Send a new e-mail verification code'}
+            {gt assign='titleIfNotSent' text='Send an e-mail verification code'}
             {foreach from=$reglist item='reginfo' name='reglist'}<tr class="{cycle values='z-odd,z-even'}">
                 <td>{$reginfo.uname|safetext}</td>
                 <td>{if !empty($reginfo.email)}<a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>{else}---{/if}</td>

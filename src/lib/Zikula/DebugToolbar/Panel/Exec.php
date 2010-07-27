@@ -49,7 +49,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_Panel
      */
     public function getTitle()
     {
-        return __('exec');
+        return __('Functions executions');
     }
 
     /**

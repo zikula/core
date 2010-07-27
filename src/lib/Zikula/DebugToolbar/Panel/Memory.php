@@ -25,7 +25,7 @@ class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_Panel
      */
     public function getId()
     {
-        return "momory";
+        return "memory";
     }
 
     /**
@@ -38,7 +38,7 @@ class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_Panel
         if (function_exists('memory_get_usage')) {
             $totalMemory = sprintf('%.1f', (memory_get_usage() / 1024));
 
-            return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/terminal.gif" /> '.$totalMemory.' KB';
+            return $totalMemory.' KB';
         }
     }
 
@@ -49,7 +49,7 @@ class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_Panel
      */
     public function getPanelTitle()
     {
-        return null;
+        return __('Memory');
     }
 
     /**

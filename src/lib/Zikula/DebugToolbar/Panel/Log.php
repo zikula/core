@@ -42,7 +42,7 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
      */
     public function getTitle()
     {
-        $title =  '<img src="'.System::getBaseUri().'/images/icons/extrasmall/comment.gif" /> '.__('Logs');
+        $title =  __('Log console');
         $count = count($this->_log);
 
         if ($count > 0) {
@@ -88,11 +88,11 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
         }
 
         
-        return '<table class="DebugToolbarLogs">
+        return '<table class="DebugToolbarTable">
                     <tr>
                         <th class="DebugToolbarLogsType">'.__('Type').'</th>
                         <th class="DebugToolbarLogsMessage">'.__('Message').'</th>
-                        <th class="DebugToolbarLogsFile">'.__('File : Line').'</th>
+                        <th class="DebugToolbarLogsFile">'.__('File: Line').'</th>
                     </tr>
                     '.implode(' ', $rows).'
                 </table>';
@@ -138,21 +138,21 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
     protected function getImageForErrorType($type) {
         switch ($type) {
             case Zikula_ErrorHandler::EMERG:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/exit.gif" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/exit.gif" alt="" />';
             case Zikula_ErrorHandler::ALERT:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.gif" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.gif" alt="" />';
             case Zikula_ErrorHandler::CRIT:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.gif" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.gif" alt="" />';
             case Zikula_ErrorHandler::ERR:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.gif" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.gif" alt="" />';
             case Zikula_ErrorHandler::WARN:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/redled.gif" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/redled.gif" alt="" />';
             case Zikula_ErrorHandler::NOTICE:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/info.gif" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/info.gif" alt="" />';
             case Zikula_ErrorHandler::INFO:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/info.gif" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/info.gif" alt="" />';
             case Zikula_ErrorHandler::DEBUG:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/text_block.gif" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/text_block.gif" alt="" />';
             default:
                 return __('Unknown');
         }

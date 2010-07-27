@@ -42,7 +42,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
      */
     public function getTitle()
     {
-        return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/text_block.gif" /> ' . __('View');
+        return __('Templates');
     }
 
     /**
@@ -65,7 +65,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
         $rows = array();
 
         foreach ($this->_templates as $template) {
-            $rows[] = $this->arrayToHTML($template['module'].' / '.$template['template'], $template['vars']);
+            $rows[] = $this->arrayToHTML($template['template'], $template['vars']);
         }
 
         return implode(' ', $rows);

@@ -35,7 +35,7 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_Panel
      */
     public function getTitle()
     {
-        return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/configure_toolbars.gif" /> ' . __('Config');
+        return __('Configuration');
     }
 
     /**
@@ -82,10 +82,10 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_Panel
     {
         $id = str_replace(' ', '', $name);
 
-        $html = '<a href="#" title="'.__('Click to show the configuration variables').'" onclick="$(\'DebugToolbarPanelconfigContent'.$id.'\').toggle();return false;">'.$name.'</a>';
+        $html = '<a href="#" title="'.__('Click to show the configuration variables').'" onclick="$(\'DebugToolbarPanelconfigContent'.$id.'\').toggle();return false;"><h2>'.$name.'</h2></a>';
         $html .= '<div id="DebugToolbarPanelconfigContent'.$id.'" style="display:none;"><pre>';
         $html .= '<ul>' . $this->outputVar($arrayname, $array) .'</ul>';
-        $html .= '</pre></div><br/>';
+        $html .= '</pre></div>';
 
         return $html;
     }

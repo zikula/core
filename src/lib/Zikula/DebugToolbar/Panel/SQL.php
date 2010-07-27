@@ -42,7 +42,14 @@ class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_Panel
      */
     public function getTitle()
     {
-        return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/database.gif" /> '. $this->getSQLCount();
+        $title =  __('Queries');
+        $count = $this->getSQLCount();
+
+        if ($count > 0) {
+            $title .= " ({$count})";
+        }
+
+        return $title;
     }
 
     /**
@@ -76,7 +83,7 @@ class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_Panel
         }
 
         
-        return '<table>
+        return '<table class="DebugToolbarTable">
                     <tr>
                         <th>'.__('Query').'</th>
                         <th>'.__('Time (ms)').'</th>

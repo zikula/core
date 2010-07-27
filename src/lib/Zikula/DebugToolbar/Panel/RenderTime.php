@@ -40,7 +40,7 @@ class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_Panel
 
         $diff = $end - $start;
 
-        return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/clock.gif" /> '.round($diff*1000, 3).' ms';
+        return round($diff*1000, 3).' ms';
     }
 
     /**
@@ -50,7 +50,7 @@ class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_Panel
      */
     public function getPanelTitle()
     {
-        return null;
+        return __('Render time');
     }
 
     /**

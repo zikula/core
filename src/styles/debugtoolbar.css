@@ -1,82 +1,168 @@
-#DebugToolbarContainer {
-    left: 0;
-    top: 0;
-   /* position: fixed;*/
-    width: 100%;
-}
-
-#DebugToolbar {
-    background-color: #D9D9D9;
-    right: 0;
-    top: 0;
-    position: fixed;
-    z-index: 10000;
-    line-height: 100%;
-    padding: 5px;
+#DebugToolbarContainer #DebugToolbar {
+    background: none repeat scroll 0 0 #FFFFCF;
+    border-bottom: 1px solid #999999;
+    border-right: 1px solid #999999;
+    color: #222;
     font-size: 12px;
-    line-height: 12px;
-    white-space:nowrap;
+    height: 20px;
+    left: 0;
+    line-height: 18px;
+    width: 20px;
+    padding: 4px;
+    position: fixed;
     text-align: left;
+    top: 0;
+    white-space: nowrap;
+    z-index: 10000;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
 }
 
-#DebugToolbarContainer a, #DebugToolbarContainer a:hover{
-    color: black;
+#DebugToolbarContainer .DebugToolbarPanel a {
+    color: #4170A0;
     font-weight: bold;
+    text-decoration: none;
 }
 
-#DebugToolbar img{
+#DebugToolbarContainer .DebugToolbarPanel a:hover {
+    color: #2A5A8A;
+    text-decoration: underline;
+}
+
+#DebugToolbarContainer #DebugToolbar img {
     vertical-align: middle;
 }
 
-#DebugToolbar ul{
-    margin:0;
-    display:inline;
-    padding:0;
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks {
+    background: #FFFFCF;
+    border-bottom: 1px solid #999999;
+    border-right: 1px solid #999999;
+    left: 29px;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
 }
 
-#DebugToolbar li{
-    display:inline;
-    list-style-type:none;
-    list-style-position:outside;
-    list-style-image:none;
-    margin-left: 8px;
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li {
+    display: inline;
+    height: 28px;
+    line-height: 28px;
+    list-style: none outside none;
+    margin: 0 0 0 8px;
+    padding: 2px 0;
 }
 
-.DebugToolbarPanel {
-    background-color:#F3F3F3;
-    left:0;
-    top:0;
-    position:absolute;
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li a {
+    color: #222;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid transparent;
+    padding: 2px;
+}
+
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li a:hover {
+    border: 1px solid #aaa;
+}
+
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.config {
+    background: url("../images/icons/extrasmall/configure_toolbars.gif") no-repeat scroll 0 50% transparent;
+    padding-left: 20px;
+}
+
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.memory {
+    background: url("../images/icons/extrasmall/terminal.gif") no-repeat scroll 0 50% transparent;
+    padding-left: 20px;
+}
+
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.rendertime {
+    background: url("../images/icons/extrasmall/clock.gif") no-repeat scroll 0 50% transparent;
+    padding-left: 20px;
+}
+
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.sql {
+    background: url("../images/icons/extrasmall/database.gif") no-repeat scroll 0 50% transparent;
+    padding-left: 20px;
+}
+
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.view {
+    background: url("../images/icons/extrasmall/text_block.gif") no-repeat scroll 0 50% transparent;
+    padding-left: 20px;
+}
+
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.exec {
+    background: url("../images/icons/extrasmall/exec.gif") no-repeat scroll 0 50% transparent;
+    padding-left: 20px;
+}
+
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.logs {
+    background: url("../images/icons/extrasmall/comment.gif") no-repeat scroll 0 50% transparent;
+    padding-left: 20px;
+}
+
+#DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.last {
+    padding-right: 5px;
+}
+
+#DebugToolbarContainer .DebugToolbarPanel {
+    background: none repeat scroll 0 0 #FAFAFA;
+    border-bottom: 1px solid #999999;
+    font-size: 12px;
+    color: #222;
+    left: 0;
+    padding: 40px 1% 1% 1%;
+    position: absolute;
+    text-align: left;
+    top: 0;
+    white-space: normal;
     width: 98%;
-    z-index:9999;
-    padding: 10px;
-    white-space:normal;
-    border-bottom: #000000 solid 1px;
-    border-right: #000000 solid 1px;
+    z-index: 9999;
 }
 
-#DebugToolbarPanelsqlContent td {
-    padding-bottom: 10px;
+#DebugToolbarContainer .DebugToolbarPanel h1 {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+    color: #222;
 }
 
+#DebugToolbarContainer .DebugToolbarPanel h2 {
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 13px;
+    color: #222;
+}
+
+#DebugToolbarContainer .DebugToolbarPanel a h2 {
+    color: #4170A0;
+}
 
 /* Log Table */
-table.DebugToolbarLogs  {
+#DebugToolbarContainer table.DebugToolbarTable {
     width: 100%;
 }
 
-table.DebugToolbarLogs td {
-    background-color:#DDDDDD;
+#DebugToolbarContainer table.DebugToolbarTable td {
+    background-color: #DDDDDD;
+    padding: 5px 2px;
 }
 
-table.DebugToolbarLogs th {
-    background-color:#999999;
+#DebugToolbarContainer table.DebugToolbarTable th {
+    background-color: #999999;
+    font-weight: bold;
+    padding: 5px 2px;
+    text-transform: uppercase;
 }
 
-.DebugToolbarLogsType {
+#DebugToolbarContainer .DebugToolbarLogsType {
     width: 6%;
+    white-space: nowrap;
 }
 
-.DebugToolbarLogsMessage {
+#DebugToolbarContainer .DebugToolbarLogsMessage {
     width: 50%;
 }
