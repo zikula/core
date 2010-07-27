@@ -104,6 +104,13 @@ class SystemListenersUtil
         $event->setNotified();
     }
 
+    /**
+     * Establish the necessary instances for logging.
+     *
+     * @param Zikula_Event $event The event to log.
+     *
+     * @return void
+     */
     public static function setupLoggers(Zikula_Event $event)
     {
         if (!($event['stage'] & System::STAGES_CONFIG)) {
@@ -135,6 +142,15 @@ class SystemListenersUtil
         }
     }
 
+    /**
+     * Log an error.
+     *
+     * @param Zikula_Event $event The log event to log.
+     *
+     * @return void
+     *
+     * @throws Zikula_Exception_Fatal Thrown if the handler for the event is an instance of Zikula_ErrorHandler_Ajax.
+     */
     public static function errorLog(Zikula_Event $event)
     {
         // Check for error supression.  if error @ supression was used.
@@ -165,16 +181,16 @@ class SystemListenersUtil
             }
         }
 
-//        $trace = $event['trace'];
-//        unset($trace[0]);
-//        foreach ($trace as $key => $var) {
-//            if (isset($trace[$key]['object'])) {
-//                unset($trace[$key]['object']);
-//            }
-//            if (isset($trace[$key]['args'])) {
-//                unset($trace[$key]['args']);
-//            }
-//        }
+        //$trace = $event['trace'];
+        //unset($trace[0]);
+        //foreach ($trace as $key => $var) {
+        //    if (isset($trace[$key]['object'])) {
+        //        unset($trace[$key]['object']);
+        //    }
+        //    if (isset($trace[$key]['args'])) {
+        //        unset($trace[$key]['args']);
+        //    }
+        //}
 
         if ($handler instanceof Zikula_ErrorHandler_Ajax) {
             throw new Zikula_Exception_Fatal($message);
@@ -188,6 +204,8 @@ class SystemListenersUtil
      * This listener logs the queries via Zend_Log to file / console.
      *
      * @param Zikula_Event $event Event.
+     *
+     * @return void
      */
     public static function logSqlQueries(Zikula_Event $event)
     {
@@ -211,6 +229,8 @@ class SystemListenersUtil
      * Debug toolbar startup.
      *
      * @param Zikula_Event $event Event.
+     *
+     * @return void
      */
     public static function setupDebugToolbar(Zikula_Event $event)
     {
@@ -273,6 +293,8 @@ class SystemListenersUtil
      * Debug toolbar rendering (listener for theme.prefooter event).
      *
      * @param Zikula_Event $event Event.
+     *
+     * @return void
      */
     public static function debugToolbarRendering(Zikula_Event $event) {
         $toolbar = ServiceUtil::getManager()->getService('debug.toolbar');
