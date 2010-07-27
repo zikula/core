@@ -34,7 +34,7 @@ class StreamReader_String extends StreamReader_Abstract
     /**
      * Constructor.
      *
-     * @param string $str Default empty.
+     * @param string $str The string to read (default: empty string).
      */
     public function __construct($str = '')
     {
@@ -47,7 +47,7 @@ class StreamReader_String extends StreamReader_Abstract
      *
      * @param integer $bytes Bytes to read.
      *
-     * @return string
+     * @return string The portion of the string read.
      */
     public function read($bytes)
     {
@@ -65,7 +65,7 @@ class StreamReader_String extends StreamReader_Abstract
      *
      * @param integer $pos Position.
      *
-     * @return integer Position.
+     * @return integer The seek-to position.
      */
     public function seekto($pos)
     {
@@ -79,7 +79,7 @@ class StreamReader_String extends StreamReader_Abstract
     /**
      * Get current position.
      *
-     * @return integer
+     * @return integer The current position.
      */
     public function currentpos()
     {
@@ -89,7 +89,7 @@ class StreamReader_String extends StreamReader_Abstract
     /**
      * Get length.
      *
-     * @return integer
+     * @return integer The length.
      */
     public function length()
     {
@@ -99,7 +99,7 @@ class StreamReader_String extends StreamReader_Abstract
     /**
      * Set stream.
      *
-     * @param string $stream Stream.
+     * @param string $stream The stream.
      *
      * @return void
      */
