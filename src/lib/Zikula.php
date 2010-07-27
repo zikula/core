@@ -42,11 +42,11 @@ class Zikula
     protected $stages = 0;
 
     /**
-     * Uptime.
+     * Boot time.
      *
      * @var float
      */
-    protected $uptime;
+    protected $bootime;
 
     /**
      * Base memory at start.
@@ -138,7 +138,7 @@ class Zikula
             throw new LogicException('Already booted.');
         }
 
-        $this->uptime = microtime(true);
+        $this->bootime = microtime(true);
 
         $this->serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
         $this->eventManager = new Zikula_EventManager($this->serviceManager);
@@ -156,7 +156,17 @@ class Zikula
      */
     public function getUptime()
     {
-        return $this->uptime;
+        return microtime(true) - $this->bootime;
+    }
+
+    /**
+     * Get boottime.
+     *
+     * @return float
+     */
+    public function getUptime()
+    {
+        return $this->bootime;
     }
 
     /**
