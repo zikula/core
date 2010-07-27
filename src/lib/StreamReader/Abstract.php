@@ -50,23 +50,23 @@ abstract class StreamReader_Abstract
     /**
      * Return the current position.
      *
-     * @return integer
+     * @return integer The current position.
      */
     abstract public function currentpos();
 
     /**
      * Length.
      *
-     * Returns length of entire stream (limit for seekto()s)
+     * Returns length of entire stream (limit for seekto()s).
      *
-     * @return integer
+     * @return integer The length.
      */
     abstract public function length();
 
     /**
      * Set error property.
      *
-     * @param string $error Error.
+     * @param string $error The error.
      *
      * @return void
      */
@@ -78,7 +78,7 @@ abstract class StreamReader_Abstract
     /**
      * Get error.
      *
-     * @return string
+     * @return string The error.
      */
     final public function getError()
     {
