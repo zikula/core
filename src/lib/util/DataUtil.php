@@ -335,14 +335,15 @@ class DataUtil
      *
      * @access private
      *
-     * @return string|void on empty
+     * @return string|void The formatted string, or null on empty.
      */
     public static function formatForDisplayHTML_callback($m)
     {
         if (!$m) {
             return;
         }
-        return '<' . strtr($m[1], array('&gt;' => '>', '&lt;' => '<', '&quot;' => '"'/*, '&amp;' => '&'*/)) . '>';
+        //return '<' . strtr($m[1], array('&gt;' => '>', '&lt;' => '<', '&quot;' => '"', '&amp;' => '&')) . '>';
+        return '<' . strtr($m[1], array('&gt;' => '>', '&lt;' => '<', '&quot;' => '"')) . '>';
     }
 
 
@@ -737,14 +738,17 @@ class DataUtil
     /**
      * Parse ini file.
      *
-     * @deprecated
-     * @since 1.3.0
-     * @see parse_ini_file()
+     * @param string  $iniFile          The file name of the ini file to parse.
+     * @param boolean $process_sections If true, a multidimensional array is returned with section names included.
+     *
+     * @deprecated since 1.3.0,  see {@link parse_ini_file()}
+     *
+     * @return array|boolean An associative array of ini file settings, or false on failure.
      */
-    public static function parseIniFile($iIniFile, $process_sections = true)
+    public static function parseIniFile($iniFile, $process_sections = true)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::parseIniFile()', 'parse_ini_file()')), E_USER_DEPRECATED);
-        return parse_ini_file($iIniFile, $process_sections);
+        return parse_ini_file($iniFile, $process_sections);
     }
 }
 
