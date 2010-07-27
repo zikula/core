@@ -60,7 +60,6 @@ class ZLoader
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloaders = new Zikula_KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
-        include ZLOADER_PATH . 'legacy/Loader.php';
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
         self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
@@ -205,4 +204,23 @@ class ZLoader
             'Loader' => 'legacy',
             );
     }
+}
+
+/**
+ * Exit.
+ *
+ * @param string  $msg  Message.
+ * @param boolean $html True for html.
+ *
+ * @return false
+ */
+function z_exit($msg, $html = true)
+{
+    if ($html) {
+        $msg = DataUtil::formatForDisplayHTML($msg);
+    }
+    LogUtil::registerError($msg);
+    trigger_error($msg, E_USER_ERROR);
+    return false;
+    //throw new Zikula_Exception_Fatal($msg);
 }

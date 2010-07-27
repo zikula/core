@@ -3560,29 +3560,14 @@ function search_split_query($q, $dbwildcard = true)
     return Search_Api_User::split_query($q, $dbwildcard);
 }
 
-
-/**
- * Exit.
- *
- * @param string  $msg  Message.
- * @param boolean $html True for html.
- *
- * @global array $ZConfig Configuration.
- * @return void|boolean
- */
-function z_exit($msg, $html = true)
-{
-    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED));
-    return LogUtil::registerError($msg2);
-}
-
-
 /**
  * Serialize the given data in an easily human-readable way for debug purposes.
  *
  * @param array   $data           The object to serialize.
  * @param boolean $functions      Whether to show function names for objects (default=false) (optional).
  * @param integer $recursionLevel The current recursion level.
+ *
+ * @deprecated since 1.3.0
  *
  * @return string A string containing serialized data.
  */
@@ -3596,6 +3581,8 @@ function _prayer($data, $functions = false, $recursionLevel = 0)
  *
  * @param array   $data The object to serialize.
  * @param boolean $die  Whether to shutdown the process or not.
+ *
+ * @deprecated since 1.3.0
  *
  * @return void
  */
@@ -3612,6 +3599,8 @@ function z_prayer($data, $die = true)
  * @param array   $data      The object to serialize.
  * @param boolean $functions Whether to show function names for objects (default=false) (optional).
  *
+ * @deprecated since 1.3.0
+ * 
  * @return void
  */
 function prayer($data, $functions = false)

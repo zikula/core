@@ -137,6 +137,8 @@ class Loader
      * @param classPath    The path prefix to use (optional) (default='lib')
      * @param exitOnError  whether or not exit upon error (optional) (default=true)
      *
+     * @deprecated since 1.3.0
+     * 
      * @return string The file name which was loaded
      */
     public static function loadClass($className, $classPath = 'lib', $exitOnError = true)
@@ -169,6 +171,8 @@ class Loader
      * @param exitOnError   whether or not exit upon error (optional) (default=true)
      * @param prefix        Override parameter for the default PN prefix (default=PN)
      *
+     * @deprecated since 1.3.0
+     * 
      * @return string The ClassName which was loaded from the file
      */
     public static function loadClassFromModule($module, $base_obj_type, $array = false, $exitOnError = false, $prefix = 'PN')
@@ -249,7 +253,7 @@ class Loader
     /**
      * Internal include_once
      *
-     * @deprecated
+     * @deprecated since 1.3.0
      * @return bool True if file was included - false if not found or included before.
      */
     public static function includeOnce($file)
@@ -264,7 +268,7 @@ class Loader
     /**
      * Internal require_once
      *
-     * @deprecated
+     * @deprecated since 1.3.0
      * @param string $file
      * @return bool
      */
