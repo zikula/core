@@ -19,8 +19,19 @@
  */
 class System
 {
+    /**
+     * The core Zikula version number.
+     */
     const VERSION_NUM = '1.3.0-dev';
+
+    /**
+     * The version ID.
+     */
     const VERSION_ID = 'Zikula';
+
+    /**
+     * The version sub-ID.
+     */
     const VERSION_SUB = 'vai';
 
     const STAGES_NONE = 0;
@@ -81,7 +92,7 @@ class System
      */
     public static function setVar($name, $value = '')
     {
-        $name = isset($name) ? (string) $name : '';
+        $name = isset($name) ? (string)$name : '';
 
         // The database parameter are not allowed to change
         if (empty($name) || $name == 'dbtype' || $name == 'dbhost' || $name == 'dbuname' || $name == 'dbpass' || $name == 'dbname' || $name == 'system' || $name == 'prefix' || $name == 'encoded') {
@@ -169,8 +180,8 @@ class System
         }
 
         // typecasting (might be useless in this function)
-        $var = (string) $var;
-        $type = (string) $type;
+        $var = (string)$var;
+        $type = (string)$type;
 
         static $maxlength = array(
         'modvar' => 64,
@@ -382,7 +393,7 @@ class System
             $redirecturl = $baseurl . $redirecturl;
         }
 
-        header("Location: $redirecturl", true, (int) $type);
+        header("Location: $redirecturl", true, (int)$type);
 
         return true;
     }
@@ -859,7 +870,7 @@ class System
      */
     public static function isInstalling()
     {
-        return (bool) defined('_ZINSTALLVER');
+        return (bool)defined('_ZINSTALLVER');
     }
 
     /**
@@ -873,7 +884,7 @@ class System
             return false;
         }
 
-        return (bool) $GLOBALS['ZConfig']['System']['compat_layer'];
+        return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
     }
 
     /**
@@ -887,7 +898,7 @@ class System
             return false;
         }
 
-        return (bool) $GLOBALS['ZConfig']['System']['legacy_prefilters'];
+        return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
     }
 
     /**
@@ -900,7 +911,7 @@ class System
         if (!isset($GLOBALS['ZConfig']['System']['development'])) {
             return false;
         }
-        return (bool) $GLOBALS['ZConfig']['System']['development'];
+        return (bool)$GLOBALS['ZConfig']['System']['development'];
     }
 
 }
