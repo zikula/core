@@ -17,6 +17,7 @@
  */
 class CategoryRegistryUtil
 {
+
     /**
      * Delete a category registry entry
      *
@@ -25,14 +26,10 @@ class CategoryRegistryUtil
      *
      * @return boolean The DB insert operation result code cast to a boolean.
      */
-    public static function deleteEntry ($modname, $entryID=null)
+    public static function deleteEntry($modname, $entryID=null)
     {
         if (!isset($modname) || !$modname) {
-            return LogUtil (__f("Error! Received invalid parameter '%s'", 'modname'));
-        }
-
-        if (!ModUtil::dbInfoLoad('Categories')) {
-            return LogUtil (__f("Error! Unable to load table information for module '%s'", 'categories'));
+            return z_exit(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
 
         $where = "crg_modname='$modname'";
@@ -40,7 +37,7 @@ class CategoryRegistryUtil
             $where .= " AND crg_id=$entryID";
         }
 
-        return (boolean)DBUtil::deleteWhere ('categories_registry', $where);
+        return (boolean)DBUtil::deleteWhere('categories_registry', $where);
     }
 
     /**
@@ -53,9 +50,9 @@ class CategoryRegistryUtil
      *
      * @return boolean The DB insert operation result code cast to a boolean
      */
-    public static function insertEntry ($modname, $table, $property, $categoryID)
+    public static function insertEntry($modname, $table, $property, $categoryID)
     {
-        return self::_processEntry ($modname, $table, $property, $categoryID);
+        return self::_processEntry($modname, $table, $property, $categoryID);
     }
 
     /**
@@ -69,13 +66,13 @@ class CategoryRegistryUtil
      *
      * @return boolean The DB insert operation result code cast to a boolean.
      */
-    public static function updateEntry ($entryID, $modname, $table, $property, $categoryID)
+    public static function updateEntry($entryID, $modname, $table, $property, $categoryID)
     {
         if (!isset($entryID) || !$entryID) {
-            return LogUtil (__f("Error! Received invalid parameter '%s'", 'entryID'));
+            return z_exit(__f("Error! Received invalid parameter '%s'", 'entryID'));
         }
 
-        return self::_processEntry ($modname, $table, $property, $categoryID, $entryID);
+        return self::_processEntry($modname, $table, $property, $categoryID, $entryID);
     }
 
     /**
@@ -89,34 +86,34 @@ class CategoryRegistryUtil
      *
      * @return boolean The DB insert operation result code cast to a boolean.
      */
-    private static function _processEntry ($modname, $table, $property, $categoryID, $entryID=null)
+    private static function _processEntry($modname, $table, $property, $categoryID, $entryID=null)
     {
         if (!isset($modname) || !$modname) {
-            return LogUtil (__f("Error! Received invalid parameter '%s'", 'modname'));
+            return z_exit(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
         if (!isset($table) || !$table) {
-            return LogUtil (__f("Error! Received invalid parameter '%s'", 'table'));
+            return z_exit(__f("Error! Received invalid parameter '%s'", 'table'));
         }
         if (!isset($property) || !$property) {
-            return LogUtil (__f("Error! Received invalid parameter '%s'", 'property'));
+            return z_exit(__f("Error! Received invalid parameter '%s'", 'property'));
         }
         if (!isset($categoryID) || !$categoryID) {
-            return LogUtil (__f("Error! Received invalid parameter '%s'", 'categoryID'));
+            return z_exit(__f("Error! Received invalid parameter '%s'", 'categoryID'));
         }
 
         if (!ModUtil::dbInfoLoad($modname)) {
-            return LogUtil (__f("Error! Unable to load table information for module '%s'", $modname));
+            return z_exit(__f("Error! Unable to load table information for module '%s'", $modname));
         }
 
-        $data = array ();
-        $data['modname']     = $modname;
-        $data['table']       = $table;
-        $data['property']    = $property;
+        $data = array();
+        $data['modname'] = $modname;
+        $data['table'] = $table;
+        $data['property'] = $property;
         $data['category_id'] = $categoryID;
         if ($entryID) {
-            $data['id']      = $entryID;
+            $data['id'] = $entryID;
         }
-        return self::registerModuleCategory ($data);
+        return self::registerModuleCategory($data);
     }
 
     /**
@@ -128,11 +125,8 @@ class CategoryRegistryUtil
      */
     public static function registerModuleCategory($catreg)
     {
-        if (!$catreg)
+        if (!$catreg) {
             return false;
-
-        if (!ModUtil::dbInfoLoad('Categories')) {
-            return LogUtil (__f("Error! Unable to load table information for module '%s'", 'categories'));
         }
 
         if ($catreg['id']) {
@@ -157,10 +151,6 @@ class CategoryRegistryUtil
             return false;
         }
 
-        if (!ModUtil::dbInfoLoad('Categories')) {
-            return LogUtil (__f("Error! Unable to load table information for module '%s'", 'categories'));
-        }
-
         foreach ($catregs as $catreg) {
             if ($catreg['id']) {
                 $res = DBUtil::updateObject($catreg, 'categories_registry');
@@ -183,11 +173,7 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategories($modname, $tablename)
     {
         if (!$modname || !$tablename) {
-            return LogUtil (__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
-        }
-
-        if (!ModUtil::dbInfoLoad('Categories')) {
-            return LogUtil (__f("Error! Unable to load table information for module '%s'", 'categories'));
+            return z_exit(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
         }
 
         static $cache = array();
@@ -255,10 +241,6 @@ class CategoryRegistryUtil
             return z_exit(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
         }
 
-        if (!ModUtil::dbInfoLoad('Categories')) {
-            return LogUtil (__f("Error! Unable to load table information for module '%s'", 'categories'));
-        }
-
         $wheres = array();
         $dbtables = DBUtil::getTables();
         $col = $dbtables['categories_registry_column'];
@@ -269,4 +251,5 @@ class CategoryRegistryUtil
 
         return $fArr;
     }
+
 }
