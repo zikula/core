@@ -154,7 +154,7 @@ class Zikula
      *
      * @return float
      */
-    public static function getUptime()
+    public function getUptime()
     {
         return $this->uptime;
     }
