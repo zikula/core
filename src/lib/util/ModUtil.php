@@ -386,8 +386,7 @@ class ModUtil
     /**
      * The getUserMods method gets a list of user modules.
      *
-     * @deprecated
-     * @see ModUtil::getModulesCapableOf()
+     * @deprecated see {@link ModUtil::getModulesCapableOf()}
      *
      * @return array An array of module information arrays.
      */
@@ -399,8 +398,7 @@ class ModUtil
     /**
      * The getProfileMods method gets a list of profile modules.
      *
-     * @deprecated
-     * @see ModUtil::getModulesCapableOf()
+     * @deprecated see {@link ModUtil::getModulesCapableOf()}
      *
      * @return array An array of module information arrays.
      */
@@ -422,8 +420,7 @@ class ModUtil
     /**
      * The getAdminMods method gets a list of administration modules.
      *
-     * @deprecated
-     * @see ModUtil::getModulesCapableOf()
+     * @deprecated see {@link ModUtil::getModulesCapableOf()}
      *
      * @return array An array of module information arrays.
      */
@@ -459,14 +456,25 @@ class ModUtil
     /**
      * Get mod types.
      *
-     * @deprecated
-     * @see ModUtil::getModulesCapableOf()
+     * @param string $type The module type, roughly equivalent, now, to a capability.
+     *
+     * @deprecated see {@link ModUtil::getModulesCapableOf()}
+     *
+     * @return array An array of module information arrays.
      */
     public static function getTypeMods($type = 'user')
     {
         return self::getModulesCapableOf($type);
     }
 
+    /**
+     * Indicates whether the specified module has the specified capability.
+     *
+     * @param string $module     The name of the module.
+     * @param string $capability The name of the advertised capability.
+     *
+     * @return boolean True if the specified module advertises that it has the specified capability, otherwise false.
+     */
     public static function isCapable($module, $capability)
     {
         $modinfo = self::getInfoFromName($module);
@@ -476,6 +484,13 @@ class ModUtil
         return (bool)array_key_exists($capability, $modinfo['capabilities']);
     }
 
+    /**
+     * Retrieves the capabilities of the specified module.
+     *
+     * @param string $module The module name.
+     *
+     * @return array|boolean The capabilities array, false if the module does not advertise any capabilities.
+     */
     public static function getCapabilitiesOf($module)
     {
         $modules = self::getAllMods();
@@ -917,6 +932,8 @@ class ModUtil
      * @param string  $instanceof Perform instanceof checking of target class.
      *
      * @throws Zikula_Exception_NotFound If method was not found.
+     * @throws InvalidArgumentException  If the controller is not an instance of the class specified in $instanceof.
+     *
      * @return mixed.
      */
     public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false, $instanceof = null)
@@ -1035,11 +1052,11 @@ class ModUtil
     /**
      * Run a module function.
      *
-     * @param string  $modname    The name of the module.
-     * @param string  $type       The type of function to run.
-     * @param string  $func       The specific function to run.
-     * @param array   $args       The arguments to pass to the function.
-     * @param string  $instanceof Perform instanceof checking of target class.
+     * @param string $modname    The name of the module.
+     * @param string $type       The type of function to run.
+     * @param string $func       The specific function to run.
+     * @param array  $args       The arguments to pass to the function.
+     * @param string $instanceof Perform instanceof checking of target class.
      *
      * @return mixed.
      */
@@ -1051,11 +1068,11 @@ class ModUtil
     /**
      * Run an module API function.
      *
-     * @param string  $modname    The name of the module.
-     * @param string  $type       The type of function to run.
-     * @param string  $func       The specific function to run.
-     * @param array   $args       The arguments to pass to the function.
-     * @param string  $instanceof Perform instanceof checking of target class.
+     * @param string $modname    The name of the module.
+     * @param string $type       The type of function to run.
+     * @param string $func       The specific function to run.
+     * @param array  $args       The arguments to pass to the function.
+     * @param string $instanceof Perform instanceof checking of target class.
      *
      * @return mixed.
      */

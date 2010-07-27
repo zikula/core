@@ -101,8 +101,8 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_View $render  Reference to Form render object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
@@ -164,7 +164,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
      * Renders the confirmation action.
      *
      * @param Form_View $render Reference to Form render object.
-     * @param string      $script  JavaScript code to run.
+     * @param string    $script JavaScript code to run.
      *
      * @return string The rendered output.
      */
@@ -181,8 +181,8 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     /**
      * Called by Forms framework due to the use of getPostBackEventReference() above.
      *
-     * @param Form_View $render       Reference to Form render object.
-     * @param string      $eventArgument The event argument.
+     * @param Form_View $render        Reference to Form render object.
+     * @param string    $eventArgument The event argument.
      *
      * @return void
      */

@@ -130,8 +130,8 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Create event handler.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
@@ -144,7 +144,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Load event handler.
      *
-     * @param Form_View $view Reference to Form_View object.
+     * @param Form_View $view    Reference to Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -322,8 +322,8 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * Called by the render when doing $view->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param array       &$data   Data object.
+     * @param Form_View $view  Reference to Form_View object.
+     * @param array     &$data Data object.
      *
      * @return void
      */
@@ -347,8 +347,8 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Form_ViewetValues.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param array       &$values Values to load.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param array     &$values Values to load.
      *
      * @return void
      */
