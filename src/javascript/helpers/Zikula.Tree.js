@@ -28,7 +28,7 @@ Zikula._Tree = Class.create({
         // extend each image with base url and images dir
         for (var item in this.config.images) {
             if (this.config.images.hasOwnProperty(item)) {
-                this.config.images[item] = document.location.pnbaseURL + this.config.imagesDir + this.config.images[item];
+                this.config.images[item] = Zikula.Config.baseURL + this.config.imagesDir + this.config.images[item];
             }
         }
         // bind toggle action
