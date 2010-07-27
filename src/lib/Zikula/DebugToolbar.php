@@ -91,8 +91,6 @@ class Zikula_DebugToolbar
     /**
      * Add multiple panels to the panel list.
      *
-     * @param Zikula_DebugToolbar_Panel $panel,... Panels to add.
-     *
      * @return void
      */
     public function addPanels()

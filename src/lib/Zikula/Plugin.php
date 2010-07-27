@@ -142,7 +142,6 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param Zikula_EventManager   $eventManager   EventManager.
      *
      * @throws LogicException If no metadata is defined.
      */

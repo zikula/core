@@ -27,7 +27,7 @@ class Zikula_ErrorHandler_Standard extends Zikula_ErrorHandler
      * @param integer $errline    Line of the error.
      * @param string  $errcontext Context of the error.
      *
-     * @return void
+     * @return boolean
      */
     public function handler($errno, $errstr, $errfile='', $errline=0, $errcontext=null)
     {

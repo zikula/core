@@ -52,6 +52,8 @@ abstract class Form_Handler implements Zikula_Translatable
 
     /**
      * Post construction hook.
+     *
+     * @return mixed
      */
     public function setup()
     {
@@ -70,7 +72,9 @@ abstract class Form_Handler implements Zikula_Translatable
     /**
      * Setter for view property.
      * 
-     * @param Form_Zikula $view Form_View
+     * @param Form_View $view Form_View.
+     *
+     * @return void
      */
     public function setView(Form_View $view)
     {
@@ -91,6 +95,8 @@ abstract class Form_Handler implements Zikula_Translatable
      * Set domain property.
      * 
      * @param string $domain Domain.
+     *
+     * @return void
      */
     public function setDomain($domain)
     {
@@ -158,8 +164,8 @@ abstract class Form_Handler implements Zikula_Translatable
      * value indicating the name of the command. The command name is normally specified by the plugin
      * that initiated the command.
      *
-     * @param Form_View $view Reference to Form render object.
-     * @param array       &$args   Arguments of the command.
+     * @param Form_View $view  Reference to Form render object.
+     * @param array     &$args Arguments of the command.
      *
      * @see    Form_Plugin_Button, Form_Plugin_ImageButton
      * @return void

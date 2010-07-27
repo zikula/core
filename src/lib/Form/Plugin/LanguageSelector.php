@@ -52,12 +52,12 @@ class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
     /**
      * Load event handler.
      *
-     * @param Form_View $render Reference to Form_View object.
-     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load($render, &$params)
+    function load($view, &$params)
     {
         if ($this->mandatory) {
             $this->addItem('---', null);
@@ -81,6 +81,6 @@ class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
             }
         }
 
-        parent::load($render, $params);
+        parent::load($view, $params);
     }
 }

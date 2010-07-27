@@ -51,7 +51,7 @@ class Zikula
     /**
      * Base memory at start.
      *
-     * @var int
+     * @var integer
      */
     protected $baseMemory;
 

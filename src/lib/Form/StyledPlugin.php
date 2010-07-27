@@ -40,12 +40,16 @@ abstract class Form_StyledPlugin extends Form_Plugin
      */
     public $styleAttributes = array();
 
+
+    /**
+     * Retrieve the styles added programatically.
+     *
+     * @return array The styles.
+     */
     public function getStyleAttributes()
     {
         return $this->styleAttributes;
     }
-
-
 
     /**
      * Render attributes.

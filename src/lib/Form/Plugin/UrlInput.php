@@ -61,8 +61,8 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void

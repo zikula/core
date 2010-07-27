@@ -83,8 +83,9 @@ function _fn($sin, $plu, $n, $params, $domain=null)
  * @param string $msgid  The message.
  * @param string $domain Gettext domain.
  *
- * @throws Exception If $domain is an array.
  * @return string
+ *
+ * @throws Exception If $domain is an array.
  */
 function __($msgid, $domain=null)
 {

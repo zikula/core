@@ -27,7 +27,7 @@ class ValidationUtil
      * @param string   $cmp_op     The compare operation to perform.
      * @param string   $cmp_value  The value to compare the supplied field value to. If the value starts with a ':', the argument is used as an object access key.
      * @param string   $err_msg    The error message to use if the validation fails.
-     * @param callable $callable   Callback, any PHP callable.
+     * @param callable $callback   Callback, any PHP callable.
      *
      * @return boolean A true/false value indicating whether the field validation passed or failed.
      */

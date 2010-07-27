@@ -818,7 +818,7 @@ class DBObject
      * Subclasses can define appropriate implementations.
      *
      * @param string $type Controller type.
-     * @param array  $data Data to be used for validation
+     * @param array  $data Data to be used for validation.
      *
      * @return boolean
      */
@@ -834,7 +834,7 @@ class DBObject
      * Subclasses can define appropriate implementations.
      *
      * @param string $type Controller type.
-     * @param array  $data Data to be used for validation
+     * @param array  $data Data to be used for validation.
      *
      * @return boolean
      */

@@ -244,6 +244,8 @@ class Form_View extends Zikula_View
      * @param boolean $isBlock    Indicates whether the plugin is a Smarty block or a Smarty function (internal).
      *
      * @return string Returns what the render() method of the plugin returns.
+     *
+     * @throws InvalidArgumentException Thrown if the plugin is not an instance of Form_Plugin.
      */
     public function registerPlugin($pluginName, &$params, $isBlock = false)
     {
@@ -682,7 +684,7 @@ class Form_View extends Zikula_View
      *
      * @param string $url Url.
      *
-     * @return void
+     * @return boolean True if redirected successfully, otherwise false.
      */
     public function redirect($url)
     {

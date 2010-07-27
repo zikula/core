@@ -61,9 +61,9 @@ class ZLoader
         self::$autoloaders = new Zikula_KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
         include ZLOADER_PATH . 'legacy/Loader.php';
-        ZLoader::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
-        ZLoader::addAutoloader('Categories', 'system/Categories/lib');
-        ZLoader::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
+        self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
+        self::addAutoloader('Categories', 'system/Categories/lib');
+        self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
     }
 
     /**

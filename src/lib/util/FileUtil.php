@@ -512,7 +512,7 @@ class FileUtil
         }
 
         // write out data
-        foreach($datarows as $datarow) {
+        foreach ($datarows as $datarow) {
             fputcsv($out, $datarow, $delimiter, $enclosure);
         }
 

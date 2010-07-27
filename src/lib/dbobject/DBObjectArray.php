@@ -895,7 +895,7 @@ class DBObjectArray
      * Subclasses can define appropriate implementations.
      *
      * @param string $type Controller type.
-     * @param array  $data Data to be used for validation
+     * @param array  $data Data to be used for validation.
      *
      * @return boolean
      */
@@ -911,7 +911,7 @@ class DBObjectArray
      * Subclasses can define appropriate implementations.
      *
      * @param string $type Controller type.
-     * @param array  $data Data to be used for validation
+     * @param array  $data Data to be used for validation.
      *
      * @return boolean
      */
@@ -939,7 +939,7 @@ class DBObjectArray
 
         $res = $this->validatePreProcess();
         if ($res) {
-            foreach ($this->_objData as $k=>$v) {
+            foreach ($this->_objData as $k => $v) {
                 $res = $res && ValidationUtil::validateObjectPlain($this->_objPath, $v, $this->_objValidation);
                 if (!$res) {
                     break;

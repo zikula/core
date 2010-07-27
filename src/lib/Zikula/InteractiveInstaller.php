@@ -37,6 +37,9 @@ abstract class Zikula_InteractiveInstaller extends Zikula_Controller
     /**
      * Dont allow any overrides for this base class.
      *
+     * @param string $method    The method name being called.
+     * @param mixed  $arguments The parameters for the call.
+     *
      * @throws BadMethodCallException If called.
      *
      * @return void

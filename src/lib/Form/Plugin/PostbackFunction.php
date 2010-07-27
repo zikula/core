@@ -90,8 +90,8 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
     /**
      * Called by Form_View framework due to the use of Form_View::getPostBackEventReference() above.
      *
-     * @param Form_View $view       Reference to Form_View object.
-     * @param string      $eventArgument The event argument.
+     * @param Form_View $view          Reference to Form_View object.
+     * @param string    $eventArgument The event argument.
      *
      * @return void
      */

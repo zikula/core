@@ -90,7 +90,7 @@ class ZGettext
      *
      * @return string $locale.
      */
-    public function setLocale($category=LC_MESSAGES, $locale)
+    public function setLocale($category = LC_MESSAGES, $locale)
     {
         $this->locale = $locale;
         $this->category = $this->translateCategory($category);

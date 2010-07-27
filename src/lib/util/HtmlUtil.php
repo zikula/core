@@ -572,8 +572,7 @@ class HtmlUtil
      * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @deprecated since 1.3.0
-     * @see HtmlUtil::getSelector_Group()
+     * @deprecated since 1.3.0 see {@link getSelector_Group()}
      *
      * @return The html for the user group selector.
      */
@@ -629,8 +628,7 @@ class HtmlUtil
      * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @deprecated since 1.3.0
-     * @see HtmlUtil::getSelector_User()
+     * @deprecated since 1.3.0 see {@link getSelector_User()}
      *
      * @return The string for the user group selector.
      */
@@ -695,8 +693,7 @@ class HtmlUtil
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      * @param string  $field         The field to use for value.
      *
-     * @deprecated since 1.3.0
-     * @see self::getSelector_Module()
+     * @deprecated since 1.3.0 see {@link getSelector_Module()}
      *
      * @return The string for the user group selector.
      */

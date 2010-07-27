@@ -81,8 +81,8 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
     /**
      * RenderContent event handler.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param string      $content The content to handle.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param string    $content The content to handle.
      *
      * @return string The (optionally) modified content.
      */
@@ -132,9 +132,9 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
      *
      * Called by child panels to register themselves.
      *
-     * @param Form_View             $view Reference to Form_View object.
-     * @param Form_Plugin_TabbedPanel &$panel  Panel object.
-     * @param string                  $title   Panel title.
+     * @param Form_View               $view   Reference to Form_View object.
+     * @param Form_Plugin_TabbedPanel &$panel Panel object.
+     * @param string                  $title  Panel title.
      *
      * @return void
      */

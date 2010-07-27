@@ -277,6 +277,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
      *                                   Doctrine_Adapter_Statement_Interface->fetch() was called.
      *
      * @see    Doctrine_Core::FETCH_* constants.
+     * 
      * @return mixed
      */
     public function fetch($fetchMode = Doctrine_Core::FETCH_BOTH,

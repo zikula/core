@@ -48,8 +48,8 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
@@ -101,7 +101,7 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
      * Parses a value.
      *
      * @param Form_View $view Reference to Form_View object.
-     * @param string      $text    Text.
+     * @param string    $text Text.
      *
      * @return string Parsed Text.
      */
@@ -120,8 +120,8 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     /**
      * Format the value to specific format.
      *
-     * @param Form_View $view Reference to Form_View object.
-     * @param string      $value   The value to format.
+     * @param Form_View $view  Reference to Form_View object.
+     * @param string    $value The value to format.
      *
      * @return string Formatted value.
      */
