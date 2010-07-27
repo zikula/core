@@ -27,6 +27,11 @@
  */
 class SecurityUtil
 {
+    /**
+     * Holds the array of security schemas.
+     *
+     * @var array
+     */
     protected static $schemas = array();
 
     const PERMS_ALL = -1;
@@ -35,11 +40,23 @@ class SecurityUtil
     // Default salt delimeter
     const SALT_DELIM = '$';
 
+    /**
+     * Retrieve the security schemas.
+     *
+     * @return array The security schemas.
+     */
     public static function getSchemas()
     {
         return self::$schemas;
     }
 
+    /**
+     * Set the security schemas array.
+     *
+     * @param array $schemas The security schemas.
+     *
+     * @return void
+     */
     public static function setSchemas($schemas)
     {
         self::$schemas = $schemas;

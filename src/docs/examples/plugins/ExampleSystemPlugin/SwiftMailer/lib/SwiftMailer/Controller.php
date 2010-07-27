@@ -17,6 +17,11 @@
  */
 class SystemPlugin_SwiftMailer_Controller extends Zikula_Plugin_Controller
 {
+    /**
+     * Fetch and render the configuration template.
+     *
+     * @return string The rendered template.
+     */
     public function configure()
     {
         return $this->view->fetch('configure.tpl');

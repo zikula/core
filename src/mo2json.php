@@ -97,6 +97,13 @@ header('Content-type: text/javascript;charset=UTF-8');
 echo "if (typeof(Zikula) == 'undefined') { Zikula = {}; }\n Zikula._translations = ";
 echo json_encode($translations);
 
+/**
+ * Validate get parameters, and die with bad request.
+ *
+ * @param string $value The value to validate.
+ *
+ * @return void
+ */
 function validate($value)
 {
     if (preg_match('#[^a-zA-Z0-9_\|]#', $value)) {
@@ -104,6 +111,11 @@ function validate($value)
     }
 }
 
+/**
+ * Send a 400 error and exit from a bad request.
+ *
+ * @return void
+ */
 function badRequest()
 {
     header('HTTP/1.1 400');

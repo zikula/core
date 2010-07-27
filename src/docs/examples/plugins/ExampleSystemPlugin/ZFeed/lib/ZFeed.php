@@ -19,6 +19,9 @@ class ZFeed extends SimplePie
 {
     /**
      * Class constructor
+     *
+     * @param string  $feed_url       The URL to the feed (optional).
+     * @param integer $cache_duration The duration (in seconds) that the feed contents will be retained in cache.
      */
     public function __construct($feed_url = null, $cache_duration = null)
     {

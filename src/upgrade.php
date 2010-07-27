@@ -453,6 +453,7 @@ function upgrade_getTables($connection)
  * Get tables in database from current connection.
  *
  * @param object $connection PDO connection.
+ * @param string $tableName  The name of the table.
  *
  * @return array
  */
@@ -466,14 +467,16 @@ function upgrade_getColumnsForTable($connection, $tableName)
     try {
         return $connection->import->listTableColumns($GLOBALS['ZConfig']['System']['prefix'] . "_$tableName");
     } catch (Exception $e) {
-
+        // TODO - do something with the exception here?
     }
 }
 
 /**
  * Standardise table columns.
  *
- * @param PDOConnection $connection
+ * @param PDOConnection $connection The PDO connection instance.
+ *
+ * @return void
  */
 function upgrade_columns($connection)
 {
@@ -667,7 +670,7 @@ CHANGE pn_language z_language VARCHAR( 30 ) NOT NULL DEFAULT  ''";
         try {
             $stmt->execute();
         } catch (Exception $e) {
-
+            // Silent - trap and toss exceptions.
         }
     }
 }

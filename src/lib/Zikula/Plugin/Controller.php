@@ -40,7 +40,10 @@ class Zikula_Plugin_Controller extends Zikula_Controller
 
     /**
      * (non-PHPdoc)
-     * @see Zikula_Base::_setupLanguageDomain()
+     * 
+     * @see    Zikula_Base::_setupLanguageDomain()
+     *
+     * @return void
      */
     protected function _setupLanguageDomain()
     {
