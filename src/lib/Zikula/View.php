@@ -260,7 +260,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         // Add ServiceManager and EventManager to all templates
         parent::assign('serviceManager', $this->serviceManager);
         parent::assign('eventManager', $this->eventManager);
-        parent::assign('zikula', $this->serviceManager->getService('zikula'));
+        parent::assign('zikula_core', $this->serviceManager->getService('zikula'));
 
         // add some useful data
         $this->assign(array('module' => $module,
@@ -996,7 +996,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         switch (strtolower($key))
         {
             case 'zikula_view':
-            case 'zikula':
+            case 'zikula_core':
             case 'servicemanager':
             case 'eventmanager':
                 $this->trigger_error(__f('%s is a protected template variable and may not be assigned', $key));
