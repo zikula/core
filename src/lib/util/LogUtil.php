@@ -144,18 +144,46 @@ class LogUtil
         return true;
     }
 
+    /**
+     * Add a popup status message.
+     *
+     * @param string $message The status message.
+     *
+     * @return void
+     *
+     * @throws InvalidArgumentException Thrown if the type provided to the internal function _addPopup is invalid.
+     */
     public static function addStatusPopup($message)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
         self::_addPopup($message, Zikula_ErrorHandler::INFO);
     }
 
+    /**
+     * Add a popup error message.
+     *
+     * @param string $message The error message.
+     *
+     * @return void
+     *
+     * @throws InvalidArgumentException Thrown if the type provided to the internal function _addPopup is invalid.
+     */
     public static function addErrorPopup($message)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
         self::_addPopup($message, E_USER_ERROR);
     }
 
+    /**
+     * Add popup message to the status or error messages.
+     *
+     * @param string  $message The message.
+     * @param integer $type    The message type.
+     *
+     * @return void
+     *
+     * @throws InvalidArgumentException Thrown if the $type is invalid.
+     */
     private static function _addPopup($message, $type = E_USER_NOTICE)
     {
         self::log($message, Zikula_ErrorHandler::DEBUG);
@@ -199,30 +227,29 @@ class LogUtil
      */
     public static function registerPermissionError($url = null, $redirect = true)
     {
-        /*
-        static $strLevels = array();
-        if (!$strLevels) {
-            $strLevels[ACCESS_INVALID] = 'INVALID';
-            $strLevels[ACCESS_NONE] = 'NONE';
-            $strLevels[ACCESS_OVERVIEW] = 'OVERVIEW';
-            $strLevels[ACCESS_READ] = 'READ';
-            $strLevels[ACCESS_COMMENT] = 'COMMENT';
-            $strLevels[ACCESS_MODERATE] = 'MODERATE';
-            $strLevels[ACCESS_EDIT] = 'EDIT';
-            $strLevels[ACCESS_ADD] = 'ADD';
-            $strLevels[ACCESS_DELETE] = 'DELETE';
-            $strLevels[ACCESS_ADMIN] = 'ADMIN';
-        }
+        //static $strLevels = array();
+        //if (!$strLevels) {
+        //    $strLevels[ACCESS_INVALID] = 'INVALID';
+        //    $strLevels[ACCESS_NONE] = 'NONE';
+        //    $strLevels[ACCESS_OVERVIEW] = 'OVERVIEW';
+        //    $strLevels[ACCESS_READ] = 'READ';
+        //    $strLevels[ACCESS_COMMENT] = 'COMMENT';
+        //    $strLevels[ACCESS_MODERATE] = 'MODERATE';
+        //    $strLevels[ACCESS_EDIT] = 'EDIT';
+        //    $strLevels[ACCESS_ADD] = 'ADD';
+        //    $strLevels[ACCESS_DELETE] = 'DELETE';
+        //    $strLevels[ACCESS_ADMIN] = 'ADMIN';
+        //}
+        //
+        //global $ZRuntime;
+        //$obj = array();
+        //$obj['component'] = 'PERMISSION';
+        //$obj['sec_component'] = $ZRuntime['security']['last_failed_check']['component'];
+        //$obj['sec_instance'] = $ZRuntime['security']['last_failed_check']['instance'];
+        //$obj['sec_permission'] = $strLevels[$ZRuntime['security']['last_failed_check']['level']];
+        //
+        //self::_write(__('Sorry! You have not been granted access to this page.'), 'PERMISSION', $obj);
 
-        global $ZRuntime;
-        $obj = array();
-        $obj['component'] = 'PERMISSION';
-        $obj['sec_component'] = $ZRuntime['security']['last_failed_check']['component'];
-        $obj['sec_instance'] = $ZRuntime['security']['last_failed_check']['instance'];
-        $obj['sec_permission'] = $strLevels[$ZRuntime['security']['last_failed_check']['level']];
-
-        self::_write(__('Sorry! You have not been granted access to this page.'), 'PERMISSION', $obj);
-        */
         $code = 403;
         if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
