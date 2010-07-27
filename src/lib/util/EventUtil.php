@@ -39,7 +39,7 @@ class EventUtil
     /**
      * Get EventManager instance.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
+     * @param Zikula $core Core instance.
      *
      * @return Zikula_EventManager
      */
@@ -155,10 +155,10 @@ class EventUtil
      *
      * Loads eventhandlers that extend Zikula_EventHandler
      *
-     * @param string                $className
-     * @param Zikula_ServiceManager $serviceManager
+     * @param string                $className      The name of the class.
+     * @param Zikula_ServiceManager $serviceManager The service manager instance (optional).
      *
-     * @throws LogicException If class is not instance of Zikula_EventHandler
+     * @throws LogicException If class is not instance of Zikula_EventHandler.
      *
      * @return void
      */
@@ -234,6 +234,7 @@ class EventUtil
     }
 
     /**
+     * Register a persistent plugin handler.
      *
      * @param string   $moduleName Module name.
      * @param string   $pluginName Plugin name.
@@ -331,7 +332,7 @@ class EventUtil
                     }
                 }
                 if (ModUtil::available($module)) {
-                    EventUtil::attach($handler['eventname'], $handler['callable']);
+                    self::attach($handler['eventname'], $handler['callable']);
                 }
             }
         }
