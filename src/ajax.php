@@ -82,7 +82,7 @@ if ($return === true) {
     AjaxUtil::error($e->getMessage());
 } elseif ($return === false) {
     // Failed to load the module
-    AjaxUtil::error(__f("Could not load the '%s' module (at '%s' function).", array(DataUtil::formatForDisplay($module), DataUtil::formatForDisplay($func))));
+    AjaxUtil::error(__f("Could not load the '%s' module (at '%s' function), reason '%s'.", array(DataUtil::formatForDisplay($module), DataUtil::formatForDisplay($func), DataUtil::formatForDisplay($e->getMessage()))));
 } else {
     AjaxUtil::output($return, true, false);
 }

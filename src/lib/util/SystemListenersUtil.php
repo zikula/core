@@ -193,8 +193,12 @@ class SystemListenersUtil
         //}
 
         if ($handler instanceof Zikula_ErrorHandler_Ajax) {
-            throw new Zikula_Exception_Fatal($message);
-            AjaxUtil::error($message);
+            if (abs($handler->getType()) <= $serviceManager['log.display_ajax_level']) {
+                // autoloaders don't work inside error handlers!
+                include_once 'lib/Zikula/Exception.php';
+                include_once 'lib/Zikula/Exception/Fatal.php';
+                throw new Zikula_Exception_Fatal($message);
+            }
         }
     }
 
@@ -235,6 +239,8 @@ class SystemListenersUtil
     public static function setupDebugToolbar(Zikula_Event $event)
     {
         if ($event['stage'] == System::STAGES_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
+            // autoloaders don't work inside error handlers!
+            include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
             $sm = $event->getSubject()->getServiceManager();
             // create definitions
             $toolbar = new Zikula_ServiceManager_Definition(
@@ -242,7 +248,7 @@ class SystemListenersUtil
                     array(),
                     array('addPanels' => array(new Zikula_ServiceManager_Service('debug.toolbar.panel.version'),
                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.config'),
-                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.momory'),
+                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.memory'),
                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.rendertime'),
                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.sql'),
                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.view'),
@@ -266,7 +272,7 @@ class SystemListenersUtil
 
             $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.version', $versionPanel, true));
             $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.config', $configPanel, true));
-            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.momory', $momoryPanel, true));
+            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.memory', $momoryPanel, true));
             $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.rendertime', $rendertimePanel, true));
             $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.sql', $sqlPanel, true));
             $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.view', $viewPanel, true));
@@ -274,18 +280,19 @@ class SystemListenersUtil
             $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.logs', $logsPanel, true));
             $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar', $toolbar, true));
 
+            $em = $sm->getService('zikula.eventmanager');
             // setup rendering event listeners
-            EventUtil::attach('theme.prefooter', array('SystemListenersUtil', 'debugToolbarRendering'));
+            $em->attach('theme.prefooter', array('SystemListenersUtil', 'debugToolbarRendering'));
 
             // setup event listeners
-            EventUtil::attach('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
-            EventUtil::attach('module.preexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPre'));
-            EventUtil::attach('module.postexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPost'));
-            EventUtil::attach('module.execute_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logExecNotFound'));
-            EventUtil::attach('log', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'log'));
-            EventUtil::attach('log.sql', new Zikula_ServiceHandler('debug.toolbar.panel.sql', 'logSql'));
-            EventUtil::attach('controller.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerNotFound'));
-            EventUtil::attach('controller_api.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerAPINotFound'));
+            $em->attach('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
+            $em->attach('module.preexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPre'));
+            $em->attach('module.postexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPost'));
+            $em->attach('module.execute_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logExecNotFound'));
+            $em->attach('log', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'log'));
+            $em->attach('log.sql', new Zikula_ServiceHandler('debug.toolbar.panel.sql', 'logSql'));
+            $em->attach('controller.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerNotFound'));
+            $em->attach('controller_api.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerAPINotFound'));
         }
     }
 
@@ -296,9 +303,12 @@ class SystemListenersUtil
      *
      * @return void
      */
-    public static function debugToolbarRendering(Zikula_Event $event) {
-        $toolbar = ServiceUtil::getManager()->getService('debug.toolbar');
-        $toolbar->addHTMLToTooter();
+    public static function debugToolbarRendering(Zikula_Event $event)
+    {
+        if (!$event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
+            $toolbar = ServiceUtil::getManager()->getService('debug.toolbar');
+            $toolbar->addHTMLToTooter();
+        }
     }
 }
 
