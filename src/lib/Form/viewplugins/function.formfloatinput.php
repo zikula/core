@@ -18,12 +18,12 @@
  *
  * This plugin creates a float input field
  *
- * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param array     $params Parameters passed in the block tag.
+ * @param Form_View $view   Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formfloatinput($params, $render)
+function smarty_function_formfloatinput($params, $view)
 {
-    return $render->registerPlugin('Form_Plugin_FloatInput', $params);
+    return $view->registerPlugin('Form_Plugin_FloatInput', $params);
 }

@@ -16,12 +16,12 @@
 /**
  * Integer input.
  *
- * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param array     $params Parameters passed in the block tag.
+ * @param Form_View $view   Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formintinput($params, $render)
+function smarty_function_formintinput($params, $view)
 {
-    return $render->registerPlugin('Form_Plugin_IntInput', $params);
+    return $view->registerPlugin('Form_Plugin_IntInput', $params);
 }

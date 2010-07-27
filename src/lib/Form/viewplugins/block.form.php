@@ -16,9 +16,9 @@
 /**
  * Smarty function to wrap Form_View generated form controls with suitable form tags.
  *
- * @param array       $params  Parameters passed in the block tag.
- * @param string      $content Content of the block.
- * @param Form_View $view Reference to Form_View object.
+ * @param array     $params  Parameters passed in the block tag.
+ * @param string    $content Content of the block.
+ * @param Form_View $view    Reference to Form_View object.
  *
  * @return string The rendered output.
  */

@@ -16,9 +16,9 @@
 /**
  * Smarty function to create a tabbed panel.
  *
- * @param array       $params  Parameters passed in the block tag.
- * @param string      $content Content of the block.
- * @param Form_View $render Reference to Form render object.
+ * @param array     $params  Parameters passed in the block tag.
+ * @param string    $content Content of the block.
+ * @param Form_View $render  Reference to Form render object.
  *
  * @return string The rendered output.
  */

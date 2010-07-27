@@ -40,12 +40,12 @@
  * The command arguments ($args) passed to the handler contains 'commandName' and
  * 'commandArgument' with the values you passed to the button in the template.
  *
- * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param array     $params Parameters passed in the block tag.
+ * @param Form_View $view   Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formbutton($params, $render)
+function smarty_function_formbutton($params, $view)
 {
-    return $render->registerPlugin('Form_Plugin_Button', $params);
+    return $view->registerPlugin('Form_Plugin_Button', $params);
 }

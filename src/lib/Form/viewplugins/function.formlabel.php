@@ -26,8 +26,8 @@
  * "myLabel" on the "pointed-to" plugin to the supplied label text. This enables
  * the validation summary to display the label text.
  *
- * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $view Reference to Form_View object.
+ * @param array     $params Parameters passed in the block tag.
+ * @param Form_View $view   Reference to Form_View object.
  *
  * @return string The rendered output.
  */

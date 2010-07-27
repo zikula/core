@@ -18,12 +18,12 @@
  *
  * This plugin creates a field for file uploads.
  *
- * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param array     $params Parameters passed in the block tag.
+ * @param Form_View $view   Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formuploadinput($params, $render)
+function smarty_function_formuploadinput($params, $view)
 {
-    return $render->registerPlugin('Form_Plugin_UploadInput', $params);
+    return $view->registerPlugin('Form_Plugin_UploadInput', $params);
 }

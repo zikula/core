@@ -27,8 +27,8 @@
  * The Form_Plugin_TextInput plugin supports basic CSS styling through attributes like "width", "color" and "font_weight". See
  * {@link Form_StyledPlugin} for more info.
  *
- * @param array     $params  Parameters passed in the block tag.
- * @param Form_View $view Reference to Form_View object.
+ * @param array     $params Parameters passed in the block tag.
+ * @param Form_View $view   Reference to Form_View object.
  *
  * @return string The rendered output.
  */

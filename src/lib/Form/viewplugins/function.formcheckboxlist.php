@@ -68,8 +68,8 @@
  *         'yyy' => 'valueYYY')
  * </code>
  *
- * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $view Reference to Form_View object.
+ * @param array     $params Parameters passed in the block tag.
+ * @param Form_View $view   Reference to Form_View object.
  *
  * @return string The rendered output.
  */
