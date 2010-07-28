@@ -79,12 +79,6 @@
 								Content
 							</div>
 						</div>
-						<div class="box ui-widget ui-widget-content ui-corner-all">
-							<h3>Drag3</h3>
-							<div class="content">
-								Content
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>

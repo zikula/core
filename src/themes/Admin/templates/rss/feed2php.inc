@@ -146,11 +146,11 @@ if  (!$rss) {
 	if ($chan == 'y') {
 	
 		// output channel title and description	
-		$str.= "<p class=\"rss-title\"><a class=\"rss-title\" href=\"" . trim($rss->channel['link']) . "\" target=\"" . $target_window . "\">" . strip_returns($rss->channel['title']) . "</a><br /><span class=\"rss-item\">" . strip_returns($rss->channel['description']) . "</span></p>\n";
+		$str.= "<p class=\"rss-title\"><a class=\"rss-title\" href=\"" . trim($rss->channel['link']) . "\" " . $target_window . ">" . strip_returns($rss->channel['title']) . "</a><br /><span class=\"rss-item\">" . strip_returns($rss->channel['description']) . "</span></p>\n";
 	
 	} elseif ($chan == 'title') {
 		// output title only
-		$str.= "<p class=\"rss-title\"><a class=\"rss-title\" href=\"" . trim($rss->channel['link']) . "\" target=\"" . $target_window . "\">" . strip_returns($rss->channel['title']) . "</a></p>\n";
+		$str.= "<p class=\"rss-title\"><a class=\"rss-title\" href=\"" . trim($rss->channel['link']) . "\" " . $target_window . ">" . strip_returns($rss->channel['title']) . "</a></p>\n";
 	
 	}	
 	
@@ -183,13 +183,13 @@ if  (!$rss) {
 			$title_str = substr(strip_returns(htmlspecialchars(strip_tags($item['summary']))), 0, 255) . '...'; 
 
 			// write the item with a title attribute
-			$str.= "<li class=\"rss-item\"><a class=\"rss-item\" href=\"" . trim($my_url) . "\"  title=\"$title_str\"" . $target_window . ">" . $my_title . "</a><br />\n";
+			$str.= "<li class=\"rss-item\"><a class=\"rss-item\" href=\"" . htmlspecialchars($my_url) . "\"  title=\"$title_str\"" . $target_window . ">" . $my_title . "</a><br />\n";
 			
 
 		} else {
 			// if no title, build a link to tag on the description
 			$str.= "<li class=\"rss-item\">\n";
-			$more_link = " <a class=\"rss-item\" href=\"" .trim($my_url) . '"' . $target_window . ">&laquo;details&raquo;</a>";
+			$more_link = " <a class=\"rss-item\" href=\"" .htmlspecialchars($my_url) . '"' . $target_window . ">&laquo;details&raquo;</a>";
 		}
 
 	

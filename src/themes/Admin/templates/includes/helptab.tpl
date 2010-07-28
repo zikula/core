@@ -7,7 +7,8 @@
     <fieldset>
         <legend>{gt text='General'}</legend>
             <ul>
-                <li><a href="community.zikula.org">Zikula Community</a></li>			
+                <li><a href="community.zikula.org">Zikula Community</a></li>
+				<li><a href="community.zikula.org/module-Wiki.htm">Community Wiki</a></li>				
             </ul>				
 </fieldset>
     <fieldset>

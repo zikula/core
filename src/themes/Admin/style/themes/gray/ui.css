@@ -309,24 +309,3 @@ a:hover, .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited
 	background:#f2f2f2 url('images/sidebar-bg-left.png') left top repeat-y;
 	padding-left:202px;
 }
-
-	/* Dashboard Buttons */
-
-#dashboard-buttons ul li {
-	border-color:#DCDFE3 #D0D4D8 #D0D4D8 #DCDFE3;
-	border-style:solid;
-	border-width:1px;
-}
-
-#dashboard-buttons ul li a {
-	color:#666;
-}
-
-#dashboard-buttons ul li a:hover {
-	border-color:#C3C9CE;
-	color:#333;
-}
-
-#dashboard-buttons ul li a:active {
-	border-color:#9D9D9D;
-}

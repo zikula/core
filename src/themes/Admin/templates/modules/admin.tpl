@@ -29,7 +29,7 @@
 <link type="text/css" href="{$themepath}/style/ui/ui.base.css" rel="stylesheet" media="all" />
 <link type="text/css" href="{$themepath}/style/themes/gray/ui.css" rel="stylesheet" title="style" media="all" />
 
-{browserhack condition="if IE 6"}
+{browserhack condition="if lte IE 6"}
     <link href="{$themepath}/style/ie.css" rel="stylesheet" media="all" />
     <script src="{$themepath}/js/pngfix.js"></script>
     <script>
@@ -37,13 +37,11 @@
 	  DD_belatedPNG.fix('.logo, ul#dashboard-buttons li a, .response-msg, #search-bar input');
     </script>
 {/browserhack}
-{browserhack condition="if IE 7"}
-    <link href="{$themepath}/style/ie.css" rel="stylesheet" media="all" />
-    <script src="{$themepath}/js/pngfix.js"></script>
-    <script>
-	  /* Fix IE6 Transparent PNG */
-	  DD_belatedPNG.fix('.logo, ul#dashboard-buttons li a, .response-msg, #search-bar input');
-    </script>
+{browserhack condition="if lte IE 7"}
+<script type="text/javascript" src="{$themepath}/js/html5.js"></script>
+{/browserhack}
+{browserhack condition="if lte IE 8"}
+<script type="text/javascript" src="{$themepath}/js/html5.js"></script>
 {/browserhack}
 </head>
 <body>
@@ -84,7 +82,8 @@
 					<li class="tab"><a href="#eqthree">{gt text='Routines'}</a></li>
 					<li class="tab"><a href="#eqfour">{gt text='Help'}</a></li>					
 					<li class="tab"><a href="#eqfive">{gt text='Info'}</a></li>
-					{/checkgroup}
+					<li class="tab"><a href="#eqsix">{gt text='News'}</a></li>
+										{/checkgroup}
                 </ul>  
                     <div id="eqone">{$maincontent}</div>
 					{checkgroup gid="2"}
@@ -92,6 +91,7 @@
 					<div id="eqthree">{include file="includes/routinetab.tpl"}</div>
 					<div id="eqfour">{include file="includes/helptab.tpl"}</div>
 					<div id="eqfive">{include file="includes/infotab.tpl"}</div>
+					<div id="eqsix">{include file="includes/newstab.tpl"}</div>
 					{/checkgroup}
 					<script type="text/javascript">
                         var eqtabs = new Zikula.UI.Tabs('aui-tabs_eq');
@@ -107,7 +107,7 @@
 	</div>
 	<div class="clear"></div>
 	<div id="footer">
-		<a href="#navigation" title="{gt text='Back to top'}">{gt text='Back to top'}</a>
+		<a href="#nav" title="{gt text='Back to top'}">{gt text='Back to top'}</a>
 	</div>
 	<div id="copyright">
 		{gt text='Powered by'} <a href="http://www.zikula.org" title="Zikula Version {version}">Zikula {version}</a>
