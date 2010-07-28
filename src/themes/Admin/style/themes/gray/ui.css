@@ -1,9 +1,6 @@
 /* Overlays */
-/* Overlays */
 .ui-widget-overlay { background: #666666 url(images/ui-bg_diagonals-thick_20_666666_40x40.png) 50% 50% repeat; opacity: .50;filter:Alpha(Opacity=50); }
-.ui-widget-shadow { margin: -5px 0 0 -5px; padding: 5px; background: #000000 url(images/ui-bg_flat_10_000000_40x100.png) 50% 50% repeat-x; opacity: .20;filter:Alpha(Opacity=20); -moz-border-radius: 5px; -webkit-border-radius: 5px; }/* Accordion
-----------------------------------*/
-
+.ui-widget-shadow { margin: -5px 0 0 -5px; padding: 5px; background: #000000 url(images/ui-bg_flat_10_000000_40x100.png) 50% 50% repeat-x; opacity: .20;filter:Alpha(Opacity=20); -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 /* Custom styles */
 
 #page_wrapper #page-content {
@@ -35,17 +32,20 @@
 }
 
 #top .welcome a.btn {
-	background:#262626;
+	background:#ddd;
 	border-color:#2e2e2e;
-	color:#696969;
+	color:#000;
 }
 
 #top .welcome a.btn:hover {
-	color:#7a7a7a;
+	color:#000;background:#eee;
 }
 
 #top .welcome span.note a {
-	color:#7a7a7a;
+	color:#fff;
+}
+#top .welcome span.note a:hover {
+	color:#ddd;
 }
 
 	/* Layout width */
@@ -54,12 +54,7 @@
 	margin:0;
 }
 
-#navigation li ul {
-	-moz-box-shadow:0 0 10px #a5a5a5;
-	border:1px solid #7f7f7f;
-}
-
-#page-header .fixed #navigation {
+#page-header .fixed {
 	margin-left:0;
 }
 
@@ -71,7 +66,7 @@
 	padding-left:10px!important;
 }
 
-.layout100 #page-header .fixed #navigation {
+.layout100 #page-header .fixed {
 	margin-left:10px;
 }
 

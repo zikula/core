@@ -7,13 +7,13 @@
 					<div class="three-col-mid">
 						<div class="column col1">
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header">Users<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Users<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
 								12345
 								</div>
 							</div>
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header">Settings<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Settings<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
 									<p>asasdfdf</p></div>
 							</div>
@@ -22,13 +22,13 @@
 						<div class="column col2">
 						
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header">Pending Content<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Pending Content<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
 								<p>Articles</p>
 								</div>
 							</div>
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header">Pending Content<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Pending Content<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
 								<p>Images</p>
 								</div>
@@ -39,13 +39,13 @@
 						<div class="column col3">
 						
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header">Forum<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Forum<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
 								Posts
 								</div>
 							</div>
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header">News<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">News<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
 								asdf
 								</div>
@@ -59,7 +59,7 @@
 						<div class="column">
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
 								
-                <div class="portlet-header ui-widget-header">{gt text='Extension News'}:<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+                <div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">{gt text='Extension News'}:<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
 									{php}
 	                                    $src = 'http://community.zikula.org/index.php?module=Extensions&func=view&ot=component&comptype=0&sort=lu_date&sdir=desc&tpl=rss&raw=1&catms=0&catma=0&catmf=0&cattt=0&catrt=0&catcl=0';
@@ -78,7 +78,7 @@
 						</div>
 						<div class="column column-right">
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header">{gt text='Project News'}:<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">{gt text='Project News'}:<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
                                     {php}
 	                                    $src = 'http://community.zikula.org/index.php?module=News&theme=RSS';

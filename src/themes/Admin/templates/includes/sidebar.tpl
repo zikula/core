@@ -1,13 +1,18 @@
 <div id="sidebar">
 			<div class="sidebar-content">
 				<a id="close_sidebar" class="btn ui-state-default full-link ui-corner-all" href="#drill">
-					<span class="ui-icon ui-icon-circle-arrow-e">&nbsp;</span>
+					<span class="ui-icon ui-icon-circle-arrow-e" style="margin-top:3px;">&nbsp;</span>
 					{gt text='Close Sidebar'}
 				</a>
-				<a id="open_sidebar" class="btn tooltip ui-state-default full-link icon-only ui-corner-all" title="{gt text='Open Sidebar'}" href="#"><span class="ui-icon ui-icon-circle-arrow-w">&nbsp;</span></a>
+				<a id="open_sidebar" class="btn tooltip ui-state-default full-link icon-only ui-corner-all" title="{gt text='Open Sidebar'}" href="#"><span class="ui-icon ui-icon-circle-arrow-w im-top">&nbsp;</span></a>
 				<div class="hide_sidebar">
+				
+				    <a class="fg-button btn ui-state-default full-link ui-corner-all" href="#">
+						<span class="ui-icon ui-icon-extlink" style="margin-top:3px;">&nbsp;</span>
+						{gt text='Visit Site!'}
+				    </a>
 					<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-						<div class="portlet-header ui-widget-header">{gt text='Theme Switcher'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+						<div class="portlet-header ui-widget-header ui-corner-all">{gt text='Theme Switcher'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 						<div class="portlet-content">
 							<ul id="style-switcher" class="side-menu">
 								<li>
@@ -31,18 +36,11 @@
 							</ul>
 						</div>
 					</div>
-					<a class="fg-button btn ui-state-default full-link ui-corner-all" href="#">
-						<span class="ui-icon ui-state-zoomin">&nbsp;</span>
-						All UI Icons usable!
-					</a>
-					
+										
 					<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-						<div class="portlet-header ui-widget-header">{gt text='Change layout width'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+						<div class="portlet-header ui-widget-header ui-corner-all">{gt text='Change width'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 						<div class="portlet-content">
 							<ul class="side-menu layout-options">
-								<li>
-									{gt text='What width would you like ?'}<br /><br />
-								</li>
 								<li>
 									<a href="javascript:void(0);" title="#"><strong>100%</strong> {gt text='width'}</a>
 								</li>

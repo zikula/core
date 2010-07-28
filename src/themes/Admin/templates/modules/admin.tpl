@@ -29,8 +29,16 @@
 <link type="text/css" href="{$themepath}/style/ui/ui.base.css" rel="stylesheet" media="all" />
 <link type="text/css" href="{$themepath}/style/themes/gray/ui.css" rel="stylesheet" title="style" media="all" />
 
-{browserhack condition="if IE"}
-    <link href="{$themepath}/style/ie6.css" rel="stylesheet" media="all" />
+{browserhack condition="if IE 6"}
+    <link href="{$themepath}/style/ie.css" rel="stylesheet" media="all" />
+    <script src="{$themepath}/js/pngfix.js"></script>
+    <script>
+	  /* Fix IE6 Transparent PNG */
+	  DD_belatedPNG.fix('.logo, ul#dashboard-buttons li a, .response-msg, #search-bar input');
+    </script>
+{/browserhack}
+{browserhack condition="if IE 7"}
+    <link href="{$themepath}/style/ie.css" rel="stylesheet" media="all" />
     <script src="{$themepath}/js/pngfix.js"></script>
     <script>
 	  /* Fix IE6 Transparent PNG */
@@ -61,12 +69,7 @@
 					</div>
 				</div>
 				{include file="includes/navitop.tpl"}
-				<div id="search-bar">
-					<form method="post" action="">
-						<input type="text" name="q" value="Suche!" />
-					</form>
 				</div>
-			</div>
 		</div>
  
 		<div id="page-layout"><div id="page-content">

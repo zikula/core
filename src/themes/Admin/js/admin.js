@@ -1,25 +1,5 @@
 jQuery(document).ready(function() {
 
-	// Navigation menu
-
-	jQuery('ul#navigation').superfish({ 
-		delay:       1000,
-		animation:   {opacity:'show',height:'show'},
-		speed:       'fast',
-		autoArrows:  true,
-		dropShadows: false
-	});
-
-	jQuery('ul#navigation li').hover(function(){
-		jQuery(this).addClass('sfHover2');
-	},
-	function(){
-		jQuery(this).removeClass('sfHover2');
-	});
-	
-	// Live Search
-	
-	 
 	//Hover states on the static widgets
 
 	jQuery('.ui-state-default').hover(

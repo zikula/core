@@ -13,17 +13,6 @@
 	padding-top:0!important;
 }
 
-#navigation li ul {
-	z-index:9999;
-	border:#696969 solid 1px;
-}
-
-#dashboard-buttons ul {
-	display:block;
-	float:left;
-	padding-bottom:10px;
-}
-
 .sidebar-content a.btn span.ui-icon {
 	left:-18px;
 }
