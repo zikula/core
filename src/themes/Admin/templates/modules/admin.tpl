@@ -74,7 +74,7 @@
 				<div class="clear"></div>
 				
 				<div class="content-box">
-                <ul id="tabs_example_eq">
+                <ul id="aui-tabs_eq">
                     <li class="tab"><a href="#eqone">{gt text='Main Administration'}</a></li>
                     {checkgroup gid="2"}
 					<li class="tab"><a href="#eqtwo">{gt text='Dashboard'}</a></li>					
@@ -91,7 +91,7 @@
 					<div id="eqfive">{include file="includes/infotab.tpl"}</div>
 					{/checkgroup}
 					<script type="text/javascript">
-                        var eqtabs = new Zikula.UI.Tabs('tabs_example_eq');
+                        var eqtabs = new Zikula.UI.Tabs('aui-tabs_eq');
                     </script>
                 </div>
 	

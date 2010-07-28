@@ -1,7 +1,7 @@
 <div class="inner-page-title">
 <br />
-					<h2>Dashboard</h2>
-					<span>Check out the newest Stuff!</span>
+					<h2>{gt text='Dashboard'}</h2>
+					<span>{gt text='Check out the newest Stuff!'}</span>
 				</div>
 				<div class="three-column sortable">
 					<div class="three-col-mid">
@@ -59,7 +59,7 @@
 						<div class="column">
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
 								
-                <div class="portlet-header ui-widget-header">Extension News:<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+                <div class="portlet-header ui-widget-header">{gt text='Extension News'}:<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
 									{php}
 	                                    $src = 'http://community.zikula.org/index.php?module=Extensions&func=view&ot=component&comptype=0&sort=lu_date&sdir=desc&tpl=rss&raw=1&catms=0&catma=0&catmf=0&cattt=0&catrt=0&catcl=0';
@@ -78,14 +78,14 @@
 						</div>
 						<div class="column column-right">
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header">Project News<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header">{gt text='Project News'}:<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
                                     {php}
 	                                    $src = 'http://community.zikula.org/index.php?module=News&theme=RSS';
 	                                    $chan = 'y';
-	                                    $num = 5;
+	                                    $num = 4;
 	                                    $desc = 0;
-	                                    $html = 'y';
+	                                    $html = 'n';
 	                                    $tz = 'feed';
 	                                    $utf = 'y';
 	                                    $date = 'n';

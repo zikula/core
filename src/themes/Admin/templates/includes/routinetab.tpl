@@ -1,4 +1,8 @@
 <br />
+<div class="inner-page-title">
+<h2>{gt text='Routines'}</h2>
+<span>{gt text='Nice little Helpers!'}</span>
+</div>
 <div class="z-form">
     <fieldset>
         <legend>{gt text='Compilation'}</legend>
