@@ -7,7 +7,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     outline: 0;
     font-size: 100%;
     vertical-align: baseline;
-    background: transparent;
+    /* background: transparent; Removed because of table problem in IE7 */
 }
 
 body {
@@ -27,7 +27,8 @@ blockquote:before, blockquote:after, q:before, q:after {
     content: none;
 }
 
-/* remember to define focus styles! */:focus {
+/* remember to define focus styles! */
+:focus {
     outline: 0;
 }
 

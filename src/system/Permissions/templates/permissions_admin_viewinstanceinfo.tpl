@@ -6,6 +6,7 @@
     <meta name="description" content="{slogan}" />
     <meta name="keywords" content="{keywords}" />
     <link rel="stylesheet" type="text/css" href="styles/core.css" media="print,projection,screen" />
+    <!--[if IE]><link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="screen" /><![endif]-->
     <link rel="stylesheet" type="text/css" href="{$stylepath}/style.css" media="print,projection,screen" />
     <link rel="stylesheet" type="text/css" href="{$stylepath}/print.css" media="print" />
 </head>

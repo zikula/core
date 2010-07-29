@@ -12,7 +12,7 @@
 }
 
 #liveusersearch .autocomplete_user ul {
-    list-style:none;
+    list-style: none;
     margin: 0;
     padding: 0;
 }
@@ -22,10 +22,10 @@
 }
 
 #liveusersearch .autocomplete_user ul li {
-    background:transparent url(../../../images/icons/extrasmall/edit_user.gif) no-repeat scroll 0 50%;
-    cursor:pointer;
-    margin:0;
-    padding:3px 0 3px 25px;
+    background: transparent url(../../../images/icons/extrasmall/edit_user.gif) no-repeat scroll 0 50%;
+    cursor: pointer;
+    margin: 0;
+    padding: 3px 0 3px 25px;
 }
 
 .newuserinfo {
@@ -39,20 +39,18 @@
     color: green;
 }
 
-#users_newuser label.errorrequired,
-#users_newuser label:hover.errorrequired {
+#users_newuser label.errorrequired, #users_newuser label:hover.errorrequired {
     border-bottom: 1px red solid;
 }
 
-#users_newuser input.errorrequired,
-#users_newuser input:hover.errorrequired {
+#users_newuser input.errorrequired, #users_newuser input:hover.errorrequired {
     border: 1px red solid;
 }
 
 div.z-accountlink {
     text-align: center;
     float: left;
-    height:9em;
+    height: 9em;
 }
 
 .passindicatorbar {
@@ -72,29 +70,27 @@ div.z-accountlink {
 }
 
 .z-icon-es-import {
-    background:url("../../../images/icons/extrasmall/db_comit.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-es-export {
-    background:url("../../../images/icons/extrasmall/db_update.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../../../images/icons/extrasmall/db_comit.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 
+.z-icon-es-export {
+    background: url("../../../images/icons/extrasmall/db_update.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
 
 .user-icon-adduser {
-    background:url("../../../images/icons/extrasmall/add_user.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../../../images/icons/extrasmall/add_user.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 
 .user-icon-lostusername {
-    background:url("../../../images/icons/extrasmall/lostusername.png") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../../../images/icons/extrasmall/lostusername.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 
-
-ul#user-block-login-tools,
-ul#user-block-login-tools li {
-    list-style:none;
+ul#user-block-login-tools, ul#user-block-login-tools li {
+    list-style: none;
     margin: 0;
     padding: 0;
 }

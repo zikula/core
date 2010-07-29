@@ -1,12 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$lang}" dir="{$langdirection}">
 <head>
-<title>{gt text="Zikula installer script"}</title>
-<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
-<meta name="author" content="Zikula Development Team" />
-<meta name="generator" content="Zikula Installer -- http://www.zikula.org" />
-<link rel="stylesheet" href="install/style/style.css" type="text/css" />
-<link rel="stylesheet" href="styles/core.css" type="text/css" />
+    <title>{gt text="Zikula installer script"}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+    <meta name="author" content="Zikula Development Team" />
+    <meta name="generator" content="Zikula Installer -- http://www.zikula.org" />
+    <link rel="stylesheet" href="install/style/style.css" type="text/css" />
+    <link rel="stylesheet" href="styles/core.css" type="text/css" />
+    <!--[if IE]><link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="screen" /><![endif]-->
     <script type="text/javascript" src="install/javascript/install.js"></script>
 </head>
 {if not $installbySQL}

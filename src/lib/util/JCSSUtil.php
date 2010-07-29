@@ -88,6 +88,7 @@ class JCSSUtil
         }
         $javascripts = self::prepareJavascripts($javascripts,$combine);
         $stylesheets = self::prepareStylesheets($stylesheets,$combine);
+        
         if ($combine) {
             $javascripts = (array)self::save($javascripts, 'js', $cache_dir);
             $stylesheets = (array)self::save($stylesheets, 'css', $cache_dir);
@@ -118,6 +119,10 @@ class JCSSUtil
             $stylesheets = array($coreStyle[0]);
         }
         $stylesheets = array_unique(array_values($stylesheets));
+
+        $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="screen" /><![endif]-->';
+        PageUtil::addVar('rawtext',$iehack);
+
         return $stylesheets;
     }
 

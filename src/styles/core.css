@@ -52,18 +52,6 @@ button.z-imagebutton {
     clear: both;
     visibility: hidden;
 }
-/* IE-Patches for clearfix */
-.z-clearfix {
-    display: inline-block;
-}
-/* Hides from IE-mac \*/
-* html .z-clearfix {
-    height: 1px;
-}
-.z-clearfix {
-    display: block;
-}
-/* End hide from IE-mac */
 
 /* Overflow-Method to clear float environments */
 .z-floatbox {
@@ -320,8 +308,6 @@ table.z-datatable ul {
 .z-form {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    zoom:1; /* IE fix */
 }
 .z-form.z-gap {
     margin: 0 0 1em 0;
@@ -333,8 +319,6 @@ table.z-datatable ul {
     border: 1px #ddd solid;
     margin: 0 0 1em 0;
     padding: 0.5em 1em;
-    overflow: hidden;
-    position:relative; /* IE fix */
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -351,7 +335,6 @@ table.z-datatable ul {
     color: #000;
     background: transparent;
     border: 0;
-    position:relative; /* IE fix */
 }
 .z-form .z-formrow .z-mandatorysym {
     color: #f00;
@@ -404,28 +387,11 @@ div.z-formrow,
 div.z-formbuttons {
     padding: 0.5em 0;
     min-height: 2em;
-    overflow: hidden;
     clear: both;
-    zoom:1; /* IE fix */
 }
-div.z-formlist {
-    overflow: hidden;
-}
+
 div.z-formlist label {
     display: inline;
-}
-
-/******************************************************************************
-* Styles for the buttons on a view table
-*******************************************************************************/
-
-div.z-viewbuttons  {
-    text-align: right;
-    margin-bottom: 1.25em;
-}
-div.z-viewbuttons img {
-    margin: 5px;
-    float: right;
 }
 
 /******************************************************************************
@@ -535,13 +501,6 @@ div.z-viewbuttons img {
     cursor: pointer;
 }
 
-/* Adjust width for IE 5 and IE6 */
-* html .z-form div.z-formrow input,
-* html .z-form div.z-formrow textarea,
-* html .z-form div.z-formrow select {
-    width: auto;
-}
-
 /******************************************************************************
 * z-form style (z-linearize elements / use additional class 'z-linear')
 *******************************************************************************/
@@ -576,43 +535,6 @@ div.z-viewbuttons img {
     padding: 0;
     margin: 0;
 }
-
-/******************************************************************************
-* IE-fixes for Fieldset/Legend
-*******************************************************************************/
-
-/* All IE versions */
-.z-form {
-    padding-top: 0\9;
-}
-.z-form fieldset {
-    padding: 0 5px\9; 
-    padding-top:1em\9;
-    padding-bottom:0.5em\9;
-}
-.z-form legend {
-    position:absolute\9; 
-    top:-.5em\9;
-    *left: 0\9;
-}
-.z-form fieldset {
-    position:relative\9; 
-    overflow:visible\9;
-    margin-top:1.5em\9;
-    zoom:1;
-}
-/* IE5.x, IE6, IE7 */
-.z-form legend {
-    *padding: 0 5px;
-}
-.z-form fieldset {
-    *padding-top:1.5em;
-}
-/* IE5.x, IE6 */
-* html .z-form {
-    padding-top: 10px;
-}
-
 
 /******************************************************************************
 * z-itemlist styles
@@ -1134,7 +1056,7 @@ div.z-viewbuttons img {
 
 .z-tooltip {
     background: #ddd; /* for non-css3 browsers */
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /* for IE */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /* for IE */
     background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /* for webkit browsers */
     background: -moz-linear-gradient(top,  #fff,  #cfcfcf); /* for firefox 3.6+ */
     border: solid 1px #b4b4b4;
@@ -1151,47 +1073,47 @@ div.z-viewbuttons img {
     color: #333;
     font-weight: normal;
     text-shadow: 1px 1px 1px #fefefe;
-    min-width:200px;
-    max-width:400px;
+    min-width: 200px;
+    max-width: 400px;
 }
 .z-window {
-    border:1px solid #DDDDDD;
-    background-color:#FAFAFA;
+    border: 1px solid #ddd;
+    background-color: #FAFAFA;
     background: -moz-linear-gradient(center top , #FAFAFA, #F2F2F2) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear,left top, left bottom,from(#FAFAFA),to(#f2f2f2));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#f2f2f2');
-    -moz-box-shadow: 5px 5px 10px #888888;
-    -webkit-box-shadow: 5px 5px 10px #888888;
-    box-shadow: 5px 5px 10px #888888;
-    padding:0;
-    text-align:left;
-    font-family:"Lucida Grande",Verdana;
-    font-size:12px;
+    -moz-box-shadow: 5px 5px 10px #888;
+    -webkit-box-shadow: 5px 5px 10px #888;
+    box-shadow: 5px 5px 10px #888;
+    padding: 0;
+    text-align: left;
+    font-family: "Lucida Grande",Verdana;
+    font-size: 12px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    min-width:200px;
-    min-height:100px;
-    overflow:hidden;
+    min-width: 200px;
+    min-height: 100px;
+    overflow: hidden;
 }
 .z-window:focus {
     outline: none;
 }
 .z-window.z-modal {
-    -moz-box-shadow: 5px 5px 10px #000000;
-    -webkit-box-shadow: 5px 5px 10px #000000;
-    box-shadow: 5px 5px 10px #000000;
+    -moz-box-shadow: 5px 5px 10px #000;
+    -webkit-box-shadow: 5px 5px 10px #000;
+    box-shadow: 5px 5px 10px #000;
 }
 .z-window .z-window-body {
-    background: #FFFFFF;
-    border-top: 1px solid #DDDDDD;
-    border-bottom: 1px solid #DDDDDD;
-    padding:10px;
-    overflow:auto;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    overflow: auto;
 }
 .z-window .z-window-body.iframe {
-    padding:0;
-    overflow:visible;
+    padding: 0;
+    overflow: visible;
 }
 .z-window .z-window-header {
     font-weight: bold;
@@ -1205,12 +1127,12 @@ div.z-viewbuttons img {
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
     background: #DDDDDD;
-    background: -moz-linear-gradient(center top , #DDDDDD, #F2F2F2) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear,left top, left bottom,from(#DDDDDD),to(#f2f2f2));
+    background: -moz-linear-gradient(center top , #ddd, #F2F2F2) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear,left top, left bottom,from(#ddd),to(#f2f2f2));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#f2f2f2');
 }
 .z-window .z-window-footer {
-    text-align:center;
+    text-align: center;
     -webkit-border-bottom-right-radius: 9px;
     -webkit-border-bottom-left-radius: 9px;
     -moz-border-radius-bottomright: 9px;
@@ -1221,51 +1143,51 @@ div.z-viewbuttons img {
     padding: 5px;
 }
 .z-window .z-window-title {
-    font-size:12px;
+    font-size: 12px;
 }
 .z-window.z-draggable .z-window-title {
-    cursor:move;
+    cursor: move;
 }
 .z-window .z-window-control {
-    display:block;
-    position:absolute;
-    top:5px;
-    height:16px;
-    width:16px;
+    display: block;
+    position: absolute;
+    top: 5px;
+    height: 16px;
+    width: 16px;
     background-position: 69px 0;
     background-position: 48px 0;
-    cursor:pointer;
+    cursor: pointer;
 }
 .z-window .z-window-control:hover {
     background-position: 32px 0;
     background-position: 0 0;
 }
 .z-window .z-window-close {
-    right:10px;
-    background-image:url("../images/ui/window.close.png");
+    right: 10px;
+    background-image: url("../images/ui/window.close.png");
 }
 .z-window .z-window-maximize {
-    right:30px;
-    background-image:url("../images/ui/window.max.png");
+    right: 30px;
+    background-image: url("../images/ui/window.max.png");
 }
 .z-window .z-window-minimize {
-    right:50px;
-    background-image:url("../images/ui/window.min.png");
+    right: 50px;
+    background-image: url("../images/ui/window.min.png");
 }
 .z-window.z-minimized .z-window-minimize,
 .z-window.z-maximized .z-window-maximize {
-    background-image:url("../images/ui/window.restore.png");
+    background-image: url("../images/ui/window.restore.png");
 }
 .z-window .resizable_handle {
-    display:block;
-    position:absolute;
-    bottom:4px;
-    right:5px;
-    height:13px;
-    width:13px;
-    background-image:url("../images/ui/window.resize.png");
-    cursor:pointer;
-    cursor:nw-resize;
+    display: block;
+    position: absolute;
+    bottom: 4px;
+    right: 5px;
+    height: 13px;
+    width: 13px;
+    background-image: url("../images/ui/window.resize.png");
+    cursor: pointer;
+    cursor: nw-resize;
 }
 .z-window.z-minimized {
     height: auto !important;
@@ -1276,8 +1198,8 @@ div.z-viewbuttons img {
 }
 .z-window.z-maximized {
     position: fixed !important;
-    max-height:none !important;
-    max-width:none !important;
+    max-height: none !important;
+    max-width: none !important;
     top: 0 !important;
     bottom: 0 !important;
     left: 0 !important;
@@ -1319,7 +1241,7 @@ div.z-viewbuttons img {
     bottom: 35px;
 }
 .z-window-indicator {
-    background: #FFFFFF url(../images/ui/zktimer_48px_white_rounded.gif) no-repeat 50% 50%;
+    background: #fff url(../images/ui/zktimer_48px_white_rounded.gif) no-repeat 50% 50%;
     opacity: 0.8;
     position: absolute;
     top: 0;
@@ -1328,7 +1250,7 @@ div.z-viewbuttons img {
     right: 0;
 }
 #control_overlay {
-    background-color:#000;
+    background-color: #000;
 }
 
 .z-select-multiple.z-form {
@@ -1343,41 +1265,41 @@ div.z-viewbuttons img {
 }
 
 .z-tabs {
-    background:url("../images/ui/tab_bottom.gif") repeat-x scroll center bottom transparent;
+    background: url("../images/ui/tab_bottom.gif") repeat-x scroll center bottom transparent;
     margin:0 !important;
     padding:0 !important;
-    width:100%;
+    width: 100%;
     overflow: hidden;
 }
 .z-tabs li {
-    background-color:#F3F3F3;
-    border:1px solid #CCCCCC;
-    float:left;
-    list-style-type:none;
-    margin:0 5px 0 0;
-    padding:0;
-    z-index:1000;
+    background-color: #F3F3F3;
+    border: 1px solid #ccc;
+    float: left;
+    list-style-type: none;
+    margin: 0 5px 0 0;
+    padding: 0;
+    z-index: 1000;
 }
 .z-tabs li > a {
-    border-right:1px solid transparent;
-    color:#666666;
-    float:left;
-    font-weight:bold;
-    padding:5px;
-    position:relative;
-    text-decoration:none;
+    border-right: 1px solid transparent;
+    color: #666666;
+    float: left;
+    font-weight: bold;
+    padding: 5px;
+    position: relative;
+    text-decoration: none;
 }
 .z-tabs li > a:hover {
-    background:#FFFFFF !important;
-    border-right:1px solid #ccc;
-    color:#000;
-    text-decoration:none;
+    background: #fff !important;
+    border-right: 1px solid #ccc;
+    color: #000;
+    text-decoration: none;
 }
 .z-tabs li.active {
-    background:none repeat scroll 0 0 #fff;
-    border-bottom:1px solid #fff;
-    z-index:2000;
+    background: none repeat scroll 0 0 #fff;
+    border-bottom: 1px solid #fff;
+    z-index: 2000;
 }
 .z-tabs li.active a:hover {
-    border-right:1px solid transparent;
+    border-right: 1px solid transparent;
 }
