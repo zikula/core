@@ -39,11 +39,11 @@ class EventUtil
     /**
      * Get EventManager instance.
      *
-     * @param Zikula $core Core instance.
+     * @param Zikula_Core $core Core instance.
      *
      * @return Zikula_EventManager
      */
-    static public function getManager(Zikula $core = null)
+    static public function getManager(Zikula_Core $core = null)
     {
         if (self::$eventManager) {
             return self::$eventManager;

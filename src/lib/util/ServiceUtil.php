@@ -37,11 +37,11 @@ class ServiceUtil
     /**
      * Get manager instance.
      *
-     * @param Zikula $core Core instance (optional).
+     * @param Zikula_Core $core Core instance (optional).
      *
      * @return Zikula_ServiceManager
      */
-    public static function getManager(Zikula $core = null)
+    public static function getManager(Zikula_Core $core = null)
     {
         if (self::$serviceManager) {
             return self::$serviceManager;
