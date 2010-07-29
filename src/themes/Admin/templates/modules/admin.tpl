@@ -76,13 +76,13 @@
 				
 				<div class="content-box">
                 <ul id="aui-tabs_eq">
-                    <li class="tab"><a href="#eqone">{gt text='Main Administration'}</a></li>
+                    <li class="z-tab"><a href="#eqone">{gt text='Main Administration'}</a></li>
                     {checkgroup gid="2"}
-					<li class="tab"><a href="#eqtwo">{gt text='Dashboard'}</a></li>					
-					<li class="tab"><a href="#eqthree">{gt text='Routines'}</a></li>
-					<li class="tab"><a href="#eqfour">{gt text='Help'}</a></li>					
-					<li class="tab"><a href="#eqfive">{gt text='Info'}</a></li>
-					<li class="tab"><a href="#eqsix">{gt text='News'}</a></li>
+					<li class="z-tab"><a href="#eqtwo">{gt text='Dashboard'}</a></li>					
+					<li class="z-tab"><a href="#eqthree">{gt text='Routines'}</a></li>
+					<li class="z-tab"><a href="#eqfour">{gt text='Help'}</a></li>					
+					<li class="z-tab"><a href="#eqfive">{gt text='Info'}</a></li>
+					<li class="z-tab"><a href="#eqsix">{gt text='News'}</a></li>
 										{/checkgroup}
                 </ul>  
                     <div id="eqone">{$maincontent}</div>
