@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 // For < PHP 5.3.0
 if (!defined('E_DEPRECATED')) {
     define('E_DEPRECATED', 8192);
@@ -41,7 +40,6 @@ class ZLoader
      * @var array
      */
     private static $map;
-
     /**
      * Autoloaders.
      *
@@ -161,49 +159,51 @@ class ZLoader
     public static function map()
     {
         return array(
-            'ZLanguage' => 'i18n',
-            'ZI18n' => 'i18n',
-            'ZL10n' => 'i18n',
-            'ZLocale' => 'i18n',
-            'ZGettext' => 'i18n',
-            'ZMO' => 'i18n',
-            'ZLanguageBrowser' => 'i18n',
-            'DBObject' => 'dbobject',
-            'DBObjectArray' => 'dbobject',
-            'DBUtil' => 'util',
-            'BlockUtil' => 'util',
-            'DBConnectionStack' => 'util',
-            'AjaxUtil' => 'util',
-            'CacheUtil' => 'util',
-            'CategoryRegistryUtil' => 'util',
-            'CategoryUtil' => 'util',
-            'CookieUtil' => 'util',
-            'DataUtil' => 'util',
-            'DateUtil' => 'util',
-            'DoctrineUtil' => 'util',
-            'EventUtil' => 'util',
-            'FileUtil' => 'util',
-            'FilterUtil' => 'util',
-            'FormUtil' => 'util',
-            'HtmlUtil' => 'util',
-            'JCSSUtil' => 'util',
-            'LogUtil' => 'util',
-            'ModUtil' => 'util',
-            'ObjectUtil' => 'util',
-            'PluginUtil' => 'util',
-            'PageUtil' => 'util',
-            'RandomUtil' => 'util',
-            'SecurityUtil' => 'util',
-            'ServiceUtil' => 'util',
-            'SessionUtil' => 'util',
-            'StringUtil' => 'util',
-            'ThemeUtil' => 'util',
-            'UserUtil' => 'util',
-            'ValidationUtil' => 'util',
-            'SystemListenersUtil' => 'util',
-            'Loader' => 'legacy',
-            );
+                'ZLanguage' => 'i18n',
+                'ZI18n' => 'i18n',
+                'ZL10n' => 'i18n',
+                'ZLocale' => 'i18n',
+                'ZGettext' => 'i18n',
+                'ZMO' => 'i18n',
+                'ZLanguageBrowser' => 'i18n',
+                'DBObject' => 'dbobject',
+                'DBObjectArray' => 'dbobject',
+                'DBUtil' => 'util',
+                'BlockUtil' => 'util',
+                'DBConnectionStack' => 'util',
+                'AjaxUtil' => 'util',
+                'CacheUtil' => 'util',
+                'CategoryRegistryUtil' => 'util',
+                'CategoryUtil' => 'util',
+                'CookieUtil' => 'util',
+                'DataUtil' => 'util',
+                'DateUtil' => 'util',
+                'DoctrineUtil' => 'util',
+                'EventUtil' => 'util',
+                'FileUtil' => 'util',
+                'FilterUtil' => 'util',
+                'FormUtil' => 'util',
+                'HtmlUtil' => 'util',
+                'JCSSUtil' => 'util',
+                'LogUtil' => 'util',
+                'ModUtil' => 'util',
+                'ObjectUtil' => 'util',
+                'PluginUtil' => 'util',
+                'PageUtil' => 'util',
+                'RandomUtil' => 'util',
+                'SecurityUtil' => 'util',
+                'ServiceUtil' => 'util',
+                'SessionUtil' => 'util',
+                'StringUtil' => 'util',
+                'System' => 'util',
+                'SystemListenersUtil' => 'util',
+                'ThemeUtil' => 'util',
+                'UserUtil' => 'util',
+                'ValidationUtil' => 'util',
+                'Loader' => 'legacy',
+        );
     }
+
 }
 
 /**
