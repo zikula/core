@@ -32,7 +32,7 @@ mb_regex_encoding('UTF-8');
  *
  * Core class with the base methods.
  */
-class Zikula
+class Zikula_Core
 {
     /**
      * Stages.

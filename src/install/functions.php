@@ -30,7 +30,7 @@ function install()
     include 'lib/ZLoader.php';
     ZLoader::register();
 
-    $core = new Zikula();
+    $core = new Zikula_Core();
     $core->boot();
     $eventManager = $core->getEventManager();
     $serviceManager = $core->getServiceManager();
