@@ -13,5 +13,5 @@
  */
 
 include 'lib/bootstrap.php';
-System::init();
+$core->init();
 System::redirect(ModUtil::url('Admin', 'admin'));
