@@ -107,7 +107,7 @@ function _upg_header()
     echo '<title>' . __('Zikula Upgrade script') . "</title>\n";
     echo '<link rel="stylesheet" href="install/style/upgrade.css" type="text/css" />' . "\n";
     echo '<link rel="stylesheet" href="styles/core.css" type="text/css" />' . "\n";
-    echo '<!--[if IE]><link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="screen" /><![endif]-->' . "\n";
+    echo '<!--[if IE]><link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" /><![endif]-->' . "\n";
     echo '</head>' . "\n";
     echo '<body>' . "\n";
     echo '<div id="container"><div id="wrapper" class="z-clearfix">' . "\n";

@@ -120,7 +120,7 @@ class JCSSUtil
         }
         $stylesheets = array_unique(array_values($stylesheets));
 
-        $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="screen" /><![endif]-->';
+        $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
         PageUtil::addVar('rawtext',$iehack);
 
         return $stylesheets;
