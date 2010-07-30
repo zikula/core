@@ -1117,12 +1117,7 @@ class ObjectUtil
         // now retrieve the full category data
         $where = 'WHERE cat_id IN (' . implode(',', $catlist) . ')';
 
-        //$cats  = DBUtil::selectObjectArray ('categories_category', $where, '', -1, -1, 'id');
-        if (!($catClass = Loader::loadClassFromModule('Categories', 'category', true))) {
-            return z_exit(__f('Unable to load class [%1$s] for module [%2$s]', array('category', 'Categories')));
-        }
-
-        $catArray = new $catClass();
+        $catArray = new Categories_DBObject_CategoryArray();
         $data = $catArray->get($where, '', -1, -1, 'id');
 
         // use the cagtegory map created previously to build the object category array
