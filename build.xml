@@ -3,7 +3,7 @@
 
     <!-- invokation
         phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcb phpcpd phpunit pdepend phpmd phpdoc jsdoc build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
-        # note phpcb must be the last artifact run in the chain
+        # note phpcb must follow phpcs
     -->
 
     <!--
