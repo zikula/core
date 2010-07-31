@@ -54,12 +54,16 @@
         <echo msg="Exporting for build..." />
         <!-- ATTN export urls require manual edit -->
         <exec command="cp -a ${workspace}/source/src ${packagepath}" />
-        <delete dir="${packagepath}/themes/Admin" includeemptydirs="true" />
+        <!-- delete dir="${packagepath}/themes/Admin" includeemptydirs="true" / -->
 
         <exec command="svn export --force http://svn.github.com/zikula-modules/Tour.git ${builddir}/tmp/Tour" />
-        <exec command="svn export --force http://svn.github.com/zikula-modules/Legal.git ${builddir}/tmp/Legal" />
         <exec command="mv ${builddir}/tmp/Legal/src/modules/Legal ${packagepath}/modules" />
+
+        <exec command="svn export --force http://svn.github.com/zikula-modules/Legal.git ${builddir}/tmp/Legal" />
         <exec command="mv ${builddir}/tmp/Tour/src/modules/Tour ${packagepath}/modules" />
+
+        <exec command="svn export --force http://svn.github.com/zikula-modules/Profile.git ${builddir}/tmp/Profile" />
+        <exec command="mv ${builddir}/tmp/Profile/src/modules/Profile ${packagepath}/modules" />
         
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs" />
