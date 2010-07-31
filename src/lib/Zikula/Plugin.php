@@ -232,6 +232,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         return $this->meta['displayname'];
     }
 
+
     /**
      * Get meta description.
      *
