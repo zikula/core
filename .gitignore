@@ -7,6 +7,8 @@
 
 # /src/config/
 /src/config/personal_config.php
+/src/config/multisites_config.php
+/src/config/FirePHPCore
 
 # /src/lib/vendor/
 
@@ -17,12 +19,15 @@
 /src/modules/!index\.html
 /src/modules/!\.htaccess
 
+# /src/plugins
+/src/plugins/!README
+
 # /src/ztemp
 /src/ztemp/errors_log/*
 /src/ztemp/purifierCache/*
 /src/ztemp/idsTmp/*
-/src/ztemp/Renderer_cache/*
-/src/ztemp/Renderer_compiled/*
+/src/ztemp/view_cache/*
+/src/ztemp/view_compiled/*
 /src/ztemp/Theme_cache/*
 /src/ztemp/Theme_compiled/*
 /src/ztemp/Theme_Config/*
