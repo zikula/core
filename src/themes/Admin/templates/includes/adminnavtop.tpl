@@ -38,7 +38,7 @@
 		<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
 			<div class="portlet-header ui-widget-header ui-corner-all">{gt text='Theme Switcher'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 				<div class="portlet-content">
-					<ul id="style-switcher" class="side-menu">
+					<ul id="style-switcher" class="settings-menu">
 						<li>
 							<a class="set_theme" id="black" href="#" title="{gt text='Black'}">{gt text='Black'}</a>
 						</li>
@@ -63,7 +63,7 @@
 		<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
 			<div class="portlet-header ui-widget-header ui-corner-all">{gt text='Change width'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 				<div class="portlet-content">
-					<ul class="side-menu layout-options">
+					<ul class="settings-menu layout-options">
 						<li>
 							<a href="javascript:void(0);" title="#"><strong>100%</strong> {gt text='width'}</a>
 						</li>

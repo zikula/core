@@ -868,8 +868,23 @@ ul#icons span.ui-icon {
 #page_wrapper #sidebar .side-menu li a.active {
 	font-weight:bold;
 }
-
-	/* SIDEBAR > Box */
+/*Settings Window */
+.settings-menu li {
+	border-bottom:#ccc dotted 1px;
+}
+.settings-menu li a {
+	padding:5px;
+	display:block;
+}
+.settings-menu li a:hover, .settings-menu li a.active {
+	background:#f0f0f0;
+	color:#000;
+}
+.settings-menu li a.active {
+	font-weight:bold;
+}
+/* End Settings Window */
+/* SIDEBAR > Box */
 	
 #page_wrapper #sidebar .box {
 	background:#fbfcfd;
