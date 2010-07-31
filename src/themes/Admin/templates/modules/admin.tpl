@@ -19,7 +19,6 @@
 <script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="{$themepath}/js/jquery-ui-1.8.2.custom.min.js"></script>
 <script type="text/javascript" src="{$themepath}/js/cookie.js"></script>
-<script type="text/javascript" src="{$themepath}/js/superfish.js"></script>
 <script type="text/javascript" src="{$themepath}/js/admin.js"></script>
 <script type="text/javascript" src="javascript/ajax/proto_scriptaculous.combined.min.js"></script>
 <script type="text/javascript" src="javascript/helpers/Zikula.js"></script>
@@ -49,28 +48,18 @@
 		<div id="page-header">
 			<div id="page-header-wrapper">
 				<div id="top">
-					<p class="logo">{gt text='Zikula Administration'}</p>
+					<p class="logo" id="logo">{gt text='Zikula Administration'}</p>
 					<div class="welcome">
-						<span class="note">{gt text='Welcome back'}, <a href="#" title="{usergetvar name="uname" uid=$uid}">{usergetvar name="uname" uid=$uid}</a></span>
-						<a class="btn ui-state-default ui-corner-all" href="#">
-							<span class="ui-icon ui-icon-wrench">&nbsp;</span>
-							{gt text='Settings'}
-						</a>
-						<a class="btn ui-state-default ui-corner-all" href="#">
-							<span class="ui-icon ui-icon-person">&nbsp;</span>
-							{gt text='My Account'}
-						</a>
-						<a class="btn ui-state-default ui-corner-all" href="{modurl modname=users type=user func=logout}">
-							<span class="ui-icon ui-icon-power">&nbsp;</span>
-							{gt text='Logout'}
-						</a>						
+					{include file="includes/adminnavtop.tpl"}
+							
 					</div>
 				</div>
 				{include file="includes/navitop.tpl"}
 				</div>
 		</div>
  
-		<div id="page-layout"><div id="page-content">
+		<div id="page-layout">
+		<div id="page-content">
 			<div id="page-content-wrapper">
 				<div class="clear"></div>
 				
@@ -96,22 +85,20 @@
 					<script type="text/javascript">
                         var eqtabs = new Zikula.UI.Tabs('aui-tabs_eq');
                     </script>
+		<br />
+		<a class="fg-button btn ui-state-default full-link ui-corner-all" href="#logo" title="{gt text='Back to top'}" >
+		<span class="ui-icon ui-icon-arrowthick-1-n" style="margin-top:3px;">&nbsp;</span>
+		{gt text='Back to top'}
+		</a>
+		
                 </div>
 	
 			{include file="includes/sidebar.tpl"}	
 						
 		<div class="clear"></div>
-			</div>
-			<div class="clear"></div>
 		</div>
-	</div>
-	<div class="clear"></div>
-	<div id="footer">
-		<a href="#nav" title="{gt text='Back to top'}">{gt text='Back to top'}</a>
-	</div>
-	<div id="copyright">
-		{gt text='Powered by'} <a href="http://www.zikula.org" title="Zikula Version {version}">Zikula {version}</a>
-	</div>
+		</div>		
+	 
 </div>
 </body>
 </html>

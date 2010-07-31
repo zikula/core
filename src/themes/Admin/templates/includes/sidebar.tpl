@@ -6,80 +6,51 @@
 				</a>
 				<a id="open_sidebar" class="btn tooltip ui-state-default full-link icon-only ui-corner-all" title="{gt text='Open Sidebar'}" href="#"><span class="ui-icon ui-icon-circle-arrow-w im-top">&nbsp;</span></a>
 				<div class="hide_sidebar">
-				
+				<div class="side_sort">
 				    <a class="fg-button btn ui-state-default full-link ui-corner-all" href="#">
 						<span class="ui-icon ui-icon-extlink" style="margin-top:3px;">&nbsp;</span>
-						{gt text='Visit Site!'}
+						{gt text='Visit your Site!'}
 				    </a>
 					<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-						<div class="portlet-header ui-widget-header ui-corner-all">{gt text='Theme Switcher'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+						<div class="portlet-header ui-widget-header ui-corner-all">
+						{gt text='Quicklinks'}
+						<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 						<div class="portlet-content">
-							<ul id="style-switcher" class="side-menu">
-								<li>
-									<a class="set_theme" id="black" href="#" title="{gt text='Black'}">{gt text='Black'}</a>
-								</li>
-								<li>
-									<a class="set_theme" id="gray" href="#" title="{gt text='Gray Standard'}">{gt text='Gray Standard'} </a>
-								</li>
-								<li>
-									<a class="set_theme" id="gray_light" href="#" title="{gt text='Light Gray'}">{gt text='Light Gray'}</a>
-								</li>
-								<li>
-									<a class="set_theme" id="green" href="#" title="{gt text='Green'}">{gt text='Green'}</a>
-								</li>
-								<li>
-									<a class="set_theme" id="blue" href="#" title="{gt text='Blue'}">{gt text='Blue'}</a>
-								</li>
-								<li>
-									<a class="set_theme" id="hot" href="#" title="{gt text='Hot'}">{gt text='Hot'}</a>
-								</li>
-							</ul>
-						</div>
-					</div>
+						  <a class="btn ui-state-default full-link ui-corner-all" href="#">
+								<span class="ui-icon ui-icon-mail-closed">&nbsp;</span>
+								asdf
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" href="#">
+								<span class="ui-icon ui-icon-arrowreturnthick-1-n">&nbsp;</span>
+								asdf
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" href="#">
+								<span class="ui-icon ui-icon-scissors">&nbsp;</span>
+								asdf
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" href="#">
+								<span class="ui-icon ui-icon-signal-diag">&nbsp;</span>
+								asdf
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" href="#">
+								<span class="ui-icon ui-icon-alert">&nbsp;</span>
+								asdf
+							</a>
+						
+						 
+					</div></div>
 										
 					<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-						<div class="portlet-header ui-widget-header ui-corner-all">{gt text='Change width'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+						<div class="portlet-header ui-widget-header ui-corner-all">{gt text='asdf'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 						<div class="portlet-content">
-							<ul class="side-menu layout-options">
-								<li>
-									<a href="javascript:void(0);" title="#"><strong>100%</strong> {gt text='width'}</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);" id="layout90" title="#"><strong>90%</strong> {gt text='width'}</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);" id="layout75" title="#"><strong>75%</strong> {gt text='width'}</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);" id="layout980" title="#"><strong>980px</strong> {gt text='width'}</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);" id="layout1280" title="#"><strong>1280px</strong> {gt text='width'}</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);" id="layout1400" title="#"><strong>1400px</strong> {gt text='width'}</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);" id="layout1600" title="Switch to 1600px layout"><strong>1600px</strong> {gt text='width'}</a>
-								</li>
-							</ul>
+							<a class="btn ui-state-default full-link ui-corner-all" href="#">
+								<span class="ui-icon ui-icon-alert">&nbsp;</span>
+								asdf
+							</a>
 						</div>
 					</div>
-					
-					<div class="side_sort">
-						<div class="box ui-widget ui-widget-content ui-corner-all">
-							<h3>Drag 1</h3>
-							<div class="content">
-								Content
-							</div>
-						</div>
-						<div class="box ui-widget ui-widget-content ui-corner-all">
-							<h3>drag 2</h3>
-							<div class="content">
-								Content
-							</div>
-						</div>
 					</div>
-				</div>
+					</div>
+					</div>
 			</div>
 		</div>

@@ -1,8 +1,8 @@
 <div class="inner-page-title">
 <br />
 					<h2>{gt text='Dashboard'}</h2>
-					<span>{gt text='Check out the newest Stuff!'}</span>
-				</div>
+					<span class="note" style="margin-right:6px;">{gt text='Welcome back'}, <a href="#" title="{usergetvar name="uname" uid=$uid}">{usergetvar name="uname" uid=$uid} !</a></span>
+					</div>
 				<div class="three-column sortable">
 					<div class="three-col-mid">
 						<div class="column col1">

@@ -298,7 +298,7 @@ a:hover, .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited
 	background:#f2f2f2 url('images/sidebar-bg-left.png') left top repeat-y;
 	padding-left:202px;
 }
-/* Navigation Start */
+/* Main Navigation Start */
 #nav {
 	margin: 2px 2px;
 	width:99%;
@@ -441,4 +441,4 @@ html[xmlns] #nav {
 * html #nav {
 	height: 1%;
 }
-/* Navigation End */
+/* Main Navigation End */

@@ -10,7 +10,6 @@
     var lblSaving = "{{gt text='Saving'}}";
     /* ]]> */
 </script>
-
 {include file='admin_admin_securityanalyzer.tpl'}
 {include file='admin_admin_developernotices.tpl'}
 {nocache}{include file='admin_admin_updatechecker.tpl'}{/nocache}
@@ -22,6 +21,7 @@
         <li {if $currentcat eq $menuoption.cid} class="active"{/if}>
             <a id="C{$menuoption.cid}" href="{$menuoption.url|safetext}" title="{$menuoption.description|safetext}">{$menuoption.title|safetext}</a>
             <span id="catcontext{$menuoption.cid}" class="z-admindrop">&nbsp;</span>
+
             <script type="text/javascript">
             /* <![CDATA[ */
                 var context_catcontext{{$menuoption.cid}} = new Control.ContextMenu('catcontext{{$menuoption.cid}}',{

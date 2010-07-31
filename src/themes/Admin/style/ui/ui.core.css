@@ -779,7 +779,7 @@ ul#icons span.ui-icon {
 	background-image:none!important;
 }
 
-	/* Theme Switcher Overlay */
+/* Theme Switcher Overlay */
 
 #theme_switcher {
 	position:absolute;
@@ -790,6 +790,17 @@ ul#icons span.ui-icon {
 	height:100%;
 	background:#333 url('../../img/loading.gif') 50% 50% no-repeat;
 	z-index:99999;
+	-ms-filter: "Alpha(Opacity=75)"; /* IE 8 */
+    filter:alpha(opacity=75); /* IE5-7 */
+    -moz-opacity: 0.75; /* Mozilla */
+    opacity: 0.75; /* Webkit */
+
+}
+* html #theme_switcher { /* ie6 hack */
+   position: absolute;
+   height: expression(document.body.scrollHeight > document.body.
+    offsetHeight ? document.body.scrollHeight : document.body.
+    offsetHeight + 'px');
 }
 
 	/* Dashboard buttons */

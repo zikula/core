@@ -192,87 +192,35 @@ jQuery(document).ready(function() {
 	    };
 
     });
+	 jQuery(function() {
 
-	// Dialog			
-
-	jQuery('#dialog').dialog({
-		autoOpen: false,
-		width: 600,
-		bgiframe: false,
-		modal: false,
-		buttons: {
-			"Ok": function() { 
-				jQuery(this).dialog("close"); 
-			}, 
-			"Cancel": function() { 
-				jQuery(this).dialog("close"); 
-			} 
-		}
-	});
-
-	// Modal Confirmation		
-
-		jQuery("#modal_confirmation").dialog({
-			autoOpen: false,
-			bgiframe: true,
-			resizable: false,
-			width:500,
-			modal: true,
-			overlay: {
-				backgroundColor: '#000',
-				opacity: 0.5
-			},
-			buttons: {
-				'Delete all items in recycle bin': function() {
-					jQuery(this).dialog('close');
-				},
-				Cancel: function() {
-					jQuery(this).dialog('close');
-				}
+		jQuery('.sidebar-position a').click(function(){
+			var side_id = jQuery(this).attr("id");
+			jQuery('body').attr("id",side_id);
+			jQuery('.sidebar-position a').removeClass("active");
+			jQuery.cookie('side_pos', side_id );
+			if(jQuery.browser.msie) {
+			    location.reload();
 			}
-		});
+			jQuery(this).addClass("active");
+		})
+			
+	    var side_cookie = jQuery.cookie('side_pos');
 
-	// Dialog Link
+		jQuery(".sidebar-position a[id="+ side_cookie +"]").addClass("active");
 
-	jQuery('#dialog_link').click(function(){
-		jQuery('#dialog').dialog('open');
-		return false;
-	});
+		if (side_cookie == 'sidebar-left') {
+			jQuery('body').attr("id","sidebar-left");
+
+	    };
+
+		if (side_cookie == 'sidebar-right') {
+			jQuery('body').attr("id","sidebar-right");
+
+	    };
+
+    });
 	
-	// Modal Confirmation Link
-
-	jQuery('#modal_confirmation_link').click(function(){
-		jQuery('#modal_confirmation').dialog('open');
-		return false;
-	});
-	
-	// Same height
-
-	var sidebarHeight = jQuery("#sidebar").height();
-	jQuery("#page-content-wrapper").css({"minHeight" : sidebarHeight });
-
-	// Simple drop down menu
-
-	var myIndex, myMenu, position, space=20;
-	
-	jQuery("div.sub").each(function(){
-		jQuery(this).css('left', jQuery(this).parent().offset().left);
-		jQuery(this).slideUp('fast');
-	});
-	
-	jQuery(".drop-down li").hover(function(){
-		jQuery("ul",this).slideDown('fast');
-		
-		//get the index, set the selector, add class
-		myIndex = jQuery(".main1").index(this);
-		myMenu = jQuery(".drop-down a.btn:eq("+myIndex+")");
-	}, function(){
-		jQuery("ul",this).slideUp('fast');
-	});
-jQuery(function() {
-	jQuery("#accordion").accordion({
-	});
-});
 
 
 
