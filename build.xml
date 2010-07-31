@@ -53,7 +53,7 @@
     <target name="build" depends="prepare">
         <echo msg="Exporting for build..." />
         <!-- ATTN export urls require manual edit -->
-        <exec command="cp ${workspace}/source ${packagepath}" />
+        <exec command="cp -a ${workspace}/source/src ${packagepath}" />
         <delete dir="${packagepath}/themes/Admin" includeemptydirs="true" />
 
         <exec command="svn export --force http://svn.github.com/zikula-modules/Tour.git ${builddir}/tmp/Tour" />
