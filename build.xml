@@ -53,10 +53,19 @@
     <target name="build" depends="prepare">
         <echo msg="Exporting for build..." />
         <!-- ATTN export urls require manual edit -->
-        <exec command="svn export -r${svn_revision} https://code.zikula.org/svn/core/branches/zikula-1.3/src ${packagepath}" />
+        <exec command="cp ${workspace}/source ${packagepath}" />
         <delete dir="${packagepath}/themes/Admin" includeemptydirs="true" />
-        <exec command="svn export --force https://code.zikula.org/svn/tour/trunk/src/Tour ${packagepath}/modules/Tour" />
-        <exec command="svn export --force https://code.zikula.org/svn/legal/trunk/src/Legal ${packagepath}/modules/Legal" />
+
+        <exec command="svn export --force http://svn.github.com/zikula-modules/Tour.git ${builddir}/tmp/Tour" />
+        <exec command="svn export --force http://svn.github.com/zikula-modules/Legal.git ${builddir}/tmp/Legal" />
+        <exec command="mv ${builddir}/tmp/Legal/src/modules/Legal ${packagepath}/modules" />
+        <exec command="mv ${builddir}/tmp/Tour/src/modules/Tour ${packagepath}/modules" />
+        <!-- 
+        exec command="svn export --force https://code.zikula.org/svn/tour/trunk/src/Tour ${packagepath}/modules/Tour" /
+        -->
+        <!-- 
+        exec command="svn export --force https://code.zikula.org/svn/legal/trunk/src/Legal ${packagepath}/modules/Legal" /
+        -->
 
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs" />
