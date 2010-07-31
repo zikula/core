@@ -33,9 +33,9 @@ if (typeof(Zikula) == 'undefined') {
  * Zikula.define('Module.Component') will create object chain: Zikula.Module.Component
  * If object in chain already exists it will be extended, not overwritten
  * 
- * @param {string} path Dot separated path to define.
+ * @param {String} path Dot separated path to define.
  * 
- * @return {object} Zikula extended object
+ * @return {Object} Zikula extended object
  */
 Zikula.define = function(path) {
     return path.split('.').inject(Zikula, function(object, prop) {
@@ -65,7 +65,7 @@ document.observe('dom:loaded',Zikula.init);
  * (means that for IE8 in IE7 mode both - IE7 and IE8e7 are true)<br />
  * - IES.IE6 - true for IE6 or older
  *
- * @return {object} Object with browsers info
+ * @return {Object} Object with browsers info
  */
 Zikula.Browser = (function(){
     var IES = {IE6:false,IE7:false,IE8:false,IE8e7:false};
@@ -85,7 +85,7 @@ Zikula.Browser = (function(){
 /**
  * Decodes json data to original format
  *
- * @param {string} jsondata JSONized array in utf-8 (as created by AjaxUtil::output).
+ * @param {String} jsondata JSONized array in utf-8 (as created by AjaxUtil::output).
  *
  * @return {mixed} Decoded data
  */
@@ -105,7 +105,7 @@ Zikula.dejsonize = function(jsondata)
  *
  * @todo beautify this
  *
- * @param {string} errortext The text to show.
+ * @param {String} errortext The text to show.
  *
  * @return void
  */
@@ -118,8 +118,8 @@ Zikula.showajaxerror = function(errortext)
 /**
  * Manage ajax error responses returned by AjaxUtil.
  *
- * @param {object}  transport      Transport object returned by Ajax.Request.
- * @param {bool}    [supresserror] Should error message be supressed.
+ * @param {Object}  transport      Transport object returned by Ajax.Request.
+ * @param {Boolean} [supresserror] Should error message be supressed.
  *
  * @return {mixed} Decoded transport data or void
  */
@@ -140,8 +140,8 @@ Zikula.ajaxResponseError = function(transport, supresserror)
 /**
  * Sets a select to a given value.
  *
- * @param {string} id  Select id.
- * @param {string} sel The value that should be selected.
+ * @param {HTMLElement|String} id  Select id.
+ * @param {String} sel The value that should be selected.
  *
  * @return void
  */
@@ -156,9 +156,9 @@ Zikula.setselectoption = function(id, sel)
  *
  * @deprecated Use Prototype $F
  *
- * @param {string} id Checkbox id.
+ * @param {HTMLElement|String} id Checkbox id.
  *
- * @return {string} Checkbox value
+ * @return {String} Checkbox value
  */
 Zikula.getcheckboxvalue = function(id)
 {
@@ -168,7 +168,7 @@ Zikula.getcheckboxvalue = function(id)
 /**
  * Updates all hidden authid fields with a new authid obtained with an ajax call.
  *
- * @param {string} authid The new authid.
+ * @param {String} authid The new authid.
  * 
  * @return void
  */
@@ -183,8 +183,8 @@ Zikula.updateauthids = function(authid)
 /**
  * Set z-odd / z-even on each li after append, move and delete.
  *
- * @param   {string} listclass   Class applied to the list of items.
- * @param   {string} headerclass Class applied to the header of the list.
+ * @param   {String} listclass   Class applied to the list of items.
+ * @param   {String} headerclass Class applied to the header of the list.
  * 
  * @return  void
  */
@@ -214,7 +214,7 @@ Zikula.recolor = function(listclass, headerclass)
 /**
  * Change the display attribute of an specific object.
  *
- * @param   {string} id Id of the object to hide/show.
+ * @param   {HTMLElement|String} id Id of the object to hide/show.
  * 
  * @return  void
  */
@@ -240,9 +240,9 @@ Zikula.switchdisplaystate = function(id)
 /**
  * Change the display attribute of an specific container depending of a radio input.
  *
- * @param  {string} idgroup       Id of the container where the radio input to observe are.
- * @param  {string} idcontainer   Id of the container to hide/show.
- * @param  {bool}   state         State of the radio to show the idcontainer.
+ * @param  {HTMLElement|String}  idgroup       Id of the container where the radio input to observe are.
+ * @param  {HTMLElement|String}  idcontainer   Id of the container to hide/show.
+ * @param  {Boolean} state         State of the radio to show the idcontainer.
  *
  * @return void
  */
@@ -275,9 +275,9 @@ Zikula.radioswitchdisplaystate = function(idgroup, idcontainer, state)
 /**
  * Change the display attribute of an specific container depending of a checkbox input.
  *
- * @param  {string} idcheckbox    Id of the checkbox input to observe.
- * @param  {string} idcontainer   Id of the container to hide/show.
- * @param  {bool}   state         State of the checkbox to show the idcontainer.
+ * @param  {HTMLElement|String} idcheckbox    Id of the checkbox input to observe.
+ * @param  {HTMLElement|String} idcontainer   Id of the container to hide/show.
+ * @param  {Boolean}   state      State of the checkbox to show the idcontainer.
  *
  * @return void
  */
@@ -336,7 +336,7 @@ Zikula.fixbuttons = function()
  * Ajax timeout detection. We set the time out to 5 seconds
  * taken from http://codejanitor.com/wp/2006/03/23/ajax-timeouts-with-prototype/
  *
- * @param {object} xmlhttp Transport object returned by Ajax.Request.
+ * @param {Object} xmlhttp Transport object returned by Ajax.Request.
  *
  * @return void
  */
@@ -471,10 +471,10 @@ function checkboxswitchdisplaystate(idcheckbox, idcontainer, state)
 /**
  * Javascript implementation of PHP str_repeat function.
  *
- * @param {string} i The string to be repeated.
- * @param {int}    m Number of time the input string should be repeated.
+ * @param {String} i The string to be repeated.
+ * @param {Number} m Number of time the input string should be repeated.
  *
- * @return {string} The repeated string.
+ * @return {String} The repeated string.
  * @author Alexandru Marasteanu <alexaholic [at) gmail (dot] com>
  * @link http://www.diveintojavascript.com/projects/sprintf-for-javascript
  */
@@ -486,10 +486,10 @@ Zikula.str_repeat = function(i, m) {
 /**
  * Javascript implementation of PHP sprintf function.
  *
- * @param {string} format Format string. PHP sprintf syntax is used.
+ * @param {String} format Format string. PHP sprintf syntax is used.
  * @param {mixed}  args   Zero or more replacements to be made according to format string.
  *
- * @return {string} A string produced according to the formatting string format.
+ * @return {String} A string produced according to the formatting string format.
  * @author Alexandru Marasteanu <alexaholic [at) gmail (dot] com>
  * @link http://www.diveintojavascript.com/projects/sprintf-for-javascript
  */
@@ -538,10 +538,10 @@ Zikula.sprintf = function () {
 /**
  * Javascript implementation of PHP vsprintf function.
  *
- * @param {string} format Format string. PHP sprintf syntax is used.
- * @param {array}  args   Array with zero or more replacements to be made according to format string.
+ * @param {String} format Format string. PHP sprintf syntax is used.
+ * @param {Array}  args   Array with zero or more replacements to be made according to format string.
  *
- * @return {string} A string produced according to the formatting string format.
+ * @return {String} A string produced according to the formatting string format.
  */
 Zikula.vsprintf = function(format, args) {
     return Zikula.sprintf.apply(this,[format].concat(args));
@@ -553,10 +553,10 @@ Zikula.vsprintf = function(format, args) {
  * Copies all properties from source to destination object and returns new object.
  * If proprety exists in destination it is extended not overwritten
  *
- * @param {object} destination Destination object
- * @param {object} source      Source object
+ * @param {Object} destination Destination object
+ * @param {Object} source      Source object
  *
- * @return {object} Extended object
+ * @return {Object} Extended object
  */
 Zikula.mergeObjects = function(destination,source)
 {
@@ -580,7 +580,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * Defaults options
      * 
      * @private
-     * @type object
+     * @type Object
      */
     defaults: {
         lang: 'en',
@@ -598,7 +598,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * Null char used as delimiter for plural forms
      * 
      * @private
-     * @type string
+     * @type String
      */
     nullChar: '\u0000',
     /**
@@ -617,10 +617,10 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * @class Zikula.Gettext
      * @constructs
      * 
-     * @param {string} lang Language for translations
-     * @param {object} data Data with translations
+     * @param {String} [lang] Language for translations
+     * @param {Object} [data] Data with translations
      *
-     * @return New gettext object
+     * @return {Zikula.Gettext} New Zikula.Gettext instance
      */
     initialize: function(lang,data) {
         this.data = {};
@@ -634,9 +634,9 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
     /**
      * Allows to re-init already initialized gettet instance
      *
-     * @param {string} lang   Language for translations
-     * @param {object} data   Data with translations
-     * @param {string} domain Default domain to use, optional
+     * @param {String} lang   Language for translations
+     * @param {Object} data   Data with translations
+     * @param {String} domain Default domain to use, optional
      *
      * @return void
      */
@@ -648,7 +648,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
     /**
      * Adds translations to gettext instance
      *
-     * @param {object} obj Data with translations
+     * @param {Object} obj Data with translations
      *
      * @return void
      */
@@ -658,7 +658,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
     /**
      * Setup current gettext language
      *
-     * @param {string} lang   Language for translations
+     * @param {String} lang   Language for translations
      *
      * @return void
      */
@@ -668,7 +668,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
     /**
      * Setup current gettext defaul domain
      *
-     * @param {string} domain Default domain to use, optional
+     * @param {String} domain Default domain to use, optional
      *
      * @return void
      */
@@ -679,10 +679,10 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * Reads from translations data
      *
      * @private
-     * @param {string} domain The domain in which given key will be searched
-     * @param {string} key    Data key to search
+     * @param {String} domain The domain in which given key will be searched
+     * @param {String} key    Data key to search
      *
-     * @return void
+     * @return {mixed} Given data key value or empty object
      */
     getData: function(domain,key) {
         domain = domain || this.domain;
@@ -698,10 +698,10 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * @example
      * Zikula.__('hello','module_foo');
      * 
-     * @param {string} msgid    The message to translate
-     * @param {string} [domain] Gettext domain, if no domain is given deafult one is used
+     * @param {String} msgid    The message to translate
+     * @param {String} [domain] Gettext domain, if no domain is given deafult one is used
      *
-     * @return {string} Translated message
+     * @return {String} Translated message
      */
     getMessage: function(msgid, domain) {
         return this.getData(domain,'translations')[msgid] || msgid;
@@ -712,11 +712,11 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * @example
      * Zikula.__f('hello %s',['A'],'module_foo');
      *
-     * @param {string} msgid    The message to translate
-     * @param {array}  params   Array with zero or more replacements to be made in msgid
-     * @param {string} [domain] Gettext domain, if no domain is given deafult one is used
+     * @param {String} msgid    The message to translate
+     * @param {Number} params   Array with zero or more replacements to be made in msgid
+     * @param {String} [domain] Gettext domain, if no domain is given deafult one is used
      *
-     * @return {string} Translated message
+     * @return {String} Translated message
      */
     getMessageFormatted: function(msgid, params, domain) {
         return Zikula.vsprintf(this.getMessage(msgid, domain), params);
@@ -727,12 +727,12 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * @example
      * Zikula._n('hello my friend','hello my friends',2,'module_foo');
      *
-     * @param {string} singular   Singular message
-     * @param {string} plural     Plural message
-     * @param {int}    count      Count
-     * @param {string} [domain]   Gettext domain, if no domain is given deafult one is used
+     * @param {String} singular   Singular message
+     * @param {String} plural     Plural message
+     * @param {Number} count      Count
+     * @param {String} [domain]   Gettext domain, if no domain is given deafult one is used
      *
-     * @return {string} Translated message
+     * @return {String} Translated message
      */
     getPluralMessage: function(singular, plural, count, domain) {
         var offset = this.getPluralOffset(count, domain),
@@ -745,18 +745,18 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
         }
     },
     /**
-     * Gettext: tlural formatted translation.
+     * Gettext: plural formatted translation.
      *
      * @example
      * Zikula._fn('hello my friend %s','hello my friends %s',2,['A','B'],'module_foo')
      *
-     * @param {string} singular Singular message
-     * @param {string} plural   Plural message
-     * @param {int}    count    Count
-     * @param {array}  params   Array with zero or more replacements to be made in singular/plural message
-     * @param {string} [domain] Gettext domain, if no domain is given deafult one is used
+     * @param {String} singular Singular message
+     * @param {String} plural   Plural message
+     * @param {Number} count    Count
+     * @param {Array}  params   Array with zero or more replacements to be made in singular/plural message
+     * @param {String} [domain] Gettext domain, if no domain is given deafult one is used
      *
-     * @return {string} Translated message
+     * @return {String} Translated message
      */
     getPluralMessageFormatted: function(singular, plural, count, params, domain) {
         return Zikula.vsprintf(this.getPluralMessage(singular, plural, count, domain), params);
@@ -765,10 +765,10 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * Calculates plural offset depending on plural forms
      *
      * @private
-     * @param {int}    count  Count
-     * @param {string} domain The domain to be used, if no domain is given deafult one is used
+     * @param {Number}    count  Count
+     * @param {String} domain The domain to be used, if no domain is given deafult one is used
      *
-     * @return {int} Plural offset
+     * @return {Number} Plural offset
      */
     getPluralOffset: function(count, domain) {
         var eq = null,
@@ -817,18 +817,18 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
      * Template for cookie
      * 
      * @private
-     * @type string
+     * @type String
      */
     cookie: '#{name}=#{value};expires=#{expires};path=#{path}',
     /**
      * Create or update cookie.
      *
-     * @param {string}       name     Cookie name.
+     * @param {String}       name     Cookie name.
      * @param {mixed}        value    Cookie value.
-     * @param {number|Date} [expires] Expiration date (Date object) or time in seconds, default is session.
-     * @param {string}      [path]    Path for cookie, by default Zikula baseURI is set.
+     * @param {Number|Date} [expires] Expiration date (Date object) or time in seconds, default is session.
+     * @param {String}      [path]    Path for cookie, by default Zikula baseURI is set.
      *
-     * @return {bool} Returns true on success, false otherwise
+     * @return {Boolean} Returns true on success, false otherwise
      */
     set: function(name, value, expires, path){
         try {
@@ -847,7 +847,7 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
      * Get cookie value.
      * Cookie value is returned in original format as it was stored.
      *
-     * @param {string} name Cookie name.
+     * @param {String} name Cookie name.
      *
      * @return {mixed} Returns cookie value or null.
      */
@@ -858,9 +858,9 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
     /**
      * Delete cookie
      *
-     * @param {string} name Cookie name.
+     * @param {String} name Cookie name.
      *
-     * @return {bool} Returns true on success, false otherwise
+     * @return {Boolean} Returns true on success, false otherwise
      */
     remove: function(name){
         return Zikula.Cookie.set(name,'',-1);
@@ -869,9 +869,9 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
      * Calculates date equal now plus given number of seconds
      *
      * @private
-     * @param {int} seconds Number of seconds
+     * @param {Number} seconds Number of seconds
      *
-     * @return {string} Date as GMT string
+     * @return {String} Date as GMT string
      */
     secondsFromNow: function(seconds) {
         var d = new Date();
@@ -885,7 +885,7 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
      * @private
      * @param {mixed} value Value to encode
      *
-     * @return {string} Encoded value
+     * @return {String} Encoded value
      */
     encode: function(value) {
         return encodeURI(encodeURI(Object.toJSON(value)));
@@ -894,7 +894,7 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
      * Decode given string to original format
      *
      * @private
-     * @param {string} value String to decode
+     * @param {String} value String to decode
      *
      * @return {mixed} Decoded value
      */
@@ -916,9 +916,9 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
  *
  * @example $(someElement).getContentWidth(); // 125
  * @extends Element.Methods
- * @param {string} element Element id
+ * @param {HTMLElement|String} element Element id
  *
- * @return {int} Element content width
+ * @return {Number} Element content width
  */
 Element.Methods.getContentWidth = function(element) {
     return ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth']
@@ -933,9 +933,9 @@ Element.Methods.getContentWidth = function(element) {
  *
  * @example $(someElement).getContentHeight(); // 141
  * @extends Element.Methods
- * @param {string} element Element id
+ * @param {HTMLElement|String} element Element id
  *
- * @return {int} Element content height
+ * @return {Number} Element content height
  */
 Element.Methods.getContentHeight = function(element) {
     return ['paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth']
@@ -951,10 +951,10 @@ Element.Methods.getContentHeight = function(element) {
  *
  * @example $(someElement).setWidth(); <br />$(someOtherElement).setWidth(100);
  * @extends Element.Methods
- * @param {string} element Element id
- * @param {number} [width] Element width, default is current element content width
+ * @param {HTMLElement|String} element Element id
+ * @param {Number} [width] Element width, default is current element content width
  *
- * @return {object} Element
+ * @return {HTMLElement} Element
  */
 Element.Methods.setWidth = function(element, width) {
     return Element.setStyle(element, {
@@ -969,10 +969,10 @@ Element.Methods.setWidth = function(element, width) {
  *
  * @example $(someElement).setHeight(); <br />$(someOtherElement).setHeight(68);
  * @extends Element.Methods
- * @param {string} element Element id
- * @param {number} [height] Element height, default is current element content height
+ * @param {HTMLElement|String} element Element id
+ * @param {Number} [height] Element height, default is current element content height
  *
- * @return {object} Element
+ * @return {HTMLElement} Element
  */
 Element.Methods.setHeight = function(element, height) {
     return Element.setStyle(element, {
@@ -991,10 +991,10 @@ Element.Methods.setHeight = function(element, height) {
  *
  * @example $(someElement).getOutlineSize('vertical'); // 10
  * @extends Element.Methods
- * @param {string} element Element id
- * @param {string} type    Type of outline
+ * @param {HTMLElement|String} element Element id
+ * @param {String} type    Type of outline
  *
- * @return {object} The sum of the given properties
+ * @return {Number} The sum of the given properties
  */
 Element.Methods.getOutlineSize = function(element, type) {
     type = type ? type.toLowerCase() : 'vertical';
