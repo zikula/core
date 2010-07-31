@@ -60,13 +60,7 @@
         <exec command="svn export --force http://svn.github.com/zikula-modules/Legal.git ${builddir}/tmp/Legal" />
         <exec command="mv ${builddir}/tmp/Legal/src/modules/Legal ${packagepath}/modules" />
         <exec command="mv ${builddir}/tmp/Tour/src/modules/Tour ${packagepath}/modules" />
-        <!-- 
-        exec command="svn export --force https://code.zikula.org/svn/tour/trunk/src/Tour ${packagepath}/modules/Tour" /
-        -->
-        <!-- 
-        exec command="svn export --force https://code.zikula.org/svn/legal/trunk/src/Legal ${packagepath}/modules/Legal" /
-        -->
-
+        
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs" />
 
