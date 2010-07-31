@@ -4,6 +4,7 @@
         phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcb phpcpd phpunit pdepend phpmd phpdoc jsdoc build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
         # note phpcb must be the last artifact run in the chain
     -->
+
     <!--
         BUILD_NUMBER - The current build number, such as "153"
         BUILD_ID - The current build id, (YYYY-MM-DD_hh-mm-ss)
@@ -12,6 +13,7 @@
         WORKSPACE - The absolute path of the workspace.
         SVN_REVISION - The revision this build is based on.
     -->
+
     <property name="builddir" value="${workspace}/build" />
     <property name="sourcedir" value="${workspace}/source" />
     <property name="package" value="${job_name}.build${build_number}" />
@@ -64,7 +66,7 @@
 
         <exec command="svn export --force http://svn.github.com/zikula-modules/Profile.git ${builddir}/tmp/Profile" />
         <exec command="mv ${builddir}/tmp/Profile/src/modules/Profile ${packagepath}/modules" />
-        
+
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs" />
 
