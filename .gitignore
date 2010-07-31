@@ -8,7 +8,7 @@
 # /src/config/
 /src/config/personal_config.php
 /src/config/multisites_config.php
-/src/config/FirePHPCore
+/src/config/FirePHPCore/*
 
 # /src/lib/vendor/
 
