@@ -1,6 +1,6 @@
 {include file='settings_admin_menu.tpl'}
 {ajaxheader modname=Settings filename=settings_admin_modifyconfig.js noscriptaculous=true effects=true}
-{pageaddvar name="javascript" value="javascript/helpers/texpand.js"}
+{pageaddvar name="javascript" value="javascript/texpand.js"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname="core" src="configure.gif" set="icons/large" __alt="Settings"}</div>
     <h2>{gt text="Main settings"}</h2>

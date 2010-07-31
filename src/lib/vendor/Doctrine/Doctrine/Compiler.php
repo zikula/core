@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Compiler.php 7490 2010-03-29 19:53:27Z jwage $
+ *  $Id: Compiler.php 7677 2010-07-28 03:37:42Z kriswallsmith $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +29,7 @@
  * @license     http://www.opensource.org/licenses/lgpllicense.php LGPL
  * @link        www.phpdoctrine.
  * @since       1.0
- * @version     $Revision: 7490 $
+ * @version     $Revision: 7677 $
  */
 class Doctrine_Compiler
 {
@@ -70,7 +70,8 @@ class Doctrine_Compiler
             //@todo what is a versioning file? do we have these anymore? None 
             //exists in my version of doctrine from svn.
             // we don't want to require versioning files
-            if (end($e) === 'php' && strpos($file->getFileName(), '.inc') === false) {
+            if (end($e) === 'php' && strpos($file->getFileName(), '.inc') === false
+                && strpos($file->getFileName(), 'sfYaml') === false) {
                 require_once $file->getPathName();
             }
         }
