@@ -799,23 +799,23 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     function _get_auto_filename($auto_base, $auto_source = null, $auto_id = null)
     {
-        $path = $auto_base.'/';
+        $path = $auto_base . '/';
 
         $multilingual = System::getVar('multilingual');
 
         if ($multilingual == 1) {
-            $path .= $this->language.'/';
+            $path .= $this->language . '/';
         }
 
         if ($this instanceof Zikula_View_Theme) {
             //$path .= 'themes/';
             $path .= $this->themeinfo['directory'] . '/';
-            //} elseif ($this instanceof Zikula_View_Plugin) {
-            //    //$path .= 'themes/';
-            //    $path .= $this->modinfo['directory'] . '/' . $this->pluginName['directory'] . '/';
+        //} elseif ($this instanceof Zikula_View_Plugin) {
+        //    //$path .= 'themes/';
+        //    $path .= $this->modinfo['directory'] . '/' . $this->pluginName['directory'] . '/';
         } else {
             //$path .= 'modules/';
-            $path .= $this->modinfo['directory'].'/';
+            $path .= $this->modinfo['directory'] . '/';
         }
 
         //echo '<p>'.$path.'</p>';
@@ -824,8 +824,14 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             mkdir($path, $this->serviceManager['system.chmod_dir'], true);
         }
 
+        // create a hash from default dsn + $auto_source and use it in the filename
+        $hash = md5($GLOBALS['ZConfig']['DBInfo']['default']['dsn'] . '+' . $auto_source);
+        $filebase = FileUtil::getFilebase($auto_source);
+        $filebase_hashed = $filebase . '-' . $hash;
+        $auto_source = str_replace($filebase, $filebase_hashed, $auto_source);
+        
         if (isset($auto_id) && !empty($auto_id)) {
-            $file = $auto_id.'_'.$auto_source;
+            $file = $auto_id . '-' . $auto_source;
         } else {
             $file = $auto_source;
         }
