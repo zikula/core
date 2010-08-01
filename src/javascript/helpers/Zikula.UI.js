@@ -1,8 +1,39 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
+/**
+ * @fileOverview Zikula.UI Framework
+ */
 
+/**
+ * Zikula UI namespace
+ *
+ * @name Zikula.UI
+ * @namespace Zikula UI namespace
+ *
+ */
 Zikula.define('UI');
 
-Zikula.UI.Key = Class.create(HotKey, {
+Zikula.UI.Key = Class.create(HotKey,/** @lends Zikula.UI.Key.prototype */{
+    /**
+     * Custom extension for Livepipe HotKey
+     * Inherit all of the methods, options and events from
+     * <a href="http://livepipe.net/extra/hotkey">Livepipe HotKey</a>.
+     * Overwrites default ctrlKey option value and set is to false.
+     *
+     * @example
+     * // note - $super param is omited
+     * var key = new Zikula.UI.Key('esc',callback,{ctrlKey: true});
+     *
+     * @class Zikula.UI.Key
+     * @constructs
+     *
+     * @param {HotKey} $super Reference to super class, this is private param, do not use it.
+     * @param {String} letter Letter or prototype key code
+     * @param {Function} callback Callback function
+     * @param {Object} [options] Config object
+     * @param {Boolean} [options.ctrlKey=false] Should crtl key be pressed to fire event
+     *
+     * @return {Zikula.UI.Key} New Zikula.UI.Key instance
+     */
     initialize: function($super,letter,callback,options) {
         options = Object.extend({
             ctrlKey: false
@@ -11,13 +42,16 @@ Zikula.UI.Key = Class.create(HotKey, {
     }
 });
 
-
 /**
  * Zikula.UI.Tooltips
- * Shorthand for group of tooltips, calls Zikula.UI.Tooltip for each element
+ * Shorthand for group of tooltips, calls {Zikula.UI.Tooltip} for each element
  *
- * @param  elements   array of elelents to bind tooltips
- * @param  options    object with options for tooltip (see Control.ToolTip options)
+ * @example
+ * Zikula.UI.Tooltips($$('.hasTooltip'));
+ *
+ * @param {HTMLElement[]} elements Array of elements to bind tooltips
+ * @param {Object} options Object with options for tooltips
+ *
  * @return void
  */
 Zikula.UI.Tooltips = function(elements,options)
@@ -27,16 +61,31 @@ Zikula.UI.Tooltips = function(elements,options)
     })
 }
 
-/**
- * Zikula.UI.Tooltip
- * Custom extension for Control.ToolTip
- *
- * @param  container  element to bind tooltip
- * @param  tooltip    element or string for tooltip content, if none title attribute is used
- * @param  options    object with options for tooltip (see Control.ToolTip options)
- * @return void
- */
-Zikula.UI.Tooltip = Class.create(Control.ToolTip, {
+Zikula.UI.Tooltip = Class.create(Control.ToolTip,/** @lends Zikula.UI.Tooltip.prototype */{
+    /**
+     * Custom extension for Livepipe Control.ToolTip
+     * Inherit all of the methods, options and events from
+     * <a href="http://livepipe.net/control/window">Livepipe Control.ToolTip</a>.
+     * Overwrites listed below options.
+     *
+     * @example
+     * // note - $super param is omited
+     * var tooltip = new Zikula.UI.Tooltip($('someElement'),null,{offsetTop:10});
+     *
+     * @class Zikula.UI.Tooltip
+     * @constructs
+     *
+     * @param {Control.ToolTip} $super Reference to super class, this is private param, do not use it.
+     * @param {HTMLElement} container Element to bind tooltip
+     * @param {HTMLElement|String} [tooltip] Element or string for tooltip content, if none title attribute is used
+     * @param {Object} [options] Config object
+     * @param {String} [options.className='z-tooltip'] Base class for tooltips
+     * @param {Number} [options.offsetTop=0] Top offset between tooltip and cursor
+     * @param {Number} [options.offsetLeft=15] Left offset between tooltip and cursor
+     * @param {Boolean} [options.iframeshim=Zikula.Browser.IE] Should iframeshim be used; by defaut it's hown only for IE
+     *
+     * @return {Zikula.UI.Tooltip} New Zikula.UI.Tooltip instance
+     */
     initialize: function($super, container, tooltip, options) {
         options = Object.extend({
             className: 'z-tooltip',
@@ -58,6 +107,16 @@ Zikula.UI.Tooltip = Class.create(Control.ToolTip, {
         }
         $super(container, tooltip, options);
     },
+    /**
+     * Takes care about tooltips position.
+     * This overwrites default Control.Toolip position behaviour which is quite buggy.
+     *
+     * @private
+     * @param {Function} $super Reference to overridden method, private.
+     * @param {Event} event Mause hoover event
+     *
+     * @return void
+     */
     position: function($super,event) {
         var dim = this.container.getDimensions(),
             vSize = document.viewport.getDimensions(),
@@ -78,6 +137,13 @@ Zikula.UI.Tooltip = Class.create(Control.ToolTip, {
         }
         this.container.setStyle(pos);
     },
+    /**
+     * Removes tooltip and cleans up
+     *
+     * @param {Function} $super Reference to overridden method, private.
+     *
+     * @return void
+     */
     destroy: function($super) {
         if(this.sourceContainer) {
             this.sourceContainer.writeAttribute('title',this.sourceContainer.retrieve('title'));
@@ -88,6 +154,13 @@ Zikula.UI.Tooltip = Class.create(Control.ToolTip, {
         $super();
     }
 });
+/**
+ * Global Zikula.UI template
+ *
+ * @param {Object} options Zikula.UI.Options
+ *
+ * @return {HTMLElement[]}
+ */
 Zikula.UI.WindowTemplate = function(options) {
     return {
         container:  new Element('div',{className: 'z-window-container'}),
@@ -101,16 +174,41 @@ Zikula.UI.WindowTemplate = function(options) {
         footer:     new Element('div',{className: 'z-window-footer'}).update('&nbsp;')
     };
 }
-/**
- * Zikula.UI.Window
- * Custom extension for Control.Window
- *
- * @param  todo document this :)
- * @param  todo cleanup on window.destroy()
- * @param  todo methods to change window content after window initialization
- * @return void
- */
-Zikula.UI.Window = Class.create(Control.Window, {
+
+Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.prototype */{
+    /**
+     * Custom extension for Livepipe Control.Window
+     * Inherit all of the methods, options and events from
+     * <a href="http://livepipe.net/control/window">Livepipe Control.Window</a>.
+     * Overwrites listed below options and methods.
+     *
+     * @example
+     * // note - $super param is omited
+     * var myWindow = new Zikula.UI.Window($('someElement'),{minmax: false});
+     *
+     * @class Zikula.UI.Window
+     * @constructs
+     *
+     * @param {Control.Window} $super Reference to super class, this is private param, do not use it.
+     * @param {HTMLElement|String} container HTMLElement, element id or direct text for window
+     * @param {Object} [options] Config object
+     * @param {String} [options.className='z-window'] Base css class for windows
+     * @param {Boolean} [options.minmax=true] Turn on/off window minimization
+     * @param {Number} [options.width=400] Default window width
+     * @param {Number} [options.initMaxHeight=400] Default window height for ajax windows
+     * @param {Number[]} [options.offset=[50,50]] Minimal left and top offsets from browsers edge
+     * @param {HTMLElement} [options.indicator] Element used as loading indicator for ajax windows
+     * @param {Number} [options.overlayOpacity=0.5] Overlay opacity for modal windows
+     * @param {String} [options.method='get'] Method for ajax calls
+     * @param {Boolean} [options.modal=false] Should widnow be modal
+     * @param {Boolean} [options.destroyOnClose=false] Should window be destroyed on close
+     * @param {Boolean} [options.iframeshim=Zikula.Browser.IE] Should iframeshim be used; by defaut it's hown only for IE
+     * @param {HTMLElement} [options.closeOnClick] Element which handles close action
+     * @param {Boolean|HTMLElement} [options.draggable] Element which handles dragging or false to disable
+     * @param {HTMLElement} [options.insertRemoteContentAt]
+     *
+     * @return {Zikula.UI.Window} New Zikula.UI.Window instance
+     */
     initialize: function($super, container, options) {
         this.setWindowType(container);
         this.window = Zikula.UI.WindowTemplate(options);
@@ -149,15 +247,25 @@ Zikula.UI.Window = Class.create(Control.Window, {
             element: this.container
         });
     },
-    open: function($super, event) {
-        return $super(event);
-    },
+    /**
+     * Brings window to front and marks it as 'active'
+     *
+     * @private
+     * @param {Function} $super Reference to overridden method, private.
+     *
+     * @return void
+     */
     bringToFront: function($super) {
         $super();
         $$('.z-window.active').invoke('removeClassName','active');
         this.container.addClassName('active');
         this.focusWindow();
     },
+    /**
+     * Sets window max size depending on browser viewport dimensions
+     * @private
+     * @return void
+     */
     setWindowMaxSize: function() {
         var dim = document.viewport.getDimensions()
         this.container.setStyle({
@@ -165,12 +273,29 @@ Zikula.UI.Window = Class.create(Control.Window, {
             maxHeight: (dim.height - this.container.getOutlineSize() - this.options.offset[1]).toUnits()
         })
     },
+    /**
+     * Calculates window content "topOffset" which referes to window header height and window border plus margins
+     * @private
+     * @return {Number}
+     */
     getTopOffset: function() {
         return this.window.header.getHeight() + this.window.header.getOutlineSize();
     },
+    /**
+     * Calculates window content "bottomOffset" which referes to window footer height and window border plus margins
+     * @private
+     * @return {Number}
+     */
     getBottomOffset: function() {
         return this.window.footer.getHeight() + this.window.footer.getOutlineSize();
     },
+    /**
+     * Calculates proper window height
+     * For ajax windows takes this.options.initMaxHeight.
+     * For other window types tries to adjust it to window content
+     * @private
+     * @return {Number}
+     */
     getWindowHeight: function() {
         var height = this.container.getHeight(),
             header = this.getTopOffset(),
@@ -183,6 +308,13 @@ Zikula.UI.Window = Class.create(Control.Window, {
         }
         return height;
     },
+    /**
+     * Finishing window opening process and take care about window size
+     * @private
+     * @param {Function} $super Reference to overridden method, private.
+     * @param {Event} event Event which fired window opening
+     * @return {Boolean}
+     */
     finishOpen: function($super, event){
         if(this.options.initMaxHeight) {
             this.container.setStyle({maxHeight: (this.options.initMaxHeight-this.getTopOffset()-this.getBottomOffset()).toUnits()});
@@ -207,6 +339,12 @@ Zikula.UI.Window = Class.create(Control.Window, {
         this.focusWindow();
         return true;
     },
+    /**
+     * Checks if window does not exceed browser viewport.
+     * Overwrites Control.Window.ensureInBounds method
+     * @private
+     * @return void
+     */
     ensureInBounds: function(){
         if(!this.isOpen)
             return;
@@ -229,6 +367,14 @@ Zikula.UI.Window = Class.create(Control.Window, {
             this.container.setStyle(pos);
         }
     },
+    /**
+     * Close window.
+     * If there are other opened windows - tries to bring to front and set focus on most top window
+     *
+     * @param {Function} $super Reference to overridden method, private.
+     * @param {Event} [event] Event which fired window closing
+     * @return {Boolean}
+     */
     close: function($super, event) {
         this.restore(event);
         this.pos = {};
@@ -250,6 +396,12 @@ Zikula.UI.Window = Class.create(Control.Window, {
         }
         return true;
     },
+    /**
+     * Maximize window or restores it to normal position
+     *
+     * @param {Event} [event]
+     * @return void
+     */
     toggleMax: function(event) {
         if(this.container.hasClassName('z-maximized')) {
             this.restore(event);
@@ -258,6 +410,12 @@ Zikula.UI.Window = Class.create(Control.Window, {
             this.maximize(event);
         }
     },
+    /**
+     * Minimize window or restores it to normal position
+     *
+     * @param {Event} [event]
+     * @return void
+     */
     toggleMin: function(event) {
         if(this.container.hasClassName('z-minimized')) {
             this.restore(event);
@@ -266,6 +424,11 @@ Zikula.UI.Window = Class.create(Control.Window, {
             this.minimize(event);
         }
     },
+    /**
+     * Maximize window
+     * @param {Event} [event]
+     * @return void
+     */
     maximize: function(event) {
         this.savePosition();
         this.restore(event);
@@ -275,6 +438,11 @@ Zikula.UI.Window = Class.create(Control.Window, {
             Draggable._dragging[this.container] = true;
         }
     },
+    /**
+     * Minimize window
+     * @param {Event} [event]
+     * @return void
+     */
     minimize: function(event) {
         this.savePosition();
         this.restore(event);
@@ -283,6 +451,11 @@ Zikula.UI.Window = Class.create(Control.Window, {
             this.draggable.options.constraint = 'horizontal';
         }
     },
+    /**
+     * Restore window to normal position
+     * @param {Event} [event]
+     * @return void
+     */
     restore: function(event) {
         this.container.removeClassName('z-minimized');
         this.container.removeClassName('z-maximized');
@@ -292,6 +465,11 @@ Zikula.UI.Window = Class.create(Control.Window, {
             Draggable._dragging[this.container] = false;
         }
     },
+    /**
+     * Saves window position before minimizing or maximizing
+     * @private
+     * @return void
+     */
     savePosition: function() {
         if(!this.container.hasClassName('z-minimized') && !this.container.hasClassName('z-maximized')) {
             var dim = this.container.getDimensions(),
@@ -304,6 +482,11 @@ Zikula.UI.Window = Class.create(Control.Window, {
             }
         }
     },
+    /**
+     * Restores window position after minimizing or maximizing
+     * @private
+     * @return void
+     */
     restorePosition: function() {
         if(this.pos) {
             var viewport_offset = document.viewport.getScrollOffsets();
@@ -312,6 +495,12 @@ Zikula.UI.Window = Class.create(Control.Window, {
             this.container.setStyle(this.pos);
         }
     },
+    /**
+     * Set window type according to container type
+     * @private
+     * @param {HTMLElement|String} container Window container
+     * @return void
+     */
     setWindowType: function(container) {
         this.windowType = 'string';
         if(Object.isElement(container)) {
@@ -324,13 +513,19 @@ Zikula.UI.Window = Class.create(Control.Window, {
                 }
             }
         }
-//        else if(Object.isString(container) && container.isJSON()) {
-//            this.windowType = 'json';
-//        }
     },
+    /**
+     * Sets focus on window element
+     * @return void
+     */
     focusWindow: function() {
         this.container.focus()
     },
+    /**
+     * Initializing window container
+     * @private
+     * @return void
+     */
     initContainer: function(container) {
         if(this.windowType == 'element') {
             this.insertContainer();
@@ -343,6 +538,11 @@ Zikula.UI.Window = Class.create(Control.Window, {
             }
         }
     },
+    /**
+     * Inserts window container elements to document
+     * @private
+     * @return void
+     */
     insertContainer: function() {
         if(!this.container){
             $(document.body).insert(this.window.container);
@@ -357,6 +557,11 @@ Zikula.UI.Window = Class.create(Control.Window, {
         this.window.container.insert(this.window.indicator.hide());
         this.inserted = true;
     },
+    /**
+     * Finishing window container build process
+     * @private
+     * @return void
+     */
     finishContainer: function() {
         this.window.container.writeAttribute('tabindex','-1');
         if(this.options.title) {
@@ -378,6 +583,11 @@ Zikula.UI.Window = Class.create(Control.Window, {
             this.window.maximize.show().observe('click',this.toggleMax.bindAsEventListener(this));
         }
     },
+    /**
+     * Overwrites Control.Window.createDefaultContainer method to allow custom window template
+     * @private
+     * @return void
+     */
     createDefaultContainer: function(container){
         if(!this.container){
             this.window.container.id = 'Zikula_UI_Window_' + this.numberInSequence;
@@ -389,10 +599,35 @@ Zikula.UI.Window = Class.create(Control.Window, {
         }
     }
 });
-/**
- * button = {label, action, close [more...]}
- **/
-Zikula.UI.Dialog = Class.create(Zikula.UI.Window, {
+
+Zikula.UI.Dialog = Class.create(Zikula.UI.Window,/** @lends Zikula.UI.Dialog.prototype */{
+    /**
+     * Extension for {Zikula.UI.Window}, customized for dialog windows
+     *
+     * @example
+     * // note - $super param is omited
+     * var myDialog = new Zikula.UI.Dialog($('someElement'),[
+     *     {label: 'Button label, action: doSomething, close: true}],
+     *     {minmax: true}
+     * );
+     *
+     * @class Zikula.UI.Dialog
+     * @extends Zikula.UI.Window
+     * @constructs
+     *
+     * @param {Zikula.UI.Window} $super Reference to super class, this is private param, do not use it.
+     * @param {HTMLElement|string} container @param {HTMLElement|String} container HTMLElement, element id or direct text for dialog
+     * @param {Object[]} [buttons] Array of button objects, each should define at least:<br />
+     * - label - {String} label for button<br />
+     * - action - {Function} action to perform after click<br />
+     * - close - {Boolean} should dialog be close after button click
+     * and any other atribute valid for button element
+     * @param {Object} [options] Config object
+     * @param {String} [options.className='z-window z-dialog'] Base class names for dialog window
+     * @param {Function} [options.callback='Prototype.emptyFunction'] Callback fuction called when button without specified action was clicked. As argument clicked button object is passed.
+     *
+     * @return {Zikula.UI.Dialog} New window object
+     */
     initialize: function($super, container, buttons, options) {
         options = Object.extend({
             className: 'z-window z-dialog',
@@ -403,24 +638,54 @@ Zikula.UI.Dialog = Class.create(Zikula.UI.Window, {
         this.buttons = {};
         this.insertButtons(buttons);
     },
+    /**
+     * Open dialog
+     *
+     * @param {Function} $super Reference to overridden method, private.
+     * @param {Event} [event] Event which fired window closing
+     * @return {Boolean}
+     */
     open: function($super, event) {
         this.isNotified = false;
         $super(event);
     },
+    /**
+     * Sets focus on dialog window
+     * @return void
+     */
     focusWindow: function() {
         this.buttons[Object.keys(this.buttons)[0]].focus();
     },
+    /**
+     * Calls callback function after button click
+     * @private
+     * @param {Object} button Clicked button
+     * @return void
+     */
     notifyCallback: function(button) {
         if(!this.isNotified) {
             this.options.callback(button);
             this.isNotified = typeof button.close !== 'undefined' ? button.close : true;
         }
     },
+    /**
+     * Inserts to dialog window buttons
+     * @private
+     * @param {Object[]} buttons Array with buttons to insert
+     * @return void
+     */
     insertButtons: function(buttons) {
         $A(buttons).each(function(button){
             this.button(button);
         }.bind(this));
     },
+    /**
+     * Insert button to dialog window
+     * Converts button object to button element, decodes button action
+     * @private
+     * @param {Object} button Button object
+     * @return void
+     */
     button: function(button) {
         // 'id class lang dir title style disabled accesskey tabindex name value type'
         var action = button.action || this.notifyCallback.bindAsEventListener(this),
@@ -441,6 +706,19 @@ Zikula.UI.Dialog = Class.create(Zikula.UI.Window, {
         }
     }
 });
+
+/**
+ * Static shorthand for Zikula.UI.AlertDialog
+ *
+ * @example
+ * Zikula.UI.Alert('This is alter dialog message!','Alert dialog title');
+ *
+ * @param {String} text Alert message
+ * @param {String} [title] Title for alert window
+ * @param {Object} [options] Config object
+ *
+ * @return {Zikula.UI.AlertDialog} New Zikula.UI.AlertDialog instance
+ */
 Zikula.UI.Alert = function(text, title, options){
     options = Object.extend({
         destroyOnClose: true,
@@ -450,7 +728,28 @@ Zikula.UI.Alert = function(text, title, options){
     dialog.open();
     return dialog;
 };
-Zikula.UI.AlertDialog = Class.create(Zikula.UI.Dialog, {
+
+
+Zikula.UI.AlertDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.AlertDialog.prototype */{
+    /**
+     * Preconfigured {Zikula.UI.Dialog} extension imitating Alert dialogs
+     *
+     * @example
+     * // note - $super param is omited
+     * var myAlert = new Zikula.UI.AlertDialog($('someElement'));
+     *
+     * @class Zikula.UI.AlertDialog
+     * @extends Zikula.UI.Dialog
+     * @constructs
+     *
+     * @param {Zikula.UI.Dialog} $super Reference to super class, this is private param, do not use it.
+     * @param {HTMLElement|String} container HTMLElement, element id or direct text for dialog
+     * @param {Object} [options] Config object
+     * @param {String} [options.className='z-window z-dialog z-alert'] Base class names for dialog window
+     * @param {Boolean} [options.minmax=false]
+     *
+     * @return {Zikula.UI.Dialog} New window object
+     */
     initialize: function($super, container, options) {
         options = Object.extend({
             className: 'z-window z-dialog z-alert',
@@ -458,15 +757,51 @@ Zikula.UI.AlertDialog = Class.create(Zikula.UI.Dialog, {
         }, options || { });
         $super(container, this.defaultButtons(this.notifyCallback.bind(this)), options);
     },
+    /**
+     * Returns default buttons for this dialog.
+     * Alert dialog has only "Ok" button
+     * @private
+     * @param {Function} callback This.notifyCallback
+     * @return {Object[]} Array of objects with buttons for dialog
+     */
     defaultButtons: function(callback) {
         return [
             {label: 'Ok'}
         ]
     }
 });
+
+/**
+ * Callable shorthand which allows to use Zikula.UI.ConfirmDialog as callback function.
+ *
+ * @example
+ * // after user click "someElement" Zikula.UI.ConfirmDialog is show
+ * // when user confirm - deleteAction action is performed
+ * $('someElement').observe('click',
+ *     Zikula.UI.IfConfirmed('Do you want to remove test element?','Confirm action',deleteAction)
+ * );
+ *
+ * @param {String} text Confirm message
+ * @param {String} title Title for confirm window
+ * @param {Object} callback Callback called when user confirm
+ * @param {Object} [options] Config object
+ *
+ * @return {mixed} Exectutes callback function and return it result
+ */
 Zikula.UI.IfConfirmed = function(text, title, callback, options){
     return Zikula.UI.Confirm.curry(text, title, callback, options);
 };
+
+/**
+ * Static shorthand for Zikula.UI.ConfirmDialog
+ *
+ * @param {String} text Confirm message
+ * @param {String} title Title for confirm window
+ * @param {Object} callback Callback called when user confirm
+ * @param {Object} [options] Config object
+ *
+ * @return {Zikula.UI.ConfirmDialog} New Zikula.UI.ConfirmDialog instance
+ */
 Zikula.UI.Confirm = function(text, title, callback, options){
     options = Object.extend({
         destroyOnClose: true,
@@ -477,14 +812,42 @@ Zikula.UI.Confirm = function(text, title, callback, options){
     dialog.open();
     return dialog;
 };
-Zikula.UI.ConfirmDialog = Class.create(Zikula.UI.Dialog, {
+
+Zikula.UI.ConfirmDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.ConfirmDialog.prototype */{
+    /**
+     * Preconfigured {Zikula.UI.Dialog} extension imitating Confirm dialogs
+     *
+     * @example
+     * // note - $super param is omited
+     * var myConfirm = new Zikula.UI.ConfirmDialog($('someElement'));
+     *
+     * @class Zikula.UI.ConfirmDialog
+     * @extends Zikula.UI.Dialog
+     * @constructs
+     *
+     * @param {Zikula.UI.Dialog} $super Reference to super class, this is private param, do not use it.
+     * @param {HTMLElement|String} container HTMLElement, element id or direct text for dialog
+     * @param {Object} [options] Config object
+     * @param {String} [options.className='z-window z-dialog z-confirm'] Base class names for dialog window
+     * @param {Boolean} [options.minmax=false]
+     *
+     * @return {Zikula.UI.Dialog} New window object
+     */
     initialize: function($super, container, options) {
         options = Object.extend({
-            className: 'z-window z-dialog z-confirm'
+            className: 'z-window z-dialog z-confirm',
+            minmax: false
         }, options || { });
         options.afterClose = this.notifyCallback.curry(false);
         $super(container, this.defaultButtons(this.notifyCallback.bind(this)), options);
     },
+    /**
+     * Returns default buttons for this dialog.
+     * Confirm dialog has "Ok" and "Cancel" buttons
+     * @private
+     * @param {Function} callback This.notifyCallback
+     * @return {Object[]} Array of objects with buttons for dialog
+     */
     defaultButtons: function(callback) {
         return [
             {label: 'Ok',action: callback.curry(true)},
@@ -492,7 +855,31 @@ Zikula.UI.ConfirmDialog = Class.create(Zikula.UI.Dialog, {
         ]
     }
 });
-Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog, {
+Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.FormDialog.prototype */{
+    /**
+     * Preconfigured {Zikula.UI.Dialog} extension which allows for easy creating dialogs with forms
+     *
+     * @example
+     * // note - $super param is omited
+     * // someElement should contain form element without submit or button elements
+     * var myForm = new Zikula.UI.FormDialog($('someElement'));
+     *
+     * @class Zikula.UI.FormDialog
+     * @extends Zikula.UI.Dialog
+     * @constructs
+     *
+     * @param {Zikula.UI.Dialog} $super Reference to super class, this is private param, do not use it.
+     * @param {HTMLElement|String} container HTMLElement (or element id) containing form.
+     * @param {Function} callback Callback function executed when form is submited and form has no action attribute
+     * @param {Object} [options] Config object
+     * @param {String} [options.className='z-window z-dialog z-form'] Base class names for dialog window
+     * @param {Number} [options.width=500]
+     * @param {Boolean} [options.ajaxRequest=false] Whether ajax request should be made after form submit, if set to true form action attribute will be used
+     * @param {Boolean} [options.resizable=true]
+     * @param {Function} [options.callback=callback]
+     *
+     * @return {Zikula.UI.Dialog} New window object
+     */
     initialize: function($super, container, callback, options) {
         options = Object.extend({
             className: 'z-window z-dialog z-form',
@@ -504,9 +891,23 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog, {
         options.afterClose = this.notifyCallback.curry(false);
         $super(container, this.defaultButtons(this.notifyCallback.bind(this)), options);
     },
+    /**
+     * Sets focus on first form element in dialog window
+     * @return void
+     */
     focusWindow: function() {
         this.container.down('form').focusFirstElement();
     },
+    /**
+     * Calls callback function after button click.
+     * If form has define action attribute and options.ajaxRequest is set to true
+     *  - form is exectuded via ajax request and callback function is called on requests complete.
+     * Otherwise callback is called just after form is submitted
+     *
+     * @private
+     * @param {Object} button Clicked button
+     * @return void
+     */
     notifyCallback: function(button) {
         if(!this.isNotified) {
             var form =  this.container.down('form'),
@@ -544,6 +945,13 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog, {
             }
         }
     },
+    /**
+     * Returns default buttons for this dialog.
+     * Form dialog has "Submit" and "Cancel" buttons
+     * @private
+     * @param {Function} callback This.notifyCallback
+     * @return {Object[]} Array of objects with buttons for dialog
+     */
     defaultButtons: function(callback) {
         return [
             {label: 'Submit', type: 'submit', name: 'submit', value: 'submit'},
@@ -551,7 +959,32 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog, {
         ]
     }
 });
-Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple, {
+
+
+Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple,/** @lends Zikula.UI.SelectMultiple.prototype */{
+    /**
+     * Custom extension for Livepipe Control.SelectMultiple
+     * Inherit all of the methods, options and events from
+     * <a href="http://livepipe.net/control/selectmultiple">Livepipe Control.SelectMultiple</a>.
+     * Overwrites listed below options and methods.
+     *
+     * @example
+     * // note - $super param is omited
+     * var select_multiple = new Zikula.UI.SelectMultiple('select_multiple');
+     *
+     * @class Zikula.UI.SelectMultiple
+     * @constructs
+     *
+     * @param {Control.SelectMultiple} $super Reference to super class, this is private param, do not use it.
+     * @param {HTMLElement|String} select HTMLElement or id of select element which should be converted to multiple select
+     * @param {Object} [options] Config object
+     * @param {String} [options.nameSelector='label'] Selector for options values
+     * @param {String} [options.valueSeparator=','] Separator used for multiple values. When user will choose two or more select values - they will be joined by this separator
+     * @param {Array} [options.excludeValues=[]] Allows to exclude from multiple select options with given values (such as "Select something form this list" with value="null")
+     * @param {Number} [options.opener=null] Element, which will open dialog with multiple options, when null - opener is build automatically
+     *
+     * @return {Zikula.UI.SelectMultiple} New Zikula.UI.SelectMultiple instance
+     */
     initialize: function($super, select, options) {
         if(options && options.afterChange) {
             this.origAfterChange = options.afterChange;
@@ -572,6 +1005,16 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple, {
         var container = this.buildContainer(select,options);
         $super(select, container, options);
     },
+    /**
+     * Creates Zikula.UI.Dialog containing multiple choises for multiple select
+     * Also when option.opener is null - creates element for opening such dialog
+     *
+     * @private
+     * @param {HTMLElement} select Select element
+     * @param {Object} options Config object
+     *
+     * @returns {HTMLElement} Form element with multiple choises
+     */
     buildContainer: function(select,options) {
         var opener = options.opener || null,
             selectId = select.identify(),
@@ -601,6 +1044,12 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple, {
         this.dialog = new Zikula.UI.Dialog(opener,[{label: 'Ok'}],{position:'relative'});
         return container;
     },
+    /**
+     * Method called to mark selected options
+     * @private
+     * @param {HTMLElement[]} elements Checkboxes
+     * @return void
+     */
     afterChange: function(elements) {
         this.checkboxes.each(function(checkbox){
             if(checkbox.checked) {
@@ -616,7 +1065,30 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple, {
     }
 });
 
-Zikula.UI.Tabs = Class.create(Control.Tabs, {
+Zikula.UI.Tabs = Class.create(Control.Tabs,/** @lends Zikula.UI.Tabs.prototype */{
+    /**
+     * Custom extension for Livepipe Control.Tabs
+     * Inherit all of the methods, options and events from
+     * <a href="http://livepipe.net/control/tabs">Livepipe Control.Tabs</a>.
+     * Overwrites listed below options and methods.
+     *
+     * @example
+     * // note - $super param is omited
+     * var myTabs =  new Zikula.UI.Tabs('tabs_example_eq',{equal: true});
+     *
+     * @class Zikula.UI.Tabs
+     * @constructs
+     *
+     * @param {Control.Tabs} $super Reference to super class, this is private param, do not use it.
+     * @param {HTMLElement|String} tab_list_container HTMLElement or id element containing unordered list of links, which href attributes points to tabs elements
+     * @param {Object} [options] Config object
+     * @param {Boolean} [options.equal=false] Should all tabs have equal height
+     * @param {String} [options.containerClass='z-tabs'] Class to add for tabs
+     * @param {Boolean} [options.setClassOnContainer=true]
+     * @param {String} [options.activeClassName='active'] Class to mark active tab
+     *
+     * @return {Zikula.UI.Tabs} New Zikula.UI.Tabs instance
+     */
     initialize: function($super, tab_list_container, options) {
         options = Object.extend({
             equal: false,
@@ -630,20 +1102,26 @@ Zikula.UI.Tabs = Class.create(Control.Tabs, {
             this.alignTabs();
         }
     },
+    /**
+     * Activate given tab
+     *
+     * @param {Function} $super
+     * @param {HTMLElement|String} link Tab element
+     * @return void
+     */
     setActiveTab: function($super,link) {
         $super(link);
         if(this.options.equal) {
             this.alignTabs();
         }
     },
+    /**
+     * Align tabs height
+     *
+     * @return void
+     */
     alignTabs: function() {
         this.maxHeight = this.containers.values().invoke('getHeight').max();
         this.containers.values().invoke('setStyle',{minHeight: this.maxHeight.toUnits()});
     }
 });
-
-/* Builder replecement
- *
- **/
-//Builder = {node: function(e,a,t) {return new Element(e,a||{}).update(t||'')}};
-
