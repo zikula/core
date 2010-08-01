@@ -811,8 +811,8 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
         if ($this instanceof Zikula_View_Theme) {
             $path .= $this->themeinfo['directory'] . '/';
-        //} elseif ($this instanceof Zikula_View_Plugin) {
-        //    $path .= $this->modinfo['directory'] . '/' . $this->pluginName['directory'] . '/';
+        } elseif ($this instanceof Zikula_View_Plugin) {
+            $path .= $this->modinfo['directory'] . '/' . $this->pluginName . '/';
         } else {
             $path .= $this->modinfo['directory'] . '/';
         }
