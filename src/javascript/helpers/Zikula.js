@@ -1,4 +1,7 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
+/**
+ * @fileOverview Zikula global helpers
+ */
 
 if (typeof(Zikula) == 'undefined') {
     /**
@@ -1015,6 +1018,27 @@ Element.Methods.getOutlineSize = function(element, type) {
         .inject(0, function(total, prop) {
             return total + parseInt(Element.getStyle(element, prop), 10);
         });
+};
+/**
+ * Fix for https://prototype.lighthouseapp.com/projects/8886-prototype/tickets/771
+ * @private
+ * @param {HTMLElement|String} element
+ * @return {HTMLElement} "Offset" parent element
+ */
+Element.Methods.getOffsetParent = function(element) {
+    if (element.offsetParent) {
+        return $(element.offsetParent);
+    }
+    if (element == document.body) {
+        return $(element);
+    }
+    //    while ((element = element.parentNode) && element != document.body)
+    while ((element = element.parentNode) && element != document.body && element != document) {
+        if (Element.getStyle(element, 'position') != 'static') {
+            return $(element);
+        }
+    }
+    return $(document.body);
 };
 // Apply new methods to prototype Element
 Element.addMethods();

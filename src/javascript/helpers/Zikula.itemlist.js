@@ -4,11 +4,30 @@ if (typeof(Zikula) == 'undefined')
     Zikula = {};
 
 // Requires prototype, pnajax, scriptaculous
-Zikula.itemlist = Class.create({
+Zikula.itemlist = Class.create(/** @lends Zikula.itemlist.prototype */{
     /**
-     * Initialize the list
-     * @param   listid    string   ID of the list to work with
-     * @param   options   array    enable or disable specific options
+     * Helper for creating sortable lists based on ul/ol html lists
+     *
+     * @example
+     * // note - $super param is omited
+     * var list = new Zikula.itemlist('menuitemlist', {headerpresent: true, firstidiszero: true});
+     *
+     * @class Zikula.itemlist
+     * @constructs
+     *
+     * @param {HTMLElement|String} listid ID of the list to work with
+     * @param {Object} [options] Config object
+     * @param {Boolean} [options.headerpresent=false] Should first item list be treated as header
+     * @param {Boolean} [options.firstidiszero=false] Ids starts from zero
+     * @param {Boolean} [options.sortable=true] Should list be sortable
+     * @param {Boolean} [options.recursive=false] Should list be recursivly sortable (allows to create multilevel lists)
+     * @param {Boolean} [options.quotekeys=false] Should node names be enclosed by quotes
+     * @param {String} [options.inputName=''] For recusive list - input used for storing JSON encoded list order
+     * @param {Function} [options.afterInitialize] Callback called after initialization
+     * @param {Function} [options.beforeAppend] Callback called before new item append
+     * @param {Function} [options.afterAppend] Callback called after new item append
+     *
+     * @return {Zikula.itemlist} New Zikula.itemlist instance
      */
     initialize: function(listid, options) {
         this.id  = listid;
@@ -75,6 +94,9 @@ Zikula.itemlist = Class.create({
 
     /**
      * Parses the ID and generate an standard name
+     * @private
+     * @param {String} id Node id
+     * @return {String} Node name
      */
     getnamefromid: function(id) {
         var chunks = id.split('_');
@@ -93,15 +115,16 @@ Zikula.itemlist = Class.create({
 
     /**
      * Recolor the itemlist
+     * @return void
      */
     itemlistrecolor: function()
     {
-        pnrecolor(this.id, 'listheader');
+        Zikula.recolor(this.id, 'listheader');
     },
 
     /**
      * Appends a new item by cloning a predefined one
-     * @return int last item id
+     * @return {Number} Last item id
      */
     appenditem: function()
     {
@@ -171,6 +194,12 @@ Zikula.itemlist = Class.create({
 
         return lastid;
     },
+    /**
+     * Event handler for deleting item from list
+     * @private
+     * @param {Event} event
+     * @return void
+     */
     deleteitem: function(event) {
         var button = event.element();
         var itemid = button.id.replace('buttondelete', 'li');
@@ -240,7 +269,7 @@ Zikula.recursiveSortable = Class.create({
         }
     },
     isAccepted: function(node) {
-        return this.config.only.length == 0 || this.config.only.any(function(c) { return node.hasClassName(c);});
+        return this.config.only.length == 0 || this.config.only.any(function(c) {return node.hasClassName(c);});
     },
     getId: function(node) {
         return Number(node.identify().match(this.config.nodeIdPattern)[1]);

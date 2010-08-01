@@ -1,28 +1,55 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
-
+/**
+ * @fileOverview Zikula.ImageViewer and ikula.ImageViewerUtil
+ */
 if (typeof(Zikula) == 'undefined') {
     Zikula = {};
 }
-/**
- * Requires prototype.js, effects.js and dragdrop.js
- * To overwrite default settings use Zikula.ImageViewer.setup method.
- * Example:
- * Zikula.ImageViewer.setup({
- *      modal: false,
- *      langLabels: {close: 'Close this box'}
- * });
- */
-Zikula._ImageViewer = Class.create({
+
+Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototype */{
+    /**
+     * Custom implementation for image zooming.
+     * It was designed as Lightbox replacement and it works quite the same.
+     * It's also backward compatible with Lightbox.
+     * Due to nature of script it's always initialized as {@link Zikula.ImageViewer}.
+     *
+     * While initialization Zikula.ImageViewerUtil collets all links to images
+     * with "rel" attribute containing "imageviewer" or "lightbox" value.
+     * It also works for image galleries - "imageviewer[galleryname]" or  "imageviewer[lightbox]"
+     *
+     * @class Zikula.ImageViewerUtil
+     * @constructs
+     *
+     * @return {Zikula.ImageViewerUtil} New Zikula.ImageViewerUtil instance
+     */
     initialize: function() {
         this.setup();
         document.observe("dom:loaded",this.postInit.bind(this));
     },
+    /**
+     * Collects galery sets and binds event listener for images
+     * @private
+     */
     postInit: function() {
         this.galleries = new Hash();
         this.galleries.set('list', $$('a[rel^=lightbox], a[rel^=imageviewer]').pluck('rel').uniq());
         $$('a[rel^=lightbox], a[rel^=imageviewer]').invoke('observe','click',this.initViewer.bindAsEventListener(this));
     },
-    setup:function () {
+    /**
+     * Public method to overwrite default ImageViewer settings.
+     * Must be called before dom:loaded event fires
+     *
+     * @param {Object} config Config object
+     * @param {Number} [config.speed=1] Factor for manipulating animation speed
+     * @param {Boolean} [config.draggable=true] Should image window be draggable
+     * @param {Boolean} [config.caption=true] Display image capition
+     * @param {Boolean} [config.pager=true] Display pager
+     * @param {Boolean} [config.modal=true] Should image window be modal
+     * @param {Boolean} [config.enablekeys=true] Enable keyboard navigation (esc, prev, next)
+     *
+     * @return void
+     */
+    setup:function (config) {
         this.config = Object.extend({
             speed: 1,
             draggable: true,
@@ -31,8 +58,9 @@ Zikula._ImageViewer = Class.create({
             modal: true,
             enablekeys: true,
             langLabels: {}
-        }, arguments[0] || {});
+        }, config || {});
 
+        // change this to gettext
         this.config.langLabels = Object.extend({
             close: 'Close',
             next: 'Next',
@@ -41,6 +69,12 @@ Zikula._ImageViewer = Class.create({
         },this.config.langLabels);
         this.config.langLabels.pager = new Template(this.config.langLabels.pager);
     },
+    /**
+     * Initialize image window
+     * @private
+     * @param {Event} event Event which invoke ImageViewer
+     * @return void
+     */
     initViewer: function(event) {
         event.stop();
         if(this.started) {return;}
@@ -58,12 +92,22 @@ Zikula._ImageViewer = Class.create({
         }
         this.prepareBox();
     },
+    /**
+     * Prepare image window and preloads image. When image is loaded showBox is called
+     * @private
+     * @return void
+     */
     prepareBox: function() {
         this.updateBox();
         this.imgPreloader = new Image();
         this.imgPreloader.onload = this.showBox.bindAsEventListener(this);
         this.imgPreloader.src =  this.element.readAttribute('href');
     },
+    /**
+     * Open image window
+     * @private
+     * @return void
+     */
     showBox: function() {
         if(this.config.modal) {
             this.ImageViewerOverlay.appear({to: 0.9, duration: this.config.speed/2});
@@ -103,6 +147,11 @@ Zikula._ImageViewer = Class.create({
             );
         }
     },
+    /**
+     * Finalize window opening. Preloads adjacent images
+     * @private
+     * @return void
+     */
     finishBox: function() {
         this.ImageViewerImg.appear({from: 0, to: 1, duration: this.config.speed/2,
             afterSetup: function(){this.imageBox.removeClassName('loading').setStyle({overflow: 'visible'});}.bind(this)
@@ -119,6 +168,13 @@ Zikula._ImageViewer = Class.create({
             this.preloadAdjacentImages();
         }
     },
+    /**
+     * Event hanlder for image window click events.
+     * Redirects event to proper methods depending on event target
+     * @private
+     * @param {Event} event Click event on image window
+     * @return void
+     */
     clickBox: function(event) {
         event.stop();
         if(this.imageBox.visible()) {
@@ -131,6 +187,13 @@ Zikula._ImageViewer = Class.create({
             }
         }
     },
+    /**
+     * Event hanlder for image window key events.
+     * Redirects event to proper methods depending on key letter
+     * @private
+     * @param {Event} event Key event on image window
+     * @return void
+     */
     key: function(event) {
         if(this.imageBox.visible() && event.keyCode) {
             switch(event.keyCode) {
@@ -146,6 +209,12 @@ Zikula._ImageViewer = Class.create({
             }
         }
     },
+    /**
+     * Hide box
+     * @private
+     * @param {Event} event It might be click or key event
+     * @return void
+     */
     hideBox: function(event) {
         if(!event || !event.isRightClick()) {
             this.imageBox.fade({duration:this.config.speed/4});
@@ -157,6 +226,13 @@ Zikula._ImageViewer = Class.create({
             }
         }
     },
+    /**
+     * Changes image in window
+     * @private
+     * @param {String} dir Prev or next
+     * @param {Event} event It might be click or key event
+     * @return void
+     */
     moveBox: function(dir,event) {
         if(!this.isGallery) {return;}
         event.stop();
@@ -169,9 +245,19 @@ Zikula._ImageViewer = Class.create({
             this.prepareBox();
         }
     },
+    /**
+     * Generates information for pager (total images in gallery, current image index)
+     * @private
+     * @return {Object} Object with info
+     */
     pagerInfo: function() {
         return this.config.langLabels.pager.evaluate({index: this.index+1,total: this.gallerySize});
     },
+    /**
+     * Creates image window box
+     * @private
+     * @return void
+     */
     buildBox: function() {
         this.endBind = this.hideBox.bindAsEventListener(this);
         this.keyBind = this.key.bindAsEventListener(this);
@@ -211,6 +297,11 @@ Zikula._ImageViewer = Class.create({
             document.observe('keydown', this.keyBind);
         }
     },
+    /**
+     * Updates image window box. If box does not exists - creates it
+     * @private
+     * @return void
+     */
     updateBox: function() {
         if(!this.imageBox) {
             this.buildBox();
@@ -238,6 +329,11 @@ Zikula._ImageViewer = Class.create({
             this.imageBox.addClassName('gallery');
         }
     },
+    /**
+     * Preloads previous and next image
+     * @private
+     * @return void
+     */
     preloadAdjacentImages: function() {
         var prevImage, nextImage;
         if (this.index > 0){
@@ -250,19 +346,16 @@ Zikula._ImageViewer = Class.create({
         }
     }
 });
-Zikula.ImageViewer = new Zikula._ImageViewer();
-
-// fix for https://prototype.lighthouseapp.com/projects/8886-prototype/tickets/771
-Element.addMethods({
-  getOffsetParent: function(element) {
-    if (element.offsetParent) return $(element.offsetParent);
-    if (element == document.body) return $(element);
-
-//    while ((element = element.parentNode) && element != document.body)
-    while ((element = element.parentNode) && element != document.body && element != document)
-      if (Element.getStyle(element, 'position') != 'static')
-        return $(element);
-
-    return $(document.body);
-  }
-});
+/**
+ * Global ImageViewer ({@link Zikula.ImageViewerUtil}) instance used in core.
+ * While ImageViewer is alwyas initialized it is possible to overwrite its config using
+ * {@link Zikula.ImageViewerUtil#setup} method.
+ *
+ * @example
+ * Zikula.ImageViewer.setup({
+ *      modal: false,
+ *      speed: 2
+ * });
+ *
+ */
+Zikula.ImageViewer = new Zikula.ImageViewerUtil();
