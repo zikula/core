@@ -778,11 +778,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             $auto_id = (isset($compile_id) && !empty($compile_id)) ? $cache_id . '_' . $compile_id  : $cache_id;
         } elseif (isset($compile_id)) {
             $auto_id = $compile_id;
-        } else {
-            $auto_id = null;
         }
 
-        return md5($auto_id);
+        if (isset($auto_id)) {
+            return md5($auto_id);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -808,13 +810,10 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         }
 
         if ($this instanceof Zikula_View_Theme) {
-            //$path .= 'themes/';
             $path .= $this->themeinfo['directory'] . '/';
         //} elseif ($this instanceof Zikula_View_Plugin) {
-        //    //$path .= 'themes/';
         //    $path .= $this->modinfo['directory'] . '/' . $this->pluginName['directory'] . '/';
         } else {
-            //$path .= 'modules/';
             $path .= $this->modinfo['directory'] . '/';
         }
 
@@ -883,14 +882,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null)
     {
-        //if ($cache_id) {
-        //    $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $cache_id;
-        //} else {
-        //    $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $this->cache_id;
-        //}
-        //
-        //return parent::clear_cache($template, $cache_id, $compile_id, $expire);
-
         $cache_dir = $this->cache_dir;
 
         $cached_files = FileUtil::getFiles($cache_dir, true, false, array('tpl'), null, false);
@@ -905,9 +896,19 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             }
         } else {
             if ($expire == null) {
-                foreach ($cached_files as $cf) {
-                    if (strpos($cf, $template) !== false) {
-                        unlink(realpath($cf));
+                $auto_id = self::_get_auto_id($cache_id, $compile_id);
+                $auto_filename = self::_get_auto_filename($cache_dir, $template, $auto_id);
+                
+                if (isset($auto_id) && !empty($auto_id)) {
+                    if (file_exists($auto_filename)) {
+                        unlink($auto_filename);
+                    }
+                } else {
+                    $template_filebase = FileUtil::getFilebase($template);
+                    foreach ($cached_files as $cf) {
+                        if (strpos($cf, $template_filebase) !== false) {
+                            unlink(realpath($cf));
+                        }
                     }
                 }
             } else {
