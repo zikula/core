@@ -1,17 +1,17 @@
-<a id="defwindow" title="{gt text='Settings'}" class="btn ui-state-default ui-corner-all" href="#defwindow_content">
-	<span class="ui-icon ui-icon-wrench">&nbsp;</span>
+<a id="defwindowmodal" title="{gt text='Settings'}" class="z-button ui-corner-all" href="#defwindow_content_modal">
+	<span class="ui-icon ui-icon-wrench" style="float:left;margin-top:2px;margin-right:4px;">&nbsp;</span>
 		{gt text='Settings'}
 </a>
-<a class="btn ui-state-default ui-corner-all" href="#">
-	<span class="ui-icon ui-icon-person">&nbsp;</span>
+<a class="z-button ui-corner-all" href="#">
+	<span class="ui-icon ui-icon-person" style="float:left;margin-top:2px;margin-right:4px;">&nbsp;</span>
 		{gt text='My Account'}
 </a>
-<a class="btn ui-state-default ui-corner-all" href="{modurl modname=users type=user func=logout}">
-    <span class="ui-icon ui-icon-power">&nbsp;</span>
+<a class="z-button ui-corner-all" href="{modurl modname=users type=user func=logout}">
+    <span class="ui-icon ui-icon-power" style="float:left;margin-top:2px;margin-right:4px;">&nbsp;</span>
 		{gt text='Logout'}
 </a>
 						
-<div id="defwindow_content" style="display: none;">
+<div id="defwindow_content_modal" style="display: none;">
 	<div class="side_sort sidebar-content">
 		<div>
 			 
@@ -91,6 +91,6 @@
 	</div>
 </div>
 <script type="text/javascript">
-    var defwindow = new Zikula.UI.Window($('defwindow'));
+    var defwindowmodal = new Zikula.UI.Window($('defwindowmodal'),{modal:true});
 </script>
 

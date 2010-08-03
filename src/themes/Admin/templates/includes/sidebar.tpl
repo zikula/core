@@ -13,41 +13,44 @@
 				    </a>
 					<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
 						<div class="portlet-header ui-widget-header ui-corner-all">
-						{gt text='Quicklinks'}
+						{gt text='Quick Links'}
 						<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 						<div class="portlet-content">
-						  <a class="btn ui-state-default full-link ui-corner-all" href="#">
-								<span class="ui-icon ui-icon-mail-closed">&nbsp;</span>
-								asdf
+							<a class="btn ui-state-default full-link ui-corner-all" href="#">
+								<span class="ui-icon ui-icon-gear" style="margin-top:2px;">&nbsp;</span>
+								{gt text='Main Settings'}
 							</a>
 							<a class="btn ui-state-default full-link ui-corner-all" href="#">
-								<span class="ui-icon ui-icon-arrowreturnthick-1-n">&nbsp;</span>
-								asdf
+								<span class="ui-icon ui-icon-person" style="margin-top:2px;">&nbsp;</span>
+								{gt text='Users'}
 							</a>
 							<a class="btn ui-state-default full-link ui-corner-all" href="#">
-								<span class="ui-icon ui-icon-scissors">&nbsp;</span>
-								asdf
+								<span class="ui-icon ui-icon-locked" style="margin-top:2px;">&nbsp;</span>
+								{gt text='Permissions'}
 							</a>
 							<a class="btn ui-state-default full-link ui-corner-all" href="#">
-								<span class="ui-icon ui-icon-signal-diag">&nbsp;</span>
-								asdf
-							</a>
-							<a class="btn ui-state-default full-link ui-corner-all" href="#">
-								<span class="ui-icon ui-icon-alert">&nbsp;</span>
-								asdf
+								<span class="ui-icon ui-icon-image" style="margin-top:2px;">&nbsp;</span>
+								{gt text='Theme'}
 							</a>
 						
 						 
 					</div></div>
 										
 					<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-						<div class="portlet-header ui-widget-header ui-corner-all">{gt text='asdf'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+						<div class="portlet-header ui-widget-header ui-corner-all">
+						{gt text='Quick Tasks'}
+						<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 						<div class="portlet-content">
-							<a class="btn ui-state-default full-link ui-corner-all" href="#">
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="#">
 								<span class="ui-icon ui-icon-alert">&nbsp;</span>
-								asdf
+								{gt text='switch site offline'}
+							</a>
+								<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="#">
+								<span class="ui-icon ui-icon-check">&nbsp;</span>
+								{gt text='switch site online'}
 							</a>
 						</div>
+						
 					</div>
 					</div>
 					</div>

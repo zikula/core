@@ -2,10 +2,9 @@
 .ui-widget-overlay { background: #666666 url(images/ui-bg_diagonals-thick_20_666666_40x40.png) 50% 50% repeat; opacity: .50;filter:Alpha(Opacity=50); }
 .ui-widget-shadow { margin: -5px 0 0 -5px; padding: 5px; background: #000000 url(images/ui-bg_flat_10_000000_40x100.png) 50% 50% repeat-x; opacity: .20;filter:Alpha(Opacity=20); -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 /* Custom styles */
-#page_wrapper{background:#eee;}
-#page_wrapper #page-content {
-	border-top:#eee solid 1px;
-	border-bottom:#eee solid 2px;
+#page_wrapper{background:#f2f2f2;}
+#page_wrapper #page-content {	
+	margin-top:-1px;
 }
 #page_wrapper #page-content #page-content-wrapper {
 	-moz-border-radius:0;
@@ -15,7 +14,6 @@
 	-o-box-shadow:0 0 0 #fff;
 	-moz-box-shadow:0 0 0 #fff;
 	-webkit-box-shadow:0 0 0 #fff;
-	border-bottom:#fafafa solid 1px;
 }
 
 .page-title {
@@ -140,19 +138,12 @@ a {
 #page_wrapper #page-header #page-header-wrapper #top .logo {
 	text-transform:none;color:#999891;font-size:1.8em;float:left;
 }
-
 	/* Header */
-
 #page-header {
 	background: #ddd; 
-	background: -webkit-gradient(linear, left top, left bottom, from(#ebebeb), to(#a1a1a1)); /* for webkit browsers */
-	background: -moz-linear-gradient(top,  #ebebeb,  #a1a1a1); /* for firefox 3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#eee)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #ddd,  #eee); /* for firefox 3.6+ */
 	color: #7D7A7C;
-	border-radius: 0 0 2em 2em;
-	-webkit-border-radius: 0 0 2em 2em;
-	-moz-border-radius: 0 0 2em 2em;
-	-pie-background: linear-gradient(top, #ebebeb, #a1a1a1);
-	 behavior: url(themes/Admin/style/themes/gray/PIE.htc);
 }	
 	/* States and Images */
 

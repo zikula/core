@@ -33,14 +33,8 @@
     <script src="{$themepath}/js/pngfix.js"></script>
     <script>
 	  /* Fix IE6 Transparent PNG */
-	  DD_belatedPNG.fix('.logo, ul#dashboard-buttons li a, .response-msg, #search-bar input');
+	  DD_belatedPNG.fix('.logo,#search-bar input');
     </script>
-{/browserhack}
-{browserhack condition="if lte IE 7"}
-<script type="text/javascript" src="{$themepath}/js/html5.js"></script>
-{/browserhack}
-{browserhack condition="if lte IE 8"}
-<script type="text/javascript" src="{$themepath}/js/html5.js"></script>
 {/browserhack}
 </head>
 <body>
@@ -54,7 +48,16 @@
 							
 					</div>
 				</div>
-				{include file="includes/navitop.tpl"}
+				<ul id="aui-tabs_eq">
+                    <li class="z-tab"><a href="#eqone">{gt text='Main Administration'}</a></li>
+                    {checkpermissionblock component='.*' instance='.*' level=ACCESS_ADMIN}
+					<li class="z-tab"><a href="#eqtwo">{gt text='Dashboard'}</a></li>					
+					<li class="z-tab"><a href="#eqthree">{gt text='Routines'}</a></li>
+					<li class="z-tab"><a href="#eqfour">{gt text='Help'}</a></li>					
+					<li class="z-tab"><a href="#eqfive">{gt text='Info'}</a></li>
+					<li class="z-tab"><a href="#eqsix">{gt text='News'}</a></li>
+					{/checkpermissionblock}				
+                </ul>
 				</div>
 		</div>
  
@@ -64,37 +67,27 @@
 				<div class="clear"></div>
 				
 				<div class="content-box">
-                <ul id="aui-tabs_eq">
-                    <li class="z-tab"><a href="#eqone">{gt text='Main Administration'}</a></li>
-                    {checkgroup gid="2"}
-					<li class="z-tab"><a href="#eqtwo">{gt text='Dashboard'}</a></li>					
-					<li class="z-tab"><a href="#eqthree">{gt text='Routines'}</a></li>
-					<li class="z-tab"><a href="#eqfour">{gt text='Help'}</a></li>					
-					<li class="z-tab"><a href="#eqfive">{gt text='Info'}</a></li>
-					<li class="z-tab"><a href="#eqsix">{gt text='News'}</a></li>
-										{/checkgroup}
-                </ul>  
+                 
                     <div id="eqone">{$maincontent}</div>
-					{checkgroup gid="2"}
+					{checkpermissionblock component='.*' instance='.*' level=ACCESS_ADMIN}
 	                <div id="eqtwo">{include file="includes/dashboard.tpl"}</div>
 					<div id="eqthree">{include file="includes/routinetab.tpl"}</div>
 					<div id="eqfour">{include file="includes/helptab.tpl"}</div>
 					<div id="eqfive">{include file="includes/infotab.tpl"}</div>
 					<div id="eqsix">{include file="includes/newstab.tpl"}</div>
-					{/checkgroup}
+					{/checkpermissionblock}
 					<script type="text/javascript">
                         var eqtabs = new Zikula.UI.Tabs('aui-tabs_eq');
                     </script>
-		<br />
-		<a class="fg-button btn ui-state-default full-link ui-corner-all" href="#logo" title="{gt text='Back to top'}" >
-		<span class="ui-icon ui-icon-arrowthick-1-n" style="margin-top:3px;">&nbsp;</span>
-		{gt text='Back to top'}
-		</a>
-		
-                </div>
-	
-			{include file="includes/sidebar.tpl"}	
-						
+		                <br />
+		                <a class="fg-button btn ui-state-default full-link ui-corner-all" href="#logo" title="{gt text='Back to top'}" >
+		                    <span class="ui-icon ui-icon-arrowthick-1-n" style="margin-top:3px;">&nbsp;</span>
+		                    {gt text='Back to top'}
+		                </a>
+		        </div>
+		{checkpermissionblock component='.*' instance='.*' level=ACCESS_ADMIN}
+		{include file="includes/sidebar.tpl"}	
+		{/checkpermissionblock}				
 		<div class="clear"></div>
 		</div>
 		</div>		

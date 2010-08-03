@@ -1,4 +1,3 @@
-<br />
 <div class="inner-page-title">
 <h2>{gt text='Routines'}</h2>
 <span>{gt text='Nice little Helpers!'}</span>

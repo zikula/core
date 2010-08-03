@@ -1,5 +1,4 @@
 <div class="inner-page-title">
-<br />
 					<h2>{gt text='Dashboard'}</h2>
 					<span class="note" style="margin-right:6px;">{gt text='Welcome back'}, <a href="#" title="{usergetvar name="uname" uid=$uid}">{usergetvar name="uname" uid=$uid} !</a></span>
 					</div>
@@ -54,53 +53,8 @@
 					</div>
 				</div>
 				<div class="clear"></div>
-				<div class="content-box">
-					<div class="two-column">
-						<div class="column">
-							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								
-                <div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">{gt text='Extension News'}:<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
-								<div class="portlet-content">
-									{php}
-	                                    $src = 'http://community.zikula.org/index.php?module=Extensions&func=view&ot=component&comptype=0&sort=lu_date&sdir=desc&tpl=rss&raw=1&catms=0&catma=0&catmf=0&cattt=0&catrt=0&catcl=0';
-	                                    $chan = 'y';
-	                                    $num = 4;
-	                                    $desc = 0;
-	                                    $html = 'y';
-	                                    $tz = 'feed';
-	                                    $utf = 'y';
-	                                    $date = 'n';
-	                                    $targ = 'y';
-	                                    include 'themes/Admin/templates/rss/feed2php.inc';
-                                    {/php}
-								</div>
-							</div>
-						</div>
-						<div class="column column-right">
-							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">{gt text='Project News'}:<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
-								<div class="portlet-content">
-                                    {php}
-	                                    $src = 'http://community.zikula.org/index.php?module=News&theme=RSS';
-	                                    $chan = 'y';
-	                                    $num = 4;
-	                                    $desc = 0;
-	                                    $html = 'n';
-	                                    $tz = 'feed';
-	                                    $utf = 'y';
-	                                    $date = 'n';
-	                                    $targ = 'y';
-	                                    include 'themes/Admin/templates/rss/feed2php.inc';
-                                    {/php}
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="clear"></div>
-					<div class="z-informationmsg ui-corner-all">
+				<div class="z-informationmsg ui-corner-all">
 						<span>Stay tuned!</span>
-						Visit community.zikula.org !
-					</div>
-				</div>
-				<div class="clear"></div>			 
+						Visit <a href="http://community.zikula.org" target="_blank"> the Community !</a>
+				</div>				
 				
