@@ -486,7 +486,7 @@ class Blocks_Block_Menutree extends Zikula_Block
      */
     private function _get_current_menus($bid)
     {
-        $supported = array('Menu', 'Extmenu', 'Menutree', 'Dynamenu');
+        $supported = array('Menu', 'Extmenu', 'Menutree');
 
         $_menus = BlockUtil::getBlocksInfo();
 
@@ -568,44 +568,6 @@ class Blocks_Block_Menutree extends Zikula_Block
                     $lineno = count($data);
                 }
                 break;
-
-            // patch by Erik Spaan
-            case 'dynamenu':
-                if (isset($menu['content']) && !empty($menu['content'])) {
-                    $reflang = $userlanguage;
-                    $pid = 1;
-                    $data = array();
-                    $level = 1;
-                    $block_params = explode('~~', $menu['content']);
-                    // $block_content[0] contains the menu layout,
-                    // 0 vertical menu, 1 vertical tree with folder icons, 2 vertical plain, 5 vertical tree without folder icons
-                    // 3 horizontal menu, 5 horizontal plain
-                    // Every menu line contains:   LevelInDots | Name | <URL> | <Title> | <Icon> | <target> |
-                    // .|Home|index.php|Homepage|home.gif||
-                    // ..|Recent News|[News]|Actueel Nieuws||_new|
-                    // Target is converted into the classname target<target> and the icon is not used ATM
-                    // Reshape the contentlines into an array with all menu items
-                    $contentlines = preg_split("[\n]", $block_params[3]);
-                    $dynamenu = array();
-                    foreach ($contentlines as $menuid => $contentline) {
-                        list($level, $name, $href, $title, $icon, $target) = explode('|', $contentline);
-                        $dynamenu[$menuid] = array(
-                                'level'     => strlen($level)-1,
-                                'name'      => isset($name) && !empty($name) ? $name : $this->__('no name'),
-                                'icon'      => isset($icon) && !empty($icon) ? "<img src=\"images/dynamenu/$icon\" alt=\"$icon\"width=\"16\" height=\"16\" />" : '',
-                                'href'      => isset($href) && !empty($href) ? $href : '#',
-                                'title'     => isset($title) && !empty($title) ? $title : '',
-                                'classname' => !empty($target) ? 'target'.$target : ''
-                        );
-                    }
-
-                    $dmid = 0;
-                    $data = $this->_parse_dynamic($dynamenu, $dmid, $reflang);
-                    ksort($data);
-                    $langs = (array)$reflang;
-                    $lineno = count($data);
-                }
-                break;
         }
 
         if (!empty($menuVars['displaymodules'])) {
@@ -632,40 +594,6 @@ class Blocks_Block_Menutree extends Zikula_Block
                     $lineno++;
                 }
             }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Convert the multi level dynamenu block into menutree datastructure (patch by Erik Spaan)
-     */
-    private function _parse_dynamic($dynamenu, &$id, $lang, $level=0, $parent=0)
-    {
-        $data = array();
-
-        $lineno = 0;
-        while ($id < count($dynamenu)) {
-            if ($dynamenu[$id]['level'] == $level) {
-                $data[$id][$lang] = array(
-                        'id'        => $id + 1,
-                        'name'      => $dynamenu[$id]['name'],
-                        'href'      => $dynamenu[$id]['href'],
-                        'title'     => $dynamenu[$id]['title'],
-                        'className' => '',
-                        'state'     => 1,
-                        'lang'      => $lang,
-                        'lineno'    => $lineno,
-                        'parent'    => $parent
-                );
-            } elseif ($dynamenu[$id]['level'] > $level) {
-                $data = array_merge($data, $this->_parse_dynamic($dynamenu, $id, $lang, $dynamenu[$id]['level'], $id));
-            } elseif ($dynamenu[$id]['level'] < $level) {
-                $id--;
-                break;
-            }
-            $id++;
-            $lineno++;
         }
 
         return $data;
