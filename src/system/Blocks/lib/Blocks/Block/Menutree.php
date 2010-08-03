@@ -486,7 +486,7 @@ class Blocks_Block_Menutree extends Zikula_Block
      */
     private function _get_current_menus($bid)
     {
-        $supported = array('menu', 'extmenu', 'menutree', 'dynamenu');
+        $supported = array('Menu', 'Extmenu', 'Menutree', 'Dynamenu');
 
         $_menus = BlockUtil::getBlocksInfo();
 
@@ -515,7 +515,8 @@ class Blocks_Block_Menutree extends Zikula_Block
 
         $userlanguage = ZLanguage::getLanguageCode();
 
-        switch($menu['bkey']) {
+        $menuType = strtolower($menu['bkey']);
+        switch($menuType) {
             case 'menutree':
                 $data = isset($menuVars['menutree_content']) ? $menuVars['menutree_content'] : array();
                 break;
