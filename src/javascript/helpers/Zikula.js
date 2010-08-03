@@ -578,6 +578,42 @@ Zikula.mergeObjects = function(destination,source)
     return destination;
 }
 
+/**
+ * Encode json data to url safe format.
+ * @param {mixed}   data Data to encode
+ * @param {Boolean} [json=true] Should data be also encode to json
+ *
+ * @return {String} Encoded data
+ */
+Zikula.urlsafeJsonEncode = function(data, json)
+{
+    json = Object.isUndefined(json) ? true : json;
+    if(json) {
+        data = Object.toJSON(data);
+    }
+    data = data.replace(/\+/g, '%20');
+    return encodeURIComponent(data);
+}
+
+/**
+ * Decode json data from url safe format.
+ * @param {String}   data Data to encode
+ * @param {Boolean} [json=true] Should data be also decode from json
+ *
+ * @return {mixed} Decoded data
+ */
+Zikula.urlsafeJsonDecode = function(data, json)
+{
+    json = Object.isUndefined(json) ? true : json;
+    data = data.replace(/\+/g, '%20');
+    data = decodeURIComponent(data);
+    if(json) {
+        data = data.evalJSON(true);
+    }
+    return data;
+}
+
+
 Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
     /**
      * Defaults options
