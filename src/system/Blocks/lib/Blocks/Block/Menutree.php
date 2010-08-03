@@ -298,7 +298,7 @@ class Blocks_Block_Menutree extends Zikula_Block
             $vars['menutree_content'] = $this->_import_menu($menutree_menus);
         } else {
             $vars['menutree_content'] = FormUtil::getPassedValue('menutree_content', '', 'POST');
-            $vars['menutree_content'] = json_decode($vars['menutree_content'],true);
+            $vars['menutree_content'] = DataUtil::urlsafeJsonDecode($vars['menutree_content']);
         }
 
         // get other form data

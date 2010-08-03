@@ -846,7 +846,12 @@ myTree.prototype = {
         var form = event.element() ? Event.element(event) : $(event);
         this.save();
         this.unsaved = false;
-        form.insert(new Element('input',{type:'hidden',name:this.config.formElement,id:this.config.formElement,value:this.saved}));
+        form.insert(new Element('input',{
+            type:'hidden',
+            name:this.config.formElement,
+            id:this.config.formElement,
+            value:Zikula.urlsafeJsonEncode(this.saved,false)
+        }));
     },
     save: function() {
         this.saved = {};
