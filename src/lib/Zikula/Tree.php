@@ -257,34 +257,9 @@ class Zikula_Tree
         $size = count($tree);
         $i = 1;
         foreach ($tree as $id => $tab) {
-            $links = array();
-            $item = $tab['item'];
-            $toggle = '<img class="'.$this->config['toggler'].'" alt="" src="'.$this->config['imagesDir'].$this->config['minus'].'" />';
-
-            $iconImage = !empty($item['icon']) ? $item['icon'] : $this->config['item'];
-            $iconImage = !empty($tab['nodes']) ?  $this->config['parentOpen'] : $this->config['item'];
-            $icon = '<img class="'.$this->config['icon'].'" alt="" src="'.$this->config['imagesDir'].$iconImage.'" />';
-
-            $class = $item['active'] == 1 ? $item['class'] : $this->config['nodeUnactive'].' '.$item['class'];
-            $linkClass = !empty($class) ? ' class="'.$class.'"' : '';
-            $linkHref = 'href="'.$item['href'].'"';
-            $linkTitle = !empty($item['title']) ? ' title="'.$item['title'].'"' : '';
-
-            $links[] = "<a {$linkHref} {$linkTitle} {$linkClass}>{$item['name']}</a>";
-
             $subhtml = !empty($tab['nodes']) ? $this->_toHTML($tab['nodes']) : '';
-
-            $liId = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
-            $links = implode('',$links);
-            $liClass = array();
-            $liClass[] = $size == 1 ? $this->config['nodeSingle'] : '';
-            $liClass[] = ($i == 1 && $size > 1) ? $this->config['nodeFirst'] : '';
-            $liClass[] = ($i == $size && $size > 1) ? $this->config['nodeLast'] : '';
-            $liClass[] = !empty($tab['nodes']) ? $this->config['nodeParent'] : $this->config['nodeLeaf'];
-            $liClass = trim(implode(' ', $liClass));
+            $liHtml[] = $this->_nodeToHTML($id, $tab, $size, $i, $subhtml);
             $i++;
-            $liClass ='class="'.$liClass.'"';
-            $liHtml[] = "<li {$liId} {$liClass}>{$toggle}{$icon}{$links}{$subhtml}</li>";
         }
 
         $ulID = !empty($treeId) ? ' id="'.$treeId.'"' : '';
@@ -293,5 +268,47 @@ class Zikula_Tree
         $html = "<ul {$ulID} {$ulClass}>{$liHtml}</ul>";
 
         return $html;
+    }
+
+
+    /**
+     * Parse single tree node to HTML
+     *
+     * @param int    $id      Node id
+     * @param array  $tab     Node data
+     * @param int    $size    Tree size
+     * @param int    $i       Current node index
+     * @param string $nodeSub HTML code for subnodes if node has such, default null
+     *
+     * @return string Node HTML code
+     */
+    private function _nodeToHTML($id,$tab, $size, $i,$nodeSub=null)
+    {
+        $links = array();
+        $item = $tab['item'];
+        $toggle = '<img class="'.$this->config['toggler'].'" alt="" src="'.$this->config['imagesDir'].$this->config['minus'].'" />';
+
+        $iconImage = !empty($item['icon']) ? $item['icon'] : $this->config['item'];
+        $iconImage = !empty($tab['nodes']) ?  $this->config['parentOpen'] : $this->config['item'];
+        $icon = '<img class="'.$this->config['icon'].'" alt="" src="'.$this->config['imagesDir'].$iconImage.'" />';
+
+        $class = $item['active'] == 1 ? $item['class'] : $this->config['nodeUnactive'].' '.$item['class'];
+        $linkClass = !empty($class) ? ' class="'.$class.'"' : '';
+        $linkHref = 'href="'.$item['href'].'"';
+        $linkTitle = !empty($item['title']) ? ' title="'.$item['title'].'"' : '';
+
+        $links[] = "<a {$linkHref} {$linkTitle} {$linkClass}>{$item['name']}</a>";
+
+        $liId = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
+        $links = implode('',$links);
+        $liClass = array();
+        $liClass[] = $size == 1 ? $this->config['nodeSingle'] : '';
+        $liClass[] = ($i == 1 && $size > 1) ? $this->config['nodeFirst'] : '';
+        $liClass[] = ($i == $size && $size > 1) ? $this->config['nodeLast'] : '';
+        $liClass[] = !empty($tab['nodes']) ? $this->config['nodeParent'] : $this->config['nodeLeaf'];
+        $liClass = trim(implode(' ', $liClass));
+        $liClass ='class="'.$liClass.'"';
+
+        return "<li {$liId} {$liClass}>{$toggle}{$icon}{$links}{$nodeSub}</li>";
     }
 }
