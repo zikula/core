@@ -97,6 +97,31 @@ class  Blocks_MenutreeTree extends Zikula_Tree
     }
 
     /**
+     * Get HTML output
+     *
+     * @return string HTML output.
+     */
+    public function getHTML()
+    {
+        PageUtil::addVar('stylesheet', $this->config['cssFile']);
+        PageUtil::addVar('javascript', 'prototype');
+        PageUtil::addVar('javascript', 'livepipe');
+        PageUtil::addVar('javascript', 'zikula.tree');
+        PageUtil::addVar('javascript', 'system/Blocks/javascript/Zikula.Menutree.Tree.js');
+        $jsClass = 'Zikula.Menutree.Tree';
+        $initScript = "
+        <script type=\"text/javascript\">
+            document.observe('dom:loaded', function() {
+                {$jsClass}.add('{$this->config['id']}','{$this->getConfigForScript()}');
+            });
+        </script>";
+        PageUtil::addVar('rawtext', $initScript);
+        $wraperClass = !empty($this->config['wraperClass']) ? 'class="'.$this->config['wraperClass'].'"' : '';
+        $tree = $this->_toHTML($this->tree,$this->config['id']);
+        $this->html = "<div {$wraperClass}>{$tree}</div>";
+        return $this->html;
+    }
+    /**
      * Parse single tree node to HTML
      *
      * @param int    $id      Node id
