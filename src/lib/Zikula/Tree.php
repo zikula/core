@@ -22,28 +22,28 @@ class Zikula_Tree
      *
      * @var array
      */
-    private $config;
+    protected $config;
 
     /**
      * Data.
      *
      * @var array
      */
-    private $data;
+    protected $data;
 
     /**
      * Tree data.
      *
      * @var array
      */
-    private $tree;
+    protected $tree;
 
     /**
      * HTML output.
      *
      * @var string
      */
-    private $html;
+    protected $html;
 
     /**
      * Constructor.
@@ -182,7 +182,7 @@ class Zikula_Tree
      *
      * @return array Data array.
      */
-    private function _parseString($menuString)
+    protected function _parseString($menuString)
     {
         //level|text|href|title|icon|target|expanded
         $keys = array('level','name','href','title','icon','target','expanded');
@@ -205,7 +205,7 @@ class Zikula_Tree
      *
      * @return array Tree data.
      */
-    private function _parseData()
+    protected function _parseData()
     {
         $this->tree = array();
         $map = array();
@@ -251,7 +251,7 @@ class Zikula_Tree
      *
      * @return string HTML output.
      */
-    private function _toHTML($tree,$treeId=null)
+    protected function _toHTML($tree,$treeId=null)
     {
         $liHtml = array();
         $size = count($tree);
@@ -282,7 +282,7 @@ class Zikula_Tree
      *
      * @return string Node HTML code
      */
-    private function _nodeToHTML($id,$tab, $size, $i,$nodeSub=null)
+    protected function _nodeToHTML($id,$tab, $size, $i,$nodeSub=null)
     {
         $links = array();
         $item = $tab['item'];
