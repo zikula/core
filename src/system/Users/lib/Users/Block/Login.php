@@ -74,6 +74,7 @@ class Users_Block_Login extends Zikula_Block
 
             $authmodule = FormUtil::getPassedValue('loginwith', $this->getVar('default_authmodule', 'Users'), 'GET');
 
+            $this->view->setCaching(false);
             $this->view->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
                        ->assign('authmodule', $authmodule)
                        ->assign('authmodules', $authmodules)
