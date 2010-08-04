@@ -1,7 +1,7 @@
 {ajaxheader modname="blocks" filename="menutree.js" effects=1 dragdrop=1 ui=true}
 {pageaddvar name="javascript" value="system/Blocks/javascript/functions.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/contextmenu.js"}
-{pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"}
+{*pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"*}
 {pageaddvar name="stylesheet" value="system/Blocks/style/menutree/contextmenu.css"}
 
 {if !empty($redirect)}
@@ -183,7 +183,7 @@
         </div>
         {/if}
         <div id="menuTreeContainer">
-            {admmenutree data=$menutree_content id='adm-menutree' nodeprefix='node_'}
+            {$menutree_content}
         </div>
 
         <script type="text/javascript">
@@ -191,7 +191,7 @@
             // some config for js functions
             var MTConfig = new Object;
             MTConfig.cookieName = 'menutree_{{$blockinfo.bid}}';
-
+/*
             var tconfig = {
                 treeElement:    'adm-menutree'
                 ,formToObserve: 'blockupdateform'
@@ -249,7 +249,7 @@
             var data = {linkhref: '{{$menutree_newurl|safetext}}'};
             tree.newNode(data);
             {{/if}}
-
+*/
             //]]>
         </script>
 

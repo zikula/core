@@ -212,7 +212,15 @@ class Blocks_Block_Menutree extends Zikula_Block
                 }
             }
             // decode tree array
-            $vars['menutree_content'] = $this->_decode_tree($vars['menutree_content'],$langs);
+            $tree = new Blocks_MenutreeTree();
+            $tree->setOption('id','adm-menutree');
+            $tree->setOption('sortable',true);
+            $langs['list'][] = 'pl';
+            $tree->setOption('langs',$langs);
+            $tree->loadArrayData($vars['menutree_content']);
+            $vars['menutree_content'] = $tree->getHTML();
+//            dump($vars['menutree_content']);
+//            $vars['menutree_content'] = $this->_decode_tree($vars['menutree_content'],$langs);
         }
 
         // Create output object
