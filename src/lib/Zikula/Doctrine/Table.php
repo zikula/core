@@ -19,6 +19,20 @@
 class Zikula_Doctrine_Table extends Doctrine_Table
 {
     /**
+     * Getter of the internal tablename.
+     *
+     * @return string Internal table name.
+     */
+    public function getInternalTableName()
+    {
+        $format = $this->_conn->getAttribute(Doctrine_Core::ATTR_TBLNAME_FORMAT);
+        $format = str_replace('%s', '', $format);
+
+        $tableName = $this->getTableName();
+        return str_replace($format, '', $tableName);
+    }
+
+    /**
      * Select and return a field value.
      *
      * @param string $field The name of the field we wish to marshall.
