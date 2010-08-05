@@ -2716,19 +2716,18 @@ class DBUtil
                             'I4' => 'integer',
                             'I8' => 'integer',
                             'N' => 'number',
-                            'L' => 'integer',
+                            'L' => 'boolean',
                             'T' => 'timestamp',
                             'TS' => 'timestamp',
                             'X' => 'clob',
                             'X2' => 'blob',
                             'XL' => 'clob');
             $iLengthMap = array(
-                            'I' => 11, // maps to I4
-                            'I1' => 3,
-                            'I2' => 5,
-                            'I4' => 11,
-                            'I8' => 20,
-                            'L' => 1);
+                            'I'  => 4, // maps to I4
+                            'I1' => 1,
+                            'I2' => 2,
+                            'I4' => 4,
+                            'I8' => 8);
             $search = array(
                             '+',
                             '-',
@@ -2795,6 +2794,7 @@ class DBUtil
 
                 // transform to Doctrine datadict representation
                 for ($i = 1; $i <= count($fields); $i++) {
+                    $fields[$i] = strtoupper($fields[$i]);
                     if ($fields[$i] == 'AUTO' || $fields[$i] == 'AUTOINCREMENT') {
                         $fAuto = true;
                     } elseif ($fields[$i] == 'PRIMARY') {
@@ -2828,7 +2828,7 @@ class DBUtil
 
                 $fieldDef = array();
                 $fieldDef['type'] = $fType;
-                $fieldDef['length'] = (!$fLen && isset($iLengthMap[$type]) ? ($fUSign ? $iLengthMap[$type] : $iLengthMap[$type] - 1) : $fLen);
+                $fieldDef['length'] = (!$fLen && isset($iLengthMap[$type]) ? $iLengthMap[$type] : $fLen);
 
                 if ($fType == 'decimal') {
                     $fieldDef['scale'] = $fScale;
@@ -2837,10 +2837,11 @@ class DBUtil
                 $fieldDef['autoincrement'] = $fAuto;
                 $fieldDef['primary'] = $fPrim;
                 $fieldDef['unsigned'] = $fUSign;
-                $fieldDef['notnull'] = ($fNull !== null ? ($fNull == 'NOTNULL' ? 1 : 0) : null);
+                $fieldDef['notnull'] = ($fNull !== null && $fType != 'boolean' ? ($fNull == 'NOTNULL' ? true : false) : null);
                 if ($fDef != null) {
                     $fieldDef['default'] = $fDef;
                 }
+
                 $ddict[$val] = $fieldDef;
             }
 
