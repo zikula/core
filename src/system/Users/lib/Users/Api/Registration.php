@@ -1068,7 +1068,7 @@ class Users_Api_Registration extends Zikula_Api
      *                      array $args['filter']   An array of field/value combinations used to filter the results. Optional, default
      *                                                  is to count all records.
      *
-     * @return int|bool Numer of pending applications, false on error.
+     * @return integer|boolean Numer of pending applications, false on error.
      */
     public function countAll($args)
     {
