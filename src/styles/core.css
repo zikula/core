@@ -1115,6 +1115,12 @@ div.z-formlist label {
     padding: 0;
     overflow: visible;
 }
+.z-window .z-window-body.iframe iframe{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%
+}
 .z-window .z-window-header {
     font-weight: bold;
     text-align:center;
