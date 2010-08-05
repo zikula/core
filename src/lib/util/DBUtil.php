@@ -2736,6 +2736,7 @@ class DBUtil
                             '%');
             $replace = array(
                             '');
+
             foreach ($tables[$tablecol] as $id => $val) {
                 $hasMath = (bool)(strcmp($val, str_replace($search, $replace, $val)));
                 if (!$hasMath && !isset($tables[$tabledef][$id])) {
@@ -3607,15 +3608,27 @@ class DBUtil
     {
         $def = self::getTableDefinition($table);
         $opt = self::getTableOptions($table);
+
+        $tables  = self::getTables();
+        $columns = $tables["{$table}_column"];
+        $columns = array_flip($columns);
+
         $hasColumns = '';
         foreach ($def as $columnName => $array) {
+            $columnAlias = $columns[$columnName];
+            $type   = $array['type'];
             $length = (is_null($array['length']) ? 'null' : $array['length']);
-            $hasColumns .= "\$this->hasColumn('$columnName', '$array[type]', $length, " . var_export($array, true) . ");\n";
+            unset($array['type']);
+            unset($array['length']);
+            $array = array_filter($array);
+            $array = !empty($array) ? ', '.var_export($array, true) : null;
+            $length = (!empty($array) || $length != 'null') ? ", $length" : '';
+            $hasColumns .= "\$this->hasColumn('$columnName as $columnAlias', '$type'{$length}{$array});\n";
         }
 
         $options = '';
         foreach ($opt as $k => $v) {
-            if ($k == 'type') {
+            if (in_array($k, array('type', 'charset', 'collate'))) {
                 continue;
             }
             $options .= "\$this->option('$k', '$v');\n";
@@ -3629,11 +3642,6 @@ class {$table}_DBUtilRecord extends Doctrine_Record
         \$this->setTableName('$table');
         $hasColumns
         $options
-    }
-
-    public function setUp()
-    {
-        self::setUp();
     }
 }
 
@@ -3653,9 +3661,10 @@ class {$table}_DBUtilRecordTable extends Doctrine_Table {}
     public static function loadDBUtilDoctrineModel($table)
     {
         // don't double load
-        if (class_exists("{$table}_DBUtilRecord")) {
+        if (class_exists("{$table}_DBUtilRecord", false)) {
             return;
         }
-        eval(self::buildDoctrineModuleClass($table));
+        $code = self::buildDoctrineModuleClass($table);
+        eval($code);
     }
 }
