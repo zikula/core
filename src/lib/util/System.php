@@ -285,8 +285,8 @@ class System
         static $path;
 
         if (!isset($path)) {
-            $path = self::serverGetVar('SCRIPT_NAME');
-            $path = str_replace(strrchr($path, '/'), '', $path);
+            $script_name = self::serverGetVar('SCRIPT_NAME');
+            $path = substr($script_name, 0, strrpos($script_name, '/'));
         }
 
         $serviceManager = ServiceUtil::getManager();
