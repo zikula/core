@@ -25,7 +25,7 @@ class  Blocks_MenutreeTree extends Zikula_Tree
     public function __construct(array $config=array())
     {
         $config = array_merge($config,array(
-            'langs'         => array('list' => array('en')),
+            'langs'         => array('en'),
             'sortable'      => false,
         ));
         parent::__construct($config);
@@ -42,12 +42,12 @@ class  Blocks_MenutreeTree extends Zikula_Tree
         $map = array();
 
         $langs = $this->config['langs'];
-        $reflang =  $langs['list'][0];
+        $reflang =  $langs[0];
 
         foreach ($this->data as $a) {
             $item = array();
 
-            foreach ((array)$langs['list'] as $lang) {
+            foreach ((array)$langs as $lang) {
                 if (empty($a[$lang])) {
                     if (!empty($a[$reflang])) {
                         $_item = $a[$reflang];
@@ -135,7 +135,7 @@ class  Blocks_MenutreeTree extends Zikula_Tree
     protected function _nodeToHTML($id,$tab, $size, $i,$nodeSub=null)
     {
         $langs = $this->config['langs'];
-        $reflang =  $langs['list'][0];
+        $reflang =  $langs[0];
 
         $links = array();
         $item = $tab['item'];

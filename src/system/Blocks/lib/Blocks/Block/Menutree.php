@@ -215,8 +215,9 @@ class Blocks_Block_Menutree extends Zikula_Block
             $tree = new Blocks_MenutreeTree();
             $tree->setOption('id','adm-menutree');
             $tree->setOption('sortable',true);
-            $langs['list'][] = 'pl';
-            $tree->setOption('langs',$langs);
+            $_langs = $langs['list'];
+            $_langs[] = 'pl';
+            $tree->setOption('langs',$_langs);
             $tree->loadArrayData($vars['menutree_content']);
             $vars['menutree_content'] = $tree->getHTML();
 //            dump($vars['menutree_content']);
