@@ -916,7 +916,7 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.FormDi
             if(button && button.name) {
                 buttonData[button.name] = button.value;
             }
-            if(form.action && button) {
+            if(form.action && form.readAttribute('action') != '#' && button) {
                 this.isNotified = true;
                 if(this.options.ajaxRequest) {
                     form.request({
