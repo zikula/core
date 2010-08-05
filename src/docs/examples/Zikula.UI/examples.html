@@ -7,6 +7,13 @@
         <link rel="stylesheet" href="../../../themes/Andreas08/style/style.css" type="text/css" />
         <link rel="stylesheet" href="../../../styles/core.css" type="text/css" />
         <!--[if IE]><link rel="stylesheet" type="text/css" href="../../../styles/core_iehacks.css" media="print,projection,screen" /><![endif]-->
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            if (typeof(Zikula) == 'undefined') {Zikula = {};}
+            Zikula.Config = {"entrypoint":"index.php","baseURL":"http:\/\/w\/zikula.git\/.run\/zikula.git.core\/","baseURI":"\/zikula.git\/.run\/zikula.git.core\/","ajaxtimeout":"5000","lang":"en"}
+         /* ]]> */
+        </script>
+
         <script type="text/javascript" src="../../../javascript/ajax/proto_scriptaculous.combined.min.js"></script>
         <script type="text/javascript" src="../../../javascript/helpers/Zikula.js"></script>
         <script type="text/javascript" src="../../../javascript/livepipe/livepipe.combined.min.js"></script>
@@ -396,17 +403,17 @@
                     <div class="code">
                         <p><a id="formdialog" title="Sample form dialog" href="#formdialog_content">Open form</a></p>
                         <div id="formdialog_content" style="display: none;">
-                            <form enctype="application/x-www-form-urlencoded" method="post" class="z-form">
+                            <form action="#" enctype="application/x-www-form-urlencoded" method="post" class="z-form">
                                 <div>
                                     <fieldset>
                                         <legend>General settings</legend>
                                         <div class="z-formrow">
                                             <label for="search_itemsperpage">Items per page</label>
-                                            <input type="text" value="10" size="3" name="itemsperpage" id="search_itemsperpage">
+                                            <input type="text" value="10" size="3" name="itemsperpage" id="search_itemsperpage" />
                                         </div>
                                         <div class="z-formrow">
                                             <label for="search_limitsummary">Number of characters to display in item summaries</label>
-                                            <input type="text" value="255" size="5" name="limitsummary" id="search_limitsummary">
+                                            <input type="text" value="255" size="5" name="limitsummary" id="search_limitsummary" />
                                         </div>
                                     </fieldset>
                                 </div>
