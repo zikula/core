@@ -26,13 +26,14 @@ jQuery(document).ready(function() {
 
 	
 	//Close/Open portlets
+	
 	jQuery(".portlet-header").hover(function() {
 		jQuery(this).addClass("ui-portlet-hover");
 	},
 	function(){
 		jQuery(this).removeClass("ui-portlet-hover");
 	});
-
+	jQuery('.portlet-content').hide();
 	jQuery(".portlet-header .ui-icon").click(function() {
 		jQuery(this).toggleClass("ui-icon-circle-arrow-n");
 		jQuery(this).parents(".portlet:first").find(".portlet-content").toggle();

@@ -1,102 +1,33 @@
-/* Basic Layout changes */
-ul#admintabs li {
-	border-radius: .4em .4em 0 0 ;
-	-webkit-border-radius: .4em .4em 0 0 ;
-	-moz-border-radius: .4em .4em 0 0 ;
-}
-ul#admintabs li > a:hover {
-	border-radius: .4em 0 0 0 ;
-	-webkit-border-radius: .4em 0 0 0 ;
-	-moz-border-radius: .4em 0 0 0 ;
-}
-ul#admintabs li#addcat #addcatlink {
-    border-radius: .4em .4em 0 0 ;
-	-webkit-border-radius: .4em .4em 0 0 ;
-	-moz-border-radius: .4em .4em 0 0 ;
-}
+/* small z-tab override */
+ul#admintabs li {	border-radius: .4em .4em 0 0 ;-webkit-border-radius: .4em .4em 0 0 ;-moz-border-radius: .4em .4em 0 0 ;}
+ul#admintabs li > a:hover {border-radius: .4em 0 0 0 ;-webkit-border-radius: .4em 0 0 0 ;-moz-border-radius: .4em 0 0 0 ;}
+ul#admintabs li#addcat #addcatlink {border-radius: .4em .4em 0 0 ;-webkit-border-radius: .4em .4em 0 0 ;-moz-border-radius: .4em .4em 0 0 ;}
+ul#admintabs li#addcat a#addcatlink:hover {border-radius: .4em .4em 0 0 ;-webkit-border-radius: .4em .4em 0 0 ;-moz-border-radius: .4em .4em 0 0 ;}
+ul#admintabs li > .z-admindrop:hover {border-radius: 0 .4em 0 0 ;-webkit-border-radius: 0 .4em 0 0 ;-moz-border-radius: 0 .4em 0 0 ;}
 
-ul#admintabs li#addcat a#addcatlink:hover {
-	border-radius: .4em .4em 0 0 ;
-	-webkit-border-radius: .4em .4em 0 0 ;
-	-moz-border-radius: .4em .4em 0 0 ;    
-}
-ul#admintabs li > .z-admindrop:hover {
-    border-radius: 0 .4em 0 0 ;
-	-webkit-border-radius: 0 .4em 0 0 ;
-	-moz-border-radius: 0 .4em 0 0 ;  
-}
+.z-tab{border-radius: .6em .6em 0 0 ;-webkit-border-radius: .6em .6em 0 0 ;-moz-border-radius: .6em .6em 0 0 ;}
+.z-tabs li > a:hover {border-radius: .6em .6em 0 0 ;-webkit-border-radius: .6em .6em 0 0 ;	-moz-border-radius: .6em .6em 0 0 ;background:#FFFFFF !important;color:#000;}
+.z-tabs li.active {border-radius: .6em .6em 0 0 ;-webkit-border-radius: .6em .6em 0 0 ;-moz-border-radius: .6em .6em 0 0 ;background:none repeat scroll 0 0 #fff;z-index:2000;}
+.z-tabs li.active a:hover {border-radius: .6em .6em 0 0 ;-webkit-border-radius: .6em .6em 0 0 ;-moz-border-radius: .6em .6em 0 0 ;border-right:1px solid transparent;}
 
-.z-tab{
-	border-radius: .6em .6em 0 0 ;
-	-webkit-border-radius: .6em .6em 0 0 ;
-	-moz-border-radius: .6em .6em 0 0 ;
-}
-.z-tabs li > a:hover {
-	border-radius: .6em .6em 0 0 ;
-	-webkit-border-radius: .6em .6em 0 0 ;
-	-moz-border-radius: .6em .6em 0 0 ;
-    background:#FFFFFF !important;
-    color:#000;
-    text-decoration:none;
-}
-.z-tabs li.active {
-	border-radius: .6em .6em 0 0 ;
-	-webkit-border-radius: .6em .6em 0 0 ;
-	-moz-border-radius: .6em .6em 0 0 ;
-    background:none repeat scroll 0 0 #fff;
-    z-index:2000;
-}
-.z-tabs li.active a:hover {
-	border-radius: .6em .6em 0 0 ;
-	-webkit-border-radius: .6em .6em 0 0 ;
-	-moz-border-radius: .6em .6em 0 0 ;
-    border-right:1px solid transparent;
-}
 .ui-helper-hidden, .hidden { display: none; }
 .ui-helper-hidden-accessible { position: absolute; left: -99999999px; }
 .ui-helper-reset { margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none; }
 .ui-helper-clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
 .ui-helper-clearfix { display: inline-block; }
+
+h1 {border-bottom: 1px dotted grey;margin-bottom: 8px;padding-bottom:4px;font-size: 18px;color:#302D2F;}
+h2 {font-size:16px;color:#302D2F;}
+h3 {font-size:14px;padding:4px;color:#302D2F;}
+
 /* required comment for clearfix to work in Opera \*/
 * html .ui-helper-clearfix { height:1%; }
 .ui-helper-clearfix { display:block; }
 /* end clearfix */
 .ui-helper-zfix { width: 100%; height: 100%; top: 0; left: 0; position: absolute; opacity: 0; filter:Alpha(Opacity=0); }
 
-.content-box-header h2, .content-box-header h3, .content-box-header h4 {
-	font-family:"Segoe UI",Frutiger,Tahoma,Helvetica,"Helvetica Neue",Arial,sans-serif;
-	font-weight:bold;
-	padding:0 0 10px;
-	margin:0 0 10px;
-	border-bottom:#ccc dotted 1px;
-}
 
-.content-box h2.ui-box-header, .content-box h3.ui-box-header, .content-box h4.ui-box-header {
-	padding:7px 4px 6px;
-}
-
-.content-box h2 {
-	font-size:1.8em;
-}
-
-.content-box h3 {
-	font-size:1.5em;
-}
-
-.content-box h4 {
-	font-size:1.2em;
-}
-
-.content-box-header {
-	padding:0!important;
-}
-
-.content-box-header2 {
-	padding:10px!important;
-}
-
-	/* Interaction states */
-
+/* Interaction states */
 .ui-state-default, .ui-widget-content .ui-state-default, .pagination a {
 	font-weight:bold;
 	outline:none;
@@ -139,27 +70,6 @@ ul#admintabs li > .z-admindrop:hover {
 #top-buttons {
 	float:right;
 	padding:9px 15px 0 0;
-}
-
-	/* Tooltip */
-
-#tooltip {
-	position:absolute;
-	z-index:30000;
-	padding:3px;
-	font-size:0.9em;
-}
-
-#tooltip div {
-	margin:0;
-	padding:5px;
-	font-size:0.9em;
-}
-
-#tooltip h3 {
-	font-weight:bold;
-	padding:5px;
-	margin:0;
 }
 
 /* Icons
@@ -982,7 +892,7 @@ ul#icons span.ui-icon {
 
 #page_wrapper #page-header #page-header-wrapper {
 	margin:0 20px;
-	min-height:76px;
+	min-height:74px;
 }
 
 #page_wrapper #page-header #page-header-wrapper #top {

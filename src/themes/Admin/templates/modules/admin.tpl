@@ -30,8 +30,8 @@
 
 {browserhack condition="if lte IE 6"}
     <link href="{$themepath}/style/ie.css" rel="stylesheet" media="all" />
-    <script src="{$themepath}/js/pngfix.js"></script>
-    <script>
+    <script type="text/javascript" src="{$themepath}/js/pngfix.js"></script>
+    <script type="text/javascript">
 	  /* Fix IE6 Transparent PNG */
 	  DD_belatedPNG.fix('.logo,#search-bar input');
     </script>
@@ -42,7 +42,7 @@
 		<div id="page-header">
 			<div id="page-header-wrapper">
 				<div id="top">
-					<p class="logo" id="logo">{gt text='Zikula Administration'}</p>
+					<span class="logo" id="logo">{gt text='Zikula Administration'}</span>
 					<div class="welcome">
 					{include file="includes/adminnavtop.tpl"}
 							
@@ -54,7 +54,7 @@
 					<li class="z-tab"><a href="#eqtwo">{gt text='Dashboard'}</a></li>					
 					<li class="z-tab"><a href="#eqthree">{gt text='Routines'}</a></li>
 					<li class="z-tab"><a href="#eqfour">{gt text='Help'}</a></li>					
-					<li class="z-tab"><a href="#eqfive">{gt text='Info'}</a></li>
+					<li class="z-tab"><a href="{modurl modname="sysinfo" type="admin"}">{gt text='Info'}</a></li>
 					<li class="z-tab"><a href="#eqsix">{gt text='News'}</a></li>
 					{/checkpermissionblock}				
                 </ul>
@@ -73,7 +73,7 @@
 	                <div id="eqtwo">{include file="includes/dashboard.tpl"}</div>
 					<div id="eqthree">{include file="includes/routinetab.tpl"}</div>
 					<div id="eqfour">{include file="includes/helptab.tpl"}</div>
-					<div id="eqfive">{include file="includes/infotab.tpl"}</div>
+					<div id="eqfive"></div>
 					<div id="eqsix">{include file="includes/newstab.tpl"}</div>
 					{/checkpermissionblock}
 					<script type="text/javascript">

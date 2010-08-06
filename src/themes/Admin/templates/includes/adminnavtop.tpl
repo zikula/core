@@ -93,4 +93,3 @@
 <script type="text/javascript">
     var defwindowmodal = new Zikula.UI.Window($('defwindowmodal'),{modal:true});
 </script>
-

@@ -17,7 +17,7 @@ $themeversion['displayname'] = __('Admin');
 $themeversion['description'] = __("Admin Theme");
 $themeversion['version'] = '1.0';
 $themeversion['admin'] = 1;
-$themeversion['user'] = 0;
+$themeversion['user'] = 1;
 $themeversion['system'] = 0;
 $themeversion['xhtml'] = true;
 
