@@ -219,7 +219,7 @@ function changeModuleCategoryResponse(req) {
     var element = document.getElementById('A' + json.response);
     if(json.newParentCat != element.parentNode.id) {}
     //add module to new category submenu 
-    eval("context_catcontext" + json.newParentCat + ".addItem({label: \'" + json.modulename + "',callback: function(){window.location = document.location.pnbaseURL + \'" + json.url + "\';}});");
+    eval("context_catcontext" + json.newParentCat + ".addItem({label: \'" + json.modulename + "',callback: function(){window.location = Zikula.Config.baseURL + \'" + json.url + "\';}});");
     //remove from old category submenu
     eval("var oldmenuitems = context_catcontext" + json.oldcid + ".items");
     for (var j in oldmenuitems) {

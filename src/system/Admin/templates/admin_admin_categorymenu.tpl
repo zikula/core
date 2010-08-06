@@ -35,7 +35,7 @@
                 {{foreach from=$menuoption.items item=item}}
                     context_catcontext{{$menuoption.cid}}.addItem({
                         label: '{{$item.menutext|safetext}}',
-                        callback: function(){window.location = document.location.pnbaseURL + '{{$item.menutexturl}}';}
+                        callback: function(){window.location = Zikula.Config.baseURL + '{{$item.menutexturl}}';}
                     });
                 {{/foreach}}
 
