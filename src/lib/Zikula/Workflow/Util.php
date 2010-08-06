@@ -49,14 +49,14 @@ class Zikula_Workflow_Util
         // Get module info
         $modinfo = ModUtil::getInfoFromName($module);
         if (!$modinfo) {
-            return z_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
+            return z_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('Zikula_Workflow_Util', $module)));
         }
 
         $path = self::_findpath("$schema.xml", $module);
         if ($path) {
             $workflowXML = file_get_contents($path);
         } else {
-            return z_exit(__f('%1$s: Unable to find the workflow file [%2$s].', array('WorkflowUtil', $path)));
+            return z_exit(__f('%1$s: Unable to find the workflow file [%2$s].', array('Zikula_Workflow_Util', $path)));
         }
 
         // instanciate Workflow Parser
@@ -93,7 +93,7 @@ class Zikula_Workflow_Util
         // Get module info
         $modinfo = ModUtil::getInfoFromName($module);
         if (!$modinfo) {
-            return z_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
+            return z_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('Zikula_Workflow_Util', $module)));
         }
 
         $moduledir = $modinfo['directory'];
@@ -106,12 +106,12 @@ class Zikula_Workflow_Util
             // non system module
             $modulepath = "modules/$moduledir";
         } else {
-            return z_exit(__f('%s: Unsupported module type.', 'WorkflowUtil'));
+            return z_exit(__f('%s: Unsupported module type.', 'Zikula_Workflow_Util'));
         }
 
         // ensure module is active
         if (!$modinfo['state'] == 3) {
-            return z_exit(__f('%1$s: The module [%2$s] is not active.', array('WorkflowUtil', $module)));
+            return z_exit(__f('%1$s: The module [%2$s] is not active.', array('Zikula_Workflow_Util', $module)));
         }
 
         $themedir = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
@@ -146,15 +146,15 @@ class Zikula_Workflow_Util
     public static function executeAction($schema, &$obj, $actionID, $table = null, $module = null, $idcolumn = 'id')
     {
         if (!isset($obj)) {
-            return z_exit(__f('%s: $obj not set.', 'WorkflowUtil'));
+            return z_exit(__f('%1$s: %2$s not set.', array('Zikula_Workflow_Util', 'obj')));
         }
 
-        if (!is_array($obj)) {
-            return z_exit(__f('%s: $obj must be an array.', 'WorkflowUtil'));
+        if (!is_array($obj) && !is_object($obj)) {
+            return z_exit(__f('%1$s: %2$s must be an array or an object.', array('Zikula_Workflow_Util', 'obj')));
         }
 
         if (empty($schema)) {
-            return z_exit(__f('%s: $schema needs to be named', 'WorkflowUtil'));
+            return z_exit(__f('%1$s: %2$s needs to be named', array('Zikula_Workflow_Util', 'schema')));
         }
 
         if (is_null($module)) {
@@ -298,12 +298,12 @@ class Zikula_Workflow_Util
      */
     public static function getActionsForObject(&$obj, $dbTable, $idcolumn = 'id', $module = null)
     {
-        if (!is_array($obj)) {
-            return z_exit(__f('%1$s: %2$s is not an array.', array('WorkflowUtil::getActionsForObject', 'object')));
+        if (!is_array($obj) && !is_object($obj)) {
+            return z_exit(__f('%1$s: %2$s is not an array nor an object.', array('Zikula_Workflow_Util::getActionsForObject', 'object')));
         }
 
         if (!isset($dbTable)) {
-            return z_exit(__f('%1$s: %2$s is specified.', array('WorkflowUtil::getActionsForObject', 'dbTable')));
+            return z_exit(__f('%1$s: %2$s is specified.', array('Zikula_Workflow_Util::getActionsForObject', 'dbTable')));
         }
 
         if (empty($module)) {
@@ -337,12 +337,12 @@ class Zikula_Workflow_Util
             $module = ModUtil::getName();
         }
 
-        if (!isset($obj) || !is_array($obj)) {
-            return z_exit(__f('%1$s: %2$s is not an array.', array('WorkflowUtil::getWorkflowForObject', 'object')));
+        if (!isset($obj) || (!is_array($obj) && !is_object($obj))) {
+            return z_exit(__f('%1$s: %2$s is not an array nor an object.', array('Zikula_Workflow_Util::getWorkflowForObject', 'object')));
         }
 
         if (!isset($dbTable)) {
-            return z_exit(__f('%1$s: %2$s is specified.', array('WorkflowUtil::getWorkflowForObject', 'dbTable')));
+            return z_exit(__f('%1$s: %2$s is not specified.', array('Zikula_Workflow_Util::getWorkflowForObject', 'dbTable')));
         }
 
         $workflow = false;
@@ -367,7 +367,11 @@ class Zikula_Workflow_Util
         }
 
         // attach workflow to object
-        $obj['__WORKFLOW__'] = $workflow;
+        if ($obj instanceof Doctrine_Record) {
+            $obj->mapValue('__WORKFLOW__', $workflow);
+        } else {
+            $obj['__WORKFLOW__'] = $workflow;
+        }
 
         return true;
     }
@@ -410,7 +414,7 @@ class Zikula_Workflow_Util
      *
      * @return boolean
      */
-    public static function permissionCheck($module, $schema, $obj = array(), $permLevel, $actionId = null)
+    public static function permissionCheck($module, $schema, $obj = array(), $permLevel = 'overview', $actionId = null)
     {
         // translate permission to something meaningful
         $permLevel = self::translatePermission($permLevel);
