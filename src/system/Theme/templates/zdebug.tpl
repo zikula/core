@@ -64,7 +64,7 @@
 		        <tt style="color: blue;">{ldelim}${$_debug_keys[vars]}{rdelim}</tt>
 		    </td>
 		    <td nowrap="nowrap">
-		        <tt style="color: green;white-space:pre"><!--raw-->{$_debug_vals[vars]|@debug_print_var:0:1000}<!--/raw--></tt>
+		        <tt style="color: green;white-space:pre"><!--raw-->{$_debug_vals[vars]|@zdebug_print_var:0:1000}<!--/raw--></tt>
 		    </td>
 		</tr>
 		{/if}

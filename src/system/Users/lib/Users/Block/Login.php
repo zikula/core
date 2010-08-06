@@ -18,6 +18,18 @@
  */
 class Users_Block_Login extends Zikula_Block
 {
+
+    /**
+     * Post-construction initialization.
+     *
+     * @return void
+     */
+    protected function postInitialize()
+    {
+        // Set caching to false by default.
+        $this->view->setCaching(false);
+    }
+
     /**
      * Initialise the block.
      *

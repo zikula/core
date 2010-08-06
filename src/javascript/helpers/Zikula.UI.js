@@ -227,6 +227,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
             iframeshim: Zikula.Browser.IE,
             closeOnClick: this.window.close,
             draggable: this.window.header,
+            onRemoteContentLoaded: function(){alert('loaded!')},
             insertRemoteContentAt: this.window.body
         }, options || { });
         if(options.modal) {
@@ -329,7 +330,24 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
         };
         if(this.indicator) {
             this.window.indicator.setStyle(bodyStyle);
+            if(Zikula.Browser.IE) {
+                var container = this.container,
+                    indicator = this.indicator;
+                new PeriodicalExecuter(function(pe) {
+                    if(container.down('iframe')) {
+                        var iframe = container.down('iframe');
+                        if (iframe.document.readyState == 'complete') {
+                            pe.stop();
+                            indicator.hide();
+                        }
+                    } else {
+                        pe.stop();
+                        indicator.hide();
+                    }
+                }, 1);
+            }
         }
+
         if(this.window.body.down('iframe')) {
             this.window.body.addClassName('iframe');
         }
@@ -519,7 +537,9 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
      * @return void
      */
     focusWindow: function() {
-        this.container.focus()
+        try {
+            this.container.focus()
+        } catch(e) {}
     },
     /**
      * Initializing window container
@@ -654,7 +674,9 @@ Zikula.UI.Dialog = Class.create(Zikula.UI.Window,/** @lends Zikula.UI.Dialog.pro
      * @return void
      */
     focusWindow: function() {
-        this.buttons[Object.keys(this.buttons)[0]].focus();
+        try {
+            this.buttons[Object.keys(this.buttons)[0]].focus();
+        } catch(e) {}
     },
     /**
      * Calls callback function after button click
@@ -896,7 +918,9 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.FormDi
      * @return void
      */
     focusWindow: function() {
-        this.container.down('form').focusFirstElement();
+        try {
+            this.container.down('form').focusFirstElement();
+        } catch(e) {}
     },
     /**
      * Calls callback function after button click.
@@ -916,7 +940,7 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.FormDi
             if(button && button.name) {
                 buttonData[button.name] = button.value;
             }
-            if(form.action && button) {
+            if(form.action && form.readAttribute('action') != '#' && button) {
                 this.isNotified = true;
                 if(this.options.ajaxRequest) {
                     form.request({

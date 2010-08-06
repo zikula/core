@@ -142,14 +142,12 @@ class ZMO
         // Caching can be turned off
         $this->enable_cache = $enable_cache;
 
-        $magic1 = (int)0x950412de;
-        $magic2 = (int)0xde120495;
-
         $this->stream = $reader;
         $magic = $this->readint();
-        if ($magic == $magic1) {
+
+        if ($magic == -1794895138 || $magic == 2500072158) { // (int)0x950412de; PHP 5.2 wont convert this properly
             $this->byteorder = 0;
-        } elseif ($magic == $magic2) {
+        } elseif ($magic == -569244523 || $magic == 3725722773) { //(int)0xde120495; PHP 5.2 wont convert this properly
             $this->byteorder = 1;
         } else {
             $this->error = 1; // not MO file

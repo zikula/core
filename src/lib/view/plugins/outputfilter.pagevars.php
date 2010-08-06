@@ -50,7 +50,7 @@ function smarty_outputfilter_pagevars($source, $view)
 
     // get inline js config and print it just before any script tag
     $jsConfig = JCSSUtil::getJSConfig();
-    if(!empty($jsConfig)) {
+    if (!empty($jsConfig)) {
         $return .= $jsConfig;
     }
 

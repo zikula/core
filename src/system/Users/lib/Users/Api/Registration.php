@@ -101,8 +101,7 @@ class Users_Api_Registration extends Zikula_Api
                     $testPass = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPass));
                     $testPassreminder = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPassreminder));
                     if (!empty($testPass) && !empty($testPassreminder) && (strlen($testPass) >= $minPasswordLength)
-                        && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false))
-                    {
+                            && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
                         $passwordErrors['reginfo_passreminder'][] = $this->__('Your password reminder is too similar to your password.');
                     }
                 }
@@ -876,8 +875,7 @@ class Users_Api_Registration extends Zikula_Api
     public function get($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-            || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)))
-        {
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
             return LogUtil::registerPermissionError();
         }
 
@@ -888,11 +886,9 @@ class Users_Api_Registration extends Zikula_Api
         // - uname is set with email
         // - email is set but the system allows multiple registrations per email
         if ((!isset($args['uid']) && !isset($args['uname']) && !isset($args['email']))
-            || (isset($args['uid']) && (isset($args['uname']) || isset($args['email'])))
-            || (isset($args['uname']) && isset($args['email']))
-            || (isset($args['email']) && !$uniqueEmails)
-            )
-        {
+                || (isset($args['uid']) && (isset($args['uname']) || isset($args['email'])))
+                || (isset($args['uname']) && isset($args['email']))
+                || (isset($args['email']) && !$uniqueEmails)) {
             return LogUtil::registerArgsError();
         }
 
@@ -984,22 +980,19 @@ class Users_Api_Registration extends Zikula_Api
     public function getAll($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-            || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)))
-        {
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
             return LogUtil::registerPermissionError();
         }
 
         if (isset($args['limitoffset']) && is_numeric($args['limitoffset'])
-            && ((int)$args['limitoffset'] == $args['limitoffset']) && ($args['limitoffset'] > 0))
-        {
+                && ((int)$args['limitoffset'] == $args['limitoffset']) && ($args['limitoffset'] > 0)) {
             $limitOffset = $args['limitoffset'];
         } else {
             $limitOffset = -1;
         }
 
         if (isset($args['limitnumrows']) && is_numeric($args['limitnumrows'])
-            && ((int)$args['limitnumrows'] == $args['limitnumrows']) && ($args['limitnumrows'] > 0))
-        {
+                && ((int)$args['limitnumrows'] == $args['limitnumrows']) && ($args['limitnumrows'] > 0)) {
             $limitNumRows = $args['limitnumrows'];
         } else {
             $limitNumRows = -1;
@@ -1068,13 +1061,12 @@ class Users_Api_Registration extends Zikula_Api
      *                      array $args['filter']   An array of field/value combinations used to filter the results. Optional, default
      *                                                  is to count all records.
      *
-     * @return int|bool Numer of pending applications, false on error.
+     * @return integer|boolean Numer of pending applications, false on error.
      */
     public function countAll($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-            || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)))
-        {
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
             return false;
         }
 
@@ -1109,8 +1101,7 @@ class Users_Api_Registration extends Zikula_Api
     public function remove($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-            || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)))
-        {
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE))) {
             return LogUtil::registerPermissionError();
         }
 
@@ -1121,8 +1112,7 @@ class Users_Api_Registration extends Zikula_Api
 
             $uid = $args['uid'];
         } elseif (!isset($args['reginfo']) || empty($args['reginfo']) || !is_array($args['reginfo'])
-            || !isset($args['reginfo']['uid']) || empty($args['reginfo']['uid']) || !is_numeric($args['reginfo']['uid']))
-        {
+                || !isset($args['reginfo']['uid']) || empty($args['reginfo']['uid']) || !is_numeric($args['reginfo']['uid'])) {
             return LogUtil::registerArgsError();
         } else {
             $uid = $args['reginfo']['uid'];
@@ -1189,8 +1179,7 @@ class Users_Api_Registration extends Zikula_Api
         // a new verification code to himself after doing a login-like process with information from  his
         // registration record, so allow not-logged-in plus READ, as well as moderator.
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-            || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)))
-        {
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
             return LogUtil::registerPermissionError();
         }
 
@@ -1294,14 +1283,11 @@ class Users_Api_Registration extends Zikula_Api
     public function getVerificationCode($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-            || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)))
-        {
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
             return LogUtil::registerPermissionError();
         }
 
-        if (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])
-            || ($args['uid'] <= 1))
-        {
+        if (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid']) || ($args['uid'] <= 1)) {
             return LogUtil::registerArgsError();
         }
 

@@ -2716,19 +2716,18 @@ class DBUtil
                             'I4' => 'integer',
                             'I8' => 'integer',
                             'N' => 'number',
-                            'L' => 'integer',
+                            'L' => 'boolean',
                             'T' => 'timestamp',
                             'TS' => 'timestamp',
                             'X' => 'clob',
                             'X2' => 'blob',
                             'XL' => 'clob');
             $iLengthMap = array(
-                            'I' => 11, // maps to I4
-                            'I1' => 3,
-                            'I2' => 5,
-                            'I4' => 11,
-                            'I8' => 20,
-                            'L' => 1);
+                            'I'  => 4, // maps to I4
+                            'I1' => 1,
+                            'I2' => 2,
+                            'I4' => 4,
+                            'I8' => 8);
             $search = array(
                             '+',
                             '-',
@@ -2737,6 +2736,7 @@ class DBUtil
                             '%');
             $replace = array(
                             '');
+
             foreach ($tables[$tablecol] as $id => $val) {
                 $hasMath = (bool)(strcmp($val, str_replace($search, $replace, $val)));
                 if (!$hasMath && !isset($tables[$tabledef][$id])) {
@@ -2795,6 +2795,7 @@ class DBUtil
 
                 // transform to Doctrine datadict representation
                 for ($i = 1; $i <= count($fields); $i++) {
+                    $fields[$i] = strtoupper($fields[$i]);
                     if ($fields[$i] == 'AUTO' || $fields[$i] == 'AUTOINCREMENT') {
                         $fAuto = true;
                     } elseif ($fields[$i] == 'PRIMARY') {
@@ -2828,7 +2829,7 @@ class DBUtil
 
                 $fieldDef = array();
                 $fieldDef['type'] = $fType;
-                $fieldDef['length'] = (!$fLen && isset($iLengthMap[$type]) ? ($fUSign ? $iLengthMap[$type] : $iLengthMap[$type] - 1) : $fLen);
+                $fieldDef['length'] = (!$fLen && isset($iLengthMap[$type]) ? $iLengthMap[$type] : $fLen);
 
                 if ($fType == 'decimal') {
                     $fieldDef['scale'] = $fScale;
@@ -2837,10 +2838,11 @@ class DBUtil
                 $fieldDef['autoincrement'] = $fAuto;
                 $fieldDef['primary'] = $fPrim;
                 $fieldDef['unsigned'] = $fUSign;
-                $fieldDef['notnull'] = ($fNull !== null ? ($fNull == 'NOTNULL' ? 1 : 0) : null);
+                $fieldDef['notnull'] = ($fNull !== null && $fType != 'boolean' ? ($fNull == 'NOTNULL' ? true : false) : null);
                 if ($fDef != null) {
                     $fieldDef['default'] = $fDef;
                 }
+
                 $ddict[$val] = $fieldDef;
             }
 
@@ -3606,15 +3608,27 @@ class DBUtil
     {
         $def = self::getTableDefinition($table);
         $opt = self::getTableOptions($table);
+
+        $tables  = self::getTables();
+        $columns = $tables["{$table}_column"];
+        $columns = array_flip($columns);
+
         $hasColumns = '';
         foreach ($def as $columnName => $array) {
+            $columnAlias = $columns[$columnName];
+            $type   = $array['type'];
             $length = (is_null($array['length']) ? 'null' : $array['length']);
-            $hasColumns .= "\$this->hasColumn('$columnName', '$array[type]', $length, " . var_export($array, true) . ");\n";
+            unset($array['type']);
+            unset($array['length']);
+            $array = array_filter($array);
+            $array = !empty($array) ? ', '.var_export($array, true) : null;
+            $length = (!empty($array) || $length != 'null') ? ", $length" : '';
+            $hasColumns .= "\$this->hasColumn('$columnName as $columnAlias', '$type'{$length}{$array});\n";
         }
 
         $options = '';
         foreach ($opt as $k => $v) {
-            if ($k == 'type') {
+            if (in_array($k, array('type', 'charset', 'collate'))) {
                 continue;
             }
             $options .= "\$this->option('$k', '$v');\n";
@@ -3628,11 +3642,6 @@ class {$table}_DBUtilRecord extends Doctrine_Record
         \$this->setTableName('$table');
         $hasColumns
         $options
-    }
-
-    public function setUp()
-    {
-        self::setUp();
     }
 }
 
@@ -3652,9 +3661,10 @@ class {$table}_DBUtilRecordTable extends Doctrine_Table {}
     public static function loadDBUtilDoctrineModel($table)
     {
         // don't double load
-        if (class_exists("{$table}_DBUtilRecord")) {
+        if (class_exists("{$table}_DBUtilRecord", false)) {
             return;
         }
-        eval(self::buildDoctrineModuleClass($table));
+        $code = self::buildDoctrineModuleClass($table);
+        eval($code);
     }
 }

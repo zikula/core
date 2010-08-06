@@ -118,7 +118,6 @@ class Form_Plugin_Label extends Form_StyledPlugin
         return $result;
     }
 
-
     /**
      * PostRender event handler.
      *
@@ -128,7 +127,7 @@ class Form_Plugin_Label extends Form_StyledPlugin
      */
     function postRender($view)
     {
-        $plugin = & $view->getPluginById($this->for);
+        $plugin = $view->getPluginById($this->for);
 
         if ($plugin != null) {
             $plugin->myLabel = $view->translateForDisplay($this->text, ($this->html == 1) ? false : true);

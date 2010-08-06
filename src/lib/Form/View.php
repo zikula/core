@@ -438,7 +438,7 @@ class Form_View extends Zikula_View
      *
      * @return Form_Plugin|null
      */
-    public function getPluginById_rec($plugin, $id)
+    public function getPluginById_rec(&$plugin, $id)
     {
         if ($plugin->id == $id) {
             return $plugin;
@@ -447,7 +447,7 @@ class Form_View extends Zikula_View
         $lim = count($plugin->plugins);
 
         for ($i = 0; $i < $lim; ++$i) {
-            $subPlugin = & $this->getPluginById_rec($plugin->plugins[$i], $id);
+            $subPlugin = $this->getPluginById_rec($plugin->plugins[$i], $id);
             if ($subPlugin != null) {
                 return $subPlugin;
             }
