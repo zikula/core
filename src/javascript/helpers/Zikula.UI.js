@@ -283,7 +283,6 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
      * @return void
      */
     setWindowMaxSize: function() {
-        console.log('tutaj?');
         var dim = document.viewport.getDimensions()
         this.container.setStyle({
             maxWidth: (dim.width - this.container.getOutlineSize('h') - this.options.offset[0]).toUnits(),
