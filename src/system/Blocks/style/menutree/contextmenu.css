@@ -6,7 +6,10 @@ div.ContextMenu {
     color: #000000;
     text-align: left;
 }
-
+div.ContextMenu * {
+    margin: 0;
+    padding: 0;
+}
 div.ContextMenu ul {
     border: 1px solid #9D9DA1;
     background: #FFFFFF;
@@ -15,7 +18,6 @@ div.ContextMenu ul {
     list-style: none;
     margin: 0;
 }
-
 div.ContextMenu ul span {
     padding: 1px 0pt 2px 22px;
     line-height: 19px;
@@ -35,7 +37,7 @@ div.ContextMenu ul li.disabled {
 
 div.ContextMenu ul li.more {
     background-color: #FFFFFF;
-    background-image: url('../../images/withc.gif');
+    background-image: url('../../images/menutree/menu/withc.gif');
     background-repeat: no-repeat;
     background-position: 100% 0;
     position: relative;
@@ -47,7 +49,7 @@ div.ContextMenu ul li:hover {
 
 div.ContextMenu ul li.more:hover {
     background-color: #B2B4BF;
-    background-image: url('../../images/withc-hover.gif');
+    background-image: url('../../images/menutree/menu/withc-hover.gif');
 }
 
 div.ContextMenu ul li ul {

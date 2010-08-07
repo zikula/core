@@ -27,6 +27,8 @@ class  Blocks_MenutreeTree extends Zikula_Tree
         $config = array_merge($config,array(
             'langs'         => array('en'),
             'sortable'      => false,
+            'imagesDir'     => 'system/Blocks/images/menutree/',
+
         ));
         parent::__construct($config);
     }
