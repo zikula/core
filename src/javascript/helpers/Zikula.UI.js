@@ -212,7 +212,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
     initialize: function($super, container, options) {
         this.setWindowType(container);
         this.window = Zikula.UI.WindowTemplate(options);
-        this.initContainer(container,options);
+        container = this.initContainer(container,options);
         options = Object.extend({
             className: 'z-window',
             minmax: true,
@@ -521,10 +521,11 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
     setWindowType: function(container) {
         this.windowType = 'string';
         if(Object.isElement(container)) {
+            this.windowType = 'element';
             if(container.hasAttribute('href')) {
                 var href = container.readAttribute('href');
                 if(href.startsWith('#')) {
-                    this.windowType = 'element';
+                    this.windowType = 'relelement';
                 } else {
                     this.windowType = 'ajax';
                 }
@@ -546,7 +547,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
      * @return void
      */
     initContainer: function(container) {
-        if(this.windowType == 'element') {
+        if(this.windowType == 'relelement') {
             this.insertContainer();
             var href = container.readAttribute('href');
             var rel = href.match(/^#(.+)$/);
@@ -556,6 +557,13 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
                 container.writeAttribute('href','#'+this.window.container.id);
             }
         }
+        else if (this.windowType == 'element') {
+            this.insertContainer();
+            this.window.body.insert(container.show());
+            this.window.container.id = 'Zikula_UI_Window_'+container.identify();
+            container = this.window.container;
+        }
+        return container;
     },
     /**
      * Inserts window container elements to document
