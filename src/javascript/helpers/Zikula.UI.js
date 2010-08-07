@@ -555,6 +555,20 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
             this.container.focus()
         } catch(e) {}
     },
+    applyDraggable: function($super) {
+        $super();
+        if(this.options.iframe) {
+            this.window.body.insert({
+                top: new Element('div',{'class':'iframe-overlay'}).hide()
+            })
+            this.draggable.options.onStart = function(draggable) {
+                draggable.element.down('.iframe-overlay').show();
+            };
+            this.draggable.options.onEnd = function(draggable) {
+                 draggable.element.down('.iframe-overlay').hide();
+            };
+        }
+    },
     /**
      * Initializing window container
      * @private

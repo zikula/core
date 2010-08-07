@@ -1197,6 +1197,7 @@ div.z-formlist label {
     cursor: pointer;
     cursor: nw-resize;
 }
+.z-window .iframe-overlay,
 .z-window .resizable_handle.onresize {
     top: 0;
     bottom: 0;
@@ -1204,6 +1205,8 @@ div.z-formlist label {
     left: 0;
     width: auto;
     height: auto;
+    position: absolute;
+    z-index: 1000;
 }
 .z-window.z-minimized {
     height: auto !important;
