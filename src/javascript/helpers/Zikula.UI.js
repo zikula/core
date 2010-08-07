@@ -227,7 +227,6 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
             iframeshim: Zikula.Browser.IE,
             closeOnClick: this.window.close,
             draggable: this.window.header,
-            onRemoteContentLoaded: function(){alert('loaded!')},
             insertRemoteContentAt: this.window.body
         }, options || { });
         if(options.modal) {
