@@ -218,7 +218,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
             minmax: true,
             width: 400,
             initMaxHeight: 400,
-            offset: [50,50],//left, top
+            offset: [0,0],//left, top
             indicator: this.window.indicator,
             overlayOpacity: 0.5,
             method: 'get',
@@ -246,6 +246,22 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
         this.key = new Zikula.UI.Key('esc',this.closeHandler,{
             element: this.container
         });
+        if(this.options.resizable) {
+            var resizable_handle = this.window.container.down('.resizable_handle'),
+                disableSelection = function (e) { e.stop() };
+            Resizables.addObserver({
+                onStart: function(){
+                    $(document.body).observe('selectstart',disableSelection);
+                    $(document.body).observe('mousedown',disableSelection);
+                    resizable_handle.addClassName('onresize');
+                },
+                onEnd: function(){
+                    $(document.body).stopObserving('selectstart',disableSelection);
+                    $(document.body).stopObserving('mousedown',disableSelection);
+                    resizable_handle.removeClassName('onresize');
+                }
+            });
+        }
     },
     /**
      * Brings window to front and marks it as 'active'
@@ -267,6 +283,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
      * @return void
      */
     setWindowMaxSize: function() {
+        console.log('tutaj?');
         var dim = document.viewport.getDimensions()
         this.container.setStyle({
             maxWidth: (dim.width - this.container.getOutlineSize('h') - this.options.offset[0]).toUnits(),
@@ -316,9 +333,6 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
      * @return {Boolean}
      */
     finishOpen: function($super, event){
-        if(this.options.initMaxHeight) {
-            this.container.setStyle({maxHeight: (this.options.initMaxHeight-this.getTopOffset()-this.getBottomOffset()).toUnits()});
-        }
         $super(event);
         this.container.setHeight(this.getWindowHeight());
         var bodyStyle = {

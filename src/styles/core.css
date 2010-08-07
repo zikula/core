@@ -1192,8 +1192,19 @@ div.z-formlist label {
     height: 13px;
     width: 13px;
     background-image: url("../images/ui/window.resize.png");
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
     cursor: pointer;
     cursor: nw-resize;
+}
+.z-window .resizable_handle.onresize {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border: 1px solid red;
+    width: auto;
+    height: auto;
 }
 .z-window.z-minimized {
     height: auto !important;
