@@ -353,6 +353,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
         this.window.body.setStyle(bodyStyle);
         this.initialWidth = this.container.getWidth();
         this.ensureInBounds();
+        this.position();
         this.focusWindow();
         return true;
     },
