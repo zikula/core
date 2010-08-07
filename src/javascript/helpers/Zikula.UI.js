@@ -246,22 +246,6 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
         this.key = new Zikula.UI.Key('esc',this.closeHandler,{
             element: this.container
         });
-        if(this.options.resizable) {
-            var resizable_handle = this.window.container.down('.resizable_handle'),
-                disableSelection = function (e) { e.stop() };
-            Resizables.addObserver({
-                onStart: function(){
-                    $(document.body).observe('selectstart',disableSelection);
-                    $(document.body).observe('mousedown',disableSelection);
-                    resizable_handle.addClassName('onresize');
-                },
-                onEnd: function(){
-                    $(document.body).stopObserving('selectstart',disableSelection);
-                    $(document.body).stopObserving('mousedown',disableSelection);
-                    resizable_handle.removeClassName('onresize');
-                }
-            });
-        }
     },
     /**
      * Brings window to front and marks it as 'active'
@@ -555,6 +539,12 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
             this.container.focus()
         } catch(e) {}
     },
+    /**
+     * Adds for draggable windows with iframe overlay to aviod focus lost while dragging
+     * @private
+     * @param {Function} $super Reference to overridden method, private.
+     * @return void
+     */
     applyDraggable: function($super) {
         $super();
         if(this.options.iframe) {
@@ -567,6 +557,31 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
             this.draggable.options.onEnd = function(draggable) {
                  draggable.element.down('.iframe-overlay').hide();
             };
+        }
+    },
+    /**
+     * Adds for resizable windows with iframe overlay to aviod focus lost while resizing
+     * @private
+     * @param {Function} $super Reference to overridden method, private.
+     * @return void
+     */
+    applyResizable: function($super) {
+        $super();
+        var resizable_handle = this.container.down('.resizable_handle'),
+            disableSelection = function (e) { e.stop() };
+        if(resizable_handle) {
+            Resizables.addObserver({
+                onStart: function(){
+                    $(document.body).observe('selectstart',disableSelection);
+                    $(document.body).observe('mousedown',disableSelection);
+                    resizable_handle.addClassName('onresize');
+                },
+                onEnd: function(){
+                    $(document.body).stopObserving('selectstart',disableSelection);
+                    $(document.body).stopObserving('mousedown',disableSelection);
+                    resizable_handle.removeClassName('onresize');
+                }
+            });
         }
     },
     /**
