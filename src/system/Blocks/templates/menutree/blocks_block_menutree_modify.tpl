@@ -1,7 +1,7 @@
 {ajaxheader modname="blocks" filename="menutree.js" effects=1 dragdrop=1 ui=true}
 {pageaddvar name="javascript" value="system/Blocks/javascript/functions.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/contextmenu.js"}
-{*pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"*}
+{pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/menutree/contextmenu.css"}
 
 {if !empty($redirect)}
@@ -169,8 +169,8 @@
                 {foreach from=$languages key=code item=name name=langloop}
                 <a href="#" lang="{$code}" class="menutree_langcontrols{if $code == $defaultanguage} activelang{/if}">{$name}</a> {if !$smarty.foreach.langloop.last} | {/if}
                 {/foreach}
-                {/if}
             </li>
+            {/if}
         </ul>
 
         {if !empty($menutree_menus)}
@@ -193,10 +193,7 @@
             MTConfig.cookieName = 'menutree_{{$blockinfo.bid}}';
 /*
             var tconfig = {
-                treeElement:    'adm-menutree'
-                ,formToObserve: 'blockupdateform'
                 ,formElement:   'menutree_content'
-                ,imagesDir:     'system/Blocks/images/'
                 {{*if $multilingual*}}
                 ,langs:         ['{{$languages|@array_keys|@implode:"','"}}']
                 {{*/if*}}
@@ -211,36 +208,7 @@
                 ,baseurl:            '{{$baseurl}}'
                 ,cookieName: MTConfig.cookieName
                 {{/if}}
-                ,langLabels: {
-                    delConfirm:         '{{gt text="Do you really want to delete this element and all of it subelements?"}}',
-                    linkname:           '{{gt text="Name"}}',
-                    linkhref:           '{{gt text="URL"}}',
-                    linktitle:          '{{gt text="Title"}}',
-                    linkclass:          '{{gt text="CSS class"}}',
-                    linkclassblank:     '{{gt text="choose class"}}',
-                    linklang:           '{{gt text="Language"}}',
-                    linkstate:          '{{gt text="Active?"}}',
-                    activate:           '{{gt text="Activate"}}',
-                    deactivate:         '{{gt text="Deactivate"}}',
-                    edit:               '{{gt text="Edit"}}',
-                    remove:             '{{gt text="Delete"}}',
-                    add:                '{{gt text="Add new..."}}',
-                    before:             '{{gt text="before"}}',
-                    after:              '{{gt text="after"}}',
-                    bottom:             '{{gt text="as child"}}',
-                    expand:             '{{gt text="Expand this node"}}',
-                    collapse:           '{{gt text="Collapse this node"}}',
-                    multitoggle:        '{{gt text="State"}}',
-                    multiactivate:      '{{gt text="Activate for all languages"}}',
-                    multideactivate:    '{{gt text="Deactivate for all languages"}}',
-                    usedefault:         '{{gt text="Use one for all languages"}}',
-                    cancel:             '{{gt text="Cancel"}}',
-                    submit:             '{{gt text="Submit"}}',
-                    required:           '{{gt text="Please fill required fields"}}',
-                    forminfo:           '{{gt text="Field Name is required."}}',
-                    maxdepthreached:    '{{gt text="Maximum depth of tree exceeded. Limit is: %s"}}',
-                    warnbeforeunload:   '{{gt text="You have unsaved changes, which will be lost if you leave this page without saving!"}}'
-                }
+
             };
             var tree = new myTree(tconfig);
 
@@ -262,3 +230,55 @@
 <script type="text/javascript">
     var tabs = new Zikula.UI.Tabs('menutree_tabs');
 </script>
+
+
+<div style="display: none;">
+    <form action="#" id="menuTreeNodeBuilder" method="post" class="z-form">
+        <div class="z-clearfix">
+            <div class="formrow z-clearfix">
+                <label for="linklang">Język</label>
+                <select name="linklang" id="linklang" class="required">
+                    <option value="pl">pl</option>
+                    <option value="en">en</option>
+                </select>
+            </div>
+            <input type="hidden" name="clang" id="clang" value="pl" />
+            <div class="formrow z-clearfix">
+                <label for="linkname">{gt text="Name"}</label>
+                <input type="text" name="linkname" id="linkname" class="required" />
+            </div>
+            <div class="formrow z-clearfix">
+                <label for="linktitle">Tytuł</label>
+                <input type="text" name="linktitle" id="linktitle" />
+            </div>
+            <div class="formrow z-clearfix">
+                <label for="linkhref">URL</label>
+                <div class="formsubrow z-clearfix">
+                    <input type="text" name="linkhref" id="linkhref" />
+                    <div class="formrow z-clearfix">
+                        <input type="checkbox" class="checkbox" name="globallinkhref" id="globallinkhref" />
+                        <label for="globallinkhref">Wspólne dla wszystkich języków</label>
+                    </div>
+                </div>
+            </div>
+            <div class="formrow z-clearfix">
+                <label for="linkclass">Klasa CSS</label>
+                <div class="formsubrow z-clearfix">
+                    <input type="text" name="linkclass" id="linkclass" />
+                    <div class="formrow z-clearfix">
+                        <input type="checkbox" class="checkbox" name="globallinkclass" id="globallinkclass" />
+                        <label for="globallinkclass">Wspólne dla wszystkich języków</label>
+                    </div>
+                </div>
+            </div>
+            <div class="formrow z-clearfix">
+                <label for="linkstate">Aktywny?</label>
+                <input type="checkbox" class="checkbox" name="linkstate" id="linkstate" />
+            </div>
+            <div class="formrow z-clearfix">
+                <input type="submit" class="submit" name="submit" value="Zapisz" />
+                <input type="button" class="submit" name="cancel" id="nodeBuilderCancel" value="Anuluj" />
+            </div>
+        </div>
+    </form>
+</div>
