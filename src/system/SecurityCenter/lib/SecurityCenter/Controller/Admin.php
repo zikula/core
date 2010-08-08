@@ -347,7 +347,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             $purifierconfig = SecurityCenter_Util::getPurifierConfig(true);
             LogUtil::registerStatus($this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
-            $purifierconfig = SecurityCenter_Util::getPurifierConfig();
+            $purifierconfig = SecurityCenter_Util::getPurifierConfig(false);
         }
 
         $purifier = new HTMLPurifier($purifierconfig);
