@@ -65,9 +65,6 @@ class SecurityCenter_Util
             $config['HTML']['Doctype'] = 'HTML 4.01 Transitional';
         }
 
-        // define where our cache directory lives
-        $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
-
         // allow nofollow and imageviewer to be used as document relationships in the rel attribute
         // see http://htmlpurifier.org/live/configdoc/plain.html#Attr.AllowedRel
         $config['Attr']['AllowedRel'] = array('nofollow' => 1, 'imageviewer' => 1);
@@ -126,6 +123,9 @@ class SecurityCenter_Util
 
         if (!isset($purifier) || $force) {
             $config = self::getpurifierconfig(array('forcedefault' => false));
+
+            $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
+
             $purifier = new HTMLPurifier($config);
         }
 
