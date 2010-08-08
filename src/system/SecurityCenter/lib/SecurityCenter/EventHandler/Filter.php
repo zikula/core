@@ -326,67 +326,6 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
         return;
     }
 
-    /**
-     * Retrieves default configuration array for HTML Purifier.
-     *
-     * @return array HTML Purifier default configuration settings.
-     */
-    private function _getpurifierdefaultconfig()
-    {
-        $purifierDefaultConfig = HTMLPurifier_Config::createDefault();
-        $purifierDefaultConfigValues = $purifierDefaultConfig->def->defaults;
-
-        $config = array();
-
-        foreach($purifierDefaultConfigValues as $key => $val)
-        {
-            $keys = explode(".", $key, 2);
-
-            $config[$keys[0]][$keys[1]] = $val;
-        }
-
-        $charset = ZLanguage::getEncoding();
-        if (strtolower($charset) != 'utf-8') {
-            // set a different character encoding with iconv
-            $config['Core']['Encoding'] = $charset;
-            // Note that HTML Purifier's support for non-Unicode encodings is crippled by the
-            // fact that any character not supported by that encoding will be silently
-            // dropped, EVEN if it is ampersand escaped.  If you want to work around
-            // this, you are welcome to read docs/enduser-utf8.html in the full package for a fix,
-            // but please be cognizant of the issues the "solution" creates (for this
-            // reason, I do not include the solution in this document).
-        }
-
-        // determine doctype of current theme
-        // supported doctypes include:
-        //
-        // HTML 4.01 Strict
-        // HTML 4.01 Transitional
-        // XHTML 1.0 Strict
-        // XHTML 1.0 Transitional (default)
-        // XHTML 1.1
-        //
-        // TODO - we need a new theme field for doctype declaration
-        // for now we will use non-strict modes
-        $currentThemeID = ThemeUtil::getIDFromName(UserUtil::getTheme());
-        $themeInfo = ThemeUtil::getInfo($currentThemeID);
-        $useXHTML = (isset($themeInfo['xhtml']) && $themeInfo['xhtml']) ? true : false;
-
-        // as XHTML 1.0 Transitional is the default, we only set HTML (for now)
-        if (!$useXHTML) {
-            $config['HTML']['Doctype'] = 'HTML 4.01 Transitional';
-        }
-
-        // define where our cache directory lives
-        $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
-
-        // allow nofollow and imageviewer to be used as document relationships in the rel attribute
-        // see http://htmlpurifier.org/live/configdoc/plain.html#Attr.AllowedRel
-        $config['Attr']['AllowedRel'] = array('nofollow' => 1, 'imageviewer' => 1);
-
-        return $config;
-    }
-
     public static function outputFilter(Zikula_Event $event)
     {
         if (System::getVar('outputfilter') > 1) {
