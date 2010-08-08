@@ -359,10 +359,18 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
         }
 
         $allowed = HTMLPurifier_Config::getAllowedDirectivesForForm(true, $config->def);
+
+        // list of excluded directives, format is $namespace_$directive
+        $excluded = array('Cache_SerializerPath');
+        
         $purifierAllowed = array();
         foreach ($allowed as $allowedDirective) {
             list($namespace, $directive) = $allowedDirective;
 
+            if (in_array($namespace.'_'.$directive, $excluded)) {
+                continue;
+            }
+            
             if ($namespace == 'Filter') {
                 if (
                 // Do not allow Filter.Custom for now. Causing errors.
