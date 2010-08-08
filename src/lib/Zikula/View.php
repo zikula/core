@@ -823,6 +823,9 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             mkdir($path, $this->serviceManager['system.chmod_dir'], true);
         }
 
+        // format auto_source for os to make sure that id does not contain 'ugly' characters
+        $auto_source = DataUtil::formatForOS($auto_source);
+
         // create a hash from default dsn + $auto_source and use it in the filename
         $hash = md5($GLOBALS['ZConfig']['DBInfo']['default']['dsn'] . '+' . $auto_source);
         $filebase = FileUtil::getFilebase($auto_source);
