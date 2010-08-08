@@ -18,8 +18,8 @@ ul#admintabs li > .z-admindrop:hover {border-radius: 0 .4em 0 0 ;-webkit-border-
 
 h1 {border-bottom: 1px dotted grey;margin-bottom: 8px;padding-bottom:4px;font-size: 18px;color:#302D2F;}
 h2 {font-size:16px;color:#302D2F;}
-h3 {font-size:14px;padding:4px;color:#302D2F;}
-
+h3 {font-size:15px;padding:4px;color:#302D2F;}
+strong{font-weight:bold;}
 /* required comment for clearfix to work in Opera \*/
 * html .ui-helper-clearfix { height:1%; }
 .ui-helper-clearfix { display:block; }
@@ -712,14 +712,12 @@ ul#icons span.ui-icon {
     offsetHeight + 'px');
 }
 
-	/* Dashboard buttons */
-
- #dashboard-buttons, .content-box {
+.content-box {
  	margin:0 0 20px;
  	padding:8px;
  	background:#fff;
  	border:#ddd solid 1px;
- }
+}
 
 .content-box .content-box-wrapper {
 	padding:4px;
