@@ -469,9 +469,7 @@ class DataUtil
             $permalinksseparator = System::getVar('shorturlsseparator');
         }
 
-        $var = strip_tags($var);
-        $var = preg_replace("/&[#a-zA-Z0-9]+;|\?/", '', $var); // remove &....; and ?
-        $var = strtr($var, ' ', $permalinksseparator); //words separation
+        $var = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($var)); 
 
         $permasearch = explode(',', System::getVar('permasearch'));
         $permareplace = explode(',', System::getVar('permareplace'));
