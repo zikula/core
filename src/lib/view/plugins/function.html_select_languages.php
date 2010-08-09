@@ -25,7 +25,7 @@
  *   - all:      show dummy entry '_ALL' on top of the list with empty value
  *
  * Example
- *   {html_select_languages name=language selected=eng}
+ *   {html_select_languages name=language selected=en}
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -42,6 +42,8 @@ function smarty_function_html_select_languages($params, $view)
 
     require_once $view->_get_plugin_filepath('function','html_options');
 
+    $output = array();
+    $values = array();
     if (isset($params['all']) && $params['all']) {
         $values[] = '';
         $output[]= DataUtil::formatForDisplay(__('All'));
