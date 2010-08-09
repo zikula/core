@@ -19,9 +19,6 @@ RewriteEngine on
 # handle the favicon to prevent a full request to our engine
 RewriteRule ^(.*)favicon.ico - [L]
 
-# ensure ajax requests are routed correctly
-RewriteRule ^(.*)/ajax.php$ ajax.php [QSA,L]
-
 # rewrite any unknown directories and files
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
