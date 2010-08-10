@@ -1,4 +1,4 @@
-{ajaxheader modname="blocks"  effects=1 dragdrop=1 ui=true}
+{ajaxheader modname="blocks" ui=true}
 {pageaddvar name="javascript" value="system/Blocks/javascript/functions.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/contextmenu.js"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"}
@@ -193,25 +193,8 @@
             MTConfig.cookieName = 'menutree_{{$blockinfo.bid}}';
 /*
             var tconfig = {
-                ,formElement:   'menutree_content'
-                {{*if $multilingual*}}
-                ,langs:         ['{{$languages|@array_keys|@implode:"','"}}']
-                {{*/if*}}
-                {{if $menutree_linkclass && $classescount > 0}}
-                ,linkclasses:   [{{foreach from=$menutree_linkclasses item=class name=classloop}}
-                {'{{$class.name}}':'{{$class.title}}'}{{if !$smarty.foreach.classloop.last}},{{/if}}
-                {{/foreach}}]
-                {{/if}}
                 ,maxDepth: {{$menutree_maxdepth|default:0}}
-                {{if $menutree_stripbaseurl}}
-                ,stripbaseurl:       true
-                ,baseurl:            '{{$baseurl}}'
-                ,cookieName: MTConfig.cookieName
-                {{/if}}
-
-            };
-            var tree = new myTree(tconfig);
-
+                {{$menutree_stripbaseurl}}
             //add this url
             {{if $menutree_newurl}}
             var data = {linkhref: '{{$menutree_newurl|safetext}}'};
@@ -241,51 +224,51 @@
                 <legend>{gt text="Menu item data"}</legend>
                 {if $multilingual || 1}
                 <div class="z-formrow">
-                    <label for="linklang">{gt text="Language"}</label>
-                    {html_options name="linklang" id="linklang" options=$languages}
+                    <label for="link_lang">{gt text="Language"}</label>
+                    {html_options name="link_lang" id="link_lang" options=$languages}
                 </div>
                 {/if}
                 <input type="hidden" name="clang" id="clang" />
                 <div class="z-formrow">
-                    <label for="linkname">{gt text="Name"}</label>
-                    <input type="text" name="linkname" id="linkname" class="required" />
+                    <label for="link_name">{gt text="Name"}</label>
+                    <input type="text" name="link_name" id="link_name" class="required" />
                 </div>
                 <div class="z-formrow">
-                    <label for="linktitle">{gt text="Title"}</label>
-                    <input type="text" name="linktitle" id="linktitle" />
+                    <label for="link_title">{gt text="Title"}</label>
+                    <input type="text" name="link_title" id="link_title" />
                 </div>
                 <div class="z-formrow">
-                    <label for="linkhref">{gt text="URL"}</label>
-                    <input type="text" name="linkhref" id="linkhref" />
+                    <label for="link_href">{gt text="URL"}</label>
+                    <input type="text" name="link_href" id="link_href" />
                     {if $multilingual}
                     <div class="z-sub z-formnote">
-                        <input type="checkbox" class="checkbox" name="globallinkhref" id="globallinkhref" />
-                        <label for="globallinkhref">{gt text="Use one for all languages"}</label>
+                        <input type="checkbox" class="checkbox" name="global_link_href" id="global_link_href" />
+                        <label for="global_link_href">{gt text="Use one for all languages"}</label>
                     </div>
                     {/if}
                 </div>
                 <div class="z-formrow">
-                    <label for="linkclass">{gt text="CSS class"}</label>
+                    <label for="link_className">{gt text="CSS class"}</label>
                     {if $menutree_linkclass}
-                    <select name="linkclass" id="linkclass">
+                    <select name="link_className" id="link_className">
                         <option>{gt text="choose class"}</option>
                         {foreach from=$menutree_linkclasses key=id item=class}
                             <option value="{$class.name}">{$class.title}</option>
                         {/foreach}
                     </select>
                     {else}
-                    <input type="text" name="linkclass" id="linkclass" />
+                    <input type="text" name="link_className" id="link_className" />
                     {/if}
                     {if $multilingual}
                     <div class="z-sub z-formnote">
-                        <input type="checkbox" class="checkbox" name="globallinkclass" id="globallinkclass" />
-                        <label for="globallinkclass">{gt text="Use one for all languages"}</label>
+                        <input type="checkbox" class="checkbox" name="global_link_className" id="global_link_className" />
+                        <label for="global_link_className">{gt text="Use one for all languages"}</label>
                     </div>
                     {/if}
                 </div>
                 <div class="z-formrow">
-                    <label for="linkstate">{gt text="Active?"}</label>
-                    <input type="checkbox" class="checkbox" name="linkstate" id="linkstate" />
+                    <label for="link_state">{gt text="Active?"}</label>
+                    <input type="checkbox" class="checkbox" name="link_state" id="link_state" />
                 </div>
             </fieldset>
         </div>

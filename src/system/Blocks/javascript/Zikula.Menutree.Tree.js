@@ -4,16 +4,17 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
     initialize: function($super, element, config) {
         config = this.decodeConfig(config);
         config = Object.extend({
-            unactiveClass:      'unactive',
+            unactiveClass:      'z-tree-unactive',
             dynamicClass:       'dynamic',
+            nodeIdPrefix:       'node_',
             dynamicPattern:     function(str) {return str ? str.startsWith('{ext:') : false;},
             langs:              ['en'],
             linkClasses:        [],
             stripBaseURL:       false,
-            onSave:             this.save,
+            onSave:             this.save.bind(this),
             saveContentTo:      'menutree_content'
             /* tmp cfg */
-            ,langs: ['en']
+//            ,langs: ['en']
 
         }, config || { });
         config.langLabels = Object.extend({
@@ -61,16 +62,16 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             multiactivate:      'menu/all-on.png',
             multideactivate:    'menu/all-off.png'
         },config.images);
-        $super(element,config);
-
-        if(this.config.langs.length > 1) {
+        if(config.langs.length > 1) {
             this.multilingual = true;
-            this.cLang = this.config.langs[0];
-            this.defaultLang = this.config.langs[0];
+            this.cLang = config.langs[0];
+            this.defaultLang = config.langs[0];
         }
-        if(this.config.linkClasses.size() > 0) {
+        if(config.linkClasses.size() > 0) {
             this.multiclass = true;
         }
+
+        $super(element,config);
 
         this.stripBaseURL();
         this.attachMenu();
@@ -79,7 +80,13 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         Event.observe(window, 'beforeunload', this.beforeUnloadHandler.bindAsEventListener(this));
     },
     initNode: function($super,node) {
-        node.select('a[lang!='+'en'+']').invoke('hide');
+        node.select('a[lang!='+this.cLang+']').invoke('hide');
+        if(!node.down('.'+this.config.icon)) {
+            node.insert({top: new Element('img',{className: this.config.icon})});
+        }
+        if((!node.down('.'+this.config.toggler))) {
+            node.insert({top: new Element('img',{className: this.config.toggler,src: this.config.images.plus})});
+        }
         $super(node);
     },
     stripBaseURL: function() {
@@ -91,25 +98,10 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         }
     },
     serializeNode: function($super,node,index) {
-        var link, nodeData = {};
-        this.config.langs.each(function(lang) {
-            link =  node.down('a[lang='+lang+']');
-            nodeData[lang] = {
-                id:         this.getNodeId(node),
-                name:       link.innerHTML,
-                title:      link.readAttribute('title'),
-                className:  $w(link.className).without(this.config.unactiveClass).join(' '),
-                state:      !link.hasClassName(this.config.unactiveClass),
-                href:       link.readAttribute('href'),
-                lang:       link.readAttribute('lang'),
-                lineno:     index || null,
-                parent:     node.up('#'+this.tree.id+' li') ? this.getNodeId(node.up('#'+this.tree.id+' li')) : 0
-            };
-        }.bind(this));
-        return nodeData;
+        return this.getNodeData(node, index, true);
     },
     save: function(node,params,data) {
-        if($('menutree_content')) {
+        if(!$('menutree_content')) {
             this.tree.up('form').insert(new Element('input',{
                 type:'hidden',
                 'id':this.config.saveContentTo,
@@ -118,6 +110,11 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         }
         $('menutree_content').setValue(Zikula.urlsafeJsonEncode(data, false));
         return true;
+    },
+    changeLang: function(lang){
+        this.tree.select('li a[lang='+this.cLang+']').invoke('hide');
+        this.cLang = lang;
+        this.tree.select('li a[lang='+this.cLang+']').invoke('show');
     },
     attachMenu: function() {
         this.config.menuConfig = Object.extend({
@@ -174,7 +171,6 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         return menuItems;
     },
     menuAction: function(elementEvt,actionEvt) {
-        console.log(arguments);
         var action = actionEvt.element().tagName == 'LI' ? actionEvt.element()._name : actionEvt.element().up('li')._name,
             obj = elementEvt.element();
         switch (action) {
@@ -232,32 +228,206 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             obj.toggleClassName(this.config.unactiveClass);
         }
     },
-    readNode: function(obj) {
-        // todo
-        console.log(arguments);
+    getNodeData: function(node,index,forSerialize) {
+        var link, nodeData = {}, prefix = forSerialize ? '' : 'link_';
+        this.config.langs.each(function(lang) {
+            link =  node.down('a[lang='+lang+']');
+//            nodeData[lang] = {
+//                id:         this.getNodeId(node),
+//                name:       link.innerHTML,
+//                title:      link.readAttribute('title'),
+//                className:  $w(link.className).without(this.config.unactiveClass).join(' '),
+//                state:      !link.hasClassName(this.config.unactiveClass),
+//                href:       link.readAttribute('href'),
+//                lang:       link.readAttribute('lang'),
+//                lineno:     index || null,
+//                parent:     node.up('#'+this.tree.id+' li') ? this.getNodeId(node.up('#'+this.tree.id+' li')) : 0
+//            };
+            nodeData[lang] = {}
+            nodeData[lang][prefix+'id'] = this.getNodeId(node);
+            nodeData[lang][prefix+'name'] = link.innerHTML;
+            nodeData[lang][prefix+'title'] = link.readAttribute('title');
+            nodeData[lang][prefix+'className'] = $w(link.className).without(this.config.unactiveClass).join(' ');
+            nodeData[lang][prefix+'state'] = !link.hasClassName(this.config.unactiveClass);
+            nodeData[lang][prefix+'href'] = link.readAttribute('href');
+            nodeData[lang][prefix+'lang'] = link.readAttribute('lang');
+            nodeData[lang][prefix+'lineno'] = index || null;
+            nodeData[lang][prefix+'parent'] = node.up('#'+this.tree.id+' li') ? this.getNodeId(node.up('#'+this.tree.id+' li')) : 0;
+        }.bind(this));
+        return nodeData;
     },
-    buildForm: function() {
-        if(!this.form) {
-            this.form = new Zikula.UI.FormDialog($('menutree_form_container'),this.submitForm,{title: $('menutree_form_container').title});
-            if(this.multilingual){
-                $('linklang').observe('change',this.changeFormLang.bindAsEventListener(this));
+    setNodeData: function(node,data) {
+        var link;
+        this.config.langs.each(function(lang) {
+            if(data[lang]) {
+                link =  node.down('a[lang='+lang+']');
+                link.update(data[lang].link_name.escapeHTML() || '');
+                link.writeAttribute('href',data[lang].link_href || null);
+                link.writeAttribute('title',data[lang].link_title ? data[lang].link_title.escapeHTML() : null);
+                link.writeAttribute('className',data[lang].link_class || null);
+                if(!data[lang].link_state) {
+                    link.addClassName(this.config.unactiveClass);
+                }
+                link.writeAttribute('lang',data[lang].link_lang || null);
+                this.unsaved = true;
+            }
+        }.bind(this));
+    },
+    addNode: function() {
+        var node = new Element('li',{id:this.config.nodeIdPrefix+this.genNextId()});
+        switch(this.formaction) {
+            case 'new':
+                this.tree.insert(node);
+                break;
+            case 'before':
+                this.referer.insert({before: node});
+                break;
+            case 'after':
+                this.referer.insert({after: node});
+                break;
+            case 'bottom':
+                var subnode = this.referer.down('ul');
+                if(subnode) {
+                    subnode.insert({bottom: node});
+                    subnode.show();
+                } else {
+                    this.referer.insert(new Element('ul').insert(node));
+                }
+                break;
+        }
+        this.config.langs.each(function(lang){
+            var link = new Element('a',{lang:lang});
+            node.insert(link);
+            if(!this.tmp[lang] || !this.tmp[lang].link_name) {
+                var validlang = this.config.langs.find(function(n) {
+                   return this.tmp[n].link_name;
+                }.bind(this))
+                this.tmp[lang].link_name = this.tmp[validlang].link_name;
+                this.tmp[lang].link_state = false;
+            }
+        }.bind(this));
+        this.setNodeData(node,this.tmp);
+        node.select('a').each(this.menu.add.bind(this.menu));
+        if(node.select('a').any(function(a) {
+            return this.config.dynamicPattern(a.readAttribute('href'));
+        }.bind(this))) {
+            node.addClassName(this.config.dynamicClass);
+        }
+        this.initNode(node);
+        this.drawNodes();
+    },
+    readNode: function(obj) {
+        this.tmp = {};
+        if(obj && Object.isElement(obj)){
+            obj = obj.tagName == 'LI' ? obj : obj.up('li');
+            this.tmp = this.getNodeData(obj);
+            var urls = [];
+            var classnames = [];
+            this.config.langs.each(function(lang){
+                urls.push(this.tmp[lang].link_href);
+                classnames.push(this.tmp[lang].link_className);
+            }.bind(this));
+            this.tmp.global = {
+                link_href:   urls.uniq().size() <= 1,
+                link_className:  classnames.uniq().size() <= 1
+            }
+        } else {
+            this.config.langs.each(function(lang){
+                this.tmp[lang] = Object.extend({
+                    link_state:  true,
+                    link_lang:   lang
+                }, obj || {});
+            }.bind(this));
+            this.tmp.global = {
+                link_href:   true,
+                link_className:  true
             }
         }
     },
+    buildForm: function() {
+        if(!this.formDialog) {
+            this.formDialog = new Zikula.UI.FormDialog($('menutree_form_container'),this.submitForm.bind(this),{title: $('menutree_form_container').title});
+            this.form = this.formDialog.window.container.down('form');
+//            this.form = this.formDialog.form;
+            if($('link_lang')){
+                $('link_lang').observe('change',this.changeFormLang.bindAsEventListener(this));
+            }
+        }
+    },
+    loadFormValues: function(lang,oldlang) {
+        lang = lang ? lang : this.cLang;
+        this.formLang = lang;
+        var data = this.tmp[lang],
+            global = this.tmp.global;
+        if(oldlang && this.tmp.global.link_href) {
+            data.href = this.tmp[oldlang].link_href;
+        }
+        if(oldlang && this.tmp.global.link_className) {
+            data.link_className = this.tmp[oldlang].link_className;
+        }
+        this.form.getElements().each(function(element){
+            if(element.id.startsWith('global_')) {
+                element.setValue(global[element.id.replace('global_','')]);
+            } else {
+                element.setValue(data[element.id]);
+            }
+        })
+    },
     showForm: function(obj) {
         this.buildForm();
-        this.form.open();
+        this.form.reset();
+        this.formLang = this.cLang;
+        if($('requiredInfo')) {
+            $('requiredInfo').hide();
+        }
+        this.editedNode = Object.isElement(obj) ? obj.up('li').id : this.genNextId();
+        this.loadFormValues();
+        this.formDialog.open();
     },
-    submitForm: function() {
-        console.log(arguments);
+    submitForm: function(data) {
+        if(!data) {
+            delete this.tmp;
+            return;
+        }
+        delete data.submit;
+        this.tmp[this.formLang] = data;
+        if(this.tmp.global && (this.tmp.global.link_href || this.tmp.global.link_className)) {
+            this.config.langs.each(function(lang){
+                if(this.tmp.global.link_href) {
+                    this.tmp[lang].link_href = data.link_href;
+                }
+                if(this.tmp.global.link_className) {
+                    this.tmp[lang].link_className = data.link_className;
+                }
+            }.bind(this));
+        }
+        if(this.formaction == 'edit') {
+            this.setNodeData($(this.editedNode),this.tmp);
+        } else {
+            this.addNode();
+        }
     },
     changeFormLang: function(event) {
-        console.log(arguments);
+        var newlang = event.element().value,
+            data = this.form.serialize(true);
+        data.link_lang = this.formLang;
+        this.tmp[this.formLang] = data;
+        this.tmp.global.link_href = data.global_link_href;
+        this.tmp.global.link_className = data.global_link_className;
+        this.loadFormValues(newlang,this.formLang);
+    },
+    genNextId: function() {
+        var maxId = this.tree.select('li').max(function(node) {
+            return this.getNodeId(node);
+        }.bind(this));
+        maxId = isNaN(maxId) ? 0 : maxId;
+        return ++maxId;
     },
     beforeUnloadHandler: function (event) {
         if(this.unsaved && this.config.langLabels.warnbeforeunload) {
             return event.returnValue = this.config.langLabels.warnbeforeunload;
         }
+        return false;
     }
 });
 Object.extend(Zikula.Menutree.Tree,{
