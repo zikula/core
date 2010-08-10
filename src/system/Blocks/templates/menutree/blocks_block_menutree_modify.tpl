@@ -1,4 +1,4 @@
-{ajaxheader modname="blocks" filename="menutree.js" effects=1 dragdrop=1 ui=true}
+{ajaxheader modname="blocks"  effects=1 dragdrop=1 ui=true}
 {pageaddvar name="javascript" value="system/Blocks/javascript/functions.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/contextmenu.js"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"}
@@ -231,54 +231,65 @@
     var tabs = new Zikula.UI.Tabs('menutree_tabs');
 </script>
 
-
-<div style="display: none;">
-    <form action="#" id="menuTreeNodeBuilder" method="post" class="z-form">
-        <div class="z-clearfix">
-            <div class="formrow z-clearfix">
-                <label for="linklang">Język</label>
-                <select name="linklang" id="linklang" class="required">
-                    <option value="pl">pl</option>
-                    <option value="en">en</option>
-                </select>
-            </div>
-            <input type="hidden" name="clang" id="clang" value="pl" />
-            <div class="formrow z-clearfix">
-                <label for="linkname">{gt text="Name"}</label>
-                <input type="text" name="linkname" id="linkname" class="required" />
-            </div>
-            <div class="formrow z-clearfix">
-                <label for="linktitle">Tytuł</label>
-                <input type="text" name="linktitle" id="linktitle" />
-            </div>
-            <div class="formrow z-clearfix">
-                <label for="linkhref">URL</label>
-                <div class="formsubrow z-clearfix">
+{capture assign="itemForm"}
+<div id="menutree_form_container" title="{gt text='Edit menu item'}" style="display: none;">
+    <p id="forminfo" class="z-warningmsg">{gt text="Field Name is required."}</p>
+    <p id="requiredInfo" class="z-errormsg" style="display: none;">{gt text="Please fill required fields"}</p>
+    <form action="#" id="nodeBuilder" class="z-form">
+        <div>
+            <fieldset>
+                <legend>{gt text="Menu item data"}</legend>
+                {if $multilingual || 1}
+                <div class="z-formrow">
+                    <label for="linklang">{gt text="Language"}</label>
+                    {html_options name="linklang" id="linklang" options=$languages}
+                </div>
+                {/if}
+                <input type="hidden" name="clang" id="clang" />
+                <div class="z-formrow">
+                    <label for="linkname">{gt text="Name"}</label>
+                    <input type="text" name="linkname" id="linkname" class="required" />
+                </div>
+                <div class="z-formrow">
+                    <label for="linktitle">{gt text="Title"}</label>
+                    <input type="text" name="linktitle" id="linktitle" />
+                </div>
+                <div class="z-formrow">
+                    <label for="linkhref">{gt text="URL"}</label>
                     <input type="text" name="linkhref" id="linkhref" />
-                    <div class="formrow z-clearfix">
+                    {if $multilingual}
+                    <div class="z-sub z-formnote">
                         <input type="checkbox" class="checkbox" name="globallinkhref" id="globallinkhref" />
-                        <label for="globallinkhref">Wspólne dla wszystkich języków</label>
+                        <label for="globallinkhref">{gt text="Use one for all languages"}</label>
                     </div>
+                    {/if}
                 </div>
-            </div>
-            <div class="formrow z-clearfix">
-                <label for="linkclass">Klasa CSS</label>
-                <div class="formsubrow z-clearfix">
+                <div class="z-formrow">
+                    <label for="linkclass">{gt text="CSS class"}</label>
+                    {if $menutree_linkclass}
+                    <select name="linkclass" id="linkclass">
+                        <option>{gt text="choose class"}</option>
+                        {foreach from=$menutree_linkclasses key=id item=class}
+                            <option value="{$class.name}">{$class.title}</option>
+                        {/foreach}
+                    </select>
+                    {else}
                     <input type="text" name="linkclass" id="linkclass" />
-                    <div class="formrow z-clearfix">
+                    {/if}
+                    {if $multilingual}
+                    <div class="z-sub z-formnote">
                         <input type="checkbox" class="checkbox" name="globallinkclass" id="globallinkclass" />
-                        <label for="globallinkclass">Wspólne dla wszystkich języków</label>
+                        <label for="globallinkclass">{gt text="Use one for all languages"}</label>
                     </div>
+                    {/if}
                 </div>
-            </div>
-            <div class="formrow z-clearfix">
-                <label for="linkstate">Aktywny?</label>
-                <input type="checkbox" class="checkbox" name="linkstate" id="linkstate" />
-            </div>
-            <div class="formrow z-clearfix">
-                <input type="submit" class="submit" name="submit" value="Zapisz" />
-                <input type="button" class="submit" name="cancel" id="nodeBuilderCancel" value="Anuluj" />
-            </div>
+                <div class="z-formrow">
+                    <label for="linkstate">{gt text="Active?"}</label>
+                    <input type="checkbox" class="checkbox" name="linkstate" id="linkstate" />
+                </div>
+            </fieldset>
         </div>
     </form>
 </div>
+{/capture}
+{pageaddvar name="footer" value=$itemForm}

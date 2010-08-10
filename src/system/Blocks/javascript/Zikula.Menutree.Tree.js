@@ -4,9 +4,17 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
     initialize: function($super, element, config) {
         config = this.decodeConfig(config);
         config = Object.extend({
-            unactiveClass:           'unactive',
-            langs: ['en'],
-            onSave: this.save
+            unactiveClass:      'unactive',
+            dynamicClass:       'dynamic',
+            dynamicPattern:     function(str) {return str ? str.startsWith('{ext:') : false;},
+            langs:              ['en'],
+            linkClasses:        [],
+            stripBaseURL:       false,
+            onSave:             this.save,
+            saveContentTo:      'menutree_content'
+            /* tmp cfg */
+            ,langs: ['en']
+
         }, config || { });
         config.langLabels = Object.extend({
             delConfirm:         'Do you really want to delete this node and all of it child nodes?',
@@ -54,15 +62,33 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             multideactivate:    'menu/all-off.png'
         },config.images);
         $super(element,config);
-        this.tree.up('form').insert(new Element('input',{type:'hidden','id':'menutree_content',name:'menutree_content'}));
+
+        if(this.config.langs.length > 1) {
+            this.multilingual = true;
+            this.cLang = this.config.langs[0];
+            this.defaultLang = this.config.langs[0];
+        }
+        if(this.config.linkClasses.size() > 0) {
+            this.multiclass = true;
+        }
+
+        this.stripBaseURL();
         this.attachMenu();
+        this.buildForm();
         this.unsaved = false;
-        this.form = new Zikula.UI.FormDialog($('menuTreeNodeBuilder'),this.submitForm);
         Event.observe(window, 'beforeunload', this.beforeUnloadHandler.bindAsEventListener(this));
     },
     initNode: function($super,node) {
         node.select('a[lang!='+'en'+']').invoke('hide');
         $super(node);
+    },
+    stripBaseURL: function() {
+        if(this.config.stripbaseurl) {
+            var baseurl = new RegExp('^'+Zikula.Config.baseURL);
+            this.tree.select('a').each(function(n) {
+                n.href = n.readAttribute('href').replace(baseurl, '');
+            }.bind(this));
+        }
     },
     serializeNode: function($super,node,index) {
         var link, nodeData = {};
@@ -83,6 +109,13 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         return nodeData;
     },
     save: function(node,params,data) {
+        if($('menutree_content')) {
+            this.tree.up('form').insert(new Element('input',{
+                type:'hidden',
+                'id':this.config.saveContentTo,
+                name:this.config.saveContentTo
+            }));
+        }
         $('menutree_content').setValue(Zikula.urlsafeJsonEncode(data, false));
         return true;
     },
@@ -200,13 +233,26 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         }
     },
     readNode: function(obj) {
+        // todo
         console.log(arguments);
     },
+    buildForm: function() {
+        if(!this.form) {
+            this.form = new Zikula.UI.FormDialog($('menutree_form_container'),this.submitForm,{title: $('menutree_form_container').title});
+            if(this.multilingual){
+                $('linklang').observe('change',this.changeFormLang.bindAsEventListener(this));
+            }
+        }
+    },
     showForm: function(obj) {
+        this.buildForm();
         this.form.open();
     },
     submitForm: function() {
-        console.log(arguments)
+        console.log(arguments);
+    },
+    changeFormLang: function(event) {
+        console.log(arguments);
     },
     beforeUnloadHandler: function (event) {
         if(this.unsaved && this.config.langLabels.warnbeforeunload) {
@@ -221,5 +267,14 @@ Object.extend(Zikula.Menutree.Tree,{
             this.trees[element] = new Zikula.Menutree.Tree(element,config);
             Zikula.t = this.trees[element];
         }
+    }
+});
+
+//http://www.prototypejs.org/2007/5/12/dom-builder#comment-15901
+//new Element('p').appendText('test');
+Element.addMethods({
+    appendText: function(element, text) {
+        element.appendChild(document.createTextNode(text));
+        return $(element);
     }
 });
