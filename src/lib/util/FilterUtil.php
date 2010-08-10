@@ -353,7 +353,7 @@ class FilterUtil extends FilterUtil_Common
      *
      * @param mixed $filter Filter string or array.
      *
-     * @return void
+     * @return $this
      */
     public function setFilter($filter)
     {
@@ -366,6 +366,7 @@ class FilterUtil extends FilterUtil_Common
         $this->obj = false;
         $this->sql = false;
 
+        return $this;
     }
 
 

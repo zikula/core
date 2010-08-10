@@ -41,7 +41,7 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
      *
      * @var array
      */
-    private $mnpntable = array();
+    private $mndbtable = array();
 
     /**
      * The table names in database.
@@ -188,7 +188,7 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
      */
     public function setListTable($name, $table)
     {
-        $this->mnpntable[$name] = $table;
+        $this->mndbtable[$name] = $table;
         $dbtable = & DBUtil::getTables();
         $this->mntable[$name] = $dbtable[$table];
         $this->mncolumn[$name] = $dbtable[$table . '_column'];

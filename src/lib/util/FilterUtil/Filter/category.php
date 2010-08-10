@@ -98,8 +98,7 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        //} elseif (!empty($fields) && !$this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
-        } elseif (!empty($fields) && array_search($fields, $this->fields) === false) {
+        } elseif (!empty($fields) && !$this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
             $this->fields[] = $fields;
         }
     }
@@ -193,7 +192,7 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
             $filter[$prop] = $items;
         }
 
-        $where = DBUtil::generateCategoryFilterWhere($this->pntable, false, $filter);
+        $where = DBUtil::generateCategoryFilterWhere($this->dbtable, false, $filter);
         if ($op == 'ne') {
             $where = 'NOT ' . $where;
         }

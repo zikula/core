@@ -12,7 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * FilterUtil build interface
+ */
 interface FilterUtil_Build
 {
     /**

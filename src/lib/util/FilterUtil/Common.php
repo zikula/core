@@ -18,39 +18,46 @@
 class FilterUtil_Common
 {
     /**
-     * Table name in pntable.php.
+     * Table name in tables.php.
      *
      * @var string
      */
-    protected static $dbtable;
+    protected $dbtable;
 
     /**
      * Module's name.
      *
      * @var string
      */
-    protected static $module;
+    protected $module;
 
     /**
      * Table name.
      *
      * @var string
      */
-    protected static $table;
+    protected $table;
+
+    /**
+     * Table alias to use.
+     *
+     * @var array
+     */
+    protected $alias;
 
     /**
      * Table columns.
      *
      * @var array
      */
-    protected static $column;
+    protected $column;
 
     /**
      * Join array.
      *
      * @var array
      */
-    protected static $join = array();
+    protected $join;
 
     /**
      * Constructor.
@@ -58,9 +65,10 @@ class FilterUtil_Common
      * Sets parameters each Class could need.
      * Array $args must hold:
      *   module: The module name.
-     *   table: The table name.
+     *   table: The table name or Doctrine_Record class name.
      * It also may contain:
      *   join: The join array.
+     *   alias: Alias to use with the main table.
      *
      * @param array $args Arguments as listed above.
      */
@@ -78,8 +86,16 @@ class FilterUtil_Common
             return false;
         }
 
+        if (isset($args['alias'])) {
+            $this->setAlias($args['alias']);
+        } else {
+            $this->alias = 'tbl';
+        }
+
         if (isset($args['join'])) {
             $this->setJoin($args['join']);
+        } else {
+            $this->join = array();
         }
     }
 
@@ -107,23 +123,88 @@ class FilterUtil_Common
     /**
      * Sets table.
      *
-     * @param string $table Table name.
+     * @param string $table Table or Doctrine_Record class name.
      *
      * @return bool true on success, false otherwise.
      */
     protected function setTable($table)
     {
-        $tables = DBUtil::getTables();
+        // check if it's a Doctrine_Record class name
+        if (class_exists($table)) {
+            $tableobj = Doctrine_Core::getTable($table);
 
-        if (!isset($tables[$table]) || !isset($tables[$table . '_column'])) {
-            return false;
+            if (!$tableobj) {
+                return false;
+            }
+
+            $fields = $tableobj->getFieldNames();
+
+            $this->dbtable = $table;
+            $this->table   = $tableobj->getTableName();
+            $this->column  = array_combine($fields, $fields);
+        } else {
+            // tables.php support
+            $tables = DBUtil::getTables();
+
+            if (!isset($tables[$table]) || !isset($tables[$table . '_column'])) {
+                return false;
+            }
+
+            $this->dbtable = $table;
+            $this->table   = $tables[$table];
+            $this->column  = $tables[$table . '_column'];
         }
 
-        $this->pntable = $table;
-        $this->table   = $tables[$table];
-        $this->column  = $tables[$table . '_column'];
+        return true;
+    }
+
+    /**
+     * Reset columns.
+     *
+     * @return void
+     */
+    protected function resetColumns()
+    {
+        // check if it's a Doctrine_Record class name
+        if (class_exists($this->dbtable, false)) {
+            $tableobj = Doctrine_Core::getTable($this->dbtable);
+
+            $fields = $tableobj->getFieldNames();
+
+            $this->column  = array_combine($fields, $fields);
+        } else {
+            // tables.php support
+            $tables = DBUtil::getTables();
+
+            if (!isset($tables[$this->dbtable]) || !isset($tables[$this->dbtable . '_column'])) {
+                return false;
+            }
+
+            $this->column  = $tables[$table . '_column'];
+        }
 
         return true;
+    }
+
+    /**
+     * Sets alias.
+     *
+     * @param string $alias Table alias.
+     *
+     * @return void
+     */
+    protected function setAlias($alias)
+    {
+        if (empty($alias)) {
+            return;
+        }
+
+        $this->alias = $alias;
+
+        // now add the alias to all fields
+        foreach ($this->column as &$a) {
+            $a = $this->alias . '.' . $a;
+        }
     }
 
     /**
@@ -155,27 +236,45 @@ class FilterUtil_Common
             return;
         }
 
-        $tables = DBUtil::getTables();
-        $c = & $this->column;
-        // reset column array...
-        $c = $tables[$this->pntable . '_column'];
-        // now add alias "tbl" to all fields
+        // reset columns
+        $this->resetColumns();
+        // now add the alias to all fields
         foreach ($this->column as &$a) {
-            $a = 'tbl.' . $a;
+            $a = $this->alias . '.' . $a;
+        }
+
+        $tables = DBUtil::getTables();
+
+        // store the fixed aliases
+        $aliases = array();
+        foreach ($this->join as $join) {
+            if (isset($join['join_alias'])) {
+                $aliases[] = $join['join_alias'];
+            }
         }
 
         // add fields of all joins
         $alias = 'a';
-        foreach ($this->join as &$join) {
-            $jc = & $tables[$join['join_table'] . '_column'];
+        foreach ($this->join as $join) {
+            // check if the alias is ok
+            if (!isset($join['join_alias'])) {
+                if (in_array($alias, $aliases)) {
+                    do {
+                        $alias++;
+                    } while(in_array($alias, $aliases));
+                }
+                $join['join_alias'] = $alias;
+            }
+            // process the fields
+            $jc = isset($tables[$join['join_table'] . '_column']) ? $tables[$join['join_table'] . '_column'] : false;
             foreach ($join['join_field'] as $k => $f) {
                 $a = $join['object_field_name'][$k];
-                if (isset($c[$a])) {
+                if (isset($this->column[$a])) {
                     // Oh, that won't work! Two fields with the same alias!
-                    return z_exit('Invalid join information!');
+                    return z_exit(__f('%s: Invalid join information!', 'FilterUtil'));
                 }
                 // so, let's add the field to the column array
-                $c[$a] = $alias . '.' . $jc[$f];
+                $this->column[$a] = $join['join_alias'] . '.' . ($jc ? $jc[$f] : $f);
             }
             // now increase the alias ('a'++ = 'b')
             $alias++;
@@ -183,11 +282,11 @@ class FilterUtil_Common
     }
 
     /**
-     * Field exists?
+     * Field exists checker.
      *
      * @param string $field Field name.
      *
-     * @return bool true if the field exists, else if not.
+     * @return bool True if the field exists, false if not.
      */
     protected function fieldExists($field)
     {
@@ -207,7 +306,8 @@ class FilterUtil_Common
      */
     protected function addCommon(&$config)
     {
-        $config['table']  = $this->pntable;
+        $config['table']  = $this->dbtable;
+        $config['alias']  = $this->alias;
         $config['module'] = $this->module;
         $config['join']   = & $this->join;
     }

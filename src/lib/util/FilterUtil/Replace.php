@@ -12,10 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * FilterUtil replace interface
+ */
 interface FilterUtil_Replace
 {
-
     /**
      * Replace whatever the plugin has to replace.
      *

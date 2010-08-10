@@ -208,6 +208,38 @@ MODULES
 
     Remove all references to Loader::loadClassFromModule, Loader::loadClassFromModuleArray()
 
+- If you have any FilterUtil filter, replace any occurrence of $this->pntable with $this->dbtable
+
+- FilterUtil can work with Doctrine passing the Record name to the constructor. i.e:
+
+    $query = Doctrine_Query::create()
+         ->from('MyModule_Model_MyModel tbl');
+
+    $filter = new FilterUtil('MyModule', 'MyModule_Model_MyModel', $filter_args);
+    $fwhere = $filter->GetSQL();
+
+    $query->where($where)
+          ->addWhere($fwhere);
+
+    If you want to notify to FilterUtil of any JOIN present on your Doctrine Query, you can pass
+    the main table alias and the join information in the $args:
+
+    $joinInfo[] = array('join_table'         =>  'MyModule_Model_AnotherModel',
+                        'join_alias'         =>  'another',
+                        'join_field'         =>  array('fieldName1', 'fieldName2'),
+                        'object_field_name'  =>  array('fieldAlias1', 'fieldAlias2'));
+
+    $filter_args = array(
+                         'varname' => 'filter',
+                         'alias'   => 'tbl',
+                         'join'    => $joinInfo
+                        );
+
+    $query->select('another.fieldName1 fieldAlias1, another.fieldName2 fieldAlias2')
+          ->leftJoin('MyModule_Model_AnotherModel another ON another.id = tbl.another_id')
+
+    And be able to filter the JOIN also with filter=fieldAlias1:eq:value
+
 - Remove any references to Loader::loadClass() - classes are loaded automatically.
 
 - You may now use the following convenience methods from OO controllers and APIs.

@@ -22,7 +22,14 @@ class FilterUtil_Plugin extends FilterUtil_Common
      *
      * @var array
      */
-    private $plg;
+    private $plg = array();
+
+    /**
+     * Loaded plugins list.
+     *
+     * @var array;
+     */
+    private $loaded = array();
 
     /**
      * Loaded operators.
@@ -82,20 +89,21 @@ class FilterUtil_Plugin extends FilterUtil_Common
      * @param array  $config Plugin's config.
      *
      * @return bool True on success, false otherwise.
+     * @TODO Rewrite this loader
      */
     public function loadPlugin($name, $config = array())
     {
-        // TODO A: rewrite this loader
-        if ($this->isLoaded($name)) {
-            return true;
-        }
-
         $module = $this->module;
         if (strpos($name, '@')) {
             list ($module, $name) = explode('@', $name, 2);
         }
+
+        if ($this->isLoaded("$module@$name")) {
+            return true;
+        }
+
         $class = 'FilterUtil_Filter_' . $name;
-        $file = 'filter.' . $name . '.class.php';
+        $file  = 'filter.' . $name . '.class.php';
 
         // Load hierarchy
         $dest = array();
@@ -106,18 +114,21 @@ class FilterUtil_Plugin extends FilterUtil_Common
             $dest[] = "config/filter/$directory/$file";
             $dest[] = "$modpath/$directory/filter/$file";
         }
-
         $dest[] = "config/filter/$file";
-        $dest[] = "lib/util/FilterUtil/Filter/$file";
-
         Loader::loadOneFile($dest);
+
+        $config = array();
         $this->addCommon($config);
         $obj = new $class($config);
 
         $this->plg[] = $obj;
-        $obj = & end($this->plg);
-        $obj->setID(key($this->plg));
-        $this->registerPlugin(key($this->plg));
+        end($this->plg);
+        $key = key($this->plg);
+        $obj = & $this->plg[$key];
+
+        $obj->setID($key);
+        $this->registerPlugin($key);
+        $this->loaded["$module@$name"] = $key;
 
         return key(end($this->plg));
     }
@@ -186,7 +197,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      */
     public function isLoaded($name)
     {
-        if (isset($this->plg[$name]) && is_a($this->plg[$name], 'FilterUtil_Filter_'.$name)) {
+        if (isset($this->loaded[$name])) {
             return true;
         }
 
