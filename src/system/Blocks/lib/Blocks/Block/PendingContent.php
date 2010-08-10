@@ -67,9 +67,9 @@ class Blocks_Block_PendingContent extends Zikula_Block
                 );
             }
         }
-        $this->view->assign('content', $content);
 
         if (!empty($content)) {
+            $this->view->assign('content', $content);
             $blockinfo['content'] = $this->view->fetch('blocks_block_pendingcontent.tpl');
         } else {
             $blockinfo['content'] = '';

@@ -1,4 +1,3 @@
-<h3>{gt text="Pending Content"}</h3>
 <ul>
 {section name='line' loop=$content}
     <li><a href="{$content[line].link|safetext}">{$content[line].description|safetext} ({$content[line].number|safetext})</a></li>
