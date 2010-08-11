@@ -42,11 +42,11 @@ class DoctrineUtil
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $base = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
         $dm = Doctrine_Manager::getInstance();
-        $save = $dm->getAttribute(Doctrine::ATTR_MODEL_LOADING);
-        $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_AGGRESSIVE);
+        $save = $dm->getAttribute(Doctrine_Core::ATTR_MODEL_LOADING);
+        $dm->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_AGGRESSIVE);
         $path = (is_null($path)) ? "$base/$osdir/lib/$osdir/Model" : "$base/$osdir/$path";
         Doctrine_Core::createTablesFromModels(realpath($path));
-        $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, $save);
+        $dm->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, $save);
     }
 
     /**
@@ -69,10 +69,10 @@ class DoctrineUtil
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $base = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
         $dm = Doctrine_Manager::getInstance();
-        $save = $dm->getAttribute(Doctrine::ATTR_MODEL_LOADING);
-        $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_AGGRESSIVE);
+        $save = $dm->getAttribute(Doctrine_Core::ATTR_MODEL_LOADING);
+        $dm->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_AGGRESSIVE);
         Doctrine_Core::loadModels(realpath("$base/$osdir/lib/$osdir/Model"));
-        $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, $save);
+        $dm->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, $save);
     }
 
     /**

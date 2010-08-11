@@ -65,7 +65,7 @@ class DBConnectionStack
     {
         $serviceManager = ServiceUtil::getManager();
         if (!isset(self::$manager)) {
-            Doctrine::debug(System::isDevelopmentMode());
+            Doctrine_Core::debug(System::isDevelopmentMode());
             self::$manager = Doctrine_Manager::getInstance();
             self::configureDoctrine(self::$manager);
             // setup caching
@@ -410,22 +410,22 @@ class DBConnectionStack
             // Modes are bitwised, so they can be combined using | and removed using ^.
             // See http://www.doctrine-project.org/documentation/manual/1_1/en/configuration#portability:portability-mode-attributes
             // Turn on all portability features (commented out as this is the default setting)
-            $object->setAttribute('portability', Doctrine::PORTABILITY_ALL);
+            $object->setAttribute('portability', Doctrine_Core::PORTABILITY_ALL);
 
             // Turn off identifier quoting, as it causes more problems than it solves
             // See http://www.doctrine-project.org/documentation/manual/1_1/en/configuration#identifier-quoting
-            $object->setAttribute(Doctrine::ATTR_QUOTE_IDENTIFIER, false);
+            $object->setAttribute(Doctrine_Core::ATTR_QUOTE_IDENTIFIER, false);
 
             // What should be exported when exporting classes to the db
             // Modes are bitwised, so they can be combined using | and removed using ^.
             // See http://www.doctrine-project.org/documentation/manual/1_1/en/configuration#exporting
-            $object->setAttribute(Doctrine::ATTR_EXPORT, Doctrine::EXPORT_ALL);
+            $object->setAttribute(Doctrine_Core::ATTR_EXPORT, Doctrine_Core::EXPORT_ALL);
 
             // Validation attributes (default is VALIDATE_NONE)
             // Modes are bitwised, so they can be combined using | and removed using ^.
             // See http://www.doctrine-project.org/documentation/manual/1_1/en/configuration#naming-convention-attributes:validation-attributes
             // Turn on all validation functionality, at least while we are in development mode
-            $object->setAttribute(Doctrine::ATTR_VALIDATE, Doctrine::VALIDATE_ALL);
+            $object->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
 
             // naming convention of database related elements
             // affect importing schemas from the database to classes
@@ -433,28 +433,28 @@ class DBConnectionStack
 
 
             // Index names (default: [name]_idx)
-            $object->setAttribute(Doctrine::ATTR_IDXNAME_FORMAT, '%s');
+            $object->setAttribute(Doctrine_Core::ATTR_IDXNAME_FORMAT, '%s');
 
             // Sequence names (default: [name]_seq)
-            // $object->setAttribute(Doctrine::ATTR_SEQNAME_FORMAT, '%s_sequence');
+            // $object->setAttribute(Doctrine_Core::ATTR_SEQNAME_FORMAT, '%s_sequence');
 
             // Database names
-            // $object->setAttribute(Doctrine::ATTR_DBNAME_FORMAT, 'myframework_%s');
+            // $object->setAttribute(Doctrine_Core::ATTR_DBNAME_FORMAT, 'myframework_%s');
 
             // Table name prefixes
             $tablePrefix = System::getVar('prefix');
-            $object->setAttribute(Doctrine::ATTR_TBLNAME_FORMAT, "{$tablePrefix}_%s");
+            $object->setAttribute(Doctrine_Core::ATTR_TBLNAME_FORMAT, "{$tablePrefix}_%s");
 
             // Allow overriding of accessors
-            $object->setAttribute(Doctrine::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
+            $object->setAttribute(Doctrine_Core::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
 
             // Enable auto loading of custom Doctrine_Table classes in addition to Doctrine_Record
-            $object->setAttribute(Doctrine::ATTR_AUTOLOAD_TABLE_CLASSES, true);
+            $object->setAttribute(Doctrine_Core::ATTR_AUTOLOAD_TABLE_CLASSES, true);
 
             // Set model loading strategy to conservative
             // see http://www.doctrine-project.org/documentation/manual/1_1/en/introduction-to-models#autoloading-models
-            $object->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_CONSERVATIVE);
-            //$object->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_AGGRESSIVE);
+            $object->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_CONSERVATIVE);
+            //$object->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_AGGRESSIVE);
 
 
             return;
@@ -464,19 +464,19 @@ class DBConnectionStack
 
 
             // fetch / hydration mode
-            //            $object->setAttribute(Doctrine::ATTR_FETCHMODE, Doctrine::FETCH_ASSOC);
-            //            $object->setAttribute(Doctrine::ATTR_HYDRATE_OVERWRITE, Doctrine::HYDRATE_RECORD);
+            //            $object->setAttribute(Doctrine_Core::ATTR_FETCHMODE, Doctrine_Core::FETCH_ASSOC);
+            //            $object->setAttribute(Doctrine_Core::ATTR_HYDRATE_OVERWRITE, Doctrine_Core::HYDRATE_RECORD);
 
 
             // default column options
-            //            $object->setAttribute(Doctrine::ATTR_DEFAULT_COLUMN_OPTIONS,
+            //            $object->setAttribute(Doctrine_Core::ATTR_DEFAULT_COLUMN_OPTIONS,
             //                                            array('type' => 'string',
             //                                                  'length' => 255,
             //                                                  'notnull' => true));
 
             // properties of default added primary key in models
             // %s is replaced with the table name
-            //            $object->setAttribute(Doctrine::ATTR_DEFAULT_IDENTIFIER_OPTIONS,
+            //            $object->setAttribute(Doctrine_Core::ATTR_DEFAULT_IDENTIFIER_OPTIONS,
             //                                            array('name' => '%s_id',
             //                                                  'type' => 'string',
             //                                                  'length' => 16));
