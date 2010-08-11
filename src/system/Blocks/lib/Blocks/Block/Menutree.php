@@ -220,9 +220,6 @@ class Blocks_Block_Menutree extends Zikula_Block
             $tree->setOption('langs',$langs['list']);
             $tree->setOption('stripbaseurl',$vars['menutree_stripbaseurl']);
             $tree->setOption('maxDepth',$vars['menutree_maxdepth']);
-            if($vars['menutree_linkclass'] && !empty($vars['menutree_linkclasses'])) {
-                $tree->setOption('linkclasses',json_encode($vars['menutree_linkclasses']));
-            }
             $tree->loadArrayData($vars['menutree_content']);
             $vars['menutree_content'] = $tree->getHTML();
         }

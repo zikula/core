@@ -9,7 +9,6 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             nodeIdPrefix:       'node_',
             dynamicPattern:     function(str) {return str ? str.startsWith('{ext:') : false;},
             langs:              ['en'],
-            linkClasses:        [],
             stripBaseURL:       false,
             onSave:             this.save.bind(this),
             saveContentTo:      'menutree_content'
@@ -66,7 +65,6 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.multilingual = config.langs.length > 1;
         this.cLang = config.langs[0];
         this.defaultLang = config.langs[0];
-        this.multiclass = config.linkClasses.size() > 0;
 
         $super(element,config);
 

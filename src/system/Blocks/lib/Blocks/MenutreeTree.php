@@ -29,7 +29,6 @@ class  Blocks_MenutreeTree extends Zikula_Tree
             'sortable'      => false,
             'dynamicClass'  => 'z-tree-dynamic',
             'imagesDir'     => 'system/Blocks/images/menutree/',
-
         ));
         parent::__construct($config);
     }
