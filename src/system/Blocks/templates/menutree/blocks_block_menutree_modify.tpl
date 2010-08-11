@@ -188,24 +188,6 @@
         </div>
         {/if}
 
-        <script type="text/javascript">
-            //<![CDATA[
-            // some config for js functions
-            var MTConfig = new Object;
-            MTConfig.cookieName = 'menutree_{{$blockinfo.bid}}';
-/*
-            var tconfig = {
-                ,maxDepth: {{$menutree_maxdepth|default:0}}
-                {{$menutree_stripbaseurl}}
-            //add this url
-            {{if $menutree_newurl}}
-            var data = {linkhref: '{{$menutree_newurl|safetext}}'};
-            tree.newNode(data);
-            {{/if}}
-*/
-            //]]>
-        </script>
-
     </div>
 </div>
 <div id="menutree_tabhelp" class="menutree_tabcontent">

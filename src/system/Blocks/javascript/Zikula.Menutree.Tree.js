@@ -5,7 +5,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         config = this.decodeConfig(config);
         config = Object.extend({
             unactiveClass:      'z-tree-unactive',
-            dynamicClass:       'dynamic',
+            dynamicClass:       'z-tree-dynamic',
             nodeIdPrefix:       'node_',
             dynamicPattern:     function(str) {return str ? str.startsWith('{ext:') : false;},
             langs:              ['en'],
@@ -462,8 +462,6 @@ Object.extend(Zikula.Menutree.Tree,{
         if (!this.inst) {
             // avaiable outside as Zikula.Menutree.Tree.inst
             this.inst = new Zikula.Menutree.Tree(element,config);
-            // tmp
-            Zikula.t = this.inst;
         }
     }
 });

@@ -9,7 +9,7 @@ ul#adm-menutree a.z-tree-unactive {
     color: #BBBBBB;
 }
 
-ul#adm-menutree li.dynamic a {
+ul#adm-menutree li.z-tree-dynamic a {
     background: #FCF2C8;
     border: 1px solid #D98A33;
 }

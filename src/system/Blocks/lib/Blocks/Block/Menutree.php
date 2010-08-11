@@ -151,7 +151,7 @@ class Blocks_Block_Menutree extends Zikula_Block
     public function modify($blockinfo)
     {
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-//dump($vars);
+
         // set some default vars
         $vars['isnew'] =                    empty($vars);
         $vars['menutree_content'] =         isset($vars['menutree_content']) ? $vars['menutree_content'] : array();
@@ -217,8 +217,7 @@ class Blocks_Block_Menutree extends Zikula_Block
             $tree = new Blocks_MenutreeTree();
             $tree->setOption('id','adm-menutree');
             $tree->setOption('sortable',true);
-            $_langs = $langs['list'];
-            $tree->setOption('langs',$_langs);
+            $tree->setOption('langs',$langs['list']);
             $tree->setOption('stripbaseurl',$vars['menutree_stripbaseurl']);
             $tree->setOption('maxDepth',$vars['menutree_maxdepth']);
             if($vars['menutree_linkclass'] && !empty($vars['menutree_linkclasses'])) {
@@ -226,8 +225,6 @@ class Blocks_Block_Menutree extends Zikula_Block
             }
             $tree->loadArrayData($vars['menutree_content']);
             $vars['menutree_content'] = $tree->getHTML();
-//            dump($vars['menutree_content']);
-//            $vars['menutree_content'] = $this->_decode_tree($vars['menutree_content'],$langs);
         }
 
         // Create output object

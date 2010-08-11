@@ -27,7 +27,7 @@ class  Blocks_MenutreeTree extends Zikula_Tree
         $config = array_merge($config,array(
             'langs'         => array('en'),
             'sortable'      => false,
-            'dynamicClass'  => 'dynamic',
+            'dynamicClass'  => 'z-tree-dynamic',
             'imagesDir'     => 'system/Blocks/images/menutree/',
 
         ));
