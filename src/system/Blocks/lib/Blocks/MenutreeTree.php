@@ -27,6 +27,7 @@ class  Blocks_MenutreeTree extends Zikula_Tree
         $config = array_merge($config,array(
             'langs'         => array('en'),
             'sortable'      => false,
+            'dynamicClass'  => 'dynamic',
             'imagesDir'     => 'system/Blocks/images/menutree/',
 
         ));
@@ -138,6 +139,7 @@ class  Blocks_MenutreeTree extends Zikula_Tree
     {
         $langs = $this->config['langs'];
         $reflang =  $langs[0];
+        $isDynamic = false;
 
         $links = array();
         $item = $tab['item'];
@@ -148,6 +150,7 @@ class  Blocks_MenutreeTree extends Zikula_Tree
         $icon = '<img class="'.$this->config['icon'].'" alt="" src="'.$this->config['imagesDir'].$iconImage.'" />';
 
         foreach($item as $lang => $translated) {
+            $isDynamic = $isDynamic || $translated['dynamic'];
             $class = $translated['active'] == 1 ? $translated['class'] : $this->config['nodeUnactive'].' '.$translated['class'];
             $linkClass = !empty($class) ? ' class="'.$class.'"' : '';
             $linkLang = 'lang="'.$translated['lang'].'"';
@@ -160,6 +163,7 @@ class  Blocks_MenutreeTree extends Zikula_Tree
         $liId = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
         $links = implode('',$links);
         $liClass = array();
+        $liClass[] = $isDynamic ?  $this->config['dynamicClass'] : '';
         $liClass[] = $size == 1 ? $this->config['nodeSingle'] : '';
         $liClass[] = ($i == 1 && $size > 1) ? $this->config['nodeFirst'] : '';
         $liClass[] = ($i == $size && $size > 1) ? $this->config['nodeLast'] : '';

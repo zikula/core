@@ -5,7 +5,7 @@ div#menuTreeContainer {
     background-color: #FAFAFA;
 }
 
-ul#adm-menutree a.unactive {
+ul#adm-menutree a.z-tree-unactive {
     color: #BBBBBB;
 }
 
