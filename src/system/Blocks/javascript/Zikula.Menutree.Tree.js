@@ -441,11 +441,12 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
     }
 });
 Object.extend(Zikula.Menutree.Tree,{
-    trees: {},
     add: function(element,config) {
-        if (!this.trees.hasOwnProperty(element)) {
-            this.trees[element] = new Zikula.Menutree.Tree(element,config);
-            Zikula.t = this.trees[element];
+        if (!this.inst) {
+            // avaiable outside as Zikula.Menutree.Tree.inst
+            this.inst = new Zikula.Menutree.Tree(element,config);
+            // tmp
+            Zikula.t = this.inst;
         }
     }
 });

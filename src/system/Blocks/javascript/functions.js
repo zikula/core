@@ -15,9 +15,9 @@ function menutree_init()
 function menutree_treecontrols_onload()
 {
     //menutree controls - add, expand and collapse
-    $('menutree_newnode').observe('click', function(e) {e.stop(); tree.newNode()});
-    $('menutree_expandall').observe('click', function(e) {e.stop(); tree.expandAll()});
-    $('menutree_collapseall').observe('click', function(e) {e.stop(); tree.collapseAll()});
+    $('menutree_newnode').observe('click', function(e) {e.stop(); Zikula.Menutree.Tree.inst.newNode()});
+    $('menutree_expandall').observe('click', function(e) {e.stop(); Zikula.Menutree.Tree.inst.expandAll()});
+    $('menutree_collapseall').observe('click', function(e) {e.stop(); Zikula.Menutree.Tree.inst.collapseAll()});
     //controls for lang changing
     $$('.menutree_langcontrols').invoke('observe','click',menutree_onlangchange)
 }
@@ -74,7 +74,7 @@ function menutree_onlangchange(event)
 {
     event.stop();
     var referer = event.element();
-    tree.changeLang(referer.lang);
+    Zikula.Menutree.Tree.inst.changeLang(referer.lang);
     $$('.activelang').invoke('removeClassName','activelang')
     $(referer).addClassName('activelang');
 }
