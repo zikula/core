@@ -224,7 +224,7 @@
         <div>
             <fieldset>
                 <legend>{gt text="Menu item data"}</legend>
-                {if $multilingual || 1}
+                {if $multilingual}
                 <div class="z-formrow">
                     <label for="link_lang">{gt text="Language"}</label>
                     {html_options name="link_lang" id="link_lang" options=$languages}

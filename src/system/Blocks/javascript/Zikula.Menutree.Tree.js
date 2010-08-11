@@ -62,14 +62,11 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             multiactivate:      'menu/all-on.png',
             multideactivate:    'menu/all-off.png'
         },config.images);
-        if(config.langs.length > 1) {
-            this.multilingual = true;
-            this.cLang = config.langs[0];
-            this.defaultLang = config.langs[0];
-        }
-        if(config.linkClasses.size() > 0) {
-            this.multiclass = true;
-        }
+
+        this.multilingual = config.langs.length > 1;
+        this.cLang = config.langs[0];
+        this.defaultLang = config.langs[0];
+        this.multiclass = config.linkClasses.size() > 0;
 
         $super(element,config);
 
@@ -116,6 +113,9 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.unsaved = false;
     },
     save: function(node,params,data) {
+        if(node && params && params[1] && params[1].hasClassName(this.config.dynamicClass) && params[0] == 'bottom') {
+            return false;
+        }
         data = data || this.serialize();
         if(!$('menutree_content')) {
             this.tree.up('form').insert(new Element('input',{
@@ -285,7 +285,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
                 if(!data[lang].link_state) {
                     link.addClassName(this.config.unactiveClass);
                 }
-                link.writeAttribute('lang',data[lang].link_lang || null);
+                link.writeAttribute('lang',data[lang].link_lang || this.defaultLang);
                 this.unsaved = true;
             }
         }.bind(this));

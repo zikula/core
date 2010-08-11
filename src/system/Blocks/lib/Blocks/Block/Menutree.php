@@ -170,7 +170,7 @@ class Blocks_Block_Menutree extends Zikula_Block
         // get list of languages
         $vars['languages'] = ZLanguage::getInstalledLanguageNames();
         // tmp
-        $vars['languages']['pl'] = "Polski";
+//        $vars['languages']['pl'] = "Polski";
         $userlanguage = ZLanguage::getLanguageCode();
 
         // get default langs
