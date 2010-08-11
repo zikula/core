@@ -344,6 +344,16 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             }
         }
     },
+    newNode: function(data) {
+        if(data) {
+            for (var item in data) {
+                data[item] = data[item].unescapeHTML();
+            }
+        }
+        this.readNode(data);
+        this.formaction = 'new';
+        this.showForm();
+    },
     buildForm: function() {
         if(!this.formDialog) {
             this.formDialog = new Zikula.UI.FormDialog($('menutree_form_container'),this.submitForm.bind(this),{title: $('menutree_form_container').title});
