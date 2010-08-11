@@ -247,17 +247,6 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         var link, nodeData = {}, prefix = forSerialize ? '' : 'link_';
         this.config.langs.each(function(lang) {
             link =  node.down('a[lang='+lang+']');
-//            nodeData[lang] = {
-//                id:         this.getNodeId(node),
-//                name:       link.innerHTML,
-//                title:      link.readAttribute('title'),
-//                className:  $w(link.className).without(this.config.unactiveClass).join(' '),
-//                state:      !link.hasClassName(this.config.unactiveClass),
-//                href:       link.readAttribute('href'),
-//                lang:       link.readAttribute('lang'),
-//                lineno:     index || null,
-//                parent:     node.up('#'+this.tree.id+' li') ? this.getNodeId(node.up('#'+this.tree.id+' li')) : 0
-//            };
             nodeData[lang] = {}
             nodeData[lang][prefix+'id'] = this.getNodeId(node);
             nodeData[lang][prefix+'name'] = link.innerHTML;
@@ -279,7 +268,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
                 link.update(data[lang].link_name.escapeHTML() || '');
                 link.writeAttribute('href',data[lang].link_href || null);
                 link.writeAttribute('title',data[lang].link_title ? data[lang].link_title.escapeHTML() : null);
-                link.writeAttribute('className',data[lang].link_class || null);
+                link.writeAttribute('className',data[lang].link_className || null);
                 if(!data[lang].link_state) {
                     link.addClassName(this.config.unactiveClass);
                 }

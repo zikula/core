@@ -235,7 +235,7 @@
                     <label for="link_className">{gt text="CSS class"}</label>
                     {if $menutree_linkclass}
                     <select name="link_className" id="link_className">
-                        <option>{gt text="choose class"}</option>
+                        <option value="">{gt text="choose class"}</option>
                         {foreach from=$menutree_linkclasses key=id item=class}
                             <option value="{$class.name}">{$class.title}</option>
                         {/foreach}
