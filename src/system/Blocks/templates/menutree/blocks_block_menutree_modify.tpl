@@ -187,7 +187,6 @@
             {$menutree_content}
         </div>
         {/if}
-
     </div>
 </div>
 <div id="menutree_tabhelp" class="menutree_tabcontent">
@@ -196,6 +195,15 @@
 
 <script type="text/javascript">
     var tabs = new Zikula.UI.Tabs('menutree_tabs');
+
+    //add this url
+    {{if $menutree_newurl}}
+    Event.observe(window,'load',function(){
+        var data = {link_href: '{{$menutree_newurl|safetext}}'};
+        $('menutree_tabs').scrollTo();
+        Zikula.Menutree.Tree.inst.newNode(data);
+    });
+    {{/if}}
 </script>
 
 {capture assign="itemForm"}
