@@ -182,9 +182,11 @@
             </select>
         </div>
         {/if}
+        {if !empty($menutree_content)}
         <div id="menuTreeContainer">
             {$menutree_content}
         </div>
+        {/if}
 
         <script type="text/javascript">
             //<![CDATA[

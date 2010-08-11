@@ -76,6 +76,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.stripBaseURL();
         this.attachMenu();
         this.buildForm();
+        this.observeForm();
         this.unsaved = false;
         Event.observe(window, 'beforeunload', this.beforeUnloadHandler.bindAsEventListener(this));
     },
@@ -89,6 +90,13 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         }
         $super(node);
     },
+    insertNode: function($super,node,params,revert){
+        var result = $super(node,params,revert);
+        if(result) {
+            this.unsaved = true;
+        }
+        return result;
+    },
     stripBaseURL: function() {
         if(this.config.stripbaseurl) {
             var baseurl = new RegExp('^'+Zikula.Config.baseURL);
@@ -100,7 +108,15 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
     serializeNode: function($super,node,index) {
         return this.getNodeData(node, index, true);
     },
+    observeForm: function() {
+        this.tree.up('form').observe('submit', this.sendSaved.bindAsEventListener(this));
+    },
+    sendSaved: function() {
+        this.save();
+        this.unsaved = false;
+    },
     save: function(node,params,data) {
+        data = data || this.serialize();
         if(!$('menutree_content')) {
             this.tree.up('form').insert(new Element('input',{
                 type:'hidden',
@@ -227,6 +243,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         } else {
             obj.toggleClassName(this.config.unactiveClass);
         }
+        this.unsaved = true;
     },
     getNodeData: function(node,index,forSerialize) {
         var link, nodeData = {}, prefix = forSerialize ? '' : 'link_';
