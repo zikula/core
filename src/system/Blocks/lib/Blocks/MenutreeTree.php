@@ -26,6 +26,8 @@ class  Blocks_MenutreeTree extends Zikula_Tree
     {
         $config = array_merge($config,array(
             'langs'         => array('en'),
+            'flat'          => false,
+            'parseURL'      => false,
             'sortable'      => false,
             'dynamicClass'  => 'z-tree-dynamic',
             'imagesDir'     => 'system/Blocks/images/menutree/',
@@ -74,9 +76,16 @@ class  Blocks_MenutreeTree extends Zikula_Tree
                     'lang' => isset($_item['lang']) ? $_item['lang'] : '',
                     'dynamic' => strpos($_item['href'],'{ext:') === 0,
                 );
+                if ($this->config['parseURL']) {
+                    $item[$lang]['href'] = Blocks_MenutreeUtil::parseUrl($item[$lang]['href']);
+                }
             }
 
-            $_node = array('item' => $item, 'nodes' => array());
+            if ($this->config['flat']) {
+                $_node = array('item' => $item[$reflang], 'nodes' => array());
+            } else {
+                $_node = array('item' => $item, 'nodes' => array());
+            }
 
             if ($a[$reflang]['parent'] == 0) {
                 $this->tree[$a[$reflang]['id']] = $_node;
@@ -98,6 +107,15 @@ class  Blocks_MenutreeTree extends Zikula_Tree
         return $this->tree;
     }
 
+    /**
+     * Get decoded, structured data
+     *
+     * @return string HTML output.
+     */
+    public function getData()
+    {
+        return $this->tree;
+    }
     /**
      * Get HTML output
      *

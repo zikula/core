@@ -121,7 +121,13 @@ class Blocks_Block_Menutree extends Zikula_Block
                            'list' => $lang,
                            'flat' => true);
 
-            $newTree = $this->_decode_tree($newTree,$langs,$_parseURL = true);
+            $tree = new Blocks_MenutreeTree();
+            $tree->setOption('langs',(array)$langs['list']);
+            $tree->setOption('flat',$langs['flat']);
+            $tree->setOption('parseURL',true);
+            $tree->loadArrayData($newTree);
+
+            $newTree = $tree->getData();
         } else {
             $newTree = array();
         }
@@ -379,117 +385,6 @@ fdump($vars);
         $this->view->clear_all_cache();
 
         return $blockinfo;
-    }
-
-    /**
-     * Function to convert flat array to structured, tree-like array
-     */
-    private function _decode_tree($array,$langs,$_parseURL = false)
-    {
-        $tree = array();
-        $map = array();
-
-        if (!empty($langs['ref'])) {
-            $reflang = $langs['ref'];
-        } else {
-            $reflang = $langs['list'][0];
-        }
-
-        foreach ($array as $a) {
-            $item = array();
-
-            foreach ((array)$langs['list'] as $lang) {
-                if (empty($a[$lang])) {
-                    if (!empty($a[$reflang])) {
-                        $item[$lang] = $a[$reflang];
-                    } else {
-                        $item[$lang] = current($a);
-                    }
-                    $item[$lang]['state'] = 0;
-                    $item[$lang]['lang'] = $lang;
-                } else {
-                    $item[$lang] = $a[$lang];
-                }
-                if ($_parseURL) {
-                    $item[$lang]['href'] = $this->_parseUrl($item[$lang]['href']);
-                }
-                $item[$lang]['dynamic'] = strpos($item[$lang]['href'],'{ext:') === 0;
-            }
-
-            if ($langs['flat']) {
-                $_node = array('item' => $item[$reflang], 'nodes' => array());
-            } else {
-                $_node = array('item' => $item, 'nodes' => array());
-            }
-
-            if ($a[$reflang]['parent'] == 0) {
-                $tree[$a[$reflang]['id']] = $_node;
-                $path = null;
-            } else {
-                $path = $map[$a[$reflang]['parent']];
-                $path[] = $a[$reflang]['parent'];
-                $handle =& $tree;
-                while (list($key, $value) = each($path)) {
-                    if ($value === 0) continue;
-                    $handle =& $handle[$value]['nodes'];
-                }
-                $handle[$a[$reflang]['id']] = $_node;
-            }
-
-            $map[$a[$reflang]['id']] = $path;
-        }
-
-        return $tree;
-    }
-
-    /**
-     * Prepare a menu item url
-     * Copy of buildURL function from extmenu block
-     */
-    private function _parseUrl($url)
-    {
-        // allow a simple portable way to link to the home page of the site
-        if ($url == '{homepage}') {
-            $url = htmlspecialchars(System::getHomepageUrl());
-
-        } elseif (!empty($url)) {
-            switch ($url[0]) // Used to allow support for linking to modules with the use of bracket
-            {
-                case '{': // new module link
-                    {
-                        $url = explode(':', substr($url, 1,  - 1));
-                        // url[0] should be the module name
-                        if (isset($url[0]) && !empty($url[0])) {
-                            $modname = $url[0];
-                            // default for params
-                            $params = array();
-                            // url[1] can be a function or function&param=value
-                            if (isset($url[1]) && !empty($url[1])) {
-                                $urlparts = explode('&', $url[1]);
-                                $func = $urlparts[0];
-                                unset($urlparts[0]);
-                                if (count($urlparts) > 0) {
-                                    foreach ($urlparts as $urlpart) {
-                                        $part = explode('=', $urlpart);
-                                        $params[trim($part[0])] = trim($part[1]);
-                                    }
-                                }
-                            } else {
-                                $func = 'main';
-                            }
-                            // addon: url[2] can be the type parameter, default 'user'
-                            $type = (isset($url[2]) &&!empty($url[2])) ? $url[2] : 'user';
-                            //  build the url
-                            $url = ModUtil::url($modname, $type, $func, $params);
-                        } else {
-                            $url = System::getHomepageUrl();
-                        }
-                        break;
-                    }
-            }  // End Bracket Linking
-        }
-
-        return $url;
     }
 
     private function _permlevels()
