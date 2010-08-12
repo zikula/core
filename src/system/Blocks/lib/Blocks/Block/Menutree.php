@@ -55,7 +55,7 @@ class Blocks_Block_Menutree extends Zikula_Block
 
         // template to use
         if (!isset($vars['menutree_tpl']) || empty($vars['menutree_tpl']) || !$this->view->template_exists($vars['menutree_tpl'])) {
-            $vars['menutree_tpl'] = 'menutree/blocks_block_menutree.tpl';
+            $vars['menutree_tpl'] = 'menutree/blocks_block_menutree_default.tpl';
         }
 
         //check if block is cached, if so - fetch cached tpl to aviod further proceedeing
@@ -235,7 +235,7 @@ class Blocks_Block_Menutree extends Zikula_Block
 
         // template to use
         if (empty($vars['menutree_tpl']) || !$this->view->template_exists($vars['menutree_tpl'])) {
-            $vars['menutree_tpl'] = 'menutree/blocks_block_menutree.tpl';
+            $vars['menutree_tpl'] = 'menutree/blocks_block_menutree_default.tpl';
         }
 
         // prepare block titles array
@@ -315,7 +315,7 @@ fdump($vars);
 
         $vars['menutree_tpl'] = isset($menutree_data['tpl']) ? $menutree_data['tpl'] : '';
         if (empty($vars['menutree_tpl']) || !$this->view->template_exists($vars['menutree_tpl'])) {
-            $vars['menutree_tpl'] = 'menutree/blocks_block_menutree.tpl';
+            $vars['menutree_tpl'] = 'menutree/blocks_block_menutree_default.tpl';
         }
 
         $vars['menutree_stylesheet'] = isset($menutree_data['stylesheet']) ? $menutree_data['stylesheet'] : '';
