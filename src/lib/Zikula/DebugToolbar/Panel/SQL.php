@@ -82,7 +82,6 @@ class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_Panel
                        </tr>';
         }
 
-        
         return '<table class="DebugToolbarTable">
                     <tr>
                         <th>'.__('Query').'</th>
@@ -101,7 +100,8 @@ class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_Panel
      *
      * @return integer
      */
-    protected function getSQLCount() {
+    protected function getSQLCount()
+    {
         return count($this->_queries);
     }
 
@@ -112,7 +112,8 @@ class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_Panel
      *
      * @return string Formated SQL query
      */
-    protected function formatSql($sql) {
+    protected function formatSql($sql)
+    {
         $sql = wordwrap($sql, 150 , ' <br/> ', true);
 
         $color = "#990099";
@@ -153,4 +154,3 @@ class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_Panel
         $this->_queries[] = $event->getArgs();
     }
 }
-

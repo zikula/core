@@ -87,7 +87,6 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
 
         }
 
-        
         return '<table class="DebugToolbarTable">
                     <tr>
                         <th class="DebugToolbarLogsType">'.__('Type').'</th>
@@ -105,7 +104,8 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
      *
      * @return string String representation
      */
-    protected function errorTypeToString($type) {
+    protected function errorTypeToString($type)
+    {
         switch ($type) {
             case Zikula_ErrorHandler::EMERG:
                 return __('Emergency');
@@ -135,7 +135,8 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
      *
      * @return string HTML
      */
-    protected function getImageForErrorType($type) {
+    protected function getImageForErrorType($type)
+    {
         switch ($type) {
             case Zikula_ErrorHandler::EMERG:
                 return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/exit.gif" alt="" />';
@@ -165,7 +166,8 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
      *
      * @return void
      */
-    public function logExecNotFound(Zikula_Event $event) {
+    public function logExecNotFound(Zikula_Event $event)
+    {
         $this->_log[] = array('type'    =>  Zikula_ErrorHandler::EMERG,
                               'errstr' => 'Execute Function failed: Function not found '.$event['modfunc']);
     }
@@ -177,7 +179,8 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
      *
      * @return void
      */
-    public function log(Zikula_Event $event) {
+    public function log(Zikula_Event $event)
+    {
         $this->_log[] = $event->getArgs();
     }
 
@@ -188,7 +191,8 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
      *
      * @return void
      */
-    public function logModControllerNotFound(Zikula_Event $event) {
+    public function logModControllerNotFound(Zikula_Event $event)
+    {
         $this->_log[] = array('type'    => Zikula_ErrorHandler::EMERG,
                               'errstr' => 'Execute Controller method faild: Method not found '.get_class($event->getSubject()).'->'.$event['method']);
     }
@@ -200,7 +204,8 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
      *
      * @return void
      */
-    public function logModControllerAPINotFound(Zikula_Event $event) {
+    public function logModControllerAPINotFound(Zikula_Event $event)
+    {
         $this->_log[] = array('type'   =>  Zikula_ErrorHandler::EMERG,
                               'errstr' => 'Execute Controller API method faild: Method not found '.get_class($event->getSubject()).'->'.$event['method']);
     }

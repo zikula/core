@@ -58,4 +58,3 @@ class Zikula_DebugToolbar_Panel_Version implements Zikula_DebugToolbar_Panel
         return null;
     }
 }
-

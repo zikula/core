@@ -62,4 +62,3 @@ class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_Panel
         return null;
     }
 }
-

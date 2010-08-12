@@ -84,16 +84,22 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_Panel
                 $args = '<a href="" title="'.__('Click to show the full parameter list').'" onclick="$(\''.$idArgs.'\').toggle();return false;">' . $shortargs . '</a><span style="display:none" id="'.$idArgs.'">'.substr($args, 100).'</span>';
             }
 
+            if (!is_string($exec['data'])) {
+                ob_start();
+                var_dump($exec['data']);
+                $exec['data'] = ob_get_contents();
+                ob_end_clean();
+            }
+
             $rows[] = '<tr>
                            <td><a href="#" title="'.__('Click to show return value').'" onclick="$(\''.$id.'\').toggle();return false;">'.$this->_levelToSpaces($exec['level']).' '.$exec['module'].'/'.$exec['type'].$exec['api'].'/'.$exec['func'].'</a>('.$args.')</td>
                            <td>'.round($exec['time'], 3).'</td>
                        </tr>
                        <tr id="'.$id.'" style="display: none;">
-                           <td><pre>'.DataUtil::formatForDisplay((is_string($exec['data'])? $exec['data'] : print_r($exec['data'], true))).'</pre></td>
+                           <td><pre>'.DataUtil::formatForDisplayHTML($exec['data']).'</pre></td>
                        </tr>';
         }
 
-        
         return '<table>
                     <tr>
                         <th>'.__('Function').'</th>
@@ -110,7 +116,8 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_Panel
      *
      * @return string
      */
-    private function _levelToSpaces($level) {
+    private function _levelToSpaces($level)
+    {
         $html = '';
 
         for ($i=0; $i < $level; $i++) {
@@ -127,7 +134,8 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_Panel
      *
      * @return void
      */
-    public function modexecPre(Zikula_Event $event) {
+    public function modexecPre(Zikula_Event $event)
+    {
         $modfunc = $event['modfunc'];
         if (is_array($modfunc)) {
             $modfunc = $modfunc[1];
@@ -153,9 +161,11 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_Panel
      *
      * @return void
      */
-    public function modexecPost(Zikula_Event $event) {
-        if(count($this->_stack) == 0)
+    public function modexecPost(Zikula_Event $event)
+    {
+        if (count($this->_stack) == 0) {
             return;
+        }
 
         // pos to last stack entry
         $stackPos = count($this->_stack) -1;
@@ -174,4 +184,3 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_Panel
         $this->_executions[$lastExecPos]['data'] = $event->getData();
     }
 }
-

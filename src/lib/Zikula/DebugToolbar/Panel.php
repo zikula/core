@@ -52,4 +52,3 @@ interface Zikula_DebugToolbar_Panel
      */
     public function getPanelContent();
 }
-

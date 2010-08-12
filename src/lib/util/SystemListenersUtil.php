@@ -307,7 +307,7 @@ class SystemListenersUtil
     {
         if (!$event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
             $toolbar = ServiceUtil::getManager()->getService('debug.toolbar');
-            $toolbar->addHTMLToTooter();
+            $toolbar->addHTMLToFooter();
         }
     }
 }

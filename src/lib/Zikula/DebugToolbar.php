@@ -152,7 +152,7 @@ class Zikula_DebugToolbar
      *
      * @return void
      */
-    public function addHTMLToTooter()
+    public function addHTMLToFooter()
     {
         PageUtil::addVar('footer', $this->asHTML());
     }

@@ -63,4 +63,3 @@ class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_Panel
         return null;
     }
 }
-

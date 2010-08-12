@@ -114,4 +114,3 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_Panel
         }
     }
 }
-

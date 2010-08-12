@@ -147,7 +147,8 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
      *
      * @return void
      */
-    public function initRenderer(Zikula_Event $event) {
+    public function initRenderer(Zikula_Event $event)
+    {
         $view = $event->getSubject();
         $view->debugging = true;
         $view->register_outputfilter(array($this, 'smartyViewoutputfilter'));
@@ -178,7 +179,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
 
             $view->_smarty_debug_info = array();
         }
-        
+
         return $output;
     }
 
@@ -190,7 +191,8 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
      *
      * @return array
      */
-    protected function removeZikulaViewVars($vars) {
+    protected function removeZikulaViewVars($vars)
+    {
         unset($vars['zikula_view']); // results in endless loop
 
         $themeVars = array_keys(ThemeUtil::getVar());
@@ -208,7 +210,8 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
      *
      * @return array
      */
-    protected function removeOldModuleVars($vars) {
+    protected function removeOldModuleVars($vars)
+    {
         foreach ($this->_templates as $template) {
             foreach ($template['vars'] as $var => $value) {
                 if (isset($vars[$var]) && $vars[$var] === $value) {
@@ -220,4 +223,3 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
         return $vars;
     }
 }
-
