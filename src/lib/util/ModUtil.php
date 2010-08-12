@@ -1059,6 +1059,11 @@ class ModUtil
 
             return false;
         }
+
+        // Issue not found exception for controller requests
+        if (!System::isLegacyMode() && !$api) {
+            throw new Zikula_Exception_NotFound(__f('The requested controller action %s_Controller_%s::%s() could not be found', array($modname, $type, $func)));
+        }
     }
 
 
