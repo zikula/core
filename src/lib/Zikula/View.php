@@ -357,16 +357,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     }
 
     /**
-     * Retrieve the current cache ID.
-     *
-     * @return string The current cache ID.
-     */
-    public function getCache_id()
-    {
-        return $this->cache_id;
-    }
-
-    /**
      * Return the current userdb flag.
      *
      * @return boolean Set if Theme is an active module and templates stored in database.
@@ -416,32 +406,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function getEventManager()
     {
         return $this->eventManager;
-    }
-
-    /**
-     * Set cache ID.
-     *
-     * @param string $id Cache ID.
-     *
-     * @return Zikula_View This instance.
-     */
-    public function setCache_Id($id)
-    {
-        $this->cache_id = $id;
-        return $this;
-    }
-
-    /**
-     * Set compile check.
-     *
-     * @param boolean $doCompileCheck If true, checks for compile will be performed.
-     *
-     * @return Zikula_View This instance.
-     */
-    public function setCompile_check($doCompileCheck)
-    {
-        $this->compile_check = $doCompileCheck;
-        return $this;
     }
 
     /**
@@ -773,7 +737,8 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @return string|null The auto_id, or null if neither $cache_id nor $compile_id are set.
      */
-    function _get_auto_id($cache_id=null, $compile_id=null) {
+    function _get_auto_id($cache_id=null, $compile_id=null)
+    {
         if (isset($cache_id)) {
             $auto_id = (isset($compile_id) && !empty($compile_id)) ? $cache_id . '_' . $compile_id  : $cache_id;
         } elseif (isset($compile_id)) {
@@ -782,9 +747,9 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
         if (isset($auto_id)) {
             return md5($auto_id);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -831,7 +796,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $filebase = FileUtil::getFilebase($auto_source);
         $filebase_hashed = $filebase . '-' . $hash;
         $auto_source = str_replace($filebase, $filebase_hashed, $auto_source);
-        
+
         if (isset($auto_id) && !empty($auto_id)) {
             $file = $auto_id . '-' . $auto_source;
         } else {
@@ -1003,6 +968,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             }
             return;
         }
+
         switch (strtolower($key))
         {
             case 'zikula_view':
@@ -1012,32 +978,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
                 $this->trigger_error(__f('%s is a protected template variable and may not be assigned', $key));
                 break;
         }
-    }
-
-    /**
-     * Set Caching.
-     *
-     * @param boolean $boolean True or false.
-     *
-     * @return Zikula_View
-     */
-    public function setCaching($boolean)
-    {
-        $this->caching = (bool)$boolean;
-        return $this;
-    }
-
-    /**
-     * Set cache lifetime.
-     *
-     * @param integer $time Lifetime in seconds.
-     *
-     * @return Zikula_View
-     */
-    public function setCache_lifetime($time)
-    {
-        $this->cache_lifetime = $time;
-        return $this;
     }
 
     /**
@@ -1140,6 +1080,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         if (System::isLegacyMode()) {
             $this->assign('pncore', $core);
         }
+
         return $this;
     }
 
@@ -1358,6 +1299,19 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     }
 
     /**
+     * Set compile check.
+     *
+     * @param boolean $doCompileCheck If true, checks for compile will be performed.
+     *
+     * @return Zikula_View This instance.
+     */
+    public function setCompile_check($doCompileCheck)
+    {
+        $this->compile_check = $doCompileCheck;
+        return $this;
+    }
+
+    /**
      * Retrieve whether templates are forced to be compiled.
      *
      * @return boolean True if templates are forced to be compiled, otherwise false.
@@ -1377,6 +1331,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setForce_compile($force_compile)
     {
         $this->force_compile = $force_compile;
+        return $this;
     }
 
     /**
@@ -1394,6 +1349,71 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function getCaching()
     {
         return $this->caching;
+    }
+
+    /**
+     * Set Caching.
+     *
+     * @param boolean $boolean True or false.
+     *
+     * @return Zikula_View
+     */
+    public function setCaching($boolean)
+    {
+        $this->caching = (bool)$boolean;
+        return $this;
+    }
+
+    /**
+     * Retrieve the current cache ID.
+     *
+     * @return string The current cache ID.
+     */
+    public function getCache_id()
+    {
+        return $this->cache_id;
+    }
+
+    /**
+     * Set cache ID.
+     *
+     * @param string $id Cache ID.
+     *
+     * @return Zikula_View This instance.
+     */
+    public function setCache_Id($id)
+    {
+        $this->cache_id = $id;
+        return $this;
+    }
+
+    /**
+     * Retrieve the number of seconds cached content will persist.
+     *
+     * Special values:
+     * <ul>
+     *  <li>0 = always regenerate cache</li>
+     *  <li>-1 = never expires</li>
+     * </ul>
+     *
+     * @return integer The number of seconds cached content will persist.
+     */
+    public function getCache_lifetime()
+    {
+        return $this->cache_lifetime;
+    }
+
+    /**
+     * Set cache lifetime.
+     *
+     * @param integer $time Lifetime in seconds.
+     *
+     * @return Zikula_View
+     */
+    public function setCache_lifetime($time)
+    {
+        $this->cache_lifetime = $time;
+        return $this;
     }
 
     /**
@@ -1416,22 +1436,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setCache_dir($cache_dir)
     {
         $this->cache_dir = $cache_dir;
-    }
-
-    /**
-     * Retrieve the number of seconds cached content will persist.
-     *
-     * Special values:
-     * <ul>
-     *  <li>0 = always regenerate cache</li>
-     *  <li>-1 = never expires</li>
-     * </ul>
-     *
-     * @return integer The number of seconds cached content will persist.
-     */
-    public function getCache_lifetime()
-    {
-        return $this->cache_lifetime;
     }
 
     /**
