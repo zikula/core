@@ -346,7 +346,13 @@ class LogUtil
         if (System::isInstalling()) {
             return;
         }
-        $errorReporting = ServiceUtil::getManager()->getService('system.errorreporting');
+
+        $serviceManager = ServiceUtil::getManager();
+        if (!$serviceManager->hasService('system.errorreporting')) {
+            return;
+        }
+
+        $errorReporting = $serviceManager->getService('system.errorreporting');
         $errorReporting->handler($level, $msg);
     }
 
