@@ -717,18 +717,25 @@ class Users_Api_Registration extends Zikula_Api
 
             $userObj['user_regdate'] = $nowUTCStr;
 
-            if ($createdByAdminOrSubAdmin) {
-                $userObj['approved_date'] = $nowUTCStr;
-                $userObj['approved_by'] = UserUtil::getVar('uid');
-            }
+            // Approved date is set no matter what approved_by will become.
+            $userObj['approved_date'] = $nowUTCStr;
+
+            // Set activated state as pending registration for now to prevent firing of update hooks after the insert until the
+            // activated state is set properly further below.
+            $userObj['activated'] = UserUtil::ACTIVATED_PENDING_REG;
 
             // NOTE: See below for the firing of the item-create hook.
             $userObj = DBUtil::insertObject($userObj, 'users', 'uid');
 
-            if ($userObj && !$createdByAdminOrSubAdmin) {
-                // Moderation is off, so user "self-approved"
-                UserUtil::setVar('approved_date', $nowUTCStr, $userObj['uid']);
-                UserUtil::setVar('approved_by', $userObj['uid'], $userObj['uid']);
+            if ($userObj) {
+                if ($createdByAdminOrSubAdmin) {
+                    // Current user is admin, so admin is creating this registration.
+                    $approvedByUid = UserUtil::getVar('uid');
+                } else {
+                    // Current user is not admin, so moderation is off and user "self-approved" through the registration process
+                    $approvedByUid = $userObj['uid'];
+                }
+                UserUtil::setVar('approved_by', $approvedByUid, $userObj['uid']);
 
                 $reginfo['uid'] = $userObj['uid'];
             }
@@ -767,6 +774,8 @@ class Users_Api_Registration extends Zikula_Api
                 UserUtil::setVar('activated', UserUtil::ACTIVATED_INACTIVE_TOUPP, $userObj['uid']);
                 $userObj['activated'] = UserUtil::ACTIVATED_INACTIVE_TOUPP;
             }
+            // Don't do any more UserUtil::setVar() operations or other direct modifications to the user record from this point until
+            // the end of the function, or an update event/hook will be fired!
 
             // Add user to default group
             $defaultGroup = ModUtil::getVar('Groups', 'defaultgroup', false);
