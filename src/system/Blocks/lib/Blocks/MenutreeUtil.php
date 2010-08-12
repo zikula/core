@@ -58,8 +58,13 @@ class Blocks_MenutreeUtil
         $templates = array_diff($templates,$sysTpls);
         sort($templates);
 
+        // prepare array values
+        $templatesValues = array();
+        foreach($templates as $t) {
+            $templatesValues[] = 'menutree/'.$t;
+        }
         // fill array keys using values
-        $templates = array_combine($templates, $templates);
+        $templates = array_combine($templatesValues,$templates);
 
         $someThemes = __('Only in some themes');
         if (!empty($tpls['themes']['some'])) {

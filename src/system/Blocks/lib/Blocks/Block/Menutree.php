@@ -297,7 +297,7 @@ class Blocks_Block_Menutree extends Zikula_Block
     {
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-
+fdump($vars);
         $this->view->setCaching(false);
 
         // check if import old menu
