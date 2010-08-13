@@ -157,7 +157,7 @@ class Blocks_Block_Menutree extends Zikula_Block
     public function modify($blockinfo)
     {
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-
+fdump($blockinfo,$vars);
         // set some default vars
         $vars['isnew'] =                    empty($vars);
         $vars['menutree_content'] =         isset($vars['menutree_content']) ? $vars['menutree_content'] : array();
@@ -219,16 +219,18 @@ class Blocks_Block_Menutree extends Zikula_Block
                     $langs['ref'] = current(array_intersect($vars['languages'], $vars['oldlanguages']));
                 }
             }
-            // decode tree array
-            $tree = new Blocks_MenutreeTree();
-            $tree->setOption('id','adm-menutree');
-            $tree->setOption('sortable',true);
-            $tree->setOption('langs',$langs['list']);
-            $tree->setOption('stripbaseurl',$vars['menutree_stripbaseurl']);
-            $tree->setOption('maxDepth',$vars['menutree_maxdepth']);
-            $tree->loadArrayData($vars['menutree_content']);
-            $vars['menutree_content'] = $tree->getHTML();
         }
+        // decode tree array
+        $tree = new Blocks_MenutreeTree();
+        $tree->setOption('id','adm-menutree'.$blockinfo['bid']);
+        $tree->setOption('sortable',true);
+        if(isset($langs)) {
+            $tree->setOption('langs',$langs['list']);
+        }
+        $tree->setOption('stripbaseurl',$vars['menutree_stripbaseurl']);
+        $tree->setOption('maxDepth',$vars['menutree_maxdepth']);
+        $tree->loadArrayData($vars['menutree_content']);
+        $vars['menutree_content'] = $tree->getHTML();
 
         // Create output object
         $this->view->setCaching(false);
