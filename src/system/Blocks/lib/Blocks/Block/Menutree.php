@@ -157,7 +157,7 @@ class Blocks_Block_Menutree extends Zikula_Block
     public function modify($blockinfo)
     {
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-fdump($blockinfo,$vars);
+
         // set some default vars
         $vars['isnew'] =                    empty($vars);
         $vars['menutree_content'] =         isset($vars['menutree_content']) ? $vars['menutree_content'] : array();
@@ -524,7 +524,6 @@ fdump($blockinfo,$vars);
          * [id] = array(
          *     [lang] = array (
          *         [data][lang] = [lang]
-         *         [data][id] = [id]
          *         [data][parent] = exist
          *     )
          * )
@@ -543,7 +542,6 @@ fdump($blockinfo,$vars);
                         || !is_array($data)
                         || empty($data['name'])
                         || !ZLanguage::isLangParam($data['lang'])
-                        || $data['id'] != $id
                         || !in_array($data['parent'],$ids)){
                     return false;
                 }
