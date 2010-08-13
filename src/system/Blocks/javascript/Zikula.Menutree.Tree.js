@@ -276,6 +276,11 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
                 this.unsaved = true;
             }
         }.bind(this));
+        if(node.select('a').any(function(a) {
+            return this.config.dynamicPattern(a.readAttribute('href'));
+        }.bind(this))) {
+            node.addClassName(this.config.dynamicClass);
+        }
         this.save();
         this.tree.fire("tree:item:save", { node: node });
     },
@@ -314,11 +319,6 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         }.bind(this));
         this.setNodeData(node,this.tmp);
         node.select('a').each(this.menu.add.bind(this.menu));
-        if(node.select('a').any(function(a) {
-            return this.config.dynamicPattern(a.readAttribute('href'));
-        }.bind(this))) {
-            node.addClassName(this.config.dynamicClass);
-        }
         this.initNode(node);
         this.drawNodes();
     },

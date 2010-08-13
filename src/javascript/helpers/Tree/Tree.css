@@ -73,3 +73,11 @@ div.treewraper ul.z-tree-sortable .z-tree-dropBeforeClass {
     margin-top: -2px;
     background: transparent;
 }
+
+div.treewraper ul li {
+    position: static !important;
+}
+
+div.treewraper ul li.z-tree-onDragClass {
+    position: relative !important;
+}

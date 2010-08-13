@@ -5,16 +5,16 @@ div#menuTreeContainer {
     background-color: #FAFAFA;
 }
 
-ul#adm-menutree a.z-tree-unactive {
+div#menuTreeContainer ul.tree a.z-tree-unactive {
     color: #BBBBBB;
 }
 
-ul#adm-menutree li.z-tree-dynamic a {
+div#menuTreeContainer ul.tree li.z-tree-dynamic a {
     background: #FCF2C8;
     border: 1px solid #D98A33;
 }
 
-ul#adm-menutree a {
+div#menuTreeContainer ul.tree a {
     cursor: pointer;
 }
 
