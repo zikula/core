@@ -491,7 +491,7 @@ class Modules_Api_Admin extends Zikula_Api
         DBUtil::deleteObjectByID('module_vars', $modinfo['name'], 'modname');
 
         // clean up any hooks activated for this module
-        DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'smodule');
+        DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
 
         // remove the entry from the modules table
         if ($this->serviceManager['multisites.enabled'] == 1) {
