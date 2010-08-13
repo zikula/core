@@ -303,7 +303,7 @@ class Blocks_Block_Menutree extends Zikula_Block
     {
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-fdump($vars);
+
         $this->view->setCaching(false);
 
         // check if import old menu
@@ -314,6 +314,9 @@ fdump($vars);
         } else {
             $vars['menutree_content'] = FormUtil::getPassedValue('menutree_content', '', 'POST');
             $vars['menutree_content'] = DataUtil::urlsafeJsonDecode($vars['menutree_content']);
+        }
+        if(!$this->validate_menu($vars['menutree_content'])) {
+            return LogUtil::registerError($this->__('Error! Could not save your changes.'));
         }
 
         // get other form data
@@ -512,4 +515,39 @@ fdump($vars);
 
         return $data;
     }
+    private function validate_menu($array)
+    {
+        /*
+         * Menu should be an array of arrays:
+         * [id] = array(
+         *     [lang] = array (
+         *         [data][lang] = [lang]
+         *         [data][id] = [id]
+         *         [data][parent] = exist
+         *     )
+         * )
+         */
+        if(!is_array($array)) {
+            return false;
+        }
+        $ids = array_keys($array);
+        $ids[] = 0;
+        foreach($array as $id => $node) {
+            if(!is_numeric($id) || !is_array($node)) {
+                return false;
+            }
+            foreach($node as $lang => $data) {
+                if(!ZLanguage::isLangParam($lang)
+                        || !is_array($data)
+                        || empty($data['name'])
+                        || !ZLanguage::isLangParam($data['lang'])
+                        || $data['id'] != $id
+                        || !in_array($data['parent'],$ids)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }
