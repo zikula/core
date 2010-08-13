@@ -95,10 +95,12 @@ function menutree_stylehelper(event)
     }
     //pattern for tpl name
     var p = /blocks_block_menutree_(.+?)\.tpl/,
-        tpl = (tpl = $('menutree_tpl').value.match(p)) ? tpl[1] : '';
+        tpl = (tpl = $('menutree_tpl').value.match(p)) ? tpl[1] : '',
+        hidden = false;
     //hide all options not containing selected tpl name
     if(!tpl.empty() && tpl != 'default') {
         $('menutree_stylesheet').value = 'null';
+        hidden = true;
         if(Prototype.Browser.IE) {
             //IE does not respect "display: none" on option element
             if($('menutree_stylesheet_backup') == undefined) {
@@ -134,7 +136,7 @@ function menutree_stylehelper(event)
         if(first != undefined) {
             first.selected = true;
         }
-        if(event && !$('menutree_stylesheet_helper').visible()) {
+        if(hidden && !$('menutree_stylesheet_helper').visible()) {
             showeffect('menutree_stylesheet_helper');
             $('menutree_stylesheet_helper').down('a').observe('click',menutree_stylehelper_reset)
         }
