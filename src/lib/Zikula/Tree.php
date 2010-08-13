@@ -306,7 +306,7 @@ class Zikula_Tree
 
         $class = $item['active'] == 1 ? $item['class'] : $this->config['nodeUnactive'].' '.$item['class'];
         $linkClass = !empty($class) ? ' class="'.$class.'"' : '';
-        $linkHref = 'href="'.$item['href'].'"';
+        $linkHref = 'href="'.DataUtil::formatForDisplay($item['href']).'"';
         $linkTitle = !empty($item['title']) ? ' title="'.$item['title'].'"' : '';
 
         $links[] = "<a {$linkHref} {$linkTitle} {$linkClass}>{$item['name']}</a>";

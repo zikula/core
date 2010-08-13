@@ -171,7 +171,7 @@ class  Blocks_MenutreeTree extends Zikula_Tree
             $class = $translated['active'] == 1 ? $translated['class'] : $this->config['nodeUnactive'].' '.$translated['class'];
             $linkClass = !empty($class) ? ' class="'.$class.'"' : '';
             $linkLang = 'lang="'.$translated['lang'].'"';
-            $linkHref = 'href="'.$translated['href'].'"';
+            $linkHref = 'href="'.DataUtil::formatForDisplay($translated['href']).'"';
             $linkTitle = !empty($translated['title']) ? ' title="'.$translated['title'].'"' : '';
 
             $links[] = "<a {$linkHref} {$linkLang} {$linkTitle} {$linkClass}>{$translated['name']}</a>";
