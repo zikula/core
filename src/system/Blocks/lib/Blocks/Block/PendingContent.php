@@ -12,6 +12,11 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Pending Content block
+ * @author Craig Heydenburg
+ */
+
 class Blocks_Block_PendingContent extends Zikula_Block
 {
     /**
