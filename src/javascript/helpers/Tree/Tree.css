@@ -13,6 +13,9 @@ div.treewraper ul {
     padding: 0;
     text-indent: 0;
 }
+div.treewraper > ul {
+    margin-left: 0 !important;
+}
 
 div.treewraper ul li {
     list-style-type: none;

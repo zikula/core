@@ -132,6 +132,18 @@ class Zikula_Tree
     }
 
     /**
+     * Set tree data. Given array must be already proper structured tree data.
+     *
+     * @param array $treeArray Data array.
+     *
+     * @return void
+     */
+    public function setTreeData($treeArray)
+    {
+        $this->tree = (array)$treeArray;
+    }
+
+    /**
      * Get HTML output
      *
      * @return string HTML output.

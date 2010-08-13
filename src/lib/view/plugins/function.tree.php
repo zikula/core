@@ -16,6 +16,9 @@
 /**
  * Zikula_View function to include the relevant files for the phpLayersMenu and pass a previously generated menu string to phpLayersMenu
  *
+ * Example:
+ * {tree $menuArray=$your_content imagesDir='yout/path/to/images/'}
+ *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
  *
@@ -24,20 +27,24 @@
 function smarty_function_tree ($params, $view)
 {
     $menuString = isset($params['menustring']) ? $params['menustring'] : null;
-    $menuArray = isset($params['menuarray']) ? $params['menuarray'] : null;
-    $config    = isset($params['config'])    ? $params['config']    : array();
+    $menuArray  = isset($params['menuarray'])  ? $params['menuarray']  : null;
+    $treeArray  = isset($params['treearray'])  ? $params['treearray']  : null;
+    $config     = isset($params['config'])     ? $params['config']     : array();
 
-    if (!isset($menuString) && !isset($menuArray)) {
-        $view->trigger_error(__f('Error! in %1$s: %2$s or %3$s parameter must be specified.', array('smarty_function_tree', 'menustring', 'menuarray')));
+    if (!isset($menuString) && !isset($menuArray) && !isset($treeArray)) {
+        $view->trigger_error(__f('Error! in %1$s: %2$s, %3$s or %4$s parameter must be specified.', array('smarty_function_tree', 'menustring', 'menuarray','treearray')));
         return false;
     }
-    unset($params['menuString']);
-    unset($params['menuArray']);
+    unset($params['menustring']);
+    unset($params['menuarray']);
+    unset($params['treearray']);
     unset($params['config']);
     $config = array_merge($config,(array)$params);
 
     $tree = new Zikula_Tree($config);
-    if (isset($menuArray)) {
+    if (isset($treeArray)) {
+        $tree->setTreeData($treeArray);
+    } elseif (isset($menuArray)) {
         $tree->loadArrayData($menuArray);
     } else {
         $tree->loadStringData($menuString);
