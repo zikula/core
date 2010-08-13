@@ -77,7 +77,7 @@ class  Blocks_MenutreeTree extends Zikula_Tree
                     'dynamic' => strpos($_item['href'],'{ext:') === 0,
                 );
                 if ($this->config['parseURL']) {
-                    $item[$lang]['href'] = Blocks_MenutreeUtil::parseUrl($item[$lang]['href']);
+                    $item[$lang]['href'] = ModUtil::apiFunc('Blocks', 'user', 'encodebracketurl', $item[$lang]['href']);
                 }
             }
 
