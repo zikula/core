@@ -51,7 +51,11 @@
                 {if isset($regactions.approve)}
                 <td class="z-center">
                     {if $regactions.approve && !$reginfo.isverified}
+                    {if isset($zcore.Users.moderation_order) && ($zcore.Users.moderation_order == 'UserUtil::APPROVAL_AFTER'|const)}
+                    <a href="{$regactions.approve|safetext}">{img src='ok.gif' modname='core' set='icons/extrasmall' __title='Pre-approve (verification still required)' __alt='Pre-approve (verification still required)'}</a>
+                    {else}
                     <a href="{$regactions.approve|safetext}">{img src='ok.gif' modname='core' set='icons/extrasmall' __title='Approve' __alt='Approve'}</a>
+                    {/if}
                     {elseif $regactions.approve && $reginfo.isverified}
                     <a href="{$regactions.approve|safetext}">{img src='add_user.gif' modname='core' set='icons/extrasmall' __title='Approve (creates a new user account)' __alt='Approve (creates a new user account)'}</a>
                     {else}

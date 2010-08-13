@@ -1092,9 +1092,10 @@ class Users_Controller_Admin extends Zikula_Controller
             );
         }
 
-        $this->view->assign('reglist', $reglist)
-                       ->assign('actions', $actions)
-                       ->assign('pager', $pager);
+        $this->view->add_core_data()
+                    ->assign('reglist', $reglist)
+                    ->assign('actions', $actions)
+                    ->assign('pager', $pager);
 
         return $this->view->fetch('users_admin_viewregistrations.tpl');
     }
@@ -1483,7 +1484,8 @@ class Users_Controller_Admin extends Zikula_Controller
                 $this->__f('Warning! Nothing to do! The registration record with uid \'%1$s\' is already approved.', $reginfo['uid']),
                 null,
                 $cancelUrl);
-        } elseif (!$forceVerification && ($approvalOrder == UserUtil::APPROVAL_AFTER) && !$reginfo['isapproved']) {
+        } elseif (!$forceVerification && ($approvalOrder == UserUtil::APPROVAL_AFTER) && !$reginfo['isapproved']
+                && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerError(
                 $this->__f('Error! The registration record with uid \'%1$s\' cannot be approved. The registration\'s e-mail address must first be verified.', $reginfo['uid']),
                 null,

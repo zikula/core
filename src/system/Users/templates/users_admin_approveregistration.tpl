@@ -6,8 +6,12 @@
 
     <h2>{$templatetitle}</h2>
 
-    {if !$reginfo.isverified && $force}
+    {if !$reginfo.isverified}
+    {if $force}
     <p class="z-warningmsg">{gt text="Warning! The e-mail address for this registration has not been verified. Approving this registration will create a new user record without completing the e-mail verification process."}</p>
+    {elseif isset($zcore.Users.moderation_order) && ($zcore.Users.moderation_order == 'UserUtil::APPROVAL_AFTER'|const)}
+    <p class="z-warningmsg">{gt text="Warning! The e-mail address for this registration has not been verified. You are pre-approving this registration, and a new user record will be created upon completion of the e-mail verification process."}</p>
+    {/if}
     {/if}
 
     {include file='users_admin_includeregistration.tpl'}
