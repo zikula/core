@@ -290,10 +290,7 @@ class Users_Controller_User extends Zikula_Controller
         ));
 
         if ($registeredObj) {
-            if (isset($registeredObj['uid'])) {
-                LogUtil::registerStatus($this->__('Done! Your account has been created and you may now log in.'));
-                return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
-            } elseif (isset($registeredObj['id'])) {
+            if ($registeredObj['activated'] == UserUtil::ACTIVATED_PENDING_REG) {
                 $moderation = $this->getVar('moderation');
                 $moderationOrder = $this->getVar('moderation_order');
                 $verifyEmail = $this->getVar('reg_verifyemail');
@@ -314,11 +311,32 @@ class Users_Controller_User extends Zikula_Controller
                     // Some unknown state! Should never get here, but just in case...
                     LogUtil::registerStatus($this->__('Done! Your registration request has been saved. Please conact the site administrator regarding the status of yor registration request.'));
                 }
+                return $this->view->fetch('users_user_registrationfinished.tpl');
             } else {
-                LogUtil::log($this->__('Internal Warning! Unknown return type from Users_Api_Registration#registerUser().'), 'WARNING');
-                LogUtil::registerError($this->__('Warning! New user information has been saved, however there may have been an issue saving it properly. Please check with a site administrator before re-registering.'));
+                // Make sure the user has a status that allows him to log in before telling him he can.
+                if (($registeredObj['activated'] == UserUtil::ACTIVATED_ACTIVE)
+                        || ($registeredObj['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD)
+                        || ($registeredObj['activated'] == UserUtil::ACTIVATED_INACTIVE_TOUPP)
+                        || ($registeredObj['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP)) {
+                    LogUtil::registerStatus($this->__('Done! Your account has been created and you may now log in.'));
+
+                    // Shouldn't really get any of the following statuses out of the registration process, but cover all the bases.
+                    if ($registeredObj['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD) {
+                        LogUtil::registerStatus($this->__('Note: Your first attempt to log in will be rejected, and you will be asked to establish a password.'));
+                    } elseif ($registeredObj['activated'] == UserUtil::ACTIVATED_INACTIVE_TOUPP) {
+                        LogUtil::registerStatus($this->__('Note: Your first attempt to log in will be rejected, and you will be asked to accept the site\'s terms.'));
+                    } elseif ($registeredObj['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP) {
+                        LogUtil::registerStatus($this->__('Note: Your first attempt to log in will be rejected, and you will be asked to establish a password, and to accept the site\'s terms.'));
+                    }
+
+                    return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
+                } else {
+                    // Shouldn't really get here out of the registration process, but cover all the bases.
+                    LogUtil::registerStatus($this->__('Done! Your account has been created.'));
+                    LogUtil::registerError($this->__('Your account status will not permit you to log in at this time. Please contact the site administrator for more information.'));
+                    return $this->view->fetch('users_user_registrationfinished.tpl');
+                }
             }
-            return $this->view->fetch('users_user_registrationfinished.tpl');
         } else {
             LogUtil::registerError($this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
             return $this->view->fetch('users_user_registrationfinished.tpl');
