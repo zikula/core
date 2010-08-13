@@ -725,11 +725,10 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      */
     getData: function(domain,key) {
         domain = domain || this.domain;
-        try {
+        if(this.data[this.lang] && this.data[this.lang][domain] && this.data[this.lang][domain][key]) {
             return this.data[this.lang][domain][key];
-        } catch (e) {
-            return {};
         }
+        return {};
     },
     /**
      * Gettext: translates message.

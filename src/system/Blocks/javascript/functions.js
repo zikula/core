@@ -1,7 +1,13 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-//Event.observe(window, 'load', menutree_init, false);
-document.observe("dom:loaded", menutree_init, false);
+Event.observe(window, 'load', function(){
+    if($('menuTreeImportOptions')) {
+        Zikula.Menutree.Tree.inst.tree.observeOnce('tree:item:save',function(){
+            $('menuTreeImportOptions').blindUp();
+        });
+    }
+});
+document.observe("dom:loaded", menutree_init);
 
 function menutree_init()
 {

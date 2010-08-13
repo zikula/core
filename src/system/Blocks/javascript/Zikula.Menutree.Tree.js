@@ -111,7 +111,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.unsaved = false;
     },
     save: function(node,params,data) {
-        if(node && params && params[1] && params[1].hasClassName(this.config.dynamicClass) && params[0] == 'bottom') {
+        if(node && params && Object.isElement(params[1]) && params[1].hasClassName(this.config.dynamicClass) && params[0] == 'bottom') {
             return false;
         }
         data = data || this.serialize();
@@ -276,6 +276,8 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
                 this.unsaved = true;
             }
         }.bind(this));
+        this.save();
+        this.tree.fire("tree:item:save", { node: node });
     },
     addNode: function() {
         var node = new Element('li',{id:this.config.nodeIdPrefix+this.genNextId()});

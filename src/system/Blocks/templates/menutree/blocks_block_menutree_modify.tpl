@@ -174,7 +174,7 @@
         </ul>
 
         {if !empty($menutree_menus)}
-        <div class="menuTreeOptions">
+        <div id="menuTreeImportOptions">
             <p>{gt text="You can import one of existing menus. To this purpose choose the appropriate menu from the drop-down list. If the chosen menu had marked appropriate option - links to all modules will be imported."}</p>
             <select id="menutree_menus" name="menutree_menus">
                 <option value="null">{gt text="Choose menu"}</option>
@@ -182,11 +182,9 @@
             </select>
         </div>
         {/if}
-        {if !empty($menutree_content)}
         <div id="menuTreeContainer">
             {$menutree_content}
         </div>
-        {/if}
     </div>
 </div>
 <div id="menutree_tabhelp" class="menutree_tabcontent">
