@@ -954,14 +954,38 @@ class Users_Api_Registration extends Zikula_Api
 
         $where = array();
         foreach ($filter as $field => $value) {
-            if (is_bool($value)) {
-                $dbValue = $value ? '1' : '0';
-            } elseif (is_int($value)) {
-                $dbValue = $value;
-            } else {
-                $dbValue = "'{$value}'";
+            if (!is_array($value)) {
+                $value = array(
+                    'operator'  => '=',
+                    'operand'   => $value,
+                );
             }
-            $where[] = "({$regColumn[$field]} = {$dbValue})";
+            
+            if (preg_match('/^IS (?:NOT )?NULL/i', $value['operator'])) {
+                $where[] = $regColumn[$field] . ' ' . strtoupper($value['operator']);
+            } elseif (preg_match('/^(?:NOT )?IN/i', $value['operator'])) {
+                if (is_null($value['operand']) || (is_array($value['operand']) && empty($value['operand']))) {
+                    $where[] = $regColumn[$field] . ' ' . strtoupper($value['operator']) . ' ()';
+                } else {
+                    if (!is_array($value['operand'])) {
+                        $value['operand'] = array($value['operand']);
+                    }
+                    foreach ($value['operand'] as $key => $operandItem) {
+                        $value['operand'][$key] = preg_replace(array('/\\\'/', '/\\\\/'), array('\\\'', '\\\\'), $operandItem);
+                    }
+                    $where[] = $regColumn[$field] . ' ' . strtoupper($value['operator']) . " ('" . implode("', '", (is_array($value['operand'] ? $value['operand'] : array($value['operand'])))) . "')";
+                }
+            } else {
+                if (is_bool($value['operand'])) {
+                    $dbValue = $value['operand'] ? '1' : '0';
+                } elseif (is_int($value['operand'])) {
+                    $dbValue = $value['operand'];
+                } else {
+                    $dbValue = "'{$value['operand']}'";
+                }
+
+                $where[] = "({$regColumn[$field]} {$value['operator']} {$dbValue})";
+            }
         }
         $where = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
 
@@ -1087,6 +1111,10 @@ class Users_Api_Registration extends Zikula_Api
             if (!is_array($args['filter'])) {
                 return LogUtil::registerArgsError();
             }
+            if (isset($args['filter']['isverified'])) {
+                $isVerifiedFilter = $args['filter']['isverified'];
+                unset($args['filter']['isverified']);
+            }
             $args['filter']['activated'] = UserUtil::ACTIVATED_PENDING_REG;
             $where = $this->whereFromFilter($args['filter']);
         } else {
@@ -1097,7 +1125,31 @@ class Users_Api_Registration extends Zikula_Api
         }
 
         $this->purgeExpired();
-        return DBUtil::selectObjectCount('users', $where);
+
+        if (isset($isVerifiedFilter)) {
+            // TODO - Can probably do this with a constructed SQL count select and join, but we'll do it this way for now.
+            if (!is_array($isVerifiedFilter)) {
+                $isVerifiedFilter = array(
+                    'operator'  => '=',
+                    'operand'   => $isVerifiedFilter,
+                );
+            }
+            // TODO - might want to error if the operator is not =, != or <>, or if the operand is not a boolean
+            $isVerifiedValue = ($isVerifiedFilter['operator'] == '=') && (bool)$isVerifiedFilter['operand'];
+
+            $users = DBUtil::selectObjectArray('users', $where, null, null, null, null, null, null, array('uid'));
+            $count = 0;
+            if ($users) {
+                foreach ($users as $userRec) {
+                    if ($userRec['__ATTRIBUTES__']['isverified'] == $isVerifiedValue) {
+                        $count++;
+                    }
+                }
+            }
+            return $count;
+        } else {
+            return DBUtil::selectObjectCount('users', $where);
+        }
     }
 
     /**

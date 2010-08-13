@@ -79,6 +79,9 @@ class Users_Installer extends Zikula_Installer
              ->setVar('login_displayverify', false)
              ->setVar('login_displayapproval', false);
 
+        // Register persistent event listeners (handlers)
+        EventUtil::registerPersistentModuleHandler('Users', 'get.pending_content', array('Users_Listeners', 'pendingContentListener'));
+
         // Initialisation successful
         return true;
     }
@@ -142,7 +145,10 @@ class Users_Installer extends Zikula_Installer
                     return '1.17';
                 }
             case '2.1.0':
-                // Current version: add 2.1.0 --> next when appropriate
+                // Register persistent event listeners (handlers)
+                EventUtil::registerPersistentModuleHandler('Users', 'get.pending_content', array('Users_Listeners', 'pendingContentListener'));
+            case '2.1.1':
+                // Current version: add 2.1.1 --> next when appropriate
         }
 
         // Update successful
