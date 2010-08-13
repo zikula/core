@@ -97,7 +97,7 @@ function menutree_stylehelper(event)
     var p = /blocks_block_menutree_(.+?)\.tpl/,
         tpl = (tpl = $('menutree_tpl').value.match(p)) ? tpl[1] : '';
     //hide all options not containing selected tpl name
-    if(!tpl.empty() && tpl != 'menutree') {
+    if(!tpl.empty() && tpl != 'default') {
         $('menutree_stylesheet').value = 'null';
         if(Prototype.Browser.IE) {
             //IE does not respect "display: none" on option element
