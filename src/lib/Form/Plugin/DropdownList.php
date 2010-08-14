@@ -349,9 +349,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
             $value = FormUtil::getPassedValue($this->inputName, null, 'POST');
-            if ($value == null) {
-                $value = array();
-            }
+            $value = ($value == null) ? array() : (array)$value;
 
             for ($i = 0, $count = count($value); $i < $count; ++$i) {
                 if (get_magic_quotes_gpc()) {
