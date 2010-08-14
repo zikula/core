@@ -36,11 +36,11 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      * Select and return a field value.
      *
      * @param string $field The name of the field we wish to marshall.
-     * @param string $where The where clause (optional) (default='').
+     * @param arry   $where The where clause (optional) (default=array()).
      *
      * @return string The resulting field value.
      */
-    public function selectField($field, $where = '')
+    public function selectField($field, $where = array())
     {
         // creates the query instance
         $q = $this->selectFieldQuery($field, $where);
@@ -71,14 +71,14 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      * Select and return an array of field values.
      *
      * @param string  $field    The name of the field we wish to marshall.
-     * @param string  $where    The where clause (optional) (default='').
+     * @param array   $where    The where clause (optional) (default=array()).
      * @param string  $orderBy  The orderby clause (optional) (default='').
      * @param boolean $distinct Whether or not to add a 'DISTINCT' clause (optional) (default=false).
      * @param string  $assocKey The key field to use to build the associative index (optional) (default='').
      *
      * @return array The resulting array of field values.
      */
-    public function selectFieldArray($field, $where = '', $orderBy = '', $distinct = false, $assocKey = '')
+    public function selectFieldArray($field, $where = array(), $orderBy = '', $distinct = false, $assocKey = '')
     {
         if (!empty($assocKey) && !$this->hasField($assocKey)) {
             $assocKey = '';
@@ -98,7 +98,7 @@ class Zikula_Doctrine_Table extends Doctrine_Table
 
         return $result;
     }
-    
+
     /**
      * Select and return an array of field values by a column value.
      *
@@ -128,14 +128,14 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      * Field Query creation.
      *
      * @param string  $field    The name of the field we wish to marshall.
-     * @param string  $where    The where clause (optional) (default='').
+     * @param array   $where    The where clause (optional) (default=array()).
      * @param string  $orderBy  The orderby clause (optional) (default='').
      * @param boolean $distinct Whether or not to add a 'DISTINCT' clause (optional) (default=false).
      * @param string  $assocKey The key field to use to build the associative index (optional) (default='').
      *
      * @return Doctrine_Query The resulting query object.
      */
-    public function selectFieldQuery($field, $where = '', $orderBy = '', $distinct = false, $assocKey = '')
+    public function selectFieldQuery($field, $where = array(), $orderBy = '', $distinct = false, $assocKey = '')
     {
         $queryAlias = 'dctrn_find';
 
@@ -147,21 +147,28 @@ class Zikula_Doctrine_Table extends Doctrine_Table
         }
 
         // adds the distinct clause id needed
-        $fieldName  = $this->_resolveFindByFieldName($field);
-        $fieldQuery = ($distinct ? "DISTINCT $fieldName" : "$fieldName");
+        $fieldQuery = ($distinct ? "DISTINCT $field" : "$field");
 
         // creates the query instance
         $q = $this->createQuery($queryAlias)
-                  ->select("$fieldQuery AS $field");
+                  ->select($field);
 
         // adds the assockey if needed
         if (!empty($assocKey)) {
-            $q->addSelect("$assocKey as $assocKey");
+            $q->addSelect($assocKey);
         }
 
         // adds the where clause if present
         if (!empty($where)) {
-            $q->where($where);
+            $method = '';
+            foreach ((array)$where as $condition) {
+                $method = empty($method) ? 'where' : 'addWhere';
+                if (is_array($condition)) {
+                    $q->$method($condition[0], $condition[1]);
+                } else {
+                    $q->$method($condition);
+                }
+            }
         }
 
         // adds the orderby if present
@@ -194,12 +201,12 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      *
      * @param string $field    The name of the field we wish to marshall.
      * @param string $option   MIN, MAX, SUM or COUNT (optional) (default='MAX').
-     * @param string $where    The where clause (optional) (default='').
+     * @param array  $where    The where clause (optional) (default=array()).
      * @param string $assocKey The key field to use to build the associative index (optional) (default='' which defaults to the primary key).
      *
      * @return array The resulting min/max/sum/count array.
      */
-    public function selectFieldFunctionArray($field, $option = 'MAX', $where = '', $assocKey = '')
+    public function selectFieldFunctionArray($field, $option = 'MAX', $where = array(), $assocKey = '')
     {
         // validate the associatibe index
         if (empty($assocKey) || !$this->hasField($assocKey)) {
@@ -223,13 +230,13 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      *
      * @param string  $field     The name of the field we wish to marshall.
      * @param string  $option    MIN, MAX, SUM or COUNT (optional) (default='MAX').
-     * @param string  $where     The where clause (optional) (default='').
+     * @param array   $where     The where clause (optional) (default=array()).
      * @param string  $assocKey  The key field to use to build the associative index (optional) (default='' which defaults to the primary key).
      * @param boolean $distinct  Whether or not to count distinct entries (optional) (default='false').
      *
      * @return Doctrine_Query The resulting query object.
      */
-    public function selectFieldFunctionQuery($field = '1', $option = 'COUNT', $where = '', $assocKey = '', $distinct = false)
+    public function selectFieldFunctionQuery($field = '1', $option = 'COUNT', $where = array(), $assocKey = '', $distinct = false)
     {
         $queryAlias = 'dctrn_find';
 
@@ -246,28 +253,36 @@ class Zikula_Doctrine_Table extends Doctrine_Table
             $ucOption = 'COUNT';
         }
 
-        $fieldName = $this->_resolveFindByFieldName($field);
-        $distinct  = ($fieldName && $ucOption == 'COUNT' && $distinct) ? 'DISTINCT ' : '';
-        if (!$fieldName) {
+        $hasField = $this->hasField($field);
+        $distinct = ($hasField && $ucOption == 'COUNT' && $distinct) ? 'DISTINCT ' : '';
+        if (!$hasField) {
             if ($ucOption == 'COUNT') {
-                $fieldName = '1';
+                $field = '1';
             } else {
-                $fieldName = $this->getIdentifier();
+                $field = $this->getIdentifier();
             }
         }
 
         $q = $this->createQuery($queryAlias)
-                  ->select("$ucOption({$distinct}{$fieldName}) AS $option");
+                  ->select("$ucOption({$distinct}{$field}) AS $option");
 
         // adds the assockey if needed
         if (!empty($assocKey)) {
-            $q->addSelect("$assocKey as $assocKey");
+            $q->addSelect($assocKey);
             $q->addGroupBy($assocKey);
         }
 
         // adds the where clause if present
         if (!empty($where)) {
-            $q->where($where);
+            $method = '';
+            foreach ((array)$where as $condition) {
+                $method = empty($method) ? 'where' : 'addWhere';
+                if (is_array($condition)) {
+                    $q->$method($condition[0], $condition[1]);
+                } else {
+                    $q->$method($condition);
+                }
+            }
         }
 
         return $q;
@@ -276,13 +291,13 @@ class Zikula_Doctrine_Table extends Doctrine_Table
     /**
      * Return a number of rows.
      *
-     * @param string  $where    The where clause (optional) (default='').
+     * @param array   $where    The where clause (optional) (default=array()).
      * @param string  $column   The column to place in the count phrase (optional) (default='1').
      * @param boolean $distinct Whether or not to count distinct entries (optional) (default='false').
      *
      * @return integer The resulting object count.
      */
-    public function selectCount($where = '', $column = '1', $distinct = false)
+    public function selectCount($where = array(), $column = '1', $distinct = false)
     {
         // creates the query instance
         $q = $this->selectFieldFunctionQuery($column, 'COUNT', $where, '', $distinct);
@@ -298,7 +313,7 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      * @param string  $transformFunc Transformation function to apply to $id (optional) (default=null).
      *
      * @return integer The resulting object count.
-     * @throws Exception If id paramerter is empty or non-numeric.
+     * @throws Exception If id paramerter is empty.
      */
     public function selectCountBy($value, $column = 'id', $transformFunc = '')
     {
@@ -306,15 +321,11 @@ class Zikula_Doctrine_Table extends Doctrine_Table
             throw new Exception(__f('The parameter %s must not be empty', 'value'));
         }
 
-        if ($column == 'id' && !is_numeric($value)) {
-            throw new Exception(__f('The parameter %s must be numeric', 'value'));
-        }
-
         // creates the query instance
         $q = $this->selectFieldFunctionQuery();
 
         if ($transformFunc) {
-            $q->where($transformFunc.'(dctrn_find.'.$this->_resolveFindByFieldName($column).') = ?', (array)$value);
+            $q->where($transformFunc.'(dctrn_find.'.$column.') = ?', (array)$value);
         } else {
             $q->where($this->buildFindByWhere($column), (array)$value);
         }
@@ -325,7 +336,7 @@ class Zikula_Doctrine_Table extends Doctrine_Table
     /**
      * Select and return a collection.
      *
-     * @param string  $where        The where clause (optional) (default='').
+     * @param array   $where        The where clause (optional) (default=array()).
      * @param string  $orderBy      The order by clause (optional) (default='').
      * @param integer $limitOffset  The lower limit bound (optional) (default=-1).
      * @param integer $limitNumRows The upper limit bound (optional) (default=-1).
@@ -333,7 +344,7 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      *
      * @return Doctrine_Collection The resulting collection.
      */
-    public function selectCollection($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '')
+    public function selectCollection($where = array(), $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '')
     {
         // creates the query instance
         $q = $this->selectQuery($where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
@@ -344,7 +355,7 @@ class Zikula_Doctrine_Table extends Doctrine_Table
     /**
      * Select Query creation.
      *
-     * @param string  $where        The where clause (optional) (default='').
+     * @param array   $where        The where clause (optional) (default=array()).
      * @param string  $orderBy      The order by clause (optional) (default='').
      * @param integer $limitOffset  The lower limit bound (optional) (default=-1).
      * @param integer $limitNumRows The upper limit bound (optional) (default=-1).
@@ -352,7 +363,7 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      *
      * @return Doctrine_Query The resulting query object.
      */
-    public function selectQuery($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '')
+    public function selectQuery($where = array(), $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '')
     {
         $queryAlias = 'dctrn_find';
 
@@ -368,7 +379,15 @@ class Zikula_Doctrine_Table extends Doctrine_Table
 
         // adds the where clause if present
         if (!empty($where)) {
-            $q->where($where);
+            $method = '';
+            foreach ((array)$where as $condition) {
+                $method = empty($method) ? 'where' : 'addWhere';
+                if (is_array($condition)) {
+                    $q->$method($condition[0], $condition[1]);
+                } else {
+                    $q->$method($condition);
+                }
+            }
         }
 
         // adds the orderby if present
@@ -421,5 +440,53 @@ class Zikula_Doctrine_Table extends Doctrine_Table
     public function decrementFieldBy($decfield, $value, $column = 'id', $deccount = 1)
     {
         return $this->incrementFieldBy($decfield, $value, $column, 0 - $deccount);
+    }
+
+    /**
+     * Create table.
+     *
+     * @return boolean True on success, false otherwise.
+     */
+    public function createTable()
+    {
+        $data = $this->getExportableFormat(false);
+
+        try {
+            Doctrine_Manager::connection()->export->createTable($data['tableName'], $data['columns'], $data['options']);
+        } catch (Exception $e) {
+            return LogUtil::registerError($e->getMessage());
+        }
+
+        return true;
+    }
+
+    /**
+     * Drop table.
+     *
+     * @return boolean True on success, false otherwise.
+     */
+    public function dropTable()
+    {
+        $tableName = $this->getOption('tableName');
+
+        try {
+            Doctrine_Manager::connection()->export->dropTable($tableName);
+        } catch (Exception $e) {
+            return LogUtil::registerError($e->getMessage());
+        }
+
+        return true;
+    }
+
+    /**
+     * Change database table using Doctrine dictionary method.
+     *
+     * @return boolean True on success, false otherwise.
+     */
+    public function changeTable()
+    {
+        $className = get_class($this->getRecordInstance());
+
+        return DoctrineUtil::changeTable($className);
     }
 }
