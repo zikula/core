@@ -384,9 +384,22 @@ class DoctrineUtil
             }
         }
 
-        // second round, alter table structures to match new tables definition.
+        // second round - alter table structures to match new tables definition.
         foreach ($modelColumns as $key => $columnDefinition) {
             $alterTableDefinition = array('change' => array($key => array('definition' => $columnDefinition)));
+            try {
+                $connection->export->alterTable($tableName, $alterTableDefinition);
+            } catch (Exception $e) {
+                return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
+            }
+        }
+
+        // third round - removes non existing columns in the model.
+        foreach (array_keys($schemaColumns) as $key) {
+            if (isset($modelColumns[$key])) {
+                continue;
+            }
+            $alterTableDefinition = array('remove' => array($key => array()));
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
@@ -411,5 +424,7 @@ class DoctrineUtil
                 $connection->export->createIndex($tableName, $indexName, $indexDefinition);//array('fields' => $indexDefinition));
             }
         }
+
+        return true;
     }
 }
