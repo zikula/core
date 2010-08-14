@@ -166,7 +166,7 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     background: #F7CBCA url("../images/icons/extrasmall/error.gif") 13px 50% no-repeat;
     border: 1px solid #CC0000;
     color: #880000;
-    margin: 5px 0;
+    margin: 5px 0 10px;
     padding: 5px 5px 5px 36px;
 }
 .z-errormsg p,
@@ -177,12 +177,16 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     margin:0.5em 0 !important;
     padding:0 !important;
 }
+.z-errormsg ul {
+    margin:0 !important;
+    padding:0 !important;
+}
 .z-informationmsg {
     background: #e6e6ff url('../images/icons/extrasmall/info.gif') 13px 50% no-repeat;
     border: 1px solid #9bb8d9;
     color: #27427D;
     padding: 5px 5px 5px 36px;
-    margin: 5px 0;
+    margin: 5px 0 10px;
 }
 .z-informationmsg p,
 .z-informationmsg h1,
@@ -197,7 +201,7 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     border: 1px solid #99CC99;
     color: #264409;
     padding: 5px 5px 5px 36px;
-    margin: 5px 0;
+    margin: 5px 0 10px;
 }
 .z-statusmsg p,
 .z-statusmsg h1,
