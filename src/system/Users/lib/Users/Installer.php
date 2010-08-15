@@ -148,7 +148,12 @@ class Users_Installer extends Zikula_Installer
                 // Register persistent event listeners (handlers)
                 EventUtil::registerPersistentModuleHandler('Users', 'get.pending_content', array('Users_Listeners', 'pendingContentListener'));
             case '2.1.1':
-                // Current version: add 2.1.1 --> next when appropriate
+                // Update users table for data type change of activated field.
+                if (!DBUtil::changeTable('users')) {
+                    return '2.1.1';
+                }
+            case '2.1.2':
+                // Current version: add 2.1.2 --> next when appropriate
         }
 
         // Update successful

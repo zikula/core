@@ -35,7 +35,7 @@ class Users_Version extends Zikula_Version
         // Be careful about version numbers. version_compare() is used to handle special situations.
         // 0.9 < 0.9.0 < 1 < 1.0 < 1.0.1 < 1.2 < 1.18 < 1.20 < 2.0 < 2.0.0 < 2.0.1
         // From this version forward, please use the major.minor.point format below.
-        $meta['version'] = '2.1.1';
+        $meta['version'] = '2.1.2';
         $meta['securityschema'] = array('Users::' => 'Uname::User ID',
                                         'Users::MailUsers' => '::');
 
