@@ -309,16 +309,14 @@ class Users_Installer extends Zikula_Installer
                         $userArray[$key]['pass'] = $userArray[$key]['hash_method'] . '$$' . $userArray[$key]['pass'];
                     } elseif ($userArray[$key]['type'] == 2) {
                         // type == 2: E-mail change request pending verification
-                        if (isset($userArray[$key]['dynamics']) && !empty($userArray[$key]['dynamics'])
-                            && is_numeric($userArray[$key]['dynamics']))
-                        {
+                        if (isset($userArray[$key]['dynamics']) && !empty($userArray[$key]['dynamics']) 
+                                && is_numeric($userArray[$key]['dynamics'])) {
                             // Convert the date to a date/time format instead of a UNIX timestamp
                             $theDate = new DateTime("@{$userArray[$key]['dynamics']}", $tzUTC);
                             $userArray[$key]['dynamics'] = $theDate->format(UserUtil::DATETIME_FORMAT);
                         }
-                        if (isset($userArray[$key]['comment']) && !empty($userArray[$key]['comment'])
-                            && is_string($userArray[$key]['comment']))
-                        {
+                        if (isset($userArray[$key]['comment']) && !empty($userArray[$key]['comment']) 
+                                && is_string($userArray[$key]['comment'])) {
                             // Convert the verification code into a salted hash with blank salt, and specify the
                             // hash method used in 1.2
                             $userArray[$key]['comment'] = '1$$' . $userArray[$key]['comment'];
@@ -388,9 +386,7 @@ class Users_Installer extends Zikula_Installer
                     }
                     foreach ($usersOldFields as $fieldName) {
                         if (($fieldName != 'hash_method') && isset($userArray[$key][$fieldName])
-                            && !empty($userArray[$key][$fieldName])
-                            && !isset($userArray[$key]['__ATTRIBUTES__'][$fieldName]))
-                        {
+                                && !empty($userArray[$key][$fieldName]) && !isset($userArray[$key]['__ATTRIBUTES__'][$fieldName])) {
                             $userArray[$key]['__ATTRIBUTES__'][$fieldName] = $userArray[$key][$fieldName];
                         }
                     }
