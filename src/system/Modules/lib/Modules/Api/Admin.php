@@ -1596,4 +1596,29 @@ class Modules_Api_Admin extends Zikula_Api
         return array('errors_modulenames'  => $errors_modulenames,
                      'errors_displaynames' => $errors_displaynames);
     }
+
+    /**
+     * check if a module come from the core
+     *
+     * @param array args['modulename'] name of the module to check
+     * @return boolean true if it's a core module.
+     */
+    public function iscoremodule($args)
+    {
+        $coremodules = array(
+                'Modules',
+                'Permissions',
+                'Groups',
+                'Blocks',
+                'ObjectData',
+                'Users',
+                'Theme',
+                'Admin',
+                'Settings',
+                'Categories');
+        if (in_array($args['modulename'], $coremodules)) {
+            return true;
+        }
+        return false;
+    }
 }

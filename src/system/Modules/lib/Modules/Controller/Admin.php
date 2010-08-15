@@ -237,15 +237,18 @@ class Modules_Controller_Admin extends Zikula_Controller
                 if (SecurityUtil::checkPermission('Modules::', "$mod[name]::$mod[id]", ACCESS_ADMIN)) {
                     switch ($mod['state']) {
                         case ModUtil::STATE_ACTIVE:
-                            $actions[] = array(
-                                    'url' => ModUtil::url('Modules', 'admin', 'deactivate', array(
-                                    'id' => $mod['id'],
-                                    'startnum' => $startnum,
-                                    'authid' => $authid,
-                                    'letter' => $letter,
-                                    'state' => $state)),
-                                    'image' => 'folder_grey.gif',
-                                    'title' => $this->__('Deactivate'));
+                            if(!ModUtil::apiFunc('Modules', 'admin', 'iscoremodule',array('modulename' => $mod['name'])))
+                            {
+                                $actions[] = array(
+                                        'url' => ModUtil::url('Modules', 'admin', 'deactivate', array(
+                                        'id' => $mod['id'],
+                                        'startnum' => $startnum,
+                                        'authid' => $authid,
+                                        'letter' => $letter,
+                                        'state' => $state)),
+                                        'image' => 'folder_grey.gif',
+                                        'title' => $this->__('Deactivate'));
+                            }
                             $actions[] = array(
                                     'url' => ModUtil::url('Modules', 'admin', 'hooks', array(
                                     'id' => $mod['id'])),
@@ -763,18 +766,7 @@ class Modules_Controller_Admin extends Zikula_Controller
             return LogUtil::registerError($this->__('Error! This module is currently set as the site\'s home page. You must choose another module for the home page before you can deactivate this one.'), null, ModUtil::url('Modules', 'admin', 'view'));
         }
 
-        $coremodules = array(
-                'Modules',
-                'Permissions',
-                'Groups',
-                'Blocks',
-                'ObjectData',
-                'Users',
-                'Theme',
-                'Admin',
-                'Settings',
-                'Categories');
-        if (in_array($modinfo['name'], $coremodules)) {
+        if(ModUtil::apiFunc('Modules', 'admin', 'iscoremodule',array('modulename' => $modinfo['name']))) {
             return LogUtil::registerError($this->__('Error! You cannot deactivate this module. It is a mandatory core module, and is needed by the system.'), null, ModUtil::url('Modules', 'admin', 'view'));
         }
 
