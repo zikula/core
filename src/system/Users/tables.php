@@ -206,43 +206,6 @@ function Users_tables_for_210()
         'created_dt'    => "T DEFAULT NULL",
     );
 
-    // User Registration table.
-    // Version 2.1.0 through current(inclusive)
-    //
-    // DO NOT USE A FIELD FOR A PURPOSE OTHER THAN ITS DOCUMENTED INTENT!
-
-    $dbinfo['users_registration'] = DBUtil::getLimitedTablename('users_registration');
-    $dbinfo['users_registration_column'] = array(
-        'id'            => 'z_id',
-        'uname'         => 'z_uname',
-        'email'         => 'z_email',
-        'pass'          => 'z_pass',
-        'passreminder'  => 'z_passreminder',
-        'passrecovery'  => 'z_passrecovery',
-        'agreetoterms'  => 'z_agreetoterms',
-        'dynadata'      => 'z_dynadata',
-        'verifycode'    => 'z_verifycode',
-        'created_dt'    => 'z_created_dt',
-        'isapproved'    => 'z_isapproved',
-        'isverified'    => 'z_isverified',
-    );
-    $dbinfo['users_registration_column_def'] = array(
-        'id'            => "I PRIMARY AUTO",
-        'uname'         => "C(25) NOTNULL DEFAULT ''",
-        'email'         => "C(60) NOTNULL DEFAULT ''",
-        'pass'          => "C(138) NOTNULL DEFAULT ''",
-        'passreminder'  => "C(255) NOTNULL DEFAULT ''",
-        'passrecovery'  => "XL NOTNULL",
-        'agreetoterms'  => "L NOTNULL DEFAULT 0",
-        'dynadata'      => "XL NOTNULL",
-        'verifycode'    => "C(138) NOTNULL DEFAULT ''",
-        'created_dt'    => "T DEFAULT NULL",
-        'isapproved'    => "L NOTNULL DEFAULT 0",
-        'isverified'    => "L NOTNULL DEFAULT 0"
-    );
-    $dbinfo['users_registration_db_extra_enable_attribution'] = true;
-    $dbinfo['users_registration_primary_key_column'] = 'id';
-
     // Sessions Table
     // Version 1.11 through current(inclusive)
     // Stores per-user session information for users who are logged in. (Note: Users who use the "remember me" option when logging in

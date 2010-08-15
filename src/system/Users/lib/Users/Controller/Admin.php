@@ -1101,7 +1101,7 @@ class Users_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Displays the information on a single registration request (users_registration).
+     * Displays the information on a single registration request.
      *
      * Available Get Parameters:
      * - userid (numeric) The id of the registration request (id) to retrieve and display.

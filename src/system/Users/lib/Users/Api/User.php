@@ -367,9 +367,8 @@ class Users_Api_User extends Zikula_Api
 
         if ($args['idfield'] == 'email') {
             $ucount = DBUtil::selectObjectCountByID ('users', $args['id'], 'email');
-            $rcount = DBUtil::selectObjectCountByID ('users_registration', $args['id'], 'email');
 
-            if (($ucount + $rcount) > 1) {
+            if ($ucount > 1) {
                 return false;
             }
         }

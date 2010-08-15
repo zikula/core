@@ -372,10 +372,6 @@ class Users_Api_Registration extends Zikula_Api
     /**
      * Create a new user or registration.
      * 
-     * May yield a new user record in the users table, or may yield a new registration record in the
-     * users_registration table, depending on the configuration of the system and on the registration data
-     * provided.
-     *
      * This is the primary and almost exclusive method for creating new user accounts, and the primary and
      * exclusive method for creating registration applications that are either pending approval, pending e-mail
      * verification, or both. 99.9% of all cases where a new user record needs to be created should use this
@@ -391,8 +387,8 @@ class Users_Api_Registration extends Zikula_Api
      *                      array $args['reginfo'] The information for the new user, in the form of a registration, even
      *                                              if a fully active user is expected.
      *
-     * @return array|bool If the user registration information is successfully saved (either a users table entry was
-     *                      created or a pending registration created in the users_registration table), then the array containing
+     * @return array|bool If the user registration information is successfully saved (either full user record was
+     *                      created or a pending registration record was created in the users table), then the array containing
      *                      the information saved is returned; false on error.
      */
     public function registerNewUser($args)
@@ -440,10 +436,10 @@ class Users_Api_Registration extends Zikula_Api
 
         // Dispatch to the appropriate function, depending on whether a registration record or a full user record is needed.
         if ($createRegistration) {
-            // We need a registration record (users_registration table)
+            // We need a registration record
             $registeredObj = $this->createRegistration($reginfo, $userNotification, $adminNotification, $passwordCreatedForUser);
         } else {
-            // Everything is in order for a full user record (users table)
+            // Everything is in order for a full user record
             $registeredObj = $this->createUser($reginfo, $userNotification, $adminNotification, $passwordCreatedForUser);
         }
 
@@ -488,7 +484,7 @@ class Users_Api_Registration extends Zikula_Api
     }
 
     /**
-     * Creates a new users_registration record.
+     * Creates a new registration record in the users table.
      *
      * This is an internal function that creates a new user registration. External calls to create either a new
      * registration record or a new users record are made to Users_Api_Registration#registerNewUser(), which
@@ -514,7 +510,7 @@ class Users_Api_Registration extends Zikula_Api
      *
      * @see    Users_Api_Registration#registerNewUser()
      *
-     * @return array|bool The registration info, as saved in the users_registration table; false on error.
+     * @return array|bool The registration info, as saved in the users table; false on error.
      */
     protected function createRegistration(array $reginfo, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
     {
@@ -1103,9 +1099,6 @@ class Users_Api_Registration extends Zikula_Api
             return false;
         }
 
-        $dbinfo = DBUtil::getTables();
-        $regColumn = $dbinfo['users_registration_column'];
-
         $where = '';
         if (isset($args['filter'])) {
             if (!is_array($args['filter'])) {
@@ -1191,7 +1184,7 @@ class Users_Api_Registration extends Zikula_Api
     }
 
     /**
-     * Removes expired registrations from the users_registration table.
+     * Removes expired registrations from the users table.
      *
      * @return void
      */
