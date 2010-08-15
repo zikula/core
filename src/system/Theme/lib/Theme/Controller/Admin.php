@@ -23,94 +23,6 @@ class Theme_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * display form to create a theme
-     */
-    public function newtheme()
-    {
-        // Security check
-        if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        $this->view->setCaching(false);
-
-        // Return the output that has been generated to the template
-        return $this->view->fetch('theme_admin_newtheme.tpl');
-    }
-
-    /**
-     * create the theme
-     */
-    public function create($args)
-    {
-        // Security check
-        if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // get our input
-        $themeinfo = FormUtil::getPassedValue('themeinfo', isset($args['themeinfo']) ? $args['themeinfo'] : null, 'POST');
-
-        // check our input
-        if (!isset($themeinfo) || !isset($themeinfo['name']) || empty($themeinfo) || empty($themeinfo['name'])) {
-            $url = ModUtil::url('Theme', 'admin', 'new');
-            return LogUtil::registerError($this->__("Error! You must enter at least the theme name."), null, $url);
-        }
-
-        // Security check
-        if (!SecurityUtil::checkPermission('Theme::', "$themeinfo[name]::", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // create theme
-        $expose_template = $this->view->expose_template;
-
-        $this->view->expose_template = false;
-        $this->view->assign($themeinfo);
-        $this->view->assign('palettes', array('palette1' =>  array()));
-        $this->view->assign('pageconfigurations', array('master'));
-        $this->view->assign('pagetemplate', 'master.tpl');
-        $this->view->assign('templates', array('left' => 'block.tpl', 'right' => 'block.tpl', 'center' => 'block.tpl'));
-
-        // work out which base page template to use
-        switch ($themeinfo['layout']) {
-            case '2coll':
-                $pagetemplate = 'layout1';
-                break;
-            case '2colr':
-                $pagetemplate = 'layout2';
-                break;
-            case '3col':
-                $pagetemplate = 'layout3';
-                break;
-            default:
-                $pagetemplate = 'emptypage';
-        }
-
-        $createdtheme = ModUtil::apiFunc('Theme', 'admin', 'create', array('themeinfo' => $themeinfo,
-                                                                           'versionfile' => $this->view->fetch('upgrade/version.tpl'),
-                                                                           'potfile' => $this->view->fetch('upgrade/pot.tpl'),
-                                                                           'palettesfile' => $this->view->fetch('upgrade/themepalettes.tpl'),
-                                                                           'variablesfile' => $this->view->fetch('upgrade/themevariables.tpl'),
-                                                                           'pageconfigurationsfile' => $this->view->fetch('upgrade/pageconfigurations.tpl'),
-                                                                           'pageconfigurationfile' => $this->view->fetch('upgrade/pageconfiguration.tpl'),
-                                                                           'pagetemplatefile' => $this->view->fetch('upgrade/'.$pagetemplate.'.tpl'),
-                                                                           'cssfile' => $this->view->fetch('upgrade/'.$pagetemplate.'.css'),
-                                                                           'blockfile' => $this->view->fetch('upgrade/block.tpl')));
-        $this->view->expose_template = $expose_template;
-
-        if ($createdtheme) {
-            LogUtil::registerStatus($this->__f('Done! Theme %s created.', $themeinfo['name']));
-        }
-
-        // regenerate theme list
-        ModUtil::apiFunc('Theme', 'admin', 'regenerate');
-
-        // redirect back to the variables page
-        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
-    }
-
-    /**
      * view all themes
      */
     public function view($args = array())
@@ -203,6 +115,7 @@ class Theme_Controller_Admin extends Zikula_Controller
 
         // get the theme info
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
+
 
         // check if we can edit the theme and, if not, create the running config
         if (!is_writable('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/templates/config') && $themeinfo['type'] == ThemeUtil::TYPE_XANTHIA3) {
