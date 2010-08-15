@@ -8,7 +8,7 @@
     <a href="{$pagerPluginArray.firstUrl}" title="{gt text="First page"}" class="z-pagercss-first">&laquo;</a>
     <a href="{$pagerPluginArray.prevUrl}" title="{gt text="Previous page"}" class="z-pagercss-prev">&lsaquo;</a>
     {else}
-    <span class="z-pagercss-first" title="{gt text="First page"}">&laquo</span>
+    <span class="z-pagercss-first" title="{gt text="First page"}">&laquo;</span>
     <span class="z-pagercss-prev" title="{gt text="Previous page"}">&lsaquo;</span>
     {/if}
 
