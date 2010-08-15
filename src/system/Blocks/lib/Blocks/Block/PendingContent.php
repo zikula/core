@@ -14,13 +14,13 @@
 
 /**
  * Pending Content block
- * @author Craig Heydenburg
  */
-
 class Blocks_Block_PendingContent extends Zikula_Block
 {
     /**
-     * initialise block
+     * Initialise block.
+     *
+     * @return void
      */
     public function init()
     {
@@ -28,9 +28,9 @@ class Blocks_Block_PendingContent extends Zikula_Block
     }
 
     /**
-     * get information on block
+     * Get information on block
      *
-     * @return       array       The block information
+     * @return array The block information.
      */
     public function info()
     {
@@ -44,10 +44,11 @@ class Blocks_Block_PendingContent extends Zikula_Block
     }
 
     /**
-     * display block
+     * Display block.
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the rendered bock
+     * @param  array  $blockinfo Blockinfo structure.
+     *
+     * @return output Rendered block.
      */
     public function display($blockinfo)
     {
