@@ -1321,6 +1321,7 @@ class Users_Api_Registration extends Zikula_Api
         if ($codeSent) {
             return $verifyChgObj['created_dt'];
         } else {
+            DBUtil::deleteObject($verifyChgObj, 'users_verifychg');
             return false;
         }
     }

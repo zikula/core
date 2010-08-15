@@ -338,7 +338,7 @@ class Users_Api_User extends Zikula_Api
         }
 
         if ($mailerArgs['body']) {
-            ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $mailerArgs);
+            return ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $mailerArgs);
         }
 
         return true;
