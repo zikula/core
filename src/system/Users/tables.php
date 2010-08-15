@@ -150,7 +150,7 @@ function Users_tables_for_210()
         'email'         => "C(60) NOTNULL DEFAULT ''",
         'pass'          => "C(138) NOTNULL DEFAULT ''",
         'passreminder'  => "C(255) NOTNULL DEFAULT ''",
-        'activated'     => "I1 NOTNULL DEFAULT 0",
+        'activated'     => "I2 NOTNULL DEFAULT 0",
         'approved_date' => "T DEFDATETIME NOTNULL DEFAULT '1970-01-01 00:00:00'",
         'approved_by'   => "I4 NOTNULL DEFAULT 0",
         'user_regdate'  => "T DEFDATETIME NOTNULL DEFAULT '1970-01-01 00:00:00'",
