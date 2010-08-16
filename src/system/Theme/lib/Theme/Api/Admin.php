@@ -31,19 +31,8 @@ class Theme_Api_Admin extends Zikula_Api
         $filethemes = array();
 
         if (is_dir('themes')) {
-            $dh = opendir('themes');
-            $dirArray = array();
-            while ($dir = readdir($dh)) {
-                if ($dir != '.' &&
-                        $dir != '..' &&
-                        $dir != '.svn' &&
-                        $dir != 'CVS' &&
-                        $dir != 'index.html' &&
-                        $dir != 'index.htm') {
-                    $dirArray[] = $dir;
-                }
-            }
-            closedir($dh);
+
+            $dirArray = FileUtil::getfiles('themes',false);
 
             foreach ($dirArray as $dir) {
                 // Work out the theme type
