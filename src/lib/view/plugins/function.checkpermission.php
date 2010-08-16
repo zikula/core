@@ -17,7 +17,7 @@
  * Check permission.
  *
  * Example:
- * {checkpermission comp="News::" inst=".*" level="ACCESS_ADMIN" assign="auth"}
+ * {checkpermission component="News::" instance=".*" level="ACCESS_ADMIN" assign="auth"}
  *
  * True/false will be returned.
  *
@@ -30,30 +30,32 @@ function smarty_function_checkpermission($params, $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $level  = isset($params['level'])  ? $params['level']  : null;
-    // allow 1.2-style parameters (component/instance) as well as 1.1 and 1.3 (comp/inst)
-    // align function.checkpermission.php with block.checkpermissionblock.php
-    // if a and !b, if !a and b, if a and b, if !a and !b
-    if (isset($params['comp'])  && !isset($params['component'])) $comp = $params['comp'];
-    if (!isset($params['comp']) && isset($params['component']))  $comp = $params['component'];
-    if (isset($params['comp'])  && isset($params['component']))  $comp = $params['comp'];
-    if (!isset($params['comp']) && !isset($params['component'])) $comp = null;
-    if (isset($params['inst'])  && !isset($params['instance']))  $inst = $params['inst'];
-    if (!isset($params['inst']) && isset($params['instance']))   $inst = $params['instance'];
-    if (isset($params['inst'])  && isset($params['instance']))   $inst = $params['inst'];
-    if (!isset($params['inst']) && !isset($params['instance']))  $inst = null;
+    
+    if (isset($params['component'])) {
+        $comp = $params['component'];
+    } elseif (isset($params['comp'])) {
+        LogUtil::log(__f('Warning! The {checkpermission} parameter %1$s is deprecated. Please use %2$s instead.', array('comp', 'component')), E_USER_DEPRECATED);
+        $comp = $params['comp'];
+    }
+    if (isset($params['instance'])) {
+        $inst = $params['instance'];
+    } elseif (isset($params['inst'])) {
+        LogUtil::log(__f('Warning! The {checkpermission} parameter %1$s is deprecated. Please use %2$s instead.', array('inst', 'instance')), E_USER_DEPRECATED);
+        $inst = $params['inst'];
+    }
 
-    if (!$comp) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'comp')));
+    if (!isset($comp)) {
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_checkpermission', 'comp')));
         return false;
     }
 
-    if (!$inst) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'inst')));
+    if (!isset($inst)) {
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_checkpermission', 'inst')));
         return false;
     }
 
     if (!$level) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'level')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_checkpermission', 'level')));
         return false;
     }
 

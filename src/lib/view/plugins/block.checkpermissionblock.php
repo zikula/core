@@ -43,17 +43,19 @@ function smarty_block_checkpermissionblock($params, $content, $view)
     if (is_null($content)) {
         return;
     }
-    // allow 1.2-style parameters (component/instance) as well as 1.1 and 1.3 (comp/inst)
-    // align function.checkpermission.php with block.checkpermissionblock.php
-    // if a and !b, if !a and b, if a and b, if !a and !b
-    if (isset($params['comp'])  && !isset($params['component'])) $comp = $params['comp'];
-    if (!isset($params['comp']) && isset($params['component']))  $comp = $params['component'];
-    if (isset($params['comp'])  && isset($params['component']))  $comp = $params['comp'];
-    if (!isset($params['comp']) && !isset($params['component'])) $comp = null;
-    if (isset($params['inst'])  && !isset($params['instance']))  $inst = $params['inst'];
-    if (!isset($params['inst']) && isset($params['instance']))   $inst = $params['instance'];
-    if (isset($params['inst'])  && isset($params['instance']))   $inst = $params['inst'];
-    if (!isset($params['inst']) && !isset($params['instance']))  $inst = null;
+
+    if (isset($params['component'])) {
+        $comp = $params['component'];
+    } elseif (isset($params['comp'])) {
+        LogUtil::log(__f('Warning! The {checkpermissionblock} parameter %1$s is deprecated. Please use %2$s instead.', array('comp', 'component')), E_USER_DEPRECATED);
+        $comp = $params['comp'];
+    }
+    if (isset($params['instance'])) {
+        $inst = $params['instance'];
+    } elseif (isset($params['inst'])) {
+        LogUtil::log(__f('Warning! The {checkpermissionblock} parameter %1$s is deprecated. Please use %2$s instead.', array('inst', 'instance')), E_USER_DEPRECATED);
+        $inst = $params['inst'];
+    }
 
     // check our input
     if (!isset($comp)) {
