@@ -110,9 +110,8 @@ class CategoryRegistryUtil
         $data['table'] = $table;
         $data['property'] = $property;
         $data['category_id'] = $categoryID;
-        if ($entryID) {
-            $data['id'] = $entryID;
-        }
+        $data['id'] = $entryID ? $entryID : false;
+        
         return self::registerModuleCategory($data);
     }
 
