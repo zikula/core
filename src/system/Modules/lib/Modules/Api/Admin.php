@@ -12,12 +12,18 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Administrative API functions for the Modules module.
+ */
 class Modules_Api_Admin extends Zikula_Api
 {
     /**
-     * update module information
-     * @param int $args ['id'] the id number of the module
-     * @return array associative array
+     * Update module information.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      numeric $args['id'] The id number of the module.
+     *
+     * @return array An associative array containing the module information for the specified module id.
      */
     public function modify($args)
     {
@@ -25,11 +31,14 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * update module information
-     * @param int $args ['id'] the id number of the module to update
-     * @param string $args ['displayname'] the new display name of the module
-     * @param string $args ['description'] the new description of the module
-     * @return bool true on success, false on failure
+     * Update module information.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      numeric $args['id']          The id number of the module to update.
+     *                      string  $args['displayname'] The new display name of the module.
+     *                      string  $args['description'] The new description of the module.
+     *
+     * @return boolean True on success, false on failure.
      */
     public function update($args)
     {
@@ -78,9 +87,12 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * update module hook information
-     * @param int $args ['id'] the id number of the module to update
-     * @return bool true on success, false on failure
+     * Update module hook information.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      numeric $args['id'] The id number of the module to update.
+     *
+     * @return boolean True on success, false on failure.
      */
     public function updatehooks($args)
     {
@@ -132,9 +144,12 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * update module hook information, extended version
-     * @param int $args ['id'] the id number of the module to update
-     * @return bool true on success, false on failure
+     * Update module hook information, extended version.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      numeric $args['id'] The id number of the module to update.
+     *
+     * @return boolean True on success, false on failure.
      */
     public function extendedupdatehooks($args)
     {
@@ -207,8 +222,18 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * obtain list of modules
-     * @return array associative array of known modules
+     * Obtain a list of modules.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      integer $args['startnum'] The number of the module at which to start the list (for paging); optional,
+     *                                                  defaults to 1.
+     *                      integer $args['numitems'] The number of the modules to return in the list (for paging); optional, defaults to
+     *                                                  -1, which returns modules starting at the specified number without limit.
+     *                      integer $args['state']    Filter the list by this state; optional.
+     *                      integer $args['type']     Filter the list by this type; optional.
+     *                      string  $args['letter']   Filter the list by module names beginning with this letter; optional.
+     *
+     * @return array An associative array of known modules.
      */
     public function listmodules($args)
     {
@@ -220,19 +245,19 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // Optional arguments.
-        $startnum = (empty($args['startnum']) || $args['startnum'] < 0) ? 1 : (int) $args['startnum'];
-        $numitems = (empty($args['numitems']) || $args['numitems'] < 0) ? -1 : (int) $args['numitems'];
+        $startnum = (empty($args['startnum']) || $args['startnum'] < 0) ? 1 : (int)$args['startnum'];
+        $numitems = (empty($args['numitems']) || $args['numitems'] < 0) ? -1 : (int)$args['numitems'];
         if ($this->serviceManager['multisites.enabled'] == 1) {
-            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int) $args['state'];
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
         } else {
-            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int) $args['state'];
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int)$args['state'];
         }
 
         // for incompatible versions of the modules with the core
         $state = $args['state'];
 
-        $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int) $args['type'];
-        $sort = empty($args['sort']) ? null : (string) $args['sort'];
+        $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int)$args['type'];
+        $sort = empty($args['sort']) ? null : (string)$args['sort'];
 
         SessionUtil::setVar('state', $state);
         SessionUtil::setVar('sort', $sort);
@@ -247,7 +272,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         if ($type != 0) {
-            $where[] = "$modulescolumn[type] = '" . (int) DataUtil::formatForStore($type) . "'";
+            $where[] = "$modulescolumn[type] = '" . (int)DataUtil::formatForStore($type) . "'";
         }
 
         // filter by module state
@@ -293,10 +318,13 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * set the state of a module
-     * @param int $args ['id'] the module id
-     * @param int $args ['state'] the state
-     * @return bool true if successful, false otherwise
+     * Set the state of a module.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      numeric $args['id']    The module id.
+     *                      integer $args['state'] The new state.
+     *
+     * @return boolean True if successful, false otherwise.
      */
     public function setState($args)
     {
@@ -361,11 +389,14 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * remove a module
-     * @param int $args ['id'] the id of the module
-     * @param bool $args ['removedependents'] remove any modules dependent on this module (default: false)
-     * @param int $args['interactive_remove'] true if in interactive upgrade mode, otherwise false
-     * @return bool true on success, false on failure
+     * Remove a module.
+     *
+     * @param array $args All parameters sent to this function.
+     *                      numeric $args['id']                 The id of the module.
+     *                      boolean $args['removedependents']   Remove any modules dependent on this module (default: false).
+     *                      boolean $args['interactive_remove'] Whether to operat in interactive mode or not.
+     *
+     * @return boolean True on success, false on failure.
      */
     public function remove($args)
     {
@@ -513,13 +544,12 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * scan the file system for modules
+     * Scan the file system for modules.
      *
-     * This function scans the file system for modules and returns an
-     * array with all (potential) modules found.
+     * This function scans the file system for modules and returns an array with all (potential) modules found.
      * This information is used to regenerate the module list.
      *
-     * @return array Array of modules found in the file system
+     * @return array An array of modules found in the file system.
      */
     public function getfilemodules()
     {
@@ -629,7 +659,7 @@ class Modules_Api_Admin extends Zikula_Api
                     } else {
                         $moddependencies = serialize(array());
                     }
-//                    if (!isset($args['name'])) {
+                    //if (!isset($args['name'])) {
                         $filemodules[$name] = array(
                                 'directory'       => $dir,
                                 'name'            => $name,
@@ -645,24 +675,24 @@ class Modules_Api_Admin extends Zikula_Api
                                 'core_min'        => $core_min,
                                 'core_max'        => $core_max,
                         );
-//                    } else {
-//                        if ($name == $args['name']) {
-//                            $filemodules = array(
-//                                    'directory'       => $dir,
-//                                    'name'            => $name,
-//                                    'type'            => $moduletype,
-//                                    'displayname'     => $displayname,
-//                                    'url'             => $url,
-//                                    'version'         => $version,
-//                                    'capabilities'    => $capabilities,
-//                                    'description'     => $description,
-//                                    'securityschema'  => $securityschema,
-//                                    'dependencies'    => $moddependencies,
-//                                    'core_min'        => $core_min,
-//                                    'core_max'        => $core_max,
-//                            );
-//                        }
-//                    }
+                    //} else {
+                    //    if ($name == $args['name']) {
+                    //        $filemodules = array(
+                    //                'directory'       => $dir,
+                    //                'name'            => $name,
+                    //                'type'            => $moduletype,
+                    //                'displayname'     => $displayname,
+                    //                'url'             => $url,
+                    //                'version'         => $version,
+                    //                'capabilities'    => $capabilities,
+                    //                'description'     => $description,
+                    //                'securityschema'  => $securityschema,
+                    //                'dependencies'    => $moddependencies,
+                    //                'core_min'        => $core_min,
+                    //                'core_max'        => $core_max,
+                    //        );
+                    //    }
+                    //}
 
                     // important: unset modversion and modtype, otherwise the
                     // following modules will have some values not defined in
@@ -677,10 +707,14 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * Regenerate modules list
-     * @param array args['filemodules'] array of modules in the filesystem, as returned by $this->getfilemodules defaults to $this->getfilemodules()
-     * @return bool true on success, false on failure
-     * @see $this->getfilemodules()
+     * Regenerate modules list.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      array $args['filemodules'] An array of modules in the filesystem, as would be returned by
+     *                                                  {@link getfilemodules()}; optional, defaults to the results of
+     *                                                  $this->getfilemodules().
+     *
+     * @return boolean True on success, false on failure.
      */
     public function regenerate($args)
     {
@@ -850,10 +884,13 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * initialise a module
-     * @param int args['id'] module ID
-     * @param int args['interactive_mode'] boolean that tells us if we are in interactive mode or not
-     * @return bool true on success, false on failure or void when we bypassed the installation
+     * Initialise a module.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      numeric $args['id']               The module ID.
+     *                      boolean $args['interactive_mode'] Perform the initialization in interactive mode or not.
+     *
+     * @return boolean|void True on success, false on failure, or null when we bypassed the installation;
      */
     public function initialise($args)
     {
@@ -979,10 +1016,13 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * upgrade a module
-     * @param int $args['id'] module ID
-     * @param int $args['interactive_upgrade'] true if in interactive upgrade mode, otherwise false
-     * @return bool true on success, false on failure
+     * Upgrade a module.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      numeric $args['id']                  The module ID.
+     *                      boolean $args['interactive_upgrade'] Whether or not to upgrade in interactive mode.
+     *
+     * @return boolean True on success, false on failure.
      */
     public function upgrade($args)
     {
@@ -1127,7 +1167,7 @@ class Modules_Api_Admin extends Zikula_Api
     /**
      * Upgrade all modules.
      *
-     * @return
+     * @return array An array of upgrade results, indexed by module name.
      */
     public function upgradeall()
     {
@@ -1168,8 +1208,13 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * utility function to count the number of items held by this module
-     * @returns integer number of items held by this module
+     * Utility function to count the number of items held by this module.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      string  $args['letter'] Filter the count by the first letter of the module name; optional.
+     *                      integer $args['state']  Filter the count by the module state; optional.
+     *
+     * @return integer The number of items held by this module.
      */
     public function countitems($args)
     {
@@ -1215,11 +1260,15 @@ class Modules_Api_Admin extends Zikula_Api
      * Get a list of modules calling a particular hook module
      *
      * @copyright (C) 2003 by the Xaraya Development Team.
-     * @param $args['hookmodname'] hook module we're looking for
-     * @param $args['hookobject'] the object of the hook (item, module, ...) (optional)
-     * @param $args['hookaction'] the action on that object (transform, display, ...) (optional)
-     * @param $args['hookarea'] the area we're dealing with (GUI, API) (optional)
-     * @return array of modules calling this hook module
+     * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
+     *
+     * @param array $args All parameters passed to this function.
+     *                      string  $args['hookmodname'] The hook module we're looking for.
+     *                      numeric $args['hookobject']  The object of the hook (item, module, ...) (optional).
+     *                      string  $args['hookaction']  The action on that object (transform, display, ...) (optional).
+     *                      string  $args['hookarea']    The area we're dealing with (GUI, API) (optional).
+     *
+     * @return array|boolean An array of modules calling this hook module; false on error.
      */
     public function gethookedmodules($args)
     {
@@ -1269,14 +1318,16 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * Enable hooks between a caller module and a hook module
-     *
-     * @param $args['callermodname'] caller module
-     * @param $args['hookmodname'] hook module
-     * @return bool true if successful
+     * Enable hooks between a caller module and a hook module.
      *
      * @copyright (C) 2003 by the Xaraya Development Team.
      * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
+     *
+     * @param array $args All parameters passed to this function.
+     *                      string $args['callermodname'] The name of the caller module.
+     *                      string $args['hookmodname']   The name of the hook module.
+     *
+     * @return bool True if successful; otherwise false.
      */
     public function enablehooks($args)
     {
@@ -1321,14 +1372,16 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * Disable hooks between a caller module and a hook module
-     *
-     * @param $args['callermodname'] caller module
-     * @param $args['hookmodname'] hook module
-     * @return bool true if successful
+     * Disable hooks between a caller module and a hook module.
      *
      * @copyright (C) 2003 by the Xaraya Development Team.
      * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
+     *
+     * @param array $args All parameters passed to this function.
+     *                      string $args['callermodname'] The name of the caller module.
+     *                      string $args['hookmodname']   The name of the hook module.
+     *
+     * @return bool True if successful; otherwise false.
      */
     public function disablehooks($args)
     {
@@ -1353,10 +1406,12 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * Get a list of hooks for a given module
+     * Get a list of hooks for a given module.
      *
-     * @param $args['modid'] the modules id
-     * @return array array of hooks attached the module
+     * @param array $args All parameters sent to this function.
+     *                      numeric $args['modid'] The modules id.
+     *
+     * @return array An array of hooks attached the module.
      */
     public function getmoduleshooks($args)
     {
@@ -1404,10 +1459,12 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * Get a extended list of hooks for a given module
+     * Get a extended list of hooks for a given module.
      *
-     * @param $args['modid'] the modules id
-     * @return array array of hooks attached the module
+     * @param array $args All parameters sent to this function.
+     *                      numeric $args['modid'] The module id.
+     *
+     * @return array An array of hooks attached the module.
      */
     public function getextendedmoduleshooks($args)
     {
@@ -1462,16 +1519,16 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * get available admin panel links
+     * Get available admin panel links.
      *
-     * @return array array of admin links
+     * @return array An array of admin links.
      */
     public function getlinks()
     {
         $links = array();
 
         // assign variables from input
-        $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
+        $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
         $letter = FormUtil::getPassedValue('letter', null, 'GET');
 
         if (SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
@@ -1480,8 +1537,9 @@ class Modules_Api_Admin extends Zikula_Api
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'hooks', array('id' => 0)), 'text' => $this->__('System hooks'), 'class' => 'z-icon-es-package');
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true)), 'text' => $this->__('System Plugins'), 'class' => 'z-icon-es-cubes');
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
-//            $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
-//            ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
+            //$filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
+            //ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
+
             // get a list of modules needing upgrading
             $newmods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED));
             if ($newmods) {
@@ -1493,9 +1551,11 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * get all module dependencies
+     * Get all module dependencies.
      *
-     * @return array of dependencies
+     * @param array $args All parameters sent to this function (not currently used).
+     *
+     * @return array Array of dependencies.
      */
     public function getdallependencies($args)
     {
@@ -1503,10 +1563,12 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * get dependencies for a module
+     * Get dependencies for a module.
      *
-     * @param modid - id of module to get dependencies for
-     * @return mixed array of dependencies e or false otherwise
+     * @param array $args All parameters sent to this function.
+     *                      numeric $args['modid'] Id of module to get dependencies for.
+     *
+     * @return array|boolean Array of dependencies; false otherwise.
      */
     public function getdependencies($args)
     {
@@ -1521,10 +1583,12 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * get dependencies for a module
+     * Get dependents of a module.
      *
-     * @param modid - id of module to get dependencies for
-     * @return mixed array of dependencies e or false otherwise
+     * @param array $args All parameters passed to this function.
+     *                      numeric $args['modid'] Id of module to get dependents for.
+     *
+     * @return array|boolean Array of dependents; false otherwise.
      */
     public function getdependents($args)
     {
@@ -1540,11 +1604,14 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * check modules for consistency
+     * Check modules for consistency.
      *
-     * @param array args['filemodules'] array of modules in the filesystem, as returned by $this->getfilemodules
-     * @return array an array of arrays with links to inconsistencies
-     * @see $this->getfilemodules()
+     * @param array $args All parameters passed to this function.
+     *                  array $args['filemodules'] Array of modules in the filesystem, as returned by {@link getfilemodules()}.
+     *
+     * @see    getfilemodules()
+     *
+     * @return array An array of arrays with links to inconsistencies.
      */
     public function checkconsistency($args)
     {
@@ -1598,10 +1665,12 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * check if a module come from the core
+     * Check if a module comes from the core.
      *
-     * @param array args['modulename'] name of the module to check
-     * @return boolean true if it's a core module.
+     * @param array $args All parameters sent to this function.
+     *                      string $args['modulename'] The name of the module to check.
+     *
+     * @return boolean True if it's a core module; otherwise false.
      */
     public function iscoremodule($args)
     {
