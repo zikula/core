@@ -6,7 +6,6 @@
     <div>
         <input type="hidden" name="action" value="gotosite" />
         <input type="hidden" name="locale" value="{$locale}" />
-        <input type="hidden" name="installtype" value="{$installtype}" />
         <fieldset>
             <legend>{gt text="Select theme"}</legend>
             <div class="z-formrow">

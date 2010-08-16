@@ -49,7 +49,6 @@ function install()
     // get our input
     $vars = array(
             'lang',
-            'installtype',
             'dbhost',
             'dbusername',
             'dbpassword',
@@ -65,7 +64,6 @@ function install()
             'action',
             'loginuser',
             'loginpassword',
-            'defaultmodule',
             'defaulttheme');
 
     foreach ($vars as $var) {
@@ -153,7 +151,7 @@ function install()
                 $smarty->assign(array('loginstate' => 'failed'));
             }
             break;
-        case 'installtype':
+        case 'processBDInfo':
             $dbname = trim($dbname);
             $dbusername = trim($dbusername);
             if (empty($dbname) || empty($dbusername)) {
@@ -169,16 +167,6 @@ function install()
             } else {
                 update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbtype, $dbtabletype);
                 update_installed_status('0');
-
-                // Must reinitialize the database since settings have changed as a result of the install process.
-                // We do this manually because the API doesn't allow for System::init to be called multiple times with different info in config.php
-                // Probably a better way of doing this?
-                $ZConfig = array();
-                $ZDebug = array();
-
-                require 'config/config.php';
-                $GLOBALS['ZConfig'] = $ZConfig;
-
                 // Easier to create initial DB direct with PDO
                 if ($createdb) {
                     try {
@@ -198,68 +186,12 @@ function install()
                         $smarty->assign('dbconnectfailed', true);
                     }
                 }
-
-                // if it is the distribution and the process have not failed in a previous step
-                if ($installbySQL && $action != 'dbinformation') {
-                    // checks if exists a previous installation with the same prefix
-                    $proceed = true;
-                    if ($dbtype == 'mysql' || $dbtype == 'mysqli') {
-                        $exec = "SHOW TABLES FROM `$dbname` LIKE '" . $dbprefix . "_%'";
-                    } else {
-                        $exec = "SHOW TABLES FROM $dbname LIKE '" . $dbprefix . "_%'";
-                    }
-                    $tables = DBUtil::executeSQL($exec);
-                    if ($tables->rowCount() > 0) {
-                        $proceed = false;
-                        $action = 'dbinformation';
-                        $smarty->assign('dbexists', true);
-                    }
-                    if ($proceed) {
-                        // create the database
-                        // set sql dump file path
-                        $fileurl = 'install/sql/Zikula-MySQL.sql';
-                        // checks if file exists
-                        if (!file_exists($fileurl)) {
-                            $action = 'dbinformation';
-                            $smarty->assign('dbdumpfailed', true);
-                        } else {
-                            // execute the SQL dump
-                            $installed = true;
-                            $lines = file($fileurl);
-                            $exec = '';
-                            foreach ($lines as $line_num => $line) {
-                                $line = trim($line);
-                                if (empty($line) || strpos($line, '--') === 0)
-                                    continue;
-                                $exec .= $line;
-                                if (strrpos($line, ';') === strlen($line) - 1) {
-                                    if (!DBUtil::executeSQL(str_replace('z_', $dbprefix . '_', $exec))) {
-                                        $installed = false;
-                                        $action = 'dbinformation';
-                                        $smarty->assign('dbdumpfailed', true);
-                                        break;
-                                    }
-                                    $exec = '';
-                                }
-                            }
-                        }
-                    }
-                    if ($installed) {
-                        $action = 'createadmin';
-                    }
-                }
             }
-            break;
-        case 'createadmin':
-            installmodules('basic', $lang);
-            if ($installtype != 'basic') {
-                installmodules($installtype, $lang);
+            if ($action != 'dbinformation') {
+                $action = 'createadmin';
             }
             break;
         case 'selecttheme':
-            System::setVar('startpage', $defaultmodule);
-            break;
-        case 'selectmodule':
             if ((!$username) || preg_match('/[^\p{L}\p{N}_\.]/u', $username)) {
                 $action = 'createadmin';
                 $smarty->assign('uservalidatefailed', true);
@@ -284,7 +216,7 @@ function install()
                         'password' => $password,
                         'repeatpassword' => $repeatpassword,
                         'email' => $email));
-            } elseif (!System::varValidate($email, 'email')) {
+            } elseif (!validateMail($email)) {
                 $action = 'createadmin';
                 $smarty->assign('emailvalidatefailed', true);
                 $smarty->assign(array(
@@ -293,6 +225,50 @@ function install()
                         'repeatpassword' => $repeatpassword,
                         'email' => $email));
             } else {
+                // create database
+                // if it is the distribution and the process have not failed in a previous step
+                if ($installbySQL) {
+                    // checks if exists a previous installation with the same prefix
+                    $proceed = true;
+                    $exec = ($dbtype == 'mysql' || $dbtype == 'mysqli') ? 
+                            "SHOW TABLES FROM `$dbname` LIKE '" . $dbprefix . "_%'" :
+                            "SHOW TABLES FROM $dbname LIKE '" . $dbprefix . "_%'";
+                    $tables = DBUtil::executeSQL($exec);
+                    if ($tables->rowCount() > 0) {
+                        $proceed = false;
+                        $action = 'dbinformation';
+                        $smarty->assign('dbexists', true);
+                    }
+                    if ($proceed) {
+                        // create the database
+                        // set sql dump file path
+                        $fileurl = 'install/sql/custom.sql';
+                        // checks if file exists
+                        if (!file_exists($fileurl)) {
+                            $action = 'dbinformation';
+                            $smarty->assign('dbdumpfailed', true);
+                        } else {
+                            // execute the SQL dump
+                            $lines = file($fileurl);
+                            $exec = '';
+                            foreach ($lines as $line_num => $line) {
+                                $line = trim($line);
+                                if (empty($line) || strpos($line, '--') === 0) continue;
+                                $exec .= $line;
+                                if (strrpos($line, ';') === strlen($line) - 1) {
+                                    if (!DBUtil::executeSQL(str_replace('z_', $dbprefix . '_', $exec))) {
+                                        $action = 'dbinformation';
+                                        $smarty->assign('dbdumpfailed', true);
+                                        break;
+                                    }
+                                    $exec = '';
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    installmodules($lang);
+                }
                 // create our new site admin
                 // TODO test the call the users module api to create the user
                 //ModUtil::apiFunc('Users', 'user', 'finishnewuser', array('uname' => $username, 'email' => $email, 'pass' => $password));
@@ -302,15 +278,6 @@ function install()
 
                 // add admin email as site email
                 System::setVar('adminmail', $email);
-
-                update_installed_status();
-                @chmod('config/config.php', 0400);
-                if (!is_readable('config/config.php')) {
-                    @chmod('config/config.php', 0440);
-                    if (!is_readable('config/config.php')) {
-                        @chmod('config/config.php', 0444);
-                    }
-                }
                 if ($installbySQL) {
                     $action = 'gotosite';
                 }
@@ -318,6 +285,8 @@ function install()
             if (!$installbySQL) {
                 break;
             }
+            System::setVar('startpage', '');
+            break;
         case 'gotosite':
             if (!$installbySQL) {
                 if (!class_exists('ThemeUtil')) {
@@ -326,7 +295,15 @@ function install()
                 System::setVar('Default_Theme', $defaulttheme);
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
-
+            // set site status as installed and protect config.php file
+            update_installed_status();
+            @chmod('config/config.php', 0400);
+            if (!is_readable('config/config.php')) {
+                @chmod('config/config.php', 0440);
+                if (!is_readable('config/config.php')) {
+                    @chmod('config/config.php', 0444);
+                }
+            }
             // install all plugins
             $systemPlugins = PluginUtil::loadAllSystemPlugins();
             foreach ($systemPlugins as $plugin) {
@@ -451,7 +428,7 @@ function createuser($username, $password, $email)
     return ($result) ? true : false;
 }
 
-function installmodules($installtype = 'basic', $lang = 'en')
+function installmodules($lang = 'en')
 {
     $connection = Doctrine_Manager::connection();
     $connection->setCharset(DBConnectionStack::getConnectionDBCharset());
@@ -462,194 +439,150 @@ function installmodules($installtype = 'basic', $lang = 'en')
     // Lang validation
     $lang = DataUtil::formatForOS($lang);
 
-    // load our installation configuration
-    $installtype = DataUtil::formatForOS($installtype);
-    if ($installtype == 'complete') {
-
-    } elseif (file_exists("install/installtypes/$installtype.php")) {
-        include "install/installtypes/$installtype.php";
-        $func = "installer_{$installtype}_modules";
-        $modules = $func();
-    } else {
-        return false;
-    }
-
     // create a result set
     $results = array();
 
     $sm = ServiceUtil::getManager();
     $em = EventUtil::getManager();
 
-    if ($installtype == 'basic') {
-        $coremodules = array(
-                'Modules',
-                'Settings',
-                'Theme',
-                'Admin',
-                'Permissions',
-                'Groups',
-                'Blocks',
-                'Users',
-        );
-        // manually install the modules module
-        foreach ($coremodules as $coremodule) {
-            // sanity check - check if module is already installed
-            if ($coremodule != 'Modules' && ModUtil::available($coremodule)) {
-                continue;
-            }
-            $modpath = 'system';
-            if (is_dir("$modpath/$coremodule/lib")) {
-                ZLoader::addAutoloader($coremodule, "$modpath/$coremodule/lib");
-            }
-
-            $bootstrap = "$modpath/$coremodule/bootstrap.php";
-            if (file_exists($bootstrap)) {
-                include_once $bootstrap;
-            }
-
-            ModUtil::dbInfoLoad($coremodule, $coremodule);
-            $className = "{$coremodule}_Installer";
-            $instance = new $className($sm);
-            if ($instance->install()) {
-                $results[$coremodule] = true;
-            }
+    $coremodules = array('Modules',
+			             'Settings',
+			             'Theme',
+			             'Admin',
+			             'Permissions',
+			             'Groups',
+			             'Blocks',
+			             'Users',
+                        );
+    // manually install the modules module
+    foreach ($coremodules as $coremodule) {
+        // sanity check - check if module is already installed
+        if ($coremodule != 'Modules' && ModUtil::available($coremodule)) {
+            continue;
+        }
+        $modpath = 'system';
+        if (is_dir("$modpath/$coremodule/lib")) {
+            ZLoader::addAutoloader($coremodule, "$modpath/$coremodule/lib");
         }
 
-        // regenerate modules list
-        $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
-        ModUtil::apiFunc('Modules', 'admin', 'regenerate', array(
-                        'filemodules' => $filemodules));
-
-        // set each of the core modules to active
-        reset($coremodules);
-        foreach ($coremodules as $coremodule) {
-            $mid = ModUtil::getIdFromName($coremodule, true);
-            ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
-                            'id' => $mid,
-                            'state' => ModUtil::STATE_INACTIVE));
-            ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
-                            'id' => $mid,
-                            'state' => ModUtil::STATE_ACTIVE));
+        $bootstrap = "$modpath/$coremodule/bootstrap.php";
+        if (file_exists($bootstrap)) {
+            include_once $bootstrap;
         }
-        // Add them to the appropriate category
-        reset($coremodules);
 
-        $coremodscat = array(
-                'Modules' => __('System'),
-                'Permissions' => __('Users'),
-                'Groups' => __('Users'),
-                'Blocks' => __('Layout'),
-                'Users' => __('Users'),
-                'Theme' => __('Layout'),
-                'Admin' => __('System'),
-                'Settings' => __('System'));
-
-        $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
-        $modscat = array();
-        foreach ($categories as $category) {
-            $modscat[$category['catname']] = $category['cid'];
-        }
-        foreach ($coremodules as $coremodule) {
-            $category = $coremodscat[$coremodule];
-            ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array(
-                            'module' => $coremodule,
-                            'category' => $modscat[$category]));
-        }
-        // create the default blocks.
-        $blockInstance = new Blocks_Installer($sm);
-        $blockInstance->defaultdata();
-    }
-
-    if ($installtype == 'complete') {
-        $modules = array();
-        $mods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array(
-                        'state' => ModUtil::STATE_UNINITIALISED));
-        foreach ($mods as $mod) {
-            if (!ModUtil::available($mod['name'])) {
-                $modules[] = $mod['name'];
-            }
-        }
-        foreach ($modules as $module) {
-            $modpath = 'modules';
-            if (is_dir("$modpath/$module/lib")) {
-                ZLoader::addAutoloader($module, "$modpath/$module/lib");
-            }
-            $bootstrap = "$modpath/$module/bootstrap.php";
-            if (file_exists($bootstrap)) {
-                include_once $bootstrap;
-            }
-
-
-            ZLanguage::bindModuleDomain($module);
-
-            $mid = ModUtil::getIdFromName($module);
-            // No need to specify 'interactive_init' => false here because System::isInstalling() evals to true in modules_pnadminapi_initialise
-            $initialise = ModUtil::apiFunc('Modules', 'admin', 'initialise', array(
-                            'id' => $mid));
-            if ($initialise === true) {
-                // activate it
-                if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
-                                'id' => $mid,
-                                'state' => ModUtil::STATE_ACTIVE))) {
-                    $results[$module] = true;
-                }
-            } else if ($initialise === false) {
-                $results[$module] = false;
-            } else {
-                unset($results[$module]);
-            }
-        }
-    } else {
-        foreach ($modules as $module) {
-            // sanity check - check if module is already installed
-            if (ModUtil::available($module['module'])) {
-                continue;
-            }
-            $modpath = 'modules';
-            if (is_dir("$modpath/$module/lib")) {
-                ZLoader::addAutoloader($module, "$modpath/$module/lib");
-            }
-            $bootstrap = "$modpath/$module/bootstrap.php";
-            if (file_exists($bootstrap)) {
-                include_once $bootstrap;
-            }
-
-
-            ZLanguage::bindModuleDomain($module);
-
-            $results[$module['module']] = false;
-
-            // #6048 - prevent trying to install modules which are contained in an install type, but are not available physically
-            if (!file_exists('system/' . $module['module'] . '/') && !file_exists('modules/' . $module['module'] . '/')) {
-                continue;
-            }
-
-            $mid = ModUtil::getIdFromName($module['module']);
-
-            // init it
-            if (ModUtil::apiFunc('Modules', 'admin', 'initialise', array(
-                            'id' => $mid)) == true) {
-                // activate it
-                if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
-                                'id' => $mid,
-                                'state' => ModUtil::STATE_ACTIVE))) {
-                    $results[$module['module']] = true;
-                }
-                // Set category
-                ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array(
-                                'module' => $module['module'],
-                                'category' => $modscat[$module['category']]));
-            }
+        ModUtil::dbInfoLoad($coremodule, $coremodule);
+        $className = "{$coremodule}_Installer";
+        $instance = new $className($sm);
+        if ($instance->install()) {
+            $results[$coremodule] = true;
         }
     }
+
+    // regenerate modules list
+    $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
+    ModUtil::apiFunc('Modules', 'admin', 'regenerate',
+                      array('filemodules' => $filemodules));
+
+    // set each of the core modules to active
+    reset($coremodules);
+    foreach ($coremodules as $coremodule) {
+        $mid = ModUtil::getIdFromName($coremodule, true);
+        ModUtil::apiFunc('Modules', 'admin', 'setstate',
+                          array('id' => $mid,
+                                'state' => ModUtil::STATE_INACTIVE));
+        ModUtil::apiFunc('Modules', 'admin', 'setstate',
+                          array('id' => $mid,
+                                'state' => ModUtil::STATE_ACTIVE));
+    }
+    // Add them to the appropriate category
+    reset($coremodules);
+
+    $coremodscat = array('Modules' => __('System'),
+		                 'Permissions' => __('Users'),
+		                 'Groups' => __('Users'),
+		                 'Blocks' => __('Layout'),
+		                 'Users' => __('Users'),
+		                 'Theme' => __('Layout'),
+		                 'Admin' => __('System'),
+		                 'Settings' => __('System'));
+
+    $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
+    $modscat = array();
+    foreach ($categories as $category) {
+        $modscat[$category['catname']] = $category['cid'];
+    }
+    foreach ($coremodules as $coremodule) {
+        $category = $coremodscat[$coremodule];
+        ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
+                          array('module' => $coremodule,
+                                'category' => $modscat[$category]));
+    }
+    // create the default blocks.
+    $blockInstance = new Blocks_Installer($sm);
+    $blockInstance->defaultdata();
+
+    // install all the basic modules
+    $modules =array(array('module'   => 'SecurityCenter',
+                          'category' => __('Security')),
+                    array('module'   => 'Tour',
+                          'category' => __('Content')),
+                    array('module'   => 'Categories',
+                          'category' => __('Content')),
+                    array('module'   => 'Legal',
+                          'category' => __('Content')),
+                    array('module'   => 'Mailer',
+                          'category' => __('System')),
+                    array('module'   => 'Errors',
+                          'category' => __('System')),
+                    array('module'   => 'Theme',
+                          'category' => __('Layout')),
+                    array('module'   => 'Search',
+                          'category' => __('Content')),
+                    array('module'   => 'SysInfo',
+                          'category' => __('Security')));
+
+    foreach ($modules as $module) {
+        // sanity check - check if module is already installed
+        if (ModUtil::available($module['module'])) {
+            continue;
+        }
+        $modpath = 'modules';
+        if (is_dir("$modpath/$module/lib")) {
+            ZLoader::addAutoloader($module, "$modpath/$module/lib");
+        }
+        $bootstrap = "$modpath/$module/bootstrap.php";
+        if (file_exists($bootstrap)) {
+            include_once $bootstrap;
+        }
+
+        ZLanguage::bindModuleDomain($module);
+
+        $results[$module['module']] = false;
+
+        // #6048 - prevent trying to install modules which are contained in an install type, but are not available physically
+        if (!file_exists('system/' . $module['module'] . '/') && !file_exists('modules/' . $module['module'] . '/')) {
+            continue;
+        }
+
+        $mid = ModUtil::getIdFromName($module['module']);
+
+        // init it
+        if (ModUtil::apiFunc('Modules', 'admin', 'initialise',
+                              array('id' => $mid)) == true) {
+            // activate it
+            if (ModUtil::apiFunc('Modules', 'admin', 'setstate',
+                                  array('id' => $mid,
+                                        'state' => ModUtil::STATE_ACTIVE))) {
+                $results[$module['module']] = true;
+            }
+            // Set category
+            ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
+                              array('module' => $module['module'],
+                                    'category' => $modscat[$module['category']]));
+        }
+    }
+
     System::setVar('language_i18n', $lang);
-
-    // run any post-install routines
-    $func = "installer_{$installtype}_post_install";
-    if (function_exists($func)) {
-        $func();
-    }
-
     return $results;
 }
 
@@ -691,4 +624,12 @@ function _installer_alreadyinstalled(Smarty $smarty)
     $smarty->display('installer_alreadyinstalled.tpl');
     System::shutDown();
     exit;
+}
+
+function validateMail($mail)
+{
+    if (!preg_match('/^(?:[^\s\000-\037\177\(\)<>@,;:\\"\[\]]\.?)+@(?:[^\s\000-\037\177\(\)<>@,;:\\\"\[\]]\.?)+\.[a-z]{2,6}$/Ui', $mail)) {
+        return false;
+    }
+    return true;
 }

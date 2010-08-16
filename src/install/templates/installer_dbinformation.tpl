@@ -13,7 +13,7 @@
 {/if}
 <form class="z-form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
     <div>
-        <input type="hidden" name="action" value="installtype" />
+        <input type="hidden" name="action" value="processBDInfo" />
         <input type="hidden" name="locale" value="{$locale}" />
         <fieldset>
             <legend>{gt text="Database information"}</legend>

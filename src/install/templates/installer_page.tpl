@@ -35,12 +35,8 @@
                         <li{if $action eq lang} class="menu_selected"{/if}>{$selectlang}{$welcome}</li>
                         <li{if $action eq requirements} class="menu_selected"{/if}>{$sysrequir}</li>
                         <li{if $action eq dbinformation} class="menu_selected"{/if}>{$dbinfos}</li>
-                        {if not $installbySQL}
-                        <li{if $action eq installtype} class="menu_selected"{/if}>{$selinstalltype}</li>
-                        {/if}
                         <li{if $action eq createadmin} class="menu_selected"{/if}>{$createaduser}</li>
                         {if not $installbySQL}
-                        <li{if $action eq selectmodule} class="menu_selected"{/if}>{$selstartpage}</li>
                         <li{if $action eq selecttheme} class="menu_selected"{/if}>{$seltheme}</li>
                         {/if}
                         <li{if $action eq gotosite} class="menu_selected"{/if}>{$alldone}</li>
