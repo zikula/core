@@ -1605,18 +1605,26 @@ class Modules_Api_Admin extends Zikula_Api
      */
     public function iscoremodule($args)
     {
-        $coremodules = array(
-                'Modules',
-                'Permissions',
-                'Groups',
-                'Blocks',
-                'ObjectData',
-                'Users',
-                'Theme',
+        static $coreModules;
+        if (!isset($coreModules)) {
+            $coreModules = array(
                 'Admin',
+                'Blocks',
+                'Categories',
+                'Errors',
+                'Groups',
+                'Mailer',
+                'Modules',
+                'PageLock',
+                'Permissions',
+                'SecurityCenter',
                 'Settings',
-                'Categories');
-        if (in_array($args['modulename'], $coremodules)) {
+                'Theme',
+                'Users',
+            );
+        }
+
+        if (in_array($args['modulename'], $coreModules)) {
             return true;
         }
         return false;
