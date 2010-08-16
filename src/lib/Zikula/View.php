@@ -1104,6 +1104,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setTemplate_dir($template_dir)
     {
         $this->template_dir = $template_dir;
+        return $this;
     }
 
     /**
@@ -1126,6 +1127,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setCompile_dir($compile_dir)
     {
         $this->compile_dir = $compile_dir;
+        return $this;
     }
 
     /**
@@ -1148,6 +1150,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setConfig_dir($config_dir)
     {
         $this->config_dir = $config_dir;
+        return $this;
     }
 
     /**
@@ -1170,6 +1173,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setPlugins_dir($plugins_dir)
     {
         $this->plugins_dir = $plugins_dir;
+        return $this;
     }
 
     /**
@@ -1195,6 +1199,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setDebugging($debugging)
     {
         $this->debugging = $debugging;
+        return $this;
     }
 
     /**
@@ -1221,6 +1226,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setError_reporting($error_reporting)
     {
         $this->error_reporting = $error_reporting;
+        return $this;
     }
 
     /**
@@ -1247,6 +1253,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setDebug_tpl($debug_tpl)
     {
         $this->debug_tpl = $debug_tpl;
+        return $this;
     }
 
     /**
@@ -1283,6 +1290,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setDebugging_ctrl($debugging_ctrl)
     {
         $this->debugging_ctrl = $debugging_ctrl;
+        return $this;
     }
 
     /**
@@ -1436,6 +1444,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setCache_dir($cache_dir)
     {
         $this->cache_dir = $cache_dir;
+        return $this;
     }
 
     /**
@@ -1468,6 +1477,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setCache_modified_check($cache_modified_check)
     {
         $this->cache_modified_check = $cache_modified_check;
+        return $this;
     }
 
     /**
@@ -1506,6 +1516,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setPhp_handling($php_handling)
     {
         $this->php_handling = $php_handling;
+        return $this;
     }
 
     /**
@@ -1536,6 +1547,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setSecurity($security)
     {
         $this->security = $security;
+        return $this;
     }
 
     /**
@@ -1561,6 +1573,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setSecure_dir($secure_dir)
     {
         $this->secure_dir = $secure_dir;
+        return $this;
     }
 
     /**
@@ -1583,6 +1596,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setSecurity_settings($security_settings)
     {
         $this->security_settings = $security_settings;
+        return $this;
     }
 
     /**
@@ -1607,6 +1621,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setTrusted_dir($trusted_dir)
     {
         $this->trusted_dir = $trusted_dir;
+        return $this;
     }
 
     /**
@@ -1629,6 +1644,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setLeft_delimiter($left_delimiter)
     {
         $this->left_delimiter = $left_delimiter;
+        return $this;
     }
 
     /**
@@ -1651,6 +1667,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setRight_delimiter($right_delimiter)
     {
         $this->right_delimiter = $right_delimiter;
+        return $this;
     }
 
     /**
@@ -1677,6 +1694,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setRequest_vars_order($request_vars_order)
     {
         $this->request_vars_order = $request_vars_order;
+        return $this;
     }
 
     /**
@@ -1702,6 +1720,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setRequest_use_auto_globals($request_use_auto_globals)
     {
         $this->request_use_auto_globals = $request_use_auto_globals;
+        return $this;
     }
 
     /**
@@ -1728,6 +1747,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setCompile_id($compile_id)
     {
         $this->compile_id = $compile_id;
+        return $this;
     }
 
     /**
@@ -1752,6 +1772,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setUse_sub_dirs($use_sub_dirs)
     {
         $this->use_sub_dirs = $use_sub_dirs;
+        return $this;
     }
 
     /**
@@ -1777,6 +1798,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setDefault_modifiers($default_modifiers)
     {
         $this->default_modifiers = $default_modifiers;
+        return $this;
     }
 
     /**
@@ -1799,6 +1821,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setDefault_resource_type($default_resource_type)
     {
         $this->default_resource_type = $default_resource_type;
+        return $this;
     }
 
     /**
@@ -1847,6 +1870,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setAutoload_filters($autoload_filters)
     {
         $this->autoload_filters = $autoload_filters;
+        return $this;
     }
 
     /**
@@ -1871,6 +1895,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setConfig_overwrite($config_overwrite)
     {
         $this->config_overwrite = $config_overwrite;
+        return $this;
     }
 
     /**
@@ -1899,6 +1924,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setConfig_booleanize($config_booleanize)
     {
         $this->config_booleanize = $config_booleanize;
+        return $this;
     }
 
     /**
@@ -1924,6 +1950,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setConfig_read_hidden($config_read_hidden)
     {
         $this->config_read_hidden = $config_read_hidden;
+        return $this;
     }
 
     /**
@@ -1952,6 +1979,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setConfig_fix_newlines($config_fix_newlines)
     {
         $this->config_fix_newlines = $config_fix_newlines;
+        return $this;
     }
 
     /**
@@ -1974,6 +2002,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setDefault_template_handler_func($default_template_handler_func)
     {
         $this->default_template_handler_func = $default_template_handler_func;
+        return $this;
     }
 
     /**
@@ -2006,6 +2035,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setCompiler_file($compiler_file)
     {
         $this->compiler_file = $compiler_file;
+        return $this;
     }
 
     /**
@@ -2028,6 +2058,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function setCompiler_class($compiler_class)
     {
         $this->compiler_class = $compiler_class;
+        return $this;
     }
 
     /**
@@ -2050,6 +2081,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function set_tpl_vars($_tpl_vars)
     {
         $this->_tpl_vars = $_tpl_vars;
+        return $this;
     }
 
     /**
@@ -2072,6 +2104,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function set_compile_id($_compile_id)
     {
         $this->_compile_id = $_compile_id;
+        return $this;
     }
 
     /**
@@ -2094,6 +2127,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function set_cache_info($_cache_info)
     {
         $this->_cache_info = $_cache_info;
+        return $this;
     }
 
     /**
@@ -2116,6 +2150,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function set_file_perms($_file_perms)
     {
         $this->_file_perms = $_file_perms;
+        return $this;
     }
 
     /**
@@ -2138,6 +2173,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function set_dir_perms($_dir_perms)
     {
         $this->_dir_perms = $_dir_perms;
+        return $this;
     }
 
     /**
@@ -2160,6 +2196,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function set_reg_objects($_reg_objects)
     {
         $this->_reg_objects = $_reg_objects;
+        return $this;
     }
 
     /**
@@ -2182,6 +2219,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function set_plugins($_plugins)
     {
         $this->_plugins = $_plugins;
+        return $this;
     }
 
     /**
@@ -2204,6 +2242,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function set_cache_serials($_cache_serials)
     {
         $this->_cache_serials = $_cache_serials;
+        return $this;
     }
 
     /**
@@ -2226,6 +2265,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function set_cache_include($_cache_include)
     {
         $this->_cache_include = $_cache_include;
+        return $this;
     }
 
     /**
@@ -2248,6 +2288,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function set_cache_including($_cache_including)
     {
         $this->_cache_including = $_cache_including;
+        return $this;
     }
 }
 
