@@ -24,7 +24,7 @@
                 <td>{$reginfo.uname|safetext}</td>
                 <td>{if !empty($reginfo.email)}<a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>{else}---{/if}</td>
                 <td class="z-center">{if $reginfo.isapproved}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Approved' __alt='Approved'}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending approval' __alt='Pending approval'}{/if}</td>
-                <td class="z-center">{if $reginfo.isverified}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'}{elseif !$reginfo.verificationsent}{if ($zcore.Users.moderation_order == 'UserUtil::APPROVAL_AFTER'|const) || (($zcore.Users.moderation_order == 'UserUtil::APPROVAL_BEFORE'|const) && ($reginfo.isapproved))}{img modname='core' set='icons/extrasmall' src='status_unknown.gif' __title='E-mail verification not sent; must be resent' __alt='E-mail verification not sent; must be resent'}{else}{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='E-mail verification not sent' __alt='E-mail verification not sent'}{/if}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'}{/if}</td>
+                <td class="z-center">{if $reginfo.isverified}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'}{elseif !$reginfo.verificationsent}{if ($zcore.Users.moderation_order != 'UserUtil::APPROVAL_BEFORE'|const) || (($zcore.Users.moderation_order == 'UserUtil::APPROVAL_BEFORE'|const) && ($reginfo.isapproved))}{img modname='core' set='icons/extrasmall' src='status_unknown.gif' __title='E-mail verification not sent; must be resent' __alt='E-mail verification not sent; must be resent'}{else}{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='E-mail verification not sent' __alt='E-mail verification not sent'}{/if}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'}{/if}</td>
                 {assign var="regactions" value=$actions.list[$reginfo.uid]}
                 {strip}
                 {* For the following, (isset($regactions.optname) == true) means that the current user can, in general, perform the operation; *}
@@ -103,53 +103,51 @@
 
     {if !empty($pager)}{pager rowcount=$pager.rowcount limit=$pager.limit posvar=$pager.posvar}{/if}
 
+    <p colspan="4" class="z-sub z-center z-bold">{gt text='Legend'}</p>
     <table class="z-admintable">
+        <thead>
+            <tr>
+                <th colspan="2" class="z-sub z-center">{gt text='Approval'}</th>
+            </tr>
+        </thead>
         <tbody>
             <tr>
-                <th colspan="4" class="z-center">{gt text='Legend'}</th>
+                <td class="z-w45">
+                    <div class="z-floatleft" style="padding: 0.5em 1.0em 0.5em 0.5em;">{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Approved' __alt='Approved'}</div>
+                    <div class="z-sub">{gt text='An administrator has approved the registration, or approval was not required when the registration was completed.'}</div>
+                </td>
+                <td class="z-w45">
+                    <div class="z-floatleft" style="padding: 0.5em 1.0em 0.5em 0.5em;;">{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending approval' __alt='Pending approval'}</div>
+                    <div class="z-sub">{gt text='Waiting for an administrator to approve the registration.'}</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="z-admintable">
+        <thead>
+            <tr>
+                <th colspan="2" class="z-sub z-center">{gt text='Verification'}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="z-w45">
+                    <div class="z-floatleft" style="padding: 0.5em 1.0em 0.5em 0.5em;">{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'}</div>
+                    <div class="z-sub">{gt text='The user has completed the e-mail verification process, or e-mail verification was not required when the registration was completed.'}</div>
+                </td>
+                <td class="z-w45">
+                    <div class="z-floatleft" style="padding: 0.5em 1.0em 0.5em 0.5em;;">{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'}</div>
+                    <div class="z-sub">{gt text='An e-mail has been sent to the registered e-mail address, but the user has not yet responded.'}</div>
+                </td>
             </tr>
             <tr>
-                <td style="vertical-align: top; width: 50%;">
-                    <table class="z-admintable">
-                        <thead>
-                            <tr>
-                                <th colspan="2" class="z-center">{gt text='Approval'}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="z-odd">
-                                <td>{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Approved' __alt='Approved'}</td>
-                                <td>{gt text='An administrator has approved the registration, or approval was not required when the registration was completed.'}</td>
-                            </tr>
-                            <tr class="z-even">
-                                <td>{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending approval' __alt='Pending approval'}</td>
-                                <td>{gt text='Waiting for an administrator to approve the registration.'}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <td class="z-w45">
+                    <div class="z-floatleft" style="padding: 0.5em 1.0em 0.5em 0.5em;;">{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='Verification e-mail message not yet sent' __alt='Verification e-mail message not yet sent'}</div>
+                    <div class="z-sub">{gt text='A verification e-mail has not been sent to the registered e-mail address.'}{if $zcore.Users.moderation_order == 'UserUtil::APPROVAL_BEFORE'|const} {gt text='If it is not yet approved, then it will be sent on approval.'}{/if}</div>
                 </td>
-                <td style="vertical-align: top; width: 50%;">
-                    <table class="z-admintable">
-                        <thead>
-                            <tr>
-                                <th colspan="2" class="z-center">{gt text='Verification'}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="z-odd">
-                                <td>{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'}</td>
-                                <td>{gt text='The user has completed the e-mail verification process, or e-mail verification was not required when the registration was completed.'}</td>
-                            </tr>
-                            <tr class="z-even">
-                                <td>{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'}</td>
-                                <td>{gt text='An e-mail has been sent to the registered e-mail address, but the user has not yet responded.'}</td>
-                            </tr>
-                            <tr class="z-odd">
-                                <td>{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='Verification e-mail message not yet sent' __alt='Verification e-mail message not yet sent'}</td>
-                                <td>{gt text='A verification e-mail has not been sent to the registered e-mail address. If it is not yet approved, then it will be sent on approval. If it is approved, then the administrator chose not to send the verification e-mail.'}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <td class="z-w45">
+                    <div class="z-floatleft" style="padding: 0.5em 1.0em 0.5em 0.5em;;">{img modname='core' set='icons/extrasmall' src='status_unknown.gif' __title='E-mail verification not sent; must be resent' __alt='E-mail verification not sent; must be resent'}</div>
+                    <div class="z-sub">{gt text='A verification e-mail has not been sent to the registered e-mail address, but the registration is in a state where one should already have been sent.'}</div>
                 </td>
             </tr>
         </tbody>
