@@ -860,7 +860,7 @@ class CategoryUtil
         foreach ($cats as $i => $c) {
 
             $params['cid'] = $c['id'];
-            $url = DataUtil::formatForDisplay(ModUtil::url('Categories', 'admin', 'edit', $params));
+            $url = ModUtil::url('Categories', 'admin', 'edit', $params);
 
             if (FormUtil::getPassedValue('type') == 'admin') {
                 $url .= '#top';
