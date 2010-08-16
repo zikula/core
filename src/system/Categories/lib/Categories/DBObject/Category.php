@@ -34,7 +34,7 @@ class Categories_DBObject_Category extends DBObject
                                               'instance_right'   => 'path',
                                               'level'            => ACCESS_READ);
 
-        $this->_objValidation['name']  = array ('name', true, 'noop', '', __('Error! You did not enter a name.'));
+        $this->_objValidation['name']  = array ('name', true, 'noop', '', __('Error! You did not enter a name.'), '');
 
         $this->_init($init, $key);
     }
