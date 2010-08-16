@@ -87,6 +87,8 @@ class JCSSUtil
             }
         }
         $javascripts = self::prepareJavascripts($javascripts,$combine);
+        // update stylesheets as there might be some additions for js
+        $stylesheets = array_merge((array)$stylesheets,(array)PageUtil::getVar('stylesheet'));
         $stylesheets = self::prepareStylesheets($stylesheets,$combine);
         
         if ($combine) {
