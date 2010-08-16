@@ -21,8 +21,8 @@ Zikula.Users.NewUser = {
             }
         }
 
-        Event.observe('users_reginfo_uname', 'keyup', function(){$('users_reginfo_uname').value = $('users_reginfo_uname').value.toLowerCase();}, false);
-        Event.observe('users_reginfo_email', 'keyup', function(){$('users_reginfo_email').value = $('users_reginfo_email').value.toLowerCase();}, false);
+        Event.observe('users_reginfo_uname', 'blur', function(){$('users_reginfo_uname').value = $('users_reginfo_uname').value.toLowerCase();}, false);
+        Event.observe('users_reginfo_email', 'blur', function(){$('users_reginfo_email').value = $('users_reginfo_email').value.toLowerCase();}, false);
 
         Element.removeClassName('checkuserajax', 'z-hide');
         Event.observe('checkuserajax', 'click', Zikula.Users.NewUser.callGetRegistrationErrors, false);
