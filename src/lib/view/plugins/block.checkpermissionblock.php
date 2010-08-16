@@ -49,12 +49,16 @@ function smarty_block_checkpermissionblock($params, $content, $view)
     } elseif (isset($params['comp'])) {
         LogUtil::log(__f('Warning! The {checkpermissionblock} parameter %1$s is deprecated. Please use %2$s instead.', array('comp', 'component')), E_USER_DEPRECATED);
         $comp = $params['comp'];
+    } else {
+        $comp = null;
     }
     if (isset($params['instance'])) {
         $inst = $params['instance'];
     } elseif (isset($params['inst'])) {
         LogUtil::log(__f('Warning! The {checkpermissionblock} parameter %1$s is deprecated. Please use %2$s instead.', array('inst', 'instance')), E_USER_DEPRECATED);
         $inst = $params['inst'];
+    } else {
+        $inst = null;
     }
 
     // check our input
