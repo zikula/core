@@ -29,9 +29,18 @@
 function smarty_function_checkpermission($params, $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
-    $comp   = isset($params['comp'])   ? $params['comp']   : null;
-    $inst   = isset($params['inst'])   ? $params['inst']   : null;
     $level  = isset($params['level'])  ? $params['level']  : null;
+    // allow 1.2-style parameters (component/instance) as well as 1.1 and 1.3 (comp/inst)
+    // align function.checkpermission.php with block.checkpermissionblock.php
+    // if a and !b, if !a and b, if a and b, if !a and !b
+    if (isset($params['comp'])  && !isset($params['component'])) $comp = $params['comp'];
+    if (!isset($params['comp']) && isset($params['component']))  $comp = $params['component'];
+    if (isset($params['comp'])  && isset($params['component']))  $comp = $params['comp'];
+    if (!isset($params['comp']) && !isset($params['component'])) $comp = null;
+    if (isset($params['inst'])  && !isset($params['instance']))  $inst = $params['inst'];
+    if (!isset($params['inst']) && isset($params['instance']))   $inst = $params['instance'];
+    if (isset($params['inst'])  && isset($params['instance']))   $inst = $params['inst'];
+    if (!isset($params['inst']) && !isset($params['instance']))  $inst = null;
 
     if (!$comp) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'comp')));

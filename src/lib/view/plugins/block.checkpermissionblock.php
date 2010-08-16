@@ -18,7 +18,9 @@
  *
  * Available attributes:
  *  - component (string) The component to be tested, e.g., 'ModuleName::'
+ *  - comp      (string) Same as component
  *  - instance  (string) The instance to be tested, e.g., 'name::1'
+ *  - inst      (string) Same as instance
  *  - level     (int)    The level of access required, e.g., ACCESS_READ
  *
  * Example:
@@ -41,13 +43,24 @@ function smarty_block_checkpermissionblock($params, $content, $view)
     if (is_null($content)) {
         return;
     }
+    // allow 1.2-style parameters (component/instance) as well as 1.1 and 1.3 (comp/inst)
+    // align function.checkpermission.php with block.checkpermissionblock.php
+    // if a and !b, if !a and b, if a and b, if !a and !b
+    if (isset($params['comp'])  && !isset($params['component'])) $comp = $params['comp'];
+    if (!isset($params['comp']) && isset($params['component']))  $comp = $params['component'];
+    if (isset($params['comp'])  && isset($params['component']))  $comp = $params['comp'];
+    if (!isset($params['comp']) && !isset($params['component'])) $comp = null;
+    if (isset($params['inst'])  && !isset($params['instance']))  $inst = $params['inst'];
+    if (!isset($params['inst']) && isset($params['instance']))   $inst = $params['instance'];
+    if (isset($params['inst'])  && isset($params['instance']))   $inst = $params['inst'];
+    if (!isset($params['inst']) && !isset($params['instance']))  $inst = null;
 
     // check our input
-    if (!isset($params['component'])) {
+    if (!isset($comp)) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'component')));
         return false;
     }
-    if (!isset($params['instance'])) {
+    if (!isset($inst)) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'instance')));
         return false;
     }
@@ -56,7 +69,7 @@ function smarty_block_checkpermissionblock($params, $content, $view)
         return false;
     }
 
-    if (!SecurityUtil::checkPermission($params['component'], $params['instance'], constant($params['level']))) {
+    if (!SecurityUtil::checkPermission($comp, $inst, constant($params['level']))) {
         return;
     }
 
