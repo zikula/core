@@ -63,6 +63,13 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
     public $enableDBUtil;
 
     /**
+     * Enable save/load of values in separate Categories field for use in Doctrine.
+     *
+     * @var boolean (default false)
+     */
+    public $enableDoctrine;
+
+    /**
      * Get filename of this file.
      *
      * @return string
@@ -152,6 +159,7 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
     {
         $this->includeEmptyElement = (isset($params['includeEmptyElement']) ? $params['includeEmptyElement'] : false);
         $this->enableDBUtil = (isset($params['enableDBUtil']) ? $params['enableDBUtil'] : false);
+        $this->enableDoctrine = (isset($params['enableDoctrine']) ? $params['enableDoctrine'] : false);
 
         self::loadParameters($this, $this->includeEmptyElement, $params);
 
@@ -199,6 +207,17 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
                 }
                 $data[$this->group]['__CATEGORIES__'][$this->dataField] = $this->getSelectedValue();
             }
+         } else if ($this->enableDoctrine && $this->dataBased) {
+            if ($this->group == null) {
+                $data['Categories'][$this->dataField] = array('category_id' => $this->getSelectedValue(),
+                                                              'reg_property' => $this->dataField);
+            } else {
+                if (!array_key_exists($this->group, $data)) {
+                    $data[$this->group] = array();
+                }
+                $data[$this->group]['Categories'][$this->dataField] = array('category_id' => $this->getSelectedValue(),
+                                                                            'reg_property' => $this->dataField);
+            }
         } else {
             parent::saveValue($render, $data);
         }
@@ -233,6 +252,34 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
                     $data = $values[$this->group];
                     if (isset($data['__CATEGORIES__'][$this->dataField])) {
                         $value = $data['__CATEGORIES__'][$this->dataField];
+                        if ($this->itemsDataField != null && isset($data[$this->itemsDataField])) {
+                            $items = $data[$this->itemsDataField];
+                        }
+                    }
+                }
+            }
+
+            if ($items != null) {
+                $this->setItems($items);
+            }
+
+            $this->setSelectedValue($value);
+        } else if ($this->enableDoctrine && $this->dataBased) {
+            $items = null;
+            $value = null;
+
+            if ($this->group == null) {
+                if ($this->dataField != null && isset($values['Categories'][$this->dataField])) {
+                    $value = $values['Categories'][$this->dataField]['category_id'];
+                }
+                if ($this->itemsDataField != null && isset($values[$this->itemsDataField])) {
+                    $items = $values[$this->itemsDataField];
+                }
+            } else {
+                if (isset($values[$this->group])) {
+                    $data = $values[$this->group];
+                    if (isset($data['Categories'][$this->dataField])) {
+                        $value = $data['Categories'][$this->dataField]['category_id'];
                         if ($this->itemsDataField != null && isset($data[$this->itemsDataField])) {
                             $items = $data[$this->itemsDataField];
                         }

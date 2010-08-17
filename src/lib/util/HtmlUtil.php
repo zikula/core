@@ -375,6 +375,32 @@ class HtmlUtil
             }
         }
 
+        // Doctrine models
+        DoctrineUtil::loadModels($modname);
+        $records = Doctrine::getLoadedModels();
+
+        foreach($records as $recordClass) {
+            // remove records from other modules
+            if(substr($recordClass, 0, strlen($modname)) != $modname) {
+                continue;
+            }
+
+            // get table name of remove table prefix
+            $tableNameRaw = Doctrine::getTable($recordClass)->getTableName();
+            sscanf($tableNameRaw, Doctrine_Manager::getInstance()->getAttribute(Doctrine::ATTR_TBLNAME_FORMAT), $tableName);
+
+            if ($remove) {
+                $tableName = str_replace($remove, '', $tableName);
+            }
+
+            if ($nStripChars) {
+                $tableName = ucfirst(substr($tableName, $nStripChars));
+            }
+
+            $data[$tableName] = $tableName;
+        }
+
+
         return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
     }
 

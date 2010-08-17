@@ -310,5 +310,47 @@ class SystemListenersUtil
             $toolbar->addHTMLToFooter();
         }
     }
+
+    /**
+     * Adds an autoloader entry for the cached (generated) doctrine models.
+     *
+     * @param Zikula_Event $event Event.
+     *
+     * @return void
+     */
+    public static function setupAutoloaderForGeneratedCategoryModels(Zikula_Event $event)
+    {
+        if($event['stage'] == System::STAGES_CONFIG) {
+            ZLoader::addAutoloader('GeneratedDoctrineModel',  CacheUtil::getLocalDir('doctrinemodels'));
+        }
+    }
+
+    /**
+     * On an module remove hook call this listener deletes all cached (generated) doctrine models for the module.
+     *
+     * @param Zikula_Event $event Event.
+     *
+     * @return void
+     */
+    public static function deleteGeneratedCategoryModelsOnModuleRemove(Zikula_Event $event) {
+        if($event['hookobject'] == 'module' && $event['hookaction'] == 'remove') {
+            $moduleName = $event['hookid'];
+
+             // remove generated category models for this record
+            $dir = 'doctrinemodels/GeneratedDoctrineModel/' . $moduleName;
+            if(file_exists(CacheUtil::getLocalDir($dir))) {
+                CacheUtil::removeLocalDir($dir);
+            }
+
+            // remove saved data about the record
+            $modelsInfo = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
+            foreach($modelsInfo as $class => $info) {
+                if($info['module'] == $moduleName) {
+                    unset($modelsInfo[$class]);
+                }
+            }
+            ModUtil::setVar('Categories', 'EntityCategorySubclasses', $modelsInfo);
+        }
+    }
 }
 

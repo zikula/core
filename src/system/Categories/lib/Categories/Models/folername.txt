@@ -1,0 +1,2 @@
+Name name of this folder is 'Models' instead of 'Model'
+to hide the doctrine models from the ModUtil::dbInfoLoad() function (it ignores the tables.php otherwise).

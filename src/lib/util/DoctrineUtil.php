@@ -71,8 +71,12 @@ class DoctrineUtil
         $dm = Doctrine_Manager::getInstance();
         $save = $dm->getAttribute(Doctrine_Core::ATTR_MODEL_LOADING);
         $dm->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_AGGRESSIVE);
-        Doctrine_Core::loadModels(realpath("$base/$osdir/lib/$osdir/Model"));
-        $dm->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, $save);
+        $path = "$base/$osdir/lib/$osdir/Model";
+
+        if(file_exists($path)) {
+            Doctrine_Core::loadModels(realpath($path));
+            $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, $save);
+        }
     }
 
     /**

@@ -456,6 +456,8 @@ class DBConnectionStack
             $object->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_CONSERVATIVE);
             //$object->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_AGGRESSIVE);
 
+            // enable dql hooks (used by Categorisable doctrine template)
+            $object->setAttribute(Doctrine_Core::ATTR_USE_DQL_CALLBACKS, true);
 
             return;
         }
