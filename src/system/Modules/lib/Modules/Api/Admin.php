@@ -1684,7 +1684,6 @@ class Modules_Api_Admin extends Zikula_Api
                 'Groups',
                 'Mailer',
                 'Modules',
-                'PageLock',
                 'Permissions',
                 'SecurityCenter',
                 'Settings',
