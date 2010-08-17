@@ -311,7 +311,7 @@ class Users_Controller_User extends Zikula_Controller
                     // Some unknown state! Should never get here, but just in case...
                     LogUtil::registerStatus($this->__('Done! Your registration request has been saved. Please conact the site administrator regarding the status of yor registration request.'));
                 }
-                return $this->view->fetch('users_user_registrationfinished.tpl');
+                return $this->view->fetch('users_user_displaystatusmsg.tpl');
             } else {
                 // Make sure the user has a status that allows him to log in before telling him he can.
                 if (($registeredObj['activated'] == UserUtil::ACTIVATED_ACTIVE)
@@ -334,12 +334,12 @@ class Users_Controller_User extends Zikula_Controller
                     // Shouldn't really get here out of the registration process, but cover all the bases.
                     LogUtil::registerStatus($this->__('Done! Your account has been created.'));
                     LogUtil::registerError($this->__('Your account status will not permit you to log in at this time. Please contact the site administrator for more information.'));
-                    return $this->view->fetch('users_user_registrationfinished.tpl');
+                    return $this->view->fetch('users_user_displaystatusmsg.tpl');
                 }
             }
         } else {
             LogUtil::registerError($this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
-            return $this->view->fetch('users_user_registrationfinished.tpl');
+            return $this->view->fetch('users_user_displaystatusmsg.tpl');
         }
     }
 
@@ -753,10 +753,60 @@ class Users_Controller_User extends Zikula_Controller
         } else {
             $userObj = UserUtil::getVars($authenticatedUid);
 
-            if (!$userObj || ($authenticatedUid != $userObj['uid'])) {
-                // Honestly, we really shouldn't get here if the authmodule's uid map is correct.
-                $errorMsg = $this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.');
-                $tryAgain = true;
+            if (!$userObj) {
+                // TODO - This section of code and the similar section in UserUtil::login need to be reconciled.
+
+                // Either the authenticatedUid is a registration, or something has gone horribly and unpredictably wrong.
+                // Try to get a registration with that uid.
+                $userObj = UserUtil::getVars($authenticatedUid, false, 'uid', true);
+                if ($userObj) {
+                    // The authenticated uid points to a registration. Let's handle returing the proper message at this point.
+                    $errorMsg = '';
+                    $loginDisplayApproval = $this->getVar('login_displayapproval', false);
+                    $loginDisplayVerify = $this->getVar('login_displayverify', false);
+                    $moderationOrder = $this->getVar('moseration_order', UserUtil::APPROVAL_BEFORE);
+
+                    if ($moderationOrder == UserUtil::APPROVAL_AFTER) {
+                        if (!$userObj['isverified'] && $loginDisplayVerify) {
+                            if (empty($userObj['approved_by'])) {
+                                $errorMsg = $this->__("Sorry! Your e-mail address must be verified before your resigration request can be approved. Check for an e-mail message containing verification instructions. If you need another verification e-mail sent, contact an administrator.");
+                            } else {
+                                $errorMsg = $this->__("Sorry! Your e-mail address must be verified before you can log in. Check for an e-mail message containing verification instructions. If you need another verification e-mail sent, contact an administrator.");
+                            }
+                        } elseif (empty($userObj['approved_by']) && $loginDisplayApproval) {
+                            $errorMsg = $this->__("Sorry! Your account is still awaiting administrator approval. An e-mail message will be sent to you once an administrator has reviewed your registration request.");
+                        }
+                    } else {
+                        if (empty($userObj['approved_by']) && $loginDisplayApproval) {
+                            $errorMsg = $this->__("Sorry! Your account is still awaiting administrator approval. An e-mail message will be sent to you once an administrator has reviewed your registration request.");
+                        } elseif (!$userObj['isverified'] && $loginDisplayVerify) {
+                            $errorMsg = $this->__("Sorry! Your e-mail address must be verified before you can log in. Check for an e-mail message containing verification instructions. If you need another verification e-mail sent, contact an administrator.");
+                        }
+                    }
+
+                    if (empty($errorMsg) && ($loginDisplayApproval || $loginDisplayVerify)) {
+                        $errorMsg = $this->__("Sorry! Your registration status is still pending.");
+                    }
+
+                    if (!empty($errorMsg)) {
+                        // No chance of logging in successfully (uname/password was correct, but status will prevent)
+                        $event = new Zikula_Event('user.login.failed', null, array(
+                            'authmodule'    => $authModuleName,
+                            'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                        ));
+                        EventUtil::notify($event);
+                        LogUtil::registerError($errorMsg);
+                        return $this->view->fetch('users_user_displaystatusmsg.tpl');
+                    } else {
+                        // Get a generic message and redisplay the login form
+                        $tryAgain = true;
+                    }
+                } else {
+                    // We got an authenticatedUid, but it is neither a user record nor a registration record. Something horribly wrong
+                    // happened somewhere.
+                    //$errorMsg = $this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.');
+                    $tryAgain = true;
+                }
             } else {
                 // Remember that we are not actually logging in here. We are, instead, intercepting based on a few
                 // statuses in order to do some UI stuff before the actual login.
@@ -764,6 +814,31 @@ class Users_Controller_User extends Zikula_Controller
                 // We really only need to deal with ACTIVATED_INACTIVE_TOUPP, ACTIVATED_INACTIVE_PWD, and ACTIVATED_INACTIVE_PWD_TOUPP
                 // here, since those are things for the UI to deal with
                 $userStatus = isset($userObj['activated']) ? $userObj['activated'] : UserUtil::ACTIVATED_INACTIVE;
+
+                // Check for activated statuses that mean that the user has no chance of logging in.
+                // TODO - This section of code and the similar section in UserUtil::login need to be reconciled.
+                if (($userStatus == UserUtil::ACTIVATED_INACTIVE) || ($userStatus == UserUtil::ACTIVATED_PENDING_DELETE)) {
+                    if (($userStatus == UserUtil::ACTIVATED_INACTIVE) && $this->getVar('login_displayinactive', false)) {
+                        $errorMsg = $this->__('Sorry! Your account is not active. Please contact a site administrator.');
+                    } elseif (($userStatus == UserUtil::ACTIVATED_PENDING_DELETE) && $this->getVar('login_displaymarkeddel', false)) {
+                        $errorMsg = $this->__('Sorry! Your account is marked to be permanently closed. Please contact a site administrator.');
+                    }
+
+                    if (!empty($errorMsg)) {
+                        // No chance of logging in successfully (uname/password was correct, but status will prevent)
+                        $event = new Zikula_Event('user.login.failed', null, array(
+                            'authmodule'    => $authModuleName,
+                            'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                        ));
+                        EventUtil::notify($event);
+                        LogUtil::registerError($errorMsg);
+                        return $this->view->fetch('users_user_displaystatusmsg.tpl');
+                    } else {
+                        // Get a generic message and redisplay the login form.
+                        $tryAgain = true;
+                    }
+                }
+
                 // The status to accept terms and/or privacy policy happens no matter what authmodule is used for this login.
                 $mustConfirmTOUPP = ($userStatus == UserUtil::ACTIVATED_INACTIVE_TOUPP) || ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP);
                 // The status to force a password change only happens if the current authmodule is 'Users', but we need to know the
@@ -1045,7 +1120,7 @@ class Users_Controller_User extends Zikula_Controller
                                             $message = $this->__('Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.');
                                         }
                                         LogUtil::registerStatus($message);
-                                        return $this->view->fetch('users_user_registrationfinished.tpl');
+                                        return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         break;
                                     case UserUtil::ACTIVATED_INACTIVE_PWD:
                                         LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
@@ -1069,7 +1144,7 @@ class Users_Controller_User extends Zikula_Controller
                                     default:
                                         LogUtil::registerStatus($this->__('Done! Your account has been verified.'));
                                         LogUtil::registerStatus($this->__('Your new account is not active yet. Please contact the site administrator for more information.'));
-                                        return $this->view->fetch('users_user_registrationfinished.tpl');
+                                        return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         break;
                                 }
                             } else {
