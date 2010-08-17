@@ -4,12 +4,12 @@
 <p>{$type|errortext}</p>
 <p>
     {$message}
-    {securityutil_checkpermission_block component='::' instance='::' level=ACCESS_ADMIN}
+    {checkpermissionblock component='::' instance='::' level=ACCESS_ADMIN}
     {gt text='(Check file \'%1$s\' at line %2$s.)' tag1=$file tag2=$line}
-    {/securityutil_checkpermission_block}
+    {/checkpermissionblock}
 </p>
 <p><a href="javascript:history.back(-1)">{gt text="Go back to previous page"}</a></p>
-{securityutil_checkpermission_block component='::' instance='::' level=ACCESS_ADMIN}
+{checkpermissionblock component='::' instance='::' level=ACCESS_ADMIN}
 <h2>{gt text="Additional information"}</h2>
 {debug_backtrace}
-{/securityutil_checkpermission_block}
+{/checkpermissionblock}
