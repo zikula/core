@@ -492,10 +492,8 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
                     $value = $values[$this->dataField];
                 }
             } else {
-                if (array_key_exists($this->group, $values) && is_array($values[$this->group])) {
-                    if (array_key_exists($this->dataField, $values[$this->group])) {
-                        $value = $values[$this->group][$this->dataField];
-                    }
+                if (array_key_exists($this->group, $values) && array_key_exists($this->dataField, $values[$this->group])) {
+                    $value = $values[$this->group][$this->dataField];
                 }
             }
 

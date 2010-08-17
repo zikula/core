@@ -969,14 +969,16 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             return;
         }
 
-        switch (strtolower($key))
-        {
-            case 'zikula_view':
-            case 'zikula_core':
-            case 'servicemanager':
-            case 'eventmanager':
-                $this->trigger_error(__f('%s is a protected template variable and may not be assigned', $key));
-                break;
+        if(is_string($key)) {
+            switch (strtolower($key))
+            {
+                case 'zikula_view':
+                case 'zikula_core':
+                case 'servicemanager':
+                case 'eventmanager':
+                    $this->trigger_error(__f('%s is a protected template variable and may not be assigned', $key));
+                    break;
+            }
         }
     }
 
