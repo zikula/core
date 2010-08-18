@@ -49,7 +49,7 @@
 					</div>
 				</div>
 				<ul id="aui-tabs_eq">
-                    <li class="z-tab"><a href="#eqone">{gt text='Main'}</a></li>
+                    <li class="z-tab"><a href="#eqone">{gt text='Main Administration'}</a></li>
                     {checkpermissionblock component='.*' instance='.*' level=ACCESS_ADMIN}
 					<li class="z-tab"><a href="#eqtwo">{gt text='Dashboard'}</a></li>					
 					<li class="z-tab"><a href="#eqthree">{gt text='Routines'}</a></li>

@@ -1,13 +1,17 @@
+<a title="{gt text='Visit your Site!'}" class="z-button ui-corner-all" href="index.php">
+	<span class="z-icon-es-world" style="margin-top:2px;">&nbsp;</span>
+		{gt text='Visit your Site!'}
+</a>
 <a id="defwindowmodal" title="{gt text='Settings'}" class="z-button ui-corner-all" href="#defwindow_content_modal">
-	<span class="ui-icon ui-icon-wrench" style="float:left;margin-top:2px;margin-right:4px;">&nbsp;</span>
+	<span class="z-icon-es-config" style="margin-top:2px;">&nbsp;</span>
 		{gt text='Settings'}
 </a>
-<a class="z-button ui-corner-all" href="#">
-	<span class="ui-icon ui-icon-person" style="float:left;margin-top:2px;margin-right:4px;">&nbsp;</span>
+<a class="z-button ui-corner-all" href="index.php?amp;module=users">
+	<span class="z-icon-es-info" style="margin-top:2px;">&nbsp;</span>
 		{gt text='My Account'}
 </a>
 <a class="z-button ui-corner-all" href="{modurl modname=users type=user func=logout}">
-    <span class="ui-icon ui-icon-power" style="float:left;margin-top:2px;margin-right:4px;">&nbsp;</span>
+    <span class="z-icon-es-exit" style="margin-top:2px;">&nbsp;</span>
 		{gt text='Logout'}
 </a>
 						
