@@ -59,3 +59,10 @@ IDNA Convert 0.6.3
     License: LGPL 2.1+
     Location in Zikula: lib/vendor/idn
     Patch details: none
+
+Markdown Extra 1.2.4 (includes Markdown 1.0.1n)
+    Vendor website: http://michelf.com/
+    Downloaded from: http://michelf.com/
+    License: New BSD
+    Location in Zikula: lib/vendor/Markdown
+    Patch details: Removed all helper functions and calltime pass by reference.

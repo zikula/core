@@ -206,3 +206,4 @@ Reworked logging and debug settings in config.php.  Error reporting configuratio
 Added debugging toolbar (configurable in config.php).
 Changed the label for the user's account activated status from 'Activated' to 'Status' in the administrator's Users manager.
 The users list in the administrator's Users manager is now sortable by user name, uid (internal ID), registration date, date last logged in, and status.
+Added markdown and markdown-extra support and with Smarty modifiers issue #2487.
