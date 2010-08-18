@@ -7,6 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
+ * @subpackage Zikula_Doctrine
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -15,7 +16,7 @@
  * Join Table for the many-to-many relationship
  * categorisable entities -> category.
  */
-class Categories_Models_EntityCategory extends Doctrine_Record
+class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
 {
     /**
      * Setup table definition.
@@ -44,12 +45,12 @@ class Categories_Models_EntityCategory extends Doctrine_Record
      */
     public function setUp()
     {
-        $this->hasOne('Categories_Models_Registry as Registry', array(
+        $this->hasOne('Zikula_Doctrine_Model_Registry as Registry', array(
             'local' => 'reg_id',
             'foreign' => 'id'
         ));
 
-        $this->hasOne('Categories_Models_Category as Category', array(
+        $this->hasOne('Zikula_Doctrine_Model_Category as Category', array(
             'local' => 'category_id',
             'foreign' => 'id'
         ));
@@ -60,9 +61,9 @@ class Categories_Models_EntityCategory extends Doctrine_Record
         $subclasses = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
 
         // get the registry object
-        $registry = Doctrine::getTable('Categories_Models_Registry')->findOneByModuleAndTableAndProperty($subclasses[get_class($this)]['module'],
-                                                                                                         $subclasses[get_class($this)]['table'],
-                                                                                                         $this->reg_property);
+        $registry = Doctrine::getTable('Zikula_Doctrine_Model_Registry')->findOneByModuleAndTableAndProperty($subclasses[get_class($this)]['module'],
+                                                                                                             $subclasses[get_class($this)]['table'],
+                                                                                                             $this->reg_property);
 
         $this['Registry'] = $registry;
     }

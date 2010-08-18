@@ -19,7 +19,7 @@
 class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
 {
     /**
-     * Adds an one-to-many relationship named Categories to Categories_Model_EntityCategory.
+     * Adds an one-to-many relationship named Categories to Zikula_Doctrine_Model_EntityCategory.
      *
      * @return void
      */
@@ -45,7 +45,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
     }
 
     /**
-     * Generates an subclass of the Categories_Model_EntityCategory class and caches the generated class in a file.
+     * Generates an subclass of the Zikula_Doctrine_Model_EntityCategory class and caches the generated class in a file.
      *
      * @param string $module     Name of the Module to that the model belongs to.
      * @param string $modelClass Classname of the model.
@@ -61,7 +61,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
         $dir = 'doctrinemodels/GeneratedDoctrineModel/' . str_replace('_', DIRECTORY_SEPARATOR, $modelClass);
         if (CacheUtil::createLocalDir($dir, System::getVar('system.chmod_dir'))) {
             $subclassName = 'GeneratedDoctrineModel_'.$modelClass.'_EntityCategory';
-            $fileContents = '<?php class '.$subclassName.' extends Categories_Models_EntityCategory { }';
+            $fileContents = '<?php class '.$subclassName.' extends Zikula_Doctrine_Model_EntityCategory { }';
             $fileName = 'EntityCategory.php';
 
             // save new model
@@ -104,7 +104,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
         sscanf($rec->getTable()->getTableName(), Doctrine_Manager::getInstance()->getAttribute(Doctrine::ATTR_TBLNAME_FORMAT), $tableName);
 
         // get the registry object
-        $registry = Doctrine::getTable('Categories_Models_Registry')->findOneByModuleAndTableAndProperty(substr(get_class($rec), 0, strpos(get_class($rec), '_')),
+        $registry = Doctrine::getTable('Zikula_Doctrine_Model_Registry')->findOneByModuleAndTableAndProperty(substr(get_class($rec), 0, strpos(get_class($rec), '_')),
                                                                                                         $tableName,
                                                                                                         $prop);
         // throw an excption when $prop is not valid
@@ -123,7 +123,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
 
         // update existring object
         if ($mapobjFound != null) {
-            if (is_object($category) && $category instanceof Categories_Model_Category) {
+            if (is_object($category) && $category instanceof Zikula_Doctrine_Model_Category) {
                 $mapobjFound['Category'] = $category;
             } else {
                 $mapobjFound['category_id'] = (int)$category;
@@ -134,7 +134,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
             $rec['Categories'][]['Registry'] = $registry;
             $newmapobj = $rec['Categories']->getLast();
             $newmapobj['reg_property'] = $prop;
-            if (is_object($category) && $category instanceof Categories_Model_Category) {
+            if (is_object($category) && $category instanceof Zikula_Doctrine_Model_Category) {
                 $newmapobj['Category'] = $category;
             } else {
                 $newmapobj['category_id'] = (int)$category;

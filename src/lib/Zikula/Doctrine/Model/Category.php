@@ -7,6 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
+ * @subpackage Zikula_Doctrine
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -15,7 +16,7 @@
 /**
  * An category.
  */
-class Categories_Models_Category extends Doctrine_Record
+class Zikula_Doctrine_Model_Category extends Doctrine_Record
 {
     /**
      * Setup table definition.
@@ -33,8 +34,8 @@ class Categories_Models_Category extends Doctrine_Record
         $this->hasColumn('cat_name as name', 'string', 255);
         $this->hasColumn('cat_value as value', 'string', 255);
         $this->hasColumn('cat_sort_value as sort_value', 'integer', 4);
-        $this->hasColumn('cat_display_name as display_name', 'string', 4000);
-        $this->hasColumn('cat_display_desc as display_desc', 'string', 4000);
+        $this->hasColumn('cat_display_name as display_name', 'array');
+        $this->hasColumn('cat_display_desc as display_desc', 'array');
         $this->hasColumn('cat_path as path', 'string', 4000);
         $this->hasColumn('cat_ipath as ipath', 'string', 255);
         $this->hasColumn('cat_status as status', 'integer', 1);

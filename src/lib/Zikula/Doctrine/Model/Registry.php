@@ -7,6 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
+ * @subpackage Zikula_Doctrine
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -15,7 +16,7 @@
 /**
  * The categories table registry.
  */
-class Categories_Models_Registry extends Doctrine_Record
+class Zikula_Doctrine_Model_Registry extends Doctrine_Record
 {
     /**
      * Setup table definition.

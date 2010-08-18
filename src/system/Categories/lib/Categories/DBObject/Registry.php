@@ -47,7 +47,7 @@ class Categories_DBObject_Registry extends DBObject
     public function updatePostProcess($data = null)
     {
         // update property in categories_mapobj too
-        Doctrine::getTable('Categories_Models_EntityCategory')->createQuery()
+        Doctrine::getTable('Zikula_Doctrine_Model_EntityCategory')->createQuery()
                 ->update()
                 ->set('reg_property', '?', $this->_objData['property'])
                 ->where('reg_id = ?', $this->_objData[$this->_objField])
