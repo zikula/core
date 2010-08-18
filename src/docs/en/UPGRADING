@@ -26,6 +26,7 @@ Please read the Zikula software condsiderations document.
 - If you are using PHP 5.3.0 or greater please make sure the php.ini file has
   date.timezone set to a valid timezone like UTC, GMT+5, Europe/Berlin.
 
+
 2. Upgrading
 ============
 Please follow the steps below in order, and read each in detail before proceeding.
@@ -54,14 +55,7 @@ no problems.
   ii. Before unpacking any files:
       - Delete entire system/ folder.
       - Delete includes/.
-      - Delete pnTemp.
-      - If you use Admin_Messages, please copy the block to a new HTML block and delete
-        the Admin_Message block.
-      - If you use the Menutree module please note the following:  The Menutree functionality
-        has been ported into the Zikula Core, but this is not to be considered the same as
-        the Menutree module.  The implementation in the Zikula Core is substantially different
-        and the upgrade process will not 'import' the configurations from your Menutree module.
-        The trees will need to be rebuilt manually after the upgrade has been completed.
+      - Delete pnTemp/.
 
   iii. Upload all files from the package you downloaded, copying over your files.
        Manually edit the NEW config/config.php with your database credentials. Please
@@ -92,6 +86,15 @@ no problems.
   If you disabled your site before starting the upgrade (see 2.2) you should
   re-enable it now.
 
+  2.5 Post upgrade notes
+  ----------------------
+  If you use the Menutree module please note the following:
+  The Menutree functionality has been ported into the Zikula Core, but this is not
+  to be considered the same as the Menutree module because implementation in the
+  Zikula Core is substantially different so the upgrade process will not 'import'
+  the configurations from your Menutree module: they should be recreated manually.
+
+
 3. Caution
 ==========
 It should be noted that Zikula does not support any modification of the core code
@@ -99,6 +102,7 @@ or data structure. Zikula has been designed to be flexible enough to avoid any
 need to modify the core, but if you find something missing that you believe could
 be of widespread use, please submit a feature request to the feature request tracker
 at http://code.zikula.org/core
+
 
 4. Final Note
 =============
