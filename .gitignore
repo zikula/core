@@ -31,4 +31,5 @@
 /src/ztemp/Theme_cache/*
 /src/ztemp/Theme_compiled/*
 /src/ztemp/Theme_Config/*
+/src/ztemp/doctrinemodels/*
 

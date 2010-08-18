@@ -73,10 +73,12 @@ class DoctrineUtil
         $dm->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_AGGRESSIVE);
         $path = "$base/$osdir/lib/$osdir/Model";
 
+        // prevent exception when model folder does not exist
         if(file_exists($path)) {
             Doctrine_Core::loadModels(realpath($path));
-            $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, $save);
         }
+
+        $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, $save);
     }
 
     /**
