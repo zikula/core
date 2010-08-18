@@ -6,7 +6,7 @@
 	<span class="z-icon-es-config" style="margin-top:2px;">&nbsp;</span>
 		{gt text='Settings'}
 </a>
-<a class="z-button ui-corner-all" href="index.php?amp;module=users">
+<a class="z-button ui-corner-all" href="index.php?&amp;module=users">
 	<span class="z-icon-es-info" style="margin-top:2px;">&nbsp;</span>
 		{gt text='My Account'}
 </a>
