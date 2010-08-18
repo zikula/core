@@ -49,21 +49,17 @@ class ExampleDoctrine_Controller_User extends Zikula_Controller
     }
 
     /**
-     * Add record.
+     * Create or edit record.
      *
      * @return string|boolean Output.
      */
-    public function add()
+    public function edit()
     {
         if (!SecurityUtil::checkPermission('ExampleDoctrine::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'main'));
         }
 
-        $user = new ExampleDoctrine_Model_User();
-        $arrayObj = FormUtil::getPassedValue('user', null, 'POST');
-        $user->merge($arrayObj);
-        $user->save();
-
-        return $this->view();
+        $form = FormUtil::newForm('ExampleDoctrine');
+        return $form->execute('exampledoctrine_user_edit.tpl', new ExampleDoctrine_Handler_Edit());
     }
 }

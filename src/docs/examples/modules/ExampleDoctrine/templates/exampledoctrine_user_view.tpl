@@ -1,23 +1,36 @@
-<h3>List of users and their passwords :-P</h3>
+<h3>{gt text='List of users and their passwords :-P'}</h3>
 
-{foreach from=$users item='u'}
-Username: {$u.username}, Password: {$u.password}<br />
-{/foreach}
+{insert name="getstatusmsg"}
 
-<form class="z-form" action="{modurl modname='ExampleDoctrine' type='user' func='add'}" method="post">
-    <fieldset>
-        <legend>{gt text='New user'}</legend>
-        <div class="z-formrow">
-            <label for="exampledoctrine_username">{gt text='User name'}</label>
-            <input id="exampledoctrine_username" type="text" name="user[username]" size="21" maxlength="25" value="" />
-        </div>
-        <div class="z-formrow">
-            <label for="exampledoctrine_password">{gt text='Password'}</label>
-            <input id="exampledoctrine_password" type="text" name="user[password]" size="21" maxlength="60" value="" />
-        </div>
-    </fieldset>
+<a href="{modurl modname="ExampleDoctrine" func="edit"}">{gt text='New user'}</a>
 
-    <div class="z-formbuttons">
-        {button src='button_ok.gif' set='icons/small' __alt='Save' __title='Save'}
-    </div>
-</form>
+<table class="z-datatable">
+    <thead>
+        <tr>
+            <td>{gt text='Username'}</td>
+            <td>{gt text='Password'}</td>
+            <td>{gt text='Categories'}</td>
+            <td>{gt text='Meta data: Comment'}</td>
+            <td>{gt text='Attributes: Field1'}</td>
+            <td>{gt text='Attributes: Field2'}</td>
+            <td>{gt text='Options'}</td>
+        </tr>
+    </thead>
+    <tbody>
+        {foreach from=$users item='u'}
+            <tr class="{cycle values="z-odd,z-even"}">
+                <td>{$u.username|safetext}</td>
+                <td>{$u.password|safetext}</td>
+                <td>
+                    {foreach from=$u.Categories item='c'}
+                        {$c.Category.name|safetext}
+                    {/foreach}
+                </td>
+                <td>{$u.__META__.dc_comment|default:''|safehtml}</td>
+                <td>{$u.__ATTRIBUTES__.field1|default:''|safetext}</td>
+                <td>{$u.__ATTRIBUTES__.field2|default:''|safetext}</td>
+                <td><a href="{modurl modname="ExampleDoctrine" func="edit" id=$u.id}">{gt text='Edit'}</a></td>
+            </tr>
+        {/foreach}
+    </tbody>
+</table>

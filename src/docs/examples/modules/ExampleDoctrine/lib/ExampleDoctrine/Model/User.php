@@ -36,6 +36,11 @@ class ExampleDoctrine_Model_User extends Doctrine_Record
      */
     public function setUp()
     {
-        $this->actAs('Timestampable');
+        // doctrine templates provided by zikula
+        $this->actAs('Zikula_Doctrine_Template_StandardFields');
+        $this->actAs('Zikula_Doctrine_Template_Categorisable');
+        $this->actAs('Zikula_Doctrine_Template_Attributable');
+        $this->actAs('Zikula_Doctrine_Template_MetaData');
+        $this->actAs('Zikula_Doctrine_Template_Logging');
     }
 }
