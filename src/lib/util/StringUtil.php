@@ -237,4 +237,37 @@ class StringUtil
 
         return $result;
     }
+
+    /**
+     * Get Markdown Parser.
+     *
+     * @return Markdown_Parser
+     */
+    public static function getMarkdownParser()
+    {
+        $sm = ServiceUtil::getManager();
+        if (!$sm->hasService('markdown_parser')) {
+            include_once 'lib/vendor/Markdown/markdown.php';
+            $sm->attachService('markdown_parser', new Markdown_Parser());
+        }
+
+        return $sm->getService('markdown_parser');
+    }
+
+    /**
+     * Get MarkdownExtra Parser.
+     *
+     * @return MarkdownExtra_Parser
+     */
+    public static function getMarkdownExtraParser()
+    {
+        $sm = ServiceUtil::getManager();
+        if (!$sm->hasService('markdownextra_parser')) {
+            include_once 'lib/vendor/Markdown/markdown.php';
+            $sm->attachService('markdownextra_parser', new MarkdownExtra_Parser());
+        }
+
+        return $sm->getService('markdownextra_parser');
+    }
+
 }
