@@ -70,6 +70,22 @@ user.update
 user.delete
     Occurs after a user is deleted from the system. The full user record deleted is available as the subject.
 
+group.create
+    Occurs after a group is created. The full group record created is available as the subject.
+
+group.update
+    Occurs after a group is updated. The full updated group record is available as the subject.
+
+group.delete
+    Occurs after a group is deleted from the system. The full group record deleted is available as the subject.
+
+group.adduser
+    Occurs after a user is added to a group. It does not apply to pending membership requests.
+    The uid and gid are available as the subject.
+
+group.removeuser
+    Occurs after a user is removed from a group. The uid and gid are available as the subject.
+
 module.postloadgeneric
     receives the args array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api).
 

@@ -566,6 +566,12 @@ class Groups_Api_User extends Zikula_Api
             return LogUtil::registerError($this->__('Error! Could not create the new item.'));
         }
 
+        // Let other modules know that we have updated a group.
+        $adduserEvent = new Zikula_Event('group.adduser', $obj);
+        $this->eventManager->notify($adduserEvent);
+
+        $this->callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
+
         // Let the calling process know that we have finished successfully
         return true;
     }
@@ -609,6 +615,13 @@ class Groups_Api_User extends Zikula_Api
         if (!$result) {
             return LogUtil::registerError($this->__('Error! Could not create the new item.'));
         }
+
+        // Let other modules know we have updated a group
+        $removeuserEvent = new Zikula_Event('group.removeuser', array('gid' => $args['gid'],
+                                                                      'uid' => $args['uid']));
+        $this->eventManager->notify($removeuserEvent);
+
+        $this->callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
         return true;

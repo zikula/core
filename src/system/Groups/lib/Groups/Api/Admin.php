@@ -56,8 +56,13 @@ class Groups_Api_Admin extends Zikula_Api
         // Get the ID of the item that we inserted.
         $gid = $obj['gid'];
 
-        // Let any hooks know that we have created a new item.
+        // Let other modules know that we have created a new group.
+        $createEvent = new Zikula_Event('group.create', $obj);
+        $this->eventManager->notify($createEvent);
+
         $this->callHooks('item', 'create', $gid, array('module' => 'Groups'));
+
+
 
         // Return the id of the newly created item to the calling process
         return $gid;
@@ -116,7 +121,10 @@ class Groups_Api_Admin extends Zikula_Api
             return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
         }
 
-        // Let any hooks know that we have deleted an item.
+        // Let other modules know that we have deleted a group.
+        $deleteEvent = new Zikula_Event('group.delete', $item);
+        $this->eventManager->notify($deleteEvent);
+
         $this->callHooks('item', 'delete', $args['gid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
@@ -182,7 +190,10 @@ class Groups_Api_Admin extends Zikula_Api
             return LogUtil::registerError($this->__('Error! Could not save your changes.'));
         }
 
-        // New hook functions
+        // Let other modules know that we have updated a group.
+        $updateEvent = new Zikula_Event('group.update', $object);
+        $this->eventManager->notify($updateEvent);
+
         $this->callHooks('item', 'update', $args['gid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
@@ -226,7 +237,10 @@ class Groups_Api_Admin extends Zikula_Api
             return LogUtil::registerError($this->__('Error! Could not create the new item.'));
         }
 
-        // Let other modules know we have updated an item
+        // Let other modules know that we have updated a group.
+        $adduserEvent = new Zikula_Event('group.adduser', $object);
+        $this->eventManager->notify($adduserEvent);
+
         $this->callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
@@ -275,7 +289,11 @@ class Groups_Api_Admin extends Zikula_Api
             return false;
         }
 
-        // Let other modules know we have updated an item
+        // Let other modules know we have updated a group
+        $removeuserEvent = new Zikula_Event('group.removeuser', array('gid' => $args['gid'],
+                                                                      'uid' => $args['uid']));
+        $this->eventManager->notify($removeuserEvent);
+
         $this->callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
