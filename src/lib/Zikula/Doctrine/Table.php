@@ -162,7 +162,7 @@ class Zikula_Doctrine_Table extends Doctrine_Table
         if (!empty($where)) {
             $method = '';
             foreach ((array)$where as $condition) {
-                $method = empty($method) ? 'where' : 'addWhere';
+                $method = empty($method) ? 'where' : 'andWhere';
                 if (is_array($condition)) {
                     $q->$method($condition[0], $condition[1]);
                 } else {
@@ -276,7 +276,7 @@ class Zikula_Doctrine_Table extends Doctrine_Table
         if (!empty($where)) {
             $method = '';
             foreach ((array)$where as $condition) {
-                $method = empty($method) ? 'where' : 'addWhere';
+                $method = empty($method) ? 'where' : 'andWhere';
                 if (is_array($condition)) {
                     $q->$method($condition[0], $condition[1]);
                 } else {
@@ -381,7 +381,7 @@ class Zikula_Doctrine_Table extends Doctrine_Table
         if (!empty($where)) {
             $method = '';
             foreach ((array)$where as $condition) {
-                $method = empty($method) ? 'where' : 'addWhere';
+                $method = empty($method) ? 'where' : 'andWhere';
                 if (is_array($condition)) {
                     $q->$method($condition[0], $condition[1]);
                 } else {
@@ -406,6 +406,68 @@ class Zikula_Doctrine_Table extends Doctrine_Table
         }
 
         return $q;
+    }
+
+    /**
+     * Delete a collection of objects.
+     *
+     * @param array  $keyarray The KeyArray to delete.
+     * @param string $field    The field to use.
+     *
+     * @return mixed The result from the delete operation.
+     */
+    public static function deleteObjectsFromKeyArray(array $keyarray, $idfield = 'id')
+    {
+        // creates a query instance
+        $q = $this->createQuery('dctrn_del');
+
+        return $q->delete()
+                 ->whereIn($idfield, array_keys($keyarray))
+                 ->execute();
+    }
+
+    /**
+     * Execute a record deletion by its ID.
+     *
+     * @param integer $id      The ID of the object to delete.
+     * @param string  $idfield The column which contains the ID field (optional) (default='id').
+     *
+     * @return mixed The result from the delete operation.
+     */
+    public static function deleteByID($id, $idfield = 'id')
+    {
+        $where = array(array($idfield, $id));
+
+        return self::deleteWhere($where);
+    }
+
+    /**
+     * Executes a delete query.
+     *
+     * @param array  $where   The where clause to use (optional) (default=array()).
+     *
+     * @return mixed The result from the delete operation.
+     */
+    public static function deleteWhere($where = array())
+    {
+        // creates a query instance
+        $q = $this->createQuery('dctrn_del');
+
+        // adds the where clause if present
+        if (!empty($where)) {
+            $method = '';
+            foreach ((array)$where as $condition) {
+                $method = empty($method) ? 'where' : 'andWhere';
+                if (is_array($condition)) {
+                    $q->$method($condition[0], $condition[1]);
+                } else {
+                    $q->$method($condition);
+                }
+            }
+        }
+
+        return $q->delete()
+                 ->execute();
     }
 
     /**
