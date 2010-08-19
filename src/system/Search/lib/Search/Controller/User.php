@@ -63,6 +63,11 @@ class Search_Controller_User extends Zikula_Controller
         if (!isset($vars['searchorder']) || empty($vars['searchorder'])) {
             $vars['searchorder'] = 'newest';
         }
+        $setActiveDefaults = false;
+        if (!isset($vars['active']) || !is_array($vars['active'])) {
+            $setActiveDefaults = true;
+            $vars['active'] = array();
+        }
 
         // reset the session vars for a new search
         SessionUtil::delVar('searchtype');
@@ -76,6 +81,11 @@ class Search_Controller_User extends Zikula_Controller
         if (count($search_modules) > 0) {
             $plugin_options = array();
             foreach($search_modules as $mods) {
+                // if active array is empty, we need to set defaults
+                if ($setActiveDefaults) {
+                    $vars['active'][$mods['name']] = '1';
+                }
+
                 // as every search plugins return a formatted html string
                 // we assign it to a generic holder named 'plugin_options'
                 // maybe in future this will change
