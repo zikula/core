@@ -90,7 +90,40 @@
 								{gt text='Settings'}
 							</a>
 						</div>
-					</div></div>
+						</div>
+						<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+						<div class="portlet-header ui-widget-header ui-corner-all">
+						{gt text='Layout'}
+						<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+						
+						<div class="portlet-content">
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="blocks" type="admin" func="view"}">
+								<span class="z-icon-es-list">&nbsp;</span>
+								{gt text='Blocks list'}
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="themes" type="admin" func="view"}">
+								<span class="z-icon-es-list">&nbsp;</span>
+								{gt text='Themes list'}
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="blocks" type="admin" func="newblock"}">
+								<span class="z-icon-es-new">&nbsp;</span>
+								{gt text='new block'}
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="blocks" type="admin" func="newposition"}">
+								<span class="z-icon-es-new">&nbsp;</span>
+								{gt text='new position'}
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="modules" type="admin" func="modifyconfig"}">
+								<span class="z-icon-es-config">&nbsp;</span>
+								{gt text='Block Settings'}
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="theme" type="admin" func="modifyconfig"}">
+								<span class="z-icon-es-config">&nbsp;</span>
+								{gt text='Theme Settings'}
+							</a>
+						</div>
+					</div>
+				</div>
 					
 				
 					</div>

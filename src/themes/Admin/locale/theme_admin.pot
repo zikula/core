@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-26 11:30+0000\n"
+"POT-Creation-Date: 2010-08-20 07:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,55 +21,173 @@ msgid "Admin"
 msgstr ""
 
 #: version.php:17
-msgid "AdminTheme"
+msgid "Admin Theme"
 msgstr ""
 
-#: templates/includes/infotab.tpl:4
+#: templates/includes/infotab.tpl:2
+msgid "Information"
+msgstr ""
+
+#: templates/includes/infotab.tpl:3
+msgid "Your Installation Informations"
+msgstr ""
+
+#: templates/includes/infotab.tpl:7
 msgid "Informations"
 msgstr ""
 
-#: templates/includes/infotab.tpl:5
+#: templates/includes/infotab.tpl:8
 msgid "Zikula version:"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:4
-msgid "Compilation"
+#: templates/includes/newstab.tpl:2
+msgid "Project News"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:6
-msgid "Delete compiled theme templates"
+#: templates/includes/newstab.tpl:3
+msgid "Stay up to date!"
+msgstr ""
+
+#: templates/includes/newstab.tpl:8
+msgid "Newest Extensions"
+msgstr ""
+
+#: templates/includes/newstab.tpl:25
+msgid "Latest Project News"
+msgstr ""
+
+#: templates/includes/newstab.tpl:46
+msgid "Latest Blog Posts"
+msgstr ""
+
+#: templates/includes/newstab.tpl:64
+msgid "Last Wiki Changes"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:2 templates/master.tpl:54
+#: templates/modules/admin.tpl:54
+msgid "Dashboard"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:3
+msgid "Welcome back"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:2 templates/master.tpl:55
+#: templates/modules/admin.tpl:55
+msgid "Routines"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:3
+msgid "Nice little Helpers!"
 msgstr ""
 
 #: templates/includes/routinetab.tpl:7
+msgid "Compilation"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:9
+msgid "Delete compiled theme templates"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:10
 msgid "Delete compiled render templates"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:11
+#: templates/includes/routinetab.tpl:14
 msgid "Caching"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:13
+#: templates/includes/routinetab.tpl:16
 msgid "Delete cached theme pages"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:14
+#: templates/includes/routinetab.tpl:17
 msgid "Delete cached render pages"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:18
+#: templates/includes/routinetab.tpl:21
 msgid "JS/CSS"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:20
+#: templates/includes/routinetab.tpl:23
 msgid "Delete combination cache"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:24 templates/includes/routinetab.tpl:27
+#: templates/includes/routinetab.tpl:27 templates/includes/routinetab.tpl:30
 msgid "Check Folders"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:26
+#: templates/includes/routinetab.tpl:29
 msgid "Check Z-Temp"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:1 templates/includes/adminnavtop.tpl:3
+msgid "Visit your Site!"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:5 templates/includes/adminnavtop.tpl:7
+#: templates/includes/sidebar.tpl:18 templates/includes/sidebar.tpl:90
+msgid "Settings"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:11
+msgid "My Account"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:15
+msgid "Logout"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:23
+msgid "Sidebar Position"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:27 templates/includes/adminnavtop.tpl:29
+msgid "Sidebar left"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:33 templates/includes/adminnavtop.tpl:35
+msgid "Sidebar right"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:43
+msgid "Theme Switcher"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:47
+msgid "Black"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:50
+msgid "Gray Standard"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:53
+msgid "Light Gray"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:56
+msgid "Green"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:59
+msgid "Blue"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:62
+msgid "Hot"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:68
+msgid "Change width"
+msgstr ""
+
+#: templates/includes/adminnavtop.tpl:72 templates/includes/adminnavtop.tpl:75
+#: templates/includes/adminnavtop.tpl:78 templates/includes/adminnavtop.tpl:81
+#: templates/includes/adminnavtop.tpl:84 templates/includes/adminnavtop.tpl:87
+#: templates/includes/adminnavtop.tpl:90
+msgid "width"
 msgstr ""
 
 #: templates/includes/sidebar.tpl:5
@@ -80,99 +198,134 @@ msgstr ""
 msgid "Open Sidebar"
 msgstr ""
 
-#: templates/includes/sidebar.tpl:10
-msgid "Theme Switcher"
+#: templates/includes/sidebar.tpl:13
+msgid "Global Links"
 msgstr ""
 
-#: templates/includes/sidebar.tpl:14
-msgid "Black"
-msgstr ""
-
-#: templates/includes/sidebar.tpl:17
-msgid "Gray Standard"
-msgstr ""
-
-#: templates/includes/sidebar.tpl:20
-msgid "Light Gray"
-msgstr ""
-
-#: templates/includes/sidebar.tpl:23
-msgid "Green"
+#: templates/includes/sidebar.tpl:22 templates/includes/sidebar.tpl:37
+msgid "Users"
 msgstr ""
 
 #: templates/includes/sidebar.tpl:26
-msgid "Blue"
+msgid "Permissions"
 msgstr ""
 
-#: templates/includes/sidebar.tpl:29
-msgid "Hot"
+#: templates/includes/sidebar.tpl:30
+msgid "Theme"
 msgstr ""
 
-#: templates/includes/sidebar.tpl:40
-msgid "Change layout width"
+#: templates/includes/sidebar.tpl:42
+msgid "All Users"
 msgstr ""
 
-#: templates/includes/sidebar.tpl:44
-msgid "What width would you like ?"
+#: templates/includes/sidebar.tpl:46
+msgid "create new User"
 msgstr ""
 
-#: templates/includes/sidebar.tpl:47 templates/includes/sidebar.tpl:50
-#: templates/includes/sidebar.tpl:53 templates/includes/sidebar.tpl:56
-#: templates/includes/sidebar.tpl:59 templates/includes/sidebar.tpl:62
-#: templates/includes/sidebar.tpl:65
-msgid "width"
+#: templates/includes/sidebar.tpl:50
+msgid "import Users"
 msgstr ""
 
-#: templates/includes/header.tpl:4
-msgid "Welcome"
+#: templates/includes/sidebar.tpl:54
+msgid "export Users"
 msgstr ""
 
-#: templates/includes/header.tpl:11 templates/modules/admin.tpl:55
-msgid "My Account"
+#: templates/includes/sidebar.tpl:58
+msgid "E-mail Users"
 msgstr ""
 
-#: templates/includes/header.tpl:13
-msgid "Change E-Mail"
+#: templates/includes/sidebar.tpl:62
+msgid "User Settings"
 msgstr ""
 
-#: templates/includes/header.tpl:14
-msgid "Change Password"
-msgstr ""
-
-#: templates/includes/header.tpl:15
-msgid "Log Out"
-msgstr ""
-
-#: templates/includes/header.tpl:22
-msgid "Quick"
-msgstr ""
-
-#: templates/includes/header.tpl:23
-msgid "Content"
-msgstr ""
-
-#: templates/includes/header.tpl:24
-msgid "Navigation"
-msgstr ""
-
-#: templates/includes/header.tpl:25
-msgid "Footer"
-msgstr ""
-
-#: templates/includes/navitop.tpl:57 templates/modules/admin.tpl:51
-msgid "Settings"
-msgstr ""
-
-#: templates/includes/navitop.tpl:62 templates/includes/helptab.tpl:10
+#: templates/includes/sidebar.tpl:68 templates/includes/helptab.tpl:14
 msgid "Modules"
 msgstr ""
 
-#: templates/includes/helptab.tpl:4
-msgid "General"
+#: templates/includes/sidebar.tpl:74
+msgid "Modules List"
 msgstr ""
 
-#: templates/includes/helptab.tpl:12
+#: templates/includes/sidebar.tpl:78
+msgid "Plugin List"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:82
+msgid "Hooks"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:86
+msgid "System Plugins"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:96
+msgid "Layout"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:102
+msgid "Blocks list"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:106
+msgid "Themes list"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:110
+msgid "new block"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:114
+msgid "new position"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:118
+msgid "Block Settings"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:122
+msgid "Theme Settings"
+msgstr ""
+
+#: templates/includes/helptab.tpl:2 templates/master.tpl:56
+#: templates/modules/admin.tpl:56
+msgid "Help"
+msgstr ""
+
+#: templates/includes/helptab.tpl:3
+msgid "You never code alone!"
+msgstr ""
+
+#: templates/includes/helptab.tpl:7
+msgid "International"
+msgstr ""
+
+#: templates/includes/helptab.tpl:16
 msgid "Admin Panel"
+msgstr ""
+
+#: templates/master.tpl:17 templates/modules/admin.tpl:17
+msgid "Main Feed"
+msgstr ""
+
+#: templates/master.tpl:45 templates/modules/admin.tpl:45
+msgid "Zikula Administration"
+msgstr ""
+
+#: templates/master.tpl:52
+msgid "Main"
+msgstr ""
+
+#: templates/master.tpl:57 templates/modules/admin.tpl:57
+msgid "Info"
+msgstr ""
+
+#: templates/master.tpl:58 templates/modules/admin.tpl:58
+msgid "News"
+msgstr ""
+
+#: templates/master.tpl:83 templates/master.tpl:85
+#: templates/modules/admin.tpl:83 templates/modules/admin.tpl:85
+msgid "Back to top"
 msgstr ""
 
 #: templates/modules/Admin/admin_admin_categorymenu.tpl:7
@@ -195,46 +348,6 @@ msgstr ""
 msgid "New module category"
 msgstr ""
 
-#: templates/modules/admin.tpl:17
-msgid "Main Feed"
-msgstr ""
-
-#: templates/modules/admin.tpl:46
-msgid "Zikula Administration"
-msgstr ""
-
-#: templates/modules/admin.tpl:48
-msgid "Welcome back"
-msgstr ""
-
-#: templates/modules/admin.tpl:59
-msgid "Logout"
-msgstr ""
-
-#: templates/modules/admin.tpl:78
+#: templates/modules/admin.tpl:52
 msgid "Main Administration"
-msgstr ""
-
-#: templates/modules/admin.tpl:80
-msgid "Dashboard"
-msgstr ""
-
-#: templates/modules/admin.tpl:81
-msgid "Routines"
-msgstr ""
-
-#: templates/modules/admin.tpl:82
-msgid "Help"
-msgstr ""
-
-#: templates/modules/admin.tpl:83
-msgid "Info"
-msgstr ""
-
-#: templates/modules/admin.tpl:107
-msgid "Back to top"
-msgstr ""
-
-#: templates/modules/admin.tpl:110
-msgid "Powered by"
 msgstr ""
