@@ -42,7 +42,7 @@
 		<div id="page-header">
 			<div id="page-header-wrapper">
 				<div id="top">
-					<span class="logo" id="logo">{gt text='Zikula Administration'}</span>
+					<span class="logo" id="logo" style="padding-top:4px;">{gt text='Administration'}</span>
 					<div class="welcome">
 					{include file="includes/adminnavtop.tpl"}
 							

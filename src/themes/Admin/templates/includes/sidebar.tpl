@@ -25,6 +25,10 @@
 								<span class="z-icon-es-locked" style="margin-top:2px;">&nbsp;</span>
 								{gt text='Permissions'}
 							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" href="{modurl modname="securitycenter" type="admin"}">
+								<span class="z-icon-es-locked" style="margin-top:2px;">&nbsp;</span>
+								{gt text='Security'}
+							</a>
 							<a class="btn ui-state-default full-link ui-corner-all" href="{modurl modname="theme" type="admin"}">
 								<span class="z-icon-es-package" style="margin-top:2px;">&nbsp;</span>
 								{gt text='Theme'}
@@ -62,7 +66,7 @@
 								{gt text='User Settings'}
 							</a>
 						</div>
-						</div>
+					</div>
 						<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
 						<div class="portlet-header ui-widget-header ui-corner-all">
 						{gt text='Modules'}
@@ -95,7 +99,6 @@
 						<div class="portlet-header ui-widget-header ui-corner-all">
 						{gt text='Layout'}
 						<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
-						
 						<div class="portlet-content">
 							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="blocks" type="admin" func="view"}">
 								<span class="z-icon-es-list">&nbsp;</span>
@@ -122,7 +125,45 @@
 								{gt text='Theme Settings'}
 							</a>
 						</div>
-					</div>
+						</div>
+						<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+						<div class="portlet-header ui-widget-header ui-corner-all">
+						{gt text='Tools'}
+						<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+						<div class="portlet-content">
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="search" type="admin"}">
+								<span class="z-icon-es-config">&nbsp;</span>
+								{gt text='Search'}
+							</a>
+						</div>
+						</div>
+						<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+						<div class="portlet-header ui-widget-header ui-corner-all">
+						{gt text='Categories'}
+						<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+						<div class="portlet-content">
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="categories" type="admin" func="view"}">
+								<span class="z-icon-es-list">&nbsp;</span>
+								{gt text='list'}
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="categories" type="admin" func="newcat"}">
+								<span class="z-icon-es-new">&nbsp;</span>
+								{gt text='new category'}
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="categories" type="admin" func="editregistry"}">
+								<span class="z-icon-es-cubes">&nbsp;</span>
+								{gt text='Registry'}
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="categories" type="admin" func="config"}">
+								<span class="z-icon-es-regenerate">&nbsp;</span>
+								{gt text='rebuild paths'}
+							</a>
+							<a class="btn ui-state-default full-link ui-corner-all" style="font-size:12px;"	href="{modurl modname="categories" type="admin" func="preferences"}">
+								<span class="z-icon-es-config">&nbsp;</span>
+								{gt text='Settings'}
+							</a>
+						</div>
+						</div>
 				</div>
 					
 				
