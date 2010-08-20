@@ -28,39 +28,6 @@
 #top .welcome a.ui-state-hover .ui-icon {
 	background-image:url(images/icons-top.png);
 }
-
-#search-bar {
-	padding:7px 0 0;
-}
-
-	/* Footer */
-
-#footer {
-	color:#c3bdb0;
-}
-
-#footer a {
-	color:#807a6e;
-	text-shadow:#fff 1px 1px 0;
-}
-
-#footer a:hover {
-	color:#5f5849;
-}
-
-#copyright {
-	color:#5f5849;
-	text-shadow:#fff 1px 1px 0;
-}
-
-#copyright a {
-	color:#2c2924;
-}
-
-#copyright a:hover {
-	color:#5f5849;
-}
-
 	/* General */
 
 body { 
@@ -95,27 +62,6 @@ a {
 
 #page_wrapper #page-header #page-header-wrapper {
 	min-height:106px;
-}
-
-.page-title {
-	text-shadow:1px 1px 0 #fff;
-}
-
-.page-title h1 {
-	color:#4C3000;
-}
-
-.page-title span a {
-	color:#979797;
-}
-.page-title span a:hover {
-	text-decoration:underline;
-	color:#C0C0C0;
-}
-
-.page-title span {
-	color:#c0c0c0;
-	display:none;
 }
 
 #page_wrapper #page-header #page-header-wrapper #top .logo{
@@ -162,7 +108,7 @@ text-transform:none;color:#fff;font-size:1.8em;float:left;}
 	text-shadow:#4C3000 1px 1px 0;
 }
 
-.ui-widget-header, #tooltip {
+.ui-widget-header {
 	border:1px solid #333;
 	background:#333 url(images/ui-bg_highlight-soft_50_dddddd_1x100.png) 50% 50% repeat-x;
 	color:#EFEBE3;
@@ -171,26 +117,10 @@ text-transform:none;color:#fff;font-size:1.8em;float:left;}
 .ui-widget-header a {
 	color: #444;
 }
-	
-	/* Tooltip */
-
-#tooltip {
-	color:#FFF!important;
-}
-
-#tooltip div {
-	background:#808080;
-}
-
-#tooltip h3 {
-	color:#fff;
-	background:#5f5f5f;
-	text-shadow:#000 1px 1px 0;
-}
 
 	/* Interaction states */
 
-.ui-state-default, .ui-widget-content .ui-state-default, .pagination a, #dashboard-buttons ul li {
+.ui-state-default, .ui-widget-content .ui-state-default, {
 	border:1px solid #ddd;
 	background:#f6f6f6 url(images/ui-bg_highlight-soft_100_f6f6f6_1x100.png) 50% 50% repeat-x;
 	font-weight:bold;
@@ -207,7 +137,7 @@ text-transform:none;color:#fff;font-size:1.8em;float:left;}
 	background:#ffffcc;
 }
 
-.ui-box-header, .ui-state-hover, .ui-box-header .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .pagination a:hover, a.btn:hover, button.ui-state-default:hover, #dashboard-buttons ul li:hover {
+.ui-box-header, .ui-state-hover, .ui-box-header .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, a.btn:hover, button.ui-state-default:hover{
 	border: 1px solid #9d9d9d;
 	background:#F6F6F6 url(images/ui-bg_highlight-soft_25_0073ea_1x100.png) 50% 50% repeat-x;
 	font-weight:bold;
@@ -243,7 +173,7 @@ text-transform:none;color:#fff;font-size:1.8em;float:left;}
 	border:0!important;
 }
 
-.ui-tabs-nav .ui-state-default a, .ui-tabs-nav .ui-tabs-selected a, .ui-accordion-header a, #sidebar .box h3, .hastable thead th, #dashboard-buttons ul li a, .ui-button, button.ui-state-default, input.ui-state-default, .hastable thead td, .ui-box-header {
+.ui-tabs-nav .ui-state-default a, .ui-tabs-nav .ui-tabs-selected a, .ui-accordion-header a, #sidebar .box h3, .hastable thead th, .ui-button, button.ui-state-default, input.ui-state-default, .hastable thead td, .ui-box-header {
 	text-shadow:0 1px 0 #fff;
 }
 
@@ -252,17 +182,6 @@ a:hover, .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited
 	outline:none;
 	text-decoration:none;
 }
-
-	/* Header search */
-
-#search-bar {
-	position:relative;
-}
-
-#search-bar input {
-	background:url('images/search_bar.png') no-repeat;
-}
-
 	/* SIDEBAR */
 	
 #page_wrapper #sidebar {
@@ -295,7 +214,7 @@ a:hover, .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited
 
 	/* PAGE CONTENT */
 
-#page_wrapper #page-content #page-content-wrapper, #live-search-results, .ui-dialog {
+#page_wrapper #page-content #page-content-wrapper, .ui-dialog {
 	background:#f2f2f2 url('images/page-container-bg.png') left top repeat-x;
 }
 
@@ -312,25 +231,4 @@ a:hover, .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited
 #sidebar-left #page_wrapper #page-content #page-content-wrapper {
 	background:#fff url('images/sidebar-bg.png') left top repeat-y;
 	padding:10px 10px 10px 240px;
-}
-
-	/* Dashboard Buttons */
-
-#dashboard-buttons ul li {
-	border-color:#DCDFE3 #D0D4D8 #D0D4D8 #DCDFE3;
-	border-style:solid;
-	border-width:1px;
-}
-
-#dashboard-buttons ul li a {
-	color:#666;
-}
-
-#dashboard-buttons ul li a:hover {
-	border-color:#C3C9CE;
-	color:#333;
-}
-
-#dashboard-buttons ul li a:active {
-	border-color:#9D9D9D;
 }
