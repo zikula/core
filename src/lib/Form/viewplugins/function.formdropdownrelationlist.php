@@ -18,6 +18,13 @@
  *
  * This plugin creates a drop down list from a relation.
  *
+ * This plugin supports doctrine.
+ * Example:
+ * <code>
+ * {formdropdownrelationlist recordClass="MyModule_Model_User" where="active = true"
+ *  num=15 oderby="registrationDate DESC"}
+ * </code>
+ *
  * @param array     $params Parameters passed in the block tag.
  * @param Form_View $view   Reference to Form render object.
  *

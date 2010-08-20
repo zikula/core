@@ -19,7 +19,18 @@
 class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
 {
     /**
+     * The class name of a doctrine record.
+     * 
+     * Required in doctrine mode only.
+     * 
+     * @var string
+     */
+    public $recordClass;
+
+    /**
      * The module of the relation.
+     *
+     * Required in dbobject mode only.
      *
      * @var string
      */
@@ -28,12 +39,16 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
     /**
      * Object type.
      *
+     * Required in dbobject mode only.
+     *
      * @var string
      */
     public $objecttype;
 
     /**
      * DBObject class prefix.
+     *
+     * Required in dbobject mode only.
      *
      * TODO B [review this prefix].
      *
@@ -72,6 +87,8 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
     /**
      * Field name of the ID field.
      *
+     * Required in dbobject mode only.
+     *
      * @var string
      */
     public $idField = '';
@@ -104,31 +121,56 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
      */
     function create($view, &$params)
     {
-        if (!isset($params['module']) || empty($params['module'])) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
-                                     array('formdropdownrelationlist', 'module')));
+        $hasModule = isset($params['module']) && !empty($params['module']);
+        $hasObjecttype = isset($params['objecttype']) && !empty($params['objecttype']);
+        $hasIdField = isset($params['idField']) && !empty($params['idField']);
+        $hasDisplayField = isset($params['displayField']) && !empty($params['displayField']);
+        $hasRecordClass = isset($params['recordClass']) && !empty($params['recordClass']);
+
+        if($hasRecordClass) {
+            $this->recordClass = $params['recordClass'];
+
+            $idColumns = Doctrine::getTable($this->recordClass)->getIdentifierColumnNames();
+
+            if(count($idColumns) > 1) {
+                $view->trigger_error(__f('Error! in %1$s: an invalid %2$s parameter was received.',
+                                     array('formdropdownrelationlist', 'recordClass')));
+            }
+
+            $this->idField = $idColumns[0];
+        } else {
+            if (!$hasModule) {
+                $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
+                                         array('formdropdownrelationlist', 'module')));
+            }
+            $this->module = $params['module'];
+            unset($params['module']);
+
+            if (!ModUtil::available($this->module)) {
+                $view->trigger_error(__f('Error! in %1$s: an invalid %2$s parameter was received.',
+                                         array('formdropdownrelationlist', 'module')));
+            }
+
+            if (!$hasObjecttype) {
+                $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
+                                         array('formdropdownrelationlist', 'objecttype')));
+            }
+            $this->objecttype = $params['objecttype'];
+            unset($params['objecttype']);
+
+            if (!$hasIdField) {
+                $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
+                                         array('formdropdownrelationlist', 'idField')));
+            }
+            $this->idField = $params['idField'];
+            unset($params['idField']);
+
+            if (isset($params['prefix'])) {
+                $this->prefix = $params['prefix'];
+                unset($params['prefix']);
+            }
         }
 
-        $this->module = $params['module'];
-        unset($params['module']);
-        if (!ModUtil::available($this->module)) {
-            $view->trigger_error(__f('Error! in %1$s: an invalid %2$s parameter was received.',
-                                     array('formdropdownrelationlist', 'module')));
-        }
-
-        if (!isset($params['objecttype']) || empty($params['objecttype'])) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
-                                     array('formdropdownrelationlist', 'objecttype')));
-        }
-        $this->objecttype = $params['objecttype'];
-        unset($params['objecttype']);
-
-        if (!isset($params['idField']) || empty($params['idField'])) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
-                                     array('formdropdownrelationlist', 'idField')));
-        }
-        $this->idField = $params['idField'];
-        unset($params['idField']);
 
         if (!isset($params['displayField']) || empty($params['displayField'])) {
             $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
@@ -136,11 +178,6 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
         }
         $this->displayField = $params['displayField'];
         unset($params['displayField']);
-
-        if (isset($params['prefix'])) {
-            $this->prefix = $params['prefix'];
-            unset($params['prefix']);
-        }
 
         if (isset($params['where'])) {
             $this->where = $params['where'];
@@ -177,28 +214,60 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
      */
     function load($view, &$params)
     {
-        ModUtil::dbInfoLoad($this->module);
+        // switch between doctrine and dbobject mode
+        if($this->recordClass) {
+            $q = Doctrine::getTable($this->recordClass)->createQuery();
 
-        // load the object class corresponding to $this->objecttype
-        $class = "{$this->module}_DBObject_".StringUtil::camelize($this->objecttype).'Array';
-
-        if (!class_exists($class) && System::isLegacyMode()) {
-            if (!($class = Loader::loadArrayClassFromModule($this->module, $this->objecttype, false, $this->prefix))) {
-                z_exit(__f('Unable to load class [%s] for module [%s]',
-                           array(DataUtil::formatForDisplay($this->objecttype, $this->module))));
+            if($this->where) {
+                if(is_array($this->where)) {
+                    $q->where($this->where[0], $this->where[1]);
+                } else {
+                    $q->where($this->where);
+                }
             }
-        }
 
-        // instantiate the object-array
-        $objectArray = new $class();
+            if($this->orderby) {
+                $q->orderBy($this->orderby);
+            }
 
-        // get() returns the cached object fetched from the DB during object instantiation
-        // get() with parameters always performs a new select
-        // while the result will be saved in the object, we assign in to a local variable for convenience.
-        $objectData = $objectArray->get($this->where, $this->orderby, $this->pos, $this->num);
+            if($this->pos >= 0) {
+                $q->offset($this->pos);
+            }
 
-        foreach ($objectData as $obj) {
-            $this->addItem($obj[$this->displayField], $obj[$this->idField]);
+            if($this->num > 0) {
+                $q->limit($this->num);
+            }
+
+            $rows = $q->execute();
+
+            foreach ($rows as $row) {
+                $this->addItem($row[$this->displayField], $row[$this->idField]);
+            }
+        } else {
+            ModUtil::dbInfoLoad($this->module);
+
+            // load the object class corresponding to $this->objecttype
+            $class = "{$this->module}_DBObject_".StringUtil::camelize($this->objecttype).'Array';
+
+            if (!class_exists($class) && System::isLegacyMode()) {
+                if (!($class = Loader::loadArrayClassFromModule($this->module, $this->objecttype, false, $this->prefix))) {
+                    z_exit(__f('Unable to load class [%s] for module [%s]',
+                               array(DataUtil::formatForDisplay($this->objecttype, $this->module))));
+                }
+            }
+
+            // instantiate the object-array
+            $objectArray = new $class();
+
+            // get() returns the cached object fetched from the DB during object instantiation
+            // get() with parameters always performs a new select
+            // while the result will be saved in the object, we assign in to a local variable for convenience.
+            $objectData = $objectArray->get($this->where, $this->orderby, $this->pos, $this->num);
+
+            foreach ($objectData as $obj) {
+                $this->addItem($obj[$this->displayField], $obj[$this->idField]);
+            }
+
         }
 
         parent::load($view, $params);
