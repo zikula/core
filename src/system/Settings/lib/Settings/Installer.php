@@ -39,7 +39,7 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('timezone_server', '0');
         System::setVar('funtext', '1');
         System::setVar('reportlevel', '0');
-        System::setVar('startpage', 'blank');
+        System::setVar('startpage', '');
         System::setVar('Version_Num', System::VERSION_NUM);
         System::setVar('Version_ID', System::VERSION_ID);
         System::setVar('Version_Sub', System::VERSION_SUB);
