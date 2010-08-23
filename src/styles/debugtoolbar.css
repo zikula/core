@@ -1,3 +1,9 @@
+#DebugToolbarContainer {
+    left:0;
+position:static;
+top:0;
+}
+
 #DebugToolbarContainer #DebugToolbar {
     background: none repeat scroll 0 0 #FFFFCF;
     border-bottom: 1px solid #999999;
@@ -9,7 +15,7 @@
     line-height: 18px;
     width: 20px;
     padding: 4px;
-    position: fixed;
+    position: absolute;
     text-align: left;
     top: 0;
     white-space: nowrap;
@@ -41,7 +47,7 @@
     left: 29px;
     margin: 0;
     padding: 0;
-    position: fixed;
+    position: absolute;
     top: 0;
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
