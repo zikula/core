@@ -1,0 +1,151 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Zikula Core\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-23 11:52-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: javascript/helpers/Zikula.js:651 javascript/helpers/Zikula.js:737
+msgid "hello"
+msgstr ""
+
+#: javascript/helpers/Zikula.js:652 javascript/helpers/Zikula.js:751
+#, php-format
+msgid "hello %s"
+msgstr ""
+
+#: javascript/helpers/Zikula.js:653 javascript/helpers/Zikula.js:766
+msgid "hello my friend"
+msgid_plural "hello my friends"
+msgstr[0] ""
+msgstr[1] ""
+
+#: javascript/helpers/Zikula.js:654 javascript/helpers/Zikula.js:789
+#, php-format
+msgid "hello my friend %s"
+msgid_plural "hello my friends %s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:20
+msgid "Do you really want to delete this node and all of it child nodes?"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:21
+msgid "Link name"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:22
+msgid "Link URL"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:23
+msgid "Link title"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:24
+msgid "Link class"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:25
+msgid "Select class"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:26
+msgid "Language"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:27
+msgid "Active?"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:28
+msgid "Activate"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:29
+msgid "Deactivate"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:30
+msgid "Edit"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:31
+msgid "Delete"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:32
+msgid "Add new..."
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:33
+msgid "before"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:34
+msgid "after"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:35
+msgid "as child"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:36
+msgid "Expand this node"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:37
+msgid "Collapse this node"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:38
+msgid "Status"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:39
+msgid "Activate for all langs"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:40
+msgid "Deactivate for all langs"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:41
+msgid "Use one for all langs"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:42
+msgid "Cancel"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:43
+msgid "Save"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:44
+msgid "Please fill required fields"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:45
+msgid "Marked fields are required"
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:46
+msgid "Maximum depth reached. Limit is: "
+msgstr ""
+
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:47
+msgid "You have unsaved changes!"
+msgstr ""
