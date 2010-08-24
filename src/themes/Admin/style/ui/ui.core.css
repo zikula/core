@@ -49,8 +49,8 @@ ul.rss-items li:first-child {
 
 h1 {border-bottom: 1px dotted grey;margin-bottom: 8px;padding-bottom:4px;font-size: 18px;color:#302D2F;}
 h2 {font-size:16px;color:#302D2F;}
-h3 {font-size:14px;padding:4px;color:#302D2F;}
-
+h3 {font-size:14px;font-weight:bold;padding:4px;color:#302D2F;}
+strong{font-weight:bold;}
 /* required comment for clearfix to work in Opera \*/
 * html .ui-helper-clearfix { height:1%; }
 .ui-helper-clearfix { display:block; }

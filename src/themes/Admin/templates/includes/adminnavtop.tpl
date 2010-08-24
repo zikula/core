@@ -95,5 +95,5 @@
 	</div>
 </div>
 <script type="text/javascript">
-    var defwindowmodal = new Zikula.UI.Window($('defwindowmodal'),{modal:true});
+    var defwindowmodal = new Zikula.UI.Window($('defwindowmodal'),{modal:true,minmax:true,resizable: true});
 </script>
