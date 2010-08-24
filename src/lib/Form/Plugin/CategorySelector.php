@@ -207,7 +207,7 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
                 }
                 $data[$this->group]['__CATEGORIES__'][$this->dataField] = $this->getSelectedValue();
             }
-         } else if ($this->enableDoctrine && $this->dataBased) {
+        } else if ($this->enableDoctrine && $this->dataBased) {
             if ($this->group == null) {
                 $data['Categories'][$this->dataField] = array('category_id' => $this->getSelectedValue(),
                                                               'reg_property' => $this->dataField);

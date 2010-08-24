@@ -379,9 +379,9 @@ class HtmlUtil
         DoctrineUtil::loadModels($modname);
         $records = Doctrine::getLoadedModels();
 
-        foreach($records as $recordClass) {
+        foreach ($records as $recordClass) {
             // remove records from other modules
-            if(substr($recordClass, 0, strlen($modname)) != $modname) {
+            if (substr($recordClass, 0, strlen($modname)) != $modname) {
                 continue;
             }
 

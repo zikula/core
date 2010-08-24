@@ -14,7 +14,7 @@
  */
 
 /**
- * Dropdown multilist
+ * Dropdown multilist.
  */
 class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
 {
@@ -127,12 +127,12 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
         $hasDisplayField = isset($params['displayField']) && !empty($params['displayField']);
         $hasRecordClass = isset($params['recordClass']) && !empty($params['recordClass']);
 
-        if($hasRecordClass) {
+        if ($hasRecordClass) {
             $this->recordClass = $params['recordClass'];
 
             $idColumns = Doctrine::getTable($this->recordClass)->getIdentifierColumnNames();
 
-            if(count($idColumns) > 1) {
+            if (count($idColumns) > 1) {
                 $view->trigger_error(__f('Error! in %1$s: an invalid %2$s parameter was received.',
                                      array('formdropdownrelationlist', 'recordClass')));
             }
@@ -215,26 +215,26 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
     function load($view, &$params)
     {
         // switch between doctrine and dbobject mode
-        if($this->recordClass) {
+        if ($this->recordClass) {
             $q = Doctrine::getTable($this->recordClass)->createQuery();
 
-            if($this->where) {
-                if(is_array($this->where)) {
+            if ($this->where) {
+                if (is_array($this->where)) {
                     $q->where($this->where[0], $this->where[1]);
                 } else {
                     $q->where($this->where);
                 }
             }
 
-            if($this->orderby) {
+            if ($this->orderby) {
                 $q->orderBy($this->orderby);
             }
 
-            if($this->pos >= 0) {
+            if ($this->pos >= 0) {
                 $q->offset($this->pos);
             }
 
-            if($this->num > 0) {
+            if ($this->num > 0) {
                 $q->limit($this->num);
             }
 

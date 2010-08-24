@@ -74,7 +74,7 @@ class DoctrineUtil
         $path = "$base/$osdir/lib/$osdir/Model";
 
         // prevent exception when model folder does not exist
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             Doctrine_Core::loadModels(realpath($path));
         }
 

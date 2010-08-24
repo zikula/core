@@ -87,7 +87,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
         $idColumn = $this->getIdColumnFromEvent($event);
 
         // determine meta id
-        if(isset($data['__META__']['id'])) {
+        if (isset($data['__META__']['id'])) {
             $metaId = $data['__META__']['id'];
         } else {
             $dataForObjectUtil = array();
@@ -132,7 +132,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
         $idColumn = $this->getIdColumnFromEvent($event);
 
         // determine meta id
-        if(isset($data['__META__']['id'])) {
+        if (isset($data['__META__']['id'])) {
             $metaId = $data['__META__']['id'];
         } else {
             $dataForObjectUtil = array();

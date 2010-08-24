@@ -320,7 +320,7 @@ class SystemListenersUtil
      */
     public static function setupAutoloaderForGeneratedCategoryModels(Zikula_Event $event)
     {
-        if($event['stage'] == System::STAGES_CONFIG) {
+        if ($event['stage'] == System::STAGES_CONFIG) {
             ZLoader::addAutoloader('GeneratedDoctrineModel',  CacheUtil::getLocalDir('doctrinemodels'));
         }
     }
@@ -333,18 +333,18 @@ class SystemListenersUtil
      * @return void
      */
     public static function deleteGeneratedCategoryModelsOnModuleRemove(Zikula_Event $event) {
-        if($event['hookobject'] == 'module' && $event['hookaction'] == 'remove') {
+        if ($event['hookobject'] == 'module' && $event['hookaction'] == 'remove') {
             $moduleName = $event['hookid'];
 
              // remove generated category models for this record
             $dir = 'doctrinemodels/GeneratedDoctrineModel/' . $moduleName;
-            if(file_exists(CacheUtil::getLocalDir($dir))) {
+            if (file_exists(CacheUtil::getLocalDir($dir))) {
                 CacheUtil::removeLocalDir($dir);
             }
 
             // remove saved data about the record
             $modelsInfo = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
-            foreach($modelsInfo as $class => $info) {
+            foreach ($modelsInfo as $class => $info) {
                 if($info['module'] == $moduleName) {
                     unset($modelsInfo[$class]);
                 }
