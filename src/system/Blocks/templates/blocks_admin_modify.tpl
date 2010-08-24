@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </fieldset>
-            {if $pncore.Blocks.collapseable eq 1}
+            {if $zcore.Blocks.collapseable eq 1}
             <fieldset>
                 <legend>{gt text="Collapsibility"}</legend>
                 <div class="z-formrow">

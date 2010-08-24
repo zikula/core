@@ -23,7 +23,7 @@
             <td>{$group.nbumax}</td>
             {if $group.state eq 0}
             <td>[ {gt text="Unavailable"} ]</td>
-            {elseif $pncore.logged_in eq false}
+            {elseif $zcore.logged_in eq false}
             <td>[ <a href="{modurl modname='Users' type='user' func='loginscreen'}" title="{gt text='Sorry! You must register for a user account on this site before you can apply for membership of a group.'}"> {gt text="Log in or register"}</a> ]</td>
             {else}
             {if $group.status eq true}

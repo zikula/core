@@ -2,8 +2,8 @@
 {include file='users_user_menu.tpl'}
 
 {foreach item='accountlink' from=$accountlinks}
-<div class="z-accountlink" style="width:{math equation='100/x' x=$pncore.Users.accountitemsperrow format='%.0d'}%;">
-    {if $pncore.Users.accountdisplaygraphics eq 1}
+<div class="z-accountlink" style="width:{math equation='100/x' x=$zcore.Users.accountitemsperrow format='%.0d'}%;">
+    {if $zcore.Users.accountdisplaygraphics eq 1}
         {if isset($accountlink.set) && !empty($accountlink.set)}
             {assign var="iconset" value=$accountlink.set}
 	{else}

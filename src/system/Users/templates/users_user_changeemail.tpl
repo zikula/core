@@ -2,7 +2,7 @@
 {include file='users_user_menu.tpl'}
 
 <p class="z-informationmsg">
-    {gt text="Notice: Please enter your new e-mail address, the same address again for verification, and then click 'Save'. The site uses this address to send you mail (when you request a new password, for instance). Your currently-recorded e-mail address is <strong>'%s'</strong>." tag1=$pncore.user.email}
+    {gt text="Notice: Please enter your new e-mail address, the same address again for verification, and then click 'Save'. The site uses this address to send you mail (when you request a new password, for instance). Your currently-recorded e-mail address is <strong>'%s'</strong>." tag1=$zcore.user.email}
     {gt text="You will receive an e-mail to your new e-mail address to confirm the change."}
 </p>
 
