@@ -628,15 +628,7 @@ ul#icons span.ui-icon {
 
 #page_wrapper #page-content #page-content-wrapper {
 	padding:0px 202px 10px 10px;
-	margin:0 20px;
-	-moz-border-radius:10px;
-	-webkit-border-radius:10px;
-	border-radius:10px;
-	box-shadow:0 0 20px #000;
-	-o-box-shadow:0 0 20px #000;
-	-moz-box-shadow:0 0 20px #000;
-	-webkit-box-shadow:0 0 20px #000;
-}
+	margin:0 20px;}
 
 #page_wrapper #page-content .no-bg-image {
 	background-image:none!important;
@@ -746,7 +738,7 @@ ul#icons span.ui-icon {
 }
 /* End Settings Window */
 /* SIDEBAR > Box */
-	
+
 #page_wrapper #sidebar .box {
 	background:#fbfcfd;
 	border:#ececec solid 1px;

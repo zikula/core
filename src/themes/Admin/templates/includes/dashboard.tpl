@@ -8,7 +8,7 @@
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
 								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Users<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
-								12345
+								 
 								</div>
 							</div>
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
@@ -36,11 +36,10 @@
 						</div>
 						
 						<div class="column col3">
-						
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Forum<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">{gt text='Groups'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
-								Posts
+								 
 								</div>
 							</div>
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">

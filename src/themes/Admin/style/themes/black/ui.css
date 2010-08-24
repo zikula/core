@@ -1,47 +1,82 @@
+/* Main Theme */
+/*            */
+#page_wrapper #page-content #page-content-wrapper {
+
+}
 /* Overlays */
 .ui-widget-overlay { background: #666666 url(images/ui-bg_diagonals-thick_20_666666_40x40.png) 50% 50% repeat; opacity: .50;filter:Alpha(Opacity=50); }
-.ui-widget-shadow { margin: -5px 0 0 -5px; padding: 5px; background: #000000 url(images/ui-bg_flat_10_000000_40x100.png) 50% 50% repeat-x; opacity: .20;filter:Alpha(Opacity=20); -moz-border-radius: 5px; -webkit-border-radius: 5px; }/* Accordion
-----------------------------------*/
-
+.ui-widget-shadow { margin: -5px 0 0 -5px; padding: 5px; background: #000000 url(images/ui-bg_flat_10_000000_40x100.png) 50% 50% repeat-x; opacity: .20;filter:Alpha(Opacity=20); -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 /* Custom styles */
-
-	/* Buttons under nav menu */
-
-#top-buttons a {
-	background:#3e3e3e;
-	border-color:#3e3e3e;
-	color:#9B9B9B;
-}
-
-#top-buttons a:hover {
-	color:#B8B8B8;
-	border-color:#545454;
+#page_wrapper{background:#f2f2f2;}
+#page_wrapper #page-content {margin-top:-2px;}
+#page_wrapper #page-content #page-content-wrapper {
+	-moz-border-radius:0;
+	-webkit-border-radius:0;
+	margin:0;
+	box-shadow:0 0 0 #fff;
+	-o-box-shadow:0 0 0 #fff;
+	-moz-box-shadow:0 0 0 #fff;
+	-webkit-box-shadow:0 0 0 #fff;
 }
 
 	/* Header top buttons */
 
 #top .welcome {
-	color:#f2f2f2;
+	color:#999891;
+	font-weight:bold;
 }
 
 #top .welcome a.btn {
-	background:#262626;
+	background:#ddd;
 	border-color:#2e2e2e;
-	color:#696969;
+	color:#000;
 }
 
 #top .welcome a.btn:hover {
-	color:#7a7a7a;
+	color:#000;background:#eee;
 }
 
 #top .welcome span.note a {
-	color:#7a7a7a;
+	color:#7D7A7C;
+}
+#top .welcome span.note a:hover {
+	color:#999891;
+}
+
+	/* Layout width */
+
+#page-header .fixed #top {
+	margin:0;
+}
+
+#page-header .fixed {
+	margin-left:0;
+}
+
+#page-header .fixed {
+	margin-right:0;
+}
+
+.layout100 .fixed #page-content-wrapper {
+	padding-left:10px!important;
+}
+
+.layout100 #page-header .fixed {
+	margin-left:10px;
+}
+
+.layout100 #page_wrapper #page-header #page-header-wrapper #top {
+	margin:0 10px;
+}
+
+.layout100 #page-header .fixed {
+	margin-right:10px;
 }
 
 	/* General */
 
 body { 
-	background:#262626;
+	background:#fff;
 	font-size:14px;
 }
 
@@ -49,21 +84,26 @@ a {
 	text-decoration:none;
 }
 
+#page_wrapper #page-header #page-header-wrapper {
+	margin:0 10px;
+}
+
+#top-buttons {
+	padding:9px 0 0;
+}
+
 #page_wrapper #page-header #page-header-wrapper #top .logo {
-text-transform:none;color:#fff;font-size:1.8em;
-float:left;
+	text-transform:none;color:#999891;font-size:1.8em;float:left;
 }
-
 	/* Header */
-
-#page_wrapper #page-header {
-	background:url('images/header-bg.png') repeat-x;
-}
-
+#page-header {
+	background: #000; 
+	color: #fff;
+}	
 	/* States and Images */
 
 .ui-icon { 
-	background-image:url(images/icons-red.png);
+	background-image:url(images/icons-blue.png);
 }
 
 .ui-widget-header .ui-icon {
@@ -91,32 +131,27 @@ float:left;
 }
 
 .ui-widget-header {
-	text-transform:uppercase;
-	text-shadow:#000 1px 1px 0;
-}
-
-.ui-widget-header{
-	border:1px solid #333;
-	background:#333 url(images/ui-bg_highlight-soft_50_dddddd_1x100.png) 50% 50% repeat-x;
-	color:#ffc6c6;
+	border:1px solid #c6c6c6;
+	background:#ddd url(images/ui-bg_highlight-soft_50_dddddd_1x100.png) 50% 50% repeat-x;
+	color:#fff;
 }
 
 .ui-widget-header a {
-	color: #444;
+	color: #fff;
 }
-	
-	/* Interaction states */
 
-.ui-state-default, .ui-widget-content .ui-state-default{
+/* Interaction states */
+
+.ui-state-default, .ui-widget-content .ui-state-default {
 	border:1px solid #ddd;
 	background:#f6f6f6 url(images/ui-bg_highlight-soft_100_f6f6f6_1x100.png) 50% 50% repeat-x;
 	font-weight:bold;
-	color:#851a1a;
+	color:#0062a4;
 	outline:none;
 }
 
 #page-wrapper #main-wrapper #main-content .page-title h1 b, .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited, #page-wrapper #main-wrapper .title h2, #page-wrapper #main-wrapper .title h3, a {
-	color:#851a1a;
+	color:#0062a4;
 	text-decoration:none;outline:none;
 }
 
@@ -124,7 +159,7 @@ float:left;
 	background:#ffffcc;
 }
 
-.ui-box-header, .ui-state-hover, .ui-box-header .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, a.btn:hover, button.ui-state-default:hover {
+.ui-box-header, .ui-state-hover, .ui-box-header .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .pagination a:hover, a.btn:hover, button.ui-state-default:hover, #dashboard-buttons ul li:hover {
 	border: 1px solid #9d9d9d;
 	background:#F6F6F6 url(images/ui-bg_highlight-soft_25_0073ea_1x100.png) 50% 50% repeat-x;
 	font-weight:bold;
@@ -133,7 +168,7 @@ float:left;
 }
 
 .content-box-header {
-	border: 1px solid #9d9d9d;
+	border: 2px solid #9d9d9d;
 }
 
 .content-box-header .ui-box-header, .content-box-header .other-box {
@@ -160,46 +195,37 @@ float:left;
 	border:0!important;
 }
 
-.ui-tabs-nav .ui-state-default a, .ui-tabs-nav .ui-tabs-selected a, .ui-accordion-header a, #sidebar .box h3, .hastable thead th, .ui-button, button.ui-state-default, input.ui-state-default, .hastable thead td, .ui-box-header {
+.ui-tabs-nav .ui-state-default a, .ui-tabs-nav .ui-tabs-selected a, .ui-accordion-header a, #sidebar .box h3, .hastable thead th, #dashboard-buttons ul li a, .ui-button, button.ui-state-default, input.ui-state-default, .hastable thead td, .ui-box-header {
 	text-shadow:0 1px 0 #fff;
 }
 
 a:hover, .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
-	color:#851A1A;
+	color:#0062A4;
 	outline:none;
 	text-decoration:none;
 }
 
 	/* SIDEBAR */
-	
+
 #page_wrapper #sidebar {
-	right:20px;
+	right:0;
 }
 
 #sidebar-left #page_wrapper #sidebar {
-	left:8px;
+	left:-11px;
 	right:auto;
 }
-
-#sidebar-left #sidebar #open_sidebar {
-	left:81px;
-}
-
-.closed-sidebar {
-	width:0;
-	margin-left:-58px;
-}
-
 	/* PAGE CONTENT */
 
 #page_wrapper #page-content #page-content-wrapper, .ui-dialog {
-	background:#f2f2f2 url('images/page-container-bg.png') left top repeat-x;
+	background:#000;
 }
 
 #page_wrapper #page-content #page-content-wrapper {
-	background:#f2f2f2 url('images/sidebar-bg.png') right top repeat-y;
+	background:#eee url('images/sidebar-bg.png') right top repeat-y;
 }
 
 #sidebar-left #page_wrapper #page-content #page-content-wrapper {
-	background:#f2f2f2 url('images/sidebar-bg-left.png') left top repeat-y;
+	background:#eee url('images/sidebar-bg-left.png') left top repeat-y;
+	padding-left:202px;
 }

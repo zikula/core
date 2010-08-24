@@ -45,8 +45,7 @@
 					<span class="logo" id="logo" style="padding-top:4px;">{gt text='Administration'}</span>
 					<div class="welcome">
 					{include file="includes/adminnavtop.tpl"}
-							
-					</div>
+			        </div>
 				</div>
 				<ul id="aui-tabs_eq">
                     <li class="z-tab"><a href="#eqone">{gt text='Main Administration'}</a></li>
@@ -67,7 +66,7 @@
 				<div class="clear"></div>
 				
 				<div class="content-box">
-                 
+                
                     <div id="eqone">{$maincontent}</div>
 					{checkpermissionblock component='.*' instance='.*' level=ACCESS_ADMIN}
 	                <div id="eqtwo">{include file="includes/dashboard.tpl"}</div>
@@ -87,7 +86,8 @@
 		        </div>
 		{checkpermissionblock component='.*' instance='.*' level=ACCESS_ADMIN}
 		{include file="includes/sidebar.tpl"}	
-		{/checkpermissionblock}				
+		{/checkpermissionblock}
+		</div>
 		<div class="clear"></div>
 		</div>
 		</div>		

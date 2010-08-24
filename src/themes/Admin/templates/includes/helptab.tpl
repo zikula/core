@@ -6,8 +6,8 @@
 <fieldset>
         <legend>{gt text='International'}</legend>
             <ul>
-                <li><a href="community.zikula.org">Zikula Community Forums</a></li>
-				<li><a href="community.zikula.org/module-Wiki.htm">Community Wiki</a></li>				
+                <li><a href="http://community.zikula.org">Zikula Community Forums</a></li>
+				<li><a href="http://community.zikula.org/module-Wiki.htm">Community Wiki</a></li>				
             </ul>				
 </fieldset>
     <fieldset>
