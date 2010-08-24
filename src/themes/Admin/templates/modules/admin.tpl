@@ -30,11 +30,6 @@
 
 {browserhack condition="if lte IE 6"}
     <link href="{$themepath}/style/ie.css" rel="stylesheet" media="all" />
-    <script type="text/javascript" src="{$themepath}/js/pngfix.js"></script>
-    <script type="text/javascript">
-	  /* Fix IE6 Transparent PNG */
-	  DD_belatedPNG.fix('.logo,#search-bar input');
-    </script>
 {/browserhack}
 </head>
 <body>
@@ -92,6 +87,6 @@
 		</div>
 		</div>		
 	 
-</div>
+    </div>
 </body>
 </html>
