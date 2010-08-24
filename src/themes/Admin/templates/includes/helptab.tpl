@@ -1,16 +1,16 @@
 <div class="inner-page-title">
-<h2>{gt text='Help'}</h2>
-<span>{gt text='You never code alone!'}</span>
+    <h2>{gt text='Help'}</h2>
+    <span>{gt text='You never code alone!'}</span>
 </div>
 <div class="z-form">
-<fieldset>
+    <fieldset>
         <legend>{gt text='International'}</legend>
             <ul>
                 <li><a href="http://community.zikula.org">Zikula Community Forums</a></li>
 				<li><a href="http://community.zikula.org/module-Wiki.htm">Community Wiki</a></li>				
             </ul>				
-</fieldset>
-<fieldset>
+    </fieldset>
+    <fieldset>
         <legend>{gt text='Local'}</legend>
             <ul>
 			    <li><a href="http://www.zikula.dk">Denmark</a></li>
@@ -23,14 +23,13 @@
                 <li><a href="http://www.zikula.ru">Russia</a></li>			
 				<li><a href="http://www.zikula.es">Spain</a></li>		
             </ul>				
-</fieldset>
+    </fieldset>
     <fieldset>
         <legend>{gt text='Internal Modules'}</legend>
             <ul>
                 <li><a href="{modurl modname=Admin type=admin func=help}">{gt text='Admin Panel'}</a>			
             </ul>               
-</fieldset>
-</fieldset>
+    </fieldset>
     <fieldset>
         <legend>{gt text='New Extensions and Updates'}</legend>
             <ul>
@@ -39,5 +38,5 @@
 				<li><a href="http://community.zikula.org/module-Extensions-view-comptype-3.htm">{gt text='Blocks'}</a>
 				<li><a href="http://community.zikula.org/module-Extensions-view-comptype-4.htm">{gt text='Plugins'}</a>
             </ul>               
-</fieldset>
+    </fieldset>
 </div>
