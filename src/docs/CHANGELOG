@@ -207,3 +207,6 @@ Added debugging toolbar (configurable in config.php).
 Changed the label for the user's account activated status from 'Activated' to 'Status' in the administrator's Users manager.
 The users list in the administrator's Users manager is now sortable by user name, uid (internal ID), registration date, date last logged in, and status.
 Added markdown and markdown-extra support and with Smarty modifiers issue #2487.
+Added doctrine templates for ObjectUtil services (issue #2447)
+Added doctrine support to DropdownRelationlist form view plugin (issue #2442)
+Added more HTML5 tags to allowed HTML settings page (issue #2460)
