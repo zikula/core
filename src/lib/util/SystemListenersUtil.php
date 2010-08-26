@@ -345,7 +345,7 @@ class SystemListenersUtil
             // remove saved data about the record
             $modelsInfo = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
             foreach ($modelsInfo as $class => $info) {
-                if($info['module'] == $moduleName) {
+                if ($info['module'] == $moduleName) {
                     unset($modelsInfo[$class]);
                 }
             }
@@ -353,4 +353,3 @@ class SystemListenersUtil
         }
     }
 }
-

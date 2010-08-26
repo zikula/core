@@ -12,9 +12,9 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 /**
- * Join Table for the many-to-many relationship
- * categorisable entities -> category.
+ * Join Table for the many-to-many relationship categorisable entities -> category.
  */
 class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
 {
@@ -56,16 +56,23 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
         ));
     }
 
+    /**
+     * preSave relationships.
+     *
+     * @return void
+     */
     public function preSave(Doctrine_Event $event)
     {
         $subclasses = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
 
         // get the registry object
-        $registry = Doctrine::getTable('Zikula_Doctrine_Model_Registry')->findOneByModuleAndTableAndProperty($subclasses[get_class($this)]['module'],
-                                                                                                             $subclasses[get_class($this)]['table'],
-                                                                                                             $this->reg_property);
+        $registry = Doctrine::getTable('Zikula_Doctrine_Model_Registry')
+                        ->findOneByModuleAndTableAndProperty(
+                            $subclasses[get_class($this)]['module'],
+                            $subclasses[get_class($this)]['table'],
+                            $this->reg_property
+                        );
 
         $this['Registry'] = $registry;
     }
 }
-

@@ -40,18 +40,21 @@ class Zikula_Provider_AggregateItem
     protected $number;
 
     /**
+     * Controller.
      *
      * @var string
      */
     protected $controller;
 
     /**
+     * Method.
      *
      * @var string
      */
     protected $method;
 
     /**
+     * Arguments for method.
      *
      * @var array
      */

@@ -335,7 +335,7 @@ class DataUtil
      *
      * @access private
      *
-     * @return string|void The formatted string, or null on empty.
+     * @return void|string The formatted string, or null on empty.
      */
     public static function formatForDisplayHTML_callback($m)
     {
@@ -746,38 +746,43 @@ class DataUtil
     public static function parseIniFile($iniFile, $process_sections = true)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::parseIniFile()', 'parse_ini_file()')), E_USER_DEPRECATED);
+
         return parse_ini_file($iniFile, $process_sections);
     }
 
     /**
      * Encode json data to url safe format.
-     * @param mixed   $data Data to encode
-     * @param boolean $json Should data be also encode to json
+     *
+     * @param mixed   $data Data to encode.
+     * @param boolean $json Should data be also encode to json.
      *
      * @return string Encoded data
      */
     public static function urlsafeJsonEncode($data, $json = true)
     {
-        if($json) {
+        if ($json) {
             $data = json_encode($data);
         }
+
         return urlencode($data);
     }
 
     /**
      * Decode json data from url safe format.
-     * @param string   $data Data to encode
-     * @param boolean $json Should data be also encode to json
      *
-     * @return mixed Decoded data
+     * @param string  $data Data to encode.
+     * @param boolean $json Should data be also encode to json.
+     *
+     * @return mixed Decoded data.
      */
     public static function urlsafeJsonDecode($data, $json = true)
     {
         $data = urldecode($data);
-        if($json) {
+
+        if ($json) {
             $data = json_decode($data,true);
         }
+
         return $data;
     }
 }
-

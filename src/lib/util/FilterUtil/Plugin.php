@@ -89,10 +89,10 @@ class FilterUtil_Plugin extends FilterUtil_Common
      * @param array  $config Plugin's config.
      *
      * @return bool True on success, false otherwise.
-     * @TODO Rewrite this loader
      */
     public function loadPlugin($name, $config = array())
     {
+        // TODO Rewrite this loader
         $module = $this->module;
         if (strpos($name, '@')) {
             list ($module, $name) = explode('@', $name, 2);

@@ -168,7 +168,7 @@ class DBConnectionStack
      * @throws Exception If no connection is available.
      * @throws Exception If the given connection does not exist.
      * @throws Exception If the given field does not exist.
-     * @return mixed The connection info array or the specified field value.
+     * @return void|mixed The connection info array or the specified field value.
      */
     public static function getConnectionInfo($name = null, $field = null)
     {
@@ -327,7 +327,7 @@ class DBConnectionStack
      *
      * @throws Exception If no connection is available.
      *
-     * @return Doctrine_Connection The connection object.
+     * @return void|Doctrine_Connection The connection object.
      */
     public static function getConnection()
     {

@@ -228,11 +228,11 @@ class Zikula_Doctrine_Table extends Doctrine_Table
     /**
      * Field Function Query creation.
      *
-     * @param string  $field     The name of the field we wish to marshall.
-     * @param string  $option    MIN, MAX, SUM or COUNT (optional) (default='MAX').
-     * @param array   $where     The where clause (optional) (default=array()).
-     * @param string  $assocKey  The key field to use to build the associative index (optional) (default='' which defaults to the primary key).
-     * @param boolean $distinct  Whether or not to count distinct entries (optional) (default='false').
+     * @param string  $field    The name of the field we wish to marshall.
+     * @param string  $option   MIN, MAX, SUM or COUNT (optional) (default='MAX').
+     * @param array   $where    The where clause (optional) (default=array()).
+     * @param string  $assocKey The key field to use to build the associative index (optional) (default='' which defaults to the primary key).
+     * @param boolean $distinct Whether or not to count distinct entries (optional) (default='false').
      *
      * @return Doctrine_Query The resulting query object.
      */
@@ -412,11 +412,11 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      * Delete a collection of objects.
      *
      * @param array  $keyarray The KeyArray to delete.
-     * @param string $field    The field to use.
+     * @param string $idfield  The field to use.
      *
      * @return mixed The result from the delete operation.
      */
-    public static function deleteObjectsFromKeyArray(array $keyarray, $idfield = 'id')
+    public function deleteObjectsFromKeyArray(array $keyarray, $idfield = 'id')
     {
         // creates a query instance
         $q = $this->createQuery('dctrn_del');
@@ -434,21 +434,21 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      *
      * @return mixed The result from the delete operation.
      */
-    public static function deleteByID($id, $idfield = 'id')
+    public function deleteByID($id, $idfield = 'id')
     {
         $where = array(array($idfield, $id));
 
-        return self::deleteWhere($where);
+        return $this->deleteWhere($where);
     }
 
     /**
      * Executes a delete query.
      *
-     * @param array  $where   The where clause to use (optional) (default=array()).
+     * @param array $where The where clause to use (optional) (default=array()).
      *
      * @return mixed The result from the delete operation.
      */
-    public static function deleteWhere($where = array())
+    public function deleteWhere($where = array())
     {
         // creates a query instance
         $q = $this->createQuery('dctrn_del');

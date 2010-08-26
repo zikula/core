@@ -42,7 +42,7 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikul
         return array('displayname' => $this->__('Example SysInfo Plugin'),
                      'description' => $this->__('Adds link to administration menu.'),
                      'version'     => '1.0.0'
-                      );
+                    );
     }
 
     /**
@@ -89,10 +89,13 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikul
         $event->setNotified();
     }
 
+    /**
+     * Controller configuration getter.
+     *
+     * @return ModulePlugin_SysInfo_Example_Controller
+     */
     public function getConfigurationController()
     {
         return new ModulePlugin_SysInfo_Example_Controller($this->serviceManager, array('plugin' => $this));
     }
 }
-
-

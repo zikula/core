@@ -969,7 +969,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             return;
         }
 
-        if(is_string($key)) {
+        if (is_string($key)) {
             switch (strtolower($key))
             {
                 case 'zikula_view':
@@ -1101,7 +1101,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $template_dir The directory name.
      *
-     * @return void
+     * @return $this
      */
     public function setTemplate_dir($template_dir)
     {
@@ -1124,7 +1124,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $compile_dir The directory name.
      *
-     * @return void
+     * @return $this
      */
     public function setCompile_dir($compile_dir)
     {
@@ -1147,7 +1147,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $config_dir The directory name.
      *
-     * @return void
+     * @return $this
      */
     public function setConfig_dir($config_dir)
     {
@@ -1170,7 +1170,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param array $plugins_dir An array of directory names.
      *
-     * @return void
+     * @return $this
      */
     public function setPlugins_dir($plugins_dir)
     {
@@ -1196,7 +1196,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $debugging True to enable, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setDebugging($debugging)
     {
@@ -1223,7 +1223,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @see    error_reporting()
      *
-     * @return void
+     * @return $this
      */
     public function setError_reporting($error_reporting)
     {
@@ -1250,7 +1250,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $debug_tpl The custom path to the debug console template.
      *
-     * @return void
+     * @return $this
      */
     public function setDebug_tpl($debug_tpl)
     {
@@ -1287,7 +1287,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $debugging_ctrl Either 'NONE' or 'URL'.
      *
-     * @return void
+     * @return $this
      */
     public function setDebugging_ctrl($debugging_ctrl)
     {
@@ -1313,7 +1313,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $doCompileCheck If true, checks for compile will be performed.
      *
-     * @return Zikula_View This instance.
+     * @return $this
      */
     public function setCompile_check($doCompileCheck)
     {
@@ -1336,7 +1336,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $force_compile True to force compilation, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setForce_compile($force_compile)
     {
@@ -1366,7 +1366,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $boolean True or false.
      *
-     * @return Zikula_View
+     * @return $this
      */
     public function setCaching($boolean)
     {
@@ -1389,7 +1389,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $id Cache ID.
      *
-     * @return Zikula_View This instance.
+     * @return $this
      */
     public function setCache_Id($id)
     {
@@ -1418,7 +1418,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param integer $time Lifetime in seconds.
      *
-     * @return Zikula_View
+     * @return $this
      */
     public function setCache_lifetime($time)
     {
@@ -1441,7 +1441,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $cache_dir The name of the cache file directory.
      *
-     * @return void
+     * @return $this
      */
     public function setCache_dir($cache_dir)
     {
@@ -1474,7 +1474,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $cache_modified_check True to respect If-Modified-Since headers, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setCache_modified_check($cache_modified_check)
     {
@@ -1513,7 +1513,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param integer $php_handling A code indicating how php tags in templates are to be handled.
      *
-     * @return void
+     * @return $this
      */
     public function setPhp_handling($php_handling)
     {
@@ -1544,7 +1544,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $security True to enable, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setSecurity($security)
     {
@@ -1570,7 +1570,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param array $secure_dir An array of secure template directories.
      *
-     * @return void
+     * @return $this
      */
     public function setSecure_dir($secure_dir)
     {
@@ -1593,7 +1593,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param array $security_settings An array of security settings.
      *
-     * @return void
+     * @return $this
      */
     public function setSecurity_settings($security_settings)
     {
@@ -1618,7 +1618,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param array $trusted_dir An array of trusted directories.
      *
-     * @return void
+     * @return $this
      */
     public function setTrusted_dir($trusted_dir)
     {
@@ -1641,7 +1641,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $left_delimiter The delimiter.
      *
-     * @return void
+     * @return $this
      */
     public function setLeft_delimiter($left_delimiter)
     {
@@ -1664,7 +1664,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $right_delimiter The delimiter.
      *
-     * @return void
+     * @return $this
      */
     public function setRight_delimiter($right_delimiter)
     {
@@ -1691,7 +1691,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $request_vars_order A string indicating the order, e.g., 'EGPCS'.
      *
-     * @return void
+     * @return $this
      */
     public function setRequest_vars_order($request_vars_order)
     {
@@ -1717,7 +1717,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $request_use_auto_globals True to use auto globals, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setRequest_use_auto_globals($request_use_auto_globals)
     {
@@ -1744,7 +1744,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string|null $compile_id The compile id, or null.
      *
-     * @return void
+     * @return $this
      */
     public function setCompile_id($compile_id)
     {
@@ -1769,7 +1769,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $use_sub_dirs True to use sub dirs, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setUse_sub_dirs($use_sub_dirs)
     {
@@ -1795,7 +1795,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param array $default_modifiers An array of default modifiers.
      *
-     * @return void
+     * @return $this
      */
     public function setDefault_modifiers($default_modifiers)
     {
@@ -1818,7 +1818,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $default_resource_type The resource type to use.
      *
-     * @return void
+     * @return $this
      */
     public function setDefault_resource_type($default_resource_type)
     {
@@ -1845,11 +1845,12 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string|null $cache_handler_func The name of the function, or null to use built-in caching.
      *
-     * @return void
+     * @return $this
      */
     public function setCache_handler_func($cache_handler_func)
     {
         $this->cache_handler_func = $cache_handler_func;
+        return $this;
     }
 
     /**
@@ -1867,7 +1868,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $autoload_filters True to automatically load, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setAutoload_filters($autoload_filters)
     {
@@ -1892,7 +1893,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $config_overwrite True to overwrite, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setConfig_overwrite($config_overwrite)
     {
@@ -1921,7 +1922,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $config_booleanize True to booleanize, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setConfig_booleanize($config_booleanize)
     {
@@ -1947,7 +1948,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $config_read_hidden True to make hidden sections readable, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setConfig_read_hidden($config_read_hidden)
     {
@@ -1976,7 +1977,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $config_fix_newlines True to automatically fix, otherwise false.
      *
-     * @return void
+     * @return $this
      */
     public function setConfig_fix_newlines($config_fix_newlines)
     {
@@ -1999,7 +2000,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $default_template_handler_func The name of the PHP function to call if a template cannot be found.
      *
-     * @return void
+     * @return $this
      */
     public function setDefault_template_handler_func($default_template_handler_func)
     {
@@ -2032,7 +2033,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @see    Smarty::$compiler_file
      * @see    setCompilerClass()
      *
-     * @return void
+     * @return $this
      */
     public function setCompiler_file($compiler_file)
     {
@@ -2055,7 +2056,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $compiler_class The name of the class used to compile templates.
      *
-     * @return void
+     * @return $this
      */
     public function setCompiler_class($compiler_class)
     {
@@ -2078,7 +2079,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param array $_tpl_vars The template variables array.
      *
-     * @return void
+     * @return $this
      */
     public function set_tpl_vars($_tpl_vars)
     {
@@ -2101,7 +2102,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $_compile_id The compile ID.
      *
-     * @return void
+     * @return $this
      */
     public function set_compile_id($_compile_id)
     {
@@ -2124,7 +2125,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param array $_cache_info Array of info that makes up a cache file.
      *
-     * @return void
+     * @return $this
      */
     public function set_cache_info($_cache_info)
     {
@@ -2147,7 +2148,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param int $_file_perms File permissions; use an octal number, e.g. set_file_perms(0664).
      *
-     * @return void
+     * @return $this
      */
     public function set_file_perms($_file_perms)
     {
@@ -2170,7 +2171,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param int $_dir_perms Directory permissions; use an octal number, e.g. set_dir_perms(0771).
      *
-     * @return void
+     * @return $this
      */
     public function set_dir_perms($_dir_perms)
     {
@@ -2193,7 +2194,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param array $_reg_objects Registered objects.
      *
-     * @return void
+     * @return $this
      */
     public function set_reg_objects($_reg_objects)
     {
@@ -2216,7 +2217,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param array $_plugins An array of plugins by type.
      *
-     * @return void
+     * @return $this
      */
     public function set_plugins($_plugins)
     {
@@ -2239,7 +2240,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param array $_cache_serials Cache serials.
      *
-     * @return void
+     * @return $this
      */
     public function set_cache_serials($_cache_serials)
     {
@@ -2262,7 +2263,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $_cache_include Name of optional cache include file.
      *
-     * @return void
+     * @return $this
      */
     public function set_cache_include($_cache_include)
     {
@@ -2285,7 +2286,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param boolean $_cache_including Indicate if the current code is used in a compiled include.
      *
-     * @return void
+     * @return $this
      */
     public function set_cache_including($_cache_including)
     {

@@ -46,6 +46,11 @@ class Zikula_View_Plugin extends Zikula_View
         $this->addPluginDir($path);
     }
 
+    /**
+     * Plugin name getter.
+     *
+     * @return string The plugin name.
+     */
     public function getPluginName()
     {
         return $this->pluginName;
@@ -66,6 +71,7 @@ class Zikula_View_Plugin extends Zikula_View
     {
         $sm = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.renderplugin.%s.%s', $moduleName, $pluginName));
+
         if (!$sm->hasService($serviceId)) {
             $view = new self($moduleName, $pluginName, $caching);
             $sm->attachService($serviceId, $view);
@@ -178,8 +184,8 @@ class Zikula_View_Plugin extends Zikula_View
             //$configPath = ($modinfo['type'] == ModUtil::TYPE_CORE) ? 'zikula/' : "$os_module/";
             $search_path = array(
                         //"config/plugins/$configPath/{$this->pluginName}/templates", //global path
-                        "{$base}plugins/{$this->pluginName}/templates",
-                );
+                        "{$base}plugins/{$this->pluginName}/templates"
+            );
 
             foreach ($search_path as $path) {
                 if (is_readable("$path/$ostemplate")) {

@@ -161,7 +161,7 @@ class FilterUtil_Common
     /**
      * Reset columns.
      *
-     * @return void
+     * @return boolean True.
      */
     protected function resetColumns()
     {
@@ -261,7 +261,7 @@ class FilterUtil_Common
                 if (in_array($alias, $aliases)) {
                     do {
                         $alias++;
-                    } while(in_array($alias, $aliases));
+                    } while (in_array($alias, $aliases));
                 }
                 $join['join_alias'] = $alias;
             }

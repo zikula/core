@@ -17,6 +17,11 @@
  */
 class ModulePlugin_SysInfo_Example_Controller extends Zikula_Plugin_Controller
 {
+    /**
+     * Configuration screen.
+     *
+     * @return string Plugin configuration output.
+     */
     public function configure()
     {
         return $this->view->fetch('configure.tpl');

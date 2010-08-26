@@ -286,11 +286,11 @@ class Zikula_Tree
     /**
      * Parse single tree node to HTML
      *
-     * @param int    $id      Node id
-     * @param array  $tab     Node data
-     * @param int    $size    Tree size
-     * @param int    $i       Current node index
-     * @param string $nodeSub HTML code for subnodes if node has such, default null
+     * @param int    $id      Node id.
+     * @param array  $tab     Node data.
+     * @param int    $size    Tree size.
+     * @param int    $i       Current node index.
+     * @param string $nodeSub HTML code for subnodes if node has such, default null.
      *
      * @return string Node HTML code
      */

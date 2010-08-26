@@ -145,12 +145,15 @@ class ZMO
         $this->stream = $reader;
         $magic = $this->readint();
 
-        if ($magic == -1794895138 || $magic == 2500072158) { // (int)0x950412de; PHP 5.2 wont convert this properly
+        if ($magic == -1794895138 || $magic == 2500072158) {
+            // (int)0x950412de; PHP 5.2 wont convert this properly
             $this->byteorder = 0;
-        } elseif ($magic == -569244523 || $magic == 3725722773) { //(int)0xde120495; PHP 5.2 wont convert this properly
+        } elseif ($magic == -569244523 || $magic == 3725722773) {
+            // (int)0xde120495; PHP 5.2 wont convert this properly
             $this->byteorder = 1;
         } else {
-            $this->error = 1; // not MO file
+            // not MO file
+            $this->error = 1;
             return false;
         }
 
@@ -163,36 +166,71 @@ class ZMO
         $this->encoding = ini_get('mbstring.internal_encoding');
     }
 
+    /**
+     * Error getter.
+     *
+     * @return string Error.
+     */
     public function getError()
     {
         return $this->error;
     }
 
+    /**
+     * Error getter.
+     *
+     * @return string Error.
+     */
     public function getOriginals()
     {
         return $this->originals;
     }
 
+    /**
+     * Translations getter.
+     *
+     * @return integer Translations.
+     */
     public function getTranslations()
     {
         return $this->translations;
     }
 
+    /**
+     * Plural header getter.
+     *
+     * @return string Plural header.
+     */
     public function getPluralheader()
     {
         return $this->pluralheader;
     }
 
+    /**
+     * Total getter.
+     *
+     * @return integer Total.
+     */
     public function getTotal()
     {
         return $this->total;
     }
 
+    /**
+     * Cache translations getter.
+     *
+     * @return array Cache translations.
+     */
     public function getCache_translations()
     {
         return $this->cache_translations;
     }
 
+    /**
+     * Encoding getter.
+     *
+     * @return string Encoding.
+     */
     public function getEncoding()
     {
         return $this->encoding;

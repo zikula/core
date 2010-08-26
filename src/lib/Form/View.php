@@ -433,8 +433,8 @@ class Form_View extends Zikula_View
     /**
      * Get Plugin By Id_rec.
      *
-     * @param object  $plugin Plugin.
-     * @param intiger $id     Plugin ID.
+     * @param object  &$plugin Plugin.
+     * @param intiger $id      Plugin ID.
      *
      * @return Form_Plugin|null
      */

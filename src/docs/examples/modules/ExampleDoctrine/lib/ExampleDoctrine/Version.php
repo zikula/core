@@ -17,6 +17,11 @@
  */
 class ExampleDoctrine_Version extends Zikula_Version
 {
+    /**
+     * Module meta data.
+     *
+     * @return array Module metadata.
+     */
     public function getMetaData()
     {
         $meta = array();

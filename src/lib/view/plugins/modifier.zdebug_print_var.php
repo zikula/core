@@ -13,11 +13,11 @@
 /**
  * Formats variable contents for display in the console
  *
- *  * @link http://smarty.php.net/manual/en/language.modifier.debug.print.var.php
+ * @link http://smarty.php.net/manual/en/language.modifier.debug.print.var.php
  * 
- * @param array|object What is being modified.
- * @param integer      Depth to print arrays.
- * @param integer      Max length.
+ * @param array|object $var    What is being modified.
+ * @param integer      $depth  Depth to print arrays.
+ * @param integer      $length Max length.
  *
  * @return string
  */
@@ -29,7 +29,7 @@ function smarty_modifier_zdebug_print_var($var, $depth = 0, $length = 40)
             "\t" => '<i>\t</i>'
     );
 
-    if ($var instanceof Doctrine_Record or $var instanceof Doctrine_Collection) {
+    if ($var instanceof Doctrine_Record || $var instanceof Doctrine_Collection) {
         $varname = get_class($var);
         $var = $var->toArray();
     }

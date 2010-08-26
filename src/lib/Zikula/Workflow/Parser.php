@@ -376,7 +376,7 @@ class Zikula_Workflow_Parser
      * @param object $parser Parser object.
      * @param string $data   Character data.
      *
-     * @return void
+     * @return boolean True.
      */
     public function characterData($parser, $data)
     {
