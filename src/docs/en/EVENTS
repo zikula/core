@@ -179,7 +179,7 @@ pageutil.addvar_filter
     Used to override things like system or module stylesheets or javascript.
     Subject is the $varname, and $event->data an array of values to be modified by the filter.
     Simply test with something like
-        if ($key = array_search($event->data, 'system/Users/javascript/somescript.js')) {
+        if (($key = array_search('system/Users/javascript/somescript.js', $event->data)) !== false) {
             $event->data[$key] = 'config/javascript/myoverride.js';
         }
     This single filter can be used to override all css or js scripts or any other var types

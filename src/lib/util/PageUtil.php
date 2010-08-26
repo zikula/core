@@ -231,12 +231,12 @@ class PageUtil
             return false;
         }
 
-        $value = (array)$value;
-        $value = array_unique($value);
-
         if (!isset($_pageVars[$varname])) {
             return false;
         }
+
+        $value = (array)$value;
+        $value = array_unique($value);
 
         $event = new Zikula_Event('pageutil.addvar_filter', $varname, array(), $value);
         $value = EventUtil::getManager()->notify($event)->getData();

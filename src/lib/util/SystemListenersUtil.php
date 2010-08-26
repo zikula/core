@@ -130,6 +130,7 @@ class SystemListenersUtil
             $writer->setFormatter($formatter);
             $displayLogger->addWriter($writer);
         }
+
         if ($serviceManager['log.to_file'] || $serviceManager['log.sql.to_file']) {
             $fileLogger = $serviceManager->attachService('zend.logger.file', new Zend_Log());
             $filename = LogUtil::getLogFileName();
@@ -332,7 +333,8 @@ class SystemListenersUtil
      *
      * @return void
      */
-    public static function deleteGeneratedCategoryModelsOnModuleRemove(Zikula_Event $event) {
+    public static function deleteGeneratedCategoryModelsOnModuleRemove(Zikula_Event $event)
+    {
         if ($event['hookobject'] == 'module' && $event['hookaction'] == 'remove') {
             $moduleName = $event['hookid'];
 
@@ -350,6 +352,24 @@ class SystemListenersUtil
                 }
             }
             ModUtil::setVar('Categories', 'EntityCategorySubclasses', $modelsInfo);
+        }
+    }
+
+    /**
+     * Core stylesheet override.
+     *
+     * @param Zikula_Event $event The event handler.
+     *
+     * @return void
+     */
+    public static function coreStylesheetOverride(Zikula_Event $event)
+    {
+        if ($event->getSubject() == 'stylesheet' && ($key = array_search('styles/core.css', $event->data)) !== false) {
+            if (file_exists('config/styles/core.css')) {
+                $event->data[$key] = 'config/styles/core.css';
+            }
+
+            $event->setNotified();
         }
     }
 }
