@@ -82,8 +82,11 @@ class Blocks_Installer extends Zikula_Installer
                     return false;
                 }
 
+            case '3.7.1':
+                $this->introduceSearch();
+
             case '3.8.0':
-            // future upgrade routines
+                // future upgrade routines
         }
 
         // Update successful
@@ -210,6 +213,33 @@ class Blocks_Installer extends Zikula_Installer
                 $block['content'] = serialize($content);
                 DBUtil::updateObject($block, 'blocks', '', 'bid');
             }
+        }
+    }
+
+    protected function introduceSearch()
+    {
+        $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+
+        // create the search block position if doesn't exists
+        if (!isset($positions['search'])) {
+            $searchpid = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'search', 'description' => $this->__('Search block')));
+        } else {
+            $searchpid = $positions['search']['pid'];
+        }
+
+        // restores the search block if not present
+        $dbtable      = DBUtil::getTables();
+        $blockscolumn = $dbtable['blocks_column'];
+        $searchblocks = DBUtil::selectObjectArray('blocks', "$blockscolumn[bkey] = 'Search'");
+
+        if (empty($searchblocks)) {
+            $block = array('bkey' => 'Search', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Search'), 'title' => $this->__('Search box'), 'description' => '', 'positions' => array($searchpid));
+            $block['bid'] = ModUtil::apiFunc('Blocks', 'admin', 'create', $block);
+            ModUtil::apiFunc('Blocks', 'admin', 'update', $block);
+        } else {
+            // assign the block to the search position
+            $blockplacment = array('bid' => $searchblocks[0]['bid'], 'pid' => $searchpid);
+            DBUtil::insertObject($blockplacment, 'block_placements');
         }
     }
 }

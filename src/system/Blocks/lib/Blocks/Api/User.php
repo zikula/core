@@ -89,7 +89,7 @@ class Blocks_Api_User extends Zikula_Api
         }
 
         $permFilter   = array();
-        $permFilter[] = array ('realm'            =>  '0',
+        $permFilter[] = array (
                 'component_left'   =>  'Blocks',
                 'component_middle' =>  '',
                 'component_right'  =>  '',
@@ -99,13 +99,14 @@ class Blocks_Api_User extends Zikula_Api
                 'level'            =>  ACCESS_OVERVIEW);
 
         $joinInfo = array();
-        $joinInfo[] = array ('join_table'          =>  'modules',
+        $joinInfo[] = array (
+                'join_table'          =>  'modules',
                 'join_field'          =>  'name',
                 'object_field_name'   =>  'module_name',
                 'compare_field_table' =>  'mid',
                 'compare_field_join'  =>  'id');
 
-        return DBUtil::selectExpandedObjectArray ('blocks', $joinInfo, $where, $sort, -1, -1, '', $permFilter);
+        return DBUtil::selectExpandedObjectArray('blocks', $joinInfo, $where, $sort, -1, -1, '', $permFilter);
     }
 
     /**
@@ -133,7 +134,7 @@ class Blocks_Api_User extends Zikula_Api
     public function countitems()
     {
         $permFilter   = array();
-        $permFilter[] = array ('realm'            =>  '0',
+        $permFilter[] = array (
                 'component_left'   =>  'Blocks',
                 'component_middle' =>  '',
                 'component_right'  =>  '',
@@ -142,7 +143,7 @@ class Blocks_Api_User extends Zikula_Api
                 'instance_right'   =>  'bid',
                 'level'            =>  ACCESS_OVERVIEW);
 
-        $blocks = DBUtil::selectObjectArray ('blocks', '', '', -1, -1, '', $permFilter);
+        $blocks = DBUtil::selectObjectArray('blocks', '', '', -1, -1, '', $permFilter);
         return count($blocks);
     }
 
@@ -163,7 +164,7 @@ class Blocks_Api_User extends Zikula_Api
             return $block_positions;
         }
 
-        return DBUtil::selectObjectArray('block_positions', null, 'name', -1, -1, '', null);
+        return DBUtil::selectObjectArray('block_positions', null, 'name', -1, -1, 'name', null);
     }
 
     /**
