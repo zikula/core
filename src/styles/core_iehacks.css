@@ -28,7 +28,6 @@
 * Generic Form Style: z-form
 *******************************************************************************/
 
-
 .z-form {
     padding-top: 0;
     overflow: hidden;
@@ -45,6 +44,8 @@
     margin-top: 1.5em;
     zoom: 1;
     position: relative;
+    -pie-background: linear-gradient(#fafafa, #f2f2f2); /*PIE*/
+    behavior: url("/styles/PIE.php");
 }
 
 .z-form legend {
@@ -70,11 +71,9 @@ div.z-formlist {
     width: auto;
 }
 
-
 /******************************************************************************
 * IE-fixes for Fieldset/Legend
 *******************************************************************************/
-
 
 /* IE5.x, IE6, IE7 */
 .z-form legend {
@@ -96,4 +95,57 @@ div.z-formlist {
     position: static\9; /* IE6, IE7, IE8 */
     *position: relative; /* IE6, IE7 */
     *padding-top: 0.5em; /* we don't need to fix the offset of LEGEND here */
+}
+
+/******************************************************************************
+* CSS3PIE problems with z-index (disappearing backgrounds)
+* http://css3pie.com/documentation/known-issues/
+*******************************************************************************/
+
+.z-button,
+.z-buttons a,
+.z-buttons input,
+.z-buttons button {
+    position: relative;
+    z-index: 1000;
+    -pie-background: linear-gradient(#F5F5F5, #dedede); /*PIE*/
+    behavior: url("/styles/PIE.php");
+}
+
+.z-buttons button {
+    padding: 4px 10px 3px 10px; /* IE6 */
+}
+
+*:first-child+html button[type] {
+    padding: 4px 10px 3px 10px; /* IE7 */
+}
+
+.z-button:hover,
+.z-buttons a:hover,
+.z-buttons input:hover,
+.z-buttons button:hover {
+    -pie-background: linear-gradient(#dedede, #F5F5F5); /*PIE*/
+    behavior: url("/styles/PIE.php");
+}
+
+.z-button:active,
+.z-buttons a:active,
+.z-buttons input:active,
+.z-buttons button:active {
+    -pie-background: linear-gradient(#d0d0d0, #f0f0f0); /*PIE*/
+    behavior: url("/styles/PIE.php");
+}
+
+.z-buttons input.z-bt-ok {
+    -pie-background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, linear-gradient(#F5F5F5, #DEDEDE); /*PIE*/
+    behavior: url("/styles/PIE.php");
+}
+.z-buttons input.z-bt-ok:hover {
+    -pie-background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, linear-gradient(#dedede, #F5F5F5); /*PIE*/
+    behavior: url("/styles/PIE.php");
+}
+
+.z-buttons input.z-bt-ok:active {
+    -pie-background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, linear-gradient(#d0d0d0, #f0f0f0); /*PIE*/
+    behavior: url("/styles/PIE.php");
 }

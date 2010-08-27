@@ -79,7 +79,7 @@ button.z-imagebutton {
 /* Miscellaneous styles */
 .z-toggle {
     display: block;
-    background-image: url(../images/global/toggle.gif);
+    background-image: url("../images/global/toggle.gif");
     background-repeat: no-repeat;
     background-position: 0px;
     border: 0pt none;
@@ -96,7 +96,7 @@ button.z-imagebutton {
 }
 .z-toggle-link,
 .z-toggle-link:visited {
-    background-image: url(../images/global/toggle.gif);
+    background-image: url("../images/global/toggle.gif");
     background-repeat: no-repeat;
     background-position: right top;
     padding-right: 25px;
@@ -313,6 +313,7 @@ table.z-datatable ul {
     margin: 0;
     padding: 0;
 }
+
 .z-form.z-gap {
     margin: 0 0 1em 0;
     padding: 1em 0;
@@ -326,13 +327,12 @@ table.z-datatable ul {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    background: #fafafa;
-    -o-background-size: 100% 100%;
-    -moz-background-size: 100% 100%;
-    -webkit-background-size: 100% 100%;
-    background: -moz-linear-gradient(top,#fafafa,#f2f2f2);
-    background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2));
+    background: #fafafa; /*non-CSS3 browsers*/
+    background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2)); /*webkit*/
+    background: -moz-linear-gradient(top,#fafafa,#f2f2f2); /*gecko*/
+    background: linear-gradient(#fafafa, #f2f2f2); /*CSS3*/
 }
+
 .z-form legend {
     font-size: 1.25em;
     font-weight: normal;
@@ -340,12 +340,14 @@ table.z-datatable ul {
     background: transparent;
     border: 0;
 }
+
 .z-form .z-formrow .z-mandatorysym {
     color: #f00;
     font-weight: bold;
     padding-left: 3px;
     display: inline;
 }
+
 .z-form .z-formrow input,
 .z-form .z-formrow textarea,
 .z-form .z-formrow select {
@@ -355,15 +357,18 @@ table.z-datatable ul {
     margin: 0;
     max-width: none;
 }
+
 .z-form .z-formrow input[type=checkbox] {
     display:inline;
     margin:0.5em 0;
     width:auto;
 }
+
 .z-form .z-formrow input[type=radio] {
     width: auto;
     border: 1px solid #fafafa;
 }
+
 .z-form .z-formrow select optgroup {
     font-style: normal;
     font-weight: bold;
@@ -563,7 +568,7 @@ div.z-formlist label {
     font-weight: bold;
 }
 .z-itemlist li.z-itemsort {
-    background-image:url(../images/icons/extrasmall/move.gif);
+    background-image:url("../images/icons/extrasmall/move.gif");
     background-position:5px 50%;
     background-repeat:no-repeat;
     padding-left: 30px !important;
@@ -625,7 +630,7 @@ div.z-formlist label {
     padding:2px 0 2px 20px;
 }
 .z-icon-es-cancel {
-    background:url("../images/icons/extrasmall/cancel.gif") no-repeat scroll 0 50% transparent;
+    background:url("../images/icons/extrasmall/button_cancel.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
 .z-icon-es-help {
@@ -789,10 +794,10 @@ div.z-formlist label {
     border-color:#CCCCCC #B9B9B9 #B9B9B9 #CCCCCC;
     border-style: solid;
     border-width: 1px;
-    background: #f5f5f5;
-    background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede));
-    background: -moz-linear-gradient(top,  #F5F5F5, #dedede);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F5F5F5', endColorstr='#dedede');
+    background: #f5f5f5; /*non-CSS3 browsers*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)); /*webkit*/
+    background: -moz-linear-gradient(top,  #F5F5F5, #dedede); /*gecko*/
+    background: linear-gradient(#F5F5F5, #dedede); /*CSS3*/
 }
 
 .z-buttons .z-bt-small {
@@ -803,14 +808,11 @@ div.z-formlist label {
 .z-buttons button {
     width: auto;
     overflow: visible;
-    padding: 4px 10px 3px 10px; /* IE6 */
 }
+
 .z-buttons button[type] {
     padding: 5px 10px 5px 10px; /* Firefox */
     line-height: 17px; /* Safari */
-}
-*:first-child+html button[type] {
-    padding: 4px 10px 3px 10px; /* IE7 */
 }
 
 .z-button:hover,
@@ -819,10 +821,10 @@ div.z-formlist label {
 .z-buttons button:hover {
     color: #222;
     text-decoration: none !important;
-    background: #616161;
-    background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5));
-    background: -moz-linear-gradient(top,  #dedede, #F5F5F5);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dedede', endColorstr='#F5F5F5');
+    background: #dedede; /*non-CSS3 browsers*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)); /*webkit*/
+    background: -moz-linear-gradient(top,  #dedede, #F5F5F5); /*gecko*/
+    background: linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
 .z-button:active,
@@ -830,10 +832,10 @@ div.z-formlist label {
 .z-buttons input:active,
 .z-buttons button:active {
     color: #000;
-    background: #d0d0d0;
-    background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0));
-    background: -moz-linear-gradient(top,  #d0d0d0, #f0f0f0);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d0d0d0', endColorstr='#f0f0f0');
+    background: #d0d0d0; /*non-CSS3 browsers*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)); /*webkit*/
+    background: -moz-linear-gradient(top,  #d0d0d0, #f0f0f0); /*gecko*/
+    background: linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
 .z-button img,
@@ -914,7 +916,7 @@ div.z-formlist label {
 .z-buttons input.z-bt-archive,
 .z-buttons input.z-bt-delete,
 .z-buttons input.z-bt-icon {
-    padding: 5px 7px 5px 29px;
+    padding: 5px 7px 5px 32px;
 }
 
 .z-buttons input.z-bt-ok.z-bt-small,
@@ -927,37 +929,42 @@ div.z-formlist label {
 .z-buttons input.z-bt-delete.z-bt-small,
 .z-buttons input.z-bt-icon.z-bt-small {
     margin: 0 1px 0 0;
-    padding: 3px 8px 4px 24px !important;
+    padding: 3px 8px 4px 27px !important;
 }
 
 .z-buttons input.z-bt-ok {
-    background: url("../images/icons/extrasmall/ok.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/ok.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_ok.gif") #F5F5F5 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, linear-gradient(#F5F5F5, #DEDEDE); /*CSS3*/
 }
-
 .z-buttons input.z-bt-ok:hover {
-    background: url("../images/icons/extrasmall/ok.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/ok.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_ok.gif") #dedede 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
 .z-buttons input.z-bt-ok:active {
-    background: url("../images/icons/extrasmall/ok.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/ok.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_ok.gif") #d0d0d0 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
 .z-buttons input.z-bt-cancel {
-    background: url("../images/icons/extrasmall/cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent;
 }
 
 .z-buttons input.z-bt-cancel:hover {
-    background: url("../images/icons/extrasmall/cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent;
 }
 
 .z-buttons input.z-bt-cancel:active {
-    background: url("../images/icons/extrasmall/cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent;
 }
 
 .z-buttons input.z-bt-preview {
@@ -1061,7 +1068,7 @@ div.z-formlist label {
 .z-tooltip {
     background: #ddd; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /* for IE */
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /* for webkit browsers */
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /* webkit */
     background: -moz-linear-gradient(top,  #fff,  #cfcfcf); /* for firefox 3.6+ */
     border: solid 1px #b4b4b4;
     -webkit-border-radius: 3px;
