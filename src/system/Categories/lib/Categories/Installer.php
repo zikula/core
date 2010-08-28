@@ -31,10 +31,6 @@ class Categories_Installer extends Zikula_Installer
             return false;
         }
 
-        // new column used in doctrine categorisable template
-        DoctrineUtil::createColumn('categories_mapobj', 'cmo_reg_property', array('type' => 'string',
-                                                                                  'length' => 60), false);
-
         $this->insertData_10();
 
         // Set autonumber to 10000 (for DB's that support autonumber fields)
@@ -55,6 +51,10 @@ class Categories_Installer extends Zikula_Installer
         DBUtil::deleteObjectByID('categories_category', 9999, 'id');
 
         $this->createTables_101();
+
+        // new column used in doctrine categorisable template
+        DoctrineUtil::createColumn('categories_mapobj', 'cmo_reg_property', array('type' => 'string',
+                                                                                  'length' => 60), false);
 
         $this->setVar('userrootcat', '/__SYSTEM__/Users');
         $this->setVar('allowusercatedit', 0);
