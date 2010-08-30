@@ -15,7 +15,7 @@
 {/if}
 <form class="z-form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
     <div>
-        <input type="hidden" name="action" value="selecttheme" />
+        <input type="hidden" name="action" value="finish" />
         <input type="hidden" name="locale" value="{$locale}" />
         <fieldset>
             <legend>{gt text="Create administrator's account"}</legend>

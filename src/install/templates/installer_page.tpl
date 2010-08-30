@@ -21,7 +21,7 @@
 {gt text="Create administrator's account" assign=createaduser}
 {gt text="Select start page" assign=selstartpage}
 {gt text="Select theme" assign=seltheme}
-{gt text="Finished!" assign=alldone}
+{gt text="Finish" assign=alldone}
 <body>
     <div id="container">
         <div id="wrapper" class="z-clearfix">
@@ -36,10 +36,7 @@
                         <li{if $action eq requirements} class="menu_selected"{/if}>{$sysrequir}</li>
                         <li{if $action eq dbinformation} class="menu_selected"{/if}>{$dbinfos}</li>
                         <li{if $action eq createadmin} class="menu_selected"{/if}>{$createaduser}</li>
-                        {if not $installbySQL}
-                        <li{if $action eq selecttheme} class="menu_selected"{/if}>{$seltheme}</li>
-                        {/if}
-                        <li{if $action eq gotosite} class="menu_selected"{/if}>{$alldone}</li>
+                        <li{if $action eq finish} class="menu_selected"{/if}>{$alldone}</li>
                     </ol>
                     <h3>{gt text="Free software"}</h3>
                     <ul>
@@ -55,9 +52,6 @@
                         {* custom links for each action go here*}
                         {if $action eq requirements}
                         <li class="highlight"><a href="{gt text="http://www.wikipedia.org/wiki/File_system_permissions"}">{gt text="File system permissions"}</a></li>
-                        {/if}
-                        {if $action eq selecttheme}
-                        <li class="highlight"><a href="http://community.zikula.org/module-Extensions-view-comptype-2.htm">{gt text="Theme extensions database"}</a></li>
                         {/if}
                     </ul>
                     {if not $installbySQL}
