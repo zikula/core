@@ -47,6 +47,32 @@ PHP
 PHP, or Hypertext Pre-processor is a server-side scripting language. For this
 release of Zikula a minimum of version 5.2.6 or greater is required.
 
+In addition to a minimum version of 5.2.6, the following are required:
+
+- The PDO extension must be installed and available.
+
+- The Tokenizer functions must be enabled. (They are enabled by default, and
+  would only be disabled if your hosting provider explicitly disabled them for
+  some reason.)
+
+- The Multibyte String Functions must be enabled. While not a default extension,
+  this should not be an issue for most installations. Multibyte String Functions
+  are typically enabled by most hosting providers.
+
+- The PCRE (Perl Compatible Regular Expression) library used with PHP must
+  support Unicode properties. This is done by compiling the library with the
+  '--enable-unicode-properties' option (or installing precompiled binaries that
+  were compiled with this option). This should not be an issue for most
+  installations.
+
+- The JSON Functions must be enabled. (They are enabled by default, and
+  would only be disabled if your hosting provider explicitly disabled them for
+  some reason.)
+
+There may be other groups of functions or extensions that are required by Zikula.
+They are not explicitly listed here because they are typically part of a 
+standard PHP installation.
+
 DATABASE
 --------
 Zikula also requires a database to be installed and currently supports MySQL 5.0

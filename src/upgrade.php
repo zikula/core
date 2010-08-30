@@ -366,6 +366,16 @@ function _upg_sanity_check($username, $password)
         }
     }
 
+    if ($validupgrade) {
+        $pcreUnicodePropertiesEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
+        if (!isset($pcreUnicodePropertiesEnabled) || !$pcreUnicodePropertiesEnabled) {
+            // PCRE Unicode property support is not enabled.
+            $validupgrade = false;
+            echo '<h2>' . __('PCRE Unicode Property Support Needed.') . "</h2>\n";
+            echo '<p class="z-errormsg">' . __('The PCRE (Perl Compatible Regular Expression) library being used with your PHP installation does not support Unicode properties. This is required to handle multi-byte character sets in regular expressions. The PCRE library used must be compiled with the \'--enable-unicode-properties\' option.') . "</p>\n";
+        }
+    }
+
     if (!$validupgrade) {
         _upg_footer();
         System::shutdown();
