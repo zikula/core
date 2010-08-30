@@ -63,8 +63,7 @@ function install()
             'email',
             'action',
             'loginuser',
-            'loginpassword',
-            'defaulttheme');
+            'loginpassword');
 
     foreach ($vars as $var) {
         // in the install we're sure we don't wany any html so we can be stricter than
@@ -192,7 +191,7 @@ function install()
             }
             break;
         case 'finish':
-            if ((!$username) || preg_match('/[^\p{L}\p{N}_\.]/u', $username)) {
+            if ((!$username) || preg_match('/[^\p{L}\p{N}_\.\-]/u', $username)) {
                 $action = 'createadmin';
                 $smarty->assign('uservalidatefailed', true);
                 $smarty->assign(array(
