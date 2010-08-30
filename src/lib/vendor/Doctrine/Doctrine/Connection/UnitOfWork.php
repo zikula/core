@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: UnitOfWork.php 7676 2010-06-09 18:31:14Z jwage $
+ *  $Id: UnitOfWork.php 7684 2010-08-24 16:34:16Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -33,7 +33,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7676 $
+ * @version     $Revision: 7684 $
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @author      Roman Borschel <roman@code-factory.org>
  */
@@ -939,7 +939,7 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
             $id = false;
             if ($record->$identifier == null) { 
                 if (($driver = strtolower($this->conn->getDriverName())) == 'pgsql') {
-                    $seq = $table->getTableName() . '_' . $identifier;
+                    $seq = $table->getTableName() . '_' . $table->getColumnName($identifier);
                 } elseif ($driver == 'oracle' || $driver == 'mssql') {
                     $seq = $table->getTableName();
                 }

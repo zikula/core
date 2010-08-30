@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Collection.php 7671 2010-06-08 20:43:47Z jwage $
+ *  $Id: Collection.php 7686 2010-08-24 16:54:40Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,7 +28,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7671 $
+ * @version     $Revision: 7686 $
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  */
 class Doctrine_Collection extends Doctrine_Access implements Countable, IteratorAggregate, Serializable
@@ -908,6 +908,41 @@ class Doctrine_Collection extends Doctrine_Access implements Countable, Iterator
 
             foreach ($this->getData() as $key => $record) {
                 $record->save($conn);
+            }
+
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollback();
+            throw $e;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Replaces all records of this collection and processes the 
+     * difference of the last snapshot and the current data
+     *
+     * @param Doctrine_Connection $conn     optional connection parameter
+     * @return Doctrine_Collection
+     */
+    public function replace(Doctrine_Connection $conn = null, $processDiff = true)
+    {
+        if ($conn == null) {
+            $conn = $this->_table->getConnection();
+        }
+
+        try {
+            $conn->beginInternalTransaction();
+
+            $conn->transaction->addCollection($this);
+
+            if ($processDiff) {
+                $this->processDiff();
+            }
+
+            foreach ($this->getData() as $key => $record) {
+                $record->replace($conn);
             }
 
             $conn->commit();

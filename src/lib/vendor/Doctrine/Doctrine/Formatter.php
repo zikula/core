@@ -257,7 +257,8 @@ class Doctrine_Formatter extends Doctrine_Connection_Module
      */
     public function getForeignKeyName($fkey)
     {
-        return preg_replace('/[^a-z0-9_\$]/i', '_', $fkey);
+        return sprintf($this->conn->getAttribute(Doctrine_Core::ATTR_FKNAME_FORMAT),
+            preg_replace('/[^a-z0-9_\$]/i', '_', $fkey));
     }
 
     /**
