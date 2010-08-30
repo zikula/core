@@ -63,7 +63,8 @@ function install()
             'email',
             'action',
             'loginuser',
-            'loginpassword');
+            'loginpassword',
+            'defaulttheme');
 
     foreach ($vars as $var) {
         // in the install we're sure we don't wany any html so we can be stricter than
