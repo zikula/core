@@ -3,7 +3,7 @@
 #                  the styles/ directory
 # ----------------------------------------------------------------------
 deny from all
-<FilesMatch "\.(css|htc|php)$">
+<FilesMatch "\.(css)$">
 order allow,deny
 allow from all
 </filesmatch>

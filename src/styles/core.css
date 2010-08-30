@@ -1,13 +1,9 @@
-/* class to show a sortable li or div */
-.z-sortable {
-    /* cursor: move; has to be set in the js code to avoid wrong css in non javascript environments */
-}
+/******************************************************************************
+* Generic styles
+*******************************************************************************/
 
-/* classes to show/hide elements */
 .z-hide { display: none !important; }
 .z-show { display: inherit !important; }
-
-/* classes for generic styles */
 .z-center { text-align: center !important; }
 .z-left { text-align: left !important; }
 .z-right { text-align: right !important; }
@@ -20,13 +16,17 @@
 .z-floatleft { float: left; }
 .z-floatright { float: right; }
 
-/* IMG Float styles, e.g. for the positioning of images in articles */
+/******************************************************************************
+* IMG Float styles, e.g. for the positioning of images in articles
+*******************************************************************************/
+
 img.z-floatleft {
     display: inline;
     float: left;
     margin-bottom: 0.15em;
     margin-right: 1em;
 }
+
 img.z-floatright {
     display: inline;
     float: right;
@@ -34,17 +34,11 @@ img.z-floatright {
     margin-left: 1em;
 }
 
-/* Style for buttons in inline ajax forms */
-button.z-imagebutton {
-    padding: 0;
-    margin: 3px 0 0 0;
-    float: left;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-}
+/******************************************************************************
+* Zikula general clearfix solution
+* http://perishablepress.com/press/2009/12/06/new-clearfix-hack/
+*******************************************************************************/
 
-/* Generic clearfix solution */
 .z-clearfix:after {
     content: ".";
     display: block;
@@ -53,59 +47,31 @@ button.z-imagebutton {
     visibility: hidden;
 }
 
-/* Overflow-Method to clear float environments */
-.z-floatbox {
-    overflow: hidden;
-}
+/******************************************************************************
+* Overflow-Method to clear float environments, Generic clearer
+*******************************************************************************/
 
-/* Generic clearer */
-.z-clearer {
-    clear: both;
-}
+.z-floatbox { overflow: hidden; }
+.z-clearer { clear: both; }
 
-/* Generic secondary text */
+/******************************************************************************
+* Miscellaneous, Generic secondary text
+*******************************************************************************/
+
 .z-sub {
     color: #777;
     font-size: 0.9em;
 }
 
-.z-calendarimg {
-    background-color: transparent;
-}
-.z-calendarimg:hover {
-    background-color: blue;
-}
+.z-calendarimg { background-color: transparent; }
+.z-calendarimg:hover { background-color: blue; }
 
-/* Miscellaneous styles */
-.z-toggle {
-    display: block;
-    background-image: url("../images/global/toggle.gif");
-    background-repeat: no-repeat;
-    background-position: 0px;
-    border: 0pt none;
-    margin: 0pt;
-    padding: 0pt;
-    width: 27px;
-    height: 25px;
-}
-.z-toggle-open,
-.z-toggle-open:visited {
-    background-position: 0pt -18px;
-    height: 25px;
-    width: 27px;
-}
-.z-toggle-link,
-.z-toggle-link:visited {
-    background-image: url("../images/global/toggle.gif");
-    background-repeat: no-repeat;
-    background-position: right top;
-    padding-right: 25px;
-    border: 0pt none;
-}
-.z-toggle-link-open,
-.z-toggle-link-open:visited {
-    background-position: right -18px;
-}
+/******************************************************************************
+* Class to show a sortable li or div. Has to be set in the js code to avoid
+* wrong css in non javascript environments
+*******************************************************************************/
+
+.z-sortable { /* cursor: move; */ }
 
 /*******************************************************************************/
 /* Styles for z-menulinks
@@ -124,27 +90,35 @@ ul.z-menulinks {
     min-height:23px !important;
     padding:0 5px !important;
 }
+
 ul.z-menulinks li {
     border-right:1px solid #aaa;
     display:inline;
     padding:0 10px;
     margin:0;
 }
+
 ul.z-menulinks li:first-child {
     border-left:1px solid #aaa;
     margin-left:5px;
 }
+
 ul.z-menulinks li.z-ml-disabled a,
 ul.z-menulinks li.z-ml-disabled a:hover {
     text-decoration:line-through !important;
 }
-/* Styles for span-based module menus */
+
+/*******************************************************************************/
+/* Styles for the old module menus based on the SPAN tag
+/*******************************************************************************/
+
 .z-menu {
     color: #aaa;
     text-align: left;
     width: 100%;
     margin-bottom: 1.5em;
 }
+
 .z-menuitem-title {
     background: url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6;
     border: 1px solid #ccc;
@@ -154,6 +128,7 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     min-height: 23px;
     padding:0 5px;
 }
+
 .z-menu a {
     padding: 3px;
 }
@@ -208,8 +183,8 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 .z-statusmsg h2,
 .z-statusmsg h3 {
     color: #264409 !important;
-    margin:0.5em 0 !important;
-    padding:0 !important;
+    margin: 0.5em 0 !important;
+    padding: 0 !important;
 }
 .z-warningmsg {
     background: #FEEFB3 url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat;
@@ -223,8 +198,8 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 .z-warningmsg h2,
 .z-warningmsg h3 {
     color: #514721 !important;
-    margin:0.5em 0 !important;
-    padding:0 !important;
+    margin: 0.5em 0 !important;
+    padding: 0 !important;
 }
 
 /******************************************************************************
@@ -238,25 +213,6 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 .z-odd {
     background-color: #f3f3f3;
     color: inherit;
-}
-
-/******************************************************************************
-* Styles for pager plugins
-*******************************************************************************/
-
-.z-pager {
-    color: #999;
-    padding: 5px 4px;
-    text-align: center;
-}
-/* style for the selected item of the pager abc plugin */
-.z-pager a.z-pagerselected {
-    font-weight: bold;
-    text-decoration: underline;
-}
-/* style for the selected item of the pager plugin */
-.z-pager span.z-pagerselected {
-    font-weight: bold;
 }
 
 /******************************************************************************
@@ -274,11 +230,13 @@ table.z-datatable {
     margin-bottom: 1em;
     padding: 5px 5px 10px 5px;
 }
+
 table.z-datatable tr.z-datatableempty {
     background-color: #f3f3f3;
     text-align: center;
     font-weight: bold;
 }
+
 table.z-datatable caption {
     background-color: #f3f3f3;
     font-weight: bold;
@@ -286,21 +244,26 @@ table.z-datatable caption {
     text-transform: uppercase;
     padding:10px;
 }
+
 table.z-datatable thead tr {
     background-color: #CFCFCF;
 }
+
 table.z-datatable tbody td,
 table.z-datatable thead th {
     padding: 5px;
     border-width: 0px;
 }
+
 table.z-datatable tbody tr.z-defaulttablerow {
     background-color: #add8e6;
     color: inherit;
 }
+
 table.z-datatable tbody tr:hover {
     background-color: #CFCFCF;
 }
+
 table.z-datatable ul {
     margin: 0;
 }
@@ -396,7 +359,6 @@ div.z-formrow,
 div.z-formbuttons {
     padding: 0.5em 0;
     min-height: 2em;
-    clear: both;
 }
 
 div.z-formlist label {
@@ -404,7 +366,20 @@ div.z-formlist label {
 }
 
 /******************************************************************************
-* Styles for the buttons in a z-form
+* Integrated clearfix solution for z-formrow and z-formbuttons
+*******************************************************************************/
+
+div.z-formrow:after,
+div.z-formbuttons:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/******************************************************************************
+* Styles for the buttons in(!) a z-form
 *******************************************************************************/
 
 .z-formbuttons {
@@ -412,6 +387,7 @@ div.z-formlist label {
     display: block;
     margin-left: 30%;
 }
+
 .z-formbuttons input,
 .z-formbuttons img {
     text-align: center;
@@ -419,6 +395,7 @@ div.z-formlist label {
     width: auto;
     cursor: pointer;
 }
+
 .z-formbuttons button {
     border: 0px;
     padding: 0px;
@@ -428,12 +405,13 @@ div.z-formlist label {
 }
 
 /******************************************************************************
-* z-form style (column-view = default)
+* Form styles (Two-column-view = default)
 *******************************************************************************/
 
 .z-form label {
     cursor: pointer;
 }
+
 .z-form div.z-formrow .z-label,
 .z-form div.z-formrow label {
     display: block;
@@ -443,13 +421,16 @@ div.z-formlist label {
     width: 29%;
     font-weight: normal;
 }
+
 .z-form .z-formlist {
     margin-left: 30%;
 }
+
 .z-form .z-formnote {
     display: block;
     margin-left: 30% !important;
 }
+
 .z-form div.z-formrow input,
 .z-form div.z-formrow textarea {
     padding: 0.3em 0.3em;
@@ -457,11 +438,13 @@ div.z-formlist label {
     display: block;
     position: relative;
 }
+
 .z-form div.z-formrow input[type=text].z-mandatoryinput,
 .z-form div.z-formrow select.z-mandatoryinput,
 .z-form div.z-formrow textarea.z-mandatoryinput {
     width: 66%;
 }
+
 .z-form div.z-formrow select {
     padding: 0.3em 2px 0.3em 1px;
     cursor: pointer;
@@ -469,18 +452,22 @@ div.z-formlist label {
     display: block;
     position: relative;
 }
+
 .z-form div.z-formlist input {
     width: auto;
 }
+
 .z-form div.z-formrow .z-listselector {
     list-style: none;
 }
+
 .z-form div.z-formrow > span,
 .z-form div.z-formrow > div {
     display: block;
     padding-bottom: 0.3em;
     padding-top: 0.3em;
 }
+
 .z-form div.z-formrow span label,
 .z-form div.z-formrow div label {
     display: inline;
@@ -488,6 +475,7 @@ div.z-formlist label {
     padding: 0 1em;
     width: auto;
 }
+
 .z-form div.z-formrow span input,
 .z-form div.z-formrow span textarea,
 .z-form div.z-formrow span select,
@@ -497,21 +485,24 @@ div.z-formlist label {
     display: inline;
     width: auto;
 }
+
 .z-form .z-formrow .readonly {
     background: #FAFAFA;
     color: #AAAAAA;
     cursor: not-allowed;
 }
+
 .z-form .z-formrow .error {
     background: #ffe1da;
     border: 1px solid #f34f4f;
 }
+
 .validationSummary label {
     cursor: pointer;
 }
 
 /******************************************************************************
-* z-form style (z-linearize elements / use additional class 'z-linear')
+* Form styles (linearize elements / use additional class 'z-linear')
 *******************************************************************************/
 
 .z-linear div.z-formrow .z-label,
@@ -522,31 +513,36 @@ div.z-formlist label {
     padding: 0.3em 0;
     text-align: left;
 }
+
 .z-linear div.z-formrow input ,
 .z-linear div.z-formrow textarea {
     display: block;
     width: 98%;
     padding: 0.3em 0;
 }
+
 .z-linear div.z-formrow .z-listselector,
 .z-linear div.z-formrow .z-listselector li {
     margin-left: 0;
 }
+
 .z-linear div.z-formrow select {
     display: block;
     width: 99%;
 }
+
 .z-linear .z-formnote,
 .z-linear .z-formlist {
     margin: 0 !important;
 }
+
 .z-linear .z-formbuttons {
     padding: 0;
     margin: 0;
 }
 
 /******************************************************************************
-* z-itemlist styles
+* Itemlist styles
 *******************************************************************************/
 
 .z-itemlist {
@@ -595,6 +591,11 @@ div.z-formlist label {
     text-align: left;
     overflow: hidden;
 }
+
+/******************************************************************************
+* Widths styles
+*******************************************************************************/
+
 .z-w90 { width: 90%; }
 .z-w85 { width: 85%; }
 .z-w80 { width: 80%; }
@@ -620,156 +621,154 @@ div.z-formlist label {
 .z-w04 { width: 4%; }
 .z-w02 { width: 2%; }
 
-
 /******************************************************************************
-* Icons-styles (es=extrasmall)
+* Icon styles (es=extrasmall). Used in menulinks navigation bar
 *******************************************************************************/
 
 .z-icon-es-ok {
-    background:url("../images/icons/extrasmall/button_ok.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/button_ok.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-cancel {
-    background:url("../images/icons/extrasmall/button_cancel.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/button_cancel.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-help {
-    background:url("../images/icons/extrasmall/agt_support.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/agt_support.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-info {
-    background:url("../images/icons/extrasmall/info.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/info.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-locked {
-    background:url("../images/icons/extrasmall/locked.png") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/locked.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-warning {
-    background:url("../images/icons/extrasmall/bell.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/bell.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-error {
-    background:url("../images/icons/extrasmall/error.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/error.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-config {
-    background:url("../images/icons/extrasmall/configure.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/configure.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-home {
-    background:url("../images/icons/extrasmall/home.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/home.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-archive {
-    background:url("../images/icons/extrasmall/folder.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/folder.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-list {
-    background:url("../images/icons/extrasmall/windowlist.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/windowlist.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-view {
-    background:url("../images/icons/extrasmall/demo.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/demo.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-preview {
-    background:url("../images/icons/extrasmall/14_layer_visible.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-new {
-    background:url("../images/icons/extrasmall/filenew.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/filenew.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-edit {
-    background:url("../images/icons/extrasmall/edit.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/edit.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-save {
-    background:url("../images/icons/extrasmall/filesave.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/filesave.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-delete {
-    background:url("../images/icons/extrasmall/14_layer_deletelayer.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-flag {
-    background:url("../images/icons/extrasmall/flag.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/flag.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-favorite {
-    background:url("../images/icons/extrasmall/favorites.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/favorites.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-profile {
-    background:url("../images/icons/extrasmall/personal.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/personal.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-password {
-    background:url("../images/icons/extrasmall/password.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/password.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-user {
-    background:url("../images/icons/extrasmall/edit_user.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/edit_user.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-adduser {
-    background:url("../images/icons/extrasmall/add_user.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/add_user.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-group {
-    background:url("../images/icons/extrasmall/edit_group.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/edit_group.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-refresh {
-    background:url("../images/icons/extrasmall/recur.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/recur.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-regenerate {
-    background:url("../images/icons/extrasmall/agt_update-product.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/agt_update-product.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-exec {
-    background:url("../images/icons/extrasmall/exec.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/exec.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-export {
-    background:url("../images/icons/extrasmall/db_update.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/db_update.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-import {
-    background:url("../images/icons/extrasmall/db_comit.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/db_comit.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-attach {
-    background:url("../images/icons/extrasmall/attach.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/attach.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-mail {
-    background:url("../images/icons/extrasmall/mail_generic.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/mail_generic.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-search {
-    background:url("../images/icons/extrasmall/search.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/search.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-package {
-    background:url("../images/icons/extrasmall/package.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/package.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-world {
-    background:url("../images/icons/extrasmall/agt_internet.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/agt_internet.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-cubes {
-    background:url("../images/icons/extrasmall/kcmdf.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/kcmdf.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
 .z-icon-es-log {
-    background:url("../images/icons/extrasmall/easymoblog.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
+    background: url("../images/icons/extrasmall/easymoblog.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }
-
 
 /******************************************************************************
 * Buttons styles
@@ -802,7 +801,7 @@ div.z-formlist label {
 
 .z-buttons .z-bt-small {
     margin: 0 1px 0 0;
-    padding: 3px 8px 4px !important;
+    padding: 3px 8px 4px 8px !important;
 }
 
 .z-buttons button {
@@ -811,7 +810,7 @@ div.z-formlist label {
 }
 
 .z-buttons button[type] {
-    padding: 5px 10px 5px 10px; /* Firefox */
+    padding: 4px 10px 5px 10px; /* Firefox */
     line-height: 17px; /* Safari */
 }
 
@@ -848,7 +847,10 @@ div.z-formlist label {
     width: 16px;
 }
 
-/* colored button: light red */
+/******************************************************************************
+* Colored button: Red
+*******************************************************************************/
+
 .z-buttons .z-btred {
     color: #d12f19;
 }
@@ -867,7 +869,10 @@ div.z-formlist label {
     border: 1px solid #EF7868;
 }
 
-/* colored button: light blue */
+/******************************************************************************
+* Colored button: Blue
+*******************************************************************************/
+
 .z-buttons .z-btblue {
     color: #336699;
 }
@@ -886,7 +891,10 @@ div.z-formlist label {
     border: 1px solid #6FA7DF;
 }
 
-/* colored button: light green */
+/******************************************************************************
+* Colored button: Green
+*******************************************************************************/
+
 .z-buttons .z-btgreen {
     color: #529214;
 }
@@ -905,7 +913,9 @@ div.z-formlist label {
     border: 1px solid #A0DF61;
 }
 
-/* input classes z-bt-ok and z-bt-classes */
+/******************************************************************************
+* Buttons based on HTML tag: Input
+*******************************************************************************/
 
 .z-buttons input.z-bt-ok,
 .z-buttons input.z-bt-cancel,
@@ -953,117 +963,161 @@ div.z-formlist label {
 }
 
 .z-buttons input.z-bt-cancel {
-    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_cancel.gif") #F5F5F5 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, linear-gradient(#F5F5F5, #DEDEDE); /*CSS3*/
 }
 
 .z-buttons input.z-bt-cancel:hover {
-    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_cancel.gif") #dedede 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
 .z-buttons input.z-bt-cancel:active {
-    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/button_cancel.gif") #d0d0d0 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/button_cancel.gif") 10px 50% no-repeat, linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
 .z-buttons input.z-bt-preview {
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") #F5F5F5 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, linear-gradient(#F5F5F5, #DEDEDE); /*CSS3*/
 }
 
 .z-buttons input.z-bt-preview:hover {
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") #dedede 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
 .z-buttons input.z-bt-preview:active {
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") #d0d0d0 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
 .z-buttons input.z-bt-new {
-    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/filenew.gif") #F5F5F5 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, linear-gradient(#F5F5F5, #DEDEDE); /*CSS3*/
 }
 
 .z-buttons input.z-bt-new:hover {
-    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/filenew.gif") #dedede 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
 .z-buttons input.z-bt-new:active {
-    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/filenew.gif") #d0d0d0 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/filenew.gif") 10px 50% no-repeat, linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
 .z-buttons input.z-bt-save {
-    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/filesave.gif") #F5F5F5 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, linear-gradient(#F5F5F5, #DEDEDE); /*CSS3*/
 }
 
 .z-buttons input.z-bt-save:hover {
-    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/filesave.gif") #dedede 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
 .z-buttons input.z-bt-save:active {
-    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/filesave.gif") #d0d0d0 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/filesave.gif") 10px 50% no-repeat, linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
 .z-buttons input.z-bt-edit {
-    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/edit.gif") #F5F5F5 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, linear-gradient(#F5F5F5, #DEDEDE); /*CSS3*/
 }
 
 .z-buttons input.z-bt-edit:hover {
-    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/edit.gif") #dedede 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
 .z-buttons input.z-bt-edit:active {
-    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/edit.gif") #d0d0d0 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/edit.gif") 10px 50% no-repeat, linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
 .z-buttons input.z-bt-archive {
-    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/folder.gif") #F5F5F5 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, linear-gradient(#F5F5F5, #DEDEDE); /*CSS3*/
 }
 
 .z-buttons input.z-bt-archive:hover {
-    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/folder.gif") #dedede 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
 .z-buttons input.z-bt-archive:active {
-    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/folder.gif") #d0d0d0 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/folder.gif") 10px 50% no-repeat, linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
 .z-buttons input.z-bt-delete {
-    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") #F5F5F5 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, linear-gradient(#F5F5F5, #DEDEDE); /*CSS3*/
 }
 
 .z-buttons input.z-bt-delete:hover {
-    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") #dedede 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
 .z-buttons input.z-bt-delete:active {
-    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent;
-    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent;
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") #d0d0d0 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.gif") 10px 50% no-repeat, linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
-/* old input image buttons */
+/* Old input image buttons. Backward compatibility < Zikula 1.3 */
 
 .z-buttons input[type=image] {
     float: left;
 }
 
-/* zikula.ui styles */
+/*******************************************************************************/
+/* Zikula.UI styles
+/*******************************************************************************/
 
 .z-tooltip {
     background: #ddd; /* for non-css3 browsers */
@@ -1087,6 +1141,7 @@ div.z-formlist label {
     min-width: 200px;
     max-width: 400px;
 }
+
 .z-window {
     border: 1px solid #ddd;
     background-color: #FAFAFA;
@@ -1107,9 +1162,11 @@ div.z-formlist label {
     min-height: 100px;
     overflow: hidden;
 }
+
 .z-window:focus {
     outline: none;
 }
+
 .z-window.z-modal {
     -moz-box-shadow: 5px 5px 10px #000;
     -webkit-box-shadow: 5px 5px 10px #000;
@@ -1122,16 +1179,19 @@ div.z-formlist label {
     padding: 10px;
     overflow: auto;
 }
+
 .z-window .z-window-body.iframe {
     padding: 0;
     overflow: visible;
 }
+
 .z-window .z-window-body.iframe iframe{
     position: absolute;
     top: 0;
     bottom: 0;
     height: 100%
 }
+
 .z-window .z-window-header {
     font-weight: bold;
     text-align:center;
@@ -1148,6 +1208,7 @@ div.z-formlist label {
     background: -webkit-gradient(linear,left top, left bottom,from(#ddd),to(#f2f2f2));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#f2f2f2');
 }
+
 .z-window .z-window-footer {
     text-align: center;
     -webkit-border-bottom-right-radius: 9px;
@@ -1159,12 +1220,15 @@ div.z-formlist label {
     min-height: 12px;
     padding: 5px;
 }
+
 .z-window .z-window-title {
     font-size: 12px;
 }
+
 .z-window.z-draggable .z-window-title {
     cursor: move;
 }
+
 .z-window .z-window-control {
     display: block;
     position: absolute;
@@ -1175,26 +1239,32 @@ div.z-formlist label {
     background-position: 48px 0;
     cursor: pointer;
 }
+
 .z-window .z-window-control:hover {
     background-position: 32px 0;
     background-position: 0 0;
 }
+
 .z-window .z-window-close {
     right: 10px;
     background-image: url("../images/ui/window.close.png");
 }
+
 .z-window .z-window-maximize {
     right: 30px;
     background-image: url("../images/ui/window.max.png");
 }
+
 .z-window .z-window-minimize {
     right: 50px;
     background-image: url("../images/ui/window.min.png");
 }
+
 .z-window.z-minimized .z-window-minimize,
 .z-window.z-maximized .z-window-maximize {
     background-image: url("../images/ui/window.restore.png");
 }
+
 .z-window .resizable_handle {
     display: block;
     position: absolute;
@@ -1208,6 +1278,7 @@ div.z-formlist label {
     cursor: pointer;
     cursor: nw-resize;
 }
+
 .z-window .iframe-overlay,
 .z-window .resizable_handle.onresize {
     top: 0;
@@ -1219,6 +1290,7 @@ div.z-formlist label {
     position: absolute;
     z-index: 1000;
 }
+
 .z-window.z-minimized {
     height: auto !important;
     min-height:0 !important;
@@ -1226,6 +1298,7 @@ div.z-formlist label {
     bottom: 0 !important;
     top: auto !important;
 }
+
 .z-window.z-maximized {
     position: fixed !important;
     max-height: none !important;
@@ -1237,39 +1310,47 @@ div.z-formlist label {
     width: auto !important;
     height: auto !important;
 }
+
 .z-window.z-minimized .z-window-header {
     -moz-border-radius: 9px;
     -webkit-border-radius: 9px;
     border-radius: 9px;
     position: static;
 }
+
 .z-window.z-minimized .z-window-body,
 .z-window.z-minimized .z-window-footer,
 .z-window.z-minimized .resizable_handle,
 .z-window.z-maximized .resizable_handle {
     display: none;
 }
+
 .z-window .z-window-header,
 .z-window .z-window-footer {
     position: absolute;
     left: 0;
     right: 0;
 }
+
 .z-window .z-window-header {
     top: 0;
 }
+
 .z-window .z-window-footer {
     bottom: 0;
 }
+
 .z-window .z-window-body {
     top: 26px;
     bottom: 26px;
     left: 0;
     right: 0;
 }
+
 .z-window.z-dialog .z-window-body {
     bottom: 35px;
 }
+
 .z-window-indicator {
     background: #fff url(../images/ui/zktimer_48px_white_rounded.gif) no-repeat 50% 50%;
     opacity: 0.8;
@@ -1279,6 +1360,7 @@ div.z-formlist label {
     left: 0;
     right: 0;
 }
+
 #control_overlay {
     background-color: #000;
 }
@@ -1287,9 +1369,11 @@ div.z-formlist label {
     padding: 0;
     margin: 0;
 }
+
 .z-select-multiple.z-form z-formrow {
     padding: 0;
 }
+
 .z-select-multiple.z-form .z-formrow.selected {
     background: #DCDCDC;
 }
@@ -1301,6 +1385,7 @@ div.z-formlist label {
     width: 100%;
     overflow: hidden;
 }
+
 .z-tabs li {
     background-color: #F3F3F3;
     border: 1px solid #ccc;
@@ -1310,6 +1395,7 @@ div.z-formlist label {
     padding: 0;
     z-index: 1000;
 }
+
 .z-tabs li > a {
     border-right: 1px solid transparent;
     color: #666666;
@@ -1319,17 +1405,75 @@ div.z-formlist label {
     position: relative;
     text-decoration: none;
 }
+
 .z-tabs li > a:hover {
     background: #fff !important;
     border-right: 1px solid #ccc;
     color: #000;
     text-decoration: none;
 }
+
 .z-tabs li.active {
     background: none repeat scroll 0 0 #fff;
     border-bottom: 1px solid #fff;
     z-index: 2000;
 }
+
 .z-tabs li.active a:hover {
     border-right: 1px solid transparent;
+}
+
+/******************************************************************************
+* Toggle styles
+* TODO: Do we still need this? (herr.vorragend)
+*******************************************************************************/
+
+.z-toggle {
+    display: block;
+    background-image: url("../images/global/toggle.gif");
+    background-repeat: no-repeat;
+    background-position: 0px;
+    border: 0pt none;
+    margin: 0pt;
+    padding: 0pt;
+    width: 27px;
+    height: 25px;
+}
+.z-toggle-open,
+.z-toggle-open:visited {
+    background-position: 0pt -18px;
+    height: 25px;
+    width: 27px;
+}
+.z-toggle-link,
+.z-toggle-link:visited {
+    background-image: url("../images/global/toggle.gif");
+    background-repeat: no-repeat;
+    background-position: right top;
+    padding-right: 25px;
+    border: 0pt none;
+}
+.z-toggle-link-open,
+.z-toggle-link-open:visited {
+    background-position: right -18px;
+}
+
+/******************************************************************************
+* Styles for pager plugins
+* TODO: Do we still need this? (herr.vorragend)
+*******************************************************************************/
+
+.z-pager {
+    color: #999;
+    padding: 5px 4px;
+    text-align: center;
+}
+/* style for the selected item of the pager abc plugin */
+.z-pager a.z-pagerselected {
+    font-weight: bold;
+    text-decoration: underline;
+}
+/* style for the selected item of the pager plugin */
+.z-pager span.z-pagerselected {
+    font-weight: bold;
 }

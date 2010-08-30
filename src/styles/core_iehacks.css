@@ -6,7 +6,11 @@
 *******************************************************************************/
 
 
-/* IE-Patches for clearfix */
+/******************************************************************************
+* Zikula general clearfix solution
+* http://perishablepress.com/press/2009/12/06/new-clearfix-hack/
+*******************************************************************************/
+
 .z-clearfix {
     display: inline-block;
 }
@@ -19,10 +23,32 @@
 }
 /* End hide from IE-mac */
 
-/* Overflow-Method to clear float environments */
+/******************************************************************************
+* Overflow-Method to clear float environments
+*******************************************************************************/
+
 .z-floatbox {
     width: 100%;
 }
+
+/******************************************************************************
+* Integrated clearfix solution for z-formrow and z-formbuttons
+*******************************************************************************/
+
+div.z-formrow,
+div.z-formbuttons {
+    display: inline-block;
+}
+/* Hides from IE-mac \*/
+* html div.z-formrow,
+* html div.z-formbuttons {
+    height: 1px;
+}
+div.z-formrow,
+div.z-formbuttons {
+    display: block;
+}
+/* End hide from IE-mac */
 
 /******************************************************************************
 * Generic Form Style: z-form
@@ -36,21 +62,17 @@
 
 .z-form fieldset,
 .z-form .z-fieldset {
-    overflow: hidden;
     padding: 0 5px;
-    padding-top:1em;
-    padding-bottom:0.5em;
-    overflow: visible;
+    padding-top: 1em;
+    padding-bottom: 0.5em;
     margin-top: 1.5em;
     zoom: 1;
     position: relative;
-    -pie-background: linear-gradient(#fafafa, #f2f2f2); /*PIE*/
-    behavior: url("/styles/PIE.php");
 }
 
 .z-form legend {
-    position:absolute;
-    top:-.5em;
+    position: absolute;
+    top: -.5em;
     *left: 0;
 }
 
@@ -80,7 +102,7 @@ div.z-formlist {
     *padding: 0 5px;
 }
 .z-form fieldset {
-    *padding-top:1.5em;
+    *padding-top: 1.5em;
 }
 /* IE5.x, IE6 */
 * html .z-form {
@@ -98,54 +120,29 @@ div.z-formlist {
 }
 
 /******************************************************************************
-* CSS3PIE problems with z-index (disappearing backgrounds)
-* http://css3pie.com/documentation/known-issues/
+* Zikula buttons for IE browsers
 *******************************************************************************/
 
-.z-button,
-.z-buttons a,
-.z-buttons input,
-.z-buttons button {
-    position: relative;
-    z-index: 1000;
-    -pie-background: linear-gradient(#F5F5F5, #dedede); /*PIE*/
-    behavior: url("/styles/PIE.php");
+.z-buttons button { /* IE6 */
+    padding: 4px 10px 3px 10px;
 }
 
-.z-buttons button {
-    padding: 4px 10px 3px 10px; /* IE6 */
+*:first-child+html button[type] { /* IE7 */
+    padding: 4px 10px 3px 10px;
 }
 
-*:first-child+html button[type] {
-    padding: 4px 10px 3px 10px; /* IE7 */
+*:first-child+html .z-buttons input { /* IE7 */
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
-.z-button:hover,
-.z-buttons a:hover,
-.z-buttons input:hover,
-.z-buttons button:hover {
-    -pie-background: linear-gradient(#dedede, #F5F5F5); /*PIE*/
-    behavior: url("/styles/PIE.php");
-}
+/******************************************************************************
+* IE inherited margin bug: Form elements and hasLayout
+* http://www.positioniseverything.net/explorer/inherited_margin.html
+* http://blog.netscraps.com/bugs/ie6-ie7-margin-inheritance-bug.html
+*******************************************************************************/
 
-.z-button:active,
-.z-buttons a:active,
-.z-buttons input:active,
-.z-buttons button:active {
-    -pie-background: linear-gradient(#d0d0d0, #f0f0f0); /*PIE*/
-    behavior: url("/styles/PIE.php");
-}
-
-.z-buttons input.z-bt-ok {
-    -pie-background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, linear-gradient(#F5F5F5, #DEDEDE); /*PIE*/
-    behavior: url("/styles/PIE.php");
-}
-.z-buttons input.z-bt-ok:hover {
-    -pie-background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, linear-gradient(#dedede, #F5F5F5); /*PIE*/
-    behavior: url("/styles/PIE.php");
-}
-
-.z-buttons input.z-bt-ok:active {
-    -pie-background: url("../images/icons/extrasmall/button_ok.gif") 10px 50% no-repeat, linear-gradient(#d0d0d0, #f0f0f0); /*PIE*/
-    behavior: url("/styles/PIE.php");
+*:first-child+html div.z-formbuttons { /* IE7 */
+    margin-left: 0;
+    padding-left: 30%;
 }
