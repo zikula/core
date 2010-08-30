@@ -250,7 +250,7 @@ class System
 
         if ($type == 'uname') {
             // check for invalid characters
-            if (preg_match('/[^\p{L}\p{N}_\.]/u', $var)) {
+            if (preg_match('/[^\p{L}\p{N}_\.\-]/u', $var)) {
                 return false;
             }
         }
