@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Pgsql.php 7632 2010-06-08 13:46:33Z jwage $
+ *  $Id: Pgsql.php 7680 2010-08-19 14:08:28Z lsmith $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +29,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7632 $
+ * @version     $Revision: 7680 $
  */
 class Doctrine_Export_Pgsql extends Doctrine_Export
 {
@@ -146,20 +146,20 @@ class Doctrine_Export_Pgsql extends Doctrine_Export
         if (isset($changes['change']) && is_array($changes['change'])) {
             foreach ($changes['change'] as $fieldName => $field) {
                 $fieldName = $this->conn->quoteIdentifier($fieldName, true);
-                if (isset($field['type'])) {
+                if (isset($field['definition']['type'])) {
                     $serverInfo = $this->conn->getServerVersion();
 
                     if (is_array($serverInfo) && $serverInfo['major'] < 8) {
                         throw new Doctrine_Export_Exception('changing column type for "'.$field['type'].'\" requires PostgreSQL 8.0 or above');
                     }
-                    $query = 'ALTER ' . $fieldName . ' TYPE ' . $this->conn->datatype->getTypeDeclaration($field['definition']);
+                    $query = 'ALTER ' . $fieldName . ' TYPE ' . $this->conn->dataDict->getNativeDeclaration($field['definition']);
                     $sql[] = 'ALTER TABLE ' . $this->conn->quoteIdentifier($name, true) . ' ' . $query;
                 }
-                if (array_key_exists('default', $field)) {
+                if (array_key_exists('default', $field['definition'])) {
                     $query = 'ALTER ' . $fieldName . ' SET DEFAULT ' . $this->conn->quote($field['definition']['default'], $field['definition']['type']);
                     $sql[] = 'ALTER TABLE ' . $this->conn->quoteIdentifier($name, true) . ' ' . $query;
                 }
-                if ( ! empty($field['notnull'])) {
+                if ( ! empty($field['definition']['notnull'])) {
                     $query = 'ALTER ' . $fieldName . ' ' . ($field['definition']['notnull'] ? 'SET' : 'DROP') . ' NOT NULL';
                     $sql[] = 'ALTER TABLE ' . $this->conn->quoteIdentifier($name, true) . ' ' . $query;
                 }
