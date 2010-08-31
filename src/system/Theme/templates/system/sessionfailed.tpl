@@ -6,12 +6,15 @@
         <style type="text/css">
             html, body {
                 height: 100%;
-                margin:0;
-                padding:0;
+                margin: 0;
+                padding: 0;
                 font-family: Verdana, Arial, Helvetica, Sans-serif;
-                font-size: 12px;
-                background: #EEEEEE;
-                line-height:1.6em;
+                font-size: 14px;
+                background: #F2F2F2;
+                background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) );
+                background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent;
+                background: linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent;
+                line-height: 1.6em;
             }
             a {
                 color: #2147B3;
@@ -20,6 +23,10 @@
             }
             img {
                 border: none;
+            }
+            h2 {
+                color:#770000;
+                text-transform:uppercase;
             }
             .container {
                 display: table;
@@ -43,6 +50,7 @@
                 -webkit-box-shadow: #999 4px 4px 10px;
                 -moz-box-shadow: #999 4px 4px 10px;
                 box-shadow: #999 4px 4px 10px;
+                text-align: center;
             }
         </style>
     </head>
@@ -50,7 +58,8 @@
         <div class="container">
             <div class="cell">
                 <div class="content">
-                    <h1>Unable to start session</h1>
+                    <h1>Zikula Application Framework</h1>
+                    <h2>Unable to start session</h2>
                     <p>
                         This website is experiencing temporary technical difficulties, refreshing the page may help.  If this problem persists please inform this website's owner about this problem.
                     </p>
@@ -62,7 +71,7 @@
                         Zikula is unable to correctly start sessions. This is because sessions cannot be written to the database which is usually caused by either your site being out of disk space or disk quota, or that the sessions table has become corrupted.  Running a repair on the sessions table may fix the problem. For further help please visit the Zikula website.
                     </p>
                     <p>
-                        Zikula is free software released under the GNU/GPL.  For more information, please visit <a href="http://zikula.org" title="Zikula Homepage">http://zikula.org</a>.
+                        Zikula is free software released under the LGPL v3.  For more information, please visit <a href="http://zikula.org" title="Zikula Homepage">http://zikula.org</a>.
                     </p>
                     <p>
                         <a href="http://zikula.org"><img src="images/powered/small/cms_zikula.png" alt="Proudly powered by Zikula" width="80" height="15" /></a>

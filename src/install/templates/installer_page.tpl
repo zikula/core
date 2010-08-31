@@ -44,7 +44,7 @@
                     <h3>{gt text="Free software"}</h3>
                     <ul>
                         <li><a href="{gt text="docs/NOTICE"}">{gt text="Notice"}</a></li>
-                        <li><a href="{gt text="docs/LGPL"}">{gt text="Lesser GNU License"}</a></li>
+                        <li><a href="{gt text="docs/LGPL"}">{gt text="LGPL v3"}</a></li>
                         <li><a href="{gt text="http://www.gnu.org/philosophy/"}">{gt text="GNU philosophy"}</a></li>
                     </ul>
                     <h3>{gt text="Useful resources"}</h3>

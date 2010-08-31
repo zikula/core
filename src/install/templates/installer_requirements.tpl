@@ -42,15 +42,6 @@
                 {else}
                 <li class="failed">{gt text="Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets."}</li>
                 {/if}
-                {php}
-                    $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
-                    $this->assign('pcreUnicodePropertiesEnabled', (isset($isEnabled) && (bool)$isEnabled));
-                {/php}
-                {if $pcreUnicodePropertiesEnabled}
-                <li class="passed">{gt text="Your PHP installation's PCRE library has Unicode property support enabled."}</li>
-                {else}
-                <li class="failed">{gt text="Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."}</li>{assign var=checkfailed value=true}
-                {/if}
                 {phpfunctionexists func="json_encode" assign="json_encode"}
                 {if $json_encode}
                 <li class="passed">{gt text="Your PHP installation has the JSON functions available."}</li>
