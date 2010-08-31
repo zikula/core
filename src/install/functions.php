@@ -191,7 +191,7 @@ function install()
                 $action = 'createadmin';
             }
             break;
-        case 'finish':
+        case 'selecttheme':
             if ((!$username) || preg_match('/[^\p{L}\p{N}_\.\-]/u', $username)) {
                 $action = 'createadmin';
                 $smarty->assign('uservalidatefailed', true);
@@ -282,6 +282,10 @@ function install()
                     $action = 'gotosite';
                 }
             }
+            if (!$installbySQL) {
+                break;
+            }
+            System::setVar('startpage', '');
             break;
         case 'gotosite':
             if (!$installbySQL) {
@@ -291,7 +295,6 @@ function install()
                 System::setVar('Default_Theme', $defaulttheme);
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
-            System::setVar('startpage', '');
             // set site status as installed and protect config.php file
             update_installed_status();
             @chmod('config/config.php', 0400);
