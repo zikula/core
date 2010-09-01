@@ -176,7 +176,6 @@ class Form_View extends Zikula_View
 
             $this->decodeIncludes();
             $this->decodeState();
-            $this->decodeEventHandler();
 
             if ($eventHandler->initialize($this) === false) {
                 return $this->getErrorMsg();
@@ -858,8 +857,6 @@ class Form_View extends Zikula_View
      */
     public function getStateText()
     {
-        $this->setState('Form_View', 'eventHandler', $this->eventHandler);
-
         $pluginState = $this->getPluginState();
         $this->setState('Form_View', 'plugins', $pluginState);
 
@@ -1009,24 +1006,6 @@ class Form_View extends Zikula_View
         }
 
         return $plugins;
-    }
-
-    /**
-     * Decode event handler.
-     *
-     * @return void
-     */
-    public function decodeEventHandler()
-    {
-        $storedHandler = & $this->getState('Form_View', 'eventHandler');
-        $currentHandler = $this->eventHandler;
-
-        // Copy saved data into event handler (this is where form handler variables are restored)
-        $varInfo = get_class_vars(get_class($storedHandler));
-
-        foreach ($varInfo as $name => $value) {
-            $currentHandler->$name = $storedHandler->$name;
-        }
     }
 
     // --- plugin event generators ---
