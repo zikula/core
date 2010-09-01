@@ -24,8 +24,14 @@
             img {
                 border: none;
             }
+            h1 {
+                font-size:24px;
+                line-height:28px;
+            }
             h2 {
                 color:#770000;
+                font-size:22px;
+                line-height:26px;
                 text-transform:uppercase;
             }
             .container {
