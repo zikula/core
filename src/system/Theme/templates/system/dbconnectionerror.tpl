@@ -47,6 +47,9 @@
                 padding: 1.5em;
                 background: #FAFAFA;
                 border: 1px solid #2147B3;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
                 -webkit-box-shadow: #999 4px 4px 10px;
                 -moz-box-shadow: #999 4px 4px 10px;
                 box-shadow: #999 4px 4px 10px;

@@ -46,6 +46,9 @@
                 padding: 1.5em;
                 background: #fafafa;
                 border: 1px solid #2147B3;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
                 -webkit-box-shadow: #999 4px 4px 10px;
                 -moz-box-shadow: #999 4px 4px 10px;
                 box-shadow: #999 4px 4px 10px;
@@ -64,9 +67,9 @@
                 background: -webkit-gradient(linear, left top, left bottom, from(#7DA3DF), to(#2147B3) );
                 background: -moz-linear-gradient(top, #7DA3DF, #2147B3);
                 background: linear-gradient(top, #7DA3DF, #2147B3);
-                -webkit-border-radius: 4px;
-                -moz-border-radius: 4px;
-                border-radius: 4px;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
                 -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
                 -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
                 box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
