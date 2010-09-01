@@ -12,7 +12,7 @@ function settings_modifyconfig_init()
     Event.observe('settings_shorturlstype_file', 'click', settings_shorturls_type_onchange, false);
 
     $$('.z_texpand').each(function(el){
-      new Texpand(el, {autoShrink: true, shrinkOnBlur:false, expandOnFocus: false, expandOnLoad: true });
+      new Texpand(el, {autoShrink: false, shrinkOnBlur:false, expandOnFocus: false, expandOnLoad: true });
     });
 
     if ( $('settings_siteoff_no').checked) {

@@ -124,6 +124,7 @@ class Blocks_Installer extends Zikula_Installer
         $left = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'left', 'description' => $this->__('Left blocks')));
         $right = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'right', 'description' => $this->__('Right blocks')));
         $center = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'center', 'description' => $this->__('Center blocks')));
+        $search = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'search', 'description' => $this->__('Search block')));
 
         // define an array of the default blocks
         $blocks = array();
@@ -151,13 +152,13 @@ class Blocks_Installer extends Zikula_Installer
         $menucontent = serialize($menucontent);
         $hellomessage = $this->__('<p><a href="http://zikula.org">Zikula</a> is a content management system (CMS) and application framework. It is secure and stable, and is a good choice for sites with a large volume of traffic.</p><p>With Zikula:</p><ul><li>you can customise all aspects of the site\'s appearance through themes, with support for CSS style sheets, JavaScript, Flash and all other modern web development technologies;</li><li>you can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation and internationalisation of your site and pages;</li><li>you can be sure that your pages will display properly in all browsers, thanks to Zikula\'s full compliance with W3C HTML standards;</li><li>you get a standard application-programming interface (API) that lets you easily augment your site\'s functionality through modules, blocks and other extensions;</li><li>you can get help and support from the Zikula community of webmasters and developers at <a href="http://www.zikula.org">zikula.org</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>');
         $blocks[] = array('bkey' => 'Extmenu', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Blocks'), 'title' => $this->__('Main menu'), 'description' => '', 'content' => $menucontent, 'positions' => array($left));
-        $blocks[] = array('bkey' => 'Search', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Search'), 'title' => $this->__('Search box'), 'description' => '', 'positions' => array($left));
+        $blocks[] = array('bkey' => 'Search', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Search'), 'title' => $this->__('Search box'), 'description' => '', 'positions' => array($search));
         $blocks[] = array('bkey' => 'Html', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Blocks'), 'title' => $this->__("This site is powered by Zikula!"), 'description' => '', 'content' => $hellomessage, 'positions' => array($center));
         $blocks[] = array('bkey' => 'Login', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Users'), 'title' => $this->__('User log-in'), 'description' => '', 'positions' => array($right));
         $blocks[] = array('bkey' => 'Online', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Users'), 'title' => $this->__('Who\'s on-line'), 'description' => '', 'positions' => array($right));
 
         // create each block and then update the block
-        // the create creates the initiial block record, the update sets the block placments
+        // the create creates the initiial block record, the update sets the block placement
         foreach ($blocks as $position => $block)
         {
             $block['bid'] = ModUtil::apiFunc('Blocks', 'admin', 'create', $block);
@@ -238,8 +239,8 @@ class Blocks_Installer extends Zikula_Installer
             ModUtil::apiFunc('Blocks', 'admin', 'update', $block);
         } else {
             // assign the block to the search position
-            $blockplacment = array('bid' => $searchblocks[0]['bid'], 'pid' => $searchpid);
-            DBUtil::insertObject($blockplacment, 'block_placements');
+            $blockplacement = array('bid' => $searchblocks[0]['bid'], 'pid' => $searchpid);
+            DBUtil::insertObject($blockplacement, 'block_placements');
         }
     }
 }
