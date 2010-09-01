@@ -208,11 +208,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 
 .z-even {
     background-color: #fff;
-    color: inherit;
+    color: #333;
 }
 .z-odd {
     background-color: #f3f3f3;
-    color: inherit;
+    color: #000;
 }
 
 /******************************************************************************
@@ -262,6 +262,7 @@ table.z-datatable tbody tr.z-defaulttablerow {
 
 table.z-datatable tbody tr:hover {
     background-color: #CFCFCF;
+    color: #000;
 }
 
 table.z-datatable ul {
@@ -302,6 +303,7 @@ table.z-datatable ul {
     color: #000;
     background: transparent;
     border: 0;
+    text-shadow: -1px -1px 0 #fff;
 }
 
 .z-form .z-formrow .z-mandatorysym {
@@ -420,6 +422,7 @@ div.z-formbuttons:after {
     text-align: right;
     width: 29%;
     font-weight: normal;
+    color: #000;
 }
 
 .z-form .z-formlist {
