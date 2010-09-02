@@ -21,8 +21,9 @@ themes being templated in the Header_Footer module.
 
 /* style for Immediate template under the tab menu */
 div.z-adminbox {
+    background: #fff;
+    color: #333;
     width: auto;
-    color: inherit;
     border-top: 0px solid #ccc;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
@@ -37,8 +38,9 @@ div.z-adminbox .z-menu {
 
 /* style for Immediate template under the admin menu */
 div.z-admincontainer {
+    background: #fff;
+    color: #333;
     width: auto;
-    color: inherit;
     margin-bottom: 1.25em;
     border-top: 0px solid #ccc;
     border-left: 1px solid #ccc;
@@ -55,10 +57,14 @@ div.z-admincategorydescription {
 
 /* style for Immediate template under the admin menu */
 div.z-adminbox h1 {
+    background: none !important;
+    color: #333 !important;
     text-align: left;
 }
 
 div.z-admincontainer h2 {
+    background: none !important;
+    color: #333 !important;
     text-align: left;
     border-bottom: 1px solid #cccccc;
     margin-top: 0px;
@@ -133,8 +139,8 @@ table.z-admintable thead th {
 
 /* style to highlight a default row in a table */
 table.z-admintable tbody tr.z-defaulttablerow {
-    background-color: #add8e6;
-    color: inherit;
+    background-color: #C2FFBF;
+    color: #077F00;
 }
 
 table.z-admintable ul {
@@ -168,7 +174,7 @@ table.z-admintable ul {
 }
 
 #z-adminiconlist .z-adminiconcontainer .z-adminicon img {
-    background: #fff;
+    background: inherit;
     border-color: #D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
     border-style: solid;
     border-width: 1px;
@@ -177,6 +183,10 @@ table.z-admintable ul {
 
 #z-adminiconlist .z-adminiconcontainer .z-adminicon img:hover {
     border: 1px solid #aaa;
+}
+
+#z-adminiconlist .z-adminlinkheader {
+    white-space: nowrap;
 }
 
 #z-adminiconlist .z-adminlinkheader img {

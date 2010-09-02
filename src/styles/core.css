@@ -79,6 +79,9 @@ img.z-floatright {
 
 ul.z-menulinks {
     background: url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6;
+    background: -webkit-gradient(linear,left top, left bottom,from(#fefefe),to(#E6E6E6)); /*webkit*/
+    background: -moz-linear-gradient(top,#fefefe,#E6E6E6); /*gecko*/
+    background: linear-gradient(#fefefe, #E6E6E6); /*CSS3*/
     border:1px solid #ccc;
     color:#aaa;
     height:auto !important;
@@ -92,10 +95,19 @@ ul.z-menulinks {
 }
 
 ul.z-menulinks li {
+    background: none !important;
     border-right:1px solid #aaa;
     display:inline;
-    padding:0 10px;
-    margin:0;
+    padding:0 10px !important;
+    margin:0 !important;
+}
+
+ul.z-menulinks li a {
+    color: #555;
+}
+
+ul.z-menulinks li a:hover {
+    color: #000;
 }
 
 ul.z-menulinks li:first-child {
@@ -138,11 +150,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 *******************************************************************************/
 
 .z-errormsg {
-    background: #F7CBCA url("../images/icons/extrasmall/error.gif") 13px 50% no-repeat;
-    border: 1px solid #CC0000;
-    color: #880000;
-    margin: 5px 0 10px;
-    padding: 5px 5px 5px 36px;
+    background: #F7CBCA url("../images/icons/extrasmall/error.gif") 13px 50% no-repeat !important;
+    border: 1px solid #CC0000 !important;
+    color: #880000 !important;
+    margin: 5px 0 10px !important;
+    padding: 5px 5px 5px 36px !important;
 }
 .z-errormsg p,
 .z-errormsg h1,
@@ -157,11 +169,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding:0 !important;
 }
 .z-informationmsg {
-    background: #e6e6ff url('../images/icons/extrasmall/info.gif') 13px 50% no-repeat;
-    border: 1px solid #9bb8d9;
-    color: #27427D;
-    padding: 5px 5px 5px 36px;
-    margin: 5px 0 10px;
+    background: #e6e6ff url('../images/icons/extrasmall/info.gif') 13px 50% no-repeat !important;
+    border: 1px solid #9bb8d9 !important;
+    color: #27427D !important;
+    padding: 5px 5px 5px 36px !important;
+    margin: 5px 0 10px !important;
 }
 .z-informationmsg p,
 .z-informationmsg h1,
@@ -172,11 +184,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding:0 !important;
 }
 .z-statusmsg {
-    background: #DFF2BF url('../images/icons/extrasmall/button_ok.gif') 13px 50% no-repeat;
-    border: 1px solid #99CC99;
-    color: #264409;
-    padding: 5px 5px 5px 36px;
-    margin: 5px 0 10px;
+    background: #DFF2BF url('../images/icons/extrasmall/button_ok.gif') 13px 50% no-repeat !important;
+    border: 1px solid #99CC99 !important;
+    color: #264409 !important;
+    padding: 5px 5px 5px 36px !important;
+    margin: 5px 0 10px !important;
 }
 .z-statusmsg p,
 .z-statusmsg h1,
@@ -187,11 +199,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding: 0 !important;
 }
 .z-warningmsg {
-    background: #FEEFB3 url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat;
-    border: 1px solid #EED324;
-    color: #514721;
-    padding: 5px 5px 5px 36px;
-    margin: 5px 0;
+    background: #FEEFB3 url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat !important;
+    border: 1px solid #EED324 !important;
+    color: #514721 !important;
+    padding: 5px 5px 5px 36px !important;
+    margin: 5px 0 !important;
 }
 .z-warningmsg p,
 .z-warningmsg h1,
@@ -208,11 +220,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 
 .z-even {
     background-color: #fff;
-    color: #333;
+    color: #444;
 }
 .z-odd {
     background-color: #f3f3f3;
-    color: #000;
+    color: #222;
 }
 
 /******************************************************************************
@@ -288,6 +300,7 @@ table.z-datatable ul {
     border: 1px #ddd solid;
     margin: 0 0 1em 0;
     padding: 0.5em 1em;
+    color: #333;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -303,7 +316,7 @@ table.z-datatable ul {
     color: #000;
     background: transparent;
     border: 0;
-    text-shadow: -1px -1px 0 #fff;
+    text-shadow: -1px -1px 0 rgba(250, 250, 250, 0.5);
 }
 
 .z-form .z-formrow .z-mandatorysym {
@@ -387,7 +400,7 @@ div.z-formbuttons:after {
 .z-formbuttons {
     text-align: left;
     display: block;
-    margin-left: 30%;
+    margin-left: 29%;
 }
 
 .z-formbuttons input,
@@ -420,18 +433,19 @@ div.z-formbuttons:after {
     float: left;
     padding: 0.3em 1% 0.3em 0;
     text-align: right;
-    width: 29%;
+    width: 28%;
     font-weight: normal;
-    color: #000;
+    color: #333;
+    overflow: hidden;
 }
 
 .z-form .z-formlist {
-    margin-left: 30%;
+    margin-left: 29%;
 }
 
 .z-form .z-formnote {
     display: block;
-    margin-left: 30% !important;
+    margin-left: 29% !important;
 }
 
 .z-form div.z-formrow input,

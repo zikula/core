@@ -53,6 +53,10 @@ div.z-accountlink {
     height: 9em;
 }
 
+div.z-accountlink  img {
+    border: none;
+}
+
 .passindicatorbar {
     min-width: 5%;
     height: 5px;
