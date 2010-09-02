@@ -6,7 +6,7 @@
 	<span class="z-icon-es-config" style="margin-top:2px;">&nbsp;</span>
 		{gt text='Settings'}
 </a>
-<a id="defwindowmodal-1"class="z-button ui-corner-all" href="#defwindow_content_modal-1">
+<a id="defwindowmodal-1" title="{gt text='My Account'}" class="z-button ui-corner-all" href="#defwindow_content_modal-1">
 	<span class="z-icon-es-info" style="margin-top:2px;">&nbsp;</span>
 		{gt text='My Account'}
 </a>

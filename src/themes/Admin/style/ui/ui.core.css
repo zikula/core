@@ -46,9 +46,10 @@ ul.rss-items li:first-child {
     background:url("../../../../images/icons/extrasmall/exit.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
+.z-accountlink{padding:6px;}
 
 h1 {border-bottom: 1px dotted grey;margin-bottom: 8px;padding-bottom:4px;font-size: 18px;color:#302D2F;}
-h2 {font-size:16px;color:#302D2F;}
+h2 {font-size:16px;color:#302D2F;margin-bottom:6px;font-weight:bold;}
 h3 {font-size:14px;font-weight:bold;padding:4px;color:#302D2F;}
 strong{font-weight:bold;}
 /* required comment for clearfix to work in Opera \*/
