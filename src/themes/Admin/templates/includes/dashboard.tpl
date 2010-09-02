@@ -6,30 +6,31 @@
 					<div class="three-col-mid">
 						<div class="column col1">
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Users<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
-								<div class="portlet-content">
-								 
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">1<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-content">									
+								content
 								</div>
 							</div>
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Settings<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">2<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
-									<p>asasdfdf</p></div>
+								content
+								</div>
 							</div>
 						</div>
 						
 						<div class="column col2">
 						
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Pending Content<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">3<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
-								<p>Articles</p>
+								content
 								</div>
 							</div>
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">Pending Content<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">4<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
-								<p>Images</p>
+								content
 								</div>
 							</div>
 						
@@ -37,15 +38,15 @@
 						
 						<div class="column col3">
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">{gt text='Groups'}<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">5<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
-								 
+								content
 								</div>
 							</div>
 							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">News<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-header ui-widget-header ui-corner-all ui-title-hover">6<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
 								<div class="portlet-content">
-								asdf
+								content
 								</div>
 							</div>
 						</div>

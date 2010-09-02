@@ -1,4 +1,4 @@
-<a title="{gt text='Visit your Site!'}" class="z-button ui-corner-all" href="index.php">
+<a title="{gt text='Visit your Site!'}" class="z-button ui-corner-all" target="_blank" href="index.php">
 	<span class="z-icon-es-world" style="margin-top:2px;">&nbsp;</span>
 		{gt text='Visit your Site!'}
 </a>
@@ -6,7 +6,7 @@
 	<span class="z-icon-es-config" style="margin-top:2px;">&nbsp;</span>
 		{gt text='Settings'}
 </a>
-<a class="z-button ui-corner-all" href="index.php?&amp;module=users">
+<a id="defwindowmodal-1"class="z-button ui-corner-all" href="#defwindow_content_modal-1">
 	<span class="z-icon-es-info" style="margin-top:2px;">&nbsp;</span>
 		{gt text='My Account'}
 </a>
@@ -14,7 +14,9 @@
     <span class="z-icon-es-exit" style="margin-top:2px;">&nbsp;</span>
 		{gt text='Logout'}
 </a>
-						
+<div id="defwindow_content_modal-1" style="display: none;">
+{modfunc modname="users" type="user" func="main"}
+</div>						
 <div id="defwindow_content_modal" style="display: none;">
 	<div class="side_sort sidebar-content">
 		<div>
@@ -50,17 +52,8 @@
 							<a class="set_theme" id="gray" href="#" title="{gt text='Gray Standard'}">{gt text='Gray Standard'} </a>
 						</li>
 						<li>
-							<a class="set_theme" id="gray_light" href="#" title="{gt text='Light Gray'}">{gt text='Light Gray'}</a>
-						</li>
-						<li>
-							<a class="set_theme" id="green" href="#" title="{gt text='Green'}">{gt text='Green'}</a>
-						</li>
-						<li>
 							<a class="set_theme" id="blue" href="#" title="{gt text='Blue'}">{gt text='Blue'}</a>
 					    </li>
-						<li>
-							<a class="set_theme" id="hot" href="#" title="{gt text='Hot'}">{gt text='Hot'}</a>
-						</li>
 					</ul>
 				</div>
 		</div>
@@ -96,4 +89,7 @@
 </div>
 <script type="text/javascript">
     var defwindowmodal = new Zikula.UI.Window($('defwindowmodal'),{modal:true,minmax:true,resizable: true});
+</script>
+<script type="text/javascript">
+    var defwindowmodal = new Zikula.UI.Window($('defwindowmodal-1'),{modal:true,minmax:true,resizable: true});
 </script>

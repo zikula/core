@@ -41,7 +41,7 @@
 	/* General */
 
 body { 
-	background:#222;
+	background:#003366;
 	font-size:14px;
 }
 
@@ -50,19 +50,13 @@ a {
 }
 
 #page_wrapper {
-	background-image:url('images/page_wrapper.png');
+	background:#003366;
 	background-position:50% top;
 	background-repeat:no-repeat;
 }
 
 #page_wrapper #page-header #page-header-wrapper #top .logo {
 text-transform:none;color:#fff;font-size:1.8em;float:left;}
-
-	/* Header */
-
-#page_wrapper #page-header {
-	background:url('images/header-bg.png') repeat-x;
-}
 
 	/* States and Images */
 
@@ -196,9 +190,6 @@ a:hover, .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited
 
 	/* PAGE CONTENT */
 
-#page_wrapper #page-content #page-content-wrapper, .ui-dialog {
-	background:#f2f2f2 url('images/page-container-bg.png') left top repeat-x;
-}
 
 #page_wrapper #page-content #page-content-wrapper {
 	background:#f2f2f2 url('images/sidebar-bg.png') right top repeat-y;
