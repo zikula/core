@@ -102,6 +102,7 @@ ul.z-menulinks li {
     margin:0 !important;
 }
 
+/*
 ul.z-menulinks li a {
     color: #555;
 }
@@ -109,6 +110,7 @@ ul.z-menulinks li a {
 ul.z-menulinks li a:hover {
     color: #000;
 }
+*/
 
 ul.z-menulinks li:first-child {
     border-left:1px solid #aaa;
@@ -793,6 +795,7 @@ div.z-formbuttons:after {
 
 .z-button,
 .z-buttons a,
+.z-buttons a:visited,
 .z-buttons input,
 .z-buttons button {
     display: inline-block;
@@ -815,6 +818,8 @@ div.z-formbuttons:after {
     background: -moz-linear-gradient(top,  #F5F5F5, #dedede); /*gecko*/
     background: linear-gradient(#F5F5F5, #dedede); /*CSS3*/
 }
+
+
 
 .z-buttons .z-bt-small {
     margin: 0 1px 0 0;
@@ -868,7 +873,8 @@ div.z-formbuttons:after {
 * Colored button: Red
 *******************************************************************************/
 
-.z-buttons .z-btred {
+.z-buttons .z-btred,
+.z-buttons .z-btred:visited {
     color: #d12f19;
 }
 .z-buttons .z-btred:hover {
@@ -890,7 +896,8 @@ div.z-formbuttons:after {
 * Colored button: Blue
 *******************************************************************************/
 
-.z-buttons .z-btblue {
+.z-buttons .z-btblue,
+.z-buttons .z-btblue:visited {
     color: #336699;
 }
 .z-buttons .z-btblue:hover {
@@ -912,7 +919,8 @@ div.z-formbuttons:after {
 * Colored button: Green
 *******************************************************************************/
 
-.z-buttons .z-btgreen {
+.z-buttons .z-btgreen,
+.z-buttons .z-btgreen:visited {
     color: #529214;
 }
 .z-buttons .z-btgreen:hover {

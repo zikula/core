@@ -217,10 +217,6 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
 }
 
 /**************** Misc classes and styles ****************/
-.z-block {
-    margin-bottom: 1em;
-    font-size: 0.9em;
-}
 
 #theme_content .z-block h3,
 #theme_content .z-block h4 {
@@ -228,16 +224,20 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
 }
 
 .z-blockposition-center {
+    font-size: 0.9em;
     background-color: #FAFBFC;
     border: 1px solid #C0C0C0;
     color: #505050;
     line-height: 1.5em;
     padding: 1em;
+    margin-bottom: 1em;
 }
 
 .z-blockposition-left,
 .z-blockposition-right {
+    font-size: 0.9em;
     padding: 0.5em 0;
+    margin-bottom: 1em;
 }
 .z-blockposition-right.z-bkey-html,
 .z-blockposition-right.z-bkey-text {
