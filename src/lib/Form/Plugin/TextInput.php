@@ -249,7 +249,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
         if (array_key_exists('maxLength', $params)) {
             $this->maxLength = $params['maxLength'];
-        } else if ($this->maxLength == null && strtolower($this->textMode) != 'multiline') {
+        } else if ($this->maxLength == null && !in_array(strtolower($this->textMode), array('multiline', 'hidden'))) {
             $view->formDie("Missing maxLength value in textInput plugin '$this->id'.");
         }
     }
@@ -348,6 +348,10 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
                 if ($this->mandatory && $this->mandatorysym) {
                     $result .= '<span class="z-mandatorysym">*</span>';
                 }
+                break;
+
+            case 'hidden':
+                $result = "<input type=\"hidden\"{$idHtml}{$nameHtml}{$maxLengthHtml} value=\"{$text}\" />";
                 break;
 
             default:
