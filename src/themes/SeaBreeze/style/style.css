@@ -290,6 +290,7 @@ It defaults to BackCompat mode, which works like previous versions of IE.
     font-weight: bold;
     line-height: normal;
     padding: 8px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
 }
 
 #nav .page_item a:hover {
@@ -304,19 +305,8 @@ It defaults to BackCompat mode, which works like previous versions of IE.
     color: #F8981D;
 }
 
-#nav li.current_page_item {
-    color: #fff;
-    text-decoration: none;
-    background: url(../images/navtabr.png) no-repeat right;
-    background-position: 100% -34px;
-}
-
-#nav .current_page_item a,
-#nav .current_page_item a:visited {
-    color: #fff;
-    text-decoration: none;
-    background: url(../images/navtabl.png) no-repeat;
-    background-position: 0 -34px;
+#nav .page_item.selected a {
+    text-decoration: underline;
 }
 
 /* footer area */
