@@ -795,7 +795,6 @@ div.z-formbuttons:after {
 
 .z-button,
 .z-buttons a,
-.z-buttons a:active,
 .z-buttons a:visited,
 .z-buttons input,
 .z-buttons button {
@@ -874,7 +873,8 @@ div.z-formbuttons:after {
 * Colored button: Red
 *******************************************************************************/
 
-.z-buttons .z-btred {
+.z-buttons .z-btred,
+.z-buttons .z-btred:visited {
     color: #d12f19;
 }
 .z-buttons .z-btred:hover {
@@ -896,7 +896,8 @@ div.z-formbuttons:after {
 * Colored button: Blue
 *******************************************************************************/
 
-.z-buttons .z-btblue {
+.z-buttons .z-btblue,
+.z-buttons .z-btblue:visited {
     color: #336699;
 }
 .z-buttons .z-btblue:hover {
@@ -918,7 +919,8 @@ div.z-formbuttons:after {
 * Colored button: Green
 *******************************************************************************/
 
-.z-buttons .z-btgreen {
+.z-buttons .z-btgreen,
+.z-buttons .z-btgreen:visited {
     color: #529214;
 }
 .z-buttons .z-btgreen:hover {
