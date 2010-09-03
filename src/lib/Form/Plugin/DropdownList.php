@@ -300,7 +300,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
             if ($this->selectionMode == 'single' && $value == $this->selectedValue) {
                 $selected = ' selected="selected"';
-            } else if ($this->selectionMode == 'multiple' && in_array($value, $this->selectedValue)) {
+            } else if ($this->selectionMode == 'multiple' && in_array($value, (array)$this->selectedValue)) {
                 $selected = ' selected="selected"';
             } else {
                 $selected = '';

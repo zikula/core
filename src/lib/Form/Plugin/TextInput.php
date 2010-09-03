@@ -324,14 +324,16 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         switch (strtolower($this->textMode)) {
             case 'singleline':
                 $result = "<input type=\"text\"{$idHtml}{$nameHtml}{$titleHtml}{$sizeHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
-                if ($this->mandatory && $this->mandatorysym)
+                if ($this->mandatory && $this->mandatorysym) {
                     $result .= '<span class="z-mandatorysym">*</span>';
+                }
                 break;
 
             case 'password':
                 $result = "<input type=\"password\"{$idHtml}{$nameHtml}{$titleHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
-                if ($this->mandatory && $this->mandatorysym)
+                if ($this->mandatory && $this->mandatorysym) {
                     $result .= '<span class="z-mandatorysym">*</span>';
+                }
                 break;
 
             case 'multiline':
