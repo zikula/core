@@ -191,7 +191,7 @@ function install()
                 $action = 'createadmin';
             }
             break;
-        case 'selecttheme':
+        case 'finish':
             if ((!$username) || preg_match('/[^\p{L}\p{N}_\.\-]/u', $username)) {
                 $action = 'createadmin';
                 $smarty->assign('uservalidatefailed', true);
@@ -278,13 +278,8 @@ function install()
 
                 // add admin email as site email
                 System::setVar('adminmail', $email);
-                if ($installbySQL) {
-                    $action = 'gotosite';
-                }
             }
-            if (!$installbySQL) {
-                break;
-            }
+            break;
             System::setVar('startpage', '');
             break;
         case 'gotosite':
