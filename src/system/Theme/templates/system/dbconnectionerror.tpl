@@ -79,7 +79,7 @@
                         <strong>If you are the website administrator...</strong><br/>
                         Zikula is unable to connect to your database. Please ensure your database access details are correct. Also, check to make sure your database is running correctly.<br />
                         <?php
-                        if (pnConfigGetVar('development')) {
+                        if (System::getVar('development')) {
                             echo('Error: ' . $e->getMessage());
                         }
                         ?>

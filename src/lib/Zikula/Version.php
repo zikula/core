@@ -67,7 +67,7 @@ class Zikula_Version implements ArrayAccess
      *
      * @var array
      */
-    protected $securityschema;
+    protected $securityschema = array();
 
     /**
      * Module dependencies.
@@ -202,11 +202,11 @@ class Zikula_Version implements ArrayAccess
         $meta['displayname'] = $this->displayname;
         $meta['url'] = $this->url;
         $meta['version'] = $this->version;
-        $meta['capabilities'] = $this->capabilities;
+        $meta['capabilities'] = serialize($this->capabilities);
         $meta['dependencies'] = $this->dependencies;
         $meta['type'] = $this->type;
         $meta['directory'] = $this->directory;
-        $meta['securityschema'] = $this->securityschema;
+        $meta['securityschema'] = serialize($this->securityschema);
         return $meta;
     }
 

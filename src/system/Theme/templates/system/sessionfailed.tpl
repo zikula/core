@@ -73,7 +73,7 @@
                         This website is experiencing temporary technical difficulties, refreshing the page may help.  If this problem persists please inform this website's owner about this problem.
                     </p>
                     <p>
-                        Please <em>do not contact</em> the Zikula team about this error, as it is specfic to this website because although this website is powered by the Zikula Application Framework, it is owned and managed independently by this website's administrator.
+                        Please <em>do not contact</em> the Zikula team about this error, as it is specific to this website because although this website is powered by the Zikula Application Framework, it is owned and managed independently by this website's administrator.
                     </p>
                     <p>
                         <strong>If you are the website administrator...</strong><br/>

@@ -72,11 +72,6 @@ function install()
         $$var = strip_tags(stripslashes(FormUtil::getPassedValue($var, '', 'GETPOST')));
     }
 
-    // check for an empty action - if so then show the first installer  page
-    if (empty($action)) {
-        $lang = 'en';
-    }
-
     // Power users might have moved the temp folder out of the root and changed the config.php
     // accordingly. Make sure we respect this security related settings
     $tempDir = (isset($GLOBALS['ZConfig']['System']['temp']) ? $GLOBALS['ZConfig']['System']['temp'] : 'ztemp');
@@ -104,6 +99,7 @@ function install()
     $GLOBALS['ZConfig']['System']['multilingual'] = true;
     $GLOBALS['ZConfig']['System']['languageurl'] = true;
     $GLOBALS['ZConfig']['System']['language_detect'] = false;
+    $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
 
     $_lang = ZLanguage::getInstance();
     $_lang->setup();
@@ -123,11 +119,12 @@ function install()
         $action = _forcelogin($action);
     }
 
-    if ($GLOBALS['ZConfig']['System']['installed'] && !isset($_GET['lang'])) { // need auth because Zikula is already installed.
+    if ($GLOBALS['ZConfig']['System']['installed'] && !isset($_GET['lang'])) {
+        // // need auth because Zikula is already installed.
         _installer_alreadyinstalled($smarty);
     }
 
-    // check for an empty action - if so then show the first installer  page
+    // check for an empty action - if so then show the first installer page
     if (empty($action)) {
         $action = 'lang';
     }
@@ -151,6 +148,7 @@ function install()
                 $smarty->assign(array('loginstate' => 'failed'));
             }
             break;
+
         case 'processBDInfo':
             $dbname = trim($dbname);
             $dbusername = trim($dbusername);
@@ -191,6 +189,7 @@ function install()
                 $action = 'createadmin';
             }
             break;
+
         case 'finish':
             if ((!$username) || preg_match('/[^\p{L}\p{N}_\.\-]/u', $username)) {
                 $action = 'createadmin';
@@ -282,6 +281,7 @@ function install()
             break;
             System::setVar('startpage', '');
             break;
+
         case 'gotosite':
             if (!$installbySQL) {
                 if (!class_exists('ThemeUtil')) {
@@ -441,20 +441,22 @@ function installmodules($lang = 'en')
     $em = EventUtil::getManager();
 
     $coremodules = array('Modules',
-			             'Settings',
-			             'Theme',
-			             'Admin',
-			             'Permissions',
-			             'Groups',
-			             'Blocks',
-			             'Users',
+			 'Settings',
+			 'Theme',
+			 'Admin',
+			 'Permissions',
+			 'Groups',
+			 'Blocks',
+			 'Users',
                         );
+
     // manually install the modules module
     foreach ($coremodules as $coremodule) {
         // sanity check - check if module is already installed
         if ($coremodule != 'Modules' && ModUtil::available($coremodule)) {
             continue;
         }
+
         $modpath = 'system';
         if (is_dir("$modpath/$coremodule/lib")) {
             ZLoader::addAutoloader($coremodule, "$modpath/$coremodule/lib");
@@ -493,13 +495,13 @@ function installmodules($lang = 'en')
     reset($coremodules);
 
     $coremodscat = array('Modules' => __('System'),
-		                 'Permissions' => __('Users'),
-		                 'Groups' => __('Users'),
-		                 'Blocks' => __('Layout'),
-		                 'Users' => __('Users'),
-		                 'Theme' => __('Layout'),
-		                 'Admin' => __('System'),
-		                 'Settings' => __('System'));
+		         'Permissions' => __('Users'),
+		         'Groups' => __('Users'),
+		         'Blocks' => __('Layout'),
+		         'Users' => __('Users'),
+		         'Theme' => __('Layout'),
+		         'Admin' => __('System'),
+		         'Settings' => __('System'));
 
     $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
     $modscat = array();
@@ -596,8 +598,13 @@ function _forcelogin($action = '')
             $dbh = new PDO("$connInfo[dbtype]:host=$connInfo[dbhost];dbname=$connInfo[dbname]", $dsnParts['user'], $dsnParts['pass']);
         } catch (PDOException $e) {
             header('HTTP/1.1 503 Service Unavailable');
-            include 'system/Theme/templates/system/dbconnectionerror.tpl';
-            self::shutDown();
+            $templateFile = 'dbconnectionerror.tpl';
+            if (file_exists("config/templates/$templateFile")) {
+                include "config/templates/$templateFile";
+            } else {
+                include "system/Theme/templates/system/$templateFile";
+            }
+            System::shutDown();
         }
 
         ServiceUtil::getManager()->getService('zikula')->init(System::STAGES_SESSIONS);
@@ -610,6 +617,7 @@ function _forcelogin($action = '')
             $action = 'login';
         }
     }
+
     return $action;
 }
 
@@ -626,5 +634,6 @@ function validateMail($mail)
     if (!preg_match('/^(?:[^\s\000-\037\177\(\)<>@,;:\\"\[\]]\.?)+@(?:[^\s\000-\037\177\(\)<>@,;:\\\"\[\]]\.?)+\.[a-z]{2,6}$/Ui', $mail)) {
         return false;
     }
+
     return true;
 }
