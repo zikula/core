@@ -202,11 +202,11 @@ class Zikula_Version implements ArrayAccess
         $meta['displayname'] = $this->displayname;
         $meta['url'] = $this->url;
         $meta['version'] = $this->version;
-        $meta['capabilities'] = serialize($this->capabilities);
+        $meta['capabilities'] = $this->capabilities;
         $meta['dependencies'] = $this->dependencies;
         $meta['type'] = $this->type;
         $meta['directory'] = $this->directory;
-        $meta['securityschema'] = serialize($this->securityschema);
+        $meta['securityschema'] = $this->securityschema;
         return $meta;
     }
 
