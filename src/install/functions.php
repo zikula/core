@@ -279,15 +279,12 @@ function install()
                 System::setVar('adminmail', $email);
             }
             break;
-            System::setVar('startpage', '');
-            break;
 
         case 'gotosite':
             if (!$installbySQL) {
                 if (!class_exists('ThemeUtil')) {
                     require_once 'lib/util/ThemeUtil.php';
                 }
-                System::setVar('Default_Theme', $defaulttheme);
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
             // set site status as installed and protect config.php file
