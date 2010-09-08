@@ -79,8 +79,8 @@ img.z-floatright {
 
 ul.z-menulinks {
     background: url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6; /*non-CSS3 browsers*/
-    background: -webkit-gradient(linear,left top, left bottom,from(#fefefe),to(#E6E6E6)); /*webkit*/
-    background: -moz-linear-gradient(top,#fefefe,#E6E6E6); /*gecko*/
+    background: -webkit-gradient(linear,left top, left bottom,from(#fefefe), to(#E6E6E6)); /*webkit*/
+    background: -moz-linear-gradient(top, #fefefe, #E6E6E6); /*gecko*/
     background: linear-gradient(#fefefe, #E6E6E6); /*CSS3*/
     border:1px solid #ccc;
     color:#aaa;
@@ -308,7 +308,7 @@ table.z-datatable ul {
     border-radius: 4px;
     background: #fafafa; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2)); /*webkit*/
-    background: -moz-linear-gradient(top,#fafafa,#f2f2f2); /*gecko*/
+    background: -moz-linear-gradient(top, #fafafa, #f2f2f2); /*gecko*/
     background: linear-gradient(#fafafa, #f2f2f2); /*CSS3*/
 }
 
@@ -537,7 +537,7 @@ div.z-formbuttons:after {
 .z-linear div.z-formrow textarea {
     display: block;
     width: 98%;
-    padding: 0.3em 0;
+    padding: 0.3em;
 }
 
 .z-linear div.z-formrow .z-listselector,
@@ -815,7 +815,7 @@ div.z-formbuttons:after {
     border-width: 1px;
     background: #f5f5f5; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)); /*webkit*/
-    background: -moz-linear-gradient(top,  #F5F5F5, #dedede); /*gecko*/
+    background: -moz-linear-gradient(top, #F5F5F5, #dedede); /*gecko*/
     background: linear-gradient(#F5F5F5, #dedede); /*CSS3*/
 }
 
@@ -844,7 +844,7 @@ div.z-formbuttons:after {
     text-decoration: none !important;
     background: #dedede; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)); /*webkit*/
-    background: -moz-linear-gradient(top,  #dedede, #F5F5F5); /*gecko*/
+    background: -moz-linear-gradient(top, #dedede, #F5F5F5); /*gecko*/
     background: linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
@@ -855,7 +855,7 @@ div.z-formbuttons:after {
     color: #000;
     background: #d0d0d0; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)); /*webkit*/
-    background: -moz-linear-gradient(top,  #d0d0d0, #f0f0f0); /*gecko*/
+    background: -moz-linear-gradient(top, #d0d0d0, #f0f0f0); /*gecko*/
     background: linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
@@ -880,14 +880,14 @@ div.z-formbuttons:after {
 .z-buttons .z-btred:hover {
     background: #fbc2c4;
     background: -webkit-gradient(linear, left top, left bottom, from(#fbc2c4), to(#fbe3e4));
-    background: -moz-linear-gradient(top,  #fbc2c4, #fbe3e4);
+    background: -moz-linear-gradient(top, #fbc2c4, #fbe3e4);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fbc2c4', endColorstr='#fbe3e4');
     border: 1px solid #EF7868;
 }
 .z-buttons .z-btred:active {
     background: #EFA4A7;
     background: -webkit-gradient(linear, left top, left bottom, from(#EFA4A7), to(#EFC2C5));
-    background: -moz-linear-gradient(top,  #EFA4A7, #EFC2C5);
+    background: -moz-linear-gradient(top, #EFA4A7, #EFC2C5);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EFA4A7', endColorstr='#EFC2C5');
     border: 1px solid #EF7868;
 }
@@ -903,14 +903,14 @@ div.z-formbuttons:after {
 .z-buttons .z-btblue:hover {
     background: #c2e1ef;
     background: -webkit-gradient(linear, left top, left bottom, from(#c2e1ef), to(#dff4ff));
-    background: -moz-linear-gradient(top,  #c2e1ef, #dff4ff);
+    background: -moz-linear-gradient(top, #c2e1ef, #dff4ff);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2e1ef', endColorstr='#dff4ff');
     border: 1px solid #6FA7DF;
 }
 .z-buttons .z-btblue:active {
     background: #A7CEDF;
     background: -webkit-gradient(linear, left top, left bottom, from(#A7CEDF), to(#C2E0EF));
-    background: -moz-linear-gradient(top,  #A7CEDF, #C2E0EF);
+    background: -moz-linear-gradient(top, #A7CEDF, #C2E0EF);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A7CEDF', endColorstr='#C2E0EF');
     border: 1px solid #6FA7DF;
 }
@@ -926,14 +926,14 @@ div.z-formbuttons:after {
 .z-buttons .z-btgreen:hover {
     background: #D1EFD2;
     background: -webkit-gradient(linear, left top, left bottom, from(#D1EFD2), to(#EFFFEF));
-    background: -moz-linear-gradient(top,  #D1EFD2, #EFFFEF);
+    background: -moz-linear-gradient(top, #D1EFD2, #EFFFEF);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#D1EFD2', endColorstr='#EFFFEF');
     border: 1px solid #A0DF61;
 }
 .z-buttons .z-btgreen:active {
     background-color:#C2EFC3;
     background: -webkit-gradient(linear, left top, left bottom, from(#C2EFC3), to(#D1EFD1));
-    background: -moz-linear-gradient(top,  #C2EFC3, #D1EFD1);
+    background: -moz-linear-gradient(top, #C2EFC3, #D1EFD1);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#C2EFC3', endColorstr='#D1EFD1');
     border: 1px solid #A0DF61;
 }
@@ -1148,7 +1148,7 @@ div.z-formbuttons:after {
     background: #ddd; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /* for IE */
     background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /* webkit */
-    background: -moz-linear-gradient(top,  #fff,  #cfcfcf); /* for firefox 3.6+ */
+    background: -moz-linear-gradient(top, #fff, #cfcfcf); /* for firefox 3.6+ */
     border: solid 1px #b4b4b4;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1229,7 +1229,7 @@ div.z-formbuttons:after {
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
     background: #DDDDDD;
-    background: -moz-linear-gradient(center top , #ddd, #F2F2F2) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(center top, #ddd, #F2F2F2) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear,left top, left bottom,from(#ddd),to(#f2f2f2));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#f2f2f2');
 }
