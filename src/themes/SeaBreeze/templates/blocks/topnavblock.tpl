@@ -2,4 +2,4 @@
 <div id="navi" class="z-clearer">
     {$content}
 </div>
-<!--  End Top Navigation Block  -->
+<!-- End Top Navigation Block -->

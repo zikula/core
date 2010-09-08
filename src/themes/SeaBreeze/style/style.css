@@ -49,7 +49,7 @@ body {
 .onecol #wrapper,
 .noleftcol #pagewidth,
 .norightcol #wrapper
-    {
+{
     background-image: none;
 }
 
@@ -65,7 +65,7 @@ body {
 
 #footer {
     background: #ffffff url(../images/bottombg.png) repeat-x top;
-    font: 11px Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
     color: #000000;
     padding: 5px;
     margin: 0 auto;
@@ -73,7 +73,7 @@ body {
     text-align: center;
 }
 
-/*printer styles*/
+/* Printer styles */
 @media print { /*hide the left column when printing*/
     #leftcol {
         display: none;
@@ -91,7 +91,7 @@ body {
 
 /*STYLING THE FORMS AND INPUT */
 .button {
-    font: 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 11px;
     background-color: #D7E5F2;
     color: #102132;
     margin-left: 12px;
@@ -129,22 +129,9 @@ input {
 }
 
 input,
-input.z-text,
-input.z-button,
-textarea,
-textarea.z-text {
+textarea {
     margin: 5px 0;
     padding: 1px 6px;
-}
-
-input.z-button {
-    border-collapse: collapse;
-}
-
-input.r-button {
-    font-size: 10pt;
-    color: #000000;
-    background: none;
 }
 
 input:hover,
@@ -159,85 +146,47 @@ textarea:focus {
     border-color: #8DC741;
 }
 
-.sbRightBlock input:focus {
-    background-color: #FFF;
-}
-
-/* Temporary fix for old modules in standards browsers */
-table[border="1"],
-table[border="2"],
-table[border="3"] {
-    border: 0px;
-    border-collapse: collapse;
-    margin-bottom: 15px;
-}
-
-table[border="1"] td,
-table[border="1"] th,
-table[border="2"] td,
-table[border="2"] th,
-table[border="3"] td,
-table[border="3"] th
-    {
-    text-align: left;
-    border: 2px solid #4C5EA8;
-    margin: 0px;
-    padding: 3px 0.5em;
-}
-
-table[border="1"] th,
-table[border="2"] th,
-table[border="3"] th {
-    font-size: 11px;
-    background-color: #EBF2FD;
-    text-align: center;
-}
-
-/*  IE hacks, "* html" style only read by IE, as it selects nothing */
-    /*
-IE6 only uses the standard W3C Boxmodel in CSS1Compat mode, which requires a full Doctype declaration with Label and URL to the Dtd.
-It defaults to BackCompat mode, which works like previous versions of IE.
-*/
-* html #LeftCol {
-    width: 155px; /* IE 5.x uses non-standard Box Model */
-    wid\th: 140px;
-    /* IE 6 can uses W3C Standard box model (in CSS1Compat mode), IE 5.x chokes on escape character */
-}
-
-#CenterCol {
-    padding: 15px 15px 15px 0px;
-    vertical-align: top;
-    text-align: left;
-}
-
-#box_content {
-    display: block;
-    background: #fff;
-    border: 0 solid #fff;
-    padding: 0 10px;
-}
-
 #header {
     width: 100%;
     height: 100px;
-    clear: both;
     background-color: #ffffff;
     background-image: url("../images/content_bkg.gif");
+    position: relative;
 }
 
-#header .logotop {
-    padding-top: 7px;
-    padding-left: 20px;
+#header h1 {
+    margin:0 0 0 20px;
+    padding:0;
+}
+
+#header h1 a {
+    color:#CC6600;
+    font-size:30px;
+    font-weight:bold;
+    letter-spacing:1pt;
+    text-decoration:none;
+}
+
+#header h1 a:hover {
+    color: #333;
+}
+
+#theme_search .theme_search_input {
+    margin:0;
+    padding:2px 4px;
+}
+
+#theme_search .theme_search_button {
+    margin:0;
+    padding:1px 6px;
 }
 
 #topmenu {
-    margin: 0px;
-    padding: 8px;
-    padding-left: 16px;
-    padding-right: 16px;
-    text-align: center;
-    vertical-align: middle;
-    clear: both;
+    clear:both;
+    margin:0;
+    padding:4px;
+    text-align:center;
+    vertical-align:middle;
 }
 
 #topmenu a {
@@ -253,14 +202,13 @@ It defaults to BackCompat mode, which works like previous versions of IE.
     clear: both;
 }
 
-/* navigation top */ /*Tab Start */
+/* Navigation top */
 #navi {
-    height: 25px;
+    bottom: 7px;
     left: 20px;
     line-height: normal;
     position: absolute;
     text-align: center;
-    top: 100px;
 }
 
 #nav {
@@ -309,12 +257,12 @@ It defaults to BackCompat mode, which works like previous versions of IE.
     text-decoration: underline;
 }
 
-/* footer area */
+/* Footer area */
 #footer p,
 #footer a,
 #footer a:visited {
     color: #000000;
-    font: 11px Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
     text-decoration: none;
 }
 
@@ -323,28 +271,24 @@ It defaults to BackCompat mode, which works like previous versions of IE.
     text-decoration: underline;
 }
 
-/* alignments */
-.center {
-    text-align: center;
-}
-
 /* Center blocks and admin messages */
-div#CenterBlocks {
-    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    font-size-adjust: none;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: normal;
+.z-blockposition-center {
+    background: #FEFEFE; /*non-CSS3 browsers*/
+    background: -webkit-gradient(linear,left top, left bottom,from(#FEFEFE),to(#F0F0F0)); /*webkit*/
+    background: -moz-linear-gradient(top,#FEFEFE, #F0F0F0); /*gecko*/
+    background: linear-gradient(#FEFEFE, #F0F0F0); /*CSS3*/
+    border:1px solid #999999;
+    font-size:12px;
+    margin:10px 0;
+    padding:10px;
 }
 
-#CenterBlocks .z-title {
-    font: bold 14px Verdana, Tahoma, Arial, Helvetica, sans-serif;
-    color: #CC6600; /*#4C5EA8; #006699 #003366;*/
-}
-
-#CenterBlocks td,#CenterBlocks div {
-    margin-bottom: 15px;
+.z-blockposition-center h3 {
+    color:#CC6600;
+    font-size:14px;
+    font-weight:bold;
+    margin:0.5em 0;
+    padding:0;
 }
 
 a img,
@@ -372,7 +316,6 @@ a:active {
 }
 
 #sidebar ul li {
-    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
     font-weight: normal;
     border: 0;
     text-align: left;
@@ -390,7 +333,6 @@ a:active {
     padding-left: 0;
     list-style-type: none;
     text-decoration: none;
-    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
 }
 
 #sidebar ul  a {
@@ -418,20 +360,9 @@ a:active {
     text-decoration: none;
 }
 
-/* Titles */
-.z-title {
-    font: bold 14px/ 150% Verdana, Helvetica, Arial, sans-serif;
-    color: #CC6600;
-    text-align: center;
-    text-decoration: none;
-    background: none;
-    margin-top: 0.5em;
-    margin-bottom: 6px;
-}
-
-h1,
-h1.z-pagetitle {
-    font: bold 22px/ 160% Verdana, Helvetica, Arial, sans-serif;
+h1 {
+    font-size: 22px;
+    font-weight: bold;
     color: #F8981D;
     text-decoration: none;
     letter-spacing: 1pt;
@@ -440,23 +371,15 @@ h1.z-pagetitle {
     margin-bottom: 20px;
 }
 
-h1.title {
-    font: bold 30px/ 190% Verdana, Helvetica, Arial, sans-serif;
-    color: #990000;
-    text-decoration: none;
-    letter-spacing: 1pt;
-    margin-left: 18px;
-}
-
-h2,
-h2.z-title {
-    font: bold 18px Verdana, Helvetica, Arial, sans-serif;
+h2 {
+    font-size: 18px;
+    font-weight: bold;
     color: #656567;
 }
 
-h3,
-h3.z-title {
-    font: bold 14px Verdana, Helvetica, Arial, sans-serif;
+h3 {
+    font-size: 16px;
+    font-weight: bold;
     color: #999999;
     text-decoration: none;
     background: none;
@@ -466,8 +389,7 @@ h3.z-title {
     line-height: 130%;
 }
 
-h4,
-h4.z-title {
+h4 {
     font-size: 14px;
     line-height: 130%;
     font-weight: bold;
@@ -477,46 +399,6 @@ h4.z-title {
     text-decoration: none;
 }
 
-td.z-title {
-    font: bold 14px/ 150% Verdana, Helvetica, sans-serif;
-    color: #4C5EA8;
-    text-decoration: none;
-    background: none;
-}
-
-a.z-title {
-    font-weight: bold;
-    color: #8DC741;
-    text-decoration: underline;
-    background: none;
-}
-
-span.z-title,
-a.z-title:link,
-a.z-title:visited {
-    color: #4C5EA8;
-    text-decoration: underline;
-}
-
-a.z-title:hover {
-    color: #CC6600;
-    text-decoration: underline;
-}
-
-a.z-title:active {
-    color: #FF9900;
-    text-decoration: underline;
-}
-
-/* used in /templates/modules/News/newsuserdisplay.htm */
-.z-art {
-    font: 10pt/ 1.5em Verdana, Helvetica, Arial, sans-serif;
-    color: #191919;
-    background: none;
-    text-decoration: none;
-}
-
-/* "More" and "Posted by" text */
 .sb-sub {
     font: 10px Verdana, Helvetica, Arial, sans-serif;
     color: #999999;
@@ -540,85 +422,20 @@ a.sb-sub:active {
     color: #FF9900;
 }
 
-/* News articles */
-.ArticleBlock {
-    margin-bottom: 0.8em;
-}
-
-.ArticleHead {
-    margin-bottom: 6px;
-}
-
-.Article {
-    background: white;
-    line-height: 1.3em;
-}
-
-.storytitle,
-z-storytitle {
-    font-size: 12px;
-    line-height: 130%;
-    font-weight: bold;
-    color: #4C5EA8;
-    margin-top: 1em;
-    margin-bottom: 3px;
-    text-decoration: none;
-}
-
-h4.storytitle img { /* align Article image */
-    margin-bottom: -5px;
-}
-
-div.sb-sub img { /* Print this and Email this images */
-    margin-bottom: -3px;
-}
-
-.note {
-    margin-bottom: 1.2em;
-}
-
-/* News title links */
-h4.storytitle {
-    font-size: 12px;
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-h4.storytitle a:link,
-h4.storytitle a:visited {
-    color: #4C5EA8;
-}
-
-h4.storytitle a:hover,
-h4.storytitle a:active {
-    color: #CC6600;
-}
-
-/* Block titles */
-h4.blocktitle,
-h4.BlockTitleRight,
-#CenterBlocks h4.z-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #CC6600;
-    margin-bottom: 3px;
-}
-
 /* Block styles */
-.sbLeftBlock {
-    width: 100%; /* 150-6px */
+.z-blockposition-left {
+    width: 100%;
     padding: 3px;
 }
 
-.sbRightBlock {
-    width: 95%; /* 150-6px */
-    padding: 10px 0px 5px 10px; /*top right bottom left */
+.z-blockposition-right {
+    width: 95%;
+    padding: 10px 0px 5px 10px;
     margin-bottom: 5px;
     margin-right: 0px;
 }
 
-.sbRightBlock ul li {
-    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+.z-blockposition-right ul li {
     font-size: 12px;
     font-weight: normal;
     text-align: left;
@@ -627,29 +444,28 @@ h4.BlockTitleRight,
     text-decoration: none;
 }
 
-.sbRightBlock ul ul ul.children {
+.z-blockposition-right ul ul ul.children {
     padding-left: 4px;
 }
 
-.sbRightBlock ul {
+.z-blockposition-right ul {
     margin-left: 0;
     padding-left: 0;
     list-style-type: none;
     text-decoration: none;
-    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
 }
 
-.sbRightBlock a {
+.z-blockposition-right a {
     color: #000000;
     text-decoration: none;
 }
 
-.sbRightBlock a:link,
-.sbRightBlock a:visited {
+.z-blockposition-right a:link,
+.z-blockposition-right a:visited {
     text-decoration: none;
 }
 
-.sbRightBlock a:hover {
+.z-blockposition-right a:hover {
     color: #C45915;
     text-decoration: none;
 }
@@ -663,34 +479,15 @@ h4.BlockTitleRight,
 
 .sbright {
     float: right;
-    /*    clear: right; */
     text-align: right;
 }
 
-/* News topic image styles */
-.TopicImage,
-.TopicImageLeft {
-    float: left;
-    vertical-align: top;
-    margin-left: -2px;
-    margin-right: 6px;
-    margin-top: 3px;
-    margin-bottom: 4px;
-}
-
-.TopicImageRight {
-    float: right;
-    vertical-align: top;
-    margin-left: 6px;
-    margin-right: -2px;
-    margin-top: 3px;
-    margin-bottom: 4px;
-}
-
-/* Other Stuff */
-.feeds-image {
-    float: left;
-    padding: 10px;
+#z-maincontent {
+    list-style-type: none;
+    display: block;
+    background: #fff;
+    border: 0 solid #fff;
+    margin:10px 0;
 }
 
 #z-maincontent p {
@@ -698,23 +495,9 @@ h4.BlockTitleRight,
     line-height: 1.5em;
 }
 
-#z-maincontent {
-    padding-top: 10px;
-    list-style-type: none;
-    text-decoration: none;
-}
-
 #z-maincontent ul {
     margin-left: 0;
     padding-left: 0;
     list-style-type: none;
     text-decoration: none;
-}
-
-div#z-maincontent a#news_notes_collapse {
-    padding-bottom: 0em;
-}
-
-.admin_messages_block {
-    margin-top: 1em;
 }
