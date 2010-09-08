@@ -1,9 +1,9 @@
 <div id="topmenu" class="sb-sub z-clearfix">
-    <span class="sbleft">{userwelcome|ucwords}</span>
-    <span class="sbright">&nbsp;</span>
+    <div class="sbleft">{userwelcome|ucwords}</div>
+    <div class="sbright">{blockposition name=search}</div>
 </div>
 <div id="header" class="z-clearfix">
-    <h1 class="title"><a href="{homepage}">{sitename}</a></h1>
+    <h1><a href="{homepage}">{sitename}</a></h1>
     <div id="navi" class="z-clearer">
         <ul id="nav">
             <li class="page_item">

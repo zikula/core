@@ -1,8 +1,8 @@
 <!-- Start Right Side Block -->
-<div class="sbRightBlock">
-    {if $title neq ''}
-    <h2>{$title}</h2>
-    {/if}
+{if !empty($title) }
+<h3 class="blocktitle">{$title}</h3>
+{/if}
+<div class="sbRightContent">
     {$content}
 </div>
-<!--  End Right Block  -->
+<!-- End Right Block -->

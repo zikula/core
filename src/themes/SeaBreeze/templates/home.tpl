@@ -8,12 +8,11 @@
                 <div id="leftcol">
                     <div id="sidebar">
                         {blockposition name=left}
-                        {blockposition name=search}
                      </div>
                 </div>
                 <div id="maincol">
-                    <div id="CenterBlocks">{blockposition name=center}</div>
-                    <div id="box_content">{$maincontent}</div>
+                    {blockposition name=center}
+                    {$maincontent}
                 </div>
                 <div id="rightcol">{blockposition name=right}</div>
             </div>

@@ -87,6 +87,7 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
     height: 110px;
     margin: 0 1px 1px 1px;
     background: #467aa7;
+    overflow: hidden;
 }
 
 #theme_header h1 {
@@ -111,10 +112,11 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
 }
 
 #theme_navigation_bar {
-    height: 2.2em;
-    line-height: 2.2em;
+    background: #578BB8;
+    height: 26px;
+    line-height: 26px;
     margin: 0 1px;
-    background: #578bb8;
+    overflow: hidden;
 }
 
 #theme_navigation_bar li {
@@ -139,12 +141,53 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
 * html #theme_navigation_bar a {
     width: 1%;
 }
- /* this hack targets IE<7 */
+/* this hack targets IE<7 */
 #theme_navigation_bar .selected, #theme_navigation_bar a:hover {
     background: #80b0da;
     color: #ffffff;
     text-decoration: none;
 }
+
+
+#theme_search{
+    background: #467AA7;
+    margin: 0;
+    padding: 0;
+}
+#theme_search .theme_search_input {
+    background: #467AA7;
+    border: none;
+    border-left: 1px solid #fff;
+    color: #FFFFFF;
+    float: left;
+    font-size: 13px;
+    margin: 0;
+    padding: 5px;
+}
+
+#theme_search .theme_search_input:hover,
+#theme_search .theme_search_input:focus,
+#theme_search .theme_search_input:active {
+    background: #27587F;
+}
+
+#theme_search .theme_search_button {
+    background: #467AA7;
+    border: none;
+    border-left: 1px solid #fff;
+    color: #FAFAFA;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px;
+    text-transform: uppercase;
+}
+#theme_search .theme_search_button:hover {
+    background: #27587F;
+    text-shadow: 1px 1px 2px #333;
+}
+
 
 /**************** Content styles ****************/
 #theme_content {

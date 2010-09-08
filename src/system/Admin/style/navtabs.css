@@ -37,7 +37,7 @@ ul#admintabs li > a:hover {
 }
 
 ul#admintabs li.active {
-    background:none repeat scroll 0 0 #fff;
+    background:none repeat scroll 0 0 #fff !important;
     border-bottom:1px solid #fff;
     z-index:2000;
 }
@@ -124,10 +124,11 @@ ul#admintabs #ajaxNewCatForm a.ajaxCatImage img {
 }
 
 #control_contextmenu {
-    background: #ddd; /* for non-css3 browsers */
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /* for IE */
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #fff,  #cfcfcf); /* for firefox 3.6+ */
+    background: #ddd; /*non-CSS3 browsers*/
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /*IE*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /*webkit*/
+    background: -moz-linear-gradient(top,  #fff,  #cfcfcf); /*gecko*/
+    background: linear-gradient(top,  #fff,  #cfcfcf); /*CSS3*/
     border: solid 1px #b4b4b4;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;

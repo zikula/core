@@ -6,7 +6,7 @@
         <div id="pagewidth">
             <div id="wrapper" class="z-clearfix">
                 <div id="maincol">
-                    <div id="box_content">{$maincontent}</div>
+                    {$maincontent}
                 </div>
             </div>
         </div>
