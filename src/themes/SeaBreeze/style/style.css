@@ -1,3 +1,7 @@
+/******************************************************************************
+* Formatting
+*******************************************************************************/
+
 body {
     font: 12px/ 140% Verdana, Tahoma, Arial, Helvetica, sans-serif;
     color: #333333;
@@ -6,90 +10,51 @@ body {
     padding: 0px;
 }
 
-/* *** Page Layout *** */
-#pagewidth {
-    width: 100%;
-    text-align: left;
-    margin: 0 auto;
-    background-image: url(../images/fc_left.png);
-    background-position: 20% 0;
-    background-repeat: repeat-y;
+h1, h2, h3, h4 {
+    font-weight:bold;
+    margin: 14px 0;
+    padding: 0;
+    line-height: 130%;
 }
 
-#wrapper {
-    background-image: url(../images/fc_right.png);
-    background-position: 80% 0;
-    background-repeat: repeat-y;
-    padding-bottom: 2em;
+h1 {
+    color: #F8981D;
+    font-size: 22px;
+    letter-spacing: 1pt;
 }
 
-#leftcol {
-    float: left;
-    overflow: hidden;
-    position: relative;
-    width: 20%;
+h2 {
+    color: #555555;
+    font-size: 18px;
 }
 
-#rightcol {
-    float: right;
-    position: relative;
-    width: 20%;
+h3 {
+    color: #656565;
+    font-size: 16px;
 }
 
-#maincol {
-    display: inline;
-    float: left;
-    margin-bottom: 20px;
-    margin-left: 1%;
-    position: relative;
-    width: 58%;
+h4 {
+    color: #8DC741;
+    font-size: 14px;
 }
 
-.onecol #pagewidth,
-.onecol #wrapper,
-.noleftcol #pagewidth,
-.norightcol #wrapper
-{
-    background-image: none;
+a img, img {
+    border: 0px;
 }
 
-.noleftcol #maincol,
-.norightcol #maincol {
-    width: 78%;
+a:link, a:visited {
+    color: #4C5EA8;
+    text-decoration: none;
 }
 
-.onecol #maincol {
-    float: none;
-    width: auto;
+a:hover, a:active {
+    color: #8CC63F;
 }
 
-#footer {
-    background: #ffffff url(../images/bottombg.png) repeat-x top;
-    font-size: 11px;
-    color: #000000;
-    padding: 5px;
-    margin: 0 auto;
-    position: relative;
-    text-align: center;
-}
+/******************************************************************************
+* Theme styling for forms and input
+*******************************************************************************/
 
-/* Printer styles */
-@media print { /*hide the left column when printing*/
-    #leftcol {
-        display: none;
-    }
-    /*hide the right column when printing*/
-    #rightcol {
-        display: none;
-    }
-    #twocols,
-    #maincol {
-        width: 100%;
-        float: none;
-    }
-}
-
-/*STYLING THE FORMS AND INPUT */
 .button {
     font-size: 11px;
     background-color: #D7E5F2;
@@ -99,8 +64,7 @@ body {
     margin-bottom: 2px;
 }
 
-select,
-select.z-text {
+select {
     background-color: #f3f3f3;
     color: #999999;
 }
@@ -146,6 +110,83 @@ textarea:focus {
     border-color: #8DC741;
 }
 
+/******************************************************************************
+* Page Layout
+*******************************************************************************/
+
+#pagewidth {
+    width: 100%;
+    text-align: left;
+    margin: 0 auto;
+    background-image: url(../images/fc_left.png);
+    background-position: 20% 0;
+    background-repeat: repeat-y;
+}
+
+#wrapper {
+    background-image: url(../images/fc_right.png);
+    background-position: 80% 0;
+    background-repeat: repeat-y;
+    padding-bottom: 20px;
+}
+
+#leftcol {
+    float: left;
+    overflow: hidden;
+    position: relative;
+    width: 20%;
+}
+
+#rightcol {
+    float: right;
+    position: relative;
+    width: 20%;
+}
+
+#maincol {
+    display: inline;
+    float: left;
+    margin-bottom: 20px;
+    margin-left: 1%;
+    position: relative;
+    width: 58%;
+}
+
+.onecol #pagewidth,
+.onecol #wrapper,
+.noleftcol #pagewidth,
+.norightcol #wrapper {
+    background-image: none;
+}
+
+.noleftcol #maincol,
+.norightcol #maincol {
+    width: 78%;
+}
+
+.onecol #maincol {
+    float: none;
+    width: auto;
+}
+
+/******************************************************************************
+* Topline
+*******************************************************************************/
+
+#topline {
+    font-size: 10px;
+    color: #999;
+    clear: both;
+    margin: 0;
+    padding: 4px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/******************************************************************************
+* Header
+*******************************************************************************/
+
 #header {
     width: 100%;
     height: 100px;
@@ -171,38 +212,20 @@ textarea:focus {
     color: #333;
 }
 
-#theme_search .theme_search_input {
+#header #theme_search .theme_search_input {
     margin:0;
     padding:2px 4px;
 }
 
-#theme_search .theme_search_button {
+#header #theme_search .theme_search_button {
     margin:0;
     padding:1px 6px;
 }
 
-#topmenu {
-    clear:both;
-    margin:0;
-    padding:4px;
-    text-align:center;
-    vertical-align:middle;
-}
+/******************************************************************************
+* Navigation top
+*******************************************************************************/
 
-#topmenu a {
-    text-decoration: none;
-}
-
-#bottomMenu {
-    font-size: 10px;
-    text-align: center;
-    background-color: #DFE5FF;
-    margin: 0px;
-    padding: 3px 0;
-    clear: both;
-}
-
-/* Navigation top */
 #navi {
     bottom: 7px;
     left: 20px;
@@ -257,7 +280,75 @@ textarea:focus {
     text-decoration: underline;
 }
 
-/* Footer area */
+/******************************************************************************
+* Left(!) Sidebar
+*******************************************************************************/
+
+#leftcol #sidebar {
+    color: #999999;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#leftcol #sidebar ul li {
+    font-weight: normal;
+    border: 0;
+    text-align: left;
+    padding-left: 0;
+    margin-left: 0;
+    text-decoration: none;
+}
+
+#leftcol #sidebar ul ul ul.children {
+    padding-left: 4px;
+}
+
+#leftcol #sidebar ul {
+    margin-left: 0;
+    padding-left: 0;
+    list-style-type: none;
+    text-decoration: none;
+}
+
+#leftcol #sidebar ul a {
+    color: #000000;
+    background-image: url("../images/icon.gif");
+    padding: 3px;
+    padding-left: 17px;
+    background-repeat: no-repeat;
+    background-position: 0 55%;
+    text-decoration: none;
+}
+
+#leftcol #sidebar ul.navlist a {
+    display: block;
+}
+
+#leftcol #sidebar ul a:link,
+#leftcol #sidebar ul a:visited {
+    text-decoration: none;
+}
+
+#leftcol #sidebar ul a:hover {
+    background-image: url("../images/icon2.gif");
+    color: #C45915;
+    text-decoration: none;
+}
+
+/******************************************************************************
+* Footer
+*******************************************************************************/
+
+#footer {
+    background: #ffffff url(../images/bottombg.png) repeat-x top;
+    font-size: 11px;
+    color: #000000;
+    padding: 5px;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+}
+
 #footer p,
 #footer a,
 #footer a:visited {
@@ -271,7 +362,10 @@ textarea:focus {
     text-decoration: underline;
 }
 
-/* Center blocks and admin messages */
+/******************************************************************************
+* Blocks
+*******************************************************************************/
+
 .z-blockposition-center {
     background: #FEFEFE; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear,left top, left bottom,from(#FEFEFE),to(#F0F0F0)); /*webkit*/
@@ -291,138 +385,16 @@ textarea:focus {
     padding:0;
 }
 
-a img,
-img {
-    border: 0px;
+.z-blockposition-left h3,
+.z-blockposition-right h3 {
+    color:#656565;
+    font-size:14px;
+    font-weight:bold;
+    line-height:130%;
+    margin:10px 0;
+    padding:0;
 }
 
-/* Anchor styles */
-a:link,
-a:visited {
-    color: #4C5EA8;
-    text-decoration: none;
-}
-
-a:hover,
-a:active {
-    color: #8CC63F;
-}
-
-/* ----------  side bar rollovers ------- */
-#sidebar {
-    color: #999999;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-#sidebar ul li {
-    font-weight: normal;
-    border: 0;
-    text-align: left;
-    padding-left: 0;
-    margin-left: 0;
-    text-decoration: none;
-}
-
-#sidebar ul ul ul.children {
-    padding-left: 4px;
-}
-
-#sidebar ul {
-    margin-left: 0;
-    padding-left: 0;
-    list-style-type: none;
-    text-decoration: none;
-}
-
-#sidebar ul  a {
-    color: #000000;
-    background-image: url("../images/icon.gif");
-    padding: 3px;
-    padding-left: 17px;
-    background-repeat: no-repeat;
-    background-position: 0 55%;
-    text-decoration: none;
-}
-
-#sidebar ul.navlist a {
-    display: block;
-}
-
-#sidebar ul a:link,
-#sidebar ul a:visited {
-    text-decoration: none;
-}
-
-#sidebar ul a:hover {
-    background-image: url("../images/icon2.gif");
-    color: #C45915;
-    text-decoration: none;
-}
-
-h1 {
-    font-size: 22px;
-    font-weight: bold;
-    color: #F8981D;
-    text-decoration: none;
-    letter-spacing: 1pt;
-    background: none;
-    margin-top: 0.3em;
-    margin-bottom: 20px;
-}
-
-h2 {
-    font-size: 18px;
-    font-weight: bold;
-    color: #656567;
-}
-
-h3 {
-    font-size: 16px;
-    font-weight: bold;
-    color: #999999;
-    text-decoration: none;
-    background: none;
-    margin-top: 3px;
-    margin-bottom: 6px;
-    padding: 6px 0;
-    line-height: 130%;
-}
-
-h4 {
-    font-size: 14px;
-    line-height: 130%;
-    font-weight: bold;
-    color: #8DC741;
-    margin-top: 1em;
-    margin-bottom: 3px;
-    text-decoration: none;
-}
-
-.sb-sub {
-    font: 10px Verdana, Helvetica, Arial, sans-serif;
-    color: #999999;
-}
-
-a.sb-sub:link {
-    color: #666666;
-    text-decoration: underline;
-    background: none;
-}
-
-a.sb-sub:visited {
-    color: #4C5EA8;
-}
-
-a.sb-sub:hover {
-    color: #CC6600;
-}
-
-a.sb-sub:active {
-    color: #FF9900;
-}
-
-/* Block styles */
 .z-blockposition-left {
     width: 100%;
     padding: 3px;
@@ -470,34 +442,46 @@ a.sb-sub:active {
     text-decoration: none;
 }
 
-/* General*/
-.sbleft {
-    vertical-align: middle;
-    float: left;
-    text-align: left;
-}
-
-.sbright {
-    float: right;
-    text-align: right;
-}
+/******************************************************************************
+* Module main content
+*******************************************************************************/
 
 #z-maincontent {
-    list-style-type: none;
     display: block;
     background: #fff;
-    border: 0 solid #fff;
-    margin:10px 0;
+    margin: 10px 0;
 }
 
 #z-maincontent p {
-    font-size: 12px;
-    line-height: 1.5em;
+    line-height: 160%;
+    margin: 12px 0;
 }
 
 #z-maincontent ul {
-    margin-left: 0;
-    padding-left: 0;
-    list-style-type: none;
-    text-decoration: none;
+    margin: 14px 0;
+    padding: 0 0 0 20px;
+}
+
+#z-maincontent ul li {
+    margin: 4px 0;
+    padding: 0;
+}
+
+/******************************************************************************
+* Printer styles
+*******************************************************************************/
+
+@media print { /*hide the left column when printing*/
+    #leftcol {
+        display: none;
+    }
+    /*hide the right column when printing*/
+    #rightcol {
+        display: none;
+    }
+    #twocols,
+    #maincol {
+        width: 100%;
+        float: none;
+    }
 }
