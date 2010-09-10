@@ -38,6 +38,11 @@ h4 {
     font-size: 14px;
 }
 
+h5 {
+    color: #545454;
+    font-size: 12px;
+}
+
 a img, img {
     border: 0px;
 }
@@ -387,7 +392,7 @@ textarea:focus {
 
 .z-blockposition-left h3,
 .z-blockposition-right h3 {
-    color:#656565;
+    color:#444;
     font-size:14px;
     font-weight:bold;
     line-height:130%;
@@ -428,7 +433,7 @@ textarea:focus {
 }
 
 .z-blockposition-right a {
-    color: #000000;
+    color: #4C5EA8;
     text-decoration: none;
 }
 
@@ -458,12 +463,35 @@ textarea:focus {
 }
 
 #z-maincontent ul {
-    margin: 14px 0;
-    padding: 0 0 0 20px;
+    margin: 14px 0 14px 7px;
+    padding: 0;
+    list-style: square;
 }
 
-#z-maincontent ul li {
-    margin: 4px 0;
+#z-maincontent ol {
+    margin: 14px 0 14px 7px;
+    padding: 0;
+    list-style: decimal;
+}
+
+#z-maincontent li {
+    margin: 0 0 7px 21px;
+    padding: 0;
+}
+
+#z-maincontent dl {
+    margin: 14px 0 14px 7px;
+    padding: 0;
+}
+
+#z-maincontent dt {
+    font-weight: bold;
+    margin: 0 0 7px 0;
+    padding: 0;
+}
+
+#z-maincontent dd {
+    margin: 0 0 7px 21px;
     padding: 0;
 }
 
