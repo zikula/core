@@ -103,7 +103,7 @@ a {
 	/* States and Images */
 
 .ui-icon { 
-	background-image:url(images/icons-blue.png);
+	background-image:url(images/icons-red.png);
 }
 
 .ui-widget-header .ui-icon {
@@ -204,28 +204,25 @@ a:hover, .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited
 	outline:none;
 	text-decoration:none;
 }
-
-	/* SIDEBAR */
+/* SIDEBAR */
 
 #page_wrapper #sidebar {
 	right:0;
 }
-
 #sidebar-left #page_wrapper #sidebar {
 	left:-11px;
 	right:auto;
 }
-	/* PAGE CONTENT */
-
-#page_wrapper #page-content #page-content-wrapper, .ui-dialog {
-	background:#000;
+#page_wrapper #page-content #page-content-wrapper{
+	background:#f2f2f2;
 }
-
 #page_wrapper #page-content #page-content-wrapper {
-	background:#eee url('images/sidebar-bg.png') right top repeat-y;
-}
-
+	background:#f2f2f2 url('images/sidebar-bg.png') right top repeat-y;
+	}
+#sidebar .sidebar-content {
+	background:#f2f2f2 url('images/sidebar-bg.png') right top repeat-y;
+	}
 #sidebar-left #page_wrapper #page-content #page-content-wrapper {
-	background:#eee url('images/sidebar-bg-left.png') left top repeat-y;
+	background:#f2f2f2 url('images/sidebar-bg-left.png') left top repeat-y;
 	padding-left:202px;
 }
