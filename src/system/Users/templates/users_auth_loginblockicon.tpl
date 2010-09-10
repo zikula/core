@@ -1,1 +1,1 @@
-<a id="users_block_loginwith_Users" class="users_block_loginwith"  href="{getcurrenturi loginwith='Users'}">{img modname='core' set='icons' src='small/user.png' __alt='Web site account' __title='Web site account'}</a>
+<a id="users_block_loginwith_Users" class="users_block_loginwith" href="{getcurrenturi loginwith='Users'}">{img modname='core' set='icons' src='small/user.png' __alt='Web site account' __title='Web site account'}</a>

@@ -2,10 +2,10 @@
     <div>
         <input type="hidden" name="url" value="{$returnurl|safetext}" />
         <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users"}" />
-        <input id="users_authmodule" type="hidden" name="authmodule" value="{$authmodule}" />
+        <input type="hidden" name="authmodule" value="{$authmodule}" id="users_authmodule" />
 
-        <fieldset>
-            {modfunc modname=$authmodule type='auth' func='loginBlockFields' assign='loginblockfields'}
+        {modfunc modname=$authmodule type='auth' func='loginBlockFields' assign='loginblockfields'}
+        <div class="users_block_box">
             {if $loginblockfields}
             {$loginblockfields}
 
@@ -21,7 +21,7 @@
                 <input class="z-bt-ok z-bt-small" type="submit" value="{gt text="Log in" domain='zikula'}" />
             </div>
             {else}
-            <legend>{$authmodule}</legend>
+            <h5>{$authmodule}</h5>
             <p class="z-errormsg">
                 {gt text='This log-in option is not available right now.' domain='zikula'}
                 {if count($authmodules) > 1}
@@ -31,11 +31,11 @@
                 {/if}
             </p>
             {/if}
-        </fieldset>
+        </div>
 
         {if (count($authmodules) > 1)}
-        <fieldset>
-            <legend>{gt text="Login with your..." domain='zikula'}</legend>
+        <div class="users_block_box">
+            <h5>{gt text="Login with your..." domain='zikula'}</h5>
             <div>
                 {foreach from=$authmodules key='cur_authmodule_name' item='cur_authmodule'}
                 {modfunc modname=$cur_authmodule_name type='auth' func='loginBlockIcon' assign='loginblockicon'}
@@ -46,16 +46,17 @@
                 {/if}
                 {/foreach}
             </div>
-        </fieldset>
+        </div>
         {/if}
 
-        <fieldset>
+        <div class="users_block_box">
+            <h5>{gt text="Miscellaneous" domain='zikula'}</h5>
             <ul id="user-block-login-tools">
                 {if $allowregistration}
                 <li><a class="user-icon-adduser" href="{modurl modname='Users' func='register'}">{gt text="New account" domain='zikula'}</a></li>
                 {/if}
                 <li><a class="user-icon-lostusername" href="{modurl modname='Users' func='lostpwduname'}">{gt text="Login problems?" domain='zikula'}</a></li>
             </ul>
-        </fieldset>
+        </div>
     </div>
 </form>
