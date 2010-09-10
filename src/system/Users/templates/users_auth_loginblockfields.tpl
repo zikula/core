@@ -1,4 +1,4 @@
-<legend>{if (count($authmodules) > 1)}{gt text='Web site account' domain='zikula'}{/if}</legend>
+{if (count($authmodules) > 1)}<h5>{gt text='Web site account' domain='zikula'}</h5>{/if}
 <div class="z-formrow">
     <label for="loginblock_authinfo_loginid">
         {if $loginviaoption == 1}

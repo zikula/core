@@ -56,20 +56,35 @@ h6 {
 }
 
 /**************** Spacing ****************/
+p, hr, h1, h2, h3, h4, h5, h6, pre, table, address, fieldset {
+    margin-bottom: 0.5em;
+}
+
 ol {
     list-style: decimal;
+    margin: 1em 0 1em 0.5em;
 }
 
 ul {
     list-style: square;
+    margin: 1em 0 1em 0.5em;
 }
 
 li {
-    margin-left: 30px;
+    margin: 0 0 0.5em 1.5em;
 }
 
-p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
-    margin-bottom: 0.5em;
+dl {
+    margin: 1em 0 1em 0.5em;
+}
+
+dt {
+    font-weight: bold;
+    margin: 0 0 0.5em 0;
+}
+
+dd {
+    margin: 0 0 0.5em 1.5em;
 }
 
 /**************** Header and navigation styles ****************/
@@ -119,6 +134,10 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
     overflow: hidden;
 }
 
+#theme_navigation_bar ul {
+    margin: 0;
+}
+
 #theme_navigation_bar li {
     float: left;
     list-style-type: none;
@@ -148,12 +167,12 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
     text-decoration: none;
 }
 
-
 #theme_search{
     background: #467AA7;
     margin: 0;
     padding: 0;
 }
+
 #theme_search .theme_search_input {
     background: #467AA7;
     border: none;
@@ -269,7 +288,7 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
 .z-blockposition-center {
     font-size: 0.9em;
     background-color: #FAFBFC;
-    border: 1px solid #C0C0C0;
+    border: 1px solid #E0E8EF;
     color: #505050;
     line-height: 1.5em;
     padding: 1em;
@@ -289,11 +308,22 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
     padding: 0.5em;
 }
 
+#theme_content #users_block_loginform .users_block_box {
+    background-color: #FAFBFC;
+    border:1px solid #E0E8EF;
+    margin:0.5em 0;
+    padding:1em;
+}
+
+#theme_content #users_block_loginform .users_block_box h5 {
+    color:#555;
+}
 
 /**************** Menu and Extmenu blocks ****************/
 ul.navlist {
     border-top: 1px solid #BBBBBB;
     list-style: none outside none;
+    margin: 0;
 }
 
 ul.navlist li {
@@ -324,6 +354,7 @@ ul.navlist ul li a {
 ul.menutree {
     border-top: 1px solid #BBBBBB;
     list-style: none outside none;
+    margin: 0;
 }
 
 ul.menutree li {
