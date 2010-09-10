@@ -82,15 +82,13 @@ ul.z-menulinks {
     background: -webkit-gradient(linear,left top, left bottom,from(#fefefe), to(#E6E6E6)); /*webkit*/
     background: -moz-linear-gradient(top, #fefefe, #E6E6E6); /*gecko*/
     background: linear-gradient(#fefefe, #E6E6E6); /*CSS3*/
-    border:1px solid #ccc;
-    color:#aaa;
-    height:auto !important;
-    line-height:23px !important;
-    list-style:none outside none;
-    margin-bottom:1em;
-    margin-left:0 !important;
-    margin-right:0 !important;
-    min-height:23px !important;
+    border: 1px solid #ccc;
+    color: #aaa;
+    height: auto !important;
+    line-height: 23px !important;
+    list-style: none outside none;
+    margin: 1em 0 !important;
+    min-height: 23px !important;
     padding:0 5px !important;
 }
 
