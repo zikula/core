@@ -347,7 +347,7 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function droppedForeignKey($tableName, array $definition)
+    public static function dropForeignKey($tableName, array $definition)
     {
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->dropForeignKey($tableName, $definition['name']);
