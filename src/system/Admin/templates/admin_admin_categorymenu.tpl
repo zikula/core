@@ -7,6 +7,7 @@
     var lblclickToEdit = "{{gt text='Right-click to edit module category'}}";
     var lblEdit = "{{gt text='Edit category'}}";
     var lblDelete = "{{gt text='Delete category'}}";
+    var lblMakeDefault = "{{gt text='Make default category'}}";
     var lblSaving = "{{gt text='Saving'}}";
     /* ]]> */
 </script>

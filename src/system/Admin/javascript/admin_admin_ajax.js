@@ -59,6 +59,16 @@ function addContext(nid)
             return;
         }
     });
+    context_menu[context_menu.length - 1].addItem( {
+        label : lblMakeDefault,
+        callback : function(nid) {
+            var cid = nid.href.match(/acid=(\d+)/)[1];
+            if (cid) {
+                defaultTab(cid);
+            }
+            return;
+        }
+    });
 }
 
 /**
@@ -175,6 +185,49 @@ function deleteTabResponse(req) {
         document.getElementById('admintabsauthid').value = aid;
         pnupdateauthids(aid);
     }
+    return false;
+}
+
+//-----------------------Make Default Tabs----------------------------------------
+/**
+ * Makes ajax request to make the category specified by id, the initially selected one.
+ *
+ * @param id the cid of the category to be made default
+ * @return void
+ */
+function defaultTab(id) {
+    var authid = document.getElementById('admintabsauthid').value;
+    var pars = "module=Admin&type=ajax&func=defaultCategory&cid=" + id + '&authid=' + authid;
+    var myAjax = new Ajax.Request("ajax.php", {
+        method : 'get',
+        parameters : pars,
+        onComplete : defaultTabResponse
+    });
+}
+
+/**
+ * Gets the response of a defaultTab request.
+ *
+ * @param  req     The request handle.
+ * @return Boolean False always, removes tab from dom on success.
+ */
+function defaultTabResponse(req) {
+    if (req.status != 200) {
+    	json = Zikula.ajaxResponseError(req);
+        document.getElementById('admintabsauthid').value = json.authid;
+        return false;
+    }
+    var json = pndejsonize(req.responseText);
+
+    alert(json.response);
+    //new Zikula.UI.Alert(json.response,'Alert dialog title');
+    
+    var aid = json.authid;
+    if (aid !== '') {
+        document.getElementById('admintabsauthid').value = aid;
+        pnupdateauthids(aid);
+    }
+
     return false;
 }
 
