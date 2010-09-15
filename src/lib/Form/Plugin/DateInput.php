@@ -200,13 +200,13 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
                                             array('type="hidden"', ''),
                                             parent::render($view));
 
-            $result .= $hiddenInputField . '<span id="' . $this->id . 'cal" style="background-color: #ff8; cursor: default;" onmouseover="this.style.backgroundColor=\'#ff0\';" onmouseout="this.style.backgroundColor=\'#ff8\';">';
+            $result .= '<div>' . $hiddenInputField . '<span id="' . $this->id . 'cal" style="background-color: #ff8; cursor: default" onmouseover="this.style.backgroundColor=\'#ff0\';" onmouseout="this.style.backgroundColor=\'#ff8\';">';
             if ($this->text) {
                 $result .= DataUtil::formatForDisplay(DateUtil::getDatetime(DateUtil::parseUIDate($this->text), $this->daFormat));
             } else {
                 $result .= __('Select date');
             }
-            $result .= '</span>';
+            $result .= '</span></div>';
             if ($this->mandatory && $this->mandatorysym) {
                 $result .= '<span class="z-mandatorysym">*</span>';
             }
