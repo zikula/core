@@ -217,12 +217,12 @@ textarea:focus {
     color: #333;
 }
 
-#header #theme_search .theme_search_input {
+.z-blockposition-search #theme_search .theme_search_input {
     margin:0;
     padding:2px 4px;
 }
 
-#header #theme_search .theme_search_button {
+.z-blockposition-search #theme_search .theme_search_button {
     margin:0;
     padding:1px 6px;
 }
