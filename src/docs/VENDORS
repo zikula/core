@@ -10,7 +10,7 @@ PHPIDS 0.6.4
     Location in Zikula: system/SecurityCenter/vendor/IDS
     Patch details: none
 
-HTMLPurifier 4.1.1
+HTMLPurifier 4.2.0
     Vendor website: http://htmlpurifier.org/
     Downloaded from: http://htmlpurifier.org/download
     License: LGPL 2.1+
