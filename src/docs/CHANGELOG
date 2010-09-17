@@ -210,3 +210,4 @@ Added markdown and markdown-extra support and with Smarty modifiers issue #2487.
 Added doctrine templates for ObjectUtil services (issue #2447)
 Added doctrine support to DropdownRelationlist form view plugin (issue #2442)
 Added more HTML5 tags to allowed HTML settings page (issue #2460)
+Upgraded to HTMLPurifier 4.2.0 (issue #2533)
