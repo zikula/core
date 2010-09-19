@@ -232,17 +232,21 @@ class FormUtil
      */
     public static function getFailedValidationObjects($objectType = null)
     {
-        static $objects = null;
-        if (!$objects) {
+        static $objects = array();
+        if (!$objects[$objectType]) {
             if (isset($_SESSION['validationFailedObjects']) && is_array($_SESSION['validationFailedObjects'])) {
                 if ($objectType && isset($_SESSION['validationFailedObjects'][$objectType])) {
-                    $objects = $_SESSION['validationFailedObjects'][$objectType];
+                    $objects[$objectType] = $_SESSION['validationFailedObjects'][$objectType];
                     unset($_SESSION['validationFailedObjects'][$objectType]);
                 } else {
                     $objects = $_SESSION['validationFailedObjects'];
                     unset($_SESSION['validationFailedObjects']);
                 }
             }
+        }
+
+        if ($objectType) {
+            return $objects[$objectType];
         }
 
         return $objects;
