@@ -3097,14 +3097,20 @@ class DBUtil
     /**
      * Change database table using Doctrine dictionary method.
      *
-     * @param string $table      Table key in pntables.
-     * @param array  $definition Table definition (default = null).
-     * @param array  $tabopt     Table options.
+     * Please note this method does not handle column renaming.  Renames should
+     * be handled by first calling this method with $dropColums = false so that data
+     * can then be copied to the new columns, before calling the method again with
+     * $dropColumns = true to cleanup the old columns.
+     *
+     * @param string  $table       Table key in pntables.
+     * @param array   $definition  Table definition (default = null).
+     * @param array   $tabopt      Table options.
+     * @param booleam $dropColumns Drop columns if they don't exist in new schema (default = false).
      *
      * @return boolean
      * @throws Exception If the $table parameter is empty or failed consistency check.
      */
-    public static function changeTable($table, $definition = null, $tabopt = null)
+    public static function changeTable($table, $definition = null, $tabopt = null, $dropColumns = false)
     {
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
@@ -3159,6 +3165,21 @@ class DBUtil
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
                 return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
+            }
+        }
+
+        // third round - removes non existing columns in the model.
+        if ($dropColumns) {
+            foreach (array_keys($metaColumns) as $key) {
+                if (isset($modelColumns[$key])) {
+                    continue;
+                }
+                $alterTableDefinition = array('remove' => array($key => array()));
+                try {
+                    $connection->export->alterTable($tableName, $alterTableDefinition);
+                } catch (Exception $e) {
+                    return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
+                }
             }
         }
 
