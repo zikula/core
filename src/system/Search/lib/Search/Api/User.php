@@ -273,11 +273,17 @@ class Search_Api_User extends Zikula_Api
             $args['type'] = 'user';
         }
 
+        // rename the search function to avoid conflicts
+        // with the module name and default shortURL module
+        if ($args['func'] == 'search') {
+            $args['func'] = 'process';
+        }
+
         // create an empty string ready for population
         $vars = '';
 
         // for the display function use either the title (if present) or the page id
-        if ($args['func'] == 'search' && isset($args['args']['q'])) {
+        if ($args['func'] == 'process' && isset($args['args']['q'])) {
             $vars = $args['args']['q'];
             if (isset($args['args']['page']) && $args['args']['page'] != 1) {
                 $vars .= '/page/'.$args['args']['page'];
@@ -317,7 +323,7 @@ class Search_Api_User extends Zikula_Api
         }
 
         // define the available user functions
-        $funcs = array('main', 'search', 'recent');
+        $funcs = array('main', 'search', 'process', 'recent');
         // set the correct function name based on our input
         if (empty($args['vars'][2])) {
             System::queryStringSetVar('func', 'main');
@@ -325,6 +331,9 @@ class Search_Api_User extends Zikula_Api
             System::queryStringSetVar('func', 'main');
             $nextvar = 2;
         } else {
+            if ($args['vars'][2] == 'process') {
+                $args['vars'][2] = 'search';
+            }
             System::queryStringSetVar('func', $args['vars'][2]);
             $nextvar = 3;
         }
