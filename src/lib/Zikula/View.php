@@ -261,6 +261,16 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         parent::assign('serviceManager', $this->serviceManager);
         parent::assign('eventManager', $this->eventManager);
         parent::assign('zikula_core', $this->serviceManager->getService('zikula'));
+        parent::assign('modvars', ModUtil::getModvars()); // Get all modvars from any modules that have accessed their modvars at least once.
+
+        $this->add_core_data();
+
+        // Metadata for SEO
+        if (!isset($this->serviceManager['zikula_view.metadata'])) {
+            $this->serviceManager['zikula_view.metadata'] = new ArrayObject(array());
+        }
+
+        parent::assign('metadata', $this->serviceManager['zikula_view.metadata']);
 
         // add some useful data
         $this->assign(array('module' => $module,
@@ -974,6 +984,9 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             {
                 case 'zikula_view':
                 case 'zikula_core':
+                case 'modvars':
+                case 'metadata':
+                case 'coredata':
                 case 'servicemanager':
                 case 'eventmanager':
                     $this->trigger_error(__f('%s is a protected template variable and may not be assigned', $key));
@@ -1035,53 +1048,55 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * This function adds some basic data to the template depending on the
      * current user and the Zikula settings.
      *
+     * @deprecated since 1.3.0
+     *
      * @return Zikula_View
      */
     public function add_core_data()
     {
-        if (!isset($this->serviceManager['zikula_view.zcore'])) {
-            $this->serviceManager['zikula_view.zcore'] = new ArrayObject(array());
+        if (!isset($this->serviceManager['zikula_view.coredata'])) {
+            $this->serviceManager['zikula_view.coredata'] = new ArrayObject(array());
         }
 
-        $core = $this->serviceManager['zikula_view.zcore'];
+        $core = $this->serviceManager['zikula_view.coredata'];
         $core['version_num'] = System::VERSION_NUM;
         $core['version_id'] = System::VERSION_ID;
         $core['version_sub'] = System::VERSION_SUB;
         $core['logged_in'] = UserUtil::isLoggedIn();
         $core['language'] = $this->language;
-        $core['themeinfo'] = $this->themeinfo;
-
+        
         // add userdata
         $core['user'] = UserUtil::getVars(SessionUtil::getVar('uid'));
 
-        // add modvars of current modules
-        foreach ($this->module as $module => $dummy) {
-            $core[$module] = ModUtil::getVar($module);
-        }
+        if (System::isLegacyMode()) {
+            // add modvars of current modules
+            foreach ($this->module as $module => $dummy) {
+                $core[$module] = ModUtil::getVar($module);
+            }
 
-        // add mod vars of all modules supplied as parameter
-        $modulenames = func_get_args();
-        foreach ($modulenames as $modulename) {
-            // if the modulename is empty do nothing
-            if (!empty($modulename) && !is_array($modulename) && !array_key_exists($modulename, $this->module)) {
-                // check if user wants to have config
-                if ($modulename == ModUtil::CONFIG_MODULE) {
-                    $ZConfig = ModUtil::getVar(ModUtil::CONFIG_MODULE);
-                    foreach ($ZConfig as $key => $value) {
-                        // gather all config vars
-                        $core['ZConfig'][$key] = $value;
+            // add mod vars of all modules supplied as parameter
+            $modulenames = func_get_args();
+            foreach ($modulenames as $modulename) {
+                // if the modulename is empty do nothing
+                if (!empty($modulename) && !is_array($modulename) && !array_key_exists($modulename, $this->module)) {
+                    // check if user wants to have config
+                    if ($modulename == ModUtil::CONFIG_MODULE) {
+                        $ZConfig = ModUtil::getVar(ModUtil::CONFIG_MODULE);
+                        foreach ($ZConfig as $key => $value) {
+                            // gather all config vars
+                            $core['ZConfig'][$key] = $value;
+                        }
+                    } else {
+                        $core[$modulename] = ModUtil::getVar($modulename);
                     }
-                } else {
-                    $core[$modulename] = ModUtil::getVar($modulename);
                 }
             }
+
+            $this->assign('pncore', $core);
         }
 
         // Module vars
-        $this->assign('zcore', $core);
-        if (System::isLegacyMode()) {
-            $this->assign('pncore', $core);
-        }
+        parent::assign('coredata', $core);
 
         return $this;
     }
