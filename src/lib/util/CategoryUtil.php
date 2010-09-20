@@ -341,17 +341,18 @@ class CategoryUtil
         $dbtables = DBUtil::getTables();
         $category_column = $dbtables['categories_category_column'];
 
-        $where = "$category_column[$field] = '" . DataUtil::formatForStore($apath) . "' OR $category_column[$field] LIKE '" . DataUtil::formatForStore($apath) . "/%'";
+        $where = "($category_column[$field] = '" . DataUtil::formatForStore($apath) . "' OR $category_column[$field] LIKE '" . DataUtil::formatForStore($apath) . "/%')";
+
         if ($exclPath) {
             $where .= " AND $category_column[$field] NOT LIKE '" . DataUtil::formatForStore($exclPath) . "%'";
         }
 
         if (!$includeLeaf) {
-            $where .= " AND $category_column[is_leaf]=0";
+            $where .= " AND $category_column[is_leaf] = 0";
         }
 
         if (!$all) {
-            $where .= " AND $category_column[status]='A'";
+            $where .= " AND $category_column[status] = 'A'";
         }
 
         //if ($attributes && is_array($attributes)) {
@@ -359,7 +360,6 @@ class CategoryUtil
         //        $where .= " AND $category_column[$k]='$v' ";
         //    }
         //}
-
 
         if (!$sort) {
             $sort = "ORDER BY $category_column[sort_value], $category_column[path]";

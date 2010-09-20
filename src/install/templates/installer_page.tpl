@@ -20,8 +20,7 @@
 {gt text="Select installation" assign=selinstalltype}
 {gt text="Create administrator's account" assign=createaduser}
 {gt text="Select start page" assign=selstartpage}
-{gt text="Select theme" assign=seltheme}
-{gt text="Finished!" assign=alldone}
+{gt text="Finish" assign=finish}
 <body>
     <div id="container">
         <div id="wrapper" class="z-clearfix">
@@ -36,15 +35,12 @@
                         <li{if $action eq requirements} class="menu_selected"{/if}>{$sysrequir}</li>
                         <li{if $action eq dbinformation} class="menu_selected"{/if}>{$dbinfos}</li>
                         <li{if $action eq createadmin} class="menu_selected"{/if}>{$createaduser}</li>
-                        {if not $installbySQL}
-                        <li{if $action eq selecttheme} class="menu_selected"{/if}>{$seltheme}</li>
-                        {/if}
-                        <li{if $action eq gotosite} class="menu_selected"{/if}>{$alldone}</li>
+                        <li{if $action eq finish} class="menu_selected"{/if}>{$finish}</li>
                     </ol>
                     <h3>{gt text="Free software"}</h3>
                     <ul>
                         <li><a href="{gt text="docs/NOTICE"}">{gt text="Notice"}</a></li>
-                        <li><a href="{gt text="docs/LGPL"}">{gt text="Lesser GNU License"}</a></li>
+                        <li><a href="{gt text="docs/LGPL"}">{gt text="LGPL v3"}</a></li>
                         <li><a href="{gt text="http://www.gnu.org/philosophy/"}">{gt text="GNU philosophy"}</a></li>
                     </ul>
                     <h3>{gt text="Useful resources"}</h3>

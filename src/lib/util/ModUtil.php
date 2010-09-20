@@ -149,9 +149,10 @@ class ModUtil
             $sort   = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
 
             $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
+
             foreach ($results as $k => $v) {
                 // ref #2045 vars are being stored with 0/1 unserialised.
-                if (array_key_exists($k,$GLOBALS['ZConfig']['System'])) {
+                if (array_key_exists($k, $GLOBALS['ZConfig']['System'])) {
                     self::$modvars[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
                 } else if ($v == '0' || $v == '1') {
                     self::$modvars[$modname][$k] = $v;

@@ -56,20 +56,35 @@ h6 {
 }
 
 /**************** Spacing ****************/
+p, hr, h1, h2, h3, h4, h5, h6, pre, table, address, fieldset {
+    margin-bottom: 0.5em;
+}
+
 ol {
     list-style: decimal;
+    margin: 1em 0 1em 0.5em;
 }
 
 ul {
     list-style: square;
+    margin: 1em 0 1em 0.5em;
 }
 
 li {
-    margin-left: 30px;
+    margin: 0 0 0.5em 1.5em;
 }
 
-p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
-    margin-bottom: 0.5em;
+dl {
+    margin: 1em 0 1em 0.5em;
+}
+
+dt {
+    font-weight: bold;
+    margin: 0 0 0.5em 0;
+}
+
+dd {
+    margin: 0 0 0.5em 1.5em;
 }
 
 /**************** Header and navigation styles ****************/
@@ -87,6 +102,7 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
     height: 110px;
     margin: 0 1px 1px 1px;
     background: #467aa7;
+    overflow: hidden;
 }
 
 #theme_header h1 {
@@ -111,10 +127,15 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
 }
 
 #theme_navigation_bar {
-    height: 2.2em;
-    line-height: 2.2em;
+    background: #578BB8;
+    height: 26px;
+    line-height: 26px;
     margin: 0 1px;
-    background: #578bb8;
+    overflow: hidden;
+}
+
+#theme_navigation_bar ul {
+    margin: 0;
 }
 
 #theme_navigation_bar li {
@@ -139,12 +160,53 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
 * html #theme_navigation_bar a {
     width: 1%;
 }
- /* this hack targets IE<7 */
+/* this hack targets IE<7 */
 #theme_navigation_bar .selected, #theme_navigation_bar a:hover {
     background: #80b0da;
     color: #ffffff;
     text-decoration: none;
 }
+
+.z-blockposition-search #theme_search{
+    background: #467AA7;
+    margin: 0;
+    padding: 0;
+}
+
+.z-blockposition-search #theme_search .theme_search_input {
+    background: #467AA7;
+    border: none;
+    border-left: 1px solid #fff;
+    color: #FFFFFF;
+    float: left;
+    font-size: 13px;
+    margin: 0;
+    padding: 5px;
+}
+
+.z-blockposition-search #theme_search .theme_search_input:hover,
+.z-blockposition-search #theme_search .theme_search_input:focus,
+.z-blockposition-search #theme_search .theme_search_input:active {
+    background: #27587F;
+}
+
+.z-blockposition-search #theme_search .theme_search_button {
+    background: #467AA7;
+    border: none;
+    border-left: 1px solid #fff;
+    color: #FAFAFA;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px;
+    text-transform: uppercase;
+}
+.z-blockposition-search #theme_search .theme_search_button:hover {
+    background: #27587F;
+    text-shadow: 1px 1px 2px #333;
+}
+
 
 /**************** Content styles ****************/
 #theme_content {
@@ -217,10 +279,6 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
 }
 
 /**************** Misc classes and styles ****************/
-.z-block {
-    margin-bottom: 1em;
-    font-size: 0.9em;
-}
 
 #theme_content .z-block h3,
 #theme_content .z-block h4 {
@@ -228,16 +286,20 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
 }
 
 .z-blockposition-center {
+    font-size: 0.9em;
     background-color: #FAFBFC;
-    border: 1px solid #C0C0C0;
+    border: 1px solid #E0E8EF;
     color: #505050;
     line-height: 1.5em;
     padding: 1em;
+    margin-bottom: 1em;
 }
 
 .z-blockposition-left,
 .z-blockposition-right {
+    font-size: 0.9em;
     padding: 0.5em 0;
+    margin-bottom: 1em;
 }
 .z-blockposition-right.z-bkey-html,
 .z-blockposition-right.z-bkey-text {
@@ -246,11 +308,22 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
     padding: 0.5em;
 }
 
+#theme_content #users_block_loginform .users_block_box {
+    background-color: #FAFBFC;
+    border:1px solid #E0E8EF;
+    margin:0.5em 0;
+    padding:1em;
+}
+
+#theme_content #users_block_loginform .users_block_box h5 {
+    color:#555;
+}
 
 /**************** Menu and Extmenu blocks ****************/
 ul.navlist {
     border-top: 1px solid #BBBBBB;
     list-style: none outside none;
+    margin: 0;
 }
 
 ul.navlist li {
@@ -281,6 +354,7 @@ ul.navlist ul li a {
 ul.menutree {
     border-top: 1px solid #BBBBBB;
     list-style: none outside none;
+    margin: 0;
 }
 
 ul.menutree li {

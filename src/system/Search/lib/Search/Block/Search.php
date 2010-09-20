@@ -96,6 +96,10 @@ class Search_Block_Search extends Zikula_Block
             $vars['displaySearchBtn'] = 0;
         }
 
+        if (!isset($vars['active'])) {
+            $vars['active'] = array();
+        }
+
         $searchmodules = array();
         if (is_array($search_modules)) {
             foreach($search_modules as $mods) {

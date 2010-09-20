@@ -101,6 +101,20 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
     public $displayField = '';
 
     /**
+     * Name of optional second field to display.
+     *
+     * @var string
+     */
+    public $displayFieldTwo = '';
+
+    /**
+     * Whether to display an empty value to select nothing
+     *
+     * @var bool
+     */
+    public $showEmptyValue = 0;
+
+    /**
      * Get filename of this file.
      *
      * @return string
@@ -179,6 +193,12 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
         $this->displayField = $params['displayField'];
         unset($params['displayField']);
 
+        $this->displayFieldTwo = '';
+        if (isset($params['displayField2'])) {
+            $this->displayFieldTwo = $params['displayField2'];
+            unset($params['displayField2']);
+        }
+
         if (isset($params['where'])) {
             $this->where = $params['where'];
             unset($params['where']);
@@ -199,6 +219,11 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
             unset($params['num']);
         }
 
+        if (isset($params['showEmptyValue'])) {
+            $this->showEmptyValue = $params['showEmptyValue'];
+            unset($params['showEmptyValue']);
+        }
+
         parent::create($view, $params);
 
         $this->cssClass .= ' relationlist';
@@ -214,6 +239,10 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
      */
     function load($view, &$params)
     {
+        if ($this->showEmptyValue != 0) {
+            $this->addItem('- - -', 0);
+        }
+
         // switch between doctrine and dbobject mode
         if ($this->recordClass) {
             $q = Doctrine::getTable($this->recordClass)->createQuery();
@@ -241,7 +270,11 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
             $rows = $q->execute();
 
             foreach ($rows as $row) {
-                $this->addItem($row[$this->displayField], $row[$this->idField]);
+                $itemLabel = $row[$this->displayField];
+                if (!empty($this->displayFieldTwo)) {
+                    $itemLabel .= ' (' . $row[$this->displayFieldTwo] . ')';
+                }
+                $this->addItem($itemLabel, $row[$this->idField]);
             }
         } else {
             ModUtil::dbInfoLoad($this->module);
@@ -265,7 +298,11 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
             $objectData = $objectArray->get($this->where, $this->orderby, $this->pos, $this->num);
 
             foreach ($objectData as $obj) {
-                $this->addItem($obj[$this->displayField], $obj[$this->idField]);
+                $itemLabel = $obj[$this->displayField];
+                if (!empty($this->displayFieldTwo)) {
+                    $itemLabel .= ' (' . $obj[$this->displayFieldTwo] . ')';
+                }
+                $this->addItem($itemLabel, $obj[$this->idField]);
             }
 
         }

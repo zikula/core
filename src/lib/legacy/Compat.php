@@ -779,8 +779,7 @@ class pnFormRender extends Form_View
      */
     public function pnFormDecodeEventHandler()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodeEventHandler')), E_USER_DEPRECATED);
-        $this->decodeEventHandler();
+        LogUtil::log(__f('Warning! Function %1$s is deprecated.', array(__CLASS__ . '#' . __FUNCTION__)), E_USER_DEPRECATED);
     }
 
     /**

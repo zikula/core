@@ -225,10 +225,11 @@ class Zikula_Core
         // Check that Zikula is installed before continuing
         if (System::getVar('installed') == 0 && !System::isInstalling()) {
             header('HTTP/1.1 503 Service Unavailable');
-            if (file_exists('config/templates/notinstalled.tpl')) {
-                require_once 'config/templates/notinstalled.tpl';
+            $templateFile = 'notinstalled.tpl';
+            if (file_exists("config/templates/$templateFile")) {
+                require_once "config/templates/$templateFile";
             } else {
-                require_once 'system/Theme/templates/system/notinstalled.tpl';
+                require_once "system/Theme/templates/system/$templateFile";
             }
             System::shutDown();
         }
@@ -240,10 +241,10 @@ class Zikula_Core
                 if (!System::isInstalling()) {
                     header('HTTP/1.1 503 Service Unavailable');
                     $templateFile = 'dbconnectionerror.tpl';
-                    if (file_exists('config/templates/' . $templateFile)) {
-                        include 'config/templates/' . $templateFile;
+                    if (file_exists("config/templates/$templateFile")) {
+                        include "config/templates/$templateFile";
                     } else {
-                        include 'system/Theme/templates/system/' . $templateFile;
+                        include "system/Theme/templates/system/$templateFile";
                     }
                     System::shutDown();
                 } else {

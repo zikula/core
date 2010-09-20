@@ -108,6 +108,8 @@ class Modules_Installer extends Zikula_Installer
     {
         $version = new Modules_Version();
         $meta = $version->toArray();
+        $meta['capabilities'] = serialize($meta['capabilities']);
+        $meta['securityschema'] = serialize($meta['securityschema']);
         $meta['state'] = ModUtil::STATE_ACTIVE;
         DBUtil::insertObject($meta, 'modules');
     }

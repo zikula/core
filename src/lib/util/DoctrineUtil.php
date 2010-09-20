@@ -347,7 +347,7 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function droppedForeignKey($tableName, array $definition)
+    public static function dropForeignKey($tableName, array $definition)
     {
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->dropForeignKey($tableName, $definition['name']);
@@ -356,12 +356,19 @@ class DoctrineUtil
     /**
      * Change database table using Doctrine dictionary method.
      *
-     * @param string $className Class name.
+     * Please note this method does not handle column renaming.  Renames should
+     * be handled by first calling this method with $dropColums = false so that data
+     * can then be copied to the new columns, before calling the method again with
+     * $dropColumns = true to cleanup the old columns.
+     *
+     * @param string  $className   Class name.
+     * @param boolean $dropColumns Drops unused columns (default=false).
      *
      * @throws InvalidArgumentException If $className does not exist.
+     * 
      * @return boolean
      */
-    public static function changeTable($className)
+    public static function changeTable($className, $dropColumns=false)
     {
         $connection = Doctrine_Manager::connection();
 
@@ -401,15 +408,17 @@ class DoctrineUtil
         }
 
         // third round - removes non existing columns in the model.
-        foreach (array_keys($schemaColumns) as $key) {
-            if (isset($modelColumns[$key])) {
-                continue;
-            }
-            $alterTableDefinition = array('remove' => array($key => array()));
-            try {
-                $connection->export->alterTable($tableName, $alterTableDefinition);
-            } catch (Exception $e) {
-                return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
+        if ($dropColumns) {
+            foreach (array_keys($schemaColumns) as $key) {
+                if (isset($modelColumns[$key])) {
+                    continue;
+                }
+                $alterTableDefinition = array('remove' => array($key => array()));
+                try {
+                    $connection->export->alterTable($tableName, $alterTableDefinition);
+                } catch (Exception $e) {
+                    return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
+                }
             }
         }
 

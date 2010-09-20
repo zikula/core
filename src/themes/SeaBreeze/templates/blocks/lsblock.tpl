@@ -1,10 +1,8 @@
-<!-- Left Block Start -->
-<div class="sbLeftBlock">
-    {if ! empty($title) }{* Display title if there is one *}
-    <h3 class="blocktitle">{$title}</h3>
-    {/if}
-    <div>
-        {$content}
-    </div>
+<!-- Start Left Block Start -->
+{if !empty($title) }
+<h3 class="blocktitle">{$title}</h3>
+{/if}
+<div class="sbLeftContent">
+    {$content}
 </div>
-<!-- Left Block End -->
+<!-- Start Left Block End -->

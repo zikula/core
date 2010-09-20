@@ -6,10 +6,12 @@
         <div id="pagewidth">
             <div id="wrapper" class="z-clearfix">
                 <div id="leftcol">
-                    <div id="sidebar">{blockposition name=left}</div>
+                    <div id="sidebar">
+                        {blockposition name=left}
+                     </div>
                 </div>
                 <div id="maincol">
-                    <div id="box_content">{$maincontent}</div>
+                    {$maincontent}
                 </div>
                 <div id="rightcol">{blockposition name=right}</div>
             </div>

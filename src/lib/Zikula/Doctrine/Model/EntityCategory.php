@@ -57,11 +57,13 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
     }
 
     /**
-     * preSave relationships.
+     * Sets the value of the Registry Relation.
+     *
+     * @param Doctrine_Event Event.
      *
      * @return void
      */
-    public function preSave(Doctrine_Event $event)
+    public function preSave($event)
     {
         $subclasses = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
 

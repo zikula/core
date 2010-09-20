@@ -53,6 +53,10 @@ div.z-accountlink {
     height: 9em;
 }
 
+div.z-accountlink  img {
+    border: none;
+}
+
 .passindicatorbar {
     min-width: 5%;
     height: 5px;
@@ -89,8 +93,35 @@ div.z-accountlink {
     padding: 2px 0 2px 20px;
 }
 
-ul#user-block-login-tools, ul#user-block-login-tools li {
+#users_block_loginform {
+    margin:0;
+    padding:0;
+}
+
+#users_block_loginform .users_block_box {
+    margin:1em 0 0;
+    padding:0 1em 1em 0;
+}
+
+#users_block_loginform .users_block_box h5 {
+    font-size:1em;
+    font-weight:bold;
+    margin:0;
+    padding:0 0 0.5em;
+    text-decoration:underline;
+}
+
+#users_block_loginform div.z-formrow {
+    padding: 0;
+}
+
+#users_block_loginform ul#user-block-login-tools {
     list-style: none;
     margin: 0;
+    padding: 0;
+}
+
+#users_block_loginform ul#user-block-login-tools li {
+    margin: 0.5em 0;
     padding: 0;
 }

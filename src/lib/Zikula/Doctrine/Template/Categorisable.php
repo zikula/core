@@ -35,8 +35,16 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
             self::_generateSubclassForCategorisableTemplate($module, $recordClass);
         }
 
+        $idColumn = $record->getTable()->getIdentifier();
+        if (is_array($idColumn)) {
+            if(count($idColumn) > 1) {
+                throw new LogicException(sprintf('Error: Doctrine record %s uses Categorisable template AND a composite primary key', $recordClass));
+            }
+            $idColumn = $idColumn[0];
+        }
+
         $this->hasMany($subclassName.' as Categories', array(
-            'local' => 'id',
+            'local' => $idColumn,
             'foreign' => 'obj_id',
             'cascade' => array('delete')
         ));

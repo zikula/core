@@ -184,11 +184,11 @@ class Zikula_Doctrine_Table extends Doctrine_Table
      *
      * @param string $field  The name of the field we wish to marshall.
      * @param string $option MIN, MAX, SUM or COUNT (optional) (default='MAX').
-     * @param string $where  The where clause (optional) (default='').
+     * @param string $where  The where clause (optional) (default=array()).
      *
      * @return mixed The resulting min/max/sum/count value.
      */
-    public function selectFieldFunction($field, $option = 'MAX', $where = '')
+    public function selectFieldFunction($field, $option = 'MAX', $where = array())
     {
         // creates the query instance
         $q = $this->selectFieldFunctionQuery($field, $option, $where);

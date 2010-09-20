@@ -107,7 +107,7 @@ class Admin_Controller_Ajax extends Zikula_Controller
      * Delete an admin category by ajax.
      *
      * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          response is a string cid on sucess.
+     *                          response is a string cid on success.
      */
     public function deleteCategory() {
         //security checks
@@ -120,7 +120,7 @@ class Admin_Controller_Ajax extends Zikula_Controller
         if (!SecurityUtil::checkPermission('Admin::Category', "::$cid", ACCESS_DELETE)) {
             return AjaxUtil::error(LogUtil::registerPermissionError(null,true), array(), false, true, '403 Unauthorized');
         }
-        //find the category corrisponding to the cid.
+        //find the category corresponding to the cid.
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if ($category == false) {
             return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')),array(), true);
@@ -186,5 +186,38 @@ class Admin_Controller_Ajax extends Zikula_Controller
         }
         //update failed for some reason
         return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')), array(), true);
+    }
+
+    /**
+     * Make a category the initially selected one (by ajax).
+     *
+     * @return AjaxUtil::output Output to the calling ajax request is returned.
+     *                          response is a string message on success.
+     */
+    public function defaultCategory() {
+        //security checks
+        if (!SecurityUtil::confirmAuthKey()) {
+            return AjaxUtil::error(LogUtil::registerAuthidError(), array(), false, true, '403 Unauthorized');
+        }
+        //get passed cid
+        $cid = trim(FormUtil::getPassedValue('cid'));
+        //check user has permission to change the initially selected category
+        if (!SecurityUtil::checkPermission('Admin::', "::", ACCESS_ADMIN)) {
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true), array(), false, true, '403 Unauthorized');
+        }
+        //find the category corresponding to the cid.
+        $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
+        if ($category == false) {
+            return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')),array(), true);
+        }
+
+        //make category the initially selected one
+        if (ModUtil::setVar('Admin', 'startcategory', $cid)) {
+            // Success
+            $output['response'] = $this->__f('Category "%s" was successfully made default.', $category['catname']);
+            return AjaxUtil::output($output, true);
+        }
+        //unknown error
+        return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not make this category default.')), array(), true);
     }
 }

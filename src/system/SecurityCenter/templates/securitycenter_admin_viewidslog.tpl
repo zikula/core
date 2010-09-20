@@ -71,7 +71,7 @@
                 <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="9">{gt text="No logged intrusions found."}</td></tr>
+            <tr class="z-admintableempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>
             {/foreach}
         </tbody>
     </table>

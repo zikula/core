@@ -1,7 +1,8 @@
+<!-- Start Center Block -->
 {if $title neq ''}
-{* Display title if there is one *}
-<h4 class="z-title">{$title}</h4>
+<h3>{$title}</h3>
 {/if}
-<div class="CenterContent">
+<div class="sbCenterContent">
     {$content}
 </div>
+<!--  End Center Block  -->

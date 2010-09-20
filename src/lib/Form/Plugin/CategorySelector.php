@@ -110,30 +110,32 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         // if we don't have a category-id we see if we can get a category by path
         if (!$list->category && $path) {
             $list->category = CategoryUtil::getCategoryByPath($path, $pathfield);
-            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, $sortField);
+            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
 
         } elseif (is_array($list->category) && isset($list->category['id']) && is_integer($list->category['id'])) {
             // check if we have an actual category object with a numeric ID set
-            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, $sortField);
+            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
 
         } elseif (is_numeric($list->category)) {
             // check if we have a numeric category
             $list->category = CategoryUtil::getCategoryByID($list->category);
-            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, $sortField);
+            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
 
         } elseif (is_string($list->category) && strpos($list->category, '/') === 0) {
             // check if we have a string/path category
             $list->category = CategoryUtil::getCategoryByPath($list->category, $pathfield);
-            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, $sortField);
+            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
         }
 
-        if ($list->mandatory)
+        if ($list->mandatory) {
             $list->addItem('- - -', null);
+        }
 
         $line = '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -';
 
-        if ($includeEmptyElement)
+        if ($includeEmptyElement) {
             $list->addItem('', null);
+        }
 
         foreach ($allCats as $cat) {
             $cslash = StringUtil::countInstances(isset($cat['ipath_relative']) ? $cat['ipath_relative'] : $cat['ipath'], '/');

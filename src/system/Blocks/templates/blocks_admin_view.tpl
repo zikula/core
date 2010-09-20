@@ -104,7 +104,7 @@
                 </td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="8">{gt text="No items found."}</td></tr>
+            <tr class="z-admintableempty"><td colspan="9">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>

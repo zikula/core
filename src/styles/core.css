@@ -78,25 +78,37 @@ img.z-floatright {
 /*******************************************************************************/
 
 ul.z-menulinks {
-    background: url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6;
-    border:1px solid #ccc;
-    color:#aaa;
-    height:auto !important;
-    line-height:23px !important;
-    list-style:none outside none;
-    margin-bottom:1em;
-    margin-left:0 !important;
-    margin-right:0 !important;
-    min-height:23px !important;
+    background: url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6; /*non-CSS3 browsers*/
+    background: -webkit-gradient(linear,left top, left bottom,from(#fefefe), to(#E6E6E6)); /*webkit*/
+    background: -moz-linear-gradient(top, #fefefe, #E6E6E6); /*gecko*/
+    background: linear-gradient(#fefefe, #E6E6E6); /*CSS3*/
+    border: 1px solid #ccc;
+    color: #aaa;
+    height: auto !important;
+    line-height: 23px !important;
+    list-style: none outside none;
+    margin: 1em 0 !important;
+    min-height: 23px !important;
     padding:0 5px !important;
 }
 
 ul.z-menulinks li {
+    background: none !important;
     border-right:1px solid #aaa;
     display:inline;
-    padding:0 10px;
-    margin:0;
+    padding:0 10px !important;
+    margin:0 !important;
 }
+
+/*
+ul.z-menulinks li a {
+    color: #555;
+}
+
+ul.z-menulinks li a:hover {
+    color: #000;
+}
+*/
 
 ul.z-menulinks li:first-child {
     border-left:1px solid #aaa;
@@ -138,11 +150,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 *******************************************************************************/
 
 .z-errormsg {
-    background: #F7CBCA url("../images/icons/extrasmall/error.gif") 13px 50% no-repeat;
-    border: 1px solid #CC0000;
-    color: #880000;
-    margin: 5px 0 10px;
-    padding: 5px 5px 5px 36px;
+    background: #F7CBCA url("../images/icons/extrasmall/error.gif") 13px 50% no-repeat !important;
+    border: 1px solid #CC0000 !important;
+    color: #880000 !important;
+    margin: 5px 0 10px !important;
+    padding: 5px 5px 5px 36px !important;
 }
 .z-errormsg p,
 .z-errormsg h1,
@@ -157,11 +169,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding:0 !important;
 }
 .z-informationmsg {
-    background: #e6e6ff url('../images/icons/extrasmall/info.gif') 13px 50% no-repeat;
-    border: 1px solid #9bb8d9;
-    color: #27427D;
-    padding: 5px 5px 5px 36px;
-    margin: 5px 0 10px;
+    background: #e6e6ff url('../images/icons/extrasmall/info.gif') 13px 50% no-repeat !important;
+    border: 1px solid #9bb8d9 !important;
+    color: #27427D !important;
+    padding: 5px 5px 5px 36px !important;
+    margin: 5px 0 10px !important;
 }
 .z-informationmsg p,
 .z-informationmsg h1,
@@ -172,11 +184,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding:0 !important;
 }
 .z-statusmsg {
-    background: #DFF2BF url('../images/icons/extrasmall/button_ok.gif') 13px 50% no-repeat;
-    border: 1px solid #99CC99;
-    color: #264409;
-    padding: 5px 5px 5px 36px;
-    margin: 5px 0 10px;
+    background: #DFF2BF url('../images/icons/extrasmall/button_ok.gif') 13px 50% no-repeat !important;
+    border: 1px solid #99CC99 !important;
+    color: #264409 !important;
+    padding: 5px 5px 5px 36px !important;
+    margin: 5px 0 10px !important;
 }
 .z-statusmsg p,
 .z-statusmsg h1,
@@ -187,11 +199,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding: 0 !important;
 }
 .z-warningmsg {
-    background: #FEEFB3 url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat;
-    border: 1px solid #EED324;
-    color: #514721;
-    padding: 5px 5px 5px 36px;
-    margin: 5px 0;
+    background: #FEEFB3 url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat !important;
+    border: 1px solid #EED324 !important;
+    color: #514721 !important;
+    padding: 5px 5px 5px 36px !important;
+    margin: 5px 0 !important;
 }
 .z-warningmsg p,
 .z-warningmsg h1,
@@ -208,11 +220,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 
 .z-even {
     background-color: #fff;
-    color: inherit;
+    color: #444;
 }
 .z-odd {
     background-color: #f3f3f3;
-    color: inherit;
+    color: #222;
 }
 
 /******************************************************************************
@@ -262,6 +274,7 @@ table.z-datatable tbody tr.z-defaulttablerow {
 
 table.z-datatable tbody tr:hover {
     background-color: #CFCFCF;
+    color: #000;
 }
 
 table.z-datatable ul {
@@ -287,12 +300,13 @@ table.z-datatable ul {
     border: 1px #ddd solid;
     margin: 0 0 1em 0;
     padding: 0.5em 1em;
+    color: #333;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     background: #fafafa; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2)); /*webkit*/
-    background: -moz-linear-gradient(top,#fafafa,#f2f2f2); /*gecko*/
+    background: -moz-linear-gradient(top, #fafafa, #f2f2f2); /*gecko*/
     background: linear-gradient(#fafafa, #f2f2f2); /*CSS3*/
 }
 
@@ -302,6 +316,7 @@ table.z-datatable ul {
     color: #000;
     background: transparent;
     border: 0;
+    text-shadow: -1px -1px 0 rgba(250, 250, 250, 0.5);
 }
 
 .z-form .z-formrow .z-mandatorysym {
@@ -385,7 +400,7 @@ div.z-formbuttons:after {
 .z-formbuttons {
     text-align: left;
     display: block;
-    margin-left: 30%;
+    margin-left: 29%;
 }
 
 .z-formbuttons input,
@@ -418,17 +433,19 @@ div.z-formbuttons:after {
     float: left;
     padding: 0.3em 1% 0.3em 0;
     text-align: right;
-    width: 29%;
+    width: 28%;
     font-weight: normal;
+    color: #333;
+    overflow: hidden;
 }
 
 .z-form .z-formlist {
-    margin-left: 30%;
+    margin-left: 29%;
 }
 
 .z-form .z-formnote {
     display: block;
-    margin-left: 30% !important;
+    margin-left: 29% !important;
 }
 
 .z-form div.z-formrow input,
@@ -518,7 +535,7 @@ div.z-formbuttons:after {
 .z-linear div.z-formrow textarea {
     display: block;
     width: 98%;
-    padding: 0.3em 0;
+    padding: 0.3em;
 }
 
 .z-linear div.z-formrow .z-listselector,
@@ -776,6 +793,7 @@ div.z-formbuttons:after {
 
 .z-button,
 .z-buttons a,
+.z-buttons a:visited,
 .z-buttons input,
 .z-buttons button {
     display: inline-block;
@@ -795,9 +813,11 @@ div.z-formbuttons:after {
     border-width: 1px;
     background: #f5f5f5; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)); /*webkit*/
-    background: -moz-linear-gradient(top,  #F5F5F5, #dedede); /*gecko*/
+    background: -moz-linear-gradient(top, #F5F5F5, #dedede); /*gecko*/
     background: linear-gradient(#F5F5F5, #dedede); /*CSS3*/
 }
+
+
 
 .z-buttons .z-bt-small {
     margin: 0 1px 0 0;
@@ -822,7 +842,7 @@ div.z-formbuttons:after {
     text-decoration: none !important;
     background: #dedede; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5)); /*webkit*/
-    background: -moz-linear-gradient(top,  #dedede, #F5F5F5); /*gecko*/
+    background: -moz-linear-gradient(top, #dedede, #F5F5F5); /*gecko*/
     background: linear-gradient(#dedede, #F5F5F5); /*CSS3*/
 }
 
@@ -833,7 +853,7 @@ div.z-formbuttons:after {
     color: #000;
     background: #d0d0d0; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0)); /*webkit*/
-    background: -moz-linear-gradient(top,  #d0d0d0, #f0f0f0); /*gecko*/
+    background: -moz-linear-gradient(top, #d0d0d0, #f0f0f0); /*gecko*/
     background: linear-gradient(#d0d0d0, #f0f0f0); /*CSS3*/
 }
 
@@ -851,20 +871,21 @@ div.z-formbuttons:after {
 * Colored button: Red
 *******************************************************************************/
 
-.z-buttons .z-btred {
+.z-buttons .z-btred,
+.z-buttons .z-btred:visited {
     color: #d12f19;
 }
 .z-buttons .z-btred:hover {
     background: #fbc2c4;
     background: -webkit-gradient(linear, left top, left bottom, from(#fbc2c4), to(#fbe3e4));
-    background: -moz-linear-gradient(top,  #fbc2c4, #fbe3e4);
+    background: -moz-linear-gradient(top, #fbc2c4, #fbe3e4);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fbc2c4', endColorstr='#fbe3e4');
     border: 1px solid #EF7868;
 }
 .z-buttons .z-btred:active {
     background: #EFA4A7;
     background: -webkit-gradient(linear, left top, left bottom, from(#EFA4A7), to(#EFC2C5));
-    background: -moz-linear-gradient(top,  #EFA4A7, #EFC2C5);
+    background: -moz-linear-gradient(top, #EFA4A7, #EFC2C5);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EFA4A7', endColorstr='#EFC2C5');
     border: 1px solid #EF7868;
 }
@@ -873,20 +894,21 @@ div.z-formbuttons:after {
 * Colored button: Blue
 *******************************************************************************/
 
-.z-buttons .z-btblue {
+.z-buttons .z-btblue,
+.z-buttons .z-btblue:visited {
     color: #336699;
 }
 .z-buttons .z-btblue:hover {
     background: #c2e1ef;
     background: -webkit-gradient(linear, left top, left bottom, from(#c2e1ef), to(#dff4ff));
-    background: -moz-linear-gradient(top,  #c2e1ef, #dff4ff);
+    background: -moz-linear-gradient(top, #c2e1ef, #dff4ff);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2e1ef', endColorstr='#dff4ff');
     border: 1px solid #6FA7DF;
 }
 .z-buttons .z-btblue:active {
     background: #A7CEDF;
     background: -webkit-gradient(linear, left top, left bottom, from(#A7CEDF), to(#C2E0EF));
-    background: -moz-linear-gradient(top,  #A7CEDF, #C2E0EF);
+    background: -moz-linear-gradient(top, #A7CEDF, #C2E0EF);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A7CEDF', endColorstr='#C2E0EF');
     border: 1px solid #6FA7DF;
 }
@@ -895,20 +917,21 @@ div.z-formbuttons:after {
 * Colored button: Green
 *******************************************************************************/
 
-.z-buttons .z-btgreen {
+.z-buttons .z-btgreen,
+.z-buttons .z-btgreen:visited {
     color: #529214;
 }
 .z-buttons .z-btgreen:hover {
     background: #D1EFD2;
     background: -webkit-gradient(linear, left top, left bottom, from(#D1EFD2), to(#EFFFEF));
-    background: -moz-linear-gradient(top,  #D1EFD2, #EFFFEF);
+    background: -moz-linear-gradient(top, #D1EFD2, #EFFFEF);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#D1EFD2', endColorstr='#EFFFEF');
     border: 1px solid #A0DF61;
 }
 .z-buttons .z-btgreen:active {
     background-color:#C2EFC3;
     background: -webkit-gradient(linear, left top, left bottom, from(#C2EFC3), to(#D1EFD1));
-    background: -moz-linear-gradient(top,  #C2EFC3, #D1EFD1);
+    background: -moz-linear-gradient(top, #C2EFC3, #D1EFD1);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#C2EFC3', endColorstr='#D1EFD1');
     border: 1px solid #A0DF61;
 }
@@ -1123,7 +1146,7 @@ div.z-formbuttons:after {
     background: #ddd; /* for non-css3 browsers */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /* for IE */
     background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /* webkit */
-    background: -moz-linear-gradient(top,  #fff,  #cfcfcf); /* for firefox 3.6+ */
+    background: -moz-linear-gradient(top, #fff, #cfcfcf); /* for firefox 3.6+ */
     border: solid 1px #b4b4b4;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1204,7 +1227,7 @@ div.z-formbuttons:after {
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
     background: #DDDDDD;
-    background: -moz-linear-gradient(center top , #ddd, #F2F2F2) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(center top, #ddd, #F2F2F2) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear,left top, left bottom,from(#ddd),to(#f2f2f2));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#f2f2f2');
 }

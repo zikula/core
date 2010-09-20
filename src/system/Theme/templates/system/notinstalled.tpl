@@ -6,20 +6,32 @@
         <style type="text/css">
             html, body {
                 height: 100%;
-                margin:0;
-                padding:0;
+                margin: 0;
+                padding: 0;
                 font-family: Verdana, Arial, Helvetica, Sans-serif;
-                font-size: 12px;
-                background: #EEEEEE;
-                line-height:1.6em;
+                font-size: 14px;
+                background: #F2F2F2;
+                background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) );
+                background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent;
+                background: linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent;
+                line-height: 1.6em;
             }
             a {
                 color: #2147B3;
-                font-weight: bold;
                 border: none;
             }
             img {
                 border: none;
+            }
+            h1 {
+                font-size:24px;
+                line-height:28px;
+            }
+            h2 {
+                color:#770000;
+                font-size:22px;
+                line-height:26px;
+                text-transform:uppercase;
             }
             .container {
                 display: table;
@@ -38,11 +50,48 @@
                 margin: 0 auto;
                 width: 50%;
                 padding: 1.5em;
-                background: #FAFAFA;
+                background: #fafafa;
                 border: 1px solid #2147B3;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
                 -webkit-box-shadow: #999 4px 4px 10px;
                 -moz-box-shadow: #999 4px 4px 10px;
                 box-shadow: #999 4px 4px 10px;
+                text-align: center;
+            }
+            .button-install {
+                display: inline-block;
+                padding: 15px 20px;
+                color: #bed7e1;
+                font-size: 12px;
+                text-decoration: none;
+                margin: 1em 0;
+                border: 1px solid #A4C3EF;
+                text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.25);
+                background: #2147B3;
+                background: -webkit-gradient(linear, left top, left bottom, from(#7DA3DF), to(#2147B3) );
+                background: -moz-linear-gradient(top, #7DA3DF, #2147B3);
+                background: linear-gradient(top, #7DA3DF, #2147B3);
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+                -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+            }
+            a.button-install:hover,
+            a.button-install:active {
+                text-decoration: none;
+                background: #3764DF;
+                background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#8FBAFF), to(#3764DF) );
+                background: -moz-linear-gradient(-90deg, #8FBAFF, #3764DF);
+                background: linear-gradient(-90deg, #8FBAFF, #3764DF);
+            }
+            .button-install strong {
+                display: block;
+                color: #fff;
+                font-size: 18px;
             }
         </style>
     </head>
@@ -50,14 +99,20 @@
         <div class="container">
             <div class="cell">
                 <div class="content">
-                    <h1>Zikula is not installed!</h1>
+                    <h1>Zikula Application Framework</h1>
+                    <h2>System is not installed!</h2>
                     <p>
-                        You are seeing this message because Zikula is not yet installed.  You can install Zikula by visiting the <a href="install.php?lang=en">install script</a>, but before doing so please read the <a href="docs/en/README">installation instructions</a>.
+                        You are seeing this message because Zikula is not yet installed.  You can install Zikula by clicking on the install button, but before doing so please read the <a href="docs/en/README">installation instructions</a>.
                         Further information can be found in the <a href="http://community.zikula.org/Wiki-UserDocs.htm">online documentation</a>.
                     </p>
                     <p>
-                        Zikula is free software released under the GNU/GPL.  For more information, please visit <a href="http://zikula.org" title="Zikula Homepage">
-                        http://zikula.org</a>.
+                        <a href="install.php?lang=en" class="button-install">
+                            <strong>Install Zikula!</strong>
+                            Zikula is free software released under the LGPL v3!
+                        </a>
+                    </p>
+                    <p>
+                        For more information, please visit <a href="http://zikula.org" title="Zikula Homepage">http://zikula.org</a>.
                     </p>
                     <p>
                         <a href="http://zikula.org"><img src="images/powered/small/cms_zikula.png" alt="Proudly powered by Zikula" width="80" height="15" /></a>

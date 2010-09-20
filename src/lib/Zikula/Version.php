@@ -67,7 +67,7 @@ class Zikula_Version implements ArrayAccess
      *
      * @var array
      */
-    protected $securityschema;
+    protected $securityschema = array();
 
     /**
      * Module dependencies.

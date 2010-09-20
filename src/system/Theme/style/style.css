@@ -58,7 +58,14 @@ img.theme_colorpicker_image {
     margin: 1%;
     padding: 4px;
     text-align: center;
+    min-width: 208px;
     width: 30%;
+    overflow: hidden;
+    color: #333;
+}
+
+#themes_list dl.theme_item a {
+    color: #333;
 }
 
 #themes_list dl.theme_item:hover {

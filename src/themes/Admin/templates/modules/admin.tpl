@@ -52,7 +52,7 @@
 					<li class="z-tab"><a href="#eqsix">{gt text='News'}</a></li>
 					{/checkpermissionblock}				
                 </ul>
-				</div>
+			</div>
 		</div>
  
 		<div id="page-layout">

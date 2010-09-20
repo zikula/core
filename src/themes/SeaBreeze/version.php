@@ -15,7 +15,7 @@
 $themeversion['name'] = 'SeaBreeze';
 $themeversion['displayname'] = __('SeaBreeze');
 $themeversion['description'] = __('The SeaBreeze theme is a browser-oriented theme, and was updated for the release of Zikula 1.0, with revised colours and new graphics.');
-$themeversion['version'] = '3.1';
+$themeversion['version'] = '3.2';
 $themeversion['admin'] = 0;
 $themeversion['user'] = 1;
 $themeversion['system'] = 0;

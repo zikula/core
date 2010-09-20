@@ -1,8 +1,11 @@
 html,
 body {
-    background-color:#EEEEEE;
+    background: #F2F2F2;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) );
+    background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent;
+    background: linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent;
     color:#000000;
-    font-family:verdana,arial,helvetica,sans-serif;
+    font-family: Verdana, Arial, Helvetica, Sans-serif;
     font-size:12px;
     height:100%;
     margin:0;
