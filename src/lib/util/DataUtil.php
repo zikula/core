@@ -364,8 +364,9 @@ class DataUtil
             $dbType = DBConnectionStack::getConnectionDBType();
             if ($dbType == 'mssql' || $dbType == 'oci8' || $dbType == 'oracle') {
                 $var = str_replace("'", "''", $var);
-            } else
+            } else {
                 $var = addslashes($var);
+            }
         }
 
         return $var;
