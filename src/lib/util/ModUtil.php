@@ -57,7 +57,16 @@ class ModUtil
      *
      * @var array
      */
-    protected static $modvars = array();
+    protected static $modvars;
+
+    /**
+     *
+     * @return Array
+     */
+    public static function getModvars()
+    {
+        return self::$modvars;
+    }
 
     /**
      * The initCoreVars preloads some module vars.
@@ -75,8 +84,8 @@ class ModUtil
 
         // if we haven't got vars for this module yet then lets get them
         if (!(self::$modvars)) {
-            self::$modvars = array(EventUtil::HANDLERS => array(), 'Settings' => array());
-            $modvars = DBUtil::selectObjectArray('module_vars');//, $where);
+            self::$modvars = new ArrayObject(array(EventUtil::HANDLERS => array(), 'Settings' => array())); // These empty arrays are required for E_ALL - drak
+            $modvars = DBUtil::selectObjectArray('module_vars');
             foreach ($modvars as $var) {
                 if (array_key_exists($var['name'],$GLOBALS['ZConfig']['System'])) {
                     self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
@@ -86,6 +95,10 @@ class ModUtil
                     self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
                 }
             }
+
+            // For use in templates, it's easier if we rename the modvars to ZConfig, since /Config is not accessible - drak
+            self::$modvars[self::CONFIG_MODULE] = new ArrayObject(self::$modvars[self::CONFIG_MODULE]);
+            self::$modvars['ZConfig'] = self::$modvars[self::CONFIG_MODULE];
         }
     }
 
