@@ -342,9 +342,6 @@ class Admin_Controller_Admin extends Zikula_Controller
         // assign the category
         $this->view->assign('category', $category);
 
-        // assign all module vars
-        $this->view->assign('modvars', $this->getVars());
-
         $displayNameType = $this->getVar('displaynametype', 1);
 
         // get admin capable modules
@@ -428,9 +425,6 @@ class Admin_Controller_Admin extends Zikula_Controller
         // Get all categories
         $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
         $this->view->assign('categories', $categories);
-
-        // assign all the module vars
-        $this->view->assign('modvars', $this->getVars());
 
         $modulecategories = array();
         foreach ($adminmodules as $adminmodule)

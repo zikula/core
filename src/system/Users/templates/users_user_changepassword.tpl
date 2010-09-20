@@ -15,17 +15,17 @@
             <div class="z-formrow">
                 <label for="newpassword">{gt text="New password"}</label>
                 <input name="newpassword" id="newpassword" type="password" value="" />
-                {if $zcore.Users.use_password_strength_meter eq 1}
+                {if $modvars.Users.use_password_strength_meter eq 1}
                 {pageaddvar name='javascript' value='prototype'}
                 {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
 
                 <script type="text/javascript">
                     var passmeter = new Zikula.Users.PassMeter('newpassword',{
                         username:'usernamehidden',
-                        minLength: '{{$zcore.Users.minpass}}',
+                        minLength: '{{$modvars.Users.minpass}}',
                         messages: {
                             username: '{{gt text="Password can not match the username, choose a different password."}}',
-                            minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$zcore.Users.minpass}}'
+                            minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.Users.minpass}}'
                         },
                         verdicts: [
                             '{{gt text="Weak"}}',

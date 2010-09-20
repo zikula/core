@@ -24,7 +24,7 @@
                 <td>{$reginfo.uname|safetext}</td>
                 <td>{if !empty($reginfo.email)}<a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>{else}---{/if}</td>
                 <td class="z-center">{if $reginfo.isapproved}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Approved' __alt='Approved'}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending approval' __alt='Pending approval'}{/if}</td>
-                <td class="z-center">{if $reginfo.isverified}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'}{elseif !$reginfo.verificationsent}{if ($zcore.Users.moderation_order != 'UserUtil::APPROVAL_BEFORE'|const) || (($zcore.Users.moderation_order == 'UserUtil::APPROVAL_BEFORE'|const) && ($reginfo.isapproved))}{img modname='core' set='icons/extrasmall' src='status_unknown.gif' __title='E-mail verification not sent; must be resent' __alt='E-mail verification not sent; must be resent'}{else}{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='E-mail verification not sent' __alt='E-mail verification not sent'}{/if}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'}{/if}</td>
+                <td class="z-center">{if $reginfo.isverified}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'}{elseif !$reginfo.verificationsent}{if ($modvars.Users.moderation_order != 'UserUtil::APPROVAL_BEFORE'|const) || (($modvars.Users.moderation_order == 'UserUtil::APPROVAL_BEFORE'|const) && ($reginfo.isapproved))}{img modname='core' set='icons/extrasmall' src='status_unknown.gif' __title='E-mail verification not sent; must be resent' __alt='E-mail verification not sent; must be resent'}{else}{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='E-mail verification not sent' __alt='E-mail verification not sent'}{/if}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'}{/if}</td>
                 {assign var="regactions" value=$actions.list[$reginfo.uid]}
                 {strip}
                 {* For the following, (isset($regactions.optname) == true) means that the current user can, in general, perform the operation; *}
@@ -51,7 +51,7 @@
                 {if isset($regactions.approve)}
                 <td class="z-center">
                     {if $regactions.approve && !$reginfo.isverified}
-                    {if isset($zcore.Users.moderation_order) && ($zcore.Users.moderation_order == 'UserUtil::APPROVAL_AFTER'|const)}
+                    {if isset($modvars.Users.moderation_order) && ($modvars.Users.moderation_order == 'UserUtil::APPROVAL_AFTER'|const)}
                     <a href="{$regactions.approve|safetext}">{img src='ok.gif' modname='core' set='icons/extrasmall' __title='Pre-approve (verification still required)' __alt='Pre-approve (verification still required)'}</a>
                     {else}
                     <a href="{$regactions.approve|safetext}">{img src='ok.gif' modname='core' set='icons/extrasmall' __title='Approve' __alt='Approve'}</a>
@@ -143,7 +143,7 @@
             <tr>
                 <td class="z-w45">
                     <div class="z-floatleft" style="padding: 0.5em 1.0em 0.5em 0.5em;;">{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='Verification e-mail message not yet sent' __alt='Verification e-mail message not yet sent'}</div>
-                    <div class="z-sub">{gt text='A verification e-mail has not been sent to the registered e-mail address.'}{if $zcore.Users.moderation_order == 'UserUtil::APPROVAL_BEFORE'|const} {gt text='If it is not yet approved, then it will be sent on approval.'}{/if}</div>
+                    <div class="z-sub">{gt text='A verification e-mail has not been sent to the registered e-mail address.'}{if $modvars.Users.moderation_order == 'UserUtil::APPROVAL_BEFORE'|const} {gt text='If it is not yet approved, then it will be sent on approval.'}{/if}</div>
                 </td>
                 <td class="z-w45">
                     <div class="z-floatleft" style="padding: 0.5em 1.0em 0.5em 0.5em;;">{img modname='core' set='icons/extrasmall' src='status_unknown.gif' __title='E-mail verification not sent; must be resent' __alt='E-mail verification not sent; must be resent'}</div>

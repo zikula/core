@@ -52,19 +52,19 @@
                     <div class="z-formrow">
                         <label for="users_reginfo_pass">{gt text='Password'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                         <input id="users_reginfo_pass"{if isset($errorflds.reginfo_pass) || isset($errorflds.passagain)} class="errorrequired"{/if} type="password" name="reginfo[pass]" size="21" maxlength="20" />
-                        <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$zcore.Users.minpass}</em>
+                        <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.Users.minpass}</em>
                     </div>
-                    {if $zcore.Users.use_password_strength_meter eq 1}
+                    {if $modvars.Users.use_password_strength_meter eq 1}
                     {pageaddvar name='javascript' value='prototype'}
                     {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
 
                     <script type="text/javascript">
                         var passmeter = new Zikula.Users.PassMeter('users_reginfo_pass',{
                             username:'users_reginfo_uname',
-                            minLength: '{{$zcore.Users.minpass}}',
+                            minLength: '{{$modvars.Users.minpass}}',
                             messages: {
                                 username: '{{gt text="Password can not match the username, choose a different password."}}',
-                                minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$zcore.Users.minpass}}'
+                                minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.Users.minpass}}'
                             },
                             verdicts: [
                             '{{gt text="Weak"}}',
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div id="users_setpass_no_wrap" class="z-formrow z-hide">
-                    {if $zcore.Users.reg_verifyemail == 'UserUtil::VERIFY_NO'|constant}
+                    {if $modvars.Users.reg_verifyemail == 'UserUtil::VERIFY_NO'|constant}
                     <p class="z-formnote z-warningmsg">{gt text="The user's e-mail address will be verified, even though e-mail address verification is turned off in 'Settings'. This is necessary because the user will create a password during the verification process."}</p>
                     {else}
                     <p class="z-formnote z-informationmsg">{gt text="The user's e-mail address will be verified. The user will create a password at that time."}</p>

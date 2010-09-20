@@ -6,8 +6,8 @@
     {math equation="$moduleid+1" assign="moduleid"}
 
     {if $count eq 1}<div class="z-adminiconrow z-clearfix">{/if}
-        <div id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$moduleid"};">
-            {if $modvars.admingraphic eq 1}
+        <div id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.Admin.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$moduleid"};">
+            {if $modvars.Admin.admingraphic eq 1}
             <a class="z-adminicon z-adminfloat" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">
                 <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutext|safetext}" alt="{$adminlink.menutext|safetext}" />
             </a>
@@ -29,7 +29,7 @@
                         leftClick: true,
                         animation: false
                     });
-                
+
                     {{foreach from=$modlinks item=modlink}}
                         context_mcontext{{$moduleid}}.addItem({
                             label: '{{$modlink.text|safetext}}',
@@ -43,19 +43,19 @@
                         handle: "dragicon{{$adminlink.id}}",
                         zindex: 2200 // must be higher than the active minitab and all other admin icons
                     });
-                
+
                 /* ]]> */
                 </script>
 
 
             </div>
 
-            {math equation="170-x*30" x=$modvars.modulesperrow format="%.0f" assign=trunLen}
+            {math equation="170-x*30" x=$modvars.Admin.modulesperrow format="%.0f" assign=trunLen}
             <div class="z-menutexttitle">{$adminlink.menutexttitle|safetext|truncate:$trunLen:"&hellip;":false}</div>
 
         </div>
 
-    {if $count eq $modvars.modulesperrow}{assign var="count" value="0"}</div>
+    {if $count eq $modvars.Admin.modulesperrow}{assign var="count" value="0"}</div>
     {else}
 {if $smarty.foreach.adminlink.last}</div>{/if}
 {/if}

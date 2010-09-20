@@ -2,8 +2,8 @@
     {assign var="count" value="0"}
     {foreach from=$adminlinks item=adminlink}
     {math equation="$count+1" assign="count"}
-    <div id="A{$adminlink.id}" class="z-adminiconcontainer z-center draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
-        {if $modvars.admingraphic eq 1}
+    <div id="A{$adminlink.id}" class="z-adminiconcontainer z-center draggable" style="width:{math equation='100/x' x=$modvars.Admin.modulesperrow format='%.0f'}%;">
+        {if $modvars.Admin.admingraphic eq 1}
         <a class="z-adminicon" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">
             <img src="{$adminlink.adminicon}" title="{$adminlink.menutexttitle|safetext}" alt="{$adminlink.menutext|safetext}" />
         </a>
@@ -23,7 +23,7 @@
         </script>
     </div>
 
-    {if $count eq $modvars.modulesperrow}
+    {if $count eq $modvars.Admin.modulesperrow}
     {assign var="count" value="0"}
     <br class="z-clearer" />
     {/if}

@@ -6,7 +6,7 @@
     {if empty($adminlinks)}
         <p class="z-bold z-center">{gt text="There are currently no modules in this category."}</p>
     {else}
-        {if $modvars.moduledescription eq 1}
+        {if $modvars.Admin.moduledescription eq 1}
         {include file="admin_admin_adminpanel_inc1.tpl"}
         {else}
         {include file="admin_admin_adminpanel_inc2.tpl"}
