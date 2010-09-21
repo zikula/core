@@ -48,7 +48,7 @@ Zikula.Users.NewUser = {
     {
         var pars = "module=Users&func=getRegistrationErrors&" + Form.serialize('users_newuser');
         var myAjax = new Ajax.Request(
-            document.location.pnbaseURL + "ajax.php",
+            Zikula.Config.baseURL + "ajax.php",
             {
                 method: 'post',
                 parameters: pars,

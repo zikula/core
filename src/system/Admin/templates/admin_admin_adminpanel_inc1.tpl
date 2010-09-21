@@ -33,7 +33,7 @@
                     {{foreach from=$modlinks item=modlink}}
                         context_mcontext{{$moduleid}}.addItem({
                             label: '{{$modlink.text|safetext}}',
-                            callback: function(){window.location = document.location.pnbaseURL + '{{$modlink.url}}';}
+                            callback: function(){window.location = Zikula.Config.baseURL + '{{$modlink.url}}';}
                         });
                     {{/foreach}}
 

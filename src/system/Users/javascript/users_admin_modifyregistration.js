@@ -49,7 +49,7 @@ Zikula.Users.AdminModifyRegistration = {
     {
         var pars = "module=Users&func=getRegistrationErrors&" + Form.serialize('users_modifyregistration');
         var myAjax = new Ajax.Request(
-            document.location.pnbaseURL + "ajax.php",
+            Zikula.Config.baseURL + "ajax.php",
             {
                 method: 'post',
                 parameters: pars,
