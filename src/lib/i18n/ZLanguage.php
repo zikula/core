@@ -297,8 +297,7 @@ class ZLanguage
      */
     public static function getLocale()
     {
-        $_this = self::getInstance();
-        return $_this->locale;
+        return self::getInstance()->locale;
     }
 
     /**
@@ -319,8 +318,7 @@ class ZLanguage
      */
     public static function getLanguageCode()
     {
-        $_this = self::getInstance();
-        return $_this->languageCode;
+        return self::getInstance()->languageCode;
     }
 
     /**
@@ -330,8 +328,7 @@ class ZLanguage
      */
     public function getLanguageCodeLegacy()
     {
-        $_this = self::getInstance();
-        return $_this->languageCodeLegacy;
+        return self::getInstance()->languageCodeLegacy;
     }
 
     /**
@@ -341,8 +338,7 @@ class ZLanguage
      */
     public static function getDBCharset()
     {
-        $_this = self::getInstance();
-        return $_this->dbCharset;
+        return self::getInstance()->dbCharset;
     }
 
     /**
@@ -352,8 +348,7 @@ class ZLanguage
      */
     public static function getEncoding()
     {
-        $_this = self::getInstance();
-        return $_this->encoding;
+        return self::getInstance()->encoding;
     }
 
 
@@ -545,8 +540,7 @@ class ZLanguage
      */
     public static function getLangUrlRule()
     {
-        $_this = self::getInstance();
-        return $_this->langUrlRule;
+        return self::getInstance()->langUrlRule;
     }
 
     /**
@@ -666,8 +660,7 @@ class ZLanguage
      */
     public static function isLangParam($lang)
     {
-        $_this = self::getInstance();
-        if ($_this->langUrlRule) {
+        if (self::getInstance()->langUrlRule) {
             return true;
         } else {
             // check if it LOOKS like a language param
@@ -685,8 +678,7 @@ class ZLanguage
      */
     public static function getDirection()
     {
-        $_this = self::getInstance();
-        return $_this->i18n->locale['language_direction'];
+        return self::getInstance()->i18n->locale['language_direction'];
     }
 
     /**
