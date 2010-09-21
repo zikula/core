@@ -44,7 +44,7 @@ TEMPLATES
 
 - The {pager} plugin  no longer requires the parameter shift
 
-- Introduced persistent $metadata for general SEO purposes.
+- Introduced persistent $metatags for general SEO purposes.
 
 - Introduced persistent $coredata for miscellaneous templating data.
 
@@ -56,7 +56,7 @@ TEMPLATES
 - The following variables are reserved for Zikula_View and may not be assigned.
   - servicemanager
   - eventmanager
-  - metadata
+  - metatags
   - coredata
   - zikula_view
   - zikula_core

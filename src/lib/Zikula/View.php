@@ -266,11 +266,11 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $this->add_core_data();
 
         // Metadata for SEO
-        if (!isset($this->serviceManager['zikula_view.metadata'])) {
-            $this->serviceManager['zikula_view.metadata'] = new ArrayObject(array());
+        if (!isset($this->serviceManager['zikula_view.metatags'])) {
+            $this->serviceManager['zikula_view.metatags'] = new ArrayObject(array());
         }
 
-        parent::assign('metadata', $this->serviceManager['zikula_view.metadata']);
+        parent::assign('metatags', $this->serviceManager['zikula_view.metatags']);
 
         // add some useful data
         $this->assign(array('module' => $module,
@@ -985,7 +985,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
                 case 'zikula_view':
                 case 'zikula_core':
                 case 'modvars':
-                case 'metadata':
+                case 'metatags':
                 case 'coredata':
                 case 'servicemanager':
                 case 'eventmanager':
