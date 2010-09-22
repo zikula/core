@@ -22,6 +22,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
      * Adds an one-to-many relationship named Categories to Zikula_Doctrine_Model_EntityCategory.
      *
      * @return void
+     * @throws Exception Throws when the record uses Categorisable template AND a composite primary key.
      */
     public function setUp()
     {
@@ -37,7 +38,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
 
         $idColumn = $record->getTable()->getIdentifier();
         if (is_array($idColumn)) {
-            if(count($idColumn) > 1) {
+            if (count($idColumn) > 1) {
                 throw new LogicException(sprintf('Error: Doctrine record %s uses Categorisable template AND a composite primary key', $recordClass));
             }
             $idColumn = $idColumn[0];
@@ -59,7 +60,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
      * @param string $modelClass Classname of the model.
      *
      * @return void
-     * @throws Exception Throws when the create of the cache directory faild.
+     * @throws Exception Throws when the create of the cache directory fails.
      */
     private static function _generateSubclassForCategorisableTemplate($module, $modelClass)
     {
@@ -80,7 +81,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
             $modelsInfo[$subclassName] = array('module' => $module, 'table' => $tableName);
             ModUtil::setVar('Categories', 'EntityCategorySubclasses', $modelsInfo);
         } else {
-            throw new Exception('Creation of the cache directory '.$dir.' faild');
+            throw new Exception('Creation of the cache directory '.$dir.' failed');
         }
     }
 

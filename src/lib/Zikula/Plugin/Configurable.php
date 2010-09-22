@@ -17,6 +17,7 @@ interface Zikula_Plugin_Configurable
     /**
      * Return an instance of the configuration controller.
      *
+     * Example:
      * <samp>
      *     return new SystemPlugin_Example_Controller($this->serviceManager, array('plugin' => $this));
      * </samp>

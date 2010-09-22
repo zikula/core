@@ -11,13 +11,13 @@
  */
 
 /**
- * Formats variable contents for display in the console
+ * Formats variable contents for display in the console.
  *
- * @link http://smarty.php.net/manual/en/language.modifier.debug.print.var.php
- * 
  * @param array|object $var    What is being modified.
  * @param integer      $depth  Depth to print arrays.
  * @param integer      $length Max length.
+ *
+ * @link http://smarty.php.net/manual/en/language.modifier.debug.print.var.php
  *
  * @return string
  */

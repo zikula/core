@@ -60,8 +60,9 @@ class ModUtil
     protected static $modvars;
 
     /**
+     * Module variables getter.
      *
-     * @return Array
+     * @return array
      */
     public static function getModvars()
     {

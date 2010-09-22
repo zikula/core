@@ -108,9 +108,9 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
     public $displayFieldTwo = '';
 
     /**
-     * Whether to display an empty value to select nothing
+     * Whether to display an empty value to select nothing.
      *
-     * @var bool
+     * @var boolean
      */
     public $showEmptyValue = 0;
 
