@@ -12,7 +12,7 @@
     /* ]]> */
 </script>
 
-<h1>{gt text="Administration" domain="zikula"} ({version})</h1>
+<h1>{gt text="Administration" domain="zikula"} ({$coredata.version_num})</h1>
 
 {include file='admin_admin_securityanalyzer.tpl'}
 {include file='admin_admin_developernotices.tpl'}
