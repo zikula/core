@@ -24,7 +24,7 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
      * @var array
      */
     private $ops = array();
-    
+
     /**
      * Fields to use the plugin for.
      * 
@@ -52,7 +52,7 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
         if (isset($config['ops']) && (!isset($this->ops) || !is_array($this->ops))) {
             $this->activateOperators($config['ops']);
         } else {
-            $this->activateOperators(array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'like', 'likefirst', 'null', 'notnull'));
+            $this->activateOperators(array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'search', 'like', 'likefirst', 'null', 'notnull'));
         }
 
         if (isset($config['default']) && $config['default'] == true || count($this->fields) <= 0) {
@@ -76,6 +76,7 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
                             'le',
                             'gt',
                             'ge',
+                            'search',
                             'like',
                             'likefirst',
                             'null',
@@ -178,6 +179,10 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
                 $where = "$column >= '$value'";
                 break;
 
+            case 'search':
+                $where = "$column LIKE '%$value%'";
+                break;
+
             case 'like':
                 $where = "$column LIKE '$value'";
                 break;
@@ -199,7 +204,6 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
                 break;
         }
 
-        return array('where' => $where); 
+        return array('where' => $where);
     }
 }
-
