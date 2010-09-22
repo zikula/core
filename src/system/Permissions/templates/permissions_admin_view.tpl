@@ -215,6 +215,6 @@
             var testingpermission  = '{{gt text="Testing permission..."}}';
             var permissionlocked   = '{{gt text="This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page."}}';
 
-            Event.observe(window, 'load', function(){permissioninit();}, false);
+            Event.observe(window, 'load', function(){permissioninit();});
         </script>
     </div>

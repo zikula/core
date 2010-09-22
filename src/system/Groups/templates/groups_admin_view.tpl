@@ -87,11 +87,11 @@
                         <a id="delete_{$group.gid}"     href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __title="Delete" __alt="Delete"}</a>
                         <a id="members_{$group.gid}"  href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=edit_group.gif modname=core set=icons/extrasmall __title="Group membership" __alt="Group membership"}</a>
                         <script type="text/javascript">
-                            Element.addClassName('insert_{{$group.gid}}', 'z-hide');
-                            Element.addClassName('modify_{{$group.gid}}', 'z-hide');
-                            Element.addClassName('delete_{{$group.gid}}', 'z-hide');
-                            Element.removeClassName('modifyajax_{{$group.gid}}', 'z-hide');
-                            Event.observe('modifyajax_{{$group.gid}}', 'click', function(){groupmodifyinit({{$group.gid}})}, false);
+                            $('insert_{{$group.gid}}').addClassName('z-hide');
+                            $('modify_{{$group.gid}}').addClassName('z-hide');
+                            $('delete_{{$group.gid}}').addClassName('z-hide');
+                            $('modifyajax_{{$group.gid}}').removeClassName('z-hide');
+                            $('modifyajax_{{$group.gid}}').observe('click', function() { groupmodifyinit({{$group.gid}}); });
                         </script>
                     </span>
                     <span id="editgroupaction_{$group.gid}" class="z-itemcell z-w10 z-hide">

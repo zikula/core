@@ -4,10 +4,10 @@
  * create the onload function to enable the drag&drop for sequencing
  *
  */
- Event.observe(window, 'load', function() 
-	{
-		// show link to extended hook settings 
-		$('extendedhookslinks').removeClassName('z-hide');
-		$('extendedhookslinks').addClassName('z-show');
-	}
+Event.observe(window, 'load', function() 
+    {
+        // show link to extended hook settings 
+        $('extendedhookslinks').removeClassName('z-hide');
+        $('extendedhookslinks').addClassName('z-show');
+    }
 ); 

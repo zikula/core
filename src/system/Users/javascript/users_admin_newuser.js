@@ -10,8 +10,8 @@ Zikula.Users.AdminNewUser = {
      */
     init: function()
     {
-        Event.observe('users_setpass_yes', 'click', Zikula.Users.AdminNewUser.setpass_onClick, false);
-        Event.observe('users_setpass_no', 'click', Zikula.Users.AdminNewUser.setpass_onClick, false);
+        $('users_setpass_yes').observe('click', Zikula.Users.AdminNewUser.setpass_onClick);
+        $('users_setpass_no').observe('click', Zikula.Users.AdminNewUser.setpass_onClick);
         $('users_setpass_container').removeClassName('z-hide');
         $('users_setpass_no_wrap').removeClassName('z-hide');
         Zikula.Users.AdminNewUser.setpass_onClick();

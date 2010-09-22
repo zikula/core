@@ -16,16 +16,16 @@ Zikula.Users.NewUser = {
         var formfields = Form.getElements("users_newuser");
         for (var i = 0, len = formfields.length; i < len; i++) {
             if ((formfields[i].id != "checkuserajax") && (formfields[i].id != "submitnewuser")) {
-                Event.observe(formfields[i], 'click', Zikula.Users.NewUser.lastCheckExpired);
-                Event.observe(formfields[i], 'keypress', Zikula.Users.NewUser.lastCheckExpired);
+                formfields[i].observe('click', Zikula.Users.NewUser.lastCheckExpired);
+                formfields[i].observe('keypress', Zikula.Users.NewUser.lastCheckExpired);
             }
         }
 
-        Event.observe('users_reginfo_uname', 'blur', function(){$('users_reginfo_uname').value = $('users_reginfo_uname').value.toLowerCase();}, false);
-        Event.observe('users_reginfo_email', 'blur', function(){$('users_reginfo_email').value = $('users_reginfo_email').value.toLowerCase();}, false);
+        $('users_reginfo_uname').observe('blur', function(){$('users_reginfo_uname').value = $('users_reginfo_uname').value.toLowerCase();});
+        $('users_reginfo_email').observe('blur', function(){$('users_reginfo_email').value = $('users_reginfo_email').value.toLowerCase();});
 
-        Element.removeClassName('checkuserajax', 'z-hide');
-        Event.observe('checkuserajax', 'click', Zikula.Users.NewUser.callGetRegistrationErrors, false);
+        $('checkuserajax').removeClassName('z-hide');
+        $('checkuserajax').observe('click', Zikula.Users.NewUser.callGetRegistrationErrors);
     },
 
     /**
@@ -82,10 +82,10 @@ Zikula.Users.NewUser = {
             if (formfields[i].type == 'checkbox') {
                 fieldWrapper = $(formfields[i].id + '_field');
                 if ((typeof(fieldWrapper) != undefined) && (fieldWrapper != null)) {
-                    Element.removeClassName(fieldWrapper, 'errorrequired');
+                    fieldWrapper.removeClassName('errorrequired');
                 }
             } else {
-                Element.removeClassName(formfields[i], 'errorrequired');
+                formfields[i].removeClassName('errorrequired');
             }
         }
 
@@ -94,10 +94,10 @@ Zikula.Users.NewUser = {
             if (field.type == 'checkbox') {
                 fieldWrapper = field.id + '_field';
                 if ((typeof(fieldWrapper) != undefined) && (fieldWrapper != null)) {
-                    Element.addClassName(fieldWrapper, 'errorrequired');
+                    fieldWrapper.addClassName('errorrequired');
                 }
             } else {
-                Element.addClassName(errorFields[i], 'errorrequired');
+                errorFields[i].addClassName('errorrequired');
             }
         }
 

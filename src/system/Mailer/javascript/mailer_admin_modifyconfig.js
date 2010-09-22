@@ -1,11 +1,11 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
 
-Event.observe(window, 'load', mailer_modifyconfig_init, false);
+Event.observe(window, 'load', mailer_modifyconfig_init);
 
 function mailer_modifyconfig_init()
 {
-     Event.observe('mailer_mailertype', 'change', mailer_transport_onchange, false);
-     Event.observe('mailer_smtpauth', 'change', mailer_smtpauth_onchange, false);
+     $('mailer_mailertype').observe('change', mailer_transport_onchange);
+     $('mailer_smtpauth').observe('change', mailer_smtpauth_onchange);
      mailer_transport_onchange();
      mailer_smtpauth_onchange();
 }

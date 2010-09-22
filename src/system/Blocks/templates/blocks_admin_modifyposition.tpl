@@ -88,5 +88,5 @@
 </div>
 
 <script type="text/javascript">
-    Event.observe(window, 'load', blocksmodifyinit, false);
+    Event.observe(window, 'load', blocksmodifyinit);
 </script>

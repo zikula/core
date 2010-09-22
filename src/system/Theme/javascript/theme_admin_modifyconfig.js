@@ -1,13 +1,14 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
 
-Event.observe(window, 'load', theme_modifyconfig_init, false);
+Event.observe(window, 'load', theme_modifyconfig_init);
 
 function theme_modifyconfig_init()
 {
-    Event.observe('enablecache', 'change', theme_enablecache_onchange, false);
-    Event.observe('cssjscombine', 'change', combinecssjs_onchange, false);
-    Event.observe('cssjsminify', 'change', minifycssjs_onchange, false);
-    Event.observe('render_cache', 'change', render_lifetime_onchange, false);
+    $('enablecache').observe('change', theme_enablecache_onchange);
+    $('cssjscombine').observe('change', combinecssjs_onchange);
+    $('cssjsminify').observe('change', minifycssjs_onchange);
+    $('render_cache').observe('change', render_lifetime_onchange);
+
     if (!$('render_cache').checked) {
         $('render_lifetime_container').hide();
     }

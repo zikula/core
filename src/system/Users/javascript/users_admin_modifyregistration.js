@@ -16,17 +16,17 @@ Zikula.Users.AdminModifyRegistration = {
         var formfields = Form.getElements("users_modifyregistration");
         for (var i = 0, len = formfields.length; i < len; i++) {
             if ((formfields[i].id != "checkuserajax") && (formfields[i].id != "submitchanges")) {
-                Event.observe(formfields[i], 'click', Zikula.Users.AdminModifyRegistration.lastCheckExpired);
-                Event.observe(formfields[i], 'keypress', Zikula.Users.AdminModifyRegistration.lastCheckExpired);
+                formfields[i].observe('click', Zikula.Users.AdminModifyRegistration.lastCheckExpired);
+                formfields[i].observe('keypress', Zikula.Users.AdminModifyRegistration.lastCheckExpired);
             }
         }
 
         // The following two observers force the user name and e-mail address to lower case.
-        Event.observe('users_reginfo_uname', 'keyup', function(){$('users_reginfo_uname').value = $('users_reginfo_uname').value.toLocaleLowerCase();}, false);
-        Event.observe('users_reginfo_email', 'keyup', function(){$('users_reginfo_email').value = $('users_reginfo_email').value.toLocaleLowerCase();}, false);
+        $('users_reginfo_uname').observe('keyup', function(){$('users_reginfo_uname').value = $('users_reginfo_uname').value.toLocaleLowerCase();});
+        $('users_reginfo_email').observe('keyup', function(){$('users_reginfo_email').value = $('users_reginfo_email').value.toLocaleLowerCase();});
 
-        Element.removeClassName('checkuserajax', 'z-hide');
-        Event.observe('checkuserajax', 'click', Zikula.Users.AdminModifyRegistration.callGetRegistrationErrors, false);
+        $('checkuserajax').removeClassName('z-hide');
+        $('checkuserajax').observe('click', Zikula.Users.AdminModifyRegistration.callGetRegistrationErrors);
     },
 
     /**
@@ -83,10 +83,10 @@ Zikula.Users.AdminModifyRegistration = {
             if (formfields[i].type == 'checkbox') {
                 fieldWrapper = $(formfields[i].id + '_field');
                 if ((typeof(fieldWrapper) != undefined) && (fieldWrapper != null)) {
-                    Element.removeClassName(fieldWrapper, 'errorrequired');
+                    fieldWrapper.removeClassName('errorrequired');
                 }
             } else {
-                Element.removeClassName(formfields[i], 'errorrequired');
+                formfields[i].removeClassName('errorrequired');
             }
         }
 
@@ -95,10 +95,10 @@ Zikula.Users.AdminModifyRegistration = {
             if (field.type == 'checkbox') {
                 fieldWrapper = field.id + '_field';
                 if ((typeof(fieldWrapper) != undefined) && (fieldWrapper != null)) {
-                    Element.addClassName(fieldWrapper, 'errorrequired');
+                    fieldWrapper.addClassName('errorrequired');
                 }
             } else {
-                Element.addClassName(errorFields[i], 'errorrequired');
+                errorFields[i].addClassName('errorrequired');
             }
         }
 

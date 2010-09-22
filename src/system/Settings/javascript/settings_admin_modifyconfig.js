@@ -1,24 +1,24 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
 
-Event.observe(window, 'load', settings_modifyconfig_init, false);
+Event.observe(window, 'load', settings_modifyconfig_init);
 
 function settings_modifyconfig_init()
 {
-    Event.observe('settings_siteoff_yes', 'click', settings_disablesite_onchange, false);
-    Event.observe('settings_siteoff_no', 'click', settings_disablesite_onchange, false);
-    Event.observe('settings_shorturls_yes', 'click', settings_shorturls_onchange, false);
-    Event.observe('settings_shorturls_no', 'click', settings_shorturls_onchange, false);
-    Event.observe('settings_shorturlstype_directory', 'click', settings_shorturls_type_onchange, false);
-    Event.observe('settings_shorturlstype_file', 'click', settings_shorturls_type_onchange, false);
+    $('settings_siteoff_yes').observe('click', settings_disablesite_onchange);
+    $('settings_siteoff_no').observe('click', settings_disablesite_onchange);
+    $('settings_shorturls_yes').observe('click', settings_shorturls_onchange);
+    $('settings_shorturls_no').observe('click', settings_shorturls_onchange);
+    $('settings_shorturlstype_directory').observe('click', settings_shorturls_type_onchange);
+    $('settings_shorturlstype_file').observe('click', settings_shorturls_type_onchange);
 
-    $$('.z_texpand').each(function(el){
-      new Texpand(el, {autoShrink: false, shrinkOnBlur:false, expandOnFocus: false, expandOnLoad: true });
+    $$('.z_texpand').each(function(el) {
+        new Texpand(el, {autoShrink: false, shrinkOnBlur: false, expandOnFocus: false, expandOnLoad: true });
     });
 
-    if ( $('settings_siteoff_no').checked) {
+    if ($('settings_siteoff_no').checked) {
         $('settings_siteoff_container').hide();
     }
-    if ( $('settings_shorturls_no').checked) {
+    if ($('settings_shorturls_no').checked) {
         $('settings_shorturls_container').hide();
     }
     settings_shorturls_type_onchange();
@@ -36,7 +36,7 @@ function settings_shorturls_onchange()
 
 function settings_shorturls_type_onchange()
 {
-    if ( $('settings_shorturlstype_file').checked == true) {
+    if ($('settings_shorturlstype_file').checked == true) {
         $('settings_shorturlsext_container').show();
         $('settings_shorturlsstripentrypoint_container').hide();
         $('settings_shorturlsseparator_container').hide();

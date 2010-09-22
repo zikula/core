@@ -5,7 +5,7 @@
  *
  */
 Event.observe(window, 'load', function()
-     { 
+     {
         $A(document.getElementsByClassName('z-sortable')).each(
         function(node) 
         {
@@ -20,5 +20,7 @@ Event.observe(window, 'load', function()
                                     tag:  'div',
                                     only: 'z-sortable'
                                 });
-            });
-    });
+            }
+	);
+    }
+);

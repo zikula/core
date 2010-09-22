@@ -142,6 +142,6 @@
 <script type="text/javascript">
     var msgBlockStatusActive = '{{gt text="Active"}}';
     var msgBlockStatusInactive = '{{gt text="Inactive"}}';
-    Event.observe(window, 'load', initactivationbuttons, false);
+    Event.observe(window, 'load', initactivationbuttons);
     Zikula.UI.Tooltips($$('.tooltips'));
 </script>

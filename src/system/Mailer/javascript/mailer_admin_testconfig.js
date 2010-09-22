@@ -1,12 +1,12 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
 
-Event.observe(window, 'load', mailer_testconfig_init, false);
+Event.observe(window, 'load', mailer_testconfig_init);
 
 function mailer_testconfig_init()
 {
-     Event.observe('mailer_msgtype_text', 'click', mailer_msgtype_onclick, false);
-     Event.observe('mailer_msgtype_html', 'click', mailer_msgtype_onclick, false);
-     Event.observe('mailer_msgtype_multipart', 'click', mailer_msgtype_onclick, false);
+     $('mailer_msgtype_text').observe('click', mailer_msgtype_onclick);
+     $('mailer_msgtype_html').observe('click', mailer_msgtype_onclick);
+     $('mailer_msgtype_multipart').observe('click', mailer_msgtype_onclick);
      mailer_msgtype_onclick();
 }
 

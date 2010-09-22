@@ -18,21 +18,21 @@ Zikula.Users.ModifyConfig = {
             }
         }
 
-        Event.observe('users_reg_allowregyes', 'click', Zikula.Users.ModifyConfig.users_reg_allowreg_onChange);
-        Event.observe('users_reg_allowregno', 'click', Zikula.Users.ModifyConfig.users_reg_allowreg_onChange);
+        $('users_reg_allowregyes').observe('click', Zikula.Users.ModifyConfig.users_reg_allowreg_onChange);
+        $('users_reg_allowregno').observe('click', Zikula.Users.ModifyConfig.users_reg_allowreg_onChange);
         Zikula.Users.ModifyConfig.users_reg_allowreg_onChange();
 
-        Event.observe('users_moderationyes', 'click', Zikula.Users.ModifyConfig.users_moderation_onClick);
-        Event.observe('users_moderationno', 'click', Zikula.Users.ModifyConfig.users_moderation_onClick);
-        Event.observe('users_reg_verifyemail2', 'click', Zikula.Users.ModifyConfig.users_verification_onClick);
-        Event.observe('users_reg_verifyemail0', 'click', Zikula.Users.ModifyConfig.users_verification_onClick);
+        $('users_moderationyes').observe('click', Zikula.Users.ModifyConfig.users_moderation_onClick);
+        $('users_moderationno').observe('click', Zikula.Users.ModifyConfig.users_moderation_onClick);
+        $('users_reg_verifyemail2').observe('click', Zikula.Users.ModifyConfig.users_verification_onClick);
+        $('users_reg_verifyemail0').observe('click', Zikula.Users.ModifyConfig.users_verification_onClick);
         Zikula.Users.ModifyConfig.users_moderation_order_switchDisplayState();
 
-        Event.observe('users_reg_question', 'blur', Zikula.Users.ModifyConfig.users_reg_question_onBlur);
+        $('users_reg_question').observe('blur', Zikula.Users.ModifyConfig.users_reg_question_onBlur);
         Zikula.Users.ModifyConfig.users_reg_question_onBlur();
 
-        Event.observe('users_loginviausername', 'click', Zikula.Users.ModifyConfig.users_loginviaoption_onClick);
-        Event.observe('users_loginviaemail', 'click', Zikula.Users.ModifyConfig.users_loginviaoption_onClick);
+        $('users_loginviausername').observe('click', Zikula.Users.ModifyConfig.users_loginviaoption_onClick);
+        $('users_loginviaemail').observe('click', Zikula.Users.ModifyConfig.users_loginviaoption_onClick);
         Zikula.Users.ModifyConfig.users_loginviaoption_onClick();
     },
 

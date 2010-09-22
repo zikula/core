@@ -28,9 +28,9 @@ function permissioninit()
     canceliconhtml = $('permeditcancel_' + adminpermission).innerHTML;
      
     /* highlight admin permission */
-    if(adminpermission != -1) {
-        if($('permission_' + adminpermission)) {
-            Element.addClassName('permission_' + adminpermission, 'adminpermission');
+    if (adminpermission != -1) {
+        if ($('permission_' + adminpermission)) {
+            $('permission_' + adminpermission).addClassName('adminpermission');
         } else {
             alert('admin permission not found!');
             adminpermission = -1;
@@ -41,27 +41,27 @@ function permissioninit()
         function(node) 
         { 
             var thispermid = node.id.split('_')[1];
-            if(lockadmin == 1 && thispermid == adminpermission) {
+            if (lockadmin == 1 && thispermid == adminpermission) {
                 // adminpermission found, locking required
                 $('permission_' + thispermid).title = permissionlocked;
-                Element.update('permdrag_' + thispermid, '(' + thispermid + ')');
-                Element.addClassName('permission_' + thispermid, 'permlocked');
-                Element.removeClassName('permission_' + thispermid, 'z-sortable');
+                $('permdrag_' + thispermid).update('(' + thispermid + ')');
+                $('permission_' + thispermid).addClassName('permlocked');
+                $('permission_' + thispermid).removeClassName('z-sortable');
             } else {
                 // not adminpermission
-                Element.addClassName('permission_' + thispermid, 'normalpermission');
-                Element.addClassName('permission_' + thispermid, 'z-itemsort');
-                Element.update('permdrag_' + thispermid, '(' + thispermid + ')');
-                Element.removeClassName('modifyajax_' + thispermid, 'z-hide');
-                Event.observe('modifyajax_' + thispermid, 'click', function(){permmodifyinit(thispermid)}, false);
+                $('permission_' + thispermid).addClassName('normalpermission');
+                $('permission_' + thispermid).addClassName('z-itemsort');
+                $('permdrag_' + thispermid).update('(' + thispermid + ')');
+                $('modifyajax_' + thispermid).removeClassName('z-hide');
+                $('modifyajax_' + thispermid).observe('click', function() { permmodifyinit(thispermid); });
             }
             // both admin and not adminpermissions
-            Element.addClassName('insert_' + thispermid, 'z-hide');
-            Element.addClassName('modify_' + thispermid, 'z-hide');
-            Element.addClassName('delete_' + thispermid, 'z-hide');
-            Element.removeClassName('testpermajax_' + thispermid, 'z-hide');
-            
-            Event.observe('testpermajax_' + thispermid, 'click', function(){permtestinit(thispermid)}, false);
+            $('insert_' + thispermid).addClassName('z-hide');
+            $('modify_' + thispermid).addClassName('z-hide');
+            $('delete_' + thispermid).addClassName('z-hide');
+            $('testpermajax_' + thispermid).removeClassName('z-hide');
+
+            $('testpermajax_' + thispermid).observe('click', function() { permtestinit(thispermid); });
         } );
 
     // set observers on all existing groups images
@@ -71,31 +71,31 @@ function permissioninit()
         var permid = singlebutton.id.split('_')[1];
         switch(singlebutton.id.split('_')[0])
         {
-            case "permeditsave":
-                Event.observe('permeditsave_'   + permid, 'click', function(){ permmodify(permid)},       false);
+            case 'permeditsave':
+                $('permeditsave_'   + permid).observe('click', function() { permmodify(permid); });
                 break;
-            case "permeditdelete":
-                Event.observe('permeditdelete_' + permid, 'click', function(){ permdelete(permid)},       false);
+            case 'permeditdelete':
+                $('permeditdelete_' + permid).observe('click', function() { permdelete(permid); });
                 break;
-            case "permeditcancel":
-                Event.observe('permeditcancel_' + permid, 'click', function(){ permmodifycancel(permid)}, false);
+            case 'permeditcancel':
+                $('permeditcancel_' + permid).observe('click', function() { permmodifycancel(permid); });
                 break;
         }
     });
 
-    Element.removeClassName('appendajax', 'z-hide'); 
-    if($('permgroupfilterform')) {
+    $('appendajax').removeClassName('z-hide'); 
+    if ($('permgroupfilterform')) {
         $('permgroupfilterform').action = 'javascript:void(0);'; 
-        Element.remove('permgroupfiltersubmit', 'z-hide'); 
-        Element.removeClassName('permgroupfiltersubmitajax', 'z-hide'); 
+        $('permgroupfiltersubmit').remove('z-hide'); 
+        $('permgroupfiltersubmitajax').removeClassName('z-hide'); 
     }
-    Element.remove('testpermsubmit');
-    Element.removeClassName('testpermsubmitajax', 'z-hide');
+    $('testpermsubmit').remove();
+    $('testpermsubmitajax').removeClassName('z-hide');
     $('testpermform').action = 'javascript:void(0);'; 
 
-    Element.removeClassName('permissiondraganddrophint', 'z-hide');
+    $('permissiondraganddrophint').removeClassName('z-hide');
 
-    Sortable.create("permissionlist",
+    Sortable.create('permissionlist',
                     { 
                       only: 'z-sortable',
                       onUpdate: sortorderchanged
@@ -112,7 +112,7 @@ function permissioninit()
  */
 function permappend()
 {
-    if(appending == false) {
+    if (appending == false) {
         appending = true;
         var pars = "module=Permissions&func=createpermission&authid=" + $F('permissionsauthid');
         var myAjax = new Ajax.Request(
@@ -136,7 +136,7 @@ function permappend()
 function permappend_response(req)
 {
     appending = false;
-    if(req.status != 200 ) { 
+    if (req.status != 200 ) { 
         pnshowajaxerror(req.responseText);
         return;
     }
@@ -163,9 +163,9 @@ function permappend_response(req)
     $('permissionlist').appendChild(newperm);
 
     // remove adminpermission & permlocked classes
-    Element.removeClassName('permission_' + json.pid, 'adminpermission');  
-    Element.removeClassName('permission_' + json.pid, 'permlocked');
-    
+    $('permission_' + json.pid).removeClassName('adminpermission');  
+    $('permission_' + json.pid).removeClassName('permlocked');
+
     // set initial values in input, hidden and select
     $('groupid_' + json.pid).value = json.gid;
     $('levelid_' + json.pid).value = json.level;
@@ -176,45 +176,45 @@ function permappend_response(req)
     pnsetselectoption('level_' + json.pid, json.level);
 
     // hide cancel icon for new permissions
-    Element.addClassName('permeditcancel_' + json.pid, 'z-hide');
+    $('permeditcancel_' + json.pid).addClassName('z-hide');
     // update delete icon to show cancel icon 
-    Element.update('permeditdelete_' + json.pid, canceliconhtml);
+    $('permeditdelete_' + json.pid).update(canceliconhtml);
 
     // update some innerHTML 
-    Element.update('permdrag_' + json.pid, '(' + json.pid + ')');
-    Element.update('permcomp_' + json.pid, json.component);
-    Element.update('perminst_' + json.pid, json.instance);
-    Element.update('permgroup_' + json.pid, json.groupname);
-    Element.update('permlevel_' + json.pid, json.levelname);
-       
-	// Remove cloned handlers (otherwise we end up deleting/updating the admin rule!
-    Event.stopObserving('modifyajax_' + json.pid, 'click');
-    Event.stopObserving('testpermajax_' + json.pid, 'click');
-    Event.stopObserving('permeditsave_' + json.pid, 'click');
-    Event.stopObserving('permeditdelete_' + json.pid, 'click');
-    Event.stopObserving('permeditcancel_' + json.pid, 'click');
-    
-	// add events
-    Event.observe('modifyajax_' + json.pid, 'click', function(){permmodifyinit(json.pid)}, false);
-    Event.observe('testpermajax_' + json.pid, 'click', function(){permtestinit(json.pid)}, false);
-    Event.observe('permeditsave_' + json.pid, 'click',  function(){permmodify(json.pid)}, false);
-    Event.observe('permeditdelete_' + json.pid, 'click',  function(){permdelete(json.pid)}, false);
-    Event.observe('permeditcancel_' + json.pid, 'click',  function(){permmodifycancel(json.pid)}, false);
+    $('permdrag_' + json.pid).update('(' + json.pid + ')');
+    $('permcomp_' + json.pid).update(json.component);
+    $('perminst_' + json.pid).update(json.instance);
+    $('permgroup_' + json.pid).update(json.groupname);
+    $('permlevel_' + json.pid).update(json.levelname);
+
+    // Remove cloned handlers (otherwise we end up deleting/updating the admin rule!
+    $('modifyajax_' + json.pid).stopObserving('click');
+    $('testpermajax_' + json.pid).stopObserving('click');
+    $('permeditsave_' + json.pid).stopObserving('click');
+    $('permeditdelete_' + json.pid).stopObserving('click');
+    $('permeditcancel_' + json.pid).stopObserving('click');
+
+    // add events
+    $('modifyajax_' + json.pid).observe('click', function() { permmodifyinit(json.pid); });
+    $('testpermajax_' + json.pid).observe('click', function() { permtestinit(json.pid); });
+    $('permeditsave_' + json.pid).observe('click',  function() { permmodify(json.pid); });
+    $('permeditdelete_' + json.pid).observe('click',  function() { permdelete(json.pid); });
+    $('permeditcancel_' + json.pid).observe('click',  function() { permmodifycancel(json.pid); });
 
     // add class to make it sortable 
-    Element.addClassName('permission_' + json.pid, 'z-sortable');
-    Element.addClassName('permission_' + json.pid, 'normalpermission');
-    Element.addClassName('permission_' + json.pid, 'z-itemsort');
-    
+    $('permission_' + json.pid).addClassName('z-sortable');
+    $('permission_' + json.pid).addClassName('normalpermission');
+    $('permission_' + json.pid).addClassName('z-itemsort');
+
     // remove class to make edit button visible
-    Element.removeClassName('modifyajax_' + json.pid, 'z-hide');  
-    Event.observe('modifyajax_' + json.pid, 'click', function(){permmodifyinit(json.pid)}, false);
+    $('modifyajax_' + json.pid).removeClassName('z-hide');  
+    $('modifyajax_' + json.pid).observe('click', function() { permmodifyinit(json.pid); });
     
     // turn on edit mode
     enableeditfields(json.pid);
     
     // we are ready now, make it visible
-    Element.removeClassName('permission_' + json.pid, 'z-hide');
+    $('permission_' + json.pid).removeClassName('z-hide');
     new Effect.Highlight('permission_' + json.pid, { startcolor: '#ffff99', endcolor: '#ffffff' });
     
     // update the sortable
@@ -239,8 +239,8 @@ function permtestinit(permid)
     $('test_component').value = $('permcomp_' + permid).innerHTML;
     $('test_instance').value  = $('perminst_' + permid).innerHTML;
     pnsetselectoption('test_level', $F('levelid_' + permid));
-    Element.update('permissiontestinfo', '&nbsp;');
-    Element.scrollTo('testpermform');
+    $('permissiontestinfo').update('&nbsp;');
+    $('testpermform').scrollTo();
 }
 
 /**
@@ -281,7 +281,7 @@ function sortorderchanged()
  */
 function sortorderchanged_response(req)
 {
-    if(req.status != 200 ) { 
+    if (req.status != 200 ) { 
         pnshowajaxerror(req.responseText);
         return;
     }
@@ -303,7 +303,7 @@ function sortorderchanged_response(req)
  */
 function permmodifyinit(permid)
 {
-    if(getmodifystatus(permid) == 0) {
+    if (getmodifystatus(permid) == 0) {
         pnsetselectoption('group_' + permid, $F('groupid_' + permid));
         pnsetselectoption('level_' + permid, $F('levelid_' + permid));
 
@@ -336,7 +336,7 @@ function permmodify(permid)
         return;
     }
     disableeditfields(permid);
-    if(getmodifystatus(permid) == 0) {
+    if (getmodifystatus(permid) == 0) {
         setmodifystatus(permid, 1);
         showinfo(permid, updatingpermission);
         // store via ajax
@@ -367,7 +367,7 @@ function permmodify(permid)
  */
 function permmodify_response(req)
 {
-    if(req.status != 200 ) { 
+    if (req.status != 200 ) { 
         pnshowajaxerror(req.responseText);
         showinfo();
         return;
@@ -381,22 +381,22 @@ function permmodify_response(req)
     $('groupid_' + json.pid).value = json.gid;
     $('levelid_' + json.pid).value = json.level;
     
-    Element.update('permgroup_' + json.pid, json.groupname);
-    Element.update('permcomp_' + json.pid, json.component);
+    $('permgroup_' + json.pid).update(json.groupname);
+    $('permcomp_' + json.pid).update(json.component);
     $('editpermcomp_' + json.pid, json.component);
-    Element.update('perminst_' + json.pid, json.instance);
+    $('perminst_' + json.pid).update(json.instance);
     $('editperminst_' + json.pid, json.instance);
-    Element.update('permlevel_' + json.pid, json.levelname);
+    $('permlevel_' + json.pid).update(json.levelname);
 
     // show trascan icon for new permissions if necessary
-    Element.removeClassName('permeditcancel_' + json.pid, 'z-hide');
+    $('permeditcancel_' + json.pid).removeClassName('z-hide');
     // update delete icon to show trashcan icon 
-    Element.update('permeditdelete_' + json.pid, deleteiconhtml);
+    $('permeditdelete_' + json.pid).update(deleteiconhtml);
 
     // update the observer for cancel, it might lea to delete if this rule
     // has been appended before
-    Event.observe('permeditcancel_' + json.pid, 'click',  function(){permmodifycancel(json.pid)}, false);
-    
+    $('permeditcancel_' + json.pid).observe('click', function() { permmodifycancel(json.pid); });
+
     setmodifystatus(json.pid, 0);
     showinfo(json.pid);
 }
@@ -413,7 +413,7 @@ function permdelete(permid)
     if (permid==adminpermission && lockadmin==1) {
         return;
     }
-    if(confirm(confirmdeleteperm) && getmodifystatus(permid) == 0) {
+    if (confirm(confirmdeleteperm) && getmodifystatus(permid) == 0) {
         showinfo(permid, deletingpermission);
         setmodifystatus(permid, 1);
         // delete via ajax
@@ -439,7 +439,7 @@ function permdelete(permid)
  */
 function permdelete_response(req)
 {
-    if(req.status != 200 ) { 
+    if (req.status != 200 ) { 
         pnshowajaxerror(req.responseText);
         return;
     }
@@ -448,7 +448,7 @@ function permdelete_response(req)
     pnupdateauthids(json.authid);
     $('permissionsauthid').value = json.authid;
 
-    Element.remove('permission_' + json.pid);
+    $('permission_' + json.pid).remove();
 }
 
 /**
@@ -461,16 +461,16 @@ function permdelete_response(req)
  */
 function enableeditfields(permid)
 {
-    Element.addClassName('permgroup_' + permid, 'z-hide');
-    Element.addClassName('permcomp_' + permid, 'z-hide');
-    Element.addClassName('perminst_' + permid, 'z-hide');
-    Element.addClassName('permlevel_' + permid, 'z-hide');
-    Element.addClassName('permaction_' + permid, 'z-hide');
-    Element.removeClassName('editpermgroup_' + permid, 'z-hide');
-    Element.removeClassName('editpermcomp_' + permid, 'z-hide');
-    Element.removeClassName('editperminst_' + permid, 'z-hide');
-    Element.removeClassName('editpermlevel_' + permid, 'z-hide');
-    Element.removeClassName('editpermaction_' + permid, 'z-hide');
+    $('permgroup_' + permid).addClassName('z-hide');
+    $('permcomp_' + permid).addClassName('z-hide');
+    $('perminst_' + permid).addClassName('z-hide');
+    $('permlevel_' + permid).addClassName('z-hide');
+    $('permaction_' + permid).addClassName('z-hide');
+    $('editpermgroup_' + permid).removeClassName('z-hide');
+    $('editpermcomp_' + permid).removeClassName('z-hide');
+    $('editperminst_' + permid).removeClassName('z-hide');
+    $('editpermlevel_' + permid).removeClassName('z-hide');
+    $('editpermaction_' + permid).removeClassName('z-hide');
 }
 
 /**
@@ -482,16 +482,16 @@ function enableeditfields(permid)
  */
 function disableeditfields(permid)
 {
-    Element.addClassName('editpermgroup_' + permid, 'z-hide');
-    Element.addClassName('editpermcomp_' + permid, 'z-hide');
-    Element.addClassName('editperminst_' + permid, 'z-hide');
-    Element.addClassName('editpermlevel_' + permid, 'z-hide');
-    Element.addClassName('editpermaction_' + permid, 'z-hide');
-    Element.removeClassName('permgroup_' + permid, 'z-hide');
-    Element.removeClassName('permcomp_' + permid, 'z-hide');
-    Element.removeClassName('perminst_' + permid, 'z-hide');
-    Element.removeClassName('permlevel_' + permid, 'z-hide');
-    Element.removeClassName('permaction_' + permid, 'z-hide');
+    $('editpermgroup_' + permid).addClassName('z-hide');
+    $('editpermcomp_' + permid).addClassName('z-hide');
+    $('editperminst_' + permid).addClassName('z-hide');
+    $('editpermlevel_' + permid).addClassName('z-hide');
+    $('editpermaction_' + permid).addClassName('z-hide');
+    $('permgroup_' + permid).removeClassName('z-hide');
+    $('permcomp_' + permid).removeClassName('z-hide');
+    $('perminst_' + permid).removeClassName('z-hide');
+    $('permlevel_' + permid).removeClassName('z-hide');
+    $('permaction_' + permid).removeClassName('z-hide');
 }
 
 /**
@@ -533,25 +533,25 @@ function setmodifystatus(permid, newvalue)
  */
 function showinfo(permid, infotext)
 {
-    if(permid) {
-        var perminfo = 'permissioninfo_' + permid;
-        var perm = 'permissioncontent_' + permid;
-        if(!Element.hasClassName(perminfo, 'z-hide')) {
-            Element.update(perminfo, '&nbsp;');
-            Element.addClassName(perminfo, 'z-hide');
-            Element.removeClassName(perm, 'z-hide');
+    if (permid) {
+        var perminfo = $('permissioninfo_' + permid);
+        var perm = $('permissioncontent_' + permid);
+        if (!perminfo.hasClassName('z-hide')) {
+            perminfo.update('&nbsp;');
+            perminfo.addClassName('z-hide');
+            perm.removeClassName('z-hide');
         } else {
-            Element.update(perminfo, infotext);
-            Element.addClassName(perm, 'z-hide');
-            Element.removeClassName(perminfo, 'z-hide');
+            perminfo.update(infotext);
+            perm.addClassName('z-hide');
+            perminfo.removeClassName('z-hide');
         }
     } else {
-        $A(document.getElementsByClassName('permissioninfo')).each(function(perminfo){
-            Element.update(perminfo, '&nbsp;');
-            Element.addClassName(perminfo, 'z-hide');
+        $A(document.getElementsByClassName('permissioninfo')).each(function(perminfo) {
+            $(perminfo).update('&nbsp;');
+            $(perminfo).addClassName('z-hide');
         });    
-        $A(document.getElementsByClassName('permissioncontent')).each(function(permcontent){
-            Element.removeClassName(permcontent, 'z-hide');
+        $A(document.getElementsByClassName('permissioncontent')).each(function(permcontent) {
+            $(permcontent).removeClassName('z-hide');
         });    
     }
 }    
@@ -570,9 +570,9 @@ function permgroupfilter()
     filtertype = filtergroupid.split('+')[0];
     filter = filtergroupid.split('+')[1];
 
-    if(filtertype == 'g') {
+    if (filtertype == 'g') {
         $('filterwarningcomponent').hide();
-        if(filter == -1) {
+        if (filter == -1) {
             $('filterwarninggroup').hide();
         } else {
             $('filterwarninggroup').show();
@@ -581,21 +581,21 @@ function permgroupfilter()
             function(el) 
             { 
                 permid = el.id.split('_')[1];
-                if(filter == -1) {
+                if (filter == -1) {
                     // show all groups - reset view
-                    Element.show('permission_' + permid);
+                    $('permission_' + permid).show();
                 } else {
                     groupid = $F('groupid_' + permid);
-                    if(groupid != filter && groupid != -1) {
-                        Element.hide('permission_' + permid);
+                    if (groupid != filter && groupid != -1) {
+                        $('permission_' + permid).hide();
                     } else {
-                        Element.show('permission_' + permid);
+                        $('permission_' + permid).show();
                     }
                 } 
             });
     } else if (filtertype == 'c') {
         $('filterwarninggroup').hide();
-        if(filter == -1) {
+        if (filter == -1) {
             $('filterwarningcomponent').hide();
         } else {
             $('filterwarningcomponent').show();
@@ -605,23 +605,23 @@ function permgroupfilter()
             { 
                 // show all permissions with .* and filter
                 permid = el.id.split('_')[1];
-                if(filter == -1) {
+                if (filter == -1) {
                     // show all components - reset view
-                    Element.show('permission_' + permid);
+                    $('permission_' + permid).show();
                 } else {
                     permcomp = $F('comp_' + permid);
-                    if(permcomp.indexOf(filter) == 0 || permcomp == '.*') {
-                        Element.show('permission_' + permid);
+                    if (permcomp.indexOf(filter) == 0 || permcomp == '.*') {
+                        $('permission_' + permid).show();
                     } else {
-                        Element.hide('permission_' + permid);
+                        $('permission_' + permid).hide();
                     }
                 } 
             });
     }
-    if(filter == -1) {
-        Element.hide('filterwarning');
+    if (filter == -1) {
+        $('filterwarning').hide();
     } else {
-        Element.show('filterwarning');
+        $('filterwarning').show();
     }
 }
 
@@ -634,7 +634,7 @@ function permgroupfilter()
  */
 function performpermissiontest()
 {
-    Element.update('permissiontestinfo', testingpermission);
+    $('permissiontestinfo').update(testingpermission);
     var pars = "module=Permissions&func=testpermission&"
                + Form.serialize('testpermform');
     Form.disable('testpermform');
@@ -658,11 +658,11 @@ function performpermissiontest()
 function performpermissiontest_response(req)
 {
     Form.enable('testpermform');
-    Element.update('permissiontestinfo', '&nbsp;');
-    if(req.status != 200 ) { 
+    $('permissiontestinfo').update('&nbsp;');
+    if (req.status != 200 ) { 
         pnshowajaxerror(req.responseText);
         return;
     }
     var json = pndejsonize(req.responseText);
-    Element.update('permissiontestinfo', json.testresult);
+    $('permissiontestinfo').update(json.testresult);
 }

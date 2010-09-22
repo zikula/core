@@ -1,8 +1,8 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-Event.observe(window, 'load', function(){
-    if($('menuTreeImportOptions')) {
-        Zikula.Menutree.Tree.inst.tree.observeOnce('tree:item:save',function(){
+Event.observe(window, 'load', function() {
+    if ($('menuTreeImportOptions')) {
+        Zikula.Menutree.Tree.inst.tree.observeOnce('tree:item:save', function() {
             $('menuTreeImportOptions').blindUp();
         });
     }
@@ -18,6 +18,7 @@ function menutree_init()
     //init tpl and style select observer
     menutree_stylehelper_onload();
 }
+
 function menutree_treecontrols_onload()
 {
     //menutree controls - add, expand and collapse
@@ -27,9 +28,10 @@ function menutree_treecontrols_onload()
     //controls for lang changing
     $$('.menutree_langcontrols').invoke('observe','click',menutree_onlangchange)
 }
+
 function menutree_linkclasses_onload()
 {
-    if($('menutree_linkclass')) {
+    if ($('menutree_linkclass')) {
         if ($('menutree_linkclass').checked == true) {
             $('menutree_linkclasses_group').show();
         } else {
@@ -43,6 +45,7 @@ function menutree_linkclasses_onload()
         $$('.menutree_linkclass_del').invoke('observe','click', menutree_linkclass_del);
     }
 }
+
 function menutree_linkclasses_onchange()
 {
     if ($('menutree_linkclass').checked == true) {
@@ -51,6 +54,7 @@ function menutree_linkclasses_onchange()
         hideeffect('menutree_linkclasses_group');
     }
 }
+
 function menutree_linkclass_add(event)
 {
     event.stop();
@@ -66,16 +70,18 @@ function menutree_linkclass_add(event)
     $('menutree_linkclasses_list').insert(list);
     list.down('.menutree_linkclass_del').observe('click', menutree_linkclass_del);
 }
+
 function menutree_linkclass_del(event)
 {
     event.stop();
     var span = event.element();
-    if($('menutree_linkclasses_list').select('li').size() > 2 ) {
+    if ($('menutree_linkclasses_list').select('li').size() > 2 ) {
         span.up('li').remove();
     } else {
         span.up('li').select('input').invoke('clear');
     }
 }
+
 function menutree_onlangchange(event)
 {
     event.stop();
@@ -87,16 +93,17 @@ function menutree_onlangchange(event)
 
 function menutree_stylehelper_onload()
 {
-    if($('menutree_tpl') && $('menutree_stylesheet_helper')) {
+    if ($('menutree_tpl') && $('menutree_stylesheet_helper')) {
         $('menutree_tpl').observe('change',menutree_stylehelper);
         $('menutree_stylesheet_helper').hide();
         menutree_stylehelper();
     }
 }
+
 function menutree_stylehelper(event)
 {
     //stop if it's onload run and stylesheet is selected
-    if(event == undefined && $('menutree_stylesheet').value != 'null') {
+    if (event == undefined && $('menutree_stylesheet').value != 'null') {
         return;
     }
     //pattern for tpl name
@@ -104,12 +111,12 @@ function menutree_stylehelper(event)
         tpl = (tpl = $('menutree_tpl').value.match(p)) ? tpl[1] : '',
         hidden = false;
     //hide all options not containing selected tpl name
-    if(!tpl.empty() && tpl != 'default') {
+    if (!tpl.empty() && tpl != 'default') {
         $('menutree_stylesheet').value = 'null';
         hidden = true;
-        if(Prototype.Browser.IE) {
+        if (Prototype.Browser.IE) {
             //IE does not respect "display: none" on option element
-            if($('menutree_stylesheet_backup') == undefined) {
+            if ($('menutree_stylesheet_backup') == undefined) {
                 var backup = $('menutree_stylesheet').cloneNode(true);
                 backup.id = 'menutree_stylesheet_backup';
                 backup.name = 'menutree_stylesheet_backup';
@@ -139,19 +146,20 @@ function menutree_stylehelper(event)
         var first = $('menutree_stylesheet').select('option').find(function(o) {
                     return o.value != 'null' && o.visible();
         });
-        if(first != undefined) {
+        if (first != undefined) {
             first.selected = true;
         }
-        if(hidden && !$('menutree_stylesheet_helper').visible()) {
+        if (hidden && !$('menutree_stylesheet_helper').visible()) {
             showeffect('menutree_stylesheet_helper');
             $('menutree_stylesheet_helper').down('a').observe('click',menutree_stylehelper_reset)
         }
     }
 }
+
 function menutree_stylehelper_reset(event)
 {
     event.stop();
-    if(Prototype.Browser.IE) {
+    if (Prototype.Browser.IE) {
         //IE does not respect display: none on option element
         while ($('menutree_stylesheet').firstChild) {
           $('menutree_stylesheet').removeChild($('menutree_stylesheet').firstChild);
@@ -169,7 +177,7 @@ function menutree_toogle(event)
 {
     event.stop();
     var element = event.element().previous();
-    if(element.visible()) {
+    if (element.visible()) {
         hideeffect(element);
     } else {
         showeffect(element);
@@ -181,17 +189,18 @@ function hideeffect(id)
 {
     var obj = $(id);
 
-    if(typeof(Effect) != "undefined") {
+    if (typeof(Effect) != "undefined") {
         Effect.BlindUp(obj);
     } else {
         obj.hide();
     }
 }
+
 function showeffect(id)
 {
     var obj = $(id);
 
-    if(typeof(Effect) != "undefined") {
+    if (typeof(Effect) != "undefined") {
         Effect.BlindDown(obj);
     } else {
         obj.show();

@@ -196,7 +196,7 @@
 
     //add this url
     {{if $menutree_newurl}}
-    Event.observe(window,'load',function(){
+    Event.observe(window, 'load',function() {
         var data = {link_href: '{{$menutree_newurl|safetext}}'};
         $('menutree_tabs').scrollTo();
         Zikula.Menutree.Tree.inst.newNode(data);

@@ -19,7 +19,7 @@ function groupinit(defgroupid, frstgroup, admingroupid)
     canceliconhtml = $('groupeditcancel_'+firstgroup).innerHTML;
 
     appending = false;
-    Element.removeClassName('appendajax', 'z-hide');
+    $('appendajax').removeClassName('z-hide');
 
     // set observers on all existing groups images
     $$('button.z-imagebutton').each(
@@ -29,13 +29,13 @@ function groupinit(defgroupid, frstgroup, admingroupid)
         switch(singlebutton.id.split('_')[0])
         {
             case "groupeditsave":
-                Event.observe('groupeditsave_'   + groupid, 'click', function(){ groupmodify(groupid)},       false);
+                $('groupeditsave_'   + groupid).observe('click', function() { groupmodify(groupid); });
                 break;
             case "groupeditdelete":
-                Event.observe('groupeditdelete_' + groupid, 'click', function(){ groupdelete(groupid)},       false);
+                $('groupeditdelete_' + groupid).observe('click', function() { groupdelete(groupid); });
                 break;
             case "groupeditcancel":
-                Event.observe('groupeditcancel_' + groupid, 'click', function(){ groupmodifycancel(groupid)}, false);
+                $('groupeditcancel_' + groupid).observe('click', function() { groupmodifycancel(groupid); });
                 break;
         }
     });
@@ -50,7 +50,7 @@ function groupinit(defgroupid, frstgroup, admingroupid)
  */
 function groupappend()
 {
-    if(appending == false) {
+    if (appending == false) {
         appending = true;
         var pars = "module=Groups&func=creategroup&authid=" + $F('groupsauthid');
         var myAjax = new Ajax.Request(
@@ -74,7 +74,7 @@ function groupappend()
 function groupappend_response(req)
 {
     appending = false;
-    if(req.status != 200 ) {
+    if (req.status != 200 ) {
         pnshowajaxerror(req.responseText);
         return;
     }
@@ -111,35 +111,35 @@ function groupappend_response(req)
     pnsetselectoption('groupgtype_' + json.gid, json.gtypelbl);
 
     // hide cancel icon for new groups
-//    Element.addClassName('groupeditcancel_' + json.gid, 'z-hide');
+//    $('groupeditcancel_' + json.gid).addClassName('z-hide');
     // update delete icon to show cancel icon
-//    Element.update('groupeditdelete_' + json.gid, canceliconhtml);
+//    $('groupeditdelete_' + json.gid).update(canceliconhtml);
 
     // update some innerHTML
-    Element.update('groupnbuser_'      + json.gid, json.nbuser);
-    Element.update('groupnbumax_'      + json.gid, json.nbumax);
-    Element.update('groupgid_'         + json.gid, json.gid);
-    Element.update('groupname_'        + json.gid, json.name);
-    Element.update('groupgtype_'       + json.gid, json.gtypelbl);
-    Element.update('groupdescription_' + json.gid, json.description) + '&nbsp;';
-    Element.update('groupstate_'       + json.gid, json.statelbl);
-    //Element.update('members_'          + json.gid, json.membersurl);
+    $('groupnbuser_'      + json.gid).update(json.nbuser);
+    $('groupnbumax_'      + json.gid).update(json.nbumax);
+    $('groupgid_'         + json.gid).update(json.gid);
+    $('groupname_'        + json.gid).update(json.name);
+    $('groupgtype_'       + json.gid).update(json.gtypelbl);
+    $('groupdescription_' + json.gid).update(json.description) + '&nbsp;';
+    $('groupstate_'       + json.gid).update(json.statelbl);
+    //$('members_'          + json.gid).update(json.membersurl);
 
     // add events
-    Event.observe('modifyajax_'      + json.gid, 'click', function(){groupmodifyinit(json.gid)}, false);
-    Event.observe('groupeditsave_'   + json.gid, 'click', function(){groupmodify(json.gid)}, false);
-    Event.observe('groupeditdelete_' + json.gid, 'click', function(){groupdelete(json.gid)}, false);
-    Event.observe('groupeditcancel_' + json.gid, 'click', function(){groupmodifycancel(json.gid)}, false);
+    $('modifyajax_'      + json.gid).observe('click', function() { groupmodifyinit(json.gid); });
+    $('groupeditsave_'   + json.gid).observe('click', function() { groupmodify(json.gid); });
+    $('groupeditdelete_' + json.gid).observe('click', function() { groupdelete(json.gid); });
+    $('groupeditcancel_' + json.gid).observe('click', function() { groupmodifycancel(json.gid); });
 
     // remove class to make edit button visible
-    Element.removeClassName('modifyajax_' + json.gid, 'z-hide');
-    Event.observe('modifyajax_' + json.gid, 'click', function(){groupmodifyinit(json.gid)}, false);
+    $('modifyajax_' + json.gid).removeClassName('z-hide');
+    $('modifyajax_' + json.gid).observe('click', function() { groupmodifyinit(json.gid); });
 
     // turn on edit mode
     enableeditfields(json.gid);
 
     // we are ready now, make it visible
-    Element.removeClassName('group_' + json.gid, 'z-hide');
+    $('group_' + json.gid).removeClassName('z-hide');
     new Effect.Highlight('group_' + json.gid, { startcolor: '#ffff99', endcolor: '#ffffff' });
 
 
@@ -156,14 +156,14 @@ function groupappend_response(req)
  */
 function groupmodifyinit(groupid)
 {
-    if(getmodifystatus(groupid) == 0) {
+    if (getmodifystatus(groupid) == 0) {
         pnsetselectoption('gtype_' + groupid, $F('gtypeid_' + groupid));
         pnsetselectoption('state_' + groupid, $F('state_' + groupid));
 
         if ((groupid == defaultgroup) || (groupid == admingroup)) {
-            Element.addClassName('groupeditdelete_' + groupid, 'z-hide');
+            $('groupeditdelete_' + groupid).addClassName('z-hide');
         } else {
-            Element.removeClassName('groupeditdelete_' + groupid, 'z-hide');
+            $('groupeditdelete_' + groupid).removeClassName('z-hide');
         }
         enableeditfields(groupid);
     }
@@ -178,18 +178,18 @@ function groupmodifyinit(groupid)
  */
 function enableeditfields(groupid)
 {
-    Element.addClassName('groupname_'               + groupid, 'z-hide');
-    Element.addClassName('groupgtype_'              + groupid, 'z-hide');
-    Element.addClassName('groupdescription_'        + groupid, 'z-hide');
-    Element.addClassName('groupstate_'              + groupid, 'z-hide');
-    Element.addClassName('groupnbumax_'             + groupid, 'z-hide');
-    Element.addClassName('groupaction_'             + groupid, 'z-hide');
-    Element.removeClassName('editgroupname_'        + groupid, 'z-hide');
-    Element.removeClassName('editgroupgtype_'       + groupid, 'z-hide');
-    Element.removeClassName('editgroupdescription_' + groupid, 'z-hide');
-    Element.removeClassName('editgroupstate_'       + groupid, 'z-hide');
-    Element.removeClassName('editgroupnbumax_'      + groupid, 'z-hide');
-    Element.removeClassName('editgroupaction_'      + groupid, 'z-hide');
+    $('groupname_'               + groupid).addClassName('z-hide');
+    $('groupgtype_'              + groupid).addClassName('z-hide');
+    $('groupdescription_'        + groupid).addClassName('z-hide');
+    $('groupstate_'              + groupid).addClassName('z-hide');
+    $('groupnbumax_'             + groupid).addClassName('z-hide');
+    $('groupaction_'             + groupid).addClassName('z-hide');
+    $('editgroupname_'        + groupid).removeClassName('z-hide');
+    $('editgroupgtype_'       + groupid).removeClassName('z-hide');
+    $('editgroupdescription_' + groupid).removeClassName('z-hide');
+    $('editgroupstate_'       + groupid).removeClassName('z-hide');
+    $('editgroupnbumax_'      + groupid).removeClassName('z-hide');
+    $('editgroupaction_'      + groupid).removeClassName('z-hide');
 }
 
 /**
@@ -201,18 +201,18 @@ function enableeditfields(groupid)
  */
 function disableeditfields(groupid)
 {
-    Element.addClassName('editgroupname_'        + groupid, 'z-hide');
-    Element.addClassName('editgroupgtype_'       + groupid, 'z-hide');
-    Element.addClassName('editgroupdescription_' + groupid, 'z-hide');
-    Element.addClassName('editgroupstate_'       + groupid, 'z-hide');
-    Element.addClassName('editgroupnbumax_'      + groupid, 'z-hide');
-    Element.addClassName('editgroupaction_'      + groupid, 'z-hide');
-    Element.removeClassName('groupname_'         + groupid, 'z-hide');
-    Element.removeClassName('groupgtype_'        + groupid, 'z-hide');
-    Element.removeClassName('groupdescription_'  + groupid, 'z-hide');
-    Element.removeClassName('groupstate_'        + groupid, 'z-hide');
-    Element.removeClassName('groupnbumax_'       + groupid, 'z-hide');
-    Element.removeClassName('groupaction_'       + groupid, 'z-hide');
+    $('editgroupname_'        + groupid).addClassName('z-hide');
+    $('editgroupgtype_'       + groupid).addClassName('z-hide');
+    $('editgroupdescription_' + groupid).addClassName('z-hide');
+    $('editgroupstate_'       + groupid).addClassName('z-hide');
+    $('editgroupnbumax_'      + groupid).addClassName('z-hide');
+    $('editgroupaction_'      + groupid).addClassName('z-hide');
+    $('groupname_'         + groupid).removeClassName('z-hide');
+    $('groupgtype_'        + groupid).removeClassName('z-hide');
+    $('groupdescription_'  + groupid).removeClassName('z-hide');
+    $('groupstate_'        + groupid).removeClassName('z-hide');
+    $('groupnbumax_'       + groupid).removeClassName('z-hide');
+    $('groupaction_'       + groupid).removeClassName('z-hide');
 }
 
 /**
@@ -224,7 +224,7 @@ function disableeditfields(groupid)
  */
 function groupmodifycancel(groupid)
 {
-    if(adding[groupid] == 1) {
+    if (adding[groupid] == 1) {
         groupdelete(groupid);
         adding = adding.without(groupid);
         return;
@@ -267,7 +267,7 @@ function setmodifystatus(groupid, newvalue)
 function groupmodify(groupid)
 {
     disableeditfields(groupid);
-    if(getmodifystatus(groupid) == 0) {
+    if (getmodifystatus(groupid) == 0) {
         setmodifystatus(groupid, 1);
         showinfo(groupid, updatinggroup);
         // store via ajax
@@ -299,7 +299,7 @@ function groupmodify(groupid)
  */
 function groupmodify_response(req)
 {
-    if(req.status != 200 ) {
+    if (req.status != 200 ) {
         showinfo();
         pnshowajaxerror(req.responseText);
         return;
@@ -310,17 +310,17 @@ function groupmodify_response(req)
     $('groupsauthid').value = json.authid;
 
     // check for groups internal error
-    if(json.error == 1) {
+    if (json.error == 1) {
         showinfo();
-        Element.addClassName($('groupinfo_' + json.gid), 'z-hide');
-        Element.removeClassName($('groupcontent_' + json.gid), 'z-hide');
+        $('groupinfo_' + json.gid).addClassName('z-hide');
+        $('groupcontent_' + json.gid).removeClassName('z-hide');
 
         /*
         // add events
-        Event.observe('modifyajax_'      + json.gid, 'click', function(){groupmodifyinit(json.gid)}, false);
-        Event.observe('groupeditsave_'   + json.gid, 'click', function(){groupmodify(json.gid)}, false);
-        Event.observe('groupeditdelete_' + json.gid, 'click', function(){groupdelete(json.gid)}, false);
-        Event.observe('groupeditcancel_' + json.gid, 'click', function(){groupmodifycancel(json.gid)}, false);
+        $('modifyajax_'      + json.gid).observe('click', function() { groupmodifyinit(json.gid); });
+        $('groupeditsave_'   + json.gid).observe('click', function() { groupmodify(json.gid); });
+        $('groupeditdelete_' + json.gid).observe('click', function() { groupdelete(json.gid); });
+        $('groupeditcancel_' + json.gid).observe('click', function() { groupmodifycancel(json.gid); });
         enableeditfields(json.gid);
         */
         pnshowajaxerror(json.message);
@@ -332,20 +332,20 @@ function groupmodify_response(req)
     $('gtype_' + json.gid).value = json.gtype;
     $('state_' + json.gid).value = json.state;
 
-    Element.update('groupgtype_' + json.gid, json.gtypelbl);
-    Element.update('groupname_' + json.gid, json.name);
+    $('groupgtype_' + json.gid).update(json.gtypelbl);
+    $('groupname_' + json.gid).update(json.name);
 
-    Element.update('groupdescription_' + json.gid, json.description + '&nbsp;');
-    Element.update('groupstate_'       + json.gid, json.statelbl);
-    Element.update('groupnbuser_'      + json.gid, json.nbuser);
-    Element.update('groupnbumax_'      + json.gid, json.nbumax);
+    $('groupdescription_' + json.gid).update(json.description + '&nbsp;');
+    $('groupstate_'       + json.gid).update(json.statelbl);
+    $('groupnbuser_'      + json.gid).update(json.nbuser);
+    $('groupnbumax_'      + json.gid).update(json.nbumax);
 
     adding = adding.without(json.gid);
 
     // show trascan icon for new permissions if necessary
-    Element.removeClassName('groupeditcancel_' + json.gid, 'z-hide');
+    $('groupeditcancel_' + json.gid).removeClassName('z-hide');
     // update delete icon to show trashcan icon
-    Element.update('groupeditdelete_' + json.gid, deleteiconhtml);
+    $('groupeditdelete_' + json.gid).update(deleteiconhtml);
 
     setmodifystatus(json.gid, 0);
     showinfo(json.gid);
@@ -360,7 +360,7 @@ function groupmodify_response(req)
  */
 function groupdelete(groupid)
 {
-    if(confirm(confirmDeleteGroup) && getmodifystatus(groupid) == 0) {
+    if (confirm(confirmDeleteGroup) && getmodifystatus(groupid) == 0) {
         showinfo(groupid, deletinggroup);
         setmodifystatus(groupid, 1);
         // delete via ajax
@@ -387,7 +387,7 @@ function groupdelete(groupid)
  */
 function groupdelete_response(req)
 {
-    if(req.status != 200 ) {
+    if (req.status != 200 ) {
         pnshowajaxerror(req.responseText);
         return;
     }
@@ -397,7 +397,7 @@ function groupdelete_response(req)
     $('groupsauthid').value = json.authid;
 
     setmodifystatus(json.gid, 0);
-    Element.remove('group_' + json.gid);
+    $('group_' + json.gid).remove();
 }
 
 /**
@@ -431,25 +431,25 @@ function groupfailure_response(groupid)
 function showinfo(groupid, infotext)
 {
 
-    if(groupid) {
-        var groupinfo = 'groupinfo_' + groupid;
-        var group = 'groupcontent_' + groupid;
-        if(!Element.hasClassName(groupinfo, 'z-hide')) {
-            Element.update(groupinfo, '&nbsp;');
-            Element.addClassName(groupinfo, 'z-hide');
-            Element.removeClassName(group, 'z-hide');
+    if (groupid) {
+        var groupinfo = $('groupinfo_' + groupid);
+        var group = $('groupcontent_' + groupid);
+        if (!groupinfo.hasClassName('z-hide')) {
+            groupinfo.update('&nbsp;');
+            groupinfo.addClassName('z-hide');
+            group.removeClassName('z-hide');
         } else {
-            Element.update(groupinfo, infotext);
-            Element.addClassName(group, 'z-hide');
-            Element.removeClassName(groupinfo, 'z-hide');
+            groupinfo.update(infotext);
+            group.addClassName('z-hide');
+            groupinfo.removeClassName('z-hide');
         }
     } else {
-        $A(document.getElementsByClassName('z-groupinfo')).each(function(groupinfo){
-            Element.update(groupinfo, '&nbsp;');
-            Element.addClassName(groupinfo, 'z-hide');
+        $A(document.getElementsByClassName('z-groupinfo')).each(function(groupinfo) {
+            $(groupinfo).update('&nbsp;');
+            $(groupinfo).addClassName('z-hide');
         });
-        $A(document.getElementsByClassName('groupcontent')).each(function(groupcontent){
-            Element.removeClassName(groupcontent, 'z-hide');
+        $A(document.getElementsByClassName('groupcontent')).each(function(groupcontent) {
+            $(groupcontent).removeClassName('z-hide');
         });
     }
 }
