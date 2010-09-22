@@ -67,7 +67,7 @@ class SecurityCenter_Util
 
         // allow nofollow and imageviewer to be used as document relationships in the rel attribute
         // see http://htmlpurifier.org/live/configdoc/plain.html#Attr.AllowedRel
-        $config['Attr']['AllowedRel'] = array('nofollow', 'imageviewer');
+        $config['Attr']['AllowedRel'] = array('nofollow' => true, 'imageviewer' => true);
 
         return $config;
     }
