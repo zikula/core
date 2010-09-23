@@ -62,6 +62,9 @@ TEMPLATES
   - zikula_core
   - modvars
 
+- {configgetvar} deprecated, use {$coredata.ZConfig.<name>}
+
+
 MODULES
 =======
 - Module folder structure has changed, please create lib/$modname inside the module
