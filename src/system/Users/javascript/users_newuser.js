@@ -97,7 +97,7 @@ Zikula.Users.NewUser = {
                     fieldWrapper.addClassName('errorrequired');
                 }
             } else {
-                errorFields[i].addClassName('errorrequired');
+                field.addClassName('errorrequired');
             }
         }
 
