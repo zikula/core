@@ -8,8 +8,8 @@
         <input type="hidden" name="active[{$actives|safetext}]" value="1" />
         {/foreach}
 
-        {searchvartofieldnames data=$vars.modvar prefix="modvar" assign="modvars"}
-        {foreach item="value" key="name" from=$modvars}
+        {searchvartofieldnames data=$modvars.Search prefix="modvar" assign="modvariables"}
+        {foreach item="value" key="name" from=$modvariables}
         <input type="hidden" name="{$name|safetext}" value="{$value|safetext}" />
         {/foreach}
     </div>

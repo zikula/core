@@ -59,8 +59,6 @@ class Search_Block_Search extends Zikula_Block
             $vars['displaySearchBtn'] = 0;
         }
 
-        // add the module vars
-        $vars['modvar'] = $this->getVars();
         $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'GETPOST');
 
         // assign the block vars array
