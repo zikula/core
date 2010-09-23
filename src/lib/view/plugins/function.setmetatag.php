@@ -14,7 +14,7 @@
  */
 
 /**
- * Set key in metatags.
+ * Set key in $metatags array.
  *
  * Available attributes:
  *  - name  (string) The name of the configuration variable to obtain
@@ -22,20 +22,20 @@
  *
  * Examples:
  *
- * <samp><p>Welcome to {metatags name='description' value='Description goes here}!</p></samp>
+ * <samp><p>Welcome to {setmetatag name='description' value='Description goes here}!</p></samp>
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
  * @return void
  */
-function smarty_function_metatags($params, $view)
+function smarty_function_setmetatag($params, $view)
 {
     $name = isset($params['name']) ? $params['name'] : null;
     $value = isset($params['default']) ? $params['default'] : null;
 
     if (!$name) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('configgetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('setmetatag', 'name')));
         return false;
     }
 
