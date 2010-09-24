@@ -140,7 +140,7 @@ table.z-admintable thead th {
 /* style to highlight a default row in a table */
 table.z-admintable tbody tr.z-defaulttablerow {
     background-color: #C2FFBF;
-    color: #077F00;
+    color: #055F00;
 }
 
 table.z-admintable ul {
