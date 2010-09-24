@@ -38,7 +38,7 @@
  *
  * @return mixed The results of the callable.
  */
-function smarty_function_calluserfunc($params, $view)
+function smarty_function_callfunc($params, $view)
 {
     $assign = (array_key_exists($params['x_assign']) && $params['x_assign']) ? true : false;
     
