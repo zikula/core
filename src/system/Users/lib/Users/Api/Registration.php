@@ -579,6 +579,8 @@ class Users_Api_Registration extends Zikula_Api
         if ($userObj) {
             $reginfo['uid'] = $userObj['uid'];
 
+            $regErrors = array();
+
             if (!$createdByAdminOrSubAdmin && $reginfo['isapproved']) {
                 // moderation is off, so the user "self-approved"
                 UserUtil::setVar('approved_date', $nowUTCStr, $userObj['uid']);
@@ -602,30 +604,56 @@ class Users_Api_Registration extends Zikula_Api
                         'rendererArgs'  => $rendererArgs,
                     ));
                     if (!$verificationSent) {
-                        LogUtil::registerError($this->__('Warning! The verification code for the new registration could not be sent.'));
-                    } else {
-                        $userObj['verificationsent'] = $verificationSent;
+                        $loggedErrorMessages = LogUtil::getErrorMessages('true');
+                        foreach($loggedErrorMessages as $lem) {
+                            if (!in_array($lem, $regErrors)) {
+                                $regErrors[] = $lem;
+                            }
+                        }
+                        $regErrors[] = $this->__('Warning! The verification code for the new registration could not be sent.');
                     }
+                    $userObj['verificationsent'] = $verificationSent;
                 } elseif (($userNotification && $reginfo['isapproved']) || !empty($passwordCreatedForUser)) {
-                    ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
-                        'toAddress'         => $reginfo['email'],
-                        'notificationType'  => 'welcome',
-                        'templateArgs'      => $rendererArgs
+                    $notificationSent = ModUtil::apiFunc('Users', 'user', 'sendNotification',
+                                            array('toAddress'         => $reginfo['email'],
+                                                  'notificationType'  => 'welcome',
+                                                  'templateArgs'      => $rendererArgs
                     ));
+
+                    if (!$notificationSent) {
+                        $loggedErrorMessages = LogUtil::getErrorMessages('true');
+                        foreach($loggedErrorMessages as $lem) {
+                            if (!in_array($lem, $regErrors)) {
+                                $regErrors[] = $lem;
+                            }
+                            $regErrors[] = $this->__('Warning! The welcoming email for the new registration could not be sent.');
+                        }
+                    }
                 }
 
                 if ($adminNotification) {
                     // mail notify email to inform admin about registration
                     $notificationEmail = $this->getVar('reg_notifyemail', '');
                     if (!empty($notificationEmail)) {
-                        ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
-                            'toAddress'         => $notificationEmail,
-                            'notificationType'  => 'regadminnotify',
-                            'templateArgs'      => $rendererArgs,
-                        ));
+                        $notificationSent = ModUtil::apiFunc('Users', 'user', 'sendNotification',
+                                                array('toAddress'         => $notificationEmail,
+                                                      'notificationType'  => 'regadminnotify',
+                                                      'templateArgs'      => $rendererArgs));
+
+                        if (!$notificationSent) {
+                            $loggedErrorMessages = LogUtil::getErrorMessages('true');
+                            foreach($loggedErrorMessages as $lem) {
+                                if (!in_array($lem, $regErrors)) {
+                                    $regErrors[] = $lem;
+                                }
+                                $regErrors[] = $this->__('Warning! The notification email for the new registration could not be sent.');
+                            }
+                        }
                     }
                 }
             }
+
+            $userObj['regErrors'] = $regErrors;
 
             return $userObj;
         } else {
