@@ -1121,6 +1121,12 @@ class Users_Controller_User extends Zikula_Controller
                             $verified = ModUtil::apiFunc('Users', 'registration', 'verify', array('reginfo' => $reginfo));
 
                             if ($verified) {
+
+                                if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
+                                    $regErrorsMessage = $this->__('There were some problems detected during the verification process. Please contact the site administrator regarding the status of your verification.');
+                                    $this->view->assign('regErrors', $verified['regErrors']);
+                                }
+                                
                                 switch ($verified['activated']) {
                                     case UserUtil::ACTIVATED_PENDING_REG:
                                         if (empty($verified['approved_by'])) {
@@ -1129,30 +1135,56 @@ class Users_Controller_User extends Zikula_Controller
                                             $message = $this->__('Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.');
                                         }
                                         LogUtil::registerStatus($message);
+                                        if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
+                                            LogUtil::registerStatus($regErrorsMessage);
+                                        }
                                         return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         break;
                                     case UserUtil::ACTIVATED_INACTIVE_PWD:
                                         LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
                                         LogUtil::registerStatus($this->__('NOTE: During your first attempt to log in you will be asked to establish a new password.'));
-                                        return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
+                                        if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
+                                            LogUtil::registerStatus($regErrorsMessage);
+                                            return $this->view->fetch('users_user_displaystatusmsg.tpl');
+                                        } else {
+                                            return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
+                                        }
                                         break;
                                     case UserUtil::ACTIVATED_INACTIVE_TOUPP:
                                         LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
                                         LogUtil::registerStatus($this->__('NOTE: During your first attempt to log in you will be asked to accept the site\'s terms.'));
-                                        return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
+                                        if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
+                                            LogUtil::registerStatus($regErrorsMessage);
+                                            return $this->view->fetch('users_user_displaystatusmsg.tpl');
+                                        } else {
+                                            return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
+                                        }
                                         break;
                                     case UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP:
                                         LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
                                         LogUtil::registerStatus($this->__('NOTE: During your first attempt to log in you will be asked to establish a new password, and to accept the site\'s terms.'));
-                                        return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
+                                        if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
+                                            LogUtil::registerStatus($regErrorsMessage);
+                                            return $this->view->fetch('users_user_displaystatusmsg.tpl');
+                                        } else {
+                                            return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
+                                        }
                                         break;
                                     case UserUtil::ACTIVATED_ACTIVE:
-                                        return LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'),
-                                            ModUtil::url('Users', 'user', 'loginScreen'));
+                                        LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
+                                        if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
+                                            LogUtil::registerStatus($regErrorsMessage);
+                                            return $this->view->fetch('users_user_displaystatusmsg.tpl');
+                                        } else {
+                                            return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
+                                        }
                                         break;
                                     default:
                                         LogUtil::registerStatus($this->__('Done! Your account has been verified.'));
                                         LogUtil::registerStatus($this->__('Your new account is not active yet. Please contact the site administrator for more information.'));
+                                        if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
+                                            LogUtil::registerStatus($regErrorsMessage);
+                                        }
                                         return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         break;
                                 }

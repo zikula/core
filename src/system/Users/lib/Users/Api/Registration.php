@@ -844,7 +844,8 @@ class Users_Api_Registration extends Zikula_Api
             $createEvent = new Zikula_Event('user.create', $userObj);
             $this->eventManager->notify($createEvent);
 
-
+            $regErrors = array();
+            
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $sitename  = System::getVar('sitename');
                 $siteurl   = System::getBaseUrl();
@@ -859,11 +860,20 @@ class Users_Api_Registration extends Zikula_Api
                 $rendererArgs['approvalorder'] = $approvalOrder;
 
                 if ($userNotification || !empty($passwordCreatedForUser)) {
-                    ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
-                        'toAddress'         => $userObj['email'],
-                        'notificationType'  => 'welcome',
-                        'templateArgs'      => $rendererArgs
-                    ));
+                    $notificationSent = ModUtil::apiFunc('Users', 'user', 'sendNotification',
+                                            array('toAddress'         => $userObj['email'],
+                                                  'notificationType'  => 'welcome',
+                                                  'templateArgs'      => $rendererArgs));
+
+                    if (!$notificationSent) {
+                        $loggedErrorMessages = LogUtil::getErrorMessages('true');
+                        foreach($loggedErrorMessages as $lem) {
+                            if (!in_array($lem, $regErrors)) {
+                                $regErrors[] = $lem;
+                            }
+                            $regErrors[] = $this->__('Warning! The welcoming email for the newly created user could not be sent.');
+                        }
+                    }
                 }
 
                 if ($adminNotification) {
@@ -871,16 +881,28 @@ class Users_Api_Registration extends Zikula_Api
                     $notificationEmail = $this->getVar('reg_notifyemail', '');
                     if (!empty($notificationEmail)) {
                         $subject = $this->__f('New registration: %s', $userObj['uname']);
-                        ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
-                            'toAddress'         => $notificationEmail,
-                            'notificationType'  => 'regadminnotify',
-                            'templateArgs'      => $rendererArgs,
-                            'subject'           => $subject,
-                        ));
+                        
+                        $notificationSent = ModUtil::apiFunc('Users', 'user', 'sendNotification',
+                                                array('toAddress'         => $notificationEmail,
+                                                      'notificationType'  => 'regadminnotify',
+                                                      'templateArgs'      => $rendererArgs,
+                                                      'subject'           => $subject));
+
+                        if (!$notificationSent) {
+                            $loggedErrorMessages = LogUtil::getErrorMessages('true');
+                            foreach($loggedErrorMessages as $lem) {
+                                if (!in_array($lem, $regErrors)) {
+                                    $regErrors[] = $lem;
+                                }
+                                $regErrors[] = $this->__('Warning! The notification email for the newly created user could not be sent.');
+                            }
+                        }
                     }
                 }
             }
 
+            $userObj['regErrors'] = $regErrors;
+            
             return $userObj;
         } else {
             return LogUtil::registerError($this->__('Unable to store the new user registration record.'));
