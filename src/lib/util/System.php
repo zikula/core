@@ -845,7 +845,7 @@ class System
                     "$temp/Theme_Config",
                     "$temp/Theme_cache",
                     "$temp/purifierCache",
-                    "$temp/idsTmp",
+                    "$temp/idsTmp"
             );
 
             foreach ($folders as $folder) {
