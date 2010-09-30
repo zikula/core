@@ -62,7 +62,7 @@ TEMPLATES
   - zikula_core
   - modvars
 
-- {configgetvar} deprecated, use {$coredata.ZConfig.<name>}
+- {configgetvar} deprecated, use {$modvars.ZConfig.<name>}
 
 
 MODULES
