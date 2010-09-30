@@ -1326,6 +1326,24 @@ class Users_Controller_Admin extends Zikula_Controller
                             // TODO - Should we fire a special registration.update event?
                         }
                         break;
+                    case 'email':
+                        // if email has changed, update it and send a new verification email (if user is not verified yet)
+                        if ($value != $oldReginfo[$field]) {
+                            $updateUserObj = array(
+                                'uid'   => $reginfo['uid'],
+                                'email' => $reginfo['email'],
+                            );
+                            DBUtil::updateObject($updateUserObj, 'users', '', 'uid', false, false);
+
+                            $approvalOrder = $this->getVar('moderation_order', UserUtil::APPROVAL_BEFORE);
+                            if (!$oldReginfo['isverified'] && (($approvalOrder != UserUtil::APPROVAL_BEFORE) || $oldReginfo['isapproved'])) {
+                                $oldReginfo[$field] = $value;
+                                $verificationSent = ModUtil::apiFunc('Users', 'registration', 'sendVerificationCode',
+                                                        array('reginfo'   => $oldReginfo,
+                                                              'force'     => true));
+                            }
+                        }
+                        break;
                     default:
                         if ($value != $oldReginfo[$field]) {
                             UserUtil::setVar($field, $value, $reginfo['uid']);
