@@ -47,6 +47,13 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     public $ifFormat;
 
     /**
+     * Date format in the display area.
+     *
+     * @var string
+     */
+    public $daFormat;
+
+    /**
      * Default date value.
      *
      * This parameter enables the input to be pre-filled with the current date or similar other well defined
