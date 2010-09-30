@@ -46,7 +46,7 @@ PageLock.RefreshLock = function()
 {
     var params = "module=PageLock&func=refreshpagelock&lockname=" + PageLock.LockName;
     var myAjax = new Ajax.Request(
-      "ajax.php", 
+      Zikula.Config.baseURL + "ajax.php", 
       {
           method: 'post', 
           parameters: params, 
@@ -81,7 +81,7 @@ PageLock.CheckLock = function()
 
     var params = "module=PageLock&func=checkpagelock&lockname=" + PageLock.LockName;
     var myAjax = new Ajax.Request(
-      "ajax.php", 
+      Zikula.Config.baseURL + "ajax.php", 
       {
           method: 'post', 
           parameters: params, 
