@@ -12,18 +12,18 @@
                 <div class="z-formrow">
                     <label for="mlsettings_multilingual">{gt text="Activate multi-lingual features"}</label>
                     <span id="mlsettings_multilingual">
-                        <input id="multilingual1" type="radio" name="mlsettings_multilingual" value="1"{if $multilingual eq 1} checked="checked"{/if} />
+                        <input id="multilingual1" type="radio" name="mlsettings_multilingual" value="1"{if $modvars.ZConfig.multilingual eq 1} checked="checked"{/if} />
                         <label for="multilingual1">{gt text="Yes"}</label>
-                        <input id="multilingual0" type="radio" name="mlsettings_multilingual" value="0"{if $multilingual eq 0} checked="checked"{/if} />
+                        <input id="multilingual0" type="radio" name="mlsettings_multilingual" value="0"{if $modvars.ZConfig.multilingual eq 0} checked="checked"{/if} />
                         <label for="multilingual0">{gt text="No"}</label>
                     </span>
                 </div>
                 <div class="z-formrow">
                     <label for="mlsettings_languageurl">{gt text="Add language to URL"}</label>
                     <span id="mlsettings_languageurl">
-                        <input id="languageurl0" type="radio" name="mlsettings_languageurl" value="1"{if $languageurl eq 1} checked="checked"{/if} />
+                        <input id="languageurl0" type="radio" name="mlsettings_languageurl" value="1"{if $modvars.ZConfig.languageurl eq 1} checked="checked"{/if} />
                         <label for="languageurl0">{gt text="Always"}</label>
-                        <input id="languageurl1" type="radio" name="mlsettings_languageurl" value="0"{if $languageurl eq 0} checked="checked"{/if} />
+                        <input id="languageurl1" type="radio" name="mlsettings_languageurl" value="0"{if $modvars.ZConfig.languageurl eq 0} checked="checked"{/if} />
                         <label for="languageurl1">{gt text="Only for non-default languages"}</label>
                     </span>
                 </div>
@@ -33,9 +33,9 @@
                 <div class="z-formrow">
                     <label for="mlsettings_language_detect">{gt text="Automatically detect language from browser settings"}</label>
                     <span id="mlsettings_language_detect">
-                        <input id="language_detect1" type="radio" name="mlsettings_language_detect" value="1"{if $language_detect eq 1} checked="checked"{/if} />
+                        <input id="language_detect1" type="radio" name="mlsettings_language_detect" value="1"{if $modvars.ZConfig.language_detect eq 1} checked="checked"{/if} />
                         <label for="language_detect1">{gt text="Yes"}</label>
-                        <input id="language_detect0" type="radio" name="mlsettings_language_detect" value="0"{if $language_detect eq 0} checked="checked"{/if} />
+                        <input id="language_detect0" type="radio" name="mlsettings_language_detect" value="0"{if $modvars.ZConfig.language_detect eq 0} checked="checked"{/if} />
                         <label for="language_detect0">{gt text="No"}</label>
                     </span>
                 </div>
@@ -49,12 +49,12 @@
                 <legend>{gt text="Server"}</legend>
                 <div class="z-formrow">
                     <label for="mlsettings_language_i18n">{gt text="Default language to use for this site"}</label>
-                    {html_select_locales id=mlsettings_language_i18n name=mlsettings_language_i18n selected=$language_i18n installed=1 all=false}
+                    {html_select_locales id=mlsettings_language_i18n name=mlsettings_language_i18n selected=$modvars.ZConfig.language_i18n installed=1 all=false}
                 </div>
                 <div class="z-formrow">
                     <label for="mlsettings_timezone_offset">{gt text="Time zone for anonymous guests"}</label>
                     <select id="mlsettings_timezone_offset" size="1" name="mlsettings_timezone_offset">
-                        {timezoneselect selected=$timezone_offset}
+                        {timezoneselect selected=$modvars.ZConfig.timezone_offset}
                     </select>
                 </div>
                 <div class="z-formrow">
@@ -68,9 +68,9 @@
                 <div class="z-formrow">
                     <label>{gt text="Allow IDN domain names"}</label>
                     <div>
-                        <input id="idnnamesyes" type="radio" name="idnnames" value="1" {if $idnnames == 1}checked="checked" {/if}/>
+                        <input id="idnnamesyes" type="radio" name="idnnames" value="1" {if $modvars.ZConfig.idnnames == 1}checked="checked" {/if}/>
                         <label for="idnnamesyes">{gt text="Yes"}</label>
-                        <input id="idnnamesno" type="radio" name="idnnames" value="0" {if $idnnames != 1}checked="checked" {/if}/>
+                        <input id="idnnamesno" type="radio" name="idnnames" value="0" {if $modvars.ZConfig.idnnames != 1}checked="checked" {/if}/>
                         <label for="idnnamesno">{gt text="No"}</label>
                     </div>
                     <div class="z-formnote z-sub z-italic">{gt text="Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs."}</div>

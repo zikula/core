@@ -40,9 +40,6 @@ class Settings_Controller_Admin extends Zikula_Controller
 
         $this->view->setCaching(false);
 
-        // get all config vars and assign them to the template
-        $this->view->assign('settings', ModUtil::getVar(ModUtil::CONFIG_MODULE));
-
         return $this->view->fetch('settings_admin_modifyconfig.tpl');
     }
 
@@ -144,16 +141,9 @@ class Settings_Controller_Admin extends Zikula_Controller
 
         $this->view->setCaching(false);
 
-        // get all config vars and assign them to the template
-        $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
-        foreach ($configvars as $key => $configvar) {
-            $configvars[$key] = $configvar;
-        }
-
-        // get the server timezone - we should not allow to change this
-        $configvars['timezone_server'] = DateUtil::getTimezone();
-        $configvars['timezone_server_abbr'] = DateUtil::getTimezoneAbbr();
-        $this->view->assign($configvars);
+        // get the server timezone and pass it to template - we should not allow to change this
+        $this->view->assign('timezone_server', DateUtil::getTimezone());
+        $this->view->assign('timezone_server_abbr', DateUtil::getTimezoneAbbr());
 
         return $this->view->fetch('settings_admin_multilingual.tpl');
     }
