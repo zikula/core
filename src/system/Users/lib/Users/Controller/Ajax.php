@@ -95,7 +95,7 @@ class Users_Controller_Ajax extends Zikula_Controller
             return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
-        if (!$this->getVar('reg_allowreg', true)) {
+        if (!$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             return AjaxUtil::error(LogUtil::registerError($this->__('Sorry! New user registration is currently disabled.')));
         }
 
