@@ -181,7 +181,9 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
      */
     function decode($render)
     {
-        $this->result = $_FILES[$this->inputName];
+        if (isset($_FILES[$this->inputName])) {
+            $this->result = $_FILES[$this->inputName];
+        }
     }
 
     /**
