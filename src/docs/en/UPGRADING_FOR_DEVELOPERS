@@ -64,6 +64,8 @@ TEMPLATES
 
 - {configgetvar} deprecated, use {$modvars.ZConfig.<name>}
 
+- {blockshow} now requires parameter "position".
+
 
 MODULES
 =======

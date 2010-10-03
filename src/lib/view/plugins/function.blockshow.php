@@ -13,13 +13,14 @@
  */
 
 /**
- * Renderes and displays a single Zikula block by blockinfo array or block id.
+ * Renders and displays a single Zikula block by blockinfo array or block id.
  *
  * Available attributes:
  *  - module    (string)    The internal name of the module that defines the block.
  *  - blockname (string)    The internal name of the block.
  *  - block     (int|array) Either the integer block id (bid) of the block, or
  *                          an array containing the blockinfo for the block.
+ *  - position  (string)    The position of the block.
  *  - assign    (string)    If set, the results are assigned to the corresponding
  *                          template variable instead of being returned to the template (optional)
  *
@@ -33,6 +34,7 @@ function smarty_function_blockshow($params, $view)
     $module    = isset($params['module'])    ? $params['module']    : null;
     $blockname = isset($params['blockname']) ? $params['blockname'] : null;
     $block     = isset($params['block'])     ? $params['block']     : null;
+    $position  = isset($params['position'])  ? $params['position']  : null;
     $assign    = isset($params['assign'])    ? $params['assign']    : null;
 
     if (!$module) {
@@ -50,12 +52,18 @@ function smarty_function_blockshow($params, $view)
         return;
     }
 
-    if (!is_array($block)) {
-        $output = BlockUtil::show($module, $blockname, BlockUtil::getBlockInfo($block));
-    } else {
-        $vars   = BlockUtil::varsFromContent($block['content']);
-        $output = BlockUtil::show($module, $blockname, $vars['content']);
+    if (!$position) {
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'position')));
+        return;
     }
+
+    if (!is_array($block)) {
+        $block = BlockUtil::getBlockInfo($block);
+    }
+
+    $block['position'] = $position;
+
+    $output = BlockUtil::show($module, $blockname, $block);
 
     if ($assign) {
         $view->assign($assign, $output);
