@@ -3,8 +3,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
         <title>{title}</title>
-        <meta name="description" content="{slogan}" />
-        <meta name="keywords" content="{keywords}" />
+        <meta name="description" content="{$modvars.ZConfig.slogan}" />
+        <meta name="keywords" content="{$modvars.ZConfig.metakeywords}" />
         <meta http-equiv="X-UA-Compatible" content="chrome=1" />
         {pageaddvar name="stylesheet" value="$stylepath/fluid960gs/reset.css"}
         {pageaddvar name="stylesheet" value="$stylepath/fluid960gs/$layout.css"}
@@ -18,6 +18,6 @@
 
         <div id="theme_page_container" class="container_16">
             <div id="theme_header">
-                <h1 class="title"><a href="{homepage}">{sitename}</a></h1>
-                <h2 class="slogan">{slogan}</h2>
+                <h1 class="title"><a href="{homepage}">{$modvars.ZConfig.sitename}</a></h1>
+                <h2 class="slogan">{$modvars.ZConfig.slogan}</h2>
             </div>

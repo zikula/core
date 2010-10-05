@@ -3,8 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
     <title>{title}</title>
-    <meta name="description" content="{slogan}" />
-    <meta name="keywords" content="{keywords}" />
+    <meta name="description" content="{$modvars.ZConfig.slogan}" />
+    <meta name="keywords" content="{$modvars.ZConfig.metakeywords}" />
     <link rel="stylesheet" type="text/css" href="styles/core.css" media="print,projection,screen" />
     {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" />{/browserhack}
     <link rel="stylesheet" type="text/css" href="{$stylepath}/style.css" media="print,projection,screen" />

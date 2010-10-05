@@ -5,16 +5,16 @@
 <title>{title}</title>
 <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1" />
-<meta name="Author" content="{sitename}" />
-<meta name="description" content="{slogan}" />
-<meta name="keywords" content="{keywords}" />
-<meta name="Copyright" content="Copyright (c) {'Y'|date} by {sitename}" />
+<meta name="Author" content="{$modvars.ZConfig.sitename}" />
+<meta name="description" content="{$modvars.ZConfig.slogan}" />
+<meta name="keywords" content="{$modvars.ZConfig.metakeywords}" />
+<meta name="Copyright" content="Copyright (c) {'Y'|date} by {$modvars.ZConfig.sitename}" />
 <meta name="Robots" content="index,follow" />
 
 <link rel="icon" type="image/png" href="{$themepath}/img/favicon.png" />
 <link rel="icon" type="image/x-icon" href="{$themepath}/img/favicon.ico" /><!--[* W3C *]-->
 <link rel="shortcut icon" type="image/ico" href="{$themepath}/img/favicon.ico" /><!--[* IE *]-->
-<link rel="alternate" href="{modurl modname='News' type='user' func='view' theme='rss'}" type="application/rss+xml" title="{sitename} {gt text='Main Feed'}" />
+<link rel="alternate" href="{modurl modname='News' type='user' func='view' theme='rss'}" type="application/rss+xml" title="{$modvars.ZConfig.sitename} {gt text='Main Feed'}" />
 
 <script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="{$themepath}/js/jquery-ui-1.8.2.custom.min.js"></script>
