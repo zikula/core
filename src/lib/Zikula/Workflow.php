@@ -175,7 +175,7 @@ class Zikula_Workflow
             $result[$operation['name']] = $this->executeOperation($operation, $obj, $nextState);
             if (!$result[$operation['name']]) {
                 // if an operation fails here, do not process further and return false
-                return false;
+                return $result;
             }
         }
 
