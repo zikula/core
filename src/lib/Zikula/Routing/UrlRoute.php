@@ -16,7 +16,7 @@
 /**
  * Url route base class
  */
-class Zikula_Routing_UrlRouter
+class Zikula_Routing_UrlRoute
 {
     /**
      * @var string The pattern for the url scheme treated by this route
