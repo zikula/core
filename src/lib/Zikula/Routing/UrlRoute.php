@@ -1,0 +1,311 @@
+<?php
+/**
+ * Copyright 2010 Zikula Foundation.
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ * @subpackage Provider
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
+
+/**
+ * Url route base class
+ */
+class Zikula_Routing_UrlRouter
+{
+    /**
+     * @var string The pattern for the url scheme treated by this route
+     */
+    protected $urlPattern;
+
+    /**
+     * @var array Array with default values for the parameters
+     */
+    protected $defaults;
+
+    /**
+     * @var array Array with input requirement checks for regex expression
+     */
+    protected $requirements;
+
+    /**
+     * @var boolean Whether the regular expression for this route has been generated or not
+     */
+    protected $compiled;
+
+    /**
+     * @var string The regular expression for catching urls for this route
+     */
+    protected $regex;
+
+    /**
+     * @var array Array with variables determined during regex compilation
+     */
+    protected $variables;
+
+    /**
+     * @var array Array with tokens determined during regex compilation
+     */
+    protected $tokens;
+
+    /**
+     * Constructor.
+     *
+     * @param        urlPattern     string        pattern for url scheme
+     * @param        defaults       array         default values for parameters
+     * @param        requirements   array         input requirement checks for regex
+     */
+    public function __construct($urlPattern, array $defaults, array $requirements)
+    {
+        // check if given url pattern ends with a trailing slash
+        if (substr($urlPattern, -1) != '/') {
+            // add missing trailing slash
+            $urlPattern .= '/';
+        }
+
+        // append a star for automatic addition of all params which were not considered in the pattern 
+        $urlPattern .= '*';
+
+        // store given arguments
+        $this->urlPattern = $urlPattern;
+        $this->defaults = $defaults;
+        $this->requirements = $requirements;
+
+        // set reasonable default values
+        $this->compiled = false;
+        $this->variables = array();
+        $this->tokens = array();
+    }
+
+    /**
+     * Create url for given arguments.
+     *
+     * @param        params       array         argument values for url parameters in this route
+     */
+    public function generate($params)
+    {
+        // compile the regex if not already done
+        if (!$this->compiled) {
+            $this->compile();
+        }
+
+        // create a list of all parameters, merging the default values with given input arguments
+        $allParams = array_merge($this->defaults, $params);
+
+        // check whether there are some variables required, but not specified or given
+        $diff = array_diff_key(array_flip($this->variables), $allParams);
+        if ($diff) {
+            throw new InvalidArgumentException('The "' . $this->urlPattern . '" route has some missing mandatory parameters (' . implode(', ', $diff) . ').');
+        }
+
+        // start creation of the url
+        $url = '';
+        // process the pattern by handling each single token (read out during compilation)
+        foreach ($this->tokens AS $token) {
+            switch ($token[0]) {
+                case 'variable':
+                        $url .= urlencode($allParams[$token[1]]);
+                        break;
+                case 'text':
+                        // exclude star sign for additional parameters
+                        if ($token[1] != '*') {
+                            $url .= $token[1];
+                        }
+                        break;
+                case 'separator':
+                        $url .= $token[1];
+                        break;
+            }
+        }
+
+        // check if url ends with a trailing slash
+        if (substr($url, -1) == '/') {
+            // remove the trailing slash
+            $url = substr($url, 0, strlen($url) - 1);
+        }
+
+        // look for the star sign
+        if (false !== strpos($this->regex, '<_star>')) {
+            // append additional parameters
+            $additionalArgs = array();
+            foreach (array_diff_key($allParams, array_flip($this->variables), $this->defaults) as $key => $value) {
+                $additionalArgs[] = urlencode($key) . '/' . urlencode($value);
+            }
+            $url .= '/' . implode('/', $additionalArgs);
+        }
+
+        // return the result
+        return $url;
+    }
+
+    /**
+     * Parse a given url and return the params read out of it
+     *
+     * @param        url            string        the input url
+     * @return mixed array with determined params or false on error
+     */
+    public function matchesUrl($url)
+    {
+        // compile the regex if not already done
+        if (!$this->compiled) {
+            $this->compile();
+        }
+
+        // check if the regex of this route instance does fit to given url
+        if (!preg_match($this->regex, $url, $matches)) {
+            return false;
+        }
+
+        // initialise list of parameters to be collected
+        $parameters = array();
+
+        // check for * in urlPattern
+        if (isset($matches['_star'])) {
+            // process additional parameters
+            $additionalArgs = explode('/', $matches['_star']);
+            for ($i = 0, $max = count($additionalArgs); $i < $max; $i += 2) {
+                if (!empty($tmp[$i])) {
+                    $parameters[$tmp[$i]] = isset($tmp[$i + 1]) ? $tmp[$i + 1] : true;
+                }
+            }
+            // unset this match to exclude it in further processing
+            unset($matches['_star']);
+        }
+
+        // add default values for all parameters
+        $parameters = array_merge($parameters, $this->defaults);
+
+        // process all matches and add according variables
+        foreach ($matches AS $key => $value) {
+            if (!is_int($key)) {
+                $parameters[$key] = $value;
+            }
+        }
+
+        return $parameters;
+    }
+
+    /**
+     * Checks if this route can treat a given set of parameters.
+     *
+     * @param        params         array         the arguments which should be processed
+     * @return boolean whether this route matches the given set of parameters or not
+     */
+    public function matchParameters($params)
+    {
+        // compile the regex if not already done
+        if (!$this->compiled) {
+            $this->compile();
+        }
+
+        if (!is_array($params)) {
+            return false;
+        }
+
+        // create a list of all parameters, merging the default values with given input arguments
+        $allParams = array_merge($this->defaults, $params);
+
+        // all $variables must be defined in the $allParams array
+        if (array_diff_key(array_flip($this->variables), $allParams)) {
+            return false;
+        }
+
+        // check requirements
+        foreach ($this->variables AS $variable) {
+            // no value no check
+            if (!$allParams[$variable]) {
+                continue;
+            }
+
+            if (!preg_match('#' . $this->requirements[$variable] . '#', $allParams[$variable])) {
+                return false;
+            }
+        }
+
+        // check that $params does not override a default value that is not a variable
+        foreach ($this->defaults as $key => $value) {
+            if (!isset($this->variables[$key]) && $allParams[$key] != $value) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Compiles the url pattern including creation of regex and collecting tokens as well as variables.
+     */
+    protected function compile()
+    {
+        // return if compilation has been done before already
+        if ($this->compiled) {
+            return true;
+        }
+
+        // parse pattern
+        $pattern = $this->urlPattern;
+        while (strlen($pattern)) {
+            if (preg_match('#^:([a-zA-z0-6_]+)#', $pattern, $match)) {
+                // variable
+                $name = $match[1];
+                $this->tokens[] = array('variable', $name);
+                $this->variables[] = $name;
+
+                $pattern = substr($pattern, strlen($match[0]));
+            } else if (preg_match('#^(?:/|\.|\-)#', $pattern, $match)) {
+                // separator
+                $this->tokens[] = array('separator', $match[0]);
+
+                $pattern = substr($pattern, strlen($match[0]));
+            } else if (preg_match('#^(.+?)(?:(?:/|\.|\-)|$)#', $pattern, $match)) {
+                // text
+                $text = $match[1];
+                $this->tokens[] = array('text', $text);
+
+                $pattern = substr($pattern, strlen($match[1]));
+            } else {
+                throw new InvalidArgumentException('Invalid pattern "' . $this->urlPattern . '" near "' . $pattern . '"!');
+            }
+        }
+
+        // create regex
+        $regex = '#';
+        for ($i = 0, $max = count($this->tokens); $i < $max; $i++) {
+            $token = $this->tokens[$i];
+            if ($token[0] == 'variable') {
+                if (!isset($this->requirements[$token[1]])) {
+                    $this->requirements[$token[1]] = '[^/\.\-]+';
+                }
+                $regex .= '(?P<'.$token[1].'>'.$this->requirements[$token[1]].')';
+            } else if ($token[0] == 'text' || $token[0] == 'separator') {
+                if ($token[1] == '*') {
+                    if ($this->tokens[$i - 1] && $this->tokens[$i - 1][0] == 'separator') {
+                        $sep_regex = $this->tokens[$i - 1][1];
+                    } else {
+                        $sep_regex = '/';
+                    }
+                    $regex .= '(?:' . $sep_regex . '(?P<_star>.*))?';
+                } else {
+                    if ($token[0] == 'separator' && $this->tokens[$i + 1] && $this->tokens[$i + 1][1] == '*') {
+
+                    } else {
+                        $regex .= $token[1];
+                    }
+                }
+            }
+        }
+        $regex .= '#';
+
+        // store the result
+        $this->regex = $regex;
+
+        // activate compiled flag
+        $this->compiled = true;
+        return true;
+    }
+}
