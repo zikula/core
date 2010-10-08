@@ -195,7 +195,12 @@ class Zikula_Workflow
         }
 
         // updates the workflow state value
-        $obj['__WORKFLOW__']['state'] = $nextState;
+        if ($obj instanceof Doctrine_Object) {
+            $this->workflowData['state'] = $nextState;
+            $obj->mapValue('__WORKFLOW__', $this->workflowData);
+        } else {
+            $obj['__WORKFLOW__']['state'] = $nextState;
+        }
 
         // return result of all operations (possibly okay to just return true here)
         return $result;
