@@ -492,7 +492,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                     if (is_dir("$base/$dependency[modname]")) {
                         $minok = 0;
                         $maxok = 0;
-                        $modversion = Modules_Util::getVersionMeta($dependency['modname'], "$base/$dependency[modname]/pnversion.php");
+                        $modversion = Modules_Util::getVersionMeta($dependency['modname'], $base);
 
                         if (!empty($dependency['minversion'])) {
                             $minok = version_compare($modversion['version'], $dependency['minversion']);

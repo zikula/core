@@ -17,25 +17,33 @@ class Modules_Util
     /**
      * Get version metadata for a module.
      *
-     * @param string $moduleName        Module Name.
-     * @param string $legacyVersionPath Path to legacy version file (default empty).
+     * @param string $moduleName Module Name.
+     * @param string $rootdir    Root directory of the module (default: modules).
      *
      * @return Zikula_Version|array
      */
-    public static function getVersionMeta($moduleName, $legacyVersionPath = '')
+    public static function getVersionMeta($moduleName, $rootdir = 'modules')
     {
         $modversion = array();
+
         $class = "{$moduleName}_Version";
         if (class_exists($class)) {
             $modversion = new $class();
             if (!$modversion instanceof Zikula_Version) {
                 LogUtil::registerError(__f('%s is not an instance of Zikula_Version', get_class($modversion)));
             }
-        } elseif (is_dir("modules/$moduleName/lib") || is_dir("system/$moduleName/lib")) {
+        } elseif (is_dir("$rootdir/$moduleName/lib")) {
             LogUtil::registerError(__f('Could not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));
         } else {
+            // pre 1.3 modules
+            $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
             if (!file_exists($legacyVersionPath)) {
-                LogUtil::registerError(__f('Cannot %1$s for module %2$s', array($legacyVersionPath, $moduleName)));
+                LogUtil::registerError(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
+                $modversion = array(
+                    'name' => $moduleName,
+                    'description' => '',
+                    'version' => 0
+                );
             } else {
                 include $legacyVersionPath;
             }

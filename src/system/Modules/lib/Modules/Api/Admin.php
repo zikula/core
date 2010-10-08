@@ -579,14 +579,14 @@ class Modules_Api_Admin extends Zikula_Api
                     }
 
                     // loads the gettext domain for 3rd party modules
-                    if (is_dir("modules/$dir/locale")) {
+                    if ($rootdir == 'modules' && is_dir("modules/$dir/locale")) {
                         // This is required here since including pnversion automatically executes the pnversion code
                         // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
                         // since loading is self contained in each zOO application.
                         ZLanguage::bindModuleDomain($dir);
                     }
 
-                    $modversion = Modules_Util::getVersionMeta($dir, "$rootdir/$dir/pnversion.php");
+                    $modversion = Modules_Util::getVersionMeta($dir, $rootdir);
                     if (!isset($modversion['capabilities'])) {
                         $modversion['capabilities'] = array();
                     }
@@ -610,7 +610,7 @@ class Modules_Api_Admin extends Zikula_Api
                         if (file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser")) {
                             $modversion['capabilities']['user'] = '1.0';
                         }
-                    } else {
+                    } elseif ($oomod) {
                         // Work out if admin-capable
                         if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
                             $caps = $modversion['capabilities'];
@@ -854,12 +854,16 @@ class Modules_Api_Admin extends Zikula_Api
                 // module is in the db already
                 if ($dbmodules[$name]['state'] == ModUtil::STATE_MISSING) {
                     // module was lost, now it is here again
-                    $this->setState(array('id'   => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_INACTIVE));
+                    $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_INACTIVE));
+                } elseif ($dbmodules[$name]['state'] == ModUtil::STATE_INVALID && $modinfo['version']) {
+                    // module was invalid, now it is valid
+                    $modinfo = array_merge($modinfo, array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_UNINITIALISED));
+                    DBUtil::updateObject($modinfo, 'modules');
                 }
                 if ($dbmodules[$name]['version'] != $modinfo['version']) {
                     if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED &&
                             $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
-                        $this->setState(array('id'   => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_UPGRADED));
+                        $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_UPGRADED));
                     }
                 }
             }
@@ -1137,7 +1141,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
         $modversion['version'] = '0';
 
-        $modversion = Modules_Util::getVersionMeta($osdir, "$modpath/$osdir/pnversion.php");
+        $modversion = Modules_Util::getVersionMeta($osdir, $modpath);
         $version = $modversion['version'];
 
         // Update state of module
