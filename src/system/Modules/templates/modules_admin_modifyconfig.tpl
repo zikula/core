@@ -4,7 +4,7 @@
     <h2>{gt text="Settings"}</h2>
     <form class="z-form" action="{modurl modname="Modules" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            {securityutil_generateauthkey name="generateauthkey" module="Modules" assign="authid"}
+            {insert name="generateauthkey" module="Modules" assign="authid"}
             <input type="hidden" name="authid" value="{$authid}" />
             <fieldset>
                 <legend>{gt text="General settings"}</legend>

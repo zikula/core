@@ -36,7 +36,7 @@
  */
 function smarty_function_securityutil_generateauthkey($params, $smarty)
 {
-    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('securityutil_generateauthkey', 'generateauthkey')), E_USER_DEPRECATED);
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('securityutil_generateauthkey', 'insert.generateauthkey')), E_USER_DEPRECATED);
     if (!isset($params['module'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('securityutil_generateauthkey', 'module')));
         return false;
