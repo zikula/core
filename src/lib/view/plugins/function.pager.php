@@ -180,6 +180,12 @@ function smarty_function_pager($params, $view)
                         $pager['type'] = $v;
                     }
                     break;
+                case 'lang':
+                    $addcurrentlang2url = System::getVar('languageurl');
+                    if ($addcurrentlang2url == 0) {
+                        $pager['args'][$k] =  $v;
+                    }
+                    break;
                 default:
                     if (is_array($v)) {
                         foreach ($v as $kk => $vv) {
