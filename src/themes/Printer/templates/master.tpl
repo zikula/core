@@ -3,8 +3,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
         <title>{title}</title>
-        <meta name="description" content="{$modvars.ZConfig.slogan}" />
-        <meta name="keywords" content="{$modvars.ZConfig.metakeywords}" />
+        <meta name="description" content="{slogan}" />
+        <meta name="keywords" content="{keywords}" />
         <meta name="robots" content="noindex,follow,noarchive" />
         <link rel="stylesheet" href="{$stylepath}/style.css" type="text/css" media="print" />
     </head>

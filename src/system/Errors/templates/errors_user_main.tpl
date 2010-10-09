@@ -1,5 +1,6 @@
 <div class="z-fullerror">
-    <h1>{gt text="Error on %s" tag1=$modvars.ZConfig.sitename}</h1>
+    {sitename assign=sitename}
+    <h1>{gt text="Error on %s" tag1=$sitename}</h1>
     <ul>
         {foreach from=$messages item=message}
         <li>{$message|safehtml}</li>
