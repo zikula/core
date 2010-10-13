@@ -26,8 +26,6 @@
  * and reserved names. As of this writing, the list of reserved names consists of
  * <ul>
  * <li>title</li>
- * <li>description</li>
- * <li>keywords</li>
  * <li>stylesheet</li>
  * <li>javascript</li>
  * <li>body</li>
@@ -49,14 +47,13 @@ function smarty_function_pagesetvar($params, $view)
     $value = isset($params['value']) ? $params['value'] : null;
 
     if (!$name) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpagesetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pagesetvar', 'name')));
         return false;
     }
     if (!$value) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpagesetvar', 'value')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pagesetvar', 'value')));
         return false;
     }
 
     PageUtil::setVar($name, $value);
-    return;
 }

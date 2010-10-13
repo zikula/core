@@ -2,9 +2,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
 <atom:link href="{getcurrenturl}" rel="self" type="application/rss+xml" />
-<title>{configgetvar name="sitename"}</title>
+<title>{pagegetvar name='title'}</title>
 <link>{getbaseurl}</link>
-<description>{configgetvar name="slogan"}</description>
+<description>{$metatag.description}</description>
 <language>{lang}</language>
 {* here you can add your image if you want to *}
 {* <image>

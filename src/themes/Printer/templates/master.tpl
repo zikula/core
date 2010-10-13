@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang}">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
-        <title>{title}</title>
-        <meta name="description" content="{slogan}" />
-        <meta name="keywords" content="{keywords}" />
+        <title>{pagegetvar name='title'}</title>
+        <meta name="description" content="{$metatags.description}" />
+        <meta name="keywords" content="{$metatags.keywords}" />
         <meta name="robots" content="noindex,follow,noarchive" />
         <link rel="stylesheet" href="{$stylepath}/style.css" type="text/css" media="print" />
     </head>

@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang}" dir="{langdirection}">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
-        <title>{title}</title>
-        <meta name="description" content="{slogan}" />
-        <meta name="keywords" content="{keywords}" />
+        <title>{pagegetvar name='title'}</title>
+        <meta name="description" content="{$metatags.description}" />
+        <meta name="keywords" content="{$metatags.keywords}" />
         <meta http-equiv="X-UA-Compatible" content="chrome=1" />
         {pageaddvar name="stylesheet" value="$stylepath/fluid960gs/reset.css"}
         {pageaddvar name="stylesheet" value="$stylepath/fluid960gs/$layout.css"}

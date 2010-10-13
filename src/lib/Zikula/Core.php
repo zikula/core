@@ -333,7 +333,6 @@ class Zikula_Core
         if ($stages & System::STAGES_THEME) {
             // register default page vars
             PageUtil::registerVar('title');
-            PageUtil::registerVar('description', false, System::getVar('slogan'));
             PageUtil::registerVar('keywords', true);
             PageUtil::registerVar('stylesheet', true);
             PageUtil::registerVar('javascript', true);
@@ -343,6 +342,11 @@ class Zikula_Core
             PageUtil::registerVar('footer', true);
 
             Zikula_View_Theme::getInstance();
+
+            // set some defaults
+            // Metadata for SEO
+            $this->serviceManager['zikula_view.metatags']['description'] = System::getVar('slogan');
+            $this->serviceManager['zikula_view.metatags']['keywords'] = System::getVar('metakeywords');
 
             $coreInitEvent->setArg('stage', System::STAGES_THEME);
             $this->eventManager->notify($coreInitEvent);

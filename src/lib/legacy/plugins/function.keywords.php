@@ -43,26 +43,11 @@
  */
 function smarty_function_keywords($params, $view)
 {
-    $keywordsarray = PageUtil::getVar('keywords');
-    if (!empty($keywordsarray)) {
-        $ak = array_keys($keywordsarray);
-        foreach ($ak as $v) {
-            $keywordsarray[$v] = trim($keywordsarray[$v]);
-            if (empty($keywordsarray[$v])) {
-                unset($keywordsarray[$v]);
-            }
-        }
-    }
-
-    if (!empty($keywordsarray)) {
-        $keywords = implode(',', $keywordsarray);
-    } else {
-        $keywords = System::getVar('metakeywords');
-    }
+    $metatags = $view->getServiceManager()->getArgument('zikula_view.metatags');
 
     if (isset($params['assign'])) {
-        $view->assign($params['assign'], $keywords);
+        $view->assign($params['assign'], $metatags['keywords']);
     } else {
-        return $keywords;
+        return $metatags['keywords'];
     }
 }
