@@ -66,6 +66,12 @@ TEMPLATES
 
 - {blockshow} now requires parameter "position".
 
+- Theme page variables have been altered slightly.  All metatags can get obtained from
+  the {$metatags.foo} array present in all templates.  Metatags can be altered in the
+  template with {setmetatag name='foo' value='bar'} as required.  From controllers
+  just alter with `$this->serviceManager['zikula_view.metatags][$foo] = $bar;` no special
+  API is required.
+
 
 MODULES
 =======
