@@ -116,6 +116,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     protected $eventManager;
 
     /**
+     * Templates.
+     *
+     * @var array
+     */
+    protected $templatePaths = array();
+
+    /**
      * Constructor.
      *
      * @param string       $module  Module name ("zikula" for system plugins).
@@ -622,10 +629,8 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     public function get_template_path($template)
     {
-        static $cache = array();
-
-        if (isset($cache[$template])) {
-            return $cache[$template];
+        if (isset($this->templateCache[$template])) {
+            return $this->templateCache[$template];
         }
 
         // the current module
@@ -641,6 +646,25 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             $os_dir = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
 
             $ostemplate = DataUtil::formatForOS($template);
+
+            $event = new Zikula_Event('zikula_view.template_override', $this, array(), "$os_dir/$os_modname/templates/$template");
+            $this->eventManager->notifyUntil($event);
+
+            if ($event->hasNotified()) {
+                $ostemplate = DataUtil::formatForOS($event->getData());
+                if (is_readable($ostemplate)) {
+                    $this->templateCache[$template] = $ostemplate;
+                    return $ostemplate;
+                } else {
+                    return false;
+                }
+            }
+
+            // Unless we are in legacy mode, halt here.  The rest of this code is
+            // scheduled for removal from 1.4.0 - drak
+            if (!System::isLegacyMode()) {
+               return false;
+            }
 
             // check the module for which we're looking for a template is the
             // same as the top level mods. This limits the places to look for
@@ -666,7 +690,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
             foreach ($search_path as $path) {
                 if (is_readable("$path/$ostemplate")) {
-                    $cache[$template] = $path;
+                    $this->templateCache[$template] = $path;
                     return $path;
                 }
             }
@@ -1009,7 +1033,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     {
         // default directory for templates
         $this->template_dir = $this->get_template_path($template);
-        //echo $this->template_dir . '<br>';
         $this->config_dir = $this->template_dir . '/config';
     }
 
