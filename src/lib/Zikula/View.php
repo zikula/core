@@ -647,6 +647,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
             $ostemplate = DataUtil::formatForOS($template);
 
+
             $event = new Zikula_Event('zikula_view.template_override', $this, array(), "$os_dir/$os_modname/templates/$template");
             $this->eventManager->notifyUntil($event);
 
@@ -2343,8 +2344,8 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     public static function getTemplateOverride($template)
     {
-        $event = new Zikula_Event('zikula_view.template_override', $this, array(), $template);
-        $this->eventManager->notifyUntil($event);
+        $event = new Zikula_Event('zikula_view.template_override', null, array(), $template);
+        EventUtil::getManager()->notifyUntil($event);
 
         if ($event->hasNotified()) {
             $ostemplate = DataUtil::formatForOS($event->getData());
