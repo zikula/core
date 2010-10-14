@@ -2331,6 +2331,32 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $this->_cache_including = $_cache_including;
         return $this;
     }
+
+    /**
+     * Execute a template override event.
+     *
+     * @param string $template Path to template.
+     *
+     * @throws InvalidArgumentException If event handler returns a non-existent template.
+     *
+     * @return mixed String if found, false if no override present.
+     */
+    public static function getTemplateOverride($template)
+    {
+        $event = new Zikula_Event('zikula_view.template_override', $this, array(), $template);
+        $this->eventManager->notifyUntil($event);
+
+        if ($event->hasNotified()) {
+            $ostemplate = DataUtil::formatForOS($event->getData());
+            if (is_readable($ostemplate)) {
+                return $ostemplate;
+            } else {
+                throw new InvalidArgumentException(__f('zikula_view.template_override returned a non-existent template path %s', $ostemplate));
+            }
+        }
+
+        return false;
+    }
 }
 
 /**
