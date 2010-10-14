@@ -19,7 +19,9 @@
 class Zikula_Routing_UrlRouter
 {
     /**
-     * @var array The list of managed routes (Zikula_Routing_UrlRoute instances)
+     * The list of managed routes (Zikula_Routing_UrlRoute instances).
+     *
+     * @var array 
      */
     protected $routes;
 
@@ -32,12 +34,12 @@ class Zikula_Routing_UrlRouter
     }
 
     /**
-     * Generate a short url for given arguments
+     * Generate a short url for given arguments.
      *
      * @param string $name   string Optional name of route to be used (if not set the route will be selected based on given params).
      * @param array  $params array  The arguments to be processed by the created url.
      *
-     * @return mixed string                     with created url or false on error
+     * @return mixed string With created url or false on error.
      */
     public function generate($name = '', array $params = array())
     {
@@ -54,7 +56,7 @@ class Zikula_Routing_UrlRouter
             $route = $this->routes[$name];
         } else {
             // determine the route based on given params
-            foreach ($this->routes AS $testRoute) {
+            foreach ($this->routes as $testRoute) {
                 if (!$testRoute->matchParameters($params)) {
                     // this route does not fit to our arguments, so we skip it
                     continue;
@@ -85,6 +87,8 @@ class Zikula_Routing_UrlRouter
      *
      * @param string $url  The input url.
      *
+     * @throws InvalidArgumentException If the Url is empty.
+     *
      * @return mixed array With determined params or false on error.
      */
     public function parse($url = '')
@@ -98,7 +102,7 @@ class Zikula_Routing_UrlRouter
         $params = null;
 
         // search for the right route for given url
-        foreach ($this->routes AS $testRoute) {
+        foreach ($this->routes as $testRoute) {
             // check if this route does the job
             $testParams = $testRoute->matchesUrl($url);
             // if not...

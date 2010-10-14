@@ -19,37 +19,51 @@
 class Zikula_Routing_UrlRoute
 {
     /**
-     * @var string The pattern for the url scheme treated by this route.
+     * The pattern for the url scheme treated by this route.
+     *
+     * @var string
      */
     protected $urlPattern;
 
     /**
-     * @var array Array with default values for the parameters.
+     * Array with default values for the parameters.
+     *
+     * @var array
      */
     protected $defaults;
 
     /**
-     * @var array Array with input requirement checks for regex expression.
+     * Array with input requirement checks for regex expression.
+     *
+     * @var array
      */
     protected $requirements;
 
     /**
-     * @var boolean Whether the regular expression for this route has been generated or not.
+     * Whether the regular expression for this route has been generated or not.
+     *
+     * @var boolean
      */
     protected $compiled;
 
     /**
-     * @var string The regular expression for catching urls for this route.
+     * The regular expression for catching urls for this route.
+     *
+     * @var string
      */
     protected $regex;
 
     /**
-     * @var array Array with variables determined during regex compilation.
+     * Array with variables determined during regex compilation.
+     *
+     * @var array
      */
     protected $variables;
 
     /**
-     * @var array Array with tokens determined during regex compilation.
+     * Array with tokens determined during regex compilation.
+     * 
+     * @var array
      */
     protected $tokens;
 
@@ -108,20 +122,20 @@ class Zikula_Routing_UrlRoute
         // start creation of the url
         $url = '';
         // process the pattern by handling each single token (read out during compilation)
-        foreach ($this->tokens AS $token) {
+        foreach ($this->tokens as $token) {
             switch ($token[0]) {
                 case 'variable':
-                        $url .= urlencode($allParams[$token[1]]);
-                        break;
+                    $url .= urlencode($allParams[$token[1]]);
+                    break;
                 case 'text':
-                        // exclude star sign for additional parameters
-                        if ($token[1] != '*') {
-                            $url .= $token[1];
-                        }
-                        break;
-                case 'separator':
+                    // exclude star sign for additional parameters
+                    if ($token[1] != '*') {
                         $url .= $token[1];
-                        break;
+                    }
+                    break;
+                case 'separator':
+                    $url .= $token[1];
+                    break;
             }
         }
 
