@@ -14,51 +14,51 @@
  */
 
 /**
- * Url route base class
+ * Url route base class.
  */
 class Zikula_Routing_UrlRoute
 {
     /**
-     * @var string The pattern for the url scheme treated by this route
+     * @var string The pattern for the url scheme treated by this route.
      */
     protected $urlPattern;
 
     /**
-     * @var array Array with default values for the parameters
+     * @var array Array with default values for the parameters.
      */
     protected $defaults;
 
     /**
-     * @var array Array with input requirement checks for regex expression
+     * @var array Array with input requirement checks for regex expression.
      */
     protected $requirements;
 
     /**
-     * @var boolean Whether the regular expression for this route has been generated or not
+     * @var boolean Whether the regular expression for this route has been generated or not.
      */
     protected $compiled;
 
     /**
-     * @var string The regular expression for catching urls for this route
+     * @var string The regular expression for catching urls for this route.
      */
     protected $regex;
 
     /**
-     * @var array Array with variables determined during regex compilation
+     * @var array Array with variables determined during regex compilation.
      */
     protected $variables;
 
     /**
-     * @var array Array with tokens determined during regex compilation
+     * @var array Array with tokens determined during regex compilation.
      */
     protected $tokens;
 
     /**
      * Constructor.
      *
-     * @param        urlPattern     string        pattern for url scheme
-     * @param        defaults       array         default values for parameters
-     * @param        requirements   array         input requirement checks for regex
+     * @param string $urlPattern   Pattern for url scheme.
+     * @param array  $defaults     Default values for parameters.
+     * @param array  $requirements Input requirement checks for regex.
      */
     public function __construct($urlPattern, array $defaults, array $requirements)
     {
@@ -85,7 +85,9 @@ class Zikula_Routing_UrlRoute
     /**
      * Create url for given arguments.
      *
-     * @param        params       array         argument values for url parameters in this route
+     * @param array $params Argument values for url parameters in this route.
+     *
+     * @return string Url.
      */
     public function generate($params)
     {
@@ -144,10 +146,11 @@ class Zikula_Routing_UrlRoute
     }
 
     /**
-     * Parse a given url and return the params read out of it
+     * Parse a given url and return the params read out of it.
      *
-     * @param        url            string        the input url
-     * @return mixed array with determined params or false on error
+     * @param string $url Input url.
+     *
+     * @return mixed array Eith determined params or false on error.
      */
     public function matchesUrl($url)
     {
@@ -193,8 +196,9 @@ class Zikula_Routing_UrlRoute
     /**
      * Checks if this route can treat a given set of parameters.
      *
-     * @param        params         array         the arguments which should be processed
-     * @return boolean whether this route matches the given set of parameters or not
+     * @param  array $params The arguments which should be processed.
+     *
+     * @return boolean Whether this route matches the given set of parameters or not.
      */
     public function matchParameters($params)
     {
@@ -239,6 +243,10 @@ class Zikula_Routing_UrlRoute
 
     /**
      * Compiles the url pattern including creation of regex and collecting tokens as well as variables.
+     *
+     * @throws InvalidArgumentException With invalid pattern.
+     * 
+     * @return boolean True.
      */
     protected function compile()
     {

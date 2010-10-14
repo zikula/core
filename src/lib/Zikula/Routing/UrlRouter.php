@@ -14,7 +14,7 @@
  */
 
 /**
- * Url router base class
+ * Url router base class.
  */
 class Zikula_Routing_UrlRouter
 {
@@ -34,9 +34,10 @@ class Zikula_Routing_UrlRouter
     /**
      * Generate a short url for given arguments
      *
-     * @param        name           string        optional name of route to be used (if not set the route will be selected based on given params)
-     * @param        params         array         the arguments to be processed by the created url
-     * @return mixed string with created url or false on error
+     * @param string $name   string Optional name of route to be used (if not set the route will be selected based on given params).
+     * @param array  $params array  The arguments to be processed by the created url.
+     *
+     * @return mixed string                     with created url or false on error
      */
     public function generate($name = '', array $params = array())
     {
@@ -51,8 +52,7 @@ class Zikula_Routing_UrlRouter
             }
             // use this route
             $route = $this->routes[$name];
-        }
-        else {
+        } else {
             // determine the route based on given params
             foreach ($this->routes AS $testRoute) {
                 if (!$testRoute->matchParameters($params)) {
@@ -81,10 +81,11 @@ class Zikula_Routing_UrlRouter
     }
 
     /**
-     * Parse a given url and return the params read out of it
+     * Parse a given url and return the params read out of it.
      *
-     * @param        url            string        the input url
-     * @return mixed array with determined params or false on error
+     * @param string $url  The input url.
+     *
+     * @return mixed array With determined params or false on error.
      */
     public function parse($url = '')
     {
@@ -125,9 +126,10 @@ class Zikula_Routing_UrlRouter
     /**
      * Set (or add) a certain route to this router instance.
      *
-     * @param        name           string                   storage name for the route
-     * @param        route          Zikula_Routing_UrlRoute  the actual route instance
-     * @return mixed string with created url or false on error
+     * @param string                  $name  Storage name for the route.
+     * @param Zikula_Routing_UrlRoute $route The actual route instance.
+     *
+     * @return mixed String with created url or false on error.
      */
     public function set($name, Zikula_Routing_UrlRoute $route)
     {
