@@ -914,4 +914,25 @@ class System
         return (bool)$GLOBALS['ZConfig']['System']['development'];
     }
 
+    /**
+     * Get a system error template.
+     *
+     * @param string $templateFile
+     * @param string $templatePath
+     *
+     * @return string Template file path.
+     */
+    public static function getSystemErrorTemplate($templateFile)
+    {
+        $templatePath = "system/Theme/templates/system/$templateFile";
+        $override = Zikula_View::getTemplateOverride($templatePath);
+        if ($override !== false) {
+            return $override;
+        } else if (self::isLegacyMode() && file_exists("config/templates/$templateFile")) {
+            return "config/templates/$templateFile";
+        } else {
+            return $templatePath;
+        }
+    }
+
 }

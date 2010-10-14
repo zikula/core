@@ -647,26 +647,20 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
             $ostemplate = DataUtil::formatForOS($template);
 
-
-            $event = new Zikula_Event('zikula_view.template_override', $this, array(), "$os_dir/$os_modname/templates/$template");
-            $this->eventManager->notifyUntil($event);
-
-            if ($event->hasNotified()) {
-                $ostemplate = DataUtil::formatForOS($event->getData());
-                if (is_readable($ostemplate)) {
+            $override = self::getTemplateOverride("$os_dir/$os_modname/templates/$template");
+            if ($override === false) {
+                // no override present
+                if (!System::isLegacyMode()) {
                     $this->templateCache[$template] = $ostemplate;
                     return $ostemplate;
-                } else {
-                    return false;
                 }
+            } else {
+                $this->templateCache[$template] = $override;
+                return $override;
             }
-
-            // Unless we are in legacy mode, halt here.  The rest of this code is
-            // scheduled for removal from 1.4.0 - drak
-            if (!System::isLegacyMode()) {
-               return false;
-            }
-
+            
+            // The rest of this code is scheduled for removal from 1.4.0 - drak
+            
             // check the module for which we're looking for a template is the
             // same as the top level mods. This limits the places to look for
             // templates.
