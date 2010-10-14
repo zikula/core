@@ -64,7 +64,6 @@ abstract class Zikula_EventHandler
 
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
-        
     }
 
     /**
@@ -129,5 +128,14 @@ abstract class Zikula_EventHandler
         foreach ($this->eventNames as $name => $method) {
             $this->eventManager->detach($name, array($this, $method));
         }
+    }
+
+    /**
+     * Post constructor hook.
+     *
+     * @return void
+     */
+    public function initialize()
+    {
     }
 }
