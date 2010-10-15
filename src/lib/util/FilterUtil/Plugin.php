@@ -250,4 +250,27 @@ class FilterUtil_Plugin extends FilterUtil_Common
             return '';
         }
     }
+    
+    /**
+     * Returns DQL code.
+     * 
+     * @param Doctrine_Query $query Doctrine Query Object.
+     * @param string          $field Field name.
+     * @param string          $op    Operator.
+     * @param string          $value Test value.
+     *
+     * @return array Doctrine Query where clause and parameters.
+     */
+    public function getDql(Doctrine_Query $query, $field, $op, $value)
+    {
+        if (!isset($this->ops[$op]) || !is_array($this->ops[$op])) {
+            return '';
+        } elseif (isset($this->ops[$op][$field])) {
+            return $this->plg[$this->ops[$op][$field]]->getDql($query, $field, $op, $value);
+        } elseif (isset($this->ops[$op]['-'])) {
+            return $this->plg[$this->ops[$op]['-']]->getDql($query, $field, $op, $value);
+        } else {
+            return '';
+        }
+    }
 }

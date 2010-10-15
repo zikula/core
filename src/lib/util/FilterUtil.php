@@ -52,6 +52,13 @@ class FilterUtil extends FilterUtil_Common
      * @var array
      */
     private $sql;
+    
+    /**
+     * Filter DQL holder.
+     *
+     * @var array
+     */
+    private $dql;
 
     /**
      * Constructor.
@@ -60,9 +67,9 @@ class FilterUtil extends FilterUtil_Common
      *  plugins: Set of plugins to load.
      *  varname: Name of filters in $_REQUEST. Default: filter.
      *
-     * @param string $module Module name.
-     * @param string $table  Table name.
-     * @param array  $args   Mixed arguments.
+     * @param string                 $module Module name.
+     * @param string|Doctrine_Table $table  Table name.
+     * @param array                  $args   Mixed arguments.
      */
     public function __construct($module, $table, $args = array())
     {
@@ -440,5 +447,69 @@ class FilterUtil extends FilterUtil_Common
         }
 
         return $this->sql;
+    }
+    
+    //+++++++++++++++ SQL Handling +++++++++++++++++++++++++
+    
+/**
+     * Help function for enrich the Doctrine Query object with the filters from a Filter-object.
+     *
+     * @param Doctrine_Query $query Doctrine Query object.
+     * @param array $obj Object array.
+     *
+     * @return array Doctrine Query where clause addition and parameters.
+     */
+    private function _genDqlRecursive(Doctrine_Query $query, $obj)
+    {
+        if (!is_array($obj) || count($obj) == 0) {
+            return '';
+        }
+
+        if (isset($obj['field']) && !empty($obj['field'])) {
+            $obj['value'] = DataUtil::formatForStore($obj['value']);
+            $res = $this->plugin->getDql($query, $obj['field'], $obj['op'], $obj['value']);
+            return $res;
+        } else {
+            $where = '';
+            $params = array();
+            if (isset($obj[0]) && is_array($obj[0])) {
+                $sub = $this->_genDqlRecursive($query, $obj[0]);
+                if (!empty($sub)) {
+                    $where .= $sub['where'];
+                    $params = array_merge($params, $sub['params']);
+                }
+                unset($obj[0]);
+            }
+            foreach ($obj as $op => $tmp) {
+                $op = strtoupper(substr($op, 0, 3)) == 'AND' ? 'AND' : 'OR';
+                if (strtoupper($op) == 'AND' || strtoupper($op) == 'OR') {
+                    $sub = $this->_genDqlRecursive($query, $tmp);
+                    if (!empty($sub)) {
+                        $where .= ' ' . strtoupper($op) . ' ' . $sub['where'];
+                        $params = array_merge($params, $sub['params']);
+                    }
+                }
+            }
+        }
+
+        return array('where' => $where, 'params' => $params);
+    }
+    
+    /**
+     * Enrich DQL.
+     * 
+     * @param Doctrine_Query $query Doctrine Query Object
+     * 
+     * @return void
+     */
+    public function enrichQuery(Doctrine_Query $query)
+    {
+        $object = $this->getObject();
+        $result = $this->_genDqlRecursive($query, $object);
+        
+        if (is_array($result) && !empty($result['where'])) {
+            $query->AndWhere($result['where'], $result['params']);
+            $this->dql = $result;
+        }
     }
 }

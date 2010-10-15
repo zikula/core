@@ -59,4 +59,37 @@ class FilterUtil_PluginCommon extends FilterUtil_Common
     {
         $this->id = $id;
     }
+    
+    /**
+     * Returns empty Sql code.
+     * 
+     * Fallback for build plugins without SQL capabilities.
+     * 
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
+     * 
+     * @return string emtpy.
+     */
+     public function getSQL($field, $op, $value)
+     {
+         return '';
+     }
+     
+/**
+     * Returns empty Dql code.
+     * 
+     * Fallback for build plugins without DQL capabilities.
+     * 
+     * @param Doctrine_Query $query Doctrine Query Object.
+     * @param string          $field Field name.
+     * @param string          $op    Operator.
+     * @param string          $value Test value.
+     *
+     * @return string empty.
+     */
+     public function getDql(Doctrine_Query $query, $field, $op, $value)
+     {
+         return '';
+     }
 }

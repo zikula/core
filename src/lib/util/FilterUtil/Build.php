@@ -64,4 +64,18 @@ interface FilterUtil_Build
      * @return array $where
      */
     public function getSQL($field, $op, $value);
+    
+    /**
+     * Get DQL
+     *
+     * Return DQL WHERE and it's params as array('where' => , 'params' =>).
+     *
+     * @param Doctrine_Query $query Doctrine Query object.
+     * @param string         $field Field name.
+     * @param string         $op    Operator.
+     * @param string         $value Value.
+     * 
+     * @return array $where
+     */
+    public function getDql(Doctrine_Query $query, $field, $op, $value);
 }
