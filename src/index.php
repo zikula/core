@@ -45,6 +45,9 @@ if (!$module) {
     if ((System::getVar('shorturls') && System::getVar('shorturlstype') == 0)) {
         $p = explode('/', str_replace(System::getBaseUri() . '/', '', $_SERVER["REQUEST_URI"]));
         $module = (empty($p[0])) ? $startPage : $p[0];
+        if (ZLanguage::isLangParam($module) && in_array($module, ZLanguage::getInstalledLanguages())) {
+            $module = '';
+        }
     } else {
         $module = $startPage;
     }

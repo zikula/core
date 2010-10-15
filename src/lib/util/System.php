@@ -667,9 +667,6 @@ class System
             $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
             $tobestripped = array(
                     "/$root",
-                    '/admin.php',
-                    '/user.php',
-                    '/error.php',
                     self::getBaseUri());
 
             // get base path to work out our current url
@@ -692,16 +689,17 @@ class System
                     array_shift($args);
                 }
 
+                $name = isset($args[1]) ? $args[1] : false;
                 // first try the first argument as a module
-                $modinfo = ModUtil::getInfoFromName($args[1]);
+                $modinfo = ($name) ? ModUtil::getInfoFromName($name) : false;
                 // if that fails it's a theme
                 if (!$modinfo) {
-                    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args[1]));
+                    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($name));
                     if ($themeinfo) {
                         self::queryStringSetVar('theme', $themeinfo['name']);
                         // now shift the vars and continue as before
                         array_shift($args);
-                        $modinfo = ModUtil::getInfoFromName($args[1]);
+                        $modinfo = isset($args[1]) ? ModUtil::getInfoFromName($args[1]) : false;
                     } else {
                         // add the default module handler into the code
                         $modinfo = ModUtil::getInfoFromName(self::getVar('shorturlsdefaultmodule'));
