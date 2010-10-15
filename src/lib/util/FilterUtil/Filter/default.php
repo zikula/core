@@ -206,4 +206,84 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
 
         return array('where' => $where);
     }
+    
+    /**
+     * Returns DQL code.
+     * 
+     * @param Doctrine_Query $query Doctrine Query Object.
+     * @param string          $field Field name.
+     * @param string          $op    Operator.
+     * @param string          $value Test value.
+     *
+     * @return array Doctrine Query where clause and parameters.
+     */
+    public function getDql(Doctrine_Query $query, $field, $op, $value)
+    {
+    	echo "$field - $op - $value";
+        if (!$this->fieldExists($field)) {
+            return '';
+        }
+
+        $where = '';
+        $params = array();
+        $tbl = $query->getRootAlias();
+        $column = $field;
+        
+        switch ($op) {
+            case 'ne':
+                $where = "$tbl.$column <> ?";
+                $params[] = $value;
+                break;
+
+            case 'lt':
+                $where = "$tbl.$column < ?";
+                $params[] = $value;
+                break;
+
+            case 'le':
+                $where = "$tbl.$column <= ?";
+                $params[] = $value;
+                break;
+
+            case 'gt':
+                $where = "$tbl.$column > ?";
+                $params[] = $value;
+                break;
+
+            case 'ge':
+                $where = "$tbl.$column >= ?";
+                $params[] = $value;
+                break;
+
+            case 'search':
+                $where = "$tbl.$column LIKE ?";
+                $params[] = '%'.$value.'%';
+                break;
+
+            case 'like':
+                $where = "$tbl.$column LIKE ?";
+                $params[] = $value;
+                break;
+
+            case 'likefirst':
+                $where = "$tbl.$column LIKE ?";
+                $params[] = $value."%";
+                break;
+
+            case 'null':
+                $where = "$tbl.$column = '' OR $tbl.$column IS NULL";
+                break;
+
+            case 'notnull':
+                $where = "$tbl.$column <> '' OR $tbl.$column IS NOT NULL";
+                break;
+
+            case 'eq':
+                $where = "$tbl.$column = ?";
+                $params[] = $value;
+                break;
+        }
+        
+        return array('where' => $where, 'params' => $params);
+    }
 }

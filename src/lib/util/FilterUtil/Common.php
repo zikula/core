@@ -23,6 +23,13 @@ class FilterUtil_Common
      * @var string
      */
     protected $dbtable;
+    
+    /**
+     * Doctrine Table.
+     * 
+     * @var Doctrine_Table
+     */
+    protected $doctrineTable;
 
     /**
      * Module's name.
@@ -81,7 +88,11 @@ class FilterUtil_Common
         }
 
         if (isset($args['table'])) {
-            $this->setTable($args['table']);
+            if ($args['table'] instanceof Doctrine_Table) {
+                $this->setDoctrineTable($args['table']);
+            } else {
+                $this->setTable($args['table']);
+            }
         } else {
             return false;
         }
@@ -123,41 +134,44 @@ class FilterUtil_Common
     /**
      * Sets table.
      *
-     * @param string $table Table or Doctrine_Record class name.
+     * @param string $table Table name.
      *
      * @return bool true on success, false otherwise.
      */
     protected function setTable($table)
     {
-        // check if it's a Doctrine_Record class name
-        if (class_exists($table)) {
-            $tableobj = Doctrine_Core::getTable($table);
+        // tables.php support
+        $tables = DBUtil::getTables();
 
-            if (!$tableobj) {
-                return false;
-            }
-
-            $fields = $tableobj->getFieldNames();
-
-            $this->dbtable = $table;
-            $this->table   = $tableobj->getTableName();
-            $this->column  = array_combine($fields, $fields);
-        } else {
-            // tables.php support
-            $tables = DBUtil::getTables();
-
-            if (!isset($tables[$table]) || !isset($tables[$table . '_column'])) {
-                return false;
-            }
-
-            $this->dbtable = $table;
-            $this->table   = $tables[$table];
-            $this->column  = $tables[$table . '_column'];
+        if (!isset($tables[$table]) || !isset($tables[$table . '_column'])) {
+            return false;
         }
+            
+        $this->dbtable = $table;
+        $this->table   = $tables[$table];
+        $this->column  = $tables[$table . '_column'];
 
         return true;
     }
+    
+    /**
+     * Sets table.
+     *
+     * @param Doctrine_Table $table Doctrine_Record class name.
+     *
+     * @return bool true on success, false otherwise.
+     */
+    protected function setDoctrineTable(Doctrine_Table $table)
+    {
+        $fields = $table->getFieldNames();
 
+        $this->doctrineTable = $table;
+        $this->table         = $table->getTableName();
+        $this->column        = array_combine($fields, $fields);
+        
+        return true;
+    }
+    
     /**
      * Reset columns.
      *
@@ -165,11 +179,10 @@ class FilterUtil_Common
      */
     protected function resetColumns()
     {
-        // check if it's a Doctrine_Record class name
-        if (class_exists($this->dbtable, false)) {
-            $tableobj = Doctrine_Core::getTable($this->dbtable);
+        // check if we're using Doctrine
+        if ($this->doctrineTable instanceof Doctrine_Table) {
 
-            $fields = $tableobj->getFieldNames();
+            $fields = $table->getFieldNames();
 
             $this->column  = array_combine($fields, $fields);
         } else {
@@ -306,7 +319,7 @@ class FilterUtil_Common
      */
     protected function addCommon(&$config)
     {
-        $config['table']  = $this->dbtable;
+        $config['table']  = ($this->doctrineTable instanceof Doctrine_Table ? $this->doctrineTable : $this->dbtable);
         $config['alias']  = $this->alias;
         $config['module'] = $this->module;
         $config['join']   = & $this->join;
