@@ -922,6 +922,13 @@ class Zikula_View_Theme extends Zikula_View
         if ($this->type == 'user' && isset($pageconfigurations['*user'])) {
             $file = $pageconfigurations['*user']['file'];
         } else if ($this->home && isset($pageconfigurations['*home'])) {
+            // allow us to match any non-zikula query string
+            $homeWithArgs = 'home' . '/' . $this->qstring;
+            if (isset($pageconfigurations[$homeWithArgs])) {
+                $file = $pageconfigurations[$homeWithArgs]['file'];
+            } else {
+                $file = $pageconfigurations['*home']['file'];
+            }
             $file = $pageconfigurations['*home']['file'];
         } else if (($this->type == 'admin' || $this->type == 'adminplugin') && isset($pageconfigurations['*admin'])) {
             $this->cachepage = false;
