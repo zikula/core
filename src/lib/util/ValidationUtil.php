@@ -48,7 +48,8 @@ class ValidationUtil
         $rc = true;
 
         // if this field already has an error, don't perform further checks
-        if (isset($_SESSION['validationErrors'][$objectType][$field])) {
+        $t = SessionUtil::getVar($field, null, "/validationFailedObjects/$objectType", false, false);
+        if ($t !== null) {
             return $rc;
         }
 
@@ -105,8 +106,9 @@ class ValidationUtil
         }
 
         if ($rc === false) {
-            if (!isset($_SESSION['validationErrors'][$objectType][$field])) {
-                $_SESSION['validationErrors'][$objectType][$field] = $err_msg;
+            $t = SessionUtil::getVar($field, null, "//validationErrors/$objectType", false, false);
+            if ($t === null) {
+                SessionUtil::setVar($field, $err_msg, "/validationErrors/$objectType");
             }
         }
 
@@ -175,7 +177,7 @@ class ValidationUtil
         }
 
         if (!$rc) {
-            $_SESSION['validationFailedObjects'][$objectType] = $object;
+            SessionUtil::setVar($objectType, $objet, "/validationFailedObjects");
         }
 
         return $rc;
