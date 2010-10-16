@@ -589,13 +589,6 @@ function upgrade_columns($connection)
     $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_instance z_instance VARCHAR(255) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_level z_level INT(11) DEFAULT '0' NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_bond z_bond INT(11) DEFAULT '0' NOT NULL";
-    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_id z_plock_id INT(11) NOT NULL AUTO_INCREMENT";
-    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_name z_plock_name VARCHAR(100) NOT NULL";
-    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_cdate z_plock_cdate DATETIME NOT NULL";
-    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_edate z_plock_edate DATETIME NOT NULL";
-    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_session z_plock_session VARCHAR(50) NOT NULL";
-    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_title z_plock_title VARCHAR(100) NOT NULL";
-    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_ipno z_plock_ipno VARCHAR(30) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_search_stat CHANGE pn_id z_id INT(11) AUTO_INCREMENT";
     $commands[] = "ALTER TABLE {$prefix}_search_stat CHANGE pn_search z_search VARCHAR(50) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_search_stat CHANGE pn_count z_count INT(11) DEFAULT '0' NOT NULL";
@@ -670,6 +663,13 @@ CHANGE pn_expire z_expire INT(11) NOT NULL DEFAULT  '0',
 CHANGE pn_active z_active INT(11) NOT NULL DEFAULT  '1',
 CHANGE pn_view z_view INT(11) NOT NULL DEFAULT  '1',
 CHANGE pn_language z_language VARCHAR(30) NOT NULL DEFAULT  ''";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_id z_plock_id INT(11) NOT NULL AUTO_INCREMENT";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_name z_plock_name VARCHAR(100) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_cdate z_plock_cdate DATETIME NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_edate z_plock_edate DATETIME NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_session z_plock_session VARCHAR(50) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_title z_plock_title VARCHAR(100) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_ipno z_plock_ipno VARCHAR(30) NOT NULL";
 
     foreach ($commands as $sql) {
         $stmt = $connection->prepare($sql);
