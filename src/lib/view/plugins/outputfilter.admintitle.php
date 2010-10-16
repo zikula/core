@@ -61,7 +61,7 @@ function smarty_outputfilter_admintitle($source, $view)
     }
 
     if (!empty($titleargs)) {
-        PageUtil::setVar('title', implode(' / ', $titleargs));
+        PageUtil::setVar('title', strip_tags(implode(' / ', $titleargs)));
     }
 
     // return the modified source
