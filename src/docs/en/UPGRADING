@@ -57,9 +57,9 @@ no problems.
  
   2.2 Prepare your existing installation
   ---------------------------------------------
-  i.   Login to your Zikula site with an administrator account. If you want, you can
-       disable your site during the upgrade by changing the configuration in
-       index.php?module=Settings&type=admin.
+  i.   If you use login by email address, you must change the login method to
+       login by username in the administration panel.  You will be required to
+       login using your administation username.
 
   ii. Before unpacking any files:
       - Delete entire system/ folder.
