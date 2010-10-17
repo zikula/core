@@ -88,6 +88,9 @@ class ModUtil
             self::$modvars = new ArrayObject(array(EventUtil::HANDLERS => array(), 'Settings' => array())); // These empty arrays are required for E_ALL - drak
             $modvars = DBUtil::selectObjectArray('module_vars');
             foreach ($modvars as $var) {
+                if (!array_key_exists($var['modname'], self::$modvars)) {
+                    self::$modvars[$var['modname']] = array();
+                }
                 if (array_key_exists($var['name'],$GLOBALS['ZConfig']['System'])) {
                     self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
                 } elseif ($var['value'] == '0' || $var['value'] == '1') {
@@ -156,7 +159,6 @@ class ModUtil
 
         // if we haven't got vars for this module yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
-            self::$modvars[$modname] = array();
             $tables = DBUtil::getTables();
             $col    = $tables['module_vars_column'];
             $where  = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";

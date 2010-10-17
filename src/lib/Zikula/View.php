@@ -1089,7 +1089,9 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         if (System::isLegacyMode()) {
             // add modvars of current modules
             foreach ($this->module as $module => $dummy) {
-                $core[$module] = ModUtil::getVar($module);
+                if (!empty($module)) {
+                    $core[$module] = ModUtil::getVar($module);
+                }
             }
 
             // add mod vars of all modules supplied as parameter
