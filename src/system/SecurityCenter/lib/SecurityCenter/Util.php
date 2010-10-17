@@ -70,9 +70,12 @@ class SecurityCenter_Util
         $config['Attr']['AllowedRel'] = array('nofollow' => true, 'imageviewer' => true);
         
         // allow Youtube by default
+        $config['Filter']['YouTube'] = false; // technically deprecated in favour of HTML.SafeEmbed and HTML.Object
+
+        // general enable for embeds and objects
         $config['HTML']['SafeEmbed'] = true;
         $config['HTML']['SafeObject'] = true;
-
+        
         return $config;
     }
 
