@@ -201,6 +201,7 @@ class ZLoader
                 'UserUtil' => 'util',
                 'ValidationUtil' => 'util',
                 'Loader' => 'legacy',
+                'sfYaml' => 'vendor/Doctrine/Doctrine/Parser/sfYaml', // needed to use Doctrine_Parser since we dont use Doctrine's autoloader
         );
     }
 
