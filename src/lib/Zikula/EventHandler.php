@@ -135,7 +135,7 @@ abstract class Zikula_EventHandler
      *
      * @return void
      */
-    public function initialize()
+    public function setup()
     {
     }
 }
