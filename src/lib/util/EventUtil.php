@@ -175,7 +175,7 @@ class EventUtil
             throw new LogicException(sprintf('Class %s must be an instance of Zikula_EventHandler', $className));
         }
 
-        $handler->initialize();
+        $handler->setup();
         $handler->attach();
     }
 
