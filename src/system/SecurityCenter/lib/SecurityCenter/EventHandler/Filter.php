@@ -326,7 +326,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
         return;
     }
 
-    public static function outputFilter(Zikula_Event $event)
+    public function outputFilter(Zikula_Event $event)
     {
         if (System::getVar('outputfilter') > 1) {
             return;
