@@ -239,7 +239,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
         System::setVar('idssoftblock', $idssoftblock);
 
         $idsmail = (bool) FormUtil::getPassedValue('idsmail', 1, 'POST');
-        System::setVar('idsmail', $idssoftblock);
+        System::setVar('idsmail', $idsmail);
 
         $idsfilter = FormUtil::getPassedValue('idsfilter', 'xml', 'POST');
         System::setVar('idsfilter', $idsfilter);

@@ -182,24 +182,24 @@
                         {gt text="PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected."}
                         {gt text="Read more about this system on the <a href=\"http://phpids.org\" title=\"PHPIDS homepage\">PHPIDS homepage</a>."}
                     </p>
-                <div class="z-formrow">
-                    <label for="securitycenter_idsmail">{gt text="Block action"}</label>
-                    <div id="securitycenter_idsmail">
-                        <input id="idsmailyes" type="radio" name="idsmail" value="1"{if $modvars.ZConfig.idsmail eq 1} checked="checked"{/if} />
-                        <label for="idsmailyes">{gt text="Warn only"}</label>
-                        <input id="idsmailno" type="radio" name="idsmail" value="0"{if $modvars.ZConfig.idsmail neq 1} checked="checked"{/if} />
-                        <label for="idsmailno">{gt text="Block"}</label>
+                     <div class="z-formrow">
+                        <label for="securitycenter_idssoftblock">{gt text="Block action"}</label>
+                        <div id="securitycenter_idssoftblock">
+                            <input id="idssoftblockyes" type="radio" name="idssoftblock" value="1"{if $modvars.ZConfig.idssoftblock eq 1} checked="checked"{/if} />
+                            <label for="idssoftblockyes">{gt text="Warn only"}</label>
+                            <input id="idssoftblockno" type="radio" name="idssoftblock" value="0"{if $modvars.ZConfig.idssoftblock neq 1} checked="checked"{/if} />
+                            <label for="idssoftblockno">{gt text="Block"}</label>
+                        </div>
                     </div>
-                </div>
-                <div class="z-formrow">
-                    <label for="securitycenter_idssoftblock">{gt text="Send email on block action"}</label>
-                    <div id="securitycenter_idssoftblock">
-                        <input id="idssoftblockyes" type="radio" name="idssoftblock" value="1"{if $modvars.ZConfig.idssoftblock eq 1} checked="checked"{/if} />
-                        <label for="idssoftblockyes">{gt text="Yes"}</label>
-                        <input id="idssoftblockno" type="radio" name="idssoftblock" value="0"{if $modvars.ZConfig.idssoftblock neq 1} checked="checked"{/if} />
-                        <label for="idssoftblockno">{gt text="No"}</label>
+                    <div class="z-formrow">
+                        <label for="securitycenter_idsmail">{gt text="Send email on block action"}</label>
+                        <div id="securitycenter_idsmail">
+                            <input id="idsmailyes" type="radio" name="idsmail" value="1"{if $modvars.ZConfig.idsmail eq 1} checked="checked"{/if} />
+                            <label for="idsmailyes">{gt text="Yes"}</label>
+                            <input id="idsmailno" type="radio" name="idsmail" value="0"{if $modvars.ZConfig.idsmail neq 1} checked="checked"{/if} />
+                            <label for="idsmailno">{gt text="No"}</label>
+                        </div>
                     </div>
-                </div>
                     <div class="z-formrow">
                         <label for="securitycenter_idsfilter">{gt text="Select filter rules to use"}</label>
                         <select id="securitycenter_idsfilter" name="idsfilter">
