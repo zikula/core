@@ -566,7 +566,7 @@ div.z-formbuttons:after {
     border: 1px solid #ccc;
     padding: 0 !important;
     margin: 1em 0  !important;
-    list-style: none;
+    list-style: none !important;
 }
 .z-itemlist li {
     font-size: 1em;
