@@ -77,12 +77,9 @@ class FilterUtil extends FilterUtil_Common
 
         $args['module'] = $module;
         $args['table']  = $table;
-        parent::__construct($args);
-
-        $config = array();
-        $this->addCommon($config);
-
-        $this->plugin = new FilterUtil_Plugin($args, array('default' => array()));
+        parent::__construct(new FilterUtil_Config($args));
+        
+        $this->plugin = new FilterUtil_Plugin($this->getConfig(), array('default' => array()));
 
         if (isset($args['plugins'])) {
             $this->plugin->loadPlugins($args['plugins']);
@@ -454,12 +451,11 @@ class FilterUtil extends FilterUtil_Common
 /**
      * Help function for enrich the Doctrine Query object with the filters from a Filter-object.
      *
-     * @param Doctrine_Query $query Doctrine Query object.
      * @param array $obj Object array.
      *
      * @return array Doctrine Query where clause addition and parameters.
      */
-    private function _genDqlRecursive(Doctrine_Query $query, $obj)
+    private function _genDqlRecursive($obj)
     {
         if (!is_array($obj) || count($obj) == 0) {
             return '';
@@ -467,13 +463,13 @@ class FilterUtil extends FilterUtil_Common
 
         if (isset($obj['field']) && !empty($obj['field'])) {
             $obj['value'] = DataUtil::formatForStore($obj['value']);
-            $res = $this->plugin->getDql($query, $obj['field'], $obj['op'], $obj['value']);
+            $res = $this->plugin->getDql($obj['field'], $obj['op'], $obj['value']);
             return $res;
         } else {
             $where = '';
             $params = array();
             if (isset($obj[0]) && is_array($obj[0])) {
-                $sub = $this->_genDqlRecursive($query, $obj[0]);
+                $sub = $this->_genDqlRecursive($obj[0]);
                 if (!empty($sub)) {
                     $where .= $sub['where'];
                     $params = array_merge($params, $sub['params']);
@@ -483,7 +479,7 @@ class FilterUtil extends FilterUtil_Common
             foreach ($obj as $op => $tmp) {
                 $op = strtoupper(substr($op, 0, 3)) == 'AND' ? 'AND' : 'OR';
                 if (strtoupper($op) == 'AND' || strtoupper($op) == 'OR') {
-                    $sub = $this->_genDqlRecursive($query, $tmp);
+                    $sub = $this->_genDqlRecursive($tmp);
                     if (!empty($sub)) {
                         $where .= ' ' . strtoupper($op) . ' ' . $sub['where'];
                         $params = array_merge($params, $sub['params']);
@@ -505,7 +501,9 @@ class FilterUtil extends FilterUtil_Common
     public function enrichQuery(Doctrine_Query $query)
     {
         $object = $this->getObject();
-        $result = $this->_genDqlRecursive($query, $object);
+        $this->getConfig()->setDoctrineQuery($query);
+        
+        $result = $this->_genDqlRecursive($object);
         
         if (is_array($result) && !empty($result['where'])) {
             $query->AndWhere($result['where'], $result['params']);

@@ -210,76 +210,73 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
     /**
      * Returns DQL code.
      * 
-     * @param Doctrine_Query $query Doctrine Query Object.
      * @param string          $field Field name.
      * @param string          $op    Operator.
      * @param string          $value Test value.
      *
      * @return array Doctrine Query where clause and parameters.
      */
-    public function getDql(Doctrine_Query $query, $field, $op, $value)
+    public function getDql($field, $op, $value)
     {
-    	echo "$field - $op - $value";
         if (!$this->fieldExists($field)) {
             return '';
         }
 
         $where = '';
         $params = array();
-        $tbl = $query->getRootAlias();
-        $column = $field;
+        $column = $this->getColumn($field);
         
         switch ($op) {
             case 'ne':
-                $where = "$tbl.$column <> ?";
+                $where = "$column <> ?";
                 $params[] = $value;
                 break;
 
             case 'lt':
-                $where = "$tbl.$column < ?";
+                $where = "$column < ?";
                 $params[] = $value;
                 break;
 
             case 'le':
-                $where = "$tbl.$column <= ?";
+                $where = "$column <= ?";
                 $params[] = $value;
                 break;
 
             case 'gt':
-                $where = "$tbl.$column > ?";
+                $where = "$column > ?";
                 $params[] = $value;
                 break;
 
             case 'ge':
-                $where = "$tbl.$column >= ?";
+                $where = "$column >= ?";
                 $params[] = $value;
                 break;
 
             case 'search':
-                $where = "$tbl.$column LIKE ?";
+                $where = "$column LIKE ?";
                 $params[] = '%'.$value.'%';
                 break;
 
             case 'like':
-                $where = "$tbl.$column LIKE ?";
+                $where = "$column LIKE ?";
                 $params[] = $value;
                 break;
 
             case 'likefirst':
-                $where = "$tbl.$column LIKE ?";
+                $where = "$column LIKE ?";
                 $params[] = $value."%";
                 break;
 
             case 'null':
-                $where = "$tbl.$column = '' OR $tbl.$column IS NULL";
+                $where = "$column = '' OR $column IS NULL";
                 break;
 
             case 'notnull':
-                $where = "$tbl.$column <> '' OR $tbl.$column IS NOT NULL";
+                $where = "$column <> '' OR $column IS NOT NULL";
                 break;
 
             case 'eq':
-                $where = "$tbl.$column = ?";
+                $where = "$column = ?";
                 $params[] = $value;
                 break;
         }

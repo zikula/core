@@ -48,10 +48,10 @@ class FilterUtil_Plugin extends FilterUtil_Common
     /**
      * Constructor.
      *
-     * @param array $config Configuration array.
-     * @param array $plgs   Plugins to load in form "plugin name => config array".
+     * @param FilterUtil_Config $config FilterUtil Configuration object.
+     * @param array             $plgs   Plugins to load in form "plugin name => config array".
      */
-    public function __construct($config = array(), $plgs = null)
+    public function __construct(FilterUtil_Config $config, $plgs = null)
     {
         parent::__construct($config);
 
@@ -93,7 +93,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
     public function loadPlugin($name, $config = array())
     {
         // TODO Rewrite this loader
-        $module = $this->module;
+        $module = $this->getConfig()->getModule();
         if (strpos($name, '@')) {
             list ($module, $name) = explode('@', $name, 2);
         }
@@ -177,7 +177,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      *
      * @return object Plugin's configuration object.
      */
-    public function getConfig($name)
+    public function getPluginConfig($name)
     {
         if (!$this->PluginIsLoaded($name)) {
             return false;
@@ -254,21 +254,20 @@ class FilterUtil_Plugin extends FilterUtil_Common
     /**
      * Returns DQL code.
      * 
-     * @param Doctrine_Query $query Doctrine Query Object.
      * @param string          $field Field name.
      * @param string          $op    Operator.
      * @param string          $value Test value.
      *
      * @return array Doctrine Query where clause and parameters.
      */
-    public function getDql(Doctrine_Query $query, $field, $op, $value)
+    public function getDql($field, $op, $value)
     {
         if (!isset($this->ops[$op]) || !is_array($this->ops[$op])) {
             return '';
         } elseif (isset($this->ops[$op][$field])) {
-            return $this->plg[$this->ops[$op][$field]]->getDql($query, $field, $op, $value);
+            return $this->plg[$this->ops[$op][$field]]->getDql($field, $op, $value);
         } elseif (isset($this->ops[$op]['-'])) {
-            return $this->plg[$this->ops[$op]['-']]->getDql($query, $field, $op, $value);
+            return $this->plg[$this->ops[$op]['-']]->getDql($field, $op, $value);
         } else {
             return '';
         }

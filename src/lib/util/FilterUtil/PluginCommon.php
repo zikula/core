@@ -33,19 +33,12 @@ class FilterUtil_PluginCommon extends FilterUtil_Common
 
     /**
      * Constructor.
-     * 
-     * Sets parameters each Class could need.
-     * array $config must hold:
-     *   module: The module name.
-     *   table: The table name.
-     * It also may contain:
-     *   join: The join array.
      *
-     * @param array $config Arguments as listed above.
+     * @param array $config Array with the config key.
      */
     public function __construct($config)
-    {
-        parent::__construct($config);
+    { 
+        parent::__construct($config['config']);
     }
 
     /**
@@ -81,14 +74,13 @@ class FilterUtil_PluginCommon extends FilterUtil_Common
      * 
      * Fallback for build plugins without DQL capabilities.
      * 
-     * @param Doctrine_Query $query Doctrine Query Object.
      * @param string          $field Field name.
      * @param string          $op    Operator.
      * @param string          $value Test value.
      *
      * @return string empty.
      */
-     public function getDql(Doctrine_Query $query, $field, $op, $value)
+     public function getDql($field, $op, $value)
      {
          return '';
      }

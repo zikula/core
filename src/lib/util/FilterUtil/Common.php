@@ -17,281 +17,34 @@
  */
 class FilterUtil_Common
 {
-    /**
-     * Table name in tables.php.
-     *
-     * @var string
-     */
-    protected $dbtable;
-    
-    /**
-     * Doctrine Table.
-     * 
-     * @var Doctrine_Table
-     */
-    protected $doctrineTable;
-
-    /**
-     * Module's name.
-     *
-     * @var string
-     */
-    protected $module;
-
-    /**
-     * Table name.
-     *
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * Table alias to use.
-     *
-     * @var array
-     */
-    protected $alias;
-
-    /**
-     * Table columns.
-     *
-     * @var array
-     */
-    protected $column;
-
-    /**
-     * Join array.
-     *
-     * @var array
-     */
-    protected $join;
-
+	
+	/**
+	 * Config object
+	 * 
+	 * @var FilterUtil_Config
+	 */
+	protected $_config;
+	
     /**
      * Constructor.
      *
-     * Sets parameters each Class could need.
-     * Array $args must hold:
-     *   module: The module name.
-     *   table: The table name or Doctrine_Record class name.
-     * It also may contain:
-     *   join: The join array.
-     *   alias: Alias to use with the main table.
+     * Sets the configuration object.
      *
-     * @param array $args Arguments as listed above.
+     * @param FilterUtil_Config $config FilterUtil configuration object
      */
-    public function __construct($args = array())
+    public function __construct(FilterUtil_Config $config)
     {
-        if (isset($args['module'])) {
-            $this->setModule($args['module']);
-        } else {
-            return false;
-        }
-
-        if (isset($args['table'])) {
-            if ($args['table'] instanceof Doctrine_Table) {
-                $this->setDoctrineTable($args['table']);
-            } else {
-                $this->setTable($args['table']);
-            }
-        } else {
-            return false;
-        }
-
-        if (isset($args['alias'])) {
-            $this->setAlias($args['alias']);
-        } else {
-            $this->alias = 'tbl';
-        }
-
-        if (isset($args['join'])) {
-            $this->setJoin($args['join']);
-        } else {
-            $this->join = array();
-        }
-    }
-
-    /**
-     * Sets Module.
-     *
-     * @param string $module Module name.
-     *
-     * @return bool true on success, false otherwise.
-     */
-    protected function setModule($module)
-    {
-        if (ModUtil::available($module)) {
-            ModUtil::dbInfoLoad($module);
-            $this->module = $module;
-            return true;
-        } elseif (strtolower($module) == 'core') {
-            $this->module = 'core';
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Sets table.
-     *
-     * @param string $table Table name.
-     *
-     * @return bool true on success, false otherwise.
-     */
-    protected function setTable($table)
-    {
-        // tables.php support
-        $tables = DBUtil::getTables();
-
-        if (!isset($tables[$table]) || !isset($tables[$table . '_column'])) {
-            return false;
-        }
-            
-        $this->dbtable = $table;
-        $this->table   = $tables[$table];
-        $this->column  = $tables[$table . '_column'];
-
-        return true;
+        $this->_config = $config;
     }
     
     /**
-     * Sets table.
-     *
-     * @param Doctrine_Table $table Doctrine_Record class name.
-     *
-     * @return bool true on success, false otherwise.
+     * Get configuration.
+     * 
+     * @return FilterUtil_Config Configuration object.
      */
-    protected function setDoctrineTable(Doctrine_Table $table)
+    public function getConfig()
     {
-        $fields = $table->getFieldNames();
-
-        $this->doctrineTable = $table;
-        $this->table         = $table->getTableName();
-        $this->column        = array_combine($fields, $fields);
-        
-        return true;
-    }
-    
-    /**
-     * Reset columns.
-     *
-     * @return boolean True.
-     */
-    protected function resetColumns()
-    {
-        // check if we're using Doctrine
-        if ($this->doctrineTable instanceof Doctrine_Table) {
-
-            $fields = $table->getFieldNames();
-
-            $this->column  = array_combine($fields, $fields);
-        } else {
-            // tables.php support
-            $tables = DBUtil::getTables();
-
-            if (!isset($tables[$this->dbtable]) || !isset($tables[$this->dbtable . '_column'])) {
-                return false;
-            }
-
-            $this->column  = $tables[$table . '_column'];
-        }
-
-        return true;
-    }
-
-    /**
-     * Sets alias.
-     *
-     * @param string $alias Table alias.
-     *
-     * @return void
-     */
-    protected function setAlias($alias)
-    {
-        if (empty($alias)) {
-            return;
-        }
-
-        $this->alias = $alias;
-
-        // now add the alias to all fields
-        foreach ($this->column as &$a) {
-            $a = $this->alias . '.' . $a;
-        }
-    }
-
-    /**
-     * Sets join.
-     *
-     * Sets a reference to a join array for right column names.
-     *
-     * @param array &$join Join array.
-     *
-     * @return void
-     */
-    protected function setJoin(&$join)
-    {
-        $this->join = & $join;
-        $this->addJoinToColumn();
-    }
-
-    /**
-     * Adds Join to columns.
-     *
-     * Edits the column array for use with a join array.
-     * We must call it whenever we edited the join information!
-     *
-     * @return void
-     */
-    protected function addJoinToColumn()
-    {
-        if (count($this->join) <= 0) {
-            return;
-        }
-
-        // reset columns
-        $this->resetColumns();
-        // now add the alias to all fields
-        foreach ($this->column as &$a) {
-            $a = $this->alias . '.' . $a;
-        }
-
-        $tables = DBUtil::getTables();
-
-        // store the fixed aliases
-        $aliases = array();
-        foreach ($this->join as $join) {
-            if (isset($join['join_alias'])) {
-                $aliases[] = $join['join_alias'];
-            }
-        }
-
-        // add fields of all joins
-        $alias = 'a';
-        foreach ($this->join as $join) {
-            // check if the alias is ok
-            if (!isset($join['join_alias'])) {
-                if (in_array($alias, $aliases)) {
-                    do {
-                        $alias++;
-                    } while (in_array($alias, $aliases));
-                }
-                $join['join_alias'] = $alias;
-            }
-            // process the fields
-            $jc = isset($tables[$join['join_table'] . '_column']) ? $tables[$join['join_table'] . '_column'] : false;
-            foreach ($join['join_field'] as $k => $f) {
-                $a = $join['object_field_name'][$k];
-                if (isset($this->column[$a])) {
-                    // Oh, that won't work! Two fields with the same alias!
-                    return z_exit(__f('%s: Invalid join information!', 'FilterUtil'));
-                }
-                // so, let's add the field to the column array
-                $this->column[$a] = $join['join_alias'] . '.' . ($jc ? $jc[$f] : $f);
-            }
-            // now increase the alias ('a'++ = 'b')
-            $alias++;
-        }
+    	return $this->_config;
     }
 
     /**
@@ -300,14 +53,27 @@ class FilterUtil_Common
      * @param string $field Field name.
      *
      * @return bool True if the field exists, false if not.
-     */
+     */ 
     protected function fieldExists($field)
     {
-        if (!isset($this->column[$field]) || empty($this->column[$field])) {
+    	$name = $this->getConfig()->getColumn($field);
+        if (!$name || empty($name)) {
             return false;
         }
 
         return true;
+    }
+    
+    /**
+     * Get field by alias.
+     * 
+     * @param string $alias Field alias.
+     * 
+     * @return string Field name.
+     */
+    protected function getColumn($alias)
+    {
+    	return $this->getConfig()->getColumn($alias);
     }
 
     /**
@@ -319,9 +85,6 @@ class FilterUtil_Common
      */
     protected function addCommon(&$config)
     {
-        $config['table']  = ($this->doctrineTable instanceof Doctrine_Table ? $this->doctrineTable : $this->dbtable);
-        $config['alias']  = $this->alias;
-        $config['module'] = $this->module;
-        $config['join']   = & $this->join;
+        $config['config']  = $this->getConfig();
     }
 }
