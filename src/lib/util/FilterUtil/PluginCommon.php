@@ -69,7 +69,7 @@ class FilterUtil_PluginCommon extends FilterUtil_Common
          return '';
      }
      
-/**
+    /**
      * Returns empty Dql code.
      * 
      * Fallback for build plugins without DQL capabilities.
