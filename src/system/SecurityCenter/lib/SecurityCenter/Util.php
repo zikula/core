@@ -73,9 +73,10 @@ class SecurityCenter_Util
         $config['Filter']['YouTube'] = false; // technically deprecated in favour of HTML.SafeEmbed and HTML.Object
 
         // general enable for embeds and objects
-        $config['HTML']['SafeEmbed'] = true;
         $config['HTML']['SafeObject'] = true;
-        
+        $config['Output']['FlashCompat'] = true;
+        $config['HTML']['SafeEmbed'] = true;
+                
         return $config;
     }
 
