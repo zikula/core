@@ -408,8 +408,6 @@ class FilterUtil_Config
     	
     	
     	$this->_setColumnsFromDoctrineTables($tables);
-    	
-    	print_r($this->_column);
     }
     
     /**
