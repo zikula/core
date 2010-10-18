@@ -572,9 +572,6 @@ class Admin_Controller_Admin extends Zikula_Controller
             $acid = !empty($possible_cids) ? (int)$possible_cids[0] : null;
         }
 
-        // store it
-        SessionUtil::setVar('lastcid', $acid);
-
         $this->view->setCaching(false);
 
         $this->view->assign('currentcat', $acid);
