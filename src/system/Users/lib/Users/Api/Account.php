@@ -66,10 +66,12 @@ class Users_Api_Account extends Zikula_Api
         }
 
         if (System::getVar('multilingual')) {
-            $items['4'] = array('url' => ModUtil::url('Users', 'user', 'changeLang'),
+            if (count(ZLanguage::getInstalledLanguages()) > 1) {
+                $items['4'] = array('url' => ModUtil::url('Users', 'user', 'changeLang'),
                                 'module' => 'Users',
                                 'title' => $this->__('Language switcher'),
                                 'icon' => 'locale.png');
+            }
         }
 
         $items['5'] = array('url' => ModUtil::url('Users', 'user', 'logout'),
