@@ -401,10 +401,15 @@ class FilterUtil_Config
     	
     	$this->resetColumns();
     	
-    	$tables = $this->_getTableInformation();
-    	$tables = array_combine($this->_doctrineQuery->getTableAliasMap(), $tables);
+    	$tables   = $this->_getTableInformation();
+    	$aliasMap = $this->_doctrineQuery->getTableAliasMap();
+    	
+    	$tables = $this->_enrichTablesWithAlias($tables, $aliasMap);    	
+    	
     	
     	$this->_setColumnsFromDoctrineTables($tables);
+    	
+    	print_r($this->_column);
     }
     
     /**
@@ -473,6 +478,32 @@ class FilterUtil_Config
 	    }
 	    
 	    return $tables;
+    }
+    
+    /**
+     * Enrich doctrine tables with it's aliasses.
+     *  
+     * @param array $tables   Array of doctrine table information.
+     * @param array $aliasMap Array of aliasses.
+     * 
+     * @return array Enriched array.
+     */
+    private function _enrichTablesWithAlias ($tables, $aliasMap) {
+        if (count($tables) == count($aliasMap)) {
+    	   return array_combine($aliasMap, $tables);
+        } elseif (count($tables) < count($aliasMap)) {
+        	$aliasses = array();
+        	foreach ($tables as $table) {
+        		foreach ($aliasMap as $alias) {
+        			if ($this->_doctrineQuery->getQueryComponent($alias) == $table) {
+        				$aliasses[] = $alias;
+        			}
+        		}
+        	}
+        	return array_combine($aliasses, $tables);
+        }
+        
+        return false;
     }
     
     /**
