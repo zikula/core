@@ -17,24 +17,24 @@
  */
 class FilterUtil_Common
 {
-	
-	/**
-	 * Config object
-	 * 
-	 * @var FilterUtil_Config
-	 */
-	protected $_config;
-	
+
+    /**
+     * Config object.
+     * 
+     * @var FilterUtil_Config
+     */
+    protected $config;
+
     /**
      * Constructor.
      *
      * Sets the configuration object.
      *
-     * @param FilterUtil_Config $config FilterUtil configuration object
+     * @param FilterUtil_Config $config FilterUtil configuration object.
      */
     public function __construct(FilterUtil_Config $config)
     {
-        $this->_config = $config;
+        $this->config = $config;
     }
     
     /**
@@ -44,7 +44,7 @@ class FilterUtil_Common
      */
     public function getConfig()
     {
-    	return $this->_config;
+        return $this->config;
     }
 
     /**
@@ -56,7 +56,7 @@ class FilterUtil_Common
      */ 
     protected function fieldExists($field)
     {
-    	$name = $this->getConfig()->getColumn($field);
+        $name = $this->getConfig()->getColumn($field);
         if (!$name || empty($name)) {
             return false;
         }
@@ -73,7 +73,7 @@ class FilterUtil_Common
      */
     protected function getColumn($alias)
     {
-    	return $this->getConfig()->getColumn($alias);
+        return $this->getConfig()->getColumn($alias);
     }
 
     /**

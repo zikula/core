@@ -17,7 +17,16 @@
  */
 class FilterUtil_Config
 {
-	/**
+
+    /**
+     * Table mode.
+     * 
+     * Enummeration what table type is used.
+     */
+    const TABLE_TABLES_MODE   = 1;
+    const TABLE_DOCTRINE_MODE = 2; 
+    
+    /**
      * Table name in tables.php.
      *
      * @var string
@@ -88,7 +97,7 @@ class FilterUtil_Config
      */
     public function __construct($args)
     {
-    if (isset($args['module'])) {
+        if (isset($args['module'])) {
             $this->setModule($args['module']);
         } else {
             return false;
@@ -144,7 +153,7 @@ class FilterUtil_Config
      */    
     public function getModule()
     {
-    	return $this->_module;
+        return $this->_module;
     }
 
     /**
@@ -156,9 +165,9 @@ class FilterUtil_Config
      */
     public function setTable($table)
     {
-    	if (!$this->getModule()) {
-    	   ModUtil::dbInfoLoad($this->getModule());
-    	}
+        if (!$this->getModule()) {
+            ModUtil::dbInfoLoad($this->getModule());
+        }
         // tables.php support
         $tables = DBUtil::getTables();
 
@@ -180,7 +189,7 @@ class FilterUtil_Config
      */
     public function getTable()
     {
-    	return $this->_dbtable;
+        return $this->_dbtable;
     }
     
     /**
@@ -245,7 +254,7 @@ class FilterUtil_Config
      */
     public function getColumns()
     {
-    	return $this->_column;
+        return $this->_column;
     } 
     
     /**
@@ -257,10 +266,10 @@ class FilterUtil_Config
      */
     public function getColumn($alias)
     {
-    	if (isset($this->_column[$alias])) {
-    		return $this->_column[$alias];
-    	}
-    	return false;
+        if (isset($this->_column[$alias])) {
+            return $this->_column[$alias];
+        }
+        return false;
     }
 
     /**
@@ -297,7 +306,7 @@ class FilterUtil_Config
      */
     public function getAlias()
     {
-    	return $this->_alias;
+        return $this->_alias;
     }
 
     /**
@@ -324,7 +333,7 @@ class FilterUtil_Config
      */
     public function getJoin()
     {
-    	return $this->_join;
+        return $this->_join;
     }
 
     /**
@@ -397,17 +406,17 @@ class FilterUtil_Config
      */
     public function setDoctrineQuery(Doctrine_Query $query)
     {
-    	$this->_doctrineQuery = $query;
-    	
-    	$this->resetColumns();
-    	
-    	$tables   = $this->_getTableInformation();
-    	$aliasMap = $this->_doctrineQuery->getTableAliasMap();
-    	
-    	$tables = $this->_enrichTablesWithAlias($tables, $aliasMap);    	
-    	
-    	
-    	$this->_setColumnsFromDoctrineTables($tables);
+        $this->_doctrineQuery = $query;
+        
+        $this->resetColumns();
+        
+        $tables   = $this->_getTableInformation();
+        $aliasMap = $this->_doctrineQuery->getTableAliasMap();
+        
+        $tables = $this->_enrichTablesWithAlias($tables, $aliasMap);        
+        
+        
+        $this->_setColumnsFromDoctrineTables($tables);
     }
     
     /**
@@ -415,7 +424,7 @@ class FilterUtil_Config
      * 
      * @return Doctrine_Query Doctrine Query Object.
      */
-    public function getDoctrineQuery(Doctrine_Query $query)
+    public function getDoctrineQuery()
     {
         return $this->_doctrineQuery;
     }
@@ -427,55 +436,55 @@ class FilterUtil_Config
      */
     private function _getTableInformation()
     {   
-    	$tables = array(); 	
-    	foreach ($this->_doctrineQuery->getDQLPart('from') as $str) {
-	        $str = trim($str);
-	        $parts = explode('JOIN ', $str);
-	
-	        $operator = false;
-	
-	        switch (trim($parts[0])) {
-	            case 'INNER':
-	                $operator = ':';
-	            case 'LEFT':
-	                array_shift($parts);
-	            break;
-	        }
-	
-	        $last = '';
-	
-	        foreach ($parts as $k => $part) {
-	            $part = trim($part);
-	
-	            if (empty($part)) {
-	                continue;
-	            }
-	
-	            $e = explode(' ', $part);
-	
-	            if (end($e) == 'INNER' || end($e) == 'LEFT') {
-	                $last = array_pop($e);
-	            }
-	            $part = implode(' ', $e);
-	
-	            foreach (explode(',', $part) as $reference) {
+        $tables = array();     
+        foreach ($this->_doctrineQuery->getDQLPart('from') as $str) {
+            $str = trim($str);
+            $parts = explode('JOIN ', $str);
+    
+            $operator = false;
+    
+            switch (trim($parts[0])) {
+                case 'INNER':
+                    $operator = ':';
+                case 'LEFT':
+                    array_shift($parts);
+                break;
+            }
+    
+            $last = '';
+    
+            foreach ($parts as $k => $part) {
+                $part = trim($part);
+    
+                if (empty($part)) {
+                    continue;
+                }
+    
+                $e = explode(' ', $part);
+    
+                if (end($e) == 'INNER' || end($e) == 'LEFT') {
+                    $last = array_pop($e);
+                }
+                $part = implode(' ', $e);
+    
+                foreach (explode(',', $part) as $reference) {
 
-	                $reference = trim($reference);
-	                $e = explode(' ', $reference);
-	                $e2 = explode('.', $e[0]);
-	
-	                if ($operator) {
-	                    $e[0] = array_shift($e2) . $operator . implode('.', $e2);
-	                }
+                    $reference = trim($reference);
+                    $e = explode(' ', $reference);
+                    $e2 = explode('.', $e[0]);
+    
+                    if ($operator) {
+                        $e[0] = array_shift($e2) . $operator . implode('.', $e2);
+                    }
 
                     $tables[] = $this->_doctrineQuery->load(implode(' ', $e));
-	            }
-	
-	            $operator = ($last == 'INNER') ? ':' : '.';
-	        }
-	    }
-	    
-	    return $tables;
+                }
+    
+                $operator = ($last == 'INNER') ? ':' : '.';
+            }
+        }
+        
+        return $tables;
     }
     
     /**
@@ -488,17 +497,17 @@ class FilterUtil_Config
      */
     private function _enrichTablesWithAlias ($tables, $aliasMap) {
         if (count($tables) == count($aliasMap)) {
-    	   return array_combine($aliasMap, $tables);
+            return array_combine($aliasMap, $tables);
         } elseif (count($tables) < count($aliasMap)) {
-        	$aliasses = array();
-        	foreach ($tables as $table) {
-        		foreach ($aliasMap as $alias) {
-        			if ($this->_doctrineQuery->getQueryComponent($alias) == $table) {
-        				$aliasses[] = $alias;
-        			}
-        		}
-        	}
-        	return array_combine($aliasses, $tables);
+            $aliasses = array();
+            foreach ($tables as $table) {
+                foreach ($aliasMap as $alias) {
+                    if ($this->_doctrineQuery->getQueryComponent($alias) == $table) {
+                        $aliasses[] = $alias;
+                    }
+                }
+            }
+            return array_combine($aliasses, $tables);
         }
         
         return false;
@@ -513,16 +522,32 @@ class FilterUtil_Config
      */
     private function _setColumnsFromDoctrineTables($tables)
     {
-    	$this->_column = array();
-    	
-    	foreach ($tables as $alias => $table) {
-    		$fields = $table['table']->getFieldNames();
-    		
-    		foreach ($fields as $field) {
-    			$key = ($table['table'] == $this->_doctrineTable ? '' : $alias . '.') . $field;
+        $this->_column = array();
+        
+        foreach ($tables as $alias => $table) {
+            $fields = $table['table']->getFieldNames();
+            
+            foreach ($fields as $field) {
+                $key = ($table['table'] == $this->_doctrineTable ? '' : $alias . '.') . $field;
 
-    			$this->_column[$key] = $alias . '.' . $field;
-    		}
-    	}
+                $this->_column[$key] = $alias . '.' . $field;
+            }
+        }
     } 
+    
+    /**
+     * Get table mode
+     * 
+     * Get whether we're using Doctrine or old tables.
+     * 
+     * @return constant Identifier constant.
+     */
+    public function getTableMode()
+    {
+        if (isset($this->_doctrineTable) && $this->_doctrineTable instanceof Doctrine_Table) {
+            return self::TABLE_DOCTRINE_MODE;
+        } else {
+            return self::TABLE_TABLES_MODE;
+        }
+    }
 }

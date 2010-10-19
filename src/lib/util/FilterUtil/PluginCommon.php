@@ -64,24 +64,24 @@ class FilterUtil_PluginCommon extends FilterUtil_Common
      * 
      * @return string emtpy.
      */
-     public function getSQL($field, $op, $value)
-     {
-         return '';
-     }
+    public function getSQL($field, $op, $value)
+    {
+        return '';
+    }
      
     /**
      * Returns empty Dql code.
      * 
      * Fallback for build plugins without DQL capabilities.
      * 
-     * @param string          $field Field name.
-     * @param string          $op    Operator.
-     * @param string          $value Test value.
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
      *
      * @return string empty.
      */
-     public function getDql($field, $op, $value)
-     {
-         return '';
-     }
+    public function getDql($field, $op, $value)
+    {
+        return '';
+    }
 }

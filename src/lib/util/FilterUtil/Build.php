@@ -70,9 +70,9 @@ interface FilterUtil_Build
      *
      * Return DQL WHERE and it's params as array('where' => , 'params' =>).
      *
-     * @param string         $field Field name.
-     * @param string         $op    Operator.
-     * @param string         $value Value.
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Value.
      * 
      * @return array $where
      */

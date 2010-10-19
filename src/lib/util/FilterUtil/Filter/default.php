@@ -23,14 +23,14 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
      * 
      * @var array
      */
-    private $ops = array();
+    private $_ops = array();
 
     /**
      * Fields to use the plugin for.
      * 
      * @var array
      */
-    private $fields = array();
+    private $_fields = array();
 
     /**
      * Constructor.
@@ -45,17 +45,17 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
     {
         parent::__construct($config);
 
-        if (isset($config['fields']) && (!isset($this->fields) || !is_array($this->fields))) {
+        if (isset($config['fields']) && (!isset($this->_fields) || !is_array($this->_fields))) {
             $this->addFields($config['fields']);
         }
 
-        if (isset($config['ops']) && (!isset($this->ops) || !is_array($this->ops))) {
+        if (isset($config['ops']) && (!isset($this->_ops) || !is_array($this->_ops))) {
             $this->activateOperators($config['ops']);
         } else {
             $this->activateOperators(array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'search', 'like', 'likefirst', 'null', 'notnull'));
         }
 
-        if (isset($config['default']) && $config['default'] == true || count($this->fields) <= 0) {
+        if (isset($config['default']) && $config['default'] == true || count($this->_fields) <= 0) {
             $this->default = true;
         }
     }
@@ -87,8 +87,8 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
             foreach ($op as $v) {
                 $this->activateOperators($v);
             }
-        } elseif (!empty($op) && array_search($op, $this->ops) === false && array_search($op, $ops) !== false) {
-            $this->ops[] = $op;
+        } elseif (!empty($op) && array_search($op, $this->_ops) === false && array_search($op, $ops) !== false) {
+            $this->_ops[] = $op;
         }
     }
 
@@ -105,8 +105,8 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } elseif (!empty($fields) && $this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
-            $this->fields[] = $fields;
+        } elseif (!empty($fields) && $this->fieldExists($fields) && array_search($fields, $this->_fields) === false) {
+            $this->_fields[] = $fields;
         }
     }
 
@@ -117,7 +117,7 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
      */
     public function getFields()
     {
-        return $this->fields;
+        return $this->_fields;
     }
 
     /**
@@ -133,7 +133,7 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
         }
 
         $ops = array();
-        foreach ($this->ops as $op) {
+        foreach ($this->_ops as $op) {
             $ops[$op] = $fields;
         }
 
@@ -210,9 +210,9 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
     /**
      * Returns DQL code.
      * 
-     * @param string          $field Field name.
-     * @param string          $op    Operator.
-     * @param string          $value Test value.
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
      *
      * @return array Doctrine Query where clause and parameters.
      */

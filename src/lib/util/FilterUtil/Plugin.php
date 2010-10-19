@@ -22,28 +22,28 @@ class FilterUtil_Plugin extends FilterUtil_Common
      *
      * @var array
      */
-    private $plg = array();
+    private $_plg = array();
 
     /**
      * Loaded plugins list.
      *
      * @var array;
      */
-    private $loaded = array();
+    private $_loaded = array();
 
     /**
      * Loaded operators.
      *
      * @var array
      */
-    private $ops;
+    private $_ops;
 
     /**
      * Loaded replaces.
      *
      * @var array
      */
-    private $replaces;
+    private $_replaces;
 
     /**
      * Constructor.
@@ -121,16 +121,16 @@ class FilterUtil_Plugin extends FilterUtil_Common
         $this->addCommon($config);
         $obj = new $class($config);
 
-        $this->plg[] = $obj;
-        end($this->plg);
-        $key = key($this->plg);
-        $obj = & $this->plg[$key];
+        $this->_plg[] = $obj;
+        end($this->_plg);
+        $key = key($this->_plg);
+        $obj = & $this->_plg[$key];
 
         $obj->setID($key);
-        $this->registerPlugin($key);
-        $this->loaded["$module@$name"] = $key;
+        $this->_registerPlugin($key);
+        $this->_loaded["$module@$name"] = $key;
 
-        return key(end($this->plg));
+        return key(end($this->_plg));
     }
 
     /**
@@ -138,13 +138,13 @@ class FilterUtil_Plugin extends FilterUtil_Common
      *
      * Check what type the plugin is from and register it.
      *
-     * @param int $k The Plugin's ID -> Key in the $this->plg array.
+     * @param int $k The Plugin's ID -> Key in the $this->_plg array.
      *
      * @return void
      */
-    private function registerPlugin($k)
+    private function _registerPlugin($k)
     {
-        $obj = & $this->plg[$k];
+        $obj = & $this->_plg[$k];
 
         if ($obj instanceof FilterUtil_Build) {
             $ops = $obj->getOperators();
@@ -154,17 +154,17 @@ class FilterUtil_Plugin extends FilterUtil_Common
                     foreach ($fields as $field) {
                         $flds[$field] = $k;
                     }
-                    if (isset($this->ops[$op]) && is_array($this->ops[$op])) {
-                        $this->ops[$op] = array_merge($this->ops[$op], $flds);
+                    if (isset($this->_ops[$op]) && is_array($this->_ops[$op])) {
+                        $this->_ops[$op] = array_merge($this->_ops[$op], $flds);
                     } else {
-                        $this->ops[$op] = $flds;
+                        $this->_ops[$op] = $flds;
                     }
                 }
             }
         }
 
         if ($obj instanceof FilterUtil_Replace) {
-            $this->replaces[] = $k;
+            $this->_replaces[] = $k;
         }
     }
 
@@ -183,7 +183,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
             return false;
         }
 
-        return $this->plg[$name]->getConfig();
+        return $this->_plg[$name]->getConfig();
     }
 
     /**
@@ -197,7 +197,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      */
     public function isLoaded($name)
     {
-        if (isset($this->loaded[$name])) {
+        if (isset($this->_loaded[$name])) {
             return true;
         }
 
@@ -215,9 +215,9 @@ class FilterUtil_Plugin extends FilterUtil_Common
      */
     public function replace($field, $op, $value)
     {
-        if (is_array($this->replaces)) {
-            foreach ($this->replaces as $k) {
-                $obj = & $this->plg[$k];
+        if (is_array($this->_replaces)) {
+            foreach ($this->_replaces as $k) {
+                $obj = & $this->_plg[$k];
                 list($field, $op, $value) = $obj->replace($field, $op, $value);
             }
         }
@@ -240,12 +240,12 @@ class FilterUtil_Plugin extends FilterUtil_Common
      */
     public function getSQL($field, $op, $value)
     {
-        if (!isset($this->ops[$op]) || !is_array($this->ops[$op])) {
+        if (!isset($this->_ops[$op]) || !is_array($this->_ops[$op])) {
             return '';
-        } elseif (isset($this->ops[$op][$field])) {
-            return $this->plg[$this->ops[$op][$field]]->getSQL($field, $op, $value);
-        } elseif (isset($this->ops[$op]['-'])) {
-            return $this->plg[$this->ops[$op]['-']]->getSQL($field, $op, $value);
+        } elseif (isset($this->_ops[$op][$field])) {
+            return $this->_plg[$this->_ops[$op][$field]]->getSQL($field, $op, $value);
+        } elseif (isset($this->_ops[$op]['-'])) {
+            return $this->_plg[$this->_ops[$op]['-']]->getSQL($field, $op, $value);
         } else {
             return '';
         }
@@ -254,20 +254,20 @@ class FilterUtil_Plugin extends FilterUtil_Common
     /**
      * Returns DQL code.
      * 
-     * @param string          $field Field name.
-     * @param string          $op    Operator.
-     * @param string          $value Test value.
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
      *
      * @return array Doctrine Query where clause and parameters.
      */
     public function getDql($field, $op, $value)
     {
-        if (!isset($this->ops[$op]) || !is_array($this->ops[$op])) {
+        if (!isset($this->_ops[$op]) || !is_array($this->_ops[$op])) {
             return '';
-        } elseif (isset($this->ops[$op][$field])) {
-            return $this->plg[$this->ops[$op][$field]]->getDql($field, $op, $value);
-        } elseif (isset($this->ops[$op]['-'])) {
-            return $this->plg[$this->ops[$op]['-']]->getDql($field, $op, $value);
+        } elseif (isset($this->_ops[$op][$field])) {
+            return $this->_plg[$this->_ops[$op][$field]]->getDql($field, $op, $value);
+        } elseif (isset($this->_ops[$op]['-'])) {
+            return $this->_plg[$this->_ops[$op]['-']]->getDql($field, $op, $value);
         } else {
             return '';
         }

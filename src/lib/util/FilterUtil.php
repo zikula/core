@@ -23,42 +23,42 @@ class FilterUtil extends FilterUtil_Common
      *
      * @var string
      */
-    private $varname;
+    private $_varname;
 
     /**
      * Plugin object.
      *
      * @var array
      */
-    private $plugin;
+    private $_plugin;
 
     /**
      * Filter object holder.
      *
      * @var array
      */
-    private $obj;
+    private $_obj;
 
     /**
      * Filter string holder.
      *
      * @var array
      */
-    private $filter;
+    private $_filter;
 
     /**
      * Filter SQL holder.
      *
      * @var array
      */
-    private $sql;
+    private $_sql;
     
     /**
      * Filter DQL holder.
      *
      * @var array
      */
-    private $dql;
+    private $_dql;
 
     /**
      * Constructor.
@@ -67,9 +67,9 @@ class FilterUtil extends FilterUtil_Common
      *  plugins: Set of plugins to load.
      *  varname: Name of filters in $_REQUEST. Default: filter.
      *
-     * @param string                 $module Module name.
+     * @param string                $module Module name.
      * @param string|Doctrine_Table $table  Table name.
-     * @param array                  $args   Mixed arguments.
+     * @param array                 $args   Mixed arguments.
      */
     public function __construct($module, $table, $args = array())
     {
@@ -79,10 +79,10 @@ class FilterUtil extends FilterUtil_Common
         $args['table']  = $table;
         parent::__construct(new FilterUtil_Config($args));
         
-        $this->plugin = new FilterUtil_Plugin($this->getConfig(), array('default' => array()));
+        $this->_plugin = new FilterUtil_Plugin($this->getConfig(), array('default' => array()));
 
         if (isset($args['plugins'])) {
-            $this->plugin->loadPlugins($args['plugins']);
+            $this->_plugin->loadPlugins($args['plugins']);
         }
         if (isset($args['varname'])) {
             $this->setVarName($args['varname']);
@@ -104,9 +104,19 @@ class FilterUtil extends FilterUtil_Common
             return false;
         }
 
-        $this->varname = $name;
+        $this->_varname = $name;
 
         return true;
+    }
+    
+    /**
+     * Get name of the input variable.
+     * 
+     * @return string Name of the variable.
+     */
+    public function getVarName()
+    {
+        return $this->_varname;
     }
 
     /**
@@ -116,7 +126,7 @@ class FilterUtil extends FilterUtil_Common
      */
     public function getPlugin()
     {
-        return $this->plugin;
+        return $this->_plugin;
     }
 
 
@@ -129,7 +139,7 @@ class FilterUtil extends FilterUtil_Common
      *
      * @return string Edited filterstring.
      */
-    private function stripBrackets($filter)
+    private function _stripBrackets($filter)
     {
         if (substr($filter, 0, 1) == '(' && substr($filter, -1) == ')') {
             return substr($filter, 1, -1);
@@ -145,7 +155,7 @@ class FilterUtil extends FilterUtil_Common
      *
      * @return array Condition object.
      */
-    private function makeCondition($filter)
+    private function _makeCondition($filter)
     {
         if (strpos($filter, ':')) {
             $parts = explode(':', $filter, 3);
@@ -178,7 +188,7 @@ class FilterUtil extends FilterUtil_Common
             return false; // invalid condition
         }
 
-        $obj = $this->plugin->replace($obj['field'], $obj['op'], $obj['value']);
+        $obj = $this->_plugin->replace($obj['field'], $obj['op'], $obj['value']);
 
         return $obj;
     }
@@ -190,7 +200,7 @@ class FilterUtil extends FilterUtil_Common
      *
      * @return array Filter object.
      */
-    private function genObjectRecursive($filter)
+    private function _genObjectRecursive($filter)
     {
         $obj = array();
         $string = '';
@@ -203,7 +213,7 @@ class FilterUtil extends FilterUtil_Common
             switch ($c) {
                 case ',': // Operator: AND
                     if (!empty($string)) {
-                        $sub = $this->makeCondition($string);
+                        $sub = $this->_makeCondition($string);
                         if ($sub != false && count($sub) > 0) {
                             $obj[$op] = $sub;
                             $sub = false;
@@ -216,7 +226,7 @@ class FilterUtil extends FilterUtil_Common
                     break;
                 case '*': // Operator: OR
                     if (!empty($string)) {
-                        $sub = $this->makeCondition($string);
+                        $sub = $this->_makeCondition($string);
                         if ($sub != false && count($sub) > 0) {
                             $obj[$op] = $sub;
                             $sub = false;
@@ -246,7 +256,7 @@ class FilterUtil extends FilterUtil_Common
                         }
                     }
                     if (!empty($string)) {
-                        $sub = $this->genObjectRecursive($string);
+                        $sub = $this->_genObjectRecursive($string);
                         if ($sub != false && count($sub) > 0) {
                             $obj[$op] = $sub;
                             $sub = false;
@@ -261,7 +271,7 @@ class FilterUtil extends FilterUtil_Common
         }
 
         if (!empty($string)) {
-            $sub = $this->makeCondition($string);
+            $sub = $this->_makeCondition($string);
             if ($sub != false && count($sub) > 0) {
                 $obj[$op] = $sub;
                 $sub = false;
@@ -278,7 +288,7 @@ class FilterUtil extends FilterUtil_Common
      */
     public function genObject()
     {
-        $this->obj = $this->genObjectRecursive($this->getFilter());
+        $this->_obj = $this->_genObjectRecursive($this->getFilter());
     }
 
     /**
@@ -286,13 +296,13 @@ class FilterUtil extends FilterUtil_Common
      *
      * @return array Filter object
      */
-    public function GetObject()
+    public function getObject()
     {
-        if (!isset($this->obj) || !is_array($this->obj)) {
+        if (!isset($this->_obj) || !is_array($this->_obj)) {
             $this->genObject();
         }
 
-        return $this->obj;
+        return $this->_obj;
     }
 
 
@@ -310,14 +320,14 @@ class FilterUtil extends FilterUtil_Common
         $filter = array();
 
         // Get unnumbered filter string
-        $filterStr = FormUtil::getPassedValue($this->varname, '');
+        $filterStr = FormUtil::getPassedValue($this->_varname, '');
         if (!empty($filterStr)) {
             $filter[] = $filterStr;
         }
 
         // Get filter1 ... filterN
         while (true) {
-            $filterURLName = $this->varname . "$i";
+            $filterURLName = $this->_varname . "$i";
             $filterStr = FormUtil::getPassedValue($filterURLName, '');
 
             if (empty($filterStr)) {
@@ -338,18 +348,18 @@ class FilterUtil extends FilterUtil_Common
      */
     public function getFilter()
     {
-        if (!isset($this->filter) || empty($this->filter)) {
+        if (!isset($this->_filter) || empty($this->_filter)) {
             $filter = $this->getFiltersFromInput();
             if (is_array($filter) && count($filter) > 0) {
-                $this->filter = "(" . implode(')*(', $filter) . ")";
+                $this->_filter = "(" . implode(')*(', $filter) . ")";
             }
         }
 
-        if ($this->filter == '()') {
-            $this->filter = '';
+        if ($this->_filter == '()') {
+            $this->_filter = '';
         }
 
-        return $this->filter;
+        return $this->_filter;
     }
 
     /**
@@ -357,22 +367,86 @@ class FilterUtil extends FilterUtil_Common
      *
      * @param mixed $filter Filter string or array.
      *
-     * @return $this
+     * @return void
      */
     public function setFilter($filter)
     {
         if (is_array($filter)) {
-            $this->filter = "(" . implode(')*(', $filter) . ")";
+            $this->_filter = "(" . implode(')*(', $filter) . ")";
         } else {
-            $this->filter = $filter;
+            $this->_filter = $filter;
         }
 
-        $this->obj = false;
-        $this->sql = false;
-
-        return $this;
+        $this->_obj = false;
+        $this->_sql = false;
     }
 
+    /**
+     * Add filter string.
+     * 
+     * Adds a filter or an array of filters.
+     * If filter does not begin with "," or "*" append it as "and".
+     * 
+     * @param mixed $filter Filter string or array.
+     * 
+     * @return void
+     */
+    public function addFilter($filter)
+    {
+        if (is_array($filter)) {
+            foreach ($filter as $tmp) {
+                $this->addFilter($tmp);
+            }
+        } elseif (substr($filter, 0, 1) == ',' || substr($filter, 0, 1) == '*') {
+            $this->_filter .= $filter;
+        } else {
+            $this->andFilter($filter);
+        }
+    } 
+    
+    /**
+     * Add filter string with "AND".
+     * 
+     * @param mixed $filter Filter string or array.
+     * 
+     * @return void
+     */
+    public function andFilter($filter)
+    {
+        if (is_array($filter)) {
+            foreach ($filter as $tmp) {
+                $this->andFilter($tmp);
+            }
+        } elseif (substr($filter, 0, 1) == ',') {
+            $this->_filter .= $filter;
+        } elseif (substr($filter, 0, 1) == '*') {
+                $this->_filter .= ',' . (substr($filter, 1));
+        } else {
+            $this->_filter .= ',' . ($filter);
+        }
+    }
+
+    /**
+     * Add filter string with "OR".
+     * 
+     * @param mixed $filter Filter string or array.
+     * 
+     * @return void
+     */
+    public function orFilter($filter)
+    {
+        if (is_array($filter)) {
+            foreach ($filter as $tmp) {
+                $this->orFilter($tmp);
+            }
+        } elseif (substr($filter, 0, 1) == '*') {
+            $this->_filter .= $filter;
+        } elseif (substr($filter, 0, 1) == ',') {
+            $this->_filter .= '*' . (substr($filter, 1));
+        } else {
+            $this->_filter .= '*' . ($filter);
+        }
+    } 
 
     //--------------- Filter handling ----------------------
     //+++++++++++++++ SQL Handling +++++++++++++++++++++++++
@@ -384,7 +458,7 @@ class FilterUtil extends FilterUtil_Common
      *
      * @return array Where and Join sql.
      */
-    private function genSqlRecursive($obj)
+    private function _genSqlRecursive($obj)
     {
         if (!is_array($obj) || count($obj) == 0) {
             return '';
@@ -392,13 +466,13 @@ class FilterUtil extends FilterUtil_Common
 
         if (isset($obj['field']) && !empty($obj['field'])) {
             $obj['value'] = DataUtil::formatForStore($obj['value']);
-            $res = $this->plugin->getSQL($obj['field'], $obj['op'], $obj['value']);
+            $res = $this->_plugin->getSQL($obj['field'], $obj['op'], $obj['value']);
             $res['join'] = & $this->join;
             return $res;
         } else {
             $where = '';
             if (isset($obj[0]) && is_array($obj[0])) {
-                $sub = $this->genSqlRecursive($obj[0]);
+                $sub = $this->_genSqlRecursive($obj[0]);
                 if (!empty($sub['where'])) {
                     $where .= $sub['where'];
                 }
@@ -407,7 +481,7 @@ class FilterUtil extends FilterUtil_Common
             foreach ($obj as $op => $tmp) {
                 $op = strtoupper(substr($op, 0, 3)) == 'AND' ? 'AND' : 'OR';
                 if (strtoupper($op) == 'AND' || strtoupper($op) == 'OR') {
-                    $sub = $this->genSqlRecursive($tmp);
+                    $sub = $this->_genSqlRecursive($tmp);
                     if (!empty($sub['where'])) {
                         $where .= ' ' . strtoupper($op) . ' ' . $sub['where'];
                     }
@@ -429,7 +503,7 @@ class FilterUtil extends FilterUtil_Common
     public function genSql()
     {
         $object = $this->getObject();
-        $this->sql = $this->genSqlRecursive($object);
+        $this->_sql = $this->_genSqlRecursive($object);
     }
 
     /**
@@ -439,16 +513,16 @@ class FilterUtil extends FilterUtil_Common
      */
     public function getSql()
     {
-        if (!isset($this->sql) || !is_array($this->sql)) {
+        if (!isset($this->_sql) || !is_array($this->_sql)) {
             $this->genSQL();
         }
 
-        return $this->sql;
+        return $this->_sql;
     }
     
     //+++++++++++++++ SQL Handling +++++++++++++++++++++++++
     
-/**
+    /**
      * Help function for enrich the Doctrine Query object with the filters from a Filter-object.
      *
      * @param array $obj Object array.
@@ -463,7 +537,7 @@ class FilterUtil extends FilterUtil_Common
 
         if (isset($obj['field']) && !empty($obj['field'])) {
             $obj['value'] = DataUtil::formatForStore($obj['value']);
-            $res = $this->plugin->getDql($obj['field'], $obj['op'], $obj['value']);
+            $res = $this->_plugin->getDql($obj['field'], $obj['op'], $obj['value']);
             return $res;
         } else {
             $where = '';
@@ -494,7 +568,7 @@ class FilterUtil extends FilterUtil_Common
     /**
      * Enrich DQL.
      * 
-     * @param Doctrine_Query $query Doctrine Query Object
+     * @param Doctrine_Query $query Doctrine Query Object.
      * 
      * @return void
      */
@@ -507,7 +581,7 @@ class FilterUtil extends FilterUtil_Common
         
         if (is_array($result) && !empty($result['where'])) {
             $query->AndWhere($result['where'], $result['params']);
-            $this->dql = $result;
+            $this->_dql = $result;
         }
     }
 }
