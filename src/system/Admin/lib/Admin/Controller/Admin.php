@@ -290,31 +290,13 @@ class Admin_Controller_Admin extends Zikula_Controller
         // Get parameters from whatever input we need.
         $acid = FormUtil::getPassedValue('acid', (isset($args['acid']) ? $args['acid'] : null), 'GET');
 
-        // cid isn't set, so we check the last session var lastcid to see where the admin has been before.
-        if (empty($acid)) {
-            $acid = SessionUtil::getVar('lastacid');
-            if (empty($acid)) {
-                // cid is still not set, go to the default category
-                $acid = $this->getVar('startcategory');
-            }
-        }
-
-        // now we know where we are or where the admin wants us to go to, lets store it in a
-        // session var for later use
-        SessionUtil::setVar('lastacid', $acid);
-
-        // Add category menu to output
-        $this->view->assign('menu', $this->categorymenu(array('acid' => $acid)));
-
-        // Admin_admin_categorymenu may have changed the acid. In this case it has been
-        // stored to lastacid so we need to read it again now
-        $acid = SessionUtil::getVar('lastacid');
-
-        // Handle the case where the current/default category does not contain any accessible items
-        // (the current user may just have admin access to a single module)
+        // cid isn't set, so go to the default category
         if (empty($acid)) {
             $acid = $this->getVar('startcategory');
         }
+
+        // Add category menu to output
+        $this->view->assign('menu', $this->categorymenu(array('acid' => $acid)));
 
         // Check to see if we have access to the requested category.
         if (!SecurityUtil::checkPermission("Admin::", "::$acid", ACCESS_ADMIN)) {
@@ -532,11 +514,7 @@ class Admin_Controller_Admin extends Zikula_Controller
     public function categorymenu($args)
     {
         // get the current category
-        $acid = FormUtil::getPassedValue('acid', isset($args['acid']) ? $args['acid'] : SessionUtil::getVar('lastacid'), 'GET');
-        if (empty($acid)) {
-            // cid is still not set, go to the default category
-            $acid = $this->getVar('startcategory');
-        }
+        $acid = FormUtil::getPassedValue('acid', isset($args['acid']) ? $args['acid'] : $this->getVar('startcategory'), 'GET');
 
         // Get all categories
         $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
@@ -593,9 +571,6 @@ class Admin_Controller_Admin extends Zikula_Controller
             // show the first category
             $acid = !empty($possible_cids) ? (int)$possible_cids[0] : null;
         }
-
-        // store it
-        SessionUtil::setVar('lastcid', $acid);
 
         $this->view->setCaching(false);
 

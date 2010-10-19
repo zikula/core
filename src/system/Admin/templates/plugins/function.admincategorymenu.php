@@ -29,6 +29,7 @@ function smarty_function_admincategorymenu($params, $smarty)
 {
     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin'));
 
-    $acid = SessionUtil::getVar('lastacid', ModUtil::getVar('Admin', 'startcategory'));
-    return ModUtil::func('Admin', 'admin', 'categorymenu', array('cid' => $acid));
+    $acid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $smarty->modinfo['id']));
+    
+    return ModUtil::func('Admin', 'admin', 'categorymenu', array('acid' => $acid));
 }
