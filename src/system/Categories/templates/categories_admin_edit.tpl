@@ -1,4 +1,4 @@
-{ajaxheader}
+{ajaxheader modname=Categories filename=ajax.js}
 
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer" id="top">
