@@ -943,7 +943,8 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
                 'u' => 'http://www.w3schools.com/tags/tag_u.asp',
                 'ul' => 'http://www.w3schools.com/html5/tag_ul.asp',
                 'var' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
-                'video' => 'http://www.w3schools.com/html5/tag_video.asp');
+                'video' => 'http://www.w3schools.com/html5/tag_video.asp',
+                'wbr' => 'http://www.w3schools.com/html5/tag_wbr.asp');
     }
 
 }
