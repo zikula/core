@@ -277,7 +277,7 @@ function changeModuleCategoryResponse(req) {
     eval("var oldmenuitems = context_catcontext" + json.oldcid + ".items");
     for (var j in oldmenuitems) {
         if (oldmenuitems[j].label.indexOf(json.modulename) != -1) {
-            eval("context_catcontext" + json.oldcid + ".items.splice(" + j + "," + j + ");");
+            eval("context_catcontext" + json.oldcid + ".items.splice(" + j + "," + 1 + ");");
         	break;
         }
     }
