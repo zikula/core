@@ -44,9 +44,7 @@ function smarty_outputfilter_admintitle($source, $view)
         $titleargs[] = $header1;
     }
     // header level 2
-    if (defined('_ADMIN_ZSECURITYANALYZER') && isset($h2[0][0]) && $h2[0][0] == '<h2>'._ADMIN_ZSECURITYANALYZER.'</h2>' && isset($h2[0][1])) {
-        $header2 = $h2[0][1];
-    } else if (isset($h2[0][0])) {
+    if (isset($h2[0][0])) {
         $header2 = $h2[0][0];
     }
     if (isset($header2) && !empty($header2)) {
@@ -61,7 +59,7 @@ function smarty_outputfilter_admintitle($source, $view)
     }
 
     if (!empty($titleargs)) {
-        PageUtil::setVar('title', strip_tags(implode(' / ', $titleargs)));
+        PageUtil::setVar('title', System::getVar('sitename') . ' - ' . strip_tags(implode(' / ', $titleargs)));
     }
 
     // return the modified source
