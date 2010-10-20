@@ -39,9 +39,17 @@
             </fieldset>
             <fieldset>
                 <legend>{gt text="Meta tag settings"}</legend>
+                <div class="z-formrow">
+                    <label for="settings_defaultpagettitle">{gt text="Default page title"}</label>
+                    <input id="settings_defaultpagettitle" type="text" name="settings[defaultpagettitle]" cols="60" rows="5" value="{$modvars.ZConfig.defaultpagettitle|safetext}" size="50" maxlength="255" />
+                </div>
+                <div class="z-formrow">
+                    <label for="settings_defaultmetadescription">{gt text="Default meta description"}</label>
+                    <input id="settings_defaultmetadescription" type="text" name="settings[defaultmetadescription]" value="{$modvars.ZConfig.defaultmetadescription|safetext}" size="50" maxlength="255" />
+                </div>
                 <div id="settings_keywords_container">
                     <div class="z-formrow">
-                        <label for="settings_metakeywords">{gt text="Meta keywords"}</label>
+                        <label for="settings_metakeywords">{gt text="Default meta keywords"}</label>
                         <textarea id="settings_metakeywords" class="z_texpand" name="settings[metakeywords]" cols="60" rows="5">{$modvars.ZConfig.metakeywords|safetext}</textarea>
                     </div>
                 </div>
