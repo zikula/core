@@ -1197,13 +1197,13 @@ class ModUtil
         }
 
         // Only convert User URLs. Exclude links that append a theme parameter
-        if ($shorturls && $shorturlstype == 0 && $type == 'user' && $forcelongurl == false) {
+        if ($shorturls && $shorturlstype == 0 && $forcelongurl == false) {
             if (isset($args['theme'])) {
                 $theme = $args['theme'];
                 unset($args['theme']);
             }
             // Module-specific Short URLs
-            $url = self::apiFunc($modinfo['name'], 'user', 'encodeurl', array('modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args));
+            $url = self::apiFunc($modinfo['name'], $type, 'encodeurl', array('modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args));
             if (empty($url)) {
                 // depending on the settings, we have generic directory based short URLs:
                 // [language]/[module]/[function]/[param1]/[value1]/[param2]/[value2]
