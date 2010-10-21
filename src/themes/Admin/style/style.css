@@ -75,7 +75,7 @@ h3 a{ text-decoration: none; }
 #content { float:left; width:100%; }
 #sidebar { float:right; width:11%; }
 
-#dash{padding:4px;}
+#dash{padding-left:4px;padding-right:4px;margin-top:-2px;border:1px solid #ddd;}
 #dash ul{padding-left:10px;}
 
 .dashboard {}
