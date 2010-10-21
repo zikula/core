@@ -114,7 +114,7 @@ var nelement = document.getElementById(nid);
         },
         onComplete: function(transport, element) {
             if(transport.status != 200 ) {
-                this.element.innerHTML = getOrig(element.id);
+                this.element.innerHTML = Admin.Editor.getOrig(element.id);
                 json = Zikula.ajaxResponseError(transport);
                 document.getElementById('admintabsauthid').value = json.authid;
                 return;
@@ -133,15 +133,29 @@ var nelement = document.getElementById(nid);
 
 
 /**
- * Gets original content of tab nid.
- * @param nid element to get original content for.
- * @return content
+ * Gets a specific editor belonging to element nid.
+ * @param nid element to get editor for.
+ * @return editor
  */
 Admin.Editor.Get = function(nid)
 {
- for (var row = 0; row < editors.length; row++) {
+    for (var row = 0; row < editors.length; row++) {
         if (editors[row][0] == nid) {
             return editors[row][1];
+        }
+    }
+}
+
+/**	 	
+ * Gets the original content of tab nid.
+ * @param nid element to get original content for.
+ * @return content
+ */
+Admin.Editor.getOrig = function(nid)
+{
+    for (var row = 0; row < editors.length; row++) {
+        if (editors[row][0] == nid) {
+            return editors[row][2];
         }
     }
 }
