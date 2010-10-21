@@ -356,7 +356,7 @@ Admin.Category.Cancel = function()
 Admin.Category.addResponse = function(req)
 {
     if (req.status != 200) {
-        Amin.Category.Cancel();
+        Admin.Category.Cancel();
         json = Zikula.ajaxResponseError(req);
         document.getElementById('admintabsauthid').value = json.authid;
         return false;
@@ -375,14 +375,14 @@ Admin.Category.addResponse = function(req)
     newelement.innerHTML = old;
     newelement.setAttribute('id', 'addcat');
     document.getElementById('admintabs').appendChild(newelement);
-    addContext('C'+json.response);
-    addEditor('C'+json.response);
+    Admin.Context.Add('C'+json.response);
+    Admin.Editor.Add('C'+json.response);
     document.getElementById('admintabsauthid').value = aid;
     pnupdateauthids(aid);
     Droppables.add('C'+json.response, {
         accept: 'draggable',
         hoverclass: 'ajaxhover',
-        onDrop: function(drag, drop) {moveModule(drag.id, drop.id);}
+        onDrop: function(drag, drop) {Admin.Module.Move(drag.id, drop.id);}
     });  
     return false;
 }
