@@ -14,15 +14,15 @@ Event.observe(window, 'load', function() {
         for ( var i = 0; i < nodes.length; i++) {
             var nid = nodes[i].getAttribute('id');
             if (nid != null && nodes[i].id != 'addcatlink') {
-                addContext(nid);
-                addEditor(nid);
+                Admin.Context.Add(nid);
+                Admin.Editor.Add(nid);
                 if ($(nodes[i]).up('li').hasClassName('active'))
                     continue;
                 var droppable = Droppables.add(nid, {
                     accept : 'draggable',
                     hoverclass : 'ajaxhover',
                     onDrop : function(drag, drop) {
-                        moveModule(drag.id, drop.id);
+                        Admin.Module.Move(drag.id, drop.id);
                 }
                 });
                 droppables.push(droppable);
@@ -31,20 +31,28 @@ Event.observe(window, 'load', function() {
     }
 });
 
+
+var Admin = {};
+Admin.Context = {};
+Admin.Tab = {};
+Admin.Category = {};
+Admin.Editor = {};
+Admin.Module = {};
+
 /**
  * Add context menu to element nid.
  * @param nid the id of the element
  * @return void
  */
-function addContext(nid)
+Admin.Context.Add = function(nid)
 {
-    context_menu.push(new Control.ContextMenu(nid, {animation: false}));
+context_menu.push(new Control.ContextMenu(nid, {animation: false}));
     context_menu[context_menu.length - 1].addItem( {
         label : lblEdit,
         callback : function(nid) {
             var cid = nid.href.match(/acid=(\d+)/)[1];
             if (cid) {
-                getEditor("C" + cid).enterEditMode();
+                Admin.Editor.Get("C" + cid).enterEditMode();
             }
             return;
         }
@@ -54,7 +62,7 @@ function addContext(nid)
         callback : function(nid) {
             var cid = nid.href.match(/acid=(\d+)/)[1];
             if (cid) {
-                deleteTab(cid);
+                Admin.Tab.Delete(cid);
             }
             return;
         }
@@ -64,7 +72,7 @@ function addContext(nid)
         callback : function(nid) {
             var cid = nid.href.match(/acid=(\d+)/)[1];
             if (cid) {
-                defaultTab(cid);
+                Admin.Tab.setDefault(cid);
             }
             return;
         }
@@ -76,8 +84,9 @@ function addContext(nid)
  * @param nid id of element.
  * @return void
  */
-function addEditor(nid) {
-    var nelement = document.getElementById(nid);
+Admin.Editor.Add = function(nid)
+{
+var nelement = document.getElementById(nid);
     var tLength = nelement.innerHTML.length;
     var editor = new Ajax.InPlaceEditor(nid,"index.php?module=Admin&type=ajax&func=editCategory",{
         clickToEditText: lblclickToEdit,
@@ -122,31 +131,21 @@ function addEditor(nid) {
     editors.push(Array(nid, editor, nelement.innerHTML));
 }
 
-/**
- * Gets a specific editor belonging to element nid.
- * @param nid element to get editor for.
- * @return editor
- */
-function getEditor(nid) {
-    for (var row = 0; row < editors.length; row++) {
-        if (editors[row][0] == nid) {
-            return editors[row][1];
-        }
-    }
-}
 
 /**
  * Gets original content of tab nid.
  * @param nid element to get original content for.
  * @return content
  */
-function getOrig(nid) {
-    for (var row = 0; row < editors.length; row++) {
+Admin.Editor.Get = function(nid)
+{
+ for (var row = 0; row < editors.length; row++) {
         if (editors[row][0] == nid) {
-            return editors[row][2];
+            return editors[row][1];
         }
     }
 }
+
 
 //-----------------------Deleting Tabs----------------------------------------
 /**
@@ -155,13 +154,14 @@ function getOrig(nid) {
  * @param id the cid of the category to be deleted
  * @return void
  */
-function deleteTab(id) {
+Admin.Tab.Delete = function(id)
+{
     var authid = document.getElementById('admintabsauthid').value;
     var pars = "module=Admin&type=ajax&func=deleteCategory&cid=" + id + '&authid=' + authid;
     var myAjax = new Ajax.Request("ajax.php", {
         method : 'get',
         parameters : pars,
-        onComplete : deleteTabResponse
+        onComplete : Admin.Tab.DeleteResponse
     });
 }
 
@@ -171,7 +171,8 @@ function deleteTab(id) {
  * @param  req     The request handle.
  * @return Boolean False always, removes tab from dom on success.
  */
-function deleteTabResponse(req) {
+Admin.Tab.DeleteResponse = function(req)
+{
     if (req.status != 200) {
     	json = Zikula.ajaxResponseError(req);
         document.getElementById('admintabsauthid').value = json.authid;
@@ -195,13 +196,14 @@ function deleteTabResponse(req) {
  * @param id the cid of the category to be made default
  * @return void
  */
-function defaultTab(id) {
+Admin.Tab.setDefault = function(id)
+{
     var authid = document.getElementById('admintabsauthid').value;
     var pars = "module=Admin&type=ajax&func=defaultCategory&cid=" + id + '&authid=' + authid;
     var myAjax = new Ajax.Request("ajax.php", {
         method : 'get',
         parameters : pars,
-        onComplete : defaultTabResponse
+        onComplete : Admin.Tab.setDefaultResponse
     });
 }
 
@@ -211,7 +213,8 @@ function defaultTab(id) {
  * @param  req     The request handle.
  * @return Boolean False always, removes tab from dom on success.
  */
-function defaultTabResponse(req) {
+Admin.Tab.setDefaultResponse = function(req)
+{
     if (req.status != 200) {
     	json = Zikula.ajaxResponseError(req);
         document.getElementById('admintabsauthid').value = json.authid;
@@ -238,7 +241,8 @@ function defaultTabResponse(req) {
  * @param id  Integer The id of the module to move.
  * @param cid Integer The cid of the category to move to.
  */
-function moveModule(id, cid) {
+Admin.Module.Move = function(id,cid)
+{
     var id = id.substr(1);
     var cid = cid.substr(1);
     var authid = document.getElementById('admintabsauthid').value;
@@ -247,7 +251,7 @@ function moveModule(id, cid) {
     var myAjax = new Ajax.Request("ajax.php", {
         method : 'get',
         parameters : pars,
-        onComplete : changeModuleCategoryResponse
+        onComplete : Admin.Module.moveResponse
     });
 }
 
@@ -257,7 +261,8 @@ function moveModule(id, cid) {
  * @param req Ajax request.
  * @return void, module is removed from dom on success.
  */
-function changeModuleCategoryResponse(req) {
+Admin.Module.moveResponse = function(req)
+{
     if (req.status != 200) {
     	json = Zikula.ajaxResponseError(req);
         document.getElementById('admintabsauthid').value = json.authid;
@@ -292,7 +297,8 @@ function changeModuleCategoryResponse(req) {
  * @param cat The calling element. (EG call like: newCategory(this); from html)
  * @return Boolean False.
  */
-function newCategory(cat) {
+Admin.Category.New = function(cat)
+{
     var parent = cat.parentNode;
     old = parent.innerHTML;
     var innerhtml = document.getElementById('ajaxNewCatHidden').innerHTML;
@@ -307,12 +313,13 @@ function newCategory(cat) {
  * @param cat The calling element. (see above)
  * @return Boolean false.
  */
-function addCategory(cat) {
+Admin.Category.Add = function(cat)
+{
     var oldcat = document.getElementById('ajaxCatImage');
     catname = document.getElementById('ajaxNewCatForm').elements['catName'].value;
     if (catname == '') {
         pnshowajaxerror('You must enter a name for the new category');
-        cancelCategory(oldcat);
+        Admin.Category.Cancel(oldcat);
         return false;
     }
     var authid = document.getElementById('admintabsauthid').value;
@@ -320,7 +327,7 @@ function addCategory(cat) {
     var myAjax = new Ajax.Request("ajax.php", {
         method : 'get',
         parameters : pars,
-        onComplete : addCategoryResponse
+        onComplete : Admin.Category.addResponse
     });
     return false;
 }
@@ -332,7 +339,8 @@ function addCategory(cat) {
  * (EG cancelCategory must be called: cancelCategory(this) from html)
  * @return Boolean False.
  */
-function cancelCategory(cat) {
+Admin.Category.Cancel = function()
+{
     var parent = document.getElementById('addcat');
     parent.innerHTML = old;
     parent.setAttribute("class", "");
@@ -345,9 +353,10 @@ function cancelCategory(cat) {
  * @param req Ajax request.
  * @return False, new tab is added on success.
  */
-function addCategoryResponse(req) {
+Admin.Category.addResponse = function(req)
+{
     if (req.status != 200) {
-        cancelCategory();
+        Amin.Category.Cancel();
         json = Zikula.ajaxResponseError(req);
         document.getElementById('admintabsauthid').value = json.authid;
         return false;
