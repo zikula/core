@@ -15,13 +15,13 @@
 </head>
 <body>
 <!-- Main Header -->
-<div id="header">
+<div class="header">
 	<div class="wrapper">
 		<div id="top">
             {include file="includes/adminnavtop.tpl"}
 		</div>
 		<!-- z-tabs -->
-		<div id="navigation">
+		<div class="navigation">
 			<ul id="aui-tabs_eq">
                 <li><a href="#eqone" class="active"><span>{gt text='Administration'}</span></a></li>
                 {checkpermissionblock component='.*' instance='.*' level=ACCESS_ADMIN}
@@ -80,7 +80,7 @@
 </div>
 <!-- End Container -->
 <!-- Footer -->
-<div id="footer">
+<div class="footer">
 	<div class="wrapper">
 		<span class="left">&copy; {datetime format='%b %d - %I:%M'} - {sitename}</span>
 		<span class="right">{gt text='Powered by'} <a href="http://community.zikula.org" target="_blank">Zikula</a> Version {version}</span>
@@ -88,6 +88,14 @@
 </div>
 <!-- End Footer -->
 <!-- UI Stuff -->
+<script type="text/javascript" src="themes/Admin/js/cookie.js"></script>
+<script type="text/javascript" src="themes/Admin/js/z-styleswitcher.js"></script>
+<script type="text/javascript">
+    function zswitcher() {
+	    new ZikulaSwitcher('switcher', ['red', 'green']);	
+                         }
+            document.observe ('dom:loaded', zswitcher, false);
+</script>
 <script type="text/javascript" src="javascript/helpers/Zikula.UI.js"></script>
 <script type="text/javascript">
     var eqtabs = new Zikula.UI.Tabs('aui-tabs_eq',{equal: true});
