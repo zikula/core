@@ -647,16 +647,25 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
             $ostemplate = DataUtil::formatForOS($template);
 
-            $override = self::getTemplateOverride("$os_dir/$os_modname/templates/$template");
+            $relativepath = "$os_dir/$os_module/templates";
+            $templatefile = "$relativepath/$ostemplate";
+            $override = self::getTemplateOverride($templatefile);
             if ($override === false) {
                 // no override present
                 if (!System::isLegacyMode()) {
-                    $this->templateCache[$template] = $ostemplate;
-                    return $ostemplate;
+                    if (is_readable($templatefile)) {
+                        $this->templateCache[$template] = $relativepath;
+                        return $relativepath;
+                    } else {
+                        return false;
+                    }
                 }
             } else {
-                $this->templateCache[$template] = $override;
-                return $override;
+                if (is_readable($override)) {
+                    $path = substr($override, 0, strrpos($override, '/'));
+                    $this->templateCache[$template] = $path;
+                    return $path;
+                }
             }
             
             // The rest of this code is scheduled for removal from 1.4.0 - drak
@@ -2391,9 +2400,7 @@ function z_get_template($tpl_name, &$tpl_source, $view)
 
     if ($tpl_path !== false) {
         $tpl_source = file_get_contents(DataUtil::formatForOS($tpl_path . '/' . $tpl_name));
-        if ($tpl_source !== false) {
-            return true;
-        }
+        return true;
     }
 
     return LogUtil::registerError(__f('Error! The template [%1$s] is not available in the [%2$s] module.', array(
@@ -2417,9 +2424,7 @@ function z_get_timestamp($tpl_name, &$tpl_timestamp, $view)
 
     if ($tpl_path !== false) {
         $tpl_timestamp = filemtime(DataUtil::formatForOS($tpl_path . '/' . $tpl_name));
-        if ($tpl_timestamp !== false) {
-            return true;
-        }
+        return true;
     }
 
     return false;
