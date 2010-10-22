@@ -4,13 +4,13 @@
     <link rel="alternate" type="text/html" href="{getbaseurl}" />
     <link rel="self" type="application/atom+xml" href="{getcurrenturl}" />
     <title>{pagegetvar name='title'}</title>
-    <subtitle>{slogan}</subtitle>
+    <subtitle>{$modvars.ZConfig.slogan}</subtitle>
     <id>{id}</id>
     <updated>{updated}</updated>
     <author>
         <name>{configgetvar name=adminmail}</name>
     </author>
     <generator>{configgetvar name=Version_ID}</generator>
-    <rights>Copyright {configgetvar name=sitename}</rights>
+    <rights>Copyright {$modvars.ZConfig.sitename}</rights>
     {$maincontent}
 </feed>
