@@ -95,7 +95,7 @@ class System
         $name = isset($name) ? (string)$name : '';
 
         // The database parameter are not allowed to change
-        if (empty($name) || $name == 'dbtype' || $name == 'dbhost' || $name == 'dbuname' || $name == 'dbpass' || $name == 'dbname' || $name == 'system' || $name == 'prefix' || $name == 'encoded') {
+        if (empty($name) || $name == 'system' || $name == 'prefix' || in_array($name, ServiceUtil::getManager()->getArgument('protected.systemvars'))) {
             return false;
         }
 
