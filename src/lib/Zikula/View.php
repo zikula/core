@@ -662,7 +662,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
                 }
             } else {
                 if (is_readable($override)) {
-                    $path = substr($override, 0, strrpos($override, '/'));
+                    $path = substr($override, 0, strrpos($override, $ostemplate));
                     $this->templateCache[$template] = $path;
                     return $path;
                 }
