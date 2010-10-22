@@ -430,7 +430,7 @@ function upgrade_getCurrentInstalledCoreVersion($connection)
     $prefix = $GLOBALS['ZConfig']['System']['prefix'];
     $moduleTable = $prefix . '_module_vars';
 
-    $stmt = $connection->prepare("SELECT z_value FROM $moduleTable WHERE z_modname = '/Config' AND z_name = 'Version_Num'");
+    $stmt = $connection->prepare("SELECT z_value FROM $moduleTable WHERE z_modname = 'ZConfig' AND z_name = 'Version_Num'");
     if (!$stmt->execute()) {
         die(__('FATAL ERROR: Cannot start, unable to determine installed Core version.'));
     }
@@ -653,7 +653,7 @@ function upgrade_columns($connection)
     $commands[] = "ALTER TABLE {$prefix}_session_info CHANGE pn_uid z_uid INT(11) DEFAULT '0'";
     $commands[] = "ALTER TABLE {$prefix}_session_info CHANGE pn_remember z_remember TINYINT DEFAULT '0' NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_session_info CHANGE pn_vars z_vars LONGTEXT NOT NULL";
-    $commands[] = "UPDATE {$prefix}_module_vars SET  z_modname =  '/Config' WHERE z_modname = '/PNConfig'";
+    $commands[] = "UPDATE {$prefix}_module_vars SET z_modname = 'ZConfig' WHERE z_modname = '/PNConfig'";
     $silentCommands = array();
     $silentCommands[] = "ALTER TABLE {$prefix}_message CHANGE pn_mid z_mid INT(11) NOT NULL AUTO_INCREMENT ,
 CHANGE pn_title z_title VARCHAR(100) NOT NULL DEFAULT  '',

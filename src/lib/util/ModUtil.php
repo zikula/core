@@ -26,7 +26,7 @@ class ModUtil
     const STATE_NOTALLOWED = 6;
     const STATE_INVALID = -1;
 
-    const CONFIG_MODULE = '/Config';
+    const CONFIG_MODULE = 'ZConfig';
 
     // Types
     const TYPE_MODULE = 2;
@@ -99,10 +99,6 @@ class ModUtil
                     self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
                 }
             }
-
-            // For use in templates, it's easier if we rename the modvars to ZConfig, since /Config is not accessible - drak
-            self::$modvars[self::CONFIG_MODULE] = new ArrayObject(self::$modvars[self::CONFIG_MODULE]);
-            self::$modvars['ZConfig'] = self::$modvars[self::CONFIG_MODULE];
         }
     }
 
