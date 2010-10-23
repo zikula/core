@@ -714,7 +714,7 @@ class System
 
             // check if there is a custom url handler for this module
             // if not decode the url using the default handler
-            if (isset($modinfo) && $modinfo['type'] != 0 && !ModUtil::apiFunc($modname, 'user', 'decodeurl', array('vars' => $args))) {
+            if (isset($modinfo) && $modinfo['type'] != 0 && !ModUtil::apiFunc($modname, $type, 'decodeurl', array('vars' => $args))) {
                 // any remaining arguments are specific to the module
                 $argscount = count($args);
                 for ($i = 3; $i < $argscount; $i = $i + 2) {
