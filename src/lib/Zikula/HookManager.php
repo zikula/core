@@ -84,7 +84,7 @@ class Zikula_HookManager
      * redispatch the event to handlers registered against the value contained in
      * 'hooktype'.
      *
-     * @param Event $event Event object.
+     * @param Zikula_Event $event Zikula_Event object.
      *
      * @return object Event object.
      */
@@ -109,9 +109,11 @@ class Zikula_HookManager
      *
      * Performs validation and returns the hooks associated for this event.
      *
+     * @param Zikula_Event $event Zikula_Event.
+     * 
      * @return array
      */
-    protected function notifySetup($event)
+    protected function notifySetup(Zikula_Event $event)
     {
         if (!$event->getSubject() instanceof Zikula_HookSubject) {
             throw new InvalidArgumentException('Event subject must be an instance of Zikula_HookSubject.');
@@ -151,8 +153,10 @@ class Zikula_HookManager
     /**
      * Unregister a hook by event name and service name.
      *
-     * @param string $hookName   Name of the hook event.
+     * @param string $hookName    Name of the hook event.
      * @param string $serviceName Name of the service that hosts the event handler.
+     *
+     * @return void
      */
     public function unregisterHook($hookName, $serviceName)
     {
@@ -166,6 +170,8 @@ class Zikula_HookManager
      * @param string $serviceName   The service name (ID).
      * @param string $hookClass     The name of the class that hosts the event handler.
      * @param string $handlerMethod Name of the method in the hookclass that hosts the event handler.
+     *
+     * @return void
      */
     public function registerHook($hookName, $serviceName, $hookClass, $handlerMethod)
     {
@@ -202,7 +208,9 @@ class Zikula_HookManager
     /**
      * Remove association.
      *
-     * @param string $hookName
+     * @param string $hookName Hook name.
+     *
+     * @return void
      */
     public function unbindHook($hookName)
     {

@@ -26,6 +26,8 @@ interface Zikula_HookManager_StorageInterface
      * @param string $serviceName   The service name (ID).
      * @param string $hookClass     The name of the class that hosts the event handler.
      * @param string $handlerMethod Name of the method in the hookclass that hosts the event handler.
+     *
+     * @return void
      */
     function registerHook($eventName, $serviceName, $hookClass, $handlerMethod);
 
@@ -58,6 +60,8 @@ interface Zikula_HookManager_StorageInterface
      *
      * @param string $hook Name Name of the hook.
      * @param string $who  The name of the object to hook the event to.
+     *
+     * @return void
      */
     function bindHook($id, $who);
 
@@ -65,6 +69,8 @@ interface Zikula_HookManager_StorageInterface
      * Unbind a hook from an object.
      *
      * @param string $hookName Hookname.
+     *
+     * @return void
      */
     function unbindHook($id);
 }

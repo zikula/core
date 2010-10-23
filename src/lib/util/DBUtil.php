@@ -3622,7 +3622,7 @@ class DBUtil
      * Build a Doctrine Model class dynamically to allow pntable based modules to use DQL
      *
      * @param string $table     Table to use.
-     * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord)
+     * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord).
      *
      * @return string The model class.
      */
@@ -3679,7 +3679,7 @@ class {$className}Table extends Doctrine_Table {}
      * Include dynamically created Doctrine Model class into runtime environment
      *
      * @param string $table     The table.
-     * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord)
+     * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord).
      *
      * @return void
      */

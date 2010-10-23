@@ -36,8 +36,8 @@ class Zikula_Routing_UrlRouter
     /**
      * Generate a short url for given arguments.
      *
-     * @param string $name   string Optional name of route to be used (if not set the route will be selected based on given params).
-     * @param array  $params array  The arguments to be processed by the created url.
+     * @param string $name   Optional name of route to be used (if not set the route will be selected based on given params).
+     * @param array  $params The arguments to be processed by the created url.
      *
      * @return mixed string With created url or false on error.
      */
@@ -85,7 +85,7 @@ class Zikula_Routing_UrlRouter
     /**
      * Parse a given url and return the params read out of it.
      *
-     * @param string $url  The input url.
+     * @param string $url The input url.
      *
      * @throws InvalidArgumentException If the Url is empty.
      *
