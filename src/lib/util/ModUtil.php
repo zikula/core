@@ -1766,7 +1766,7 @@ class ModUtil
         unset($modules[0]);
         foreach ($modules as $module) {
             $base = ($module['type'] == self::TYPE_MODULE) ? 'modules' : 'system';
-            $path = "$base/$module[name]/lib";
+            $path = "$base/$module[directory]/lib";
             ZLoader::addAutoloader($module['directory'], $path);
         }
     }
