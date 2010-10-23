@@ -110,7 +110,11 @@ class Zikula_Workflow
         }
 
         $this->workflowData = $insertObj;
-        $obj['__WORKFLOW__'] = $insertObj;
+        if ($obj instanceof Doctrine_Record) {
+            $obj->mapValue('__WORKFLOW__', $insertObj);
+        } else {
+            $obj['__WORKFLOW__'] = $insertObj;
+        }
         return true;
     }
 
@@ -195,7 +199,7 @@ class Zikula_Workflow
         }
 
         // updates the workflow state value
-        if ($obj instanceof Doctrine_Object) {
+        if ($obj instanceof Doctrine_Record) {
             $this->workflowData['state'] = $nextState;
             $obj->mapValue('__WORKFLOW__', $this->workflowData);
         } else {
