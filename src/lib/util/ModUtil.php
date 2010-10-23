@@ -1657,12 +1657,12 @@ class ModUtil
      * Only modules in the module table are returned
      * which means that new/unscanned modules will not be returned.
      *
-     * @param constant $state The module state (optional) (defaults = active state).
-     * @param string   $sort  The sort to use.
+     * @param integer $state The module state (optional) (defaults = active state).
+     * @param string  $sort  The sort to use.
      *
      * @return array The resulting module object array.
      */
-    public static function getModulesByState($state = self::STATE_ACTIVE, $sort='displayname')
+    public static function getModulesByState($state=self::STATE_ACTIVE, $sort='displayname')
     {
         $tables = DBUtil::getTables();
         $cols   = $tables['modules_column'];
