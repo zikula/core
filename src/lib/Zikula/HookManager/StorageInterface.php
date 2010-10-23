@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Common
+ * @package Zikula
  * @subpackage HookManager_Storage
  *
  * Please see the NOTICE file distributed with this source code for further

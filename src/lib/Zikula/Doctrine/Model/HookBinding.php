@@ -6,21 +6,18 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Core
- * @subpackage Entities
+ * @package Zikula
+ * @subpackage Zikula_Doctrine
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Entities;
-use \Zikula\Framework\Entities\StandardEntity as StandardEntity;
-
 /**
  * @Entity
  * @Table(name="hook_bindings")
  */
-class HookBinding extends StandardEntity
+class Zikula_Doctrine_Model_HookBinding
 {
     /**
      * @Id @Column(type="integer")
