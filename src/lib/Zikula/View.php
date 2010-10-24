@@ -174,17 +174,17 @@ class Zikula_View extends Smarty implements Zikula_Translatable
                 $mpluginPathOld = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
         }
 
-        $pluginpaths[] = 'lib/view/plugins';
+        // At some point this needs to be rationalised.
+        // We're searching in at least 4 redundany places 99% of the time - drak
+        $pluginpaths[] = 'config/plugins'; // Official override
+        $pluginpaths[] = "themes/$theme/templates/modules/$module/plugins"; // Module override in themes
+        $pluginpaths[] = "themes/$theme/plugins"; // Theme plugins
+        $pluginpaths[] = $mpluginPath; // Plugins for current module
         if (System::isLegacyMode()) {
-            $pluginpaths[] = 'lib/legacy/plugins';
+            $pluginpaths[] = $mpluginPathOld; // Module plugins (legacy paths)
+            $pluginpaths[] = 'lib/legacy/plugins'; // Core legacy plugins
         }
-        $pluginpaths[] = 'config/plugins';
-        $pluginpaths[] = "themes/$theme/templates/modules/$module/plugins";
-        $pluginpaths[] = "themes/$theme/plugins";
-        $pluginpaths[] = $mpluginPath;
-        if (System::isLegacyMode()) {
-            $pluginpaths[] = $mpluginPathOld;
-        }
+        $pluginpaths[] = 'lib/view/plugins'; // Core plugins
 
         foreach ($pluginpaths as $pluginpath) {
             $this->addPluginDir($pluginpath);
