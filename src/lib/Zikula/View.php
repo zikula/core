@@ -158,7 +158,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
         $this->modinfo = ModUtil::getInfoFromName($module);
 
-        $modpath = ($this->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         switch ($this->module[$module]['type'])
         {
             case ModUtil::TYPE_MODULE :
@@ -176,6 +175,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
         // At some point this needs to be rationalised.
         // We're searching in at least 4 redundany places 99% of the time - drak
+        $pluginpaths = array();
         $pluginpaths[] = 'config/plugins'; // Official override
         $pluginpaths[] = "themes/$theme/templates/modules/$module/plugins"; // Module override in themes
         $pluginpaths[] = "themes/$theme/plugins"; // Theme plugins
