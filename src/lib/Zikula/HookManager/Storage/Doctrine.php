@@ -17,15 +17,8 @@
 /**
  * Doctrine storage class.
  */
-class Zikula_HooksManager_Storage_Doctrine implements Zikula_HooksManager_StorageInterface
+class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageInterface
 {
-    /**
-     * EntityManager.
-     *
-     * @var object
-     */
-    protected $entityManager;
-
     /**
      * Hooks.
      *
@@ -58,13 +51,11 @@ class Zikula_HooksManager_Storage_Doctrine implements Zikula_HooksManager_Storag
     /**
      * Constructor.
      *
-     * @param EntityManager $entityManager         Doctrine Entitymanager.
      * @param string        $hookEntityName        Class name of the Hook entity class.
      * @param string        $hookBindingEntityName Class name of the HookBinding entity class.
      */
-    public function __construct(EntityManager $entityManager, $hookEntityName, $hookBindingEntityName)
+    public function __construct($hookEntityName, $hookBindingEntityName)
     {
-        $this->entityManager = $entityManager;
         $this->hookEntityName = $hookEntityName;
         $this->hookBindingEntityName = $hookBindingEntityName;
     }
@@ -77,7 +68,7 @@ class Zikula_HooksManager_Storage_Doctrine implements Zikula_HooksManager_Storag
     public function getHooks()
     {
         if (!$this->hooks) {
-            $this->hooks = $this->entityManager->createQuery("SELECT h FROM {$this->hookEntityName} h")->getResult(Query::HYDRATE_ARRAY);
+            $this->hooks = Doctrine_Core::getTable($this->hookEntityName)->findAll(Doctrine_Core::HYDRATE_ARRAY);
         }
 
         return $this->hooks;
@@ -90,8 +81,15 @@ class Zikula_HooksManager_Storage_Doctrine implements Zikula_HooksManager_Storag
      */
     public function unregisterHook($hookName)
     {
-        $this->entityManager->createQuery("delete h from {$this->hookEntityName} h where h.hookname = $hookName")->getResult();
-        $this->entityManager->createQuery("delete h from {$this->hookBindingEntityName} h where h.hookname = $hookName")->getResult();
+        Doctrine_Core::getTable($this->hookEntityName)->createQuery()
+            ->delete()
+            ->where('hockname = ?', $hookName)
+            ->execute();
+
+        Doctrine_Core::getTable($this->hookBindingEntityName)->createQuery()
+            ->delete()
+            ->where('hookname = ?', $hookName)
+            ->execute();
         $this->hooks = null;
     }
 
@@ -105,10 +103,12 @@ class Zikula_HooksManager_Storage_Doctrine implements Zikula_HooksManager_Storag
      */
     public function registerHook($hookName, $serviceName, $handlerClass, $handlerMethod)
     {
-        $r = new ReflectionClass($this->hookEntityName);
-        $hook = $r->newInstance();
-        $hook->set($hookName, $serviceName, $handlerClass, $handlerMethod);
-        $this->entityManager->persist($hook);
+        $hook = Doctrine_Core::getTable($this->hookEntityName)
+                    ->create(array('hookname' => $hookName,
+                                   'servicename' => $serviceName,
+                                   'handlerclass' => $handlerClass,
+                                   'handlermethod' => $handlerMethod));
+        $hook->save();
         $this->hooks[] = $hook;
     }
 
@@ -123,11 +123,16 @@ class Zikula_HooksManager_Storage_Doctrine implements Zikula_HooksManager_Storag
     public function getHookBindings($type = null, $who = null)
     {
         if (!is_null($who)) {
-            return $this->entityManager->createQuery("SELECT h FROM {$this->hookBindingEntityName} h WHERE h.who = '$who' AND h.hookname LIKE '%$type' ORDER BY h.weight")->getResult(Query::HYDRATE_ARRAY);
+            return Doctrine_Core::getTable($this->hookBindingEntityName)->createQuery()
+                    ->where('who = ? and hookname LIKE ?', array($who, '%'.$type))
+                    ->orderBy('weight')
+                    ->fetchArray();
         }
 
         if (!$this->hookBindings) {
-            $this->hookBindings = $this->entityManager->createQuery("SELECT h FROM {$this->hookBindingEntityName} h ORDER BY h.weight")->getResult(Query::HYDRATE_ARRAY);
+            $this->hookBindings = Doctrine_Core::getTable($this->hookBindingEntityName)->createQuery()
+                ->orderBy('weight')
+                ->fetchArray();
         }
 
         return $this->hookBindings;
@@ -143,10 +148,11 @@ class Zikula_HooksManager_Storage_Doctrine implements Zikula_HooksManager_Storag
     {
         $next = count($this->getHookBindings()) + 1;
 
-        $r = new ReflectionClass($this->hookBindingEntityName);
-        $binding = $r->newInstance();
-        $binding->set($hookName, $who, $next);
-        $this->entityManager->persist($binding);
+        $binding = Doctrine_Core::getTable($this->hookBindingEntityName)
+                ->create(array('hookname' => $hookName,
+                               'who' => $who,
+                               'weight' => $next));
+        $binding->save();
         $this->hookBindings[] = $binding;
     }
 
@@ -157,17 +163,23 @@ class Zikula_HooksManager_Storage_Doctrine implements Zikula_HooksManager_Storag
      */
     public function unbindHook($hookName)
     {
-        $this->entityManager->createQuery("DELETE h FROM {$this->hookEntityName} h WHERE h.hookname = '$hookName'")->getResult();
-        $bindings = $this->entityManager->createQuery("SELECT h FROM {$this->hookBindingEntityName} h ORDER BY h.weight")->getResult(Query::HYDRATE_OBJECT);
+        Doctrine_Core::getTable($this->hookBindingEntityName)->createQuery()
+            ->delete()
+            ->where('hookname = ?', $hookName)
+            ->execute();
+
+        $bindings = Doctrine_Core::getTable($this->hookBindingEntityName)->createQuery()
+            ->orderBy('weight')
+            ->execute();
 
         // reorder sequences.
         $count = 1;
         foreach ($bindings as $binding) {
             $binding->setWeight($count);
+            $binding->save();
             $count++;
         }
 
-        $this->entityManager->flush();
         $this->hookBindings = null;
     }
 }

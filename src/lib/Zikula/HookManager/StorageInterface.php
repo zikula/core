@@ -29,21 +29,21 @@ interface Zikula_HookManager_StorageInterface
      *
      * @return void
      */
-    function registerHook($eventName, $serviceName, $hookClass, $handlerMethod);
+    public function registerHook($eventName, $serviceName, $hookClass, $handlerMethod);
 
     /**
      * Unregister a hook by event name and service name.
      *
      * @param integer $id   Name of the hook event.
      */
-    function unregisterHook($id);
+    public function unregisterHook($id);
 
     /**
      * Get registered hooks from peristence layer.
      *
      * @return array Of hooks.
      */
-    function getHooks();
+    public function getHooks();
 
     /**
      * Find hooks bound to a given object 'who'.
@@ -53,7 +53,7 @@ interface Zikula_HookManager_StorageInterface
      *
      * @return array
      */
-    function getHookBindings($who, $type);
+    public function getHookBindings($type = null, $who = null);
 
     /**
      * Bind a hook with an object.
@@ -63,7 +63,7 @@ interface Zikula_HookManager_StorageInterface
      *
      * @return void
      */
-    function bindHook($id, $who);
+    public function bindHook($id, $who);
 
     /**
      * Unbind a hook from an object.
@@ -72,5 +72,5 @@ interface Zikula_HookManager_StorageInterface
      *
      * @return void
      */
-    function unbindHook($id);
+    public function unbindHook($id);
 }

@@ -183,6 +183,7 @@ class ZLoader
                 'FileUtil' => 'util',
                 'FilterUtil' => 'util',
                 'FormUtil' => 'util',
+                'HookUtil' => 'util',
                 'HtmlUtil' => 'util',
                 'JCSSUtil' => 'util',
                 'LogUtil' => 'util',

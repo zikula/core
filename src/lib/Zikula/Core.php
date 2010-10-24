@@ -70,6 +70,13 @@ class Zikula_Core
     protected $eventManager;
 
     /**
+     * HookManager.
+     *
+     * @var Zikula_HookManager
+     */
+    protected $hookManager;
+
+    /**
      * Booted flag.
      *
      * @var boolean
@@ -126,6 +133,15 @@ class Zikula_Core
     }
 
     /**
+     * Getter for hookManger property.
+     *
+     * @return Zikula_HookManager
+     */
+    public function getHookManager() {
+        return $this->hookManager;
+    }
+
+    /**
      * Boot Zikula.
      *
      * @throws LogicException If already booted.
@@ -144,9 +160,17 @@ class Zikula_Core
         $this->eventManager = new Zikula_EventManager($this->serviceManager);
         $this->serviceManager->attachService('zikula.eventmanager', $this->eventManager);
         $this->serviceManager->attachService('zikula', $this);
+        
+        $storage = new Zikula_HookManager_Storage_Doctrine('Zikula_Doctrine_Model_HookRegistry',
+                                                           'Zikula_Doctrine_Model_HookBindings');
+        $this->hookManager = new Zikula_HookManager($this->serviceManager,
+                                                    $this->eventManager,
+                                                    $storage);
+        $this->eventManager->attach('callhooks', array($this->hookManager, 'notify'));
 
         ServiceUtil::getManager($this);
         EventUtil::getManager($this);
+        HookUtil::getManager($this);
     }
 
     /**
@@ -266,6 +290,9 @@ class Zikula_Core
             $coreInitEvent->setArg('stage', System::STAGES_TABLES);
             $this->eventManager->notify($coreInitEvent);
         }
+
+        // setup hookmanager AFTER the database is available
+        $this->hookManager->registerHooksRuntime();
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
         // start block
