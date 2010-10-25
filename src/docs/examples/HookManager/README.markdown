@@ -79,7 +79,7 @@ Example
 
 Real example of notifying a hookable event.
 
-    $event = new Zikula_Event('callhooks', new Zikula_HookSubject('action.create', 'module.foo', $this), $args());
+    $event = new Zikula_Event('callhooks', new Zikula_HookSubject('action.create', 'module.foo', $this), $args(), $data);
     $hookManager->notify($event);
 
 ## Advanced use
@@ -87,3 +87,12 @@ Real example of notifying a hookable event.
 HookManager also has a notifyUntil() method (correlating with the counterparts in EventManager).
 Hooks can process just like normal events by modifying the $event->data property.  This will be
 returned in the event object and can be retrieved by $event->getData();.
+
+Zikula Hook Event Base-Naming Scheme
+------------------------------------
+hook.systeminit
+hook.systemplugin.$name
+hook.module.$name
+hook.module.$modname.plugin.$name
+
+These named are then followed by the type of hook as required.
