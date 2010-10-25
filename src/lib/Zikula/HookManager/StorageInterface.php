@@ -13,7 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
  * Zikula_HookManager_StorageInterface for hooks persistence.
  */
