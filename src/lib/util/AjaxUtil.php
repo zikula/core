@@ -26,10 +26,25 @@ class AjaxUtil
      * @param boolean $displayalert Flag to display the error as an alert or not.
      * @param string  $code         Optional error code, default '400 Bad data'.
      *
+     * @deprecated since 1.3.0
+     * @todo Move to Compat.
+     *
      * @return void
      */
     public static function error($message = '', $other = array(), $createauthid = false, $displayalert = true, $code = '400 Bad data')
     {
+        if (LogUtil::hasErrors()) {
+            if (!$message) {
+                $errors = LogUtil::getErrorMessages();
+                throw new Zikula_Exception_Forbidden($errors[0]);
+            }
+        }
+
+        throw new Zikula_Exception_Forbidden($message);
+
+        // Below for reference - to be deleted.
+
+
         if (empty($message)) {
             $type = LogUtil::getErrorType();
             $code = $type ? $type : $code;
@@ -64,10 +79,19 @@ class AjaxUtil
      * @param boolean $statusmsg    Include statusmsg in output.
      * @param string  $code         Optional error code, default '200 OK'.
      *
+     * @deprecated since 1.3.0
+     * @todo Move to Compat.
+     * 
      * @return void
      */
     public static function output($args, $createauthid = false, $xjsonheader = false, $statusmsg = true, $code = '200 OK')
     {
+        $response = new Zikula_Response_Ajax($args);
+        echo $response;
+        System::shutDown();
+
+        // Below for reference - to be deleted.
+
         // check if an error message is set
         $msgs = LogUtil::getErrorMessagesText('<br />');
 

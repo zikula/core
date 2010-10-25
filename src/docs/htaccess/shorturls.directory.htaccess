@@ -7,11 +7,10 @@
 
 # security options if they work in your environment.  If you get a 500 error then they wont.
 # These settings are best turned off in php.ini and will be on modern hosting environemnts.
-# php_flag register_globals off
 # php_flag magic_quotes_gpc off
 
 # turn the rewriting engine on
-RewriteEngine on
+RewriteEngine On
 
 # Enable RewriteBase if Zikula is installed to a sub-directory
 # RewriteBase /your/path/to/Zikula

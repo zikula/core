@@ -311,7 +311,8 @@ class LogUtil
      *
      * @return string error message.
      */
-    public static function getErrorMsgAuthid() {
+    public static function getErrorMsgAuthid()
+    {
         return __("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again.");
     }
 
@@ -320,7 +321,8 @@ class LogUtil
      *
      * @return string error message.
      */
-    public static function getErrorMsgPermission() {
+    public static function getErrorMsgPermission()
+    {
         return __('Sorry! You have not been granted access to this page.');
     }
 
@@ -329,7 +331,8 @@ class LogUtil
      *
      * @return string error message.
      */
-    public static function getErrorMsgArgs() {
+    public static function getErrorMsgArgs()
+    {
         return __('Error! The action you wanted to perform was not successful for some reason, maybe because of a problem with what you input. Please check and try again.');
     }
 

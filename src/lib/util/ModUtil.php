@@ -26,7 +26,7 @@ class ModUtil
     const STATE_NOTALLOWED = 6;
     const STATE_INVALID = -1;
 
-    const CONFIG_MODULE = '/Config';
+    const CONFIG_MODULE = 'ZConfig';
 
     // Types
     const TYPE_MODULE = 2;
@@ -99,10 +99,6 @@ class ModUtil
                     self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
                 }
             }
-
-            // For use in templates, it's easier if we rename the modvars to ZConfig, since /Config is not accessible - drak
-            self::$modvars[self::CONFIG_MODULE] = new ArrayObject(self::$modvars[self::CONFIG_MODULE]);
-            self::$modvars['ZConfig'] = self::$modvars[self::CONFIG_MODULE];
         }
     }
 
@@ -1063,6 +1059,11 @@ class ModUtil
 
             return false;
         }
+
+        // Issue not found exception for controller requests
+        if (!System::isLegacyMode() && !$api) {
+            throw new Zikula_Exception_NotFound(__f('The requested controller action %s_Controller_%s::%s() could not be found', array($modname, $type, $func)));
+        }
     }
 
 
@@ -1197,13 +1198,13 @@ class ModUtil
         }
 
         // Only convert User URLs. Exclude links that append a theme parameter
-        if ($shorturls && $shorturlstype == 0 && $type == 'user' && $forcelongurl == false) {
+        if ($shorturls && $shorturlstype == 0 && $type != 'admin' && $forcelongurl == false) {
             if (isset($args['theme'])) {
                 $theme = $args['theme'];
                 unset($args['theme']);
             }
             // Module-specific Short URLs
-            $url = self::apiFunc($modinfo['name'], 'user', 'encodeurl', array('modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args));
+            $url = self::apiFunc($modinfo['name'], $type, 'encodeurl', array('modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args));
             if (empty($url)) {
                 // depending on the settings, we have generic directory based short URLs:
                 // [language]/[module]/[function]/[param1]/[value1]/[param2]/[value2]
@@ -1661,12 +1662,12 @@ class ModUtil
      * Only modules in the module table are returned
      * which means that new/unscanned modules will not be returned.
      *
-     * @param constant $state The module state (optional) (defaults = active state).
-     * @param string   $sort  The sort to use.
+     * @param integer $state The module state (optional) (defaults = active state).
+     * @param string  $sort  The sort to use.
      *
      * @return array The resulting module object array.
      */
-    public static function getModulesByState($state = self::STATE_ACTIVE, $sort='displayname')
+    public static function getModulesByState($state=self::STATE_ACTIVE, $sort='displayname')
     {
         $tables = DBUtil::getTables();
         $cols   = $tables['modules_column'];
@@ -1770,7 +1771,7 @@ class ModUtil
         unset($modules[0]);
         foreach ($modules as $module) {
             $base = ($module['type'] == self::TYPE_MODULE) ? 'modules' : 'system';
-            $path = "$base/$module[name]/lib";
+            $path = "$base/$module[directory]/lib";
             ZLoader::addAutoloader($module['directory'], $path);
         }
     }

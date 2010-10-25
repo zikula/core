@@ -11,81 +11,81 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 include 'lib/bootstrap.php';
 $core->init(System::STAGES_ALL | System::STAGES_AJAX & ~System::STAGES_DECODEURLS);
 
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
-$type   = FormUtil::getPassedValue('type', 'ajax', 'GETPOST', FILTER_SANITIZE_STRING);
-$func   = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
+$type = FormUtil::getPassedValue('type', 'ajax', 'GETPOST', FILTER_SANITIZE_STRING);
+$func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
 // Check for site closed
 if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
         UserUtil::logout();
     }
-    AjaxUtil::error(__('The site is currently off-line.'));
+    die(new Zikula_Response_Ajax_Unavailable(__('The site is currently off-line.')));
 }
 
 if (empty($func)) {
-    AjaxUtil::error(__f("Missing parameter '%s'", 'func'));
+    die(new Zikula_Response_Ajax_NotFound(__f("Missing parameter '%s'", 'func')));
 }
 
 // get module information
 $modinfo = ModUtil::getInfoFromName($module);
 if ($modinfo == false) {
-    AjaxUtil::error(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module)));
+    die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module))));
 }
 
 if (!ModUtil::available($modinfo['name'])) {
-    AjaxUtil::error(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
+    die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module))));
 }
 
-$arguments = array(); // this is entirely ununsed? - drak
+if (!ModUtil::load($modinfo['name'], $type)) {
+    die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module))));
+}
 
-if (ModUtil::load($modinfo['name'], $type)) {
-    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-        $dbConn = DBConnectionStack::getConnection();
-        $dbConn->beginTransaction();
+// Handle database transactions
+if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+    $dbConn = DBConnectionStack::getConnection();
+    $dbConn->beginTransaction();
+}
+
+// Dispatch controller.
+try {
+    $response = ModUtil::func($modinfo['name'], $type, $func);
+    if (System::isLegacyMode() && $response == false && LogUtil::hasErrors()) {
+        throw new Zikula_Exception_Fatal(__('An unknown error occurred in module %s, controller %s, action %s', array($modinfo['name'], $type, $func)));
     }
+} catch (Zikula_Exception_NotFound $e) {
+    $response = new Zikula_Response_Ajax_NotFound($e->getMessage());
+} catch (Zikula_Exception_Forbidden $e) {
+    $response = new Zikula_Response_Ajax_Forbidden($e->getMessage());
+} catch (Zikula_Exception_Fatal $e) {
+    $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
+} catch (PDOException $e) {
+    $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
+} catch (Exception $e) {
+    $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
+}
 
-    // Run the function
-    try {
-        $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
-    } catch (Zikula_Exception_Fatal $e) {
-        $return = false;
-    } catch (Exception $e) {
-        $return = false;
-    }
-
-    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-        if ($return === false && $e instanceof PDOException) {
-            $return = __('Error! The transaction failed. Performing rollback.') . "\n" . $return;
-            $dbConn->rollback();
-            AjaxUtil::error($return);
-            $return == true;
-        }
+// Handle database transactions
+if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+    if (isset($e) && $e instanceof Exception) {
+        $dbConn->rollback();
+    } else {
         $dbConn->commit();
     }
-} else {
-    $return = false;
 }
 
-// Sort out return of function.  Can be
-// true - finished
-// false - display error msg
-// text - return information
-if ($return === true) {
-    // Nothing to do here everything was done in the module
-} elseif (isset($e) && $e instanceof Zikula_Exception_Fatal) {
-    AjaxUtil::error($e->getMessage());
-} elseif ($return === false) {
-    // Failed to load the module
-    $reason = isset($e) ? DataUtil::formatForDisplay($e->getMessage()) : '';
-    AjaxUtil::error(__f("Could not load the '%s' module (at '%s' function), reason '%s'.", array(DataUtil::formatForDisplay($module), DataUtil::formatForDisplay($func), $reason)));
-} else {
-    AjaxUtil::output($return, true, false);
+// Process final response.
+if (!$response instanceof Zikula_Response_Ajax_Base) {
+    if (empty($response) || is_string($response)) {
+        $response = new Zikula_Response_Ajax_Plain($response);
+    } else {
+        $response = new Zikula_Response_Ajax($response);
+    }
 }
 
-System::shutdown();
+// Issue response.
+echo $response;

@@ -754,8 +754,15 @@ class Modules_Api_Admin extends Zikula_Api
         // see if any modules have changed name since last generation
         foreach ($filemodules as $name => $modinfo) {
             if (isset($modinfo['oldnames']) || !empty($modinfo['oldnames'])) {
+                $tables = DBUtil::getTables();
                 foreach ($dbmodules as $dbname => $dbmodinfo) {
                     if (in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
+                        // migrate its modvars
+                        $cols = $tables['module_vars_column'];
+                        $save = array('modname' => $modinfo['name']);
+                        DBUtil::updateObject($save, 'module_vars', "{$cols['modname']} = '$dbname'");
+
+                        // rename the module register
                         $save = $dbmodules[$dbname];
                         $save['name'] = $modinfo['name'];
                         unset($dbmodules[$dbname]);
@@ -764,6 +771,7 @@ class Modules_Api_Admin extends Zikula_Api
                         DBUtil::updateObject($dbmodules[$dbname], 'modules');
                     }
                 }
+                unset($tables);
             }
 
             if (isset($dbmodules[$name]) && $dbmodules[$name]['state'] > 10) {

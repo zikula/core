@@ -3621,12 +3621,15 @@ class DBUtil
     /**
      * Build a Doctrine Model class dynamically to allow pntable based modules to use DQL
      *
-     * @param string $table Table to use.
+     * @param string $table     Table to use.
+     * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord).
      *
      * @return string The model class.
      */
-    public static function buildDoctrineModuleClass($table)
+    public static function buildDoctrineModuleClass($table, $className=null)
     {
+        $className = (is_null($className) ? "{$table}_DBUtilRecord" : $className);
+
         $def = self::getTableDefinition($table);
         $opt = self::getTableOptions($table);
 
@@ -3656,7 +3659,7 @@ class DBUtil
         }
         // generate the model class:
         $class = "
-class {$table}_DBUtilRecord extends Doctrine_Record
+class {$className} extends Doctrine_Record
 {
     public function setTableDefinition()
     {
@@ -3666,7 +3669,7 @@ class {$table}_DBUtilRecord extends Doctrine_Record
     }
 }
 
-class {$table}_DBUtilRecordTable extends Doctrine_Table {}
+class {$className}Table extends Doctrine_Table {}
 ";
         return $class;
     }
@@ -3675,17 +3678,19 @@ class {$table}_DBUtilRecordTable extends Doctrine_Table {}
     /**
      * Include dynamically created Doctrine Model class into runtime environment
      *
-     * @param string $table The table.
+     * @param string $table     The table.
+     * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord).
      *
      * @return void
      */
-    public static function loadDBUtilDoctrineModel($table)
+    public static function loadDBUtilDoctrineModel($table, $className=null)
     {
         // don't double load
-        if (class_exists("{$table}_DBUtilRecord", false)) {
+        $className = (is_null($className) ? "{$table}_DBUtilRecord" : $className);
+        if (class_exists($className, false)) {
             return;
         }
-        $code = self::buildDoctrineModuleClass($table);
+        $code = self::buildDoctrineModuleClass($table, $className);
         eval($code);
     }
 }

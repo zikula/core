@@ -42,7 +42,7 @@ define('PNPERMS_UNREGISTERED', SecurityUtil::PERMS_UNREGISTERED);
 /**
  * Fake module for config vars
  */
-define('PN_CONFIG_MODULE', '/Config');
+define('PN_CONFIG_MODULE', 'ZConfig');
 
 /**
  *  Theme filters

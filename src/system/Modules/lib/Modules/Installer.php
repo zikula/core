@@ -45,6 +45,9 @@ class Modules_Installer extends Zikula_Installer
             return false;
         }
 
+        // create the new hooks tables
+        Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookBindings', 'Zikula_Doctrine_Model_HookRegistry'));
+
         // populate default data
         $this->defaultdata();
         $this->setVar('itemsperpage', 25);
@@ -72,6 +75,9 @@ class Modules_Installer extends Zikula_Installer
                 System::delVar('loadlegacy');
                 DBUtil::changeTable('modules');
             case '3.7.3':
+                // create the new hooks tables
+                Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookBindings', 'Zikula_Doctrine_Model_HookRegistry'));
+            case '3.7.4':
                 // future upgrade routines
 
         }

@@ -158,7 +158,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
         $this->modinfo = ModUtil::getInfoFromName($module);
 
-        $modpath = ($this->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         switch ($this->module[$module]['type'])
         {
             case ModUtil::TYPE_MODULE :
@@ -174,17 +173,18 @@ class Zikula_View extends Smarty implements Zikula_Translatable
                 $mpluginPathOld = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
         }
 
-        $pluginpaths[] = 'lib/view/plugins';
+        // At some point this needs to be rationalised.
+        // We're searching in at least 4 redundany places 99% of the time - drak
+        $pluginpaths = array();
+        $pluginpaths[] = 'config/plugins'; // Official override
+        $pluginpaths[] = "themes/$theme/templates/modules/$module/plugins"; // Module override in themes
+        $pluginpaths[] = "themes/$theme/plugins"; // Theme plugins
+        $pluginpaths[] = $mpluginPath; // Plugins for current module
         if (System::isLegacyMode()) {
-            $pluginpaths[] = 'lib/legacy/plugins';
+            $pluginpaths[] = $mpluginPathOld; // Module plugins (legacy paths)
+            $pluginpaths[] = 'lib/legacy/plugins'; // Core legacy plugins
         }
-        $pluginpaths[] = 'config/plugins';
-        $pluginpaths[] = "themes/$theme/templates/modules/$module/plugins";
-        $pluginpaths[] = "themes/$theme/plugins";
-        $pluginpaths[] = $mpluginPath;
-        if (System::isLegacyMode()) {
-            $pluginpaths[] = $mpluginPathOld;
-        }
+        $pluginpaths[] = 'lib/view/plugins'; // Core plugins
 
         foreach ($pluginpaths as $pluginpath) {
             $this->addPluginDir($pluginpath);
@@ -647,16 +647,25 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
             $ostemplate = DataUtil::formatForOS($template);
 
-            $override = self::getTemplateOverride("$os_dir/$os_modname/templates/$template");
+            $relativepath = "$os_dir/$os_module/templates";
+            $templatefile = "$relativepath/$ostemplate";
+            $override = self::getTemplateOverride($templatefile);
             if ($override === false) {
                 // no override present
                 if (!System::isLegacyMode()) {
-                    $this->templateCache[$template] = $ostemplate;
-                    return $ostemplate;
+                    if (is_readable($templatefile)) {
+                        $this->templateCache[$template] = $relativepath;
+                        return $relativepath;
+                    } else {
+                        return false;
+                    }
                 }
             } else {
-                $this->templateCache[$template] = $override;
-                return $override;
+                if (is_readable($override)) {
+                    $path = substr($override, 0, strrpos($override, $ostemplate));
+                    $this->templateCache[$template] = $path;
+                    return $path;
+                }
             }
             
             // The rest of this code is scheduled for removal from 1.4.0 - drak
@@ -2391,9 +2400,7 @@ function z_get_template($tpl_name, &$tpl_source, $view)
 
     if ($tpl_path !== false) {
         $tpl_source = file_get_contents(DataUtil::formatForOS($tpl_path . '/' . $tpl_name));
-        if ($tpl_source !== false) {
-            return true;
-        }
+        return true;
     }
 
     return LogUtil::registerError(__f('Error! The template [%1$s] is not available in the [%2$s] module.', array(
@@ -2417,9 +2424,7 @@ function z_get_timestamp($tpl_name, &$tpl_timestamp, $view)
 
     if ($tpl_path !== false) {
         $tpl_timestamp = filemtime(DataUtil::formatForOS($tpl_path . '/' . $tpl_name));
-        if ($tpl_timestamp !== false) {
-            return true;
-        }
+        return true;
     }
 
     return false;

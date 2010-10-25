@@ -46,7 +46,7 @@
         </li>
         {/foreach}
         <li id="addcat">
-            <a id="addcatlink" href="{modurl modname=Admin type=admin func=new}" title="{gt text='New module category'}" onclick='return newCategory(this);'>&nbsp;</a>
+            <a id="addcatlink" href="{modurl modname=Admin type=admin func=new}" title="{gt text='New module category'}" onclick='return Admin.Category.New(this);'>&nbsp;</a>
         </li>
     </ul>
     {adminonlinemanual}

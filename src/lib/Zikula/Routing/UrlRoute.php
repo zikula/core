@@ -101,6 +101,8 @@ class Zikula_Routing_UrlRoute
      *
      * @param array $params Argument values for url parameters in this route.
      *
+     * @throws InvalidArgumentException If required params are missing.
+     *
      * @return string Url.
      */
     public function generate($params)
@@ -198,7 +200,7 @@ class Zikula_Routing_UrlRoute
         $parameters = array_merge($parameters, $this->defaults);
 
         // process all matches and add according variables
-        foreach ($matches AS $key => $value) {
+        foreach ($matches as $key => $value) {
             if (!is_int($key)) {
                 $parameters[$key] = $value;
             }
@@ -210,7 +212,7 @@ class Zikula_Routing_UrlRoute
     /**
      * Checks if this route can treat a given set of parameters.
      *
-     * @param  array $params The arguments which should be processed.
+     * @param array $params The arguments which should be processed.
      *
      * @return boolean Whether this route matches the given set of parameters or not.
      */
@@ -234,7 +236,7 @@ class Zikula_Routing_UrlRoute
         }
 
         // check requirements
-        foreach ($this->variables AS $variable) {
+        foreach ($this->variables as $variable) {
             // no value no check
             if (!$allParams[$variable]) {
                 continue;

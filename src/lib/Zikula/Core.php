@@ -70,6 +70,13 @@ class Zikula_Core
     protected $eventManager;
 
     /**
+     * HookManager.
+     *
+     * @var Zikula_HookManager
+     */
+    protected $hookManager;
+
+    /**
      * Booted flag.
      *
      * @var boolean
@@ -126,6 +133,15 @@ class Zikula_Core
     }
 
     /**
+     * Getter for hookManger property.
+     *
+     * @return Zikula_HookManager
+     */
+    public function getHookManager() {
+        return $this->hookManager;
+    }
+
+    /**
      * Boot Zikula.
      *
      * @throws LogicException If already booted.
@@ -141,12 +157,19 @@ class Zikula_Core
         $this->bootime = microtime(true);
 
         $this->serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
-        $this->eventManager = new Zikula_EventManager($this->serviceManager);
-        $this->serviceManager->attachService('zikula.eventmanager', $this->eventManager);
+        $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new Zikula_EventManager($this->serviceManager));
         $this->serviceManager->attachService('zikula', $this);
+        
+        $storage = new Zikula_HookManager_Storage_Doctrine('Zikula_Doctrine_Model_HookRegistry', 'Zikula_Doctrine_Model_HookBindings');
+        $this->hookManager = $this->serviceManager->attachService(
+                'zikula.hookmanager',
+                new Zikula_HookManager($this->serviceManager, $this->eventManager, $storage));
+
+        $this->eventManager->attach('callhooks', array($this->hookManager, 'notify'));
 
         ServiceUtil::getManager($this);
         EventUtil::getManager($this);
+        HookUtil::getManager($this);
     }
 
     /**
@@ -324,7 +347,7 @@ class Zikula_Core
         if ($stages & System::STAGES_THEME) {
             // register default page vars
             PageUtil::registerVar('title');
-            PageUtil::setVar('title', System::getVar('sitename') . ' :: ' . System::getVar('slogan'));
+            PageUtil::setVar('title', System::getVar('defaultpagetitle'));
             PageUtil::registerVar('keywords', true);
             PageUtil::registerVar('stylesheet', true);
             PageUtil::registerVar('javascript', true);
@@ -337,7 +360,7 @@ class Zikula_Core
 
             // set some defaults
             // Metadata for SEO
-            $this->serviceManager['zikula_view.metatags']['description'] = System::getVar('slogan');
+            $this->serviceManager['zikula_view.metatags']['description'] = System::getVar('defaultmetadescription');
             $this->serviceManager['zikula_view.metatags']['keywords'] = System::getVar('metakeywords');
 
             $coreInitEvent->setArg('stage', System::STAGES_THEME);

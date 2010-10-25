@@ -1500,3 +1500,17 @@ div.z-formbuttons:after {
 .z-pager span.z-pagerselected {
     font-weight: bold;
 }
+
+/******************************************************************************
+* Order styles
+*******************************************************************************/
+
+.z-order-asc {
+    background: url("../images/icons/extrasmall/order_asc.gif") transparent right 50% no-repeat;
+    padding-right: 14px;
+}
+.z-order-desc {
+    background: url("../images/icons/extrasmall/order_desc.gif") transparent right 50% no-repeat;
+    padding-right: 14px;
+}
+

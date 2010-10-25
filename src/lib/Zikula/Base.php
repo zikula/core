@@ -82,6 +82,13 @@ abstract class Zikula_Base implements Zikula_Translatable
     protected $eventManager;
 
     /**
+     * HookManager.
+     *
+     * @var Zikula_HookManager
+     */
+    protected $hookManager;
+
+    /**
      * This object's reflection.
      *
      * @var ReflectionObject
@@ -98,6 +105,7 @@ abstract class Zikula_Base implements Zikula_Translatable
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        $this->hookManager = $this->serviceManager->getService('zikula.hookmanager');
         $this->options = $options;
         Zikula_ClassProperties::load($this, $options);
         $this->_setup();

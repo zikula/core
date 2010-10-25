@@ -4,7 +4,6 @@
 # These settings are best turned off in php.ini and will be on modern hosting environments.
 #<IfModule !mod_suphp.c>
 	#php_flag magic_quotes_gpc Off
-	#php_flag register_globals Off
 #</IfModule>
 
 # Set PHP Runtime Configuration (PHPRC)
