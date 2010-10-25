@@ -80,7 +80,7 @@ Example
 Real example of notifying a hookable event.
 
     $event = new Zikula_Event('callhooks', new Zikula_HookSubject('action.create', 'application.foo', $this), $args());
-    $eventManager->notify($event);
+    $hookManager->notify($event);
 
 ## Advanced use
 
