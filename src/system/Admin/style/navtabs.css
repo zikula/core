@@ -17,6 +17,9 @@ ul#admintabs li {
     margin:0 5px 0 0;
     padding:0;
     z-index:1000;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
 }
 
 ul#admintabs li > a {
@@ -34,6 +37,9 @@ ul#admintabs li > a:hover {
     border-right:1px solid #ccc;
     color:#000;
     text-decoration:none !important;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+    border-radius: 5px 0 0 0;
 }
 
 ul#admintabs li.active {
@@ -57,6 +63,9 @@ ul#admintabs li#addcat #addcatlink {
 
 ul#admintabs li#addcat a#addcatlink:hover {
     background:url("../../../images/icons/extrasmall/edit_add.gif") no-repeat scroll 50% 50% #FFF !important;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
 }
 
 ul#admintabs li > .z-admindrop {
@@ -72,17 +81,26 @@ ul#admintabs li > .z-admindrop {
 ul#admintabs li > .z-admindrop:hover {
     background:url("../images/arrow_hover.png") no-repeat scroll 0 50% #FFFFFF;
     border-left:1px solid #CCCCCC;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+    border-radius: 0 5px 0 0;
 }
 
 ul#admintabs li.active > .z-admindrop:hover {
     background:url("../images/arrow_hover.png") no-repeat scroll 0 50% transparent;
     border-left:1px solid transparent;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+    border-radius: 0 5px 0 0;
 }
 
 ul#admintabs li a.ajaxhover {
     background: #FFFFB2 !important;
     border-right:1px solid #ccc;
     color:#000;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+    border-radius: 5px 0 0 0;
 }
 
 ul#admintabs #ajaxNewCatForm {
@@ -94,6 +112,9 @@ ul#admintabs #ajaxNewCatForm {
     position:relative;
     text-decoration:none;
     z-index:1000;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
 }
 
 ul#admintabs #ajaxNewCatForm input.ajaxNewCat {
@@ -189,6 +210,9 @@ form.inplaceeditor-form {
     margin-right: 0.5em;
     padding: 5px 10px;
     text-decoration: none;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+    border-radius: 5px 0 0 0;
 }
 
 form.inplaceeditor-form input[type="text"] {
