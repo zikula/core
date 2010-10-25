@@ -103,7 +103,7 @@ class StreamReader_String extends StreamReader_Abstract
      *
      * @return void
      */
-    final public function setStream($stream)
+    public function setStream($stream)
     {
         $this->_stream = $stream;
     }

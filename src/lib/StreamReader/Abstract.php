@@ -70,7 +70,7 @@ abstract class StreamReader_Abstract
      *
      * @return void
      */
-    final protected function setError($error)
+    protected function setError($error)
     {
         $this->error = $error;
     }
@@ -80,7 +80,7 @@ abstract class StreamReader_Abstract
      *
      * @return string The error.
      */
-    final public function getError()
+    public function getError()
     {
         return $this->error;
     }

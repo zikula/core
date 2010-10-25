@@ -227,7 +227,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      *
      * @return string
      */
-    final public function getMetaDisplayName()
+    public function getMetaDisplayName()
     {
         return $this->meta['displayname'];
     }
@@ -237,7 +237,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      *
      * @return string
      */
-    final public function getMetaDescription()
+    public function getMetaDescription()
     {
         return $this->meta['description'];
     }
@@ -247,7 +247,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      *
      * @return string
      */
-    final public function getMetaVersion()
+    public function getMetaVersion()
     {
         return $this->meta['version'];
     }
