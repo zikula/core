@@ -185,11 +185,11 @@
     <table class="z-admintable">
         <thead>
             <tr>
-                <th> {gt text="User ID"} </th>
-                <th> {gt text="User name"} </th>
-                <th> {gt text="Name"} </th>
-                <th> {gt text="Comment"} </th>
-                <th> {gt text="Actions"} </th>
+                <th>{gt text="User ID"}</th>
+                <th>{gt text="User name"}</th>
+                <th>{gt text="Name"}</th>
+                <th>{gt text="Comment"}</th>
+                <th>{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
