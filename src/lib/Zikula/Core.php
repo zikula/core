@@ -157,15 +157,14 @@ class Zikula_Core
         $this->bootime = microtime(true);
 
         $this->serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
-        $this->eventManager = new Zikula_EventManager($this->serviceManager);
-        $this->serviceManager->attachService('zikula.eventmanager', $this->eventManager);
+        $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new Zikula_EventManager($this->serviceManager));
         $this->serviceManager->attachService('zikula', $this);
         
-        $storage = new Zikula_HookManager_Storage_Doctrine('Zikula_Doctrine_Model_HookRegistry',
-                                                           'Zikula_Doctrine_Model_HookBindings');
-        $this->hookManager = new Zikula_HookManager($this->serviceManager,
-                                                    $this->eventManager,
-                                                    $storage);
+        $storage = new Zikula_HookManager_Storage_Doctrine('Zikula_Doctrine_Model_HookRegistry', 'Zikula_Doctrine_Model_HookBindings');
+        $this->hookManager = $this->serviceManager->attachService(
+                'zikula.hookmanager',
+                new Zikula_HookManager($this->serviceManager, $this->eventManager, $storage));
+
         $this->eventManager->attach('callhooks', array($this->hookManager, 'notify'));
 
         ServiceUtil::getManager($this);
