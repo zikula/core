@@ -33,7 +33,7 @@ interface Zikula_HookManager_StorageInterface
     /**
      * Unregister a hook by event name and service name.
      *
-     * @param integer $id   Name of the hook event.
+     * @param integer $id Name of the hook event.
      */
     public function unregisterHook($id);
 
@@ -47,8 +47,8 @@ interface Zikula_HookManager_StorageInterface
     /**
      * Find hooks bound to a given object 'who'.
      *
-     * @param string $who  Name of the object to fine hookable events for.
      * @param string $type The hook type (valid only if $who is set).
+     * @param string $who  Name of the object to fine hookable events for.
      *
      * @return array
      */
@@ -57,8 +57,8 @@ interface Zikula_HookManager_StorageInterface
     /**
      * Bind a hook with an object.
      *
-     * @param string $hook Name Name of the hook.
-     * @param string $who  The name of the object to hook the event to.
+     * @param string $id  Name Name of the hook.
+     * @param string $who The name of the object to hook the event to.
      *
      * @return void
      */
@@ -67,7 +67,7 @@ interface Zikula_HookManager_StorageInterface
     /**
      * Unbind a hook from an object.
      *
-     * @param string $hookName Hookname.
+     * @param string $id Hookname.
      *
      * @return void
      */

@@ -18,6 +18,11 @@
  */
 class Zikula_Doctrine_Model_HookRegistry extends Doctrine_Record
 {
+    /**
+     * Setup for table definition.
+     *
+     * @return void
+     */
     public function setTableDefinition()
     {
         $this->setTableName('hook_registry');
@@ -67,6 +72,11 @@ class Zikula_Doctrine_Model_HookRegistry extends Doctrine_Record
              ));
     }
 
+    /**
+     * Setup hook.
+     *
+     * @return void
+     */
     public function setUp()
     {
         parent::setUp();
