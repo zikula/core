@@ -1,7 +1,7 @@
 HookManager Documentation
 -------------------------
 
-Hooks are special events that are hooked to specific applications/plugins via
+Hooks are special events that are hooked to specific module/plugins via
 the persistence layer.  Unlike regular events their load order can be controlled
 because they are dispatched via the Zikula_HookManager. Zikula_HookManager depends on
 Zikula_EventManager.
@@ -37,14 +37,14 @@ should be considered like EventManager handler names.
 They contain both the hook's owner information and also the type of the hook,
 in two parts:
 
-- 'hook.application.$name'
-- 'hook.application.$name.plugin.$pluginName'
+- 'hook.module.$name'
+- 'hook.module.$name.plugin.$pluginName'
 
 The second part is the type of the hook, like 'display.view', 'action.create'.
 
 Example of full form could be:
-- 'hook.application.foo.display.view'
-- 'hook.application.foo.action.create'
+- 'hook.module.foo.display.view'
+- 'hook.module.foo.action.create'
 
 When registering the hook handler you must use the full name like
 'hook.application.foo.action.create'.
@@ -79,7 +79,7 @@ Example
 
 Real example of notifying a hookable event.
 
-    $event = new Zikula_Event('callhooks', new Zikula_HookSubject('action.create', 'application.foo', $this), $args());
+    $event = new Zikula_Event('callhooks', new Zikula_HookSubject('action.create', 'module.foo', $this), $args());
     $hookManager->notify($event);
 
 ## Advanced use
