@@ -291,9 +291,6 @@ class Zikula_Core
             $this->eventManager->notify($coreInitEvent);
         }
 
-        // setup hookmanager AFTER the database is available
-        $this->hookManager->registerHooksRuntime();
-
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
         // start block
         if ($stages & System::STAGES_LANGS) {
