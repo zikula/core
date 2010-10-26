@@ -1102,3 +1102,81 @@ Object.extend(Number.prototype, (function() {
         toUnits:         toUnits
     };
 })());
+
+
+Zikula.define('Ajax');
+Zikula.Ajax.Request = Class.create(Ajax.Request,{
+    initialize: function($super, url, options) {
+        options = this.initReposneHandlers(options);
+        options = Object.extend({
+            authid: null
+        }, options || { });
+        if(options.authid) {
+            var authid = $F(options.authid),
+                pars = options.parameters || {};
+            if(Object.isString(pars)) {
+                options.parameters = pars + '&authid=' + authid;
+            } else {
+                options.parameters = Object.extend(pars,{authid: authid});
+            }
+            options.onComplete = this.responseComplete.bind(this);
+        }
+        $super(url, options);
+    },
+    initReposneHandlers: function(options) {
+        options = options || {};
+        this.observers = {};
+        // ugly hack to find all callbacks in options as properties which names starts with "on"
+        for (var prop in options) {
+            if(prop.startsWith('on') && Object.isFunction(options[prop])) {
+                this.observers[prop] = options[prop];
+                options[prop] = this.responseHandler.curry(prop).bind(this);
+            }
+        }
+        return options;
+    },
+    responseHandler: function(event,reponse,headerJSON) {
+        if(this.observers[event]) {
+            reponse = Object.extend(reponse,Zikula.Ajax.Response)
+            this.observers[event](reponse,headerJSON);
+        }
+    },
+    responseComplete: function(reponse,headerJSON) {
+        reponse = Object.extend(reponse,Zikula.Ajax.Response)
+        if(this.options.authid) {
+            $(this.options.authid).setValue(reponse.getAuthid());
+        }
+        if(this.observers['onComplete']) {
+            this.observers['onComplete'](reponse,headerJSON);
+        }
+    }
+});
+
+Zikula.Ajax.Response = {
+    getAuthid: function() {
+        return this.decodeResponse().core ? this.decodeResponse().core.csrftoken : null;
+    },
+    getData: function() {
+        return this.decodeResponse().data;
+    },
+    getCoreData: function() {
+        return this.decodeResponse().core;
+    },
+    isSuccess: function() {
+        var status = this.getStatus();
+        return !status || (status >= 200 && status < 300);
+    },
+    decodeResponse: function() {
+        if(!this.ZikulaResponse) {
+            try {
+                this.ZikulaResponse = this.responseText.evalJSON(true);
+            } catch(e) {
+                this.ZikulaResponse = {
+                    data: this.responseText,
+                    core: null
+                }
+            }
+        }
+        return this.ZikulaResponse;
+    }
+}
