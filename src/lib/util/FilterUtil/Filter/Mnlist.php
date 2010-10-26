@@ -16,7 +16,7 @@
 /**
  * Filter entries using a m:n relationship.
  */
-class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements FilterUtil_Build
+class FilterUtil_Filter_Mnlist extends FilterUtil_PluginCommon implements FilterUtil_Build
 {
     /**
      * Enabled operators.

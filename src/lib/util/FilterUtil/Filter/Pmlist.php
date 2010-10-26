@@ -14,9 +14,11 @@
  */
 
 /**
- * FilterUtil category filter plugin
+ * FilterUtil plugin to access a single category field.
+ * 
+ * Operator "sub" can filter for a category and all its subcategories.
  */
-class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements FilterUtil_Build
+class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements FilterUtil_Build
 {
     /**
      * Enabled operators.
@@ -31,22 +33,14 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
      * @var array
      */
     private $fields = array();
-    
-    /**
-     * Category property.
-     * 
-     * @var array
-     */
-    private $property;
 
     /**
-     * Constructor.
+     * Constructor
      * 
-     * Argument $config may contain
-     *  fields:   Set of fields to use, see setFields().
-     *  property: Property set of the categories to filter by.
-     *            As in DBUtil categoryFilter. See setProperty().
-     *  ops:      Operators to enable, see activateOperators().
+     * Argument $config may contain:
+     *  fields:  Set of fields to work on.
+     *  ops:     Enabled Operators.
+     *  default: This plugin is the default plugin for all fields?
      *
      * @param array $config Configuration.
      */
@@ -54,35 +48,19 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
     {
         parent::__construct($config);
 
-        if (isset($config['fields']) && is_array($config['fields'])) {
+        if (isset($config['fields'])) {
             $this->addFields($config['fields']);
-        }
-
-        if (isset($config['property'])) {
-            $this->setProperty($config['property']);
-        } else {
-            $this->setProperty('Main');
         }
 
         if (isset($config['ops']) && (!isset($this->ops) || !is_array($this->ops))) {
             $this->activateOperators($config['ops']);
         } else {
-            $this->activateOperators($this->availableOperators());
+            $this->activateOperators(array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'like', 'null', 'notnull'));
         }
-    }
 
-    /**
-     * Returns the operators the plugin can handle.
-     * 
-     * @return array Operators.
-     */
-    public function availableOperators()
-    {
-        return array(
-                     'eq',
-                     'ne',
-                     'sub'
-                    );
+        if ($config['default'] == true || count($this->fields) <= 0) {
+            $this->default = true;
+        }
     }
 
     /**
@@ -98,7 +76,7 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } elseif (!empty($fields) && !$this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
+        } elseif (!empty($fields) && $this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
             $this->fields[] = $fields;
         }
     }
@@ -114,7 +92,7 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
     }
 
     /**
-     * Adds operators.
+     * Activates the requested Operators.
      *
      * @param mixed $op Operators to activate.
      * 
@@ -132,7 +110,7 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
     }
 
     /**
-     * Get operators
+     * Get activated operators.
      *
      * @return array Set of Operators and Arrays.
      */
@@ -152,16 +130,17 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
     }
 
     /**
-     * Sets the category property.
-     *
-     * @param mixed $property Category Property.
+     * Returns the operators the plugin can handle.
      * 
-     * @see    CategoryUtil
-     * @return void
+     * @return array Operators.
      */
-    public function setProperty($property)
+    public function availableOperators()
     {
-        $this->property = (array)$property;
+        return array(
+                     'eq',
+                     'ne',
+                     'sub'
+                    );
     }
 
     /**
@@ -175,26 +154,35 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
      */
     function getSQL($field, $op, $value)
     {
+
         if (array_search($op, $this->availableOperators()) === false || array_search($field, $this->fields) === false) {
             return '';
         }
 
-        $items = array($value);
-        if ($op == 'sub') {
-            $cats = CategoryUtil::getSubCategories($value);
-            foreach ($cats as $item) {
-                $items[] = $item['id'];
-            }
-        }
+        $where = '';
 
-        $filter = array('__META__' => array('module' => $this->module));
-        foreach ($this->property as $prop) {
-            $filter[$prop] = $items;
-        }
+        switch ($op) {
+            case 'eq':
+                $where = $this->column[$field].' = '.$value;
+                break;
 
-        $where = DBUtil::generateCategoryFilterWhere($this->dbtable, false, $filter);
-        if ($op == 'ne') {
-            $where = 'NOT ' . $where;
+            case 'ne':
+                $where = $this->column[$field].' != '.$value;
+                break;
+
+            case 'sub':
+                $cats = CategoryUtil::getSubCategories($value);
+                $items = array();
+                $items[] = $value;
+                foreach ($cats as $item) {
+                    $items[] = $item['id'];
+                }
+                if (count($items) == 1) {
+                    $where = $this->column[$field] . " = " . implode("", $items);
+                } else {
+                    $where = $this->column[$field] . " IN (" . implode(",", $items) . ")";
+                }
+                break;
         }
 
         return array('where' => $where);

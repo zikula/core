@@ -16,7 +16,7 @@
 /**
  * FilterUtil date handler plugin
  */
-class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUtil_Build, FilterUtil_Replace
+class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUtil_Build, FilterUtil_Replace
 {
     
     /**

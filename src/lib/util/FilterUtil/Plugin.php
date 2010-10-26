@@ -81,6 +81,69 @@ class FilterUtil_Plugin extends FilterUtil_Common
 
         return $error;
     }
+    
+    /**
+     * Available plugins list.
+     *
+     * @return array List of the available plugins.
+     */
+    public static function getPluginsAvailable()
+    {
+        $classNames = array();
+        $classNames['category']    = 'FilterUtil_Filter_Category';
+        $classNames['default']     = 'FilterUtil_Filter_Default';
+        $classNames['date']        = 'FilterUtil_Filter_Date';
+        $classNames['mnlist']      = 'FilterUtil_Filter_Mnlist';
+        $classNames['pmlist']      = 'FilterUtil_Filter_Pmlist';
+        $classNames['replaceName'] = 'FilterUtil_Filter_ReplaceName';
+
+        // collect classes from other providers also allows for override
+        // TODO A [This is only allowed for the module which owns this object.]
+        
+        $event = new Zikula_Event('zikula.filterutil.get_plugin_classes');
+        $event->setData($classNames);
+        $classNames = EventUtil::getManager()->notify($event)->getData();
+
+        return $classNames;
+    }
+    
+    /**
+     * Loads a single plugin.
+     *
+     * @param string $name   Plugin's name.
+     * @param array  $config Plugin's config.
+     *
+     * @return integer The plugin's id.
+     */
+    public function loadPlugin($name, $config = array()) 
+    {
+        if ($this->isLoaded($name)) {   
+            return $this->_loaded[$name];
+        }
+        
+        $plugins = $this->getPluginsAvailable();
+        if (isset($plugins[$name]) && !empty($plugins[$name]) && class_exists($plugins[$name])) {
+            $class = $plugins[$name];
+            
+            $this->addCommon($config);
+            $obj = new $class($config);
+    
+            $this->_plg[] = $obj;
+            end($this->_plg);
+            $key = key($this->_plg);
+            $obj = $this->_plg[$key];
+    
+            $obj->setID($key);
+            $this->_registerPlugin($key);
+            $this->_loaded[$name] = $key;
+    
+            return key(end($this->_plg));
+        } elseif (System::isLegacyMode()) {
+            return $this->loadPluginLegacy();
+        }
+        
+        return false;
+    }
 
     /**
      * Loads a single plugin.
@@ -88,17 +151,16 @@ class FilterUtil_Plugin extends FilterUtil_Common
      * @param string $name   Plugin's name.
      * @param array  $config Plugin's config.
      *
-     * @return bool True on success, false otherwise.
+     * @return integer The plugin's id.
      */
-    public function loadPlugin($name, $config = array())
+    public function loadPluginLegacy($name, $config = array())
     {
-        // TODO Rewrite this loader
         $module = $this->getConfig()->getModule();
         if (strpos($name, '@')) {
             list ($module, $name) = explode('@', $name, 2);
         }
 
-        if ($this->isLoaded("$module@$name")) {
+        if ($this->isLoaded("$module@$name")) {   
             return true;
         }
 
