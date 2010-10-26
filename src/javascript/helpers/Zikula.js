@@ -1154,7 +1154,7 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,{
 
 Zikula.Ajax.Response = {
     getAuthid: function() {
-        return this.decodeResponse().core ? this.decodeResponse().core.csrftoken : null;
+        return this.decodeResponse().core ? this.decodeResponse().core.authid : null;
     },
     getData: function() {
         return this.decodeResponse().data;

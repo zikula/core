@@ -117,7 +117,7 @@ abstract class Zikula_Response_Ajax_Base
         }
 
         if ($this->csrfToken) {
-            $core['csrftoken'] = $this->csrfToken;
+            $core['authid'] = $this->csrfToken;
         }
         $core['statusmsg'] = LogUtil::getStatusMessages();
         
