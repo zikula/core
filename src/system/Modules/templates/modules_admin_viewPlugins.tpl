@@ -32,7 +32,7 @@
                 <th>{gt text="Plugin display name"}</th>
                 <th>{gt text="Description"}</th>
                 <th>{gt text="Version"}</th>
-                <th style="white-space:nowrap">
+                <th class="z-nowrap">
                     <form action="{modurl modname="Modules" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
                         <div>
                             <input type="hidden" name="sort" value="{$sort|safetext}" />
@@ -72,13 +72,13 @@
                 <td>{$plugin.instance->getMetaDisplayName()|safetext}</td>
                 <td>{$plugin.instance->getMetaDescription()|safetext}</td>
                 <td>{$plugin.version|safetext}</td>
-                <td style="white-space:nowrap">
+                <th class="z-nowrap">
                     {img src=$plugin.statusimage modname=core set=icons/extrasmall alt=$plugin.status title=$plugin.status}&nbsp;{$plugin.status|safetext}
                     {if isset($plugin.newversion)}
                     <br />({$plugin.newversion|safetext})
                     {/if}
                 </td>
-                <td class="z-right" style="white-space:nowrap">
+                <td class="z-right z-nowrap">
                     {strip}
                     {foreach from=$plugin.actions item="action"}
                     <a href="{$action.url|safetext}">{img modname=core src=$action.image set=icons/extrasmall title=$action.title alt=$action.title}</a>&nbsp;

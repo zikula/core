@@ -110,6 +110,8 @@ class Zikula_HookManager
      * Performs validation and returns the hooks associated for this event.
      *
      * @param Zikula_Event $event Zikula_Event.
+     *
+     * @throws InvalidArgumentException If event is not an instance of Zikula_HookSubject.
      * 
      * @return array
      */

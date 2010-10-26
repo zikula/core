@@ -26,6 +26,7 @@ class TemplateOverrides extends Zikula_EventHandler
 
     /**
      * Associative array.
+     * 
      * Maps template path to overriden path.
      *
      * @var array
@@ -34,6 +35,8 @@ class TemplateOverrides extends Zikula_EventHandler
 
     /**
      * Setup of handlers.
+     *
+     * @return void
      */
     public function setup()
     {

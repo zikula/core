@@ -9,12 +9,12 @@
     <table class="z-admintable">
         <thead>
             <tr>
-                <th><a href="{modurl modname="Modules" type="admin" func="view" sort="name"}">{gt text="Internal name"}</a></th>
-                <th><a href="{modurl modname="Modules" type="admin" func="view" sort="displayname"}">{gt text="Display name"}</a></th>
+                <th><a class="z-order-asc" href="{modurl modname="Modules" type="admin" func="view" sort="name"}">{gt text="Internal name"}</a></th>
+                <th><a class="z-order-asc" href="{modurl modname="Modules" type="admin" func="view" sort="displayname"}">{gt text="Display name"}</a></th>
                 <th>{gt text="Module URL"}</th>
                 <th>{gt text="Description"}</th>
                 <th>{gt text="Version"}</th>
-                <th style="white-space:nowrap">
+                <th class="z-nowrap">
                     <form action="{modurl modname="Modules" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
                         <div>
                             <label for="modules_state">{gt text="State"}</label><br />
@@ -51,13 +51,13 @@
                 <td>{$modules[modules].modinfo.url|safetext}</td>
                 <td>{$modules[modules].modinfo.description|safetext|default:"&nbsp;"}</td>
                 <td>{$modules[modules].modinfo.version|safetext}</td>
-                <td style="white-space:nowrap">
+                <td class="z-nowrap">
                     {img src=$modules[modules].statusimage modname=core set=icons/extrasmall alt=$modules[modules].status title=$modules[modules].status}&nbsp;{$modules[modules].status|safetext}
                     {if isset($modules[modules].modinfo.newversion)}
                     <br />({$modules[modules].modinfo.newversion|safetext})
                     {/if}
                 </td>
-                <td class="z-right" style="white-space:nowrap">
+                <td class="z-right z-nowrap">
                     {assign var="options" value=$modules[modules].options}
                     {strip}
                     {section name=options loop=$options}

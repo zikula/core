@@ -173,22 +173,16 @@ class Zikula_View extends Smarty implements Zikula_Translatable
                 $mpluginPathOld = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
         }
 
-        // At some point this needs to be rationalised.
-        // We're searching in at least 4 redundany places 99% of the time - drak
-        $pluginpaths = array();
-        $pluginpaths[] = 'config/plugins'; // Official override
-        $pluginpaths[] = "themes/$theme/templates/modules/$module/plugins"; // Module override in themes
-        $pluginpaths[] = "themes/$theme/plugins"; // Theme plugins
-        $pluginpaths[] = $mpluginPath; // Plugins for current module
+        // Add standard plugin search path
+        $this->addPluginDir('config/plugins'); // Official override
+        $this->addPluginDir("themes/$theme/templates/modules/$module/plugins"); // Module override in themes
+        $this->addPluginDir("themes/$theme/plugins"); // Theme plugins
+        $this->addPluginDir($mpluginPath); // Plugins for current module
         if (System::isLegacyMode()) {
-            $pluginpaths[] = $mpluginPathOld; // Module plugins (legacy paths)
-            $pluginpaths[] = 'lib/legacy/plugins'; // Core legacy plugins
+            $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
+            $this->addPluginDir('lib/legacy/plugins'); // Core legacy plugins
         }
-        $pluginpaths[] = 'lib/view/plugins'; // Core plugins
-
-        foreach ($pluginpaths as $pluginpath) {
-            $this->addPluginDir($pluginpath);
-        }
+        $this->addPluginDir('lib/view/plugins'); // Core plugins
 
         // check if the recent 'type' parameter in the URL is admin and if yes,
         // include system/Admin/templates/plugins to the plugins_dir array

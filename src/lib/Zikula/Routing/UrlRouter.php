@@ -133,7 +133,9 @@ class Zikula_Routing_UrlRouter
      * @param string                  $name  Storage name for the route.
      * @param Zikula_Routing_UrlRoute $route The actual route instance.
      *
-     * @return mixed String with created url or false on error.
+     * @throws InvalidArgumentException If name is empty.
+     *
+     * @return void
      */
     public function set($name, Zikula_Routing_UrlRoute $route)
     {

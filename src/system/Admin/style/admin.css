@@ -101,21 +101,16 @@ div.property_selector_noscript {
 /* style for admin tables
 /******************************************************************************/
 table.z-admintable {
-    width: 100%;
-    color: inherit;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    margin-top: 0px;
-    margin-bottom: 1em;
-    padding: 5px 5px 10px 5px;
-}
-
-table.z-admintable tr.z-admintableempty {
-    background-color: #f3f3f3;
-    text-align: center;
-    font-weight: bold;
+    border:1px solid #CCCCCC;
+    border-spacing:1px 0;
+    color:inherit;
+    margin:1em 0;
+    padding:0;
+    width:100%;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 table.z-admintable caption {
@@ -124,6 +119,10 @@ table.z-admintable caption {
     border-bottom: 2px solid #CFCFCF;
     text-transform: uppercase;
     padding: 10px;
+}
+
+table.z-admintable thead {
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 table.z-admintable thead tr {
@@ -135,6 +134,24 @@ table.z-admintable tbody td,
 table.z-admintable thead th {
     padding: 5px;
     border-width: 0px;
+}
+
+table.z-admintable thead th {
+    background: #CFCFCF; /*non-CSS3 browsers*/
+    background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#CFCFCF)); /*webkit*/
+    background: -moz-linear-gradient(top, #fafafa, #CFCFCF); /*gecko*/
+    background: linear-gradient(#fafafa, #CFCFCF); /*CSS3*/
+    font-size: 0.9em;
+    padding: 7px 5px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+table.z-admintable tr.z-admintableempty {
+    background-color:#F3F3F3;
+    font-size:0.9em;
+    font-weight:bold;
+    text-align:center;
+    text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 /* style to highlight a default row in a table */

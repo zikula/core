@@ -45,32 +45,32 @@
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'bid';
                 {/php}
-        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Block ID"}</a></th>
+        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Block ID"}</a></th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'title';
                 {/php}
-        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Title"}</a></th>
+        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Title"}</a></th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'description';
                 {/php}
-        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Description"}</a></th>
+        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Description"}</a></th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'module_name';
                 {/php}
-        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Module"}</a></th>
+        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Module"}</a></th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'bkey';
                 {/php}
-        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Name"}</a></th>
+        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Name"}</a></th>
                 <th>{gt text="Position(s)"}</th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'language'
                 {/php}
-        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Language"}</a></th>
+        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Language"}</a></th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'active'
                 {/php}
-        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="State"}</a></th>
+        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="State"}</a></th>
                 <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>

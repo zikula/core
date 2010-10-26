@@ -916,7 +916,6 @@ class System
      * Get a system error template.
      *
      * @param string $templateFile
-     * @param string $templatePath
      *
      * @return string Template file path.
      */

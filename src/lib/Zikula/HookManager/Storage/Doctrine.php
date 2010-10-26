@@ -13,7 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
  * Doctrine storage class.
  */
@@ -51,8 +50,8 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
     /**
      * Constructor.
      *
-     * @param string        $hookEntityName        Class name of the Hook entity class.
-     * @param string        $hookBindingEntityName Class name of the HookBinding entity class.
+     * @param string $hookEntityName        Class name of the Hook entity class.
+     * @param string $hookBindingEntityName Class name of the HookBinding entity class.
      */
     public function __construct($hookEntityName, $hookBindingEntityName)
     {
@@ -78,6 +77,8 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
      * Unregister a hook by event name and service name from persistence layer.
      *
      * @param string $hookName Name of the hook event.
+     *
+     * @return void
      */
     public function unregisterHook($hookName)
     {
@@ -100,6 +101,8 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
      * @param string $serviceName   The service name (ID).
      * @param string $handlerClass  The name of the class that hosts the event handler.
      * @param string $handlerMethod Name of the method in the hookclass that hosts the event handler.
+     *
+     * @return void
      */
     public function registerHook($hookName, $serviceName, $handlerClass, $handlerMethod)
     {
@@ -143,6 +146,8 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
      *
      * @param string $binding Name Name of the hook.
      * @param string $who  The name of the object to hook the event to.
+     *
+     * @return void
      */
     public function bindHook($hookName, $who)
     {
@@ -160,6 +165,8 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
      * Bind a hook from an object.
      *
      * @param string $hookName Hookname.
+     *
+     * @return void
      */
     public function unbindHook($hookName)
     {
