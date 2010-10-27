@@ -57,7 +57,7 @@ class ModUtil
      *
      * @var array
      */
-    protected static $modvars;
+    protected static $modvars = array();
 
     /**
      * Module variables getter.
