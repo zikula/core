@@ -148,30 +148,36 @@ class Blocks_Block_Menu extends Zikula_Block
         }
 
         // allow a simple portable way to link to the home page of the site
-        $url = System::getHomepageUrl();
         if ($url == '{homepage}') {
             $url = System::getBaseUrl();
         } elseif (!empty($url)) {
-            $url = explode(':', substr($url, 1, - 1));
-            // url[0] should be the module name
-            if (isset($url[0]) && !empty($url[0])) {
-                $modname = $url[0];
-                // default for params
-                $params = array();
-                $func = 'main';
-                // url[1] can be a function or function&param=value
-                if (isset($url[1]) && !empty($url[1])) {
-                    $urlparts = explode('&', $url[1]);
-                    $func = $urlparts[0];
-                    unset($urlparts[0]);
-                    if (count($urlparts) > 0) {
-                        foreach ($urlparts as $urlpart) {
-                            $part = explode('=', $urlpart);
-                            $params[trim($part[0])] = trim($part[1]);
+            if ($url[0] == '{') {
+                $url = explode(':', substr($url, 1, - 1));
+                
+                // url[0] should be the module name
+                if (isset($url[0]) && !empty($url[0])) {
+                    $modname = $url[0];
+                    
+                    // default values
+                    $type = 'user';
+                    $func = 'main';
+                    $params = array();
+                    
+                    // url[1] can be a function or function&param=value
+                    if (isset($url[1]) && !empty($url[1])) {
+                        $urlparts = explode('&', $url[1]);
+                        $func = $urlparts[0];
+                        unset($urlparts[0]);
+                        if (count($urlparts) > 0) {
+                            foreach ($urlparts as $urlpart) {
+                                $part = explode('=', $urlpart);
+                                $params[trim($part[0])] = trim($part[1]);
+                            }
                         }
+                        // addon: url[2] can be the type parameter, default 'user'
+                        $type = (isset($url[2]) && !empty($url[2])) ? $url[2] : 'user';
                     }
-                    // addon: url[2] can be the type parameter, default 'user'
-                    $type = (isset($url[2]) && !empty($url[2])) ? $url[2] : 'user';
+                    
                     //  build the url
                     $url = ModUtil::url($modname, $type, $func, $params);
                 }
@@ -179,7 +185,7 @@ class Blocks_Block_Menu extends Zikula_Block
         }
 
         $item = array('MENUITEMTITLE'    => $title,
-                      'MENUITEMURL'      =>  $url,
+                      'MENUITEMURL'      => $url,
                       'MENUITEMCOMMENT'  => DataUtil::formatForDisplay($comment),
                       'MENUITEMSELECTED' => $itemselected);
 
