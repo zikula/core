@@ -1135,19 +1135,19 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,{
         }
         return options;
     },
-    responseHandler: function(event,reponse,headerJSON) {
+    responseHandler: function(event,response,headerJSON) {
         if(this.observers[event]) {
-            reponse = Object.extend(reponse,Zikula.Ajax.Response)
-            this.observers[event](reponse,headerJSON);
+            response = Object.extend(response,Zikula.Ajax.Response);
+            this.observers[event](response,headerJSON);
         }
     },
-    responseComplete: function(reponse,headerJSON) {
-        reponse = Object.extend(reponse,Zikula.Ajax.Response)
+    responseComplete: function(response,headerJSON) {
+        response = Object.extend(response,Zikula.Ajax.Response)
         if(this.options.authid) {
-            $(this.options.authid).setValue(reponse.getAuthid());
+            $(this.options.authid).setValue(response.getAuthid());
         }
         if(this.observers['onComplete']) {
-            this.observers['onComplete'](reponse,headerJSON);
+            this.observers['onComplete'](response,headerJSON);
         }
     }
 });
@@ -1155,6 +1155,9 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,{
 Zikula.Ajax.Response = {
     getAuthid: function() {
         return this.decodeResponse().core ? this.decodeResponse().core.authid : null;
+    },
+    getMessage: function() {
+        return this.decodeResponse().core ? this.decodeResponse().core.statusmsg : null;
     },
     getData: function() {
         return this.decodeResponse().data;
