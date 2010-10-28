@@ -18,24 +18,24 @@
  */
 class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUtil_Build, FilterUtil_Replace
 {
-    
+
     /**
      * Enabled operators.
-     * 
+     *
      * @var array
      */
     private $ops = array();
-    
+
     /**
      * Fields to use the plugin for.
-     * 
+     *
      * @var array
      */
     private $fields = array();
 
     /**
      * Constructor.
-     * 
+     *
      * Argument $config may contain
      *  fields:   Set of fields to use, see setFields().
      *  ops:      Operators to enable, see activateOperators().
@@ -59,7 +59,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
 
     /**
      * Returns the operators the plugin can handle.
-     * 
+     *
      * @return array Operators.
      */
     public function availableOperators()
@@ -78,7 +78,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
      * Activates the requested Operators.
      *
      * @param mixed $op Operators to activate.
-     * 
+     *
      * @return void
      */
     public function activateOperators($op)
@@ -96,7 +96,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
      * Adds fields to list in common way.
      *
      * @param mixed $fields Fields to add.
-     * 
+     *
      * @return void
      */
     public function addFields($fields)
@@ -112,7 +112,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
 
     /**
      * Returns the fields.
-     * 
+     *
      * @return array List of fields.
      */
     public function getFields()
@@ -147,7 +147,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
      * @param string $field Field name.
      * @param string $op    Filter operator.
      * @param string $value Filter value.
-     * 
+     *
      * @return array New filter set.
      */
     public function replace($field, $op, $value)
@@ -163,7 +163,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
 
         // Now, work!
         // convert to unix timestamp
-        if (($date = $this->DateConvert($value)) === false) {
+        if (($date = $this->dateConvert($value)) === false) {
             return false;
         }
 
@@ -176,9 +176,9 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
 
     /**
      * Convert the date to a more useful format.
-     * 
+     *
      * @param string $date Date string.
-     * 
+     *
      * @return string Converted date
      */
     protected function dateConvert($date)
@@ -197,7 +197,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
 
     /**
      * Parses the date string to create a time period.
-     * 
+     *
      * Takes a date and calculates a period by a specific type.
      * Types may be:
      *   year:       That year.
@@ -207,10 +207,10 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
      *   hour:       That hour.
      *   min/minute: That minute.
      * Returns an array(from, to).
-     * 
+     *
      * @param string $date Date string.
      * @param string $type Period type.
-     * 
+     *
      * @return array Start and end of the period.
      */
     private function makePeriod($date, $type)
@@ -257,7 +257,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Test value.
-     * 
+     *
      * @return array SQL code array.
      */
     public function getSQL($field, $op, $value)

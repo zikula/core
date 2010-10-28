@@ -20,7 +20,7 @@ class FilterUtil_Common
 
     /**
      * Config object.
-     * 
+     *
      * @var FilterUtil_Config
      */
     protected $config;
@@ -36,10 +36,10 @@ class FilterUtil_Common
     {
         $this->config = $config;
     }
-    
+
     /**
      * Get configuration.
-     * 
+     *
      * @return FilterUtil_Config Configuration object.
      */
     public function getConfig()
@@ -53,7 +53,7 @@ class FilterUtil_Common
      * @param string $field Field name.
      *
      * @return bool True if the field exists, false if not.
-     */ 
+     */
     protected function fieldExists($field)
     {
         $name = $this->getConfig()->getColumn($field);
@@ -63,12 +63,12 @@ class FilterUtil_Common
 
         return true;
     }
-    
+
     /**
      * Get field by alias.
-     * 
+     *
      * @param string $alias Field alias.
-     * 
+     *
      * @return string Field name.
      */
     protected function getColumn($alias)

@@ -20,28 +20,28 @@ class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements Filt
 {
     /**
      * Enabled operators.
-     * 
+     *
      * @var array
      */
     private $ops = array();
-    
+
     /**
      * Fields to use the plugin for.
-     * 
+     *
      * @var array
      */
     private $fields = array();
-    
+
     /**
      * Category property.
-     * 
+     *
      * @var array
      */
     private $property;
 
     /**
      * Constructor.
-     * 
+     *
      * Argument $config may contain
      *  fields:   Set of fields to use, see setFields().
      *  property: Property set of the categories to filter by.
@@ -73,7 +73,7 @@ class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements Filt
 
     /**
      * Returns the operators the plugin can handle.
-     * 
+     *
      * @return array Operators.
      */
     public function availableOperators()
@@ -89,7 +89,7 @@ class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements Filt
      * Adds fields to list in common way.
      *
      * @param mixed $fields Fields to add.
-     * 
+     *
      * @return void
      */
     public function addFields($fields)
@@ -105,7 +105,7 @@ class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements Filt
 
     /**
      * Returns the fields.
-     * 
+     *
      * @return array List of fields.
      */
     public function getFields()
@@ -117,7 +117,7 @@ class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements Filt
      * Adds operators.
      *
      * @param mixed $op Operators to activate.
-     * 
+     *
      * @return void
      */
     public function activateOperators($op)
@@ -155,7 +155,7 @@ class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements Filt
      * Sets the category property.
      *
      * @param mixed $property Category Property.
-     * 
+     *
      * @see    CategoryUtil
      * @return void
      */
@@ -170,7 +170,7 @@ class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements Filt
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Test value.
-     * 
+     *
      * @return array SQL code array.
      */
     function getSQL($field, $op, $value)

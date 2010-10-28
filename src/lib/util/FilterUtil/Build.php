@@ -19,9 +19,9 @@ interface FilterUtil_Build
 {
     /**
      * Adds fields to list in common way.
-     * 
+     *
      * @param mixed $fields Fields to add.
-     * 
+     *
      * @return void
      */
     public function addFields($fields);
@@ -37,7 +37,7 @@ interface FilterUtil_Build
      * Activates/Enables operators.
      *
      * @param mixed $op Operators to activate.
-     * 
+     *
      * @return void
      */
     public function activateOperators($op);
@@ -60,11 +60,11 @@ interface FilterUtil_Build
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Value.
-     * 
+     *
      * @return array $where
      */
     public function getSQL($field, $op, $value);
-    
+
     /**
      * Get DQL
      *
@@ -73,7 +73,7 @@ interface FilterUtil_Build
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Value.
-     * 
+     *
      * @return array $where
      */
     public function getDql($field, $op, $value);

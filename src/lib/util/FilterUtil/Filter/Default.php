@@ -20,21 +20,21 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
 {
     /**
      * Enabled operators.
-     * 
+     *
      * @var array
      */
     private $_ops = array();
 
     /**
      * Fields to use the plugin for.
-     * 
+     *
      * @var array
      */
     private $_fields = array();
 
     /**
      * Constructor.
-     * 
+     *
      * Argument $config may contain
      *  fields:   Set of fields to use, see setFields().
      *  ops:      Operators to enable, see activateOperators().
@@ -64,7 +64,7 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
      * Activates the requested Operators.
      *
      * @param mixed $op Operators to activate.
-     * 
+     *
      * @return void
      */
     public function activateOperators($op)
@@ -96,7 +96,7 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
      * Adds fields to list in common way.
      *
      * @param mixed $fields Fields to add.
-     * 
+     *
      * @return void
      */
     public function addFields($fields)
@@ -112,7 +112,7 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
 
     /**
      * Returns the fields.
-     * 
+     *
      * @return array List of fields.
      */
     public function getFields()
@@ -146,7 +146,7 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Test value.
-     * 
+     *
      * @return array SQL code array.
      */
     public function getSQL($field, $op, $value)
@@ -206,10 +206,10 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
 
         return array('where' => $where);
     }
-    
+
     /**
      * Returns DQL code.
-     * 
+     *
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Test value.
@@ -225,7 +225,7 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
         $where = '';
         $params = array();
         $column = $this->getColumn($field);
-        
+
         switch ($op) {
             case 'ne':
                 $where = "$column <> ?";
@@ -280,7 +280,7 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
                 $params[] = $value;
                 break;
         }
-        
+
         return array('where' => $where, 'params' => $params);
     }
 }

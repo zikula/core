@@ -19,14 +19,14 @@ class FilterUtil_PluginCommon extends FilterUtil_Common
 {
     /**
      * Default handler.
-     * 
+     *
      * @var boolean
      */
     protected $default = false;
 
     /**
      * ID of the plugin.
-     * 
+     *
      * @var integer
      */
     protected $id;
@@ -37,7 +37,7 @@ class FilterUtil_PluginCommon extends FilterUtil_Common
      * @param array $config Array with the config key.
      */
     public function __construct($config)
-    { 
+    {
         parent::__construct($config['config']);
     }
 
@@ -45,35 +45,35 @@ class FilterUtil_PluginCommon extends FilterUtil_Common
      * Sets the plugin id.
      *
      * @param int $id Plugin ID.
-     * 
+     *
      * @return void
      */
     public function setID($id)
     {
         $this->id = $id;
     }
-    
+
     /**
      * Returns empty Sql code.
-     * 
+     *
      * Fallback for build plugins without SQL capabilities.
-     * 
+     *
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Test value.
-     * 
+     *
      * @return string emtpy.
      */
     public function getSQL($field, $op, $value)
     {
         return '';
     }
-     
+
     /**
      * Returns empty Dql code.
-     * 
+     *
      * Fallback for build plugins without DQL capabilities.
-     * 
+     *
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Test value.

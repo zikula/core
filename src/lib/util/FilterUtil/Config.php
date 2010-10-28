@@ -20,22 +20,22 @@ class FilterUtil_Config
 
     /**
      * Table mode.
-     * 
+     *
      * Enummeration what table type is used.
      */
     const TABLE_TABLES_MODE   = 1;
-    const TABLE_DOCTRINE_MODE = 2; 
-    
+    const TABLE_DOCTRINE_MODE = 2;
+
     /**
      * Table name in tables.php.
      *
      * @var string
      */
     private $_dbtable;
-    
+
     /**
      * Doctrine Table.
-     * 
+     *
      * @var Doctrine_Table
      */
     private $_doctrineTable;
@@ -74,14 +74,14 @@ class FilterUtil_Config
      * @var array
      */
     private $_join;
-    
+
     /**
      * Doctrine Query object.
-     * 
+     *
      * @var Doctrine_Query
      */
     private $_doctrineQuery;
-    
+
     /**
      * Constructor.
      *
@@ -125,7 +125,7 @@ class FilterUtil_Config
             $this->join = array();
         }
     }
-    
+
     /**
      * Sets Module.
      *
@@ -145,12 +145,12 @@ class FilterUtil_Config
 
         return false;
     }
-    
+
     /**
      * Gets Module.
-     * 
+     *
      * @return string Module name.
-     */    
+     */
     public function getModule()
     {
         return $this->_module;
@@ -174,24 +174,24 @@ class FilterUtil_Config
         if (!isset($tables[$table]) || !isset($tables[$table . '_column'])) {
             return false;
         }
-            
+
         $this->_dbtable = $table;
         $this->_table   = $tables[$table];
         $this->_column  = $tables[$table . '_column'];
 
         return true;
     }
-    
+
     /**
      * Gets table.
-     * 
+     *
      * @return string Table name.
      */
     public function getTable()
     {
         return $this->_dbtable;
     }
-    
+
     /**
      * Sets Doctrine table.
      *
@@ -206,20 +206,20 @@ class FilterUtil_Config
         $this->_doctrineTable = $table;
         $this->_table         = $table->getTableName();
         $this->_column        = array_combine($fields, $fields);
-        
+
         return true;
     }
-    
+
     /**
      * Gets Doctrine table.
-     * 
+     *
      * @return Doctrine_Table Doctrine_Table object.
      */
     public function getDoctrineTable()
     {
         return $this->_doctrineTable;
     }
-    
+
     /**
      * Reset columns.
      *
@@ -246,22 +246,22 @@ class FilterUtil_Config
 
         return true;
     }
-    
+
     /**
      * Get columns.
-     * 
+     *
      * @return array Column set.
      */
     public function getColumns()
     {
         return $this->_column;
-    } 
-    
+    }
+
     /**
      * Get single column.
-     * 
+     *
      * @param string $alias Alias.
-     * 
+     *
      * @return string Column name.
      */
     public function getColumn($alias)
@@ -269,6 +269,7 @@ class FilterUtil_Config
         if (isset($this->_column[$alias])) {
             return $this->_column[$alias];
         }
+
         return false;
     }
 
@@ -284,9 +285,9 @@ class FilterUtil_Config
         if (empty($alias)) {
             return;
         }
-        
+
         $this->_alias = $alias;
-        
+
         // reset column set.
         $this->resetColumns();
 
@@ -294,14 +295,14 @@ class FilterUtil_Config
         foreach ($this->_column as &$a) {
             $a = $this->_alias . '.' . $a;
         }
-        
+
         // finaly readd the joined tables.
         $this->addJoinToColumn();
     }
-    
+
     /**
      * Gets alias.
-     * 
+     *
      * @return string Table alias.
      */
     public function getAlias()
@@ -323,12 +324,12 @@ class FilterUtil_Config
         $this->_join = & $join;
         $this->updateColumns();
     }
-    
+
     /**
      * Gets join.
-     * 
+     *
      * Gets the reference to the given join array.
-     * 
+     *
      * @return array Join array
      */
     public function getJoin()
@@ -352,6 +353,7 @@ class FilterUtil_Config
 
         // reset columns
         $this->resetColumns();
+
         // now add the alias to all fields
         foreach ($this->_column as &$a) {
             $a = $this->_alias . '.' . $a;
@@ -394,110 +396,110 @@ class FilterUtil_Config
             $alias++;
         }
     }
-    
+
     /**
      * Set Doctrine Query.
-     * 
+     *
      * Set the Doctrine Query Object and expand configuration with it's information.
-     * 
+     *
      * @param Doctrine_Query $query Doctrine Query Object.
-     * 
+     *
      * @return void
      */
     public function setDoctrineQuery(Doctrine_Query $query)
     {
         $this->_doctrineQuery = $query;
-        
+
         $this->resetColumns();
-        
+
         $tables   = $this->_getTableInformation();
         $aliasMap = $this->_doctrineQuery->getTableAliasMap();
-        
-        $tables = $this->_enrichTablesWithAlias($tables, $aliasMap);        
-        
-        
+
+        $tables = $this->_enrichTablesWithAlias($tables, $aliasMap);
+
         $this->_setColumnsFromDoctrineTables($tables);
     }
-    
+
     /**
      * Gets the Doctrine Query object.
-     * 
+     *
      * @return Doctrine_Query Doctrine Query Object.
      */
     public function getDoctrineQuery()
     {
         return $this->_doctrineQuery;
     }
-    
+
     /**
      * Load the table objects from the "from" info.
-     * 
+     *
      * @return array Array of Doctrine_Table objects.
      */
     private function _getTableInformation()
-    {   
-        $tables = array();     
+    {
+        $tables = array();
         foreach ($this->_doctrineQuery->getDQLPart('from') as $str) {
             $str = trim($str);
             $parts = explode('JOIN ', $str);
-    
+
             $operator = false;
-    
+
             switch (trim($parts[0])) {
                 case 'INNER':
                     $operator = ':';
                 case 'LEFT':
                     array_shift($parts);
-                break;
+                    break;
             }
-    
+
             $last = '';
-    
+
             foreach ($parts as $k => $part) {
                 $part = trim($part);
-    
+
                 if (empty($part)) {
                     continue;
                 }
-    
+
                 $e = explode(' ', $part);
-    
+
                 if (end($e) == 'INNER' || end($e) == 'LEFT') {
                     $last = array_pop($e);
                 }
                 $part = implode(' ', $e);
-    
-                foreach (explode(',', $part) as $reference) {
 
+                foreach (explode(',', $part) as $reference) {
                     $reference = trim($reference);
                     $e = explode(' ', $reference);
                     $e2 = explode('.', $e[0]);
-    
+
                     if ($operator) {
                         $e[0] = array_shift($e2) . $operator . implode('.', $e2);
                     }
 
                     $tables[] = $this->_doctrineQuery->load(implode(' ', $e));
                 }
-    
+
                 $operator = ($last == 'INNER') ? ':' : '.';
             }
         }
-        
+
         return $tables;
     }
-    
+
     /**
      * Enrich doctrine tables with it's aliasses.
-     *  
+     *
      * @param array $tables   Array of doctrine table information.
      * @param array $aliasMap Array of aliasses.
-     * 
+     *
      * @return array Enriched array.
      */
-    private function _enrichTablesWithAlias ($tables, $aliasMap) {
+    private function _enrichTablesWithAlias($tables, $aliasMap)
+    {
         if (count($tables) == count($aliasMap)) {
             return array_combine($aliasMap, $tables);
+
         } elseif (count($tables) < count($aliasMap)) {
             $aliasses = array();
             foreach ($tables as $table) {
@@ -509,37 +511,41 @@ class FilterUtil_Config
             }
             return array_combine($aliasses, $tables);
         }
-        
+
         return false;
     }
-    
+
     /**
      * Set column array from Doctrine_Table object array.
-     * 
+     *
      * @param array $tables Array of Doctrine_Table objects.
-     * 
+     *
      * @return void
      */
     private function _setColumnsFromDoctrineTables($tables)
     {
         $this->_column = array();
-        
+
+        $aliases = array();
         foreach ($tables as $alias => $table) {
+            $aliases[] = "$alias.";
             $fields = $table['table']->getFieldNames();
-            
+
             foreach ($fields as $field) {
                 $key = ($table['table'] == $this->_doctrineTable ? '' : $alias . '.') . $field;
+                // strip other table aliases of the field key
+                $key = str_replace($aliases, '', $key);
 
                 $this->_column[$key] = $alias . '.' . $field;
             }
         }
-    } 
-    
+    }
+
     /**
      * Get table mode
-     * 
+     *
      * Get whether we're using Doctrine or old tables.
-     * 
+     *
      * @return constant Identifier constant.
      */
     public function getTableMode()

@@ -52,7 +52,7 @@ class FilterUtil extends FilterUtil_Common
      * @var array
      */
     private $_sql;
-    
+
     /**
      * Filter DQL holder.
      *
@@ -78,7 +78,7 @@ class FilterUtil extends FilterUtil_Common
         $args['module'] = $module;
         $args['table']  = $table;
         parent::__construct(new FilterUtil_Config($args));
-        
+
         $this->_plugin = new FilterUtil_Plugin($this->getConfig(), array('default' => array()));
 
         if (isset($args['plugins'])) {
@@ -108,10 +108,10 @@ class FilterUtil extends FilterUtil_Common
 
         return true;
     }
-    
+
     /**
      * Get name of the input variable.
-     * 
+     *
      * @return string Name of the variable.
      */
     public function getVarName()
@@ -208,8 +208,10 @@ class FilterUtil extends FilterUtil_Common
         $op = 0;
         $level = 0;
         $sub = false;
+
         for ($i = 0; $i < strlen($filter); $i++) {
             $c = substr($filter, $i, 1);
+
             switch ($c) {
                 case ',': // Operator: AND
                     if (!empty($string)) {
@@ -224,6 +226,7 @@ class FilterUtil extends FilterUtil_Common
                     }
                     $string = '';
                     break;
+
                 case '*': // Operator: OR
                     if (!empty($string)) {
                         $sub = $this->_makeCondition($string);
@@ -237,6 +240,7 @@ class FilterUtil extends FilterUtil_Common
                     }
                     $string = '';
                     break;
+
                 case '(': // Subquery
                     $level++;
                     while ($level != 0 && $i <= strlen($filter)) {
@@ -264,6 +268,7 @@ class FilterUtil extends FilterUtil_Common
                     }
                     $string = '';
                     break;
+
                 default:
                     $string .= $c;
                     break;
@@ -383,12 +388,12 @@ class FilterUtil extends FilterUtil_Common
 
     /**
      * Add filter string.
-     * 
+     *
      * Adds a filter or an array of filters.
      * If filter does not begin with "," or "*" append it as "and".
-     * 
+     *
      * @param mixed $filter Filter string or array.
-     * 
+     *
      * @return void
      */
     public function addFilter($filter)
@@ -402,13 +407,13 @@ class FilterUtil extends FilterUtil_Common
         } else {
             $this->andFilter($filter);
         }
-    } 
-    
+    }
+
     /**
      * Add filter string with "AND".
-     * 
+     *
      * @param mixed $filter Filter string or array.
-     * 
+     *
      * @return void
      */
     public function andFilter($filter)
@@ -420,7 +425,7 @@ class FilterUtil extends FilterUtil_Common
         } elseif (substr($filter, 0, 1) == ',') {
             $this->_filter .= $filter;
         } elseif (substr($filter, 0, 1) == '*') {
-                $this->_filter .= ',' . (substr($filter, 1));
+            $this->_filter .= ',' . (substr($filter, 1));
         } else {
             $this->_filter .= ',' . ($filter);
         }
@@ -428,9 +433,9 @@ class FilterUtil extends FilterUtil_Common
 
     /**
      * Add filter string with "OR".
-     * 
+     *
      * @param mixed $filter Filter string or array.
-     * 
+     *
      * @return void
      */
     public function orFilter($filter)
@@ -446,7 +451,7 @@ class FilterUtil extends FilterUtil_Common
         } else {
             $this->_filter .= '*' . ($filter);
         }
-    } 
+    }
 
     //--------------- Filter handling ----------------------
     //+++++++++++++++ SQL Handling +++++++++++++++++++++++++
@@ -469,6 +474,7 @@ class FilterUtil extends FilterUtil_Common
             $res = $this->_plugin->getSQL($obj['field'], $obj['op'], $obj['value']);
             $res['join'] = & $this->join;
             return $res;
+
         } else {
             $where = '';
             if (isset($obj[0]) && is_array($obj[0])) {
@@ -478,6 +484,7 @@ class FilterUtil extends FilterUtil_Common
                 }
                 unset($obj[0]);
             }
+
             foreach ($obj as $op => $tmp) {
                 $op = strtoupper(substr($op, 0, 3)) == 'AND' ? 'AND' : 'OR';
                 if (strtoupper($op) == 'AND' || strtoupper($op) == 'OR') {
@@ -519,9 +526,9 @@ class FilterUtil extends FilterUtil_Common
 
         return $this->_sql;
     }
-    
+
     //+++++++++++++++ SQL Handling +++++++++++++++++++++++++
-    
+
     /**
      * Help function for enrich the Doctrine Query object with the filters from a Filter-object.
      *
@@ -564,21 +571,21 @@ class FilterUtil extends FilterUtil_Common
 
         return array('where' => $where, 'params' => $params);
     }
-    
+
     /**
      * Enrich DQL.
-     * 
+     *
      * @param Doctrine_Query $query Doctrine Query Object.
-     * 
+     *
      * @return void
      */
     public function enrichQuery(Doctrine_Query $query)
     {
         $object = $this->getObject();
         $this->getConfig()->setDoctrineQuery($query);
-        
+
         $result = $this->_genDqlRecursive($object);
-        
+
         if (is_array($result) && !empty($result['where'])) {
             $query->AndWhere($result['where'], $result['params']);
             $this->_dql = $result;

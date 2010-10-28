@@ -20,16 +20,16 @@ class FilterUtil_Filter_ReplaceName extends FilterUtil_PluginCommon implements F
 {
     /**
      * Replace pairs.
-     * 
+     *
      * Form is old => new.
-     * 
+     *
      * @var array
      */
     protected $pair = array();
 
     /**
      * Constructor.
-     * 
+     *
      * Argument $config may contain:
      *  pair: array of replace pairs in form old => new.
      *
@@ -68,7 +68,7 @@ class FilterUtil_Filter_ReplaceName extends FilterUtil_PluginCommon implements F
      * @param string $field Field name.
      * @param string $op    Filter operator.
      * @param string $value Filter value.
-     * 
+     *
      * @return array New filter set.
      */
     public function replace($field, $op, $value)

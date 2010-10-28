@@ -15,28 +15,28 @@
 
 /**
  * FilterUtil plugin to access a single category field.
- * 
+ *
  * Operator "sub" can filter for a category and all its subcategories.
  */
 class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements FilterUtil_Build
 {
     /**
      * Enabled operators.
-     * 
+     *
      * @var array
      */
     private $ops = array();
-    
+
     /**
      * Fields to use the plugin for.
-     * 
+     *
      * @var array
      */
     private $fields = array();
 
     /**
      * Constructor
-     * 
+     *
      * Argument $config may contain:
      *  fields:  Set of fields to work on.
      *  ops:     Enabled Operators.
@@ -67,7 +67,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements Filter
      * Adds fields to list in common way.
      *
      * @param mixed $fields Fields to add.
-     * 
+     *
      * @return void
      */
     public function addFields($fields)
@@ -83,7 +83,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements Filter
 
     /**
      * Returns the fields.
-     * 
+     *
      * @return array List of fields.
      */
     public function getFields()
@@ -95,7 +95,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements Filter
      * Activates the requested Operators.
      *
      * @param mixed $op Operators to activate.
-     * 
+     *
      * @return void
      */
     public function activateOperators($op)
@@ -131,7 +131,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements Filter
 
     /**
      * Returns the operators the plugin can handle.
-     * 
+     *
      * @return array Operators.
      */
     public function availableOperators()
@@ -149,7 +149,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements Filter
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Test value.
-     * 
+     *
      * @return array SQL code array.
      */
     function getSQL($field, $op, $value)
