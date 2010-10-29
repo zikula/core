@@ -412,6 +412,7 @@ div.z-formbuttons:after {
     cursor: pointer;
 }
 
+button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-formbuttons button {
     border: 0px;
     padding: 0px;
@@ -1176,7 +1177,7 @@ div.z-formbuttons:after {
     background: -webkit-gradient(linear,left top, left bottom,from(#FAFAFA),to(#f2f2f2)); /*webkit*/
     background: -moz-linear-gradient(center top , #FAFAFA, #F2F2F2) repeat scroll 0 0 transparent; /*gecko*/
     background: linear-gradient(#FAFAFA, #F2F2F2); /*CSS3*/
-    border: 1px solid #ddd;
+    border: solid 1px #b4b4b4;
     -moz-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3);
     box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3);
@@ -1226,7 +1227,7 @@ div.z-formbuttons:after {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#f2f2f2'); /* for IE */
     background: -webkit-gradient(linear,left top, left bottom,from(#ddd),to(#f2f2f2)); /*webkit*/
     background: -moz-linear-gradient(center top, #ddd, #F2F2F2) repeat scroll 0 0 transparent; /*gecko*/
-    background: linear-gradient(##ddd, #F2F2F2); /*CSS3*/
+    background: linear-gradient(#ddd, #F2F2F2); /*CSS3*/
     font-weight: bold;
     text-align: center;
     padding: 5px;
