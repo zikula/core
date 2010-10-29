@@ -177,7 +177,7 @@ ul#admintabs #ajaxNewCatForm a.ajaxCatImage img {
     text-decoration: none;
     color: #333;
     font-weight: normal;
-    text-shadow: 1px 1px 1px #fefefe;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 #control_contextmenu ul li.selected,
@@ -185,7 +185,7 @@ ul#admintabs #ajaxNewCatForm a.ajaxCatImage img {
     background-color:#3875D7;
     color:#FFFFFF;
     cursor:pointer;
-    text-shadow:1px 1px 1px #333;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
 }
 
 #control_contextmenu ul li.selected:hover {

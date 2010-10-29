@@ -41,9 +41,9 @@
                 padding: 1.5em;
                 background: #FAFAFA;
                 border: 1px solid #2147B3;
-                -webkit-box-shadow: #999 4px 4px 10px;
-                -moz-box-shadow: #999 4px 4px 10px;
-                box-shadow: #999 4px 4px 10px;
+                -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
+                -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
+                box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
             }
         </style>
         {/literal}

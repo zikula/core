@@ -95,7 +95,9 @@ dd {
     background: #ffffff;
     color: #303030;
     border: 2px solid #a0a0a0;
-    -moz-box-shadow: 1px 1px 1px #A0A0A0;
+    -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
 }
 
 #theme_header {
@@ -204,7 +206,7 @@ dd {
 }
 .z-blockposition-search #theme_search .theme_search_button:hover {
     background: #27587F;
-    text-shadow: 1px 1px 2px #333;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .3);
 }
 
 
