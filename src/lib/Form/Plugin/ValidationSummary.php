@@ -38,18 +38,28 @@ class Form_Plugin_ValidationSummary extends Form_Plugin
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
-        $validators = & $render->validators;
+        $validators = & $view->validators;
 
         $html = '';
         foreach ($validators as $validator) {
             if (!$validator->isValid) {
-                $html .= "<li><label for=\"{$validator->id}\">" . DataUtil::formatForDisplay($validator->myLabel) . ': ';
+                $label = '';
+                if (get_class($validator) == 'Form_Plugin_RadioButton') {
+                    foreach ($view->plugins as $plugin) {
+                        if (get_class($plugin) == 'Form_Plugin_Label' && $plugin->for == $validator->dataField) {
+                            $label = $plugin->text;
+                            break;
+                        }
+                    }
+                }
+                $label = !empty($label) ? $label : $validator->myLabel;
+                $html .= "<li><label for=\"{$validator->id}\">" . DataUtil::formatForDisplay($label) . ': ';
                 $html .=  DataUtil::formatForDisplay($validator->errorMessage) . "</label></li>\n";
             }
         }

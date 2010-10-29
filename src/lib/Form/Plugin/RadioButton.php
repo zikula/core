@@ -269,6 +269,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      */
     function initialize($view)
     {
+        $this->validationChecked = false;
         $view->addValidator($this);
     }
 
@@ -354,7 +355,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      *
      * @return void
      */
-    function validate($view)
+    function validate(&$view)
     {
         $this->clearValidation($view);
 
@@ -374,7 +375,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      *
      * @return boolean
      */
-    function findCheckedRadioButton($view, &$firstRadioButton)
+    function findCheckedRadioButton(&$view, &$firstRadioButton)
     {
         $lim = count($view->plugins);
 
