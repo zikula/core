@@ -77,20 +77,20 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
             return;
         }
 
-        if ($this->text != '') {
+        if ($this->text !== '') {
             $this->text = DataUtil::transformNumberInternal($this->text);
             if (!is_numeric($this->text)) {
                 $this->setError(__('Error! Invalid number.'));
             }
 
             $i = $this->text;
-            if ($this->minValue != null && $i < $this->minValue || $this->maxValue != null && $i > $this->maxValue) {
-                if ($this->minValue != null && $this->maxValue != null) {
+            if ($this->minValue !== null && $i < $this->minValue || $this->maxValue !== null && $i > $this->maxValue) {
+                if ($this->minValue !== null && $this->maxValue !== null) {
                     $this->setError(__f('Error! Range error. Value must be between %1$s and %2$s.',
                                         array($this->minValue, $this->maxValue)));
-                } else if ($this->minValue != null) {
+                } else if ($this->minValue !== null) {
                     $this->setError(__f('Error! The value must be %s or more.', $this->minValue));
-                } else if ($this->maxValue != null) {
+                } else if ($this->maxValue !== null) {
                     $this->setError(__f('Error! The value must be %s or less.', $this->maxValue));
                 }
             }
@@ -107,7 +107,7 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
      */
     function parseValue($view, $text)
     {
-        if ($text == '') {
+        if ($text === '') {
             return null;
         }
 
