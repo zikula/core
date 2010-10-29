@@ -607,7 +607,7 @@ class DataUtil
     public static function mb_unserialize($string)
     {
         // we use a callback here to avoid problems with certain characters (single quotes and dollarsign) - drak
-        return @unserialize(preg_replace_callback('#s:(\d+):"(.*?)";#s', create_function('$m', 'return DataUtil::_mb_unserialize_callback($m);'), $string));
+        return @unserialize(preg_replace_callback('#s:(\d+):"(.*?)";#s', create_function('$m', 'return self::_mb_unserialize_callback($m);'), $string));
     }
 
     /**
