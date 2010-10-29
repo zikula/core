@@ -35,8 +35,7 @@ class AjaxUtil
     {
         if (LogUtil::hasErrors()) {
             if (!$message) {
-                $errors = LogUtil::getErrorMessages();
-                throw new Zikula_Exception_Forbidden($errors[0]);
+                throw new Zikula_Exception_Forbidden();
             }
         }
 
