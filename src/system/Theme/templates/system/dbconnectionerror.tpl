@@ -10,10 +10,11 @@
                 padding: 0;
                 font-family: Verdana, Arial, Helvetica, Sans-serif;
                 font-size: 14px;
-                background: #F2F2F2;
-                background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) );
-                background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent;
-                background: linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent;
+                background: #F2F2F2; /*non-CSS3 browsers*/
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#eaeaea'); /*IE*/
+                background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) ); /*webkit*/
+                background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent; /*gecko*/
+                background: linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent; /*CSS3*/
                 line-height: 1.6em;
             }
             a {
@@ -56,9 +57,9 @@
                 -webkit-border-radius: 5px;
                 -moz-border-radius: 5px;
                 border-radius: 5px;
-                -webkit-box-shadow: #999 4px 4px 10px;
-                -moz-box-shadow: #999 4px 4px 10px;
-                box-shadow: #999 4px 4px 10px;
+                -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
+                -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
+                box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
                 text-align: center;
             }
         </style>

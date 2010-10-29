@@ -11,10 +11,11 @@
     border-color: #CCCCCC #B9B9B9 #B9B9B9 #CCCCCC;
     border-style: solid;
     border-width: 1px;
-    background: #f5f5f5;
-    background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede));
-    background: -moz-linear-gradient(top,  #F5F5F5, #dedede);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F5F5F5', endColorstr='#dedede');
+    background: #f5f5f5; /*non-CSS3 browsers*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F5F5F5', endColorstr='#dedede'); /*IE*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede)); /*webkit*/
+    background: -moz-linear-gradient(top,  #F5F5F5, #dedede); /*gecko*/
+    background: linear-gradient(top,  #F5F5F5,  #dedede); /*CSS3*/
 }
 
 .z-pagercss span {
@@ -29,20 +30,22 @@
 .z-pagercss span:hover,
 .z-pagercss a:hover {
     text-decoration: none !important;
-    background: #c2e1ef;
-    background: -webkit-gradient(linear, left top, left bottom, from(#c2e1ef), to(#dff4ff));
-    background: -moz-linear-gradient(top,  #c2e1ef, #dff4ff);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2e1ef', endColorstr='#dff4ff');
     border: 1px solid #6FA7DF;
+    background: #c2e1ef; /*non-CSS3 browsers*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2e1ef', endColorstr='#dff4ff'); /*IE*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#c2e1ef), to(#dff4ff)); /*webkit*/
+    background: -moz-linear-gradient(top,  #c2e1ef, #dff4ff); /*gecko*/
+    background: linear-gradient(top,  #c2e1ef,  #dff4ff); /*CSS3*/
 }
 
 .z-pagercss span.z-pagercss-current {
     color: #444;
     font-weight: bold;
-    background: #c2e1ef;
-    background: -webkit-gradient(linear, left top, left bottom, from(#c2e1ef), to(#dff4ff));
-    background: -moz-linear-gradient(top,  #c2e1ef, #dff4ff);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2e1ef', endColorstr='#dff4ff');
     border: 1px solid #6FA7DF;
+    background: #c2e1ef; /*non-CSS3 browsers*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2e1ef', endColorstr='#dff4ff'); /*IE*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#c2e1ef), to(#dff4ff)); /*webkit*/
+    background: -moz-linear-gradient(top,  #c2e1ef, #dff4ff); /*gecko*/
+    background: linear-gradient(top,  #c2e1ef,  #dff4ff); /*CSS3*/
 }
 

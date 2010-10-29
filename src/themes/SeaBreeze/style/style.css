@@ -373,6 +373,7 @@ textarea:focus {
 
 .z-blockposition-center {
     background: #FEFEFE; /*non-CSS3 browsers*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FEFEFE', endColorstr='#F0F0F0'); /*IE*/
     background: -webkit-gradient(linear,left top, left bottom,from(#FEFEFE),to(#F0F0F0)); /*webkit*/
     background: -moz-linear-gradient(top,#FEFEFE, #F0F0F0); /*gecko*/
     background: linear-gradient(#FEFEFE, #F0F0F0); /*CSS3*/

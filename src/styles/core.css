@@ -79,6 +79,7 @@ img.z-floatright {
 
 ul.z-menulinks {
     background: url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6; /*non-CSS3 browsers*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#E6E6E6'); /*IE*/
     background: -webkit-gradient(linear,left top, left bottom,from(#fefefe), to(#E6E6E6)); /*webkit*/
     background: -moz-linear-gradient(top, #fefefe, #E6E6E6); /*gecko*/
     background: linear-gradient(#fefefe, #E6E6E6); /*CSS3*/
@@ -301,9 +302,9 @@ table.z-datatable ul {
     margin: 0 0 1em 0;
     padding: 0.5em 1em;
     color: #333;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     background: #fafafa; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2)); /*webkit*/
     background: -moz-linear-gradient(top, #fafafa, #f2f2f2); /*gecko*/
@@ -316,7 +317,7 @@ table.z-datatable ul {
     color: #000;
     background: transparent;
     border: 0;
-    text-shadow: -1px -1px 0 rgba(250, 250, 250, 0.5);
+    text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .z-form .z-formrow .z-mandatorysym {
@@ -817,8 +818,6 @@ div.z-formbuttons:after {
     background: linear-gradient(#F5F5F5, #dedede); /*CSS3*/
 }
 
-
-
 .z-buttons .z-bt-small {
     margin: 0 1px 0 0;
     padding: 3px 8px 4px 8px !important;
@@ -877,16 +876,18 @@ div.z-formbuttons:after {
 }
 .z-buttons .z-btred:hover {
     background: #fbc2c4;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fbc2c4', endColorstr='#fbe3e4');
     background: -webkit-gradient(linear, left top, left bottom, from(#fbc2c4), to(#fbe3e4));
     background: -moz-linear-gradient(top, #fbc2c4, #fbe3e4);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fbc2c4', endColorstr='#fbe3e4');
+    background: linear-gradient(#fbc2c4, #fbe3e4);
     border: 1px solid #EF7868;
 }
 .z-buttons .z-btred:active {
     background: #EFA4A7;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EFA4A7', endColorstr='#EFC2C5');
     background: -webkit-gradient(linear, left top, left bottom, from(#EFA4A7), to(#EFC2C5));
     background: -moz-linear-gradient(top, #EFA4A7, #EFC2C5);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EFA4A7', endColorstr='#EFC2C5');
+    background: linear-gradient(#EFA4A7, #EFC2C5);
     border: 1px solid #EF7868;
 }
 
@@ -900,16 +901,18 @@ div.z-formbuttons:after {
 }
 .z-buttons .z-btblue:hover {
     background: #c2e1ef;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2e1ef', endColorstr='#dff4ff');
     background: -webkit-gradient(linear, left top, left bottom, from(#c2e1ef), to(#dff4ff));
     background: -moz-linear-gradient(top, #c2e1ef, #dff4ff);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2e1ef', endColorstr='#dff4ff');
+    background: linear-gradient(#c2e1ef, #dff4ff);
     border: 1px solid #6FA7DF;
 }
 .z-buttons .z-btblue:active {
     background: #A7CEDF;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A7CEDF', endColorstr='#C2E0EF');
     background: -webkit-gradient(linear, left top, left bottom, from(#A7CEDF), to(#C2E0EF));
     background: -moz-linear-gradient(top, #A7CEDF, #C2E0EF);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A7CEDF', endColorstr='#C2E0EF');
+    background: linear-gradient(#A7CEDF, #C2E0EF);
     border: 1px solid #6FA7DF;
 }
 
@@ -923,16 +926,18 @@ div.z-formbuttons:after {
 }
 .z-buttons .z-btgreen:hover {
     background: #D1EFD2;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#D1EFD2', endColorstr='#EFFFEF');
     background: -webkit-gradient(linear, left top, left bottom, from(#D1EFD2), to(#EFFFEF));
     background: -moz-linear-gradient(top, #D1EFD2, #EFFFEF);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#D1EFD2', endColorstr='#EFFFEF');
+    background: linear-gradient(#D1EFD2, #EFFFEF);
     border: 1px solid #A0DF61;
 }
 .z-buttons .z-btgreen:active {
     background-color:#C2EFC3;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#C2EFC3', endColorstr='#D1EFD1');
     background: -webkit-gradient(linear, left top, left bottom, from(#C2EFC3), to(#D1EFD1));
     background: -moz-linear-gradient(top, #C2EFC3, #D1EFD1);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#C2EFC3', endColorstr='#D1EFD1');
+    background: linear-gradient(#C2EFC3, #D1EFD1);
     border: 1px solid #A0DF61;
 }
 
@@ -1143,10 +1148,11 @@ div.z-formbuttons:after {
 /*******************************************************************************/
 
 .z-tooltip {
-    background: #ddd; /* for non-css3 browsers */
+    background: #ddd; /*non-CSS3 browsers*/
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /* for IE */
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /* webkit */
-    background: -moz-linear-gradient(top, #fff, #cfcfcf); /* for firefox 3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /*webkit*/
+    background: -moz-linear-gradient(top, #fff, #cfcfcf); /*gecko*/
+    background: linear-gradient(#fff, #cfcfcf); /*CSS3*/
     border: solid 1px #b4b4b4;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1154,33 +1160,33 @@ div.z-formbuttons:after {
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
     box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     font-size: 0.9em;
     text-align: left;
-    padding: 5px 10px 5px 10px;
+    padding: 2px 5px;
     margin: 0;
     color: #333;
     font-weight: normal;
-    text-shadow: 1px 1px 1px #fefefe;
-    min-width: 200px;
-    max-width: 400px;
+    max-width: 40em;
 }
 
 .z-window {
+    background-color: #FAFAFA; /*non-CSS3 browsers*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#f2f2f2'); /* for IE */
+    background: -webkit-gradient(linear,left top, left bottom,from(#FAFAFA),to(#f2f2f2)); /*webkit*/
+    background: -moz-linear-gradient(center top , #FAFAFA, #F2F2F2) repeat scroll 0 0 transparent; /*gecko*/
+    background: linear-gradient(#FAFAFA, #F2F2F2); /*CSS3*/
     border: 1px solid #ddd;
-    background-color: #FAFAFA;
-    background: -moz-linear-gradient(center top , #FAFAFA, #F2F2F2) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear,left top, left bottom,from(#FAFAFA),to(#f2f2f2));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#f2f2f2');
-    -moz-box-shadow: 5px 5px 10px #888;
-    -webkit-box-shadow: 5px 5px 10px #888;
-    box-shadow: 5px 5px 10px #888;
+    -moz-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3);
     padding: 0;
     text-align: left;
     font-family: "Lucida Grande",Verdana;
     font-size: 12px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
     min-width: 200px;
     min-height: 100px;
     overflow: hidden;
@@ -1191,9 +1197,9 @@ div.z-formbuttons:after {
 }
 
 .z-window.z-modal {
-    -moz-box-shadow: 5px 5px 10px #000;
-    -webkit-box-shadow: 5px 5px 10px #000;
-    box-shadow: 5px 5px 10px #000;
+    -moz-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }
 .z-window .z-window-body {
     background: #fff;
@@ -1216,32 +1222,33 @@ div.z-formbuttons:after {
 }
 
 .z-window .z-window-header {
+    background: #DDDDDD; /*non-CSS3 browsers*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#f2f2f2'); /* for IE */
+    background: -webkit-gradient(linear,left top, left bottom,from(#ddd),to(#f2f2f2)); /*webkit*/
+    background: -moz-linear-gradient(center top, #ddd, #F2F2F2) repeat scroll 0 0 transparent; /*gecko*/
+    background: linear-gradient(##ddd, #F2F2F2); /*CSS3*/
     font-weight: bold;
-    text-align:center;
+    text-align: center;
     padding: 5px;
     height: 16px;
-    -webkit-border-top-left-radius: 9px;
-    -webkit-border-top-right-radius: 9px;
-    -moz-border-radius-topleft: 9px;
-    -moz-border-radius-topright: 9px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    background: #DDDDDD;
-    background: -moz-linear-gradient(center top, #ddd, #F2F2F2) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear,left top, left bottom,from(#ddd),to(#f2f2f2));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#f2f2f2');
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .z-window .z-window-footer {
     text-align: center;
-    -webkit-border-bottom-right-radius: 9px;
-    -webkit-border-bottom-left-radius: 9px;
-    -moz-border-radius-bottomright: 9px;
-    -moz-border-radius-bottomleft: 9px;
-    border-bottom-right-radius: 9px;
-    border-bottom-left-radius: 9px;
     min-height: 12px;
     padding: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .z-window .z-window-title {
@@ -1335,9 +1342,9 @@ div.z-formbuttons:after {
 }
 
 .z-window.z-minimized .z-window-header {
-    -moz-border-radius: 9px;
-    -webkit-border-radius: 9px;
-    border-radius: 9px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
     position: static;
 }
 
