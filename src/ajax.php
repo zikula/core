@@ -79,13 +79,16 @@ if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
 }
 
 // Process final response.
+// If response is not instanceof Zikula_Response_Ajax_Base provide compat solution
 if (!$response instanceof Zikula_Response_Ajax_Base) {
-    if (empty($response) || is_string($response)) {
-        $response = new Zikula_Response_Ajax_Plain($response);
-    } else {
-        $response = new Zikula_Response_Ajax($response);
-    }
+    $response = !is_array($response) ? array('data' => $response) : $response;
+    $response['statusmsg'] = LogUtil::getStatusMessages();
+    $response['authid'] = SecurityUtil::generateAuthKey(ModUtil::getName());
+    $response = json_encode($response);
+    header("HTTP/1.1 200 OK");
+    header('Content-type: application/json');
 }
 
 // Issue response.
 echo $response;
+System::shutdown();
