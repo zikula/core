@@ -47,15 +47,15 @@ class SystemListenersUtil
     public static function systemHooks(Zikula_Event $event)
     {
         if (!System::isInstalling()) {
-            if (!System::isInstalling()) {
-                $event->getSubject()->getHookManager()->registerHooksRuntime();
-            }
+            $event->getSubject()->getHookManager()->registerHooksRuntime();
         
             // call system init hooks
             $systeminithooks = FormUtil::getPassedValue('systeminithooks', 'yes', 'GETPOST');
             if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN) && (isset($systeminithooks) && $systeminithooks == 'no')) {
                 // omit system hooks if requested by an administrator
             } else {
+                $initEvent = new Zikula_Event('callhooks', new Zikula_HookSubject('hook.systeminit', 'module.zikula', $event->getSubject()));
+                $event->getSubject()->getHookManager()->notify($initEvent);
                 ModUtil::callHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
             }
         }
