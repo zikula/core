@@ -342,17 +342,17 @@ class Modules_Controller_Admin extends Zikula_Controller
                                         'state' => $state)),
                                         'image' => 'agt_update_misc.gif',
                                         'title' => $this->__('Install'));
-                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.main_siteurl'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.main_siteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
-                                    $actions[] = array(
-                                            'url' => ModUtil::url('Modules', 'admin', 'remove', array(
-                                            'id' => $mod['id'],
-                                            'startnum' => $startnum,
-                                            'authid' => $authid,
-                                            'letter' => $letter,
-                                            'state' => $state)),
-                                            'image' => '14_layer_deletelayer.gif',
-                                            'title' => $this->__('Remove module'));
-                                }
+//                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.main_siteurl'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.main_siteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+//                                    $actions[] = array(
+//                                            'url' => ModUtil::url('Modules', 'admin', 'remove', array(
+//                                            'id' => $mod['id'],
+//                                            'startnum' => $startnum,
+//                                            'authid' => $authid,
+//                                            'letter' => $letter,
+//                                            'state' => $state)),
+//                                            'image' => '14_layer_deletelayer.gif',
+//                                            'title' => $this->__('Remove module'));
+//                                }
                             } else {
                                 $actions[] = array(
                                         'url' => ModUtil::url('Modules', 'admin', 'compinfo', array(
