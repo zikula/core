@@ -528,7 +528,6 @@ class FilterUtil_Config
 
         $aliases = array();
         foreach ($tables as $alias => $table) {
-            $aliases[] = "$alias.";
             $fields = $table['table']->getFieldNames();
 
             foreach ($fields as $field) {
@@ -538,6 +537,7 @@ class FilterUtil_Config
 
                 $this->_column[$key] = $alias . '.' . $field;
             }
+            $aliases[] = "$alias.";
         }
     }
 
