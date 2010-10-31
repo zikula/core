@@ -46,6 +46,10 @@ TEMPLATES
 
 - Introduced persistent $metatags for general SEO purposes.
 
+- Themes should be updated to use {$metatags.dscription} and {$metatags.keywords}
+
+- Page title comes from {pagegetvar name="title"} and not {title}
+
 - Introduced persistent $coredata for miscellaneous templating data.
 
 - Introduced persistent $modvars array with all module vars.
