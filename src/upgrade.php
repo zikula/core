@@ -215,7 +215,7 @@ function _upg_login($showheader = true)
     echo '<p>' . __('For the next upgrade steps you need to be logged in. Please provide your admin account credentials') . '</p>' . "\n";
     echo '<form class="z-form" action="upgrade.php?lang=' . $lang . '" method="post" enctype="application/x-www-form-urlencoded">' . "\n";
     echo '<fieldset><legend>' . __('Log-in') . '</legend>' . "\n";
-    echo '<div class="z-formrow"><label for="username">' . __('User name') . '</label><input id="username" type="text" name="username" size="25" maxlength="25" /></div>' . "\n";
+    echo '<div class="z-formrow"><label for="username">' . __('User name') . '</label><input id="username" type="text" name="username" size="60" maxlength="25" /></div>' . "\n";
     echo '<div class="z-formrow"><label for="password">' . __('Password') . '</label><input id="password" type="password" name="password" size="25" maxlength="40" /></div>' . "\n";
     echo '<input type="hidden" name="action" value="sanitycheck" />' . "\n";
 
