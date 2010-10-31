@@ -262,7 +262,6 @@ class Form_View extends Zikula_View
             if (!$plugin instanceof Form_Plugin) {
                 throw new InvalidArgumentException(__f('Plugin %s must be an instance of Form_Plugin', $pluginName));
             }
-            $plugin->setDomain($this->getDomain());
             $plugin->setup();
 
             // Make sure to store ID and render reference in plugin

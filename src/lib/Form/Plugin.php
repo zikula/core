@@ -236,6 +236,8 @@ abstract class Form_Plugin implements Zikula_Translatable
      */
     public function __construct($view, &$params)
     {
+        $this->setDomain($view->getDomain());
+
         $this->view = $view;
     }
 
@@ -602,8 +604,6 @@ abstract class Form_Plugin implements Zikula_Translatable
      */
     public function registerPlugin($view, $plugin)
     {
-        $plugin->setDomain($this->domain);
-
         $this->plugins[] = $plugin;
     }
 
