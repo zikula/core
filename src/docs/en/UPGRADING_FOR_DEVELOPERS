@@ -46,7 +46,7 @@ TEMPLATES
 
 - Introduced persistent $metatags for general SEO purposes.
 
-- Themes should be updated to use {$metatags.dscription} and {$metatags.keywords}
+- Themes should be updated to use {$metatags.description} and {$metatags.keywords}
 
 - Page title comes from {pagegetvar name="title"} and not {title}
 
