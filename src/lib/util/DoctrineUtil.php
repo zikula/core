@@ -175,11 +175,11 @@ class DoctrineUtil
      *
      * @param string  $oldTableName Old table name.
      * @param string  $newTableName New table name.
-     * @param boolean $check        Verifies request, default: true.
+     * @param boolean $check        Validate request only, default: false.
      *
      * @return void
      */
-    public static function renameTable($oldTableName, $newTableName, $check=true)
+    public static function renameTable($oldTableName, $newTableName, $check=false)
     {
         $oldTableName = self::decorateTableName($oldTableName);
         $newTableName = self::decorateTableName($newTableName);
@@ -193,11 +193,11 @@ class DoctrineUtil
      * @param string  $tableName  Table name.
      * @param string  $columnName Column name.
      * @param array   $options    Options.
-     * @param boolean $check      Verifies request, default: true.
+     * @param boolean $check      Verifies request only, default: false.
      *
      * @return void
      */
-    public static function createColumn($tableName, $columnName, $options=array(), $check=true)
+    public static function createColumn($tableName, $columnName, $options=array(), $check=false)
     {
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->alterTable($tableName, array('add' => array($columnName => $options)), $check);
@@ -209,11 +209,11 @@ class DoctrineUtil
      *
      * @param string  $tableName  Table name.
      * @param string  $columnName Column name.
-     * @param boolean $check      Verifies request, default: true.
+     * @param boolean $check      Verifies request only, default: false.
      *
      * @return void
      */
-    public static function dropColumn($tableName, $columnName, $check=true)
+    public static function dropColumn($tableName, $columnName, $check=false)
     {
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->alterTable($tableName, array('remove' => array($columnName => array())), $check);
@@ -225,17 +225,16 @@ class DoctrineUtil
      * @param string  $tableName     Table name.
      * @param string  $oldColumnName Old column name.
      * @param string  $newColumnName New column name.
-     * @param boolean $check         Verifies request, default: true.
+     * @param boolean $check         Verifies request only, default: false.
      *
      * @return void
      */
-    public static function renameColumn($tableName, $oldColumnName, $newColumnName, $check=true)
+    public static function renameColumn($tableName, $oldColumnName, $newColumnName, $check=false)
     {
-        $oldTableName = self::decorateTableName($oldTableName);
-        $newTableName = self::decorateTableName($newTableName);
+        $tableName = self::decorateTableName($tableName);
         $columnList = Doctrine_Manager::connection()->import->listTableColumns($tableName);
-        if (isset($columnList[$column['oldColumnName']])) {
-            Doctrine_Manager::connection()->export->alterTable($column['tableName'],
+        if (isset($columnList[$oldColumnName])) {
+            Doctrine_Manager::connection()->export->alterTable($tableName,
                     array('rename' => array($oldColumnName => array('name' => $newColumnName, 'definition' => $columnList[$oldColumnName]))), $check);
         }
     }
@@ -247,11 +246,11 @@ class DoctrineUtil
      * @param string  $tableName  Table name.
      * @param string  $columnName Column name.
      * @param array   $options    Column options.
-     * @param boolean $check      Verifies request, default: true.
+     * @param boolean $check      Verifies request only, default: false.
      *
      * @return void
      */
-    public static function alterColumn($tableName, $columnName, array $options=array(), $check=true)
+    public static function alterColumn($tableName, $columnName, array $options=array(), $check=false)
     {
         $options = array();
         $options = $column['options'];
