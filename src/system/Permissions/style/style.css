@@ -8,22 +8,6 @@
     margin:1em 0;
     width:100%;
 }
-#permgroupfilterform {
-    float: right;
-}
-#permgroupfilterform button {
-    background: #eee;
-    border: 2px outset #eee;
-    cursor: pointer;
-    margin-left: 5px;
-    padding: 1px;
-}
-#permgroupfilter {
-    float: right;
-}
-#permgrp {
-    float: left;
-}
 ol#permissionlist .adminpermission {
     border:1px solid red;
     padding-left: 30px !important;

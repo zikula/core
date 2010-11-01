@@ -16,28 +16,7 @@
 
     <div id="permissions-header" class="z-clearfix">
         <a id="appendajax" onclick="javascript:permappend();" class="z-floatleft z-icon-es-new z-hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
-        {if $enablefilter eq true}
-        <form id="permgroupfilterform" action="{modurl modname=Permissions type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
-            <div>
-                <div id="filterwarning" style="{if $permgrp eq -1}display: none;{/if}color: red; float: left; margin-right: 20px;">{img modname=core src=error.gif set=icons/extrasmall __alt="Error" __title="Error"}&nbsp;<strong>{gt text="Caution! Filter is active!"}</strong></div>
-                <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Permissions}" />
-                <select id="permgrp" name="permgrp">
-                    <optgroup label="{gt text="Group"}">
-                        {foreach item=groupname from=$permgrps key=groupid}
-                        <option value="g+{$groupid}">{$groupname}</option>
-                        {/foreach}
-                    </optgroup>
-                    <optgroup label="{gt text="Component"}">
-                        {foreach item=component from=$components key=compkey}
-                        <option value="c+{$compkey}">{$component}</option>
-                        {/foreach}
-                    </optgroup>
-                </select>
-                <button id="permgroupfiltersubmit" name="permgroupfiltersubmit" type="submit">{gt text="Filter"}</button>
-                <button id="permgroupfiltersubmitajax" class="z-hide" onclick="javascript:permgroupfilter();">{gt text="Filter"}</button>
-            </div>
-        </form>
-        {/if}
+        <strong id="filterwarning" class="z-floatright z-icon-es-warning" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
     </div>
 
     <div class="permbox">
@@ -47,8 +26,8 @@
         <ol id="permissionlist" class="z-itemlist">
             <li class="z-itemheader z-itemsortheader z-clearfix">
                 <span class="z-itemcell z-w05">&nbsp;</span>
-                <span class="z-itemcell z-w15">{gt text="Group"}<span id="filterwarninggroup" style="{if $filtertype neq 'group'}display: none;{/if}margin-left: 3px;">{img modname=core src=error.gif set=icons/extrasmall __alt="Error" __title="Error"}</span></span>
-                <span class="z-itemcell z-w25">{gt text="Component"}<span id="filterwarningcomponent" style="{if $filtertype neq 'component'}display: none;{/if}margin-left: 3px;">{img modname=core src=error.gif set=icons/extrasmall __alt="Error" __title="Error"}</span></span>
+                <span class="z-itemcell z-w15">{gt text="Group"}<em id="filterwarninggroup" style="{if $filtertype neq 'group'}display: none;{/if} color: red; vertical-align: top;"> (filtered)</em></span>
+                <span class="z-itemcell z-w25">{gt text="Component"}<em id="filterwarningcomponent" style="{if $filtertype neq 'component'}display: none;{/if} color: red; vertical-align: top;"> (filtered)</em></span>
                 <span class="z-itemcell z-w25">{gt text="Instance"}</span>
                 <span class="z-itemcell z-w20">{gt text="Permission level"}</span>
                 <span class="z-itemcell z-w07">{gt text="Actions"}</span>
@@ -198,6 +177,36 @@
             </div>
         </fieldset>
     </form>
+
+    {if $enablefilter eq true}
+    <form class="z-form" id="permgroupfilterform" action="{modurl modname=Permissions type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
+        <div>
+            <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Permissions}" />
+            <fieldset>
+                <legend>{gt text="Filter permission rules list"}</legend>
+                <div class="z-formrow">
+                    <label for="permgrp">{gt text="Choose filter"}</label>
+                    <select id="permgrp" name="permgrp">
+                        <optgroup label="{gt text="Group"}">
+                            {foreach item=groupname from=$permgrps key=groupid}
+                            <option value="g+{$groupid}">{$groupname}</option>
+                            {/foreach}
+                        </optgroup>
+                        <optgroup label="{gt text="Component"}">
+                            {foreach item=component from=$components key=compkey}
+                            <option value="c+{$compkey}">{$component}</option>
+                            {/foreach}
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="z-buttons z-formbuttons">
+                    <button id="permgroupfiltersubmit" class="z-button" name="permgroupfiltersubmit" type="submit">{img modname=core src=button_ok.gif set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
+                    <button id="permgroupfiltersubmitajax" class="z-button z-hide" onclick="javascript:permgroupfilter();">{img modname=core src=button_ok.gif set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+    {/if}
 
     <script type="text/javascript">
         // some defines
