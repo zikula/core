@@ -1375,6 +1375,8 @@ class ModUtil
      * @param string $hooktype   Name of the hook type.
      * @param string $hookfunc   Name of the hook function.
      *
+     * @deprecated since 1.3.0
+     *
      * @return boolean True if successful, false otherwise.
      */
     public static function registerHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
@@ -1402,6 +1404,8 @@ class ModUtil
      * @param string $hookmodule Name of the hook module.
      * @param string $hooktype   Name of the hook type.
      * @param string $hookfunc   Name of the hook function.
+     *
+     * @deprecated since 1.3.0
      *
      * @return boolean True if successful, false otherwise.
      */
@@ -1445,6 +1449,10 @@ class ModUtil
      */
     public static function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
     {
+        if (!System::isLegacyMode()) {
+            return null;
+        }
+
         static $modulehooks;
 
         if (!isset($hookaction)) {
@@ -1511,6 +1519,8 @@ class ModUtil
      *
      * @param string $tmodule The target module.
      * @param string $smodule The source module - default the current top most module.
+     *
+     * @deprecated since 1.3.0
      *
      * @return boolean True if the current module is hooked by the target module, false otherwise.
      */
