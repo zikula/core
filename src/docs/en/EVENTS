@@ -109,31 +109,6 @@ module.type_not_found if $type is not found in ModUtil::exec() (e.g. no admin.ph
         4. $event->setNotify().
         5. return void
 
-module.postcallhooks.extrainfo
-
-    $subject
-    $event->data is $extrainfo
-    $args = 'gui' => $gui,
-            'hookobject' => $hookobject,
-            'hookaction' => $hookaction,
-            'hookid' => $hookid,
-            'extrainfo' => $extrainfo,
-            'implode' => $implode,
-            'args' => $args
-
-module.postcallhooks.output
-
-    $subject
-    $event->data is $output
-    $args = 'gui' => $gui,
-            'hookobject' => $hookobject,
-            'hookaction' => $hookaction,
-            'hookid' => $hookid,
-            'extrainfo' => $extrainfo,
-            'implode' => $implode,
-            'output' => $output,
-            'args' => $args
-
 module.custom_classname in order to override the classname calculated in ModUtil::exec().
     In order to override a pre-existing controller/api method, use this event type to override the class name that is loaded.
     This allows to override the methods using inheritance.

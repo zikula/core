@@ -630,18 +630,14 @@ abstract class Zikula_Base implements Zikula_Translatable
      * @param integer $hookid     The id of the object the hook is called for (module-specific).
      * @param array   $extrainfo  Extra information for the hook, dependent on hookaction.
      * @param boolean $implode    Implode collapses all display hooks into a single string.
-     * @param object  $subject    Default $this controller.
-     * @param array   $args       Extra arguments.
+     *
+     * @toto REMOVE THIS METHOD - drak
      *
      * @return string|array String output from GUI hooks, extrainfo array for API hooks.
      */
-    public function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true, $subject = null, array $args = array())
+    public function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
     {
-        if (is_null($subject)) {
-            $subject = $this;
-        }
-
-        return ModUtil::callHooks($hookobject, $hookaction, $hookid, $extrainfo, $implode, $subject, $args);
+        return ModUtil::callHooks($hookobject, $hookaction, $hookid, $extrainfo, $implode);
     }
 
     /**

@@ -1438,12 +1438,12 @@ class ModUtil
      * @param integer $hookid     The id of the object the hook is called for (module-specific).
      * @param array   $extrainfo  Extra information for the hook, dependent on hookaction.
      * @param boolean $implode    Implode collapses all display hooks into a single string.
-     * @param object  $subject    Object, usually the calling class as $this.
-     * @param array   $args       Extra arguments.
+     *
+     * @deprecated since 1.3.0
      *
      * @return string|array String output from GUI hooks, extrainfo array for API hooks.
      */
-    public static function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true, $subject = null, array $args = array())
+    public static function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
     {
         static $modulehooks;
 
@@ -1473,8 +1473,6 @@ class ModUtil
 
         // Call each hook
         foreach ($modulehooks[$lModname] as $modulehook) {
-            $modulehook['subject'] = $subject;
-            $modulehook['args'] = $args;
             if (!isset($extrainfo['tmodule']) || (isset($extrainfo['tmodule']) && $extrainfo['tmodule'] == $modulehook['tmodule'])) {
                 if (($modulehook['action'] == $hookaction) && ($modulehook['object'] == $hookobject)) {
                     if (isset($modulehook['tarea']) && $modulehook['tarea'] == 'GUI') {
@@ -1502,33 +1500,10 @@ class ModUtil
                 $output = implode("\n", $output);
             }
 
-            // Events that alter $output with $event->data.
-            $event = new Zikula_Event('module.postcallhooks.output', $subject, array(
-                            'gui' => $gui,
-                            'hookobject' => $hookobject,
-                            'hookaction' => $hookaction,
-                            'hookid' => $hookid,
-                            'extrainfo' => $extrainfo,
-                            'implode' => $implode,
-                            'output' => $output,
-                            'args' => $args), $output);
-            EventUtil::notify($event);
-
-            return $event->getData();
+            return $output;
         }
 
-        // Events that alter $extrainfo via $event->data.
-        $event = new Zikula_Event('module.postcallhooks.extrainfo', $subject, array(
-                        'gui' => $gui,
-                        'hookobject' => $hookobject,
-                        'hookaction' => $hookaction,
-                        'hookid' => $hookid,
-                        'extrainfo' => $extrainfo,
-                        'implode' => $implode,
-                        'args' => $args), $extrainfo);
-        EventUtil::notify($event);
-
-        return $event->getData();
+        return $extrainfo;
     }
 
     /**
