@@ -31,7 +31,7 @@ class Zikula_EventManager
     /**
      * ServiceManager object.
      *
-     * @var object
+     * @var Zikula_ServiceManager
      */
     protected $serviceManager;
 
@@ -51,24 +51,34 @@ class Zikula_EventManager
     /**
      * Attach an event handler to the stack.
      *
-     * @param string $name    Name of handler.
-     * @param mixed  $handler Callable handler or instance of ServiceHandler.
+     * @param string  $name    Name of handler.
+     * @param mixed   $handler Callable handler or instance of ServiceHandler.
+     * @param integer $weight  Handler weight to control invokation order, (default = 0).
      *
      * @throws InvalidArgumentException If Handler is not callable or an instance of ServiceHandler.
      *
      * @return void
      */
-    public function attach($name, $handler)
+    public function attach($name, $handler, $weight=0)
     {
         if ($handler instanceof Zikula_ServiceHandler && !$this->serviceManager->hasService($handler->getId())) {
             throw new InvalidArgumentException(sprintf('ServiceHandler (id:"%s") is not registered with the ServiceManager', $handler->getId()));
         }
 
+        $weight = (integer)$weight;
         if (!$handler instanceof Zikula_ServiceHandler && !is_callable($handler)) {
             throw new InvalidArgumentException('Handler given is not a valid PHP callback or ServiceHandler instance');
         }
 
-        $this->handlers[$name][] = $handler;
+        if (!isset($this->handlers[$name][$weight])) {
+            $this->handlers[$name][$weight] = array();
+        }
+
+        $this->handlers[$name][$weight][] = $handler;
+
+        // Reorder according to priority.
+        ksort($this->handlers[$name]);
+        $this->handlers[$name] = $this->handlers[$name];
     }
 
     /**
@@ -81,16 +91,27 @@ class Zikula_EventManager
      */
     public function detach($name, $handler)
     {
-        if (isset($this->handlers[$name])) {
-            // save handlers
-            $handlers = $this->handlers[$name];
-            unset($this->handlers[$name]);
-            foreach ($handlers as $test) {
-                // rebuild array of handles minus the one we detached
-                if ($handler !== $test) {
-                    $this->handlers[$name][] = $test;
+        if (!$this->existsHandler($name)) {
+            return;
+        }
+
+        foreach ($this->handlers[$name] as $weight => $handlersArray) {
+            foreach (array_keys($handlersArray) as $key) {
+                if ($this->handlers[$name][$weight][$key] === $handler) {
+                    // Remove handler.
+                    unset($this->handlers[$name][$weight][$key]);
                 }
             }
+
+            if (empty($this->handlers[$name][$weight])) {
+                // If there are no handers for this weight, remove key.
+                unset($this->handlers[$name][$weight]);
+            }
+        }
+
+        // If there are no more handlers for this name, remove key.
+        if (empty($this->handlers[$name])) {
+            unset ($this->handlers[$name]);
         }
     }
 
@@ -113,9 +134,9 @@ class Zikula_EventManager
      */
     public function notify(Zikula_Event $event)
     {
-        $name = $event->getName();
-        if ($this->existsHandler($name)) {
-            foreach ($this->handlers[$name] as $handler) {
+        $handlers = $this->extractHandlers($event->getName());
+        if ($handlers) {
+            foreach ($handlers as $handler) {
                 $this->invoke($handler, $event);
             }
         }
@@ -132,9 +153,9 @@ class Zikula_EventManager
      */
     public function notifyUntil(Zikula_Event $event)
     {
-        $name = $event->getName();
-        if ($this->existsHandler($name)) {
-            foreach ($this->handlers[$name] as $handler) {
+        $handlers = $this->extractHandlers($event->getName());
+        if ($handlers) {
+            foreach ($handlers as $handler) {
                 $this->invoke($handler, $event);
                 if ($event->hasNotified()) {
                     // halt execution because someone answered
@@ -147,21 +168,40 @@ class Zikula_EventManager
     }
 
     /**
+     * Extracts handlers according to set priority.
+     *
+     * @param string $name Event handler name.
+     *
+     * @return array Non associative array of handlers, empty array if none were found.
+     */
+    public function extractHandlers($name)
+    {
+        $handlers = array();
+        if ($this->existsHandler($name)) {
+            foreach ($this->handlers[$name] as $callables) {
+                $handlers = array_merge($handlers, $callables);
+            }
+        }
+
+        return $handlers;
+    }
+
+    /**
      * Invoke handler.
      *
      * @param callable     $handler Callable by PHP.
      * @param Zikula_Event $event   Event object.
      *
-     * @return boolean
+     * @return void
      */
     protected function invoke($handler, $event)
     {
         if ($handler instanceof Zikula_ServiceHandler) {
             $service = $this->serviceManager->getService($handler->getId());
             $reflectionMethod = new ReflectionMethod(get_class($service), $handler->getMethodName());
-            return $reflectionMethod->invoke($service, $event);
+            $reflectionMethod->invoke($service, $event);
         } else {
-            return call_user_func($handler, $event);
+            call_user_func($handler, $event);
         }
     }
 
@@ -172,9 +212,9 @@ class Zikula_EventManager
      *
      * @return boolean
      */
-    public function existsHandler($name)
+    protected function existsHandler($name)
     {
-        return (array_key_exists($name, $this->handlers) && count($this->handlers[$name] > 0) ? true : false);
+        return array_key_exists($name, $this->handlers);
     }
 
     /**
