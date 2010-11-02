@@ -47,7 +47,8 @@ class Zikula_ServiceManager_Definition
      *
      * @param string $className       Name of the class (with full namespace if applicable).
      * @param array  $constructorArgs Non associative array of parameters.
-     * @param array  $methods         Associative array of $method => array($param1, $param2...).
+     * @param array  $methods         Associative array of array($method => array(0 => array($param1, $param2...),
+     *                                                                            1 => array($param1, $param2...).
      */
     public function __construct($className, array $constructorArgs = array(), array $methods = array())
     {
@@ -111,7 +112,8 @@ class Zikula_ServiceManager_Definition
     /**
      * Setter for methods property.
      *
-     * @param array $methods Associative array of $method => array($param1, $param2...).
+     * @param array $methods Associative array of array($method => array(0 => array($param1, $param2...),
+     *                                                                   1 => array($param1, $param2...).
      *
      * @return void
      */
@@ -133,7 +135,7 @@ class Zikula_ServiceManager_Definition
      */
     public function addMethod($method, array $args = array())
     {
-        $this->methods[$method] = $args;
+        $this->methods[$method][] = $args;
     }
 
     /**

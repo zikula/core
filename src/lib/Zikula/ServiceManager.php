@@ -209,14 +209,15 @@ class Zikula_ServiceManager implements ArrayAccess
         }
 
         if ($definition->hasMethods()) {
-            $methods = $definition->getMethods();
-            foreach ($methods as $method => $args) {
-                $reflectionMethod = new ReflectionMethod($definition->getClassName(), $method);
-                if (count($args) > 0) {
-                    $reflectionMethod->invokeArgs($service, $this->compileArgs($args));
-                } else {
-                    // no args
-                    $reflectionMethod->invoke($service);
+            foreach ($definition->getMethods() as $method => $arguments) {
+                foreach ($arguments as $args) {
+                    $reflectionMethod = new ReflectionMethod($definition->getClassName(), $method);
+                    if (count($args) > 0) {
+                        $reflectionMethod->invokeArgs($service, $this->compileArgs($args));
+                    } else {
+                        // no args
+                        $reflectionMethod->invoke($service);
+                    }
                 }
             }
         }
