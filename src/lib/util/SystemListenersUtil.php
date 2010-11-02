@@ -247,18 +247,19 @@ class SystemListenersUtil
             // autoloaders don't work inside error handlers!
             include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
             $sm = $event->getSubject()->getServiceManager();
+            
             // create definitions
             $toolbar = new Zikula_ServiceManager_Definition(
                     'Zikula_DebugToolbar',
                     array(),
-                    array('addPanels' => array(new Zikula_ServiceManager_Service('debug.toolbar.panel.version'),
-                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.config'),
-                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.memory'),
-                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.rendertime'),
-                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.sql'),
-                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.view'),
-                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.exec'),
-                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.logs')))
+                    array('addPanels' =>  array(0 => array(new Zikula_ServiceManager_Service('debug.toolbar.panel.version'),
+                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.config'),
+                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.memory'),
+                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.rendertime'),
+                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.sql'),
+                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.view'),
+                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.exec'),
+                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.logs'))))
             );
 
             $versionPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Version');
