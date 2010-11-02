@@ -73,8 +73,7 @@ class Zikula_HookManager
             $value = $this->eventManager->notify($hookEvent)->getData();
         }
         
-        $event->setData($value);
-        return $event;
+        return $event->setData($value);
     }
 
     /**
@@ -100,8 +99,7 @@ class Zikula_HookManager
             }
         }
 
-        $event->setData($value);
-        return $event;
+        return $event->setData($value);
     }
 
     /**
