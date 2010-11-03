@@ -302,8 +302,8 @@ class IDS_Converter
     public static function convertFromSQLHex($value)
     {
         $matches = array();
-        if(preg_match_all('/(?:0x[a-f\d]{2,}[a-f\d]*)+/im', $value, $matches)) {
-            foreach($matches[0] as $match) {
+        if(preg_match_all('/(?:(?:\A|[^\d])0x[a-f\d]{2,}[a-f\d]*)+/im', $value, $matches)) {
+        	foreach($matches[0] as $match) {
                 $converted = '';
                 foreach(str_split($match, 2) as $hex_index) {
                     if(preg_match('/[a-f\d]{2,3}/i', $hex_index)) {
@@ -345,7 +345,7 @@ class IDS_Converter
                          'MD5|R?LIKE)[+\s]*\([^()]+\))|(?:-+\d)/ims');
         $value   = preg_replace($pattern, 0, $value);
         $pattern = array('/(?:NOT\s+BETWEEN)|(?:IS\s+NOT)|(?:NOT\s+IN)|' .
-                         '(?:XOR|\WDIV\W|\WNOT\W|<>|RLIKE(?:\s+BINARY)?)|' .
+                         '(?:XOR|\WDIV\W|<>|RLIKE(?:\s+BINARY)?)|' .
                          '(?:REGEXP\s+BINARY)|' .
                          '(?:SOUNDS\s+LIKE)/ims');
         $value   = preg_replace($pattern, '!', $value);
@@ -658,6 +658,9 @@ class IDS_Converter
         //normalize ampersand listings
         $value = preg_replace('/(\w\s)&\s(\w)/', '$1$2', $value);
         
+        //normalize escaped RegExp modifiers
+        $value = preg_replace('/\/\\\(\w)/', '/$1', $value);        
+        
         return $value;
     }
 
@@ -687,7 +690,7 @@ class IDS_Converter
             $tmp_value = preg_replace('/([*.!?+-])\1{1,}/m', '$1', $tmp_value);
             $tmp_value = preg_replace('/"[\p{L}\d\s]+"/m', null, $tmp_value);
 
-            $stripped_length = strlen(preg_replace('/[\d\s\p{L}\.:,%&\/><\-)!]+/m',
+            $stripped_length = strlen(preg_replace('/[\d\s\p{L}\.:,%&\/><\-)!|]+/m',
                 null, $tmp_value));
             $overall_length  = strlen(
                 preg_replace('/([\d\s\p{L}:,\.]{3,})+/m', 'aaa',
