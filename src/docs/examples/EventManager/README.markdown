@@ -74,3 +74,11 @@ If using the EventManager in conjunction with the ServiceManager, then you may a
     [php]
     $eventManager = new EventManager($serviceManager);
     $eventManager->attach('eventname', new ServiceHandler('some.service', 'handlerMethod'));
+
+## EVENT WEIGHTING
+
+It is possiblet to influence the execution order of event handlers.
+Handlers registered against a name can be set a weight which defaults at 0. If
+more than one handler is registered per weighting order then they will be executed
+in the order they were attached.  Weights can be positive or negative.  Use the
+thrid parameter in the attach method.
