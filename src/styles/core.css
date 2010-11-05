@@ -266,6 +266,7 @@ table.z-datatable tbody td,
 table.z-datatable thead th {
     padding: 5px;
     border-width: 0px;
+    vertical-align: middle;
 }
 
 table.z-datatable thead th {

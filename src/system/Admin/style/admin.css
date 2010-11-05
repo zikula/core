@@ -135,6 +135,7 @@ table.z-admintable tbody td,
 table.z-admintable thead th {
     padding: 5px;
     border-width: 0px;
+    vertical-align: middle;
 }
 
 table.z-admintable thead th {
