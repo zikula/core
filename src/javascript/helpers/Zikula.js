@@ -117,7 +117,14 @@ Zikula.showajaxerror = function(errortext)
     if(errortext.isJSON) {
         var decoded = errortext.evalJSON(true);
         if(decoded.core && decoded.core.statusmsg) {
-            errortext = decoded.core.statusmsg;
+            if(typeof(decoded.core.statusmsg) == 'object') {
+                if(!Object.isArray(decoded.core.statusmsg)) {
+                    decoded.core.statusmsg = Object.values(decoded.core.statusmsg);
+                }
+                errortext = decoded.core.statusmsg.join("\n")
+            } else {
+                errortext = decoded.core.statusmsg;
+            }
         }
     }
     alert(errortext);
