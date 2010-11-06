@@ -33,14 +33,15 @@ class AjaxUtil
      */
     public static function error($message = '', $other = array(), $createauthid = false, $displayalert = true, $code = '400 Bad data')
     {
-        if (LogUtil::hasErrors()) {
-            if (!$message) {
-                throw new Zikula_Exception_Forbidden();
+        if(!System::isLegacyMode()) {
+            if (LogUtil::hasErrors()) {
+                if (!$message) {
+                    throw new Zikula_Exception_Forbidden();
+                }
             }
+
+            throw new Zikula_Exception_Forbidden($message);
         }
-
-        throw new Zikula_Exception_Forbidden($message);
-
         // Below for reference - to be deleted.
 
 
@@ -85,10 +86,11 @@ class AjaxUtil
      */
     public static function output($args, $createauthid = false, $xjsonheader = false, $statusmsg = true, $code = '200 OK')
     {
-        $response = new Zikula_Response_Ajax($args);
-        echo $response;
-        System::shutDown();
-
+        if(!System::isLegacyMode()){
+            $response = new Zikula_Response_Ajax($args);
+            echo $response;
+            System::shutDown();
+        }
         // Below for reference - to be deleted.
 
         // check if an error message is set
