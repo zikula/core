@@ -114,12 +114,11 @@ function permappend()
 {
     if (appending == false) {
         appending = true;
-        var pars = "module=Permissions&func=createpermission&authid=" + $F('permissionsauthid');
-        var myAjax = new Ajax.Request(
-            "ajax.php", 
+        new Zikula.Ajax.Request(
+            "ajax.php?module=Permissions&func=createpermission",
             {
                 method: 'post', 
-                parameters: pars, 
+                authid: 'permissionsauthid',
                 onComplete: permappend_response
             });
     }
@@ -136,86 +135,83 @@ function permappend()
 function permappend_response(req)
 {
     appending = false;
-    if (req.status != 200 ) { 
-        pnshowajaxerror(req.responseText);
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
         return;
     }
-    var json = pndejsonize(req.responseText);
+    var data = req.getData();
 
-    pnupdateauthids(json.authid);
-    $('permissionsauthid').value = json.authid;
-    
     // copy new permission li from permission_1.
     var newperm = $('permission_1').cloneNode(true);
 
     // update the ids. We use the getElementsByTagName function from
     // protoype for this. The 6 tags here cover everything in a single li
     // that has a unique id
-    newperm.id   = 'permission_' + json.pid; 
-    $A(newperm.getElementsByTagName('div')).each(function(node){ node.id = node.id.split('_')[0] + '_' + json.pid; });
-    $A(newperm.getElementsByTagName('span')).each(function(node){ node.id = node.id.split('_')[0] + '_' + json.pid; });
-    $A(newperm.getElementsByTagName('input')).each(function(node){ node.id = node.id.split('_')[0] + '_' + json.pid; node.value = ''; });
-    $A(newperm.getElementsByTagName('select')).each(function(node){ node.id = node.id.split('_')[0] + '_' + json.pid; });
-    $A(newperm.getElementsByTagName('button')).each(function(node){ node.id = node.id.split('_')[0] + '_' + json.pid; });
-    $A(newperm.getElementsByTagName('textarea')).each(function(node){ node.id = node.id.split('_')[0] + '_' + json.pid; });
+    newperm.id   = 'permission_' + data.pid;
+    $A(newperm.getElementsByTagName('div')).each(function(node){ node.id = node.id.split('_')[0] + '_' + data.pid; });
+    $A(newperm.getElementsByTagName('span')).each(function(node){ node.id = node.id.split('_')[0] + '_' + data.pid; });
+    $A(newperm.getElementsByTagName('input')).each(function(node){ node.id = node.id.split('_')[0] + '_' + data.pid; node.value = ''; });
+    $A(newperm.getElementsByTagName('select')).each(function(node){ node.id = node.id.split('_')[0] + '_' + data.pid; });
+    $A(newperm.getElementsByTagName('button')).each(function(node){ node.id = node.id.split('_')[0] + '_' + data.pid; });
+    $A(newperm.getElementsByTagName('textarea')).each(function(node){ node.id = node.id.split('_')[0] + '_' + data.pid; });
 
     // append new perm to the permission list
     $('permissionlist').appendChild(newperm);
 
     // remove adminpermission & permlocked classes
-    $('permission_' + json.pid).removeClassName('adminpermission');  
-    $('permission_' + json.pid).removeClassName('permlocked');
+    $('permission_' + data.pid).removeClassName('adminpermission');
+    $('permission_' + data.pid).removeClassName('permlocked');
 
     // set initial values in input, hidden and select
-    $('groupid_' + json.pid).value = json.gid;
-    $('levelid_' + json.pid).value = json.level;
-    $('sequence_' + json.pid).value = json.sequence;
-    $('component_' + json.pid).value = json.component;
-    $('instance_' + json.pid).value = json.instance;
-    pnsetselectoption('group_' + json.pid, json.gid);
-    pnsetselectoption('level_' + json.pid, json.level);
+    $('groupid_' + data.pid).value = data.gid;
+    $('levelid_' + data.pid).value = data.level;
+    $('sequence_' + data.pid).value = data.sequence;
+    $('component_' + data.pid).value = data.component;
+    $('instance_' + data.pid).value = data.instance;
+    pnsetselectoption('group_' + data.pid, data.gid);
+    pnsetselectoption('level_' + data.pid, data.level);
 
     // hide cancel icon for new permissions
-    $('permeditcancel_' + json.pid).addClassName('z-hide');
+    $('permeditcancel_' + data.pid).addClassName('z-hide');
     // update delete icon to show cancel icon 
-    $('permeditdelete_' + json.pid).update(canceliconhtml);
+    $('permeditdelete_' + data.pid).update(canceliconhtml);
 
     // update some innerHTML 
-    $('permdrag_' + json.pid).update('(' + json.pid + ')');
-    $('permcomp_' + json.pid).update(json.component);
-    $('perminst_' + json.pid).update(json.instance);
-    $('permgroup_' + json.pid).update(json.groupname);
-    $('permlevel_' + json.pid).update(json.levelname);
+    $('permdrag_' + data.pid).update('(' + data.pid + ')');
+    $('permcomp_' + data.pid).update(data.component);
+    $('perminst_' + data.pid).update(data.instance);
+    $('permgroup_' + data.pid).update(data.groupname);
+    $('permlevel_' + data.pid).update(data.levelname);
 
     // Remove cloned handlers (otherwise we end up deleting/updating the admin rule!
-    $('modifyajax_' + json.pid).stopObserving('click');
-    $('testpermajax_' + json.pid).stopObserving('click');
-    $('permeditsave_' + json.pid).stopObserving('click');
-    $('permeditdelete_' + json.pid).stopObserving('click');
-    $('permeditcancel_' + json.pid).stopObserving('click');
+    $('modifyajax_' + data.pid).stopObserving('click');
+    $('testpermajax_' + data.pid).stopObserving('click');
+    $('permeditsave_' + data.pid).stopObserving('click');
+    $('permeditdelete_' + data.pid).stopObserving('click');
+    $('permeditcancel_' + data.pid).stopObserving('click');
 
     // add events
-    $('modifyajax_' + json.pid).observe('click', function() { permmodifyinit(json.pid); });
-    $('testpermajax_' + json.pid).observe('click', function() { permtestinit(json.pid); });
-    $('permeditsave_' + json.pid).observe('click',  function() { permmodify(json.pid); });
-    $('permeditdelete_' + json.pid).observe('click',  function() { permdelete(json.pid); });
-    $('permeditcancel_' + json.pid).observe('click',  function() { permmodifycancel(json.pid); });
+    $('modifyajax_' + data.pid).observe('click', function() { permmodifyinit(data.pid); });
+    $('testpermajax_' + data.pid).observe('click', function() { permtestinit(data.pid); });
+    $('permeditsave_' + data.pid).observe('click',  function() { permmodify(data.pid); });
+    $('permeditdelete_' + data.pid).observe('click',  function() { permdelete(data.pid); });
+    $('permeditcancel_' + data.pid).observe('click',  function() { permmodifycancel(data.pid); });
 
     // add class to make it sortable 
-    $('permission_' + json.pid).addClassName('z-sortable');
-    $('permission_' + json.pid).addClassName('normalpermission');
-    $('permission_' + json.pid).addClassName('z-itemsort');
+    $('permission_' + data.pid).addClassName('z-sortable');
+    $('permission_' + data.pid).addClassName('normalpermission');
+    $('permission_' + data.pid).addClassName('z-itemsort');
 
     // remove class to make edit button visible
-    $('modifyajax_' + json.pid).removeClassName('z-hide');  
-    $('modifyajax_' + json.pid).observe('click', function() { permmodifyinit(json.pid); });
+    $('modifyajax_' + data.pid).removeClassName('z-hide');
+    $('modifyajax_' + data.pid).observe('click', function() { permmodifyinit(data.pid); });
     
     // turn on edit mode
-    enableeditfields(json.pid);
+    enableeditfields(data.pid);
     
     // we are ready now, make it visible
-    $('permission_' + json.pid).removeClassName('z-hide');
-    new Effect.Highlight('permission_' + json.pid, { startcolor: '#ffff99', endcolor: '#ffffff' });
+    $('permission_' + data.pid).removeClassName('z-hide');
+    new Effect.Highlight('permission_' + data.pid, { startcolor: '#ffff99', endcolor: '#ffffff' });
     
     // update the sortable
     Sortable.create("permissionlist",
@@ -258,16 +254,16 @@ function sortorderchanged()
     // the adminpermission is left out and gets sequence value of 0 which puts it on top of the
     // list
     $('permission_' + adminpermission).addClassName('z-sortable');    
-    var pars = "module=Permissions&func=changeorder&authid=" + $F('permissionsauthid') + "&"
-               + Sortable.serialize('permissionlist', { 'name': 'permorder' });
+    var pars = Sortable.serialize('permissionlist', { 'name': 'permorder' });
     // remove sortable class from adminpermission
     $('permission_' + adminpermission).removeClassName('z-sortable');    
 
-    var myAjax = new Ajax.Request(
-        "ajax.php", 
+    new Zikula.Ajax.Request(
+        "ajax.php?module=Permissions&func=changeorder",
         {
             method: 'get', 
-            parameters: pars, 
+            parameters: pars,
+            authid: 'permissionsauthid',
             onComplete: sortorderchanged_response
         });
 }
@@ -281,16 +277,10 @@ function sortorderchanged()
  */
 function sortorderchanged_response(req)
 {
-    if (req.status != 200 ) { 
-        pnshowajaxerror(req.responseText);
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
         return;
     }
-
-    var json = pndejsonize(req.responseText);
-
-    pnupdateauthids(json.authid);
-    $('permissionsauthid').value = json.authid;
-    
     pnrecolor('permissionlist', 'permlistheader');
 }
    
@@ -340,18 +330,19 @@ function permmodify(permid)
         setmodifystatus(permid, 1);
         showinfo(permid, updatingpermission);
         // store via ajax
-        var pars = "module=Permissions&func=updatepermission&authid="
-                   + $F('permissionsauthid')
-                   + '&pid=' + permid
-                   + '&gid=' + $F('group_' + permid)
-                   + '&seq=' + $F('sequence_' + permid)
-                   + '&comp=' + encodeURIComponent($F('component_' + permid))
-                   + '&inst=' + encodeURIComponent($F('instance_' + permid))
-                   + '&level=' + $F('level_' + permid)
-        var myAjax = new Ajax.Request(
-            "ajax.php", 
+        var pars = {
+               pid: permid,
+               gid: $F('group_' + permid),
+               seq: $F('sequence_' + permid),
+               comp: $F('component_' + permid),
+               inst: $F('instance_' + permid),
+               level: $F('level_' + permid)
+        }
+        new Zikula.Ajax.Request(
+            "ajax.php?module=Permissions&func=updatepermission",
             {
-                method: 'post', 
+                method: 'post',
+                authid: 'permissionsauthid',
                 parameters: pars, 
                 onComplete: permmodify_response
             });
@@ -367,38 +358,34 @@ function permmodify(permid)
  */
 function permmodify_response(req)
 {
-    if (req.status != 200 ) { 
-        pnshowajaxerror(req.responseText);
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
         showinfo();
         return;
     }
-    
-    var json = pndejsonize(req.responseText);
+    var data = req.getData();
 
-    pnupdateauthids(json.authid);
-    $('permissionsauthid').value = json.authid;
+    $('groupid_' + data.pid).value = data.gid;
+    $('levelid_' + data.pid).value = data.level;
     
-    $('groupid_' + json.pid).value = json.gid;
-    $('levelid_' + json.pid).value = json.level;
-    
-    $('permgroup_' + json.pid).update(json.groupname);
-    $('permcomp_' + json.pid).update(json.component);
-    $('editpermcomp_' + json.pid, json.component);
-    $('perminst_' + json.pid).update(json.instance);
-    $('editperminst_' + json.pid, json.instance);
-    $('permlevel_' + json.pid).update(json.levelname);
+    $('permgroup_' + data.pid).update(data.groupname);
+    $('permcomp_' + data.pid).update(data.component);
+    $('editpermcomp_' + data.pid, data.component);
+    $('perminst_' + data.pid).update(data.instance);
+    $('editperminst_' + data.pid, data.instance);
+    $('permlevel_' + data.pid).update(data.levelname);
 
     // show trascan icon for new permissions if necessary
-    $('permeditcancel_' + json.pid).removeClassName('z-hide');
+    $('permeditcancel_' + data.pid).removeClassName('z-hide');
     // update delete icon to show trashcan icon 
-    $('permeditdelete_' + json.pid).update(deleteiconhtml);
+    $('permeditdelete_' + data.pid).update(deleteiconhtml);
 
     // update the observer for cancel, it might lea to delete if this rule
     // has been appended before
-    $('permeditcancel_' + json.pid).observe('click', function() { permmodifycancel(json.pid); });
+    $('permeditcancel_' + data.pid).observe('click', function() { permmodifycancel(data.pid); });
 
-    setmodifystatus(json.pid, 0);
-    showinfo(json.pid);
+    setmodifystatus(data.pid, 0);
+    showinfo(data.pid);
 }
 
 /**
@@ -417,14 +404,13 @@ function permdelete(permid)
         showinfo(permid, deletingpermission);
         setmodifystatus(permid, 1);
         // delete via ajax
-        var pars = "module=Permissions&func=deletepermission&authid="
-                   + $F('permissionsauthid')
-                   + '&pid=' + permid;
-        var myAjax = new Ajax.Request(
-            "ajax.php", 
+        var pars = {pid: permid};
+        new Zikula.Ajax.Request(
+            "ajax.php?module=Permissions&func=deletepermission",
             {
                 method: 'get', 
-                parameters: pars, 
+                parameters: pars,
+                authid: 'permissionsauthid',
                 onComplete: permdelete_response
             }); 
     }
@@ -439,16 +425,13 @@ function permdelete(permid)
  */
 function permdelete_response(req)
 {
-    if (req.status != 200 ) { 
-        pnshowajaxerror(req.responseText);
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
         return;
     }
-    var json = pndejsonize(req.responseText);
+    var data = req.getData();
 
-    pnupdateauthids(json.authid);
-    $('permissionsauthid').value = json.authid;
-
-    $('permission_' + json.pid).remove();
+    $('permission_' + data.pid).remove();
 }
 
 /**
@@ -635,11 +618,10 @@ function permgroupfilter()
 function performpermissiontest()
 {
     $('permissiontestinfo').update(testingpermission);
-    var pars = "module=Permissions&func=testpermission&"
-               + Form.serialize('testpermform');
+    var pars = Form.serialize('testpermform');
     Form.disable('testpermform');
-    var myAjax = new Ajax.Request(
-        "ajax.php", 
+    new Zikula.Ajax.Request(
+        "ajax.php?module=Permissions&func=testpermission",
         {
             method: 'get', 
             parameters: pars, 
@@ -659,10 +641,10 @@ function performpermissiontest_response(req)
 {
     Form.enable('testpermform');
     $('permissiontestinfo').update('&nbsp;');
-    if (req.status != 200 ) { 
-        pnshowajaxerror(req.responseText);
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
         return;
     }
-    var json = pndejsonize(req.responseText);
-    $('permissiontestinfo').update(json.testresult);
+    var data = req.getData();
+    $('permissiontestinfo').update(data.testresult);
 }

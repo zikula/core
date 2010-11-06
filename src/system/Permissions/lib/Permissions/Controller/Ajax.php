@@ -33,11 +33,13 @@ class Permissions_Controller_Ajax extends Zikula_Controller
     public function updatepermission()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
 
@@ -85,7 +87,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller
                 $perm['groupname'] = $group['name'];
         }
 
-        return $perm;
+        return new Zikula_Response_Ajax($perm);
     }
 
     /**
@@ -96,11 +98,13 @@ class Permissions_Controller_Ajax extends Zikula_Controller
     public function changeorder()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
         $permorder = FormUtil::getPassedValue('permorder');
@@ -113,7 +117,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller
             $obj = array('sequence' => $cnt);
             DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
         }
-        return array('result' => true);
+        return new Zikula_Response_Ajax(array('result' => true));
     }
 
     /**
@@ -124,11 +128,13 @@ class Permissions_Controller_Ajax extends Zikula_Controller
     public function createpermission()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
         // add a blank permission
@@ -151,7 +157,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller
         $newperm['levelname'] = $accesslevels[$newperm['level']];
         $newperm['groupname'] = $this->__('Unregistered');
 
-        return $newperm;
+        return new Zikula_Response_Ajax($newperm);
     }
 
     /**
@@ -163,11 +169,13 @@ class Permissions_Controller_Ajax extends Zikula_Controller
     public function deletepermission()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
         $pid = FormUtil::getPassedValue('pid', null, 'get');
@@ -183,10 +191,10 @@ class Permissions_Controller_Ajax extends Zikula_Controller
                 $this->setVar('adminid', 0);
                 $this->setVar('lockadmin', false);
             }
-            return array('pid' => $pid);
+            return new Zikula_Response_Ajax(array('pid' => $pid));
         }
 
-        AjaxUtil::error($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
+        throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
     }
 
     /**
@@ -201,7 +209,8 @@ class Permissions_Controller_Ajax extends Zikula_Controller
     public function testpermission()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
         }
 
         $uname = DataUtil::convertFromUTF8(FormUtil::getPassedValue('test_user', '', 'get'));
@@ -222,6 +231,6 @@ class Permissions_Controller_Ajax extends Zikula_Controller
             }
         }
 
-        return array('testresult' => $result);
+        return new Zikula_Response_Ajax(array('testresult' => $result));
     }
 }
