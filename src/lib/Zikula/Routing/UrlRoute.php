@@ -187,9 +187,11 @@ class Zikula_Routing_UrlRoute
         if (isset($matches['_star'])) {
             // process additional parameters
             $additionalArgs = explode('/', $matches['_star']);
+            $tmp = $additionalArgs;
             for ($i = 0, $max = count($additionalArgs); $i < $max; $i += 2) {
                 if (!empty($tmp[$i])) {
                     $parameters[$tmp[$i]] = isset($tmp[$i + 1]) ? $tmp[$i + 1] : true;
+                    System::queryStringSetVar($tmp[$i], $parameters[$tmp[$i]]);
                 }
             }
             // unset this match to exclude it in further processing
