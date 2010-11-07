@@ -84,7 +84,9 @@ if (!$response instanceof Zikula_Response_Ajax_Base) {
     $response = !is_array($response) ? array('data' => $response) : $response;
     $response['statusmsg'] = LogUtil::getStatusMessages();
     $response['authid'] = SecurityUtil::generateAuthKey(ModUtil::getName());
-    $response = new Zikula_Ajax_Response($response);
+    $response = json_encode($response);
+    header("HTTP/1.1 200 OK");
+    header('Content-type: application/json');
 }
 
 // Issue response.
