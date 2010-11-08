@@ -796,7 +796,10 @@ class Admin_Controller_Admin extends Zikula_Controller
             curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
             curl_setopt($ch, CURLOPT_REFERER, $ref);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            if (!ini_get('safe_mode')) {
+                // This option doesnt work in safe_mode
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            }
             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
             $data = curl_exec($ch);
             if (!$data && $port=443) {
