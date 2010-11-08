@@ -10,7 +10,7 @@
     <input id="blocks_menu_modules" type="checkbox" value="1" name="displaymodules"{if $displaymodules} checked="checked"{/if} />
 </div>
 <h3>{gt text="Content"}</h3>
-<table class="z-admintable">
+<table class="z-datatable">
     <thead>
         <tr>
             <th>{gt text="Title" domain='zikula'}</th>

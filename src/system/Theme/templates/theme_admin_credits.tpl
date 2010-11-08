@@ -5,7 +5,7 @@
     {if $themeinfo.system neq 1}
     <div style="text-align:center;">{previewimage name=$themeinfo.name id=theme_credits_preview}</div>
     {/if}
-    <table class="z-admintable">
+    <table class="z-datatable">
         <tbody>
             {foreach from=$themeinfo item=field key=key}
             {if $field neq ''}

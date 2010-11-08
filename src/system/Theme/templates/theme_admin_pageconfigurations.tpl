@@ -4,7 +4,7 @@
     {gt text="Page configuration assignments" assign=templatetitle}
     <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Name"}</th>
@@ -26,7 +26,7 @@
         </tbody>
     </table>
     <h3>{gt text="Page configurations"}</h3>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Configuration file"}</th>

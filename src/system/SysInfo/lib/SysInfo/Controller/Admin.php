@@ -155,7 +155,7 @@ class SysInfo_Controller_Admin extends Zikula_Controller
         $phpinfo = preg_replace('/width="[0-9]+"/i', 'width="80%"', $phpinfo);
 
         // change the table into our standard admin table format
-        $phpinfo = str_replace('<table border="0" cellpadding="3" width="80%">', '<table class="z-admintable">', $phpinfo);
+        $phpinfo = str_replace('<table border="0" cellpadding="3" width="80%">', '<table class="z-datatable">', $phpinfo);
         $phpinfo = str_replace('<tr class="h">', '<tr>', $phpinfo);
         $phpinfo = str_replace('</th></tr>', '</th></tr>', $phpinfo);
         $phpinfo = str_replace('</tr></table>', '</tr></table>', $phpinfo);

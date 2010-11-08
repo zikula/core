@@ -27,7 +27,7 @@
                     <p>{gt text="Warning! Enabling the &lt;img&gt;, &lt;span&gt;, &lt;marquee&gt;, &lt;script&gt;, &lt;embed&gt;, &lt;object&gt; or &lt;iframe&gt; tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to 'Not allowed' unless you are sure that you really understand the consequences of enabling them."}</p>
                     {if $htmlpurifier}<p>{gt text='Warning! Using the <a href="%s">HTML Purifier output filter</a> will override settings for some HTML tags (such as &lt;object&gt; and &lt;embed&gt;).' tag1=$configurl|safetext}</p>{/if}
                 </div>
-                <table class="z-admintable">
+                <table class="z-datatable">
                     <thead>
                         <tr>
                             <th>{gt text="Tag"}</th>

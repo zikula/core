@@ -4,7 +4,7 @@
     <div class="z-adminpageicon">{img modname=core src=info.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <p class="z-informationmsg">{gt text="Notice: You are recommended to ensure that all writeable files and folders are secured from outside access. For best security, the 'ztemp' folder should not be located in a browseable directory of your site. <strong>Current path to 'ztemp':</strong>"} {$ztemp}</p>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Type"}</th>

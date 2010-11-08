@@ -8,7 +8,7 @@
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Theme}" />
             <input type="hidden" name="themename" value="{$themename|safetext}" />
-            <table class="z-admintable">
+            <table class="z-datatable">
                 <thead>
                     <tr>
                         <th>{gt text="Name"}</th>
@@ -42,7 +42,7 @@
                         </td>
                     </tr>
                     {foreachelse}
-                    <tr class="z-admintableempty"><td colspan="2">{gt text="No items found."}</td></tr>
+                    <tr class="z-datatableempty"><td colspan="2">{gt text="No items found."}</td></tr>
                     {/foreach}
                 </tbody>
             </table>

@@ -39,7 +39,7 @@
         </fieldset>
     </form>
 
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 {php}
@@ -104,14 +104,14 @@
                 </td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="9">{gt text="No items found."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="9">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>
 
     <h2 id="blockpositions">{gt text="Block positions list"}</h2>
     <p class="z-informationmsg">{gt text="This is the list of block positions currently existing for your site's pages. You can create a new block position by clicking 'Create block position' in the menu. To edit the settings for a block position, or to reorder the blocks within a block position, click on the 'Edit' icon beside that particular position. To delete a block position, click on the 'Delete' icon and confirm the action in the confirmation prompt that will display."}</p>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Name"}</th>
@@ -133,7 +133,7 @@
                 </td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="4">{gt text="No items found."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="4">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>

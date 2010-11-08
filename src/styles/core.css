@@ -230,9 +230,11 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 
 /******************************************************************************
 * User-Frontend-Tables: z-datatable
+* 'z-admintable' is deprecated since 1.3.0
 *******************************************************************************/
 
-table.z-datatable {
+table.z-datatable,
+table.z-admintable {
     border:1px solid #CCCCCC;
     border-spacing:1px 0;
     color:inherit;
@@ -244,7 +246,8 @@ table.z-datatable {
     border-radius: 5px;
 }
 
-table.z-datatable caption {
+table.z-datatable caption,
+table.z-admintable caption {
     background-color: #f3f3f3;
     font-weight: bold;
     border-bottom: 2px solid #CFCFCF;
@@ -252,24 +255,29 @@ table.z-datatable caption {
     padding:10px;
 }
 
-table.z-datatable thead {
+table.z-datatable thead,
+table.z-admintable thead {
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
-table.z-datatable thead tr {
+table.z-datatable thead tr,
+table.z-admintable thead tr {
     background-color: #CFCFCF;
 }
 
 table.z-datatable tbody td,
-table.z-datatable thead th {
+table.z-datatable thead th,
+table.z-admintable tbody td,
+table.z-admintable thead th {
     padding: 5px;
     border-width: 0px;
     vertical-align: middle;
 }
 
-table.z-datatable thead th {
+table.z-datatable thead th,
+table.z-admintable thead th {
     background: #CFCFCF; /*non-CSS3 browsers*/
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#CFCFCF'); /*IE*/
     background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#CFCFCF)); /*webkit*/
@@ -280,7 +288,8 @@ table.z-datatable thead th {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-table.z-datatable tr.z-datatableempty {
+table.z-datatable tr.z-datatableempty,
+table.z-admintable tr.z-admintableempty {
     background-color:#F3F3F3;
     font-size:0.9em;
     font-weight:bold;
@@ -288,7 +297,8 @@ table.z-datatable tr.z-datatableempty {
     text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-table.z-datatable tbody tr.z-defaulttablerow {
+table.z-datatable tbody tr.z-defaulttablerow,
+table.z-admintable tbody tr.z-defaulttablerow {
     background-color: #C2FFBF;
     color: #055F00;
 }
@@ -298,7 +308,8 @@ table.z-datatable tbody tr:hover {
     color: #000;
 }
 
-table.z-datatable ul {
+table.z-datatable ul,
+table.z-admintable ul {
     margin: 0;
 }
 
@@ -311,8 +322,8 @@ table.z-datatable ul {
     padding: 0;
 }
 
-.z-form.z-gap {
-    margin: 0 0 1em 0;
+.z-gap {
+    margin: 1em 0;
     padding: 1em 0;
 }
 

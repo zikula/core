@@ -7,7 +7,7 @@
     <h2>{gt text="Themes list"}</h2>
     <p class="z-informationmsg">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
     <div id="themes-alphafilter" style="padding:1em 0;"><strong>[{pagerabc posvar="startlet" forwardvars=''}]</strong></div>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Name"}</th>
@@ -40,7 +40,7 @@
                 </td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="3">{gt text="No items found."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="3">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>

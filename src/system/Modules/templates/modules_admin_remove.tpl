@@ -22,7 +22,7 @@
                 {if $dependents}
                 <div class="z-formrow">
                     <p class="z-informationmsg">{gt text="Warning! Other modules present in your system are dependent on this module. If you remove this module then all modules that require it will also be removed."}</p>
-                    <table class="z-admintable">
+                    <table class="z-datatable">
                         <thead>
                             <tr>
                                 <th>{gt text="Module name"}</th>

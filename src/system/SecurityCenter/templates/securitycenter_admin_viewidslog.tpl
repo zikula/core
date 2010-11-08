@@ -31,7 +31,7 @@
         </fieldset>
     </form>
 
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th><a class="z-order-asc" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="name"}">{gt text="Name"}</a></th>
@@ -71,7 +71,7 @@
                 <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>
             {/foreach}
         </tbody>
     </table>

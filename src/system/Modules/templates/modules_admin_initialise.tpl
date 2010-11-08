@@ -12,7 +12,7 @@
             </div>
             {if $dependencies}
             <div class="z-formrow">
-                <table class="z-admintable">
+                <table class="z-datatable">
                     <thead>
                         <tr>
                             <th>{gt text="Module name"}</th>

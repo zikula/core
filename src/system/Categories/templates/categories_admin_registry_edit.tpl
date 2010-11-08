@@ -8,7 +8,7 @@
     {gt text="Choose table" assign=chooseTable}
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="editregistry"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <table class="z-admintable">
+            <table class="z-datatable">
                 <thead>
                     <tr>
                         <th>{gt text="Module"}</th>

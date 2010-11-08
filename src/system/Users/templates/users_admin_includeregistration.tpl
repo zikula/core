@@ -10,7 +10,7 @@
 {/if}
 {/strip}
 
-<table class="z-admintable">
+<table class="z-datatable">
     <thead>
         <tr>
             <th colspan="2">{gt text='Registration data'}</th>
@@ -36,7 +36,7 @@
 
 {configgetvar name='profilemodule' assign='profilemodule'}
 {if $profilemodule}
-<table class="z-admintable" summary="{$templatetitle}">
+<table class="z-datatable" summary="{$templatetitle}">
     <thead>
         <tr>
             <th colspan="2">{gt text='Profile data'}</th>
@@ -48,7 +48,7 @@
 </table>
 {/if}
 
-<table class="z-admintable" summary="{gt text='Registration Record Status'}">
+<table class="z-datatable" summary="{gt text='Registration Record Status'}">
     <thead>
         <tr>
             <th colspan="2">{gt text='Registration Status'}</th>

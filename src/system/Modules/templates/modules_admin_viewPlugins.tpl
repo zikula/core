@@ -8,7 +8,7 @@
         <h2>{gt text="Plugins list"}</h2>
     {/if}
 
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 {if !$systemplugins}
@@ -87,7 +87,7 @@
                 </td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="7">{gt text="No items found."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="7">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>

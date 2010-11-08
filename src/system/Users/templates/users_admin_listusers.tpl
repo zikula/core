@@ -41,7 +41,7 @@
 
     <form class="z-form" method="post" action="{modurl modname="Users" type="admin" func="processusers"}" name="userlist">
         <div>
-            <table class="z-admintable">
+            <table class="z-datatable">
                 <thead>
                     <tr>
                         {if $mailusers eq true || $deleteusers eq true}

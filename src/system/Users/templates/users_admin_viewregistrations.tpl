@@ -7,7 +7,7 @@
     <h2>{$templatetitle}</h2>
 
     {if count($reglist) > 0}
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="User name"}</th>
@@ -104,7 +104,7 @@
     {if !empty($pager)}{pager rowcount=$pager.rowcount limit=$pager.limit posvar=$pager.posvar}{/if}
 
     <p colspan="4" class="z-sub z-center z-bold">{gt text='Legend'}</p>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th colspan="2" class="z-sub z-center">{gt text='Approval'}</th>
@@ -123,7 +123,7 @@
             </tr>
         </tbody>
     </table>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th colspan="2" class="z-sub z-center">{gt text='Verification'}</th>

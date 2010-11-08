@@ -31,7 +31,7 @@
             <input type="hidden" name="do"     value="yes" />
             <fieldset>
                 <legend>{gt text='Group membership'}</legend>
-                <table class="z-admintable">
+                <table class="z-datatable">
                     <thead>
                         <tr>
                             <th>{gt text='Group'}</th>

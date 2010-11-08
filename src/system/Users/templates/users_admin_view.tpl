@@ -24,7 +24,7 @@
         <strong>[{pagerabc posvar="letter" forwardvars="sortby"}]</strong>
     </p>
 
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th><span class="z-floatleft">{gt text="User name"}</span><span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='uname' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='uname' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>

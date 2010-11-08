@@ -15,7 +15,7 @@
             <input type="hidden" name="insseq" value="{$insseq|safetext}" />
             <input type="hidden" name="realm" value="0" />
             {/if}
-            <table class="z-admintable">
+            <table class="z-datatable">
                 <thead>
                     <tr>
                         <th>{gt text="Sequence"}</th>

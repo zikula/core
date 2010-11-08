@@ -4,7 +4,7 @@
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Name"}</th>
@@ -23,7 +23,7 @@
                 </td>
             </tr>
             {sectionelse}
-            <tr class="z-admintableempty"><td colspan="2">{gt text="No items found."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="2">{gt text="No items found."}</td></tr>
             {/section}
         </tbody>
     </table>

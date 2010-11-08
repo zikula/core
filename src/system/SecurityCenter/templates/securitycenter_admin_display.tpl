@@ -1,7 +1,7 @@
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
     <h2>{$title|safetext}</h2>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Variable"}</th>

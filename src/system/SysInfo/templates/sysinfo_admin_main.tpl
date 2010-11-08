@@ -44,7 +44,7 @@
     </ul>
 
     <h3>{gt text="Required PHP extensions"}</h3>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Name"}</th>
@@ -60,13 +60,13 @@
                 <td>{img src=$ext.loaded modname=core set=icons/extrasmall alt=$ext.status title=$ext.status}</td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="3">{gt text="No required extensions listed."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="3">{gt text="No required extensions listed."}</td></tr>
             {/foreach}
         </tbody>
     </table>
 
     <h3>{gt text="Optional PHP extensions"}</h3>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Name"}</th>
@@ -82,13 +82,13 @@
                 <td>{img src=$ext.loaded modname=core set=icons/extrasmall alt=$ext.status title=$ext.status}</td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="3">{gt text="No optional extensions listed."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="3">{gt text="No optional extensions listed."}</td></tr>
             {/foreach}
         </tbody>
     </table>
 
     <h3>{gt text="Optional PHP patches"}</h3>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Name"}</th>
@@ -104,7 +104,7 @@
                 <td>{img src=$ext.loaded modname=core set=icons/extrasmall alt=$ext.status title=$ext.status}</td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="3">{gt text="No optional patches listed."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="3">{gt text="No optional patches listed."}</td></tr>
             {/foreach}
         </tbody>
     </table>

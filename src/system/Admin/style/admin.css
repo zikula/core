@@ -97,79 +97,11 @@ div.property_selector_noscript {
     display: inline;
 }
 
-/******************************************************************************/
-/* style for admin tables
-/******************************************************************************/
-table.z-admintable {
-    border:1px solid #CCCCCC;
-    border-spacing:1px 0;
-    color:inherit;
-    margin:1em 0;
-    padding:0;
-    width:100%;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-}
-
-table.z-admintable caption {
-    background-color: #f3f3f3;
-    font-weight: bold;
-    border-bottom: 2px solid #CFCFCF;
-    text-transform: uppercase;
-    padding: 10px;
-}
-
-table.z-admintable thead {
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-}
-
-table.z-admintable thead tr {
-    background-color: #CFCFCF;
-}
-
-/* stying for the cell elements in admin tables */
-table.z-admintable tbody td,
-table.z-admintable thead th {
-    padding: 5px;
-    border-width: 0px;
-    vertical-align: middle;
-}
-
-table.z-admintable thead th {
-    background: #CFCFCF; /*non-CSS3 browsers*/
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#CFCFCF'); /*IE*/
-    background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#CFCFCF)); /*webkit*/
-    background: -moz-linear-gradient(top, #fafafa, #CFCFCF); /*gecko*/
-    background: linear-gradient(#fafafa, #CFCFCF); /*CSS3*/
-    font-size: 0.9em;
-    padding: 7px 5px;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-table.z-admintable tr.z-admintableempty {
-    background-color:#F3F3F3;
-    font-size:0.9em;
-    font-weight:bold;
-    text-align:center;
-    text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-/* style to highlight a default row in a table */
-table.z-admintable tbody tr.z-defaulttablerow {
-    background-color: #C2FFBF;
-    color: #055F00;
-}
-
-table.z-admintable ul {
-    margin: 0;
-}
 
 /******************************************************************************/
 /* Styling for module icon list in the admin panel
 /******************************************************************************/
+
 #z-adminiconlist {
     margin: 5px;
 }
@@ -232,6 +164,7 @@ table.z-admintable ul {
 /*****************************************************************************/
 /* Styling for status security analyzer, update checker and more
 /*****************************************************************************/
+
 div#z-securityanalyzer {
     background: #fff6bf url(../../../images/icons/large/bell.gif) center no-repeat;
     background-position: 15px 50%;

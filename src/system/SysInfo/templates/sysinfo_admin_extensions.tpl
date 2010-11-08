@@ -4,7 +4,7 @@
     <div class="z-adminpageicon">{img modname=core src=info.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <p class="z-informationmsg">{gt text="Notice: This is a list of all the modules present within the file system of your site, with the versions of the modules. It includes both modules that are installed and modules that are not installed."}</p>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Module"}</th>
@@ -20,12 +20,12 @@
                 <td>{$mod.version}</td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="3">{gt text="No items found."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="3">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>
     <p class="z-informationmsg">{gt text="Notice: This is a list of all the themes installed on your site, with the versions of the themes."}</p>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="Themes manager"}</th>
@@ -41,7 +41,7 @@
                 <td>{$theme.version}</td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="3">{gt text="No items found."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="3">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>

@@ -145,7 +145,7 @@ ul#admintabs li > .z-admindrop:hover {border-radius: 0 .4em 0 0 ;-webkit-border-
 	-webkit-border-radius: .8em .8em .8em .8em ;
 	-moz-border-radius: .8em .8em .8em .8em ;
 }
-.z-admintable {
+.z-datatable {
     -moz-box-shadow: .6em .6em .6em #A0A0A0;
 	border-radius: .8em .8em .8em .8em ;
 	-webkit-border-radius: .8em .8em .8em .8em ;

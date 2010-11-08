@@ -182,7 +182,7 @@
 
     {if $useritems}
     <h2> {gt text="Pending applications"} </h2>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th>{gt text="User ID"}</th>
@@ -205,7 +205,7 @@
                 </td>
             </tr>
             {foreachelse}
-            <tr class="z-admintableempty"><td colspan="5">{gt text="No items found."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="5">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>

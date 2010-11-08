@@ -6,7 +6,7 @@
     <h2>{gt text="Modules list"}</h2>
     <p class="z-informationmsg">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>
     <div style="padding:1em 0;"><strong>[{pagerabc posvar="letter" forwardvars="module,type,func"}]</strong></div>
-    <table class="z-admintable">
+    <table class="z-datatable">
         <thead>
             <tr>
                 <th><a class="z-order-asc" href="{modurl modname="Modules" type="admin" func="view" sort="name"}">{gt text="Internal name"}</a></th>
@@ -67,7 +67,7 @@
                 </td>
             </tr>
             {sectionelse}
-            <tr class="z-admintableempty"><td colspan="7">{gt text="No items found."}</td></tr>
+            <tr class="z-datatableempty"><td colspan="7">{gt text="No items found."}</td></tr>
             {/section}
         </tbody>
     </table>
