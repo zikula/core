@@ -1117,8 +1117,46 @@ Object.extend(Number.prototype, (function() {
 })());
 
 
+/**
+ * Zikula Ajax namespace
+ *
+ * @name Zikula.Ajax
+ * @namespace Zikula UI namespace
+ *
+ */
 Zikula.define('Ajax');
-Zikula.Ajax.Request = Class.create(Ajax.Request,{
+
+Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.prototype */{
+    /**
+     * Custom extension for Prototype Ajax.Request
+     * Inherit all of the methods, options and events from
+     * <a href="http://api.prototypejs.org/ajax/ajax/request/">Prototype Ajax.Request</a>.
+     * This extension adds new option 'authid' and extend response object with {@link Zikula.Ajax.Response}.
+     * When 'authid' param is added then it's value will be automatically added to request
+     * and if new one will come with response - it will be also updated.
+     * This is recommended way for handling authids.
+     *
+     * @example
+     * // note - $super param is omitted
+     * new Zikula.Ajax.Request('ajax.php?module=mymodule&func=myfunc',{
+     *     authid: 'authidElementId',
+     *     parameters: {
+     *         id: someID,
+     *         foo: bar
+     *     }
+     *     onComplete: yourCompleteCallbackFunction
+     * });
+     *
+     * @class Zikula.Ajax.Request
+     * @constructs
+     *
+     * @param {Ajax.Request} $super Reference to super class, this is private param, do not use it.
+     * @param {String} url Url for request
+     * @param {Object} [options] Config object
+     * @param {String} [options.authid=null] ID for authid element
+     *
+     * @return {Zikula.Ajax.Request} New Zikula.Ajax.Request instance
+     */
     initialize: function($super, url, options) {
         options = this.initReposneHandlers(options);
         options = Object.extend({
@@ -1136,6 +1174,16 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,{
         }
         $super(url, options);
     },
+    /**
+     * Adds internal callbacks for ajax request
+     * Each callback provided in Zikula.Ajax.Request constructor need to be prefetched
+     * to extend response object.
+     *
+     * @private
+     * @param {Object} options Options
+     *
+     * @return {Object} Modyfied options object
+     */
     initReposneHandlers: function(options) {
         options = options || {};
         this.observers = {};
@@ -1148,12 +1196,33 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,{
         }
         return options;
     },
+    /**
+     * Internal response handler
+     * Extends response object with {Zikula.Ajax.Response} and calls original callback
+     *
+     * @private
+     * @param {String} event Callback event name
+     * @param {Ajax.Response} response Response object returned by Ajax.Request
+     * @param {Object|Arraj} headerJSON
+     *
+     * @return void
+     */
     responseHandler: function(event,response,headerJSON) {
         if(this.observers[event]) {
             response = Object.extend(response,Zikula.Ajax.Response);
             this.observers[event](response,headerJSON);
         }
     },
+    /**
+     * Internal response handler for onComplete event
+     * Updates authid element, if new value is given in response
+     *
+     * @private
+     * @param {Ajax.Response} response Response object returned by Ajax.Request
+     * @param {Object|Arraj} headerJSON
+     *
+     * @return void
+     */
     responseComplete: function(response,headerJSON) {
         response = Object.extend(response,Zikula.Ajax.Response)
         if(this.options.authid) {
@@ -1165,23 +1234,69 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,{
     }
 });
 
-Zikula.Ajax.Response = {
+/**
+ * Custom extension for Prototype Ajax.Response
+ * Inherit all of the methods, options and events from
+ * <a href="http://api.prototypejs.org/ajax/ajax/response/">Prototype Ajax.Response</a>.
+ * This extension adds new public methods to response object.
+ * It's recommended to obtain data from response using this methods rather than
+ * reading responseText directly.
+ *
+ * @class Zikula.Ajax.Response
+ */
+Zikula.Ajax.Response = /** @lends Zikula.Ajax.Response */{
+    /**
+     * Get authid token from response
+     *
+     * @return {String|null} Authid token
+     */
     getAuthid: function() {
         return this.decodeResponse().core ? this.decodeResponse().core.authid : null;
     },
+    /**
+     * Get status or error messages from response
+     * Note - it is possible to get more then one message from response, so this method
+     * may return simple string or object with numeric keys and multiple messages.
+     *
+     * @return {String|Object} Message or object with multiple messages
+     */
     getMessage: function() {
         return this.decodeResponse().core ? this.decodeResponse().core.statusmsg : null;
     },
+    /**
+     * Get data returned by module controller
+     *
+     * @return {mixed} Data returned by module controller
+     */
     getData: function() {
         return this.decodeResponse().data;
     },
+    /**
+     * Get core data from response
+     *
+     * @private
+     *
+     * @return {mixed}
+     */
     getCoreData: function() {
         return this.decodeResponse().core;
     },
+    /**
+     * Tests whether the request was successful.
+     *
+     * @return {Boolean} True on success, false otherwise
+     */
     isSuccess: function() {
         var status = this.getStatus();
         return !status || (status >= 200 && status < 300);
     },
+    /**
+     * Decodes responseText
+     *
+     * @private
+     *
+     * @return {Object} Decoded response text
+     */
     decodeResponse: function() {
         if(!this.ZikulaResponse) {
             try {
