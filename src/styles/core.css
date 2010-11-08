@@ -15,6 +15,7 @@
 .z-normal { font-weight: normal !important; font-style: normal !important; }
 .z-floatleft { float: left; }
 .z-floatright { float: right; }
+.z-gap { margin: 1em 0 !important; padding: 1em 0 !important; }
 
 /******************************************************************************
 * IMG Float styles, e.g. for the positioning of images in articles
@@ -320,11 +321,6 @@ table.z-admintable ul {
 .z-form {
     margin: 0;
     padding: 0;
-}
-
-.z-gap {
-    margin: 1em 0;
-    padding: 1em 0;
 }
 
 .z-form fieldset,
@@ -828,6 +824,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 
 .z-button,
 .z-buttons a,
+.z-buttons a:link,
 .z-buttons a:visited,
 .z-buttons input,
 .z-buttons button {
@@ -908,6 +905,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 *******************************************************************************/
 
 .z-buttons .z-btred,
+.z-buttons .z-btred:link,
 .z-buttons .z-btred:visited {
     color: #d12f19;
 }
@@ -933,6 +931,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 *******************************************************************************/
 
 .z-buttons .z-btblue,
+.z-buttons .z-btblue:link,
 .z-buttons .z-btblue:visited {
     color: #336699;
 }
@@ -958,6 +957,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 *******************************************************************************/
 
 .z-buttons .z-btgreen,
+.z-buttons .z-btgreen:link,
 .z-buttons .z-btgreen:visited {
     color: #529214;
 }
@@ -1520,12 +1520,14 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     height: 25px;
 }
 .z-toggle-open,
+.z-toggle-open:link,
 .z-toggle-open:visited {
     background-position: 0pt -18px;
     height: 25px;
     width: 27px;
 }
 .z-toggle-link,
+.z-toggle-link:link,
 .z-toggle-link:visited {
     background-image: url("../images/global/toggle.gif");
     background-repeat: no-repeat;
@@ -1534,6 +1536,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     border: 0pt none;
 }
 .z-toggle-link-open,
+.z-toggle-link-open:link,
 .z-toggle-link-open:visited {
     background-position: right -18px;
 }
