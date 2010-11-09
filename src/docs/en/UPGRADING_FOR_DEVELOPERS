@@ -422,6 +422,101 @@ JAVASCRIPT CHANGES
 ==================
 TODO:- by Jusuff
 
+AJAX WORKFLOW CHANGES
+==================
+
+The Zikula 1.3. ajax workflow has been changed from both the PHP and JavaScript
+side.
+On the JavaScript side:
+- All requests should be performed using Zikula.Ajax.Request, this class is
+  an extension of the prototype Ajax.Request and inherits all its methods, options
+  and properties.
+- For requests sent by Zikula.Ajax.Request has been added a new parameter -
+  "authid", if you provide ID for element containing authid token - it will be
+  automatically added to the request and then updated after receiving the response,
+  it is the only recommended method for handling authid in ajax requests,
+- The response returned by Zikula.Ajax.Request now has new methods for the data
+  collection:
+    - getAuthid - returns new authid token - usually there is no need to refer
+      to this method manually, because authid should now be updated automatically
+    - getMessage - returns the error or status message (or list of messages)
+      registered in module controller by LogUtil
+    - getData - returns the main data provided by the module controller
+    - isSuccess - check if the request is successful or not
+- The only recommended way to read the response is to use methods listed above,
+  the response however still has all the methods and properties that has original
+  Ajax.Response object
+
+On the PHP side:
+- there has been developed a whole set of classes that support responses sent to
+  ajax request. Also error handling was changed.
+- Module controller in case of success should always return as response one
+  of the two types of objects: Zikula_Response_Ajax_Base or Zikula_Response_Ajax_Plain.
+- Zikula_Response_Ajax_Base takes as an argument any value - a single variable
+  or array, which then can be read on the JS side using the getData method.
+  In most cases, the module should return a reply of this type. In addition,
+  this type of response is assumed to generate a new authid token.
+- If it is necessary to send response that contains only plain text or html
+  (for example, Ajax.Autocompleter from Scriptaculous requires such response)
+  the module controller must return as response Zikula_Response_Ajax_Plain object.
+  This class takes plain text as its argument. For this type of responses new
+  authid token is not generated.
+- Possible errors in the module controller must be handled via exceptions. You
+  may first register error message using LogUtil, then throw an exception
+  (eg Zikula_Exception_Forbidden for no presmission or Zikula_Exception_Fatal
+  for bad authid token). You may also pass error message directly to exception.
+- If the controller module must declare a failure and also send some data to JS
+  then the module should not throw an exception but instead return object of type
+  Zikula_Response_Ajax_BadData. This class allows to pass argument exactly
+  the same as usual ajax responses.
+
+Example (taken from the Permissions module):
+Send a request from JS:
+    // build parameters object
+    var pars = {pid: permid};
+    // call request class
+    new Zikula.Ajax.Request(
+        "Ajax.php?module = permissions&func=deletepermission"
+        {
+            method: 'get',
+            parameters: pars,
+            authid 'permissionsauthid' // value of "permissionsauthid" will be
+                                          added to request as authid and with
+                                          response arrive it will be updated
+            onComplete: permdelete_response
+        }
+    );
+
+Process the request in the module controller:
+    // test permissions and throw an exception on failure
+    if (!SecurityUtil::checkPermission('Permissions::','::', ACCESS_ADMIN)) {
+        LogUtil::registerPermissionError(null, true);
+        throw new Zikula_Exception_Forbidden();
+    }
+
+    // test authid and throw an exception on failure
+    if (!SecurityUtil::confirmAuthKey()) {
+        LogUtil::registerAuthidError();
+        throw new Zikula_Exception_Fatal();
+    }
+
+    // throw an exception from some other reason
+    throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
+
+    // return response
+    return new Zikula_Response_Ajax(array('pid' => $ pid));
+
+Read the response in JS
+    // check if request was successful
+    if (! req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
+        return;
+    }
+    // get data returned by module
+    // if you passed eg array('pid'=>123), then you will have data.pid = 123
+    var date = req.getData();
+
+
 PAGEADDVAR CHANGES
 ==================
 This Api has been updated with several conveniences.  The changes are
