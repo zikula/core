@@ -476,13 +476,13 @@ Send a request from JS:
     var pars = {pid: permid};
     // call request class
     new Zikula.Ajax.Request(
-        "Ajax.php?module = permissions&func=deletepermission"
+        "ajax.php?module = permissions&func=deletepermission",
         {
             method: 'get',
             parameters: pars,
-            authid 'permissionsauthid' // value of "permissionsauthid" will be
-                                          added to request as authid and with
-                                          response arrive it will be updated
+            authid 'permissionsauthid', // value of "permissionsauthid" will be
+                                           added to request as authid and with
+                                           response arrive it will be updated
             onComplete: permdelete_response
         }
     );
