@@ -848,29 +848,36 @@ Object.extend(Zikula,{
     _fn: Zikula.GettextInstance._fn
 });
 
-/**
- * Util class for creating cookies.<br />
- * Cookie data is stored in JSON format so all data types valid for JSON can be stored
- * (this are string, number, object, array, true, false, null).<br />
- * Retruned data is always converted to original format. There is no need to prepare it for store.
- * 
- * @example
- * Zikula.Cookie.set('cookiename','cookievalue');
- * Zikula.Cookie.get('cookiename'); // 'cookievalue'
- * // you may also use more complicted values:
- * Zikula.Cookie.set('somedata', {arraydata: [1,2,3], bool: true, foo: 'bar'}
- * Zikula.Cookie.get('somedata'); // {arraydata: [1,2,3], bool: true, foo: 'bar'}
- * 
- * @class Zikula.Cookie
- */
-Zikula.Cookie = /** @lends Zikula.Cookie */{
+Zikula.CookieUtil = Class.create(/** @lends Zikula.CookieUtil */{
+    /**
+     * Base util class for handling cookies.<br />
+     * For standard usage use {@link Zikula.Cookie} - already initialized instance
+     * of {@link Zikula.CookieUtil}
+     * 
+     * @class Zikula.CookieUtil
+     * @constructs
+     *
+     * @param {Object} [options] Config object
+     * @param {String} [options.path=Zikula.Config.baseURI] Default path for cookies, if not set Zikula.Config.baseURI will be used
+     * @param {String} [options.domain=''] Domain for cookies, if not set current domain will be used
+     * @param {Boolean} [options.secure=false] Should cookies be secured (transmitted over secure protocol as https)
+     *
+     * @return {Zikula.CookieUtil} New Zikula.CookieUtil instance
+     */
+    initialize: function(options) {
+        this.options = Object.extend({
+            path: Zikula.Config.baseURI,
+            domain: '',
+            secure: false
+        }, options || { });
+    },
     /**
      * Template for cookie
      * 
      * @private
      * @type String
      */
-    cookie: '#{name}=#{value};expires=#{expires};path=#{path}',
+    cookie: '#{name}=#{value};expires=#{expires};path=#{path};domain=#{domain};#{secure}',
     /**
      * Create or update cookie.
      *
@@ -883,12 +890,15 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
      */
     set: function(name, value, expires, path){
         try {
-            document.cookie = Zikula.Cookie.cookie.interpolate({
+            var cookieStr = this.cookie.interpolate({
                 name: name,
-                value: Zikula.Cookie.encode(value),
-                expires: expires instanceof Date ? expires.toGMTString() : Zikula.Cookie.secondsFromNow(expires),
-                path: path ? path : Zikula.Config.baseURI
+                value: this.encode(value),
+                expires: expires instanceof Date ? expires.toGMTString() : this.secondsFromNow(expires),
+                path: path ? path : this.options.path,
+                domain: this.options.domain,
+                secure: this.options.secure ? 'secure' : ''
             });
+            document.cookie = cookieStr;
         } catch (e) {
             return false;
         }
@@ -904,7 +914,7 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
      */
     get: function(name){
         var cookie = document.cookie.match(name + '=(.*?)(;|$)');
-        return cookie ? Zikula.Cookie.decode(cookie[1]) : null
+        return cookie ? this.decode(cookie[1]) : null
     },
     /**
      * Delete cookie
@@ -914,7 +924,7 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
      * @return {Boolean} Returns true on success, false otherwise
      */
     remove: function(name){
-        return Zikula.Cookie.set(name,'',-1);
+        return this.set(name,'',-1);
     },
     /**
      * Calculates date equal now plus given number of seconds
@@ -952,7 +962,27 @@ Zikula.Cookie = /** @lends Zikula.Cookie */{
     decode: function(value) {
         return decodeURI(decodeURI(value)).evalJSON(true);
     }
-};
+});
+/**
+ * Util class for creating cookies.<br />
+ * Cookie data is stored in JSON format so all data types valid for JSON can be stored
+ * (this are string, number, object, array, true, false, null).<br />
+ * Retruned data is always converted to original format. There is no need to prepare it for store.<br />
+ *
+ * @example
+ * Zikula.Cookie.set('cookiename','cookievalue');
+ * Zikula.Cookie.get('cookiename'); // 'cookievalue'
+ * // you may also use more complicted values:
+ * Zikula.Cookie.set('somedata', {arraydata: [1,2,3], bool: true, foo: 'bar'}
+ * Zikula.Cookie.get('somedata'); // {arraydata: [1,2,3], bool: true, foo: 'bar'}
+ * 
+ * @class
+ * 
+ * @borrows Zikula.CookieUtil.set as #set
+ * @borrows Zikula.CookieUtil.get as #get
+ * @borrows Zikula.CookieUtil.remove as #remove
+ */
+Zikula.Cookie = new Zikula.CookieUtil();
 
 /**
  * Extensions for prototype Element.Methods
