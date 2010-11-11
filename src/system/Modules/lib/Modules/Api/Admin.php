@@ -121,11 +121,13 @@ class Modules_Api_Admin extends Zikula_Api
         // for incompatible versions of the modules with the core
         $state = $args['state'];
 
-        $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int)$args['type'];
-        $sort = empty($args['sort']) ? null : (string)$args['sort'];
+        $type    = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int)$args['type'];
+        $sort    = empty($args['sort']) ? null : (string)$args['sort'];
+        $sortdir = isset($args['sortdir']) && $args['sortdir'] ? $args['sortdir'] : 'ASC';
 
         SessionUtil::setVar('state', $state);
         SessionUtil::setVar('sort', $sort);
+        SessionUtil::setVar('sortdir', $sortdir);
 
         // Obtain information
         $dbtable = DBUtil::getTables();
@@ -164,9 +166,9 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         if ($sort == 'displayname') {
-            $orderBy = "ORDER BY UPPER($modulescolumn[displayname])";
+            $orderBy = "ORDER BY UPPER($modulescolumn[displayname]) $sortdir";
         } else {
-            $orderBy = "ORDER BY UPPER($modulescolumn[name])";
+            $orderBy = "ORDER BY UPPER($modulescolumn[name]) $sortdir";
         }
 
         $objArray = DBUtil::selectObjectArray('modules', $wheresql, $orderBy, $startnum - 1, $numitems);

@@ -189,6 +189,11 @@ class Modules_Controller_Admin extends Zikula_Controller
         $letter = FormUtil::getPassedValue('letter', null, 'GET');
         $state = FormUtil::getPassedValue('state', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('state', null), 'GETPOST');
         $sort = FormUtil::getPassedValue('sort', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('sort', null), 'GET');
+        $sortdir = FormUtil::getPassedValue('sortdir', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('sortdir', null), 'GET');
+
+        // parameter for used sort order
+        if ($sort != 'name' && $sort != 'displayname') $sort = 'name';
+        if ($sortdir != 'asc' && $sortdir != 'desc') $sortdir = 'asc';
 
         // do some clean up
         SessionUtil::delVar('interactive_init');
@@ -223,6 +228,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                        'letter' => $letter,
                                        'state' => $state,
                                        'numitems' => $this->getVar('itemsperpage'),
+                                       'sortdir' => $sortdir,
                                        'sort' => $sort));
 
         // generate an auth key to use in urls
@@ -428,6 +434,9 @@ class Modules_Controller_Admin extends Zikula_Controller
         }
 
         $this->view->assign('multi', $this->serviceManager['multisites.enabled'])
+                   ->assign('sort', $sort)
+                   ->assign('sortdir', $sortdir)
+                   ->assign('sdirReverse', ($sortdir == 'asc') ? 'desc' : 'asc') // reverted for links
                    ->assign('modules', $moduleinfo);
 
         // Assign the values for the smarty plugin to produce a pager.

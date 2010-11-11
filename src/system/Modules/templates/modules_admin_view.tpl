@@ -9,8 +9,24 @@
     <table class="z-datatable">
         <thead>
             <tr>
-                <th><a class="z-order-asc" href="{modurl modname="Modules" type="admin" func="view" sort="name"}">{gt text="Internal name"}</a></th>
-                <th><a class="z-order-asc" href="{modurl modname="Modules" type="admin" func="view" sort="displayname"}">{gt text="Display name"}</a></th>
+                <th>
+                    {assign var='sortDirection' value='asc'}
+                    {assign var='sortCss' value=''}
+                    {if $sort eq 'name'}
+                    {assign var='sortDirection' value=$sdirReverse}
+                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {/if}
+                    <a class="{$sortCss}" href="{modurl modname="Modules" type="admin" func="view" sort="name" sortdir=$sortDirection}">{gt text="Internal name"}</a>
+                </th>
+                <th>
+                    {assign var='sortDirection' value='asc'}
+                    {assign var='sortCss' value=''}
+                    {if $sort eq 'displayname'}
+                    {assign var='sortDirection' value=$sdirReverse}
+                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {/if}
+                    <a class="{$sortCss}" href="{modurl modname="Modules" type="admin" func="view" sort="displayname" sortdir=$sortDirection}">{gt text="Display name"}</a>
+                </th>
                 <th>{gt text="Module URL"}</th>
                 <th>{gt text="Description"}</th>
                 <th>{gt text="Version"}</th>
