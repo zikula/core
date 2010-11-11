@@ -629,17 +629,6 @@ Zikula.urlsafeJsonDecode = function(data, json)
 
 Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
     /**
-     * Defaults options
-     * 
-     * @private
-     * @type Object
-     */
-    defaults: {
-        lang: 'en',
-        domain: 'zikula',
-        pluralForms: 'nplurals=2; plural=n == 1 ? 0 : 1;'
-    },
-    /**
      * Regexp used for validating plural forms
      *
      * @private
@@ -675,6 +664,12 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * @return {Zikula.Gettext} New Zikula.Gettext instance
      */
     initialize: function(lang,data) {
+        this.defaults = {
+            lang: 'en',
+            domain: 'zikula',
+            pluralForms: 'nplurals=2; plural=n == 1 ? 0 : 1;'
+        };
+
         this.data = {};
         this.setup(lang,data);
 
