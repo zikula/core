@@ -193,7 +193,7 @@ class Modules_Controller_Admin extends Zikula_Controller
 
         // parameter for used sort order
         if ($sort != 'name' && $sort != 'displayname') $sort = 'name';
-        if ($sortdir != 'asc' && $sortdir != 'desc') $sortdir = 'asc';
+        if ($sortdir != 'ASC' && $sortdir != 'DESC') $sortdir = 'ASC';
 
         // do some clean up
         SessionUtil::delVar('interactive_init');
@@ -436,7 +436,7 @@ class Modules_Controller_Admin extends Zikula_Controller
         $this->view->assign('multi', $this->serviceManager['multisites.enabled'])
                    ->assign('sort', $sort)
                    ->assign('sortdir', $sortdir)
-                   ->assign('sdirReverse', ($sortdir == 'asc') ? 'desc' : 'asc') // reverted for links
+                   ->assign('sortdirReverse', ($sortdir == 'ASC') ? 'DESC' : 'ASC') // reverted for links
                    ->assign('modules', $moduleinfo);
 
         // Assign the values for the smarty plugin to produce a pager.

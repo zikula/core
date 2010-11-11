@@ -27,15 +27,55 @@
     <table class="z-datatable">
         <thead>
             <tr>
-                <th><span class="z-floatleft">{gt text="User name"}</span><span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='uname' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='uname' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>
-                <th><span class="z-floatleft">{gt text="Internal ID"}</span><span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='uid' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='uid' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>
-                <th><span class="z-floatleft">{gt text="Registration date"}</span><span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='user_regdate' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='user_regdate' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>
-                <th><span class="z-floatleft">{gt text="Last login"}</span><span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='lastlogin' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='lastlogin' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>
+                <th>
+                    {assign var='sortDirection' value='ASC'}
+                    {assign var='sortCss' value=''}
+                    {if $sort eq 'uname'}
+                    {assign var='sortDirection' value=$sortdirReverse}
+                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {/if}
+                    <a class="{$sortCss|lower}" href="{modurl modname='Users' type='admin' func='view' sort='uname' sortdir=$sortDirection}">{gt text="User name"}</a>
+                </th>
+                <th>
+                    {assign var='sortDirection' value='ASC'}
+                    {assign var='sortCss' value=''}
+                    {if $sort eq 'uid'}
+                    {assign var='sortDirection' value=$sortdirReverse}
+                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {/if}
+                    <a class="{$sortCss|lower}" href="{modurl modname='Users' type='admin' func='view' sort='uid' sortdir=$sortDirection}">{gt text="Internal ID"}</a>
+                </th>
+                <th>
+                    {assign var='sortDirection' value='ASC'}
+                    {assign var='sortCss' value=''}
+                    {if $sort eq 'user_regdate'}
+                    {assign var='sortDirection' value=$sortdirReverse}
+                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {/if}
+                    <a class="{$sortCss|lower}" href="{modurl modname='Users' type='admin' func='view' sort='user_regdate' sortdir=$sortDirection}">{gt text="Registration date"}</a>
+                </th>
+                <th>
+                    {assign var='sortDirection' value='ASC'}
+                    {assign var='sortCss' value=''}
+                    {if $sort eq 'lastlogin'}
+                    {assign var='sortDirection' value=$sortdirReverse}
+                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {/if}
+                    <a class="{$sortCss|lower}" href="{modurl modname='Users' type='admin' func='view' sort='lastlogin' sortdir=$sortDirection}">{gt text="Last login"}</a>
+                </th>
                 {if $canSeeGroups}
-                <th><span class="z-floatleft">{gt text="User's groups"}</span></th>
+                <th>{gt text="User's groups"}</th>
                 {/if}
-                <th><span class="z-floatleft">{gt text="Status"}</span><span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='activated' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='activated' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>
-                <th><span class="z-floatright">{gt text="Actions"}</span></th>
+                <th>
+                    {assign var='sortDirection' value='ASC'}
+                    {assign var='sortCss' value=''}
+                    {if $sort eq 'activated'}
+                    {assign var='sortDirection' value=$sortdirReverse}
+                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {/if}
+                    <a class="{$sortCss|lower}" href="{modurl modname='Users' type='admin' func='view' sort='activated' sortdir=$sortDirection}">{gt text="Status"}</a>
+                </th>
+                <th>{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody class="z-clearer">
