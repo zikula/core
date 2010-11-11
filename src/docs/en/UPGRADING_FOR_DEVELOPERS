@@ -476,7 +476,7 @@ Send a request from JS:
     var pars = {pid: permid};
     // call request class
     new Zikula.Ajax.Request(
-        "ajax.php?module = permissions&func=deletepermission",
+        "ajax.php?module=permissions&func=deletepermission",
         {
             method: 'get',
             parameters: pars,
@@ -508,7 +508,7 @@ Process the request in the module controller:
 
 Read the response in JS
     // check if request was successful
-    if (! req.isSuccess()) {
+    if (!req.isSuccess()) {
         Zikula.showajaxerror(req.getMessage());
         return;
     }
