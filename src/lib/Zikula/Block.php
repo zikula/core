@@ -78,7 +78,7 @@ abstract class Zikula_Block extends Zikula_Controller
     public function __call($method, $args)
     {
         $event = new Zikula_Event('block.method_not_found', $this, array('method' => $method, 'args' => $args));
-        EventUtil::notifyUntil($event);
+        $this->eventManager->notifyUntil($event);
         if ($event->hasNotified()) {
             return $event->getData();
         }
