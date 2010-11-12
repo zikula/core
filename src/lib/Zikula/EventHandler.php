@@ -58,12 +58,39 @@ abstract class Zikula_EventHandler
      */
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
-        if (!is_array($this->eventNames) || !$this->eventNames) {
-            throw new InvalidArgumentException(sprintf("%s->eventNames property contain indexed array of 'eventname' => handlerMethod", get_class($this)));
-        }
-
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        $this->setupHandlerDefinitions();
+    }
+
+    /**
+     * Required setup of handler definitions.
+     *
+     * <samp>
+     *    $this->addHandlerDefinition('some.event', 'handler', 10);
+     *    $this->addHandlerDefinition('some.event', 'handler2', 10);
+     * </samp>
+     *
+     * @return void
+     */
+    abstract protected function setupHandlerDefinitions();
+
+    /**
+     * Add Event definition to handler.
+     *
+     * @param string  $name   Name of event.
+     * @param string  $method Method to invoke when called.
+     * @param integer $weight Handler weight, defaults to 10.
+     *
+     * @return void
+     */
+    protected function addHandlerDefinition($name, $method, $weight=10)
+    {
+        if (!method_exists($this, $method)) {
+            throw new InvalidArgumentException(sprintf('Method %1$s does not exist in this EventHandler class %2$s', $method, get_class($this)));
+        }
+        
+        $this->eventNames[] = array('name' => $name, 'method' => $method, 'weight' => $weight);
     }
 
     /**
@@ -105,16 +132,8 @@ abstract class Zikula_EventHandler
      */
     public function attach()
     {
-        if (!is_array($this->eventNames)) {
-            throw new InvalidArgumentException(sprintf("%s->eventNames property contain indexed array of 'eventname' => handlerMethod", get_class($this)));
-        }
-
-        foreach ($this->eventNames as $name => $method) {
-            if (is_integer($name)) {
-                throw new InvalidArgumentException(sprintf("%s->eventNames property contain indexed array of 'eventname' => handlerMethod", get_class($this)));
-            }
-
-            $this->eventManager->attach($name, array($this, $method));
+        foreach ($this->eventNames as $callable) {
+            $this->eventManager->attach($callable['name'], array($this, $callable['method']), $callable['weight']);
         }
     }
 
@@ -125,8 +144,8 @@ abstract class Zikula_EventHandler
      */
     public function detach()
     {
-        foreach ($this->eventNames as $name => $method) {
-            $this->eventManager->detach($name, array($this, $method));
+        foreach ($this->eventNames as $callable) {
+            $this->eventManager->detach($callable['name'], array($this, $callable['method']));
         }
     }
 

@@ -18,11 +18,14 @@
 class SysInfo_EventHandlers_Extensions extends Zikula_EventHandler
 {
     /**
-     * Array of event names for this handler (usually just one).
+     * Setup handler definitions.
      *
-     * @var array
+     * @return void
      */
-    protected $eventNames = array('controller.method_not_found' => 'handler');
+    protected function setupHandlerDefinitions()
+    {
+        $this->addHandlerDefinition('controller.method_not_found', 'handler');
+    }
 
     /**
      * Event handler here.

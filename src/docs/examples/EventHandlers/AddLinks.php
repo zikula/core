@@ -18,11 +18,15 @@
 class SysInfo_EventHandlers_AddLinks extends Zikula_EventHandler
 {
     /**
-     * Array of event names for this handler (usually just one).
+     * Setup handler definitions.
      *
-     * @var array
+     * @return void
      */
-    protected $eventNames = array('module.postexecute' => 'handler');
+    protected function setupHandlerDefinitions()
+    {
+        $this->addHandlerDefinition('module.postexecute', 'handler');
+        $this->addHandlerDefinition('controller.method_not_found', 'anotherfunction');
+    }
 
     /**
      * Event handler here.

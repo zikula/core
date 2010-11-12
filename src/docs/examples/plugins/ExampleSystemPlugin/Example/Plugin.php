@@ -18,11 +18,14 @@
 class SystemPlugin_Example_Plugin extends Zikula_Plugin
 {
     /**
-     * Event names.
+     * Setup handler definitions.
      *
-     * @var array
+     * @return void
      */
-    protected $eventNames = array('theme.init' => 'handler');
+    protected function setupHandlerDefinitions()
+    {
+        $this->addHandlerDefinition('theme.init', 'handler');
+    }
 
     /**
      * Get plugin meta data.

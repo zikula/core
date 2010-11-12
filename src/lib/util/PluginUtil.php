@@ -144,7 +144,8 @@ class PluginUtil
             $plugin->preInitialize();
             $plugin->initialize();
             $plugin->postInitialize();
-            if (is_array($plugin->getEventNames()) && $plugin->getEventNames()) {
+            
+            if ($plugin->getEventNames()) {
                 $plugin->attach();
             }
             $plugin->setBooted();

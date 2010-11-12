@@ -137,7 +137,6 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      */
     protected $controllerClass;
 
-
     /**
      * Constructor.
      *
@@ -153,6 +152,27 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         if (!$this->getMetaDisplayName() || !$this->getMetaDescription() || !$this->getMetaVersion()) {
             throw new LogicException(sprintf("setMeta() must be defined in %s must and return array('displayname' => 'displayname', 'description' => 'description', 'version' => 'a.b.c')", get_class($this)));
         }
+
+        // Load any handlers if they exist
+        if ($this->reflection->hasMethod('setupHandlerDefinitions')) {
+            $this->setupHandlerDefinitions();
+        }
+    }
+
+    /**
+     * Optional setup of handler definitions.
+     *
+     * Overriding the Zikula_EventHandler interface which required this.
+     *
+     * <samp>
+     *    $this->addHandlerDefinition('some.event', 'handler', 10);
+     *    $this->addHandlerDefinition('some.event', 'handler2', 10);
+     * </samp>
+     *
+     * @return void
+     */
+    protected function setupHandlerDefinitions()
+    {
     }
 
     /**
@@ -166,7 +186,8 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
             return $this->reflection;
         }
 
-        return new ReflectionObject($this);
+        $this->reflection = new ReflectionObject($this);
+        return $this->reflection;
     }
 
     /**

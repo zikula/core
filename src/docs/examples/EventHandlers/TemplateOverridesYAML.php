@@ -18,13 +18,6 @@
 class TemplateOverrides extends Zikula_EventHandler
 {
     /**
-     * Array of event names for this handler (usually just one).
-     *
-     * @var array
-     */
-    protected $eventNames = array('zikula_view.template_override' => 'handler');
-
-    /**
      * Associative array.
      * 
      * Maps template path to overriden path.
@@ -32,6 +25,16 @@ class TemplateOverrides extends Zikula_EventHandler
      * @var array
      */
     protected $overrideMap = array();
+
+    /**
+     * Setup handler definitions.
+     *
+     * @return void
+     */
+    protected function setupHandlerDefinitions()
+    {
+        $this->addHandlerDefinition('zikula_view.template_override', 'handler');
+    }
 
     /**
      * Setup of handlers.

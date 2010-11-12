@@ -18,11 +18,14 @@
 class MultiHookHandler extends Zikula_EventHandler
 {
     /**
-     * Array of event names for this handler (usually just one).
+     * Setup handler definitions.
      *
-     * @var array
+     * @return void
      */
-    protected $eventNames = array('theme.init' => 'handler');
+    protected function setupHandlerDefinitions()
+    {
+        $this->addHandlerDefinition('theme.init', 'handler');
+    }
 
     /**
      * Event handler here.

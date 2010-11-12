@@ -25,12 +25,15 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikul
     protected $gettextEnabled = true;
 
     /**
-     * Event names.
+     * Setup handler definitions.
      *
-     * @var array
+     * @return void
      */
-    protected $eventNames = array('module.postexecute'          => 'addLinks',
-                                  'controller.method_not_found' => 'anotherfunction');
+    protected function setupHandlerDefinitions()
+    {
+        $this->addHandlerDefinition('module.postexecute', 'addLinks');
+        $this->addHandlerDefinition('controller.method_not_found', 'anotherfunction');
+    }
 
     /**
      * Provide plugin meta data.
@@ -75,7 +78,7 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikul
     {
         // check if this is for this handler
         $subject = $event->getSubject();
-        if (!($event['method'] == 'anotherfunction' && $subject instanceof SysInfo_admin)) {
+        if (!($event['method'] == 'anotherfunction' && $subject instanceof SysInfo_Controller_Admin)) {
             return;
         }
 

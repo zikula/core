@@ -14,8 +14,14 @@
 
 class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
 {
-    protected $eventNames = array('core.init' => 'idsInputFilter',
-                                  'system.outputfilter' => 'outputFilter');
+    /**
+     * Setup this handler.
+     */
+    protected function setupHandlerDefinitions()
+    {
+        $this->addHandlerDefinition('core.init', 'idsInputFilter');
+        $this->addHandlerDefinition('system.outputfilter', 'outputFilter');
+    }
 
     /**
      * Protects against basic attempts of Cross-Site Scripting (XSS).

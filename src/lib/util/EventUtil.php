@@ -185,18 +185,19 @@ class EventUtil
      * @param string   $moduleName Module name.
      * @param string   $eventName  Event name.
      * @param callable $callable   PHP callable. No instanciated callables allowed.
+     * @param integer  $weight     Weight of handler, default = 10.
      *
      * @throws InvalidArgumentException If the callable given is not callable.
      *
      * @return void
      */
-    public static function registerPersistentModuleHandler($moduleName, $eventName, $callable)
+    public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight=10)
     {
         if (!is_callable($callable)) {
             throw new InvalidArgumentException('$callable is not a valid PHP callable');
         }
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
-        $handlers[] = array('eventname' => $eventName, 'callable' => $callable);
+        $handlers[] = array('eventname' => $eventName, 'callable' => $callable, 'weight' => $weight);
         ModUtil::setVar(self::HANDLERS, $moduleName, $handlers);
     }
 
@@ -243,18 +244,19 @@ class EventUtil
      * @param string   $pluginName Plugin name.
      * @param string   $eventName  Event name.
      * @param callable $callable   PHP callable. No instanciated callables allowed.
+     * @param integer  $weight     Weight of handler, default = 10.
      *
      * @throws InvalidArgumentException If callable is not callable.
      *
      * @return void
      */
-    public static function registerPersistentPluginHandler($moduleName, $pluginName, $eventName, $callable)
+    public static function registerPersistentPluginHandler($moduleName, $pluginName, $eventName, $callable, $weight=10)
     {
         if (!is_callable($callable)) {
             throw new InvalidArgumentException('$callable is not a valid PHP callable');
         }
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
-        $handlers[] = array('plugin' => $pluginName, 'eventname' => $eventName, 'callable' => $callable);
+        $handlers[] = array('plugin' => $pluginName, 'eventname' => $eventName, 'callable' => $callable, 'weight' => 10);
         ModUtil::setVar(self::HANDLERS, $moduleName, $handlers);
     }
 
@@ -334,8 +336,9 @@ class EventUtil
                         continue;
                     }
                 }
+
                 if (ModUtil::available($module)) {
-                    self::attach($handler['eventname'], $handler['callable']);
+                    self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
                 }
             }
         }
