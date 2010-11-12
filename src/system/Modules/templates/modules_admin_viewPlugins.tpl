@@ -3,33 +3,34 @@
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View plugins"}</div>
     {if $systemplugins}
-        <h2>{gt text="System plugins"}</h2>
+    <h2>{gt text="System plugins"}</h2>
     {else}
-        <h2>{gt text="Plugins list"}</h2>
+    <h2>{gt text="Plugins list"}</h2>
     {/if}
 
     <table class="z-datatable">
         <thead>
             <tr>
                 {if !$systemplugins}
-                    <th>
-                        <form action="{modurl modname="Modules" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
+                <th>
+                    <form action="{modurl modname="Modules" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
+                        <div>
+                            <input type="hidden" name="sort" value="{$sort|safetext}" />
+                            <input type="hidden" name="state" value="{$state|safetext}" />
+                            <input type="hidden" name="systemplugins" value="{$systemplugins|safetext}" />
                             <div>
-                                <input type="hidden" name="sort" value="{$sort|safetext}" />
-                                <input type="hidden" name="state" value="{$state|safetext}" />
-                                <input type="hidden" name="systemplugins" value="{$systemplugins|safetext}" />
-                                <div>
-                                    <label for="bymodule">
-                                        <a href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Module"}</a>
-                                    </label><br />
-                                    {selector_module name="bymodule" selectedValue=$module allValue="0" __allText="All" submit=true}
-                                </div>
+                                <label for="bymodule">
+                                    <a href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Module"}</a>
+                                </label><br />
+                                {selector_module name="bymodule" selectedValue=$module allValue="0" __allText="All" submit=true}
                             </div>
-                        </form>
-                    </th>
+                        </div>
+                    </form>
+                </th>
                 {/if}
-                <th><a href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="name" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Internal Plugin name"}</a></th>
-                <th>{gt text="Plugin display name"}</th>
+
+                <th><a {if empty($sort) || $sort eq 'module'} class="z-order-asc"{/if} href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Internal Plugin name"}</a></th>
+                <th><a {if $sort eq 'name'} class="z-order-asc"{/if} href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="name" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Plugin display name"}</a></th>
                 <th>{gt text="Description"}</th>
                 <th>{gt text="Version"}</th>
                 <th class="z-nowrap">
@@ -57,22 +58,21 @@
             {foreach from=$plugins item="plugin"}
             <tr class="{cycle values="z-odd,z-even"}">
                 {if !$systemplugins}
-                    <td>
-                        {$plugin.instance->getModuleName()|safetext}
-                    </td>
+                <td>{$plugin.instance->getModuleName()|safetext}</td>
                 {/if}
-                <td>{if $plugin.instance instanceof Zikula_Plugin_Configurable and $plugin.instance->isInstalled() and $_type eq 'system'}
-                        <a href="{modurl modname="Modules" type="adminplugin" func="dispatch" _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
+                <td>
+                    {if $plugin.instance instanceof Zikula_Plugin_Configurable and $plugin.instance->isInstalled() and $_type eq 'system'}
+                    <a href="{modurl modname="Modules" type="adminplugin" func="dispatch" _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
                     {elseif $plugin.instance instanceof Zikula_Plugin_Configurable and $plugin.instance->isInstalled() and $_type eq 'module'}
-                        <a href="{modurl modname="Modules" type="adminplugin" func="dispatch" _module=$plugin.instance->getModuleName() _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
+                    <a href="{modurl modname="Modules" type="adminplugin" func="dispatch" _module=$plugin.instance->getModuleName() _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
                     {else}
-                        {$plugin.instance->getPluginName()|safetext}
+                    {$plugin.instance->getPluginName()|safetext}
                     {/if}
-               </td>
+                </td>
                 <td>{$plugin.instance->getMetaDisplayName()|safetext}</td>
                 <td>{$plugin.instance->getMetaDescription()|safetext}</td>
                 <td>{$plugin.version|safetext}</td>
-                <th class="z-nowrap">
+                <td class="z-nowrap">
                     {img src=$plugin.statusimage modname=core set=icons/extrasmall alt=$plugin.status title=$plugin.status}&nbsp;{$plugin.status|safetext}
                     {if isset($plugin.newversion)}
                     <br />({$plugin.newversion|safetext})

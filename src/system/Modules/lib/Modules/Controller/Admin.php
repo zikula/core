@@ -1275,12 +1275,10 @@ class Modules_Controller_Admin extends Zikula_Controller
         }
 
         // sort plugins array
-        if (!empty($sort)) {
-            if ($sort == 'module') {
-                usort($plugins, array($this, 'viewPluginsSorter_byModule'));
-            } else if ($sort == 'name') {
-                usort($plugins, array($this, 'viewPluginsSorter_byName'));
-            }
+        if (empty($sort) || $sort == 'module') {
+            usort($plugins, array($this, 'viewPluginsSorter_byModule'));
+        } else if ($sort == 'name') {
+            usort($plugins, array($this, 'viewPluginsSorter_byName'));
         }
 
         $this->view->assign('plugins', $plugins)
