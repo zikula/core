@@ -592,6 +592,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         $this->view->assign('filter', $filter)
+                ->assign('sort', $sort)
                 ->assign('objectArray', $data);
 
         // Assign the values for the smarty plugin to produce a pager.

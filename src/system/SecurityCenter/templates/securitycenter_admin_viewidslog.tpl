@@ -34,15 +34,16 @@
     <table class="z-datatable">
         <thead>
             <tr>
-                <th><a class="z-order-asc" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="name"}">{gt text="Name"}</a></th>
-                <th><a class="z-order-asc" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="tag"}">{gt text="Tag"}</a></th>
-                <th><a class="z-order-asc" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="value"}">{gt text="Value"}</a></th>
-                <th><a class="z-order-asc" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="page"}">{gt text="Page"}</a></th>
-                <th><a class="z-order-asc" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="username"}">{gt text="User Name"}</a></th>
-                <th><a class="z-order-asc" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="ip"}">{gt text="IP"}</a></th>
-                <th><a class="z-order-asc" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="impact"}">{gt text="Impact"}</a></th>
+                
+                <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="name"}">{gt text="Name"}</a></th>
+                <th><a class="{if $sort eq 'tag'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="tag"}">{gt text="Tag"}</a></th>
+                <th><a class="{if $sort eq 'value'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="value"}">{gt text="Value"}</a></th>
+                <th><a class="{if $sort eq 'page'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="page"}">{gt text="Page"}</a></th>
+                <th><a class="{if $sort eq 'username'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="username"}">{gt text="User Name"}</a></th>
+                <th><a class="{if $sort eq 'ip'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="ip"}">{gt text="IP"}</a></th>
+                <th><a class="{if $sort eq 'impact'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="impact"}">{gt text="Impact"}</a></th>
                 <th>{gt text="PHPIDS filters used"}</th>
-                <th><a class="z-order-asc" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="date DESC"}">{gt text="Date"}</a></th>
+                <th><a class="{if empty($sort) || $sort eq 'date DESC'}z-order-desc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="date DESC"}">{gt text="Date"}</a></th>
                 <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
