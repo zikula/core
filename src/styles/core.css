@@ -862,6 +862,11 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 3px 8px 4px 8px !important;
 }
 
+.z-buttons button[type] {
+    padding: 4px 10px 5px 10px; /* Firefox */
+    line-height: 17px; /* Safari */
+}
+
 .z-buttons button {
     width: auto;
     overflow: visible;
