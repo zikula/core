@@ -68,6 +68,7 @@
                         {/checkpermissionblock}
                     </div>
                 </div>
+                <br />
                 <div class="dashboard-footer">
                     <a href="#top"> &uarr; {gt text='Top'}</a>
                 </div>
@@ -92,7 +93,7 @@
 <script type="text/javascript" src="themes/Admin/js/z-styleswitcher.js"></script>
 <script type="text/javascript">
     function zswitcher() {
-        new ZikulaSwitcher('switcher', ['red', 'green']);
+        new ZikulaSwitcher('switcher', ['gray', 'red', 'green']);
                          }
             document.observe ('dom:loaded', zswitcher, false);
 </script>
