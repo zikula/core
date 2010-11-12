@@ -1507,6 +1507,9 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: url("../images/icons/extrasmall/order_desc.gif") transparent right 50% no-repeat;
     padding-right: 14px;
 }
+.z-order-unsorted {
+    padding-right: 14px;
+}
 
 /******************************************************************************
 * Toggle styles

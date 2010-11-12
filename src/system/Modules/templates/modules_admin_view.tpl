@@ -10,17 +10,21 @@
         <thead>
             <tr>
                 <th>
-                    {if $sort eq 'name'}
-                    <a class="z-order-{$sortdir|lower}" href="{modurl modname="Modules" type="admin" func="view" sort="name" sortdir=$sortdirReverse}">{gt text="Internal name"}</a>
+                    {assign var='currentCol' value='name'}
+                    {gt text="Internal name" assign='currentStr'}
+                    {if $sort eq $currentCol}
+                    <a class="z-order-{$sortdir|lower}" href="{modurl modname="Modules" type="admin" func="view" sort=$currentCol sortdir=$sortdirReverse}">{$currentStr}</a>
                     {else}
-                    <a href="{modurl modname="Modules" type="admin" func="view" sort="name" sortdir=$sortdir}">{gt text="Internal name"}</a>
+                    <a class="z-order-unsorted" href="{modurl modname="Modules" type="admin" func="view" sort=$currentCol sortdir=$sortdir}">{$currentStr}</a>
                     {/if}
                 </th>
                 <th>
-                    {if $sort eq 'displayname'}
-                    <a class="z-order-{$sortdir|lower}" href="{modurl modname="Modules" type="admin" func="view" sort="displayname" sortdir=$sortdirReverse}">{gt text="Display name"}</a>
+                    {assign var='currentCol' value='displayname'}
+                    {gt text="Display name" assign='currentStr'}
+                    {if $sort eq $currentCol}
+                    <a class="z-order-{$sortdir|lower}" href="{modurl modname="Modules" type="admin" func="view" sort=$currentCol sortdir=$sortdirReverse}">{$currentStr}</a>
                     {else}
-                    <a href="{modurl modname="Modules" type="admin" func="view" sort="name" sortdir=$sortdir}">{gt text="Internal name"}</a>
+                    <a class="z-order-unsorted" href="{modurl modname="Modules" type="admin" func="view" sort=$currentCol sortdir=$sortdir}">{$currentStr}</a>
                     {/if}
                 </th>
                 <th>{gt text="Module URL"}</th>

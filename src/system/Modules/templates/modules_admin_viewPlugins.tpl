@@ -29,8 +29,8 @@
                 </th>
                 {/if}
 
-                <th><a {if empty($sort) || $sort eq 'module'} class="z-order-asc"{/if} href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Internal Plugin name"}</a></th>
-                <th><a {if $sort eq 'name'} class="z-order-asc"{/if} href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="name" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Plugin display name"}</a></th>
+                <th><a class="{if empty($sort) || $sort eq 'module'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Internal Plugin name"}</a></th>
+                <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="name" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Plugin display name"}</a></th>
                 <th>{gt text="Description"}</th>
                 <th>{gt text="Version"}</th>
                 <th class="z-nowrap">

@@ -28,52 +28,52 @@
         <thead>
             <tr>
                 <th>
-                    {assign var='sortDirection' value='ASC'}
-                    {assign var='sortCss' value=''}
-                    {if $sort eq 'uname'}
-                    {assign var='sortDirection' value=$sortdirReverse}
-                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {assign var='currentCol' value='uname'}
+                    {gt text="User name" assign='currentStr'}
+                    {if $sort eq $currentCol}
+                    <a class="z-order-{$sortdir|lower}" href="{modurl modname='Users' type='admin' func='view' sort=$currentCol sortdir=$sortdirReverse}">{$currentStr}</a>
+                    {else}
+                    <a class="z-order-unsorted" href="{modurl modname='Users' type='admin' func='view' sort=$currentCol sortdir=$sortdir}">{$currentStr}</a>
                     {/if}
-                    <a class="{$sortCss|lower}" href="{modurl modname='Users' type='admin' func='view' sort='uname' sortdir=$sortDirection}">{gt text="User name"}</a>
                 </th>
                 <th>
-                    {assign var='sortDirection' value='ASC'}
-                    {assign var='sortCss' value=''}
-                    {if $sort eq 'uid'}
-                    {assign var='sortDirection' value=$sortdirReverse}
-                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {assign var='currentCol' value='uid'}
+                    {gt text="Internal ID" assign='currentStr'}
+                    {if $sort eq $currentCol}
+                    <a class="z-order-{$sortdir|lower}" href="{modurl modname='Users' type='admin' func='view' sort=$currentCol sortdir=$sortdirReverse}">{$currentStr}</a>
+                    {else}
+                    <a class="z-order-unsorted" href="{modurl modname='Users' type='admin' func='view' sort=$currentCol sortdir=$sortdir}">{$currentStr}</a>
                     {/if}
-                    <a class="{$sortCss|lower}" href="{modurl modname='Users' type='admin' func='view' sort='uid' sortdir=$sortDirection}">{gt text="Internal ID"}</a>
                 </th>
                 <th>
-                    {assign var='sortDirection' value='ASC'}
-                    {assign var='sortCss' value=''}
-                    {if $sort eq 'user_regdate'}
-                    {assign var='sortDirection' value=$sortdirReverse}
-                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {assign var='currentCol' value='user_regdate'}
+                    {gt text="Registration date" assign='currentStr'}
+                    {if $sort eq $currentCol}
+                    <a class="z-order-{$sortdir|lower}" href="{modurl modname='Users' type='admin' func='view' sort=$currentCol sortdir=$sortdirReverse}">{$currentStr}</a>
+                    {else}
+                    <a class="z-order-unsorted" href="{modurl modname='Users' type='admin' func='view' sort=$currentCol sortdir=$sortdir}">{$currentStr}</a>
                     {/if}
-                    <a class="{$sortCss|lower}" href="{modurl modname='Users' type='admin' func='view' sort='user_regdate' sortdir=$sortDirection}">{gt text="Registration date"}</a>
                 </th>
                 <th>
-                    {assign var='sortDirection' value='ASC'}
-                    {assign var='sortCss' value=''}
-                    {if $sort eq 'lastlogin'}
-                    {assign var='sortDirection' value=$sortdirReverse}
-                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {assign var='currentCol' value='lastlogin'}
+                    {gt text="Last login" assign='currentStr'}
+                    {if $sort eq $currentCol}
+                    <a class="z-order-{$sortdir|lower}" href="{modurl modname='Users' type='admin' func='view' sort=$currentCol sortdir=$sortdirReverse}">{$currentStr}</a>
+                    {else}
+                    <a class="z-order-unsorted" href="{modurl modname='Users' type='admin' func='view' sort=$currentCol sortdir=$sortdir}">{$currentStr}</a>
                     {/if}
-                    <a class="{$sortCss|lower}" href="{modurl modname='Users' type='admin' func='view' sort='lastlogin' sortdir=$sortDirection}">{gt text="Last login"}</a>
                 </th>
                 {if $canSeeGroups}
                 <th>{gt text="User's groups"}</th>
                 {/if}
                 <th>
-                    {assign var='sortDirection' value='ASC'}
-                    {assign var='sortCss' value=''}
-                    {if $sort eq 'activated'}
-                    {assign var='sortDirection' value=$sortdirReverse}
-                    {assign var='sortCss' value="z-order-`$sortdir`"}
+                    {assign var='currentCol' value='activated'}
+                    {gt text="Status" assign='currentStr'}
+                    {if $sort eq $currentCol}
+                    <a class="z-order-{$sortdir|lower}" href="{modurl modname='Users' type='admin' func='view' sort=$currentCol sortdir=$sortdirReverse}">{$currentStr}</a>
+                    {else}
+                    <a class="z-order-unsorted" href="{modurl modname='Users' type='admin' func='view' sort=$currentCol sortdir=$sortdir}">{$currentStr}</a>
                     {/if}
-                    <a class="{$sortCss|lower}" href="{modurl modname='Users' type='admin' func='view' sort='activated' sortdir=$sortDirection}">{gt text="Status"}</a>
                 </th>
                 <th>{gt text="Actions"}</th>
             </tr>
