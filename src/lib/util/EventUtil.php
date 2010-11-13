@@ -193,7 +193,7 @@ class EventUtil
      */
     public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight=10)
     {
-        if (!is_callable($callable) || !$callable instanceof Zikula_ServiceHandler) {
+        if (!is_callable($callable) && !$callable instanceof Zikula_ServiceHandler) {
             throw new InvalidArgumentException('$callable is not a valid PHP callable or instance of Zikula_ServiceHandler');
         }
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
@@ -252,7 +252,7 @@ class EventUtil
      */
     public static function registerPersistentPluginHandler($moduleName, $pluginName, $eventName, $callable, $weight=10)
     {
-        if (!is_callable($callable) || !$callable instanceof Zikula_ServiceHandler) {
+        if (!is_callable($callable) && !$callable instanceof Zikula_ServiceHandler) {
             throw new InvalidArgumentException('$callable is not a valid PHP callable or instance of Zikula_ServiceHandler');
         }
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
