@@ -30,11 +30,13 @@ class Blocks_Controller_Ajax extends Zikula_Controller
     public function changeblockorder()
     {
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null, true);
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
         $blockorder = FormUtil::getPassedValue('blockorder');
@@ -43,7 +45,7 @@ class Blocks_Controller_Ajax extends Zikula_Controller
         // empty block positions for this block zone
         $res = DBUtil::deleteObjectByID('block_placements', $position, 'pid');
         if (!$res) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')));
+            throw new Zikula_Exception_Fatal($this->__('Error! Could not save your changes.'));
         }
 
         // add new block positions
@@ -55,11 +57,11 @@ class Blocks_Controller_Ajax extends Zikula_Controller
         if (!empty($blockplacements)) {
             $res = DBUtil::insertObjectArray($blockplacements, 'block_placements');
             if (!$res) {
-                return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')));
+                throw new Zikula_Exception_Fatal($this->__('Error! Could not save your changes.'));
             }
         }
 
-        return array('result' => true);
+        return new Zikula_Response_Ajax(array('result' => true));
     }
 
     /**
@@ -73,18 +75,19 @@ class Blocks_Controller_Ajax extends Zikula_Controller
     public function toggleblock()
     {
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null, true);
+            throw new Zikula_Exception_Forbidden();
         }
 
         $bid = FormUtil::getPassedValue('bid', -1, 'GET');
         if ($bid == -1) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('No block ID passed.')));
+            throw new Zikula_Exception_Fatal($this->__('No block ID passed.'));
         }
 
         // read the block information
         $blockinfo = BlockUtil::getBlockInfo($bid);
         if ($blockinfo == false) {
-            return AjaxUtil::error(LogUtil::registerError($this->__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid))));
+            throw new Zikula_Exception_Fatal($this->__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid)));
         }
 
         if ($blockinfo['active'] == 1) {
@@ -93,6 +96,6 @@ class Blocks_Controller_Ajax extends Zikula_Controller
             ModUtil::apiFunc('Blocks', 'admin', 'activate', array('bid' => $bid));
         }
 
-        AjaxUtil::output(array('bid' => $bid));
+        return new Zikula_Response_Ajax(array('bid' => $bid));
     }
 }

@@ -55,14 +55,15 @@ function initactivationbuttons()
  */
 function blockorderchanged()
 {
-    var pars = "module=Blocks&func=changeblockorder&authid=" + $F('blocksauthid')
-               + "&position=" + $F('position')
+    var pars = "position=" + $F('position')
                + "&" + Sortable.serialize('assignedblocklist', { 'name': 'blockorder' });
-    var myAjax = new Ajax.Request(
-        "ajax.php",
+
+    new Zikula.Ajax.Request(
+        "ajax.php?module=Blocks&func=changeblockorder",
         {
             method: 'get',
             parameters: pars,
+            authid: 'blocksauthid',
             onComplete: blockorderchanged_response
         });
 }
@@ -76,13 +77,10 @@ function blockorderchanged()
  */
 function blockorderchanged_response(req)
 {
-    if (req.status != 200 ) {
-        pnshowajaxerror(req.responseText);
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
         return;
     }
-
-    var json = pndejsonize(req.responseText);
-    pnupdateauthids(json.authid);
 
     pnrecolor('assignedblocklist', 'assignedblocklistheader');
     pnrecolor('unassignedblocklist', 'unassignedblocklistheader');
@@ -98,9 +96,10 @@ function blockorderchanged_response(req)
  */
 function toggleblock(bid)
 {
-    var pars = "module=Blocks&func=toggleblock&bid=" + bid;
-    var myAjax = new Ajax.Request(
-        "ajax.php",
+    var pars = "bid=" + bid;
+
+    new Zikula.Ajax.Request(
+        "ajax.php?module=Blocks&func=toggleblock",
         {
             method: 'get',
             parameters: pars,
@@ -117,14 +116,14 @@ function toggleblock(bid)
  */
 function toggleblock_response(req)
 {
-    if (req.status != 200 ) {
-        pnshowajaxerror(req.responseText);
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
         return;
     }
 
-    var json = pndejsonize(req.responseText);
+    var data = req.getData();
 
-    $('active_' + json.bid).toggle();
-    $('inactive_' + json.bid).toggle();
-    $('activity_' + json.bid).update((($('activity_' + json.bid).innerHTML == msgBlockStatusInactive) ? msgBlockStatusActive : msgBlockStatusInactive));
+    $('active_' + data.bid).toggle();
+    $('inactive_' + data.bid).toggle();
+    $('activity_' + data.bid).update((($('activity_' + data.bid).innerHTML == msgBlockStatusInactive) ? msgBlockStatusActive : msgBlockStatusInactive));
 }
