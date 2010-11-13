@@ -34,9 +34,9 @@ class Theme_Controller_Admin extends Zikula_Controller
 
         $this->view->setCaching(false);
 
-        if(isset($GLOBALS['ZConfig']['multisites']['multi']) && $GLOBALS['ZConfig']['multisites']['multi'] == 1){
+        if(isset($this->serviceManager['multisites.enabled']) && $this->serviceManager['multisites.enabled'] == 1){
             // only the main site can regenerate the themes list
-            if($GLOBALS['ZConfig']['multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET')){
+            if($this->serviceManager['multisites.mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET')){
                 //return true but any action has been made
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
