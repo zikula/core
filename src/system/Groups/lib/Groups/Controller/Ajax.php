@@ -29,12 +29,13 @@ class Groups_Controller_Ajax extends Zikula_Controller
      * @param nbumax the maximum of users
      * @param name the group name
      * @param description the group description
-     * @return mixed updated group as array or Ajax error
+     * @return Ajax Response
      */
     public function updategroup($args)
     {
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
         $gid          = FormUtil::getPassedValue('gid', null,    'post');
@@ -45,13 +46,12 @@ class Groups_Controller_Ajax extends Zikula_Controller
         $description  = DataUtil::convertFromUTF8(FormUtil::getPassedValue('description', null, 'post'));
 
         if (!SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_EDIT)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null, true);
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (empty($name)) {
-            return array('error'   => true,
-                    'gid'     => $gid,
-                    'message' => $this->__('Error! The group name is missing.'));
+            return new Zikula_Response_Ajax(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $this->__('Error! The group name is missing.')));
         }
 
         if (preg_match("/[\n\r\t\x0B]/", $name)) {
@@ -76,20 +76,22 @@ class Groups_Controller_Ajax extends Zikula_Controller
             // check for sessionvar
             $msgs = LogUtil::getStatusMessagesText();
             if (!empty($msgs)) {
-                // return with msg, but not via AjaxUtil::error
-                return array(   'error'   => true,
-                        'gid'     => $gid,
-                        'message' => $msgs);
+                // return with msg, but not via Zikula_Exception_Fatal
+                return new Zikula_Response_Ajax(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $msgs));
             }
         }
 
         // Setting various defines
-        $typelabel = array(0  => $this->__('Core'),
-                1  => $this->__('Public'),
-                2  => $this->__('Private'));
+        $typelabel = array(
+            0  => $this->__('Core'),
+            1  => $this->__('Public'),
+            2  => $this->__('Private')
+        );
 
-        $statelabel = array(0 => $this->__('Closed'),
-                1 => $this->__('Open'));
+        $statelabel = array(
+            0 => $this->__('Closed'),
+            1 => $this->__('Open')
+        );
 
         // Using uncached query here as it was returning the unupdated group
         $group = DBUtil::selectObjectByID('groups', $gid, 'gid', null, null, null, false);
@@ -100,7 +102,7 @@ class Groups_Controller_Ajax extends Zikula_Controller
         $group['statelbl'] = $statelabel[$group['state']];
         $group['gtypelbl'] = $typelabel[$group['gtype']];
 
-        return $group;
+        return new Zikula_Response_Ajax($group);
     }
 
     /**
@@ -108,41 +110,51 @@ class Groups_Controller_Ajax extends Zikula_Controller
      *
      * @author Frank Schummertz - Frank Chestnut
      * @param none
-     * @return mixed array with new permission or Ajax error
+     * @return Ajax Response
      */
     public function creategroup()
     {
         if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null, true);
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
-        $typelabel = array(0  => $this->__('Core'),
-                1  => $this->__('Public'),
-                2  => $this->__('Private'));
+        $typelabel = array(
+            0  => $this->__('Core'),
+            1  => $this->__('Public'),
+            2  => $this->__('Private')
+        );
 
-        $statelabel = array(0 => $this->__('Closed'),
-                1 => $this->__('Open'));
+        $statelabel = array(
+            0 => $this->__('Closed'),
+            1 => $this->__('Open')
+        );
 
         // Default values
-        $obj = array('name'        => '',
-                'gtype'       => 0,
-                'state'       => 0,
-                'nbumax'      => 0,
-                'description' => '');
+        $obj = array(
+            'name'        => '',
+            'gtype'       => 0,
+            'state'       => 0,
+            'nbumax'      => 0,
+            'description' => ''
+        );
 
         $newgroup = ModUtil::apiFunc('Groups', 'admin', 'create', $obj);
 
         if ($newgroup == false) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not create the new group.')));
+            throw new Zikula_Exception_Fatal($this->__('Error! Could not create the new group.'));
         }
 
         // temporary group name
-        $updobj = array('name' => $this->__f('Group %s', $newgroup),
-                'gid'  => $newgroup);
+        $updobj = array(
+            'name' => $this->__f('Group %s', $newgroup),
+            'gid'  => $newgroup
+        );
 
         DBUtil::updateObject($updobj, 'groups', null, 'gid');
 
@@ -153,7 +165,7 @@ class Groups_Controller_Ajax extends Zikula_Controller
         $obj['gtypelbl']   = $typelabel[$obj['gtype']];
         $obj['membersurl'] = ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $newgroup));
 
-        return $obj;
+        return new Zikula_Response_Ajax($obj);
     }
 
     /**
@@ -161,32 +173,34 @@ class Groups_Controller_Ajax extends Zikula_Controller
      *
      * @author Frank Schummertz - Frank Chestnut
      * @param gid the group id
-     * @return mixed the id of the group that has been deleted or Ajax error
+     * @return Ajax Response
      */
     public function deletegroup()
     {
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
         $gid   = FormUtil::getPassedValue('gid', null, 'get');
         $group = DBUtil::selectObjectByID('groups', $gid, 'gid');
 
         if (!SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_DELETE)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null, true);
+            throw new Zikula_Exception_Forbidden();
         }
 
         // Check if it is the default group...
         $defaultgroup = $this->getVar('defaultgroup');
 
         if ($group['gid'] == $defaultgroup) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('Error! You cannot delete the default user group.')));
+            throw new Zikula_Exception_Fatal($this->__('Error! You cannot delete the default user group.'));
         }
 
         if (ModUtil::apiFunc('Groups', 'admin', 'delete', array('gid' => $gid)) == true) {
-            return array('gid' => $gid);
+            return new Zikula_Response_Ajax(array('gid' => $gid));
         }
 
-        return AjaxUtil::error(LogUtil::registerError($this->__f('Error! Could not delete the \'%s\' group.', $gid)));
+        throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete the \'%s\' group.', $gid));
     }
 }
