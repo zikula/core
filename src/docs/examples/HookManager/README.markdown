@@ -7,7 +7,11 @@ because they are dispatched via the Zikula_HookManager. Zikula_HookManager depen
 Zikula_EventManager.
 
 The Zikula_HookManager#notify() is designed to be registered as an Zikula_EventManager
-eventhandler.  The basic idea is this handler receives the hook event and calculates
+eventhandler.
+
+    $eventManager->attach('callhooks', array($hookManager, notify));
+
+The basic idea is this handler receives the hook event and calculates
 the actual hook eventhandlers that should be notified, and in which order.
 
 There are four aspects to be aware of when using Hooks:
@@ -79,8 +83,8 @@ Example
 
 Real example of notifying a hookable event.
 
-    $event = new Zikula_Event('callhooks', new Zikula_HookSubject('action.create', 'module.foo', $this), $args(), $data);
-    $hookManager->notify($event);
+    $event = new Zikula_Event('callhooks', new Zikula_HookSubject('action.create', 'module.foo', $this), $args, $data);
+    $eventManager->notify($event);
 
 ## Advanced use
 
