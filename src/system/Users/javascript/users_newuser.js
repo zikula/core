@@ -46,12 +46,14 @@ Zikula.Users.NewUser = {
      */
     callGetRegistrationErrors: function()
     {
-        var pars = "module=Users&func=getRegistrationErrors&" + Form.serialize('users_newuser');
-        var myAjax = new Ajax.Request(
-            Zikula.Config.baseURL + "ajax.php",
+        var pars = Form.serialize('users_newuser');
+        
+        new Zikula.Ajax.Request(
+            Zikula.Config.baseURL + "ajax.php?module=Users&func=getRegistrationErrors",
             {
                 method: 'post',
                 parameters: pars,
+                authid: 'users_authid',
                 onComplete: Zikula.Users.NewUser.getRegistrationErrorsResponse
             });
     },
@@ -63,17 +65,15 @@ Zikula.Users.NewUser = {
      */
     getRegistrationErrorsResponse: function(req)
     {
-        if (req.status != 200 ) {
-            Zikula.ajaxResponseError(req);
+        if (!req.isSuccess()) {
+            Zikula.showajaxerror(req.getMessage());
             return;
         }
-        var json = Zikula.dejsonize(req.responseText);
 
-        Zikula.updateauthids(json.authid);
-        $('users_authid').value = json.authid;
+        var data = req.getData();
 
-        var errorFields = json.fields;
-        var errorMessages = json.messages;
+        var errorFields = data.fields;
+        var errorMessages = data.messages;
         var formfields = Form.getElements("users_newuser");
         var field = null;
         var fieldWrapper = null;

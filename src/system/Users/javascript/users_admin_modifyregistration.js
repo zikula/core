@@ -47,12 +47,14 @@ Zikula.Users.AdminModifyRegistration = {
      */
     callGetRegistrationErrors: function()
     {
-        var pars = "module=Users&func=getRegistrationErrors&" + Form.serialize('users_modifyregistration');
-        var myAjax = new Ajax.Request(
-            Zikula.Config.baseURL + "ajax.php",
+        var pars = Form.serialize('users_modifyregistration');
+        
+        new Zikula.Ajax.Request(
+            Zikula.Config.baseURL + "ajax.php?module=Users&func=getRegistrationErrors",
             {
                 method: 'post',
                 parameters: pars,
+                authid: 'users_authid',
                 onComplete: Zikula.Users.AdminModifyRegistration.responseGetRegistrationErrors
             });
     },
@@ -64,17 +66,15 @@ Zikula.Users.AdminModifyRegistration = {
      */
     responseGetRegistrationErrors: function(req)
     {
-        if (req.status != 200 ) {
-            Zikula.showajaxerror(req.responseText);
+        if (!req.isSuccess()) {
+            Zikula.showajaxerror(req.getMessage());
             return;
         }
-        var json = Zikula.dejsonize(req.responseText);
 
-        Zikula.updateauthids(json.authid);
-        $('users_authid').value = json.authid;
+        var data = req.getData();
 
-        var errorFields = json.fields;
-        var errorMessages = json.messages;
+        var errorFields = data.fields;
+        var errorMessages = data.messages;
         var formfields = Form.getElements("users_modifyregistration");
         var field = null;
         var fieldWrapper = null;

@@ -92,11 +92,12 @@ class Users_Controller_Ajax extends Zikula_Controller
     public function getRegistrationErrors()
     {
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
         if (!$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('Sorry! New user registration is currently disabled.')));
+            throw new Zikula_Exception_Fatal($this->__('Sorry! New user registration is currently disabled.'));
         }
 
         $reginfo            = DataUtil::convertFromUTF8(FormUtil::getPassedValue('reginfo', null, 'POST'));
@@ -137,13 +138,15 @@ class Users_Controller_Ajax extends Zikula_Controller
                 'fields'    => $errorFields,
                 'messages'  => $errorMessages,
             );
-            AjaxUtil::output($returnValue, true, true);
+            
+            return new Zikula_Response_Ajax($returnValue);
         } else {
             $returnValue = array(
                 'fields'    => array(),
                 'messages'  => array(),
             );
-            AjaxUtil::output($returnValue, true, true);
+            
+            return new Zikula_Response_Ajax($returnValue);
         }
     }
 }
