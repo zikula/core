@@ -28,6 +28,11 @@ class ServiceUtil
     private static $serviceManager;
 
     /**
+     * Service handlers key for persistence.
+     */
+    const HANDLERS = '/ServiceHandlers';
+
+    /**
      * Constructor.
      */
     private function __construct()
@@ -49,5 +54,64 @@ class ServiceUtil
 
         self::$serviceManager = $core->getServiceManager();
         return self::$serviceManager;
+    }
+
+    /**
+     * Register a persistent service handler.
+     *
+     * This will be loaded into ServiceManager at runtime.
+     *
+     * @param string                           $id         Service ID.
+     * @param Zikula_ServiceManager_Definition $definition Class definition.
+     * @param boolean                          $shared     Shared service or not.
+     * 
+     * @return void
+     */
+    public static function registerPersistentService($id, Zikula_ServiceManager_Definition $definition, $shared=true)
+    {
+        $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', array());
+        $handlers[] = array('id' => $id, 'definition' => $definition, 'shared' => $shared);
+        ModUtil::setVar(self::HANDLERS, 'definitions', $handlers);
+    }
+
+    /**
+     * Register a persistent service handler.
+     *
+     * This will be loaded into ServiceManager at runtime.
+     *
+     * @param string $id Service ID.
+     *
+     * @return void
+     */
+    public static function unRegisterPersistentService($id)
+    {
+        $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', false);
+        if (!$handlers) {
+            return;
+        }
+        $filteredHandlers = array();
+        foreach ($handlers as $handler) {
+            if ($handler['id'] !== $id) {
+                $filteredHandlers[] = $handler;
+            }
+        }
+        ModUtil::setVar(self::HANDLERS, 'definitions', $filteredHandlers);
+    }
+
+    /**
+     * Load all persisted services into ServiceManager.
+     *
+     * @return void
+     */
+    public static function loadPersistentServices()
+    {
+        $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', array());
+        if (!$handlers) {
+            return;
+        }
+
+        foreach ($handlers as $handler) {
+            self::$serviceManager->registerService(new Zikula_ServiceManager_Service($handler['id'], $handler['definition'], $handler['shared']));
+        }
     }
 }
