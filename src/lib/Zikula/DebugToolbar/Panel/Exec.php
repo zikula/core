@@ -96,7 +96,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_Panel
                            <td>'.round($exec['time'], 3).'</td>
                        </tr>
                        <tr id="'.$id.'" style="display: none;">
-                           <td><pre>'.DataUtil::formatForDisplayHTML($exec['data']).'</pre></td>
+                           <td><pre>'.DataUtil::formatForDisplay($exec['data']).'</pre></td>
                        </tr>';
         }
 
