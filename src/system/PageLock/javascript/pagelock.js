@@ -44,12 +44,13 @@ PageLock.Cancel = function()
 // Ajax method for refreshing existing lock
 PageLock.RefreshLock = function()
 {
-    var params = "module=PageLock&func=refreshpagelock&lockname=" + PageLock.LockName;
-    var myAjax = new Ajax.Request(
-      Zikula.Config.baseURL + "ajax.php", 
+    var pars = "lockname=" + PageLock.LockName;
+    
+    new Zikula.Ajax.Request(
+      Zikula.Config.baseURL + "ajax.php?module=PageLock&func=refreshpagelock",
       {
           method: 'post', 
-          parameters: params, 
+          parameters: pars,
           onComplete: PageLock.RefreshLockComplete
       });
 }
@@ -57,13 +58,13 @@ PageLock.RefreshLock = function()
 
 PageLock.RefreshLockComplete = function(req)
 {
-    if (req.status != 200 ) 
-    {
-        pnshowajaxerror(req.responseText);
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
         return;
     }
 
-    var data = pndejsonize(req.responseText);
+    var data = req.getData();
+
     if (!data.hasLock)
     {
         alert(data.message);
@@ -79,12 +80,13 @@ PageLock.CheckLock = function()
 {
     new Effect.Highlight('pageLockOverlayLED', { startcolor: "#FF3030", endcolor: "#B0001D" });
 
-    var params = "module=PageLock&func=checkpagelock&lockname=" + PageLock.LockName;
-    var myAjax = new Ajax.Request(
-      Zikula.Config.baseURL + "ajax.php", 
+    var pars = "lockname=" + PageLock.LockName;
+    
+    new Zikula.Ajax.Request(
+      Zikula.Config.baseURL + "ajax.php?module=PageLock&func=checkpagelock",
       {
           method: 'post', 
-          parameters: params, 
+          parameters: pars,
           onComplete: PageLock.CheckLockComplete
       });
 }
@@ -92,13 +94,12 @@ PageLock.CheckLock = function()
 
 PageLock.CheckLockComplete = function(req)
 {
-    if (req.status != 200 ) 
-    {
-        pnshowajaxerror(req.responseText);
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
         return;
     }
 
-    var data = pndejsonize(req.responseText);
+    var data = req.getData();
 
     if (data.hasLock)
     {

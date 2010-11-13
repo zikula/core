@@ -36,7 +36,8 @@ class PageLock_Controller_Ajax extends Zikula_Controller
         } else {
             $lockInfo['message'] = null;
         }
-        return $lockInfo;
+
+        return new Zikula_Response_Ajax($lockInfo);
     }
 
     /**
@@ -60,7 +61,8 @@ class PageLock_Controller_Ajax extends Zikula_Controller
         } else {
             $lockInfo['message'] = null;
         }
-        return $lockInfo;
+
+        return new Zikula_Response_Ajax($lockInfo);
     }
 
 }
