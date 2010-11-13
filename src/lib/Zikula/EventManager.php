@@ -53,13 +53,13 @@ class Zikula_EventManager
      *
      * @param string  $name    Name of handler.
      * @param mixed   $handler Callable handler or instance of ServiceHandler.
-     * @param integer $weight  Handler weight to control invokation order, (default = 0).
+     * @param integer $weight  Handler weight to control invokation order, (default = 10).
      *
      * @throws InvalidArgumentException If Handler is not callable or an instance of ServiceHandler.
      *
      * @return void
      */
-    public function attach($name, $handler, $weight=0)
+    public function attach($name, $handler, $weight=10)
     {
         if ($handler instanceof Zikula_ServiceHandler && !$this->serviceManager->hasService($handler->getId())) {
             throw new InvalidArgumentException(sprintf('ServiceHandler (id:"%s") is not registered with the ServiceManager', $handler->getId()));

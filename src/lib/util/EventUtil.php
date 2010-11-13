@@ -184,7 +184,7 @@ class EventUtil
      *
      * @param string   $moduleName Module name.
      * @param string   $eventName  Event name.
-     * @param callable $callable   PHP callable. No instanciated callables allowed.
+     * @param callable $callable   PHP static callable or instance of Zikula_ServiceHandler.
      * @param integer  $weight     Weight of handler, default = 10.
      *
      * @throws InvalidArgumentException If the callable given is not callable.
@@ -193,8 +193,8 @@ class EventUtil
      */
     public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight=10)
     {
-        if (!is_callable($callable)) {
-            throw new InvalidArgumentException('$callable is not a valid PHP callable');
+        if (!is_callable($callable) || !$callable instanceof Zikula_ServiceHandler) {
+            throw new InvalidArgumentException('$callable is not a valid PHP callable or instance of Zikula_ServiceHandler');
         }
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
         $handlers[] = array('eventname' => $eventName, 'callable' => $callable, 'weight' => $weight);
@@ -243,7 +243,7 @@ class EventUtil
      * @param string   $moduleName Module name.
      * @param string   $pluginName Plugin name.
      * @param string   $eventName  Event name.
-     * @param callable $callable   PHP callable. No instanciated callables allowed.
+     * @param callable $callable   PHP static callable or instance of Zikula_ServiceHandler.
      * @param integer  $weight     Weight of handler, default = 10.
      *
      * @throws InvalidArgumentException If callable is not callable.
@@ -252,8 +252,8 @@ class EventUtil
      */
     public static function registerPersistentPluginHandler($moduleName, $pluginName, $eventName, $callable, $weight=10)
     {
-        if (!is_callable($callable)) {
-            throw new InvalidArgumentException('$callable is not a valid PHP callable');
+        if (!is_callable($callable) || !$callable instanceof Zikula_ServiceHandler) {
+            throw new InvalidArgumentException('$callable is not a valid PHP callable or instance of Zikula_ServiceHandler');
         }
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
         $handlers[] = array('plugin' => $pluginName, 'eventname' => $eventName, 'callable' => $callable, 'weight' => 10);
