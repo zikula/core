@@ -55,7 +55,7 @@ class SystemListenersUtil
                 // omit system hooks if requested by an administrator
             } else {
                 $initEvent = new Zikula_Event('callhooks', new Zikula_HookSubject('hook.systeminit', 'module.zikula', $event->getSubject()));
-                $event->getSubject()->getHookManager()->notify($initEvent);
+                $event->getSubject()->getEventManager()->notify($initEvent);
                 ModUtil::callHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
             }
         }
