@@ -381,11 +381,12 @@ class CategoryUtil
      * @param intiger $excludeCid  CategoryID (root folder) to exclude from the result set (optional) (default='').
      * @param string  $assocKey    The field to use as the associated array key (optional) (default='').
      * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null).
+     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value').
      * @param array   $columnArray The list of columns to fetch (optional) (default=null).
      *
      * @return The resulting folder object array
      */
-    public static function getSubCategories($cid, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $columnArray = null)
+    public static function getSubCategories($cid, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
     {
         if (!$cid) {
             return false;
@@ -397,7 +398,7 @@ class CategoryUtil
         }
 
         static $catPathCache = array();
-        $cacheKey = $cid . '_' . (int)$recurse . '_' . (int)$relative . '_' . (int)$includeRoot . '_' . (int)$includeLeaf . '_' . (int)$all . '_' . $excludeCid . '_' . $assocKey;
+        $cacheKey = $cid . '_' . (int)$recurse . '_' . (int)$relative . '_' . (int)$includeRoot . '_' . (int)$includeLeaf . '_' . (int)$all . '_' . $excludeCid . '_' . $assocKey . '_' . $sortField;
         if (isset($catPathCache[$cacheKey])) {
             return $catPathCache[$cacheKey];
         }
@@ -407,7 +408,7 @@ class CategoryUtil
             $exclCat = self::getCategoryByID($excludeCid);
         }
 
-        $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes, '', $columnArray);
+        $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes, $sortField, $columnArray);
         $catPathCache[$cacheKey] = $cats;
         return $cats;
     }
@@ -425,10 +426,11 @@ class CategoryUtil
      * @param intiger $excludeCid  CategoryID (root folder) to exclude from the result set (optional) (default='').
      * @param string  $assocKey    The field to use as the associated array key (optional) (default='').
      * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null).
+     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value').
      *
      * @return The resulting folder object array.
      */
-    public static function getSubCategoriesByPath($apath, $field = 'ipath', $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null)
+    public static function getSubCategoriesByPath($apath, $field = 'ipath', $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value')
     {
         if (!$apath) {
             return false;
@@ -440,7 +442,7 @@ class CategoryUtil
         }
 
         static $catPathCache = array();
-        $cacheKey = $apath . '_' . $field . '_' . (int)$recurse . '_' . (int)$relative . '_' . (int)$includeRoot . '_' . (int)$includeLeaf . '_' . (int)$all . '_' . $excludeCid . '_' . $assocKey;
+        $cacheKey = $apath . '_' . $field . '_' . (int)$recurse . '_' . (int)$relative . '_' . (int)$includeRoot . '_' . (int)$includeLeaf . '_' . (int)$all . '_' . $excludeCid . '_' . $assocKey . '_' . $sortField;
         if (isset($catPathCache[$cacheKey])) {
             return $catPathCache[$cacheKey];
         }
@@ -450,7 +452,7 @@ class CategoryUtil
             $exclCat = self::getCategoryByID($excludeCid);
         }
 
-        $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes);
+        $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes, $sortField);
         $catPathCache[$cacheKey] = $cats;
         return $cats;
     }
@@ -467,7 +469,7 @@ class CategoryUtil
      * @param string  $excludeCat  The root category of the hierarchy to exclude from the result set (optional) (default='').
      * @param string  $assocKey    The field to use as the associated array key (optional) (default='').
      * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null).
-     * @param string  $sortField   The field to sort the resulting category array by (optional) (default=null).
+     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value').
      * @param array   $columnArray The list of columns to fetch (optional) (default=null).
      *
      * @return The resulting folder object array.
