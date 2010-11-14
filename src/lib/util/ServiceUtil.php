@@ -70,7 +70,7 @@ class ServiceUtil
     public static function registerPersistentService($id, Zikula_ServiceManager_Definition $definition, $shared=true)
     {
         $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', array());
-        $handlers[] = array('id' => $id, 'definition' => $definition, 'shared' => $shared);
+        $handlers[$id] = array('definition' => $definition, 'shared' => $shared);
         ModUtil::setVar(self::HANDLERS, 'definitions', $handlers);
     }
 
@@ -89,13 +89,12 @@ class ServiceUtil
         if (!$handlers) {
             return;
         }
-        $filteredHandlers = array();
-        foreach ($handlers as $handler) {
-            if ($handler['id'] !== $id) {
-                $filteredHandlers[] = $handler;
-            }
+
+        if (array_key_exists($id, $handlers)) {
+            unset($handlers[$id]);
         }
-        ModUtil::setVar(self::HANDLERS, 'definitions', $filteredHandlers);
+
+        ModUtil::setVar(self::HANDLERS, 'definitions', $handlers);
     }
 
     /**
@@ -110,8 +109,8 @@ class ServiceUtil
             return;
         }
 
-        foreach ($handlers as $handler) {
-            self::$serviceManager->registerService(new Zikula_ServiceManager_Service($handler['id'], $handler['definition'], $handler['shared']));
+        foreach ($handlers as $id => $handler) {
+            self::$serviceManager->registerService(new Zikula_ServiceManager_Service($id, $handler['definition'], $handler['shared']));
         }
     }
 }
