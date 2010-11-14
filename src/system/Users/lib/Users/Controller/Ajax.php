@@ -30,17 +30,17 @@ class Users_Controller_Ajax extends Zikula_Controller
     /**
      * Performs a user search based on the user name fragment entered so far.
      *
-     * Sends output directly via echo.
-     *
      * Available Request Parameters:
      * - fragment (string) A partial user name entered by the user.
      *
-     * @return boolean True.
+     * @return string Zikula_Response_Ajax_Plain with list of users matching the criteria.
      */
     public function getUsers()
     {
+        $view = Zikula_View::getInstance('Users');
+
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            return true;
+            return new Zikula_Response_Ajax_Plain(DataUtil::convertToUTF8($view->fetch('users_ajax_getusers.tpl')));
         }
 
         $fragment = FormUtil::getPassedValue('fragment');
@@ -53,18 +53,10 @@ class Users_Controller_Ajax extends Zikula_Controller
         $where = 'WHERE ' . $usersColumn['uname'] . ' REGEXP \'(' . DataUtil::formatForStore($fragment) . ')\'';
         $results = DBUtil::selectObjectArray('users', $where);
 
-        // TODO - This should really be in a template.
-        $out = '<ul>';
-        if (is_array($results) && count($results) > 0) {
-            foreach ($results as $result) {
-                $out .= '<li>' . DataUtil::formatForDisplay($result['uname']) .'<input type="hidden" id="'
-                     . DataUtil::formatForDisplay($result['uname']) . '" value="' . $result['uid'] . '" /></li>';
-            }
-        }
-        $out .= '</ul>';
+        $view->assign('results', $results);
+        $output = $view->fetch('users_ajax_getusers.tpl');
 
-        echo DataUtil::convertToUTF8($out);
-        return true;
+        return new Zikula_Response_Ajax_Plain(DataUtil::convertToUTF8($output));
     }
 
     /**
@@ -81,7 +73,7 @@ class Users_Controller_Ajax extends Zikula_Controller
      * - vpass        (string) A verification of the proposed password for the new user record.
      * - reg_answer   (string) The user-entered answer to the registration question.
      *
-     * @return array An array containing an error code and a result message. Possible error codes are:
+     * @return array A Zikula_Response_Ajax containing an array of error code and a result message. Possible error codes are:
      *               -1=NoPermission 1=EverythingOK 2=NotaValidatedEmailAddr
      *               3=NotAgreeToTerms 4=InValidatedUserName 5=UserNameTooLong
      *               6=UserNameReserved 7=UserNameIncludeSpace 8=UserNameTaken

@@ -12,15 +12,24 @@ function showdynamicsmenu()
 function liveusersearch()
 {
     $('liveusersearch').removeClassName('z-hide');
-    $('modifyuser').observe('click', function() { window.location.href=Zikula.Config.entrypoint + "?module=users&type=admin&func=modify&uname=" + $F('username');});
-    $('deleteuser').observe('click', function() { window.location.href=Zikula.Config.entrypoint + "?module=users&type=admin&func=deleteusers&uname=" + $F('username');});
+    $('modifyuser').observe('click', function() { 
+        window.location.href = Zikula.Config.entrypoint + "?module=users&type=admin&func=modify&uname=" + $F('username');
+    });
+    $('deleteuser').observe('click', function() { 
+        window.location.href = Zikula.Config.entrypoint + "?module=users&type=admin&func=deleteusers&uname=" + $F('username');
+    });
     new Ajax.Autocompleter('username', 'username_choices', Zikula.Config.baseURL + 'ajax.php?module=users&func=getusers',
-                           {paramName: 'fragment',
-                            minChars: 3,
-                            afterUpdateElement: function(data){
-                                $('modifyuser').observe('click', function() { window.location.href=Zikula.Config.entrypoint + "?module=users&type=admin&func=modify&userid=" + $($(data).value).value;});
-                                $('deleteuser').observe('click', function() { window.location.href=Zikula.Config.entrypoint + "?module=users&type=admin&func=deleteusers&userid=" + $($(data).value).value;});
-                                }
-                            }
-                            );
+        {
+            paramName: 'fragment',
+            minChars: 3,
+            afterUpdateElement: function(data){
+                $('modifyuser').observe('click', function() {
+                    window.location.href = Zikula.Config.entrypoint + "?module=users&type=admin&func=modify&userid=" + $($(data).value).value;
+                });
+                $('deleteuser').observe('click', function() {
+                    window.location.href=Zikula.Config.entrypoint + "?module=users&type=admin&func=deleteusers&userid=" + $($(data).value).value;
+                });
+            }
+        }
+    );
 }
