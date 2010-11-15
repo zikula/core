@@ -86,7 +86,7 @@ class Zikula_Version implements ArrayAccess
     /**
      * Gettext language domain, computed from {@link ZLanguage::getModuleDomain()}.
      *
-     * @var <type>
+     * @var string
      */
     protected $domain;
 
