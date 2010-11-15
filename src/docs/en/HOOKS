@@ -1,0 +1,23 @@
+ZIKULA HOOKS
+============
+This document describes the Zikula Hook system.
+
+What is a hook?
+---------------
+A hook is just another kind of event that occurs in Zikula and should really be called
+'hookable events'.  Unlike events, hookable events are used to attach modules/plugins to
+other modules so that they can UI functionality.  For example, a comments module could
+attach comments to a blog module.  Similarly a ratings module could be attached to a
+blog module, so that all articles would have now have ratings.
+
+Other examples could be adding extra fields to forms to gather extra information.
+
+Providers and Subscriber
+------------------------
+In this document we will use hook providers, and hook subscribers.  A provider is simply
+a module/plugin that actually provides some functionality that can be attached to other
+modules's output.
+
+A subscriber is simply a module that understand hooks.  It can process hooks that are
+provided by other modules.
+
