@@ -30,6 +30,6 @@
 function smarty_modifier_callfilterhooks($string, $moduleName=null)
 {
     $moduleName = is_null($moduleName) ? ModUtil::getName() : $moduleName;
-    $event = new Zikula_Event("$moduleName.filter", null, array('module' => $moduleName), $string);
+    $event = new Zikula_Event("$moduleName.display.filter", null, array('module' => $moduleName), $string);
     return EventUtil::getManager()->notify($event)->getData();
 }
