@@ -290,6 +290,7 @@ class HookUtil
      */
     protected static function resolveCallable($handler)
     {
+        $serviceManager = ServiceUtil::getManager();
         if ($handler['serviceid']) {
             $definition = new Zikula_ServiceManager_Definition($handler['classname'], array($serviceManager));
             $serviceManager->registerService(new Zikula_ServiceManager_Service($handler['serviceid'], $definition));
