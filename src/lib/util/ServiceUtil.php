@@ -75,7 +75,7 @@ class ServiceUtil
     }
 
     /**
-     * Register a persistent service handler.
+     * Un-register a persistent service handler.
      *
      * This will be loaded into ServiceManager at runtime.
      *
