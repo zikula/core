@@ -34,6 +34,7 @@ $eventManager->attach('log.sql', array('SystemListenersUtil', 'logSqlQueries'));
 $eventManager->attach('core.init', array('SystemListenersUtil', 'setupAutoloaderForGeneratedCategoryModels'));
 $eventManager->attach('module.postcallhooks.extrainfo', array('SystemListenersUtil', 'deleteGeneratedCategoryModelsOnModuleRemove'));
 $eventManager->attach('pageutil.addvar_filter', array('SystemListenersUtil', 'coreStylesheetOverride'));
+$eventManager->attach('module.postexecute', array('SystemListenersUtil', 'addHooksAdminLinks'));
 
 include 'config/config.php';
 global $ZRuntime;
