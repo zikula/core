@@ -33,10 +33,16 @@ class HookUtil
     const HANDLERS = '/HookHandlers';
 
     /**
+     * Hook handlers key for persistence.
+     */
+    const SORTS = '/DisplaySorts';
+
+    /**
      * Constructor.
      */
     private function __construct()
     {
+
     }
 
     /**
@@ -149,7 +155,7 @@ class HookUtil
         }
 
         // We have to remove any persistent event handlers from persistance and EventManager
-        $handlers = ModUtil::getVar(self::HANDLERS, 'handlers');
+        $handlers = ModUtil::getVar(self::HANDLERS, '/handlers');
         foreach ($handlers as $key => $handler) {
             if ($handler['name'] == $name) {
                 unset($handlers[$key]);
@@ -210,9 +216,9 @@ class HookUtil
 
         $hook['weight'] = (is_null($weight)) ? $hook['weight'] : $weight;
         $hook['eventname'] = $eventName;
-        $handlers = ModUtil::getVar(self::HANDLERS, 'handlers', array());
+        $handlers = ModUtil::getVar(self::HANDLERS, '/handlers', array());
         $handlers[] = $hook;
-        ModUtil::setVar(self::HANDLERS, 'handlers', $handlers);
+        ModUtil::setVar(self::HANDLERS, '/handlers', $handlers);
     }
 
     /**
@@ -234,7 +240,7 @@ class HookUtil
         $hook['weight'] = (is_null($weight)) ? $hook['weight'] : $weight;
         $hook['eventname'] = $eventName;
 
-        $handlers = ModUtil::getVar(self::HANDLERS, 'handlers', false);
+        $handlers = ModUtil::getVar(self::HANDLERS, '/handlers', false);
         if (!$handlers) {
             // nothing to do
             return;
@@ -247,7 +253,7 @@ class HookUtil
             }
         }
 
-        ModUtil::setVar(self::HANDLERS, 'handlers', $filteredHandlers);
+        ModUtil::setVar(self::HANDLERS, '/handlers', $filteredHandlers);
     }
 
     /**
@@ -257,7 +263,7 @@ class HookUtil
      */
     public static function loadHandlers()
     {
-        $handlers = ModUtil::getVar(self::HANDLERS, 'handlers', array());
+        $handlers = ModUtil::getVar(self::HANDLERS, '/handlers', array());
         if (!$handlers) {
             return;
         }
@@ -293,6 +299,90 @@ class HookUtil
         }
 
         return $callable;
+    }
+
+    /**
+     * Sort out display hooks according to configuration.
+     *
+     * @param string $owner   Owner
+     * @param string $results Assoc-array of results.
+     *
+     * @return array
+     */
+    public static function sortDisplayHooks($owner, $results)
+    {
+        if (!$results) {
+            return $results;
+        }
+        
+        // Get correct order of event responses.
+        $orderBy = self::getDisplaySortsByOwner($owner);
+        if (!$orderBy) {
+            return $orderBy;
+        }
+
+        // Perform the sort now.
+        $sortedResults = array();
+        foreach ($orderBy as $key) {
+            if (array_key_exists($key, $results)) {
+                $sortedResults[$key] = $results[$key];
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Set Display Hook sorting information.
+     *
+     * @param string $owner
+     * @param array  $array Non-assoc array of owners in order, array(Comments, Ratings).
+     *
+     * @return array
+     */
+    public static function setDisplaySortsByOwner($owner, array $array)
+    {
+        ModUtil::setVar(self::SORTS, $owner, $array);
+    }
+
+    /**
+     * Get Display Hook sorting information.
+     *
+     * @param string $owner
+     *
+     * @return array
+     */
+    public static function getDisplaySortsByOwner($owner)
+    {
+        return ModUtil::getVar(self::SORTS, $owner, array());
+    }
+
+    /**
+     * Get all sorting information
+     *
+     * @return array
+     */
+    public static function getAllDisplaySorts()
+    {
+        return ModUtil::getVar(self::SORTS, '', array());
+    }
+
+    /**
+     * Set all sorting information.
+     *
+     * @param array $array Associative array of sorts array('owner' => array('Comments', 'Ratings'));
+     *
+     * @return array
+     */
+    public static function setAllDisplaySorts(array $array)
+    {
+        if (!$array) {
+            return;
+        }
+        
+        foreach ($array as $key => $value) {
+            ModUtil::setVar(self::SORTS, $key, $value);
+        }
     }
 
 }
