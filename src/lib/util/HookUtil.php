@@ -386,4 +386,28 @@ class HookUtil
         }
     }
 
+    /**
+     * Get list of modules who provide hooks.
+     *
+     * This means modules that provide hooks that can be attached to other modules.
+     *
+     * @return array
+     */
+    public static function getHookProviders()
+    {
+        return ModUtil::getModulesCapableOf('hook_provider');
+    }
+
+    /**
+     * Get list of modules that subscribe to hooks.
+     *
+     * This means modules that can make use of another modules' hooks.
+     *
+     * @return array
+     */
+    public static function getHookSubscribers()
+    {
+        return ModUtil::getModulesCapableOf('hook_subscriber');
+    }
+
 }
