@@ -75,6 +75,7 @@ class SystemListenersUtil
                 ServiceUtil::loadPersistentServices();
                 PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");
                 EventUtil::loadPersistentEvents();
+                HookUtil::loadHandlers();
             }
         }
     }

@@ -24,7 +24,7 @@ class Modules_Version extends Zikula_Version
         @$meta['description'] = $this->__('Provides support for modules, and incorporates an interface for adding, removing and administering core system modules and add-on modules.');
         //! module name that appears in URL
         $meta['url']  = $this->__('modules');
-        $meta['version'] = '3.7.4';
+        $meta['version'] = '3.7.5';
         $meta['securityschema'] = array('Modules::' => '::');
         return $meta;
     }

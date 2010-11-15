@@ -74,10 +74,10 @@ class Modules_Installer extends Zikula_Installer
                 // legacy is no longer supported
                 System::delVar('loadlegacy');
                 DBUtil::changeTable('modules');
-            case '3.7.3':
-                // create the new hooks tables
-                Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookBindings', 'Zikula_Doctrine_Model_HookRegistry'));
             case '3.7.4':
+                // create the new hooks tables
+                Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders'));
+            case '3.7.5':
                 // future upgrade routines
 
         }
