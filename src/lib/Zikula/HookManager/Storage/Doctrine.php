@@ -98,13 +98,13 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
      * Register a new hook with the persistence layer.
      *
      * @param string $hookName      The name of the hook event.
-     * @param string $serviceName   The service name (ID).
      * @param string $handlerClass  The name of the class that hosts the event handler.
      * @param string $handlerMethod Name of the method in the hookclass that hosts the event handler.
+     * @param string $serviceName   The service name (ID).
      *
      * @return void
      */
-    public function registerHook($hookName, $serviceName, $handlerClass, $handlerMethod)
+    public function registerHook($hookName, $handlerClass, $handlerMethod, $serviceName=null)
     {
         $hook = Doctrine_Core::getTable($this->hookEntityName)
                     ->create(array('hookname' => $hookName,

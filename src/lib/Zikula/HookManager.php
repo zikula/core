@@ -131,12 +131,17 @@ class Zikula_HookManager
     {
         foreach ($this->getHooks() as $hook) {
             // if the service doesn't exist, register it with service manager.
-            if (!$this->serviceManager->hasService($hook['servicename'])) {
+            if ($hook['servicename'] && !$this->serviceManager->hasService($hook['servicename'])) {
                 $this->serviceManager->registerService(new Zikula_ServiceManager_Service($hook['servicename'], new Zikula_ServiceManager_Definition($hook['handlerclass'], array($this->serviceManager))));
+
+                // setup lazy loading of eventhandler class.
+                $callable = new Zikula_ServiceHandler($hook['servicename'], $hook['handlermethod']);
+            } else {
+                // callable is a static class
+                $callable = array($hook['handlerclass'], $hook['handlermethod']);
             }
 
-            // setup lazy loading of eventhandler class.
-            $this->eventManager->attach($hook['hookname'], new Zikula_ServiceHandler($hook['servicename'], $hook['handlermethod']));
+            $this->eventManager->attach($hook['hookname'], $callable);
         }
     }
 
@@ -167,15 +172,15 @@ class Zikula_HookManager
      * Register hook with the persistence layer.
      *
      * @param string $hookName      The name of the hook event.
-     * @param string $serviceName   The service name (ID).
      * @param string $hookClass     The name of the class that hosts the event handler.
      * @param string $handlerMethod Name of the method in the hookclass that hosts the event handler.
+     * @param string $serviceName   The service name (ID).
      *
      * @return void
      */
-    public function registerHook($hookName, $serviceName, $hookClass, $handlerMethod)
+    public function registerHook($hookName, $hookClass, $handlerMethod, $serviceName=null)
     {
-        $this->storage->registerHook($hookName, $serviceName, $hookClass, $handlerMethod);
+        $this->storage->registerHook($hookName, $hookClass, $handlerMethod, $serviceName);
     }
 
     /**

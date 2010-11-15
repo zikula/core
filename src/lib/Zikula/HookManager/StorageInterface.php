@@ -22,13 +22,13 @@ interface Zikula_HookManager_StorageInterface
      * Register a new hook with the persistence layer.
      *
      * @param string $eventName     The name of the hook event.
-     * @param string $serviceName   The service name (ID).
      * @param string $hookClass     The name of the class that hosts the event handler.
      * @param string $handlerMethod Name of the method in the hookclass that hosts the event handler.
+     * @param string $serviceName   The service name (ID).
      *
      * @return void
      */
-    public function registerHook($eventName, $serviceName, $hookClass, $handlerMethod);
+    public function registerHook($eventName, $hookClass, $handlerMethod, $serviceName=null);
 
     /**
      * Unregister a hook by event name and service name.
