@@ -338,7 +338,11 @@ class EventUtil
                 }
 
                 if (ModUtil::available($module)) {
-                    self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
+                    try {
+                        self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
+                    } catch (InvalidArgumentException $e) {
+                        LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), Zikula_ErrorHandler::ERR);
+                    }
                 }
             }
         }
