@@ -180,7 +180,7 @@ class EventUtil
     }
 
     /**
-     * Register a persisten event for a module.
+     * Register a persistent event for a module.
      *
      * @param string   $moduleName Module name.
      * @param string   $eventName  Event name.
