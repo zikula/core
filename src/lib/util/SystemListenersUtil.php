@@ -393,12 +393,12 @@ class SystemListenersUtil
         }
 
         if (ModUtil::isCapable($event['modname'], 'hook_providers')) {
-            $event->data[] = array('url' => ModUtil::url($event['modname'], 'admin', 'somelink'), 'text' => __('Hook Providers'));
+            $event->data[] = array('url' => ModUtil::url('Modules', 'admin', 'hookproviders'), 'text' => __('Hook Providers'));
             return;
         }
 
         if (ModUtil::isCapable($event['modname'], 'hook_subscribers')) {
-            $event->data[] = array('url' => ModUtil::url($event['modname'], 'admin', 'somelink'), 'text' => __('Hook Subscribers'));
+            $event->data[] = array('url' => ModUtil::url($event['modname'], 'admin', 'hooksubscribers'), 'text' => __('Hook Subscribers'));
             return;
         }
     }
