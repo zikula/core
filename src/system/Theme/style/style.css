@@ -1,7 +1,13 @@
+.theme_preview img,
 img#theme_credits_preview {
     padding: 5px;
     margin: 10px;
     border: 1px solid #D9E0E6;
+}
+
+.theme_preview h4 {
+    margin: 10px 0 0 0;
+    padding: 0;
 }
 
 div#theme_undefinedblockpositions {
@@ -81,4 +87,8 @@ img.theme_colorpicker_image {
 #themes_list dl.theme_item dd {
     padding: 0;
     margin: 0;
+}
+
+.colorpicker {
+    cursor: pointer;
 }

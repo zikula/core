@@ -11,7 +11,7 @@
         <thead>
             <tr>
                 <th>{gt text="Name"}</th>
-                <th>{gt text="Type"}</th>
+                <th>{gt text="Description"}</th>
                 <th>{gt text="Actions"}</th>
             </tr>
         </thead>
@@ -19,11 +19,17 @@
             {foreach from=$themes item=theme}
             <tr class="{cycle values="z-odd,z-even}{if $theme.name|strtolower eq $currenttheme|strtolower} z-defaulttablerow{/if}">
                 <td>
-                    <span title="{$theme.description|default:$theme.displayname}" class="tooltips">{$theme.displayname|safetext}</span>
+                    <span title="#title_{$theme.name}" class="tooltips">{$theme.displayname|safetext}</span>
                     {if $theme.name|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips"> (*) </span>{/if}
+                    <div id="title_{$theme.name}" class="theme_preview z-center" style="display: none;">
+                        <h4>{$theme.displayname}</h4>
+                        {if $themeinfo.system neq 1}
+                        <p>{previewimage name=$theme.name}</p>
+                        {/if}
+                    </div>
                 </td>
-                <td>{$theme.type|themetype}</td>
-                <td>
+                <td>{$theme.description|default:$theme.displayname}</td>
+                <td class="z-right">
                     {if $theme.admin eq true}
                     <a href="{modurl modname=Admin type=admin func=adminpanel theme=$theme.name}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview"}</a>&nbsp;&nbsp;
                     {else}
@@ -51,3 +57,4 @@
 <script type="text/javascript">
     Zikula.UI.Tooltips($$('.tooltips'));
 </script>
+
