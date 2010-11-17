@@ -38,6 +38,15 @@ A complex module might have several different areas where attaching Hooks may or
 may not be appropriate, or may require different Hooks.  For this reason you may
 specify different areas.
 
+The addType() method deserves some explanation.  The first parameter is the hook
+type; the second parameter is the event name that is triggered by *THIS* module.
+So if this module was a news module, then these are the unique names that only
+*this* news module actually triggers.  Under the hood, when a user attaches say
+a comments module, then the hook handler of the comment module will be attached
+to the EventManager using the event name supplied by the subscriber module (news).
+e.g. attach news.ui.view to comments.handler.ui.view which is the name of a
+callable handler registered by the hook provider (news).
+
 It is also necessary to add the following to the getMetaData() method of Version.php
 to let Zikula know that the module understands Hooks and may subscribe to them.
 Zikula will add a configuration menu to the administration area of the module.  For
@@ -66,10 +75,10 @@ an event name.
     HookUtil::registerHook($name, $owner, $type, $className, $method, $serviceId)
 
     // registering a static method handler.
-    HookUtil::registerHook('ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview')
+    HookUtil::registerHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview')
 
     // registering a service
-    HookUtil::registerHook('ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview', 'module.ratings_hooks')
+    HookUtil::registerHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview', 'module.ratings_hooks')
 
 The $weight parameter can be used to set default weights of handlers that are eventually attached with
 EventManager.  Generally, this can be left alone.
@@ -95,3 +104,22 @@ validate.delete  - Used to validate input from a ui delete form.
 process.create   - Perform the final create actions for a ui create form.
 process.update   - Perform the final update actions for a ui create form.
 process.delete   - Perform the final delete actions for a ui create form.
+
+Implementing Hooks from the Subscriber Side
+-------------------------------------------
+So it can be seen quite clearly that Hooks are really only for use on with display.  Their
+main purpose it so a module can be attached to another, like attaching ratings to blog
+posts.  In this section we cover the implementation of hooks from the subscriber's side.
+So in our example, that would mean the Blogging module.
+
+We don't need to be concerned with attaching hooks to modules, that is handled automatically
+by the administation UI.
+
+Attaching display hooks is very simple.  Inside the template simply add
+
+    {calldisplayhooks hooktype='ui.view' subject=$subject module=$module assign='display_hooks'}
+
+$module will be added magically.
+The plugin will return all display hooks, sorted according to the administration settings.  The return
+is an array of `array('moduleName1' => 'output1', 'moduleName2' => 'output2')`
+
