@@ -268,10 +268,10 @@ table.z-admintable thead tr {
     background-color: #CFCFCF;
 }
 
-table.z-datatable tbody td,
-table.z-datatable thead th,
-table.z-admintable tbody td,
-table.z-admintable thead th {
+table.z-datatable td,
+table.z-datatable th,
+table.z-admintable td,
+table.z-admintable th {
     padding: 5px;
     border-width: 0px;
     vertical-align: middle;

@@ -3,7 +3,7 @@
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="Credits"}</div>
     <h2>{gt text="Theme credits"}</h2>
     {if $themeinfo.system neq 1}
-    <div style="text-align:center;">{previewimage name=$themeinfo.name id=theme_credits_preview}</div>
+    <div style="text-align:center;">{previewimage size='large' name=$themeinfo.name id=theme_credits_preview}</div>
     {/if}
     <table class="z-datatable">
         <tbody>
