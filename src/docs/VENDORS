@@ -65,3 +65,69 @@ Markdown Extra 1.2.4 (includes Markdown 1.0.1n)
     License: New BSD
     Location in Zikula: lib/vendor/Markdown
     Patch details: Removed all helper functions and calltime pass by reference.
+
+
+JAVASCRIPT LIBRARIES
+-------------
+PickyColor 0.1
+    Vendor website: http://code.google.com/p/picky-color/
+    Downloaded from: http://code.google.com/p/picky-color/
+    License: MIT
+    Location in Zikula: javascript/picky_color
+    Patch details: none
+
+Prototype 1.6.1
+    Vendor website: http://www.prototypejs.org/
+    Downloaded from: http://www.prototypejs.org/
+    License: MIT
+    Location in Zikula: javascript/ajax
+    Patch details: none
+
+Scriptaculous 1.8.3
+    Vendor website: http://script.aculo.us/
+    Downloaded from: http://script.aculo.us/
+    License: MIT
+    Location in Zikula: javascript/ajax
+    Patch details: none
+
+Validation 1.5.4.1
+    Vendor website: http://tetlaw.id.au/view/javascript/really-easy-field-validation
+    Downloaded from: http://tetlaw.id.au/view/javascript/really-easy-field-validation
+    License: MIT
+    Location in Zikula: javascript/ajax/validation.min.js
+    Patch details: none
+
+Texpand 0.9.7
+    Vendor website: http://github.com/gf3/texpand
+    Downloaded from: http://github.com/gf3/texpand
+    License: MIT
+    Location in Zikula: javascript/texpand.js
+    Patch details: none
+
+jQuery v1.4.3
+    Vendor website: http://jquery.com/
+    Downloaded from: http://jquery.com/
+    License: MIT
+    Location in Zikula: javascript/jquery
+    Patch details: none
+
+DHTML Calendar 1.0
+    Vendor website: http://www.dynarch.com/projects/calendar
+    Downloaded from: http://www.dynarch.com/projects/calendar
+    License: LGPL
+    Location in Zikula: javascript/jscalendar
+    Patch details: none
+
+LivePipe
+    Vendor website: http://livepipe.net/core
+    Downloaded from: http://livepipe.net/core
+    License: MIT
+    Location in Zikula: javascript/livepipe
+    Patch details: none
+
+PHP Layers Menu 3.2.0-rc
+    Vendor website: http://phplayersmenu.sourceforge.net/
+    Downloaded from: http://phplayersmenu.sourceforge.net/
+    License: LGPL
+    Location in Zikula: javascript/phplayersmenu
+    Patch details: none
