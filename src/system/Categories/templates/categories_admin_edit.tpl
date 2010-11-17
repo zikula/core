@@ -115,7 +115,7 @@
                 </ul>
             </fieldset>
             {/if}
-            <div class="z-buttons z-formbuttons">
+            <div class="z-buttons z-buttonrow">
                 {if ($mode == "edit")}
                 {button class="z-btgreen" src=button_ok.gif set=icons/extrasmall name="category_submit" value="update"  __alt="Save" __title="Save" __text="Save"}
                 {button class="z-btblue" src=editcopy.gif set=icons/extrasmall name="category_copy" value="copy" __alt="Copy" __title="Copy" __text="Copy"}

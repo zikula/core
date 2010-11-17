@@ -1,3 +1,4 @@
+{ajaxheader ui=true}
 {gt text="Module categories list" assign=templatetitle}
 {include file="admin_admin_menu.tpl"}
 
@@ -18,7 +19,7 @@
                 <td>
                     {assign var="options" value=$categories[category].options}
                     {section name=option loop=$options}
-                    <a href="{$options[option].url|safetext}">{img modname=core set=icons/extrasmall src=$options[option].image title=$options[option].title alt=$options[option].title}</a>
+                    <a href="{$options[option].url|safetext}">{img modname=core set=icons/extrasmall src=$options[option].image title=$options[option].title alt=$options[option].title class='tooltips'}</a>
                     {/section}
                 </td>
             </tr>
@@ -32,3 +33,7 @@
     </div>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
+
+<script type="text/javascript">
+    Zikula.UI.Tooltips($$('.tooltips'));
+</script>

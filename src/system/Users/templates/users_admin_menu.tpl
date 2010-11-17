@@ -1,4 +1,4 @@
-{ajaxheader modname='Users' filename='users.js'}
+{ajaxheader modname='Users' filename='users.js' ui=true}
 
 {admincategorymenu}
 <div class="z-adminbox">

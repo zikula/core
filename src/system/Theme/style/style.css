@@ -10,6 +10,11 @@ img#theme_credits_preview {
     padding: 0;
 }
 
+.marktooltip {
+    border-bottom: 1px dashed #aaa;
+    cursor: pointer;
+}
+
 div#theme_undefinedblockpositions {
     width: 85%;
 }

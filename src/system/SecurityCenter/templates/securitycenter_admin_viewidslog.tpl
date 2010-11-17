@@ -69,7 +69,7 @@
                 {/foreach}
                 </td>
                 <td>{$event.date|safetext}</td>
-                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
+                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
             </tr>
             {foreachelse}
             <tr class="z-datatableempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>
@@ -83,4 +83,5 @@
     $$('.eventfilter').each(function(element) {
         new Zikula.UI.Window(element);
     })
+    Zikula.UI.Tooltips($$('.tooltips'));
 </script>

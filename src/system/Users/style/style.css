@@ -125,3 +125,24 @@ div.z-accountlink  img {
     margin: 0.5em 0;
     padding: 0;
 }
+
+.user-icon-greenled {
+    background: url("../../../images/icons/extrasmall/greenled.gif") no-repeat scroll 0 50% transparent;
+    padding: 0 0 0 20px;
+}
+
+.user-icon-redled {
+    background: url("../../../images/icons/extrasmall/redled.gif") no-repeat scroll 0 50% transparent;
+    padding: 0 0 0 20px;
+}
+
+.user-icon-mail_delete {
+    background: url("../../../images/icons/extrasmall/mail_delete.gif") no-repeat scroll 0 50% transparent;
+    padding: 0 0 0 20px;
+}
+
+.user-icon-status_unknown {
+    background: url("../../../images/icons/extrasmall/status_unknown.gif") no-repeat scroll 0 50% transparent;
+    padding: 0 0 0 20px;
+}
+

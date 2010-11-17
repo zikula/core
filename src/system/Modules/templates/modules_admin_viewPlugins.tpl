@@ -1,3 +1,4 @@
+{ajaxheader ui=true}
 {include file="modules_admin_menu.tpl"}
 
 <div class="z-admincontainer">
@@ -81,7 +82,7 @@
                 <td class="z-right z-nowrap">
                     {strip}
                     {foreach from=$plugin.actions item="action"}
-                    <a href="{$action.url|safetext}">{img modname=core src=$action.image set=icons/extrasmall title=$action.title alt=$action.title}</a>&nbsp;
+                    <a href="{$action.url|safetext}">{img modname=core src=$action.image set=icons/extrasmall title=$action.title alt=$action.title class='tooltips'}</a>&nbsp;
                     {/foreach}
                     {/strip}
                 </td>
@@ -92,3 +93,7 @@
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+    Zikula.UI.Tooltips($$('.tooltips'));
+</script>
