@@ -355,7 +355,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      *
      * @return void
      */
-    function validate(&$view)
+    function validate($view)
     {
         $this->clearValidation($view);
 
@@ -371,11 +371,11 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * Find the checked radio button in group.
      *
      * @param Form_View               $view              Reference to Form_View object.
-     * @param Form_Plugin_RadioButton &$firstRadioButton The first found radio button.
+     * @param Form_Plugin_RadioButton $firstRadioButton The first found radio button.
      *
      * @return boolean
      */
-    function findCheckedRadioButton(&$view, &$firstRadioButton)
+    function findCheckedRadioButton($view, $firstRadioButton)
     {
         $lim = count($view->plugins);
 
@@ -391,12 +391,12 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Recursive helper method for self::findCheckedRadioButton().
      *
-     * @param Form_Plugin_RadioButton &$firstRadioButton The first found radio button.
+     * @param Form_Plugin_RadioButton $firstRadioButton The first found radio button.
      * @param Form_Plugin             $plugin            A Form plugin.
      *
      * @return boolean
      */
-    function findCheckedRadioButton_rec(&$firstRadioButton, $plugin)
+    function findCheckedRadioButton_rec($firstRadioButton, $plugin)
     {
         if ($plugin instanceof Form_Plugin_RadioButton && $plugin->groupName == $this->groupName) {
             $plugin->validationChecked = true;
