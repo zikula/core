@@ -114,7 +114,7 @@ Zikula.dejsonize = function(jsondata)
  */
 Zikula.showajaxerror = function(errortext)
 {
-    if(errortext.isJSON) {
+    if(errortext.isJSON()) {
         var decoded = errortext.evalJSON(true);
         if(decoded.core && decoded.core.statusmsg) {
             if(typeof(decoded.core.statusmsg) == 'object') {
