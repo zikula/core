@@ -75,7 +75,7 @@ class HookUtil
      *
      * @return void
      */
-    public function registerHook($name, $owner, $type, $className, $method, $serviceId=null, $weight=10)
+    public static function registerHook($name, $owner, $type, $className, $method, $serviceId=null, $weight=10)
     {
         $provider = new Zikula_Doctrine_Model_HookProviders();
         $provider->merge(array(

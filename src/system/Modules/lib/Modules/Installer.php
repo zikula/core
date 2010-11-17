@@ -45,8 +45,8 @@ class Modules_Installer extends Zikula_Installer
             return false;
         }
 
-        // create the new hooks tables
-        Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookBindings', 'Zikula_Doctrine_Model_HookRegistry'));
+        // create hook provider table.
+        Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders'));
 
         // populate default data
         $this->defaultdata();

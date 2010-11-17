@@ -21,3 +21,60 @@ modules's output.
 A subscriber is simply a module that understand hooks.  It can process hooks that are
 provided by other modules.
 
+Subscriber Modules
+------------------
+Modules that understand hooks must make this known to the Zikula framework via setting
+in the Version.php.  This is done by adding a method called to Version.php
+
+    protected function setupHookSubscriberBundles()
+    {
+         $bundle = new Zikula_Version_HookBundle(__('News Display Hooks'));
+         $bundle->addType('ui.view', 'news.ui.view');
+         $bundle->addType('ui.create', 'news.ui.create');
+         $this->addHookSubscriberBundle('articles', $bundle);
+    }
+
+A complex module might have several different areas where attaching Hooks may or
+may not be appropriate, or may require different Hooks.  For this reason you may
+specify different areas.
+
+It is also necessary to add the following to the getMetaData() method of Version.php
+to let Zikula know that the module understands Hooks and may subscribe to them.
+Zikula will add a configuration menu to the administration area of the module.  For
+this reason you *must* have an admin controller in the module.
+
+    $meta['capabilities'] = array('hook_subscriber' => array('enabled' => true));
+
+Provider Modules
+----------------
+Provider modules must make their available hook handlers known to Zikula.  This should
+be done during the installation/upgrade of the module.
+
+The first task is to register the hook event handlers, that is to say, the actual
+PHP class/method that will respond to hook events that are triggered by subscriber modules.
+
+A module may register either static class callable methods, like Foo::Bar($event) or
+services (which are instanciated class objects).  If using services, they must be \
+instances of Zikula_EventHandler.  We use one API do register these.  Omitting
+leaving $serviceId = null, will tell Zikula the callable is a static class method.
+If you give a $serviceId, then this class will be instanciated and used.  This means
+you can use the same $serviceId and have multiple methods in side if you wish.
+
+The $name of the hook, is the name of the handler - a common name.  This is NOT
+an event name.
+
+    HookUtil::registerHook($name, $owner, $type, $className, $method, $serviceId)
+
+    // registering a static method handler.
+    HookUtil::registerHook('ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview')
+
+    // registering a service
+    HookUtil::registerHook('ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview', 'module.ratings_hooks')
+
+The $weight parameter can be used to set default weights of handlers that are eventually attached with
+EventManager.  Generally, this can be left alone.
+
+The second task is to let Zikula know that the module is a hook provider by adding the
+following capability to Version.php
+
+    $meta['capabilities'] = array('hook_provider' => array('enabled' => true));

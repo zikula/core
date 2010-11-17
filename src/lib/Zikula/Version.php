@@ -166,6 +166,13 @@ class Zikula_Version implements ArrayAccess
      */
     protected $reflection;
 
+    /**
+     * Hook subscriber bundles.
+     *
+     * @var array
+     */
+    protected $hookSubscribers = array();
+
     //abstract public function getMetaData();
 
     /**
@@ -186,6 +193,9 @@ class Zikula_Version implements ArrayAccess
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
         Zikula_ClassProperties::load($this, $this->getMetaData());
+
+        // Load configuration of any hook subscribers.
+        $this->setupHookSubscriberBundles();
     }
 
     /**
@@ -626,4 +636,51 @@ class Zikula_Version implements ArrayAccess
         $this->$key = null;
     }
 
+    /**
+     * Setup Hook Subscribers if any.
+     * 
+     * @return void
+     */
+    protected function setupHookSubscriberBundles()
+    {
+    }
+
+    /**
+     * Add a hook subscriber bundle.
+     *
+     * @param string                    $area
+     * @param Zikula_Version_HookBundle $bundle
+     */
+    public function addHookSubscriberBundle($area, Zikula_Version_HookBundle $bundle)
+    {
+        $this->hookSubscribers[$area] = $bundle;
+    }
+
+    /**
+     * Returns array of hook bundles.
+     *
+     * Usually this will only be one.
+     *
+     * @return array Of Zikula_Version_HookBundle
+     */
+    public function getHookSubscriberBundles()
+    {
+        return $this->hookSubscribers;
+    }
+
+    /**
+     * Get hook subscriber bundle for a given area.
+     *
+     * @param string $area Area.
+     *
+     * @return Zikula_Version_HookBundle
+     */
+    public function getHookSubscriberBundle($area)
+    {
+        if (!array_key_exists($area, $this->hookSubscribers)) {
+            throw new InvalidArgumentException(__f('Hook subscriber area %s does not exist', $area));
+        }
+
+        return $this->hookSubscribers[$area];
+    }
 }
