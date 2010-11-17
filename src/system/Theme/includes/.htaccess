@@ -1,5 +1,0 @@
-deny from all
-<FilesMatch "\.(html|js)$">
-order allow,deny
-allow from all
-</filesmatch>
