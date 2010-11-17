@@ -277,7 +277,11 @@ class HookUtil
                 $callable = self::resolveCallable($handler);
             }
 
-            $eventManager->attach($handler['eventname'], $callable, $handler['weight']);
+            try {
+                $eventManager->attach($handler['eventname'], $callable, $handler['weight']);
+            } catch (InvalidArgumentException $e) {
+                LogUtil::log(sprintf("Hook event handler could not be attached because %s", $e->getMessage()), Zikula_ErrorHandler::ERR);
+            }
         }
     }
 
@@ -315,7 +319,7 @@ class HookUtil
         if (!$results) {
             return $results;
         }
-        
+
         // Get correct order of event responses.
         $orderBy = self::getDisplaySortsByOwner($owner);
         if (!$orderBy) {
@@ -380,7 +384,7 @@ class HookUtil
         if (!$array) {
             return;
         }
-        
+
         foreach ($array as $key => $value) {
             ModUtil::setVar(self::SORTS, $key, $value);
         }
