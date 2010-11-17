@@ -78,3 +78,20 @@ The second task is to let Zikula know that the module is a hook provider by addi
 following capability to Version.php
 
     $meta['capabilities'] = array('hook_provider' => array('enabled' => true));
+
+Hook Types
+----------
+The following is a list of valid hook types.  Not all have to be used but in general,
+a HookBundle should contain at least the ui.* and process.* handlers valid to complete
+an action.
+
+ui.view          - Display hook for view templates.
+ui.create        - Display hook for create templates.
+ui.edit          - Display hook for edit forms.
+ui.delete        - Display hook for delete forms.
+validate.create  - Used to validate input from a ui create form.
+validate.update  - Used to validate input from an ui modify form.
+validate.delete  - Used to validate input from a ui delete form.
+process.create   - Perform the final create actions for a ui create form.
+process.update   - Perform the final update actions for a ui create form.
+process.delete   - Perform the final delete actions for a ui create form.
