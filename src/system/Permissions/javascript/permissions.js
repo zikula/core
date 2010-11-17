@@ -1,18 +1,6 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
 
 /**
- * Show information about all available components and instances
- *
- *@params none;
- *@return none;
- *@author Frank Schummertz
- */
-function showinstanceinformation() {
-    window.open (Zikula.Config.entrypoint + "?module=Permissions&type=admin&func=viewinstanceinfo",
-                 "Instance_Information","toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=no,copyhistory=no,width=600,height=300");
-}
-
-/**
  * Inits the ajax stuff: show ajax buttons, remove non ajax buttons etc.
  *
  *@params none;

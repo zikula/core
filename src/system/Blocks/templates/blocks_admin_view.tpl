@@ -98,7 +98,7 @@
                 <td class="z-right">
                     {foreach item=option from=$block.options}
                     {if $option.noscript eq true}<noscript><div>{/if}
-                        <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
+                        <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title class='tooltips'}</a>&nbsp;
                     {if $option.noscript eq true}</div></noscript>{/if}
                     {/foreach}
                 </td>
@@ -128,7 +128,7 @@
                 <td><pre style="margin:0;padding:0;">&#123blockposition name={$position.name|safehtml}&#125</pre></td>
                 <td class="z-right">
                     {foreach item=option from=$position.options}
-                    <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
+                    <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title class='tooltips'}</a>&nbsp;
                     {/foreach}
                 </td>
             </tr>

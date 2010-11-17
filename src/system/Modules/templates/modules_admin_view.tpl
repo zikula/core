@@ -1,3 +1,4 @@
+{ajaxheader ui=true}
 {include file="modules_admin_menu.tpl"}
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"http://community.zikula.org/module-Extensions-view.htm\">`$extdbtitle`</a></strong>" var=extdblink}
@@ -77,7 +78,7 @@
                     {assign var="options" value=$modules[modules].options}
                     {strip}
                     {section name=options loop=$options}
-                    <a href="{$options[options].url|safetext}">{img modname=core src=$options[options].image set=icons/extrasmall title=$options[options].title alt=$options[options].title}</a>&nbsp;
+                    <a href="{$options[options].url|safetext}">{img modname=core src=$options[options].image set=icons/extrasmall title=$options[options].title alt=$options[options].title class='tooltips'}</a>&nbsp;
                     {/section}
                     {/strip}
                 </td>
@@ -89,3 +90,7 @@
     </table>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
+
+<script type="text/javascript">
+    Zikula.UI.Tooltips($$('.tooltips'));
+</script>

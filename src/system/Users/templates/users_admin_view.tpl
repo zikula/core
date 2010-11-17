@@ -1,5 +1,4 @@
 {gt text="Users list" assign=templatetitle}
-{ajaxheader modname='Users'}
 {include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
@@ -10,8 +9,8 @@
     <div id="liveusersearch" class="z-hide z-form">
         <fieldset>
             <label for="username">{gt text="Search"}:</label>&nbsp;<input size="25" maxlength="25" type="text" id="username" value="" />
-            <a id="modifyuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="xedit.gif" __title="Edit" __alt="Edit"}</a>
-            <a id="deleteuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.gif" __title="Delete" __alt="Delete"}</a>
+            <a id="modifyuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="xedit.gif" __title="Edit" __alt="Edit" class='tooltips'}</a>
+            <a id="deleteuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.gif" __title="Delete" __alt="Delete" class='tooltips'}</a>
             {img id="ajax_indicator" style="display: none;" modname=core set=icons/extrasmall src="indicator_circle.gif" alt=""}
             <div id="username_choices" class="autocomplete_user"></div>
             <script type="text/javascript">
@@ -92,11 +91,11 @@
                     {/foreach}
                 </td>
                 {/if}
-                <td class="z-center">{img modname=core set=icons/extrasmall src=$usersitems[usersitems].activation.image title=$usersitems[usersitems].activation.title alt=$usersitems[usersitems].activation.title}</td>
+                <td class="z-center">{img modname=core set=icons/extrasmall src=$usersitems[usersitems].activation.image title=$usersitems[usersitems].activation.title alt=$usersitems[usersitems].activation.title class='tooltips'}</td>
                 <td class="z-right">
                     {assign var="options" value=$usersitems[usersitems].options}
                     {section name=options loop=$options}
-                    <a href="{$options[options].url|safetext}">{img modname=core set=icons/extrasmall src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                    <a href="{$options[options].url|safetext}">{img modname=core set=icons/extrasmall src=$options[options].image title=$options[options].title alt=$options[options].title class='tooltips'}</a>
                     {/section}
                 </td>
             </tr>
@@ -106,3 +105,7 @@
 
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
+
+<script type="text/javascript">
+    Zikula.UI.Tooltips($$('.tooltips'));
+</script>
