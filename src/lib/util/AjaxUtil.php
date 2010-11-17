@@ -26,6 +26,8 @@ class AjaxUtil
      * @param boolean $displayalert Flag to display the error as an alert or not.
      * @param string  $code         Optional error code, default '400 Bad data'.
      *
+     * @throws Zikula_Exception_Forbidden if there are errors in when legacymode is disabled.
+     *
      * @deprecated since 1.3.0
      * @todo Move to Compat.
      *
@@ -33,7 +35,7 @@ class AjaxUtil
      */
     public static function error($message = '', $other = array(), $createauthid = false, $displayalert = true, $code = '400 Bad data')
     {
-        if(!System::isLegacyMode()) {
+        if (!System::isLegacyMode()) {
             if (LogUtil::hasErrors()) {
                 if (!$message) {
                     throw new Zikula_Exception_Forbidden();
@@ -86,7 +88,7 @@ class AjaxUtil
      */
     public static function output($args, $createauthid = false, $xjsonheader = false, $statusmsg = true, $code = '200 OK')
     {
-        if(!System::isLegacyMode()){
+        if (!System::isLegacyMode()){
             $response = new Zikula_Response_Ajax($args);
             echo $response;
             System::shutDown();

@@ -173,7 +173,7 @@ class HookUtil
     /**
      * Unregister all hooks for a given owner
      *
-     * @param string $name Name of hook handler.
+     * @param string $owner Name of hook handler.
      *
      * @return void
      */
@@ -305,7 +305,7 @@ class HookUtil
     /**
      * Sort out display hooks according to configuration.
      *
-     * @param string $owner   Owner
+     * @param string $owner   Owner.
      * @param string $results Assoc-array of results.
      *
      * @return array
@@ -336,10 +336,10 @@ class HookUtil
     /**
      * Set Display Hook sorting information.
      *
-     * @param string $owner
-     * @param array  $array Non-assoc array of owners in order, array(Comments, Ratings).
+     * @param string $owner Owner.
+     * @param array  $array Non-assoc array of owners in order, array('Comments', 'Ratings').
      *
-     * @return array
+     * @return void
      */
     public static function setDisplaySortsByOwner($owner, array $array)
     {
@@ -349,7 +349,7 @@ class HookUtil
     /**
      * Get Display Hook sorting information.
      *
-     * @param string $owner
+     * @param string $owner Owner.
      *
      * @return array
      */
@@ -371,9 +371,9 @@ class HookUtil
     /**
      * Set all sorting information.
      *
-     * @param array $array Associative array of sorts array('owner' => array('Comments', 'Ratings'));
+     * @param array $array Associative array of sorts array('owner' => array('Comments', 'Ratings')).
      *
-     * @return array
+     * @return void
      */
     public static function setAllDisplaySorts(array $array)
     {

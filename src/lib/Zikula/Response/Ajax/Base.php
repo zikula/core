@@ -111,7 +111,7 @@ abstract class Zikula_Response_Ajax_Base
         $core = array();
 
         if ($this->options) {
-            foreach($this->options as $key => $value) {
+            foreach ($this->options as $key => $value) {
                 $core[$key] = $value;
             }
         }
@@ -125,7 +125,7 @@ abstract class Zikula_Response_Ajax_Base
     }
 
     /**
-     * Create Http Response Header
+     * Create Http Response Header.
      *
      * @return string
      */
@@ -158,6 +158,14 @@ abstract class Zikula_Response_Ajax_Base
         return "HTTP/1.1 $response";
     }
 
+    /**
+     * Add options.
+     *
+     * @param string $key   Option key.
+     * @param mixed  $value Value.
+     *
+     * @return void
+     */
     public function addOptions($key, $value)
     {
         $this->options[$key] = $value;

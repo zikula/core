@@ -648,12 +648,15 @@ class Zikula_Version implements ArrayAccess
     /**
      * Add a hook subscriber bundle.
      *
-     * @param string                    $area
-     * @param Zikula_Version_HookBundle $bundle
+     * @param string                    $area   Area.
+     * @param Zikula_Version_HookBundle $bundle HookBundle.
+     *
+     * @return Zikula_Version
      */
     public function addHookSubscriberBundle($area, Zikula_Version_HookBundle $bundle)
     {
         $this->hookSubscribers[$area] = $bundle;
+        return $this;
     }
 
     /**
@@ -672,6 +675,8 @@ class Zikula_Version implements ArrayAccess
      * Get hook subscriber bundle for a given area.
      *
      * @param string $area Area.
+     *
+     * @throws InvalidArgumentException If the area specified is not registered.
      *
      * @return Zikula_Version_HookBundle
      */

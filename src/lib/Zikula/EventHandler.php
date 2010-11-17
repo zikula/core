@@ -66,10 +66,10 @@ abstract class Zikula_EventHandler
     /**
      * Required setup of handler definitions.
      *
-     * <samp>
+     * <Samp>
      *    $this->addHandlerDefinition('some.event', 'handler', 10);
      *    $this->addHandlerDefinition('some.event', 'handler2', 10);
-     * </samp>
+     * </Samp>
      *
      * @return void
      */
@@ -81,6 +81,8 @@ abstract class Zikula_EventHandler
      * @param string  $name   Name of event.
      * @param string  $method Method to invoke when called.
      * @param integer $weight Handler weight, defaults to 10.
+     *
+     * @throws InvalidArgumentException If method specified is invalid.
      *
      * @return void
      */
