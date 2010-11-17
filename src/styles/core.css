@@ -1434,6 +1434,29 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     right: 0;
 }
 
+.z-alert .z-window-body {
+    background: #F7CBCA;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F7CBCA), to(#fbe3e4));
+    background: -moz-linear-gradient(top, #F7CBCA, #fbe3e4);
+    background: linear-gradient(#F7CBCA, #fbe3e4);
+}
+
+.z-alert .z-window-header {
+    color: #d12f19;
+}
+
+.z-dialog .z-window-title {
+    background: url("../images/icons/extrasmall/info.gif") no-repeat scroll 0 50% transparent;
+}
+
+.z-alert .z-window-title {
+    background: url("../images/icons/extrasmall/error.gif") no-repeat scroll 0 50% transparent;
+}
+
+.z-confirm .z-window-title {
+    background: url("../images/icons/extrasmall/agt_support.gif") no-repeat scroll 0 50% transparent;
+}
+
 #control_overlay {
     background-color: #000;
 }
