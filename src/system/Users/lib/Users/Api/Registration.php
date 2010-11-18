@@ -371,7 +371,7 @@ class Users_Api_Registration extends Zikula_Api
 
     /**
      * Create a new user or registration.
-     * 
+     *
      * This is the primary and almost exclusive method for creating new user accounts, and the primary and
      * exclusive method for creating registration applications that are either pending approval, pending e-mail
      * verification, or both. 99.9% of all cases where a new user record needs to be created should use this
@@ -839,13 +839,13 @@ class Users_Api_Registration extends Zikula_Api
             // registration is created. It is not a "real" record until now, so it wasn't really
             // "created" until now. It is way down here so that the activated state and profile
             // data can be properly saved before the hook is fired.
-            $this->callHooks('item', 'create', $userObj['uid'], array('module' => 'Users'));
+            ModUtil::callHooks('item', 'create', $userObj['uid'], array('module' => 'Users'));
 
             $createEvent = new Zikula_Event('user.create', $userObj);
             $this->eventManager->notify($createEvent);
 
             $regErrors = array();
-            
+
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $sitename  = System::getVar('sitename');
                 $siteurl   = System::getBaseUrl();
@@ -881,7 +881,7 @@ class Users_Api_Registration extends Zikula_Api
                     $notificationEmail = $this->getVar('reg_notifyemail', '');
                     if (!empty($notificationEmail)) {
                         $subject = $this->__f('New registration: %s', $userObj['uname']);
-                        
+
                         $notificationSent = ModUtil::apiFunc('Users', 'user', 'sendNotification',
                                                 array('toAddress'         => $notificationEmail,
                                                       'notificationType'  => 'regadminnotify',
@@ -902,7 +902,7 @@ class Users_Api_Registration extends Zikula_Api
             }
 
             $userObj['regErrors'] = $regErrors;
-            
+
             return $userObj;
         } else {
             return LogUtil::registerError($this->__('Unable to store the new user registration record.'));
@@ -1006,7 +1006,7 @@ class Users_Api_Registration extends Zikula_Api
                     'operand'   => $value,
                 );
             }
-            
+
             if (preg_match('/^IS (?:NOT )?NULL/i', $value['operator'])) {
                 $where[] = $regColumn[$field] . ' ' . strtoupper($value['operator']);
             } elseif (preg_match('/^(?:NOT )?IN/i', $value['operator'])) {
@@ -1493,7 +1493,7 @@ class Users_Api_Registration extends Zikula_Api
                 return LogUtil::registerError($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $id));
             }
         }
-        
+
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
 
         $reginfo['isapproved'] = true;
@@ -1556,7 +1556,7 @@ class Users_Api_Registration extends Zikula_Api
             // NOTE: This is not an item-create because this is a legacy activation, and the
             // user account record was already in a state where it was a "real" record.
             // See createRegistration() and createUser() above.
-            $this->callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
+            ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
             // ... and call event too.
             $updateEvent = new Zikula_Event('user.update', $res);
             $this->eventManager->notify($updateEvent);

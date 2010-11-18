@@ -298,7 +298,7 @@ class Theme_Api_Admin extends Zikula_Api
             ModUtil::apiFunc('Theme', 'admin', 'deletefiles', array('themename' => $themeinfo['name'], 'themedirectory' => $themeinfo['directory']));
         }
         // Let any hooks know that we have deleted an item.
-        $this->callHooks('item', 'delete', $themeid, array('module' => 'Theme'));
+        ModUtil::callHooks('item', 'delete', $themeid, array('module' => 'Theme'));
 
         // Let the calling process know that we have finished successfully
         return true;

@@ -290,7 +290,7 @@ class Users_Controller_User extends Zikula_Controller
         ));
 
         if ($registeredObj) {
-            
+
             if ($registeredObj['activated'] == UserUtil::ACTIVATED_PENDING_REG) {
                 $moderation = $this->getVar('moderation');
                 $moderationOrder = $this->getVar('moderation_order');
@@ -317,7 +317,7 @@ class Users_Controller_User extends Zikula_Controller
                         LogUtil::registerStatus($this->__('Done! Your registration request has been saved. Please contact the site administrator regarding the status of your registration request.'));
                     }
                 }
-               
+
                 return $this->view->fetch('users_user_displaystatusmsg.tpl');
             } else {
                 // Make sure the user has a status that allows him to log in before telling him he can.
@@ -862,7 +862,7 @@ class Users_Controller_User extends Zikula_Controller
                     if ($mustConfirmTOUPP) {
                         if (ModUtil::available('legal')
                                 && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
-                            
+
                             $touppAccepted = (int)FormUtil::getPassedValue('touaccepted', 0, 'GETPOST');
                             $mustConfirmTOUPP = !$touppAccepted;
                             $tryAgain = !$touppAccepted;
@@ -989,7 +989,7 @@ class Users_Controller_User extends Zikula_Controller
             if ($loggedIn) {
                 // start login hook
                 $uid = UserUtil::getVar('uid');
-                $this->callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
+                ModUtil::callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
                 $loginRedirect = $this->getVar('login_redirect');
                 if ($loginRedirect == 1) {
                     // WCAG compliant login
@@ -1023,7 +1023,7 @@ class Users_Controller_User extends Zikula_Controller
 
         // start logout hook
         $uid = UserUtil::getVar('uid');
-        $this->callHooks('zikula', 'logout', $uid, array('module' => 'zikula'));
+        ModUtil::callHooks('zikula', 'logout', $uid, array('module' => 'zikula'));
         if (UserUtil::logout()) {
             if ($login_redirect == 1) {
                 // WCAG compliant logout - we redirect to index.php because
@@ -1109,7 +1109,7 @@ class Users_Controller_User extends Zikula_Controller
 
                 if ($verifycode && $reginfo && isset($reginfo['pass']) && !empty($reginfo['pass'])
                         && isset($reginfo['passreminder']) && !empty($reginfo['passreminder'])) {
-                    
+
                     $verifyChg = ModUtil::apiFunc('Users', 'registration', 'getVerificationCode', array(
                         'uid'   => $reginfo['uid'],
                     ));
@@ -1126,7 +1126,7 @@ class Users_Controller_User extends Zikula_Controller
                                     $regErrorsMessage = $this->__('There were some problems detected during the verification process. Please contact the site administrator regarding the status of your verification.');
                                     $this->view->assign('regErrors', $verified['regErrors']);
                                 }
-                                
+
                                 switch ($verified['activated']) {
                                     case UserUtil::ACTIVATED_PENDING_REG:
                                         if (empty($verified['approved_by'])) {

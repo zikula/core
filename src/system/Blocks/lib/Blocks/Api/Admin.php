@@ -112,7 +112,7 @@ class Blocks_Api_Admin extends Zikula_Api
         }
 
         // call update hooks
-        $this->callHooks('item', 'update', $args['bid'], array('module' => 'Blocks'));
+        ModUtil::callHooks('item', 'update', $args['bid'], array('module' => 'Blocks'));
 
         return true;
     }
@@ -189,7 +189,7 @@ class Blocks_Api_Admin extends Zikula_Api
         }
 
         // Let other modules know we have created an item
-        $this->callHooks('item', 'create', $block['bid'], array('module' => 'Blocks'));
+        ModUtil::callHooks('item', 'create', $block['bid'], array('module' => 'Blocks'));
 
         return $block['bid'];
     }
@@ -293,7 +293,7 @@ class Blocks_Api_Admin extends Zikula_Api
         }
 
         // Let other modules know we have deleted an item
-        $this->callHooks('item', 'delete', $args['bid'], array('module' => 'Blocks'));
+        ModUtil::callHooks('item', 'delete', $args['bid'], array('module' => 'Blocks'));
 
         return true;
     }

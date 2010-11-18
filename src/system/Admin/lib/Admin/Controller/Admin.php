@@ -261,7 +261,7 @@ class Admin_Controller_Admin extends Zikula_Controller
 
     /**
      * Display main admin panel for a category
-     * 
+     *
      * @param int $args['acid'] the id of the category to be displayed
      * @return string HTML string
      */
@@ -496,7 +496,7 @@ class Admin_Controller_Admin extends Zikula_Controller
         }
 
         // Let any other modules know that the modules configuration has been updated
-        $this->callHooks('module','updateconfig','Admin', array('module' => 'Admin'));
+        ModUtil::callHooks('module','updateconfig','Admin', array('module' => 'Admin'));
 
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));

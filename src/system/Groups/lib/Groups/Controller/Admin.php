@@ -839,7 +839,7 @@ class Groups_Controller_Admin extends Zikula_Controller
         $this->setVar('hideclosed', $hideclosed);
 
         // Let any other modules know that the modules configuration has been updated
-        $this->callHooks('module','updateconfig','Groups', array('module' => 'Groups'));
+        ModUtil::callHooks('module','updateconfig','Groups', array('module' => 'Groups'));
 
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));

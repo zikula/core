@@ -301,7 +301,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
         System::setVar('idsexceptions', $idsexceptarray);
 
         // Let any other modules know that the modules configuration has been updated
-        $this->callHooks('module', 'updateconfig', 'SecurityCenter', array('module' => 'SecurityCenter'));
+        ModUtil::callHooks('module', 'updateconfig', 'SecurityCenter', array('module' => 'SecurityCenter'));
 
         // clear all cache and compile directories
         ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');

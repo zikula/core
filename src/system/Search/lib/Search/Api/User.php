@@ -251,7 +251,7 @@ class Search_Api_User extends Zikula_Api
         }
 
         // Let any hooks know that we have created a new item.
-        $this->callHooks('item', 'create', $args['q'], array('module' => 'Search'));
+        ModUtil::callHooks('item', 'create', $args['q'], array('module' => 'Search'));
 
         return true;
     }

@@ -146,7 +146,7 @@ class Users_Api_Admin extends Zikula_Api
         $userInfo = $args['userinfo'];
         if (!isset($userInfo['uid']) || empty($userInfo['uid']) || !isset($userInfo['uname'])
                 || empty($userInfo['uname']) || !isset($userInfo['email'])  || empty($userInfo['email'])) {
-            
+
             return LogUtil::registerArgsError();
         }
 
@@ -239,7 +239,7 @@ class Users_Api_Admin extends Zikula_Api
         $updateEvent = new Zikula_Event('user.update', $userInfo);
         $this->eventManager->notify($updateEvent);
 
-        $this->callHooks('item', 'update', $userInfo['uid'], array('module' => 'Users'));
+        ModUtil::callHooks('item', 'update', $userInfo['uid'], array('module' => 'Users'));
 
         return true;
     }
@@ -317,7 +317,7 @@ class Users_Api_Admin extends Zikula_Api
                 $deleteEvent = new Zikula_Event('user.delete', $userObj);
                 $this->eventManager->notify($deleteEvent);
 
-                $this->callHooks('item', 'delete', $userObj['uid'], array('module' => 'Users'));
+                ModUtil::callHooks('item', 'delete', $userObj['uid'], array('module' => 'Users'));
             }
         }
 
@@ -493,11 +493,11 @@ class Users_Api_Admin extends Zikula_Api
 
             foreach ($importValues as $value) {
                 if ($value['activated'] != UserUtil::ACTIVATED_PENDING_REG) {
-                    $this->callHooks('item', 'create', $value['uid'], array('module' => 'Users'));
+                    ModUtil::callHooks('item', 'create', $value['uid'], array('module' => 'Users'));
                     $createEvent = new Zikula_Event('user.create', $value);
                     $this->eventManager->notify($createEvent);
                 }
-                if (($value['activated'] != UserUtil::ACTIVATED_PENDING_REG) && ($value['activated'] != UserUtil::ACTIVATED_INACTIVE) 
+                if (($value['activated'] != UserUtil::ACTIVATED_PENDING_REG) && ($value['activated'] != UserUtil::ACTIVATED_INACTIVE)
                         && ($value['sendMail'] == 1)) {
 
                     $renderer->assign('email', $value['email']);

@@ -855,7 +855,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         $this->setVar('collapseable', $collapseable);
 
         // Let any other modules know that the modules configuration has been updated
-        $this->callHooks('module','updateconfig','Blocks', array('module' => 'Blocks'));
+        ModUtil::callHooks('module','updateconfig','Blocks', array('module' => 'Blocks'));
 
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));

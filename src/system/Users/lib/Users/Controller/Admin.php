@@ -491,9 +491,9 @@ class Users_Controller_Admin extends Zikula_Controller
                 if (SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_EDIT)) {
                     $actions[$key]['modifyUrl'] = ModUtil::url($this->getName(), 'admin', 'modify', array('userid' => $userinfo['uid']));
                 }
-                if (($currentUid != $userinfo['uid']) 
+                if (($currentUid != $userinfo['uid'])
                         && SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_DELETE)) {
-                    
+
                     $actions[$key]['deleteUrl'] = ModUtil::url($this->getName(), 'admin', 'deleteusers', array('userid' => $userinfo['uid']));
                 }
             }
@@ -1798,7 +1798,7 @@ class Users_Controller_Admin extends Zikula_Controller
             $errorFields['chgemail_expiredays'] = true;
             $this->registerError($this->__('The number of days before an e-mail change request pending verification is expired must be zero (0) or a positive integer.'));
         }
-        if (!isset($config['chgpass_expiredays']) || !is_numeric($config['chgpass_expiredays']) 
+        if (!isset($config['chgpass_expiredays']) || !is_numeric($config['chgpass_expiredays'])
                 || ((int)$config['chgpass_expiredays'] != $config['chgpass_expiredays']) || ($config['chgpass_expiredays'] < 0)) {
 
             $errorFields['chgpass_expiredays'] = true;
@@ -1863,7 +1863,7 @@ class Users_Controller_Admin extends Zikula_Controller
                 ModUtil::setVar('Legal', 'privacypolicy', false);
             }
             // Let any other modules know that the modules configuration has been updated
-            $this->callHooks('module', 'updateconfig', 'Users', array('module' => 'Users'));
+            ModUtil::callHooks('module', 'updateconfig', 'Users', array('module' => 'Users'));
 
             // the module configuration has been updated successfuly
             LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
@@ -2000,7 +2000,7 @@ class Users_Controller_Admin extends Zikula_Controller
             if (!strrpos($exportFile, '.csv')) {
                 $exportFile .= '.csv';
             }
-           
+
             $colnames = array();
 
             //get all user fields
@@ -2029,7 +2029,7 @@ class Users_Controller_Admin extends Zikula_Controller
                 if ($groups == 1) {
                     array_push($titlerow, 'groups');
                 }
-                
+
                 array_merge($titlerow, $colnames);
             } else {
                 $titlerow = array();
@@ -2047,7 +2047,7 @@ class Users_Controller_Admin extends Zikula_Controller
 
             // data for csv
             $datarows = array();
-            
+
             //loop every user gettin user id and username and all user fields and push onto result array.
             foreach ($users as $user) {
                 $uservars = UserUtil::getVars($user['uid']);
@@ -2066,7 +2066,7 @@ class Users_Controller_Admin extends Zikula_Controller
                 if ($lastLogin == 1) {
                     array_push($result, $uservars['lastlogin']);
                 }
-                
+
                 if ($groups == 1) {
                     $usergroups = ModUtil::apiFunc('Groups', 'user', 'getusergroups',
                                             array('uid'   => $uservars['uid'],
@@ -2079,11 +2079,11 @@ class Users_Controller_Admin extends Zikula_Controller
                     }
 
                     $groupstring = rtrim($groupstring, chr(124));
-                    
+
 
                     array_push($result, $groupstring);
                 }
-                
+
                 foreach ($colnames as $colname) {
                     array_push($result, $uservars['__ATTRIBUTES__'][$colname]);
                 }
@@ -2098,7 +2098,7 @@ class Users_Controller_Admin extends Zikula_Controller
         if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
             $this->view->assign('groups', '1');
         }
-        
+
         return $this->view->fetch('users_admin_export.tpl');
     }
 

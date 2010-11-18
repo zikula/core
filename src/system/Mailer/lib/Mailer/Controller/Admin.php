@@ -128,7 +128,7 @@ class Mailer_Controller_Admin extends Zikula_Controller
         $this->setVar('smtppassword', $smtppassword);
 
         // Let any other modules know that the modules configuration has been updated
-        $this->callHooks('module', 'updateconfig', 'Mailer', array('module' => 'Mailer'));
+        ModUtil::callHooks('module', 'updateconfig', 'Mailer', array('module' => 'Mailer'));
 
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
