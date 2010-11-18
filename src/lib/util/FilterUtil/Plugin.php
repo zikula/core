@@ -210,6 +210,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
 
         if ($obj instanceof FilterUtil_Build) {
             $ops = $obj->getOperators();
+
             if (isset($ops) && is_array($ops)) {
                 foreach ($ops as $op => $fields) {
                     $flds = array();

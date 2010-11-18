@@ -23,7 +23,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_PluginCommon implements Filter
      *
      * @var array
      */
-    private $ops = array();
+    protected $ops = array();
 
     /**
      * Field configuration.
@@ -32,7 +32,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_PluginCommon implements Filter
      *
      * @var array
      */
-    private $fields = array();
+    protected $fields = array();
 
     /**
      * The table names of the relation tables.
@@ -41,7 +41,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_PluginCommon implements Filter
      *
      * @var array
      */
-    private $mndbtable = array();
+    protected $mndbtable = array();
 
     /**
      * The table names in database.
@@ -50,7 +50,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_PluginCommon implements Filter
      *
      * @var aray
      */
-    private $mntable = array();
+    protected $mntable = array();
 
     /**
      * The column set of the relation tables.
@@ -59,7 +59,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_PluginCommon implements Filter
      *
      * @var array
      */
-    private $mncolumn = array();
+    protected $mncolumn = array();
 
     /**
      * The field in table to compare the relationed field with.
@@ -68,7 +68,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_PluginCommon implements Filter
      *
      * @var array
      */
-    private $comparefield = array();
+    protected $comparefield = array();
 
     /**
      * Constructor
@@ -171,10 +171,12 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_PluginCommon implements Filter
         if ($this->default == true) {
             $fields[] = '-';
         }
+
         $ops = array();
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }
+
         return $ops;
     }
 

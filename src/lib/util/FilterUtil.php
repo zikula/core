@@ -553,7 +553,9 @@ class FilterUtil extends FilterUtil_Common
                 $sub = $this->_genDqlRecursive($obj[0]);
                 if (!empty($sub)) {
                     $where .= $sub['where'];
-                    $params = array_merge($params, $sub['params']);
+                    if (isset($sub['params'])) {
+                        $params = array_merge($params, $sub['params']);
+                    }
                 }
                 unset($obj[0]);
             }

@@ -23,21 +23,21 @@ class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements Filt
      *
      * @var array
      */
-    private $ops = array();
+    protected $ops = array();
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    private $fields = array();
+    protected $fields = array();
 
     /**
      * Category property.
      *
      * @var array
      */
-    private $property;
+    protected $property;
 
     /**
      * Constructor.
@@ -99,6 +99,7 @@ class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements Filt
                 $this->addFields($fld);
             }
         } elseif (!empty($fields) && !$this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
+            // the field must not be a column of the table as it should be using the zikula categorization system
             $this->fields[] = $fields;
         }
     }
@@ -194,7 +195,7 @@ class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements Filt
 
         $where = DBUtil::generateCategoryFilterWhere($this->dbtable, false, $filter);
         if ($op == 'ne') {
-            $where = 'NOT ' . $where;
+            $where = str_replace(' IN ', ' NOT IN ', $where);
         }
 
         return array('where' => $where);

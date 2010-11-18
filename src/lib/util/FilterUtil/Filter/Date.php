@@ -24,14 +24,14 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
      *
      * @var array
      */
-    private $ops = array();
+    protected $ops = array();
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    private $fields = array();
+    protected $fields = array();
 
     /**
      * Constructor.
@@ -46,7 +46,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
     {
         parent::__construct($config);
 
-        if (isset($config['fields']) && (!isset($this->fields) || !is_array($this->fields))) {
+        if (isset($config['fields']) && is_array($config['fields'])) {
             $this->addFields($config['fields']);
         }
 
@@ -327,5 +327,93 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
         }
 
         return array('where' => $where);
+    }
+
+    /**
+     * Returns DQL code.
+     *
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
+     *
+     * @return array Doctrine Query where clause and parameters.
+     */
+    public function getDql($field, $op, $value)
+    {
+        if (array_search($op, $this->ops) === false || !$this->fieldExists($field)) {
+            return '';
+        }
+
+        $type = 'point';
+        if (preg_match('~^(year|month|week|day|hour|min):\s*(.*)$~i', $value, $res)) {
+            $type = strtolower($res[1]);
+            if (strlen($res[2]) == 4) {
+                $res[2] = "01.01." . $res[2];
+            }
+            $time = strtotime($res[2]);
+        } elseif (preg_match('~(year|month|week|day|hour|min|tomorrow)~', $value, $res)) {
+            $type = strtolower($res[1]);
+            $time = strtotime($value);
+        } else {
+            $time = strtotime($value);
+        }
+
+        $where = '';
+        $params = array();
+        $column = $this->getColumn($field);
+
+        switch ($op) {
+            case 'eq':
+                if ($type != 'point') {
+                    list($from, $to) = $this->makePeriod($time, $type);
+                    $where = "$column >= ? AND $column < ?";
+                    $params[] = DateUtil::getDatetime($from);
+                    $params[] = DateUtil::getDatetime($to);
+                } else {
+                    $where = "$column = ?";
+                    $params[] = DateUtil::getDatetime($time);
+                }
+                break;
+
+            case 'ne':
+                if ($type != 'point') {
+                    list($from, $to) = $this->makePeriod($time, $type);
+                    $where = "$column < ? AND $column >= ?";
+                    $params[] = DateUtil::getDatetime($from);
+                    $params[] = DateUtil::getDatetime($to);
+                } else {
+                    $where = "$column <> ?";
+                    $params[] = DateUtil::getDatetime($time);
+                }
+                break;
+
+            case 'gt':
+                if ($type != 'point') {
+                    list($from, $time) = $this->makePeriod($time, $type);
+                }
+                $where = "$column > ?";
+                $params[] = DateUtil::getDatetime($time);
+                break;
+
+            case 'ge':
+                $where = "$column >= ?";
+                $params[] = DateUtil::getDatetime($time);
+                break;
+
+            case 'lt':
+                $where = "$column < ?";
+                $params[] = DateUtil::getDatetime($time);
+                break;
+
+            case 'le':
+                if ($type != 'point') {
+                    list($from, $time) = $this->makePeriod($time, $type);
+                }
+                $where = "$column <= ?";
+                $params[] = DateUtil::getDatetime($time);
+                break;
+        }
+
+        return array('where' => $where, 'params' => $params);
     }
 }

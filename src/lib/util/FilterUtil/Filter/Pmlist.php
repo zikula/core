@@ -25,14 +25,14 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements Filter
      *
      * @var array
      */
-    private $ops = array();
+    protected $ops = array();
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    private $fields = array();
+    protected $fields = array();
 
     /**
      * Constructor
@@ -159,15 +159,16 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements Filter
             return '';
         }
 
-        $where = '';
+        $where  = '';
+        $column = $this->column[$field];
 
         switch ($op) {
             case 'eq':
-                $where = $this->column[$field].' = '.$value;
+                $where = "$column = '$value'";
                 break;
 
             case 'ne':
-                $where = $this->column[$field].' != '.$value;
+                $where = "$column <> '$value'";
                 break;
 
             case 'sub':
@@ -178,9 +179,9 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements Filter
                     $items[] = $item['id'];
                 }
                 if (count($items) == 1) {
-                    $where = $this->column[$field] . " = " . implode("", $items);
+                    $where = "$column = '".implode("", $items)."'";
                 } else {
-                    $where = $this->column[$field] . " IN (" . implode(",", $items) . ")";
+                    $where = "$column IN ('".implode("','", $items)."')";
                 }
                 break;
         }

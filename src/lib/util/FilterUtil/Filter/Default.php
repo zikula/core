@@ -23,14 +23,14 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
      *
      * @var array
      */
-    private $_ops = array();
+    protected $_ops = array();
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    private $_fields = array();
+    protected $_fields = array();
 
     /**
      * Constructor.
@@ -159,6 +159,10 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
         $column = $this->column[$field];
 
         switch ($op) {
+            case 'eq':
+                $where = "$column = '$value'";
+                break;
+
             case 'ne':
                 $where = "$column <> '$value'";
                 break;
@@ -198,10 +202,6 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
             case 'notnull':
                 $where = "$column <> '' OR $column IS NOT NULL";
                 break;
-
-            case 'eq':
-                $where = "$column = '$value'";
-                break;
         }
 
         return array('where' => $where);
@@ -227,6 +227,11 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
         $column = $this->getColumn($field);
 
         switch ($op) {
+            case 'eq':
+                $where = "$column = ?";
+                $params[] = $value;
+                break;
+
             case 'ne':
                 $where = "$column <> ?";
                 $params[] = $value;
@@ -273,11 +278,6 @@ class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements Filte
 
             case 'notnull':
                 $where = "$column <> '' OR $column IS NOT NULL";
-                break;
-
-            case 'eq':
-                $where = "$column = ?";
-                $params[] = $value;
                 break;
         }
 
