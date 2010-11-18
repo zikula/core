@@ -169,5 +169,5 @@ hook types.  This can be done as follows:
     $this->eventManager->notify($event);
 
    // the short way, provided in instances of Zikula_Base (controllers, APIs etc).
-   $this->callHooks('news.hook.process.create', $subject);
+   $this->cnotifyHooks('news.hook.process.create', $subject);
 
