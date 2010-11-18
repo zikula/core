@@ -79,7 +79,7 @@ img.z-floatright {
 /*******************************************************************************/
 
 ul.z-menulinks {
-    background: url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6; /*non-CSS3 browsers*/
+    background: url("../images/global/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6; /*non-CSS3 browsers*/
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#E6E6E6'); /*IE*/
     background: -webkit-gradient(linear,left top, left bottom,from(#fefefe), to(#E6E6E6)); /*webkit*/
     background: -moz-linear-gradient(top, #fefefe, #E6E6E6); /*gecko*/
@@ -134,7 +134,7 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 }
 
 .z-menuitem-title {
-    background: url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6;
+    background: url("../images/global/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6;
     border: 1px solid #ccc;
     display: block;
     height: auto !important;
@@ -1524,11 +1524,11 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 *******************************************************************************/
 
 .z-order-asc {
-    background: url("../images/icons/extrasmall/order_asc.gif") transparent right 50% no-repeat;
+    background: url("../images/global/order_asc.gif") transparent right 50% no-repeat;
     padding-right: 14px;
 }
 .z-order-desc {
-    background: url("../images/icons/extrasmall/order_desc.gif") transparent right 50% no-repeat;
+    background: url("../images/global/order_desc.gif") transparent right 50% no-repeat;
     padding-right: 14px;
 }
 .z-order-unsorted {
