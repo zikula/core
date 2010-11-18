@@ -113,15 +113,12 @@ var nelement = $(nid);
             return 'catname='+encodeURIComponent(value)+'&cid='+cid+'&authid='+authid;
         },
         onComplete: function(transport, element) {
-        	alert("2");
            // if (!transport.isSuccess()) {
-            //    this.element.innerHTML = Admin.Editor.getOrig(element.id);
-    	     //   Zikula.showajaxerror(transport.getMessage());
-              //  return;
-            //}
-            alert('2');
+           //     this.element.innerHTML = Admin.Editor.getOrig(element.id);
+    	   //     Zikula.showajaxerror(transport.getMessage());
+           //     return;
+           //}
             var data = transport.getData();
-            alert('1');
             this.element.innerHTML = data.response;
         }
     });
