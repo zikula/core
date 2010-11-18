@@ -29,10 +29,12 @@ class Admin_Controller_Ajax extends Zikula_Controller
 
         //security checks
         if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
         }
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
         //get passed information
@@ -43,7 +45,7 @@ class Admin_Controller_Ajax extends Zikula_Controller
         $module = ModUtil::getInfo($moduleID);
         if (!$module) {
         	//deal with couldnt get module info
-        	return AjaxUtil::error($this->__f('Error! Could not get module name for id %s.', DataUtil::formatForDisplay($moduleID)), array(), true);
+        	throw new Zikula_Exception_Fatal($this->__('Error! Could not get module name for id %s.'));
         }
         //get the module name
         $displayname = DataUtil::formatForDisplay($module['displayname']);
@@ -53,14 +55,14 @@ class Admin_Controller_Ajax extends Zikula_Controller
         $result = ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('category' => $newParentCat,
                 'module' => $module));
         if(!$result) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not add module to module category.')));
+            throw new Zikula_Exception_Fatal($this->__('Error! Could not add module to module category.'));
         }
         $output['response'] = $moduleID;
         $output['newParentCat'] = $newParentCat;
         $output['oldcid'] = $oldcid;
         $output['modulename'] = $displayname;
         $output['url'] = ModUtil::url($module, 'admin');
-        return AjaxUtil::output($output, true);
+        return new Zikula_Response_Ajax($output);
     }
 
     /**
@@ -71,13 +73,14 @@ class Admin_Controller_Ajax extends Zikula_Controller
      *                          url is a formatted url to the new category on success.
      */
     public function addCategory() {
-
         //security checks
         if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
         }
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
         //get form information
@@ -88,19 +91,19 @@ class Admin_Controller_Ajax extends Zikula_Controller
         $cats = ModUtil::apiFunc('Admin', 'admin', 'getall');
         foreach ($cats as $cat) {
             if (in_array($catName, $cat)) {
-            	return AjaxUtil::error($this->__('Error! A category by this name already exists.'), array(), true);
+            	throw new Zikula_Exception_Fatal($this->__('Error! A category by this name already exists.'));
             }
         }
         //create the category
         $result = ModUtil::apiFunc('Admin', 'admin', 'create', array('catname' => $catName,
                 'description' => ''));
         if (!$result) {
-            return AjaxUtil::error($this->__('The category could not be created.'), array(), true);
+            throw new Zikula_Exception_Fatal($this->__('The category could not be created.'));
         }
         $output['response'] = $result;
         $url = ModUtil::url('Admin', 'admin', 'adminpanel', array('acid' => $result));
         $output['url'] = $url;
-        AjaxUtil::output($output, true);
+        return new Zikula_Response_Ajax($output);
     }
 
     /**
@@ -112,28 +115,30 @@ class Admin_Controller_Ajax extends Zikula_Controller
     public function deleteCategory() {
         //security checks
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError(), array(), false, true, '403 Unauthorized');
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
         //get passed cid to delete
         $cid = trim(FormUtil::getPassedValue('cid'));
         //check user has permission to delete this
         if (!SecurityUtil::checkPermission('Admin::Category', "::$cid", ACCESS_DELETE)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true), array(), false, true, '403 Unauthorized');
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
         }
         //find the category corresponding to the cid.
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if ($category == false) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')),array(), true);
+            throw new Zikula_Exception_Fatal($this->__('Error! No such category found.'));
         }
 
         //delete the category
         if (ModUtil::apiFunc('Admin', 'admin', 'delete', array('cid' => $cid))) {
             // Success
             $output['response'] = $cid;
-            return AjaxUtil::output($output, true);
+            return new Zikula_Response_Ajax($output);
         }
         //unknown error
-        return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not perform the deletion.')), array(), true);
+        throw new Zikula_Exception_Fatal($this->__('Error! Could not perform the deletion.'));
     }
 
     /**
@@ -148,15 +153,17 @@ class Admin_Controller_Ajax extends Zikula_Controller
 
         //security checks
         if (!SecurityUtil::checkPermission('Admin::Category', "$cat[catname]::$cid", ACCESS_EDIT)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true), array(), false, true, '403 Unauthorized');
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
         }
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError(), array(), false, true, '403 Unauthorized');
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
 
         //make sure cid and category name (cat) are both set
         if (!isset($cid) || $cid == '' || !isset($cat) || $cat == '') {
-            return AjaxUtil::error(LogUtil::registerArgsError(), array(), true);
+            throw new Zikula_Exception_BadData($this->__('No category name or id set.'));
         }
 
         //check if category with same name exists
@@ -166,26 +173,26 @@ class Admin_Controller_Ajax extends Zikula_Controller
                 //check to see if the category with same name is the same category.
                 if ($catName['cid'] == $cid) {
                     $output['response'] = $cat;
-                    return AjaxUtil::output($output, true);
+                    return new Zikula_Response_Ajax($output);
                 }
                 //a different category has the same name, not allowed.
-                return AjaxUtil::error($this->__('Error! A category by this name already exists.'), array(), true);
+                throw new Zikula_Exception_Fatal($this->__f('Error! A category by this name already exists.'));
             }
         }
 
         //get the category from the database
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if ($category == false) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')), array(), true);
+            throw new Zikula_Exception_Fatal($this->__('Error! No such category found.'));
         }
 
         //update the category using the info from the database and from the form.
         if (ModUtil::apiFunc('Admin', 'admin', 'update', array('cid' => $cid, 'catname' => $cat, 'description' => $category['description']))) {
             $output['response'] = $cat;
-            return AjaxUtil::output($output, true);
+            return new Zikula_Response_Ajax($output);
         }
         //update failed for some reason
-        return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')), array(), true);
+        throw new Zikula_Exception_Fatal($this->__('Error! Could not save your changes.'));
     }
 
     /**
@@ -197,13 +204,15 @@ class Admin_Controller_Ajax extends Zikula_Controller
     public function defaultCategory() {
         //security checks
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError(), array(), false, true, '403 Unauthorized');
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
         //get passed cid
         $cid = trim(FormUtil::getPassedValue('cid'));
         //check user has permission to change the initially selected category
         if (!SecurityUtil::checkPermission('Admin::', "::", ACCESS_ADMIN)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true), array(), false, true, '403 Unauthorized');
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
         }
         //find the category corresponding to the cid.
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
@@ -215,9 +224,9 @@ class Admin_Controller_Ajax extends Zikula_Controller
         if (ModUtil::setVar('Admin', 'startcategory', $cid)) {
             // Success
             $output['response'] = $this->__f('Category "%s" was successfully made default.', $category['catname']);
-            return AjaxUtil::output($output, true);
+            return new Zikula_Response_Ajax($output);
         }
         //unknown error
-        return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not make this category default.')), array(), true);
+        throw new Zikula_Exception_Fatal($this->__('Error! Could not make this category default.'));
     }
 }
