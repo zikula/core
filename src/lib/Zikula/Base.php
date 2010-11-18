@@ -623,21 +623,28 @@ abstract class Zikula_Base implements Zikula_Translatable
     }
 
     /**
-     * Carry out hook operations for module.
-     *
-     * @param string  $hookobject The object the hook is called for - one of 'item', 'category' or 'module'.
-     * @param string  $hookaction The action the hook is called for - one of 'new', 'create', 'modify', 'update', 'delete', 'transform', 'display', 'modifyconfig', 'updateconfig'.
-     * @param integer $hookid     The id of the object the hook is called for (module-specific).
-     * @param array   $extrainfo  Extra information for the hook, dependent on hookaction.
-     * @param boolean $implode    Implode collapses all display hooks into a single string.
-     *
-     * @toto REMOVE THIS METHOD - drak
-     *
-     * @return string|array String output from GUI hooks, extrainfo array for API hooks.
+     * Trigger hookable event.
+     * 
+     * @param string $name    The event name for the hookable event.
+     * @param mixed  $subject The subject of the event.
+     * @param array  $args    Extra meta data.
+     * @param mixes  $data    Any data to filter.
+     * 
+     * @return Zikula_Event 
      */
-    public function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
+    public function notifyHooks($name, $subject, $args=array(), $data=null)
     {
-        return ModUtil::callHooks($hookobject, $hookaction, $hookid, $extrainfo, $implode);
+        // set caller's name
+        if (!array_key_exists($args['module'])) {
+            $args['module'] = $this->name;
+        }
+
+        if (!array_key_exists($args['id'])) {
+            $args['id'] = 'id';
+        }
+
+        $event = new Zikula_Event($name, $subject, $args, $data);
+        return $this->eventManager->notify($event);
     }
 
     /**
