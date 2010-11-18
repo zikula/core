@@ -28,4 +28,17 @@ class Modules_Version extends Zikula_Version
         $meta['securityschema'] = array('Modules::' => '::');
         return $meta;
     }
+    
+    /**
+     * Setup Hook Subscribers if any.
+     *
+     * @return void
+     */
+    protected function setupHookSubscriberBundles()
+    {
+         $bundle = new Zikula_Version_HookBundle(__('News Display Hooks'));
+         $bundle->addType('ui.view', 'news.ui.view');
+         $bundle->addType('ui.create', 'news.ui.create');
+         $this->addHookSubscriberBundle('default', $bundle);
+    }
 }
