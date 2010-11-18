@@ -21,13 +21,6 @@
 class HookUtil
 {
     /**
-     * Hook manager instance.
-     *
-     * @var Zikula_HookManager
-     */
-    private static $hookManager;
-
-    /**
      * Hook handlers key for persistence.
      */
     const HANDLERS = '/HookHandlers';
@@ -42,24 +35,6 @@ class HookUtil
      */
     private function __construct()
     {
-
-    }
-
-    /**
-     * Get manager instance.
-     *
-     * @param Zikula_Core $core Core instance (optional).
-     *
-     * @return Zikula_HookManager
-     */
-    public static function getManager(Zikula_Core $core = null)
-    {
-        if (self::$hookManager) {
-            return self::$hookManager;
-        }
-
-        self::$hookManager = $core->getHookManager();
-        return self::$hookManager;
     }
 
     /**

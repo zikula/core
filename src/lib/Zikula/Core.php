@@ -70,13 +70,6 @@ class Zikula_Core
     protected $eventManager;
 
     /**
-     * HookManager.
-     *
-     * @var Zikula_HookManager
-     */
-    protected $hookManager;
-
-    /**
      * Booted flag.
      *
      * @var boolean
@@ -133,15 +126,6 @@ class Zikula_Core
     }
 
     /**
-     * Getter for hookManger property.
-     *
-     * @return Zikula_HookManager
-     */
-    public function getHookManager() {
-        return $this->hookManager;
-    }
-
-    /**
      * Boot Zikula.
      *
      * @throws LogicException If already booted.
@@ -159,17 +143,9 @@ class Zikula_Core
         $this->serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
         $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new Zikula_EventManager($this->serviceManager));
         $this->serviceManager->attachService('zikula', $this);
-        
-        $storage = new Zikula_HookManager_Storage_Doctrine('Zikula_Doctrine_Model_HookRegistry', 'Zikula_Doctrine_Model_HookBindings');
-        $this->hookManager = $this->serviceManager->attachService(
-                'zikula.hookmanager',
-                new Zikula_HookManager($this->serviceManager, $this->eventManager, $storage));
-
-        $this->eventManager->attach('callhooks', array($this->hookManager, 'notify'));
 
         ServiceUtil::getManager($this);
         EventUtil::getManager($this);
-        HookUtil::getManager($this);
     }
 
     /**
