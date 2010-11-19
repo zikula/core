@@ -52,6 +52,12 @@ class Modules_HookUI
         $view = Zikula_View::getInstance('Modules', false);
         $view->assign('currentmodule', $moduleName);
 
+        $hooksubscribers = HookUtil::getHookSubscribers();
+        for ($i=0 ; $i < count($hooksubscribers) ; $i++) {
+            $hooksubscribers[$i]['attached'] = false; //TODO: check if module is attached
+        }
+        $view->assign('hooksubscribers', $hooksubscribers);
+
         $event->setData($view->fetch('modules_hookui_subscribers.tpl'));
         $event->setNotified();
     }
