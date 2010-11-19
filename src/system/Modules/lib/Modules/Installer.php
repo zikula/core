@@ -47,6 +47,8 @@ class Modules_Installer extends Zikula_Installer
 
         // create hook provider table.
         Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders'));
+        EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hookproviders'));
+        EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hooksubscribers'));
 
         // populate default data
         $this->defaultdata();
