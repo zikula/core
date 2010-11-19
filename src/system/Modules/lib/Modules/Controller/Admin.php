@@ -255,11 +255,14 @@ class Modules_Controller_Admin extends Zikula_Controller
                                         'image' => 'folder_grey.gif',
                                         'title' => $this->__('Deactivate'));
                             }
-                            $actions[] = array(
-                                    'url' => ModUtil::url('Modules', 'admin', 'hooks', array(
-                                    'id' => $mod['id'])),
-                                    'image' => 'attach.gif',
-                                    'title' => $this->__('Hook settings'));
+
+                            if (System::isLegacyMode() && !ModUtil::isOO($mod['name'])) {
+                                $actions[] = array(
+                                        'url' => ModUtil::url('Modules', 'admin', 'hooks', array(
+                                        'id' => $mod['id'])),
+                                        'image' => 'attach.gif',
+                                        'title' => $this->__('Hook settings'));
+                            }
 
                             if (PluginUtil::hasModulePlugins($mod['name'])) {
                                 $actions[] = array(
