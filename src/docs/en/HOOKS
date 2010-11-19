@@ -55,7 +55,7 @@ to let Zikula know that the module understands Hooks and may subscribe to them.
 Zikula will add a configuration menu to the administration area of the module.  For
 this reason you *must* have an admin controller in the module.
 
-    $meta['capabilities'] = array('hook_subscriber' => array('enabled' => true));
+    $meta['capabilities'] = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
 
 Provider Modules
 ----------------
@@ -91,7 +91,7 @@ eventually attached with EventManager.  Generally, this parameter can be left al
 The second task is to let Zikula know that the module is a hook provider by adding the
 following capability to Version.php
 
-    $meta['capabilities'] = array('hook_provider' => array('enabled' => true));
+    $meta['capabilities'] = array(HookUtil::PROVIDER_CAPABLE => array('enabled' => true));
 
 Hook Types
 ----------

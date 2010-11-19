@@ -31,6 +31,16 @@ class HookUtil
     const SORTS = '/DisplaySorts';
 
     /**
+     * Provider capability key.
+     */
+    const PROVIDER_CAPABLE = 'hook_provider';
+
+    /**
+     * Subscriber capability key.
+     */
+    const SUBSCRIBER_CAPABLE = 'hook_subscriber';
+
+    /**
      * Constructor.
      */
     private function __construct()
@@ -387,6 +397,30 @@ class HookUtil
     public static function getHookSubscribers()
     {
         return ModUtil::getModulesCapableOf('hook_subscriber');
+    }
+
+    /**
+     * Is a module is subscriber capable.
+     *
+     * @param string $module Module name.
+     *
+     * @return boolean
+     */
+    public static function isProviderCapable($module)
+    {
+        return ModUtil::isCapable($module, self::PROVIDER_CAPABLE);
+    }
+
+    /**
+     * Is a module subscriber capable.
+     *
+     * @param string $module Module name.
+     *
+     * @return boolean
+     */
+    public static function isSubscriberCapable($module)
+    {
+        return ModUtil::isCapable($module, self::SUBSCRIBER_CAPABLE);
     }
 
 }
