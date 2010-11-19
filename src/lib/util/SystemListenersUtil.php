@@ -393,7 +393,7 @@ class SystemListenersUtil
         }
 
         if (HookUtil::isProviderCapable($event['modname'])) {
-            $event->data[] = array('url' => ModUtil::url('Modules', 'admin', 'hookproviders'), 'text' => __('Hook Providers'));
+            $event->data[] = array('url' => ModUtil::url($event['modname'], 'admin', 'hookproviders'), 'text' => __('Hook Providers'));
             return;
         }
 

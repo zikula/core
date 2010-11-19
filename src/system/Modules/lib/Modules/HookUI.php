@@ -20,17 +20,17 @@ class Modules_HookUI
     {
         // check if this is for this handler
         $subject = $event->getSubject();
-        if (!($event['method'] == 'hookproviders' && $subject instanceof Modules_Controller_Admin)) {
-            return;
+        if (!($event['method'] == 'hookproviders' && strrpos(get_class($subject), '_Controller_Admin'))) {
+           return;
         }
 
-        if (!SecurityUtil::checkPermission("Modules::", '::', ACCESS_ADMIN)) {
+        $moduleName = $subject->getName();
+        if (!SecurityUtil::checkPermission("$moduleName::", '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
-        $view = $subject->getView();
-        $currentModule = ModUtil::getName();
-        $view->assign('currentmodule', $currentModule);
+        $view = Zikula_View::getInstance('Modules', false);
+        $view->assign('currentmodule', $moduleName);
         
         $event->setData($view->fetch('modules_hookui_providers.tpl'));
         $event->setNotified();
@@ -40,17 +40,17 @@ class Modules_HookUI
     {
         // check if this is for this handler
         $subject = $event->getSubject();
-        if (!($event['method'] == 'hooksubscribers' && $subject instanceof Modules_Controller_Admin)) {
+        if (!($event['method'] == 'hooksubscribers' && strrpos(get_class($subject), '_Controller_Admin'))) {
            return;
         }
 
-        if (!SecurityUtil::checkPermission("Modules::", '::', ACCESS_ADMIN)) {
+        $moduleName = $subject->getName();
+        if (!SecurityUtil::checkPermission("$moduleName::", '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
-        $view = $subject->getView();
-        $currentModule = ModUtil::getName();
-        $view->assign('currentmodule', $currentModule);
+        $view = Zikula_View::getInstance('Modules', false);
+        $view->assign('currentmodule', $moduleName);
 
         $event->setData($view->fetch('modules_hookui_subscribers.tpl'));
         $event->setNotified();
