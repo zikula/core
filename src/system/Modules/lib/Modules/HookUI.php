@@ -30,7 +30,7 @@ class Modules_HookUI
 
         $view = $subject->getView();
         $currentModule = ModUtil::getName();
-        $view->attach('currentmodule', $currentModule);
+        $view->assign('currentmodule', $currentModule);
         
         $event->setData($view->fetch('modules_hookui_providers.tpl'));
         $event->setNotified();
@@ -50,7 +50,7 @@ class Modules_HookUI
 
         $view = $subject->getView();
         $currentModule = ModUtil::getName();
-        $view->attach('currentmodule', $currentModule);
+        $view->assign('currentmodule', $currentModule);
 
         $event->setData($view->fetch('modules_hookui_subscribers.tpl'));
         $event->setNotified();
