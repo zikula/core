@@ -60,7 +60,7 @@ class Groups_Api_Admin extends Zikula_Api
         $createEvent = new Zikula_Event('group.create', $obj);
         $this->eventManager->notify($createEvent);
 
-        ModUtil::callHooks('item', 'create', $gid, array('module' => 'Groups'));
+        //TODO REFACTOR: ModUtil::callHooks('item', 'create', $gid, array('module' => 'Groups'));
 
 
 
@@ -125,7 +125,7 @@ class Groups_Api_Admin extends Zikula_Api
         $deleteEvent = new Zikula_Event('group.delete', $item);
         $this->eventManager->notify($deleteEvent);
 
-        ModUtil::callHooks('item', 'delete', $args['gid'], array('module' => 'Groups'));
+        //TODO REFACTOR: ModUtil::callHooks('item', 'delete', $args['gid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -194,7 +194,7 @@ class Groups_Api_Admin extends Zikula_Api
         $updateEvent = new Zikula_Event('group.update', $object);
         $this->eventManager->notify($updateEvent);
 
-        ModUtil::callHooks('item', 'update', $args['gid'], array('module' => 'Groups'));
+        //TODO REFACTOR: ModUtil::callHooks('item', 'update', $args['gid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -241,7 +241,7 @@ class Groups_Api_Admin extends Zikula_Api
         $adduserEvent = new Zikula_Event('group.adduser', $object);
         $this->eventManager->notify($adduserEvent);
 
-        ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
+        //TODO REFACTOR: ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -294,7 +294,7 @@ class Groups_Api_Admin extends Zikula_Api
                                                                       'uid' => $args['uid']));
         $this->eventManager->notify($removeuserEvent);
 
-        ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
+        //TODO REFACTOR: ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
         return true;

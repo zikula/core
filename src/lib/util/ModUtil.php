@@ -1381,11 +1381,21 @@ class ModUtil
      */
     public static function registerHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
     {
+        if (!System::legacyMode()) {
+            LogUtil::log(__f('%1$s::%2$s is not available in without legacy mode', array('ModUtil', 'registerHook')), Zikula_ErrorHandler::ERR);
+            return false;
+        }
+
         // define input, all numbers and booleans to strings
         $hookmodule = isset($hookmodule) ? ((string)$hookmodule) : '';
 
         // validate
         if (!System::varValidate($hookmodule, 'mod')) {
+            return false;
+        }
+
+        if (self::isOO($hookmodule)) {
+            LogUtil::log(__('OO module types may not make use of this legacy API'), Zikula_ErrorHandler::ERR);
             return false;
         }
 
@@ -1463,6 +1473,11 @@ class ModUtil
             $modname = $extrainfo['module'];
         } else {
             $modname = self::getName();
+        }
+
+        if (self::isOO($modname)) {
+            LogUtil::log(__('OO module types may not make use of this legacy API'), Zikula_ErrorHandler::ERR);
+            return null;
         }
 
         $lModname = strtolower($modname);

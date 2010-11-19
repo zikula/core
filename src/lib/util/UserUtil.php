@@ -21,7 +21,7 @@ class UserUtil
 
     /**
      * Pending registration (not able to log in).
-     * 
+     *
      * Moderation and/or e-mail verification are in use in the registration process, and one or more of the required steps has not yet
      * been completed.
      */
@@ -1252,7 +1252,7 @@ class UserUtil
             }
         } elseif (($getRegistration && ($user['activated'] != self::ACTIVATED_PENDING_REG))
                 || (!$getRegistration && ($user['activated'] == self::ACTIVATED_PENDING_REG))) {
-                
+
             return false;
         }
 
@@ -1426,7 +1426,7 @@ class UserUtil
         // the password being updated, and the system is not currently being installed.
         if ($res && !$isRegistration && ($name != 'pass') && !System::isInstalling()) {
             // Call the hook
-            ModUtil::callHooks('item', 'update', $uid, array('module' => 'Users'));
+            //TODO REFACTOR: ModUtil::callHooks('item', 'update', $uid, array('module' => 'Users'));
 
             // Fire the event
             $updateEvent = new Zikula_Event('user.update', $updatedUserObj);
@@ -1520,7 +1520,7 @@ class UserUtil
 
         if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
             || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
-            
+
             return LogUtil::registerArgsError();
         }
 
@@ -1694,7 +1694,7 @@ class UserUtil
         // Prevent deletion of core fields (duh)
         if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass') || ($name == 'uname')
             || ($name == 'activated')) {
-            
+
             return false;
         }
 
@@ -1780,7 +1780,7 @@ class UserUtil
         // the password being updated, and the system is not currently being installed.
         if ($res && !$isRegistration && ($name != 'pass') && !System::isInstalling()) {
             // Call the hook
-            ModUtil::callHooks('item', 'update', $uid, array('module' => 'Users'));
+            //TODO REFACTOR: ModUtil::callHooks('item', 'update', $uid, array('module' => 'Users'));
 
             // Fire the event
             $updateEvent = new Zikula_Event('user.update', $updatedUserObj);

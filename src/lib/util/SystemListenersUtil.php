@@ -52,7 +52,7 @@ class SystemListenersUtil
             if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN) && (isset($systeminithooks) && $systeminithooks == 'no')) {
                 // omit system hooks if requested by an administrator
             } else {
-                ModUtil::callHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
+                //TODO REFACTOR: ModUtil::callHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
             }
         }
     }
@@ -245,7 +245,7 @@ class SystemListenersUtil
             // autoloaders don't work inside error handlers!
             include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
             $sm = $event->getSubject()->getServiceManager();
-            
+
             // create definitions
             $toolbar = new Zikula_ServiceManager_Definition(
                     'Zikula_DebugToolbar',

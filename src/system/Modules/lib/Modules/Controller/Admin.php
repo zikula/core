@@ -1057,7 +1057,7 @@ class Modules_Controller_Admin extends Zikula_Controller
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
         // Let any other modules know that the modules configuration has been updated
-        ModUtil::callHooks('module', 'updateconfig', 'Modules', array('module' => 'Modules'));
+        //TODO REFACTOR: ModUtil::callHooks('module', 'updateconfig', 'Modules', array('module' => 'Modules'));
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work

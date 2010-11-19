@@ -122,7 +122,7 @@ class Settings_Controller_Admin extends Zikula_Controller
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
         // Let any other modules know that the modules configuration has been updated
-        ModUtil::callHooks('module','updateconfig','Settings', array('module' => 'Settings'));
+        //TODO REFACTOR: ModUtil::callHooks('module','updateconfig','Settings', array('module' => 'Settings'));
 
         return System::redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
     }

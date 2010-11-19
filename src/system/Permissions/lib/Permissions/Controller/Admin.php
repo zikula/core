@@ -713,7 +713,7 @@ class Permissions_Controller_Admin extends Zikula_Controller
         $this->setVar('adminid', $adminid);
 
         // Let any other modules know that the modules configuration has been updated
-        ModUtil::callHooks('module','updateconfig', 'Permissions', array('module' => 'Permissions'));
+        //TODO REFACTOR: ModUtil::callHooks('module','updateconfig', 'Permissions', array('module' => 'Permissions'));
 
         // the module configuration has been updated successfuly
         if ($error==true) {
