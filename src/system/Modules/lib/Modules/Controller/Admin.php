@@ -200,7 +200,7 @@ class Modules_Controller_Admin extends Zikula_Controller
         SessionUtil::delVar('interactive_remove');
         SessionUtil::delVar('interactive_upgrade');
 
-        if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.main_siteurl'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.main_siteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+        if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
             // always regenerate modules list
             $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
             $inconsistencies = ModUtil::apiFunc('Modules', 'admin', 'checkconsistency', array('filemodules' => $filemodules));
@@ -351,7 +351,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                         'state' => $state)),
                                         'image' => 'agt_update_misc.gif',
                                         'title' => $this->__('Install'));
-//                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.main_siteurl'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.main_siteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+//                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
 //                                    $actions[] = array(
 //                                            'url' => ModUtil::url('Modules', 'admin', 'remove', array(
 //                                            'id' => $mod['id'],

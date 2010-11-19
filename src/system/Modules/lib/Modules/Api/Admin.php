@@ -394,7 +394,7 @@ class Modules_Api_Admin extends Zikula_Api
         // remove the entry from the modules table
         if ($this->serviceManager['multisites.enabled'] == 1) {
             // who can access to the mainSite can delete the modules in any other site
-            $canDelete = (($this->serviceManager['multisites.main_siteurl'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.main_siteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) ? 1 : 0;
+            $canDelete = (($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) ? 1 : 0;
             //delete the module infomation only if it is not allowed, missign or invalid
             if ($canDelete == 1 || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
                 // remove the entry from the modules table
@@ -719,7 +719,7 @@ class Modules_Api_Admin extends Zikula_Api
                 }
                 if ($this->serviceManager['multisites.enabled'] == 1) {
                     // only the main site can regenerate the modules list
-                    if (($this->serviceManager['multisites.main_siteurl'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.main_siteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+                    if (($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
                         DBUtil::insertObject($modinfo, 'modules');
                     }
                 } else {
