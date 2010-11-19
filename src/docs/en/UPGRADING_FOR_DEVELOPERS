@@ -415,9 +415,6 @@ WORKFLOW CHANGES
   <parameter className="z-bt-ok" titleText="Click me">button</parameter>
   and the case will be respected.
 
-JAVASCRIPT CHANGES
-==================
-TODO:- by Jusuff
 
 AJAX WORKFLOW CHANGES
 ==================
