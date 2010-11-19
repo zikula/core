@@ -1183,8 +1183,11 @@ class ModUtil
         if (!isset($shorturlsdefaultmodule)) {
             $shorturlsdefaultmodule = System::getVar('shorturlsdefaultmodule');
         }
+
+        // copy shorturls var so we don't overwrite static var
+        $_shorturls = $shorturls; 
         if (isset($args['returnpage'])) {
-            $shorturls = false;
+            $_shorturls = false;
         }
 
         $language = ($forcelang ? $forcelang : ZLanguage::getLanguageCode());
@@ -1198,7 +1201,7 @@ class ModUtil
         }
 
         // Only convert User URLs. Exclude links that append a theme parameter
-        if ($shorturls && $shorturlstype == 0 && $type != 'admin' && $forcelongurl == false) {
+        if ($_shorturls && $shorturlstype == 0 && $type != 'admin' && $forcelongurl == false) {
             if (isset($args['theme'])) {
                 $theme = $args['theme'];
                 unset($args['theme']);
