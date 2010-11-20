@@ -323,6 +323,25 @@ Zikula.checkboxswitchdisplaystate = function(idcheckbox, idcontainer, state)
 }
 
 /**
+ * Allows to check, uncheck or toggle given checkbox or radio inputs.
+ *
+ * If selector param is container ID all inputs of type radio or checkbox are affected.
+ * If you need more specyfic conditions - use CSS selector for inputs (eg 'form.class input[type=radio]')
+ *
+ * @param {String} selector Container ID or CSS selector for inputs
+ * @param {Boolean} [value=null] True to check, false to uncheck. Leave null to toggle status
+ *
+ * @return void
+ */
+Zikula.toggleInput = function(selector, value) {
+    var setValue = value == null ? function(v) {return !v} : function(v){return value},
+        elements = $(selector) ? $(selector).select('input[type=radio],input[type=checkbox]') : $$(selector);
+    if(elements) {
+        elements.each(function(e){e.checked = setValue(e.checked)});
+    }
+}
+
+/**
  * Workaround for wrong buttons values in IE and multiple submit buttons in IE6/7.
  *
  * @return void
