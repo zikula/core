@@ -94,6 +94,9 @@ function smarty_function_modulelinks($params, $view)
         } else {
             $html .= '<span'.$attr.'>'.$menuitem['text'].'</span>';
         }
+        if (isset($menuitem['links'])) {
+            $html .= addsubmenu($i, $menuitem['links']);
+        }
         $html .= '</li>';
 
     }
@@ -106,4 +109,25 @@ function smarty_function_modulelinks($params, $view)
         return $html;
     }
 
+}
+
+function addsubmenu($id, $links) {
+    $html = '';
+    $html .= '<span id="modcontext' .$id .'" class="z-drop">&nbsp;</span>';
+    $html .= "<script type='text/javascript'>
+            /* <![CDATA[ */
+                var context_modcontext{$id} = new Control.ContextMenu('modcontext{$id}',{
+                    leftClick: true,
+                    animation: false
+                });";
+    foreach ($links as $link) {
+        $html .= "context_modcontext{$id}.addItem({
+                    label: '{$link['text']}',
+                    callback: function(){window.location = Zikula.Config.baseURL + '{$link['url']}';}
+                });";
+
+    }
+    $html .= "/* ]]> */
+            </script>";
+    return $html;
 }
