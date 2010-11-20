@@ -199,7 +199,7 @@ class HookUtil
             throw new InvalidArgumentException(sprintf('Hook handler %s does not exist', $handlerName));
         }
 
-        $hook['weight'] = (is_null($weight)) ? $hook['weight'] : $weight;
+        $hook['weight'] = (is_null($weight)) ? (int)$hook['weight'] : (int)$weight;
         $hook['eventname'] = $eventName;
         $handlers = ModUtil::getVar(self::HANDLERS, '/handlers', array());
         $handlers[] = $hook;
@@ -211,18 +211,18 @@ class HookUtil
      *
      * @param string  $eventName   Name of hookable event.
      * @param string  $handlerName Name of handling class.
-     * @param integer $weight      The event handler weight.
+     * @param integer $weight      The event handler weight, default = 10.
      *
      * @return void
      */
-    public static function unRegisterHandler($eventName, $handlerName, $weight)
+    public static function unRegisterHandler($eventName, $handlerName, $weight=10)
     {
         $hook = self::getHook($handlerName);
         if (!$hook) {
             return;
         }
 
-        $hook['weight'] = (is_null($weight)) ? $hook['weight'] : $weight;
+        $hook['weight'] = (is_null($weight)) ? (int)$hook['weight'] : (int)$weight;
         $hook['eventname'] = $eventName;
 
         $handlers = ModUtil::getVar(self::HANDLERS, '/handlers', false);
@@ -421,6 +421,16 @@ class HookUtil
     public static function isSubscriberCapable($module)
     {
         return ModUtil::isCapable($module, self::SUBSCRIBER_CAPABLE);
+    }
+
+    public static function isHandlerRegistered($eventName)
+    {
+        $handlers = ModUtil::getVar(self::HANDLERS, '/handlers', array());
+        if (!$handlers) {
+            return;
+        }
+
+        
     }
 
 }
