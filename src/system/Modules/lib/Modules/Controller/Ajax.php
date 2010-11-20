@@ -20,14 +20,14 @@ class Modules_Controller_Ajax extends Zikula_Controller
     }
 
     /**
-     * togglemodule
-     * This function toggles attached/detached
+     * togglesubscriberstatus
+     * This function toggles attached/detached status of subscribers
      *
      * @param id int            id of module to be attached/detached
      * @param provider string   module to attach/detach
      * @return mixed            Ajax response
      */
-    public function togglemodule()
+    public function togglesubscriberstatus()
     {
         $provider = FormUtil::getPassedValue('provider', '', 'GET');
         
@@ -45,5 +45,34 @@ class Modules_Controller_Ajax extends Zikula_Controller
         /* TODO */
 
         return new Zikula_Response_Ajax(array('id' => $id));
+    }
+
+    /**
+     * changeproviderorder
+     *
+     * @param subscriber string     name of the subscriber
+     * @param providerorder array   array of sorted provider ids
+     * @return Ajax response
+     */
+    public function changeproviderorder()
+    {
+        $subscriber = FormUtil::getPassedValue('subscriber', '', 'GET');
+
+        if (!SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
+            LogUtil::registerPermissionError(null, true);
+            throw new Zikula_Exception_Forbidden();
+        }
+
+        $providerorder = FormUtil::getPassedValue('providerorder');
+
+        $ordering = array();
+        foreach ((array)$providerorder as $order => $id) {
+            $ordering[] = array('id' => $id, 'order' => $order);
+        }
+
+        // update ordering status
+        /* TODO */
+
+        return new Zikula_Response_Ajax(array('result' => true));
     }
 }

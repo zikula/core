@@ -1,41 +1,30 @@
 /**
- * activate all buttons to (de-)attach modules
- *
- */
-function initactionbuttons()
-{
-    $$('a.actionbutton').each(function(item) {
-        item.removeClassName('actionbutton');
-    });
-}
-
-/**
- * Toggle a module's attached/detached status
+ * Toggle a subscribers's attached/detached status
  *
  *@params id;
  *@params provider;
  *@return none;
  */
-function togglemodule(id, provider)
+function togglesubscriberstatus(id, provider)
 {
     var pars = "id=" + id + "&provider=" + provider;
 
     new Zikula.Ajax.Request(
-        "ajax.php?module=Modules&func=togglemodule",
+        "ajax.php?module=Modules&func=togglesubscriberstatus",
         {
             method: 'get',
             parameters: pars,
-            onComplete: togglemodule_response
+            onComplete: togglesubscriberstatus_response
         });
 }
 
 /**
- * Ajax response function for updating module status
+ * Ajax response function for updating subscriber module status
  *
  *@params req Ajax response;
  *@return none;
  */
-function togglemodule_response(req)
+function togglesubscriberstatus_response(req)
 {
     if (!req.isSuccess()) {
         Zikula.showajaxerror(req.getMessage());
@@ -43,7 +32,68 @@ function togglemodule_response(req)
     }
 
     var data = req.getData();
-
+    
     $('attached_' + data.id).toggle();
     $('detached_' + data.id).toggle();
+}
+
+/**
+ * Inits sorting of providers
+ *
+ *@params none;
+ *@return none;
+ */
+function initprovidersorting()
+{
+    Sortable.create('providerssortlist',
+                    {
+                      dropOnEmpty: true,
+                      only: 'z-sortable',
+                      containment:['providerssortlist'],
+                      onUpdate: changeproviderorder
+                    });
+
+    $A(document.getElementsByClassName('z-sortable')).each(
+        function(node) {
+            var thisproviderid = node.id.split('_')[1];
+            Element.addClassName('provider_' + thisproviderid, 'z-itemsort');
+        }
+    )
+}
+
+/**
+ * Stores the new sort order. This function gets called automatically
+ * from the Sortable when a 'drop' action has been detected
+ *
+ *@params none;
+ *@return none;
+ */
+function changeproviderorder()
+{
+    var pars = 'subscriber=' + subscriber +
+               '&' + Sortable.serialize('providerssortlist', { 'name': 'providerorder' });
+
+    new Zikula.Ajax.Request(
+        'ajax.php?module=Modules&func=changeproviderorder',
+        {
+            method: 'get',
+            parameters: pars,
+            onComplete: changeproviderorder_response
+        });
+}
+
+/**
+ * Ajax response function for updating new sort order
+ *
+ *@params req;
+ *@return none;
+ */
+function changeproviderorder_response(req)
+{
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
+        return;
+    }
+    
+    pnrecolor('providerssortlist', 'providerssortlistheader');
 }

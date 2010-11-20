@@ -31,6 +31,9 @@ class Modules_HookUI
 
         $view = Zikula_View::getInstance('Modules', false);
         $view->assign('currentmodule', $moduleName);
+
+        $hookproviders = HookUtil::getHookProviders();
+        $view->assign('hookproviders', $hookproviders);
         
         $event->setData($view->fetch('modules_hookui_providers.tpl'));
         $event->setNotified();
