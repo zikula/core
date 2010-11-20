@@ -33,15 +33,15 @@
                             <th>{gt text="Tag"}</th>
                             <th>
                                 <label for="toggle_notallowed" title="{gt text='Check all'}">{gt text="Not allowed"}</label>
-                                <input name="radiotoggle" id="toggle_notallowed" onclick="CheckAll('notallowed');" type="radio" value="0" />
+                                <input name="radiotoggle" id="toggle_notallowed" type="radio" value="0" />
                             </th>
                             <th>
                                 <label for="toggle_allowed" title="{gt text='Check all'}">{gt text="Allowed"}</label>
-                                <input name="radiotoggle" id="toggle_allowed" onclick="CheckAll('allowed');" type="radio" value="1" />
+                                <input name="radiotoggle" id="toggle_allowed" type="radio" value="1" />
                             </th>
                             <th>
                                 <label for="toggle_allowedwith" title="{gt text='Check all'}">{gt text="Allowed with attributes"}</label>
-                                <input name="radiotoggle" id="toggle_allowedwith" onclick="CheckAll('allowedwith');" type="radio" value="2" />
+                                <input name="radiotoggle" id="toggle_allowedwith" type="radio" value="2" />
                             </th>
                             <th>{gt text="Tag usage (from <a href=\"http://www.w3schools.com\">W3Schools</a>)"}</th>
                         </tr>
@@ -50,9 +50,9 @@
                         {foreach from=$htmltags key=htmltag item=usagetag}
                         <tr class="{cycle values=z-odd,z-even}">
                             <td>&lt;{$htmltag|safetext}&gt;</td>
-                            <td><input class="notallowed_radio"  onclick="CheckCheckAll('notallowed');"  type="radio" value="0" name="htmlallow{$htmltag|safetext}tag" {if (isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 0) or !isset($currenthtmltags.$htmltag)} checked="checked"{/if} /></td>
-                            <td><input class="allowed_radio"     onclick="CheckCheckAll('allowed');"     type="radio" value="1" name="htmlallow{$htmltag|safetext}tag" {if isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 1} checked="checked"{/if} /></td>
-                            <td><input class="allowedwith_radio" onclick="CheckCheckAll('allowedwith');" type="radio" value="2" name="htmlallow{$htmltag|safetext}tag" {if isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 2} checked="checked"{/if} /></td>
+                            <td><input class="notallowed_radio" type="radio" value="0" name="htmlallow{$htmltag|safetext}tag" {if (isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 0) or !isset($currenthtmltags.$htmltag)} checked="checked"{/if} /></td>
+                            <td><input class="allowed_radio" type="radio" value="1" name="htmlallow{$htmltag|safetext}tag" {if isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 1} checked="checked"{/if} /></td>
+                            <td><input class="allowedwith_radio" type="radio" value="2" name="htmlallow{$htmltag|safetext}tag" {if isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 2} checked="checked"{/if} /></td>
                             <td>{if !empty($usagetag)}<a href="{$usagetag}">{gt text='About "&lt;%s&gt;"' tag1=$htmltag}</a>{/if}</td>
                         </tr>
                         {/foreach}
