@@ -169,9 +169,16 @@ class Zikula_Version implements ArrayAccess
     /**
      * Hook subscriber bundles.
      *
-     * @var array
+     * @var array Indexed array of Zikula_Version_HookSubscriberBundle
      */
-    protected $hookSubscribers = array();
+    protected $hookSubscriberBundles = array();
+
+    /**
+     * Hook provider bundles.
+     *
+     * @var array Indexed array of Zikula_Version_HookProviderBundle
+     */
+    protected $hookProviderBundles = array();
 
     //abstract public function getMetaData();
 
@@ -194,8 +201,8 @@ class Zikula_Version implements ArrayAccess
         }
         Zikula_ClassProperties::load($this, $this->getMetaData());
 
-        // Load configuration of any hook subscribers.
-        $this->setupHookSubscriberBundles();
+        // Load configuration of any hook bundles.
+        $this->setupHookBundles();
     }
 
     /**
@@ -641,22 +648,58 @@ class Zikula_Version implements ArrayAccess
      * 
      * @return void
      */
-    protected function setupHookSubscriberBundles()
+    protected function setupHookBundles()
     {
     }
 
     /**
-     * Add a hook subscriber bundle.
+     * Register a hook subscriber bundle.
      *
      * @param string                    $area   Area.
      * @param Zikula_Version_HookBundle $bundle HookBundle.
      *
      * @return Zikula_Version
      */
-    public function addHookSubscriberBundle($area, Zikula_Version_HookBundle $bundle)
+    public function registerHookSubscriberBundle(Zikula_Version_HookSubscriberBundle $bundle)
     {
-        $this->hookSubscribers[$area] = $bundle;
+        $area = $bundle->getArea();
+        if (array_key_exists($area, $this->hookSubscriberBundles)) {
+            throw new InvalidArgumentException(sprintf('Area %s is already registered'));
+        }
+        
+        $this->hookSubscriberBundles[$area] = $bundle;
         return $this;
+    }
+
+    /**
+     * Register a hook subscriber bundle.
+     *
+     * @param string                            $area   Area.
+     * @param Zikula_Version_HookProviderBundle $bundle HookProviderBundle.
+     *
+     * @return Zikula_Version
+     */
+    public function registerHookProviderBundle(Zikula_Version_HookProviderBundle $bundle)
+    {
+        $area = $bundle->getArea();
+        if (array_key_exists($area, $this->hookProviderBundles)) {
+            throw new InvalidArgumentException(sprintf('Area %s is already registered'));
+        }
+
+        $this->hookProviderBundles[$area] = $bundle;
+        return $this;
+    }
+
+    /**
+     * Returns array of hook subscriber bundles.
+     *
+     * Usually this will only be one.
+     *
+     * @return array Of Zikula_Version_HookSubscriberBundle
+     */
+    public function getHookSubscriberBundles()
+    {
+        return $this->hookSubscriberBundles;
     }
 
     /**
@@ -664,11 +707,11 @@ class Zikula_Version implements ArrayAccess
      *
      * Usually this will only be one.
      *
-     * @return array Of Zikula_Version_HookBundle
+     * @return array Of Zikula_Version_HookProviderBundle
      */
-    public function getHookSubscriberBundles()
+    public function getHookProviderBundles()
     {
-        return $this->hookSubscribers;
+        return $this->hookProviderBundles;
     }
 
     /**
@@ -678,14 +721,32 @@ class Zikula_Version implements ArrayAccess
      *
      * @throws InvalidArgumentException If the area specified is not registered.
      *
-     * @return Zikula_Version_HookBundle
+     * @return Zikula_Version_HookSubscriberBundle
      */
     public function getHookSubscriberBundle($area)
     {
-        if (!array_key_exists($area, $this->hookSubscribers)) {
+        if (!array_key_exists($area, $this->hookSubscriberBundles)) {
             throw new InvalidArgumentException(__f('Hook subscriber area %s does not exist', $area));
         }
 
-        return $this->hookSubscribers[$area];
+        return $this->hookSubscriberBundles[$area];
+    }
+
+    /**
+     * Get hook provider bundle for a given area.
+     *
+     * @param string $area Area.
+     *
+     * @throws InvalidArgumentException If the area specified is not registered.
+     *
+     * @return Zikula_Version_HookProviderBundle
+     */
+    public function getHookProviderBundle($area)
+    {
+        if (!array_key_exists($area, $this->hookProviderBundles)) {
+            throw new InvalidArgumentException(__f('Hook provider area %s does not exist', $area));
+        }
+
+        return $this->hookProviderBundles[$area];
     }
 }

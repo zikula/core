@@ -45,13 +45,15 @@ class HookUtil
      */
     private function __construct()
     {
+
     }
 
     /**
-     * Register a hook handler.
+     * Register a provider hook handler.
      *
      * @param string  $name      Name of the hook handler.
      * @param string  $owner     Owner of the hook handler.
+     * @param string  $area      Handler area.
      * @param string  $type      Hook type.
      * @param string  $className Class.
      * @param string  $method    Method name.
@@ -60,12 +62,13 @@ class HookUtil
      *
      * @return void
      */
-    public static function registerHook($name, $owner, $type, $className, $method, $serviceId=null, $weight=10)
+    public static function registerProvider($name, $owner, $area, $type, $className, $method, $serviceId=null, $weight=10)
     {
         $provider = new Zikula_Doctrine_Model_HookProviders();
         $provider->merge(array(
                 'name' => $name,
                 'owner' => $owner,
+                'area' => $area,
                 'type' => $type,
                 'classname' => $className,
                 'method' => $method,
@@ -76,17 +79,55 @@ class HookUtil
     }
 
     /**
+     * Register a subscriber's availability.
+     *
+     * @param string  $owner     Owner of the hook handler.
+     * @area  string  $area      Subscriber area.
+     * @param string  $type      Hook type.
+     * @param string  $eventName EventName called.
+     *
+     * @return void
+     */
+    public static function registerSubscriber($owner, $area, $type, $eventName)
+    {
+        $subscriber = new Zikula_Doctrine_Model_HookSubscribers();
+        $subscriber->merge(array(
+                'owner' => $owner,
+                'area' => $area,
+                'type' => $type,
+                'eventname' => $eventName,
+        ));
+        $subscriber->save();
+    }
+
+    /**
      * Get all hook handlers for a given owner.
      *
      * @param string $owner Owner.
      *
      * @return array Nonassoc array of arrays or empty array if not found.
      */
-    public static function getHooksForOwner($owner)
+    public static function getProvidersForOwner($owner)
     {
         return Doctrine_Query::create()->select()
                 ->where('owner = ?', $owner)
                 ->from('Zikula_Doctrine_Model_HookProviders')
+                ->execute()
+                ->toArray();
+    }
+
+    /**
+     * Get all available subscribers for a given owner.
+     *
+     * @param string $owner Owner.
+     *
+     * @return array Nonassoc array of arrays or empty array if not found.
+     */
+    public static function getSubscribersForOwner($owner)
+    {
+        return Doctrine_Query::create()->select()
+                ->where('owner = ?', $owner)
+                ->from('Zikula_Doctrine_Model_HookSubscribers')
                 ->execute()
                 ->toArray();
     }
@@ -98,9 +139,21 @@ class HookUtil
      *
      * @return array Empty if not found
      */
-    public static function getHook($name)
+    public static function getProvider($name)
     {
         return Doctrine_Core::getTable('Zikula_Doctrine_Model_HookProviders')->findOneBy('name', $name, Doctrine_Core::HYDRATE_ARRAY);
+    }
+
+    /**
+     * Get subscriber.
+     *
+     * @param string $eventName Name of subscriber.
+     *
+     * @return array Empty if not found
+     */
+    public static function getSubscriber($eventName)
+    {
+        return Doctrine_Core::getTable('Zikula_Doctrine_Model_HookSubscriber')->findOneBy('eventname', $eventName, Doctrine_Core::HYDRATE_ARRAY);
     }
 
     /**
@@ -108,9 +161,19 @@ class HookUtil
      *
      * @return array Nonassoc array of arrays. Empty if not found.
      */
-    public static function getHooks()
+    public static function getProviders()
     {
         return Doctrine_Core::getTable('Zikula_Doctrine_Model_HookProviders')->findAll(Doctrine_Core::HYDRATE_ARRAY);
+    }
+
+    /**
+     * Get all subscribers.
+     *
+     * @return array Nonassoc array of arrays. Empty if not found.
+     */
+    public static function getSubscribers()
+    {
+        return Doctrine_Core::getTable('Zikula_Doctrine_Model_HookSubscribers')->findAll(Doctrine_Core::HYDRATE_ARRAY);
     }
 
     /**
@@ -120,9 +183,21 @@ class HookUtil
      *
      * @return boolean
      */
-    public static function hasHook($name)
+    public static function hasProvider($name)
     {
-        return (bool)self::getHook($name);
+        return (bool)self::getProvider($name);
+    }
+
+    /**
+     * Has hook.
+     *
+     * @param string $name Name of hook handler.
+     *
+     * @return boolean
+     */
+    public static function hasSubscriber($name)
+    {
+        return (bool)self::getSubscriber($name);
     }
 
     /**
@@ -132,7 +207,7 @@ class HookUtil
      *
      * @return void
      */
-    public static function unregisterHook($name)
+    public static function unregisterProvider($name)
     {
         $hook = self::getHook($name);
         if (!$hook) {
@@ -162,7 +237,7 @@ class HookUtil
      *
      * @return void
      */
-    public static function unregisterHooksByOwner($owner)
+    public static function unregisterProvidersByOwner($owner)
     {
         $hooks = Doctrine_Query::create()->select()
                         ->where('owner = ?', $owner)
@@ -175,12 +250,12 @@ class HookUtil
         }
 
         foreach ($hooks as $hook) {
-            self::unregisterHook($hook['name']);
+            self::unregisterProvider($hook['name']);
         }
     }
 
     /**
-     * Register a persistent hook handler.
+     * Register a persistent (runtime) hook handler (provider).
      *
      * These will be loaded into EventManager (and ServiceManager as required) at runtime.
      *
@@ -194,7 +269,7 @@ class HookUtil
      */
     public static function registerHandler($eventName, $handlerName, $weight=null)
     {
-        $hook = self::getHook($handlerName);
+        $hook = self::getProvider($handlerName);
         if (!$hook) {
             throw new InvalidArgumentException(sprintf('Hook handler %s does not exist', $handlerName));
         }
@@ -207,7 +282,7 @@ class HookUtil
     }
 
     /**
-     * Unregister a persistent hook handler.
+     * Unregister a persistent (runtime) hook handler.
      *
      * @param string  $eventName   Name of hookable event.
      * @param string  $handlerName Name of handling class.
@@ -217,7 +292,7 @@ class HookUtil
      */
     public static function unRegisterHandler($eventName, $handlerName, $weight=10)
     {
-        $hook = self::getHook($handlerName);
+        $hook = self::getProvider($handlerName);
         if (!$hook) {
             return;
         }
@@ -423,14 +498,88 @@ class HookUtil
         return ModUtil::isCapable($module, self::SUBSCRIBER_CAPABLE);
     }
 
-    public static function isHandlerRegistered($eventName)
+    /**
+     * Register Provider Hook handlers with persistence layer.
+     * 
+     * @param array $bundles An array of provider bundles.
+     *
+     * @return void
+     */
+    public static function registerHookProviderBundles(Zikula_Version $version)
     {
-        $handlers = ModUtil::getVar(self::HANDLERS, '/handlers', array());
-        if (!$handlers) {
-            return;
+        $bundles = $version->getHookProviderBundles();
+        $owner = $version->getName();
+        foreach ($bundles as $bundle) {
+            foreach ($bundle->getHooks() as $name => $hook) {
+                self::registerProvider($name, $owner, $bundle->getArea(), $hook['type'], $hook['classname'], $hook['method'], $hook['serviceid'], $hook['weight']);
+            }
+        }
+    }
+
+    /**
+     * Register Subscribers with persistence layer.
+     *
+     * @param array $bundles An array of provider bundles.
+     *
+     * @return void
+     */
+    public static function registerHookSubscriberBundles(Zikula_Version $version)
+    {
+        $bundles = $version->getHookSubscriberBundles();
+        $owner = $version->getName();
+        foreach ($bundles as $bundle) {
+            foreach ($bundle->getHookTypes() as $type => $eventName) {
+                self::registerSubscriber($owner, $bundle->getArea(), $type, $eventName);
+            }
+        }
+    }
+
+    /**
+     *
+     * @param string $subscriberArea
+     * @param string $providerArea
+     *
+     * @return boolean
+     */
+    public static function bindSubscribersToProvider($subscriberArea, $providerArea)
+    {
+        $subscribers = Doctrine_Query::create()->select()
+                        ->where('area = ?', $subscriberArea)
+                        ->from('Zikula_Doctrine_Model_HookSubscribers')
+                        ->execute()
+                        ->toArray();
+
+        if (!$subscribers) {
+            return false;
         }
 
-        
+        // Link all subscriber events types that match the selected provider
+        $linked = false;
+        foreach ($subscribers as $subscriber) {
+            $provider = Doctrine_Query::create()->select()
+                            ->where('area = ?', $providerArea)
+                            ->andWhere('type = ?', $subscriber['type'])
+                            ->from('Zikula_Doctrine_Model_HookProviders')
+                            ->execute()
+                            ->toArray();
+
+            if ($provider) {
+                $provider = $provider[0];
+                $linked = true;
+                $handlerName = $provider['name'];
+                $weight = $provider['weight'];
+                self::registerHandler($subscriber['eventname'], $handlerName, $weight);
+            }
+        }
+
+        if ($linked) {
+            $binding = new Zikula_Doctrine_Model_HookBindings();
+            $binding->subowner = $provider['owner'];
+            $binding->providerowner = $subscriber['owner'];
+            $binding->subarea = $subscriberArea;
+            $binding->providerarea = $providerArea;
+            $binding->save();
+        }
     }
 
 }

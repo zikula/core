@@ -13,9 +13,9 @@
  */
 
 /**
- * Zikula Version HookBundle
+ * Zikula Version HookBundle for Hook Subscribers
  */
-class Zikula_Version_HookBundle
+class Zikula_Version_HookSubscriberBundle
 {
     /**
      * Hook types.
@@ -32,13 +32,22 @@ class Zikula_Version_HookBundle
     protected $title;
 
     /**
+     * Area ID.
+     *
+     * @var string
+     */
+    protected $area;
+
+    /**
      * Constructor.
      *
+     * @param string $area  Area ID, this should be a unique string.
      * @param string $title Title.
      */
-    public function __construct($title)
+    public function __construct($area, $title)
     {
         $this->title = $title;
+        $this->area = $area;
     }
 
     /**
@@ -62,7 +71,17 @@ class Zikula_Version_HookBundle
     }
 
     /**
-     * Add a subscriber to the bundle.
+     * Get area property.
+     *
+     * @return string
+     */
+    public function getArea()
+    {
+        return $this->area;
+    }
+
+    /**
+     * Add a subscriber to this bundle.
      *
      * @param string $type      Hook type.
      * @param string $eventName Event name.

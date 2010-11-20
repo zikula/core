@@ -46,7 +46,8 @@ class Modules_Installer extends Zikula_Installer
         }
 
         // create hook provider table.
-        Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders'));
+        Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders', 'Zikula_Doctrine_Model_HookSubscribers',
+                'Zikula_Doctrine_Model_HookBindings'));
         EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hookproviders'));
         EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hooksubscribers'));
 
@@ -76,12 +77,16 @@ class Modules_Installer extends Zikula_Installer
                 // legacy is no longer supported
                 System::delVar('loadlegacy');
                 DBUtil::changeTable('modules');
+            case '3.7.4':
             case '3.7.5':
+            case '3.7.6':
+            case '3.7.8':
                 // create the new hooks tables
-                Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders'));
+                Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders', 'Zikula_Doctrine_Model_HookSubscribers',
+                'Zikula_Doctrine_Model_HookBindings'));
                 EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hookproviders'));
                 EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hooksubscribers'));
-            case '3.7.6':
+            case '3.7.8':
                 // future upgrade routines
 
         }

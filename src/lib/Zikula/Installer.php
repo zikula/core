@@ -19,6 +19,13 @@
 abstract class Zikula_Installer extends Zikula_Base
 {
     /**
+     * Version instance of the module.
+     * 
+     * @var Zikula_Version
+     */
+    protected $version;
+
+    /**
      * Setup internal properties.
      *
      * @return void
@@ -35,6 +42,8 @@ abstract class Zikula_Installer extends Zikula_Base
         $this->modinfo['type'] = prev($p);
         $this->systemBaseDir = realpath("{$this->baseDir}/../..");
         $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
+        $versionClass = "{$this->name}_Version";
+        $this->version = new $versionClass;
     }
 
     /**

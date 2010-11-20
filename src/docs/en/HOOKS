@@ -23,18 +23,31 @@ modules's output.
 A subscriber is simply a module that understands hooks.  It can process hooks that are
 provided by other modules.
 
+Areas
+-----
+This is an advanced feature for complex modules.  In general, modules will only provide
+or subscribe to one area.  Areas allow subscribers and provider to group their features.
+This is to allow modules to provide different groups of hooks.  From the provider
+side, a it can provide different hook features.  From the subscriber side, it allows a
+module to apply hooks to one part of a module as opposed to another.
+
 Subscriber Modules
 ------------------
 Modules that understand hooks must make this known to the Zikula framework the
 modules's Version.php.  This is done by adding a method called to Version.php
 
-    protected function setupHookSubscriberBundles()
+    protected function setupHookBundles()
     {
-         $bundle = new Zikula_Version_HookBundle(__('News Display Hooks'));
-         $bundle->addType('ui.view', 'news.ui.view');
-         $bundle->addType('ui.create', 'news.ui.create');
-         $this->addHookSubscriberBundle('articles', $bundle);
+        $bundle = new Zikula_Version_HookSubscriberBundle('articles', __('News Display Hooks'));
+        $bundle->addType('ui.view', 'news.ui.view');
+        $bundle->addType('ui.create', 'news.ui.create');
+        $this->addHookSubscriberBundle($bundle);
     }
+
+During installation, upgrade of the module you must register the bundles with the
+persistence layer using:
+
+    HookUtil::registerHookSubscriberBundles($this->version);
 
 A complex module might have several different areas where attaching Hooks may or
 may not be appropriate, or may require different Hooks for different areas.
@@ -59,12 +72,33 @@ this reason you *must* have an admin controller in the module.
 
 Provider Modules
 ----------------
-Provider modules must make their available hook handlers known to Zikula.  This 
-should be done during the installation/upgrade of the module.
+Provider modules must make their available hook handlers known to Zikula.  You must perform three
+tasks:
 
-The first task is to register the hook event handlers, that is to say, the actual
-PHP class/method that will respond to hook events that are triggered by subscriber
-modules.
+Firstly add the hook_provider capability to the module's Version.php in getMetaData()
+
+    $meta['capabilities'] = array(HookUtil::PROVIDER_CAPABLE => array('enabled' => true));
+
+Secondly, you must configure provider bundles in the Version.php by adding the following method
+to Version.php
+
+    protected function setupHookBundles()
+    {
+        $bundle = new Zikula_Version_HookBundle('ratings', __('Ratings Hook Poviders'));
+        $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview');
+        //...
+        $this->addHookProviderBundle($bundle);
+
+        //... repeat as many times as necessary
+    }
+
+Thirdly, installation or upgrade of the module you must register the bundles with the
+persistence layer using:
+
+    HookUtil::registerHookProviderBundles($this->version);
+
+This will register the hook event handlers, that is to say, the actual PHP class/method
+that will respond to hook events that are triggered by subscriber modules.
 
 A module may register either static class callable methods, like Foo::Bar($event) or
 services (which are instanciated class objects).  If using services, they must be 
@@ -77,21 +111,16 @@ you can use the same $serviceId and have multiple methods in side if you wish.
 The $name of the hook, is the name of the handler - a common name.  This is NOT
 an event name.
 
-    HookUtil::registerHook($name, $owner, $type, $className, $method, $serviceId)
+    $bundle->addHook($name, $owner, $type, $className, $method, $serviceId, $weight);
 
     // registering a static method handler.
-    HookUtil::registerHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview')
+    $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview');
 
     // registering a service
-    HookUtil::registerHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview', 'module.ratings_hooks')
+    $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview', 'module.ratings_hooks');
 
 The $weight parameter can be used to set default weights of handlers that are
 eventually attached with EventManager.  Generally, this parameter can be left alone.
-
-The second task is to let Zikula know that the module is a hook provider by adding the
-following capability to Version.php
-
-    $meta['capabilities'] = array(HookUtil::PROVIDER_CAPABLE => array('enabled' => true));
 
 Hook Types
 ----------
