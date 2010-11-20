@@ -4,37 +4,6 @@
 
 <div class="z-admincontainer">
 
-    {if $mailusers eq true || $deleteusers eq true}
-    <script type="text/javascript">
-        /**
-        * Checks/unchecks all tables
-        * Auther PHPMyadmin
-        *
-        * @param   string   the form name
-        * @param   boolean  whether to check or to uncheck the element
-        *
-        * @return  boolean  always true
-        */
-        function setCheckboxes(the_form, do_check)
-        {
-            var elts      = document.forms[the_form].elements['userid[]'];
-            var elts_cnt  = (typeof(elts.length) != 'undefined')
-            ? elts.length
-            : 0;
-
-            if (elts_cnt) {
-                for (var i = 0; i < elts_cnt; i++) {
-                    elts[i].checked = do_check;
-                } // end for
-            } else {
-                elts.checked        = do_check;
-            } // end if... else
-
-            return true;
-        } // end of the 'setCheckboxes()' function
-    </script>
-    {/if}
-
     <div class="z-adminpageicon">{img modname='Users' src='admin.png' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
@@ -82,8 +51,18 @@
 
             {if $mailusers eq true || $deleteusers eq true}
             <p>
-                <a href="#" onclick="setCheckboxes('userlist', true); return false;">{gt text="Select all"}</a> / <a href="#" onclick="setCheckboxes('userlist', false); return false;">{gt text="De-select all"}</a>
+                <a href="#" id="select_all">{gt text="Select all"}</a> / <a href="#" id="deselect_all">{gt text="De-select all"}</a>
             </p>
+            <script type="text/javascript">
+                $('select_all').observe('click', function(e){
+                    Zikula.toggleInput('userlist', true);
+                    e.stop()
+                });
+                $('deselect_all').observe('click', function(e){
+                    Zikula.toggleInput('userlist', false);
+                    e.stop()
+                });
+            </script>
             {/if}
 
             {if $mailusers eq true}
