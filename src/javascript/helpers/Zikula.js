@@ -1336,3 +1336,19 @@ Zikula.Ajax.Response = /** @lends Zikula.Ajax.Response */{
         return this.ZikulaResponse;
     }
 }
+Object.extend(Zikula.Ajax.Response,/** @lends Zikula.Ajax.Response.prototype */{
+    /**
+     * Static method allowing to extend prototype Ajax.Response with Zikula.Ajax.Response methods
+     * 
+     * @static
+     * @name Zikula.Ajax.Response.extend
+     * @function
+     * 
+     * @param {Object} response Ajax.Response object
+     *
+     * @return {Zikula.Ajax.Request} Response extended with Zikula.Ajax.Request methods
+     */
+    extend: function(response){
+        return Object.extend(response,Zikula.Ajax.Response);
+    }
+});
