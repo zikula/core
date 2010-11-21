@@ -655,7 +655,6 @@ class Zikula_Version implements ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param string                    $area   Area.
      * @param Zikula_Version_HookBundle $bundle HookBundle.
      *
      * @return Zikula_Version
@@ -674,7 +673,6 @@ class Zikula_Version implements ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param string                            $area   Area.
      * @param Zikula_Version_HookProviderBundle $bundle HookProviderBundle.
      *
      * @return Zikula_Version

@@ -81,10 +81,10 @@ class HookUtil
     /**
      * Register a subscriber's availability.
      *
-     * @param string  $owner     Owner of the hook handler.
-     * @area  string  $area      Subscriber area.
-     * @param string  $type      Hook type.
-     * @param string  $eventName EventName called.
+     * @param string $owner     Owner of the hook handler.
+     * @area  string $area      Subscriber area.
+     * @param string $type      Hook type.
+     * @param string $eventName EventName called.
      *
      * @return void
      */
@@ -501,7 +501,7 @@ class HookUtil
     /**
      * Register Provider Hook handlers with persistence layer.
      * 
-     * @param array $bundles An array of provider bundles.
+     * @param Zikula_Version $version Module's version object.
      *
      * @return void
      */
@@ -519,7 +519,7 @@ class HookUtil
     /**
      * Register Subscribers with persistence layer.
      *
-     * @param array $bundles An array of provider bundles.
+     * @param Zikula_Version $version Module's version object.
      *
      * @return void
      */
