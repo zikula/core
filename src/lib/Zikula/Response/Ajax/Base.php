@@ -68,7 +68,7 @@ abstract class Zikula_Response_Ajax_Base
      */
     public function __construct($data, array $options = array())
     {
-        $this->data = (array)$data;
+        $this->data = $data;
         $this->options = $options;
         if ($this->newCsrfToken) {
             $this->csrfToken = SecurityUtil::generateAuthKey(ModUtil::getName());
