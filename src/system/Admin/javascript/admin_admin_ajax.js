@@ -307,7 +307,7 @@ Admin.Category.Add = function(cat)
     if (catname == '') {
         Zikula.showajaxerror('You must enter a name for the new category');
         Admin.Category.Cancel(oldcat);
-        return;
+        return false;
     }
     var pars = "catname=" + catname;
     new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=addCategory", {
