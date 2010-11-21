@@ -176,7 +176,7 @@ class Admin_Controller_Ajax extends Zikula_Controller
                     return new Zikula_Response_Ajax($output);
                 }
                 //a different category has the same name, not allowed.
-                throw new Zikula_Exception_Fatal($this->__f('Error! A category by this name already exists.'));
+                throw new Zikula_Exception_Fatal($this->__('Error! A category by this name already exists.'));
             }
         }
 
