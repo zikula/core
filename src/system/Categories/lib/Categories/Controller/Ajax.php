@@ -19,14 +19,14 @@ class Categories_Controller_Ajax extends Zikula_Controller
     {
         // no need for a Zikula_View so override it.
     }
-    
+
     /**
      * Resequence categories
      *
      */
     public function resequence() {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
-            LogUtil::registerPermissionError(null,true)
+            LogUtil::registerPermissionError(null,true);
             throw new Zikula_Exception_Forbidden();
         }
         if (!SecurityUtil::confirmAuthKey()) {
