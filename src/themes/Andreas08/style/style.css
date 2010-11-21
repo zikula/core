@@ -184,6 +184,8 @@ dd {
     font-size: 13px;
     margin: 0;
     padding: 5px;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
 }
 
 .z-blockposition-search #theme_search .theme_search_input:hover,
@@ -203,6 +205,8 @@ dd {
     margin: 0;
     padding: 5px;
     text-transform: uppercase;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
 }
 .z-blockposition-search #theme_search .theme_search_button:hover {
     background: #27587F;
