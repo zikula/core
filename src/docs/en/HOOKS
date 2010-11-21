@@ -31,6 +31,12 @@ This is to allow modules to provide different groups of hooks.  From the provide
 side, a it can provide different hook features.  From the subscriber side, it allows a
 module to apply hooks to one part of a module as opposed to another.
 
+Areas should all be unique, so please use this format:
+
+    module.mymodule.<areaname>
+    module.comments.general (the provider area)
+    module.news.articles    (the subscriber area)
+
 Subscriber Modules
 ------------------
 Modules that understand hooks must make this known to the Zikula framework the
