@@ -114,7 +114,7 @@ Zikula.dejsonize = function(jsondata)
  */
 Zikula.showajaxerror = function(errortext)
 {
-    if(errortext.isJSON()) {
+    if(Object.isString(errortext) && errortext.isJSON()) {
         var decoded = errortext.evalJSON(true);
         if(decoded.core && decoded.core.statusmsg) {
             if(typeof(decoded.core.statusmsg) == 'object') {
@@ -126,6 +126,8 @@ Zikula.showajaxerror = function(errortext)
                 errortext = decoded.core.statusmsg;
             }
         }
+    } else if (Object.isArray(errortext)) {
+        errortext = errortext.join("\n")
     }
     alert(errortext);
     return;
