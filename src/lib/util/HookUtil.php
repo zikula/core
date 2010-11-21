@@ -635,4 +635,36 @@ class HookUtil
                 ->from('Zikula_Doctrine_Model_HookBindings')
                 ->execute();
     }
+
+    /**
+     * Get All subscribers connected to a given provider module.
+     *
+     * @param string $providerName Name of provider.
+     *
+     * @return array
+     */
+    public static function getSubscribersConnectedToProvider($providerName)
+    {
+        return Doctrine_Query::create()->select()
+                ->andWhere('providerowner = ?', $providerName)
+                ->from('Zikula_Doctrine_Model_HookBindings')
+                ->execute()
+                ->toArray();
+    }
+
+    /**
+     * Get All providers in use by a given subscriber.
+     *
+     * @param string $subscriberName Subscriber's name.
+     *
+     * @return array
+     */
+    public static function getProvidersInUseBy($subscriberName)
+    {
+        return Doctrine_Query::create()->select()
+                ->andWhere('subowner = ?', $subscriberName)
+                ->from('Zikula_Doctrine_Model_HookBindings')
+                ->execute()
+                ->toArray();
+    }
 }
