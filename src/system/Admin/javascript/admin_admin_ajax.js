@@ -113,11 +113,13 @@ var nelement = $(nid);
             return 'catname='+encodeURIComponent(value)+'&cid='+cid+'&authid='+authid;
         },
         onComplete: function(transport, element) {
-           // if (!transport.isSuccess()) {
-           //     this.element.innerHTML = Admin.Editor.getOrig(element.id);
-    	   //     Zikula.showajaxerror(transport.getMessage());
-           //     return;
-           //}
+            transport = Zikula.Ajax.Response.extend(transport);
+            $('admintabsauthid').setValue(transport.getAuthid());
+            if (!transport.isSuccess()) {
+                this.element.innerHTML = Admin.Editor.getOrig(element.id);
+                Zikula.showajaxerror(transport.getMessage());
+                return;
+            }
             var data = transport.getData();
             this.element.innerHTML = data.response;
         }
