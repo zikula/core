@@ -1592,3 +1592,18 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-pager span.z-pagerselected {
     font-weight: bold;
 }
+
+/******************************************************************************
+* Drop-Down
+*******************************************************************************/
+
+.z-drop {
+    background: url("../images/global/arrow.png") no-repeat scroll 0 50% transparent;
+    cursor: pointer;
+    padding: 0 5px;
+    position: relative;
+}
+
+.z-drop:hover {
+    background: url("../images/global/arrow_hover.png") no-repeat scroll 0 50% transparent;
+}
