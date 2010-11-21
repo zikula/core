@@ -535,9 +535,10 @@ class HookUtil
     }
 
     /**
-     *
-     * @param string $subscriberArea
-     * @param string $providerArea
+     * Bind subscribers to a provider.
+     * 
+     * @param string $subscriberArea Subscriber area name.
+     * @param string $providerArea   Provider area name.
      *
      * @return boolean
      */
