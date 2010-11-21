@@ -26,10 +26,12 @@ class Categories_Controller_Ajax extends Zikula_Controller
      */
     public function resequence() {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            LogUtil::registerPermissionError(null,true)
+            throw new Zikula_Exception_Forbidden();
         }
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
         }
         $data = json_decode(FormUtil::getPassedValue('data', null, 'post'), true);
         $cats = CategoryUtil::getSubCategories(1, true, true, true, true, true, '', 'id');
@@ -43,7 +45,8 @@ class Categories_Controller_Ajax extends Zikula_Controller
             }
         }
 
-        return array('result' => true);
+        $output['response'] = true;
+        return new Zikula_Response_Ajax($output);
     }
 
 }

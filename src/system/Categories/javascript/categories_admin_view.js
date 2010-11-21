@@ -11,30 +11,23 @@ function CategoriesSave(node,params,data) {
     }
     var pars = {
             'data': data,
-            'authid': $F('categoriesauthid')
     }
-    var request = new Ajax.Request(
+    var request = new Zikula.Ajax.Request(
         "ajax.php?module=Categories&func=resequence",
         {
             method: 'post',
             parameters: pars,
-            onSuccess: CategoriesSuccessResponse,
-            onFailure: CategoriesFailureResponse
+            authid: 'categoriesauthid',
+            onComplete: CategoriesSaveResponse
         });
     return request.success();
 }
 
-function CategoriesSuccessResponse(response)
+function CategoriesSaveResponse(req)
 {
-    var responseText = pndejsonize(response.responseText);
-
-    pnupdateauthids(responseText.authid);
-    $('categoriesauthid').value = responseText.authid;
+    if (!req.isSuccess()) {
+    	Zikula.showajaxerror(req.getMessage());
+        return Zikula.TreeSortable.categoriesTree.revertInsertion();
+    }
     return true;
-}
-
-function CategoriesFailureResponse(response)
-{
-    pnshowajaxerror(response.responseText);
-    return Zikula.TreeSortable.categoriesTree.revertInsertion();
 }
