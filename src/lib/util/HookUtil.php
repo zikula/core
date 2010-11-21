@@ -575,8 +575,8 @@ class HookUtil
 
         if ($linked) {
             $binding = new Zikula_Doctrine_Model_HookBindings();
-            $binding->subowner = $provider['owner'];
-            $binding->providerowner = $subscriber['owner'];
+            $binding->subowner = $subscriber['owner'];
+            $binding->providerowner = $provider['owner'];
             $binding->subarea = $subscriberArea;
             $binding->providerarea = $providerArea;
             $binding->save();
@@ -663,6 +663,24 @@ class HookUtil
     {
         return Doctrine_Query::create()->select()
                 ->andWhere('subowner = ?', $subscriberName)
+                ->from('Zikula_Doctrine_Model_HookBindings')
+                ->execute()
+                ->toArray();
+    }
+
+    /**
+     * Check if given provider is in use by a given subscriber.
+     *
+     * @param string $subscriberName    Subscriber's name.
+     * @param string $providerName      Provider's name.
+     *
+     * @return array
+     */
+    public static function bindingsBetweenProviderAndSubscriber($subscriberName, $providerName)
+    {
+        return Doctrine_Query::create()->select()
+                ->andWhere('subowner = ?', $subscriberName)
+                ->andWhere('providerowner  = ?', $providerName)
                 ->from('Zikula_Doctrine_Model_HookBindings')
                 ->execute()
                 ->toArray();

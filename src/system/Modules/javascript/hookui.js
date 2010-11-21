@@ -1,13 +1,13 @@
 /**
  * Toggle a subscribers's attached/detached status
  *
- *@params id;
+ *@params subscriber;
  *@params provider;
  *@return none;
  */
-function togglesubscriberstatus(id, provider)
+function togglesubscriberstatus(subscriber, provider)
 {
-    var pars = "id=" + id + "&provider=" + provider;
+    var pars = "subscriber=" + subscriber + "&provider=" + provider;
 
     new Zikula.Ajax.Request(
         "ajax.php?module=Modules&func=togglesubscriberstatus",

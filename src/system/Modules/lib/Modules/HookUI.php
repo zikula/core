@@ -57,7 +57,7 @@ class Modules_HookUI
 
         $hooksubscribers = HookUtil::getHookSubscribers();
         for ($i=0 ; $i < count($hooksubscribers) ; $i++) {
-            $hooksubscribers[$i]['attached'] = false; //TODO: check if module is attached
+            $hooksubscribers[$i]['attached'] = (count(HookUtil::bindingsBetweenProviderAndSubscriber($hooksubscribers[$i]['name'], $moduleName)) > 0) ? true : false;
         }
         $view->assign('hooksubscribers', $hooksubscribers);
 

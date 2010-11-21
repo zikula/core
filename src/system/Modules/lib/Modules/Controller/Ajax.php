@@ -23,28 +23,70 @@ class Modules_Controller_Ajax extends Zikula_Controller
      * togglesubscriberstatus
      * This function toggles attached/detached status of subscribers
      *
-     * @param id int            id of module to be attached/detached
+     * @param subscriber string module to be attached/detached
      * @param provider string   module to attach/detach
      * @return mixed            Ajax response
      */
     public function togglesubscriberstatus()
     {
         $provider = FormUtil::getPassedValue('provider', '', 'GET');
-        
+        if (empty($provider)) {
+            throw new Zikula_Exception_Fatal($this->__('No provider module passed.'));
+        }
+        if (!ModUtil::available($provider)) {
+            throw new Zikula_Exception_Fatal($this->__f('Provider module "%s" is not available.', $provider));
+        }
+
         if (!SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN)) {
             LogUtil::registerPermissionError(null, true);
             throw new Zikula_Exception_Forbidden();
         }
 
-        $id = FormUtil::getPassedValue('id', -1, 'GET');
-        if ($id == -1) {
-            throw new Zikula_Exception_Fatal($this->__('No module ID passed.'));
+        $subscriber = FormUtil::getPassedValue('subscriber', '', 'GET');
+        if (empty($subscriber)) {
+            throw new Zikula_Exception_Fatal($this->__('No subscriber module passed.'));
+        }
+        if (!ModUtil::available($subscriber)) {
+            throw new Zikula_Exception_Fatal($this->__f('Subscriber module "%s" is not available.', $subscriber));
+        }
+        
+        // find out if subscriber is already connected to provider
+        $bindings = HookUtil::bindingsBetweenProviderAndSubscriber($subscriber, $provider);
+        
+        // if number of bindings are greated than 0, than means
+        // that subscriber is already connected to provider
+        if (count($bindings) > 0) {
+            foreach ($bindings as $binding) {
+                HookUtil::unBindSubscribersFromProvider($binding['subarea'], $binding['providerarea']);
+            }
+        } else {
+            // find out areas for provider module
+            $providerVersion = $provider.'_Version';
+            $providerModule = new $providerVersion;
+            $providerBundles = $providerModule->getHookProviderBundles();
+            $providerAreas = array();
+            foreach ($providerBundles as $area => $hookproviderbundle) {
+                $providerAreas[] = $area;
+            }
+
+            // find out areas for subscriber module
+            $subscriberVersion = $subscriber.'_Version';
+            $subscriberModule = new $subscriberVersion;
+            $subscriberBundles = $subscriberModule->getHookSubscriberBundles();
+            $subscriberAreas = array();
+            foreach ($subscriberBundles as $area => $hooksubscriberbundle) {
+                $subscriberAreas[] = $area;
+            }
+
+            // bind subscriber to provider
+            foreach ($subscriberAreas as $sarea) {
+                foreach ($providerAreas as $parea) {
+                    HookUtil::bindSubscribersToProvider($sarea, $parea);
+                }
+            }
         }
 
-        // check if provider is attached to module and act accordingly
-        /* TODO */
-
-        return new Zikula_Response_Ajax(array('id' => $id));
+        return new Zikula_Response_Ajax(array('id' => ModUtil::getIdFromName($subscriber)));
     }
 
     /**
