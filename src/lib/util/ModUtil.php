@@ -1384,7 +1384,7 @@ class ModUtil
      */
     public static function registerHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
     {
-        if (!System::legacyMode()) {
+        if (!System::isLegacyMode()) {
             LogUtil::log(__f('%1$s::%2$s is not available in without legacy mode', array('ModUtil', 'registerHook')), Zikula_ErrorHandler::ERR);
             return false;
         }
