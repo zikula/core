@@ -710,7 +710,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @param string  $cache_id   The cache ID (optional).
      * @param string  $compile_id The compile ID (optional).
      * @param boolean $display    Whether or not to display directly (optional).
-     * @param boolean $reset      Reset singleton defaults (optional).
+     * @param boolean $reset      Reset singleton defaults (optional). deprecated.
      *
      * @return string The template output.
      */
@@ -733,12 +733,8 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             $output = "\n<!-- Start " . $this->template_dir . "/$template -->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
         }
 
-        // now we've got our output from this module reset our instance
-        if ($reset) {
-            //$this->module = $this->toplevelmodule;
-        }
-
-        return $output;
+        $event = new Zikula_Event('zikula_view.postfetch', $this, array('template' => $template), $output);
+        return $this->eventManager->notify($event)->getData();
     }
 
     /**

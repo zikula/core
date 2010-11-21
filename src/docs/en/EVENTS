@@ -115,6 +115,9 @@ module.custom_classname in order to override the classname calculated in ModUtil
     Receives no subject, args of array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
     and 'event data' of $className.  This can be altered by setting $event->setData() followed by $event->setNotified().
 
+module.module_uninstalled called after module successful uninstall
+    Receives $modinfo as args
+
 theme.init
     Occurs just before Theme#__construct() exits.  Subject is $this, args are 
     array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo)
@@ -129,6 +132,9 @@ theme.prefooter
 
 view.init
     Occurs just before Zikula_View#__construct() exits. Subject is $this, args are array('module' => $module, 'modinfo' => $modinfo, 'themeinfo' => $themeinfo)
+
+zikula_view.postfetch
+    Filter of output of a fetch.  Receives Zikula_View instance as subject, args are array('template' => $template), $data was the result of the fetch to be filtered.
 
 dbobject.pre/post*
     takes subject of $this.

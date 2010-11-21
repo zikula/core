@@ -317,7 +317,9 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // call any module delete hooks
-        //TODO REFACTOR: ModUtil::callHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
+        if (System::isLegacyMode()) {
+            ModUtil::callHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
+        }
 
         // Get module database info
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
@@ -330,15 +332,13 @@ class Modules_Api_Admin extends Zikula_Api
                 }
             }
 
-            $sm = ServiceUtil::getManager();
-            $em = EventUtil::getManager();
             if ($oomod) {
                 $className = ucwords($modinfo['name']) . '_Installer';
                 $reflectionInstaller = new ReflectionClass($className);
                 if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
                     LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
                 }
-                $installer = $reflectionInstaller->newInstanceArgs(array($sm));
+                $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
                 $interactiveClass = ucwords($modinfo['name']) . '_Interactiveinstaller';
                 $interactiveController = null;
                 if (class_exists($interactiveClass)) {
@@ -346,7 +346,7 @@ class Modules_Api_Admin extends Zikula_Api
                     if (!$reflectionInteractive->isSubclassOf('Zikula_InteractiveInstaller')) {
                         LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
                     }
-                    $interactiveController = $reflectionInteractive->newInstance($sm);
+                    $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
                 }
             }
 
@@ -405,6 +405,11 @@ class Modules_Api_Admin extends Zikula_Api
             }
         } else {
             DBUtil::deleteObjectByID('modules', $args['id'], 'id');
+        }
+
+        if ($oomod) {
+            $event = new Zikula_Event('module.module_uninstalled', null, $modinfo);
+            $this->eventManager->notify($event);
         }
 
         return true;
