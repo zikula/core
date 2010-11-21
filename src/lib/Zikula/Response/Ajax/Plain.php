@@ -19,25 +19,6 @@
 class Zikula_Response_Ajax_Plain extends Zikula_Response_Ajax_Base
 {
     /**
-     * Reponse data.
-     *
-     * @var array
-     */
-    protected $data;
-
-    /**
-     * Constructor.
-     *
-     * @param mixed $data    Application data.
-     * @param array $options Options (unused).
-     */
-    public function __construct($data, array $options = array())
-    {
-        $this->data = $data;
-        $this->options = $options;
-    }
-
-    /**
      * Convert class to string.
      *
      * @return void
