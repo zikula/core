@@ -32,7 +32,11 @@ class Modules_HookUI
         $view = Zikula_View::getInstance('Modules', false);
         $view->assign('currentmodule', $moduleName);
 
-        $hookproviders = HookUtil::getHookProviders();
+        $currentSorting = HookUtil::getDisplaySortsByOwner($moduleName);
+        $hookproviders = array();
+        foreach ($currentSorting as $provider) {
+            $hookproviders[] = ModUtil::getInfoFromName($provider);
+        }
         $view->assign('hookproviders', $hookproviders);
         
         $event->setData($view->fetch('modules_hookui_providers.tpl'));

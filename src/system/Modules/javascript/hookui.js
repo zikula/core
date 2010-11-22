@@ -71,7 +71,7 @@ function initprovidersorting()
 function changeproviderorder()
 {
     var pars = 'subscriber=' + subscriber +
-               '&' + Sortable.serialize('providerssortlist', { 'name': 'providerorder' });
+               '&' + Sortable.serialize('providerssortlist', { 'name': 'providersorder' });
 
     new Zikula.Ajax.Request(
         'ajax.php?module=Modules&func=changeproviderorder',

@@ -99,21 +99,30 @@ class Modules_Controller_Ajax extends Zikula_Controller
     public function changeproviderorder()
     {
         $subscriber = FormUtil::getPassedValue('subscriber', '', 'GET');
+        if (empty($subscriber)) {
+            throw new Zikula_Exception_Fatal($this->__('No subscriber module passed.'));
+        }
+        if (!ModUtil::available($subscriber)) {
+            throw new Zikula_Exception_Fatal($this->__f('Subscriber module "%s" is not available.', $subscriber));
+        }
 
         if (!SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
             LogUtil::registerPermissionError(null, true);
             throw new Zikula_Exception_Forbidden();
         }
 
-        $providerorder = FormUtil::getPassedValue('providerorder');
-
-        $ordering = array();
-        foreach ((array)$providerorder as $order => $id) {
-            $ordering[] = array('id' => $id, 'order' => $order);
+        $providersorder = FormUtil::getPassedValue('providersorder');
+        if (!(is_array($providersorder) && count($providersorder) > 0)) {
+            throw new Zikula_Exception_Fatal($this->__('Providers order is not an array.'));
         }
 
-        // update ordering status
-        /* TODO */
+        $sort = array();
+        foreach ((array)$providersorder as $order => $id) {
+            $providerModule = ModUtil::getInfo($id);
+            $sort[] = $providerModule['name'];
+        }
+        
+        HookUtil::setDisplaySortsByOwner($subscriber, $sort);
 
         return new Zikula_Response_Ajax(array('result' => true));
     }

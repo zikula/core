@@ -584,7 +584,7 @@ class HookUtil
             $sort = self::getDisplaySortsByOwner($subscriber['owner']);
             if (!in_array($provider['owner'], $sort)) {
                 $sort[] = $provider['owner'];
-                self::setDisplaySortsByOwner($subscriber['owner'], sort);
+                self::setDisplaySortsByOwner($subscriber['owner'], $sort);
             }
         }
     }
