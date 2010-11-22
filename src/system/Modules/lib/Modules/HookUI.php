@@ -33,10 +33,15 @@ class Modules_HookUI
         $view->assign('currentmodule', $moduleName);
 
         $currentSorting = HookUtil::getDisplaySortsByOwner($moduleName);
-        $hookproviders = array();
-        foreach ($currentSorting as $provider) {
-            $hookproviders[] = ModUtil::getInfoFromName($provider);
+        if (count($currentSorting) > 0) {
+            $hookproviders = array();
+            foreach ($currentSorting as $provider) {
+                $hookproviders[] = ModUtil::getInfoFromName($provider);
+            }
+        } else {
+            $hookproviders = HookUtil::getHookProviders();
         }
+
         $view->assign('hookproviders', $hookproviders);
         
         $event->setData($view->fetch('modules_hookui_providers.tpl'));
