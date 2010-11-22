@@ -415,7 +415,7 @@ class HookUtil
      *
      * @param string $owner Owner.
      *
-     * @return array
+     * @return array Non-assoc array of providers in the order they should be sorted.
      */
     public static function getDisplaySortsByOwner($owner)
     {
@@ -580,6 +580,12 @@ class HookUtil
             $binding->subarea = $subscriberArea;
             $binding->providerarea = $providerArea;
             $binding->save();
+
+            $sort = self::getDisplaySortsByOwner($subscriber['owner']);
+            if (!in_array($provider['owner'], $sort)) {
+                $sort[] = $provider['owner'];
+                self::setDisplaySortsByOwner($subscriber['owner'], sort);
+            }
         }
     }
 
@@ -593,13 +599,6 @@ class HookUtil
      */
     public static function unBindSubscribersFromProvider($subscriberArea, $providerArea)
     {
-        $binding = Doctrine_Query::create()->select()
-                        ->where('subarea = ?', $subscriberArea)
-                        ->andWhere('providerarea = ?', $providerArea)
-                        ->from('Zikula_Doctrine_Model_HookBindings')
-                        ->execute()
-                        ->toArray();
-
         $subscribers = Doctrine_Query::create()->select()
                         ->where('area = ?', $subscriberArea)
                         ->from('Zikula_Doctrine_Model_HookSubscribers')
@@ -634,6 +633,15 @@ class HookUtil
                 ->andWhere('providerarea = ?', $providerArea)
                 ->from('Zikula_Doctrine_Model_HookBindings')
                 ->execute();
+
+        if (isset($linked)) {
+            $sort = self::getDisplaySortsByOwner($subscriber['owner']);
+            $key = array_search($provider['owner'], $sort);
+            if ($key) {
+                unset($sort[$key]);
+                self::setDisplaySortsByOwner($subscriber['owner'], $key);
+            }
+        }
     }
 
     /**
@@ -685,4 +693,5 @@ class HookUtil
                 ->execute()
                 ->toArray();
     }
+
 }
