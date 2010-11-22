@@ -1152,12 +1152,59 @@ class Modules_Api_Admin extends Zikula_Api
         $letter = FormUtil::getPassedValue('letter', null, 'GET');
 
         if (SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'view'), 'text' => $this->__('Modules list'), 'class' => 'z-icon-es-list');
-            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins'), 'text' => $this->__('Plugins list'), 'class' => 'z-icon-es-cubes');
+            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'view'),
+                             'text' => $this->__('Modules list'),
+                             'class' => 'z-icon-es-list',
+                             'links' => array(
+                                             array('url' => ModUtil::url('Modules', 'admin', 'view'),
+                                                   'text' => $this->__('All')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_UNINITIALISED)),
+                                                   'text' => $this->__('Not installed')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_INACTIVE)),
+                                                   'text' => $this->__('Inactive')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_ACTIVE)),
+                                                   'text' => $this->__('Active')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_MISSING)),
+                                                   'text' => $this->__('Files missing')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_UPGRADED)),
+                                                   'text' => $this->__('New version uploaded')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_NOTALLOWED)),
+                                                   'text' => $this->__('Not allowed')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_INVALID)),
+                                                   'text' => $this->__('Invalid structure'))
+                                               ));
+
+            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins'),
+                             'text' => $this->__('Plugins list'), 
+                             'class' => 'z-icon-es-cubes',
+                             'links' => array(
+                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins'),
+                                                   'text' => $this->__('All')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('state'=>PluginUtil::NOTINSTALLED)),
+                                                   'text' => $this->__('Not installed')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('state'=>PluginUtil::DISABLED)),
+                                                   'text' => $this->__('Inactive')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('state'=>PluginUtil::ENABLED)),
+                                                   'text' => $this->__('Active'))
+                                               ));
+
             if (System::isLegacyMode()) {
                 $links[] = array('url' => ModUtil::url('Modules', 'admin', 'hooks', array('id' => 0)), 'text' => $this->__('System hooks'), 'class' => 'z-icon-es-package');
             }
-            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true)), 'text' => $this->__('System Plugins'), 'class' => 'z-icon-es-cubes');
+            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true)),
+                             'text' => $this->__('System Plugins'),
+                             'class' => 'z-icon-es-cubes',
+                             'links' => array(
+                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true)),
+                                                   'text' => $this->__('All')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::NOTINSTALLED)),
+                                                   'text' => $this->__('Not installed')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::DISABLED)),
+                                                   'text' => $this->__('Inactive')),
+                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::ENABLED)),
+                                                   'text' => $this->__('Active'))
+                                               ));
+
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
             //$filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
             //ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
