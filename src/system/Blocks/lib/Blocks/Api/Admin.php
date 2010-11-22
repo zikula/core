@@ -419,9 +419,23 @@ class Blocks_Api_Admin extends Zikula_Api
     {
         $links = array();
 
-        if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
-            $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'view'), 'text' => $this->__('Blocks list'), 'class' => 'z-icon-es-list');
+        // get all possible block positions
+        $blockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+        
+        // Create array for dropdown menu links
+        foreach($blockspositions as $blocksposition) {
+             $filter['blockposition_id'] = $blocksposition['pid'];
+             $poslinks[] = array('url' => ModUtil::url('Blocks', 'admin', 'view', array('filter' => $filter)), 
+                                 'text' => $this->__f('Position \"%s\" ', $blocksposition['name']));
         }
+
+        if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
+            $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'view'), 
+                             'text' => $this->__('Blocks list'), 
+                             'class' => 'z-icon-es-list',
+                             'links' => $poslinks);
+        }
+
         if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADD)) {
             $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'newblock'), 'text' => $this->__('Create new block'), 'class' => 'z-icon-es-new');
         }
