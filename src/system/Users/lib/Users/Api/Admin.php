@@ -332,6 +332,7 @@ class Users_Api_Admin extends Zikula_Api
     public function getLinks()
     {
         $links = array();
+        $submenulinks = array();
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url('Users', 'admin', 'view'), 'text' => $this->__('Users list'), 'class' => 'z-icon-es-list');
@@ -343,11 +344,12 @@ class Users_Api_Admin extends Zikula_Api
             }
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new');
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'import'), 'text' => $this->__('Import users'), 'class' => 'z-icon-es-import');
-        }
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'exporter'), 'text' => $this->__('Export users'), 'class' => 'z-icon-es-export');
+            $submenulinks[] = array('url' => ModUtil::url('Users', 'admin', 'newUser'), 'text' => $this->__('Create new user'));
+            $submenulinks[] = array('url' => ModUtil::url('Users', 'admin', 'import'), 'text' => $this->__('Import users'));
+            if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+                 $submenulinks[] = array('url' => ModUtil::url('Users', 'admin', 'exporter'), 'text' => $this->__('Export users'));
+            }
+            $links[] = array('url' => ModUtil::url('Users', 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new', 'links' => $submenulinks);
         }
         if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url('Users', 'admin', 'search'), 'text' => $this->__('Find and e-mail users'), 'class' => 'z-icon-es-mail');

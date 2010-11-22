@@ -418,6 +418,7 @@ class Blocks_Api_Admin extends Zikula_Api
     public function getlinks()
     {
         $links = array();
+        $submenulinks = array();
 
         // get all possible block positions
         $blockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
@@ -425,15 +426,15 @@ class Blocks_Api_Admin extends Zikula_Api
         // Create array for dropdown menu links
         foreach($blockspositions as $blocksposition) {
              $filter['blockposition_id'] = $blocksposition['pid'];
-             $poslinks[] = array('url' => ModUtil::url('Blocks', 'admin', 'view', array('filter' => $filter)), 
-                                 'text' => $this->__f('Position \"%s\" ', $blocksposition['name']));
+             $submenulinks[] = array('url' => ModUtil::url('Blocks', 'admin', 'view', array('filter' => $filter)), 
+                                     'text' => $this->__f('Position \"%s\" ', $blocksposition['name']));
         }
 
         if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
             $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'view'), 
                              'text' => $this->__('Blocks list'), 
                              'class' => 'z-icon-es-list',
-                             'links' => $poslinks);
+                             'links' => $submenulinks);
         }
 
         if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADD)) {
