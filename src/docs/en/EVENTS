@@ -9,6 +9,15 @@ You may trigger events with
 Any changes made to the $event object or $subject in the handlers will be carry over (standard PHP5 behaviour).
 
 List of event names you can take advantage of in the core.
+
+api.method_not_found called in instances of Zikula_Api from __call()
+    Receives arguments from __call($method, argument) as $args
+    $event['method'] = the method which didn't exist in the main class.
+    $event['args'] = the arguments that were passed
+    The event subject is the class where the method was not found.
+    Must exit if $event['method'] does not match whatever the handler expects.
+    Modify $event->data and $event->setNotify().
+
 core.preinit
     Occurs after the config.php is loaded.
 
@@ -19,14 +28,6 @@ core.init
 core.postinit
     Occurs just before System::init() exits from normal execution.
 
-api.method_not_found called in instances of Zikula_Api from __call()
-    Receives arguments from __call($method, argument) as $args
-    $event['method'] = the method which didn't exist in the main class.
-    $event['args'] = the arguments that were passed
-    The event subject is the class where the method was not found.
-    Must exit if $event['method'] does not match whatever the handler expects.
-    Modify $event->data and $event->setNotify().
-
 controller.method_not_found called in instances of Zikula_Controller from __call()
     Receives arguments from __call($method, argument) as $args
     $event['method'] = the method which didn't exist in the main class.
@@ -35,43 +36,11 @@ controller.method_not_found called in instances of Zikula_Controller from __call
     Must exit if $event['method'] does not match whatever the handler expects.
     Modify $event->data and $event->setNotify().
 
+dbobject.pre/post*
+    Takes subject of $this.
+
 installer.module.uninstalled called after module successful uninstall
     Receives $modinfo as args
-
-user.login
-    Occurs right after login, $event['user'] is the UID of the logged in user.
-    $event['authmodule'] with the name of the module that authenticated.
-    $event['loginid'] with the equivalent of the user name that authenticated (not all authmodules use loginid,
-    and therefore this may not be supplied). If authentication was attempted with Zikula's Users module, then
-    $event['loginid'] will contain the uname logged in.
-
-user.logout
-    Occurs right after logout, $event['user'] is the UID of the user who logged out.
-    $event['authmodule'] with the name of the module that logged out (in addition to Zikula core).
-
-user.logout.failed
-    Occurs right after logout, $event['user'] is the UID of the user who attempted to log out.
-    $event['authmodule'] with the name of the module that attempted and failed to log out.
-
-user.login.failed
-    Occurs on login failure. $event['authmodule'] with the name of the module that attempted to authenticate.
-    $event['loginid'] with the equivalent of the user name that was attempted (not all authmodules use loginid,
-    and therefore this may not be supplied). If authentication was attempted with Zikula's Users module, then
-    $event['loginid'] will contain the uname attempted.
-
-user.gettheme
-    This is invoked with notifyUntil so you should execute $event->setNotified() in the event handler.
-    receives $event['name'] the chosen theme name, it can modify the name.
-
-user.create
-    Occurs after a user is created. It does not apply to creation of a pending registration.
-    The full user record created is available as the subject.
-
-user.update
-    Occurs after a user is updated. The full updated user record is available as the subject.
-
-user.delete
-    Occurs after a user is deleted from the system. The full user record deleted is available as the subject.
 
 group.create
     Occurs after a group is created. The full group record created is available as the subject.
@@ -118,8 +87,37 @@ module_dispatch.custom_classname in order to override the classname calculated i
     Receives no subject, args of array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
     and 'event data' of $className.  This can be altered by setting $event->setData() followed by $event->setNotified().
 
+module.mailer.api.sendmessage
+    Inkoked from Mailer_Api_User#sendmessage. Subject is Mailer_Api_User with $args.
+    This is a notifyUntil event so the event must $event->setNotified() and set any
+    return data into $event->data, or $event->setData()
+
+pageutil.addvar_filter
+    Used to override things like system or module stylesheets or javascript.
+    Subject is the $varname, and $event->data an array of values to be modified by the filter.
+    Simply test with something like
+        if (($key = array_search('system/Users/javascript/somescript.js', $event->data)) !== false) {
+            $event->data[$key] = 'config/javascript/myoverride.js';
+        }
+    This single filter can be used to override all css or js scripts or any other var types
+    sent to PageUtil::addVar().
+
+setup.errorreporting
+    Invoked during System::init().  Used to activate set_error_handler().  Event must setNotified().
+
+system.outputfilter
+    Filter type event for output filter HTML sanitisation
+
+systemerror
+    args gets array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)
+
+theme.ajax_request
+    Triggered by a native ajax request from a theme.  This occurs when the following call is made
+    ajax.php?module=theme&func=dispatch&.....
+    Handlers should be registered in the theme.
+
 theme.init
-    Occurs just before Theme#__construct() exits.  Subject is $this, args are 
+    Occurs just before Theme#__construct() exits.  Subject is $this, args are
     array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo)
 
 theme.load_config
@@ -136,34 +134,38 @@ view.init
 view.fetch
     Filter of result of a fetch.  Receives Zikula_View instance as subject, args are array('template' => $template), $data was the result of the fetch to be filtered.
 
-dbobject.pre/post*
-    Takes subject of $this.
+user.login
+    Occurs right after login, $event['user'] is the UID of the logged in user.
+    $event['authmodule'] with the name of the module that authenticated.
+    $event['loginid'] with the equivalent of the user name that authenticated (not all authmodules use loginid,
+    and therefore this may not be supplied). If authentication was attempted with Zikula's Users module, then
+    $event['loginid'] will contain the uname logged in.
 
-systemerror
-    args gets array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)
+user.logout
+    Occurs right after logout, $event['user'] is the UID of the user who logged out.
+    $event['authmodule'] with the name of the module that logged out (in addition to Zikula core).
 
-module.mailer.api.sendmessage
-    Inkoked from Mailer_Api_User#sendmessage. Subject is Mailer_Api_User with $args.
-    This is a notifyUntil event so the event must $event->setNotified() and set any
-    return data into $event->data, or $event->setData()
+user.logout.failed
+    Occurs right after logout, $event['user'] is the UID of the user who attempted to log out.
+    $event['authmodule'] with the name of the module that attempted and failed to log out.
 
-setup.errorreporting
-    Invoked during System::init().  Used to activate set_error_handler().  Event must setNotified().
+user.login.failed
+    Occurs on login failure. $event['authmodule'] with the name of the module that attempted to authenticate.
+    $event['loginid'] with the equivalent of the user name that was attempted (not all authmodules use loginid,
+    and therefore this may not be supplied). If authentication was attempted with Zikula's Users module, then
+    $event['loginid'] will contain the uname attempted.
 
-pageutil.addvar_filter
-    Used to override things like system or module stylesheets or javascript.
-    Subject is the $varname, and $event->data an array of values to be modified by the filter.
-    Simply test with something like
-        if (($key = array_search('system/Users/javascript/somescript.js', $event->data)) !== false) {
-            $event->data[$key] = 'config/javascript/myoverride.js';
-        }
-    This single filter can be used to override all css or js scripts or any other var types
-    sent to PageUtil::addVar().
+user.gettheme
+    This is invoked with notifyUntil so you should execute $event->setNotified() in the event handler.
+    receives $event['name'] the chosen theme name, it can modify the name.
 
-system.outputfilter
-    Filter type event for output filter HTML sanitisation
+user.create
+    Occurs after a user is created. It does not apply to creation of a pending registration.
+    The full user record created is available as the subject.
 
-theme.ajax_request
-    Triggered by a native ajax request from a theme.  This occurs when the following call is made
-    ajax.php?module=theme&func=dispatch&.....
-    Handlers should be registered in the theme.
+user.update
+    Occurs after a user is updated. The full updated user record is available as the subject.
+
+user.delete
+    Occurs after a user is deleted from the system. The full user record deleted is available as the subject.
+
