@@ -112,6 +112,9 @@ function smarty_function_modulelinks($params, $view)
 }
 
 function addsubmenu($id, $links) {
+
+    PageUtil::addVar('javascript', 'zikula.ui');
+
     $html = '';
     $html .= '<span id="modcontext' .$id .'" class="z-drop">&nbsp;</span>';
     $html .= "<script type='text/javascript'>
