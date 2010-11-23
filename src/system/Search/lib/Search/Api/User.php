@@ -250,9 +250,6 @@ class Search_Api_User extends Zikula_Api
             return false;
         }
 
-        // Let any hooks know that we have created a new item.
-        //TODO REFACTOR: ModUtil::callHooks('item', 'create', $args['q'], array('module' => 'Search'));
-
         return true;
     }
 
