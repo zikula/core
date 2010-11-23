@@ -1168,8 +1168,6 @@ class Modules_Api_Admin extends Zikula_Api
                                                    'text' => $this->__('Files missing')),
                                              array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_UPGRADED)),
                                                    'text' => $this->__('New version uploaded')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_NOTALLOWED)),
-                                                   'text' => $this->__('Not allowed')),
                                              array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_INVALID)),
                                                    'text' => $this->__('Invalid structure'))
                                                ));
