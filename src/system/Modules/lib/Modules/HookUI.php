@@ -36,7 +36,9 @@ class Modules_HookUI
         if (count($currentSorting) > 0) {
             $hookproviders = array();
             foreach ($currentSorting as $provider) {
-                $hookproviders[] = ModUtil::getInfoFromName($provider);
+                if (ModUtil::available($provider)) {
+                    $hookproviders[] = ModUtil::getInfoFromName($provider);
+                }
             }
         } else {
             $hookproviders = HookUtil::getHookProviders();
