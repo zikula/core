@@ -69,6 +69,8 @@ class Zikula_Response_DisplayHook
      * Set name property.
      *
      * @param string $name Name.
+     *
+     * @return void
      */
     public function setName($name)
     {
@@ -86,6 +88,13 @@ class Zikula_Response_DisplayHook
         return $this->view;
     }
 
+    /**
+     * Set view property.
+     *
+     * @param Zikula_View $view Zikula_View.
+     *
+     * @return void
+     */
     public function setView($view)
     {
         $this->view = $view;
@@ -107,6 +116,8 @@ class Zikula_Response_DisplayHook
      * Set template property.
      *
      * @param string $template Template name.
+     *
+     * @return void
      */
     public function setTemplate($template)
     {
