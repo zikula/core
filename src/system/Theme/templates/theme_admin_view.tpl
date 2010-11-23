@@ -19,7 +19,11 @@
             {foreach from=$themes item=theme}
             <tr class="{cycle values="z-odd,z-even}{if $theme.name|strtolower eq $currenttheme|strtolower} z-defaulttablerow{/if}">
                 <td>
-                    <span title="#title_{$theme.name}" class="tooltips marktooltip">{$theme.displayname|safetext}</span>
+                    {if $theme.admin eq true}
+                    <a href="{modurl modname=Admin type=admin func=adminpanel theme=$theme.name}" title="{$theme.displayname|safetext}"><span title="#title_{$theme.name}" class="tooltips marktooltip">{$theme.displayname|safetext}</span></a>&nbsp;
+                    {else}
+                    <a href="{entrypoint}?theme={$theme.name}" title="{$theme.displayname|safetext}"><span title="#title_{$theme.name}" class="tooltips marktooltip">{$theme.displayname|safetext}</span></a>&nbsp;
+                    {/if}
                     {if $theme.name|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips"> (*) </span>{/if}
                     <div id="title_{$theme.name}" class="theme_preview z-center" style="display: none;">
                         <h4>{$theme.displayname}</h4>
@@ -29,7 +33,7 @@
                     </div>
                 </td>
                 <td>{$theme.description|default:$theme.displayname}</td>
-                <td class="z-right">
+                <td class="z-right z-nowrap">
                     {if $theme.admin eq true}
                     <a href="{modurl modname=Admin type=admin func=adminpanel theme=$theme.name}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview" class="tooltips"}</a>&nbsp;
                     {else}
