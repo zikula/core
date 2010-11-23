@@ -24,12 +24,11 @@
  * - 'id'        The ID field/property of the index, default 'id' [required].
  * - 'module'    The caller of this hook, defaults to current module [required].
  * - 'returnurl' The return URL, defaults to URL of called page, [required].
- * - 'divclass'  Only works if assigned not set, the css class to wrap the output in [optional].
  * - 'assign'    If set, the results array is assigned to the named variable instead display [optional].
  * - all remaining parameters are passed to the hook via the args param in the event.
  *
  * Example:
- *  {notifydisplayhooks eventname='news.item.ui.view' subject=$subject returnurl=$returnurl divclass='z-displayhook'}
+ *  {notifydisplayhooks eventname='news.item.ui.view' subject=$subject returnurl=$returnurl}
  *  {notifydisplayhooks eventname='news.item.ui.view' subject=$subject returnurl=$returnurl assign='displayhooks'}
  *
  * @param array       $params All attributes passed to this function from the template.
@@ -45,7 +44,6 @@ function smarty_function_notifydisplayhooks($params, $view)
 
     $assign = isset($params['assign']) ? $params['assign'] : false;
     $params['id'] = isset($params['id']) ? $params['id'] : 'id';
-    $divclass = isset($params['divclass']) ? $params['divclass'] : 'z-displayhook';
 
     if (!isset($params['module'])) {
         $params['module'] = $view->getTopLevelModule();
@@ -60,7 +58,6 @@ function smarty_function_notifydisplayhooks($params, $view)
     unset($params['subject']);
     unset($params['eventname']);
     unset($params['assign']);
-    unset($params['divclass']);
 
     // create event and notify
     $event = new Zikula_Event($type, $subject, $params, $data);
@@ -77,7 +74,7 @@ function smarty_function_notifydisplayhooks($params, $view)
 
     $output = '';
     foreach ($results as $result) {
-        $output = "<div class=\"$divclass\">\n$result\n</div>";
+        $output .= "$result\n";
     }
     return $output;
 }
