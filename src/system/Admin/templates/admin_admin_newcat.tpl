@@ -18,7 +18,7 @@
                     <textarea id="admin_description" name="category[description]" cols="50" rows="10"></textarea>
                 </div>
             </fieldset>
-            {modcallhooks hookobject=item hookaction=new module=Admin}
+
             <div class="z-buttons z-formbuttons">
                 {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
                 <a href="{modurl modname=Admin type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
