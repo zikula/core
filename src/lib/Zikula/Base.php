@@ -624,7 +624,7 @@ abstract class Zikula_Base implements Zikula_Translatable
      * 
      * @return Zikula_Event 
      */
-    public function notifyHooks($name, $subject, $args=array(), $data=null)
+    public function notifyHooks($name, $subject=null, $args=array(), $data=null)
     {
         // set caller's name
         if (!array_key_exists($args['module'])) {
