@@ -639,7 +639,7 @@ class HookUtil
             $key = array_search($provider['owner'], $sort);
             if ($key) {
                 unset($sort[$key]);
-                self::setDisplaySortsByOwner($subscriber['owner'], $key);
+                self::setDisplaySortsByOwner($subscriber['owner'], $sort);
             }
         }
     }
