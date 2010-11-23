@@ -51,7 +51,10 @@ function smarty_function_notifydisplayhooks($params, $view)
     $module = $params['module'];
 
     $subject = isset($params['subject']) ? $params['subject'] : null;
-    $type = isset($params['type']) ? $params['type'] : null;
+    if (!isset($params['eventname'])) {
+        trigger_error(__f('Error! "%1$s" must be set in %2$s', array('eventname', 'notifydisplayhooks')));
+    }
+    $eventname = $params['eventname'];
     $params['returnurl'] = isset($params['returnurl']) ? $params['returnurl'] : System::getCurrentUrl();
     $data = array();
 
@@ -60,7 +63,7 @@ function smarty_function_notifydisplayhooks($params, $view)
     unset($params['assign']);
 
     // create event and notify
-    $event = new Zikula_Event($type, $subject, $params, $data);
+    $event = new Zikula_Event($eventname, $subject, $params, $data);
     $results = $eventManager->notify($event)->getData();
 
     // sort display hooks
