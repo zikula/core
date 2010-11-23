@@ -712,9 +712,6 @@ class Permissions_Controller_Admin extends Zikula_Controller
         }
         $this->setVar('adminid', $adminid);
 
-        // Let any other modules know that the modules configuration has been updated
-        //TODO REFACTOR: ModUtil::callHooks('module','updateconfig', 'Permissions', array('module' => 'Permissions'));
-
         // the module configuration has been updated successfuly
         if ($error==true) {
             LogUtil::registerStatus($this->__('Error! Could not save configuration: unknown permission rule ID.'));
