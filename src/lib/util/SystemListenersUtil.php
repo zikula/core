@@ -248,16 +248,16 @@ class SystemListenersUtil
 
             // create definitions
             $toolbar = new Zikula_ServiceManager_Definition(
-                    'Zikula_DebugToolbar',
-                    array(),
-                    array('addPanels' =>  array(0 => array(new Zikula_ServiceManager_Service('debug.toolbar.panel.version'),
-                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.config'),
-                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.memory'),
-                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.rendertime'),
-                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.sql'),
-                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.view'),
-                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.exec'),
-                                                new Zikula_ServiceManager_Service('debug.toolbar.panel.logs'))))
+                            'Zikula_DebugToolbar',
+                            array(),
+                            array('addPanels' => array(0 => array(new Zikula_ServiceManager_Service('debug.toolbar.panel.version'),
+                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.config'),
+                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.memory'),
+                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.rendertime'),
+                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.sql'),
+                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.view'),
+                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.exec'),
+                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.logs'))))
             );
 
             $versionPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Version');
@@ -325,12 +325,14 @@ class SystemListenersUtil
     public static function setupAutoloaderForGeneratedCategoryModels(Zikula_Event $event)
     {
         if ($event['stage'] == System::STAGES_CONFIG) {
-            ZLoader::addAutoloader('GeneratedDoctrineModel',  CacheUtil::getLocalDir('doctrinemodels'));
+            ZLoader::addAutoloader('GeneratedDoctrineModel', CacheUtil::getLocalDir('doctrinemodels'));
         }
     }
 
     /**
      * On an module remove hook call this listener deletes all cached (generated) doctrine models for the module.
+     *
+     * Listens for the 'installer.module.uninstalled' event.
      *
      * @param Zikula_Event $event Event.
      *
@@ -338,24 +340,22 @@ class SystemListenersUtil
      */
     public static function deleteGeneratedCategoryModelsOnModuleRemove(Zikula_Event $event)
     {
-        if ($event['hookobject'] == 'module' && $event['hookaction'] == 'remove') {
-            $moduleName = $event['hookid'];
+        $moduleName = $event['modname'];
 
-             // remove generated category models for this record
-            $dir = 'doctrinemodels/GeneratedDoctrineModel/' . $moduleName;
-            if (file_exists(CacheUtil::getLocalDir($dir))) {
-                CacheUtil::removeLocalDir($dir);
-            }
-
-            // remove saved data about the record
-            $modelsInfo = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
-            foreach ($modelsInfo as $class => $info) {
-                if ($info['module'] == $moduleName) {
-                    unset($modelsInfo[$class]);
-                }
-            }
-            ModUtil::setVar('Categories', 'EntityCategorySubclasses', $modelsInfo);
+        // remove generated category models for this record
+        $dir = 'doctrinemodels/GeneratedDoctrineModel/' . $moduleName;
+        if (file_exists(CacheUtil::getLocalDir($dir))) {
+            CacheUtil::removeLocalDir($dir);
         }
+
+        // remove saved data about the record
+        $modelsInfo = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
+        foreach ($modelsInfo as $class => $info) {
+            if ($info['module'] == $moduleName) {
+                unset($modelsInfo[$class]);
+            }
+        }
+        ModUtil::setVar('Categories', 'EntityCategorySubclasses', $modelsInfo);
     }
 
     /**
@@ -402,6 +402,5 @@ class SystemListenersUtil
             return;
         }
     }
-
 
 }

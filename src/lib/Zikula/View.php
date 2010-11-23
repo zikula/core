@@ -733,7 +733,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             $output = "\n<!-- Start " . $this->template_dir . "/$template -->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
         }
 
-        $event = new Zikula_Event('zikula_view.postfetch', $this, array('template' => $template), $output);
+        $event = new Zikula_Event('view.fetch', $this, array('template' => $template), $output);
         return $this->eventManager->notify($event)->getData();
     }
 

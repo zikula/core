@@ -1,9 +1,9 @@
 You may register event listeners with EventUtil::attach($name, $handler);
 
-You may issue events with
+You may trigger events with
 
     [php]
-    $event = new Zikula_Event($name, $subject, $args);
+    $event = new Zikula_Event($eventName, $subject, $args, $data);
     EventUtil::notify($event);
 
 Any changes made to the $event object or $subject in the handlers will be carry over (standard PHP5 behaviour).
@@ -34,6 +34,9 @@ controller.method_not_found called in instances of Zikula_Controller from __call
     The event subject is the class where the method was not found.
     Must exit if $event['method'] does not match whatever the handler expects.
     Modify $event->data and $event->setNotify().
+
+installer.module.uninstalled called after module successful uninstall
+    Receives $modinfo as args
 
 user.login
     Occurs right after login, $event['user'] is the UID of the logged in user.
@@ -115,9 +118,6 @@ module_dispatch.custom_classname in order to override the classname calculated i
     Receives no subject, args of array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
     and 'event data' of $className.  This can be altered by setting $event->setData() followed by $event->setNotified().
 
-module.module_uninstalled called after module successful uninstall
-    Receives $modinfo as args
-
 theme.init
     Occurs just before Theme#__construct() exits.  Subject is $this, args are 
     array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo)
@@ -133,22 +133,16 @@ theme.prefooter
 view.init
     Occurs just before Zikula_View#__construct() exits. Subject is $this, args are array('module' => $module, 'modinfo' => $modinfo, 'themeinfo' => $themeinfo)
 
-zikula_view.postfetch
-    Filter of output of a fetch.  Receives Zikula_View instance as subject, args are array('template' => $template), $data was the result of the fetch to be filtered.
+view.fetch
+    Filter of result of a fetch.  Receives Zikula_View instance as subject, args are array('template' => $template), $data was the result of the fetch to be filtered.
 
 dbobject.pre/post*
-    takes subject of $this.
+    Takes subject of $this.
 
 systemerror
     args gets array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)
 
-controller.method_not_found
-    args are method (method name), 'args' = $args
-
-controller_api.method_not_found
-    args are method (method name). 'args' = $args
-
-mailer.sendmessage
+module.mailer.api.sendmessage
     Inkoked from Mailer_Api_User#sendmessage. Subject is Mailer_Api_User with $args.
     This is a notifyUntil event so the event must $event->setNotified() and set any
     return data into $event->data, or $event->setData()

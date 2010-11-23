@@ -32,7 +32,7 @@ $eventManager->attach('core.postinit', array('SystemListenersUtil', 'systemHooks
 $eventManager->attach('core.init', array('SystemListenersUtil', 'setupDebugToolbar'));
 $eventManager->attach('log.sql', array('SystemListenersUtil', 'logSqlQueries'));
 $eventManager->attach('core.init', array('SystemListenersUtil', 'setupAutoloaderForGeneratedCategoryModels'));
-$eventManager->attach('module_dispatch.postcallhooks.extrainfo', array('SystemListenersUtil', 'deleteGeneratedCategoryModelsOnModuleRemove'));
+$eventManager->attach(installer.module.uninstalled', array('SystemListenersUtil', 'deleteGeneratedCategoryModelsOnModuleRemove'));
 $eventManager->attach('pageutil.addvar_filter', array('SystemListenersUtil', 'coreStylesheetOverride'));
 $eventManager->attach('module_dispatch.postexecute', array('SystemListenersUtil', 'addHooksAdminLinks'));
 
