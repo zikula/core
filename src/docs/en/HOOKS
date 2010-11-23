@@ -206,3 +206,18 @@ hook types.  This can be done as follows:
    // the short way, provided in instances of Zikula_Base (controllers, APIs etc).
    $this->notifyHooks('news.hook.process.create', $subject);
 
+HOOK RESPONSES FROM PROVIDERS
+-----------------------------
+A hook handler should response with a Zikula_Response_DisplayHook object in the following manner.
+
+    public function hookHandler(Zikula_Event $event)
+    {
+        $name = 'Foo'; // this module's name.
+        $template = 'template_name.tpl'; // the name of the module's template
+        $view = Zikula_View::getInstance($name);
+
+        // do stuff...
+
+        // add this response to the event stack
+        $event->data[$name] = new Zikula_Response_DisplayHook($name, $view, $template);
+    }
