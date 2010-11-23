@@ -108,8 +108,6 @@
             {modfunc modname=$profileModName type='form' func='edit' dynadata=$reginfo.dynadata}
             {/if}
 
-            {modcallhooks hookobject='item' hookaction='new' module='Users'}
-
             <fieldset>
                 <legend>{gt text="Check your entries and submit your registration"}</legend>
                 <p id="users_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit new user' to continue."}</p>

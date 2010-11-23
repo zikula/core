@@ -839,8 +839,6 @@ class Users_Api_Registration extends Zikula_Api
             // registration is created. It is not a "real" record until now, so it wasn't really
             // "created" until now. It is way down here so that the activated state and profile
             // data can be properly saved before the hook is fired.
-            //TODO REFACTOR: ModUtil::callHooks('item', 'create', $userObj['uid'], array('module' => 'Users'));
-
             $createEvent = new Zikula_Event('user.create', $userObj);
             $this->eventManager->notify($createEvent);
 
@@ -1556,7 +1554,6 @@ class Users_Api_Registration extends Zikula_Api
             // NOTE: This is not an item-create because this is a legacy activation, and the
             // user account record was already in a state where it was a "real" record.
             // See createRegistration() and createUser() above.
-            //TODO REFACTOR: ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
             // ... and call event too.
             $updateEvent = new Zikula_Event('user.update', $res);
             $this->eventManager->notify($updateEvent);

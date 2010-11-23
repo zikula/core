@@ -1425,9 +1425,6 @@ class UserUtil
         // Do not fire update event/hook unless the update happened, it was not a registration record, it was not
         // the password being updated, and the system is not currently being installed.
         if ($res && !$isRegistration && ($name != 'pass') && !System::isInstalling()) {
-            // Call the hook
-            //TODO REFACTOR: ModUtil::callHooks('item', 'update', $uid, array('module' => 'Users'));
-
             // Fire the event
             $updateEvent = new Zikula_Event('user.update', $updatedUserObj);
             EventUtil::notify($updateEvent);
@@ -1779,9 +1776,6 @@ class UserUtil
         // Do not fire update event/hook unless the update happened, it was not a registration record, it was not
         // the password being updated, and the system is not currently being installed.
         if ($res && !$isRegistration && ($name != 'pass') && !System::isInstalling()) {
-            // Call the hook
-            //TODO REFACTOR: ModUtil::callHooks('item', 'update', $uid, array('module' => 'Users'));
-
             // Fire the event
             $updateEvent = new Zikula_Event('user.update', $updatedUserObj);
             EventUtil::notify($updateEvent);

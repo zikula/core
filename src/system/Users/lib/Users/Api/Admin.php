@@ -239,8 +239,6 @@ class Users_Api_Admin extends Zikula_Api
         $updateEvent = new Zikula_Event('user.update', $userInfo);
         $this->eventManager->notify($updateEvent);
 
-        //TODO REFACTOR: ModUtil::callHooks('item', 'update', $userInfo['uid'], array('module' => 'Users'));
-
         return true;
     }
 
@@ -316,8 +314,6 @@ class Users_Api_Admin extends Zikula_Api
                 // Let other modules know we have deleted an item
                 $deleteEvent = new Zikula_Event('user.delete', $userObj);
                 $this->eventManager->notify($deleteEvent);
-
-                //TODO REFACTOR: ModUtil::callHooks('item', 'delete', $userObj['uid'], array('module' => 'Users'));
             }
         }
 
@@ -495,7 +491,6 @@ class Users_Api_Admin extends Zikula_Api
 
             foreach ($importValues as $value) {
                 if ($value['activated'] != UserUtil::ACTIVATED_PENDING_REG) {
-                    //TODO REFACTOR: ModUtil::callHooks('item', 'create', $value['uid'], array('module' => 'Users'));
                     $createEvent = new Zikula_Event('user.create', $value);
                     $this->eventManager->notify($createEvent);
                 }

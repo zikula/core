@@ -1862,8 +1862,6 @@ class Users_Controller_Admin extends Zikula_Controller
                 ModUtil::setVar('Legal', 'termsofuse', false);
                 ModUtil::setVar('Legal', 'privacypolicy', false);
             }
-            // Let any other modules know that the modules configuration has been updated
-            //TODO REFACTOR: ModUtil::callHooks('module', 'updateconfig', 'Users', array('module' => 'Users'));
 
             // the module configuration has been updated successfuly
             LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
