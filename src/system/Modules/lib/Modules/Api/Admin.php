@@ -407,7 +407,7 @@ class Modules_Api_Admin extends Zikula_Api
             DBUtil::deleteObjectByID('modules', $args['id'], 'id');
         }
 
-        $event = new Zikula_Event('module.module_uninstalled', null, $modinfo);
+        $event = new Zikula_Event('module_dispatch.module_uninstalled', null, $modinfo);
         $this->eventManager->notify($event);
 
         return true;

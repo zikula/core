@@ -741,7 +741,7 @@ class ModUtil
 
         self::_loadStyleSheets($modname, $api, $type);
 
-        $event = new Zikula_Event('module.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
+        $event = new Zikula_Event('module_dispatch.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
         EventUtil::notify($event);
 
         return $modname;
@@ -821,7 +821,7 @@ class ModUtil
         $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname). '_Controller_'. ucwords($type);
 
         // allow overriding the OO class (to override existing methods using inheritance).
-        $event = new Zikula_Event('module.custom_classname', null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+        $event = new Zikula_Event('module_dispatch.custom_classname', null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
         EventUtil::notifyUntil($event);
         if ($event->hasNotified()) {
             $className = $event->getData();
@@ -984,8 +984,8 @@ class ModUtil
         $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
         $eventManager = EventUtil::getManager();
         if ($loaded) {
-            $preExecuteEvent = new Zikula_Event('module.preexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-            $postExecuteEvent = new Zikula_Event('module.postexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $preExecuteEvent = new Zikula_Event('module_dispatch.preexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $postExecuteEvent = new Zikula_Event('module_dispatch.postexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
 
             if (is_callable($modfunc)) {
                 $eventManager->notify($preExecuteEvent);
@@ -1050,7 +1050,7 @@ class ModUtil
             // return void
 
             // This event means that no $type was found
-            $event = new Zikula_Event('module.type_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
+            $event = new Zikula_Event('module_dispatch.type_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
             $eventManager->notifyUntil($event);
 
             if ($preExecuteEvent->hasNotified()) {
@@ -1185,7 +1185,7 @@ class ModUtil
         }
 
         // copy shorturls var so we don't overwrite static var
-        $_shorturls = $shorturls; 
+        $_shorturls = $shorturls;
         if (isset($args['returnpage'])) {
             $_shorturls = false;
         }

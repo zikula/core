@@ -31,7 +31,7 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikul
      */
     protected function setupHandlerDefinitions()
     {
-        $this->addHandlerDefinition('module.postexecute', 'addLinks');
+        $this->addHandlerDefinition('module_dispatch.postexecute', 'addLinks');
         $this->addHandlerDefinition('controller.method_not_found', 'anotherfunction');
     }
 

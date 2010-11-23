@@ -24,7 +24,7 @@ class SysInfo_EventHandlers_AddLinks extends Zikula_EventHandler
      */
     protected function setupHandlerDefinitions()
     {
-        $this->addHandlerDefinition('module.postexecute', 'handler');
+        $this->addHandlerDefinition('module_dispatch.postexecute', 'handler');
         $this->addHandlerDefinition('controller.method_not_found', 'anotherfunction');
     }
 

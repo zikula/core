@@ -290,9 +290,9 @@ class SystemListenersUtil
 
             // setup event listeners
             $em->attach('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
-            $em->attach('module.preexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPre'));
-            $em->attach('module.postexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPost'));
-            $em->attach('module.execute_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logExecNotFound'));
+            $em->attach('module_dispatch.preexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPre'));
+            $em->attach('module_dispatch.postexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPost'));
+            $em->attach('module_dispatch.execute_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logExecNotFound'));
             $em->attach('log', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'log'));
             $em->attach('log.sql', new Zikula_ServiceHandler('debug.toolbar.panel.sql', 'logSql'));
             $em->attach('controller.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerNotFound'));
@@ -379,7 +379,7 @@ class SystemListenersUtil
     /**
      * Dynamically add menu links to administration for hook providers.
      *
-     * Listens for 'module.postexecute' events.
+     * Listens for 'module_dispatch.postexecute' events.
      *
      * @param Zikula_Event $event The event handler.
      *
