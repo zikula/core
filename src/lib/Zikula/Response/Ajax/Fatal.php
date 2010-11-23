@@ -16,7 +16,7 @@
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_Fatal extends Zikula_Response_Ajax
+class Zikula_Response_Ajax_Fatal extends Zikula_Response_Ajax_Error
 {
     /**
      * Constructor.

@@ -16,7 +16,7 @@
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_Base
+abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_Base
 {
     /**
      * Display alert window.
