@@ -135,7 +135,7 @@
                     <p class="z-warningmsg z-formnote">{gt text="Warning! When auxiliary themes like RSS are used, enabling this option can corrupt the page output until you disable it again (for instance, with RSS, the feed will be broken)."}</p>
                 </div>
             </fieldset>
-            {modcallhooks hookobject=module hookaction=modifyconfig module=Theme}
+
             <div class="z-buttons z-formbuttons">
                 {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
                 <a href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
