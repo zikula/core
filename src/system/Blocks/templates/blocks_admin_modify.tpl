@@ -117,8 +117,6 @@
                 </div>
             </fieldset>
 
-            {modcallhooks hookobject=item hookaction=modify hookid=$bid module=Blocks}
-
             {if isset($redirect) && $redirect neq ''}
                 {assign var="cancelurl" value=$redirect|urldecode}
             {else}

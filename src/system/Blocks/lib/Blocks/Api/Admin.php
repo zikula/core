@@ -111,9 +111,6 @@ class Blocks_Api_Admin extends Zikula_Api
             }
         }
 
-        // call update hooks
-        //TODO REFACTOR: ModUtil::callHooks('item', 'update', $args['bid'], array('module' => 'Blocks'));
-
         return true;
     }
 
@@ -187,9 +184,6 @@ class Blocks_Api_Admin extends Zikula_Api
                 return LogUtil::registerError($this->__('Error! Could not create the new item.'));
             }
         }
-
-        // Let other modules know we have created an item
-        //TODO REFACTOR: ModUtil::callHooks('item', 'create', $block['bid'], array('module' => 'Blocks'));
 
         return $block['bid'];
     }
@@ -291,9 +285,6 @@ class Blocks_Api_Admin extends Zikula_Api
         if (!$res) {
             return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
         }
-
-        // Let other modules know we have deleted an item
-        //TODO REFACTOR: ModUtil::callHooks('item', 'delete', $args['bid'], array('module' => 'Blocks'));
 
         return true;
     }
@@ -422,17 +413,17 @@ class Blocks_Api_Admin extends Zikula_Api
 
         // get all possible block positions
         $blockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
-        
+
         // Create array for dropdown menu links
         foreach($blockspositions as $blocksposition) {
              $filter['blockposition_id'] = $blocksposition['pid'];
-             $submenulinks[] = array('url' => ModUtil::url('Blocks', 'admin', 'view', array('filter' => $filter)), 
+             $submenulinks[] = array('url' => ModUtil::url('Blocks', 'admin', 'view', array('filter' => $filter)),
                                      'text' => $this->__f('Position \"%s\" ', $blocksposition['name']));
         }
 
         if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
-            $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'view'), 
-                             'text' => $this->__('Blocks list'), 
+            $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'view'),
+                             'text' => $this->__('Blocks list'),
                              'class' => 'z-icon-es-list',
                              'links' => $submenulinks);
         }
