@@ -440,29 +440,39 @@ On the JavaScript side:
 - The only recommended way to read the response is to use methods listed above,
   the response however still has all the methods and properties that has original
   Ajax.Response object
+- In some cases ajax calls are made without Zikula.Ajax.Request (eg some predefined
+  scripts, such as Ajax.InPlaceEditor etc) and returned response does is not extended
+  with Zikula.Ajax.Response method. In such case use Zikula.Ajax.Response.extend
+  method to manually extend response.
 
 On the PHP side:
-- there has been developed a whole set of classes that support responses sent to
+- There has been developed a whole set of classes that support responses sent to
   ajax request. Also error handling was changed.
 - Module controller in case of success should always return as response one
   of the two types of objects: Zikula_Response_Ajax_Base or Zikula_Response_Ajax_Plain.
-- Zikula_Response_Ajax_Base takes as an argument any value - a single variable
-  or array, which then can be read on the JS side using the getData method.
+- Zikula_Response_Ajax_Base has 3 arguments:
+      - $data - takes as an argument any value - a single variable or array,
+        which then can be read on the JS side using the getData method
+      - $message - optional param, which allows to pass message (or array of messages)
+        to response; such messages will be next merged with possible messages
+        from LotUtil
+      - $options - optional param, which allows to add additional data to response
   In most cases, the module should return a reply of this type. In addition,
   this type of response is assumed to generate a new authid token.
 - If it is necessary to send response that contains only plain text or html
   (for example, Ajax.Autocompleter from Scriptaculous requires such response)
   the module controller must return as response Zikula_Response_Ajax_Plain object.
-  This class takes plain text as its argument. For this type of responses new
-  authid token is not generated.
-- Possible errors in the module controller must be handled via exceptions. You
-  may first register error message using LogUtil, then throw an exception
-  (eg Zikula_Exception_Forbidden for no presmission or Zikula_Exception_Fatal
-  for bad authid token). You may also pass error message directly to exception.
-- If the controller module must declare a failure and also send some data to JS
-  then the module should not throw an exception but instead return object of type
-  Zikula_Response_Ajax_BadData. This class allows to pass argument exactly
-  the same as usual ajax responses.
+  This class takes plain text as its $data argument. For this type of responses
+  new authid token is not generated.
+- Possible errors (not related to data validation) in the module controller
+  must be handled via exceptions. You may first register error message using LogUtil,
+  then throw an exception (eg Zikula_Exception_Forbidden for no presmission or
+  Zikula_Exception_Fatal for bad authid token). You may also pass error message
+  directly to exception.
+- If the controller module must declare a failure because of data validation and/or
+  also send some data to JS then the module should not throw an exception but instead
+  return object of type Zikula_Response_Ajax_BadData. This class allows to pass
+  arguments exactly the same as usual ajax responses.
 
 Example (taken from the Permissions module):
 Send a request from JS:
@@ -494,6 +504,9 @@ Process the request in the module controller:
         throw new Zikula_Exception_Fatal();
     }
 
+    // when controller needs to return failure due to data validation:
+    return new Zikula_Response_Ajax_BadData($data, 'message');
+
     // throw an exception from some other reason
     throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
 
@@ -509,6 +522,12 @@ Read the response in JS
     // get data returned by module
     // if you passed eg array('pid'=>123), then you will have data.pid = 123
     var date = req.getData();
+
+    // when ajax call was made without Zikula.Ajax.Request you have to
+    // manually extend response
+    transport = Zikula.Ajax.Response.extend(transport);
+    // no you have access to new methods:
+    transport.getData();
 
 
 PAGEADDVAR CHANGES
