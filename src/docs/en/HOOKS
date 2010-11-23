@@ -33,9 +33,9 @@ module to apply hooks to one part of a module as opposed to another.
 
 Areas should all be unique, so please use this format:
 
-    module.mymodule.<areaname>
-    module.comments.general (the provider area)
-    module.news.articles    (the subscriber area)
+    modulehook_area.mymodule.<areaname>
+    modulehook_area.comments.general (the provider area)
+    modulehook_area.news.articles    (the subscriber area)
 
 Subscriber Modules
 ------------------
@@ -44,7 +44,7 @@ modules's Version.php.  This is done by adding a method called to Version.php
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookSubscriberBundle('articles', __('News Display Hooks'));
+        $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.news.articles', __('News Display Hooks'));
         $bundle->addType('ui.view', 'news.hook.ui.view');
         $bundle->addType('ui.create', 'news.hook.ui.create');
         $this->addHookSubscriberBundle($bundle);
@@ -90,7 +90,7 @@ to Version.php
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookProviderBundle('ratings', __('Ratings Hook Poviders'));
+        $bundle = new Zikula_Version_HookProviderBundle('modulehook_area.ratings.item', __('Ratings Hook Poviders'));
         $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview');
         //...
         $this->addHookProviderBundle($bundle);
