@@ -127,9 +127,6 @@ class Mailer_Controller_Admin extends Zikula_Controller
         $smtppassword = (string)FormUtil::getPassedValue('smtppassword', '', 'POST');
         $this->setVar('smtppassword', $smtppassword);
 
-        // Let any other modules know that the modules configuration has been updated
-        //TODO REFACTOR: ModUtil::callHooks('module', 'updateconfig', 'Mailer', array('module' => 'Mailer'));
-
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
