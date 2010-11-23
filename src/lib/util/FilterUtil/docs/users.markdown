@@ -20,13 +20,13 @@ while the operator defines the condition type (equal, lower than, aso.).
 Several statements can be connected by a comma `,` (AND) or an asterisk `*` (OR).
 
 - `name:eq:Peter,costs:lt:100`
-  The name is Peter and the costs are below 100.
+  The name is Peter *and* the costs are below 100.
 - `name:eq:Peter*name:eq:Chris`
-  The name is Peter or Chris
+  The name is Peter *or* Chris
 
 Furthermore you can use brackets to group statements.
 
-- `(name:eq:Peter,costs:lt:100)*(name:eq:Chris,costs:lt:150)`
+- `(name:eq:Peter,costs:lt:100)*(name:eq:Chris,costs:lt:150)`  
   Either the name is Peter _and_ the costs are below 100 __or__ the name is Chris
   _and_ the costs are below 150.
 
@@ -49,12 +49,12 @@ Operators:
 - `le` is lower or equal than
 - `gt` is greater than
 - `ge` is greater or equal than
-- `search` is any middle coincidence.
+- `search` is any middle coincidence.  
   "bar" will tag on "foobarthis" but not on "foobar" nor "barfoo".
-- `like` is like.
-  The value is scanned case insensitive. Also you can use “%” as placeholder.
+- `like` is like.  
+  The value is scanned case insensitive. Also you can use “%” as placeholder.  
   “%bar” will tag on “FOObar”, “Blubbar” and so on, but not on “BarFoo”.
-- `likefirst` is for coincidences at the beggining.
+- `likefirst` is for coincidences at the beggining.  
   “foo” will tag on “fOo”, “FOObar”, “FooBlub” and so on, but not on “AnotherFoo”.
 - `null` is Empty or NULL
 - `notnull` is Not empty and not NULL
@@ -80,7 +80,8 @@ Extended values:
   followed by a colon to search for a time period. Examples:
   * `date:eq:year:15.07.2009` => All items with a date in year 2009
   * `date:eq:month:15.07.2009` => All items with a date in july 2009
-- Using relative time information according to the GNU Date Input Formats syntax. Examples:
+- Using relative time information according to the GNU [Date Input Formats](http://www.gnu.org/software/tar/manual/html_node/tar_113.html) syntax.
+  Examples:
   * `date:eq:today` => All items with date of today
   * `date:ge:­24 hours` => All items with date up from 24 hours ago
   * `date:eq:last year` => All items with date in the last year
@@ -89,11 +90,11 @@ Operators
 
 - `eq` is equal
 - `ne` is not equal
-- `gt` is greater than.
-  For time periods: End of the given period. Date:gt:today tags all items with date of tomorrow or after.
-- `ge` is greater or equal then.
-  For time periods: Begin of the given period. Date:ge:today tags all items with date of today or after.
-- `lt` is lower than.
-  For time periods: Begin of the given period. Date:lt:today tags all items with date of yesterday or before.
-- `le` is lower or equal than.
-  For time periods: End of the given period. Date:le:today tags all items with date of today or before.
+- `gt` is greater than.  
+  For time periods: *End* of the given period. Date:gt:today tags all items with date of tomorrow or after.
+- `ge` is greater or equal then.  
+  For time periods: *Begin* of the given period. Date:ge:today tags all items with date of today or after.
+- `lt` is lower than.  
+  For time periods: *Begin* of the given period. Date:lt:today tags all items with date of yesterday or before.
+- `le` is lower or equal than.  
+  For time periods: *End* of the given period. Date:le:today tags all items with date of today or before.

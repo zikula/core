@@ -45,12 +45,12 @@ modules's Version.php.  This is done by adding a method called to Version.php
     protected function setupHookBundles()
     {
         $bundle = new Zikula_Version_HookSubscriberBundle('articles', __('News Display Hooks'));
-        $bundle->addType('ui.view', 'news.ui.view');
-        $bundle->addType('ui.create', 'news.ui.create');
+        $bundle->addType('ui.view', 'news.hook.ui.view');
+        $bundle->addType('ui.create', 'news.hook.ui.create');
         $this->addHookSubscriberBundle($bundle);
     }
 
-During installation, upgrade of the module you must register the bundles with the
+During installation or upgrade of the module you must register the bundles with the
 persistence layer using:
 
     HookUtil::registerHookSubscriberBundles($this->version);
@@ -90,7 +90,7 @@ to Version.php
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookBundle('ratings', __('Ratings Hook Poviders'));
+        $bundle = new Zikula_Version_HookProviderBundle('ratings', __('Ratings Hook Poviders'));
         $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview');
         //...
         $this->addHookProviderBundle($bundle);
@@ -134,7 +134,7 @@ The following is a list of valid hook types.  Not all have to be used but in gen
 a HookBundle should contain at least the ui.* and process.* handlers valid to complete
 an action.
 
-ui.view          - Display hook for view templates.
+ui.view          - Display hook for view/display templates.
 ui.create        - Display hook for create templates.
 ui.edit          - Display hook for edit forms.
 ui.delete        - Display hook for delete forms.
@@ -185,7 +185,7 @@ by the administation UI.
 
 Attaching display hooks is very simple.  Inside the template simply add
 
-    {calldisplayhooks hooktype='ui.view' subject=$subject module=$module assign='display_hooks'}
+    {notifydisplayhooks hooktype='ui.view' subject=$subject module=$module assign='display_hooks'}
 
 $module will be added magically unless you need to specify it (the value is take from
 the Zikula_View instance.

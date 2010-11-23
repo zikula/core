@@ -5,7 +5,7 @@ FilterUtil brings a filter system to a module's list view. It's using an extende
 pagesetter­-like filter syntax providing a maximum of flexibility, able to work on
 pntable and Doctrine based modules.
 
-In this document we will help you understand the implementation of `FilterUtil`
+In this document we will help you understand the implementation of _FilterUtil_
 in your module.
 
 
@@ -16,7 +16,7 @@ Implementing FilterUtil is very easy. Simply load it and create a new instance b
     [php]
     $filterUtil = new FilterUtil('ModuleName', $table, $config);
 
-Where `$table` can be a `Doctrine_Table` instance or a pntable name string,
+Where `$table` can be a *Doctrine_Table* instance or a pntable name string,
 and `$config` is an array of additional attributes:
 
 1. **varname**: The name of the filter variable in the URL. Default: “filter”
@@ -54,8 +54,8 @@ The configuration values are:
 #### Mnlist ####
 
 - **fields**:  This is an array in the form: (name => array(field=>'', table=>'', comparefield=>'')).
-  name is the filter field name. field is the id field in the mn-relationship table.
-  table is the table of the mn-relationship. comparefield is the field to compare with in the table.
+  *name* is the filter field name. *field* is the id field in the mn-relationship table.
+  *table* is the table of the mn-relationship. *comparefield* is the field to compare with in the table.
 - **ops**: Array of operators to enable (available operators: eq, ne).
 
 #### Pmlist ####
@@ -67,7 +67,7 @@ The configuration values are:
 #### ReplaceName ####
 
 This plugin allows you to replace the name of fields.
-E.g. `author` -> `cr_uid` or `date` -> `cr_date`.
+E.g. *author* -> *cr_uid* or *date* -> *cr_date*.
 
 - **pairs**: Array of replace pairs (field name => replace with).
 
@@ -109,13 +109,14 @@ Adds a filter string with "OR".
     [php]
     $filterUtil->enrichQuery($query);
 
-Enrich a `Doctrine_Query` with the filter conditions.
+Enrich a *Doctrine_Query* with the filter conditions.
 
     [php]
     $result = $filterUtil->getSQL();
 
 Returns the where clause and join conditions for pntable based modules.
 The result is an array with:
+
 - *where*: the WHERE clause.
 - *join*: A reference to the DBUtil JOIN array.
 
@@ -133,7 +134,7 @@ Your module may register a persistent EventHandler on its installer:
         array('ModuleName_EventHandler_Listeners', 'getFilterClasses')
     );
 
-to add your plugins to the list on:
+to add your plugins to the list with:
 
     [php]
 	class ModuleName_EventHandler_Listeners
@@ -148,7 +149,7 @@ to add your plugins to the list on:
 		}
 	}
 
-and you will be able to filter, for instance, an `author` field with your plugin
+and you will be able to filter, for instance, an *author* field with your plugin
 with an addition to your configuration array like:
 
     [php]
