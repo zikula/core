@@ -18,4 +18,17 @@
  */
 abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_Base
 {
+    /**
+     * Generate system level payload.
+     *
+     * @return array
+     */
+    protected function generateCoreData()
+    {
+        $core = parent::generateCoreData();
+        if(!isset($core['statusmsg']) || empty($core['statusmsg'])) {
+            $core['statusmsg'] = __('An unknown error occurred');
+        }
+        return $core;
+    }
 }
