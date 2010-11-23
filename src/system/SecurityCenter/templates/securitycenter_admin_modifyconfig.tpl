@@ -176,7 +176,7 @@
                         <label for="useidsno">{gt text="No"}</label>
                     </div>
                 </div>
-                
+
                 <div id="securitycenter_idsfields">
                     <p class="z-formnote z-informationmsg">
                         {gt text="PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected."}
@@ -263,7 +263,7 @@
                     </select>
                 </div>
             </fieldset>
-            {modcallhooks hookobject=module hookaction=modifyconfig module=SecurityCenter}
+
             <div class="z-buttons z-formbuttons">
                 {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
                 <a href="{modurl modname=SecurityCenter type=admin}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
