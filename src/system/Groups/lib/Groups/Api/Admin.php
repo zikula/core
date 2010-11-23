@@ -16,7 +16,6 @@ class Groups_Api_Admin extends Zikula_Api
 {
     /**
      * create a new group item
-     * @author Mark West
      * @param string $args['name'] name of the group
      * @return mixed group ID on success, false on failure
      */
@@ -60,17 +59,12 @@ class Groups_Api_Admin extends Zikula_Api
         $createEvent = new Zikula_Event('group.create', $obj);
         $this->eventManager->notify($createEvent);
 
-        //TODO REFACTOR: ModUtil::callHooks('item', 'create', $gid, array('module' => 'Groups'));
-
-
-
         // Return the id of the newly created item to the calling process
         return $gid;
     }
 
     /**
      * delete a group item
-     * @author Mark West
      * @param int $args['gid'] ID of the item
      * @return bool true on success, false on failure
      * @todo call permissions API to remove group permissions associated with the group
@@ -125,15 +119,12 @@ class Groups_Api_Admin extends Zikula_Api
         $deleteEvent = new Zikula_Event('group.delete', $item);
         $this->eventManager->notify($deleteEvent);
 
-        //TODO REFACTOR: ModUtil::callHooks('item', 'delete', $args['gid'], array('module' => 'Groups'));
-
         // Let the calling process know that we have finished successfully
         return true;
     }
 
     /**
      * update a group item
-     * @author Mark West
      * @param int $args['gid'] the ID of the item
      * @param string $args['name'] the new name of the item
      * @return bool true if successful, false otherwise
@@ -194,15 +185,12 @@ class Groups_Api_Admin extends Zikula_Api
         $updateEvent = new Zikula_Event('group.update', $object);
         $this->eventManager->notify($updateEvent);
 
-        //TODO REFACTOR: ModUtil::callHooks('item', 'update', $args['gid'], array('module' => 'Groups'));
-
         // Let the calling process know that we have finished successfully
         return true;
     }
 
     /**
      * add a user to a group item
-     * @author Mark West
      * @param int $args['gid'] the ID of the item
      * @param int $args['uid'] the ID of the user
      * @return bool true if successful, false otherwise
@@ -241,15 +229,12 @@ class Groups_Api_Admin extends Zikula_Api
         $adduserEvent = new Zikula_Event('group.adduser', $object);
         $this->eventManager->notify($adduserEvent);
 
-        //TODO REFACTOR: ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
-
         // Let the calling process know that we have finished successfully
         return true;
     }
 
     /**
      * remove a user from a group item
-     * @author Mark West
      * @param int $args['gid'] the ID of the item
      * @param int $args['uid'] the ID of the user
      * @return bool true if successful, false otherwise
@@ -294,15 +279,12 @@ class Groups_Api_Admin extends Zikula_Api
                                                                       'uid' => $args['uid']));
         $this->eventManager->notify($removeuserEvent);
 
-        //TODO REFACTOR: ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
-
         // Let the calling process know that we have finished successfully
         return true;
     }
 
     /**
      * get a specific group id from a group name
-     * @author F. Chestnut
      * @param $args['name'] name of group item to get
      * @param $args['checkgid'] optional gid of the group
      * @return int item, or false on failure

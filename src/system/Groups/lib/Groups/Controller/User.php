@@ -318,9 +318,6 @@ class Groups_Controller_User extends Zikula_Controller
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
                                            'itemsperpage' => $itemsperpage));
 
-        $this->view->assign('hooks', //TODO REFACTOR: ModUtil::callHooks('item', 'display', $gid,
-                                                      ModUtil::url('Groups', 'user', 'memberslist', array('gid' => $gid))));
-
         $profileModule = System::getVar('profilemodule', '');
         $this->view->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));
 

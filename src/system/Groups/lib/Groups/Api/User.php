@@ -570,8 +570,6 @@ class Groups_Api_User extends Zikula_Api
         $adduserEvent = new Zikula_Event('group.adduser', $obj);
         $this->eventManager->notify($adduserEvent);
 
-        //TODO REFACTOR: ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
-
         // Let the calling process know that we have finished successfully
         return true;
     }
@@ -620,8 +618,6 @@ class Groups_Api_User extends Zikula_Api
         $removeuserEvent = new Zikula_Event('group.removeuser', array('gid' => $args['gid'],
                                                                       'uid' => $args['uid']));
         $this->eventManager->notify($removeuserEvent);
-
-        //TODO REFACTOR: ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
         return true;
