@@ -890,9 +890,6 @@ class Modules_Api_Admin extends Zikula_Api
             ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
         }
 
-        // call any module initialisation hooks
-        //TODO REFACTOR: ModUtil::callHooks('module', 'initialise', $modinfo['name'], array('module' => $modinfo['name']));
-
         // Success
         return true;
     }
@@ -1039,9 +1036,6 @@ class Modules_Api_Admin extends Zikula_Api
 
         DBUtil::updateObject($obj, 'modules');
 
-        // call any module upgrade hooks
-        //TODO REFACTOR: ModUtil::callHooks('module', 'upgrade', $modinfo['name'], array('module' => $modinfo['name']));
-
         // Success
         return true;
     }
@@ -1173,7 +1167,7 @@ class Modules_Api_Admin extends Zikula_Api
                                                ));
 
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins'),
-                             'text' => $this->__('Plugins list'), 
+                             'text' => $this->__('Plugins list'),
                              'class' => 'z-icon-es-cubes',
                              'links' => array(
                                              array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins'),

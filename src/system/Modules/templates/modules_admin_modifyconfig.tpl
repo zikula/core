@@ -17,7 +17,7 @@
                     <span><a href="{modurl modname="Modules" type="admin" func="view" defaults=true authid=$authid}">{gt text="Hard module regenerate to reset displayname, url and description to defaults"}</a></span>
                 </div>
             </fieldset>
-            {modcallhooks hookobject=module hookaction=modifyconfig module=Modules}
+
             <div class="z-buttons z-formbuttons">
                 {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
                 <a href="{modurl modname=Modules type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>

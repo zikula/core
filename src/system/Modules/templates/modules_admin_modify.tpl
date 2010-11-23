@@ -25,7 +25,7 @@
                     <span><a href="{modurl modname="Modules" type="admin" func="modify" id=$id restore=true}">{gt text="Restore now"}</a> ({gt text="This may break your existing indexed URLs"})</span>
                 </div>
             </fieldset>
-            {modcallhooks hookobject=item hookaction=modify hookid=$id module=Modules}
+
             <div class="z-buttons z-formbuttons">
                 {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
                 <a href="{modurl modname=Modules type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
