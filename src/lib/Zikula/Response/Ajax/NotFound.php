@@ -22,11 +22,12 @@ class Zikula_Response_Ajax_NotFound extends Zikula_Response_Ajax_Error
      * Constructor.
      *
      * @param mixed $data    Application data.
+     * @param mixed $data    Response status/error message, may be string or array.
      * @param array $options Options.
      */
-    public function __construct($data, array $options = array())
+    public function __construct($data, $message = null, array $options = array())
     {
         $this->responseCode = 404;
-        parent::__construct($data);
+        parent::__construct($data, $message, $options);
     }
 }

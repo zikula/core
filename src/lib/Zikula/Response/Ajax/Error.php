@@ -18,23 +18,4 @@
  */
 abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_Base
 {
-    /**
-     * Display alert window.
-     *
-     * @var boolean
-     */
-    protected $errorMessage;
-
-    /**
-     * Generate system level payload.
-     *
-     * @return array
-     */
-    protected function generateCoreData()
-    {
-        $core = parent::generateCoreData();
-        $core['errormessage'] = LogUtil::getErrorMessages();
-        return $core;
-    }
-
 }

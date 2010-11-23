@@ -58,15 +58,15 @@ try {
         throw new Zikula_Exception_Fatal(__('An unknown error occurred in module %s, controller %s, action %s', array($modinfo['name'], $type, $func)));
     }
 } catch (Zikula_Exception_NotFound $e) {
-    $response = new Zikula_Response_Ajax_NotFound($e->getMessage());
+    $response = new Zikula_Response_Ajax_NotFound(null, $e->getMessage());
 } catch (Zikula_Exception_Forbidden $e) {
-    $response = new Zikula_Response_Ajax_Forbidden($e->getMessage());
+    $response = new Zikula_Response_Ajax_Forbidden(null, $e->getMessage());
 } catch (Zikula_Exception_Fatal $e) {
-    $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
+    $response = new Zikula_Response_Ajax_Fatal(null, $e->getMessage());
 } catch (PDOException $e) {
-    $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
+    $response = new Zikula_Response_Ajax_Fatal(null, $e->getMessage());
 } catch (Exception $e) {
-    $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
+    $response = new Zikula_Response_Ajax_Fatal(null, $e->getMessage());
 }
 
 // Handle database transactions

@@ -54,6 +54,13 @@ abstract class Zikula_Response_Ajax_Base
     protected $data;
 
     /**
+     * Reponse status messages.
+     *
+     * @var array
+     */
+    protected $messages;
+
+    /**
      * Options array.
      * 
      * @var array
@@ -64,11 +71,13 @@ abstract class Zikula_Response_Ajax_Base
      * Constructor.
      *
      * @param mixed $data    Application data.
+     * @param mixed $data    Response status/error message, may be string or array.
      * @param array $options Options.
      */
-    public function __construct($data, array $options = array())
+    public function __construct($data, $message = null, array $options = array())
     {
         $this->data = $data;
+        $this->messages = (array)$message;
         $this->options = $options;
         if ($this->newCsrfToken) {
             $this->csrfToken = SecurityUtil::generateAuthKey(ModUtil::getName());
@@ -119,7 +128,8 @@ abstract class Zikula_Response_Ajax_Base
         if ($this->csrfToken) {
             $core['authid'] = $this->csrfToken;
         }
-        $core['statusmsg'] = LogUtil::getStatusMessages();
+        $logUtilMessages = (array)LogUtil::getStatusMessages();
+        $core['statusmsg'] = array_merge($this->messages,$logUtilMessages);
         
         return $core;
     }
