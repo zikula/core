@@ -340,7 +340,7 @@ class SystemListenersUtil
      */
     public static function deleteGeneratedCategoryModelsOnModuleRemove(Zikula_Event $event)
     {
-        $moduleName = $event['modname'];
+        $moduleName = $event['name'];
 
         // remove generated category models for this record
         $dir = 'doctrinemodels/GeneratedDoctrineModel/' . $moduleName;
