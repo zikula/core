@@ -439,7 +439,6 @@ class Modules_Controller_Admin extends Zikula_Controller
         $this->view->assign('multi', $this->serviceManager['multisites.enabled'])
                    ->assign('sort', $sort)
                    ->assign('sortdir', $sortdir)
-                   ->assign('sortdirReverse', ($sortdir == 'ASC') ? 'DESC' : 'ASC') // reverted for links
                    ->assign('modules', $moduleinfo);
 
         // Assign the values for the smarty plugin to produce a pager.

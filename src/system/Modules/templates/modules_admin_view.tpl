@@ -11,22 +11,10 @@
         <thead>
             <tr>
                 <th>
-                    {assign var='currentCol' value='name'}
-                    {gt text="Internal name" assign='currentStr'}
-                    {if $sort eq $currentCol}
-                    <a class="z-order-{$sortdir|lower}" href="{modurl modname="Modules" type="admin" func="view" sort=$currentCol sortdir=$sortdirReverse}">{$currentStr}</a>
-                    {else}
-                    <a class="z-order-unsorted" href="{modurl modname="Modules" type="admin" func="view" sort=$currentCol sortdir=$sortdir}">{$currentStr}</a>
-                    {/if}
+                    {sortlink __linktext='Internal name' sort='name' currentsort=$sort sortdir=$sortdir modname='Modules' type='admin' func='view'}
                 </th>
                 <th>
-                    {assign var='currentCol' value='displayname'}
-                    {gt text="Display name" assign='currentStr'}
-                    {if $sort eq $currentCol}
-                    <a class="z-order-{$sortdir|lower}" href="{modurl modname="Modules" type="admin" func="view" sort=$currentCol sortdir=$sortdirReverse}">{$currentStr}</a>
-                    {else}
-                    <a class="z-order-unsorted" href="{modurl modname="Modules" type="admin" func="view" sort=$currentCol sortdir=$sortdir}">{$currentStr}</a>
-                    {/if}
+                    {sortlink __linktext='Display name' sort='displayname' currentsort=$sort sortdir=$sortdir modname='Modules' type='admin' func='view'}
                 </th>
                 <th>{gt text="Module URL"}</th>
                 <th>{gt text="Description"}</th>
