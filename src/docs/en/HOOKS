@@ -135,15 +135,10 @@ a HookBundle should contain at least the ui.* and process.* handlers valid to co
 an action.
 
 ui.view          - Display hook for view/display templates.
-ui.create        - Display hook for create templates.
-ui.edit          - Display hook for edit forms.
-ui.delete        - Display hook for delete forms.
-validate.create  - Used to validate input from a ui create form.
-validate.update  - Used to validate input from an ui modify form.
-validate.delete  - Used to validate input from a ui delete form.
-process.create   - Perform the final create actions for a ui create form.
-process.update   - Perform the final update actions for a ui create form.
-process.delete   - Perform the final delete actions for a ui create form.
+ui.edit          - Display hook for create/edit forms.
+validate.update  - Used to validate input from an ui create/edit form.
+process.update   - Perform the final update actions for a ui create/edit form.
+process.delete   - Perform the final delete actions for a ui form.
 
 Hookable Events
 ---------------
