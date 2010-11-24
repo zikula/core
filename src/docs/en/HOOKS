@@ -44,10 +44,10 @@ modules's Version.php.  This is done by adding a method called to Version.php
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.news.articles', __('News Display Hooks'));
+        $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.news.articles', $this->__('News Display Hooks'));
         $bundle->addType('ui.view', 'news.hook.ui.view');
         $bundle->addType('ui.create', 'news.hook.ui.create');
-        $this->addHookSubscriberBundle($bundle);
+        $this->registerHookSubscriberBundle($bundle);
     }
 
 During installation or upgrade of the module you must register the bundles with the
@@ -90,10 +90,10 @@ to Version.php
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookProviderBundle('modulehook_area.ratings.item', __('Ratings Hook Poviders'));
+        $bundle = new Zikula_Version_HookProviderBundle('modulehook_area.ratings.item', $this->__('Ratings Hook Poviders'));
         $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview');
         //...
-        $this->addHookProviderBundle($bundle);
+        $this->registerHookProviderBundle($bundle);
 
         //... repeat as many times as necessary
     }
@@ -185,7 +185,7 @@ by the administation UI.
 
 Attaching display hooks is very simple.  Inside the template simply add
 
-    {notifydisplayhooks hooktype='ui.view' subject=$subject module=$module assign='display_hooks'}
+    {notifydisplayhooks eventname='news.hook.ui.view' subject=$subject module=$module assign='display_hooks'}
 
 $module will be added magically unless you need to specify it (the value is take from
 the Zikula_View instance.
