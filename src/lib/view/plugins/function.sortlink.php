@@ -77,7 +77,7 @@ function smarty_function_sortlink($params, $view)
     // build the link output
     $link = ModUtil::url($modname, $type, $func, $params);
 
-    $output = "<a class=\"$cssclass\" href=\"$link\">$text</a>";
+    $output = '<a class="' . DataUtil::formatForDisplay($cssclass) . '" href="' . DataUtil::formatForDisplay($link) . '">' . DataUtil::formatForDisplay($text) . '</a>';
 
     if ($assign) {
         $view->assign($assign, $output);
