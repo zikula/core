@@ -33,10 +33,19 @@ class Modules_HookUI
         $view->assign('currentmodule', $moduleName);
 
         $hookproviders = array();
-        $hookprovidersinuse = HookUtil::getProvidersInUseBy($moduleName);
-        foreach ($hookprovidersinuse as $provider) {
-            if (ModUtil::available($provider['providerowner'])) {
-                $hookproviders[] = ModUtil::getInfoFromName($provider['providerowner']);
+        $currentSorting = HookUtil::getDisplaySortsByOwner($moduleName);
+        if (count($currentSorting) > 0) {            
+            foreach ($currentSorting as $provider) {
+                if (ModUtil::available($provider)) {
+                    $hookproviders[] = ModUtil::getInfoFromName($provider);
+                }
+            }
+        } else {
+            $hookprovidersinuse = HookUtil::getProvidersInUseBy($moduleName);
+            foreach ($hookprovidersinuse as $provider) {
+                if (ModUtil::available($provider['providerowner'])) {
+                    $hookproviders[] = ModUtil::getInfoFromName($provider['providerowner']);
+                }
             }
         }
         $view->assign('hookproviders', $hookproviders);
