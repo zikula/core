@@ -637,7 +637,7 @@ class HookUtil
         if (isset($linked)) {
             $sort = self::getDisplaySortsByOwner($subscriber['owner']);
             $key = array_search($provider['owner'], $sort);
-            if ($key) {
+            if ($key !== false) {
                 unset($sort[$key]);
                 self::setDisplaySortsByOwner($subscriber['owner'], $sort);
             }
