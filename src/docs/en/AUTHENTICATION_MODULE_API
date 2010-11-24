@@ -63,11 +63,11 @@ Module API. The module is responsible for interpreting the authentication
 information, processing it appropriately, and if the user has provided
 sufficient credentials to identify himself, return the user ID (`uid`) of the
 Zikula Users module account that matches the authenticated user. Specifically,
-the `authenticateUser(...)` method of the authentication module's `Auth_API`
+the `authenticateUser(...)` method of the authentication module's `Api_Auth`
 class is called.
 
 It should be made clear that the `authenticateUser()` method __does not__ log
-the user in to the Zikula system. Instead, it simply authenticates the user
+the user in to the Zikula-based site. Instead, it simply authenticates the user
 based on the information provided, and either returns an authenticated `uid`,
 or the boolean value `false` if the information provided fails to authenticate
 to a valid user.
@@ -114,7 +114,8 @@ The _Users_ system module is an example of a non-reentrant authentication
 module. Everything it needs to authenticate a user is available locally, or
 is available through API calls. The user who is logging in does not have to
 be directed to an external site in order to provide information or otherwise
-confirm his desire to use his user name and password to log into a Zikula site.
+confirm his desire to use his user name and password to log into a Zikula-based
+site.
 
 If a custom authentication method requires external data (either external to
 Zikula but on the same server, or on another server entirely), but does not
@@ -131,24 +132,25 @@ Reentrant Authentication
 ------------------------
 
 That leaves us with reentrant authentication methods. These methods require the
-user to leave the Zikula site to provide some kind of information or
+user to leave the Zikula-based site to provide some kind of information or
 confirmation to an external authenticating system in order to complete the
 process.
 
 An example of a reentrant authentication module is the
 [OpenID module](http://code.zikula.org/openid) available on the
-[CoZi](http://code.zikula.org). When a user attempts to log in with an OpenID,
+[Cozi](http://code.zikula.org). When a user attempts to log in with an OpenID,
 the module must pass the OpenID to the external system so that the user can
-provide a password (or otherwise confirm that the Zikula site is authorized
-to use the OpenID for the purposes of logging in). Once that external step
-is completed, the external authentication system must reenter the log in
-process on the Zikula site somehow without starting all over again. This is
-done by giving the external system a URL with which to reenter the process.
-The Zikula log in process can then pass the external system's response to the
-request for authentication to the custom authentication module (in this
-example, the OpenID module), and the log in can be completed. Zikula identifies
-reentrant authentication modules by calling the `isReentrant()` method of the
-authentication module's `Api_Auth` class.
+provide a password (or otherwise confirm that the Zikula-based site is
+authorized to use the OpenID for the purposes of logging in). Once that
+external step is completed, the external authentication system must reenter
+the log in process on the Zikula-based site somehow without starting all over
+again. This is done by giving the external system a URL with which to reenter
+the process. The Zikula log in process can then pass the external system's
+response to the request for authentication to the custom authentication module
+(in this example, the OpenID module), and the log in can be completed. Zikula
+identifies reentrant authentication modules by calling the `isReentrant()`
+method of the authentication module's `Api_Auth` class, and receiving back a
+value of `true`.
 
 It is important that Zikula identify reentrant authentication processes.
 Remember that an authentication module does not encompass the entire log in
@@ -229,11 +231,16 @@ Api Classes and Methods
 
 All classes and functions described are required, unless otherwise specified.
 
+In all cases in this documentation, _ModName_ should be replaced with the
+module name of the custom authentication module. For example, the OpenID
+module is found in the `modules/OpenID` directory, and its classes are named
+`OpenID_Api_Auth` (found in `modules/OpenID/lib/OpenID/Api/Auth.php`),
+`OpenID_Api_Account`, `OpenID_Controller_Auth`, etc.
+
 **ModName_Api_Auth Class**
 
-The `ModName_Api_Auth` Class (where _`ModName`_ is the module prefix name)
-implements the functions necessary for Zikula to request authentication of
-user information.
+The `ModName_Api_Auth` Class implements the functions necessary for Zikula to
+request authentication of user information.
 
 *`isReentrant()` Function*
 
