@@ -42,35 +42,28 @@
     <table class="z-datatable">
         <thead>
             <tr>
-                {php}
-                  $this->_tpl_vars['filter']['sort'] = 'bid';
-                {/php}
-        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Block ID"}</a></th>
-                {php}
-                  $this->_tpl_vars['filter']['sort'] = 'title';
-                {/php}
-        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Title"}</a></th>
-                {php}
-                  $this->_tpl_vars['filter']['sort'] = 'description';
-                {/php}
-        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Description"}</a></th>
-                {php}
-                  $this->_tpl_vars['filter']['sort'] = 'module_name';
-                {/php}
-        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Module"}</a></th>
-                {php}
-                  $this->_tpl_vars['filter']['sort'] = 'bkey';
-                {/php}
-        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Name"}</a></th>
+                <th>
+                    {sortlink __linktext='Block ID' sort='bid' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                </th>
+                <th>
+                    {sortlink __linktext='Title' sort='title' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                </th>
+                <th>
+                    {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                </th>
+                <th>
+                    {sortlink __linktext='Module' sort='module_name' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                </th>
+                <th>
+                    {sortlink __linktext='Name' sort='bkey' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                </th>
                 <th>{gt text="Position(s)"}</th>
-                {php}
-                  $this->_tpl_vars['filter']['sort'] = 'language'
-                {/php}
-        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Language"}</a></th>
-                {php}
-                  $this->_tpl_vars['filter']['sort'] = 'active'
-                {/php}
-        <th><a class="z-order-asc" href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="State"}</a></th>
+                <th>
+                    {sortlink __linktext='Language' sort='language' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                </th>
+                <th>
+                    {sortlink __linktext='State' sort='active' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                </th>
                 <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>

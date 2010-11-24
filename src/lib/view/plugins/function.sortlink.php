@@ -60,9 +60,12 @@ function smarty_function_sortlink($params, $view)
     // defines the CSS class and revert the order for current field
     if ($params['currentsort'] == $params['sort']) {
         $cssclass = 'z-order-'.strtolower($sortdir);
+        // reverse the direction
         $params['sortdir'] = ($sortdir == 'ASC') ? 'DESC' : 'ASC';
     } else {
         $cssclass = 'z-order-unsorted';
+        // defaults the direction to ASC
+        $params['sortdir'] = 'ASC';
     }
 
     // unset non link parameters

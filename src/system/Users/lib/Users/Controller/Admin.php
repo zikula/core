@@ -61,7 +61,7 @@ class Users_Controller_Admin extends Zikula_Controller
     public function main()
     {
         // Security check will be done in view()
-        return System::redirect(ModUtil::url('Users', 'admin', 'view'));
+        return $this->view();
     }
 
     /**

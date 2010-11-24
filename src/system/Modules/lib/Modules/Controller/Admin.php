@@ -185,11 +185,12 @@ class Modules_Controller_Admin extends Zikula_Controller
         }
 
         // Get parameters from whatever input we need.
+        $modinfo = $this->getModInfo();
         $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
         $letter = FormUtil::getPassedValue('letter', null, 'GET');
-        $state = FormUtil::getPassedValue('state', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('state', null), 'GETPOST');
-        $sort = FormUtil::getPassedValue('sort', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('sort', null), 'GET');
-        $sortdir = FormUtil::getPassedValue('sortdir', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('sortdir', null), 'GET');
+        $state = FormUtil::getPassedValue('state', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('state', null), 'GETPOST');
+        $sort = FormUtil::getPassedValue('sort', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('sort', null), 'GET');
+        $sortdir = FormUtil::getPassedValue('sortdir', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('sortdir', null), 'GET');
 
         // parameter for used sort order
         if ($sort != 'name' && $sort != 'displayname') $sort = 'name';
