@@ -42,24 +42,21 @@ function smarty_function_notifydisplayhooks($params, $view)
 {
     $eventManager = $view->getEventManager();
 
-    $assign = isset($params['assign']) ? $params['assign'] : false;
-    $params['id'] = isset($params['id']) ? $params['id'] : 'id';
-
-    if (!isset($params['module'])) {
-        $params['module'] = $view->getTopLevelModule();
-    }
-    $module = $params['module'];
-
-    $subject = isset($params['subject']) ? $params['subject'] : null;
     if (!isset($params['eventname'])) {
         trigger_error(__f('Error! "%1$s" must be set in %2$s', array('eventname', 'notifydisplayhooks')));
     }
     $eventname = $params['eventname'];
-    $params['returnurl'] = isset($params['returnurl']) ? $params['returnurl'] : System::getCurrentUrl();
-    $data = array();
 
-    unset($params['subject']);
+    $params['id'] = isset($params['id']) ? $params['id'] : 'id';
+    $params['returnurl'] = isset($params['returnurl']) ? $params['returnurl'] : System::getCurrentUrl();
+    $params['module'] = $module = isset($params['module']) ? $params['module'] : $view->getTopLevelModule();
+
+    $subject = isset($params['subject']) ? $params['subject'] : null;
+    $assign  = isset($params['assign']) ? $params['assign'] : false;
+    $data    = array();
+
     unset($params['eventname']);
+    unset($params['subject']);
     unset($params['assign']);
 
     // create event and notify
@@ -79,5 +76,6 @@ function smarty_function_notifydisplayhooks($params, $view)
     foreach ($results as $result) {
         $output .= "$result\n";
     }
+
     return $output;
 }
