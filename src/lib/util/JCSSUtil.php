@@ -310,11 +310,14 @@ class JCSSUtil
      * - styles: information about additional files (styles) that should be loaded along with the script
      * - gettext: if script requires a translations
      *
+     * When System::isDevelopmentMode precombined versions of scripts (prototype, livepipe and jquery)
+     * are replaced by original, uncompressed files
+     *
      * @return array List of core scripts
      */
     public static function scriptsMap()
     {
-        return array(
+        $scripts = array(
             'prototype' => array(
                 'path' => 'javascript/ajax/proto_scriptaculous.combined.min.js',
                 'require' => array('zikula'),
@@ -362,6 +365,90 @@ class JCSSUtil
                 'path' => 'javascript/jquery/noconflict.js',
             )
         );
+        if(System::isDevelopmentMode()) {
+            $prototypeUncompressed = array(
+                'prototype' => array(
+                    'path' => 'javascript/ajax/original_uncompressed/prototype.js',
+                    'require' => array('zikula','scriptaculous','builder','controls','dragdrop','effects','slider','sound'),
+                    'aliases' => array('prototype','scriptaculous'),
+                ),
+                'scriptaculous' => array(
+                    'path' => 'javascript/ajax/original_uncompressed/scriptaculous.js',
+                ),
+                'builder' => array(
+                    'path' => 'javascript/ajax/original_uncompressed/builder.js',
+                ),
+                'controls' => array(
+                    'path' => 'javascript/ajax/original_uncompressed/controls.js',
+                ),
+                'dragdrop' => array(
+                    'path' => 'javascript/ajax/original_uncompressed/dragdrop.js',
+                ),
+                'effects' => array(
+                    'path' => 'javascript/ajax/original_uncompressed/effects.js',
+                ),
+                'slider' => array(
+                    'path' => 'javascript/ajax/original_uncompressed/slider.js',
+                ),
+                'sound' => array(
+                    'path' => 'javascript/ajax/original_uncompressed/sound.js',
+                )
+            );
+            $livepipeUncompressed = array(
+                'livepipe' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/livepipe.js',
+                    'require' => array('prototype','contextmenu','cookie','event_behavior','hotkey','progressbar','rating','resizable','scrollbar','selection','selectmultiple','tabs','textarea','window'),
+                ),
+                'contextmenu' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/contextmenu.js',
+                ),
+                'cookie' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/cookie.js',
+                ),
+                'event_behavior' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/event_behavior.js',
+                ),
+                'hotkey' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/hotkey.js',
+                ),
+                'progressbar' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/progressbar.js',
+                ),
+                'rating' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/rating.js',
+                ),
+                'resizable' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/resizable.js',
+                ),
+                'scrollbar' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/scrollbar.js',
+                ),
+                'selection' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/selection.js',
+                ),
+                'selectmultiple' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/selectmultiple.js',
+                ),
+                'tabs' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/tabs.js',
+                ),
+                'textarea' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/textarea.js',
+                ),
+                'window' => array(
+                    'path' => 'javascript/livepipe/original_uncompressed/window.js',
+                )
+            );
+            $jQueryUncompressed = array(
+                'jquery' => array(
+                    'path' => 'javascript/jquery/jquery.js',
+                    'require' => array('noconflict'),
+                )
+            );
+            $scripts['jquery'] = $jQueryUncompressed['jquery'];
+            $scripts = array_merge($prototypeUncompressed,$livepipeUncompressed,array_slice($scripts,2));
+        }
+        return $scripts;
     }
 
     /**
