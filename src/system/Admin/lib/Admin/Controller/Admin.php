@@ -373,7 +373,14 @@ class Admin_Controller_Admin extends Zikula_Controller
                 }
             }
         }
-        $this->view->assign('adminlinks', $adminlinks);
+
+        // sort array by module display name
+        foreach ($adminlinks as $adminIcon) {
+            $adminIconsSorted[$adminIcon['menutext']] = $adminIcon;
+        }
+        ksort($adminIconsSorted);
+
+        $this->view->assign('adminlinks', $adminIconsSorted);
 
         // work out what stylesheet is being used to render to the admin panel
         $css = $this->getVar('modulestylesheet');
