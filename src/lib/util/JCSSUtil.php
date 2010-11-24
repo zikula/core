@@ -281,6 +281,7 @@ class JCSSUtil
                 case 'javascript/ajax/builder.js':
                 case 'javascript/ajax/controls.js':
                 case 'javascript/ajax/dragdrop.js':
+                case 'javascript/ajax/effects.js':
                 case 'javascript/ajax/slider.js':
                 case 'javascript/ajax/sound.js':
                     $script = 'prototype';
