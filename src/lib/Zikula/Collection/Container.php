@@ -33,7 +33,7 @@ class Zikula_Collection_Container implements Zikula_Collection_Interface
     protected $collection;
 
     /**
-     * Construct a new Zikula_Collection
+     * Construct a new Zikula_Collection.
      *
      * @param string      $name       The name of the collection.
      * @param ArrayObject $collection The collection (optional).
@@ -45,7 +45,7 @@ class Zikula_Collection_Container implements Zikula_Collection_Interface
     }
 
     /**
-     * Retrieve the collection
+     * Retrieve the collection.
      *
      * @return ArrayObject The collection.
      */
