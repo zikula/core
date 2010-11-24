@@ -125,10 +125,6 @@ class Modules_Api_Admin extends Zikula_Api
         $sort    = empty($args['sort']) ? null : (string)$args['sort'];
         $sortdir = isset($args['sortdir']) && $args['sortdir'] ? $args['sortdir'] : 'ASC';
 
-        SessionUtil::setVar('state', $state);
-        SessionUtil::setVar('sort', $sort);
-        SessionUtil::setVar('sortdir', $sortdir);
-
         // Obtain information
         $dbtable = DBUtil::getTables();
         $modulescolumn = $dbtable['modules_column'];
