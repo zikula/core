@@ -373,7 +373,14 @@ class Admin_Controller_Admin extends Zikula_Controller
                 }
             }
         }
-        $this->view->assign('adminlinks', $adminlinks);
+
+        // sort array by module display name
+        foreach ($adminlinks as $adminIcon) {
+            $adminIconsSorted[$adminIcon['menutext']] = $adminIcon;
+        }
+        ksort($adminIconsSorted);
+
+        $this->view->assign('adminlinks', $adminIconsSorted);
 
         // work out what stylesheet is being used to render to the admin panel
         $css = $this->getVar('modulestylesheet');
@@ -467,7 +474,6 @@ class Admin_Controller_Admin extends Zikula_Controller
         }
         $modvars['modulestylesheet'] = isset($modvars['modulestylesheet']) ? $modvars['modulestylesheet'] : 'navtabs.css';
         $modvars['admingraphic'] = isset($modvars['admingraphic']) ? $modvars['admingraphic'] : 0;
-        $modvars['moduledescription'] = isset($modvars['moduledescription']) ? $modvars['moduledescription'] : 0;
         $modvars['displaynametype'] = isset($modvars['displaynametype']) ? $modvars['displaynametype'] : 1;
         $modvars['startcategory'] = isset($modvars['startcategory']) ? $modvars['startcategory'] : 1;
         $modvars['defaultcategory'] = isset($modvars['defaultcategory']) ? $modvars['defaultcategory'] : 1;

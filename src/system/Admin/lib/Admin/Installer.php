@@ -42,7 +42,6 @@ class Admin_Installer extends Zikula_Installer
         $this->setVar('ignoreinstallercheck', 0);
         $this->setVar('admintheme', '');
         $this->setVar('displaynametype', 1);
-        $this->setVar('moduledescription', 1);
 
         $this->defaultdata();
 
@@ -76,6 +75,9 @@ class Admin_Installer extends Zikula_Installer
 
             case '1.7':
             case '1.8':
+                $this->delVar('moduledescription');
+
+            case '1.8.1':
             // future upgrade routines
         }
 

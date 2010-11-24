@@ -33,14 +33,6 @@
                     {/if}
                 </div>
                 <div class="z-formrow">
-                    <label for="admin_moduledesc">{gt text="Display description and context menu"}</label>
-                    {if $modvars.Admin.moduledescription eq 1}
-                    <input id="admin_moduledesc" name="modvars[moduledescription]" type="checkbox" value="1" checked="checked" />
-                    {else}
-                    <input id="admin_moduledesc" name="modvars[moduledescription]" type="checkbox" value="1" />
-                    {/if}
-                </div>
-                <div class="z-formrow">
                     <label for="admin_displaynametype">{gt text="Form of display for module names"}</label>
                     <select id="admin_displaynametype" name="modvars[displaynametype]">
                         <option value="1" {if $modvars.Admin.displaynametype eq 1}selected="selected"{/if}>{gt text="Display name"}</option>
