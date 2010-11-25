@@ -366,7 +366,7 @@ class JCSSUtil
                 'path' => 'javascript/jquery/noconflict.js',
             )
         );
-        if(System::isDevelopmentMode()) {
+        if (System::isDevelopmentMode()) {
             $prototypeUncompressed = array(
                 'prototype' => array(
                     'path' => 'javascript/ajax/original_uncompressed/prototype.js',
