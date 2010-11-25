@@ -227,9 +227,13 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
                 $from = mktime(0, 0, 0, $datearray['mon'], 1, $datearray['year']);
                 $to = strtotime('+1 month', $from);
                 break;
-            //case 'week':
-            //   $from = DateUtil::getDatetime("substr ($date, 0, strpos ($date, ' '));
-            //   $to = DateUtil::getDatetime("$from +1 year");
+
+            case 'week':
+                $from = mktime(0, 0, 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
+                $from = ($datearray['wday'] != 1) ? strtotime('last monday', $from) : $from;
+                $to = strtotime('+1 week', $from);
+                break;
+
             case 'day':
             case 'tomorrow':
                 $from = mktime(0, 0, 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
@@ -286,8 +290,8 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
             case 'eq':
                 if ($type != 'point') {
                     list($from, $to) = $this->makePeriod($time, $type);
-                    $where =  "$column >= '".DateUtil::getDatetime($from)."' AND ".
-                              "$column < '".DateUtil::getDatetime($to)."'";
+                    $where = "($column >= '".DateUtil::getDatetime($from)."' AND ".
+                              "$column < '".DateUtil::getDatetime($to)."')";
                 } else {
                     $where = "$column = '".DateUtil::getDatetime($time)."'";
                 }
@@ -296,8 +300,8 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
             case 'ne':
                 if ($type != 'point') {
                     list($from, $to) = $this->makePeriod($time, $type);
-                    $where =  "$column < '".DateUtil::getDatetime($from)."' AND ".
-                              "$column >= '".DateUtil::getDatetime($to)."'";
+                    $where = "($column < '".DateUtil::getDatetime($from)."' AND ".
+                              "$column >= '".DateUtil::getDatetime($to)."')";
                 } else {
                     $where = "$column <> '".DateUtil::getDatetime($time)."'";
                 }
@@ -366,7 +370,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
             case 'eq':
                 if ($type != 'point') {
                     list($from, $to) = $this->makePeriod($time, $type);
-                    $where = "$column >= ? AND $column < ?";
+                    $where = "($column >= ? AND $column < ?)";
                     $params[] = DateUtil::getDatetime($from);
                     $params[] = DateUtil::getDatetime($to);
                 } else {
@@ -378,7 +382,7 @@ class FilterUtil_Filter_Date extends FilterUtil_PluginCommon implements FilterUt
             case 'ne':
                 if ($type != 'point') {
                     list($from, $to) = $this->makePeriod($time, $type);
-                    $where = "$column < ? AND $column >= ?";
+                    $where = "($column < ? OR $column >= ?)";
                     $params[] = DateUtil::getDatetime($from);
                     $params[] = DateUtil::getDatetime($to);
                 } else {

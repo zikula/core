@@ -188,4 +188,49 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements Filter
 
         return array('where' => $where);
     }
+
+    /**
+     * Returns DQL code.
+     *
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
+     *
+     * @return array Doctrine Query where clause and parameters.
+     */
+    public function getDql($field, $op, $value)
+    {
+        if (array_search($op, $this->ops) === false || !$this->fieldExists($field)) {
+            return '';
+        }
+
+        $where = '';
+        $column = $this->getColumn($field);
+
+        switch ($op) {
+            case 'eq':
+                $where = "$column = '$value'";
+                break;
+
+            case 'ne':
+                $where = "$column <> '$value'";
+                break;
+
+            case 'sub':
+                $cats = CategoryUtil::getSubCategories($value);
+                $items = array();
+                $items[] = $value;
+                foreach ($cats as $item) {
+                    $items[] = $item['id'];
+                }
+                if (count($items) == 1) {
+                    $where = "$column = '".implode("", $items)."'";
+                } else {
+                    $where = "$column IN ('".implode("','", $items)."')";
+                }
+                break;
+        }
+
+        return array('where' => $where);
+    }
 }
