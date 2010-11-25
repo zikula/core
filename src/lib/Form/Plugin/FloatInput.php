@@ -62,8 +62,16 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
      */
     function create($view, &$params)
     {
+        // Check if precision is provided, is a number, is an integer (even if its data type is a string), and is non-negative.
+        if (isset($params['precision']) && is_numeric($params['precision']) && ((int)$params['precision'] == $params['precision'])
+                && ($params['precision'] >= 0)) {
+            // TODO - should we check if it is a non-negative integer separately so that we can throw or log an error or warning?
+            $this->precision = (int)$params['precision'];
+        } else {
+            $this->precision = 2;
+        }
+
         $this->maxLength = 30;
-        $this->precision = 2;
         $params['width'] = '6em';
 
         parent::create($view, $params);
