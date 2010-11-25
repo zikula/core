@@ -328,6 +328,7 @@ class Admin_Controller_Admin extends Zikula_Controller
 
         // get admin capable modules
         $adminmodules = ModUtil::getAdminMods();
+        usort($adminmodules, '_sortAdminModsByDisplayName');
         $adminlinks = array();
         foreach ($adminmodules as $adminmodule) {
             if (SecurityUtil::checkPermission("{$adminmodule['name']}::", 'ANY', ACCESS_EDIT)) {
@@ -374,13 +375,7 @@ class Admin_Controller_Admin extends Zikula_Controller
             }
         }
 
-        // sort array by module display name
-        foreach ($adminlinks as $adminIcon) {
-            $adminIconsSorted[$adminIcon['menutext']] = $adminIcon;
-        }
-        ksort($adminIconsSorted);
-
-        $this->view->assign('adminlinks', $adminIconsSorted);
+        $this->view->assign('adminlinks', $adminlinks);
 
         // work out what stylesheet is being used to render to the admin panel
         $css = $this->getVar('modulestylesheet');
@@ -524,6 +519,7 @@ class Admin_Controller_Admin extends Zikula_Controller
 
         // get admin capable modules
         $adminmodules = ModUtil::getAdminMods();
+        usort($adminmodules, '_sortAdminModsByDisplayName');
         $adminlinks = array();
 
         foreach ($adminmodules as $adminmodule) {
@@ -818,4 +814,11 @@ class Admin_Controller_Admin extends Zikula_Controller
             return false;
         }
     }
+}
+
+/**
+ * Sorting by module display name
+ */
+function _sortAdminModsByDisplayName($a, $b) {
+    return strcmp($a['displayname'], $b['displayname']);
 }
