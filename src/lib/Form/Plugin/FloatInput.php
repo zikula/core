@@ -36,6 +36,12 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     public $maxValue;
 
     /**
+     * Number of decimal places to display.
+     * @var int
+     */
+    var $precision;
+
+    /**
      * Get filename of this file.
      *
      * @return string
@@ -57,6 +63,7 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     function create($view, &$params)
     {
         $this->maxLength = 30;
+        $this->precision = 2;
         $params['width'] = '6em';
 
         parent::create($view, $params);
@@ -127,6 +134,6 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
      */
     function formatValue($view, $value)
     {
-        return DataUtil::formatNumber($value);
+        return DataUtil::formatNumber($value, $this->precision);
     }
 }
