@@ -53,13 +53,12 @@
  * - <b>create</b>: Similar to a constructor since it is called directly after the plugin has been created.
  *   In this event handler you should set the various member variables your plugin requires. You can access
  *   Smarty parameters through the $params object. The automatic setting of member variables from Smarty
- *   parameters happens <i>after</i> the create event.
+ *   parameters happens <i>before</i> the create event.
  *   This event is only fired the first time the plugin is instantiated,
  *   but not when restored from saved state.
  *
- * - <b>load</b>: Called immediately after member variables has been set from their Smarty parameters. So
- *   the plugin is assumed to be fully initialized when the load event is fired. During the load event the plugin
- *   is expected to load values from the render object.
+ * - <b>load</b>: Called immediately after the create event. So the plugin is assumed to be fully initialized when the load event
+ *   is fired. During the load event the plugin is expected to load values from the render object.
  *
  *   A typical load event handler will just call the loadValue
  *   handler and pass it the values of the render object (to improve reuse). The loadValue method will then take care of the rest.
@@ -402,7 +401,10 @@ abstract class Form_Plugin implements Zikula_Translatable
     /**
      * Create event handler.
      *
-     * Default action is to do nothing.
+     * This fires once, immediately <i>after</i> member variables have been populated from Smarty parameters
+     * (in {@link readParameters()}). Default action is to do nothing.
+     *
+     * @see Form_View::registerPlugin()
      *
      * @param Form_View $view    Reference to Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
@@ -416,7 +418,9 @@ abstract class Form_Plugin implements Zikula_Translatable
     /**
      * Load event handler.
      *
-     * Default action is to do nothing.
+     * This fires once, immediately <i>after</i> the create event. Default action is to do nothing.
+     *
+     * @see Form_View::registerPlugin()
      *
      * @param Form_View $view    Reference to Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
@@ -443,6 +447,8 @@ abstract class Form_Plugin implements Zikula_Translatable
     /**
      * Pre-initialise hook.
      *
+     * Fires immediately before {@link initialize()}.
+     *
      * @return void
      */
     public function preInitialize()
@@ -451,6 +457,8 @@ abstract class Form_Plugin implements Zikula_Translatable
 
     /**
      * Post-initialise hook.
+     *
+     * Fires immediately after {@link initialize()}.
      *
      * @return void
      */
