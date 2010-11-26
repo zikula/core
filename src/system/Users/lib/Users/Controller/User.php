@@ -122,9 +122,9 @@ class Users_Controller_User extends Zikula_Controller
                    ->assign('returnurl', $returnurl);
 
         // do we have to show a note about reconfirming the terms of use?
-        if (ModUtil::available('legal') && (ModUtil::getVar('legal', 'termsofuse') || ModUtil::getVar('legal', 'privacypolicy'))) {
-            $this->view->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true))
-                       ->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
+        if (ModUtil::available('Legal') && (ModUtil::getVar('Legal', 'termsofuse') || ModUtil::getVar('Legal', 'privacypolicy'))) {
+            $this->view->assign('tou_active', ModUtil::getVar('Legal', 'termsofuse', true))
+                       ->assign('pp_active',  ModUtil::getVar('Legal', 'privacypolicy', true));
         } else {
             $confirmtou = 0;
         }
@@ -205,11 +205,11 @@ class Users_Controller_User extends Zikula_Controller
             $errorInfo = ModUtil::apiFunc('Users', 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $registrationErrors));
 
             $rendererArgs = array_merge($rendererArgs, $args);
-            $legalModAvailable = ModUtil::available('legal');
+            $legalModAvailable = ModUtil::available('Legal');
             $profileModName = System::getVar('profilemodule', '');
             $profileModAvailable = !empty($profileModName) && ModUtil::available($profileModName);
-            $rendererArgs['touActive'] = $legalModAvailable && ModUtil::getVar('legal', 'termsofuse', true);
-            $rendererArgs['ppActive'] = $legalModAvailable && ModUtil::getVar('legal', 'privacypolicy', true);
+            $rendererArgs['touActive'] = $legalModAvailable && ModUtil::getVar('Legal', 'termsofuse', true);
+            $rendererArgs['ppActive'] = $legalModAvailable && ModUtil::getVar('Legal', 'privacypolicy', true);
             $rendererArgs['userMustAccept'] = $rendererArgs['touActive'] || $rendererArgs['ppActive'];
             $rendererArgs['errorMessages'] = (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array();
             $rendererArgs['errorFields'] = (isset($errorInfo['errorFields']) && !empty($errorInfo['errorFields'])) ? $errorInfo['errorFields'] : array();
@@ -860,8 +860,8 @@ class Users_Controller_User extends Zikula_Controller
                     // That stuff is to catch logins that happen without going through this function. This is where it is really
                     // handled.
                     if ($mustConfirmTOUPP) {
-                        if (ModUtil::available('legal')
-                                && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
+                        if (ModUtil::available('Legal')
+                                && (ModUtil::getVar('Legal', 'termsofuse', true) || ModUtil::getVar('Legal', 'privacypolicy', true))) {
 
                             $touppAccepted = (int)FormUtil::getPassedValue('touaccepted', 0, 'GETPOST');
                             $mustConfirmTOUPP = !$touppAccepted;

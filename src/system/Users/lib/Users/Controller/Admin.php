@@ -118,9 +118,9 @@ class Users_Controller_Admin extends Zikula_Controller
         $profileModName = System::getVar('profilemodule', '');
         $profileModAvailable = !empty($profileModName) && ModUtil::available($profileModName);
 
-        $legalAvailable = ModUtil::available('legal');
-        $touActive = $legalAvailable && ModUtil::getVar('legal', 'termsofuse');
-        $ppActive = $legalAvailable && ModUtil::getVar('legal', 'privacypolicy');
+        $legalAvailable = ModUtil::available('Legal');
+        $touActive = $legalAvailable && ModUtil::getVar('Legal', 'termsofuse');
+        $ppActive = $legalAvailable && ModUtil::getVar('Legal', 'privacypolicy');
 
         // Set a few other things, no matter if we are coming back or not
         $rendererArgs['usermustaccept'] = $touActive || $ppActive;
@@ -294,7 +294,7 @@ class Users_Controller_Admin extends Zikula_Controller
         $useProfileModule = (!empty($profileModule) && ModUtil::available($profileModule));
 
         // if module Legal is not available show the equivalent states for user activation value
-        $adaptStateLegalMod = (!ModUtil::available('legal') || (!ModUtil::getVar('legal', 'termsofuse') && !ModUtil::getVar('legal', 'privacypolicy'))) ? 1 : 0;
+        $adaptStateLegalMod = (ModUtil::available('Legal') && (ModUtil::getVar('Legal', 'termsofuse') || ModUtil::getVar('Legal', 'privacypolicy'))) ? 0 : 1;
 
         // Get the current user's uid
         $currentUid = UserUtil::getVar('uid');
@@ -716,7 +716,7 @@ class Users_Controller_Admin extends Zikula_Controller
         }
 
         // if module Legal is not available show the equivalent states for user activation value
-        if (!ModUtil::available('legal') || (!ModUtil::getVar('legal', 'termsofuse') && !ModUtil::getVar('legal', 'privacypolicy'))) {
+        if (!ModUtil::available('Legal') || (!ModUtil::getVar('Legal', 'termsofuse') && !ModUtil::getVar('Legal', 'privacypolicy'))) {
             if ($uservars['activated'] == UserUtil::ACTIVATED_INACTIVE_TOUPP) {
                 $uservars['activated'] = UserUtil::ACTIVATED_ACTIVE;
             } else if ($uservars['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP) {
@@ -757,9 +757,9 @@ class Users_Controller_Admin extends Zikula_Controller
             ->assign('defaultgroupid', ModUtil::getVar('Groups', 'defaultgroup', 1))
             ->assign('primaryadmingroupid', ModUtil::getVar('Groups', 'primaryadmingroup', 2))
             ->assign('groups_infos', $groups_infos)
-            ->assign('legal', ModUtil::available('legal'))
-            ->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true))
-            ->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
+            ->assign('legal', ModUtil::available('Legal'))
+            ->assign('tou_active', ModUtil::getVar('Legal', 'termsofuse', true))
+            ->assign('pp_active',  ModUtil::getVar('Legal', 'privacypolicy', true));
 
         return $this->view->fetch('users_admin_modify.tpl');
     }
@@ -1148,9 +1148,9 @@ class Users_Controller_Admin extends Zikula_Controller
                 $this->__('%m-%d-%Y %H:%M'));
         }
 
-        if (ModUtil::available('legal')) {
-            $touActive = ModUtil::getVar('legal', 'termsofuse', true);
-            $ppActive = ModUtil::getVar('legal', 'privacypolicy', true);
+        if (ModUtil::available('Legal')) {
+            $touActive = ModUtil::getVar('Legal', 'termsofuse', true);
+            $ppActive = ModUtil::getVar('Legal', 'privacypolicy', true);
         } else {
             $touActive = false;
             $ppActive = false;
@@ -1430,9 +1430,9 @@ class Users_Controller_Admin extends Zikula_Controller
                     $this->__('%m-%d-%Y %H:%M'));
             }
 
-            if (ModUtil::available('legal')) {
-                $touActive = ModUtil::getVar('legal', 'termsofuse', true);
-                $ppActive = ModUtil::getVar('legal', 'privacypolicy', true);
+            if (ModUtil::available('Legal')) {
+                $touActive = ModUtil::getVar('Legal', 'termsofuse', true);
+                $ppActive = ModUtil::getVar('Legal', 'privacypolicy', true);
             } else {
                 $touActive = false;
                 $ppActive = false;
@@ -1535,9 +1535,9 @@ class Users_Controller_Admin extends Zikula_Controller
                     $this->__('%m-%d-%Y %H:%M'));
             }
 
-            if (ModUtil::available('legal')) {
-                $touActive = ModUtil::getVar('legal', 'termsofuse', true);
-                $ppActive = ModUtil::getVar('legal', 'privacypolicy', true);
+            if (ModUtil::available('Legal')) {
+                $touActive = ModUtil::getVar('Legal', 'termsofuse', true);
+                $ppActive = ModUtil::getVar('Legal', 'privacypolicy', true);
             } else {
                 $touActive = false;
                 $ppActive = false;
@@ -1622,9 +1622,9 @@ class Users_Controller_Admin extends Zikula_Controller
                     $this->__('%m-%d-%Y %H:%M'));
             }
 
-            if (ModUtil::available('legal')) {
-                $touActive = ModUtil::getVar('legal', 'termsofuse', true);
-                $ppActive = ModUtil::getVar('legal', 'privacypolicy', true);
+            if (ModUtil::available('Legal')) {
+                $touActive = ModUtil::getVar('Legal', 'termsofuse', true);
+                $ppActive = ModUtil::getVar('Legal', 'privacypolicy', true);
             } else {
                 $touActive = false;
                 $ppActive = false;
@@ -1702,9 +1702,9 @@ class Users_Controller_Admin extends Zikula_Controller
         $this->view->assign('config', empty($config) ? $this->getVars() : $config)
                    ->assign('errorFields', $errorFields)
                    ->assign('profile', (!empty($profileModule) && ModUtil::available($profileModule)))
-                   ->assign('legal', ModUtil::available('legal'))
-                   ->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true))
-                   ->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true))
+                   ->assign('legal', ModUtil::available('Legal'))
+                   ->assign('tou_active', ModUtil::getVar('Legal', 'termsofuse', true))
+                   ->assign('pp_active',  ModUtil::getVar('Legal', 'privacypolicy', true))
                    ->assign('authmodules', $authmodules);
 
         // Return the output that has been generated by this function
@@ -1854,7 +1854,7 @@ class Users_Controller_Admin extends Zikula_Controller
                  ->setVar('chgemail_expiredays', $config['chgemail_expiredays'])
                  ->setVar('chgpass_expiredays', $config['chgpass_expiredays']);
 
-            if (ModUtil::available('legal')) {
+            if (ModUtil::available('Legal')) {
                 ModUtil::setVar('Legal', 'termsofuse', $config['termsofuse']);
                 ModUtil::setVar('Legal', 'privacypolicy', $config['privacypolicy']);
             } else {

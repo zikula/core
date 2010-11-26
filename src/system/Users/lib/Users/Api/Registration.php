@@ -310,9 +310,9 @@ class Users_Api_Registration extends Zikula_Api
         }
 
         if ($checkMode != 'modify') {
-            if (ModUtil::available('legal')) {
-                $touInEffect = ModUtil::getVar('legal', 'termsofuse', true);
-                $ppInEffect  = ModUtil::getVar('legal', 'privacypolicy', true);
+            if (ModUtil::available('Legal')) {
+                $touInEffect = ModUtil::getVar('Legal', 'termsofuse', true);
+                $ppInEffect  = ModUtil::getVar('Legal', 'privacypolicy', true);
                 if ($touInEffect || $ppInEffect) {
                     if ($isAdminOrSubAdmin && !isset($reginfo['agreetoterms'])) {
                         $registrationErrors['reginfo_agreetoterms'][] = $this->__('The registration record must indicate whether the user agreed to the terms of use or privacy policy or not.');
@@ -786,9 +786,9 @@ class Users_Api_Registration extends Zikula_Api
 
         if ($userObj) {
             // Set appropriate activated status
-            $legalModuleAvailable = ModUtil::available('legal');
-            $termsActive = $legalModuleAvailable && ModUtil::getVar('legal', 'termsofuse', true);
-            $privacyActive = $legalModuleAvailable && ModUtil::getVar('legal', 'privacypolicy', true);
+            $legalModuleAvailable = ModUtil::available('Legal');
+            $termsActive = $legalModuleAvailable && ModUtil::getVar('Legal', 'termsofuse', true);
+            $privacyActive = $legalModuleAvailable && ModUtil::getVar('Legal', 'privacypolicy', true);
             $userAgreementRequired = $legalModuleAvailable && ($termsActive || $privacyActive);
             if (!$userAgreementRequired || ($userAgreementRequired && isset($reginfo['agreetoterms']) && $reginfo['agreetoterms'])) {
                 UserUtil::setVar('activated', UserUtil::ACTIVATED_ACTIVE, $userObj['uid']);

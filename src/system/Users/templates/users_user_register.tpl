@@ -11,8 +11,8 @@
 </div>
 {else}
 {if $userMustAccept}
-{modurl fqurl=true modname='legal' type='user' func='main' assign='touUrl'}
-{modurl fqurl=true modname='legal' type='user' func='privacy' assign='ppUrl'}
+{modurl fqurl=true modname='Legal' type='user' func='main' assign='touUrl'}
+{modurl fqurl=true modname='Legal' type='user' func='privacy' assign='ppUrl'}
 {gt text='\'Terms of use\'' assign='touTextString'}
 {gt text='\'Privacy policy\'' assign='ppTextString'}
 {assign var='touLink' value='<a href="%1$s" onclick="window.open(\'%1$s\');return false;">%2$s</a>'|sprintf:$touUrl:$touTextString}
