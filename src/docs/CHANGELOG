@@ -217,3 +217,4 @@ Added missing member var for display area format in dateinput form plugin (issue
 Added doctrine support to selectmodobject(Array) view plugins (issue #2542)
 Included generic url routing classes (issue #2557)
 Added a new attribute, precision, to the formfloatinput Form plugin, which controls the number of digits after the decimal. (issue #2616)
+The userprofilelink Smarty modifier now accepts a wider range of user names, including user names with '@' (issue #2404)

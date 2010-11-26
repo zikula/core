@@ -40,15 +40,22 @@
  */
 function smarty_modifier_userprofilelink($string, $class = '', $image = '', $maxLength = 0)
 {
-    $uname = $uid = $string = DataUtil::formatForDisplay($string);
-
-    if (!is_numeric($string)) {
-        $uid = UserUtil::getIdFromName($string);
+    // TODO - This does not handle cases where the uname is made up entirely of digits (e.g. $uname == "123456"). It will interpret it
+    // as a uid. A new modifier is needed that acts on uids and only uids, and this modifier should act on unames and only unames.
+    if (is_numeric($string)) {
+        $uid = DataUtil::formatForStore($string);
+        $uname = UserUtil::getVar('uname', $uid);
+    } else {
+        $uname = DataUtil::formatForStore($string);
+        $uid = UserUtil::getIdFromName($uname);
     }
+
+    $showUname = DataUtil::formatForDisplay($uname);
 
     $profileModule = System::getVar('profilemodule', '');
 
-    if ($uid <> false && $uid > 1 && !empty($profileModule) && ModUtil::available($profileModule) && strtolower($string) <> strtolower(ModUtil::getVar('Users', 'anonymous'))) {
+    if (isset($uid) && $uid && isset($uname) && $uname && ($uid > 1) && !empty($profileModule) && ModUtil::available($profileModule)
+            && (strtolower($uname) <> strtolower(ModUtil::getVar('Users', 'anonymous')))) {
         if (!empty($class)) {
             $class = ' class="' . DataUtil::formatForDisplay($class) . '"';
         }
@@ -58,31 +65,22 @@ function smarty_modifier_userprofilelink($string, $class = '', $image = '', $max
                 // if it is an array we assume that it is an pnimg array
                 $show = '<img src="' . DataUtil::formatForDisplay($image['src']) . '" alt="' . DataUtil::formatForDisplay($image['alt']) . '" width="' . DataUtil::formatForDisplay($image['width']) . '" height="' . DataUtil::formatForDisplay($image['height']) . '" />';
             } else {
-                $show = '<img src="' . DataUtil::formatForDisplay($image) . '" alt="' . $string . '" />';
+                $show = '<img src="' . DataUtil::formatForDisplay($image) . '" alt="' . $showUname . '" />';
             }
         } elseif ($maxLength > 0) {
             // truncate the user name to $maxLength chars
-            $showLength = strlen($string);
+            $showLength = strlen($showUname);
             $truncEnd = ($maxLength > $showLength) ? $showLength : $maxLength;
-            $show = substr($string, 0, $truncEnd);
-
-        } elseif (is_numeric($string)) {
-            $show = $uname = UserUtil::getVar('uname', $uid);
-        } else {
-            $show = $string;
+            $showUname = substr($string, 0, $truncEnd);
         }
 
-        if (!is_numeric($string)) {
-            $string = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $string . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uname' => $string), null, null, true)) . '">' . $show . '</a>';
-        } else {
-            $string = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $uname . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $show . '</a>';
-        }
+        $profileLink = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $showUname . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $showUname . '</a>';
     } elseif (!empty($image)) {
-        $string = ''; //image for anonymous user should be "empty"
-    } elseif (is_numeric($string)) {
-        $string = UserUtil::getVar('uname', $uid);
+        $profileLink = ''; //image for anonymous user should be "empty"
+    } else {
+        $profileLink = DataUtil::formatForDisplay($string);
     }
 
-    return $string;
+    return $profileLink;
 }
 
