@@ -615,26 +615,24 @@ abstract class Zikula_Base implements Zikula_Translatable
     }
 
     /**
-     * Trigger hookable event.
+     * Notify any hookable events.
      * 
      * @param string $name    The event name for the hookable event.
      * @param mixed  $subject The subject of the event.
+     * @param mixed  $id      The ID of the subject.
      * @param array  $args    Extra meta data.
      * @param mixes  $data    Any data to filter.
      * 
      * @return Zikula_Event 
      */
-    public function notifyHooks($name, $subject=null, $args=array(), $data=null)
+    public function notifyHooks($name, $subject=null, $id=null, $args=array(), $data=null)
     {
+        // set ID.
+        $args['id'] = $id;
+        
         // set caller's name
-        if (!array_key_exists($args['module'])) {
-            $args['module'] = $this->name;
-        }
-
-        if (!array_key_exists($args['id'])) {
-            $args['id'] = 'id';
-        }
-
+        $args['caller'] = $this->name;
+        
         $event = new Zikula_Event($name, $subject, $args, $data);
         return $this->eventManager->notify($event);
     }

@@ -49,7 +49,7 @@ function smarty_function_notifydisplayhooks($params, $view)
 
     $params['id'] = isset($params['id']) ? $params['id'] : 'id';
     $params['returnurl'] = isset($params['returnurl']) ? $params['returnurl'] : System::getCurrentUrl();
-    $params['module'] = $module = isset($params['module']) ? $params['module'] : $view->getTopLevelModule();
+    $params['caller'] = $caller = isset($params['caller']) ? $params['caller'] : $view->get_tpl_var('controller')->getName();
 
     $subject = isset($params['subject']) ? $params['subject'] : null;
     $assign  = isset($params['assign']) ? $params['assign'] : false;
@@ -64,7 +64,7 @@ function smarty_function_notifydisplayhooks($params, $view)
     $results = $eventManager->notify($event)->getData();
 
     // sort display hooks
-    $results = HookUtil::sortDisplayHooks($module, $results);
+    $results = HookUtil::sortDisplayHooks($caller, $results);
 
     // assign results, this plugin does not return any display
     if ($assign) {
