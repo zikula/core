@@ -2109,6 +2109,22 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     }
 
     /**
+     * Get a template variable.
+     *
+     * @param string $key Key of assigned template variable.
+     *
+     * @return mixed
+     */
+    public function get_tpl_var($key)
+    {
+        if (!array_key_exists($key, $this->_tpl_vars)) {
+            throw new InvalidArgumentException(__f('%s does not exist as as assigned variable', $key));
+        }
+
+        return $this->_tpl_vars[$key];
+    }
+
+    /**
      * Set the template variables array ({@link Smarty::$_tpl_vars}).
      *
      * @param array $_tpl_vars The template variables array.
