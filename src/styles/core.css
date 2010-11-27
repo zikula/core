@@ -1519,6 +1519,23 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     border-right: 1px solid transparent;
 }
 
+.z-accordion .header {
+    background: url("../images/global/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6; /*non-CSS3 browsers*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#E6E6E6'); /*IE*/
+    background: -webkit-gradient(linear,left top, left bottom,from(#fefefe), to(#E6E6E6)); /*webkit*/
+    background: -moz-linear-gradient(top, #fefefe, #E6E6E6); /*gecko*/
+    background: linear-gradient(#fefefe, #E6E6E6); /*CSS3*/
+    border: 1px solid #ccc;
+    line-height: 1.8em;
+    margin: 0.2em 0;
+    padding: 0 15px;
+    cursor: pointer;
+}
+.z-accordion .header.active {
+    background: #FFFFFF;
+}
+
+
 /******************************************************************************
 * Order styles
 *******************************************************************************/

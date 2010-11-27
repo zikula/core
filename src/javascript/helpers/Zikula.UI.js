@@ -568,7 +568,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
     applyResizable: function($super) {
         $super();
         var resizable_handle = this.container.down('.resizable_handle'),
-            disableSelection = function (e) { e.stop() };
+            disableSelection = function (e) {e.stop()};
         if(resizable_handle) {
             Resizables.addObserver({
                 onStart: function(){
@@ -1197,5 +1197,137 @@ Zikula.UI.Tabs = Class.create(Control.Tabs,/** @lends Zikula.UI.Tabs.prototype *
     alignTabs: function() {
         this.maxHeight = this.containers.values().invoke('getHeight').max();
         this.containers.values().invoke('setStyle',{minHeight: this.maxHeight.toUnits()});
+    }
+});
+
+Zikula.UI.Accordion = Class.create({
+    initialize: function(element, options) {
+        this.options = Object.extend({
+            equal: false,
+            height: null,
+            containerClass: 'z-accordion',
+            activeClassName: 'active',
+            headerSelector: '.header',
+            active: null,
+            activateOnHash: false,
+            saveToCookie: false
+        }, options || { });
+        this.accordion = $(element);
+        if(this.options.saveToCookie) {
+            this.cookie = 'z-accordion:'+this.accordion.identify()
+        }
+        this.accordion.addClassName(this.options.containerClass);
+        this.initPanels();
+    },
+    initPanels: function() {
+        this.headers = this.accordion.select(this.options.headerSelector);
+        if (!this.headers || this.headers.length === 0) return;
+        this.contents = this.headers.map(function(h) {
+            return h.next();
+        });
+        if(this.options.saveToCookie) {
+            this.options.active = Zikula.Cookie.get(this.cookie);
+        }
+        if(this.options.activateOnHash && window.location.hash) {
+            var hash = window.location.hash.replace('#','');
+            if(this.headers.include($(hash))) {
+                this.options.active = this.headers.indexOf($(hash));
+            } else if(this.headers[hash]) {
+                this.options.active = hash;
+            }
+        }
+        if(this.options.equal || this.options.height) {
+            this.alignPanels();
+        }
+        this.headers.each(function(h,i){
+            this.contents[i].hide();
+            if(this.options.height) {
+                this.contents[i].setStyle({height: this.options.height.toUnits(),overflow: 'auto'});
+            }
+            h.observe('click',this.click.bindAsEventListener(this));
+        }.bind(this));
+        this.setActivePanel(this.options.active || this.headers.first(), true);
+    },
+    click: function(event) {
+      var header = event.findElement(this.options.headerSelector);
+      if (!header || !this.headers.include(header)) return;
+      this.setActivePanel(header);
+    },
+    setActivePanel: function(panel, skipAnimation) {
+        if (this.animating == true) return;
+        var panelIndex;
+        if (Object.isElement(panel) && this.headers.include(panel)) {
+            panelIndex = this.headers.indexOf(panel);
+        } else if (Object.isElement(this.headers[panel])) {
+            panelIndex = panel;
+            panel = this.headers[panel];
+        } else {
+            return;
+        }
+        if (panelIndex == this.activePanel) return;
+        if (skipAnimation || Object.isUndefined(this.activePanel)) {
+            [panel, panel.next().show()].invoke('addClassName',this.options.activeClassName);
+            this.activePanel = panelIndex;
+            if(this.options.saveToCookie) {
+                Zikula.Cookie.set(this.cookie,this.activePanel);
+            }
+            return;
+        }
+        this.animate(panelIndex, this.activePanel);
+    },
+    animate: function(show,hide) {
+        this.effects = [];
+        var options = $H({
+            sync: true,
+            scaleContent: false,
+            transition: Effect.Transitions.sinoidal
+        });
+        new Effect.Parallel([
+            new Effect.SlideUp(this.contents[hide], options),
+            new Effect.SlideDown(this.contents[show], options)
+        ], {
+            duration: 0.2,
+            queue: {
+                position: 'end',
+                scope: 'accordionAnimation'
+            },
+            beforeStart: function() {
+                this.animating = true;
+                [this.headers[hide],this.contents[hide]].invoke('removeClassName',this.options.activeClassName);
+            }.bind(this),
+            afterFinish: function() {
+                this.animating = false;
+                [this.headers[show],this.contents[show]].invoke('addClassName',this.options.activeClassName);
+                this.activePanel = show;
+                if(this.options.saveToCookie) {
+                    Zikula.Cookie.set(this.cookie,this.activePanel);
+                }
+                if(this.options.height) {
+                    this.contents[show].setStyle({height: this.options.height.toUnits(),overflow: 'auto'});
+                }
+            }.bind(this)
+        });
+    },
+    next: function(){
+        this.setActivePanel(this.headers[this.activePanel+1] || this.headers.first());
+    },
+    previous: function(){
+        this.setActivePanel(this.headers[this.activePanel-1] || this.headers.last());
+    },
+    first: function(){
+        this.setActivePanel(this.headers.first());
+    },
+    last: function(){
+        this.setActivePanel(this.headers.last());
+    },
+    alignPanels: function(panel) {
+        if(!this.options.height) {
+            this.options.height = this.contents.invoke('getHeight').max();
+        }
+        panel = panel || this.contents;
+        $A(panel).invoke('setStyle',{
+            height: this.options.height.toUnits(),
+            overflow: 'auto'
+        });
     }
 });
