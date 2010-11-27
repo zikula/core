@@ -635,9 +635,9 @@ class Groups_Api_User extends Zikula_Api
         $col = $dbtable['session_info_column'];
         $activetime = time() - (System::getVar('secinactivemins') * 60);
 
-        $where = "WHERE    $col[uid]!=0 AND $col[lastused]>$activetime
-              GROUP BY $col[uid]";
+        $where = "WHERE {$col['uid']} != 0 AND {$col['lastused']} > {$activetime} GROUP BY {$col['uid']}";
         $fa = DBUtil::selectFieldArray ('session_info', 'uid', $where, '', true);
+        $items = array();
         foreach ($fa as $f) {
             $items[] = array('uid' => $f);
         }
