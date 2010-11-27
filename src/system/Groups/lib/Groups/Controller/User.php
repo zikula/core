@@ -302,7 +302,11 @@ class Groups_Controller_User extends Zikula_Controller
             $this->view->assign('members', false);
         }
 
-        $this->view->assign('ismember', ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
+        if (UserUtil::isLoggedIn()) {
+            $this->view->assign('ismember', ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
+        } else {
+            $this->view->assign('ismember', false);
+        }
 
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
                                            'itemsperpage' => $itemsperpage));
