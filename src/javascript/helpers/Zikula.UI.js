@@ -1255,7 +1255,7 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
         this.contents = this.headers.map(function(h) {
             return h.next();
         });
-        if(this.options.saveToCookie) {
+        if(!this.options.active && this.options.saveToCookie) {
             this.options.active = Zikula.Cookie.get(this.cookie);
         }
         if(this.options.activateOnHash && window.location.hash) {
