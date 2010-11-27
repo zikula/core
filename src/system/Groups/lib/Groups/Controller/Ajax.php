@@ -82,16 +82,9 @@ class Groups_Controller_Ajax extends Zikula_Controller
         }
 
         // Setting various defines
-        $typelabel = array(
-            0  => $this->__('Core'),
-            1  => $this->__('Public'),
-            2  => $this->__('Private')
-        );
-
-        $statelabel = array(
-            0 => $this->__('Closed'),
-            1 => $this->__('Open')
-        );
+        $groupsCommon = new Groups_Helper_Common();
+        $typelabel = $groupsCommon->gtypeLabels();
+        $statelabel = $groupsCommon->stateLabels();
 
         // Using uncached query here as it was returning the unupdated group
         $group = DBUtil::selectObjectByID('groups', $gid, 'gid', null, null, null, false);
@@ -124,22 +117,15 @@ class Groups_Controller_Ajax extends Zikula_Controller
             throw new Zikula_Exception_Fatal();
         }
 
-        $typelabel = array(
-            0  => $this->__('Core'),
-            1  => $this->__('Public'),
-            2  => $this->__('Private')
-        );
-
-        $statelabel = array(
-            0 => $this->__('Closed'),
-            1 => $this->__('Open')
-        );
+        $groupsCommon = new Groups_Helper_Common();
+        $typelabel = $groupsCommon->gtypeLabels();
+        $statelabel = $groupsCommon->stateLabels();
 
         // Default values
         $obj = array(
             'name'        => '',
-            'gtype'       => 0,
-            'state'       => 0,
+            'gtype'       => Groups_Helper_Common::GTYPE_CORE,
+            'state'       => Groups_Helper_Common::STATE_CLOSED,
             'nbumax'      => 0,
             'description' => ''
         );

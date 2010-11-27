@@ -80,14 +80,9 @@ class Groups_Controller_User extends Zikula_Controller
         $typelabel  = array();
         $statelabel = array();
 
-        $typelabel = array(
-                // '-1' => $this->__('Core'),
-                '0'  => $this->__('Core'),
-                '1'  => $this->__('Public'),
-                '2'  => $this->__('Private'));
-
-        $statelabel = array('0' => $this->__('Closed'),
-                '1' => $this->__('Open'));
+        $groupsCommon = new Groups_Helper_Common();
+        $typelabel = $groupsCommon->gtypeLabels();
+        $statelabel = $groupsCommon->stateLabels();
 
         foreach ($groups as $group) {
 
@@ -156,7 +151,7 @@ class Groups_Controller_User extends Zikula_Controller
                 return DataUtil::formatForDisplay($this->__('Error! You are already a member of this group.'));
             }
 
-            if ($group['gtype'] <= 0) {
+            if ($group['gtype'] == Groups_Helper_Common::GTYPE_CORE) {
                 return DataUtil::formatForDisplay($this->__('Sorry! You cannot apply for membership of that group.'));
             }
 
@@ -166,7 +161,7 @@ class Groups_Controller_User extends Zikula_Controller
                 }
             }
 
-            if ($group['state'] == 0) {
+            if ($group['state'] == Groups_Helper_Common::STATE_CLOSED) {
                 return DataUtil::formatForDisplay($this->__('Sorry! That group is closed.'));
             }
         }
@@ -206,7 +201,7 @@ class Groups_Controller_User extends Zikula_Controller
         if (empty($tag)) return DataUtil::formatForDisplay($this->__('Error! You must click on the checkbox to confirm your action.'));
 
         $applytext = '';
-        if ($action == 'subscribe' && $gtype == 2) {
+        if ($action == 'subscribe' && $gtype == Groups_Helper_Common::GTYPE_PRIVATE) {
             $applytext = FormUtil::getPassedValue('applytext', null, 'POST');
         }
 
@@ -257,14 +252,9 @@ class Groups_Controller_User extends Zikula_Controller
         $typelabel  = array();
         $statelabel = array();
 
-        $typelabel = array(
-                // '-1' => $this->__('Core'),
-                '0'  => $this->__('Core'),
-                '1'  => $this->__('Public'),
-                '2'  => $this->__('Private'));
-
-        $statelabel = array('0' => $this->__('Closed'),
-                '1' => $this->__('Open'));
+        $groupsCommon = new Groups_Helper_Common();
+        $typelabel = $groupsCommon->gtypeLabels();
+        $statelabel = $groupsCommon->stateLabels();
 
         $group['typelbl']  = $typelabel[$group['gtype']];
         $group['statelbl'] = $statelabel[$group['state']];

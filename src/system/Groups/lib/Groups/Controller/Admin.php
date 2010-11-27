@@ -78,14 +78,9 @@ class Groups_Controller_Admin extends Zikula_Controller
 
 
         // Setting various defines
-        $typelabel = array(//'-2' => $this->__('New group in DB'),
-                //'-1' => $this->__('Core'),
-                '0'  => $this->__('Core'),
-                '1'  => $this->__('Public'),
-                '2'  => $this->__('Private'));
-
-        $statelabel = array('0' => $this->__('Closed'),
-                '1' => $this->__('Open'));
+        $groupsCommon = new Groups_Helper_Common();
+        $typelabel = $groupsCommon->gtypeLabels();
+        $statelabel = $groupsCommon->stateLabels();
 
         $groups = array();
         foreach ($items as $item) {
@@ -178,14 +173,9 @@ class Groups_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         // Setting various defines
-        $grouptype = array(
-            '0' => $this->__('Core'),
-            '1'  => $this->__('Public'),
-            '2'  => $this->__('Private'));
-
-        $groupstate = array(
-            '0' => $this->__('Closed'),
-            '1' => $this->__('Open'));
+        $groupsCommon = new Groups_Helper_Common();
+        $grouptype = $groupsCommon->gtypeLabels();
+        $groupstate = $groupsCommon->stateLabels();
 
         $this->view->assign('grouptype',  $grouptype)
                    ->assign('groupstate', $groupstate);
@@ -283,14 +273,9 @@ class Groups_Controller_Admin extends Zikula_Controller
         $this->view->assign($item);
 
         // Setting various defines
-        $grouptype = array(
-            '0' => $this->__('Core'),
-            '1'  => $this->__('Public'),
-            '2'  => $this->__('Private'));
-
-        $groupstate = array(
-            '0' => $this->__('Closed'),
-            '1' => $this->__('Open'));
+        $groupsCommon = new Groups_Helper_Common();
+        $grouptype = $groupsCommon->gtypeLabels();
+        $groupstate = $groupsCommon->stateLabels();
 
         $this->view->assign('grouptype',  $grouptype)
                    ->assign('groupstate', $groupstate);

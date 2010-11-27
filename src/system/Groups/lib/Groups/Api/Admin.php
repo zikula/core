@@ -28,10 +28,10 @@ class Groups_Api_Admin extends Zikula_Api
 
         // Setting defaults
         if (!isset($args['gtype'])) {
-            $args['gtype'] = '0';
+            $args['gtype'] = Groups_Helper_Common::GTYPE_CORE;
         }
         if (!isset($args['state'])) {
-            $args['state'] = 0;
+            $args['state'] = Groups_Helper_Common::STATE_CLOSED;
         }
 
         // Security check
@@ -160,10 +160,10 @@ class Groups_Api_Admin extends Zikula_Api
 
         // Setting defaults
         if (!isset($args['gtype'])) {
-            $args['gtype'] = '0';
+            $args['gtype'] = Groups_Helper_Common::GTYPE_CORE;
         }
         if (!isset($args['state'])) {
-            $args['state'] = 0;
+            $args['state'] = Groups_Helper_Common::STATE_CLOSED;
         }
 
         // Update the item

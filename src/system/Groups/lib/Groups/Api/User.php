@@ -138,9 +138,9 @@ class Groups_Api_User extends Zikula_Api
         $dbtable = DBUtil::getTables();
         $grpcol = $dbtable['groups_column'];
 
-        $where = "WHERE $grpcol[gtype] >= '1'";
+        $where = "WHERE {$grpcol['gtype']} != " . Groups_Helper_Common::GTYPE_CORE;
         if ($this->getVar('hideclosed')) {
-            $where .= " AND $grpcol[state] > '0'";
+            $where .= " AND {$grpcol['state']} != " . Groups_Helper_Common::STATE_CLOSED;
         }
         return DBUtil::selectObjectCount('groups', $where);
     }
@@ -235,18 +235,18 @@ class Groups_Api_User extends Zikula_Api
 
         $items = array();
 
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('Groups::', 'ANY', ACCESS_OVERVIEW)) {
             return $items;
         }
 
         $dbtable = DBUtil::getTables();
         $grpcol = $dbtable['groups_column'];
 
-        $where = "WHERE $grpcol[gtype] >= '1'";
+        $where = "WHERE {$grpcol['gtype']} != " . Groups_Helper_Common::GTYPE_CORE;
         if ($this->getVar('hideclosed')) {
-            $where .= " AND $grpcol[state] > '0'";
+            $where .= " AND {$grpcol['state']} != " . Groups_Helper_Common::STATE_CLOSED;
         }
-        $orderBy = "ORDER BY $grpcol[name]";
+        $orderBy = "ORDER BY {$grpcol['name']}";
         $objArray = DBUtil::selectObjectArray('groups', $where, $orderBy, $args['startnum']-1, $args['numitems']);
 
         if ($objArray === false) {
@@ -276,10 +276,10 @@ class Groups_Api_User extends Zikula_Api
 
             if (SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_OVERVIEW)) {
                 if (!isset($gtype) || is_null($gtype)) {
-                    $gtype = -2;
+                    $gtype = Groups_Helper_Common::GTYPE_CORE;
                 }
                 if (is_null($state)) {
-                    $state = 0;
+                    $state = Groups_Helper_Common::STATE_CLOSED;
                 }
 
                 $ismember = false;
@@ -461,7 +461,7 @@ class Groups_Api_User extends Zikula_Api
 
         if ($args['action'] == 'subscribe') {
 
-            if ($args['gtype'] == 2) {
+            if ($args['gtype'] == Groups_Helper_Common::GTYPE_PRIVATE) {
                 if (!isset($args['applytext'])) {
                     return LogUtil::registerArgsError();
                 }
