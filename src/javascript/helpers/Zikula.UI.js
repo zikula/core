@@ -1200,7 +1200,31 @@ Zikula.UI.Tabs = Class.create(Control.Tabs,/** @lends Zikula.UI.Tabs.prototype *
     }
 });
 
-Zikula.UI.Accordion = Class.create({
+Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
+    /**
+     * Accordion script.
+     * Markup for accordion container needs pairs of headers and content panels.
+     * Each pair is identyfied by panel header.
+     *
+     * @example
+     * var accordion =  new Zikula.UI.Accordion('accordion_container',{equal: true});
+     *
+     * @class Zikula.UI.Accordion
+     * @constructs
+     *
+     * @param {HTMLElement|String} element HTMLElement or id element containing accordion content
+     * @param {Object} [options] Config object
+     * @param {Boolean} [options.equal=false] Should all accordion panels have equal height
+     * @param {Boolean} [options.height=null] Height for all panels
+     * @param {String} [options.containerClass='z-accordion'] Class to add for accordion container
+     * @param {String} [options.activeClassName='active'] Class to mark active panel header and content
+     * @param {String} [options.headerSelector='.header'] Selector to match panel headers
+     * @param {String|Number} [options.active=null] Id of index of panel to open; when id is given it should point to panel header, not content
+     * @param {Boolean} [options.activateOnHash=false] If true - script will try to open panel pointed via url hash (it may be panel index or id)
+     * @param {Boolean} [options.saveToCookie=false] If true - panel status will be saved to cookie and loaded on page refresh
+     *
+     * @return {Zikula.UI.Accordion} New Zikula.UI.Accordion instance
+     */
     initialize: function(element, options) {
         this.options = Object.extend({
             equal: false,
@@ -1219,6 +1243,12 @@ Zikula.UI.Accordion = Class.create({
         this.accordion.addClassName(this.options.containerClass);
         this.initPanels();
     },
+    /**
+     * Prepares accordion for display
+     * 
+     * @private
+     * @return void
+     */
     initPanels: function() {
         this.headers = this.accordion.select(this.options.headerSelector);
         if (!this.headers || this.headers.length === 0) return;
@@ -1246,13 +1276,37 @@ Zikula.UI.Accordion = Class.create({
             }
             h.observe('click',this.click.bindAsEventListener(this));
         }.bind(this));
+        if(this.options.active) {
+            if(this.headers.include($(this.options.active))) {
+                this.options.active = this.headers.indexOf($(this.options.active));
+            } else if (Object.isElement(this.headers[this.options.active])) {
+                this.options.active = this.options.active;
+            } else {
+                this.options.active = null;
+            }
+        }
         this.setActivePanel(this.options.active || this.headers.first(), true);
     },
+    /**
+     * Handler for click event on panel headers.
+     *
+     * @private
+     * @param {Event} event Click event
+     * @return void
+     */
     click: function(event) {
       var header = event.findElement(this.options.headerSelector);
       if (!header || !this.headers.include(header)) return;
       this.setActivePanel(header);
     },
+    /**
+     * Activate given panel
+     *
+     * @param {String|Number} panel Panel to activate, it may be panel header id or index
+     * @param {Boolean} [skipAnimation=false] Should activation be made without animation
+     *
+     * @return void
+     */
     setActivePanel: function(panel, skipAnimation) {
         if (this.animating == true) return;
         var panelIndex;
@@ -1275,6 +1329,14 @@ Zikula.UI.Accordion = Class.create({
         }
         this.animate(panelIndex, this.activePanel);
     },
+    /**
+     * Internal animation method
+     *
+     * @private
+     * @param {Number} show Index of panel to show
+     * @param {Number} hide Index of panel to hide
+     * @return void
+     */
     animate: function(show,hide) {
         this.effects = [];
         var options = $H({
@@ -1308,24 +1370,48 @@ Zikula.UI.Accordion = Class.create({
             }.bind(this)
         });
     },
+    /**
+     * Activate next panel.
+     *
+     * @return void
+     */
     next: function(){
         this.setActivePanel(this.headers[this.activePanel+1] || this.headers.first());
     },
+    /**
+     * Activate previous panel.
+     *
+     * @return void
+     */
     previous: function(){
         this.setActivePanel(this.headers[this.activePanel-1] || this.headers.last());
     },
+    /**
+     * Activate first panel.
+     *
+     * @return void
+     */
     first: function(){
         this.setActivePanel(this.headers.first());
     },
+    /**
+     * Activate last panel.
+     *
+     * @return void
+     */
     last: function(){
         this.setActivePanel(this.headers.last());
     },
-    alignPanels: function(panel) {
+    /**
+     * Align panels hight.
+     *
+     * @return void
+     */
+    alignPanels: function() {
         if(!this.options.height) {
             this.options.height = this.contents.invoke('getHeight').max();
         }
-        panel = panel || this.contents;
-        $A(panel).invoke('setStyle',{
+        $A(this.contents).invoke('setStyle',{
             height: this.options.height.toUnits(),
             overflow: 'auto'
         });
