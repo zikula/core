@@ -49,11 +49,11 @@ class Groups_Helper_Common extends Zikula_Base {
     }
 
     /**
-     * Return the standard set of labels for Group states.
+     * Return the standard set of labels for Group types.
      *
-     * @staticvar array $stateLabels The array of standard state labels.
+     * @staticvar array $gtypeLabels The array of standard group type labels.
      *
-     * @return array An associative array of state labels indexed by state constants.
+     * @return array An associative array of group type labels indexed by group type constants.
      */
     public function gtypeLabels() {
         static $gtypeLabels;
