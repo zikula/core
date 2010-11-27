@@ -532,9 +532,9 @@ Read the response in JS
 
 PAGEADDVAR CHANGES
 ==================
-This Api has been updated with several conveniences.  The changes are
-fully BC but you will notice the included sources are changes to the new ones
-despite the old references.
+This API has been updated with several conveniences.  The changes are
+fully backwards compatible: you will notice that pageutil includes the new
+javascript references even when specifying the old ones.
 
 Prototype and Scriptaculous have been combined into a single compressed file for
 convenience.  Only validation.js and unittest.js have not been combined.
