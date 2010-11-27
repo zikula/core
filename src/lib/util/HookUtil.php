@@ -557,15 +557,15 @@ class HookUtil
         // Link all subscriber events types that match the selected provider
         $linked = false;
         foreach ($subscribers as $subscriber) {
-            $provider = Doctrine_Query::create()->select()
+            $hookprovider = Doctrine_Query::create()->select()
                             ->where('area = ?', $providerArea)
                             ->andWhere('type = ?', $subscriber['type'])
                             ->from('Zikula_Doctrine_Model_HookProviders')
                             ->execute()
                             ->toArray();
 
-            if ($provider) {
-                $provider = $provider[0];
+            if ($hookprovider) {
+                $provider = $hookprovider[0];
                 $linked = true;
                 $handlerName = $provider['name'];
                 $weight = $provider['weight'];
@@ -611,15 +611,15 @@ class HookUtil
 
         // Unlink all subscriber events types that match the selected provider
         foreach ($subscribers as $subscriber) {
-            $provider = Doctrine_Query::create()->select()
+            $hookprovider = Doctrine_Query::create()->select()
                             ->where('area = ?', $providerArea)
                             ->andWhere('type = ?', $subscriber['type'])
                             ->from('Zikula_Doctrine_Model_HookProviders')
                             ->execute()
                             ->toArray();
 
-            if ($provider) {
-                $provider = $provider[0];
+            if ($hookprovider) {
+                $provider = $hookprovider[0];
                 $linked = true;
                 $handlerName = $provider['name'];
                 $weight = $provider['weight'];
