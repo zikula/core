@@ -169,7 +169,6 @@ class Groups_Controller_User extends Zikula_Controller
         $this->view->add_core_data();
 
         $this->view->assign('mainpage',     true)
-                   ->assign('hooks',        false)
                    ->assign('gid',          $gid)
                    ->assign('gname',        $group['name'])
                    ->assign('gtype',        $group['gtype']) // Can't use type as it is a reserved word.

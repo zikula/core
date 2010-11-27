@@ -81,4 +81,3 @@
     </tbody>
 </table>
 {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
-{$hooks}

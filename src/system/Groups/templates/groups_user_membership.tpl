@@ -41,5 +41,3 @@
     </div>
 </form>
 {/if}
-
-{$hooks}
