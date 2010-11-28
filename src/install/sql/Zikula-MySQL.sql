@@ -29,12 +29,12 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_admin_category`
 --
 
-INSERT INTO `z_admin_category` (`z_cid`, `z_name`, `z_description`, `z_order`) VALUES (1,'System','Core modules at the heart of operation of the site.',0);
-INSERT INTO `z_admin_category` (`z_cid`, `z_name`, `z_description`, `z_order`) VALUES (2,'Layout','Layout modules for controlling the site\'s look and feel.',0);
-INSERT INTO `z_admin_category` (`z_cid`, `z_name`, `z_description`, `z_order`) VALUES (3,'Users','Modules for controlling user membership, access rights and profiles.',0);
-INSERT INTO `z_admin_category` (`z_cid`, `z_name`, `z_description`, `z_order`) VALUES (4,'Content','Modules for providing content to your users.',0);
-INSERT INTO `z_admin_category` (`z_cid`, `z_name`, `z_description`, `z_order`) VALUES (5,'Uncategorised','Newly-installed or uncategorized modules.',0);
-INSERT INTO `z_admin_category` (`z_cid`, `z_name`, `z_description`, `z_order`) VALUES (6,'Security','Modules for managing the site\'s security.',0);
+INSERT INTO `z_admin_category` VALUES (1,'System','Core modules at the heart of operation of the site.',0);
+INSERT INTO `z_admin_category` VALUES (2,'Layout','Layout modules for controlling the site\'s look and feel.',0);
+INSERT INTO `z_admin_category` VALUES (3,'Users','Modules for controlling user membership, access rights and profiles.',0);
+INSERT INTO `z_admin_category` VALUES (4,'Content','Modules for providing content to your users.',0);
+INSERT INTO `z_admin_category` VALUES (5,'Uncategorised','Newly-installed or uncategorized modules.',0);
+INSERT INTO `z_admin_category` VALUES (6,'Security','Modules for managing the site\'s security.',0);
 
 --
 -- Table structure for table `z_admin_module`
@@ -56,20 +56,20 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_admin_module`
 --
 
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (1,1,1,0);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (2,12,1,1);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (3,14,2,0);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (4,2,1,2);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (5,9,3,0);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (6,6,3,1);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (7,3,2,1);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (8,15,3,2);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (9,11,6,0);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (10,4,4,0);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (11,7,1,3);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (12,5,1,4);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (13,10,4,1);
-INSERT INTO `z_admin_module` (`z_amid`, `z_mid`, `z_cid`, `z_order`) VALUES (14,13,6,1);
+INSERT INTO `z_admin_module` VALUES (1,1,1,0);
+INSERT INTO `z_admin_module` VALUES (2,12,1,1);
+INSERT INTO `z_admin_module` VALUES (3,14,2,0);
+INSERT INTO `z_admin_module` VALUES (4,2,1,2);
+INSERT INTO `z_admin_module` VALUES (5,9,3,0);
+INSERT INTO `z_admin_module` VALUES (6,6,3,1);
+INSERT INTO `z_admin_module` VALUES (7,3,2,1);
+INSERT INTO `z_admin_module` VALUES (8,15,3,2);
+INSERT INTO `z_admin_module` VALUES (9,11,6,0);
+INSERT INTO `z_admin_module` VALUES (10,4,4,0);
+INSERT INTO `z_admin_module` VALUES (11,7,1,3);
+INSERT INTO `z_admin_module` VALUES (12,5,1,4);
+INSERT INTO `z_admin_module` VALUES (13,10,4,1);
+INSERT INTO `z_admin_module` VALUES (14,13,6,1);
 
 --
 -- Table structure for table `z_block_placements`
@@ -89,12 +89,12 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_block_placements`
 --
 
-INSERT INTO `z_block_placements` (`z_pid`, `z_bid`, `z_order`) VALUES (1,1,0);
-INSERT INTO `z_block_placements` (`z_pid`, `z_bid`, `z_order`) VALUES (4,2,0);
-INSERT INTO `z_block_placements` (`z_pid`, `z_bid`, `z_order`) VALUES (3,3,0);
-INSERT INTO `z_block_placements` (`z_pid`, `z_bid`, `z_order`) VALUES (2,4,0);
-INSERT INTO `z_block_placements` (`z_pid`, `z_bid`, `z_order`) VALUES (2,5,0);
-INSERT INTO `z_block_placements` (`z_pid`, `z_bid`, `z_order`) VALUES (7,6,0);
+INSERT INTO `z_block_placements` VALUES (1,1,0);
+INSERT INTO `z_block_placements` VALUES (4,2,0);
+INSERT INTO `z_block_placements` VALUES (3,3,0);
+INSERT INTO `z_block_placements` VALUES (2,4,0);
+INSERT INTO `z_block_placements` VALUES (2,5,0);
+INSERT INTO `z_block_placements` VALUES (7,6,0);
 
 --
 -- Table structure for table `z_block_positions`
@@ -115,14 +115,14 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_block_positions`
 --
 
-INSERT INTO `z_block_positions` (`z_pid`, `z_name`, `z_description`) VALUES (1,'left','Left blocks');
-INSERT INTO `z_block_positions` (`z_pid`, `z_name`, `z_description`) VALUES (2,'right','Right blocks');
-INSERT INTO `z_block_positions` (`z_pid`, `z_name`, `z_description`) VALUES (3,'center','Center blocks');
-INSERT INTO `z_block_positions` (`z_pid`, `z_name`, `z_description`) VALUES (4,'search','Search block');
-INSERT INTO `z_block_positions` (`z_pid`, `z_name`, `z_description`) VALUES (5,'header','Header block');
-INSERT INTO `z_block_positions` (`z_pid`, `z_name`, `z_description`) VALUES (6,'footer','Footer block');
-INSERT INTO `z_block_positions` (`z_pid`, `z_name`, `z_description`) VALUES (7,'topnav','Top navigation block');
-INSERT INTO `z_block_positions` (`z_pid`, `z_name`, `z_description`) VALUES (8,'bottomnav','Bottom navigation block');
+INSERT INTO `z_block_positions` VALUES (1,'left','Left blocks');
+INSERT INTO `z_block_positions` VALUES (2,'right','Right blocks');
+INSERT INTO `z_block_positions` VALUES (3,'center','Center blocks');
+INSERT INTO `z_block_positions` VALUES (4,'search','Search block');
+INSERT INTO `z_block_positions` VALUES (5,'header','Header block');
+INSERT INTO `z_block_positions` VALUES (6,'footer','Footer block');
+INSERT INTO `z_block_positions` VALUES (7,'topnav','Top navigation block');
+INSERT INTO `z_block_positions` VALUES (8,'bottomnav','Bottom navigation block');
 
 --
 -- Table structure for table `z_blocks`
@@ -154,12 +154,12 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_blocks`
 --
 
-INSERT INTO `z_blocks` (`z_bid`, `z_bkey`, `z_title`, `z_description`, `z_content`, `z_url`, `z_mid`, `z_filter`, `z_active`, `z_collapsable`, `z_defaultstate`, `z_refresh`, `z_last_update`, `z_language`) VALUES (1,'Extmenu','Main menu','Main menu','a:5:{s:14:\"displaymodules\";s:1:\"0\";s:10:\"stylesheet\";s:11:\"extmenu.css\";s:8:\"template\";s:24:\"blocks_block_extmenu.tpl\";s:11:\"blocktitles\";a:1:{s:2:\"en\";s:9:\"Main menu\";}s:5:\"links\";a:1:{s:2:\"en\";a:5:{i:0;a:7:{s:4:\"name\";s:4:\"Home\";s:3:\"url\";s:10:\"{homepage}\";s:5:\"title\";s:26:\"Go to the site\'s home page\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:1;a:7:{s:4:\"name\";s:14:\"Administration\";s:3:\"url\";s:24:\"{Admin:adminpanel:admin}\";s:5:\"title\";s:29:\"Go to the site administration\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:2;a:7:{s:4:\"name\";s:10:\"My Account\";s:3:\"url\";s:7:\"{Users}\";s:5:\"title\";s:24:\"Go to your account panel\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:3;a:7:{s:4:\"name\";s:7:\"Log out\";s:3:\"url\";s:14:\"{Users:logout}\";s:5:\"title\";s:20:\"Log out of this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:4;a:7:{s:4:\"name\";s:11:\"Site search\";s:3:\"url\";s:8:\"{Search}\";s:5:\"title\";s:16:\"Search this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}}}}','',3,'',1,1,1,3600,'2010-11-28 16:10:33','');
-INSERT INTO `z_blocks` (`z_bid`, `z_bkey`, `z_title`, `z_description`, `z_content`, `z_url`, `z_mid`, `z_filter`, `z_active`, `z_collapsable`, `z_defaultstate`, `z_refresh`, `z_last_update`, `z_language`) VALUES (2,'Search','Search box','Search block','a:1:{s:16:\"displaySearchBtn\";i:1;}','',10,'',1,1,1,3600,'2010-11-28 16:10:33','');
-INSERT INTO `z_blocks` (`z_bid`, `z_bkey`, `z_title`, `z_description`, `z_content`, `z_url`, `z_mid`, `z_filter`, `z_active`, `z_collapsable`, `z_defaultstate`, `z_refresh`, `z_last_update`, `z_language`) VALUES (3,'Html','This site is powered by Zikula!','HTML block','<p><a href=\"http://zikula.org\">Zikula</a> is a content management system (CMS) and application framework. It is secure and stable, and is a good choice for sites with a large volume of traffic.</p><p>With Zikula:</p><ul><li>you can customise all aspects of the site\'s appearance through themes, with support for CSS style sheets, JavaScript, Flash and all other modern web development technologies;</li><li>you can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation and internationalisation of your site and pages;</li><li>you can be sure that your pages will display properly in all browsers, thanks to Zikula\'s full compliance with W3C HTML standards;</li><li>you get a standard application-programming interface (API) that lets you easily augment your site\'s functionality through modules, blocks and other extensions;</li><li>you can get help and support from the Zikula community of webmasters and developers at <a href=\"http://www.zikula.org\">zikula.org</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>','',3,'',1,1,1,3600,'2010-11-28 16:10:33','');
-INSERT INTO `z_blocks` (`z_bid`, `z_bkey`, `z_title`, `z_description`, `z_content`, `z_url`, `z_mid`, `z_filter`, `z_active`, `z_collapsable`, `z_defaultstate`, `z_refresh`, `z_last_update`, `z_language`) VALUES (4,'Login','User log-in','Login block','','',15,'',1,1,1,3600,'2010-11-28 16:10:33','');
-INSERT INTO `z_blocks` (`z_bid`, `z_bkey`, `z_title`, `z_description`, `z_content`, `z_url`, `z_mid`, `z_filter`, `z_active`, `z_collapsable`, `z_defaultstate`, `z_refresh`, `z_last_update`, `z_language`) VALUES (5,'Online','Who\'s on-line','Online block','','',15,'',1,1,1,3600,'2010-11-28 16:10:33','');
-INSERT INTO `z_blocks` (`z_bid`, `z_bkey`, `z_title`, `z_description`, `z_content`, `z_url`, `z_mid`, `z_filter`, `z_active`, `z_collapsable`, `z_defaultstate`, `z_refresh`, `z_last_update`, `z_language`) VALUES (6,'Extmenu','Top navigation','Theme navigation','a:5:{s:14:\"displaymodules\";s:1:\"0\";s:10:\"stylesheet\";s:11:\"extmenu.css\";s:8:\"template\";s:31:\"blocks_block_extmenu_topnav.tpl\";s:11:\"blocktitles\";a:1:{s:2:\"en\";s:14:\"Top navigation\";}s:5:\"links\";a:1:{s:2:\"en\";a:3:{i:0;a:7:{s:4:\"name\";s:4:\"Home\";s:3:\"url\";s:10:\"{homepage}\";s:5:\"title\";s:26:\"Go to the site\'s home page\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:1;a:7:{s:4:\"name\";s:10:\"My Account\";s:3:\"url\";s:7:\"{Users}\";s:5:\"title\";s:24:\"Go to your account panel\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:2;a:7:{s:4:\"name\";s:11:\"Site search\";s:3:\"url\";s:8:\"{Search}\";s:5:\"title\";s:16:\"Search this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}}}}','',3,'',1,1,1,3600,'2010-11-28 16:10:33','');
+INSERT INTO `z_blocks` VALUES (1,'Extmenu','Main menu','Main menu','a:5:{s:14:\"displaymodules\";s:1:\"0\";s:10:\"stylesheet\";s:11:\"extmenu.css\";s:8:\"template\";s:24:\"blocks_block_extmenu.tpl\";s:11:\"blocktitles\";a:1:{s:2:\"en\";s:9:\"Main menu\";}s:5:\"links\";a:1:{s:2:\"en\";a:5:{i:0;a:7:{s:4:\"name\";s:4:\"Home\";s:3:\"url\";s:10:\"{homepage}\";s:5:\"title\";s:26:\"Go to the site\'s home page\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:1;a:7:{s:4:\"name\";s:14:\"Administration\";s:3:\"url\";s:24:\"{Admin:adminpanel:admin}\";s:5:\"title\";s:29:\"Go to the site administration\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:2;a:7:{s:4:\"name\";s:10:\"My Account\";s:3:\"url\";s:7:\"{Users}\";s:5:\"title\";s:24:\"Go to your account panel\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:3;a:7:{s:4:\"name\";s:7:\"Log out\";s:3:\"url\";s:14:\"{Users:logout}\";s:5:\"title\";s:20:\"Log out of this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:4;a:7:{s:4:\"name\";s:11:\"Site search\";s:3:\"url\";s:8:\"{Search}\";s:5:\"title\";s:16:\"Search this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}}}}','',3,'',1,1,1,3600,'2010-11-28 16:10:33','');
+INSERT INTO `z_blocks` VALUES (2,'Search','Search box','Search block','a:1:{s:16:\"displaySearchBtn\";i:1;}','',10,'',1,1,1,3600,'2010-11-28 16:10:33','');
+INSERT INTO `z_blocks` VALUES (3,'Html','This site is powered by Zikula!','HTML block','<p><a href=\"http://zikula.org\">Zikula</a> is a content management system (CMS) and application framework. It is secure and stable, and is a good choice for sites with a large volume of traffic.</p><p>With Zikula:</p><ul><li>you can customise all aspects of the site\'s appearance through themes, with support for CSS style sheets, JavaScript, Flash and all other modern web development technologies;</li><li>you can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation and internationalisation of your site and pages;</li><li>you can be sure that your pages will display properly in all browsers, thanks to Zikula\'s full compliance with W3C HTML standards;</li><li>you get a standard application-programming interface (API) that lets you easily augment your site\'s functionality through modules, blocks and other extensions;</li><li>you can get help and support from the Zikula community of webmasters and developers at <a href=\"http://www.zikula.org\">zikula.org</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>','',3,'',1,1,1,3600,'2010-11-28 16:10:33','');
+INSERT INTO `z_blocks` VALUES (4,'Login','User log-in','Login block','','',15,'',1,1,1,3600,'2010-11-28 16:10:33','');
+INSERT INTO `z_blocks` VALUES (5,'Online','Who\'s on-line','Online block','','',15,'',1,1,1,3600,'2010-11-28 16:10:33','');
+INSERT INTO `z_blocks` VALUES (6,'Extmenu','Top navigation','Theme navigation','a:5:{s:14:\"displaymodules\";s:1:\"0\";s:10:\"stylesheet\";s:11:\"extmenu.css\";s:8:\"template\";s:31:\"blocks_block_extmenu_topnav.tpl\";s:11:\"blocktitles\";a:1:{s:2:\"en\";s:14:\"Top navigation\";}s:5:\"links\";a:1:{s:2:\"en\";a:3:{i:0;a:7:{s:4:\"name\";s:4:\"Home\";s:3:\"url\";s:10:\"{homepage}\";s:5:\"title\";s:26:\"Go to the site\'s home page\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:1;a:7:{s:4:\"name\";s:10:\"My Account\";s:3:\"url\";s:7:\"{Users}\";s:5:\"title\";s:24:\"Go to your account panel\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:2;a:7:{s:4:\"name\";s:11:\"Site search\";s:3:\"url\";s:8:\"{Search}\";s:5:\"title\";s:16:\"Search this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}}}}','',3,'',1,1,1,3600,'2010-11-28 16:10:33','');
 
 --
 -- Table structure for table `z_categories_category`
@@ -199,45 +199,45 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_categories_category`
 --
 
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (1,0,1,0,'__SYSTEM__','',0,'b:0;','b:0;','/__SYSTEM__','/1','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (2,1,0,0,'Modules','',0,'a:1:{s:2:\"en\";s:7:\"Modules\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules','/1/2','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (3,1,0,0,'General','',0,'a:1:{s:2:\"en\";s:7:\"General\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General','/1/3','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (4,3,0,0,'YesNo','',0,'a:1:{s:2:\"en\";s:6:\"Yes/No\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/YesNo','/1/3/4','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (5,4,0,1,'1 - Yes','',0,'b:0;','b:0;','/__SYSTEM__/General/YesNo/1 - Yes','/1/3/4/5','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (6,4,0,1,'2 - No','',0,'b:0;','b:0;','/__SYSTEM__/General/YesNo/2 - No','/1/3/4/6','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (10,3,0,0,'Publication Status (extended)','',0,'a:1:{s:2:\"en\";s:29:\"Publication status (extended)\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended','/1/3/10','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (11,10,0,1,'Pending','',0,'a:1:{s:2:\"en\";s:7:\"Pending\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Pending','/1/3/10/11','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (12,10,0,1,'Checked','',0,'a:1:{s:2:\"en\";s:7:\"Checked\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Checked','/1/3/10/12','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (13,10,0,1,'Approved','',0,'a:1:{s:2:\"en\";s:8:\"Approved\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Approved','/1/3/10/13','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (14,10,0,1,'On-line','',0,'a:1:{s:2:\"en\";s:7:\"On-line\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Online','/1/3/10/14','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (15,10,0,1,'Rejected','',0,'a:1:{s:2:\"en\";s:8:\"Rejected\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Rejected','/1/3/10/15','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (16,3,0,0,'Gender','',0,'a:1:{s:2:\"en\";s:6:\"Gender\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender','/1/3/16','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (17,16,0,1,'Male','',0,'a:1:{s:2:\"en\";s:4:\"Male\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender/Male','/1/3/16/17','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (18,16,0,1,'Female','',0,'a:1:{s:2:\"en\";s:6:\"Female\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender/Female','/1/3/16/18','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (19,3,0,0,'Title','',0,'a:1:{s:2:\"en\";s:5:\"Title\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title','/1/3/19','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (20,19,0,1,'Mr','',0,'a:1:{s:2:\"en\";s:3:\"Mr.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Mr','/1/3/19/20','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (21,19,0,1,'Mrs','',0,'a:1:{s:2:\"en\";s:4:\"Mrs.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Mrs','/1/3/19/21','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (22,19,0,1,'Ms','',0,'a:1:{s:2:\"en\";s:3:\"Ms.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Ms','/1/3/19/22','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (23,19,0,1,'Miss','',0,'a:1:{s:2:\"en\";s:4:\"Miss\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Miss','/1/3/19/23','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (24,19,0,1,'Dr','',0,'a:1:{s:2:\"en\";s:3:\"Dr.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Dr','/1/3/19/24','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (25,3,0,0,'ActiveStatus','',0,'a:1:{s:2:\"en\";s:15:\"Activity status\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus','/1/3/25','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (26,25,0,1,'Active','',0,'a:1:{s:2:\"en\";s:6:\"Active\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus/Active','/1/3/25/26','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (27,25,0,1,'Inactive','',0,'a:1:{s:2:\"en\";s:8:\"Inactive\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus/Inactive','/1/3/25/27','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (28,3,0,0,'Publication status (basic)','',0,'a:1:{s:2:\"en\";s:26:\"Publication status (basic)\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic','/1/3/28','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (29,28,0,1,'Pending','',0,'a:1:{s:2:\"en\";s:7:\"Pending\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic/Pending','/1/3/28/29','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (30,28,0,1,'Approved','',0,'a:1:{s:2:\"en\";s:8:\"Approved\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic/Approved','/1/3/28/30','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (31,1,0,0,'Users','',0,'a:1:{s:2:\"en\";s:5:\"Users\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Users','/1/31','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (32,2,0,0,'Global','',0,'a:1:{s:2:\"en\";s:6:\"Global\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global','/1/2/32','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (33,32,0,1,'Blogging','',0,'a:1:{s:2:\"en\";s:8:\"Blogging\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/Blogging','/1/2/32/33','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (34,32,0,1,'Music and audio','',0,'a:1:{s:2:\"en\";s:15:\"Music and audio\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/MusicAndAudio','/1/2/32/34','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (35,32,0,1,'Art and photography','',0,'a:1:{s:2:\"en\";s:19:\"Art and photography\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/ArtAndPhotography','/1/2/32/35','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (36,32,0,1,'Writing and thinking','',0,'a:1:{s:2:\"en\";s:20:\"Writing and thinking\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/WritingAndThinking','/1/2/32/36','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (37,32,0,1,'Communications and media','',0,'a:1:{s:2:\"en\";s:24:\"Communications and media\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/CommunicationsAndMedia','/1/2/32/37','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (38,32,0,1,'Travel and culture','',0,'a:1:{s:2:\"en\";s:18:\"Travel and culture\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/TravelAndCulture','/1/2/32/38','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (39,32,0,1,'Science and technology','',0,'a:1:{s:2:\"en\";s:22:\"Science and technology\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/ScienceAndTechnology','/1/2/32/39','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (40,32,0,1,'Sport and activities','',0,'a:1:{s:2:\"en\";s:20:\"Sport and activities\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/SportAndActivities','/1/2/32/40','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (41,32,0,1,'Business and work','',0,'a:1:{s:2:\"en\";s:17:\"Business and work\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/BusinessAndWork','/1/2/32/41','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_categories_category` (`cat_id`, `cat_parent_id`, `cat_is_locked`, `cat_is_leaf`, `cat_name`, `cat_value`, `cat_sort_value`, `cat_display_name`, `cat_display_desc`, `cat_path`, `cat_ipath`, `cat_status`, `cat_obj_status`, `cat_cr_date`, `cat_cr_uid`, `cat_lu_date`, `cat_lu_uid`) VALUES (42,32,0,1,'Activism and action','',0,'a:1:{s:2:\"en\";s:19:\"Activism and action\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/ActivismAndAction','/1/2/32/42','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (1,0,1,0,'__SYSTEM__','',0,'b:0;','b:0;','/__SYSTEM__','/1','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (2,1,0,0,'Modules','',0,'a:1:{s:2:\"en\";s:7:\"Modules\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules','/1/2','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (3,1,0,0,'General','',0,'a:1:{s:2:\"en\";s:7:\"General\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General','/1/3','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (4,3,0,0,'YesNo','',0,'a:1:{s:2:\"en\";s:6:\"Yes/No\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/YesNo','/1/3/4','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (5,4,0,1,'1 - Yes','',0,'b:0;','b:0;','/__SYSTEM__/General/YesNo/1 - Yes','/1/3/4/5','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (6,4,0,1,'2 - No','',0,'b:0;','b:0;','/__SYSTEM__/General/YesNo/2 - No','/1/3/4/6','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (10,3,0,0,'Publication Status (extended)','',0,'a:1:{s:2:\"en\";s:29:\"Publication status (extended)\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended','/1/3/10','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (11,10,0,1,'Pending','',0,'a:1:{s:2:\"en\";s:7:\"Pending\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Pending','/1/3/10/11','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (12,10,0,1,'Checked','',0,'a:1:{s:2:\"en\";s:7:\"Checked\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Checked','/1/3/10/12','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (13,10,0,1,'Approved','',0,'a:1:{s:2:\"en\";s:8:\"Approved\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Approved','/1/3/10/13','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (14,10,0,1,'On-line','',0,'a:1:{s:2:\"en\";s:7:\"On-line\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Online','/1/3/10/14','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (15,10,0,1,'Rejected','',0,'a:1:{s:2:\"en\";s:8:\"Rejected\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Rejected','/1/3/10/15','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (16,3,0,0,'Gender','',0,'a:1:{s:2:\"en\";s:6:\"Gender\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender','/1/3/16','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (17,16,0,1,'Male','',0,'a:1:{s:2:\"en\";s:4:\"Male\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender/Male','/1/3/16/17','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (18,16,0,1,'Female','',0,'a:1:{s:2:\"en\";s:6:\"Female\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender/Female','/1/3/16/18','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (19,3,0,0,'Title','',0,'a:1:{s:2:\"en\";s:5:\"Title\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title','/1/3/19','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (20,19,0,1,'Mr','',0,'a:1:{s:2:\"en\";s:3:\"Mr.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Mr','/1/3/19/20','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (21,19,0,1,'Mrs','',0,'a:1:{s:2:\"en\";s:4:\"Mrs.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Mrs','/1/3/19/21','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (22,19,0,1,'Ms','',0,'a:1:{s:2:\"en\";s:3:\"Ms.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Ms','/1/3/19/22','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (23,19,0,1,'Miss','',0,'a:1:{s:2:\"en\";s:4:\"Miss\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Miss','/1/3/19/23','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (24,19,0,1,'Dr','',0,'a:1:{s:2:\"en\";s:3:\"Dr.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Dr','/1/3/19/24','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (25,3,0,0,'ActiveStatus','',0,'a:1:{s:2:\"en\";s:15:\"Activity status\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus','/1/3/25','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (26,25,0,1,'Active','',0,'a:1:{s:2:\"en\";s:6:\"Active\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus/Active','/1/3/25/26','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (27,25,0,1,'Inactive','',0,'a:1:{s:2:\"en\";s:8:\"Inactive\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus/Inactive','/1/3/25/27','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (28,3,0,0,'Publication status (basic)','',0,'a:1:{s:2:\"en\";s:26:\"Publication status (basic)\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic','/1/3/28','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (29,28,0,1,'Pending','',0,'a:1:{s:2:\"en\";s:7:\"Pending\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic/Pending','/1/3/28/29','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (30,28,0,1,'Approved','',0,'a:1:{s:2:\"en\";s:8:\"Approved\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic/Approved','/1/3/28/30','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (31,1,0,0,'Users','',0,'a:1:{s:2:\"en\";s:5:\"Users\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Users','/1/31','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (32,2,0,0,'Global','',0,'a:1:{s:2:\"en\";s:6:\"Global\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global','/1/2/32','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (33,32,0,1,'Blogging','',0,'a:1:{s:2:\"en\";s:8:\"Blogging\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/Blogging','/1/2/32/33','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (34,32,0,1,'Music and audio','',0,'a:1:{s:2:\"en\";s:15:\"Music and audio\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/MusicAndAudio','/1/2/32/34','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (35,32,0,1,'Art and photography','',0,'a:1:{s:2:\"en\";s:19:\"Art and photography\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/ArtAndPhotography','/1/2/32/35','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (36,32,0,1,'Writing and thinking','',0,'a:1:{s:2:\"en\";s:20:\"Writing and thinking\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/WritingAndThinking','/1/2/32/36','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (37,32,0,1,'Communications and media','',0,'a:1:{s:2:\"en\";s:24:\"Communications and media\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/CommunicationsAndMedia','/1/2/32/37','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (38,32,0,1,'Travel and culture','',0,'a:1:{s:2:\"en\";s:18:\"Travel and culture\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/TravelAndCulture','/1/2/32/38','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (39,32,0,1,'Science and technology','',0,'a:1:{s:2:\"en\";s:22:\"Science and technology\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/ScienceAndTechnology','/1/2/32/39','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (40,32,0,1,'Sport and activities','',0,'a:1:{s:2:\"en\";s:20:\"Sport and activities\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/SportAndActivities','/1/2/32/40','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (41,32,0,1,'Business and work','',0,'a:1:{s:2:\"en\";s:17:\"Business and work\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/BusinessAndWork','/1/2/32/41','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_categories_category` VALUES (42,32,0,1,'Activism and action','',0,'a:1:{s:2:\"en\";s:19:\"Activism and action\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/ActivismAndAction','/1/2/32/42','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
 
 --
 -- Table structure for table `z_categories_mapmeta`
@@ -359,9 +359,9 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_group_membership`
 --
 
-INSERT INTO `z_group_membership` (`z_gid`, `z_uid`) VALUES (1,1);
-INSERT INTO `z_group_membership` (`z_gid`, `z_uid`) VALUES (1,2);
-INSERT INTO `z_group_membership` (`z_gid`, `z_uid`) VALUES (2,2);
+INSERT INTO `z_group_membership` VALUES (1,1);
+INSERT INTO `z_group_membership` VALUES (1,2);
+INSERT INTO `z_group_membership` VALUES (2,2);
 
 --
 -- Table structure for table `z_group_perms`
@@ -386,11 +386,11 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_group_perms`
 --
 
-INSERT INTO `z_group_perms` (`z_pid`, `z_gid`, `z_sequence`, `z_realm`, `z_component`, `z_instance`, `z_level`, `z_bond`) VALUES (1,2,1,0,'.*','.*',800,0);
-INSERT INTO `z_group_perms` (`z_pid`, `z_gid`, `z_sequence`, `z_realm`, `z_component`, `z_instance`, `z_level`, `z_bond`) VALUES (2,-1,2,0,'ExtendedMenublock::','1:1:',0,0);
-INSERT INTO `z_group_perms` (`z_pid`, `z_gid`, `z_sequence`, `z_realm`, `z_component`, `z_instance`, `z_level`, `z_bond`) VALUES (3,1,3,0,'.*','.*',300,0);
-INSERT INTO `z_group_perms` (`z_pid`, `z_gid`, `z_sequence`, `z_realm`, `z_component`, `z_instance`, `z_level`, `z_bond`) VALUES (4,0,4,0,'ExtendedMenublock::','1:(1|2|3):',0,0);
-INSERT INTO `z_group_perms` (`z_pid`, `z_gid`, `z_sequence`, `z_realm`, `z_component`, `z_instance`, `z_level`, `z_bond`) VALUES (5,0,5,0,'.*','.*',200,0);
+INSERT INTO `z_group_perms` VALUES (1,2,1,0,'.*','.*',800,0);
+INSERT INTO `z_group_perms` VALUES (2,-1,2,0,'ExtendedMenublock::','1:1:',0,0);
+INSERT INTO `z_group_perms` VALUES (3,1,3,0,'.*','.*',300,0);
+INSERT INTO `z_group_perms` VALUES (4,0,4,0,'ExtendedMenublock::','1:(1|2|3):',0,0);
+INSERT INTO `z_group_perms` VALUES (5,0,5,0,'.*','.*',200,0);
 
 --
 -- Table structure for table `z_groups`
@@ -417,8 +417,8 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_groups`
 --
 
-INSERT INTO `z_groups` (`z_gid`, `z_name`, `z_gtype`, `z_description`, `z_prefix`, `z_state`, `z_nbuser`, `z_nbumax`, `z_link`, `z_uidmaster`) VALUES (1,'Users',0,'By default, all users are made members of this group.','usr',0,0,0,0,0);
-INSERT INTO `z_groups` (`z_gid`, `z_name`, `z_gtype`, `z_description`, `z_prefix`, `z_state`, `z_nbuser`, `z_nbumax`, `z_link`, `z_uidmaster`) VALUES (2,'Administrators',0,'By default, all administrators are made members of this group.','adm',0,0,0,0,0);
+INSERT INTO `z_groups` VALUES (1,'Users',0,'By default, all users are made members of this group.','usr',0,0,0,0,0);
+INSERT INTO `z_groups` VALUES (2,'Administrators',0,'By default, all administrators are made members of this group.','adm',0,0,0,0,0);
 
 --
 -- Table structure for table `z_hook_bindings`
@@ -559,210 +559,210 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_module_vars`
 --
 
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (1,'/EventHandlers','Modules','a:2:{i:0;a:3:{s:9:\"eventname\";s:27:\"controller.method_not_found\";s:8:\"callable\";a:2:{i:0;s:14:\"Modules_HookUI\";i:1;s:13:\"hookproviders\";}s:6:\"weight\";i:10;}i:1;a:3:{s:9:\"eventname\";s:27:\"controller.method_not_found\";s:8:\"callable\";a:2:{i:0;s:14:\"Modules_HookUI\";i:1;s:15:\"hooksubscribers\";}s:6:\"weight\";i:10;}}');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (2,'Modules','itemsperpage','i:25;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (3,'ZConfig','debug','s:1:\"0\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (4,'ZConfig','sitename','s:9:\"Site name\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (5,'ZConfig','slogan','s:16:\"Site description\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (6,'ZConfig','metakeywords','s:253:\"zikula, community, portal, portal web, open source, gpl, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (7,'ZConfig','defaultpagetitle','s:9:\"Site name\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (8,'ZConfig','defaultmetadescription','s:16:\"Site description\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (9,'ZConfig','startdate','s:7:\"11/2010\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (10,'ZConfig','adminmail','s:15:\"drak@zikula.org\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (11,'ZConfig','Default_Theme','s:9:\"Andreas08\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (12,'ZConfig','anonymous','s:5:\"Guest\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (13,'ZConfig','timezone_offset','s:1:\"0\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (14,'ZConfig','timezone_server','s:1:\"0\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (15,'ZConfig','funtext','s:1:\"1\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (16,'ZConfig','reportlevel','s:1:\"0\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (17,'ZConfig','startpage','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (18,'ZConfig','Version_Num','s:9:\"1.3.0-dev\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (19,'ZConfig','Version_ID','s:6:\"Zikula\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (20,'ZConfig','Version_Sub','s:3:\"vai\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (21,'ZConfig','debug_sql','s:1:\"0\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (22,'ZConfig','multilingual','s:1:\"1\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (23,'ZConfig','useflags','s:1:\"0\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (24,'ZConfig','theme_change','s:1:\"0\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (25,'ZConfig','UseCompression','s:1:\"0\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (26,'ZConfig','siteoff','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (27,'ZConfig','siteoffreason','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (28,'ZConfig','starttype','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (29,'ZConfig','startfunc','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (30,'ZConfig','startargs','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (31,'ZConfig','entrypoint','s:9:\"index.php\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (32,'ZConfig','language_detect','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (33,'ZConfig','shorturls','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (34,'ZConfig','shorturlstype','s:1:\"0\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (35,'ZConfig','shorturlsext','s:4:\"html\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (36,'ZConfig','shorturlsseparator','s:1:\"-\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (37,'ZConfig','shorturlsstripentrypoint','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (38,'ZConfig','shorturlsdefaultmodule','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (39,'ZConfig','profilemodule','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (40,'ZConfig','messagemodule','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (41,'ZConfig','languageurl','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (42,'ZConfig','ajaxtimeout','i:5000;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (43,'ZConfig','permasearch','s:161:\"À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (44,'ZConfig','permareplace','s:107:\"A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (45,'ZConfig','language','s:3:\"eng\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (46,'ZConfig','locale','s:2:\"en\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (47,'ZConfig','language_i18n','s:2:\"en\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (48,'ZConfig','idnnames','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (49,'Theme','modulesnocache','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (50,'Theme','enablecache','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (51,'Theme','compile_check','b:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (52,'Theme','cache_lifetime','i:3600;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (53,'Theme','force_compile','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (54,'Theme','trimwhitespace','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (55,'Theme','maxsizeforlinks','i:30;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (56,'Theme','itemsperpage','i:25;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (57,'Theme','cssjscombine','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (58,'Theme','cssjscompress','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (59,'Theme','cssjsminify','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (60,'Theme','cssjscombine_lifetime','i:3600;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (61,'Theme','render_compile_check','b:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (62,'Theme','render_force_compile','b:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (63,'Theme','render_cache','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (64,'Theme','render_expose_template','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (65,'Theme','render_lifetime','i:3600;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (66,'Admin','modulesperrow','i:3;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (67,'Admin','itemsperpage','i:15;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (68,'Admin','defaultcategory','i:5;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (69,'Admin','modulestylesheet','s:11:\"navtabs.css\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (70,'Admin','admingraphic','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (71,'Admin','startcategory','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (72,'Admin','ignoreinstallercheck','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (73,'Admin','admintheme','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (74,'Admin','displaynametype','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (75,'Permissions','filter','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (76,'Permissions','warnbar','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (77,'Permissions','rowview','i:20;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (78,'Permissions','rowedit','i:20;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (79,'Permissions','lockadmin','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (80,'Permissions','adminid','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (81,'Groups','itemsperpage','i:25;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (82,'Groups','defaultgroup','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (83,'Groups','mailwarning','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (84,'Groups','hideclosed','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (85,'Groups','primaryadmingroup','i:2;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (86,'Blocks','collapseable','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (87,'Users','itemsperpage','i:25;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (88,'Users','accountdisplaygraphics','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (89,'Users','accountitemsperpage','i:25;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (90,'Users','accountitemsperrow','i:5;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (91,'Users','changepassword','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (92,'Users','changeemail','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (93,'Users','reg_allowreg','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (94,'Users','reg_verifyemail','i:2;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (95,'Users','reg_Illegalusername','s:87:\"root adm linux webmaster admin god administrator administrador nobody anonymous anonimo\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (96,'Users','reg_Illegaldomains','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (97,'Users','reg_Illegaluseragents','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (98,'Users','reg_noregreasons','s:51:\"Sorry! New user registration is currently disabled.\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (99,'Users','reg_uniemail','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (100,'Users','reg_notifyemail','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (101,'Users','reg_optitems','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (102,'Users','userimg','s:11:\"images/menu\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (103,'Users','avatarpath','s:13:\"images/avatar\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (104,'Users','allowgravatars','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (105,'Users','gravatarimage','s:12:\"gravatar.gif\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (106,'Users','minage','i:13;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (107,'Users','minpass','i:5;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (108,'Users','anonymous','s:5:\"Guest\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (109,'Users','loginviaoption','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (110,'Users','moderation','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (111,'Users','hash_method','s:6:\"sha256\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (112,'Users','login_redirect','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (113,'Users','reg_question','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (114,'Users','reg_answer','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (115,'Users','use_password_strength_meter','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (116,'Users','default_authmodule','s:5:\"Users\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (117,'Users','moderation_order','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (118,'Users','login_displaymarkeddel','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (119,'Users','login_displayinactive','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (120,'Users','login_displayverify','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (121,'Users','login_displayapproval','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (122,'/EventHandlers','Users','a:1:{i:0;a:3:{s:9:\"eventname\";s:19:\"get.pending_content\";s:8:\"callable\";a:2:{i:0;s:15:\"Users_Listeners\";i:1;s:22:\"pendingContentListener\";}s:6:\"weight\";i:10;}}');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (123,'SecurityCenter','itemsperpage','i:10;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (124,'ZConfig','updatecheck','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (125,'ZConfig','updatefrequency','i:7;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (126,'ZConfig','updatelastchecked','i:1290960638;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (127,'ZConfig','updateversion','s:5:\"1.2.4\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (128,'ZConfig','keyexpiry','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (129,'ZConfig','sessionauthkeyua','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (130,'ZConfig','secure_domain','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (131,'ZConfig','signcookies','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (132,'ZConfig','signingkey','s:40:\"f10968bb2b7773334f789a2c55eb2b81d77c8099\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (133,'ZConfig','seclevel','s:6:\"Medium\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (134,'ZConfig','secmeddays','i:7;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (135,'ZConfig','secinactivemins','i:20;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (136,'ZConfig','sessionstoretofile','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (137,'ZConfig','sessionsavepath','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (138,'ZConfig','gc_probability','i:100;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (139,'ZConfig','anonymoussessions','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (140,'ZConfig','sessionrandregenerate','b:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (141,'ZConfig','sessionregenerate','b:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (142,'ZConfig','sessionregeneratefreq','i:10;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (143,'ZConfig','sessionipcheck','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (144,'ZConfig','sessionname','s:4:\"ZSID\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (145,'ZConfig','filtergetvars','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (146,'ZConfig','filterpostvars','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (147,'ZConfig','filtercookievars','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (148,'ZConfig','outputfilter','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (149,'ZConfig','htmlpurifierlocation','s:46:\"system/SecurityCenter/lib/vendor/htmlpurifier/\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (150,'SecurityCenter','htmlpurifierConfig','s:3805:\"a:10:{s:4:\"Attr\";a:15:{s:14:\"AllowedClasses\";N;s:19:\"AllowedFrameTargets\";a:0:{}s:10:\"AllowedRel\";a:2:{s:8:\"nofollow\";b:1;s:11:\"imageviewer\";b:1;}s:10:\"AllowedRev\";a:0:{}s:13:\"ClassUseCDATA\";N;s:15:\"DefaultImageAlt\";N;s:19:\"DefaultInvalidImage\";s:0:\"\";s:22:\"DefaultInvalidImageAlt\";s:13:\"Invalid image\";s:14:\"DefaultTextDir\";s:3:\"ltr\";s:8:\"EnableID\";b:0;s:16:\"ForbiddenClasses\";a:0:{}s:11:\"IDBlacklist\";a:0:{}s:17:\"IDBlacklistRegexp\";N;s:8:\"IDPrefix\";s:0:\"\";s:13:\"IDPrefixLocal\";s:0:\"\";}s:10:\"AutoFormat\";a:10:{s:13:\"AutoParagraph\";b:0;s:6:\"Custom\";a:0:{}s:14:\"DisplayLinkURI\";b:0;s:7:\"Linkify\";b:0;s:22:\"PurifierLinkify.DocURL\";s:3:\"#%s\";s:15:\"PurifierLinkify\";b:0;s:33:\"RemoveEmpty.RemoveNbsp.Exceptions\";a:2:{s:2:\"td\";b:1;s:2:\"th\";b:1;}s:22:\"RemoveEmpty.RemoveNbsp\";b:0;s:11:\"RemoveEmpty\";b:0;s:28:\"RemoveSpansWithoutAttributes\";b:0;}s:3:\"CSS\";a:7:{s:14:\"AllowImportant\";b:0;s:11:\"AllowTricky\";b:0;s:17:\"AllowedProperties\";N;s:13:\"DefinitionRev\";i:1;s:19:\"ForbiddenProperties\";a:0:{}s:12:\"MaxImgLength\";s:6:\"1200px\";s:11:\"Proprietary\";b:0;}s:5:\"Cache\";a:2:{s:14:\"DefinitionImpl\";s:10:\"Serializer\";s:14:\"SerializerPath\";N;}s:4:\"Core\";a:17:{s:17:\"AggressivelyFixLt\";b:1;s:13:\"CollectErrors\";b:0;s:13:\"ColorKeywords\";a:17:{s:6:\"maroon\";s:7:\"#800000\";s:3:\"red\";s:7:\"#FF0000\";s:6:\"orange\";s:7:\"#FFA500\";s:6:\"yellow\";s:7:\"#FFFF00\";s:5:\"olive\";s:7:\"#808000\";s:6:\"purple\";s:7:\"#800080\";s:7:\"fuchsia\";s:7:\"#FF00FF\";s:5:\"white\";s:7:\"#FFFFFF\";s:4:\"lime\";s:7:\"#00FF00\";s:5:\"green\";s:7:\"#008000\";s:4:\"navy\";s:7:\"#000080\";s:4:\"blue\";s:7:\"#0000FF\";s:4:\"aqua\";s:7:\"#00FFFF\";s:4:\"teal\";s:7:\"#008080\";s:5:\"black\";s:7:\"#000000\";s:6:\"silver\";s:7:\"#C0C0C0\";s:4:\"gray\";s:7:\"#808080\";}s:25:\"ConvertDocumentToFragment\";b:1;s:31:\"DirectLexLineNumberSyncInterval\";i:0;s:8:\"Encoding\";s:5:\"utf-8\";s:21:\"EscapeInvalidChildren\";b:0;s:17:\"EscapeInvalidTags\";b:0;s:24:\"EscapeNonASCIICharacters\";b:0;s:14:\"HiddenElements\";a:2:{s:6:\"script\";b:1;s:5:\"style\";b:1;}s:8:\"Language\";s:2:\"en\";s:9:\"LexerImpl\";N;s:19:\"MaintainLineNumbers\";N;s:17:\"NormalizeNewlines\";b:1;s:16:\"RemoveInvalidImg\";b:1;s:28:\"RemoveProcessingInstructions\";b:0;s:20:\"RemoveScriptContents\";N;}s:6:\"Filter\";a:6:{s:6:\"Custom\";a:0:{}s:27:\"ExtractStyleBlocks.Escaping\";b:1;s:24:\"ExtractStyleBlocks.Scope\";N;s:27:\"ExtractStyleBlocks.TidyImpl\";N;s:18:\"ExtractStyleBlocks\";b:0;s:7:\"YouTube\";b:0;}s:4:\"HTML\";a:25:{s:7:\"Allowed\";N;s:17:\"AllowedAttributes\";N;s:15:\"AllowedElements\";N;s:14:\"AllowedModules\";N;s:18:\"Attr.Name.UseCDATA\";b:0;s:12:\"BlockWrapper\";s:1:\"p\";s:11:\"CoreModules\";a:7:{s:9:\"Structure\";b:1;s:4:\"Text\";b:1;s:9:\"Hypertext\";b:1;s:4:\"List\";b:1;s:22:\"NonXMLCommonAttributes\";b:1;s:19:\"XMLCommonAttributes\";b:1;s:16:\"CommonAttributes\";b:1;}s:13:\"CustomDoctype\";N;s:12:\"DefinitionID\";N;s:13:\"DefinitionRev\";i:1;s:7:\"Doctype\";s:22:\"HTML 4.01 Transitional\";s:20:\"FlashAllowFullScreen\";b:0;s:19:\"ForbiddenAttributes\";a:0:{}s:17:\"ForbiddenElements\";a:0:{}s:12:\"MaxImgLength\";i:1200;s:6:\"Parent\";s:3:\"div\";s:11:\"Proprietary\";b:0;s:9:\"SafeEmbed\";b:1;s:10:\"SafeObject\";b:1;s:6:\"Strict\";b:0;s:7:\"TidyAdd\";a:0:{}s:9:\"TidyLevel\";s:6:\"medium\";s:10:\"TidyRemove\";a:0:{}s:7:\"Trusted\";b:0;s:5:\"XHTML\";b:1;}s:6:\"Output\";a:5:{s:21:\"CommentScriptContents\";b:1;s:11:\"FlashCompat\";b:1;s:7:\"Newline\";N;s:8:\"SortAttr\";b:0;s:10:\"TidyFormat\";b:0;}s:4:\"Test\";a:1:{s:12:\"ForceNoIconv\";b:0;}s:3:\"URI\";a:16:{s:14:\"AllowedSchemes\";a:6:{s:4:\"http\";b:1;s:5:\"https\";b:1;s:6:\"mailto\";b:1;s:3:\"ftp\";b:1;s:4:\"nntp\";b:1;s:4:\"news\";b:1;}s:4:\"Base\";N;s:13:\"DefaultScheme\";s:4:\"http\";s:12:\"DefinitionID\";N;s:13:\"DefinitionRev\";i:1;s:7:\"Disable\";b:0;s:15:\"DisableExternal\";b:0;s:24:\"DisableExternalResources\";b:0;s:16:\"DisableResources\";b:0;s:4:\"Host\";N;s:13:\"HostBlacklist\";a:0:{}s:12:\"MakeAbsolute\";b:0;s:5:\"Munge\";N;s:14:\"MungeResources\";b:0;s:14:\"MungeSecretKey\";N;s:22:\"OverrideAllowedSchemes\";b:1;}}\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (151,'ZConfig','useids','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (152,'ZConfig','idsmail','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (153,'ZConfig','idsrulepath','s:32:\"config/phpids_zikula_default.xml\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (154,'ZConfig','idssoftblock','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (155,'ZConfig','idsfilter','s:3:\"xml\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (156,'ZConfig','idsimpactthresholdone','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (157,'ZConfig','idsimpactthresholdtwo','i:10;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (158,'ZConfig','idsimpactthresholdthree','i:25;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (159,'ZConfig','idsimpactthresholdfour','i:75;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (160,'ZConfig','idsimpactmode','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (161,'ZConfig','idshtmlfields','a:1:{i:0;s:14:\"POST.__wysiwyg\";}');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (162,'ZConfig','idsjsonfields','a:1:{i:0;s:15:\"POST.__jsondata\";}');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (163,'ZConfig','idsexceptions','a:12:{i:0;s:10:\"GET.__utmz\";i:1;s:10:\"GET.__utmc\";i:2;s:18:\"REQUEST.linksorder\";i:3;s:15:\"POST.linksorder\";i:4;s:19:\"REQUEST.fullcontent\";i:5;s:16:\"POST.fullcontent\";i:6;s:22:\"REQUEST.summarycontent\";i:7;s:19:\"POST.summarycontent\";i:8;s:19:\"REQUEST.filter.page\";i:9;s:16:\"POST.filter.page\";i:10;s:20:\"REQUEST.filter.value\";i:11;s:17:\"POST.filter.value\";}');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (164,'ZConfig','summarycontent','s:1130:\"For the attention of %sitename% administration staff:\n\nOn %date% at %time%, Zikula detected that somebody tried to interact with the site in a way that may have been intended compromise its security. This is not necessarily the case: it could have been caused by work you were doing on the site, or may have been due to some other reason. In any case, it was detected and blocked. \n\nThe suspicious activity was recognised in \'%filename%\' at line %linenumber%.\n\nType: %type%. \n\nAdditional information: %additionalinfo%.\n\nBelow is logged information that may help you identify what happened and who was responsible.\n\n=====================================\nInformation about the user:\n=====================================\nUser name:  %username%\nUser\'s e-mail address: %useremail%\nUser\'s real name: %userrealname%\n\n=====================================\nIP numbers (if this was a cracker, the IP numbers may not be the true point of origin)\n=====================================\nIP according to HTTP_CLIENT_IP: %httpclientip%\nIP according to REMOTE_ADDR: %remoteaddr%\nIP according to GetHostByName($REMOTE_ADDR): %gethostbyremoteaddr%\n\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (165,'ZConfig','fullcontent','s:1289:\"=====================================\nInformation in the $_REQUEST array\n=====================================\n%requestarray%\n\n=====================================\nInformation in the $_GET array\n(variables that may have been in the URL string or in a \'GET\'-type form)\n=====================================\n%getarray%\n\n=====================================\nInformation in the $_POST array\n(visible and invisible form elements)\n=====================================\n%postarray%\n\n=====================================\nBrowser information\n=====================================\n%browserinfo%\n\n=====================================\nInformation in the $_SERVER array\n=====================================\n%serverarray%\n\n=====================================\nInformation in the $_ENV array\n=====================================\n%envarray%\n\n=====================================\nInformation in the $_COOKIE array\n=====================================\n%cookiearray%\n\n=====================================\nInformation in the $_FILES array\n=====================================\n%filearray%\n\n=====================================\nInformation in the $_SESSION array\n(session information -- variables starting with PNSV are Zikula session variables)\n=====================================\n%sessionarray%\n\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (166,'ZConfig','usehtaccessbans','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (167,'ZConfig','extrapostprotection','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (168,'ZConfig','extragetprotection','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (169,'ZConfig','checkmultipost','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (170,'ZConfig','maxmultipost','i:4;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (171,'ZConfig','cpuloadmonitor','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (172,'ZConfig','cpumaxload','d:10;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (173,'ZConfig','ccisessionpath','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (174,'ZConfig','htaccessfilelocation','s:9:\".htaccess\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (175,'ZConfig','nocookiebanthreshold','i:10;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (176,'ZConfig','nocookiewarningthreshold','i:2;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (177,'ZConfig','fastaccessbanthreshold','i:40;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (178,'ZConfig','fastaccesswarnthreshold','i:10;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (179,'ZConfig','javababble','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (180,'ZConfig','javaencrypt','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (181,'ZConfig','preservehead','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (182,'ZConfig','filterarrays','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (183,'ZConfig','htmlentities','s:1:\"1\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (184,'ZConfig','AllowableHTML','a:110:{s:3:\"!--\";i:2;s:1:\"a\";i:2;s:4:\"abbr\";i:1;s:7:\"acronym\";i:1;s:7:\"address\";i:1;s:6:\"applet\";i:0;s:4:\"area\";i:0;s:7:\"article\";i:1;s:5:\"aside\";i:1;s:5:\"audio\";i:0;s:1:\"b\";i:1;s:4:\"base\";i:0;s:8:\"basefont\";i:0;s:3:\"bdo\";i:0;s:3:\"big\";i:0;s:10:\"blockquote\";i:2;s:2:\"br\";i:2;s:6:\"button\";i:0;s:6:\"canvas\";i:0;s:7:\"caption\";i:1;s:6:\"center\";i:2;s:4:\"cite\";i:1;s:4:\"code\";i:0;s:3:\"col\";i:1;s:8:\"colgroup\";i:1;s:7:\"command\";i:0;s:8:\"datalist\";i:0;s:2:\"dd\";i:1;s:3:\"del\";i:0;s:7:\"details\";i:1;s:3:\"dfn\";i:0;s:3:\"dir\";i:0;s:3:\"div\";i:2;s:2:\"dl\";i:1;s:2:\"dt\";i:1;s:2:\"em\";i:2;s:5:\"embed\";i:0;s:8:\"fieldset\";i:1;s:10:\"figcaption\";i:0;s:6:\"figure\";i:0;s:6:\"footer\";i:0;s:4:\"font\";i:0;s:4:\"form\";i:0;s:2:\"h1\";i:1;s:2:\"h2\";i:1;s:2:\"h3\";i:1;s:2:\"h4\";i:1;s:2:\"h5\";i:1;s:2:\"h6\";i:1;s:6:\"header\";i:0;s:6:\"hgroup\";i:0;s:2:\"hr\";i:2;s:1:\"i\";i:1;s:6:\"iframe\";i:0;s:3:\"img\";i:2;s:5:\"input\";i:0;s:3:\"ins\";i:0;s:6:\"keygen\";i:0;s:3:\"kbd\";i:0;s:5:\"label\";i:1;s:6:\"legend\";i:1;s:2:\"li\";i:2;s:3:\"map\";i:0;s:4:\"mark\";i:0;s:4:\"menu\";i:0;s:7:\"marquee\";i:0;s:5:\"meter\";i:0;s:3:\"nav\";i:0;s:4:\"nobr\";i:0;s:6:\"object\";i:0;s:2:\"ol\";i:2;s:8:\"optgroup\";i:0;s:6:\"option\";i:0;s:6:\"output\";i:0;s:1:\"p\";i:2;s:5:\"param\";i:0;s:3:\"pre\";i:2;s:8:\"progress\";i:0;s:1:\"q\";i:0;s:2:\"rp\";i:0;s:2:\"rt\";i:0;s:4:\"ruby\";i:0;s:1:\"s\";i:0;s:4:\"samp\";i:0;s:6:\"script\";i:0;s:7:\"section\";i:0;s:6:\"select\";i:0;s:5:\"small\";i:0;s:6:\"source\";i:0;s:4:\"span\";i:2;s:6:\"strike\";i:0;s:6:\"strong\";i:2;s:3:\"sub\";i:1;s:7:\"summary\";i:1;s:3:\"sup\";i:0;s:5:\"table\";i:2;s:5:\"tbody\";i:1;s:2:\"td\";i:2;s:8:\"textarea\";i:0;s:5:\"tfoot\";i:1;s:2:\"th\";i:2;s:5:\"thead\";i:0;s:4:\"time\";i:0;s:2:\"tr\";i:2;s:2:\"tt\";i:2;s:1:\"u\";i:0;s:2:\"ul\";i:2;s:3:\"var\";i:0;s:5:\"video\";i:0;s:3:\"wbr\";i:0;}');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (185,'Categories','userrootcat','s:17:\"/__SYSTEM__/Users\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (186,'Categories','allowusercatedit','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (187,'Categories','autocreateusercat','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (188,'Categories','autocreateuserdefaultcat','i:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (189,'Categories','userdefaultcatname','s:7:\"Default\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (190,'Mailer','mailertype','i:1;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (191,'Mailer','charset','s:5:\"utf-8\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (192,'Mailer','encoding','s:4:\"8bit\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (193,'Mailer','html','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (194,'Mailer','wordwrap','i:50;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (195,'Mailer','msmailheaders','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (196,'Mailer','sendmailpath','s:18:\"/usr/sbin/sendmail\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (197,'Mailer','smtpauth','b:0;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (198,'Mailer','smtpserver','s:9:\"localhost\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (199,'Mailer','smtpport','i:25;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (200,'Mailer','smtptimeout','i:10;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (201,'Mailer','smtpusername','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (202,'Mailer','smtppassword','s:0:\"\";');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (203,'Search','itemsperpage','i:10;');
-INSERT INTO `z_module_vars` (`z_id`, `z_modname`, `z_name`, `z_value`) VALUES (204,'Search','limitsummary','i:255;');
+INSERT INTO `z_module_vars` VALUES (1,'/EventHandlers','Modules','a:2:{i:0;a:3:{s:9:\"eventname\";s:27:\"controller.method_not_found\";s:8:\"callable\";a:2:{i:0;s:14:\"Modules_HookUI\";i:1;s:13:\"hookproviders\";}s:6:\"weight\";i:10;}i:1;a:3:{s:9:\"eventname\";s:27:\"controller.method_not_found\";s:8:\"callable\";a:2:{i:0;s:14:\"Modules_HookUI\";i:1;s:15:\"hooksubscribers\";}s:6:\"weight\";i:10;}}');
+INSERT INTO `z_module_vars` VALUES (2,'Modules','itemsperpage','i:25;');
+INSERT INTO `z_module_vars` VALUES (3,'ZConfig','debug','s:1:\"0\";');
+INSERT INTO `z_module_vars` VALUES (4,'ZConfig','sitename','s:9:\"Site name\";');
+INSERT INTO `z_module_vars` VALUES (5,'ZConfig','slogan','s:16:\"Site description\";');
+INSERT INTO `z_module_vars` VALUES (6,'ZConfig','metakeywords','s:253:\"zikula, community, portal, portal web, open source, gpl, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework\";');
+INSERT INTO `z_module_vars` VALUES (7,'ZConfig','defaultpagetitle','s:9:\"Site name\";');
+INSERT INTO `z_module_vars` VALUES (8,'ZConfig','defaultmetadescription','s:16:\"Site description\";');
+INSERT INTO `z_module_vars` VALUES (9,'ZConfig','startdate','s:7:\"11/2010\";');
+INSERT INTO `z_module_vars` VALUES (10,'ZConfig','adminmail','s:15:\"drak@zikula.org\";');
+INSERT INTO `z_module_vars` VALUES (11,'ZConfig','Default_Theme','s:9:\"Andreas08\";');
+INSERT INTO `z_module_vars` VALUES (12,'ZConfig','anonymous','s:5:\"Guest\";');
+INSERT INTO `z_module_vars` VALUES (13,'ZConfig','timezone_offset','s:1:\"0\";');
+INSERT INTO `z_module_vars` VALUES (14,'ZConfig','timezone_server','s:1:\"0\";');
+INSERT INTO `z_module_vars` VALUES (15,'ZConfig','funtext','s:1:\"1\";');
+INSERT INTO `z_module_vars` VALUES (16,'ZConfig','reportlevel','s:1:\"0\";');
+INSERT INTO `z_module_vars` VALUES (17,'ZConfig','startpage','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (18,'ZConfig','Version_Num','s:9:\"1.3.0-dev\";');
+INSERT INTO `z_module_vars` VALUES (19,'ZConfig','Version_ID','s:6:\"Zikula\";');
+INSERT INTO `z_module_vars` VALUES (20,'ZConfig','Version_Sub','s:3:\"vai\";');
+INSERT INTO `z_module_vars` VALUES (21,'ZConfig','debug_sql','s:1:\"0\";');
+INSERT INTO `z_module_vars` VALUES (22,'ZConfig','multilingual','s:1:\"1\";');
+INSERT INTO `z_module_vars` VALUES (23,'ZConfig','useflags','s:1:\"0\";');
+INSERT INTO `z_module_vars` VALUES (24,'ZConfig','theme_change','s:1:\"0\";');
+INSERT INTO `z_module_vars` VALUES (25,'ZConfig','UseCompression','s:1:\"0\";');
+INSERT INTO `z_module_vars` VALUES (26,'ZConfig','siteoff','i:0;');
+INSERT INTO `z_module_vars` VALUES (27,'ZConfig','siteoffreason','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (28,'ZConfig','starttype','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (29,'ZConfig','startfunc','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (30,'ZConfig','startargs','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (31,'ZConfig','entrypoint','s:9:\"index.php\";');
+INSERT INTO `z_module_vars` VALUES (32,'ZConfig','language_detect','i:0;');
+INSERT INTO `z_module_vars` VALUES (33,'ZConfig','shorturls','b:0;');
+INSERT INTO `z_module_vars` VALUES (34,'ZConfig','shorturlstype','s:1:\"0\";');
+INSERT INTO `z_module_vars` VALUES (35,'ZConfig','shorturlsext','s:4:\"html\";');
+INSERT INTO `z_module_vars` VALUES (36,'ZConfig','shorturlsseparator','s:1:\"-\";');
+INSERT INTO `z_module_vars` VALUES (37,'ZConfig','shorturlsstripentrypoint','b:0;');
+INSERT INTO `z_module_vars` VALUES (38,'ZConfig','shorturlsdefaultmodule','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (39,'ZConfig','profilemodule','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (40,'ZConfig','messagemodule','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (41,'ZConfig','languageurl','i:0;');
+INSERT INTO `z_module_vars` VALUES (42,'ZConfig','ajaxtimeout','i:5000;');
+INSERT INTO `z_module_vars` VALUES (43,'ZConfig','permasearch','s:161:\"À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü\";');
+INSERT INTO `z_module_vars` VALUES (44,'ZConfig','permareplace','s:107:\"A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U\";');
+INSERT INTO `z_module_vars` VALUES (45,'ZConfig','language','s:3:\"eng\";');
+INSERT INTO `z_module_vars` VALUES (46,'ZConfig','locale','s:2:\"en\";');
+INSERT INTO `z_module_vars` VALUES (47,'ZConfig','language_i18n','s:2:\"en\";');
+INSERT INTO `z_module_vars` VALUES (48,'ZConfig','idnnames','i:1;');
+INSERT INTO `z_module_vars` VALUES (49,'Theme','modulesnocache','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (50,'Theme','enablecache','b:0;');
+INSERT INTO `z_module_vars` VALUES (51,'Theme','compile_check','b:1;');
+INSERT INTO `z_module_vars` VALUES (52,'Theme','cache_lifetime','i:3600;');
+INSERT INTO `z_module_vars` VALUES (53,'Theme','force_compile','b:0;');
+INSERT INTO `z_module_vars` VALUES (54,'Theme','trimwhitespace','b:0;');
+INSERT INTO `z_module_vars` VALUES (55,'Theme','maxsizeforlinks','i:30;');
+INSERT INTO `z_module_vars` VALUES (56,'Theme','itemsperpage','i:25;');
+INSERT INTO `z_module_vars` VALUES (57,'Theme','cssjscombine','b:0;');
+INSERT INTO `z_module_vars` VALUES (58,'Theme','cssjscompress','b:0;');
+INSERT INTO `z_module_vars` VALUES (59,'Theme','cssjsminify','b:0;');
+INSERT INTO `z_module_vars` VALUES (60,'Theme','cssjscombine_lifetime','i:3600;');
+INSERT INTO `z_module_vars` VALUES (61,'Theme','render_compile_check','b:1;');
+INSERT INTO `z_module_vars` VALUES (62,'Theme','render_force_compile','b:1;');
+INSERT INTO `z_module_vars` VALUES (63,'Theme','render_cache','b:0;');
+INSERT INTO `z_module_vars` VALUES (64,'Theme','render_expose_template','b:0;');
+INSERT INTO `z_module_vars` VALUES (65,'Theme','render_lifetime','i:3600;');
+INSERT INTO `z_module_vars` VALUES (66,'Admin','modulesperrow','i:3;');
+INSERT INTO `z_module_vars` VALUES (67,'Admin','itemsperpage','i:15;');
+INSERT INTO `z_module_vars` VALUES (68,'Admin','defaultcategory','i:5;');
+INSERT INTO `z_module_vars` VALUES (69,'Admin','modulestylesheet','s:11:\"navtabs.css\";');
+INSERT INTO `z_module_vars` VALUES (70,'Admin','admingraphic','i:1;');
+INSERT INTO `z_module_vars` VALUES (71,'Admin','startcategory','i:1;');
+INSERT INTO `z_module_vars` VALUES (72,'Admin','ignoreinstallercheck','i:0;');
+INSERT INTO `z_module_vars` VALUES (73,'Admin','admintheme','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (74,'Admin','displaynametype','i:1;');
+INSERT INTO `z_module_vars` VALUES (75,'Permissions','filter','i:1;');
+INSERT INTO `z_module_vars` VALUES (76,'Permissions','warnbar','i:1;');
+INSERT INTO `z_module_vars` VALUES (77,'Permissions','rowview','i:20;');
+INSERT INTO `z_module_vars` VALUES (78,'Permissions','rowedit','i:20;');
+INSERT INTO `z_module_vars` VALUES (79,'Permissions','lockadmin','i:1;');
+INSERT INTO `z_module_vars` VALUES (80,'Permissions','adminid','i:1;');
+INSERT INTO `z_module_vars` VALUES (81,'Groups','itemsperpage','i:25;');
+INSERT INTO `z_module_vars` VALUES (82,'Groups','defaultgroup','i:1;');
+INSERT INTO `z_module_vars` VALUES (83,'Groups','mailwarning','i:0;');
+INSERT INTO `z_module_vars` VALUES (84,'Groups','hideclosed','i:0;');
+INSERT INTO `z_module_vars` VALUES (85,'Groups','primaryadmingroup','i:2;');
+INSERT INTO `z_module_vars` VALUES (86,'Blocks','collapseable','i:0;');
+INSERT INTO `z_module_vars` VALUES (87,'Users','itemsperpage','i:25;');
+INSERT INTO `z_module_vars` VALUES (88,'Users','accountdisplaygraphics','i:1;');
+INSERT INTO `z_module_vars` VALUES (89,'Users','accountitemsperpage','i:25;');
+INSERT INTO `z_module_vars` VALUES (90,'Users','accountitemsperrow','i:5;');
+INSERT INTO `z_module_vars` VALUES (91,'Users','changepassword','i:1;');
+INSERT INTO `z_module_vars` VALUES (92,'Users','changeemail','i:1;');
+INSERT INTO `z_module_vars` VALUES (93,'Users','reg_allowreg','i:1;');
+INSERT INTO `z_module_vars` VALUES (94,'Users','reg_verifyemail','i:2;');
+INSERT INTO `z_module_vars` VALUES (95,'Users','reg_Illegalusername','s:87:\"root adm linux webmaster admin god administrator administrador nobody anonymous anonimo\";');
+INSERT INTO `z_module_vars` VALUES (96,'Users','reg_Illegaldomains','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (97,'Users','reg_Illegaluseragents','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (98,'Users','reg_noregreasons','s:51:\"Sorry! New user registration is currently disabled.\";');
+INSERT INTO `z_module_vars` VALUES (99,'Users','reg_uniemail','i:1;');
+INSERT INTO `z_module_vars` VALUES (100,'Users','reg_notifyemail','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (101,'Users','reg_optitems','i:0;');
+INSERT INTO `z_module_vars` VALUES (102,'Users','userimg','s:11:\"images/menu\";');
+INSERT INTO `z_module_vars` VALUES (103,'Users','avatarpath','s:13:\"images/avatar\";');
+INSERT INTO `z_module_vars` VALUES (104,'Users','allowgravatars','i:1;');
+INSERT INTO `z_module_vars` VALUES (105,'Users','gravatarimage','s:12:\"gravatar.gif\";');
+INSERT INTO `z_module_vars` VALUES (106,'Users','minage','i:13;');
+INSERT INTO `z_module_vars` VALUES (107,'Users','minpass','i:5;');
+INSERT INTO `z_module_vars` VALUES (108,'Users','anonymous','s:5:\"Guest\";');
+INSERT INTO `z_module_vars` VALUES (109,'Users','loginviaoption','i:0;');
+INSERT INTO `z_module_vars` VALUES (110,'Users','moderation','i:0;');
+INSERT INTO `z_module_vars` VALUES (111,'Users','hash_method','s:6:\"sha256\";');
+INSERT INTO `z_module_vars` VALUES (112,'Users','login_redirect','i:1;');
+INSERT INTO `z_module_vars` VALUES (113,'Users','reg_question','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (114,'Users','reg_answer','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (115,'Users','use_password_strength_meter','i:0;');
+INSERT INTO `z_module_vars` VALUES (116,'Users','default_authmodule','s:5:\"Users\";');
+INSERT INTO `z_module_vars` VALUES (117,'Users','moderation_order','i:0;');
+INSERT INTO `z_module_vars` VALUES (118,'Users','login_displaymarkeddel','b:0;');
+INSERT INTO `z_module_vars` VALUES (119,'Users','login_displayinactive','b:0;');
+INSERT INTO `z_module_vars` VALUES (120,'Users','login_displayverify','b:0;');
+INSERT INTO `z_module_vars` VALUES (121,'Users','login_displayapproval','b:0;');
+INSERT INTO `z_module_vars` VALUES (122,'/EventHandlers','Users','a:1:{i:0;a:3:{s:9:\"eventname\";s:19:\"get.pending_content\";s:8:\"callable\";a:2:{i:0;s:15:\"Users_Listeners\";i:1;s:22:\"pendingContentListener\";}s:6:\"weight\";i:10;}}');
+INSERT INTO `z_module_vars` VALUES (123,'SecurityCenter','itemsperpage','i:10;');
+INSERT INTO `z_module_vars` VALUES (124,'ZConfig','updatecheck','i:1;');
+INSERT INTO `z_module_vars` VALUES (125,'ZConfig','updatefrequency','i:7;');
+INSERT INTO `z_module_vars` VALUES (126,'ZConfig','updatelastchecked','i:1290960638;');
+INSERT INTO `z_module_vars` VALUES (127,'ZConfig','updateversion','s:5:\"1.2.4\";');
+INSERT INTO `z_module_vars` VALUES (128,'ZConfig','keyexpiry','i:0;');
+INSERT INTO `z_module_vars` VALUES (129,'ZConfig','sessionauthkeyua','b:0;');
+INSERT INTO `z_module_vars` VALUES (130,'ZConfig','secure_domain','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (131,'ZConfig','signcookies','i:1;');
+INSERT INTO `z_module_vars` VALUES (132,'ZConfig','signingkey','s:40:\"f10968bb2b7773334f789a2c55eb2b81d77c8099\";');
+INSERT INTO `z_module_vars` VALUES (133,'ZConfig','seclevel','s:6:\"Medium\";');
+INSERT INTO `z_module_vars` VALUES (134,'ZConfig','secmeddays','i:7;');
+INSERT INTO `z_module_vars` VALUES (135,'ZConfig','secinactivemins','i:20;');
+INSERT INTO `z_module_vars` VALUES (136,'ZConfig','sessionstoretofile','i:0;');
+INSERT INTO `z_module_vars` VALUES (137,'ZConfig','sessionsavepath','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (138,'ZConfig','gc_probability','i:100;');
+INSERT INTO `z_module_vars` VALUES (139,'ZConfig','anonymoussessions','i:1;');
+INSERT INTO `z_module_vars` VALUES (140,'ZConfig','sessionrandregenerate','b:1;');
+INSERT INTO `z_module_vars` VALUES (141,'ZConfig','sessionregenerate','b:1;');
+INSERT INTO `z_module_vars` VALUES (142,'ZConfig','sessionregeneratefreq','i:10;');
+INSERT INTO `z_module_vars` VALUES (143,'ZConfig','sessionipcheck','i:0;');
+INSERT INTO `z_module_vars` VALUES (144,'ZConfig','sessionname','s:4:\"ZSID\";');
+INSERT INTO `z_module_vars` VALUES (145,'ZConfig','filtergetvars','i:1;');
+INSERT INTO `z_module_vars` VALUES (146,'ZConfig','filterpostvars','i:1;');
+INSERT INTO `z_module_vars` VALUES (147,'ZConfig','filtercookievars','i:1;');
+INSERT INTO `z_module_vars` VALUES (148,'ZConfig','outputfilter','i:1;');
+INSERT INTO `z_module_vars` VALUES (149,'ZConfig','htmlpurifierlocation','s:46:\"system/SecurityCenter/lib/vendor/htmlpurifier/\";');
+INSERT INTO `z_module_vars` VALUES (150,'SecurityCenter','htmlpurifierConfig','s:3805:\"a:10:{s:4:\"Attr\";a:15:{s:14:\"AllowedClasses\";N;s:19:\"AllowedFrameTargets\";a:0:{}s:10:\"AllowedRel\";a:2:{s:8:\"nofollow\";b:1;s:11:\"imageviewer\";b:1;}s:10:\"AllowedRev\";a:0:{}s:13:\"ClassUseCDATA\";N;s:15:\"DefaultImageAlt\";N;s:19:\"DefaultInvalidImage\";s:0:\"\";s:22:\"DefaultInvalidImageAlt\";s:13:\"Invalid image\";s:14:\"DefaultTextDir\";s:3:\"ltr\";s:8:\"EnableID\";b:0;s:16:\"ForbiddenClasses\";a:0:{}s:11:\"IDBlacklist\";a:0:{}s:17:\"IDBlacklistRegexp\";N;s:8:\"IDPrefix\";s:0:\"\";s:13:\"IDPrefixLocal\";s:0:\"\";}s:10:\"AutoFormat\";a:10:{s:13:\"AutoParagraph\";b:0;s:6:\"Custom\";a:0:{}s:14:\"DisplayLinkURI\";b:0;s:7:\"Linkify\";b:0;s:22:\"PurifierLinkify.DocURL\";s:3:\"#%s\";s:15:\"PurifierLinkify\";b:0;s:33:\"RemoveEmpty.RemoveNbsp.Exceptions\";a:2:{s:2:\"td\";b:1;s:2:\"th\";b:1;}s:22:\"RemoveEmpty.RemoveNbsp\";b:0;s:11:\"RemoveEmpty\";b:0;s:28:\"RemoveSpansWithoutAttributes\";b:0;}s:3:\"CSS\";a:7:{s:14:\"AllowImportant\";b:0;s:11:\"AllowTricky\";b:0;s:17:\"AllowedProperties\";N;s:13:\"DefinitionRev\";i:1;s:19:\"ForbiddenProperties\";a:0:{}s:12:\"MaxImgLength\";s:6:\"1200px\";s:11:\"Proprietary\";b:0;}s:5:\"Cache\";a:2:{s:14:\"DefinitionImpl\";s:10:\"Serializer\";s:14:\"SerializerPath\";N;}s:4:\"Core\";a:17:{s:17:\"AggressivelyFixLt\";b:1;s:13:\"CollectErrors\";b:0;s:13:\"ColorKeywords\";a:17:{s:6:\"maroon\";s:7:\"#800000\";s:3:\"red\";s:7:\"#FF0000\";s:6:\"orange\";s:7:\"#FFA500\";s:6:\"yellow\";s:7:\"#FFFF00\";s:5:\"olive\";s:7:\"#808000\";s:6:\"purple\";s:7:\"#800080\";s:7:\"fuchsia\";s:7:\"#FF00FF\";s:5:\"white\";s:7:\"#FFFFFF\";s:4:\"lime\";s:7:\"#00FF00\";s:5:\"green\";s:7:\"#008000\";s:4:\"navy\";s:7:\"#000080\";s:4:\"blue\";s:7:\"#0000FF\";s:4:\"aqua\";s:7:\"#00FFFF\";s:4:\"teal\";s:7:\"#008080\";s:5:\"black\";s:7:\"#000000\";s:6:\"silver\";s:7:\"#C0C0C0\";s:4:\"gray\";s:7:\"#808080\";}s:25:\"ConvertDocumentToFragment\";b:1;s:31:\"DirectLexLineNumberSyncInterval\";i:0;s:8:\"Encoding\";s:5:\"utf-8\";s:21:\"EscapeInvalidChildren\";b:0;s:17:\"EscapeInvalidTags\";b:0;s:24:\"EscapeNonASCIICharacters\";b:0;s:14:\"HiddenElements\";a:2:{s:6:\"script\";b:1;s:5:\"style\";b:1;}s:8:\"Language\";s:2:\"en\";s:9:\"LexerImpl\";N;s:19:\"MaintainLineNumbers\";N;s:17:\"NormalizeNewlines\";b:1;s:16:\"RemoveInvalidImg\";b:1;s:28:\"RemoveProcessingInstructions\";b:0;s:20:\"RemoveScriptContents\";N;}s:6:\"Filter\";a:6:{s:6:\"Custom\";a:0:{}s:27:\"ExtractStyleBlocks.Escaping\";b:1;s:24:\"ExtractStyleBlocks.Scope\";N;s:27:\"ExtractStyleBlocks.TidyImpl\";N;s:18:\"ExtractStyleBlocks\";b:0;s:7:\"YouTube\";b:0;}s:4:\"HTML\";a:25:{s:7:\"Allowed\";N;s:17:\"AllowedAttributes\";N;s:15:\"AllowedElements\";N;s:14:\"AllowedModules\";N;s:18:\"Attr.Name.UseCDATA\";b:0;s:12:\"BlockWrapper\";s:1:\"p\";s:11:\"CoreModules\";a:7:{s:9:\"Structure\";b:1;s:4:\"Text\";b:1;s:9:\"Hypertext\";b:1;s:4:\"List\";b:1;s:22:\"NonXMLCommonAttributes\";b:1;s:19:\"XMLCommonAttributes\";b:1;s:16:\"CommonAttributes\";b:1;}s:13:\"CustomDoctype\";N;s:12:\"DefinitionID\";N;s:13:\"DefinitionRev\";i:1;s:7:\"Doctype\";s:22:\"HTML 4.01 Transitional\";s:20:\"FlashAllowFullScreen\";b:0;s:19:\"ForbiddenAttributes\";a:0:{}s:17:\"ForbiddenElements\";a:0:{}s:12:\"MaxImgLength\";i:1200;s:6:\"Parent\";s:3:\"div\";s:11:\"Proprietary\";b:0;s:9:\"SafeEmbed\";b:1;s:10:\"SafeObject\";b:1;s:6:\"Strict\";b:0;s:7:\"TidyAdd\";a:0:{}s:9:\"TidyLevel\";s:6:\"medium\";s:10:\"TidyRemove\";a:0:{}s:7:\"Trusted\";b:0;s:5:\"XHTML\";b:1;}s:6:\"Output\";a:5:{s:21:\"CommentScriptContents\";b:1;s:11:\"FlashCompat\";b:1;s:7:\"Newline\";N;s:8:\"SortAttr\";b:0;s:10:\"TidyFormat\";b:0;}s:4:\"Test\";a:1:{s:12:\"ForceNoIconv\";b:0;}s:3:\"URI\";a:16:{s:14:\"AllowedSchemes\";a:6:{s:4:\"http\";b:1;s:5:\"https\";b:1;s:6:\"mailto\";b:1;s:3:\"ftp\";b:1;s:4:\"nntp\";b:1;s:4:\"news\";b:1;}s:4:\"Base\";N;s:13:\"DefaultScheme\";s:4:\"http\";s:12:\"DefinitionID\";N;s:13:\"DefinitionRev\";i:1;s:7:\"Disable\";b:0;s:15:\"DisableExternal\";b:0;s:24:\"DisableExternalResources\";b:0;s:16:\"DisableResources\";b:0;s:4:\"Host\";N;s:13:\"HostBlacklist\";a:0:{}s:12:\"MakeAbsolute\";b:0;s:5:\"Munge\";N;s:14:\"MungeResources\";b:0;s:14:\"MungeSecretKey\";N;s:22:\"OverrideAllowedSchemes\";b:1;}}\";');
+INSERT INTO `z_module_vars` VALUES (151,'ZConfig','useids','i:0;');
+INSERT INTO `z_module_vars` VALUES (152,'ZConfig','idsmail','i:0;');
+INSERT INTO `z_module_vars` VALUES (153,'ZConfig','idsrulepath','s:32:\"config/phpids_zikula_default.xml\";');
+INSERT INTO `z_module_vars` VALUES (154,'ZConfig','idssoftblock','i:1;');
+INSERT INTO `z_module_vars` VALUES (155,'ZConfig','idsfilter','s:3:\"xml\";');
+INSERT INTO `z_module_vars` VALUES (156,'ZConfig','idsimpactthresholdone','i:1;');
+INSERT INTO `z_module_vars` VALUES (157,'ZConfig','idsimpactthresholdtwo','i:10;');
+INSERT INTO `z_module_vars` VALUES (158,'ZConfig','idsimpactthresholdthree','i:25;');
+INSERT INTO `z_module_vars` VALUES (159,'ZConfig','idsimpactthresholdfour','i:75;');
+INSERT INTO `z_module_vars` VALUES (160,'ZConfig','idsimpactmode','i:1;');
+INSERT INTO `z_module_vars` VALUES (161,'ZConfig','idshtmlfields','a:1:{i:0;s:14:\"POST.__wysiwyg\";}');
+INSERT INTO `z_module_vars` VALUES (162,'ZConfig','idsjsonfields','a:1:{i:0;s:15:\"POST.__jsondata\";}');
+INSERT INTO `z_module_vars` VALUES (163,'ZConfig','idsexceptions','a:12:{i:0;s:10:\"GET.__utmz\";i:1;s:10:\"GET.__utmc\";i:2;s:18:\"REQUEST.linksorder\";i:3;s:15:\"POST.linksorder\";i:4;s:19:\"REQUEST.fullcontent\";i:5;s:16:\"POST.fullcontent\";i:6;s:22:\"REQUEST.summarycontent\";i:7;s:19:\"POST.summarycontent\";i:8;s:19:\"REQUEST.filter.page\";i:9;s:16:\"POST.filter.page\";i:10;s:20:\"REQUEST.filter.value\";i:11;s:17:\"POST.filter.value\";}');
+INSERT INTO `z_module_vars` VALUES (164,'ZConfig','summarycontent','s:1130:\"For the attention of %sitename% administration staff:\n\nOn %date% at %time%, Zikula detected that somebody tried to interact with the site in a way that may have been intended compromise its security. This is not necessarily the case: it could have been caused by work you were doing on the site, or may have been due to some other reason. In any case, it was detected and blocked. \n\nThe suspicious activity was recognised in \'%filename%\' at line %linenumber%.\n\nType: %type%. \n\nAdditional information: %additionalinfo%.\n\nBelow is logged information that may help you identify what happened and who was responsible.\n\n=====================================\nInformation about the user:\n=====================================\nUser name:  %username%\nUser\'s e-mail address: %useremail%\nUser\'s real name: %userrealname%\n\n=====================================\nIP numbers (if this was a cracker, the IP numbers may not be the true point of origin)\n=====================================\nIP according to HTTP_CLIENT_IP: %httpclientip%\nIP according to REMOTE_ADDR: %remoteaddr%\nIP according to GetHostByName($REMOTE_ADDR): %gethostbyremoteaddr%\n\";');
+INSERT INTO `z_module_vars` VALUES (165,'ZConfig','fullcontent','s:1289:\"=====================================\nInformation in the $_REQUEST array\n=====================================\n%requestarray%\n\n=====================================\nInformation in the $_GET array\n(variables that may have been in the URL string or in a \'GET\'-type form)\n=====================================\n%getarray%\n\n=====================================\nInformation in the $_POST array\n(visible and invisible form elements)\n=====================================\n%postarray%\n\n=====================================\nBrowser information\n=====================================\n%browserinfo%\n\n=====================================\nInformation in the $_SERVER array\n=====================================\n%serverarray%\n\n=====================================\nInformation in the $_ENV array\n=====================================\n%envarray%\n\n=====================================\nInformation in the $_COOKIE array\n=====================================\n%cookiearray%\n\n=====================================\nInformation in the $_FILES array\n=====================================\n%filearray%\n\n=====================================\nInformation in the $_SESSION array\n(session information -- variables starting with PNSV are Zikula session variables)\n=====================================\n%sessionarray%\n\";');
+INSERT INTO `z_module_vars` VALUES (166,'ZConfig','usehtaccessbans','i:0;');
+INSERT INTO `z_module_vars` VALUES (167,'ZConfig','extrapostprotection','i:0;');
+INSERT INTO `z_module_vars` VALUES (168,'ZConfig','extragetprotection','i:0;');
+INSERT INTO `z_module_vars` VALUES (169,'ZConfig','checkmultipost','i:0;');
+INSERT INTO `z_module_vars` VALUES (170,'ZConfig','maxmultipost','i:4;');
+INSERT INTO `z_module_vars` VALUES (171,'ZConfig','cpuloadmonitor','i:0;');
+INSERT INTO `z_module_vars` VALUES (172,'ZConfig','cpumaxload','d:10;');
+INSERT INTO `z_module_vars` VALUES (173,'ZConfig','ccisessionpath','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (174,'ZConfig','htaccessfilelocation','s:9:\".htaccess\";');
+INSERT INTO `z_module_vars` VALUES (175,'ZConfig','nocookiebanthreshold','i:10;');
+INSERT INTO `z_module_vars` VALUES (176,'ZConfig','nocookiewarningthreshold','i:2;');
+INSERT INTO `z_module_vars` VALUES (177,'ZConfig','fastaccessbanthreshold','i:40;');
+INSERT INTO `z_module_vars` VALUES (178,'ZConfig','fastaccesswarnthreshold','i:10;');
+INSERT INTO `z_module_vars` VALUES (179,'ZConfig','javababble','i:0;');
+INSERT INTO `z_module_vars` VALUES (180,'ZConfig','javaencrypt','i:0;');
+INSERT INTO `z_module_vars` VALUES (181,'ZConfig','preservehead','i:0;');
+INSERT INTO `z_module_vars` VALUES (182,'ZConfig','filterarrays','i:1;');
+INSERT INTO `z_module_vars` VALUES (183,'ZConfig','htmlentities','s:1:\"1\";');
+INSERT INTO `z_module_vars` VALUES (184,'ZConfig','AllowableHTML','a:110:{s:3:\"!--\";i:2;s:1:\"a\";i:2;s:4:\"abbr\";i:1;s:7:\"acronym\";i:1;s:7:\"address\";i:1;s:6:\"applet\";i:0;s:4:\"area\";i:0;s:7:\"article\";i:1;s:5:\"aside\";i:1;s:5:\"audio\";i:0;s:1:\"b\";i:1;s:4:\"base\";i:0;s:8:\"basefont\";i:0;s:3:\"bdo\";i:0;s:3:\"big\";i:0;s:10:\"blockquote\";i:2;s:2:\"br\";i:2;s:6:\"button\";i:0;s:6:\"canvas\";i:0;s:7:\"caption\";i:1;s:6:\"center\";i:2;s:4:\"cite\";i:1;s:4:\"code\";i:0;s:3:\"col\";i:1;s:8:\"colgroup\";i:1;s:7:\"command\";i:0;s:8:\"datalist\";i:0;s:2:\"dd\";i:1;s:3:\"del\";i:0;s:7:\"details\";i:1;s:3:\"dfn\";i:0;s:3:\"dir\";i:0;s:3:\"div\";i:2;s:2:\"dl\";i:1;s:2:\"dt\";i:1;s:2:\"em\";i:2;s:5:\"embed\";i:0;s:8:\"fieldset\";i:1;s:10:\"figcaption\";i:0;s:6:\"figure\";i:0;s:6:\"footer\";i:0;s:4:\"font\";i:0;s:4:\"form\";i:0;s:2:\"h1\";i:1;s:2:\"h2\";i:1;s:2:\"h3\";i:1;s:2:\"h4\";i:1;s:2:\"h5\";i:1;s:2:\"h6\";i:1;s:6:\"header\";i:0;s:6:\"hgroup\";i:0;s:2:\"hr\";i:2;s:1:\"i\";i:1;s:6:\"iframe\";i:0;s:3:\"img\";i:2;s:5:\"input\";i:0;s:3:\"ins\";i:0;s:6:\"keygen\";i:0;s:3:\"kbd\";i:0;s:5:\"label\";i:1;s:6:\"legend\";i:1;s:2:\"li\";i:2;s:3:\"map\";i:0;s:4:\"mark\";i:0;s:4:\"menu\";i:0;s:7:\"marquee\";i:0;s:5:\"meter\";i:0;s:3:\"nav\";i:0;s:4:\"nobr\";i:0;s:6:\"object\";i:0;s:2:\"ol\";i:2;s:8:\"optgroup\";i:0;s:6:\"option\";i:0;s:6:\"output\";i:0;s:1:\"p\";i:2;s:5:\"param\";i:0;s:3:\"pre\";i:2;s:8:\"progress\";i:0;s:1:\"q\";i:0;s:2:\"rp\";i:0;s:2:\"rt\";i:0;s:4:\"ruby\";i:0;s:1:\"s\";i:0;s:4:\"samp\";i:0;s:6:\"script\";i:0;s:7:\"section\";i:0;s:6:\"select\";i:0;s:5:\"small\";i:0;s:6:\"source\";i:0;s:4:\"span\";i:2;s:6:\"strike\";i:0;s:6:\"strong\";i:2;s:3:\"sub\";i:1;s:7:\"summary\";i:1;s:3:\"sup\";i:0;s:5:\"table\";i:2;s:5:\"tbody\";i:1;s:2:\"td\";i:2;s:8:\"textarea\";i:0;s:5:\"tfoot\";i:1;s:2:\"th\";i:2;s:5:\"thead\";i:0;s:4:\"time\";i:0;s:2:\"tr\";i:2;s:2:\"tt\";i:2;s:1:\"u\";i:0;s:2:\"ul\";i:2;s:3:\"var\";i:0;s:5:\"video\";i:0;s:3:\"wbr\";i:0;}');
+INSERT INTO `z_module_vars` VALUES (185,'Categories','userrootcat','s:17:\"/__SYSTEM__/Users\";');
+INSERT INTO `z_module_vars` VALUES (186,'Categories','allowusercatedit','i:0;');
+INSERT INTO `z_module_vars` VALUES (187,'Categories','autocreateusercat','i:0;');
+INSERT INTO `z_module_vars` VALUES (188,'Categories','autocreateuserdefaultcat','i:0;');
+INSERT INTO `z_module_vars` VALUES (189,'Categories','userdefaultcatname','s:7:\"Default\";');
+INSERT INTO `z_module_vars` VALUES (190,'Mailer','mailertype','i:1;');
+INSERT INTO `z_module_vars` VALUES (191,'Mailer','charset','s:5:\"utf-8\";');
+INSERT INTO `z_module_vars` VALUES (192,'Mailer','encoding','s:4:\"8bit\";');
+INSERT INTO `z_module_vars` VALUES (193,'Mailer','html','b:0;');
+INSERT INTO `z_module_vars` VALUES (194,'Mailer','wordwrap','i:50;');
+INSERT INTO `z_module_vars` VALUES (195,'Mailer','msmailheaders','b:0;');
+INSERT INTO `z_module_vars` VALUES (196,'Mailer','sendmailpath','s:18:\"/usr/sbin/sendmail\";');
+INSERT INTO `z_module_vars` VALUES (197,'Mailer','smtpauth','b:0;');
+INSERT INTO `z_module_vars` VALUES (198,'Mailer','smtpserver','s:9:\"localhost\";');
+INSERT INTO `z_module_vars` VALUES (199,'Mailer','smtpport','i:25;');
+INSERT INTO `z_module_vars` VALUES (200,'Mailer','smtptimeout','i:10;');
+INSERT INTO `z_module_vars` VALUES (201,'Mailer','smtpusername','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (202,'Mailer','smtppassword','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (203,'Search','itemsperpage','i:10;');
+INSERT INTO `z_module_vars` VALUES (204,'Search','limitsummary','i:255;');
 
 --
 -- Table structure for table `z_modules`
@@ -794,21 +794,21 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_modules`
 --
 
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (1,'Modules',3,'Modules manager','modules','Provides support for modules, and incorporates an interface for adding, removing and administering core system modules and add-on modules.','Modules','3.7.8','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:9:\"Modules::\";s:2:\"::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (2,'Admin',3,'Administration panel','adminpanel','Provides the site\'s administration panel, and the ability to configure and manage it.','Admin','1.9.0','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:7:\"Admin::\";s:38:\"Admin Category name::Admin Category ID\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (3,'Blocks',3,'Blocks manager','blocks','Provides an interface for adding, removing and administering the site\'s side and center blocks.','Blocks','3.8.0','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:2:{s:8:\"Blocks::\";s:30:\"Block key:Block title:Block ID\";s:16:\"Blocks::position\";s:26:\"Position name::Position ID\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (4,'Categories',3,'Categories manager','categories','Provides support for categorisation of content in other modules, and an interface for adding, removing and administering categories.','Categories','1.2.1','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:20:\"Categories::Category\";s:40:\"Category ID:Category Path:Category IPath\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (5,'Errors',3,'Errors','errors','Provides the core system of the site with error-logging capability.','Errors','1.1.1','a:1:{s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:8:\"Errors::\";s:2:\"::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (6,'Groups',3,'Groups manager','groups','Provides support for user groups, and incorporates an interface for adding, removing and administering them.','Groups','2.3.2','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:8:\"Groups::\";s:10:\"Group ID::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (7,'Mailer',3,'Mailer','mailer','Provides mail-sending functionality for communication with the site\'s users, and an interface for managing the e-mail service settings used by the mailer.','Mailer','1.3.1','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:8:\"Mailer::\";s:2:\"::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (8,'PageLock',3,'Page lock','pagelock','Provides the ability to lock pages when they are in use, for content and access control.','PageLock','1.1.1','a:0:{}',1,'a:1:{s:10:\"PageLock::\";s:2:\"::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (9,'Permissions',3,'Permission manager','permissions','Provides an interface for fine-grained management of accessibility of the site\'s functionality and content through permission rules.','Permissions','1.1.1','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:13:\"Permissions::\";s:2:\"::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (10,'Search',3,'Site search','search','Provides an engine for searching within the site, and an interface for managing search page settings.','Search','1.5.1','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:8:\"Search::\";s:13:\"Module name::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (11,'SecurityCenter',3,'Security center','securitycenter','Provides the ability to manage site security. It logs attempted hacks and similar events, and incorporates a user interface for customising alerting and security settings.','SecurityCenter','1.4.3','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:16:\"SecurityCenter::\";s:2:\"::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (12,'Settings',3,'General settings','settings','Provides an interface for managing the site\'s general settings, i.e. site start page settings, multi-lingual settings, error reporting options and various other features that are not administered within other modules.','Settings','2.9.5','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:10:\"Settings::\";s:2:\"::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (13,'SysInfo',3,'System info','sysinfo','Provides detailed information reports about the system configuration and environment, for tracking and troubleshooting purposes.','SysInfo','1.1.1','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:9:\"SysInfo::\";s:2:\"::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (14,'Theme',3,'Themes manager','theme','Provides the site\'s theming system, and an interface for managing themes, to control the site\'s presentation and appearance.','Theme','3.4.1','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:7:\"Theme::\";s:12:\"Theme name::\";}','','');
-INSERT INTO `z_modules` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_url`, `z_description`, `z_directory`, `z_version`, `z_capabilities`, `z_state`, `z_securityschema`, `z_core_min`, `z_core_max`) VALUES (15,'Users',3,'Users manager','users','Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.','Users','2.1.2','a:3:{s:14:\"authentication\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:2:{s:7:\"Users::\";s:14:\"Uname::User ID\";s:16:\"Users::MailUsers\";s:2:\"::\";}','','');
+INSERT INTO `z_modules` VALUES (1,'Modules',3,'Modules manager','modules','Provides support for modules, and incorporates an interface for adding, removing and administering core system modules and add-on modules.','Modules','3.7.8','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:9:\"Modules::\";s:2:\"::\";}','','');
+INSERT INTO `z_modules` VALUES (2,'Admin',3,'Administration panel','adminpanel','Provides the site\'s administration panel, and the ability to configure and manage it.','Admin','1.9.0','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:7:\"Admin::\";s:38:\"Admin Category name::Admin Category ID\";}','','');
+INSERT INTO `z_modules` VALUES (3,'Blocks',3,'Blocks manager','blocks','Provides an interface for adding, removing and administering the site\'s side and center blocks.','Blocks','3.8.0','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:2:{s:8:\"Blocks::\";s:30:\"Block key:Block title:Block ID\";s:16:\"Blocks::position\";s:26:\"Position name::Position ID\";}','','');
+INSERT INTO `z_modules` VALUES (4,'Categories',3,'Categories manager','categories','Provides support for categorisation of content in other modules, and an interface for adding, removing and administering categories.','Categories','1.2.1','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:20:\"Categories::Category\";s:40:\"Category ID:Category Path:Category IPath\";}','','');
+INSERT INTO `z_modules` VALUES (5,'Errors',3,'Errors','errors','Provides the core system of the site with error-logging capability.','Errors','1.1.1','a:1:{s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:8:\"Errors::\";s:2:\"::\";}','','');
+INSERT INTO `z_modules` VALUES (6,'Groups',3,'Groups manager','groups','Provides support for user groups, and incorporates an interface for adding, removing and administering them.','Groups','2.3.2','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:8:\"Groups::\";s:10:\"Group ID::\";}','','');
+INSERT INTO `z_modules` VALUES (7,'Mailer',3,'Mailer','mailer','Provides mail-sending functionality for communication with the site\'s users, and an interface for managing the e-mail service settings used by the mailer.','Mailer','1.3.1','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:8:\"Mailer::\";s:2:\"::\";}','','');
+INSERT INTO `z_modules` VALUES (8,'PageLock',3,'Page lock','pagelock','Provides the ability to lock pages when they are in use, for content and access control.','PageLock','1.1.1','a:0:{}',1,'a:1:{s:10:\"PageLock::\";s:2:\"::\";}','','');
+INSERT INTO `z_modules` VALUES (9,'Permissions',3,'Permission manager','permissions','Provides an interface for fine-grained management of accessibility of the site\'s functionality and content through permission rules.','Permissions','1.1.1','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:13:\"Permissions::\";s:2:\"::\";}','','');
+INSERT INTO `z_modules` VALUES (10,'Search',3,'Site search','search','Provides an engine for searching within the site, and an interface for managing search page settings.','Search','1.5.1','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:8:\"Search::\";s:13:\"Module name::\";}','','');
+INSERT INTO `z_modules` VALUES (11,'SecurityCenter',3,'Security center','securitycenter','Provides the ability to manage site security. It logs attempted hacks and similar events, and incorporates a user interface for customising alerting and security settings.','SecurityCenter','1.4.3','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:16:\"SecurityCenter::\";s:2:\"::\";}','','');
+INSERT INTO `z_modules` VALUES (12,'Settings',3,'General settings','settings','Provides an interface for managing the site\'s general settings, i.e. site start page settings, multi-lingual settings, error reporting options and various other features that are not administered within other modules.','Settings','2.9.5','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:10:\"Settings::\";s:2:\"::\";}','','');
+INSERT INTO `z_modules` VALUES (13,'SysInfo',3,'System info','sysinfo','Provides detailed information reports about the system configuration and environment, for tracking and troubleshooting purposes.','SysInfo','1.1.1','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:9:\"SysInfo::\";s:2:\"::\";}','','');
+INSERT INTO `z_modules` VALUES (14,'Theme',3,'Themes manager','theme','Provides the site\'s theming system, and an interface for managing themes, to control the site\'s presentation and appearance.','Theme','3.4.1','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:7:\"Theme::\";s:12:\"Theme name::\";}','','');
+INSERT INTO `z_modules` VALUES (15,'Users',3,'Users manager','users','Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.','Users','2.1.2','a:3:{s:14:\"authentication\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:2:{s:7:\"Users::\";s:14:\"Uname::User ID\";s:16:\"Users::MailUsers\";s:2:\"::\";}','','');
 
 --
 -- Table structure for table `z_objectdata_attributes`
@@ -835,19 +835,19 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_objectdata_attributes`
 --
 
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (1,'code',5,'categories_category','Y','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (2,'code',6,'categories_category','N','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (3,'code',11,'categories_category','P','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (4,'code',12,'categories_category','C','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (5,'code',13,'categories_category','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (6,'code',14,'categories_category','O','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (7,'code',15,'categories_category','R','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (8,'code',17,'categories_category','M','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (9,'code',18,'categories_category','F','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (10,'code',26,'categories_category','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (11,'code',27,'categories_category','I','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (12,'code',29,'categories_category','P','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
-INSERT INTO `z_objectdata_attributes` (`oba_id`, `oba_attribute_name`, `oba_object_id`, `oba_object_type`, `oba_value`, `oba_obj_status`, `oba_cr_date`, `oba_cr_uid`, `oba_lu_date`, `oba_lu_uid`) VALUES (13,'code',30,'categories_category','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (1,'code',5,'categories_category','Y','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (2,'code',6,'categories_category','N','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (3,'code',11,'categories_category','P','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (4,'code',12,'categories_category','C','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (5,'code',13,'categories_category','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (6,'code',14,'categories_category','O','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (7,'code',15,'categories_category','R','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (8,'code',17,'categories_category','M','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (9,'code',18,'categories_category','F','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (10,'code',26,'categories_category','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (11,'code',27,'categories_category','I','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (12,'code',29,'categories_category','P','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
+INSERT INTO `z_objectdata_attributes` VALUES (13,'code',30,'categories_category','A','A','2010-11-28 16:10:34',0,'2010-11-28 16:10:34',0);
 
 --
 -- Table structure for table `z_objectdata_log`
@@ -1014,7 +1014,7 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_session_info`
 --
 
-INSERT INTO `z_session_info` (`z_sessid`, `z_ipaddr`, `z_lastused`, `z_uid`, `z_remember`, `z_vars`) VALUES ('3bhe4ba9ur24s486l7r5bhq8dsjh4iq6','837ec5754f503cfaaee0929fd48974e7','2010-11-28 16:10:39',2,0,'ZSVrand|a:1:{s:5:\"admin\";s:38:\"y7Z@=qs1e}j2lgQ3nondVCtTFpOWc~mbN5+kri\";}ZSVuseragent|s:40:\"510fbf65f46941d8181cc9a47a1a12d91c91d3ac\";ZSVuid|i:2;');
+INSERT INTO `z_session_info` VALUES ('3bhe4ba9ur24s486l7r5bhq8dsjh4iq6','837ec5754f503cfaaee0929fd48974e7','2010-11-28 16:10:39',2,0,'ZSVrand|a:1:{s:5:\"admin\";s:38:\"y7Z@=qs1e}j2lgQ3nondVCtTFpOWc~mbN5+kri\";}ZSVuseragent|s:40:\"510fbf65f46941d8181cc9a47a1a12d91c91d3ac\";ZSVuid|i:2;');
 
 --
 -- Table structure for table `z_themes`
@@ -1044,12 +1044,12 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_themes`
 --
 
-INSERT INTO `z_themes` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_description`, `z_directory`, `z_version`, `z_contact`, `z_admin`, `z_user`, `z_system`, `z_state`, `z_xhtml`) VALUES (1,'Admin',3,'Admin','Zikula Admin Theme','Admin','1.0','',1,1,0,1,1);
-INSERT INTO `z_themes` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_description`, `z_directory`, `z_version`, `z_contact`, `z_admin`, `z_user`, `z_system`, `z_state`, `z_xhtml`) VALUES (2,'Andreas08',3,'Andreas08','Based on the theme Andreas08 by Andreas Viklund and extended for Zikula with the CSS Framework \'fluid960gs\'.','Andreas08','2.0','',1,1,0,1,1);
-INSERT INTO `z_themes` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_description`, `z_directory`, `z_version`, `z_contact`, `z_admin`, `z_user`, `z_system`, `z_state`, `z_xhtml`) VALUES (3,'Atom',3,'Atom','The Atom theme is an auxiliary theme specially designed for rendering pages in Atom mark-up.','Atom','1.0','',0,0,1,1,0);
-INSERT INTO `z_themes` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_description`, `z_directory`, `z_version`, `z_contact`, `z_admin`, `z_user`, `z_system`, `z_state`, `z_xhtml`) VALUES (4,'Printer',3,'Printer','The Printer theme is an auxiliary theme designed specially for outputting pages in a printer-friendly format.','Printer','2.0','',0,0,1,1,1);
-INSERT INTO `z_themes` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_description`, `z_directory`, `z_version`, `z_contact`, `z_admin`, `z_user`, `z_system`, `z_state`, `z_xhtml`) VALUES (5,'RSS',3,'RSS','The RSS theme is an auxiliary theme designed specially for outputting pages as an RSS feed.','RSS','1.0','',0,0,1,1,0);
-INSERT INTO `z_themes` (`z_id`, `z_name`, `z_type`, `z_displayname`, `z_description`, `z_directory`, `z_version`, `z_contact`, `z_admin`, `z_user`, `z_system`, `z_state`, `z_xhtml`) VALUES (6,'SeaBreeze',3,'SeaBreeze','The SeaBreeze theme is a browser-oriented theme, and was updated for the release of Zikula 1.0, with revised colours and new graphics.','SeaBreeze','3.2','',0,1,0,1,1);
+INSERT INTO `z_themes` VALUES (1,'Admin',3,'Admin','Zikula Admin Theme','Admin','1.0','',1,1,0,1,1);
+INSERT INTO `z_themes` VALUES (2,'Andreas08',3,'Andreas08','Based on the theme Andreas08 by Andreas Viklund and extended for Zikula with the CSS Framework \'fluid960gs\'.','Andreas08','2.0','',1,1,0,1,1);
+INSERT INTO `z_themes` VALUES (3,'Atom',3,'Atom','The Atom theme is an auxiliary theme specially designed for rendering pages in Atom mark-up.','Atom','1.0','',0,0,1,1,0);
+INSERT INTO `z_themes` VALUES (4,'Printer',3,'Printer','The Printer theme is an auxiliary theme designed specially for outputting pages in a printer-friendly format.','Printer','2.0','',0,0,1,1,1);
+INSERT INTO `z_themes` VALUES (5,'RSS',3,'RSS','The RSS theme is an auxiliary theme designed specially for outputting pages as an RSS feed.','RSS','1.0','',0,0,1,1,0);
+INSERT INTO `z_themes` VALUES (6,'SeaBreeze',3,'SeaBreeze','The SeaBreeze theme is a browser-oriented theme, and was updated for the release of Zikula 1.0, with revised colours and new graphics.','SeaBreeze','3.2','',0,1,0,1,1);
 
 --
 -- Table structure for table `z_userblocks`
@@ -1101,8 +1101,8 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_users`
 --
 
-INSERT INTO `z_users` (`z_uid`, `z_uname`, `z_email`, `z_pass`, `z_passreminder`, `z_activated`, `z_approved_date`, `z_approved_by`, `z_user_regdate`, `z_lastlogin`, `z_theme`, `z_ublockon`, `z_ublock`) VALUES (1,'guest','','','',1,'2010-11-28 16:10:32',2,'2010-11-28 16:10:32','1970-01-01 00:00:00','',0,'');
-INSERT INTO `z_users` (`z_uid`, `z_uname`, `z_email`, `z_pass`, `z_passreminder`, `z_activated`, `z_approved_date`, `z_approved_by`, `z_user_regdate`, `z_lastlogin`, `z_theme`, `z_ublockon`, `z_ublock`) VALUES (2,'admin','drak@zikula.org','8$g=EAE$d466af938c49e7ad5b2d76dbbb4427b2281711502e243111d9a1a47652aa6624','',1,'2010-11-28 16:10:32',2,'2010-11-28 16:10:34','2010-11-28 16:10:34','',0,'');
+INSERT INTO `z_users` VALUES (1,'guest','','','',1,'2010-11-28 16:10:32',2,'2010-11-28 16:10:32','1970-01-01 00:00:00','',0,'');
+INSERT INTO `z_users` VALUES (2,'admin','drak@zikula.org','8$g=EAE$d466af938c49e7ad5b2d76dbbb4427b2281711502e243111d9a1a47652aa6624','',1,'2010-11-28 16:10:32',2,'2010-11-28 16:10:34','2010-11-28 16:10:34','',0,'');
 
 --
 -- Table structure for table `z_users_verifychg`
@@ -1159,4 +1159,4 @@ SET character_set_client = @saved_cs_client;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-11-28 22:01:47
+-- Dump completed on 2010-11-28 22:05:25
