@@ -101,6 +101,27 @@ class HookUtil
     }
 
     /**
+     * Un-register a subscriber's availability.
+     *
+     * @param string $owner     Owner of the hook handler.
+     * @area  string $area      Subscriber area.
+     * @param string $type      Hook type.
+     * @param string $eventName EventName called.
+     *
+     * @return void
+     */
+    public static function unRegisterSubscriber($owner, $area, $type, $eventName)
+    {
+        return Doctrine_Query::create()->delete()
+                ->where('owner = ?', $owner)
+                ->andWhere('area = ?', $area)
+                ->andWhere('type = ?', $type)
+                ->andWhere('eventname = ?', $eventName)
+                ->from('Zikula_Doctrine_Model_HookSubscribers')
+                ->execute();
+    }
+
+    /**
      * Get all hook handlers for a given owner.
      *
      * @param string $owner Owner.
@@ -201,28 +222,26 @@ class HookUtil
     }
 
     /**
-     * Unregister hook.
+     * Unregister a single provider handler.
      *
-     * @param string $name Name of hook handler.
+     * This removed all runtime handlers for events of subscribers that might be attached.
+     *
+     * @param string $name Name of provider handler.
      *
      * @return void
      */
     public static function unregisterProvider($name)
     {
-        $hook = self::getHook($name);
-        if (!$hook) {
+        $provider = self::getProvider($name);
+        if (!$provider) {
             return;
         }
 
         // We have to remove any persistent event handlers from persistance and EventManager
         $handlers = ModUtil::getVar(self::HANDLERS, '/handlers');
-        foreach ($handlers as $key => $handler) {
-            if ($handler['name'] == $name) {
-                unset($handlers[$key]);
-                EventUtil::getManager()->detach($handler['eventname'], self::resolveCallable($handler));
-            }
+        foreach ($handlers as $handler) {
+            self::unRegisterHandler($handler['eventname'], $handler['name'], $handler['weight']);
         }
-        $handlers = ModUtil::setVar(self::HANDLERS, 'handlers', $handlers);
 
         Doctrine_Query::create()->delete()
                 ->where('name = ?', $name)
@@ -239,18 +258,18 @@ class HookUtil
      */
     public static function unregisterProvidersByOwner($owner)
     {
-        $hooks = Doctrine_Query::create()->select()
+        $providers = Doctrine_Query::create()->select()
                         ->where('owner = ?', $owner)
                         ->from('Zikula_Doctrine_Model_HookProviders')
                         ->execute()
                         ->toArray();
 
-        if (!$hooks) {
+        if (!$providers) {
             return;
         }
 
-        foreach ($hooks as $hook) {
-            self::unregisterProvider($hook['name']);
+        foreach ($providers as $provider) {
+            self::unregisterProvider($provider['name']);
         }
     }
 
@@ -269,15 +288,15 @@ class HookUtil
      */
     public static function registerHandler($eventName, $handlerName, $weight=null)
     {
-        $hook = self::getProvider($handlerName);
-        if (!$hook) {
+        $provider = self::getProvider($handlerName);
+        if (!$provider) {
             throw new InvalidArgumentException(sprintf('Hook handler %s does not exist', $handlerName));
         }
 
-        $hook['weight'] = (is_null($weight)) ? (int)$hook['weight'] : (int)$weight;
-        $hook['eventname'] = $eventName;
+        $provider['weight'] = (is_null($weight)) ? (int)$provider['weight'] : (int)$weight;
+        $provider['eventname'] = $eventName;
         $handlers = ModUtil::getVar(self::HANDLERS, '/handlers', array());
-        $handlers[] = $hook;
+        $handlers[] = $provider;
         ModUtil::setVar(self::HANDLERS, '/handlers', $handlers);
     }
 
@@ -285,20 +304,20 @@ class HookUtil
      * Unregister a persistent (runtime) hook handler.
      *
      * @param string  $eventName   Name of hookable event.
-     * @param string  $handlerName Name of handling class.
+     * @param string  $handlerName Common name of handler.
      * @param integer $weight      The event handler weight, default = 10.
      *
      * @return void
      */
     public static function unRegisterHandler($eventName, $handlerName, $weight=10)
     {
-        $hook = self::getProvider($handlerName);
-        if (!$hook) {
+        $provider = self::getProvider($handlerName);
+        if (!$provider) {
             return;
         }
 
-        $hook['weight'] = (is_null($weight)) ? (int)$hook['weight'] : (int)$weight;
-        $hook['eventname'] = $eventName;
+        $provider['weight'] = (is_null($weight)) ? (int)$provider['weight'] : (int)$weight;
+        $provider['eventname'] = $eventName;
 
         $handlers = ModUtil::getVar(self::HANDLERS, '/handlers', false);
         if (!$handlers) {
@@ -308,8 +327,11 @@ class HookUtil
 
         $filteredHandlers = array();
         foreach ($handlers as $handler) {
-            if ($handler !== $hook) {
+            if ($handler !== $provider) {
                 $filteredHandlers[] = $handler;
+            } else {
+                // remove any runtime event handlers
+                EventUtil::getManager()->detach($handler['eventname'], self::resolveCallable($handler));
             }
         }
 
@@ -517,6 +539,36 @@ class HookUtil
     }
 
     /**
+     * Unregister providers by bundle.
+     *
+     * This cascades to remove all bindings by any subscribers to the providers in these bundles.
+     * 
+     * @param Zikula_Version $version
+     *
+     * @return void
+     */
+    public static function unRegisterHookProviderBundles(Zikula_Version $version)
+    {
+        $bundles = $version->getHookProviderBundles();
+        $providerName = $version->getName();
+
+        $subscribers = self::getSubscribersInUseBy($providerName);
+        foreach ($subscribers as $subscriber) {
+            // remove handlers for this binding, the associated sorts and update bindings table.
+            self::unBindSubscribersFromProvider($subscriber['subarea'], $subscriber['providerarea']);
+        }
+
+        // now delete availability of bundles from subscriber availability table.
+        foreach ($bundles as $bundle) {
+            Doctrine_Query::create()->delete()
+                        ->where('owner = ?', $providerName)
+                        ->andWhere('area = ?', $bundle->getArea())
+                        ->from('Zikula_Doctrine_Model_HookProviders')
+                        ->execute();
+        }
+    }
+
+    /**
      * Register Subscribers with persistence layer.
      *
      * @param Zikula_Version $version Module's version object.
@@ -531,6 +583,34 @@ class HookUtil
             foreach ($bundle->getHookTypes() as $type => $eventName) {
                 self::registerSubscriber($owner, $bundle->getArea(), $type, $eventName);
             }
+        }
+    }
+
+    /**
+     * Unregister all subscribers from the system.
+     * 
+     * This cascades to remove all event handlers, sorting data and update bindings table.
+     *
+     * @param Zikula_Version $version
+     */
+    public static function unRegisterHookSubscriberBundles(Zikula_Version $version)
+    {
+        $bundles = $version->getHookSubscriberBundles();
+        $subscriberName = $version->getName();
+
+        $providers = self::getProvidersInUseBy($subscriberName);
+        foreach ($providers as $provider) {
+            // remove handlers for this binding, the associated sorts and update bindings table.
+            self::unBindSubscribersFromProvider($provider['subarea'], $provider['providerarea']);
+        }
+
+        // now delete availability of bundles from subscriber availability table.
+        foreach ($bundles as $bundle) {
+            Doctrine_Query::create()->delete()
+                        ->where('owner = ?', $subscriberName)
+                        ->andWhere('area = ?', $bundle->getArea())
+                        ->from('Zikula_Doctrine_Model_HookSubscribers')
+                        ->execute();
         }
     }
 
@@ -590,7 +670,7 @@ class HookUtil
     }
 
     /**
-     * Un-bind subscribers from a provider.
+     * Un-bind all subscribers from a provider for a given area.
      *
      * @param string $subscriberArea Subscriber area name.
      * @param string $providerArea   Provider area name.
@@ -671,6 +751,22 @@ class HookUtil
     {
         return Doctrine_Query::create()->select()
                 ->andWhere('subowner = ?', $subscriberName)
+                ->from('Zikula_Doctrine_Model_HookBindings')
+                ->execute()
+                ->toArray();
+    }
+
+    /**
+     * Get all subscribers that use a given provider.
+     *
+     * @param string $providerName Provider's name.
+     *
+     * @return array
+     */
+    public static function getSubscribersInUseBy($providerName)
+    {
+        return Doctrine_Query::create()->select()
+                ->andWhere('providerowner = ?', $providerName)
                 ->from('Zikula_Doctrine_Model_HookBindings')
                 ->execute()
                 ->toArray();
