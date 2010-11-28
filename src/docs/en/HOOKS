@@ -136,15 +136,19 @@ The following is a list of valid hook types.  Not all have to be used but in gen
 a HookBundle should contain at least the ui.* and process.* handlers valid to complete
 an action.
 
-ui.view          - Display hook for view/display templates.
-ui.edit          - Display hook for create/edit forms.
-ui.delete        - Display hook for delete dialogues (generally not used).
+ui.view         - Display hook for view/display templates.
+ui.edit         - Display hook for create/edit forms.
+ui.delete       - Display hook for delete dialogues (generally not used).
 
-validate.edit    - Used to validate input from an ui create/edit form.
-validate.delete  - Used to validate input from an ui create/edit form (generally no used).
+validate.edit   - Used to validate input from an ui create/edit form.
+validate.delete - Used to validate input from an ui create/edit form (generally no used).
 
-process.edit     - Perform the final update actions for a ui create/edit form.
-process.delete   - Perform the final delete actions for a ui form.
+process.edit    - Perform the final update actions for a ui create/edit form.
+process.delete  - Perform the final delete actions for a ui form.
+
+filter          - This is a filter to be applied in a given area.  Filters should probably
+                  Have their own separate area(s) as it would give a user more control over
+                  what filters are applied and where.
 
 Hookable Events
 ---------------
@@ -334,3 +338,14 @@ triggering a hookable event with
 
 ui.delete hooks are displayed in the template with
 {notifydisplayhooks eventname='<module>.hook.<area>.ui.delete' subject=$subject id=$id}
+
+FILTER HOOKS
+------------
+Filter hooks are designed to filter data.  The should be generally have their own areas
+and a module might choose to have several, giving the user control over which areas of
+the module's output have the filters applied.
+
+Usage:
+
+    {$var|notifyfilters:'news.filterhook.<area>.<name>'}
+

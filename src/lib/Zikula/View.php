@@ -239,6 +239,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         }
 
         $this->register_prefilter('z_prefilter_gettext_params');
+        $this->register_prefilter('z_prefilter_notifyfilters');
 
         // Assign some useful theme settings
         //$this->assign(ThemeUtil::getVar()); // TODO A [investigate - this appears to always be empty and causes loops] (drak)
@@ -2568,3 +2569,17 @@ function z_prefilter_legacy_callback($m)
     $m[1] = preg_replace('#\|pn#', '|', $m[1]);
     return "{{$m[1]}}";
 }
+
+/**
+ * Prefilter for hookable filters.
+ *
+ * @param string      $tpl_source The template's source prior to prefiltering.
+ * @param Zikula_View $view       A reference to the Zikula_View object.
+ *
+ * @return string The prefiltered template contents.
+ */
+function z_prefilter_notifyfilters($tpl_source, $view)
+{
+    return preg_replace_callback('#\{(?:\s*)notifyfilters:(\'|"){1}(.*?)(\'|"){1}(?:\s*)\}#', create_function('$m', 'return "{notifyfilters:$m[1]$m[2]$m[3]:\$zikula_view}";'), $tpl_source);
+}
+
