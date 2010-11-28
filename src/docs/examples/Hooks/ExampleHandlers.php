@@ -32,7 +32,7 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the id of the object.
      * args[module] the module who notified of this event.
      *
-     * @param Zikula_Event $event
+     * @param Zikula_Event $event The hookable event.
      *
      * @return void
      */
@@ -61,7 +61,7 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the ID of the subject.
      * args[module] the module who notified of this event.
      *
-     * @param Zikula_Event $event
+     * @param Zikula_Event $event The hookable event.
      *
      * @return void
      */
@@ -110,7 +110,7 @@ class Example_HookHandler extends Zikula_HookHandler
      *
      * This handler works for create and edit actions equally.
      *
-     * @param Zikula_Event $event
+     * @param Zikula_Event $event The hookable event.
      *
      * @return void
      */
@@ -137,7 +137,7 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the ID of the subject.
      * args[module] the module who notified of this event.
      *
-     * @param Zikula_Event $event
+     * @param Zikula_Event $event The hookable event.
      *
      * @return void
      */
@@ -162,7 +162,7 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the is of the object
      * args[module] is the name of who notified this event.
      *
-     * @param Zikula_Event $event
+     * @param Zikula_Event $event The hookable event.
      *
      * @return void
      */
