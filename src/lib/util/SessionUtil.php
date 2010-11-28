@@ -123,31 +123,7 @@ class SessionUtil
         $_HTTP_X_FORWARDED_FOR = System::serverGetVar('HTTP_X_FORWARDED_FOR');
 
         if (System::getVar('sessionipcheck')) {
-            /*
-              Feature for after 0.8 release - drak
-              // todo - add dropdown option for sessionipcheckmask for /32, /24, /16 CIDR
-
-              $ipmask = System::getVar('sessionipcheckmask');
-              if ($ipmask <> 32) {
-              // since we're not a /32 we need to handle in case multiple ips returned
-              if ($_HTTP_X_FORWARDED_FOR && strstr($_HTTP_X_FORWARDED_FOR, ', ')) {
-              $_ips = explode(', ', $_HTTP_X_FORWARDED_FOR);
-              $_HTTP_X_FORWARDED_FOR = $_ips[0];
-              }
-
-              // apply CIDR mask to allow IP checks on clients assigned
-              // dynamic IP addresses - e.g. A O *cough* L
-              if ($ipmask == 24) {
-              $_REMOTE_ADDR = preg_replace('/[^.]+.$/', '*', $_REMOTE_ADDR);
-              $_HTTP_X_FORWARDED_FOR = ($_HTTP_X_FORWARDED_FOR ? preg_replace('/[^.]+.$/', '*', $_HTTP_X_FORWARDED_FOR) : '');
-              } else if ($ipmask == 16) {
-              $_REMOTE_ADDR = preg_replace('/[0-9]*.\.[^.]+.$/', '*', $_REMOTE_ADDR);
-              $_HTTP_X_FORWARDED_FOR = ($_HTTP_X_FORWARDED_FOR ? preg_replace('/[0-9]*.\.[^.]+.$/', '*', $fullhost) : '');
-              } else { // must be a /32 CIDR
-              null; // nothing to do
-              }
-              }
-             */
+            // feature for future release
         }
 
         // create the ip fingerprint

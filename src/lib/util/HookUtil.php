@@ -82,7 +82,7 @@ class HookUtil
      * Register a subscriber's availability.
      *
      * @param string $owner     Owner of the hook handler.
-     * @area  string $area      Subscriber area.
+     * @param string $area      Subscriber area.
      * @param string $type      Hook type.
      * @param string $eventName EventName called.
      *
@@ -104,7 +104,7 @@ class HookUtil
      * Un-register a subscriber's availability.
      *
      * @param string $owner     Owner of the hook handler.
-     * @area  string $area      Subscriber area.
+     * @param string $area      Subscriber area.
      * @param string $type      Hook type.
      * @param string $eventName EventName called.
      *
@@ -543,7 +543,7 @@ class HookUtil
      *
      * This cascades to remove all bindings by any subscribers to the providers in these bundles.
      * 
-     * @param Zikula_Version $version
+     * @param Zikula_Version $version Module's version object.
      *
      * @return void
      */
@@ -591,7 +591,7 @@ class HookUtil
      * 
      * This cascades to remove all event handlers, sorting data and update bindings table.
      *
-     * @param Zikula_Version $version
+     * @param Zikula_Version $version Module's version object.
      *
      * @return void
      */
@@ -777,8 +777,8 @@ class HookUtil
     /**
      * Check if given provider is in use by a given subscriber.
      *
-     * @param string $subscriberName    Subscriber's name.
-     * @param string $providerName      Provider's name.
+     * @param string $subscriberName Subscriber's name.
+     * @param string $providerName   Provider's name.
      *
      * @return array
      */
