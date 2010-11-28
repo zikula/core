@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 /**
  * constants for this class
  */
@@ -37,8 +36,7 @@ class DateUtil
             $format = DATEFORMAT_FIXED;
         }
 
-        switch (trim(strtolower($format)))
-        {
+        switch (trim(strtolower($format))) {
             case 'datelong':
                 //! datelong
                 $format = __('%A, %B %d, %Y');
@@ -109,7 +107,6 @@ class DateUtil
         return self::strftime(DATEONLYFORMAT_FIXED, $timestamp);
     }
 
-
     /**
      * Reformat a given datetime according to the specified format.
      *
@@ -140,7 +137,6 @@ class DateUtil
         return self::getDatetime($time, $format);
     }
 
-
     /**
      * Build a datetime string from the supplied fields.
      *
@@ -169,7 +165,6 @@ class DateUtil
         return self::strftime($format, $dTime);
     }
 
-
     /**
      * Return a formatted datetime at the end of the business day n days from now.
      *
@@ -186,16 +181,15 @@ class DateUtil
      */
     public static function getDatetime_NextDay($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
     {
-        $next = mktime ($hour!=null   ? (int)$hour     : date('H'),
-                        $minute!=null ? (int)$minute   : date('i'),
-                        $second!=null ? (int)$second   : date('s'),
-                        $month!=null  ? (int)$month    : date('m'),
-                        $day!=null    ? (int)$day+$num : date('d')+$num,
-                        $year!=null   ? (int)$year     : date('y'));
+        $next = mktime($hour != null ? (int)$hour : date('H'),
+                        $minute != null ? (int)$minute : date('i'),
+                        $second != null ? (int)$second : date('s'),
+                        $month != null ? (int)$month : date('m'),
+                        $day != null ? (int)$day + $num : date('d') + $num,
+                        $year != null ? (int)$year : date('y'));
 
         return self::strftime($format, $next);
     }
-
 
     /**
      * Return a formatted datetime at the end of the business day n week from now.
@@ -214,16 +208,15 @@ class DateUtil
     public static function getDatetime_NextWeek($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
     {
         $num *= 7;
-        $next = mktime ($hour!=null   ? (int)$hour     : date('H'),
-                        $minute!=null ? (int)$minute   : date('i'),
-                        $second!=null ? (int)$second   : date('s'),
-                        $month!=null  ? (int)$month    : date('m'),
-                        $day!=null    ? (int)$day+$num : date('d')+$num,
-                        $year!=null   ? (int)$year     : date('y'));
+        $next = mktime($hour != null ? (int)$hour : date('H'),
+                        $minute != null ? (int)$minute : date('i'),
+                        $second != null ? (int)$second : date('s'),
+                        $month != null ? (int)$month : date('m'),
+                        $day != null ? (int)$day + $num : date('d') + $num,
+                        $year != null ? (int)$year : date('y'));
 
         return self::strftime($format, $next);
     }
-
 
     /**
      * Return a formatted datetime at the end of the business day n months from now.
@@ -241,16 +234,15 @@ class DateUtil
      */
     public static function getDatetime_NextMonth($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
     {
-        $next = mktime ($hour!=null   ? (int)$hour     : date('H'),
-                        $minute!=null ? (int)$minute   : date('i'),
-                        $second!=null ? (int)$second   : date('s'),
-                        $month!=null  ? (int)$month+$num : date('m')+$num,
-                        $day!=null    ? (int)$day      : date('d'),
-                        $year!=null   ? (int)$year     : date('y'));
+        $next = mktime($hour != null ? (int)$hour : date('H'),
+                        $minute != null ? (int)$minute : date('i'),
+                        $second != null ? (int)$second : date('s'),
+                        $month != null ? (int)$month + $num : date('m') + $num,
+                        $day != null ? (int)$day : date('d'),
+                        $year != null ? (int)$year : date('y'));
 
         return self::strftime($format, $next);
     }
-
 
     /**
      * Return a formatted datetime at the end of the business day n years from now
@@ -268,16 +260,15 @@ class DateUtil
      */
     public static function getDatetime_NextYear($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
     {
-        $next = mktime ($hour!=null   ? (int)$hour     : date('H'),
-                        $minute!=null ? (int)$minute   : date('i'),
-                        $second!=null ? (int)$second   : date('s'),
-                        $month!=null  ? (int)$month    : date('m'),
-                        $day!=null    ? (int)$day      : date('d'),
-                        $year!=null   ? (int)$year+$num : date('y')+$num);
+        $next = mktime($hour != null ? (int)$hour : date('H'),
+                        $minute != null ? (int)$minute : date('i'),
+                        $second != null ? (int)$second : date('s'),
+                        $month != null ? (int)$month : date('m'),
+                        $day != null ? (int)$day : date('d'),
+                        $year != null ? (int)$year + $num : date('y') + $num);
 
         return self::strftime($format, $next);
     }
-
 
     /**
      * Return the date portion of a datetime timestamp.
@@ -305,7 +296,6 @@ class DateUtil
         return substr($sTime, 0, $spaceOffset);
     }
 
-
     /**
      * Return the time portion of a datetime timestamp.
      *
@@ -329,9 +319,8 @@ class DateUtil
 
         $spaceOffset = strpos($datetime, ' ');
 
-        return substr($datetime, $spaceOffset+1);
+        return substr($datetime, $spaceOffset + 1);
     }
-
 
     /**
      * Return the requested field from the supplied date.
@@ -376,7 +365,6 @@ class DateUtil
         return $fields[$field];
     }
 
-
     /**
      * Return an structured array holding the differences between 2 dates.
      *
@@ -403,16 +391,15 @@ class DateUtil
         }
 
         $s = $date2 - $date1;
-        $d = intval($s/86400);
-        $s -= $d*86400;
-        $h = intval($s/3600);
-        $s -= $h*3600;
-        $m = intval($s/60);
-        $s -= $m*60;
+        $d = intval($s / 86400);
+        $s -= $d * 86400;
+        $h = intval($s / 3600);
+        $s -= $h * 3600;
+        $m = intval($s / 60);
+        $s -= $m * 60;
 
         return array('d' => $d, 'h' => $h, 'm' => $m, 's' => $s);
     }
-
 
     /**
      * Return an field holding the differences between 2 dates expressed in units of the field requested.
@@ -446,27 +433,21 @@ class DateUtil
         $diff = 0;
 
         if ($field == 1) {
-            $diff = $s/(60*60*24*31*12);
-
+            $diff = $s / (60 * 60 * 24 * 31 * 12);
         } elseif ($field == 2) {
-            $diff = $s/(60*60*24*31);
-
+            $diff = $s / (60 * 60 * 24 * 31);
         } elseif ($field == 3) {
-            $diff = $s/(60*60*24);
-
+            $diff = $s / (60 * 60 * 24);
         } elseif ($field == 4) {
-            $diff = $s/(60*60);
-
+            $diff = $s / (60 * 60);
         } elseif ($field == 5) {
-            $diff = $s/(60);
-
+            $diff = $s / (60);
         } else {
             $diff = $s;
         }
 
         return $diff;
     }
-
 
     /**
      * Calculate day-x of KW in a YEAR.
@@ -480,29 +461,28 @@ class DateUtil
      */
     public static function getDateofKW($day, $kw, $year, $flag='s')
     {
-        $wday = date('w',mktime(0, 0, 0, 1, 1, $year)); // 1=Monday,...,7 = Sunday
+        $wday = date('w', mktime(0, 0, 0, 1, 1, $year)); // 1=Monday,...,7 = Sunday
 
         if ($wday <= 4) {
-            $firstday = mktime(0, 0, 0, 1, 1-($wday-1)+$day, $year);
+            $firstday = mktime(0, 0, 0, 1, 1 - ($wday - 1) + $day, $year);
         } else {
-            $firstday = mktime(0, 0, 0, 1, 1+(7-$wday+1)+$day, $year);
+            $firstday = mktime(0, 0, 0, 1, 1 + (7 - $wday + 1) + $day, $year);
         }
 
         $month = date('m', $firstday);
-        $year  = date('Y', $firstday);
-        $day   = date('d', $firstday);
+        $year = date('Y', $firstday);
+        $day = date('d', $firstday);
 
-        $adddays = ($kw-1)*7;
+        $adddays = ($kw - 1) * 7;
 
         if ($flag != 's') {
-            $return = mktime(0, 0, 0, $month, $day+$adddays, $year);
+            $return = mktime(0, 0, 0, $month, $day + $adddays, $year);
         } else {
-            $return = self::getDatetime(mktime(0, 0, 0, $month, $day+$adddays, $year));
+            $return = self::getDatetime(mktime(0, 0, 0, $month, $day + $adddays, $year));
         }
 
         return $return;
     }
-
 
     /**
      * Return a the number of days in the given month/year.
@@ -520,13 +500,13 @@ class DateUtil
 
         $days = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
-        $d = $days[$month-1];
+        $d = $days[$month - 1];
 
         if ($month == 2) {
             // Check for leap year, no 4000 rule
-            if ($year%4 == 0) {
-                if ($year%100 == 0) {
-                    if ($year%400 == 0) {
+            if ($year % 4 == 0) {
+                if ($year % 100 == 0) {
+                    if ($year % 400 == 0) {
                         $d = 29;
                     }
                 } else {
@@ -537,7 +517,6 @@ class DateUtil
 
         return $d;
     }
-
 
     /**
      * Return an array of weekdays for the given month.
@@ -561,7 +540,6 @@ class DateUtil
         return $weekdays;
     }
 
-
     /**
      * Return an array of dates for the given month.
      *
@@ -582,7 +560,6 @@ class DateUtil
         return $dates;
     }
 
-
     /**
      * Parses a user interface date string (excluding time) into a timestamp.
      *
@@ -595,7 +572,6 @@ class DateUtil
     {
         return self::parseUIDateTime($text, $format);
     }
-
 
     /**
      * Parses a user interface date+time string into a timestamp.
@@ -628,15 +604,15 @@ class DateUtil
             $day = $matches[$dayPos];
             $sec = 0;
             $min = 0;
-                $hour = 0;
+            $hour = 0;
 
             if ($format['type'] == 'datetimeshort') {
                 $hour = $matches[$hourPos];
-                $min  = $matches[$minutePos];
+                $min = $matches[$minutePos];
             } elseif ($format['type'] == 'datetimefull') {
                 $hour = $matches[$hourPos];
-                $min  = $matches[$minutePos];
-                $sec  = $matches[$secondPos];
+                $min = $matches[$minutePos];
+                $sec = $matches[$secondPos];
             }
             if (!checkdate($month, $day, $year) || $hour > 23 || $min > 59 || $sec > 59) {
                 return null;
@@ -647,7 +623,6 @@ class DateUtil
 
         return mktime($hour, $min, $sec, $month, $day, $year);
     }
-
 
     /**
      * Create a unix timestamp from either a unix timestamp (sic!), a MySQL timestamp or a string.
@@ -665,16 +640,13 @@ class DateUtil
         if (empty($string)) {
             // use 'now'
             $time = time();
-
         } elseif (preg_match('/^\d{14}$/', $string)) {
             // it is mysql timestamp format of YYYYMMDDHHMMSS?
-            $time = mktime(substr($string, 8, 2),substr($string, 10, 2),substr($string, 12, 2),
-                           substr($string, 4, 2),substr($string, 6, 2),substr($string, 0, 4));
-
+            $time = mktime(substr($string, 8, 2), substr($string, 10, 2), substr($string, 12, 2),
+                            substr($string, 4, 2), substr($string, 6, 2), substr($string, 0, 4));
         } elseif (is_numeric($string)) {
             // it is a numeric string, we handle it as timestamp
             $time = (int)$string;
-
         } else {
             // strtotime should handle it
             $time = strtotime($string);
@@ -686,7 +658,6 @@ class DateUtil
 
         return $time;
     }
-
 
     /**
      * Identify timezone using the date PHP function.
@@ -705,11 +676,9 @@ class DateUtil
         }
 
         // we probably need some fixes depending on the day light saving here
-
         // fix the value to match the Zikula timezones ones
-        return (float)sprintf('%2.2f', $tz/100);
+        return (float)sprintf('%2.2f', $tz / 100);
     }
-
 
     /**
      * Return the translated name of a specific timezone if exists.
@@ -733,7 +702,6 @@ class DateUtil
         return __('Unknown timezone');
     }
 
-
     /**
      * Return the translated list of timezones.
      *
@@ -741,46 +709,45 @@ class DateUtil
      */
     public static function getTimezones()
     {
-        return array('-12'   => __('(GMT -12:00 hours) Baker Island'),
-                     '-11'   => __('(GMT -11:00 hours) Midway Island, Samoa'),
-                     '-10'   => __('(GMT -10:00 hours) Hawaii'),
-                     '-9.5'  => __('(GMT -9:30 hours) French Polynesia'),
-                     '-9'    => __('(GMT -9:00 hours) Alaska'),
-                     '-8'    => __('(GMT -8:00 hours) Pacific Time (US & Canada)'),
-                     '-7'    => __('(GMT -7:00 hours) Mountain Time (US & Canada)'),
-                     '-6'    => __('(GMT -6:00 hours) Central Time (US & Canada), Mexico City'),
-                     '-5'    => __('(GMT -5:00 hours) Eastern Time (US & Canada), Bogota, Lima, Quito'),
-                     '-4'    => __('(GMT -4:00 hours) Atlantic Time (Canada), Caracas, La Paz'),
-                     '-3.5'  => __('(GMT -3:30 hours) Newfoundland'),
-                     '-3'    => __('(GMT -3:00 hours) Brazil, Buenos Aires, Georgetown'),
-                     '-2'    => __('(GMT -2:00 hours) Mid-Atlantic'),
-                     '-1'    => __('(GMT -1:00 hours) Azores, Cape Verde Islands'),
-                     '0'     => __('(GMT) Western Europe Time, London, Lisbon, Casablanca, Monrovia'),
-                     '1'     => __('(GMT +1:00 hours) CET (Central Europe Time), Brussels, Copenhagen, Madrid, Paris'),
-                     '2'     => __('(GMT +2:00 hours) EET (Eastern Europe Time), Kaliningrad, South Africa'),
-                     '3'     => __('(GMT +3:00 hours) Baghdad, Kuwait, Riyadh, Moscow, St. Petersburg'),
-                     '3.5'   => __('(GMT +3:30 hours) Tehran'),
-                     '4'     => __('(GMT +4:00 hours) Abu Dhabi, Muscat, Baku, Tbilisi'),
-                     '4.5'   => __('(GMT +4:30 hours) Kabul'),
-                     '5'     => __('(GMT +5:00 hours) Ekaterinburg, Islamabad, Karachi, Tashkent'),
-                     '5.5'   => __('(GMT +5:30 hours) Bombay, Calcutta, Madras, New Delhi'),
-                     '5.75'  => __('(GMT +5:45 hours) Kathmandu'),
-                     '6'     => __('(GMT +6:00 hours) Almaty, Dhaka, Colombo'),
-                     '6.5'   => __('(GMT +6:30 hours) Cocos Islands, Myanmar'),
-                     '7'     => __('(GMT +7:00 hours) Bangkok, Hanoi, Jakarta'),
-                     '8'     => __('(GMT +8:00 hours) Beijing, Perth, Singapore, Hong Kong, Chongqing, Urumqi, Taipei'),
-                     '9'     => __('(GMT +9:00 hours) Tokyo, Seoul, Osaka, Sapporo, Yakutsk'),
-                     '9.5'   => __('(GMT +9:30 hours) Adelaide, Darwin'),
-                     '10'    => __('(GMT +10:00 hours) EAST (East Australian Standard)'),
-                     '10.5'  => __('(GMT +10:30 hours) Lord Howe Island (NSW, Australia)'),
-                     '11'    => __('(GMT +11:00 hours) Magadan, Solomon Islands, New Caledonia'),
-                     '11.5'  => __('(GMT +11:30 hours) Norfolk Island'),
-                     '12'    => __('(GMT +12:00 hours) Auckland, Wellington, Fiji, Kamchatka, Marshall Island'),
-                     '12.75' => __('(GMT +12:45 hours) Chatham Islands'),
-                     '13'    => __('(GMT +13:00 hours Tonga, Kiribati (Phoenix Islands)'),
-                     '14'    => __('(GMT +14:00 hours) Kiribati (Line Islands)'));
+        return array('-12' => __('(GMT -12:00 hours) Baker Island'),
+                '-11' => __('(GMT -11:00 hours) Midway Island, Samoa'),
+                '-10' => __('(GMT -10:00 hours) Hawaii'),
+                '-9.5' => __('(GMT -9:30 hours) French Polynesia'),
+                '-9' => __('(GMT -9:00 hours) Alaska'),
+                '-8' => __('(GMT -8:00 hours) Pacific Time (US & Canada)'),
+                '-7' => __('(GMT -7:00 hours) Mountain Time (US & Canada)'),
+                '-6' => __('(GMT -6:00 hours) Central Time (US & Canada), Mexico City'),
+                '-5' => __('(GMT -5:00 hours) Eastern Time (US & Canada), Bogota, Lima, Quito'),
+                '-4' => __('(GMT -4:00 hours) Atlantic Time (Canada), Caracas, La Paz'),
+                '-3.5' => __('(GMT -3:30 hours) Newfoundland'),
+                '-3' => __('(GMT -3:00 hours) Brazil, Buenos Aires, Georgetown'),
+                '-2' => __('(GMT -2:00 hours) Mid-Atlantic'),
+                '-1' => __('(GMT -1:00 hours) Azores, Cape Verde Islands'),
+                '0' => __('(GMT) Western Europe Time, London, Lisbon, Casablanca, Monrovia'),
+                '1' => __('(GMT +1:00 hours) CET (Central Europe Time), Brussels, Copenhagen, Madrid, Paris'),
+                '2' => __('(GMT +2:00 hours) EET (Eastern Europe Time), Kaliningrad, South Africa'),
+                '3' => __('(GMT +3:00 hours) Baghdad, Kuwait, Riyadh, Moscow, St. Petersburg'),
+                '3.5' => __('(GMT +3:30 hours) Tehran'),
+                '4' => __('(GMT +4:00 hours) Abu Dhabi, Muscat, Baku, Tbilisi'),
+                '4.5' => __('(GMT +4:30 hours) Kabul'),
+                '5' => __('(GMT +5:00 hours) Ekaterinburg, Islamabad, Karachi, Tashkent'),
+                '5.5' => __('(GMT +5:30 hours) Bombay, Calcutta, Madras, New Delhi'),
+                '5.75' => __('(GMT +5:45 hours) Kathmandu'),
+                '6' => __('(GMT +6:00 hours) Almaty, Dhaka, Colombo'),
+                '6.5' => __('(GMT +6:30 hours) Cocos Islands, Myanmar'),
+                '7' => __('(GMT +7:00 hours) Bangkok, Hanoi, Jakarta'),
+                '8' => __('(GMT +8:00 hours) Beijing, Perth, Singapore, Hong Kong, Chongqing, Urumqi, Taipei'),
+                '9' => __('(GMT +9:00 hours) Tokyo, Seoul, Osaka, Sapporo, Yakutsk'),
+                '9.5' => __('(GMT +9:30 hours) Adelaide, Darwin'),
+                '10' => __('(GMT +10:00 hours) EAST (East Australian Standard)'),
+                '10.5' => __('(GMT +10:30 hours) Lord Howe Island (NSW, Australia)'),
+                '11' => __('(GMT +11:00 hours) Magadan, Solomon Islands, New Caledonia'),
+                '11.5' => __('(GMT +11:30 hours) Norfolk Island'),
+                '12' => __('(GMT +12:00 hours) Auckland, Wellington, Fiji, Kamchatka, Marshall Island'),
+                '12.75' => __('(GMT +12:45 hours) Chatham Islands'),
+                '13' => __('(GMT +13:00 hours Tonga, Kiribati (Phoenix Islands)'),
+                '14' => __('(GMT +14:00 hours) Kiribati (Line Islands)'));
     }
-
 
     /**
      * Identify timezone abbreviation using the date PHP function.
@@ -796,7 +763,6 @@ class DateUtil
         return date('T', $ts);
     }
 
-
     /**
      * Return the time difference between the server and user timezone in seconds.
      *
@@ -807,9 +773,8 @@ class DateUtil
         $srv_tz = System::getVar('timezone_server');
         $usr_tz = UserUtil::getVar('tzoffset') ? UserUtil::getVar('tzoffset') : System::getVar('timezone_offset');
 
-        return ($srv_tz - $usr_tz)*60*60;
+        return ($srv_tz - $usr_tz) * 60 * 60;
     }
-
 
     /**
      * Multilingual format time method.
@@ -839,7 +804,7 @@ class DateUtil
 
             // build the timezone
             $timezone_all = explode(' ', __('GMT-12 GMT-11 HST GMT-9:30 AKST PST MST CST EST AST GMT-3:30 GMT-3 GMT-2 GMT-1 GMT CET EET GMT+3 GMT+3:30 GMT+4 GMT+4:30 GMT+5 GMT+5:30 GMT+5:45 GMT+6 GMT+6:30 GMT+7 AWST ACDT JST ACST AEST GMT+11 GMT+11:30 GMT+12 GMT+12:45 GMT+13 GMT+14'));
-            $offset_all   = explode(' ', __('-12 -11 -10 -9.5 -9 -8 -7 -6 -5 -4 -3.5 -3 -2 -1 0 1 2 3 3.5 4 4.5 5 5.5 5.75 6 6.5 7 8 9 9.5 10 10.5 11 11.5 12 12.75 13 14'));
+            $offset_all = explode(' ', __('-12 -11 -10 -9.5 -9 -8 -7 -6 -5 -4 -3.5 -3 -2 -1 0 1 2 3 3.5 4 4.5 5 5.5 5.75 6 6.5 7 8 9 9.5 10 10.5 11 11.5 12 12.75 13 14'));
 
             $thezone = null;
             if (UserUtil::isLoggedIn()) {
@@ -863,7 +828,6 @@ class DateUtil
         return strftime($trformat, $timestamp);
     }
 
-
     /**
      * Get dateformat data.
      *
@@ -880,14 +844,13 @@ class DateUtil
     {
         if (is_null($dateformat)) {
             $dateformat = __('%Y-%m-%d');
-    }
+        }
 
         // 8 = __('%Y-%m-%d');
         // 14 = __('%Y-%m-%d %H:%M');
         // 17 = __('%Y-%m-%d %h:%M:%S');
         $length = strlen($dateformat);
-        switch ($length)
-        {
+        switch ($length) {
             case 8:
                 $regex = '#%(\w)(.)%(\w)(.)%(\w)#';
                 $type = 'date';
@@ -916,17 +879,17 @@ class DateUtil
             $separator = preg_quote($matches[2]);
 
             $dateMap = array('d' => array('regex' => '(\d{2})', 'type' => 'day'),
-                             'e' => array('regex' => '(\d{1,2})', 'type' => 'day'),
-                             'm' => array('regex' => '(\d{2})', 'type' => 'month'),
-                             'y' => array('regex' => '(\d{2})', 'type' => 'year'),
-                             'Y' => array('regex' => '(\d{4})', 'type' => 'year'),
-                             'g' => array('regex' => '(\d{2})', 'type' => 'year'),
-                             'G' => array('regex' => '(\d{4})',  'type' => 'year'),
-                             'H' => array('regex' => '(\d{2})',  'type' => 'hour'),
-                             'I' => array('regex' => '(\d{2})',  'type' => 'hour'),
-                             'l' => array('regex' => '(\d{1,2})',  'type' => 'hour'),
-                             'M' => array('regex' => '(\d{2})',  'type' => 'minute'),
-                             'S' => array('regex' => '(\d{2})',  'type' => 'second'));
+                    'e' => array('regex' => '(\d{1,2})', 'type' => 'day'),
+                    'm' => array('regex' => '(\d{2})', 'type' => 'month'),
+                    'y' => array('regex' => '(\d{2})', 'type' => 'year'),
+                    'Y' => array('regex' => '(\d{4})', 'type' => 'year'),
+                    'g' => array('regex' => '(\d{2})', 'type' => 'year'),
+                    'G' => array('regex' => '(\d{4})', 'type' => 'year'),
+                    'H' => array('regex' => '(\d{2})', 'type' => 'hour'),
+                    'I' => array('regex' => '(\d{2})', 'type' => 'hour'),
+                    'l' => array('regex' => '(\d{1,2})', 'type' => 'hour'),
+                    'M' => array('regex' => '(\d{2})', 'type' => 'minute'),
+                    'S' => array('regex' => '(\d{2})', 'type' => 'second'));
 
             // define elements
             $format = array();
@@ -976,4 +939,5 @@ class DateUtil
         // TODO A throw exception here in 1.3.0 - drak
         z_exit(__f('Dateformat did not match known format in %s', $dateformat));
     }
+
 }

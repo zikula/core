@@ -13,7 +13,7 @@
  */
 
 /**
- * HookUtil
+ * HookUtil.
  *
  * In the context of Zikula, unfortunately we need to maintain the HookManager
  * since it's not convenient to pass around using dependency injection.
@@ -561,10 +561,10 @@ class HookUtil
         // now delete availability of bundles from subscriber availability table.
         foreach ($bundles as $bundle) {
             Doctrine_Query::create()->delete()
-                        ->where('owner = ?', $providerName)
-                        ->andWhere('area = ?', $bundle->getArea())
-                        ->from('Zikula_Doctrine_Model_HookProviders')
-                        ->execute();
+                    ->where('owner = ?', $providerName)
+                    ->andWhere('area = ?', $bundle->getArea())
+                    ->from('Zikula_Doctrine_Model_HookProviders')
+                    ->execute();
         }
     }
 
@@ -592,6 +592,8 @@ class HookUtil
      * This cascades to remove all event handlers, sorting data and update bindings table.
      *
      * @param Zikula_Version $version
+     *
+     * @return void
      */
     public static function unRegisterHookSubscriberBundles(Zikula_Version $version)
     {
@@ -607,10 +609,10 @@ class HookUtil
         // now delete availability of bundles from subscriber availability table.
         foreach ($bundles as $bundle) {
             Doctrine_Query::create()->delete()
-                        ->where('owner = ?', $subscriberName)
-                        ->andWhere('area = ?', $bundle->getArea())
-                        ->from('Zikula_Doctrine_Model_HookSubscribers')
-                        ->execute();
+                    ->where('owner = ?', $subscriberName)
+                    ->andWhere('area = ?', $bundle->getArea())
+                    ->from('Zikula_Doctrine_Model_HookSubscribers')
+                    ->execute();
         }
     }
 

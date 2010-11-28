@@ -48,8 +48,6 @@ class SessionUtil
 
 
         ini_set('session.name', self::getCookieName()); // Name of our cookie
-
-
         // Set lifetime of session cookie
         $seclevel = System::getVar('seclevel');
         switch ($seclevel) {
@@ -96,8 +94,8 @@ class SessionUtil
         }
         // Do not call any of these functions directly.  Marked as private with _
         session_set_save_handler('_SessionUtil__Start', '_SessionUtil__Close', '_SessionUtil__Read', '_SessionUtil__Write', //use session_write_close();
-                                 '_SessionUtil__Destroy', // use session_destroy();
-                                 '_SessionUtil__GC');
+                '_SessionUtil__Destroy', // use session_destroy();
+                '_SessionUtil__GC');
     }
 
     /**
@@ -126,31 +124,30 @@ class SessionUtil
 
         if (System::getVar('sessionipcheck')) {
             /*
-                Feature for after 0.8 release - drak
-                // todo - add dropdown option for sessionipcheckmask for /32, /24, /16 CIDR
+              Feature for after 0.8 release - drak
+              // todo - add dropdown option for sessionipcheckmask for /32, /24, /16 CIDR
 
-                $ipmask = System::getVar('sessionipcheckmask');
-                if ($ipmask <> 32) {
-                    // since we're not a /32 we need to handle in case multiple ips returned
-                    if ($_HTTP_X_FORWARDED_FOR && strstr($_HTTP_X_FORWARDED_FOR, ', ')) {
-                        $_ips = explode(', ', $_HTTP_X_FORWARDED_FOR);
-                        $_HTTP_X_FORWARDED_FOR = $_ips[0];
-                    }
+              $ipmask = System::getVar('sessionipcheckmask');
+              if ($ipmask <> 32) {
+              // since we're not a /32 we need to handle in case multiple ips returned
+              if ($_HTTP_X_FORWARDED_FOR && strstr($_HTTP_X_FORWARDED_FOR, ', ')) {
+              $_ips = explode(', ', $_HTTP_X_FORWARDED_FOR);
+              $_HTTP_X_FORWARDED_FOR = $_ips[0];
+              }
 
-                    // apply CIDR mask to allow IP checks on clients assigned
-                    // dynamic IP addresses - e.g. A O *cough* L
-                    if ($ipmask == 24) {
-                        $_REMOTE_ADDR = preg_replace('/[^.]+.$/', '*', $_REMOTE_ADDR);
-                        $_HTTP_X_FORWARDED_FOR = ($_HTTP_X_FORWARDED_FOR ? preg_replace('/[^.]+.$/', '*', $_HTTP_X_FORWARDED_FOR) : '');
-                    } else if ($ipmask == 16) {
-                        $_REMOTE_ADDR = preg_replace('/[0-9]*.\.[^.]+.$/', '*', $_REMOTE_ADDR);
-                        $_HTTP_X_FORWARDED_FOR = ($_HTTP_X_FORWARDED_FOR ? preg_replace('/[0-9]*.\.[^.]+.$/', '*', $fullhost) : '');
-                    } else { // must be a /32 CIDR
-                        null; // nothing to do
-                    }
-                }
-            */
-
+              // apply CIDR mask to allow IP checks on clients assigned
+              // dynamic IP addresses - e.g. A O *cough* L
+              if ($ipmask == 24) {
+              $_REMOTE_ADDR = preg_replace('/[^.]+.$/', '*', $_REMOTE_ADDR);
+              $_HTTP_X_FORWARDED_FOR = ($_HTTP_X_FORWARDED_FOR ? preg_replace('/[^.]+.$/', '*', $_HTTP_X_FORWARDED_FOR) : '');
+              } else if ($ipmask == 16) {
+              $_REMOTE_ADDR = preg_replace('/[0-9]*.\.[^.]+.$/', '*', $_REMOTE_ADDR);
+              $_HTTP_X_FORWARDED_FOR = ($_HTTP_X_FORWARDED_FOR ? preg_replace('/[0-9]*.\.[^.]+.$/', '*', $fullhost) : '');
+              } else { // must be a /32 CIDR
+              null; // nothing to do
+              }
+              }
+             */
         }
 
         // create the ip fingerprint
@@ -543,8 +540,8 @@ class SessionUtil
         $hostNameDotCount = substr_count(System::getHost(), '.');
         return System::getVar('sessionname') . $hostNameDotCount;
     }
-}
 
+}
 // Following _Session__* API are for internal class use.  Do not call directly
 
 /**
@@ -777,7 +774,6 @@ function _SessionUtil__GC($maxlifetime)
                 break;
         }
         return true;
-
     } else {
         // DB based GC
         $dbtable = DBUtil::getTables();
@@ -812,5 +808,4 @@ function _SessionUtil__GC($maxlifetime)
         return (bool)$res;
     }
 }
-
 

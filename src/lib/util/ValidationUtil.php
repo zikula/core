@@ -73,35 +73,35 @@ class ValidationUtil
             }
 
             switch ($cmp_op) {
-                case 'eq '   : $rc = ($postval === $testval);
-                               break;
-                case 'neq'   : $rc = ($postval != $testval);
-                               break;
-                case 'gt'    : $rc = ($postval !== '' && is_numeric($postval) && $postval > $testval);
-                               break;
-                case 'gte'   : $rc = ($postval !== '' && is_numeric($postval) && $postval >= $testval);
-                               break;
-                case 'lt'    : $rc = ($postval !== '' && is_numeric($postval) && $postval < $testval);
-                               break;
-                case 'lte'   : $rc = ($postval !== '' && is_numeric($postval) && $postval <= $testval);
-                               break;
-                case 'in'    : $rc = ($postval !== '' && is_array($testval)   && in_array($postval, $testval));
-                               break;
-                case 'notin' : $rc = ($postval !== '' && is_array($testval)   && !in_array($postval, $testval));
-                               break;
+                case 'eq ' : $rc = ($postval === $testval);
+                    break;
+                case 'neq' : $rc = ($postval != $testval);
+                    break;
+                case 'gt' : $rc = ($postval !== '' && is_numeric($postval) && $postval > $testval);
+                    break;
+                case 'gte' : $rc = ($postval !== '' && is_numeric($postval) && $postval >= $testval);
+                    break;
+                case 'lt' : $rc = ($postval !== '' && is_numeric($postval) && $postval < $testval);
+                    break;
+                case 'lte' : $rc = ($postval !== '' && is_numeric($postval) && $postval <= $testval);
+                    break;
+                case 'in' : $rc = ($postval !== '' && is_array($testval) && in_array($postval, $testval));
+                    break;
+                case 'notin' : $rc = ($postval !== '' && is_array($testval) && !in_array($postval, $testval));
+                    break;
                 case 'regexp': $rc = ($postval !== '' && preg_match($testval, $postval));
-                               break;
-                case 'url'   : $rc = System::varValidate($postval, 'url');
-                               break;
+                    break;
+                case 'url' : $rc = System::varValidate($postval, 'url');
+                    break;
                 case 'email' : $rc = System::varValidate($postval, 'email');
-                               break;
-                case 'noop'  :
-                case ''      : if (!$required) {
-                                  return z_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
-                               }
-                               $rc = true;
-                               break;
-                default      : return z_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
+                    break;
+                case 'noop' :
+                case '' : if (!$required) {
+                        return z_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
+                    }
+                    $rc = true;
+                    break;
+                default : return z_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
             }
         }
 
@@ -136,9 +136,9 @@ class ValidationUtil
     public static function validateFieldByArray($object, $validationControl)
     {
         $objType = $validationControl['objectType'];
-        $field   = $validationControl['field'];
-        $req     = $validationControl['required'];
-        $cmp_op  = $validationControl['cmp_op'];
+        $field = $validationControl['field'];
+        $req = $validationControl['required'];
+        $cmp_op = $validationControl['cmp_op'];
         $cmp_val = $validationControl['cmp_value'];
         $err_msg = $validationControl['err_msg'];
         $callback = $validationControl['callback'];

@@ -17,7 +17,6 @@
  */
 class FilterUtil extends FilterUtil_Common
 {
-
     /**
      * The Input variable name.
      *
@@ -76,7 +75,7 @@ class FilterUtil extends FilterUtil_Common
         $this->setVarName('filter');
 
         $args['module'] = $module;
-        $args['table']  = $table;
+        $args['table'] = $table;
         parent::__construct(new FilterUtil_Config($args));
 
         $this->_plugin = new FilterUtil_Plugin($this->getConfig(), array('default' => array()));
@@ -129,7 +128,6 @@ class FilterUtil extends FilterUtil_Common
         return $this->_plugin;
     }
 
-
     //++++++++++++++++ Object handling +++++++++++++++++++
 
     /**
@@ -164,10 +162,10 @@ class FilterUtil extends FilterUtil_Common
         }
 
         $obj = array(
-                     'field' => false,
-                     'op'    => false,
-                     'value' => false
-                    );
+                'field' => false,
+                'op' => false,
+                'value' => false
+        );
 
         if (isset($parts[2]) && substr($parts[2], 0, 1) == '$') {
             $value = FormUtil::getPassedValue(substr($parts[2], 1), null);
@@ -309,7 +307,6 @@ class FilterUtil extends FilterUtil_Common
 
         return $this->_obj;
     }
-
 
     //---------------- Object handling ---------------------
     //++++++++++++++++ Filter handling +++++++++++++++++++++
@@ -474,7 +471,6 @@ class FilterUtil extends FilterUtil_Common
             $res = $this->_plugin->getSQL($obj['field'], $obj['op'], $obj['value']);
             $res['join'] = & $this->join;
             return $res;
-
         } else {
             $where = '';
             if (isset($obj[0]) && is_array($obj[0])) {
@@ -497,9 +493,9 @@ class FilterUtil extends FilterUtil_Common
         }
 
         return array(
-                     'where' => (empty($where) ? '' : "(\n $where \n)"),
-                     'join' => &$this->join
-                    );
+                'where' => (empty($where) ? '' : "(\n $where \n)"),
+                'join' => &$this->join
+        );
     }
 
     /**
@@ -593,4 +589,5 @@ class FilterUtil extends FilterUtil_Common
             $this->_dql = $result;
         }
     }
+
 }

@@ -139,7 +139,6 @@ class DoctrineUtil
         return Doctrine_Manager::connection()->formatter->getTableName($tableName);
     }
 
-
     /**
      * Create table.
      *
@@ -155,7 +154,6 @@ class DoctrineUtil
         Doctrine_Manager::connection()->export->createTable($tableName, $columns, $options);
     }
 
-
     /**
      * Drop table.
      *
@@ -168,7 +166,6 @@ class DoctrineUtil
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->dropTable($tableName);
     }
-
 
     /**
      * Rename a table.
@@ -186,7 +183,6 @@ class DoctrineUtil
         Doctrine_Manager::connection()->export->alterTable($oldTableName, array('name' => $newTableName), $check);
     }
 
-
     /**
      * Add a column to table.
      *
@@ -202,7 +198,6 @@ class DoctrineUtil
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->alterTable($tableName, array('add' => array($columnName => $options)), $check);
     }
-
 
     /**
      * Drop column from table.
@@ -239,7 +234,6 @@ class DoctrineUtil
         }
     }
 
-
     /**
      * Modify a column.
      *
@@ -259,7 +253,6 @@ class DoctrineUtil
         Doctrine_Manager::connection()->export->alterTable($tableName, array('change' => array($columnName => array('definition' => $options))), $check);
     }
 
-
     /**
      * Create index.
      *
@@ -275,7 +268,6 @@ class DoctrineUtil
         Doctrine_Manager::connection()->export->createIndex($tableName, $indexName, $definition);
     }
 
-
     /**
      * Drop index.
      *
@@ -289,7 +281,6 @@ class DoctrineUtil
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->dropIndex($tableName, $indexName);
     }
-
 
     /**
      * Create constraint.
@@ -306,7 +297,6 @@ class DoctrineUtil
         Doctrine_Manager::connection()->export->createConstraint($tableName, $constraintName, $definition);
     }
 
-
     /**
      * Drop constraint.
      *
@@ -322,7 +312,6 @@ class DoctrineUtil
         Doctrine_Manager::connection()->export->dropConstraint($tableName, $constraintName, isset($definition['primary']) && $definition['primary']);
     }
 
-
     /**
      * Create foreign key.
      *
@@ -336,7 +325,6 @@ class DoctrineUtil
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->createForeignKey($tableName, $definition);
     }
-
 
     /**
      * Drop Foreign Key.
@@ -435,10 +423,11 @@ class DoctrineUtil
         $modelIndexes = $modelTable->getOption('indexes');
         if ($modelIndexes) {
             foreach ($modelIndexes as $indexName => $indexDefinition) {
-                $connection->export->createIndex($tableName, $indexName, $indexDefinition);//array('fields' => $indexDefinition));
+                $connection->export->createIndex($tableName, $indexName, $indexDefinition); //array('fields' => $indexDefinition));
             }
         }
 
         return true;
     }
+
 }

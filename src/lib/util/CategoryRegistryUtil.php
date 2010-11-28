@@ -17,7 +17,6 @@
  */
 class CategoryRegistryUtil
 {
-
     /**
      * Delete a category registry entry
      *
@@ -111,7 +110,7 @@ class CategoryRegistryUtil
         $data['property'] = $property;
         $data['category_id'] = $categoryID;
         $data['id'] = $entryID ? $entryID : false;
-        
+
         return self::registerModuleCategory($data);
     }
 

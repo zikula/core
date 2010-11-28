@@ -29,6 +29,7 @@ class DBUtil
      */
     private function __construct()
     {
+
     }
 
     /**
@@ -60,7 +61,7 @@ class DBUtil
             $key = md5($key);
             $prefix = md5(DBConnectionStack::getConnectionDSN());
             $cacheDriver = DBConnectionStack::getCacheDriver();
-            return $cacheDriver->fetch($prefix.$table.$key);
+            return $cacheDriver->fetch($prefix . $table . $key);
         }
 
         return false;
@@ -81,7 +82,7 @@ class DBUtil
             $key = md5($key);
             $prefix = md5(DBConnectionStack::getConnectionDSN());
             $cacheDriver = DBConnectionStack::getCacheDriver();
-            $cacheDriver->save($prefix.$table.$key, $fields);
+            $cacheDriver->save($prefix . $table . $key, $fields);
         }
     }
 
@@ -97,7 +98,7 @@ class DBUtil
         if (self::hasObjectCache($table)) {
             $prefix = md5(DBConnectionStack::getConnectionDSN());
             $cacheDriver = DBConnectionStack::getCacheDriver();
-            $cacheDriver->deleteByPrefix($prefix.$table);
+            $cacheDriver->deleteByPrefix($prefix . $table);
         }
     }
 
@@ -112,7 +113,7 @@ class DBUtil
 
         // we will form an array to keep formally compatible to the old ado-db style for now
         return array('description' => $connection->getAttribute(PDO::ATTR_SERVER_INFO),
-                     'version' => $connection->getAttribute(PDO::ATTR_CLIENT_VERSION));
+                'version' => $connection->getAttribute(PDO::ATTR_CLIENT_VERSION));
     }
 
     /**
@@ -187,7 +188,7 @@ class DBUtil
      */
     public static function getDefaultTableOptions()
     {
-        $tableoptions= array();
+        $tableoptions = array();
         $dbType = DBConnectionStack::getConnectionDBType();
         if ($dbType == 'mysql' || $dbType == 'mysqli') {
             $tableoptions['type'] = DBConnectionStack::getConnectionDBTableType();
@@ -330,7 +331,7 @@ class DBUtil
      */
     public static function _getAllColumnsQualified($table, $tablealias, $columnArray = null)
     {
-        $search  = array('+', '-', '*', '/', '%');
+        $search = array('+', '-', '*', '/', '%');
         $replace = array('');
 
         $tables = self::getTables();
@@ -341,11 +342,11 @@ class DBUtil
 
         foreach ($columns as $key => $val) {
             if (!$columnArray || in_array($key, $columnArray)) {
-                $hasMath = (bool)(strcmp ($val, str_replace($search, $replace, $val)));
+                $hasMath = (bool)(strcmp($val, str_replace($search, $replace, $val)));
                 if (!$hasMath) {
-                    $queriesResult[] = $tablealias . '.' . $val . ' AS "' . $key. '"';
+                    $queriesResult[] = $tablealias . '.' . $val . ' AS "' . $key . '"';
                 } else {
-                    $queriesResult[] = $val . ' AS "' . $key. '"';
+                    $queriesResult[] = $val . ' AS "' . $key . '"';
                 }
             }
         }
@@ -422,7 +423,7 @@ class DBUtil
         // add fields of all joins
         $alias = 'a';
         foreach ($joinInfo as &$join) {
-            $jc =& $tables[$join['join_table'].'_column'];
+            $jc = & $tables[$join['join_table'] . '_column'];
             foreach ($join['join_field'] as $k => $f) {
                 $a = $join['object_field_name'][$k];
                 if (isset($columns[$a])) {
@@ -477,8 +478,8 @@ class DBUtil
         }
 
         $renameColumnArray = array($oldcolumn => array(
-                                       'name' => $newcolumn,
-                                       'definition' => $definition));
+                        'name' => $newcolumn,
+                        'definition' => $definition));
         try {
             DBConnectionStack::getConnection()->export->alterTable($tableName, array('rename' => $renameColumnArray));
         } catch (Exception $e) {
@@ -640,10 +641,10 @@ class DBUtil
         }
 
         // grab each key and value and append to the sql string
-        $search  = array('+', '-', '*', '/', '%');
+        $search = array('+', '-', '*', '/', '%');
         $replace = array('');
-        $cArray  = array();
-        $vArray  = array();
+        $cArray = array();
+        $vArray = array();
 
         $dbType = DBConnectionStack::getConnectionDBType ();
         foreach ($columnList as $key => $val) {
@@ -706,7 +707,7 @@ class DBUtil
         }
 
         if ($cArray && $vArray) {
-             $object = self::_savePostProcess($object, $table, $idfield);
+            $object = self::_savePostProcess($object, $table, $idfield);
         }
 
         return $object;
@@ -754,9 +755,9 @@ class DBUtil
         }
 
         // grab each key and value and append to the sql string
-        $tArray  = array();
-        $search  = array ('+', '-', '*', '/', '%');
-        $replace = array ('');
+        $tArray = array();
+        $search = array('+', '-', '*', '/', '%');
+        $replace = array('');
 
         foreach ($columnList as $key => $val) {
             $hasMath = (bool)(strcmp($val, str_replace($search, $replace, $val)));
@@ -888,42 +889,42 @@ class DBUtil
         }
 
         if (($enableAllServices ||
-            (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])  ) &&
-            System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
-            strcmp($table, 'categories_') !== 0 &&
-            strcmp($table, 'objectdata_attributes') !== 0 &&
-            strcmp($table, 'objectdata_log') !== 0 &&
-            ModUtil::available('Categories')) {
+                (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"]) ) &&
+                System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
+                strcmp($table, 'categories_') !== 0 &&
+                strcmp($table, 'objectdata_attributes') !== 0 &&
+                strcmp($table, 'objectdata_log') !== 0 &&
+                ModUtil::available('Categories')) {
             ObjectUtil::storeObjectCategories($object, $table, $idfield, $update);
         }
 
         if (($enableAllServices ||
-            (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
-            System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
-            strcmp($table, 'objectdata_attributes') !== 0 &&
-            strcmp($table, 'objectdata_log') !== 0) {
+                (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
+                System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
+                strcmp($table, 'objectdata_attributes') !== 0 &&
+                strcmp($table, 'objectdata_log') !== 0) {
             ObjectUtil::storeObjectAttributes($object, $table, $idfield, $update);
         }
 
         if (($enableAllServices ||
-            (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"] ) ||
-            System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
-            $table != 'objectdata_attributes' &&
-            $table != 'objectdata_meta' &&
-            $table != 'objectdata_log') {
+                (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"] ) ||
+                System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
+                $table != 'objectdata_attributes' &&
+                $table != 'objectdata_meta' &&
+                $table != 'objectdata_log') {
             ObjectUtil::updateObjectMetaData($object, $table, $idfield);
         }
 
         if (($enableAllServices ||
-            (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])  ) &&
-            System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
-            strcmp($table, 'objectdata_log') !== 0) {
+                (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"]) ) &&
+                System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
+                strcmp($table, 'objectdata_log') !== 0) {
             $oldObj = self::selectObjectByID($table, $object[$idfield], $idfield);
 
             $log = new ObjectData_Log();
             $log['object_type'] = $table;
-            $log['object_id']   = $object[$idfield];
-            $log['op']          = ($update ? 'U' : 'I');
+            $log['object_id'] = $object[$idfield];
+            $log['op'] = ($update ? 'U' : 'I');
 
             if ($update) {
                 $log['diff'] = serialize(ObjectUtil::diffExtended($oldObj, $object, $idfield));
@@ -936,7 +937,6 @@ class DBUtil
 
         return $object;
     }
-
 
     /**
      * Increment a field by the given increment.
@@ -951,14 +951,14 @@ class DBUtil
      */
     public static function incrementObjectFieldByID($table, $incfield, $id, $idfield = 'id', $inccount = 1)
     {
-        $tables       = self::getTables();
-        $tableName    = $tables[$table];
-        $columns      = $tables["{$table}_column"];
-        $idFieldName  = $columns[$idfield];
+        $tables = self::getTables();
+        $tableName = $tables[$table];
+        $columns = $tables["{$table}_column"];
+        $idFieldName = $columns[$idfield];
         $incFieldName = $columns[$incfield];
-        $column       = $tables["{$table}_column"];
+        $column = $tables["{$table}_column"];
 
-        $sql  = 'UPDATE ' . $tableName . " SET $incFieldName = $column[$incfield] + $inccount";
+        $sql = 'UPDATE ' . $tableName . " SET $incFieldName = $column[$incfield] + $inccount";
         $sql .= " WHERE $idFieldName = '" . DataUtil::formatForStore($id) . "'";
 
         $res = self::executeSQL($sql);
@@ -1010,9 +1010,9 @@ class DBUtil
             throw new Exception(__('Missing either object or where-clause'));
         }
 
-        $tables    = self::getTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
-        $columns   = $tables["{$table}_column"];
+        $columns = $tables["{$table}_column"];
         $fieldName = $columns[$idfield];
         $sql = "DELETE FROM $tableName ";
 
@@ -1046,7 +1046,6 @@ class DBUtil
         return $res;
     }
 
-
     /**
      * Generate and execute a delete SQL statement.
      *
@@ -1058,9 +1057,9 @@ class DBUtil
      */
     public static function deleteObjectsFromKeyArray(array $keyarray, $table, $field = 'id')
     {
-        $tables    = self::getTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
-        $columns   = $tables["{$table}_column"];
+        $columns = $tables["{$table}_column"];
         $fieldName = $columns[$field];
 
         $sql = 'DELETE FROM ' . $tableName . ' WHERE ' . $fieldName . ' IN (';
@@ -1107,13 +1106,12 @@ class DBUtil
      */
     public static function deleteWhere($table, $where)
     {
-        $tables    = self::getTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
-        $where     = self::_checkWhereClause($where);
-        $sql       = 'DELETE FROM ' . $tableName . ' ' . $where;
+        $where = self::_checkWhereClause($where);
+        $sql = 'DELETE FROM ' . $tableName . ' ' . $where;
         return self::executeSQL($sql);
     }
-
 
     /**
      * Post-processing after this object has beens deleted.
@@ -1136,41 +1134,41 @@ class DBUtil
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
         if (($enableAllServices ||
-            (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])  ) &&
-            System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
-            $table != 'categories_' &&
-            $table != 'objectdata_attributes' &&
-            $table != 'objectdata_log' &&
-            ModUtil::available('Categories')) {
-            ObjectUtil::deleteObjectCategories ($object, $table, $idfield);
+                (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"]) ) &&
+                System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
+                $table != 'categories_' &&
+                $table != 'objectdata_attributes' &&
+                $table != 'objectdata_log' &&
+                ModUtil::available('Categories')) {
+            ObjectUtil::deleteObjectCategories($object, $table, $idfield);
         }
 
         if (((isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]) ||
-             (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
-            System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
-            $table != 'objectdata_attributes' &&
-            $table != 'objectdata_log') {
-            ObjectUtil::deleteObjectAttributes ($object, $table, $idfield);
+                (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
+                System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
+                $table != 'objectdata_attributes' &&
+                $table != 'objectdata_log') {
+            ObjectUtil::deleteObjectAttributes($object, $table, $idfield);
         }
 
         if (($enableAllServices ||
-            (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"] ) ||
-            System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
-            $table != 'objectdata_attributes' &&
-            $table != 'objectdata_meta' &&
-            $table != 'objectdata_log') {
-            ObjectUtil::deleteObjectMetaData ($object, $table, $idfield);
+                (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"] ) ||
+                System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
+                $table != 'objectdata_attributes' &&
+                $table != 'objectdata_meta' &&
+                $table != 'objectdata_log') {
+            ObjectUtil::deleteObjectMetaData($object, $table, $idfield);
         }
 
         if (($enableAllServices ||
-            (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])  ) &&
-            System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
-            strcmp($table, 'objectdata_log') !== 0) {
+                (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"]) ) &&
+                System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
+                strcmp($table, 'objectdata_log') !== 0) {
             $log = new ObjectData_Log();
             $log['object_type'] = $table;
-            $log['object_id']   = $object[$idfield];
-            $log['op']          = 'D';
-            $log['diff']        = serialize($object);
+            $log['object_id'] = $object[$idfield];
+            $log['op'] = 'D';
+            $log['diff'] = serialize($object);
             $log->save();
         }
     }
@@ -1467,7 +1465,7 @@ class DBUtil
                 // we need an array of arrays, but this will fix a single array
                 if (!is_array($permissionFilter[0])) {
                     $permissionFilter = array(
-                        $permissionFilter);
+                            $permissionFilter);
                 }
 
                 foreach (array_keys($permissionFilter) as $k) {
@@ -1875,7 +1873,7 @@ class DBUtil
             return $res;
         }
 
-        $ca = null;//Not required since Zikula 1.3.0 because of 'PDO::fetchAll()' #2227 //self::getColumnsArray($table, $columnArray);
+        $ca = null; //Not required since Zikula 1.3.0 because of 'PDO::fetchAll()' #2227 //self::getColumnsArray($table, $columnArray);
         $objArr = self::marshallObjects($res, $ca, true, '', true, $permissionFilter);
 
         if (count($objArr) > 0) {
@@ -1990,7 +1988,7 @@ class DBUtil
         $orderby = self::_checkOrderByClause($orderby, $table);
 
         $objects = array();
-        $ca = null;// Not required since Zikula 1.3.0 because of 'PDO::fetchAll()' #2227// self::getColumnsArray($table, $columnArray);
+        $ca = null; // Not required since Zikula 1.3.0 because of 'PDO::fetchAll()' #2227// self::getColumnsArray($table, $columnArray);
         $sql = self::_getSelectAllColumnsFrom($table, $where, $orderby, $columnArray);
 
         do {
@@ -2004,7 +2002,7 @@ class DBUtil
             }
 
             $objArr = self::marshallObjects($res, $ca, true, $assocKey, true, $permissionFilter);
-            $fc     = self::_getFetchedObjectCount();
+            $fc = self::_getFetchedObjectCount();
             if ($objArr) {
                 $objects = $objects + (array)$objArr; // append new array
             }
@@ -2071,7 +2069,7 @@ class DBUtil
 
         $objects = array();
         $fetchedObjectCount = 0;
-        $ca = null;//Note required since Zikula 1.3.0 because of PDO::fetchAll() see #2227 //self::getColumnsArray($table, $columnArray);
+        $ca = null; //Note required since Zikula 1.3.0 because of PDO::fetchAll() see #2227 //self::getColumnsArray($table, $columnArray);
         $sql = self::_getSelectAllColumnsFrom($table, $where, $orderby, $columnArray);
 
         do {
@@ -2264,7 +2262,7 @@ class DBUtil
             return $res;
         }
 
-        $fields =  self::marshallFieldArray($res, true, $assocKey);
+        $fields = self::marshallFieldArray($res, true, $assocKey);
         self::setCache($table, $key, $fields);
 
         return $fields;
@@ -2359,7 +2357,7 @@ class DBUtil
         $sqlJoinArray = self::_processJoinArray($table, $joinInfo, $columnArray);
         $sqlJoin = $sqlJoinArray[0];
         $sqlJoinFieldList = $sqlJoinArray[1];
-        $ca = null;//$sqlJoinArray[2]; -- edited by Drak, this causes errors if set.
+        $ca = null; //$sqlJoinArray[2]; -- edited by Drak, this causes errors if set.
 
         $usesJoin = (count($joinInfo) > 0) ? true : false;
 
@@ -2382,7 +2380,7 @@ class DBUtil
             }
 
             $objArr = self::marshallObjects($res, $ca, true, $assocKey, true, $permissionFilter);
-            $fc     = self::_getFetchedObjectCount();
+            $fc = self::_getFetchedObjectCount();
             if ($objArr) {
                 $objects = $objects + (array)$objArr; // append new array
             }
@@ -2623,7 +2621,7 @@ class DBUtil
             return $res;
         }
 
-        $ca = null;//Note required since Zikula 1.3.0 because of PDO::fetchAll() see #2227 //self::getColumnsArray($table, $columnArray);
+        $ca = null; //Note required since Zikula 1.3.0 because of PDO::fetchAll() see #2227 //self::getColumnsArray($table, $columnArray);
         $objArr = self::marshallObjects($res, $ca, true, '', true, $permissionFilter);
         self::setCache($table, $key, $objArr);
 
@@ -2705,37 +2703,37 @@ class DBUtil
             // we have a {$tablename}_column_def array as defined in tables.php. This is a real array, not a string.
             // The format is like "C(24) NOTNULL DEFAULT ''" which means we have to prepend the field name now
             $typemap = array(
-                            'B' => 'blob',
-                            'C' => 'string',
-                            'C2' => 'blob',
-                            'D' => 'date',
-                            'F' => 'float',
-                            'I' => 'integer',
-                            'I1' => 'integer',
-                            'I2' => 'integer',
-                            'I4' => 'integer',
-                            'I8' => 'integer',
-                            'N' => 'number',
-                            'L' => 'boolean',
-                            'T' => 'timestamp',
-                            'TS' => 'timestamp',
-                            'X' => 'clob',
-                            'X2' => 'blob',
-                            'XL' => 'clob');
+                    'B' => 'blob',
+                    'C' => 'string',
+                    'C2' => 'blob',
+                    'D' => 'date',
+                    'F' => 'float',
+                    'I' => 'integer',
+                    'I1' => 'integer',
+                    'I2' => 'integer',
+                    'I4' => 'integer',
+                    'I8' => 'integer',
+                    'N' => 'number',
+                    'L' => 'boolean',
+                    'T' => 'timestamp',
+                    'TS' => 'timestamp',
+                    'X' => 'clob',
+                    'X2' => 'blob',
+                    'XL' => 'clob');
             $iLengthMap = array(
-                            'I'  => 4, // maps to I4
-                            'I1' => 1,
-                            'I2' => 2,
-                            'I4' => 4,
-                            'I8' => 8);
+                    'I' => 4, // maps to I4
+                    'I1' => 1,
+                    'I2' => 2,
+                    'I4' => 4,
+                    'I8' => 8);
             $search = array(
-                            '+',
-                            '-',
-                            '*',
-                            '/',
-                            '%');
+                    '+',
+                    '-',
+                    '*',
+                    '/',
+                    '%');
             $replace = array(
-                            '');
+                    '');
 
             foreach ($tables[$tablecol] as $id => $val) {
                 $hasMath = (bool)(strcmp($val, str_replace($search, $replace, $val)));
@@ -2763,8 +2761,7 @@ class DBUtil
                     throw new InvalidArgumentException(__f('Error in table definition for %1$s, column %2$s', array($table, $id)));
                 }
 
-                switch (count($matches))
-                {
+                switch (count($matches)) {
                     case 2:
                         $type = $matches[1];
                         break;
@@ -2995,13 +2992,13 @@ class DBUtil
 
         // verify that column and column_def definitions are consistent
         $search = array(
-                        '+',
-                        '-',
-                        '*',
-                        '/',
-                        '%');
+                '+',
+                '-',
+                '*',
+                '/',
+                '%');
         $replace = array(
-                        '');
+                '');
         $success = true;
         foreach ($columns as $k => $v) {
             $hasMath = (bool)(strcmp($v, str_replace($search, $replace, $v)));
@@ -3380,7 +3377,7 @@ class DBUtil
         }
 
         $indexDefinition = array(
-            'fields' => $indexFields,
+                'fields' => $indexFields,
         );
 
         if (!empty($idxoptarray) && is_array($idxoptarray)) {
@@ -3633,19 +3630,19 @@ class DBUtil
         $def = self::getTableDefinition($table);
         $opt = self::getTableOptions($table);
 
-        $tables  = self::getTables();
+        $tables = self::getTables();
         $columns = $tables["{$table}_column"];
         $columns = array_flip($columns);
 
         $hasColumns = '';
         foreach ($def as $columnName => $array) {
             $columnAlias = $columns[$columnName];
-            $type   = $array['type'];
+            $type = $array['type'];
             $length = (is_null($array['length']) ? 'null' : $array['length']);
             unset($array['type']);
             unset($array['length']);
             $array = array_filter($array);
-            $array = !empty($array) ? ', '.var_export($array, true) : null;
+            $array = !empty($array) ? ', ' . var_export($array, true) : null;
             $length = (!empty($array) || $length != 'null') ? ", $length" : '';
             $hasColumns .= "\$this->hasColumn('$columnName as $columnAlias', '$type'{$length}{$array});\n";
         }
@@ -3674,7 +3671,6 @@ class {$className}Table extends Doctrine_Table {}
         return $class;
     }
 
-
     /**
      * Include dynamically created Doctrine Model class into runtime environment
      *
@@ -3693,4 +3689,5 @@ class {$className}Table extends Doctrine_Table {}
         $code = self::buildDoctrineModuleClass($table, $className);
         eval($code);
     }
+
 }

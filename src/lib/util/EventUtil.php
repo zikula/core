@@ -48,9 +48,9 @@ class EventUtil
         if (self::$eventManager) {
             return self::$eventManager;
         }
-        
+
         self::$eventManager = $core->getEventManager();
-        
+
         return self::$eventManager;
     }
 
@@ -129,7 +129,7 @@ class EventUtil
         foreach ($it as $file) {
             $before = get_declared_classes();
             include realpath($file);
-            $after  = get_declared_classes();
+            $after = get_declared_classes();
 
             $diff = new ArrayIterator(array_diff($after, $before));
             if (count($diff) > 1) {
@@ -167,7 +167,7 @@ class EventUtil
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();
         }
-        
+
         $r = new ReflectionClass($className);
         $handler = $r->newInstance($serviceManager);
 
@@ -347,4 +347,5 @@ class EventUtil
             }
         }
     }
+
 }

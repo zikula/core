@@ -44,14 +44,12 @@ class ModUtil
      * @var array
      */
     protected static $ooModules = array();
-
     /**
      * Module info cache.
      *
      * @var array
      */
     protected static $modinfo;
-
     /**
      * Module vars.
      *
@@ -91,7 +89,7 @@ class ModUtil
                 if (!array_key_exists($var['modname'], self::$modvars)) {
                     self::$modvars[$var['modname']] = array();
                 }
-                if (array_key_exists($var['name'],$GLOBALS['ZConfig']['System'])) {
+                if (array_key_exists($var['name'], $GLOBALS['ZConfig']['System'])) {
                     self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
                 } elseif ($var['value'] == '0' || $var['value'] == '1') {
                     self::$modvars[$var['modname']][$var['name']] = $var['value'];
@@ -114,7 +112,7 @@ class ModUtil
     {
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
-        $name    = isset($name) ? ((string)$name) : '';
+        $name = isset($name) ? ((string)$name) : '';
 
         // make sure we have the necessary parameters
         if (!System::varValidate($modname, 'mod') || !System::varValidate($name, 'modvar')) {
@@ -156,9 +154,9 @@ class ModUtil
         // if we haven't got vars for this module yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
             $tables = DBUtil::getTables();
-            $col    = $tables['module_vars_column'];
-            $where  = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
-            $sort   = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
+            $col = $tables['module_vars_column'];
+            $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
+            $sort = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
 
             $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
 
@@ -217,12 +215,12 @@ class ModUtil
 
         if (self::hasVar($modname, $name)) {
             $tables = DBUtil::getTables();
-            $cols   = $tables['module_vars_column'];
-            $where  = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
+            $cols = $tables['module_vars_column'];
+            $where = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
                          AND $cols[name] = '" . DataUtil::formatForStore($name) . "'";
             $res = DBUtil::updateObject($obj, 'module_vars', $where);
         } else {
-            $obj['name']    = $name;
+            $obj['name'] = $name;
             $obj['modname'] = $modname;
             $res = DBUtil::insertObject($obj, 'module_vars');
         }
@@ -285,11 +283,11 @@ class ModUtil
         }
 
         $tables = DBUtil::getTables();
-        $cols   = $tables['module_vars_column'];
+        $cols = $tables['module_vars_column'];
 
         // check if we're deleting one module var or all module vars
         $specificvar = '';
-        $name    = DataUtil::formatForStore($name);
+        $name = DataUtil::formatForStore($name);
         $modname = DataUtil::formatForStore($modname);
         if (!empty($name)) {
             $specificvar = " AND $cols[name] = '$name'";
@@ -710,12 +708,12 @@ class ModUtil
         if (self::isOO($modname)) {
             self::initOOModule($modname);
         } else {
-            $osdir   = DataUtil::formatForOS($modinfo['directory']);
-            $ostype  = DataUtil::formatForOS($type);
+            $osdir = DataUtil::formatForOS($modinfo['directory']);
+            $ostype = DataUtil::formatForOS($type);
 
             $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
             $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
-            $mosdir  = "$modpath/$osdir/pn{$ostype}{$osapi}";
+            $mosdir = "$modpath/$osdir/pn{$ostype}{$osapi}";
 
             if (file_exists($cosfile)) {
                 // Load the file from config
@@ -724,6 +722,7 @@ class ModUtil
                 // Load the file from modules
                 include_once $mosfile;
             } elseif (is_dir($mosdir)) {
+
             } else {
                 // File does not exist
                 return false;
@@ -818,7 +817,7 @@ class ModUtil
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
-        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname). '_Controller_'. ucwords($type);
+        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname) . '_Controller_' . ucwords($type);
 
         // allow overriding the OO class (to override existing methods using inheritance).
         $event = new Zikula_Event('module_dispatch.custom_classname', null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
@@ -977,7 +976,6 @@ class ModUtil
                         throw new InvalidArgumentException(__f('%1$s must be an instance of $2$s', array(get_class($controller), $instanceof)));
                     }
                 }
-
             }
         }
 
@@ -1048,7 +1046,6 @@ class ModUtil
             // 3. Save the result $event->setData($result).
             // 4. $event->setNotify().
             // return void
-
             // This event means that no $type was found
             $event = new Zikula_Event('module_dispatch.type_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
             $eventManager->notifyUntil($event);
@@ -1065,7 +1062,6 @@ class ModUtil
             throw new Zikula_Exception_NotFound(__f('The requested controller action %s_Controller_%s::%s() could not be found', array($modname, $type, $func)));
         }
     }
-
 
     /**
      * Run a module function.
@@ -1108,7 +1104,6 @@ class ModUtil
 
         return self::exec($modname, $type, $func, $args, true, $instanceof);
     }
-
 
     /**
      * Generate a module function URL.
@@ -1251,10 +1246,8 @@ class ModUtil
             } else {
                 $url = "$url" . (!empty($query) ? '?' . $query : '');
             }
-
         } else {
             // Regular URLs
-
             // The arguments
             $urlargs = "module=$modname";
             if ((!empty($type)) && ($type != 'user')) {
@@ -1329,8 +1322,8 @@ class ModUtil
         }
 
         if ((isset($modstate[$modname]) &&
-                        $modstate[$modname] == self::STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) &&
-                        (isset($modstate[$modname]) && ($modstate[$modname] == self::STATE_UPGRADED || $modstate[$modname] == self::STATE_INACTIVE)))) {
+                $modstate[$modname] == self::STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) &&
+                (isset($modstate[$modname]) && ($modstate[$modname] == self::STATE_UPGRADED || $modstate[$modname] == self::STATE_INACTIVE)))) {
             return true;
         }
 
@@ -1347,7 +1340,7 @@ class ModUtil
         static $module;
 
         if (!isset($module)) {
-            $type   = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
+            $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
             $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
             if (empty($module)) {
@@ -1486,11 +1479,11 @@ class ModUtil
         $lModname = strtolower($modname);
         if (!isset($modulehooks[$lModname])) {
             // Get database info
-            $tables  = DBUtil::getTables();
-            $cols    = $tables['hooks_column'];
-            $where   = "WHERE $cols[smodule] = '" . DataUtil::formatForStore($modname) . "'";
+            $tables = DBUtil::getTables();
+            $cols = $tables['hooks_column'];
+            $where = "WHERE $cols[smodule] = '" . DataUtil::formatForStore($modname) . "'";
             $orderby = "$cols[sequence] ASC";
-            $hooks   = DBUtil::selectObjectArray('hooks', $where, $orderby);
+            $hooks = DBUtil::selectObjectArray('hooks', $where, $orderby);
             $modulehooks[$lModname] = $hooks;
         }
 
@@ -1658,7 +1651,6 @@ class ModUtil
         return DBUtil::selectObjectArray('modules', $where, $sort);
     }
 
-
     /**
      * Return an array of modules in the specified state.
      *
@@ -1673,11 +1665,11 @@ class ModUtil
     public static function getModulesByState($state=self::STATE_ACTIVE, $sort='displayname')
     {
         $tables = DBUtil::getTables();
-        $cols   = $tables['modules_column'];
+        $cols = $tables['modules_column'];
 
         $where = "$cols[state] = $state";
 
-        return DBUtil::selectObjectArray ('modules', $where, $sort);
+        return DBUtil::selectObjectArray('modules', $where, $sort);
     }
 
     /**
@@ -1699,7 +1691,7 @@ class ModUtil
         }
 
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-        $osdir   = DataUtil::formatForOS($modinfo['directory']);
+        $osdir = DataUtil::formatForOS($modinfo['directory']);
         ZLoader::addAutoloader($moduleName, realpath("$modpath/$osdir/lib"));
         // load optional bootstrap
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -1747,7 +1739,7 @@ class ModUtil
             self::$ooModules[$moduleName]['oo'] = false;
             $modinfo = self::getInfo(self::getIdFromName($moduleName));
             $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-            $osdir   = DataUtil::formatForOS($modinfo['directory']);
+            $osdir = DataUtil::formatForOS($modinfo['directory']);
 
             if (!$modinfo) {
                 return false;
@@ -1778,4 +1770,5 @@ class ModUtil
             ZLoader::addAutoloader($module['directory'], $path);
         }
     }
+
 }

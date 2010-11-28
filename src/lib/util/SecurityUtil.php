@@ -13,17 +13,15 @@
  */
 
 /**
- * Notes on security system
+ * SecurityUtil.
+ *
+ * Notes on security system.
  *
  * Special UID and GIDS:
  *  UID -1 corresponds to 'all users', includes unregistered users
  *  GID -1 corresponds to 'all groups', includes unregistered users
  *  UID 0 corresponds to unregistered users
- *  GID 0 corresponds to unregistered users
- */
-
-/**
- * SecurityUtil
+ *  GID 0 corresponds to unregistered users.
  */
 class SecurityUtil
 {
@@ -384,7 +382,6 @@ class SecurityUtil
                 // We have a match - set the level and quit
                 $level = $perm['level'];
                 break;
-
             }
             return $level;
         }
@@ -547,7 +544,7 @@ class SecurityUtil
         $algoList = hash_algos();
 
         if (is_string($unhashedData) && is_string($saltedHash) && is_string($saltDelimeter) && (strlen($saltDelimeter) == 1)
-            && (strpos($saltedHash, $saltDelimeter) !== false)) {
+                && (strpos($saltedHash, $saltDelimeter) !== false)) {
             list ($hashMethod, $saltStr, $correctHash) = explode($saltDelimeter, $saltedHash);
 
             if (!empty($hashMethodCodeToName)) {
@@ -597,15 +594,15 @@ class SecurityUtil
         static $accessnames = null;
         if (!is_array($accessnames)) {
             $accessnames = array(
-                0 => __('No access'),
-                100 => __('Overview access'),
-                200 => __('Read access'),
-                300 => __('Comment access'),
-                400 => __('Moderate access'),
-                500 => __('Edit access'),
-                600 => __('Add access'),
-                700 => __('Delete access'),
-                800 => __('Admin access'));
+                    0 => __('No access'),
+                    100 => __('Overview access'),
+                    200 => __('Read access'),
+                    300 => __('Comment access'),
+                    400 => __('Moderate access'),
+                    500 => __('Edit access'),
+                    600 => __('Add access'),
+                    700 => __('Delete access'),
+                    800 => __('Admin access'));
         }
 
         return $accessnames;

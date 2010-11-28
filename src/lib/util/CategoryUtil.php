@@ -13,7 +13,7 @@
  */
 
 /**
- * CategoryUtil
+ * CategoryUtil.
  */
 class CategoryUtil
 {
@@ -29,7 +29,7 @@ class CategoryUtil
      *
      * @return The resulting folder object
      */
-    public static function createCategory ($rootPath, $name, $value=null, $displayname=null, $description=null, $attributes=null)
+    public static function createCategory($rootPath, $name, $value=null, $displayname=null, $description=null, $attributes=null)
     {
         if (!isset($rootPath) || !$rootPath) {
             return LogUtil::registerError(__f("Error! Received invalid parameter '%s'", 'rootPath'));
@@ -47,17 +47,17 @@ class CategoryUtil
 
         $lang = ZLanguage::getLanguageCode();
 
-        $rootCat = self::getCategoryByPath ($rootPath);
+        $rootCat = self::getCategoryByPath($rootPath);
         if (!$rootCat) {
             return LogUtil::registerError(__f("Error! Non-existing root category '%s' received", $rootPath));
         }
 
-        $checkCat = self::getCategoryByPath ("$rootPath/$name");
+        $checkCat = self::getCategoryByPath("$rootPath/$name");
         if (!$checkCat) {
-            $cat  = new Categories_DBObject_Category();
+            $cat = new Categories_DBObject_Category();
             $data = array();
-            $data['parent_id']    = $rootCat['id'];
-            $data['name']         = $name;
+            $data['parent_id'] = $rootCat['id'];
+            $data['name'] = $name;
             $data['display_name'] = array($lang => $displayname);
             $data['display_desc'] = array($lang => $description);
             if ($value) {
@@ -100,14 +100,14 @@ class CategoryUtil
 
         $permFilter = array();
         $permFilter[] = array(
-            'realm' => 0,
-            'component_left' => 'Categories',
-            'component_middle' => '',
-            'component_right' => 'Category',
-            'instance_left' => 'id',
-            'instance_middle' => 'path',
-            'instance_right' => 'ipath',
-            'level' => ACCESS_OVERVIEW);
+                'realm' => 0,
+                'component_left' => 'Categories',
+                'component_middle' => '',
+                'component_right' => 'Category',
+                'instance_left' => 'id',
+                'instance_middle' => 'path',
+                'instance_right' => 'ipath',
+                'level' => ACCESS_OVERVIEW);
 
         $cache[$cid] = DBUtil::selectObjectByID('categories_category', (int)$cid, 'id', null, $permFilter);
 
@@ -140,14 +140,14 @@ class CategoryUtil
         $permFilter = array();
         if ($enablePermissionFilter) {
             $permFilter[] = array(
-                'realm' => 0,
-                'component_left' => 'Categories',
-                'component_middle' => '',
-                'component_right' => 'Category',
-                'instance_left' => 'id',
-                'instance_middle' => 'path',
-                'instance_right' => 'ipath',
-                'level' => ACCESS_OVERVIEW);
+                    'realm' => 0,
+                    'component_left' => 'Categories',
+                    'component_middle' => '',
+                    'component_right' => 'Category',
+                    'instance_left' => 'id',
+                    'instance_middle' => 'path',
+                    'instance_right' => 'ipath',
+                    'level' => ACCESS_OVERVIEW);
         }
 
         $cats = DBUtil::selectObjectArray('categories_category', $where, $sort, -1, -1, $assocKey, $permFilter, null, $columnArray);
@@ -210,8 +210,7 @@ class CategoryUtil
      */
     public static function getCategoriesByRegistry($registry)
     {
-        if (!$registry || !is_array($registry))
-            return false;
+        if (!$registry || !is_array($registry)) return false;
 
         ModUtil::dbInfoLoad('Categories');
         $dbtables = DBUtil::getTables();
@@ -868,7 +867,7 @@ class CategoryUtil
                 $url .= '#top';
             }
             if ($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
-                $c['name'] =  __('Root category');
+                $c['name'] = __('Root category');
             }
 
             if (isset($c['display_name'][$lang]) && !empty($c['display_name'][$lang])) {
@@ -883,10 +882,10 @@ class CategoryUtil
         }
 
         $tree = new Zikula_Tree();
-        $tree->setOption('id','categoriesTree');
-        $tree->setOption('sortable',$sortable);
+        $tree->setOption('id', 'categoriesTree');
+        $tree->setOption('sortable', $sortable);
         // disable drag and drop for root category
-        $tree->setOption('disabled',array(1));
+        $tree->setOption('disabled', array(1));
         $tree->loadArrayData($cats);
         return $tree->getHTML();
     }
@@ -963,8 +962,7 @@ class CategoryUtil
      */
     public static function sortCategories($cats, $sortField = '')
     {
-        if (!$cats)
-            return $cats;
+        if (!$cats) return $cats;
 
         global $_catSortField;
         if ($sortField) {
@@ -1059,7 +1057,7 @@ class CategoryUtil
         }
         if (!is_array($selectedValue)) {
             $selectedValue = array(
-                (string)$selectedValue);
+                    (string)$selectedValue);
         }
 
         $id = strtr($name, '[]', '__');
@@ -1101,8 +1099,7 @@ class CategoryUtil
             } else {
                 $cslash = StringUtil::countInstances(isset($cat['ipath_relative']) ? $cat['ipath_relative'] : $cat['ipath'], '/');
                 $indent = '';
-                if ($cslash > 0)
-                    $indent = substr($line, 0, $cslash * 2);
+                if ($cslash > 0) $indent = substr($line, 0, $cslash * 2);
 
                 $indent = '|' . $indent;
                 //if ($count) {
@@ -1390,8 +1387,7 @@ class CategoryUtil
     public static function hasCategoryAccess($categories, $module, $permLevel = ACCESS_OVERVIEW)
     {
         // Always allow access to content with no categories associated
-        if (count($categories) == 0)
-            return true;
+        if (count($categories) == 0) return true;
 
         if (ModUtil::getVar('Categories', 'permissionsall', 0)) {
             // Access is required for all categories
@@ -1404,10 +1400,11 @@ class CategoryUtil
             // Access is required for at least one category
             foreach ($categories as $propertyName => $cat) {
                 if (SecurityUtil::checkPermission("Categories:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel))
-                    return true;
+                        return true;
             }
 
             return false;
         }
     }
+
 }

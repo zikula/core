@@ -13,7 +13,7 @@
  */
 
 /**
- * Zikula page variables functions
+ * Zikula page variables functions.
  *
  * A <em>page variable</em> is an entity identified by a name that stores a value for the currently
  * rendered page. They are used to set for example the title of the page, the stylesheets used etc.
@@ -34,8 +34,6 @@
  * and reserved names. As of this writing, the list of reserved names consists of
  * <ul>
  * <li>title</li>
- * <li>description</li>
- * <li>keywords</li>
  * <li>stylesheet</li>
  * <li>javascript</li>
  * <li>jsgettext</li>
@@ -54,7 +52,6 @@ class PageUtil
      * and reserved names. As of this writing, the list of reserved names consists of
      * <ul>
      * <li>title</li>
-     * <li>keywords</li>
      * <li>stylesheet</li>
      * <li>javascript</li>
      * <li>jsgettext</li>
@@ -299,4 +296,5 @@ class PageUtil
 
         return true;
     }
+
 }

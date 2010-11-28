@@ -13,7 +13,7 @@
  */
 
 /**
- * LogUtil
+ * LogUtil.
  */
 class LogUtil
 {
@@ -187,7 +187,7 @@ class LogUtil
     private static function _addPopup($message, $type = E_USER_NOTICE)
     {
         self::log($message, Zikula_ErrorHandler::DEBUG);
-        
+
         if ($type === Zikula_ErrorHandler::INFO) {
             $key = '_ZStatusMsg';
         } elseif ($type === E_USER_ERROR) {
@@ -394,4 +394,5 @@ class LogUtil
 
         return $logfile;
     }
+
 }

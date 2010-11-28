@@ -20,6 +20,7 @@ class HtmlUtil
     const MARKER_NONE = '&nbsp;&nbsp;';
     const REQUIRED_MARKER = '<span class="z-mandatorysym">*</span>';
     const VALIDATION_MARKER = '<span class="z-mandatorysym">!</span>';
+
     /**
      * Return the HTML code for the specified date selector input box.
      *
@@ -171,7 +172,7 @@ class HtmlUtil
         if (isset($cache[$cacheKey])) {
             $dataArray = $cache[$cacheKey];
         } else {
-            $classname = "{$modname}_DBObject_".StringUtil::camelize($objectType).'Array';
+            $classname = "{$modname}_DBObject_" . StringUtil::camelize($objectType) . 'Array';
             if (!class_exists($classname) && System::isLegacyMode()) {
                 // BC check for PNObject old style.
                 $classname = Loader::loadClassFromModule($modname, $objectType, true);
@@ -536,9 +537,9 @@ class HtmlUtil
     {
         $perms = array();
         $perms[_Z_PERMISSION_BASIC_PRIVATE] = __('Private');
-        $perms[_Z_PERMISSION_BASIC_GROUP]   = __('Group');
-        $perms[_Z_PERMISSION_BASIC_USER]    = __('User');
-        $perms[_Z_PERMISSION_BASIC_PUBLIC]  = __('Public');
+        $perms[_Z_PERMISSION_BASIC_GROUP] = __('Group');
+        $perms[_Z_PERMISSION_BASIC_USER] = __('User');
+        $perms[_Z_PERMISSION_BASIC_PUBLIC] = __('Public');
 
         return $perms[$value];
     }
@@ -559,9 +560,9 @@ class HtmlUtil
 
         $perms = array();
         $perms[_Z_PERMISSION_BASIC_PRIVATE] = __('Private');
-        $perms[_Z_PERMISSION_BASIC_GROUP]   = __('Group');
-        $perms[_Z_PERMISSION_BASIC_USER]    = __('User');
-        $perms[_Z_PERMISSION_BASIC_PUBLIC]  = __('Public');
+        $perms[_Z_PERMISSION_BASIC_GROUP] = __('Group');
+        $perms[_Z_PERMISSION_BASIC_USER] = __('User');
+        $perms[_Z_PERMISSION_BASIC_PUBLIC] = __('Public');
 
         return self::getSelector_Generic($name, $perms, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
     }
@@ -577,8 +578,8 @@ class HtmlUtil
     public static function getSelector_PermissionLevel($name = 'permission', $selectedValue = '0')
     {
         $perms = array();
-        $perms[_Z_PERMISSION_LEVEL_NONE]  = __('No access');
-        $perms[_Z_PERMISSION_LEVEL_READ]  = __('Read access');
+        $perms[_Z_PERMISSION_LEVEL_NONE] = __('No access');
+        $perms[_Z_PERMISSION_LEVEL_READ] = __('Read access');
         $perms[_Z_PERMISSION_LEVEL_WRITE] = __('Write access');
 
         return self::getSelector_Generic($name, $perms, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
@@ -604,7 +605,7 @@ class HtmlUtil
      */
     public static function getSelector_PNGroup($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getSelector_PNGroup', 'getSelector_Group')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getSelector_PNGroup', 'getSelector_Group')), E_USER_DEPRECATED);
         return self::getSelector_Group($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $excludeList, $submit, $disabled);
     }
 
@@ -660,7 +661,7 @@ class HtmlUtil
      */
     public static function getSelector_PNUser($name = 'userid', $gid = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getSelector_PNUser', 'getSelector_User')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getSelector_PNUser', 'getSelector_User')), E_USER_DEPRECATED);
         return self::getSelector_User($name, $gid, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $excludeList, $submit);
     }
 
@@ -725,7 +726,7 @@ class HtmlUtil
      */
     public static function getSelector_PNModule($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
     {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getSelector_PNUser', 'getSelector_User')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getSelector_PNUser', 'getSelector_User')), E_USER_DEPRECATED);
         return self::getSelector_Module($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
     }
 
@@ -750,8 +751,8 @@ class HtmlUtil
         $data = array();
         $modules = ModUtil::getModulesByState(3, 'displayname');
         foreach ($modules as $module) {
-            $value        = $module[$field];
-            $displayname  = $module['displayname'];
+            $value = $module[$field];
+            $displayname = $module['displayname'];
             $data[$value] = $displayname;
         }
 
@@ -848,7 +849,7 @@ class HtmlUtil
      *
      * @return The generated HTML for the selector.
      */
-    public static function getSelector_DatetimeMonth ($selected=0, $name='month', $submit=false, $disabled=false, $multipleSize=1, $text=0)
+    public static function getSelector_DatetimeMonth($selected=0, $name='month', $submit=false, $disabled=false, $multipleSize=1, $text=0)
     {
         if (!$name) {
             $name = 'month';
@@ -859,18 +860,18 @@ class HtmlUtil
         }
         array_unshift($mnames, 'noval');
 
-        $id           = strtr($name, '[]', '__');
-        $disabled     = $disabled ? 'disabled="disabled"' : '';
-        $multiple     = $multipleSize > 1 ? 'multiple="multiple"' : '';
+        $id = strtr($name, '[]', '__');
+        $disabled = $disabled ? 'disabled="disabled"' : '';
+        $multiple = $multipleSize > 1 ? 'multiple="multiple"' : '';
         $multipleSize = $multipleSize > 1 ? "size=\"$multipleSize\"" : '';
-        $submit       = $submit ? 'onchange="this.form.submit();"' : '';
+        $submit = $submit ? 'onchange="this.form.submit();"' : '';
 
         $html = "<select name=\"" . DataUtil::formatForDisplay($name) . "\" id=\"" . DataUtil::formatForDisplay($id) . "\" " . DataUtil::formatForDisplay($multipleSize) . " $multiple $submit $disabled>";
 
-        for ($i=1; $i<13; $i++) {
-            $val = sprintf ("%02d", $i);
-            $opt = $text ? $mnames[$i]:$val;
-            $sel = ($i==$selected ? 'selected="selected"' : '');
+        for ($i = 1; $i < 13; $i++) {
+            $val = sprintf("%02d", $i);
+            $opt = $text ? $mnames[$i] : $val;
+            $sel = ($i == $selected ? 'selected="selected"' : '');
             $html = $html . "<option value=\"$val\" $sel>" . DataUtil::formatForDisplay($opt) . "</option>";
         }
 
@@ -965,12 +966,12 @@ class HtmlUtil
         $idname = strtr($fieldname, '[]', '__');
 
         $output = '<select' . ' name="' . DataUtil::formatForDisplay($fieldname) . '"'
-                            . ' id="' . DataUtil::formatForDisplay($idname) . '"'
-                            . ' size="' . DataUtil::formatForDisplay($size) . '"'
-                            . (($multiple == 1) ? ' multiple="multiple"' : '')
-                            . ((empty($accesskey)) ? '' : ' accesskey="' . DataUtil::formatForDisplay($accesskey) . '"')
-                            //. ' tabindex="'.$this->tabindex.'"'
-                            . ($onchange ? " onchange=\"$onchange\"" : '') . '>';
+                . ' id="' . DataUtil::formatForDisplay($idname) . '"'
+                . ' size="' . DataUtil::formatForDisplay($size) . '"'
+                . (($multiple == 1) ? ' multiple="multiple"' : '')
+                . ((empty($accesskey)) ? '' : ' accesskey="' . DataUtil::formatForDisplay($accesskey) . '"')
+                //. ' tabindex="'.$this->tabindex.'"'
+                . ($onchange ? " onchange=\"$onchange\"" : '') . '>';
 
         foreach ($data as $datum) {
             $output .= '<option value="' . DataUtil::formatForDisplay($datum['id']) . '"' . ((empty($datum['selected'])) ? '' : " selected='$datum[selected]'") . '>' . DataUtil::formatForDisplay($datum['name']) . '</option>';
@@ -979,4 +980,5 @@ class HtmlUtil
         $output .= '</select>';
         return $output;
     }
+
 }

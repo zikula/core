@@ -144,7 +144,7 @@ class PluginUtil
             $plugin->preInitialize();
             $plugin->initialize();
             $plugin->postInitialize();
-            
+
             if ($plugin->getEventNames()) {
                 $plugin->attach();
             }
@@ -353,7 +353,7 @@ class PluginUtil
         }
 
         $state = self::getState($plugin->getServiceId(), self::getDefaultState());
-        if (version_compare($plugin->getMetaVersion(), $state['version'], '<=') ) {
+        if (version_compare($plugin->getMetaVersion(), $state['version'], '<=')) {
             throw new LogicException(__f('Installed version and plugin version are equal, nothing to do for %s', $className));
         }
 
@@ -476,4 +476,5 @@ class PluginUtil
         }
         return strtolower(str_replace('_', '.', $className));
     }
+
 }

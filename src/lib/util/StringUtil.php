@@ -49,8 +49,9 @@ class StringUtil
         if ($len > $limit) {
             $string = mb_substr($string, 0, $limit);
 
-            if ($appendDots)
+            if ($appendDots) {
                 $string .= '...';
+            }
         }
 
         return $string;
@@ -181,7 +182,7 @@ class StringUtil
             }
 
             // Get context on the left
-            $startPos = max(0, $startPos - floor($contextSize / 2) );
+            $startPos = max(0, $startPos - floor($contextSize / 2));
             // Get the first word of section in full length
             while ($startPos > 0 && $text[$startPos] != ' ') {
                 --$startPos;
@@ -195,8 +196,7 @@ class StringUtil
             }
 
             // Setup section 
-            $section = mb_strcut($text, $startPos, $endPos-$startPos);
-
+            $section = mb_strcut($text, $startPos, $endPos - $startPos);
         } else {
             // Text is shorter than $contextSize
             $section = $text;

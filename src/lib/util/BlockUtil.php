@@ -255,7 +255,7 @@ class BlockUtil
         $sm = ServiceUtil::getManager();
         $modinfo = ModUtil::getInfoFromName($modname);
 
-        $serviceId = strtolower('block.' .$modinfo['name'] . '_' . 'Block_' . $block);
+        $serviceId = strtolower('block.' . $modinfo['name'] . '_' . 'Block_' . $block);
         if ($sm->hasService($serviceId)) {
             return $sm->getService($serviceId);
         }
@@ -267,7 +267,7 @@ class BlockUtil
         $basedir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $moddir = DataUtil::formatForOS($modinfo['directory']);
         $blockdir = "$basedir/$moddir/lib/$moddir/Block";
-        $ooblock = "$blockdir/".ucwords($block). '.php';
+        $ooblock = "$blockdir/" . ucwords($block) . '.php';
         ModUtil::load($modname);
         $isOO = ModUtil::isOO($modname);
 

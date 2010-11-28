@@ -97,11 +97,11 @@ class RandomUtil
      */
     public static function getString($minLen, $maxLen, $leadingCapital = true, $useUpper = true, $useLower = true, $useSpace = false, $useNumber = false, $useSpecial = false, $seed = false, $dontuse = null)
     {
-        $rnd     = '';
-        $chars   = '';
-        $upper   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $lower   = "abcdefghijklmnopqrstuvwxyz";
-        $number  = "0123456789";
+        $rnd = '';
+        $chars = '';
+        $upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $lower = "abcdefghijklmnopqrstuvwxyz";
+        $number = "0123456789";
         $special = "~@#$%^*()_+-={}|][";
 
         if ($seed) {

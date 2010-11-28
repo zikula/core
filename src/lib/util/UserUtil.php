@@ -182,7 +182,7 @@ class UserUtil
      */
     public static function getPNUsers($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'uid')
     {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getPNUsers', 'getUsers')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getPNUsers', 'getUsers')), E_USER_DEPRECATED);
         return self::getUsers($where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
 
@@ -204,8 +204,6 @@ class UserUtil
         return DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
 
-
-
     /**
      * Return a group object.
      *
@@ -218,7 +216,7 @@ class UserUtil
      */
     public static function getPNGroup($gid)
     {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getPNGroup', 'getGroup')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getPNGroup', 'getGroup')), E_USER_DEPRECATED);
         return self::getGroup($gid);
     }
 
@@ -249,7 +247,7 @@ class UserUtil
      */
     public static function getPNGroups($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'gid')
     {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getPNGroups', 'getGroups')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getPNGroups', 'getGroups')), E_USER_DEPRECATED);
         return self::getGroups();
     }
 
@@ -283,7 +281,7 @@ class UserUtil
      */
     public static function getPNUserIdList($where = '', $orderBy = '', $separator = ',')
     {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getPNUserIdList', 'getUserIdList')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getPNUserIdList', 'getUserIdList')), E_USER_DEPRECATED);
         return self::getUserIdList($where, $orderBy, $separator);
     }
 
@@ -333,7 +331,7 @@ class UserUtil
      */
     public static function getPNGroupIdList($where = '', $orderBy = '', $separator = ',')
     {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getPNGroupIdList', 'getGroupIdList')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getPNGroupIdList', 'getGroupIdList')), E_USER_DEPRECATED);
         return self::getGroupIdList($where, $orderBy, $separator);
     }
 
@@ -493,7 +491,7 @@ class UserUtil
      */
     public static function getSelectorData_PNGroup($defaultValue = 0, $defaultText = '', $ignore = array(), $includeAll = 0, $allText = '')
     {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getSelectorData_PNGroup', 'getSelectorData_Group')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getSelectorData_PNGroup', 'getSelectorData_Group')), E_USER_DEPRECATED);
         return self::getSelectorData_Group($defaultValue, $defaultText, $ignore, $includeAll, $allText);
     }
 
@@ -599,8 +597,8 @@ class UserUtil
     {
         LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . __f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'UserUtil::loginUsing()')), E_USER_DEPRECATED);
         $authinfo = array(
-            'loginid'   => $loginID,
-            'pass'      => $userEnteredPassword,
+                'loginid' => $loginID,
+                'pass' => $userEnteredPassword,
         );
         return self::loginUsing('Users', $authinfo, $rememberme, null, $checkPassword);
     }
@@ -648,8 +646,8 @@ class UserUtil
         // Authenticate the loginID and userEnteredPassword against the specified authModule.
         // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
         $checkPasswordArgs = array(
-            'authinfo'      => $authinfo,
-            'reentrant_url' => $reentrantURL,
+                'authinfo' => $authinfo,
+                'reentrant_url' => $reentrantURL,
         );
         return ModUtil::apiFunc($authModuleName, 'auth', 'checkPassword', $checkPasswordArgs, 'Zikula_AuthApi');
     }
@@ -690,13 +688,13 @@ class UserUtil
         if (!ModUtil::available($authModuleName)) {
             return LogUtil::registerArgsError();
         }
-        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi')  && (!isset($reentrantURL) || empty($reentrantURL))) {
+        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi') && (!isset($reentrantURL) || empty($reentrantURL))) {
             return LogUtil::registerArgsError();
         }
 
         $authenticateUserArgs = array(
-            'authinfo'      => $authinfo,
-            'reentrant_url' => $reentrantURL,
+                'authinfo' => $authinfo,
+                'reentrant_url' => $reentrantURL,
         );
         return ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', $authenticateUserArgs, 'Zikula_AuthApi');
     }
@@ -752,8 +750,8 @@ class UserUtil
         // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
         if ($checkPassword) {
             $authArgs = array(
-                'authinfo'      => $authinfo,
-                'reentrant_url' => isset($args['reentrant_url']) ? $args['reentrant_url'] : null,
+                    'authinfo' => $authinfo,
+                    'reentrant_url' => isset($args['reentrant_url']) ? $args['reentrant_url'] : null,
             );
             $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', $authArgs, 'Zikula_AuthApi');
         } elseif (!$preauthenicatedUid) {
@@ -765,9 +763,9 @@ class UserUtil
         if (!$authenticatedUid || !is_numeric($authenticatedUid) || ((int)$authenticatedUid != $authenticatedUid)) {
             // Note that we have not actually logged into anything yet, just authenticated.
             $event = new Zikula_Event('user.login.failed', null, array(
-                'authmodule'    => $authModuleName,
-                'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
-            ));
+                            'authmodule' => $authModuleName,
+                            'loginid' => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                    ));
             EventUtil::notify($event);
 
             if (!LogUtil::hasErrors()) {
@@ -779,7 +777,6 @@ class UserUtil
 
         // At this point we are authenticated, but not logged in. Check for things that need to be done
         // prior to login.
-
         // Need to make sure the Users module stuff is loaded and available, especially if we are logging in during
         // an upgrade or install.
         ModUtil::dbInfoLoad('Users', 'Users');
@@ -795,9 +792,9 @@ class UserUtil
             // Oops! The authmodule gave us a bad uid! Really should not happen unless that module's uid mapping is out of sync.
             // Note that we have not actually logged into anything yet, just authenticated.
             $event = new Zikula_Event('user.login.failed', null, array(
-                'authmodule'    => $authModuleName,
-                'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
-            ));
+                            'authmodule' => $authModuleName,
+                            'loginid' => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                    ));
             EventUtil::notify($event);
             return LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
         }
@@ -828,9 +825,9 @@ class UserUtil
         }
         if (!empty($errorMsg)) {
             $event = new Zikula_Event('user.login.failed', null, array(
-                'authmodule'    => $authModuleName,
-                'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
-            ));
+                            'authmodule' => $authModuleName,
+                            'loginid' => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                    ));
             EventUtil::notify($event);
             return LogUtil::registerError($errorMsg);
         }
@@ -840,7 +837,6 @@ class UserUtil
             // If we came here through the normal Users module loginScreen/login Users module UI functions, then we shouldn't
             // have to deal with terms or password status issues. If we came here from some place else, then we need to
             // ensure they get handled.
-
             // The status to accept terms and/or privacy policy happens no matter what authmodule is used for this login.
             $mustConfirmTOUPP = ($userObj['activated'] == self::ACTIVATED_INACTIVE_TOUPP) || ($userObj['activated'] == self::ACTIVATED_INACTIVE_PWD_TOUPP);
 
@@ -861,12 +857,12 @@ class UserUtil
                     } elseif ($mustConfirmTOUPP) {
                         $errorMsg = __('Your log-in request was not completed because you must agree to our terms first.');
                     }
-                    $callbackURL = ModUtil::url('Users','user','loginScreen', array(
-                        'authinfo'      => $authinfo,
-                        'authmodule'    => $authModuleName,
-                        'confirmtou'    => $mustConfirmTOUPP,
-                        'changepassword'=> $mustChangePasswordRightNow,
-                    ));
+                    $callbackURL = ModUtil::url('Users', 'user', 'loginScreen', array(
+                                    'authinfo' => $authinfo,
+                                    'authmodule' => $authModuleName,
+                                    'confirmtou' => $mustConfirmTOUPP,
+                                    'changepassword' => $mustChangePasswordRightNow,
+                            ));
 
                     // Haven't failed login yet, really. We're retrying.
                     return LogUtil::registerError($errorMsg, 403, $callbackURL);
@@ -889,12 +885,12 @@ class UserUtil
             // checking $mustChangePasswordRightNow and $mustChangePassword
             if ($mustChangePasswordRightNow) {
                 $errorMsg = __('Your log-in request was not completed because you must change your web site account\'s password first.');
-                $callbackURL = ModUtil::url('Users','user','loginScreen', array(
-                    'authinfo'      => $authinfo,
-                    'authmodule'    => $authModuleName,
-                    'confirmtou'    => $mustConfirmTOUPP,
-                    'changepassword'=> $mustChangePasswordRightNow,
-                ));
+                $callbackURL = ModUtil::url('Users', 'user', 'loginScreen', array(
+                                'authinfo' => $authinfo,
+                                'authmodule' => $authModuleName,
+                                'confirmtou' => $mustConfirmTOUPP,
+                                'changepassword' => $mustChangePasswordRightNow,
+                        ));
 
                 // Haven't failed login yet, really. We're retrying.
                 return LogUtil::registerError($errorMsg, 403, $callbackURL);
@@ -908,12 +904,12 @@ class UserUtil
                 // account inactive or we have a problem understanding what status the user has, deny login
                 // Note that we have not actually logged into anything yet, just authenticated.
                 $event = new Zikula_Event('user.login.failed', null, array(
-                    'authmodule'    => $authModuleName,
-                    'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
-                ));
+                                'authmodule' => $authModuleName,
+                                'loginid' => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                        ));
                 EventUtil::notify($event);
                 return LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided '
-                    . 'does not match the information for your account. Please correct your entry and try again.'));
+                                . 'does not match the information for your account. Please correct your entry and try again.'));
             }
         }
 
@@ -942,10 +938,10 @@ class UserUtil
             $GLOBALS['authinfogathered'][$authenticatedUid] = 0;
 
             $event = new Zikula_Event('user.login', null, array(
-                'authmodule'    => $authModuleName,
-                'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
-                'user'          => $authenticatedUid,
-            ));
+                            'authmodule' => $authModuleName,
+                            'loginid' => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                            'user' => $authenticatedUid,
+                    ));
             EventUtil::notify($event);
 
             return true;
@@ -955,9 +951,9 @@ class UserUtil
             // authenticateUser. Strange situation, so deny login.
             // Note that we have not actually logged into anything yet.
             $event = new Zikula_Event('user.login.failed', null, array(
-                'authmodule'    => $authModuleName,
-                'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
-            ));
+                            'authmodule' => $authModuleName,
+                            'loginid' => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                    ));
             EventUtil::notify($event);
             return false;
         }
@@ -975,8 +971,8 @@ class UserUtil
     public static function loginHttp()
     {
         $uname = System::serverGetVar('REMOTE_USER');
-        $hSec  = System::getVar('session_http_login_high_security', true);
-        $rc    = self::loginUsing('Users', array('loginid' => $uname, 'pass' => null), false, false);
+        $hSec = System::getVar('session_http_login_high_security', true);
+        $rc = self::loginUsing('Users', array('loginid' => $uname, 'pass' => null), false, false);
         if ($rc && $hSec) {
             System::setVar('seclevel', 'High');
         }
@@ -993,9 +989,9 @@ class UserUtil
     {
         if (self::isLoggedIn()) {
             $event = new Zikula_Event('user.logout', null, array(
-                'authmodule'    => $authModuleName,
-                'user'          => self::getVar('uid'),
-            ));
+                            'authmodule' => $authModuleName,
+                            'user' => self::getVar('uid'),
+                    ));
             EventUtil::notify($event);
 
             session_destroy();
@@ -1072,7 +1068,7 @@ class UserUtil
 
         $verifyChgColumn = $dbinfo['users_verifychg_column'];
         $where = "({$verifyChgColumn['newemail']} = '{$emailAddress}') AND ({$verifyChgColumn['changetype']} = "
-            . self::VERIFYCHGTYPE_EMAIL . ")";
+                . self::VERIFYCHGTYPE_EMAIL . ")";
         if ($excludeUid > 1) {
             $where .= " AND ({$verifyChgColumn['uid']} != {$excludeUid})";
         }
@@ -1109,7 +1105,7 @@ class UserUtil
             $verifyChgColumn = $dbinfo['users_verifychg_column'];
             $where = "WHERE ({$verifyChgColumn['uid']} = {$userObj['uid']}) AND ({$verifyChgColumn['changetype']} = " . self::VERIFYCHGTYPE_REGEMAIL . ")";
             $verifyChgList = DBUtil::selectObjectArray('users_verifychg', $where, '', -1, 1);
-            if ($verifyChgList && is_array($verifyChgList) && !empty($verifyChgList) && is_array($verifyChgList[0])  && !empty($verifyChgList[0])) {
+            if ($verifyChgList && is_array($verifyChgList) && !empty($verifyChgList) && is_array($verifyChgList[0]) && !empty($verifyChgList[0])) {
                 $userObj['verificationsent'] = $verifyChgList[0]['created_dt'];
             } else {
                 $userObj['verificationsent'] = false;
@@ -1160,7 +1156,7 @@ class UserUtil
         }
 
         // assign a value for the parameter idfield if it is necessary and prevent from possible typing mistakes
-        if ($idfield  == '' || ($idfield != 'uid' && $idfield != 'uname' && $idfield != 'email')) {
+        if ($idfield == '' || ($idfield != 'uid' && $idfield != 'uname' && $idfield != 'email')) {
             $idfield = 'uid';
             if (!is_numeric($id)) {
                 $idfield = 'uname';
@@ -1240,7 +1236,7 @@ class UserUtil
                 // reloaded into cache no matter what $getRegistration is set to. If not, and this is
                 // called from setVar(), and setVar() changed the 'activated' value, then we'd have trouble.
                 if (($getRegistration && ($user['activated'] != self::ACTIVATED_PENDING_REG))
-                    || (!$getRegistration && ($user['activated'] == self::ACTIVATED_PENDING_REG))) {
+                        || (!$getRegistration && ($user['activated'] == self::ACTIVATED_PENDING_REG))) {
                     return false;
                 }
 
@@ -1369,33 +1365,33 @@ class UserUtil
 
         // this array maps old DUDs to new attributes
         $mappingarray = array(
-            '_UREALNAME' => 'realname',
-            '_UFAKEMAIL' => 'publicemail',
-            '_YOURHOMEPAGE' => 'url',
-            '_TIMEZONEOFFSET' => 'tzoffset',
-            '_YOURAVATAR' => 'avatar',
-            '_YLOCATION' => 'city',
-            '_YICQ' => 'icq',
-            '_YAIM' => 'aim',
-            '_YYIM' => 'yim',
-            '_YMSNM' => 'msnm',
-            '_YOCCUPATION' => 'occupation',
-            '_SIGNATURE' => 'signature',
-            '_EXTRAINFO' => 'extrainfo',
-            '_YINTERESTS' => 'interests',
-            'name' => 'realname',
-            'femail' => 'publicemail',
-            'timezone_offset' => 'tzoffset',
-            'user_avatar' => 'avatar',
-            'user_icq' => 'icq',
-            'user_aim' => 'aim',
-            'user_yim' => 'yim',
-            'user_msnm' => 'msnm',
-            'user_from' => 'city',
-            'user_occ' => 'occupation',
-            'user_intrest' => 'interests',
-            'user_sig' => 'signature',
-            'bio' => 'extrainfo',
+                '_UREALNAME' => 'realname',
+                '_UFAKEMAIL' => 'publicemail',
+                '_YOURHOMEPAGE' => 'url',
+                '_TIMEZONEOFFSET' => 'tzoffset',
+                '_YOURAVATAR' => 'avatar',
+                '_YLOCATION' => 'city',
+                '_YICQ' => 'icq',
+                '_YAIM' => 'aim',
+                '_YYIM' => 'yim',
+                '_YMSNM' => 'msnm',
+                '_YOCCUPATION' => 'occupation',
+                '_SIGNATURE' => 'signature',
+                '_EXTRAINFO' => 'extrainfo',
+                '_YINTERESTS' => 'interests',
+                'name' => 'realname',
+                'femail' => 'publicemail',
+                'timezone_offset' => 'tzoffset',
+                'user_avatar' => 'avatar',
+                'user_icq' => 'icq',
+                'user_aim' => 'aim',
+                'user_yim' => 'yim',
+                'user_msnm' => 'msnm',
+                'user_from' => 'city',
+                'user_occ' => 'occupation',
+                'user_intrest' => 'interests',
+                'user_sig' => 'signature',
+                'bio' => 'extrainfo',
         );
 
         $res = false;
@@ -1454,7 +1450,6 @@ class UserUtil
         // removed from this array but a user's password has been hashed with that method, then that user will no
         // longer be able to log in!! Only remove an entry if you are absolutely positive no user record has a
         // password hashed with that method!
-
         // NOTICE: DO NOT change the numbers assigned to each hash method. The number is the identifier for the
         // method stored in the database. If a number is changed to a different method, then any user whose password
         // was hashed with the method previously identified by that number will no longer be able to log in!
@@ -1464,16 +1459,16 @@ class UserUtil
         if ($reverse) {
             // Ensure this is in sync with the array below!
             return array(
-                1 => 'md5',
-                5 => 'sha1',
-                8 => 'sha256'
+                    1 => 'md5',
+                    5 => 'sha1',
+                    8 => 'sha256'
             );
         } else {
             // Ensure this is in sync with the array above!
             return array(
-                'md5'    => 1,
-                'sha1'   => 5,
-                'sha256' => 8
+                    'md5' => 1,
+                    'sha1' => 5,
+                    'sha256' => 8
             );
         }
     }
@@ -1493,7 +1488,7 @@ class UserUtil
         }
 
         if (!isset($hashAlgorithmName) || !is_string($hashAlgorithmName) || empty($hashAlgorithmName) || !isset($hashMethodCodesByName[$hashAlgorithmName])
-            || empty($hashMethodCodesByName[$hashAlgorithmName]) || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
+                || empty($hashMethodCodesByName[$hashAlgorithmName]) || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
 
             return LogUtil::registerArgsError();
         }
@@ -1516,7 +1511,7 @@ class UserUtil
         }
 
         if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
-            || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
+                || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
 
             return LogUtil::registerArgsError();
         }
@@ -1543,8 +1538,8 @@ class UserUtil
         }
 
         return isset($unhashedPassword)
-            && is_string($unhashedPassword)
-            && (strlen($unhashedPassword) >= $minLength);
+        && is_string($unhashedPassword)
+        && (strlen($unhashedPassword) >= $minLength);
     }
 
     /**
@@ -1586,8 +1581,8 @@ class UserUtil
         return SecurityUtil::getSaltedHash($unhashedPassword, $hashAlgorithmName, self::getPasswordHashMethods(false), 5, self::SALT_DELIM);
 
         return array(
-            'hashMethodCode'    => $hashMethodCode,
-            'hash'              => hash($hashAlgorithmName, $unhashedPassword),
+                'hashMethodCode' => $hashMethodCode,
+                'hash' => hash($hashAlgorithmName, $unhashedPassword),
         );
     }
 
@@ -1690,7 +1685,7 @@ class UserUtil
     {
         // Prevent deletion of core fields (duh)
         if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass') || ($name == 'uname')
-            || ($name == 'activated')) {
+                || ($name == 'activated')) {
 
             return false;
         }
@@ -1722,33 +1717,33 @@ class UserUtil
 
         // this array maps old DUDs to new attributes
         $mappingarray = array(
-            '_UREALNAME' => 'realname',
-            '_UFAKEMAIL' => 'publicemail',
-            '_YOURHOMEPAGE' => 'url',
-            '_TIMEZONEOFFSET' => 'tzoffset',
-            '_YOURAVATAR' => 'avatar',
-            '_YLOCATION' => 'city',
-            '_YICQ' => 'icq',
-            '_YAIM' => 'aim',
-            '_YYIM' => 'yim',
-            '_YMSNM' => 'msnm',
-            '_YOCCUPATION' => 'occupation',
-            '_SIGNATURE' => 'signature',
-            '_EXTRAINFO' => 'extrainfo',
-            '_YINTERESTS' => 'interests',
-            'name' => 'realname',
-            'femail' => 'publicemail',
-            'timezone_offset' => 'tzoffset',
-            'user_avatar' => 'avatar',
-            'user_icq' => 'icq',
-            'user_aim' => 'aim',
-            'user_yim' => 'yim',
-            'user_msnm' => 'msnm',
-            'user_from' => 'city',
-            'user_occ' => 'occupation',
-            'user_intrest' => 'interests',
-            'user_sig' => 'signature',
-            'bio' => 'extrainfo',
+                '_UREALNAME' => 'realname',
+                '_UFAKEMAIL' => 'publicemail',
+                '_YOURHOMEPAGE' => 'url',
+                '_TIMEZONEOFFSET' => 'tzoffset',
+                '_YOURAVATAR' => 'avatar',
+                '_YLOCATION' => 'city',
+                '_YICQ' => 'icq',
+                '_YAIM' => 'aim',
+                '_YYIM' => 'yim',
+                '_YMSNM' => 'msnm',
+                '_YOCCUPATION' => 'occupation',
+                '_SIGNATURE' => 'signature',
+                '_EXTRAINFO' => 'extrainfo',
+                '_YINTERESTS' => 'interests',
+                'name' => 'realname',
+                'femail' => 'publicemail',
+                'timezone_offset' => 'tzoffset',
+                'user_avatar' => 'avatar',
+                'user_icq' => 'icq',
+                'user_aim' => 'aim',
+                'user_yim' => 'yim',
+                'user_msnm' => 'msnm',
+                'user_from' => 'city',
+                'user_occ' => 'occupation',
+                'user_intrest' => 'interests',
+                'user_sig' => 'signature',
+                'bio' => 'extrainfo',
         );
 
         if (self::fieldAlias($name)) {
@@ -1759,7 +1754,6 @@ class UserUtil
             LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($name, $mappingarray[$name])), E_USER_DEPRECATED);
             // $name is a former DUD /old style user information now stored as an attribute
             $res = (bool)ObjectUtil::deleteObjectSingleAttribute($uid, 'users', $mappingarray[$name]);
-
         } else {
             // $name not in the users table and also not found in the mapping array,
             // let's make an attribute out of it

@@ -17,7 +17,6 @@
  */
 class CacheUtil
 {
-
     /**
      * Get the location of the local cache directory.
      *
@@ -29,7 +28,7 @@ class CacheUtil
     {
         $array = array();
         $array[] = DataUtil::formatForOS(System::getVar('temp'), true);
-        
+
         if (!is_null($dir)) {
             $array[] = DataUtil::formatForOS($dir);
         }
@@ -89,4 +88,5 @@ class CacheUtil
         self::removeLocalDir($dir);
         self::createLocalDir($dir);
     }
+
 }

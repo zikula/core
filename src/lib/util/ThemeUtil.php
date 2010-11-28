@@ -73,7 +73,7 @@ class ThemeUtil
      * @param constant $type   Theme type.
      *
      * @return array Available themes.
-     **/
+     */
     public static function getAllThemes($filter = self::FILTER_ALL, $state = self::STATE_ACTIVE, $type = self::TYPE_ALL)
     {
         static $themesarray = array();
@@ -104,7 +104,7 @@ class ThemeUtil
             $orderBy = "ORDER BY $themescolumn[name]";
             // define the permission filter to apply
             $permFilter = array(
-                array('realm' => 0, 'component_left' => 'Theme', 'instance_left' => 'name', 'level' => ACCESS_READ));
+                    array('realm' => 0, 'component_left' => 'Theme', 'instance_left' => 'name', 'level' => ACCESS_READ));
             $themesarray[$key] = DBUtil::selectObjectArray('themes', $where, $orderBy, 0, -1, 'directory', $permFilter);
             if (!$themesarray[$key]) {
                 return false;
@@ -113,7 +113,6 @@ class ThemeUtil
 
         return $themesarray[$key];
     }
-
 
     /**
      * Get themeID given its name.
@@ -169,7 +168,7 @@ class ThemeUtil
      * @param string $themeid Id of the theme.
      *
      * @return array The theme information.
-     **/
+     * */
     public static function getInfo($themeid)
     {
         if ($themeid == 0 || !is_numeric($themeid)) {
@@ -268,4 +267,5 @@ class ThemeUtil
         }
         return $csssrc;
     }
+
 }

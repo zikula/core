@@ -13,7 +13,7 @@
  */
 
 /**
- * CookieUtil
+ * CookieUtil.
  */
 class CookieUtil
 {
@@ -40,7 +40,7 @@ class CookieUtil
             return z_exit('setCookie: ' . DataUtil::formatForDisplay($value) . ' must be a string');
         }
 
-        if (System::getVar('signcookies') && (!$signed==false)) {
+        if (System::getVar('signcookies') && (!$signed == false)) {
             // sign the cookie
             $value = SecurityUtil::signData($value);
         }
@@ -60,7 +60,7 @@ class CookieUtil
     public static function getCookie($name, $signed=true, $default='')
     {
         $cookie = FormUtil::getPassedValue($name, $default, 'COOKIE');
-        if (System::getVar('signcookies') && (!$signed==false)) {
+        if (System::getVar('signcookies') && (!$signed == false)) {
             return SecurityUtil::checkSignedData($cookie);
         }
 
@@ -81,4 +81,5 @@ class CookieUtil
     {
         return self::setCookie($name, '', time());
     }
+
 }
