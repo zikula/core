@@ -91,7 +91,7 @@ to Version.php
     protected function setupHookBundles()
     {
         $bundle = new Zikula_Version_HookProviderBundle('modulehook_area.ratings.item', $this->__('Ratings Hook Poviders'));
-        $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview');
+        $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview', 'ratings.service');
         //...
         $this->registerHookProviderBundle($bundle);
 
