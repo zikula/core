@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-24 14:13-0400\n"
+"POT-Creation-Date: 2010-11-28 16:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,22 +16,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: javascript/helpers/Zikula.js:651 javascript/helpers/Zikula.js:737
+#: javascript/helpers/Zikula.js:674 javascript/helpers/Zikula.js:766
 msgid "hello"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:652 javascript/helpers/Zikula.js:751
+#: javascript/helpers/Zikula.js:675 javascript/helpers/Zikula.js:780
 #, php-format
 msgid "hello %s"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:653 javascript/helpers/Zikula.js:766
+#: javascript/helpers/Zikula.js:676 javascript/helpers/Zikula.js:795
 msgid "hello my friend"
 msgid_plural "hello my friends"
 msgstr[0] ""
 msgstr[1] ""
 
-#: javascript/helpers/Zikula.js:654 javascript/helpers/Zikula.js:789
+#: javascript/helpers/Zikula.js:677 javascript/helpers/Zikula.js:818
 #, php-format
 msgid "hello my friend %s"
 msgid_plural "hello my friends %s"
