@@ -34,6 +34,7 @@ module to apply hooks to one part of a module as opposed to another.
 Areas should all be unique, so please use this format:
 
     modulehook_area.mymodule.<areaname>
+    eg.
     modulehook_area.comments.general (the provider area)
     modulehook_area.news.articles    (the subscriber area)
 
@@ -46,7 +47,8 @@ modules's Version.php.  This is done by adding a method called to Version.php
     {
         $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.news.articles', $this->__('News Display Hooks'));
         $bundle->addType('ui.view', 'news.hook.articles.ui.view');
-        $bundle->addType('ui.create', 'news.hook.articles.ui.create');
+        $bundle->addType('ui.edit', 'news.hook.articles.ui.edit');
+        // add other types as needed
         $this->registerHookSubscriberBundle($bundle);
     }
 
@@ -91,8 +93,8 @@ to Version.php
     protected function setupHookBundles()
     {
         $bundle = new Zikula_Version_HookProviderBundle('modulehook_area.ratings.item', $this->__('Ratings Hook Poviders'));
-        $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview', 'ratings.service');
-        //...
+        $bundle->addHook('hookhandler.ratings.ui.view', 'ui.view', 'Ratings_Hooks', 'uiview', 'ratings.service');
+        // add other hooks as needed
         $this->registerHookProviderBundle($bundle);
 
         //... repeat as many times as necessary
@@ -117,13 +119,13 @@ you can use the same $serviceId and have multiple methods in side if you wish.
 The $name of the hook, is the name of the handler - a common name.  This is NOT
 an event name.
 
-    $bundle->addHook($name, $owner, $type, $className, $method, $serviceId, $weight);
+    $bundle->addHook($name, $type, $className, $method, $serviceId, $weight);
 
     // registering a static method handler.
-    $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview');
+    $bundle->addHook('hookhandler.ratings.ui.view', 'ui.view', 'Ratings_Hooks', 'uiview');
 
     // registering a service (preferred - class must be an instance of Zikula_HookHandler)
-    $bundle->addHook('hookhandler.ratings.ui.view', 'Ratings', 'ui.view', 'Ratings_Hooks', 'uiview', 'module.ratings_hooks');
+    $bundle->addHook('hookhandler.ratings.ui.view', 'ui.view', 'Ratings_Hooks', 'uiview', 'module.ratings_hooks');
 
 The $weight parameter can be used to set default weights of handlers that are
 eventually attached with EventManager.  Generally, this parameter can be left alone.
@@ -150,7 +152,7 @@ In this section we will discuss the actual hookable event that is triggered by
 a subscriber module.
 
 The event encapulates information about the hookable event.  Principally, we need
-the hook event name, e.g. 'news.hook.<area>.ui.edit'.
+the hook event name, e.g. '<nodulename>.hook.<area>.ui.edit'.
 
 Next, we need the subject of the event.  This will be the object or array of data.
 For example if this was a blog post, then it would be the blog post object (if
@@ -166,7 +168,7 @@ In the arguments of the event, we should also include an array of
 
 It might looks like this:
 
-    new Zikula_Event('news.hook.artciles.process.update', $article, array('caller' => 'News', 'id' => $article['id']));
+    new Zikula_Event('news.hook.articles.process.update', $article, array('caller' => 'News', 'id' => $article['id']));
 
 Implementing Hooks from the Subscriber Side
 -------------------------------------------
@@ -182,8 +184,7 @@ Attaching display hooks is very simple.  Inside the template simply add
 
     {notifydisplayhooks eventname='news.hook.articles.ui.view' subject=$subject id=$subject[id] assign='display_hooks'}
 
-$module will be added magically unless you need to specify it (the value is take from
-the Zikula_View instance.
+$module will be added magically unless you need to specify it (the value is taken from the Zikula_View instance.
 
 The plugin will return all display hooks, sorted according to the administration
 settings.  The return is an array of
@@ -199,14 +200,14 @@ hook types.  This can be done as follows:
     $this->eventManager->notify($event);
 
    // the short way, provided in instances of Zikula_Base (controllers, APIs etc).
-   $this->notifyHooks('news.hook.artciles.process.create', $subject, $id);
+   $this->notifyHooks('news.hook.articles.process.edit', $subject, $id);
 
 HOOK RESPONSES FROM PROVIDERS
 -----------------------------
 A hook handler should response with a Zikula_Response_DisplayHook object in the following manner.
 
     // example of a static handler (*not* preferred for edit/validate handlers which should be Zikula_HookHandlder instances)
-    public function hookHandler(Zikula_Event $event)
+    public static function hookHandler(Zikula_Event $event)
     {
         $name = 'Foo'; // this module's name.
         $template = 'template_name.tpl'; // the name of the module's template
@@ -278,7 +279,7 @@ the Zikula_HookHandler instances unless using an outdated workflow where validat
 redirect to display methods, in which case you will have to do validation again.
 
 ui.edit hooks are displayed in the template with
-    {notifydisplayhooks eventname='hook.<module>.<area>.ui.edit' subject=$subject id=$id}
+    {notifydisplayhooks eventname='<module>.hook.<area>.ui.edit' subject=$subject id=$id}
 
 === Editing an existing item ===
 
@@ -317,7 +318,7 @@ the Zikula_HookHandler instances unless using an outdated workflow where validat
 redirect to display methods, in which case you will have to do validation again.
 
 ui.edit hooks are displayed in the template with
-    {notifydisplayhooks eventname='hook.<module>.<area>.ui.edit' subject=$subject id=$id}
+    {notifydisplayhooks eventname='<module>.hook.<area>.ui.edit' subject=$subject id=$id}
 
 === Deleting an item ===
 There are manu different approaches that can be taken to deleting an item. For example we
@@ -331,3 +332,5 @@ triggering a hookable event with
     id=$item['id']
     caller=calling module's name
 
+ui.delete hooks are displayed in the template with
+{notifydisplayhooks eventname='<module>.hook.<area>.ui.delete' subject=$subject id=$id}
