@@ -152,7 +152,7 @@ In this section we will discuss the actual hookable event that is triggered by
 a subscriber module.
 
 The event encapulates information about the hookable event.  Principally, we need
-the hook event name, e.g. '<nodulename>.hook.<area>.ui.edit'.
+the hook event name, e.g. '<module>.hook.<area>.ui.edit'.
 
 Next, we need the subject of the event.  This will be the object or array of data.
 For example if this was a blog post, then it would be the blog post object (if
