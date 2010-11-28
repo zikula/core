@@ -20,7 +20,7 @@
  *   - eventName:  Name of the event.
  *
  * Example
- *   {$foo|notifyfilters:'hookfilter.news.articles'}
+ *   {$foo|notifyfilters:'news.filterhook.articles'}
  *
  * @param string      $string    The contents to filter.
  * @param string      $eventName The contents to filter.
@@ -30,6 +30,6 @@
  */
 function smarty_modifier_notifyfilters($string, $eventName, $view)
 {
-    $event = new Zikula_Event($eventName, $view, array('module' => $view->getToplevelmodule()), $string);
+    $event = new Zikula_Event($eventName, $view, array('caller' => $view->getToplevelmodule()), $string);
     return EventUtil::getManager()->notify($event)->getData();
 }

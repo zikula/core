@@ -347,5 +347,10 @@ the module's output have the filters applied.
 
 Usage:
 
-    {$var|notifyfilters:'news.filterhook.<area>.<name>'}
+    {$var|notifyfilters:'news.filterhook.articles'}
+
+Within PHP they could be invoked like this:
+
+    $event = new Zikula_Event($eventName, $this->view, array('caller' => $this->getName()), $string);
+    $result = $this->eventManager->notify($event)->getData();
 
