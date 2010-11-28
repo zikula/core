@@ -21,15 +21,14 @@
  * Available parameters:
  * - 'eventname' The name of the hook event [required].
  * - 'subject'   The subject of the event (array or object) [required].
- * - 'id'        The ID field/property of the index, default 'id' [required].
- * - 'module'    The caller of this hook, defaults to current module [required].
+ * - 'id'        The ID if the subject.
  * - 'returnurl' The return URL, defaults to URL of called page, [required].
  * - 'assign'    If set, the results array is assigned to the named variable instead display [optional].
  * - all remaining parameters are passed to the hook via the args param in the event.
  *
  * Example:
- *  {notifydisplayhooks eventname='news.item.ui.view' subject=$subject returnurl=$returnurl}
- *  {notifydisplayhooks eventname='news.item.ui.view' subject=$subject returnurl=$returnurl assign='displayhooks'}
+ *  {notifydisplayhooks eventname='news.hook.item.ui.view' subject=$subject id=$id returnurl=$returnurl}
+ *  {notifydisplayhooks eventname='news.hook.item.ui.view' subject=$subject id=$id returnurl=$returnurl assign='displayhooks'}
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -47,7 +46,7 @@ function smarty_function_notifydisplayhooks($params, $view)
     }
     $eventname = $params['eventname'];
 
-    $params['id'] = isset($params['id']) ? $params['id'] : 'id';
+    $params['id'] = isset($params['id']) ? $params['id'] : null;
     $params['returnurl'] = isset($params['returnurl']) ? $params['returnurl'] : System::getCurrentUrl();
     $params['caller'] = $caller = isset($params['caller']) ? $params['caller'] : $view->get_tpl_var('controller')->getName();
 

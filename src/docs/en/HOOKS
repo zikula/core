@@ -168,9 +168,6 @@ It might looks like this:
 
     new Zikula_Event('news.hook.artciles.process.update', $article, array('caller' => 'News', 'id' => $article['id']));
 
-In general, hook providers can assume if no 'id' key is available that the ID 
-is 'id' as this is generally logical and good practice.
-
 Implementing Hooks from the Subscriber Side
 -------------------------------------------
 So it can be seen quite clearly that Hooks are really only for use on with display.  Their
@@ -183,7 +180,7 @@ by the administation UI.
 
 Attaching display hooks is very simple.  Inside the template simply add
 
-    {notifydisplayhooks eventname='news.hook.articles.ui.view' subject=$subject module=$module assign='display_hooks'}
+    {notifydisplayhooks eventname='news.hook.articles.ui.view' subject=$subject id=$subject[id] assign='display_hooks'}
 
 $module will be added magically unless you need to specify it (the value is take from
 the Zikula_View instance.
@@ -191,18 +188,18 @@ the Zikula_View instance.
 The plugin will return all display hooks, sorted according to the administration
 settings.  The return is an array of
 
-    array('moduleName1' => 'output1',
-          'moduleName2' => 'output2');
+    array('name1' => 'output1',
+          'name2' => 'output2');
 
 In the module controllers, you will need to implement the process and or validation
 hook types.  This can be done as follows:
 
     // the long way
-    $event = new Zikula_Event('news.hook.articles.process.create', $subject, array('module' => $moduleName));
+    $event = new Zikula_Event('news.hook.articles.process.create', $subject, array('id' => $id, 'module' => $moduleName));
     $this->eventManager->notify($event);
 
    // the short way, provided in instances of Zikula_Base (controllers, APIs etc).
-   $this->notifyHooks('news.hook.artciles.process.create', $subject);
+   $this->notifyHooks('news.hook.artciles.process.create', $subject, $id);
 
 HOOK RESPONSES FROM PROVIDERS
 -----------------------------
