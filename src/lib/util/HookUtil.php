@@ -352,9 +352,10 @@ class HookUtil
 
         $serviceManager = ServiceUtil::getManager();
         $eventManager = EventUtil::getManager();
+        $sm = new Zikula_ServiceManager_Service('zikula.servicemanager');
         foreach ($handlers as $key => $handler) {
             if ($handler['serviceid'] && !$serviceManager->hasService($handler['serviceid'])) {
-                $definition = new Zikula_ServiceManager_Definition($handler['classname'], array($serviceManager));
+                $definition = new Zikula_ServiceManager_Definition($handler['classname'], array($sm));
                 $serviceManager->registerService(new Zikula_ServiceManager_Service($handler['serviceid'], $definition));
                 $callable = self::resolveCallable($handler);
             } else {
