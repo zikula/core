@@ -328,13 +328,14 @@ class Admin_Controller_Admin extends Zikula_Controller
 
         // get admin capable modules
         $adminmodules = ModUtil::getAdminMods();
-        usort($adminmodules, '_sortAdminModsByDisplayName');
+        //usort($adminmodules, '_sortAdminModsByOrder');
         $adminlinks = array();
         foreach ($adminmodules as $adminmodule) {
             if (SecurityUtil::checkPermission("{$adminmodule['name']}::", 'ANY', ACCESS_EDIT)) {
                 $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory',
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
-
+                $order = ModUtil::apiFunc('Admin', 'admin', 'getSortOrder',
+                        array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
                 if (($catid == $acid) || (($catid == false) && ($acid == $this->getVar('defaultcategory')))) {
                     $modinfo = ModUtil::getInfoFromName($adminmodule['name']);
                     $menutexturl = ModUtil::url($modinfo['name'], 'admin');
@@ -370,11 +371,12 @@ class Admin_Controller_Admin extends Zikula_Controller
                             'menutexttitle' => $menutexttitle,
                             'modname' => $modinfo['name'],
                             'adminicon' => $adminicon,
-                            'id' => $modinfo['id']);
+                            'id' => $modinfo['id'],
+                            'order'=> $order);
                 }
             }
         }
-
+        usort($adminlinks, '_sortAdminModsByOrder');
         $this->view->assign('adminlinks', $adminlinks);
 
         // work out what stylesheet is being used to render to the admin panel
@@ -519,22 +521,30 @@ class Admin_Controller_Admin extends Zikula_Controller
 
         // get admin capable modules
         $adminmodules = ModUtil::getAdminMods();
-        usort($adminmodules, '_sortAdminModsByDisplayName');
+        //usort($adminmodules, '_sortAdminModsByOrder');
         $adminlinks = array();
 
         foreach ($adminmodules as $adminmodule) {
             if (SecurityUtil::checkPermission("$adminmodule[name]::", '::', ACCESS_EDIT)) {
                 $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $adminmodule['id']));
+                $order = ModUtil::apiFunc('Admin', 'admin', 'getSortOrder',
+                        array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
                 $menutexturl = ModUtil::url($adminmodule['name'], 'admin');
                 $menutext = $adminmodule['displayname'];
                 $menutexttitle = $adminmodule['description'];
                 $adminlinks[$catid][] = array('menutexturl' => $menutexturl,
                         'menutext' => $menutext,
                         'menutexttitle' => $menutexttitle,
-                        'modname' => $adminmodule['name']);
+                        'modname' => $adminmodule['name'],
+                        'order' => $order
+                );
             }
         }
-
+        
+        foreach($adminlinks as &$item) {
+            usort($item, '_sortAdminModsByOrder');
+        }
+        
         $menuoptions = array();
         $possible_cids = array();
         $permission = false;
@@ -795,8 +805,8 @@ class Admin_Controller_Admin extends Zikula_Controller
             curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
             curl_setopt($ch, CURLOPT_REFERER, $ref);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
-                // This option doesnt work in safe_mode or with open_basedir set in php.ini
+            if (!ini_get('safe_mode')) {
+                // This option doesnt work in safe_mode
                 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             }
             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
@@ -821,4 +831,12 @@ class Admin_Controller_Admin extends Zikula_Controller
  */
 function _sortAdminModsByDisplayName($a, $b) {
     return strcmp($a['displayname'], $b['displayname']);
+}
+
+function _sortAdminModsByOrder($a,$b) {
+    if((int)$a['order'] == (int)$b['order']) {
+        return strcmp($a['modname'], $b['modname']);
+    }
+    if((int)$a['order']  > (int)$b['order']) return 1;
+    if((int)$a['order']  < (int)$b['order']) return -1;
 }

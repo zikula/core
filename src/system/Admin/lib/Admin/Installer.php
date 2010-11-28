@@ -78,6 +78,13 @@ class Admin_Installer extends Zikula_Installer
                 $this->delVar('moduledescription');
 
             case '1.8.1':
+                if (!DBUtil::changeTable('admin_category')) {
+                    return '1.8.1';
+                }
+                if (!DBUtil::changeTable('admin_module')) {
+                    return '1.8.1';
+                }
+            case '1.9.0':
             // future upgrade routines
         }
 

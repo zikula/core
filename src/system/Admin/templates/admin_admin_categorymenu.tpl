@@ -22,7 +22,7 @@
 <div class="admintabs-container" id="admintabs-container">
     <ul id="admintabs" class="z-clearfix">
         {foreach from=$menuoptions name=menuoption item=menuoption}
-        <li {if $currentcat eq $menuoption.cid} class="active"{/if}>
+        <li {if $currentcat eq $menuoption.cid} class="active"{/if} id="admintab_{$menuoption.cid}" class="admintab" style="z-index:0;">
             <a id="C{$menuoption.cid}" href="{$menuoption.url|safetext}" title="{$menuoption.description|safetext}">{$menuoption.title|safetext}</a>
             <span id="catcontext{$menuoption.cid}" class="z-admindrop">&nbsp;</span>
 

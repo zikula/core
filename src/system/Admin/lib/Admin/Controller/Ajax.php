@@ -229,4 +229,43 @@ class Admin_Controller_Ajax extends Zikula_Controller
         //unknown error
         throw new Zikula_Exception_Fatal($this->__('Error! Could not make this category default.'));
     }
+    
+    public function sortCategories() {
+        if (!SecurityUtil::confirmAuthKey()) {
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
+        }
+        
+        if (!SecurityUtil::checkPermission('Admin::', "::", ACCESS_ADMIN)) {
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
+        }
+        $data = FormUtil::getPassedValue('admintabs');
+        $objects = array();
+        foreach ($data as $order => $id) {
+            array_push($objects, array("cid" => $id, "order" => $order));
+        }
+        DBUtil::updateObjectArray($objects,'admin_category','cid');
+        return new Zikula_Response_Ajax(array());
+    }
+    
+    
+     public function sortModules() {
+        if (!SecurityUtil::confirmAuthKey()) {
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
+        }
+        
+        if (!SecurityUtil::checkPermission('Admin::', "::", ACCESS_ADMIN)) {
+            LogUtil::registerPermissionError(null,true);
+            throw new Zikula_Exception_Forbidden();
+        }
+        $data = FormUtil::getPassedValue('modules');
+        $objects = array();
+        foreach ($data as $order => $id) {
+            array_push($objects, array("mid" => $id, "order" => $order));
+        }
+        DBUtil::updateObjectArray($objects,'admin_module','mid');
+        return new Zikula_Response_Ajax(array());
+    }
 }

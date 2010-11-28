@@ -12,8 +12,8 @@
             {math equation="$count+1" assign="count"}
             {math equation="$moduleid+1" assign="moduleid"}
 
-            {if $count eq 1}<div class="z-adminiconrow z-clearfix">{/if}
-                <div id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.Admin.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$moduleid"};">
+            {if $smarty.foreach.adminlink.first}<div class="z-adminiconrow z-clearfix" id="modules">{/if}
+                <div id="module_{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.Admin.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$moduleid"};">
                     {if $modvars.Admin.admingraphic eq 1}
                     <a class="z-adminicon z-adminfloat" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">
                         <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutext|safetext}" alt="{$adminlink.menutext|safetext}" />
@@ -46,12 +46,6 @@
                             {{/foreach}}
 
                         {{/if}}
-                            new Draggable("A{{$adminlink.id}}", {
-                                revert: true,
-                                handle: "dragicon{{$adminlink.id}}",
-                                zindex: 2200 // must be higher than the active minitab and all other admin icons
-                            });
-
                         /* ]]> */
                         </script>
 
@@ -62,11 +56,7 @@
                     <div class="z-menutexttitle">{$adminlink.menutexttitle|safetext|truncate:$trunLen:"&hellip;":false}</div>
 
                 </div>
-
-            {if $count eq $modvars.Admin.modulesperrow}{assign var="count" value="0"}</div>
-            {else}
         {if $smarty.foreach.adminlink.last}</div>{/if}
-        {/if}
 
         {/foreach}
         </div>

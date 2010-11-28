@@ -29,11 +29,13 @@ function Admin_tables()
     $dbtable['admin_category'] = DBUtil::getLimitedTablename('admin_category');
     $dbtable['admin_category_column'] = array('cid'         => 'z_cid',
                                               'catname'     => 'z_name',
-                                              'description' => 'z_description');
+                                              'description' => 'z_description',
+                                              'order'       => 'z_order');
 
     $dbtable['admin_category_column_def'] = array('cid'         => "I NOTNULL AUTO PRIMARY",
                                                   'catname'     => "C(32) NOTNULL DEFAULT ''",
-                                                  'description' => "C(254) NOTNULL DEFAULT ''");
+                                                  'description' => "C(254) NOTNULL DEFAULT ''",
+                                                  'order'       => "I NOTNULL DEFAULT 0");
 
 
 
@@ -41,13 +43,15 @@ function Admin_tables()
     // on-screen to be very easy to read by a user.
     $admin_category = DBUtil::getLimitedTablename('admin_module');
     $dbtable['admin_module'] = $admin_category;
-    $dbtable['admin_module_column'] = array('id'  => 'z_amid',
-                                            'mid' => 'z_mid',
-                                            'cid' => 'z_cid');
+    $dbtable['admin_module_column'] = array('id'    => 'z_amid',
+                                            'mid'   => 'z_mid',
+                                            'cid'   => 'z_cid',
+                                            'order' => 'z_order');
 
-    $dbtable['admin_module_column_def'] = array('id'  => "I NOTNULL AUTO PRIMARY",
-                                                'mid' => "I NOTNULL DEFAULT 0",
-                                                'cid' => "I NOTNULL DEFAULT 0");
+    $dbtable['admin_module_column_def'] = array('id'    => "I NOTNULL AUTO PRIMARY",
+                                                'mid'   => "I NOTNULL DEFAULT 0",
+                                                'cid'   => "I NOTNULL DEFAULT 0",
+                                                'order' => "I NOTNULL DEFAULT 0");
 
     $dbtable['admin_module_column_idx'] = array ('mid_cid' => array('mid', 'cid'));
 

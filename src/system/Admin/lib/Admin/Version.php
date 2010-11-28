@@ -21,7 +21,7 @@ class Admin_Version extends Zikula_Version
         $meta['description']    = $this->__("Provides the site's administration panel, and the ability to configure and manage it.");
         //! module name that appears in URL
         $meta['url']            = $this->__('adminpanel');
-        $meta['version']        = '1.8.1';
+        $meta['version']        = '1.9.0';
         $meta['securityschema'] = array('Admin::' => 'Admin Category name::Admin Category ID');
         return $meta;
     }

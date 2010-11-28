@@ -34,7 +34,8 @@ class Admin_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError ();
         }
 
-        $category = array('catname' => $args['catname'], 'description' => $args['description']);
+        $count = $categories = ModUtil::apiFunc('Admin', 'admin', 'countitems');
+        $category = array('catname' => $args['catname'], 'description' => $args['description'], 'order' => $count);
 
         if (!DBUtil::insertObject($category, 'admin_category', 'cid')) {
             return LogUtil::registerError($this->__('Error! Could not create the new item.'));
@@ -178,7 +179,7 @@ class Admin_Api_Admin extends Zikula_Api
         $admincategorycolumn = &$dbtable['admin_category_column'];
 
         // get all categories the user has permission to see
-        $orderBy = "ORDER BY $admincategorycolumn[catname]";
+        $orderBy = "ORDER BY $admincategorycolumn[order]";
         $permFilter = array(array('realm'          => 0,
                         'component_left' => 'Admin',
                         'instance_left'  => 'catname',
@@ -255,6 +256,9 @@ class Admin_Api_Admin extends Zikula_Api
         $values = array();
         $values['cid'] = $args['category'];
         $values['mid'] = $mid;
+        
+        $values['order'] = ModUtil::apiFunc('Admin', 'admin', 'countModsInCat', array('cid' =>$args['category']));
+        
         if (!DBUtil::insertObject($values, 'admin_module')) {
             return false;
         }
@@ -302,6 +306,32 @@ class Admin_Api_Admin extends Zikula_Api
         return false;
     }
 
+    /**
+     * Get the category a module belongs to
+     * @param int $args['mid'] id of the module
+     * @return mixed category id, or false on failure
+     */
+    public function getSortOrder($args)
+    {
+
+        // Argument check
+        if (!isset($args['mid'])) {
+            return LogUtil::registerArgsError();
+        }
+        
+        // retrieve the admin module object array
+        //$result = DBUtil::selectObject('admin_module', );
+        $result = DBUtil::selectObjectByID('admin_module', (int)$args['mid'], 'mid');
+        if (!$result) {
+            return false;
+        }
+        return $result['order'];
+      
+    }
+    
+    
+    
+    
     /**
      * Get the category a module belongs to
      * @return array of categories
@@ -383,5 +413,14 @@ class Admin_Api_Admin extends Zikula_Api
         }
 
         return $links;
+    }
+    
+    public function countModsInCat($args) 
+    {
+        if (!isset($args['cid'])) {
+            return LogUtil::registerArgsError();
+        }
+        
+        return DBUtil::selectObjectCountByID('admin_module', $args['cid'], 'cid');
     }
 }
