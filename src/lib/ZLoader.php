@@ -214,6 +214,8 @@ class ZLoader
  * @param string  $msg  Message.
  * @param boolean $html True for html.
  *
+ * @deprecated since 1.3.0
+ *
  * @return false
  */
 function z_exit($msg, $html = true)
