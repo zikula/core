@@ -21,13 +21,13 @@ class Zikula_Response_Ajax_Plain extends Zikula_Response_Ajax_Base
     /**
      * Convert class to string.
      *
-     * @return void
+     * @return string
      */
     public function __toString()
     {
         header($this->createHttpResponseHeader());
         header('Content-type: text/html');
-        echo $this->data;
+        return $this->data;
     }
 
 }
