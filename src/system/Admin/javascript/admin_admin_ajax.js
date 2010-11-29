@@ -10,58 +10,61 @@ Event.observe(window, 'load', function() {
     droppables = Array();
     
     //make the admin tabs (categories) sortable
-    Sortable.create('admintabs',{
-        tag:'li',
-        onChange: function(element) {
-            //stops the default link action (change curent category) when dropping sortable
-            $$("#"+element.id + " a").each(function(item) {
+    make_tabs_sortable = function() {
+        Sortable.create('admintabs',{
+            tag:'li',
+            onChange: function(element) {
+                //stops the default link action (change curent category) when dropping sortable
+                $$("#"+element.id + " a").each(function(item) {
                     Event.observe(item.id, 'click', function(event) {
-                            event.preventDefault();
+                        event.preventDefault();
                     });
-            });
-        },
-        onUpdate: function(element){
-            //reset the default action after drop has been completed
-            Event.observe(element.id, 'mousemove', function(event) {  
-                            $$("#"+element.id + " a").each(function(item) {
-                                    Event.stopObserving(item.id, 'click');
-                            });
-                            Event.stopObserving(element.id, 'mousemove');
-            });
-            pars = Sortable.serialize("admintabs");
-            //send the new sort order to the ajax controller
-            new Zikula.Ajax.Request(
-                "ajax.php?module=Admin&type=ajax&func=sortCategories", {
-                    method: 'get',
-                    parameters: pars,
-                    authid: 'admintabsauthid',
-                    onComplete: function (req) {
-                        if (!req.isSuccess()) {
-                            Zikula.showajaxerror(req.getMessage());
+                });
+            },
+            onUpdate: function(element){
+                //reset the default action after drop has been completed
+                Event.observe(element.id, 'mousemove', function(event) {  
+                    $$("#"+element.id + " a").each(function(item) {
+                        Event.stopObserving(item.id, 'click');
+                    });
+                    Event.stopObserving(element.id, 'mousemove');
+                });
+                pars = Sortable.serialize("admintabs");
+                //send the new sort order to the ajax controller
+                new Zikula.Ajax.Request(
+                    "ajax.php?module=Admin&type=ajax&func=sortCategories", {
+                        method: 'get',
+                        parameters: pars,
+                        authid: 'admintabsauthid',
+                        onComplete: function (req) {
+                            if (!req.isSuccess()) {
+                                Zikula.showajaxerror(req.getMessage());
+                                return;
+                            }
+                            //nothing needs to be updated, just authids
+                            var data = req.getData();
                             return;
                         }
-                        //nothing needs to be updated, just authids
-                        var data = req.getData();
-                        return;
                     }
-                }
-            );
-            return;
-        },
-        //prevents sorting of the "add new category" link
-        only: Array("admintab","active")
-    });
+                );
+                return;
+            },
+            //prevents sorting of the "add new category" link
+            only: Array("admintab","active")
+        });
+    };
+    make_tabs_sortable();
     
     //make the modules sortable
-    Sortable.create('modules',{
+    make_modules_sortable = function() {
+        Sortable.create('modules',{
             tag: 'div',
             constraint: "",
             only: Array("z-adminiconcontainer"),
             onUpdate: function(element){
-            pars = Sortable.serialize("modules");
-            //send the new order to the ajax controller
-            new Zikula.Ajax.Request(
-                "ajax.php?module=Admin&type=ajax&func=sortModules", {
+                pars = Sortable.serialize("modules");
+                //send the new order to the ajax controller
+                new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=sortModules", {
                     method: 'get',
                     parameters: pars,
                     authid: 'admintabsauthid',
@@ -74,11 +77,14 @@ Event.observe(window, 'load', function() {
                         var data = req.getData();
                         return;
                     }
-                }
-            );
+                });
             return;
-        },
-    });
+            },
+        });
+    }
+    if ( $$("#modules div").size() > 0) {
+        make_modules_sortable();
+    }
     
     //add context menus to tabs, as well as make them droppable
     var list = $('admintabs');
@@ -436,8 +442,8 @@ Admin.Category.addResponse = function(req)
     newcat.innerHTML = '<a id="C' + data.response + '" href="'
         + data.url + '">' + catname + '</a><span id="catcontext' 
         + data.response + '" class="z-admindrop">&nbsp;</span>';
-    newcat.setAttribute("class","");
-    newcat.setAttribute("id", "");
+    newcat.setAttribute("class","admintab");
+    newcat.setAttribute("id", "admintab_" + data.response);
     eval("context_catcontext" + data.response + " =  new Control.ContextMenu('catcontext' + data.response,{leftClick: true,animation: false });");
 
     var newelement = document.createElement('li');
@@ -451,5 +457,7 @@ Admin.Category.addResponse = function(req)
         hoverclass: 'ajaxhover',
         onDrop: function(drag, drop) {Admin.Module.Move(drag.id, drop.id);}
     });  
+    Sortable.destroy('admintabs');
+    make_tabs_sortable();
     return false;
 }
