@@ -381,6 +381,14 @@ MISCELLANEOUS
   $namespace is the first part of the PEAR classname, and $path is
   the path to the containing folder.  Use bootstrap.php.
 
+- If you have any front controllers, please note the bootstrapping process has
+  been changed, see index.php for example.
+
+- It is not acceptable to query the session for the user id.  You must use
+  UserUtil::getVar('uid');
+
+- To determine if the user is the anonymous user, please use UserUtil::isGuestUser()
+
 API CHANGES
 ===========
 There is a shell script in SVN tool/ to rename all these for you automatically
@@ -650,11 +658,6 @@ added getters and setter and new methods in Zikula_View to modify settings.
 the provided getters and setters.
   - Reliance on $GLOBALS['ZConfig'] and $GLOBALS['ZRuntime'].
   - Reliance on Zikula_Adapter_AdodbStatement being returned from DBUtil::executeSQL().
-
-MISCELLANEOUS
-=============
-If you have any front controllers, please note the bootstrapping process has been changed,
-see index.php for example.
 
 SECURITY
 ========
