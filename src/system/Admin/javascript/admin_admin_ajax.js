@@ -13,6 +13,7 @@ Event.observe(window, 'load', function() {
     make_tabs_sortable = function() {
         Sortable.create('admintabs',{
             tag:'li',
+            constraint: 'horizontal',
             onChange: function(element) {
                 //stops the default link action (change curent category) when dropping sortable
                 $$("#"+element.id + " a").each(function(item) {
