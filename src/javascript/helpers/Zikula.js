@@ -1204,7 +1204,7 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
      * @return {Zikula.Ajax.Request} New Zikula.Ajax.Request instance
      */
     initialize: function($super, url, options) {
-        options = this.initReponseHandlers(options);
+        options = this.initResponseHandlers(options);
         options = Object.extend({
             authid: null
         }, options || { });
@@ -1230,7 +1230,7 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
      *
      * @return {Object} Modyfied options object
      */
-    initReponseHandlers: function(options) {
+    initResponseHandlers: function(options) {
         options = options || {};
         this.observers = {};
         // ugly hack to find all callbacks in options as properties which names starts with "on"
