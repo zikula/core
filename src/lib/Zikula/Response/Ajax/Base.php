@@ -87,7 +87,7 @@ abstract class Zikula_Response_Ajax_Base
     /**
      * Convert class to string.
      *
-     * @return void
+     * @return string
      */
     public function __toString()
     {
