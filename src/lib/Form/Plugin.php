@@ -26,7 +26,7 @@
  * <code>
  * class MyPlugin inherits Form_Plugin
  * {
- *    var $x;
+ *    public $x;
  * }
  * </code>
  *
@@ -35,7 +35,7 @@
  * <code>
  * class MyPlugin inherits Form_Plugin
  * {
- *    var $y;
+ *    public $y;
  * }
  * </code>
  *
