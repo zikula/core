@@ -19,15 +19,9 @@
 class Zikula_Response_Ajax_BadData extends Zikula_Response_Ajax_Error
 {
     /**
-     * Constructor.
+     * Response code.
      *
-     * @param mixed $data    Application data.
-     * @param mixed $message Response status/error message, may be string or array.
-     * @param array $options Options.
+     * @var integer
      */
-    public function __construct($data, $message = null, array $options = array())
-    {
-        $this->responseCode = 400;
-        parent::__construct($data, $message, $options);
-    }
+    protected $responseCode = 400;
 }
