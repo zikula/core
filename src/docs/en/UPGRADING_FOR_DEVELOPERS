@@ -500,16 +500,20 @@ Send a request from JS:
     );
 
 Process the request in the module controller:
-    // test permissions and throw an exception on failure
-    if (!SecurityUtil::checkPermission('Permissions::','::', ACCESS_ADMIN)) {
-        LogUtil::registerPermissionError(null, true);
-        throw new Zikula_Exception_Forbidden();
+    // test permissions and throw an exception on failure (in a Zikula_Base instance)
+    $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+
+    // test permissions and throw an exception on failure (outside a Zikula_Base instance)
+    if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
     }
 
-    // test authid and throw an exception on failure
+    // test authid and throw an exception on failure (in a Zikula_Base instance)
+    $this->throwForbiddenUnless(SecurityUtil::confirmAuthKey(), LogUtil::getErrorMsgAuthid());
+
+    // test authid and throw an exception on failure (outside a Zikula_Base instance)
     if (!SecurityUtil::confirmAuthKey()) {
-        LogUtil::registerAuthidError();
-        throw new Zikula_Exception_Fatal();
+        throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgAuthid());
     }
 
     // when controller needs to return failure due to data validation:
@@ -519,7 +523,7 @@ Process the request in the module controller:
     throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
 
     // return response
-    return new Zikula_Response_Ajax(array('pid' => $ pid));
+    return new Zikula_Response_Ajax(array('pid' => $pid));
 
 Read the response in JS
     // check if request was successful
@@ -536,6 +540,15 @@ Read the response in JS
     transport = Zikula.Ajax.Response.extend(transport);
     // no you have access to new methods:
     transport.getData();
+
+If you need to communicate with some javascript that is not part of the Zikula
+JS framework, we provide two responses of use
+
+    // return a plain string
+    return new Zikula_Response_Ajax_Plain($string);
+
+    // return some data that must be serialized (will be serialized by the class).
+    return new Zikula_Response_Ajax_Json($mixed);
 
 
 PAGEADDVAR CHANGES

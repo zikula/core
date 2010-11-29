@@ -16,22 +16,28 @@
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax extends Zikula_Response_Ajax_MediatorBase
+class Zikula_Response_Ajax_Json extends Zikula_Response_Ajax_Base
 {
     /**
      * Constructor.
      *
-     * @param mixed $payload Application data.
-     * @param mixed $message Response status/error message, may be string or array.
-     * @param array $options Options.
+     * @param string $payload Payload data.
      */
-    public function __construct($payload, $message = null, array $options = array())
+    public function __construct($payload)
     {
         $this->payload = $payload;
-        $this->messages = (array)$message;
-        $this->options = $options;
-        if ($this->newCsrfToken) {
-            $this->csrfToken = SecurityUtil::generateAuthKey(ModUtil::getName());
-        }
     }
+
+    /**
+     * Convert class to string.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        header($this->createHttpResponseHeader());
+        header('Content-type: application/json');
+        return json_encode($this->data);
+    }
+
 }

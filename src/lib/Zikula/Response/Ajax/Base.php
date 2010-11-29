@@ -14,7 +14,7 @@
  */
 
 /**
- * Ajax class.
+ * Ajax base class.
  */
 abstract class Zikula_Response_Ajax_Base
 {
@@ -24,115 +24,6 @@ abstract class Zikula_Response_Ajax_Base
      * @var integer
      */
     protected $responseCode = 200;
-
-    /**
-     * Payload data (not encoded).
-     * 
-     * @var array
-     */
-    protected $payload;
-
-    /**
-     * CSRF Token.
-     * 
-     * @var string
-     */
-    protected $csrfToken;
-
-    /**
-     * Flag to create a new nonce.
-     * 
-     * @var boolean
-     */
-    protected $newCsrfToken = true;
-
-    /**
-     * Reponse data.
-     *
-     * @var array
-     */
-    protected $data;
-
-    /**
-     * Reponse status messages.
-     *
-     * @var array
-     */
-    protected $messages;
-
-    /**
-     * Options array.
-     * 
-     * @var array
-     */
-    protected $options;
-    
-    /**
-     * Constructor.
-     *
-     * @param mixed $data    Application data.
-     * @param mixed $message Response status/error message, may be string or array.
-     * @param array $options Options.
-     */
-    public function __construct($data, $message = null, array $options = array())
-    {
-        $this->data = $data;
-        $this->messages = (array)$message;
-        $this->options = $options;
-        if ($this->newCsrfToken) {
-            $this->csrfToken = SecurityUtil::generateAuthKey(ModUtil::getName());
-        }
-    }
-
-    /**
-     * Convert class to string.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        $payload = json_encode($this->generatePayload());
-        header($this->createHttpResponseHeader());
-        header('Content-type: application/json');
-        return $payload;
-    }
-
-    /**
-     * Generates payload.
-     *
-     * @return array
-     */
-    protected function generatePayload()
-    {
-        return array(
-                'core' => $this->generateCoreData(),
-                'data' => $this->data,
-        );
-    }
-
-    /**
-     * Generate system level payload.
-     * 
-     * @return array
-     */
-    protected function generateCoreData()
-    {
-        $core = array();
-
-        if ($this->options) {
-            foreach ($this->options as $key => $value) {
-                $core[$key] = $value;
-            }
-        }
-
-        if ($this->csrfToken) {
-            $core['authid'] = $this->csrfToken;
-        }
-        $logUtilMessages = (array)LogUtil::getStatusMessages();
-        $core['statusmsg'] = array_merge($this->messages,$logUtilMessages);
-        
-        return $core;
-    }
 
     /**
      * Create Http Response Header.
@@ -167,18 +58,4 @@ abstract class Zikula_Response_Ajax_Base
 
         return "HTTP/1.1 $response";
     }
-
-    /**
-     * Add options.
-     *
-     * @param string $key   Option key.
-     * @param mixed  $value Value.
-     *
-     * @return void
-     */
-    public function addOptions($key, $value)
-    {
-        $this->options[$key] = $value;
-    }
-
 }

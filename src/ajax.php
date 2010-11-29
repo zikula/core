@@ -24,25 +24,25 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
         UserUtil::logout();
     }
-    die(new Zikula_Response_Ajax_Unavailable(null, __('The site is currently off-line.')));
+    die(new Zikula_Response_Ajax_Unavailable(__('The site is currently off-line.')));
 }
 
 if (empty($func)) {
-    die(new Zikula_Response_Ajax_NotFound(null, __f("Missing parameter '%s'", 'func')));
+    die(new Zikula_Response_Ajax_NotFound(__f("Missing parameter '%s'", 'func')));
 }
 
 // get module information
 $modinfo = ModUtil::getInfoFromName($module);
 if ($modinfo == false) {
-    die(new Zikula_Response_Ajax_NotFound(null, __f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module))));
+    die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module))));
 }
 
 if (!ModUtil::available($modinfo['name'])) {
-    die(new Zikula_Response_Ajax_NotFound(null, __f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module))));
+    die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module))));
 }
 
 if (!ModUtil::load($modinfo['name'], $type)) {
-    die(new Zikula_Response_Ajax_NotFound(null, __f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module))));
+    die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module))));
 }
 
 // Handle database transactions
@@ -58,15 +58,15 @@ try {
         throw new Zikula_Exception_Fatal(__('An unknown error occurred in module %s, controller %s, action %s', array($modinfo['name'], $type, $func)));
     }
 } catch (Zikula_Exception_NotFound $e) {
-    $response = new Zikula_Response_Ajax_NotFound(null, $e->getMessage());
+    $response = new Zikula_Response_Ajax_NotFound($e->getMessage());
 } catch (Zikula_Exception_Forbidden $e) {
-    $response = new Zikula_Response_Ajax_Forbidden(null, $e->getMessage());
+    $response = new Zikula_Response_Ajax_Forbidden($e->getMessage());
 } catch (Zikula_Exception_Fatal $e) {
-    $response = new Zikula_Response_Ajax_Fatal(null, $e->getMessage());
+    $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
 } catch (PDOException $e) {
-    $response = new Zikula_Response_Ajax_Fatal(null, $e->getMessage());
+    $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
 } catch (Exception $e) {
-    $response = new Zikula_Response_Ajax_Fatal(null, $e->getMessage());
+    $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
 }
 
 // Handle database transactions

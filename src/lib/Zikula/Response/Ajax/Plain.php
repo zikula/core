@@ -19,6 +19,16 @@
 class Zikula_Response_Ajax_Plain extends Zikula_Response_Ajax_Base
 {
     /**
+     * Constructor.
+     *
+     * @param string $payload Payload data.
+     */
+    public function __construct($payload)
+    {
+        $this->payload = $payload;
+    }
+
+    /**
      * Convert class to string.
      *
      * @return string
@@ -27,7 +37,7 @@ class Zikula_Response_Ajax_Plain extends Zikula_Response_Ajax_Base
     {
         header($this->createHttpResponseHeader());
         header('Content-type: text/html');
-        return $this->data;
+        return $this->payload;
     }
 
 }

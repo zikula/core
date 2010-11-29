@@ -16,8 +16,24 @@
 /**
  * Ajax class.
  */
-abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_Base
+abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_MediatorBase
 {
+    /**
+     * Constructor.
+     *
+     * @param mixed $message Response status/error message, may be string or array.
+     * @param mixed $payload Payload.
+     * @param array $options Options.
+     */
+    public function __construct($message, $payload=null)
+    {
+        $this->messages = (array)$message;
+        $this->payload = $payload;
+        if ($this->newCsrfToken) {
+            $this->csrfToken = SecurityUtil::generateAuthKey(ModUtil::getName());
+        }
+    }
+
     /**
      * Generate system level payload.
      *
