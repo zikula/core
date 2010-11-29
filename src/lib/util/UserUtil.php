@@ -1988,4 +1988,15 @@ class UserUtil
         return array_key_exists($label, $dbtables['users_column']);
     }
 
+    /**
+     * Determine if the current session is that of an anonymous user.
+     *
+     * @return boolean
+     */
+    public static function isGuestUser()
+    {
+        return !SessionUtil::getVar('uid', 0);
+    }
+
+
 }
