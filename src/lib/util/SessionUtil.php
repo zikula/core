@@ -208,6 +208,7 @@ class SessionUtil
         // init status & error message arrays
         self::setVar('_ZErrorMsg', array());
         self::setVar('_ZStatusMsg', array());
+        self::setVar('uid', 0);
 
         return true;
     }
