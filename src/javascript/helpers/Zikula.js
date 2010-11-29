@@ -1249,7 +1249,7 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
      * @private
      * @param {String} event Callback event name
      * @param {Ajax.Response} response Response object returned by Ajax.Request
-     * @param {Object|Arraj} headerJSON
+     * @param {Object|Array} headerJSON
      *
      * @return void
      */
@@ -1265,7 +1265,7 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
      *
      * @private
      * @param {Ajax.Response} response Response object returned by Ajax.Request
-     * @param {Object|Arraj} headerJSON
+     * @param {Object|Array} headerJSON
      *
      * @return void
      */
