@@ -94,7 +94,7 @@ abstract class Zikula_Response_Ajax_Base
         $payload = json_encode($this->generatePayload());
         header($this->createHttpResponseHeader());
         header('Content-type: application/json');
-        echo $payload;
+        return $payload;
     }
 
     /**
