@@ -1284,23 +1284,8 @@ class UserUtil
         if ($uid == -1) {
             $uid = SessionUtil::getVar('uid');
         }
-
-        if ($uid === '') {
-            // note empty doesn't work with integer 0 because
-            // that empty(0) is true, so we're using === '' to test for empty - drak
-            // not exactly sure why we make this test to be honest - drak
-            // refs #2462.
+        if (empty($uid)) {
             return null;
-        }
-
-        // hack for the guest user to actually return a UID for the guest user.
-        // refs #2462 - drak
-        if ($name == 'uid' && $uid == 0) {
-            return 0;
-        }
-
-        if ($uid == 0) {
-            $uid = 1; // refs #2462, allow Guest user to return attributes.
         }
 
         // get this user's variables
