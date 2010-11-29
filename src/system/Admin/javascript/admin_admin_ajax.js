@@ -62,6 +62,7 @@ Event.observe(window, 'load', function() {
             tag: 'div',
             constraint: "",
             only: Array("z-adminiconcontainer"),
+            handle: 'z-dragicon',
             onUpdate: function(element){
                 pars = Sortable.serialize("modules");
                 //send the new order to the ajax controller
