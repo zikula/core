@@ -16,15 +16,15 @@
  * User interaction handler for Form system.
  *
  * This class is the main entry point for using the Form system. It is expected to be used in Zikula's
- * user files, such as "pnuser.php", like this:
+ * controllers, like this:
  * <code>
- * function modname_user_new($args)
+ * public function create($args)
  * {
  *   // Create instance of Form_View
  *   $view = FormUtil::newForm('howtoforms');
  *
  *   // Execute form using supplied template and event handler
- *   return $view->execute('modname_user_new.html', new modname_user_newHandler());
+ *   return $view->execute('modname_user_create.tpl', new Modname_Form_Handler_Create());
  * }
  * </code>
  * See tutorials elsewhere for general introduction to Form.
@@ -124,16 +124,17 @@ class Form_View extends Zikula_View
      *
      * Use FormUtil::newForm() instead of instantiating Form_View directly.
      *
-     * @param string $module Module name.
+     * @param string  $module  Module name.
+     * @param boolean $caching Caching flag (not used - just for e_strict).
      */
-    public function __construct($module)
+    public function __construct($module, $caching=null)
     {
         // override behaviour of anonymous sessions
         SessionUtil::requireSession();
 
         // Construct and make normal Smarty use possible
         parent::__construct($module, false);
-        array_push($this->plugins_dir, 'lib/Form/viewplugins');
+        $this->addPluginDir('lib/Form/viewplugins');
 
         // Setup
         $this->idCount = 1;
@@ -816,8 +817,8 @@ class Form_View extends Zikula_View
 
         // Load the third party plugins only
         foreach ($this->includes as $includeFilename => $dummy) {
-            if (strpos($includeFilename, 'config'.DIRECTORY_SEPARATOR)
-             || strpos($includeFilename, 'modules'.DIRECTORY_SEPARATOR)) {
+            if (strpos($includeFilename, 'config' . DIRECTORY_SEPARATOR)
+             || strpos($includeFilename, 'modules' . DIRECTORY_SEPARATOR)) {
                 require_once $includeFilename;
             }
         }
@@ -987,7 +988,7 @@ class Form_View extends Zikula_View
 
             $varCount = count($vars);
             if ($varCount != count($pluginState)) {
-                return LogUtil::registerError("Cannot restore Form_View plugin of type '$pluginType' since stored and actual number of member vars differ");
+                return LogUtil::registerError(__f("Cannot restore Form_View plugin of type '%s' since stored and actual number of member vars differ", $pluginType));
             }
 
             for ($i = 0; $i < $varCount; ++$i) {
