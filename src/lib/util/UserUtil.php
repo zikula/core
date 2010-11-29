@@ -1296,7 +1296,11 @@ class UserUtil
         // hack for the guest user to actually return a UID for the guest user.
         // refs #2462 - drak
         if ($name == 'uid' && $uid == 0) {
-            return 1;
+            return 0;
+        }
+
+        if ($uid == 0) {
+            $uid = 1; // refs #2462, allow Guest user to return attributes.
         }
 
         // get this user's variables
