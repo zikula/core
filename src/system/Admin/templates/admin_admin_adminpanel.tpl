@@ -6,10 +6,8 @@
     {if !empty($adminlinks)}
 
         <div id="z-adminiconlist">
-            {assign var="count" value="0"}
             {assign var="moduleid" value="0"}
             {foreach from=$adminlinks name=adminlink item=adminlink}
-            {math equation="$count+1" assign="count"}
             {math equation="$moduleid+1" assign="moduleid"}
 
             {if $smarty.foreach.adminlink.first}<div class="z-adminiconrow z-clearfix" id="modules">{/if}

@@ -328,7 +328,6 @@ class Admin_Controller_Admin extends Zikula_Controller
 
         // get admin capable modules
         $adminmodules = ModUtil::getAdminMods();
-        //usort($adminmodules, '_sortAdminModsByOrder');
         $adminlinks = array();
         foreach ($adminmodules as $adminmodule) {
             if (SecurityUtil::checkPermission("{$adminmodule['name']}::", 'ANY', ACCESS_EDIT)) {
@@ -521,7 +520,6 @@ class Admin_Controller_Admin extends Zikula_Controller
 
         // get admin capable modules
         $adminmodules = ModUtil::getAdminMods();
-        //usort($adminmodules, '_sortAdminModsByOrder');
         $adminlinks = array();
 
         foreach ($adminmodules as $adminmodule) {
@@ -824,13 +822,6 @@ class Admin_Controller_Admin extends Zikula_Controller
             return false;
         }
     }
-}
-
-/**
- * Sorting by module display name
- */
-function _sortAdminModsByDisplayName($a, $b) {
-    return strcmp($a['displayname'], $b['displayname']);
 }
 
 function _sortAdminModsByOrder($a,$b) {
