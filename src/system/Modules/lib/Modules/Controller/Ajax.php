@@ -57,7 +57,7 @@ class Modules_Controller_Ajax extends Zikula_Controller
         // that subscriber is already connected to provider
         if (count($bindings) > 0) {
             foreach ($bindings as $binding) {
-                HookUtil::unBindSubscribersFromProvider($binding['subarea'], $binding['providerarea']);
+                HookUtil::unbindSubscribersFromProvider($binding['subarea'], $binding['providerarea']);
             }
         } else {
             // find out areas for provider module
