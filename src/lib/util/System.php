@@ -66,7 +66,7 @@ class System
         if (array_key_exists($name, $GLOBALS['ZConfig']['System'])) {
             $mod_var = $GLOBALS['ZConfig']['System'][$name];
         } else {
-            $mod_var = ModUtil::getVar(ModUtil::CONFIG_MODULE, $name);
+            $mod_var = ModUtil::getVar(ModUtil::CONFIG_MODULE, $name, $default);
             // cache
             $GLOBALS['ZConfig']['System'][$name] = $mod_var;
         }
