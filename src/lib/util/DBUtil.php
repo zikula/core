@@ -1316,15 +1316,16 @@ class DBUtil
      * @param string $where       The original where clause (optional) (default='').
      * @param string $orderBy     The original order-by clause (optional) (default='').
      * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
+     * @param string $distinct    Set if a "SELECT DISTINCT" should be performed.
      *
-     * @return Nothing, the order-by-clause is altered in place.
+     * @return string The select clause built.
      */
-    public static function _getSelectAllColumnsFrom($table, $where = '', $orderBy = '', $columnArray = null)
+    public static function _getSelectAllColumnsFrom($table, $where = '', $orderBy = '', $columnArray = null, $distinct = false)
     {
         $tables = self::getTables();
         $tableName = $tables[$table];
 
-        $query = 'SELECT ' . self::_getAllColumns($table, $columnArray) . " FROM $tableName AS tbl ";
+        $query = 'SELECT ' . ($distinct ? 'DISTINCT ' : '') . self::_getAllColumns($table, $columnArray) . " FROM $tableName AS tbl ";
 
         if (trim($where)) {
             $query .= self::_checkWhereClause($where) . ' ';
@@ -1970,12 +1971,13 @@ class DBUtil
      * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null).
      * @param string  $categoryFilter   The category list to use for filtering (optional) (default=null).
      * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null).
+     * @param string  $distinct         Set if a "SELECT DISTINCT" should be performed.
      *
      * @return array The resulting object array.
      */
-    public static function selectObjectArray($table, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $permissionFilter = null, $categoryFilter = null, $columnArray = null)
+    public static function selectObjectArray($table, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $permissionFilter = null, $categoryFilter = null, $columnArray = null, $distinct = '')
     {
-        $key = $where . $orderby . $limitOffset . $limitNumRows . $assocKey . serialize($permissionFilter) . serialize($categoryFilter) . serialize($columnArray);
+        $key = $where . $orderby . $limitOffset . $limitNumRows . $assocKey . serialize($permissionFilter) . serialize($categoryFilter) . serialize($columnArray) . ($distinct ? '1' : '0');
         $objects = self::getCache($table, $key);
         if ($objects !== false) {
             return $objects;
@@ -1989,7 +1991,7 @@ class DBUtil
 
         $objects = array();
         $ca = null; // Not required since Zikula 1.3.0 because of 'PDO::fetchAll()' #2227// self::getColumnsArray($table, $columnArray);
-        $sql = self::_getSelectAllColumnsFrom($table, $where, $orderby, $columnArray);
+        $sql = self::_getSelectAllColumnsFrom($table, $where, $orderby, $columnArray, $distinct);
 
         do {
             $fetchedObjectCount = self::_getFetchedObjectCount();
@@ -2334,12 +2336,13 @@ class DBUtil
      * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null).
      * @param string  $categoryFilter   The category filter (optional) (default=null).
      * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null).
+     * @param string  $distinct         Set if a "SELECT DISTINCT" should be performed.  default false.
      *
      * @return array The resulting object.
      */
-    public static function selectExpandedObjectArray($table, $joinInfo, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $permissionFilter = null, $categoryFilter = null, $columnArray = null)
+    public static function selectExpandedObjectArray($table, $joinInfo, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $permissionFilter = null, $categoryFilter = null, $columnArray = null, $distinct = false)
     {
-        $key = serialize($joinInfo) . $where . $orderby . $limitOffset . $limitNumRows . serialize($assocKey) . serialize($permissionFilter) . serialize($categoryFilter) . serialize($columnArray);
+        $key = serialize($joinInfo) . $where . $orderby . $limitOffset . $limitNumRows . serialize($assocKey) . serialize($permissionFilter) . serialize($categoryFilter) . serialize($columnArray) . ($distinct ? '1' : '0');
         $objects = self::getCache($table, $key);
         if ($objects !== false) {
             return $objects;
@@ -2351,7 +2354,7 @@ class DBUtil
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
 
-        $sqlStart = "SELECT " . self::_getAllColumnsQualified($table, 'tbl', $columnArray);
+        $sqlStart = "SELECT " . ($distinct ? 'DISTINCT ' : '') . self::_getAllColumnsQualified($table, 'tbl', $columnArray);
         $sqlFrom = "FROM $tableName AS tbl ";
 
         $sqlJoinArray = self::_processJoinArray($table, $joinInfo, $columnArray);
