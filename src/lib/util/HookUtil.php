@@ -110,7 +110,7 @@ class HookUtil
      *
      * @return void
      */
-    public static function unRegisterSubscriber($owner, $area, $type, $eventName)
+    public static function unregisterSubscriber($owner, $area, $type, $eventName)
     {
         return Doctrine_Query::create()->delete()
                 ->where('owner = ?', $owner)
@@ -240,7 +240,7 @@ class HookUtil
         // We have to remove any persistent event handlers from persistance and EventManager
         $handlers = ModUtil::getVar(self::HANDLERS, '/handlers');
         foreach ($handlers as $handler) {
-            self::unRegisterHandler($handler['eventname'], $handler['name'], $handler['weight']);
+            self::unregisterHandler($handler['eventname'], $handler['name'], $handler['weight']);
         }
 
         Doctrine_Query::create()->delete()
@@ -309,7 +309,7 @@ class HookUtil
      *
      * @return void
      */
-    public static function unRegisterHandler($eventName, $handlerName, $weight=10)
+    public static function unregisterHandler($eventName, $handlerName, $weight=10)
     {
         $provider = self::getProvider($handlerName);
         if (!$provider) {
@@ -548,7 +548,7 @@ class HookUtil
      *
      * @return void
      */
-    public static function unRegisterHookProviderBundles(Zikula_Version $version)
+    public static function unregisterHookProviderBundles(Zikula_Version $version)
     {
         $bundles = $version->getHookProviderBundles();
         $providerName = $version->getName();
@@ -556,7 +556,7 @@ class HookUtil
         $subscribers = self::getSubscribersInUseBy($providerName);
         foreach ($subscribers as $subscriber) {
             // remove handlers for this binding, the associated sorts and update bindings table.
-            self::unBindSubscribersFromProvider($subscriber['subarea'], $subscriber['providerarea']);
+            self::unbindSubscribersFromProvider($subscriber['subarea'], $subscriber['providerarea']);
         }
 
         // now delete availability of bundles from subscriber availability table.
@@ -596,7 +596,7 @@ class HookUtil
      *
      * @return void
      */
-    public static function unRegisterHookSubscriberBundles(Zikula_Version $version)
+    public static function unregisterHookSubscriberBundles(Zikula_Version $version)
     {
         $bundles = $version->getHookSubscriberBundles();
         $subscriberName = $version->getName();
@@ -604,7 +604,7 @@ class HookUtil
         $providers = self::getProvidersInUseBy($subscriberName);
         foreach ($providers as $provider) {
             // remove handlers for this binding, the associated sorts and update bindings table.
-            self::unBindSubscribersFromProvider($provider['subarea'], $provider['providerarea']);
+            self::unbindSubscribersFromProvider($provider['subarea'], $provider['providerarea']);
         }
 
         // now delete availability of bundles from subscriber availability table.
@@ -680,7 +680,7 @@ class HookUtil
      *
      * @return boolean
      */
-    public static function unBindSubscribersFromProvider($subscriberArea, $providerArea)
+    public static function unbindSubscribersFromProvider($subscriberArea, $providerArea)
     {
         $subscribers = Doctrine_Query::create()->select()
                         ->where('area = ?', $subscriberArea)
@@ -706,7 +706,7 @@ class HookUtil
                 $linked = true;
                 $handlerName = $provider['name'];
                 $weight = $provider['weight'];
-                self::unRegisterHandler($subscriber['eventname'], $handlerName, $weight);
+                self::unregisterHandler($subscriber['eventname'], $handlerName, $weight);
             }
         }
 
