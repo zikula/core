@@ -254,7 +254,7 @@ class Groups_Api_User extends Zikula_Api
         }
 
         $uid = UserUtil::getVar('uid');
-
+        
         if ($uid != 0) {
             $memberships = ModUtil::apiFunc('Groups', 'user', 'getusergroups',
                     array('uid' => $uid,
@@ -288,9 +288,7 @@ class Groups_Api_User extends Zikula_Api
                 }
 
                 if ($uid != 0) {
-                    $status = ModUtil::apiFunc('Groups', 'user', 'isuserpending',
-                            array('gid' => $gid,
-                            'uid' => $uid));
+                    $status = ModUtil::apiFunc('Groups', 'user', 'isuserpending', array('gid' => $gid, 'uid' => $uid));
                 } else {
                     $status = false;
                 }
@@ -305,7 +303,15 @@ class Groups_Api_User extends Zikula_Api
                     $canapply = false;
                 }
 
-                $items[] = array('gid'         => $gid,
+                // Anon users or non-members should not be able to see private groups.
+                if ($gtype == Groups_Helper_Common::GTYPE_PRIVATE) {
+                    if (!$uid || !$this->isgroupmember(array('uid' => $uid, 'gid' => $gid))) {
+                        continue;
+                    }
+                }
+
+                $items[] = array(
+                        'gid'         => $gid,
                         'name'        => $name,
                         'gtype'       => $gtype,
                         'description' => $description,
