@@ -39,7 +39,7 @@
                     <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                     <input id="users_emailagain"{if isset($errorflds.emailagain)} class="errorrequired"{/if} type="text" name="emailagain" size="21" maxlength="60" value="{$emailagain|default:''}" />
                 </div>
-                <div id="users_setpass_container" class="z-formrow{if empty($reginfo.pass) && !isset($errorflds.reginfo_pass) && !isset($errorflds.passagain)} z-hide{/if}">
+                <div id="users_setpass_container" class="z-formrow{if !empty($reginfo.pass) || isset($errorflds.reginfo_pass) || isset($errorflds.passagain)} z-hide{/if}">
                     <label for="users_setpass">{gt text="Set the user's password now?"}</label>
                     <div id="users_setpass">
                         <input id="users_setpass_yes" type="radio" name="setpass" value="1" {if !empty($reginfo.pass) || isset($errorflds.reginfo_pass) || isset($errorflds.passagain)} checked="checked"{/if} />
