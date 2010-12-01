@@ -92,7 +92,7 @@ to Version.php
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookProviderBundle('modulehook_area.ratings.item', $this->__('Ratings Hook Poviders'));
+        $bundle = new Zikula_Version_HookProviderBundle('modulehook_area.ratings.rating', $this->__('Ratings Hook Poviders'));
         $bundle->addHook('hookhandler.ratings.ui.view', 'ui.view', 'Ratings_Hooks', 'uiview', 'ratings.service');
         // add other hooks as needed
         $this->registerHookProviderBundle($bundle);
@@ -186,15 +186,16 @@ by the administation UI.
 
 Attaching display hooks is very simple.  Inside the template simply add
 
-    {notifydisplayhooks eventname='news.hook.articles.ui.view' subject=$subject id=$subject[id] assign='display_hooks'}
+    {notifydisplayhooks eventname='news.hook.articles.ui.view' area='module_area.news.articles' subject=$subject id=$id returnurl=$returnurl}
 
-$module will be added magically unless you need to specify it (the value is taken from the Zikula_View instance.
+$caller will be added magically unless you need to specify it but the value is taken
+from the Zikula_View instance so in general it's not needed.
 
 The plugin will return all display hooks, sorted according to the administration
 settings.  The return is an array of
 
-    array('name1' => 'output1',
-          'name2' => 'output2');
+    array('providerarea1' => 'output1',
+          'providerarea2' => 'output2');
 
 In the module controllers, you will need to implement the process and or validation
 hook types.  This can be done as follows:
@@ -213,14 +214,13 @@ A hook handler should response with a Zikula_Response_DisplayHook object in the 
     // example of a static handler (*not* preferred for edit/validate handlers which should be Zikula_HookHandlder instances)
     public static function hookHandler(Zikula_Event $event)
     {
-        $name = 'Foo'; // this module's name.
         $template = 'template_name.tpl'; // the name of the module's template
-        $view = Zikula_View::getInstance($name);
+        $view = Zikula_View::getInstance($module);
 
         // do stuff...
 
         // add this response to the event stack
-        $event->data[$name] = new Zikula_Response_DisplayHook($name, $view, $template);
+        $event->data['modulehook_area.modname.area'] = new Zikula_Response_DisplayHook('modulehook_area.modname.area', $view, $template);
     }
 
 GENERAL WORKFLOW OF HOOKS
@@ -232,6 +232,14 @@ The general workflow of hooks is as follows.
 When viewing an item of some sort, we want to allow other modules to attach some form of
 content to the diplay view.  We simply notify ui.view hooks with the item being displayed
 (the subject), the id and the module name as arguments.
+
+In the template we simply use something like this, using the 'ui.view' hook type.
+
+    {notifydisplayhooks eventname='<module>.hook.<area>.ui.view' area='module_area.<module>.<area>' subject=$subject id=$id returnurl=$returnurl}
+
+
+Introduction to new/edit/delete types
+-------------------------------------
 
 The next two hook types, 'creating new items and editing existing items' are considered to be
 all part of the same workflow.  There is little point duplicating the bulk of code reuqired
@@ -338,6 +346,7 @@ triggering a hookable event with
 
 ui.delete hooks are displayed in the template with
 {notifydisplayhooks eventname='<module>.hook.<area>.ui.delete' subject=$subject id=$id}
+
 
 FILTER HOOKS
 ------------

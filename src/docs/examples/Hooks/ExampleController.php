@@ -31,7 +31,7 @@ class Example_Controller_User extends Zikula_Controller
         $this->view->fetch('example_user_view.tpl');
 
         // note the called template should execute
-        // {notifydisplayhooks eventname='example.hook.general.ui.view subject=$article id=$article[id]}
+        // {notifydisplayhooks eventname='example.hook.general.ui.view' subject=$article id=$article[id]}
     }
 
     public function edit()
@@ -71,7 +71,7 @@ class Example_Controller_User extends Zikula_Controller
         $this->view->fetch('example_user_edit.tpl');
 
         // note the called template should execute
-        // {notifydisplayhooks eventname='example.hook.general.ui.edit subject=$article id=$article[id]}
+        // {notifydisplayhooks eventname='example.hook.general.ui.edit' subject=$article id=$article[id]}
     }
 
     public function delete()

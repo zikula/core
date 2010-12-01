@@ -25,7 +25,7 @@ class Zikula_Response_DisplayHook
      * 
      * @var string
      */
-    protected $name;
+    protected $area;
 
     /**
      * Zikula_View
@@ -44,37 +44,37 @@ class Zikula_Response_DisplayHook
     /**
      * Constructor.
      *
-     * @param string      $name     Name of this response.
+     * @param string      $area     Name of this response.
      * @param Zikula_View $view     Zikula View instance.
      * @param string      $template Template, in the context of the Zikula_View.
      */
-    public function __construct($name, Zikula_View $view, $template)
+    public function __construct($area, Zikula_View $view, $template)
     {
-        $this->name = $name;
+        $this->area = $area;
         $this->view = $view;
         $this->template = $template;
     }
 
     /**
-     * Get name property.
+     * Get area property.
      *
      * @return string
      */
-    public function getName()
+    public function getArea()
     {
-        return $this->name;
+        return $this->area;
     }
 
     /**
      * Set name property.
      *
-     * @param string $name Name.
+     * @param string $area Name.
      *
      * @return void
      */
-    public function setName($name)
+    public function setArea($area)
     {
-        $this->name = $name;
+        $this->area = $area;
     }
 
 

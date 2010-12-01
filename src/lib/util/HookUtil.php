@@ -392,19 +392,19 @@ class HookUtil
     /**
      * Sort out display hooks according to configuration.
      *
-     * @param string $owner   Owner.
-     * @param string $results Assoc-array of results.
+     * @param string $subscriberArea  Owner.
+     * @param string $results         Assoc-array of results.
      *
      * @return array
      */
-    public static function sortDisplayHooks($owner, $results)
+    public static function sortDisplayHooks($subscriberArea, $results)
     {
         if (!$results) {
             return $results;
         }
 
         // Get correct order of event responses.
-        $orderBy = self::getDisplaySortsByOwner($owner);
+        $orderBy = self::getDisplaySortsByArea($subscriberArea);
         if (!$orderBy) {
             return $orderBy;
         }
@@ -423,26 +423,26 @@ class HookUtil
     /**
      * Set Display Hook sorting information.
      *
-     * @param string $owner Owner.
+     * @param string $area Owner.
      * @param array  $array Non-assoc array of owners in order, array('Comments', 'Ratings').
      *
      * @return void
      */
-    public static function setDisplaySortsByOwner($owner, array $array)
+    public static function setDisplaySortsByArea($area, array $array)
     {
-        ModUtil::setVar(self::SORTS, $owner, $array);
+        ModUtil::setVar(self::SORTS, $area, $array);
     }
 
     /**
      * Get Display Hook sorting information.
      *
-     * @param string $owner Owner.
+     * @param string $area Owner.
      *
      * @return array Non-assoc array of providers in the order they should be sorted.
      */
-    public static function getDisplaySortsByOwner($owner)
+    public static function getDisplaySortsByArea($area)
     {
-        return ModUtil::getVar(self::SORTS, $owner, array());
+        return ModUtil::getVar(self::SORTS, $area, array());
     }
 
     /**
@@ -664,10 +664,10 @@ class HookUtil
             $binding->providerarea = $providerArea;
             $binding->save();
 
-            $sort = self::getDisplaySortsByOwner($subscriber['owner']);
-            if (!in_array($provider['owner'], $sort)) {
-                $sort[] = $provider['owner'];
-                self::setDisplaySortsByOwner($subscriber['owner'], $sort);
+            $sort = self::getDisplaySortsByArea($subscriberArea);
+            if (!in_array($providerArea, $sort)) {
+                $sort[] = $providerArea;
+                self::setDisplaySortsByArea($subscriberArea, $sort);
             }
         }
     }
@@ -718,11 +718,11 @@ class HookUtil
                 ->execute();
 
         if (isset($linked)) {
-            $sort = self::getDisplaySortsByOwner($subscriber['owner']);
-            $key = array_search($provider['owner'], $sort);
+            $sort = self::getDisplaySortsByArea($subscriberArea);
+            $key = array_search($providerArea, $sort);
             if ($key !== false) {
                 unset($sort[$key]);
-                self::setDisplaySortsByOwner($subscriber['owner'], $sort);
+                self::setDisplaySortsByArea($subscriberArea, $sort);
             }
         }
     }

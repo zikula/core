@@ -56,8 +56,8 @@ class Example_HookHandler extends Zikula_HookHandler
         $view->assign('comment', $comment);
 
         // add this response to the event stack
-        $name = 'hookhandler.comment.general.ui.view';
-        $event->data[$name] = new Zikula_Response_DisplayHook($name, $view, 'areaname_ui_view.tpl');
+        // the area names are the names of *THIS* provider's area
+        $event->data['modulehook_area.modname.area'] = new Zikula_Response_DisplayHook('modulehook_area.modname.area', $view, 'areaname_ui_view.tpl');
     }
 
     /**

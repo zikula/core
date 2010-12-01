@@ -27,7 +27,7 @@
  * - all remaining parameters are passed to the hook via the args param in the event.
  *
  * Example:
- *  {notifydisplayhooks eventname='news.hook.item.ui.view' subject=$subject id=$id returnurl=$returnurl}
+ *  {notifydisplayhooks eventname='news.hook.item.ui.view' area='module_area.news.articles' subject=$subject id=$id returnurl=$returnurl}
  *  {notifydisplayhooks eventname='news.hook.item.ui.view' subject=$subject id=$id returnurl=$returnurl assign='displayhooks'}
  *
  * @param array       $params All attributes passed to this function from the template.
@@ -46,9 +46,14 @@ function smarty_function_notifydisplayhooks($params, $view)
     }
     $eventname = $params['eventname'];
 
+    if (!isset($params['area'])) {
+        trigger_error(__f('Error! "%1$s" must be set in %2$s', array('area', 'notifydisplayhooks')));
+    }
+    $area = $params['area'];
+
     $params['id'] = isset($params['id']) ? $params['id'] : null;
     $params['returnurl'] = isset($params['returnurl']) ? $params['returnurl'] : System::getCurrentUrl();
-    $params['caller'] = $caller = isset($params['caller']) ? $params['caller'] : $view->get_tpl_var('controller')->getName();
+    $params['caller'] = isset($params['caller']) ? $params['caller'] : $view->get_tpl_var('controller')->getName();
 
     $subject = isset($params['subject']) ? $params['subject'] : null;
     $assign  = isset($params['assign']) ? $params['assign'] : false;
@@ -63,7 +68,7 @@ function smarty_function_notifydisplayhooks($params, $view)
     $results = $eventManager->notify($event)->getData();
 
     // sort display hooks
-    $results = HookUtil::sortDisplayHooks($caller, $results);
+    $results = HookUtil::sortDisplayHooks($area, $results);
 
     // assign results, this plugin does not return any display
     if ($assign) {
