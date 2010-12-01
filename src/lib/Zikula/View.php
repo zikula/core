@@ -2580,6 +2580,6 @@ function z_prefilter_legacy_callback($m)
  */
 function z_prefilter_notifyfilters($tpl_source, $view)
 {
-    return preg_replace_callback('#\{(?:\s*)notifyfilters:(\'|"){1}(.*?)(\'|"){1}(?:\s*)\}#', create_function('$m', 'return "{notifyfilters:$m[1]$m[2]$m[3]:\$zikula_view}";'), $tpl_source);
+    return preg_replace_callback('#\{(?:\s*)([\w\d.$|]+)\|notifyfilters:(\'|"){1}(.*?)(\'|"){1}(?:\s*)\}#', create_function('$m', 'return "{{$m[1]}|notifyfilters:$m[2]$m[3]$m[4]:\$zikula_view}";'), $tpl_source);
 }
 
