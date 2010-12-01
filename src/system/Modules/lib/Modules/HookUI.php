@@ -33,7 +33,7 @@ class Modules_HookUI
         $view->assign('currentmodule', $moduleName);
 
         $hookproviders = array();
-        $currentSorting = HookUtil::getDisplaySortsByOwner($moduleName);
+        $currentSorting = HookUtil::getDisplaySortsByArea($moduleName);
         if (count($currentSorting) > 0) {            
             foreach ($currentSorting as $provider) {
                 if (ModUtil::available($provider)) {
