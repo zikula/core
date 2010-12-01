@@ -11,7 +11,7 @@
     <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
     <div id="users_errormsgs_div" class="z-errormsg{if empty($errormsgs)} z-hide{/if}">
-        <p>Please correct the following items:</p>
+        <p>{gt text='Please correct the following items:'}</p>
         <ul id="users_errormsgs">
             {foreach from=$errormsgs item='message'}
             <li>{$message}</li>
