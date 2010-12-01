@@ -122,7 +122,7 @@ class Modules_Controller_Ajax extends Zikula_Controller
             $sort[] = $providerModule['name'];
         }
         
-        HookUtil::setDisplaySortsByOwner($subscriber, $sort);
+        HookUtil::setDisplaySortsByArea($subscriber, $sort);
 
         return new Zikula_Response_Ajax(array('result' => true));
     }
