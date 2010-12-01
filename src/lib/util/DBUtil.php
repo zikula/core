@@ -3171,7 +3171,7 @@ class DBUtil
         // third round - removes non existing columns in the model.
         if ($dropColumns) {
             foreach (array_keys($metaColumns) as $key) {
-                if (isset($modelColumns[$key])) {
+                if (array_key_exists($key, $metaColumns)) {
                     continue;
                 }
                 $alterTableDefinition = array('remove' => array($key => array()));
@@ -3561,7 +3561,8 @@ class DBUtil
         }
 
         try {
-            return DBConnectionStack::getConnection()->import->listTableIndexes($tableName);
+            // Using array_unique here because Doctrine is sometimes returning a duplicate of the last index key - drak refs #2676
+            return array_unique(DBConnectionStack::getConnection()->import->listTableIndexes($tableName));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Fetching table index list failed.') . ' ' . $e->getMessage());
         }
