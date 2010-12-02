@@ -117,7 +117,7 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
         this.ImageViewerImg.height = this.imgPreloader.height;
         if(this.config.caption){
             this.ImageViewerTitle.update(this.element.readAttribute('title') || '&nbsp;');
-            /*this.ImageViewerCaption.setStyle({width: this.imgPreloader.width+'px'});*/
+            /*this.ImageViewerFooter.setStyle({width: this.imgPreloader.width+'px'});*/
         }
         if(this.config.pager && this.isGallery){
             this.ImageViewerPager.update(this.pagerInfo()).show();
@@ -158,7 +158,7 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
         });
         if (this.config.draggable){
             if(this.isGallery && this.config.caption) {
-                this.drag = new Draggable(this.imageBox, {handle: this.ImageViewerCaption});
+                this.drag = new Draggable(this.imageBox, {handle: this.ImageViewerFooter});
             } else {
                 this.drag = new Draggable(this.imageBox);
             }
@@ -283,15 +283,15 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
         );
 
         if(this.config.pager || this.config.caption) {
-            this.ImageViewerCaption = new Element('p',{id: 'ImageViewerCaption'});
-            this.ImageViewerCaption.addClassName('z-clearfix');
+            this.ImageViewerFooter = new Element('p',{id: 'ImageViewerFooter'});
+            this.ImageViewerFooter.addClassName('z-clearfix');
             if(this.config.caption) {
                 this.ImageViewerTitle = new Element('span',{id: 'ImageViewerTitle'});
             }
             if(this.config.pager) {
                 this.ImageViewerPager = new Element('span',{id: 'ImageViewerPager'});
             }
-            this.imageBox.insert(this.ImageViewerCaption
+            this.imageBox.insert(this.ImageViewerFooter
                 .insert(this.ImageViewerTitle)
                 .insert(this.ImageViewerPager)
             );

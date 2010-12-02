@@ -24,7 +24,7 @@
     border: none;
     background: transparent;
 }
-#ImageViewerCaption {
+#ImageViewerFooter {
     color: #000000;
     cursor: pointer;
     display: block;
@@ -85,7 +85,7 @@
 }
 .loading#ImageViewer #ImageViewerImgContainer,
 .loading#ImageViewer #ImageViewerClose,
-.loading#ImageViewer #ImageViewerCaption,
+.loading#ImageViewer #ImageViewerFooter,
 .loading#ImageViewer #ImageViewerPager,
 .loading#ImageViewer #ImageViewerImg,
 .loading#ImageViewer a {
