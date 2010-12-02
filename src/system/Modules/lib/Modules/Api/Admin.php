@@ -313,7 +313,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // call any module delete hooks
-        if (System::isLegacyMode()) {
+        if (System::isLegacyMode() && !$oomod) {
             ModUtil::callHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
         }
 
