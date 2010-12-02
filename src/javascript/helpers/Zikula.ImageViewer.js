@@ -13,7 +13,7 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
      * It's also backward compatible with Lightbox.
      * Due to nature of script it's always initialized as {@link Zikula.ImageViewer}.
      *
-     * While initialization Zikula.ImageViewerUtil collets all links to images
+     * While initialization Zikula.ImageViewerUtil collects all links to images
      * with "rel" attribute containing "imageviewer" or "lightbox" value.
      * It also works for image galleries - "imageviewer[galleryname]" or  "imageviewer[lightbox]"
      *
@@ -42,7 +42,7 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
      * @param {Object} config Config object
      * @param {Number} [config.speed=1] Factor for manipulating animation speed
      * @param {Boolean} [config.draggable=true] Should image window be draggable
-     * @param {Boolean} [config.caption=true] Display image capition
+     * @param {Boolean} [config.caption=true] Display image caption
      * @param {Boolean} [config.pager=true] Display pager
      * @param {Boolean} [config.modal=true] Should image window be modal
      * @param {Boolean} [config.enablekeys=true] Enable keyboard navigation (esc, prev, next)
@@ -51,7 +51,7 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
      */
     setup:function (config) {
         this.config = Object.extend({
-            speed: 1,
+            speed: 0.7,
             draggable: true,
             caption: true,
             pager: true,
@@ -110,14 +110,14 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
      */
     showBox: function() {
         if(this.config.modal) {
-            this.ImageViewerOverlay.appear({to: 0.9, duration: this.config.speed/2});
+            this.ImageViewerOverlay.appear({to: 0.7, duration: this.config.speed/2});
         }
         this.ImageViewerImg.src = this.element.readAttribute('href');
         this.ImageViewerImg.width = this.imgPreloader.width;
         this.ImageViewerImg.height = this.imgPreloader.height;
         if(this.config.caption){
             this.ImageViewerTitle.update(this.element.readAttribute('title') || '&nbsp;');
-            this.ImageViewerCapition.setStyle({width: this.imgPreloader.width+'px'});
+            /*this.ImageViewerCaption.setStyle({width: this.imgPreloader.width+'px'});*/
         }
         if(this.config.pager && this.isGallery){
             this.ImageViewerPager.update(this.pagerInfo()).show();
@@ -158,7 +158,7 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
         });
         if (this.config.draggable){
             if(this.isGallery && this.config.caption) {
-                this.drag = new Draggable(this.imageBox, {handle: this.ImageViewerCapition});
+                this.drag = new Draggable(this.imageBox, {handle: this.ImageViewerCaption});
             } else {
                 this.drag = new Draggable(this.imageBox);
             }
@@ -268,15 +268,10 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
         }
         this.imageBox = new Element('div', {id: 'ImageViewer'})
         $(document.body).insert(this.imageBox);
-        if(this.config.caption) {
-            this.ImageViewerCapition = new Element('p',{id: 'ImageViewerCapition'});
-            this.ImageViewerTitle = new Element('span',{id: 'ImageViewerTitle'});
-            this.ImageViewerClose = new Element('span',{id: 'ImageViewerClose', title: this.config.langLabels.close});
-            this.imageBox.insert(this.ImageViewerCapition
-                .insert(this.ImageViewerTitle)
-                .insert(this.ImageViewerClose)
-            );
-        }
+
+        this.ImageViewerClose = new Element('span',{id: 'ImageViewerClose', title: this.config.langLabels.close});
+        this.imageBox.insert(this.ImageViewerClose);
+
         this.ImageViewerImgContainer = new Element('div',{id: 'ImageViewerImgContainer'});
         this.ImageViewerImg = new Element('img',{id: 'ImageViewerImg', src: this.element.readAttribute('href'), alt: this.element.readAttribute('title') || ''});
         this.ImageViewerPrev = new Element('a',{id: 'ImageViewerPrev', title: this.config.langLabels.prev}).hide();
@@ -286,10 +281,22 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
             .insert(this.ImageViewerPrev)
             .insert(this.ImageViewerNext)
         );
-        if(this.config.pager) {
-            this.ImageViewerPager = new Element('p',{id: 'ImageViewerPager'});
-            this.imageBox.insert(this.ImageViewerPager);
+
+        if(this.config.pager || this.config.caption) {
+            this.ImageViewerCaption = new Element('p',{id: 'ImageViewerCaption'});
+            this.ImageViewerCaption.addClassName('z-clearfix');
+            if(this.config.caption) {
+                this.ImageViewerTitle = new Element('span',{id: 'ImageViewerTitle'});
+            }
+            if(this.config.pager) {
+                this.ImageViewerPager = new Element('span',{id: 'ImageViewerPager'});
+            }
+            this.imageBox.insert(this.ImageViewerCaption
+                .insert(this.ImageViewerTitle)
+                .insert(this.ImageViewerPager)
+            );
         }
+
         this.imageBox.absolutize().clonePosition(this.referer).setStyle({overflow: 'hidden', opacity: 0.5});
         this.imageBox.observe('click',this.clickBox.bindAsEventListener(this));
         document.observe('click', this.endBind);
@@ -311,7 +318,9 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
         }
         this.imageBox.className = '';
         this.imageBox.addClassName('loading');
-        this.ImageViewerPager.hide();
+        if(this.config.pager && this.isGallery){
+            this.ImageViewerPager.hide();
+        }
         this.ImageViewerPrev.hide();
         this.ImageViewerNext.hide();
         if(this.isGallery) {

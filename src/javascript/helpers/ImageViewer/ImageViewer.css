@@ -1,44 +1,57 @@
 #ImageViewer {
     position: absolute;
-    background: #000000;
+    background: #fff;
     padding: 0px;
     margin: 0px;
-    border: 1px solid #FFFFFF;
+    border: 3px solid #000;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
     text-align: center;
-    color: #FFFFFF;
+    color: #000;
     line-height: 0;
     z-index: 1001;
+    -moz-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.9);
+    -webkit-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.9);
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.9);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
 #ImageViewer * {
     padding: 0;
     margin: 0;
-    border: 0;
+    border: none;
     background: transparent;
 }
-#ImageViewerCapition {
-    margin: 10px 5px 5px 5px;
-    line-height: 16px;
-    text-align: left;
+#ImageViewerCaption {
+    color: #000000;
     cursor: pointer;
-    color: #FFFFFF;
+    display: block;
+    font-size: 0.9em;
+    height: 20px;
+    line-height: 20px;
+    margin: 0;
+    padding: 5px 10px;
+    text-align: left;
+}
+#ImageViewerTitle {
+    text-align: left;
+    float:left;
+    width: 49%;
 }
 #ImageViewerPager {
-    font-size: 0.8em;
-    font-style: italic;
-    text-align: left;
-    margin: 5px;
-    color: #FFFFFF;
+    float: right;
+    text-align: right;
+    width: 49%;
 }
 #ImageViewerClose {
     position: absolute;
-    right: 5px;
-    top: 10px;
-    width: 16px;
-    height: 16px;
-    background: url(close.png) no-repeat;
+    right: -12px;
+    top: -12px;
+    width: 30px;
+    height: 30px;
+    background: url(zclose.png) no-repeat;
     cursor: pointer;
     z-index: 1003;
 }
@@ -47,36 +60,39 @@
 }
 #ImageViewerImg {
     margin: 5px;
-    display: block;
 }
-#ImageViewerNext, #ImageViewerPrev {
-    width: 50%;
-    height: 100%;
+#ImageViewerNext,
+#ImageViewerPrev {
+    cursor: pointer;
     display: block;
+    height: 100%;
     position: absolute;
     top: 0;
+    width: 49%;
     z-index: 1002;
-    cursor: pointer;
 }
 #ImageViewerPrev {
-    left: -32px;
-    background: url(prev.png) left center no-repeat;
-    padding-left: 32px;
+    left: 1%;
+}
+#ImageViewerPrev:hover {
+    background: url("zprev.png") left center no-repeat;
 }
 #ImageViewerNext {
-    right: -32px;
-    background: url(next.png) right center no-repeat;
-    padding-right: 32px;
+    right: 1%;
+}
+#ImageViewerNext:hover {
+    background: url("znext.png") right center no-repeat;
 }
 .loading#ImageViewer #ImageViewerImgContainer,
-.loading#ImageViewer #ImageViewerCapition,
+.loading#ImageViewer #ImageViewerClose,
+.loading#ImageViewer #ImageViewerCaption,
 .loading#ImageViewer #ImageViewerPager,
 .loading#ImageViewer #ImageViewerImg,
 .loading#ImageViewer a {
     visibility: hidden;
 }
 .loading#ImageViewer{
-    background: #000000 url(zktimer.gif) no-repeat center center;
+    background: #fff url("../../../images/ajax/large_square_white.gif") no-repeat scroll center center;
 }
 #ImageViewerOverlay {
     position: fixed;
