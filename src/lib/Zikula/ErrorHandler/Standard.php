@@ -30,9 +30,14 @@ class Zikula_ErrorHandler_Standard extends Zikula_ErrorHandler
      * @return boolean
      */
     public function handler($errno, $errstr, $errfile='', $errline=0, $errcontext=null)
-    {
+    {        
         $this->setupHandler($errno, $errstr, $errfile, $errline, $errcontext);
 
+        // handle strange condition when PHP calls this handler with line = 0 - drak
+        if ($errline == 0) {
+            $this->errline = $this->trace[3]['line'];
+            $this->errfile = $this->trace[3]['file'];
+        }
         // Notify all loggers
         $this->eventManager->notify($this->event->setArgs(array('trace' => $this->trace, 'type' => $this->type, 'errno' => $this->errno, 'errstr' => $this->errstr, 'errfile' => $this->errfile, 'errline' => $this->errline, 'errcontext' => $this->errcontext)));
         if ($this->isPHPError() && System::isDevelopmentMode() && $this->showPHPErrorHandler()) {
