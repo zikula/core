@@ -1196,7 +1196,7 @@ class ModUtil
         }
 
         // Only convert User URLs. Exclude links that append a theme parameter
-        if ($_shorturls && $shorturlstype == 0 && $type != 'admin' && $forcelongurl == false) {
+        if ($_shorturls && $shorturlstype == 0 && $type == 'user' && $forcelongurl == false) {
             if (isset($args['theme'])) {
                 $theme = $args['theme'];
                 unset($args['theme']);
