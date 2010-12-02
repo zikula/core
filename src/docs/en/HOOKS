@@ -146,7 +146,7 @@ validate.delete - Used to validate input from an ui create/edit form (generally 
 process.edit    - Perform the final update actions for a ui create/edit form.
 process.delete  - Perform the final delete actions for a ui form.
 
-filter          - This is a filter to be applied in a given area.  Filters should probably
+ui.filter       - This is a filter to be applied in a given area.  Filters should probably
                   Have their own separate area(s) as it would give a user more control over
                   what filters are applied and where.
 
