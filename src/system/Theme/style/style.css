@@ -62,7 +62,7 @@ img.theme_colorpicker_image {
 
 /* Theme list in user frontend */
 #themes_list dl.theme_item {
-    background: #FFFFFF;
+    background: #fafafa;
     border-color: #D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
     border-style: solid;
     border-width: 1px;
@@ -71,13 +71,18 @@ img.theme_colorpicker_image {
     padding: 4px;
     text-align: center;
     min-width: 208px;
-    width: 30%;
+    width: 29%;
     overflow: hidden;
     color: #333;
 }
 
 #themes_list dl.theme_item a {
     color: #333;
+    font-weight: normal;
+}
+
+#themes_list dl.theme_item a:hover {
+    text-decoration:underline;
 }
 
 #themes_list dl.theme_item:hover {
@@ -91,8 +96,9 @@ img.theme_colorpicker_image {
 }
 
 #themes_list dl.theme_item dd {
+    font-size: 0.9em;
+    margin: 0.5em 0;
     padding: 0;
-    margin: 0;
 }
 
 .colorpicker {
