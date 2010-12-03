@@ -31,6 +31,7 @@ class Modules_Util
             try {
                 $modversion = new $class();
             } catch (Exception $e) {
+                LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), Zikula_ErrorHandler::CRIT);
                 throw new InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), 0, $e);
             }
             if (!$modversion instanceof Zikula_Version) {
@@ -42,6 +43,7 @@ class Modules_Util
             // pre 1.3 modules
             $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
             if (!file_exists($legacyVersionPath)) {
+                LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), Zikula_ErrorHandler::CRIT);
                 LogUtil::registerError(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
                 $modversion = array(
                     'name' => $moduleName,
