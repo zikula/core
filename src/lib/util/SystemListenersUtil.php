@@ -167,7 +167,21 @@ class SystemListenersUtil
         // array('trace' => $trace, 'type' => $type, 'errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)
         $message = $event['errstr'];
         if (is_string($event['errstr'])) {
-            $message = __f("%s: %s in %s line %s", array(Zikula_ErrorHandler::translateErrorCode($event['errno']), $event['errstr'], $event['errfile'], $event['errline']));
+            if ($event['errline'] == 0) {
+                $message = __f('PHP issued an error at line 0, so reporting entire trace to be more helpful: %1$s: %2$s', array(Zikula_ErrorHandler::translateErrorCode($event['errno']), $event['errstr']));
+                $fullTrace = $event['trace'];
+                array_shift($fullTrace); // shift is performed on copy so as not to disturn the event args
+                foreach ($fullTrace as $trace) {
+                    $file = isset($trace['file']) ? $trace['file'] : null;
+                    $line = isset($trace['line']) ? $trace['line'] : null;
+                    
+                    if ($file && $line) {
+                        $message .= ' ' . __f('traced in %1$s line %2$s', array($file, $line)) . "#\n";
+                    }
+                }
+            } else {
+                $message = __f('%1$s: %2$s in %3$s line %4$s', array(Zikula_ErrorHandler::translateErrorCode($event['errno']), $event['errstr'], $event['errfile'], $event['errline']));
+            }
         }
 
         $serviceManager = $event->getSubject()->getServiceManager();
@@ -183,17 +197,6 @@ class SystemListenersUtil
                 $serviceManager->getService('zend.logger.file')->log($message, abs($event['type']));
             }
         }
-
-        //$trace = $event['trace'];
-        //unset($trace[0]);
-        //foreach ($trace as $key => $var) {
-        //    if (isset($trace[$key]['object'])) {
-        //        unset($trace[$key]['object']);
-        //    }
-        //    if (isset($trace[$key]['args'])) {
-        //        unset($trace[$key]['args']);
-        //    }
-        //}
 
         if ($handler instanceof Zikula_ErrorHandler_Ajax) {
             if (abs($handler->getType()) <= $serviceManager['log.display_ajax_level']) {
