@@ -632,6 +632,14 @@ abstract class Zikula_Base implements Zikula_Translatable
         
         // set caller's name
         $args['caller'] = $this->name;
+
+        if (!isset($args['controller'])) {
+            $args['controller'] = $this;
+        }
+
+        if (!$args['controller'] instanceof Zikula_Controller) {
+            throw new InvalidArgumentException(__f('%s is not an instance of Zikula_Controller, the $args[\'controller\'] argument must be the controller who is notifying these hooks', get_class($this)));
+        }
         
         $event = new Zikula_Event($name, $subject, $args, $data);
         return $this->eventManager->notify($event);

@@ -168,11 +168,12 @@ the post to be deleted, therefor, this object should already be available.
 
 In the arguments of the event, we should also include an array of
 'caller' => $moduleName,
+'controller' => calling controller
 'id'     => the id of the object
 
 It might looks like this:
 
-    new Zikula_Event('news.hook.articles.process.update', $article, array('caller' => 'News', 'id' => $article['id']));
+    new Zikula_Event('news.hook.articles.process.update', $article, array('caller' => 'News', 'id' => $article['id'], 'controller' => $this));
 
 Implementing Hooks from the Subscriber Side
 -------------------------------------------
@@ -267,6 +268,7 @@ When displaying a new empty form, we simply trigger a ui.edit event with
     subject=null
     id=null/empty/0
     caller=calling module
+    controller=calling controller
 
 When we come to validate a new create form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a validate.edit event with
@@ -306,12 +308,14 @@ When displaying an edit form, we simply trigger a ui.edit event with
     subject=$item
     id=$item['id']
     caller=calling module
+    controller=calling controller
 
 When we come to validate an edit form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a validate.edit event with
     subject=$item
     id=$item['id']
     caller=name of calling module
+    controller=calling controller
     data=new Zikula_Collection_HookValidationProviders()
 
 The data property of the event can then be tested for the presence of validation errors or not
@@ -323,6 +327,7 @@ If it's ok simply commit the form data, then trigger a process.edit event with
     subject=$item
     id=$id
     caller=name of calling module
+    controller=calling controller
 
 If the data is not ok, then simply redisplay the template.  The triggered event will pick up
 the validation problems automatically as the validation of each handler will persist in
@@ -343,6 +348,7 @@ triggering a hookable event with
     subject=$item
     id=$item['id']
     caller=calling module's name
+    controller=calling controller
 
 ui.delete hooks are displayed in the template with
 {notifydisplayhooks eventname='<module>.hook.<area>.ui.delete' subject=$subject id=$id}
