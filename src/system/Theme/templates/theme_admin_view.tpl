@@ -35,18 +35,18 @@
                 <td>{$theme.description|default:$theme.displayname}</td>
                 <td class="z-right z-nowrap">
                     {if $theme.admin eq true}
-                    <a href="{modurl modname=Admin type=admin func=adminpanel theme=$theme.name}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview" class="tooltips"}</a>&nbsp;
+                    <a href="{modurl modname=Admin type=admin func=adminpanel theme=$theme.name}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview: `$theme.displayname`" class="tooltips"}</a>&nbsp;
                     {else}
-                    <a href="{entrypoint}?theme={$theme.name}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview" class="tooltips"}</a>&nbsp;
+                    <a href="{entrypoint}?theme={$theme.name}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview: `$theme.displayname`" class="tooltips"}</a>&nbsp;
                     {/if}
-                    <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit" class="tooltips"}</a>&nbsp;
+                    <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit: `$theme.displayname` " class="tooltips"}</a>&nbsp;
                     {if $theme.name neq $currenttheme and $theme.state neq 2}
-                    <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete" class="tooltips"}</a>&nbsp;
+                    <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete: `$theme.displayname`" class="tooltips"}</a>&nbsp;
                     {/if}
                     {if $theme.name neq $currenttheme and $theme.user and $theme.state neq 2}
-                    <a href="{modurl modname="Theme" type="admin" func="setasdefault" themename=$theme.name}">{img modname=core src=ok.gif set=icons/extrasmall __alt="Set as default" __title="Set as default" class="tooltips"}</a>&nbsp;
+                    <a href="{modurl modname="Theme" type="admin" func="setasdefault" themename=$theme.name}">{img modname=core src=ok.gif set=icons/extrasmall __alt="Set as default" __title="Set as default: `$theme.displayname`" class="tooltips"}</a>&nbsp;
                     {/if}
-                    <a href="{modurl modname="Theme" type="admin" func="credits" themename=$theme.name}">{img modname=core src=info.gif set=icons/extrasmall __alt="Credits" __title="Credits" class="tooltips"}</a>
+                    <a href="{modurl modname="Theme" type="admin" func="credits" themename=$theme.name}">{img modname=core src=info.gif set=icons/extrasmall __alt="Credits" __title="Credits: `$theme.displayname`" class="tooltips"}</a>
                 </td>
             </tr>
             {foreachelse}
