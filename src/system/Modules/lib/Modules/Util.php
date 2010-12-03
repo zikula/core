@@ -28,7 +28,11 @@ class Modules_Util
 
         $class = "{$moduleName}_Version";
         if (class_exists($class)) {
-            $modversion = new $class();
+            try {
+                $modversion = new $class();
+            } catch (Exception $e) {
+                throw new InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), 0, $e);
+            }
             if (!$modversion instanceof Zikula_Version) {
                 LogUtil::registerError(__f('%s is not an instance of Zikula_Version', get_class($modversion)));
             }

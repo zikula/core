@@ -452,7 +452,13 @@ class Modules_Api_Admin extends Zikula_Api
                         ZLanguage::bindModuleDomain($dir);
                     }
 
-                    $modversion = Modules_Util::getVersionMeta($dir, $rootdir);
+                    try {
+                        $modversion = Modules_Util::getVersionMeta($dir, $rootdir);
+                    } catch (Exception $e) {
+                        LogUtil::registerError($e->getMessage());
+                        continue;
+                    }
+
                     if (!isset($modversion['capabilities'])) {
                         $modversion['capabilities'] = array();
                     }
@@ -541,24 +547,6 @@ class Modules_Api_Admin extends Zikula_Api
                                 'core_min'        => $core_min,
                                 'core_max'        => $core_max,
                         );
-                    //} else {
-                    //    if ($name == $args['name']) {
-                    //        $filemodules = array(
-                    //                'directory'       => $dir,
-                    //                'name'            => $name,
-                    //                'type'            => $moduletype,
-                    //                'displayname'     => $displayname,
-                    //                'url'             => $url,
-                    //                'version'         => $version,
-                    //                'capabilities'    => $capabilities,
-                    //                'description'     => $description,
-                    //                'securityschema'  => $securityschema,
-                    //                'dependencies'    => $moddependencies,
-                    //                'core_min'        => $core_min,
-                    //                'core_max'        => $core_max,
-                    //        );
-                    //    }
-                    //}
 
                     // important: unset modversion and modtype, otherwise the
                     // following modules will have some values not defined in
