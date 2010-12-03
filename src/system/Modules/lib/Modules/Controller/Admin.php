@@ -259,7 +259,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'folder_grey.gif',
-                                        'title' => $this->__('Deactivate'));
+                                        'title' => $this->__f('Deactivate \'%s\' module', $mod['name']));
                             }
 
                             if (System::isLegacyMode() && !ModUtil::isOO($mod['name'])) {
@@ -267,7 +267,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                         'url' => ModUtil::url('Modules', 'admin', 'hooks', array(
                                         'id' => $mod['id'])),
                                         'image' => 'attach.gif',
-                                        'title' => $this->__('Hook settings'));
+                                        'title' => $this->__f('Hook settings for \'%s\'', $mod['name']));
                             }
 
                             if (PluginUtil::hasModulePlugins($mod['name'])) {
@@ -275,7 +275,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                         'url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array(
                                         'bymodule' => $mod['name'])),
                                         'image' => 'blockdevice.gif',
-                                        'title' => $this->__('Plugins'));
+                                        'title' => $this->__f('Plugins for \'%s\'', $mod['name']));
                             }
                             break;
                         case ModUtil::STATE_INACTIVE:
@@ -287,7 +287,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => 'folder_green.gif',
-                                    'title' => $this->__('Activate'));
+                                    'title' => $this->__f('Activate \'%s\'', $mod['name']));
                             $actions[] = array(
                                     'url' => ModUtil::url('Modules', 'admin', 'remove', array(
                                     'id' => $mod['id'],
@@ -296,7 +296,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => '14_layer_deletelayer.gif',
-                                    'title' => $this->__('Remove module'));
+                                    'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
                         case ModUtil::STATE_MISSING:
                             $actions[] = array(
@@ -307,7 +307,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => '14_layer_deletelayer.gif',
-                                    'title' => $this->__('Remove module'));
+                                    'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
                         case ModUtil::STATE_UPGRADED:
                             $actions[] = array(
@@ -318,7 +318,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => 'agt_update-product.gif',
-                                    'title' => $this->__('Upgrade'));
+                                    'title' => $this->__f('Upgrade \'%s\'', $mod['name']));
                             break;
                         case ModUtil::STATE_INVALID:
                         // nothing to do, remove manually
@@ -343,7 +343,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => '14_layer_deletelayer.gif',
-                                    'title' => $this->__('Remove module'));
+                                    'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
                         case ModUtil::STATE_UNINITIALISED:
                         default:
@@ -356,7 +356,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'agt_update_misc.gif',
-                                        'title' => $this->__('Install'));
+                                        'title' => $this->__f('Install \'%s\'', $mod['name']));
 //                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
 //                                    $actions[] = array(
 //                                            'url' => ModUtil::url('Modules', 'admin', 'remove', array(
@@ -377,7 +377,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'info.gif',
-                                        'title' => $this->__('Incompatible version'));
+                                        'title' => $this->__f('Incompatible version: \'%s\'', $mod['name']));
                             }
                             break;
                     }
@@ -387,7 +387,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                 'url' => ModUtil::url('Modules', 'admin', 'modify', array(
                                 'id' => $mod['id'])),
                                 'image' => 'xedit.gif',
-                                'title' => $this->__('Edit'));
+                                'title' => $this->__f('Edit \'%s\'', $mod['name']));
                 }
 
                 // Translate state
