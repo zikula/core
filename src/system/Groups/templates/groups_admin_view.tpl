@@ -82,10 +82,10 @@
                     {* *}
                     {assign var="options" value=$group.options}
                     <span id="groupaction_{$group.gid}" class="z-itemcell z-w10">
-                        <button class="z-imagebutton z-hide tooltips" id="modifyajax_{$group.gid}" title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
-                        <a id="modify_{$group.gid}"  href="{$group.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit" class='tooltips'}</a>
-                        <a id="delete_{$group.gid}"     href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __title="Delete" __alt="Delete" class='tooltips'}</a>
-                        <a id="members_{$group.gid}"  href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=edit_group.gif modname=core set=icons/extrasmall __title="Group membership" __alt="Group membership" class='tooltips'}</a>
+                        <button class="z-imagebutton z-hide tooltips" id="modifyajax_{$group.gid}" title="{gt text="Edit group: `$group.name`"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
+                        <a id="modify_{$group.gid}"  href="{$group.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit group: `$group.name`" __alt="Edit" class='tooltips'}</a>
+                        <a id="delete_{$group.gid}"     href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __title="Delete group: `$group.name`" __alt="Delete" class='tooltips'}</a>
+                        <a id="members_{$group.gid}"  href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=edit_group.gif modname=core set=icons/extrasmall __title="Membership of group: `$group.name`" __alt="Group membership" class='tooltips'}</a>
                         <script type="text/javascript">
                             //$('insert_{{$group.gid}}').addClassName('z-hide');
                             $('modify_{{$group.gid}}').addClassName('z-hide');
@@ -97,9 +97,9 @@
                         </script>
                     </span>
                     <span id="editgroupaction_{$group.gid}" class="z-itemcell z-w10 z-hide">
-                        <button class="z-imagebutton tooltips" id="groupeditsave_{$group.gid}"   title="{gt text="Save"}">{img src=button_ok.gif modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
-                        <button class="z-imagebutton tooltips" id="groupeditdelete_{$group.gid}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
-                        <button class="z-imagebutton tooltips" id="groupeditcancel_{$group.gid}" title="{gt text="Cancel"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
+                        <button class="z-imagebutton tooltips" id="groupeditsave_{$group.gid}"   title="{gt text="Save group: `$group.name`"}">{img src=button_ok.gif modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
+                        <button class="z-imagebutton tooltips" id="groupeditdelete_{$group.gid}" title="{gt text="Delete group: `$group.name`"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
+                        <button class="z-imagebutton tooltips" id="groupeditcancel_{$group.gid}" title="{gt text="Cancel group: `$group.name`"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                     </span>
                 </div>
                 <div id="groupinfo_{$group.gid}" class="z-hide z-groupinfo">
@@ -166,12 +166,12 @@
                     </span>
                     {* *}
                     <span id="groupaction_1" class="z-itemcell z-w12 z-hide">
-                        <button class="z-imagebutton tooltips" id="modifyajax_1"   title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
+                        <button class="z-imagebutton" id="modifyajax_1" title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
                     </span>
                     <span id="editgroupaction_1" class="z-itemcell z-w12">
-                        <button class="z-imagebutton tooltips" id="groupeditsave_1"   title="{gt text="Save"}">{img src=button_ok.gif modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
-                        <button class="z-imagebutton tooltips" id="groupeditdelete_1" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
-                        <button class="z-imagebutton tooltips" id="groupeditcancel_1" title="{gt text="Cancel"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
+                        <button class="z-imagebutton" id="groupeditsave_1"   title="{gt text="Save"}">{img src=button_ok.gif modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
+                        <button class="z-imagebutton" id="groupeditdelete_1" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete:"}</button>
+                        <button class="z-imagebutton" id="groupeditcancel_1" title="{gt text="Cancel"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                     </span>
                 </div>
                 <div id="groupinfo_1" class="z-hide z-groupinfo">&nbsp;</div>
@@ -202,8 +202,8 @@
                 <td>{$useritem.gname}</td>
                 <td>{$useritem.application|safehtml}</td>
                 <td>
-                    <a href="{modurl modname='Groups' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='accept'}" title="{gt text="Accept"} {$useritem.username}">{img src=add_user.gif modname=core set=icons/extrasmall __alt="Accept" class='tooltips'}</a>&nbsp;
-                    <a href="{modurl modname='Groups' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='deny'}" title="{gt text="Deny"} {$useritem.username}">{img src=delete_user.gif modname=core set=icons/extrasmall __alt="Deny" class='tooltips'}</a>
+                    <a href="{modurl modname='Groups' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='accept'}" title="{gt text="Accept"} {$useritem.username}">{img src=add_user.gif modname=core set=icons/extrasmall __alt="Accept" __title="Accept" class='tooltips'}</a>&nbsp;
+                    <a href="{modurl modname='Groups' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='deny'}" title="{gt text="Deny"} {$useritem.username}">{img src=delete_user.gif modname=core set=icons/extrasmall __alt="Deny" __title="Accept" class='tooltips'}</a>
                 </td>
             </tr>
             {foreachelse}
