@@ -44,7 +44,7 @@
                 <th>
                     {sortlink __linktext='Status' sort='activated' currentsort=$sort sortdir=$sortdir modname='Users' type='admin' func='view'}
                 </th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody class="z-clearer">

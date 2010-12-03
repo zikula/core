@@ -310,26 +310,26 @@ class Users_Controller_Admin extends Zikula_Controller
                 if ($useProfileModule) {
                     $options[] = array('url'   => ModUtil::url($profileModule, 'user', 'view', array('uid' => $item['uid'])),
                                        'image' => 'personal.gif',
-                                       'title' => $this->__('View the profile'));
+                                       'title' => $this->__f('View the profile of \'%s\''), $item['uname']);
                 }
                 if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_MODERATE)) {
                     $options[] = array('url'   => ModUtil::url('Users', 'admin', 'lostUsername', array('uid' => $item['uid'], 'authid' => $authId)),
                                        'image' => 'lostusername.png',
-                                       'title' => $this->__('Send user name'));
+                                       'title' => $this->__f('Send user name to \'%s\'', $item['uname']));
 
                     $options[] = array('url'   => ModUtil::url('Users', 'admin', 'lostPassword', array('uid' => $item['uid'], 'authid' => $authId)),
                                        'image' => 'lostpassword.png',
-                                       'title' => $this->__('Send password recovery code'));
+                                       'title' => $this->__f('Send password recovery code to \'%s\'', $item['uname']));
 
                     if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_EDIT)) {
                         $options[] = array('url'   => ModUtil::url('Users', 'admin', 'modify', array('userid' => $item['uid'])),
                                            'image' => 'xedit.gif',
-                                           'title' => $this->__('Edit'));
+                                           'title' => $this->__f('Edit \'%s\'', $item['uname']));
 
                         if (($currentUid != $item['uid']) && SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_DELETE)) {
                             $options[] = array('url'   => ModUtil::url('Users', 'admin', 'deleteUsers', array('userid' => $item['uid'])),
                                                'image' => '14_layer_deletelayer.gif',
-                                               'title' => $this->__('Delete'));
+                                               'title' => $this->__f('Delete \'%s\'', $item['uname']));
                         }
                     }
                 }
