@@ -108,23 +108,23 @@ class Blocks_Controller_Admin extends Zikula_Controller
                 $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'deactivate',
                         array('bid' => $block['bid'], 'authid' => $authid)),
                         'image' => 'folder_grey.gif',
-                        'title' => $this->__('Deactivate'),
+                        'title' => $this->__f('Deactivate \'%s\'', $block['title']),
                         'noscript' => true);
             } else {
                 $block['options'][] = array ('url' => ModUtil::url('Blocks', 'admin', 'activate',
                         array('bid' => $block['bid'], 'authid' => $authid)),
                         'image' => 'folder_green.gif',
-                        'title' => $this->__('Activate'),
+                        'title' => $this->__f('Activate \'%s\'', $block['title']),
                         'noscript' => true);
             }
 
             $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $block['bid'])),
                     'image' => 'xedit.gif',
-                    'title' => $this->__('Edit'),
+                    'title' => $this->__f('Edit \'%s\'', $block['title']),
                     'noscript' => false);
             $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'delete', array('bid' => $block['bid'])),
                     'image' => '14_layer_deletelayer.gif',
-                    'title' => $this->__('Delete'),
+                    'title' => $this->__f('Delete \'%s\'', $block['title']),
                     'noscript' => false);
 
             $blocksitems[] = $block;
@@ -142,11 +142,11 @@ class Blocks_Controller_Admin extends Zikula_Controller
                 if (SecurityUtil::checkPermission('Blocks::', "$item[name]::$", ACCESS_EDIT)) {
                     $options[] = array('url'   => ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $item['pid'])),
                             'image' => 'xedit.gif',
-                            'title' => $this->__('Edit'));
+                            'title' => $this->__f('Edit blockposition \'%s\'', $item['name']));
                     if (SecurityUtil::checkPermission('Blocks::', "$item[name]::", ACCESS_DELETE)) {
                         $options[] = array('url'   => ModUtil::url('Blocks', 'admin', 'deleteposition', array('pid' => $item['pid'])),
                                 'image' => '14_layer_deletelayer.gif',
-                                'title' => $this->__('Delete'));
+                                'title' => $this->__f('Delete blockposition \'%s\'', $item['name']));
                     }
                 }
                 // Add the calculated menu options to the item array
