@@ -663,7 +663,7 @@ class Zikula_Version implements ArrayAccess
     {
         $area = $bundle->getArea();
         if (array_key_exists($area, $this->hookSubscriberBundles)) {
-            throw new InvalidArgumentException(sprintf('Area %s is already registered'));
+            throw new InvalidArgumentException(sprintf('Area %s is already registered', $area));
         }
         
         $this->hookSubscriberBundles[$area] = $bundle;
