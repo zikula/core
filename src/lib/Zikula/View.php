@@ -32,6 +32,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public $toplevelmodule;
 
     /**
+     * Module name.
+     *
+     * @var string
+     */
+    public $moduleName;
+
+    /**
      * Module info.
      *
      * @var array
@@ -141,6 +148,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         // the topmost module. For Hooks, Blocks, API Functions and others
         // you need to set this property to the name of the respective module!
         $this->toplevelmodule = ModUtil::getName();
+        $this->moduleName = ModUtil::getName();
         if (!$module) {
             $module = $this->toplevelmodule;
         }
@@ -293,6 +301,16 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function getModule()
     {
         return $this->module;
+    }
+
+    /**
+     * Retrieve module name.
+     *
+     * @return string Module name.
+     */
+    public function getModuleName()
+    {
+        return $this->moduleName;
     }
 
     /**

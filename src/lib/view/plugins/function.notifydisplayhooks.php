@@ -63,6 +63,9 @@ function smarty_function_notifydisplayhooks($params, $view)
     unset($params['subject']);
     unset($params['assign']);
 
+    // Add the Zikula_View instance as an argument
+    $params['view'] = $view;
+
     // create event and notify
     $event = new Zikula_Event($eventname, $subject, $params, $data);
     $results = $eventManager->notify($event)->getData();
