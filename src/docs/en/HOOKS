@@ -190,7 +190,7 @@ by the administration UI.
 
 Attaching display hooks is very simple.  Inside the template simply add
 
-    {notifydisplayhooks eventname='news.hook.articles.ui.view' area='module_area.news.articles' subject=$subject id=$id returnurl=$returnurl}
+    {notifydisplayhooks eventname='news.hook.articles.ui.view' area='modulehook_area.news.articles' subject=$subject id=$id returnurl=$returnurl}
 
 `$caller` will be added automatically unless you need to specify it, but the value is taken
 from the Zikula_View instance so in general it's not needed.
@@ -239,7 +239,7 @@ content to the display view.  We simply notify `ui.view` hooks with the item bei
 
 In the template we simply use something like this, using the `ui.view` hook type.
 
-    {notifydisplayhooks eventname='<module>.hook.<area>.ui.view' area='module_area.<module>.<area>' subject=$subject id=$id returnurl=$returnurl}
+    {notifydisplayhooks eventname='<module>.hook.<area>.ui.view' area='modulehook_area.<module>.<area>' subject=$subject id=$id returnurl=$returnurl}
 
 
 Introduction to new/edit/delete types
