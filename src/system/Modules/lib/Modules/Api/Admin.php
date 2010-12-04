@@ -301,6 +301,8 @@ class Modules_Api_Admin extends Zikula_Api
             ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
+        $version = Modules_Util::getVersionMeta($osdir, $modpath);
+
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
@@ -385,7 +387,11 @@ class Modules_Api_Admin extends Zikula_Api
         DBUtil::deleteObjectByID('module_vars', $modinfo['name'], 'modname');
 
         // clean up any hooks activated for this module
-        DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
+        if (System::isLegacyMode()) {
+            DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
+        }
+        HookUtil::unregisterHookProviderBundles($version);
+        HookUtil::unregisterHookSubscriberBundles($version);
 
         // remove the entry from the modules table
         if ($this->serviceManager['multisites.enabled'] == 1) {
