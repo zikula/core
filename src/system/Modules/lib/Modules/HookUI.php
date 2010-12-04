@@ -32,22 +32,38 @@ class Modules_HookUI
         $view = Zikula_View::getInstance('Modules', false);
         $view->assign('currentmodule', $moduleName);
 
+        // get all areas of the subscriber
+        $subscriberAreas = HookUtil::getSubscriberAreasByOwner($moduleName);
+
+        // get current sorting
+        $currentSorting = array();
+        foreach ($subscriberAreas as $subscriberArea) {
+            $currentSorting[$subscriberArea] = array();
+            $sortsByArea = HookUtil::getDisplaySortsByArea($subscriberArea);
+            foreach ($sortsByArea as $sba) {
+                array_push($currentSorting[$subscriberArea], $sba);
+            }
+        }
+        
         $hookproviders = array();
-        $currentSorting = HookUtil::getDisplaySortsByArea($moduleName);
-        if (count($currentSorting) > 0) {            
-            foreach ($currentSorting as $provider) {
-                if (ModUtil::available($provider)) {
-                    $hookproviders[] = ModUtil::getInfoFromName($provider);
+        if (count($currentSorting) > 0) {
+            foreach ($currentSorting as $areaSorting) {
+                foreach ($areaSorting as $sorting) {
+                    $provider = HookUtil::getOwnerByProviderArea($sorting);
+                    if (!array_key_exists($provider, $hookproviders) && ModUtil::available($provider)) {
+                        $hookproviders[$provider] = ModUtil::getInfoFromName($provider);
+                    }
                 }
             }
         } else {
             $hookprovidersinuse = HookUtil::getProvidersInUseBy($moduleName);
             foreach ($hookprovidersinuse as $provider) {
-                if (ModUtil::available($provider['providerowner'])) {
-                    $hookproviders[] = ModUtil::getInfoFromName($provider['providerowner']);
+                if (!array_key_exists($provider['providerowner'], $hookproviders) && ModUtil::available($provider['providerowner'])) {
+                    $hookproviders[$provider['providerowner']] = ModUtil::getInfoFromName($provider['providerowner']);
                 }
             }
         }
+        
         $view->assign('hookproviders', $hookproviders);
         
         $event->setData($view->fetch('modules_hookui_providers.tpl'));

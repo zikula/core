@@ -116,13 +116,22 @@ class Modules_Controller_Ajax extends Zikula_Controller
             throw new Zikula_Exception_Fatal($this->__('Providers order is not an array.'));
         }
 
-        $sort = array();
+        $areaSorts = array();
         foreach ((array)$providersorder as $order => $id) {
             $providerModule = ModUtil::getInfo($id);
-            $sort[] = $providerModule['name'];
+            $bindings = HookUtil::bindingsBetweenProviderAndSubscriber($subscriber, $providerModule['name']);
+            foreach ($bindings as $binding) {
+                if (!isset($areaSorts[$binding['subarea']])) {
+                    $areaSorts[$binding['subarea']] = array();
+                }
+
+                $areaSorts[$binding['subarea']][] = $binding['providerarea'];
+            }
         }
-        
-        HookUtil::setDisplaySortsByArea($subscriber, $sort);
+
+        foreach($areaSorts as $area => $sort) {
+            HookUtil::setDisplaySortsByArea($area, $sort);
+        }
 
         return new Zikula_Response_Ajax(array('result' => true));
     }
