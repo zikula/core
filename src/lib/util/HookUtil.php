@@ -793,4 +793,89 @@ class HookUtil
                 ->toArray();
     }
 
+    /**
+     * Get all areas of a provider.
+     *
+     * @param string $providerName Provider's name.
+     *
+     * @return array
+     */
+    public static function getProviderAreasByOwner($providerName)
+    {
+        $results = Doctrine_Query::create()->select()
+                        ->where('p.owner = ?', $providerName)
+                        ->from('Zikula_Doctrine_Model_HookProviders p')
+                        ->execute()
+                        ->toArray();
+
+        $return = array();
+        foreach ($results as $result) {
+            $return[] = $result['area'];
+        }
+
+        return array_unique($return);
+    }
+
+     /**
+     * Get all areas of a subscriber.
+     *
+     * @param string $subscriberName Subscriber's name.
+     *
+     * @return array
+     */
+    public static function getSubscriberAreasByOwner($subscriberName)
+    {
+        $results = Doctrine_Query::create()->select()
+                        ->where('s.owner = ?', $subscriberName)
+                        ->from('Zikula_Doctrine_Model_HookSubscribers s')
+                        ->execute()
+                        ->toArray();
+
+        $return = array();
+        foreach ($results as $result) {
+            $return[] = $result['area'];
+        }
+
+        return array_unique($return);
+    }
+
+    /**
+     * Get owner (subscriber) given an area.
+     *
+     * @param string $area Subscriber's area.
+     *
+     * @return array
+     */
+    public static function getOwnerBySubscriberArea($area)
+    {
+        $results = Doctrine_Query::create()->select()
+                        ->where('s.area = ?', $area)
+                        ->from('Zikula_Doctrine_Model_HookSubscribers s')
+                        ->limit(1)
+                        ->execute()
+                        ->toArray();
+
+        return (is_array($results) ? $results[0]['owner'] : false);
+    }
+
+    /**
+     * Get owner (provider) given an area.
+     *
+     * @param string $area Provider's area.
+     *
+     * @return array
+     */
+    public static function getOwnerByProviderArea($area)
+    {
+        $results = Doctrine_Query::create()->select()
+                        ->where('p.area = ?', $area)
+                        ->from('Zikula_Doctrine_Model_HookProviders p')
+                        ->limit(1)
+                        ->execute()
+                        ->toArray();
+
+        return (is_array($results) ? $results[0]['owner'] : false);
+    }
+
+
 }
