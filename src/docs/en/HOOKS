@@ -62,7 +62,7 @@ be appropriate, or may require different Hooks for different areas.
 This is why you may specify different areas in the API.  Each area would have to
 have it's own set of unique event names.
 
-The addType() method deserves some explanation.  The first parameter is the hook
+The `addType()` method deserves some explanation.  The first parameter is the hook
 type. The second parameter is the event name that is triggered by *THIS* module.
 So if this module was a news module, then these are the unique names that only
 *this* news module actually triggers.  Under the hood, when a user attaches say
@@ -146,9 +146,9 @@ an action.
     process.edit    - Perform the final update actions for a ui create/edit form.
     process.delete  - Perform the final delete actions for a ui form.
 
-ui.filter       - This is a filter to be applied in a given area.  Filters should probably
-                  Have their own separate area(s) as it would give a user more control over
-                  what filters are applied and where.
+    ui.filter       - This is a filter to be applied in a given area.  Filters should probably
+                      Have their own separate area(s) as it would give a user more control over
+                      what filters are applied and where.
 
 Hookable Events
 ---------------
