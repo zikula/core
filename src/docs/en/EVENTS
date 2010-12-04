@@ -39,7 +39,13 @@ controller.method_not_found called in instances of Zikula_Controller from __call
 dbobject.pre/post*
     Takes subject of $this.
 
-installer.module.uninstalled called after module successful uninstall
+installer.module.installed called after a module is successfully installed.
+    Receives $modinfo as args
+
+installer.module.upgraded called after a module is successfully upgraded.
+    Receives $modinfo as args
+
+installer.module.uninstalled called after a module is successfully uninstalled.
     Receives $modinfo as args
 
 group.create

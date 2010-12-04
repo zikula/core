@@ -876,9 +876,14 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         if (!System::isInstalling()) {
+            // This should become an event handler - drak
             $category = ModUtil::getVar('Admin', 'defaultcategory');
             ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
         }
+
+        // All went ok so issue installed event
+        $event = new Zikula_Event('installer.module.installed', null, $modinfo);
+        $this->eventManager->notify($event);
 
         // Success
         return true;
@@ -1025,6 +1030,10 @@ class Modules_Api_Admin extends Zikula_Api
                      'version' => $version);
 
         DBUtil::updateObject($obj, 'modules');
+
+        // Upgrade succeeded, issue event.
+        $event = new Zikula_Event('installer.module.upgraded', null, $modinfo);
+        $this->eventManager->notify($event);
 
         // Success
         return true;
