@@ -22,7 +22,7 @@ class DoctrineUtil
      *
      * @see Zikula_Doctrine_Hydrator_SingleScalarArray
      */
-    const HYDRATOR_SINGLE_SCALAR_ARRAY = "SingleScalarArray";
+    const HYDRATE_SINGLE_SCALAR_ARRAY = "SingleScalarArray";
 
     /**
      * Constructor.

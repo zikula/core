@@ -23,7 +23,7 @@
  * $array = Doctrine_Query::create()
  *              ->select("DISTINCT myColumn")
  *              ->from("MyTable")
- *              ->execute(array(), DoctrineUtil::HYDRATOR_SINGLE_SCALAR_ARRAY)
+ *              ->execute(array(), DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY)
  * // $array is array(0 => "myColumn value 1", 1 => "myColumn value 2")
  * </code>
  * </li>
@@ -33,7 +33,7 @@
  * $array = Doctrine_Query::create()
  *              ->select("myKeyColumn, myColumn")
  *              ->from("MyTable INDEXBY myKeyColumn")
- *              ->execute(array(), DoctrineUtil::HYDRATOR_SINGLE_SCALAR_ARRAY)
+ *              ->execute(array(), DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY)
  * // $array is array("key1" => "myColumn value 1", "key2" => "myColumn value 2")
  * </code>
  * </li>
@@ -47,7 +47,7 @@ class Zikula_Doctrine_Hydrator_SingleScalarArray extends Doctrine_Hydrator_Abstr
      *
      * @param mixed $stmt Doctrine statement.
      *
-     * @return array the hydration result (never null)
+     * @return array Hydration result (never null).
      */
     public function hydrateResultSet($stmt) {
         // setup aliases and assoc informations.
@@ -58,7 +58,7 @@ class Zikula_Doctrine_Hydrator_SingleScalarArray extends Doctrine_Hydrator_Abstr
         $rootComponent = $this->_queryComponents[$rootAlias];
         $isAssoc = isset($rootComponent['map']) && !empty($rootComponent['map']);
 
-        // laod rows from db
+        // load rows from db
         $resultRows = $stmt->fetchAll(Doctrine::FETCH_ASSOC);
         $fieldArray = array();
 
