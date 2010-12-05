@@ -459,6 +459,8 @@ class DBConnectionStack
             // enable dql hooks (used by Categorisable doctrine template)
             $object->setAttribute(Doctrine_Core::ATTR_USE_DQL_CALLBACKS, true);
 
+            $object->registerHydrator(DoctrineUtil::HYDRATOR_SINGLE_SCALAR_ARRAY, 'Zikula_Doctrine_Hydrator_SingleScalarArray');
+
             return;
         }
         if ($object instanceof Doctrine_Connection) {

@@ -18,6 +18,13 @@
 class DoctrineUtil
 {
     /**
+     * Hydrate an array of values.
+     *
+     * @see Zikula_Doctrine_Hydrator_SingleScalarArray
+     */
+    const HYDRATOR_SINGLE_SCALAR_ARRAY = "SingleScalarArray";
+
+    /**
      * Constructor.
      *
      * @throws Exception DoctrineUtil can't be instanciated directly.
