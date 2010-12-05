@@ -791,7 +791,7 @@ class HookUtil
      */
     public static function getProviderAreasByOwner($providerName)
     {
-        return Doctrine_Query::create()->select('DISTINCT p.owner')
+        return Doctrine_Query::create()->select('DISTINCT p.area')
                         ->where('p.owner = ?', $providerName)
                         ->from('Zikula_Doctrine_Model_HookProviders p')
                         ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
@@ -806,7 +806,7 @@ class HookUtil
      */
     public static function getSubscriberAreasByOwner($subscriberName)
     {
-        return Doctrine_Query::create()->select('DISTINCT s.owner')
+        return Doctrine_Query::create()->select('DISTINCT s.area')
                         ->where('s.owner = ?', $subscriberName)
                         ->from('Zikula_Doctrine_Model_HookSubscribers s')
                         ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
