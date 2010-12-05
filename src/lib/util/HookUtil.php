@@ -133,8 +133,7 @@ class HookUtil
         return Doctrine_Query::create()->select()
                 ->where('owner = ?', $owner)
                 ->from('Zikula_Doctrine_Model_HookProviders')
-                ->execute()
-                ->toArray();
+                ->fetchArray();
     }
 
     /**
@@ -149,8 +148,7 @@ class HookUtil
         return Doctrine_Query::create()->select()
                 ->where('owner = ?', $owner)
                 ->from('Zikula_Doctrine_Model_HookSubscribers')
-                ->execute()
-                ->toArray();
+                ->fetchArray();
     }
 
     /**
@@ -261,8 +259,7 @@ class HookUtil
         $providers = Doctrine_Query::create()->select()
                         ->where('owner = ?', $owner)
                         ->from('Zikula_Doctrine_Model_HookProviders')
-                        ->execute()
-                        ->toArray();
+                        ->fetchArray();
 
         if (!$providers) {
             return;
@@ -630,8 +627,7 @@ class HookUtil
         $subscribers = Doctrine_Query::create()->select()
                         ->where('area = ?', $subscriberArea)
                         ->from('Zikula_Doctrine_Model_HookSubscribers')
-                        ->execute()
-                        ->toArray();
+                        ->fetchArray();
 
         if (!$subscribers) {
             return false;
@@ -644,8 +640,7 @@ class HookUtil
                             ->where('area = ?', $providerArea)
                             ->andWhere('type = ?', $subscriber['type'])
                             ->from('Zikula_Doctrine_Model_HookProviders')
-                            ->execute()
-                            ->toArray();
+                            ->fetchArray();
 
             if ($hookprovider) {
                 $provider = $hookprovider[0];
@@ -685,8 +680,7 @@ class HookUtil
         $subscribers = Doctrine_Query::create()->select()
                         ->where('area = ?', $subscriberArea)
                         ->from('Zikula_Doctrine_Model_HookSubscribers')
-                        ->execute()
-                        ->toArray();
+                        ->fetchArray();
 
         if (!$subscribers) {
             return false;
@@ -698,8 +692,7 @@ class HookUtil
                             ->where('area = ?', $providerArea)
                             ->andWhere('type = ?', $subscriber['type'])
                             ->from('Zikula_Doctrine_Model_HookProviders')
-                            ->execute()
-                            ->toArray();
+                            ->fetchArray();
 
             if ($hookprovider) {
                 $provider = $hookprovider[0];
@@ -739,8 +732,7 @@ class HookUtil
         return Doctrine_Query::create()->select()
                 ->andWhere('providerowner = ?', $providerName)
                 ->from('Zikula_Doctrine_Model_HookBindings')
-                ->execute()
-                ->toArray();
+                ->fetchArray();
     }
 
     /**
@@ -755,8 +747,7 @@ class HookUtil
         return Doctrine_Query::create()->select()
                 ->andWhere('subowner = ?', $subscriberName)
                 ->from('Zikula_Doctrine_Model_HookBindings')
-                ->execute()
-                ->toArray();
+                ->fetchArray();
     }
 
     /**
@@ -771,8 +762,7 @@ class HookUtil
         return Doctrine_Query::create()->select()
                 ->andWhere('providerowner = ?', $providerName)
                 ->from('Zikula_Doctrine_Model_HookBindings')
-                ->execute()
-                ->toArray();
+                ->fetchArray();
     }
 
     /**
@@ -789,8 +779,7 @@ class HookUtil
                 ->andWhere('subowner = ?', $subscriberName)
                 ->andWhere('providerowner  = ?', $providerName)
                 ->from('Zikula_Doctrine_Model_HookBindings')
-                ->execute()
-                ->toArray();
+                ->fetchArray();
     }
 
     /**
@@ -802,18 +791,10 @@ class HookUtil
      */
     public static function getProviderAreasByOwner($providerName)
     {
-        $results = Doctrine_Query::create()->select()
+        return Doctrine_Query::create()->select('DISTINCT p.owner')
                         ->where('p.owner = ?', $providerName)
                         ->from('Zikula_Doctrine_Model_HookProviders p')
-                        ->execute()
-                        ->toArray();
-
-        $return = array();
-        foreach ($results as $result) {
-            $return[] = $result['area'];
-        }
-
-        return array_unique($return);
+                        ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
 
      /**
@@ -825,18 +806,10 @@ class HookUtil
      */
     public static function getSubscriberAreasByOwner($subscriberName)
     {
-        $results = Doctrine_Query::create()->select()
+        return Doctrine_Query::create()->select('DISTINCT s.owner')
                         ->where('s.owner = ?', $subscriberName)
                         ->from('Zikula_Doctrine_Model_HookSubscribers s')
-                        ->execute()
-                        ->toArray();
-
-        $return = array();
-        foreach ($results as $result) {
-            $return[] = $result['area'];
-        }
-
-        return array_unique($return);
+                        ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
 
     /**
@@ -848,14 +821,10 @@ class HookUtil
      */
     public static function getOwnerBySubscriberArea($area)
     {
-        $results = Doctrine_Query::create()->select()
+        return Doctrine_Query::create()->select('DISTINCT s.owner')
                         ->where('s.area = ?', $area)
                         ->from('Zikula_Doctrine_Model_HookSubscribers s')
-                        ->limit(1)
-                        ->execute()
-                        ->toArray();
-
-        return (is_array($results) ? $results[0]['owner'] : false);
+                        ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
 
     /**
@@ -867,14 +836,10 @@ class HookUtil
      */
     public static function getOwnerByProviderArea($area)
     {
-        $results = Doctrine_Query::create()->select()
+        return Doctrine_Query::create()->select('DISTINCT p.owner')
                         ->where('p.area = ?', $area)
                         ->from('Zikula_Doctrine_Model_HookProviders p')
-                        ->limit(1)
-                        ->execute()
-                        ->toArray();
-
-        return (is_array($results) ? $results[0]['owner'] : false);
+                        ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
 
 
