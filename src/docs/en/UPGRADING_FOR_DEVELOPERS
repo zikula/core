@@ -517,7 +517,7 @@ Process the request in the module controller:
     }
 
     // when controller needs to return failure due to data validation:
-    return new Zikula_Response_Ajax_BadData($data, 'message');
+    return new Zikula_Response_Ajax_BadData($this->__('Invalid input')); // Second param $data is optional
 
     // throw an exception from some other reason
     throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
