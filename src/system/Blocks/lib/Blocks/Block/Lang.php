@@ -247,11 +247,12 @@ class Blocks_Block_Lang extends Zikula_Block
             $img = file_exists("images/flags/flag-$code.png");
 
             if ($translate == 2) {
+                // configuration requires to translate each item in the list into the language of the country being shown
                 ZLanguage::setLocale($code);
                 $langname = ZLanguage::getLanguageName($code);
                 ZLanguage::setLocale($savedLanguage);
             } else {
-                $langname = ZLanguage::getLanguageName();
+                $langname = ZLanguage::getLanguageName($savedLanguage);
             }
             $list[] = array('code' => $code,
                             'name' => $langname,
