@@ -167,11 +167,9 @@ glance, but even `delete` operations normally come from a screen that has displa
 the post to be deleted, therefore, this object should already be available.
 
 In the arguments of the event, we should also include an array of
-'caller' => $moduleName,
-'controller' => calling controller
-'id'     => the id of the object
 
     'caller' => $moduleName,
+    'controller' => calling controller
     'id'     => the id of the object
 
 It might looks like this:
