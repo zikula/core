@@ -49,6 +49,10 @@ class Modules_Controller_Ajax extends Zikula_Controller
         if (!ModUtil::available($subscriber)) {
             throw new Zikula_Exception_Fatal($this->__f('Subscriber module "%s" is not available.', $subscriber));
         }
+
+        if ($subscriber == $provider) {
+            throw new Zikula_Exception_Fatal($this->__f("%s can't be attached to itself.", $subscriber));
+        }
         
         // find out if subscriber is already connected to provider
         $bindings = HookUtil::bindingsBetweenProviderAndSubscriber($subscriber, $provider);

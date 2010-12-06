@@ -69,7 +69,7 @@ class Modules_HookUI
         }
 
         $moduleName = $subject->getName();
-        if (!SecurityUtil::checkPermission("$moduleName::", '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission($moduleName.'::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -77,7 +77,12 @@ class Modules_HookUI
         $view->assign('currentmodule', $moduleName);
 
         $hooksubscribers = HookUtil::getHookSubscribers();
-        for ($i=0 ; $i < count($hooksubscribers) ; $i++) {
+        $total_hooksubscribers = count($hooksubscribers);
+        for ($i=0 ; $i < $total_hooksubscribers ; $i++) {
+            if ($hooksubscribers[$i]['name'] == $moduleName) {
+                unset($hooksubscribers[$i]);
+                continue;
+            }
             $hooksubscribers[$i]['attached'] = (count(HookUtil::bindingsBetweenProviderAndSubscriber($hooksubscribers[$i]['name'], $moduleName)) > 0) ? true : false;
         }
         $view->assign('hooksubscribers', $hooksubscribers);
