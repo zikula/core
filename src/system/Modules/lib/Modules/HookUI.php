@@ -44,26 +44,16 @@ class Modules_HookUI
                 array_push($currentSorting[$subscriberArea], $sba);
             }
         }
-        
+
         $hookproviders = array();
-        if (count($currentSorting) > 0) {
-            foreach ($currentSorting as $areaSorting) {
-                foreach ($areaSorting as $sorting) {
-                    $provider = HookUtil::getOwnerByProviderArea($sorting);
-                    if (!array_key_exists($provider, $hookproviders) && ModUtil::available($provider)) {
-                        $hookproviders[$provider] = ModUtil::getInfoFromName($provider);
-                    }
-                }
-            }
-        } else {
-            $hookprovidersinuse = HookUtil::getProvidersInUseBy($moduleName);
-            foreach ($hookprovidersinuse as $provider) {
-                if (!array_key_exists($provider['providerowner'], $hookproviders) && ModUtil::available($provider['providerowner'])) {
-                    $hookproviders[$provider['providerowner']] = ModUtil::getInfoFromName($provider['providerowner']);
+        foreach ($currentSorting as $areaSorting) {
+            foreach ($areaSorting as $sorting) {
+                $provider = HookUtil::getOwnerByProviderArea($sorting);
+                if (!array_key_exists($provider, $hookproviders) && ModUtil::available($provider)) {
+                    $hookproviders[$provider] = ModUtil::getInfoFromName($provider);
                 }
             }
         }
-        
         $view->assign('hookproviders', $hookproviders);
         
         $event->setData($view->fetch('modules_hookui_providers.tpl'));
