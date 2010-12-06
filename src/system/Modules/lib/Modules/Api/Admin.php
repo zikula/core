@@ -390,8 +390,11 @@ class Modules_Api_Admin extends Zikula_Api
         if (System::isLegacyMode()) {
             DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
         }
-        HookUtil::unregisterHookProviderBundles($version);
-        HookUtil::unregisterHookSubscriberBundles($version);
+
+        if ($oomod) {
+            HookUtil::unregisterHookProviderBundles($version);
+            HookUtil::unregisterHookSubscriberBundles($version);
+        }
 
         // remove the entry from the modules table
         if ($this->serviceManager['multisites.enabled'] == 1) {
