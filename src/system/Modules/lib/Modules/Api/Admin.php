@@ -1055,25 +1055,24 @@ class Modules_Api_Admin extends Zikula_Api
 
         // get a list of modules needing upgrading
         if ($this->listmodules(array('state' => ModUtil::STATE_UPGRADED))) {
-            $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_SYSTEM));
+            $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED));
 
-            // Crazy sort to make sure the User's module is upgraded first
-            $key = array_search('Users', $newmods);
-            if (is_integer($key)) {
-                $usersModule[] = $newmods[$key];
-                unset($newmods[$key]);
-            }
-            $newModArray = (isset($usersModule)) ? $usersModule : array();
-            foreach ($newmods as $mod) {
-                $newModArray[] = $mod;
-            }
-
-            $newModArray = array_merge($newModArray, $this->listmodules(array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_MODULE)));
-
-            if (is_array($newModArray) && $newModArray) {
-                foreach ($newModArray as $mod) {
-                    $upgradeResults[$mod['name']] = $this->upgrade(array('id' => $mod['id']));
+            // Sort upgrade order according to this list.
+            $priorities = array('Users', 'Modules', 'Groups', 'Permissions', 'Admin', 'Blocks', 'Themes', 'Settings', 'Categories', 'SecurityCenter', 'Errors');
+            $sortedList = array();
+            foreach ($priorities as $priority) {
+                foreach ($newmods as $key => $modinfo) {
+                    if ($modinfo['name'] == $priority) {
+                        $sortedList[] = $modinfo;
+                        unset($newmods[$key]);
+                    }
                 }
+            }
+
+            $newmods = array_merge($sortedList, $newmods);
+
+            foreach ($newmods as $mod) {
+                $upgradeResults[$mod['name']] = $this->upgrade(array('id' => $mod['id']));
             }
 
             System::setVar('Version_Num', System::VERSION_NUM);
