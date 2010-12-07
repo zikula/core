@@ -315,9 +315,13 @@ class Blocks_Block_Menutree extends Zikula_Block
             $vars['menutree_content'] = FormUtil::getPassedValue('menutree_content', '', 'POST');
             $vars['menutree_content'] = DataUtil::urlsafeJsonDecode($vars['menutree_content']);
         }
+
         if(!$this->validate_menu($vars['menutree_content'])) {
             return LogUtil::registerError($this->__('Error! Could not save your changes.'));
         }
+
+        // sort tree array according to lineno key
+        uasort($vars['menutree_content'], array('Blocks_Block_Menutree','sort_menu'));
 
         // get other form data
         $menutree_data = FormUtil::getPassedValue('menutree');
@@ -515,6 +519,7 @@ class Blocks_Block_Menutree extends Zikula_Block
 
         return $data;
     }
+
     private function validate_menu($array)
     {
         /*
@@ -548,4 +553,15 @@ class Blocks_Block_Menutree extends Zikula_Block
         return true;
     }
 
+    private function sort_menu($a, $b)
+    {
+        $alang = key($a);
+        $va = $a[$alang]['lineno'] ? $a[$alang]['lineno'] : 0;
+        $blang = key($b);
+        $vb = $b[$blang]['lineno'] ? $b[$blang]['lineno'] : 0;
+        if ($va == $vb) {
+            return 0;
+        }
+        return ($va < $vb) ? -1 : 1;
+    }
 }
