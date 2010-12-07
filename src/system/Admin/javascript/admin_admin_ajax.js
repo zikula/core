@@ -81,7 +81,7 @@ Event.observe(window, 'load', function() {
                     }
                 });
             return;
-            },
+            }
         });
     }
     if ( $$("#modules div").size() > 0) {
