@@ -99,7 +99,7 @@ class Blocks_MenutreeUtil
         }
         foreach ($adminThemes as $at) {
             if (!array_key_exists($at['name'], $themesStyles)) {
-                $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$at['name'].'/style/Blocks/menutree', false, false, 'css', false);
+                $themesStyles[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/style/Blocks/menutree', false, false, 'css', false);
             }
         }
 
