@@ -396,7 +396,7 @@ Admin.Category.Add = function(cat)
     var oldcat = $('ajaxCatImage');
     catname = $('ajaxNewCatForm').elements['catName'].value;
     if (catname == '') {
-        Zikula.showajaxerror('You must enter a name for the new category');
+        Zikula.showajaxerror(Zikula.__('You must enter a name for the new category'));
         Admin.Category.Cancel(oldcat);
         return false;
     }
