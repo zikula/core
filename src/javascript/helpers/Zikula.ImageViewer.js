@@ -60,12 +60,11 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
             langLabels: {}
         }, config || {});
 
-        // change this to gettext
         this.config.langLabels = Object.extend({
-            close: 'Close',
-            next: 'Next',
-            prev: 'Prev',
-            pager: 'Image #{index} of #{total}'
+            close: Zikula.__('Close'),
+            next: Zikula.__('Next'),
+            prev: Zikula.__('Prev'),
+            pager: Zikula.__('Image #{index} of #{total}')
         },this.config.langLabels);
         this.config.langLabels.pager = new Template(this.config.langLabels.pager);
     },
