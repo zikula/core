@@ -379,7 +379,7 @@ Zikula.recursiveSortable = Class.create({
                 this.saved.set(this.getId(node),item);
             }
         }.bind(this));
-        $(this.config.inputName).value = this.saved.toJSON();
+        $(this.config.inputName).value = Object.toJSON(this.saved.toJSON());
         return this.saved;
     },
     beforeUnloadHandler: function (event) {
