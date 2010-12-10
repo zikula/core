@@ -838,7 +838,7 @@ Zikula.UI.AlertDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.Alert
      */
     defaultButtons: function(callback) {
         return [
-            {label: 'Ok'}
+            {label: Zikula.__('Ok')}
         ]
     }
 });
@@ -922,8 +922,8 @@ Zikula.UI.ConfirmDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.Con
      */
     defaultButtons: function(callback) {
         return [
-            {label: 'Ok',action: callback.curry(true)},
-            {label: 'Cancel',action: callback.curry(false)}
+            {label: Zikula.__('Ok'),action: callback.curry(true)},
+            {label: Zikula.__('Cancel'),action: callback.curry(false)}
         ]
     }
 });
@@ -1028,8 +1028,8 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.FormDi
      */
     defaultButtons: function(callback) {
         return [
-            {label: 'Submit', type: 'submit', name: 'submit', value: 'submit'},
-            {label: 'Cancel', action: callback.curry(false)}
+            {label: Zikula.__('Submit'), type: 'submit', name: 'submit', value: 'submit'},
+            {label: Zikula.__('Cancel'), action: callback.curry(false)}
         ]
     }
 });
@@ -1095,7 +1095,11 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple,/** @lends Zikula
             openerId = selectId+'_opener',
             containerId = selectId+'_options';
         if(!opener) {
-            opener = new Element('a',{id:openerId,href:'#'+containerId,title:'Select multiple'}).update('Select multiple');
+            opener = new Element('a',{
+                id:openerId,
+                href:'#'+containerId,
+                title:Zikula.__('Select multiple')
+            }).update(Zikula.__('Select multiple'));
             select.insert({after:opener});
         } else {
             opener = $(opener);
@@ -1115,7 +1119,7 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple,/** @lends Zikula
                 )
             }
         });
-        this.dialog = new Zikula.UI.Dialog(opener,[{label: 'Ok'}],{position:'relative'});
+        this.dialog = new Zikula.UI.Dialog(opener,[{label: Zikula.__('Ok')}],{position:'relative'});
         return container;
     },
     /**
