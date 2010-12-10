@@ -98,7 +98,7 @@ Zikula.dejsonize = function(jsondata)
     try {
         result = jsondata.evalJSON(true);
     } catch(error) {
-        alert('illegal JSON response: \n' + error + 'in\n' + jsondata);
+        alert(Zikula.__f('illegal JSON response: \n%1$s in\n%2$s',[error, jsondata]));
     }
     return result;
 }
@@ -405,7 +405,7 @@ Ajax.Responders.register({
                     if($('ajax_indicator') && $('ajax_indicator').tagName == 'IMG') {
                         $('ajax_indicator').src = Zikula.Config.baseURL + 'images/icons/extrasmall/error.gif';
                     }
-                    pnshowajaxerror('Ajax connection time out!');
+                    Zikula.showajaxerror(Zikula.__('Ajax connection time out!'));
                     // Run the onFailure method if we set one up when creating the AJAX object
                     if (request.options['onFailure']) {
                         request.options['onFailure'](request.transport, request.json);
