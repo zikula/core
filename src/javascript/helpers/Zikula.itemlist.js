@@ -201,7 +201,7 @@ Zikula.itemlist = Class.create(/** @lends Zikula.itemlist.prototype */{
      * @return void
      */
     deleteitem: function(event) {
-        var button = event.element();
+        var button = event.findElement('.buttondelete');
         var itemid = button.id.replace('buttondelete', 'li');
         if ($(itemid)) {
           $(itemid).remove();
