@@ -10,7 +10,7 @@ function CategoriesSave(node,params,data) {
         return false;
     }
     var pars = {
-            'data': data,
+            'data': data
     }
     var request = new Zikula.Ajax.Request(
         "ajax.php?module=Categories&func=resequence",
