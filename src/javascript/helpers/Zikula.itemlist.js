@@ -233,8 +233,8 @@ Zikula.recursiveSortable = Class.create({
         this.config.only = [this.config.only].flatten();
 
         this.config.langLabels = Object.extend({
-            maxdepthreached:    'Maximum depth reached. Limit is: ',
-            warnbeforeunload:   'You have unsaved changes!'
+            maxdepthreached:    Zikula.__('Maximum depth reached. Limit is: '),
+            warnbeforeunload:   Zikula.__('You have unsaved changes!')
         },this.config.langLabels);
 
         this.list = $(this.config.id).cleanWhitespace();
