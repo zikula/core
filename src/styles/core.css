@@ -598,6 +598,10 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     margin: 1em 0  !important;
     list-style: none !important;
 }
+.z-itemlist ul,
+.z-itemlist ol {
+    list-style: none !important;
+}
 .z-itemlist li {
     font-size: 1em;
     border: 1px dotted #999999;
