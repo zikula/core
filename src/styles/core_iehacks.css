@@ -62,7 +62,7 @@ div.z-formbuttons {
 
 .z-form fieldset,
 .z-form .z-fieldset {
-    padding: 0 5px;
+    /* padding: 0 5px; */
     padding-top: 1em;
     padding-bottom: 0.5em;
     margin-top: 1.5em;

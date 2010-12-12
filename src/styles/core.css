@@ -561,10 +561,10 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     text-align: left;
 }
 
-.z-linear div.z-formrow input ,
+.z-linear div.z-formrow input,
 .z-linear div.z-formrow textarea {
     display: block;
-    width: 98%;
+    width: 96%;
     padding: 0.3em;
 }
 
@@ -575,7 +575,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 
 .z-linear div.z-formrow select {
     display: block;
-    width: 99%;
+    width: 97%;
 }
 
 .z-linear .z-formnote,
