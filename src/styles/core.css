@@ -361,7 +361,7 @@ table.z-admintable ul {
     border: 1px solid #ddd;
     font-size: 1em;
     margin: 0;
-    max-width: none;
+    /* max-width: none; */
 }
 
 .z-form .z-formrow input[type=checkbox] {

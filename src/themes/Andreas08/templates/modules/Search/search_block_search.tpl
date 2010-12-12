@@ -1,4 +1,4 @@
-<form id="theme_search" class="z-floatright" method="post" action="{modurl modname="Search" type="user" func="search"}">
+<form id="theme_search" class="z-floatright" method="post" action="{modurl modname='Search' type='user' func='search'}">
     <div>
         <input class="theme_search_input" id="block_search_q" type="text" name="q" size="20" maxlength="255" />
         {if $vars.displaySearchBtn eq 1}
