@@ -41,7 +41,8 @@
  */
 function smarty_insert_getstatusmsg($params, $view)
 {
-    $assign = isset($params['assign'])  ? $params['assign']  : null;
+    // NOTE: assign parameter is handled by the smarty_core_run_insert_handler(...) function in lib/vendor/Smarty/internals/core.run_insert_handler.php
+    
     $class  = isset($params['class'])   ? $params['class']   : null;
     $style  = isset($params['style'])   ? $params['style']   : null;
     $tag    = isset($params['tag'])     ? $params['tag']     : null;
@@ -62,11 +63,6 @@ function smarty_insert_getstatusmsg($params, $view)
     if (!empty($msgError)) {
         $msgStatus = $msgError;
         $msgtype   = ($class ? $class : 'z-errormsg');
-    }
-
-    if ($assign) {
-        $view->assign($assign, $msgStatus);
-        return;
     }
 
     if (empty($msgStatus) || count($msgStatus)==0) {

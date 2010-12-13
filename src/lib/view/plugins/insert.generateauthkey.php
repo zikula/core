@@ -30,7 +30,6 @@
  */
 function smarty_insert_generateauthkey($params, $view)
 {
-    $assign = isset($params['assign']) ? $params['assign'] : null;
     $module = isset($params['module']) ? $params['module'] : null;
 
     if (!$module) {
@@ -39,9 +38,7 @@ function smarty_insert_generateauthkey($params, $view)
 
     $result = SecurityUtil::generateAuthKey($module);
 
-    if ($assign) {
-        $view->assign($assign, $result);
-    } else {
-        return $result;
-    }
+    // NOTE: assign parameter is handled by the smarty_core_run_insert_handler(...) function in lib/vendor/Smarty/internals/core.run_insert_handler.php
+    
+    return $result;
 }
