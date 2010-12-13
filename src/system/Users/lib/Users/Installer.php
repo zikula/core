@@ -77,7 +77,11 @@ class Users_Installer extends Zikula_Installer
              ->setVar('login_displaymarkeddel', false)
              ->setVar('login_displayinactive', false)
              ->setVar('login_displayverify', false)
-             ->setVar('login_displayapproval', false);
+             ->setVar('login_displayapproval', false)
+             ->setVar('chgemail_expiredays', 0)
+             ->setVar('chgpass_expiredays', 0)
+             ->setVar('reg_expiredays', 0)
+                ;
 
         // Register persistent event listeners (handlers)
         EventUtil::registerPersistentModuleHandler('Users', 'get.pending_content', array('Users_Listeners', 'pendingContentListener'));
@@ -502,7 +506,11 @@ class Users_Installer extends Zikula_Installer
              ->setVar('login_displaymarkeddel', false)
              ->setVar('login_displayinactive', false)
              ->setVar('login_displayverify', false)
-             ->setVar('login_displayapprove', false);
+             ->setVar('login_displayapprove', false)
+             ->setVar('chgemail_expiredays', 0)
+             ->setVar('chgpass_expiredays', 0)
+             ->setVar('reg_expiredays', 0)
+                ;
 
         $this->delVar('reg_forcepwdchg');
         $this->delVar('lowercaseuname');
