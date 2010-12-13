@@ -4,6 +4,7 @@
         <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users"}" />
         <input type="hidden" name="authmodule" value="{$authmodule}" id="users_authmodule" />
 
+        {if $authmodule}
         {modfunc modname=$authmodule type='auth' func='loginBlockFields' assign='loginblockfields'}
         <div class="users_block_box">
             {if $loginblockfields}
@@ -32,18 +33,24 @@
             </p>
             {/if}
         </div>
+        {/if}
 
         {if (count($authmodules) > 1)}
         <div class="users_block_box">
+            {if $authmodule}
+            <h5>{gt text="Or instead, login with your..." domain='zikula'}</h5>
+            {else}
             <h5>{gt text="Login with your..." domain='zikula'}</h5>
+            {/if}
             <div>
-                {foreach from=$authmodules key='cur_authmodule_name' item='cur_authmodule'}
+                {foreach from=$authmodules key='cur_authmodule_name' item='cur_authmodule' name='cur_authmodule'}
                 {modfunc modname=$cur_authmodule_name type='auth' func='loginBlockIcon' assign='loginblockicon'}
                 {if $loginblockicon}
                 {$loginblockicon}
                 {else}
                 <a id="users_block_loginwith_{$cur_authmodule_name}" class="users_block_loginwith" href="{modurl modname='Users' func='loginScreen'}">{$cur_authmodule_name}</a>
                 {/if}
+                {if !$smarty.foreach.cur_authmodule.last}<br />{/if}
                 {/foreach}
             </div>
         </div>

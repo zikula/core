@@ -84,7 +84,15 @@ class Users_Block_Login extends Zikula_Block
                 }
             }
 
-            $authmodule = FormUtil::getPassedValue('loginwith', $this->getVar('default_authmodule', 'Users'), 'GET');
+            // If there is more than one authmodule available don't assume a default.
+            $authmodule = false;
+            $numAuthmodules = count($authmodules);
+            if ($numAuthmodules == 1) {
+                // There is exactly one authmodule available, so use that as the default
+                $authmodule = FormUtil::getPassedValue('loginwith', array_pop(array_keys($authmodules)), 'GET');
+            } elseif (!$numAuthmodules) {
+                return LogUtil::registerError($this->__("It appears that there are no authorization modules available for processing user log-in requests."));
+            }
 
             $this->view->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
                        ->assign('authmodule', $authmodule)
