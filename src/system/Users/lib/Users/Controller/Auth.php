@@ -49,7 +49,10 @@ class Users_Controller_Auth extends Zikula_Controller
      */
     public function loginBlockIcon()
     {
-        return $this->view->fetch('users_auth_loginblockicon.tpl');
+        $loginViaOption = $this->getVar('loginviaoption', 0);
+        return $this->view
+                ->assign('loginviaoption', $loginViaOption)
+                ->fetch('users_auth_loginblockicon.tpl');
     }
 
 }
