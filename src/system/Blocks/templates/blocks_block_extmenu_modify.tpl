@@ -74,7 +74,7 @@
                 <input type="text" id="links_{$thislanguage}_{$itemid}_title" name="links[{$thislanguage}][{$itemid}][title]" size="25" maxlength="255" value="{$item.title|safetext}" />
             </span>
             <span class="z-itemcell z-w10">
-                <input type="checkbox" id="links_{$thislanguage}_{$itemid}_active" name="links[{$thislanguage}][{$itemid}][active]" {if $item.active}checked="checked"{/if} value="1" />
+                <input type="checkbox" id="links_{$thislanguage}_{$itemid}_active" name="links[{$thislanguage}][{$itemid}][active]" {if isset($item.active) && $item.active}checked="checked"{/if} value="1" />
                 {if $thislanguage == $userlanguage}
                 <button type="button" class="imagebutton-nofloat buttondelete" id="buttondelete_menuitemlist_{$itemid}">{img src='14_layer_deletelayer.gif' modname='core' set='icons/extrasmall' __alt='Delete' __title='Delete' }</button>
                 (<span class="itemid">{$itemid}</span>)
