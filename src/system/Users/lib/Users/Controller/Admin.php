@@ -85,7 +85,8 @@ class Users_Controller_Admin extends Zikula_Controller
         }
 
         // If we are returning here from validation errors detected in createUser, then get the data already entered
-        // otherwise $rendererArgs should end up to be an empty array.
+        // otherwise $rendererArgs should end up to be an empty array. See registerNewUser() below for what is stored on the session
+        // variable and returned here (The "if ($registrationErrors)" block).
         $rendererArgs = SessionUtil::getVar('Users_Admin_newUser', array(), '/', false);
         SessionUtil::delVar('Users_Admin_newUser');
 
@@ -105,6 +106,8 @@ class Users_Controller_Admin extends Zikula_Controller
         } else {
             // It was empty, so set defaults.
             $rendererArgs['reginfo'] = array();
+            $rendererArgs['reginfo']['uname'] = '';
+            $rendererArgs['reginfo']['email'] = '';
             $rendererArgs['reginfo']['dynadata'] = array();
             $rendererArgs['setpass'] = false;
             $rendererArgs['emailagain'] = '';
