@@ -499,10 +499,12 @@ class JCSSUtil
         // optional minify
         if ($themevars['cssjsminify']) {
             if ($ext == 'css') {
+                // Remove comments.
+                $contents = trim(preg_replace('/\/\*.*?\*\//s', '', $contents));
                 // Compress whitespace.
                 $contents = preg_replace('/\s+/', ' ', $contents);
-                // Remove comments.
-                $contents = trim(preg_replace('/\/\*.*?\*\//', '', $contents));
+                // Additional whitespace optimisation -- spaces around certain tokens is not required by CSS
+                $contents = preg_replace('/\s*(;|\{|\}|:|,)\s*/', '\1', $contents);
             }
         }
 
