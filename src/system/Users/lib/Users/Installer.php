@@ -506,7 +506,7 @@ class Users_Installer extends Zikula_Installer
              ->setVar('login_displaymarkeddel', false)
              ->setVar('login_displayinactive', false)
              ->setVar('login_displayverify', false)
-             ->setVar('login_displayapprove', false)
+             ->setVar('login_displayapproval', false)
              ->setVar('chgemail_expiredays', 0)
              ->setVar('chgpass_expiredays', 0)
              ->setVar('reg_expiredays', 0)
