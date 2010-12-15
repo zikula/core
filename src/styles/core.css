@@ -466,7 +466,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     width: 28%;
     font-weight: normal;
     color: #333;
-    overflow: hidden;
+    /* overflow: hidden; This causes hidden labels after BlindUp/Down in Chrome */
 }
 
 .z-form .z-formlist {
