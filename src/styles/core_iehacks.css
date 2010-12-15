@@ -80,6 +80,7 @@ div.z-formrow,
 div.z-formbuttons {
     overflow: hidden;
     zoom: 1;
+    position: relative;
 }
 
 div.z-formlist {
