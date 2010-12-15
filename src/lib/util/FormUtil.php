@@ -224,7 +224,7 @@ class FormUtil
     public static function getFailedValidationObjects($objectType = null)
     {
         static $objects = array();
-        if (!$objects[$objectType]) {
+        if (!isset($objects[$objectType])) {
             $t = SessionUtil::getVar('validationFailedObjects', null, '/', false, false);
             if ($t != null && is_array($t)) {
                 if ($objectType && isset($t[$objectType])) {
