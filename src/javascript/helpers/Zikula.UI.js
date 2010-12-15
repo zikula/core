@@ -1349,10 +1349,10 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
             transition: Effect.Transitions.sinoidal
         });
         new Effect.Parallel([
-            new Effect.SlideUp(this.contents[hide], options),
-            new Effect.SlideDown(this.contents[show], options)
+            new Effect.BlindUp(this.contents[hide], options),
+            new Effect.BlindDown(this.contents[show], options)
         ], {
-            duration: 0.2,
+            duration: 0.3,
             queue: {
                 position: 'end',
                 scope: 'accordionAnimation'
