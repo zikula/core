@@ -1221,8 +1221,8 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
      * @param {Boolean} [options.equal=false] Should all accordion panels have equal height
      * @param {Boolean} [options.height=null] Height for all panels
      * @param {String} [options.containerClass='z-accordion'] Class to add for accordion container
-     * @param {String} [options.activeClassName='active'] Class to mark active panel header and content
-     * @param {String} [options.headerSelector='.header'] Selector to match panel headers
+     * @param {String} [options.activeClassName='z-acc-active'] Class to mark active panel header and content
+     * @param {String} [options.headerSelector='.z-acc-header'] Selector to match panel headers
      * @param {String|Number} [options.active=null] Id of index of panel to open; when id is given it should point to panel header, not content
      * @param {Boolean} [options.activateOnHash=false] If true - script will try to open panel pointed via url hash (it may be panel index or id)
      * @param {Boolean} [options.saveToCookie=false] If true - panel status will be saved to cookie and loaded on page refresh
@@ -1234,8 +1234,8 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
             equal: false,
             height: null,
             containerClass: 'z-accordion',
-            activeClassName: 'active',
-            headerSelector: '.header',
+            activeClassName: 'z-acc-active',
+            headerSelector: '.z-acc-header',
             active: null,
             activateOnHash: false,
             saveToCookie: false
