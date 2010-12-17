@@ -318,6 +318,13 @@ class JCSSUtil
     public static function scriptsMap()
     {
         $scripts = array(
+                'jquery' => array(
+                        'path' => 'javascript/jquery/jquery.min.js',
+                        'require' => array('noconflict'),
+                ),
+                'noconflict' => array(
+                        'path' => 'javascript/jquery/noconflict.js',
+                ),
                 'prototype' => array(
                         'path' => 'javascript/ajax/proto_scriptaculous.combined.min.js',
                         'require' => array('zikula'),
@@ -329,7 +336,7 @@ class JCSSUtil
                 ),
                 'zikula' => array(
                         'path' => 'javascript/helpers/Zikula.js',
-                        'require' => array('prototype', 'livepipe'),
+                        'require' => array('prototype'),
                         'aliases' => array('javascript/ajax/ajax.js'),
                 ),
                 'zikula.ui' => array(
@@ -357,13 +364,6 @@ class JCSSUtil
                         'path' => 'javascript/ajax/validation.min.js',
                         'require' => array('prototype'),
                 ),
-                'jquery' => array(
-                        'path' => 'javascript/jquery/jquery.min.js',
-                        'require' => array('noconflict'),
-                ),
-                'noconflict' => array(
-                        'path' => 'javascript/jquery/noconflict.js',
-                )
         );
         if (System::isDevelopmentMode()) {
             $prototypeUncompressed = array(
@@ -443,10 +443,12 @@ class JCSSUtil
                     'jquery' => array(
                             'path' => 'javascript/jquery/jquery.js',
                             'require' => array('noconflict'),
-                    )
+                    ),
+                    'noconflict' => array(
+                            'path' => 'javascript/jquery/noconflict.js',
+                    ),
             );
-            $scripts['jquery'] = $jQueryUncompressed['jquery'];
-            $scripts = array_merge($prototypeUncompressed, $livepipeUncompressed, array_slice($scripts, 2));
+            $scripts = array_merge($jQueryUncompressed, $prototypeUncompressed, $livepipeUncompressed, array_slice($scripts, 4));
         }
         return $scripts;
     }
