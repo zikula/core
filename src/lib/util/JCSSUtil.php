@@ -209,15 +209,17 @@ class JCSSUtil
      *
      * @return array List of javascript files
      */
-    private static function resolveDependencies($javascripts)
+    private static function resolveDependencies($javascripts, &$resolved = array())
     {
         $coreScripts = self::scriptsMap();
         $withDeps = array();
         foreach ($javascripts as $script) {
             $script = self::getScriptName($script);
-            if (isset($coreScripts[$script]) && isset($coreScripts[$script]['require'])) {
+            if (isset($coreScripts[$script]) && isset($coreScripts[$script]['require']) && !in_array($script, $resolved)) {
+                $resolved[] = $script;
                 $required = $coreScripts[$script]['require'];
-                $withDeps = array_merge($withDeps, (array)$required);
+                $r = self::resolveDependencies($required, $resolved);
+                $withDeps = array_merge($withDeps, (array)$r);
             }
             $withDeps[] = $script;
         }
@@ -493,7 +495,9 @@ class JCSSUtil
         $contents[] = "/* --- Combined file written: " . DateUtil::getDateTime() . " */\n\n";
         $contents[] = "/* --- Combined files:\n" . implode("\n", $files) . "\n*/\n\n";
         foreach ($files as $file) {
-            self::readfile($contents, $file, $ext);
+            if (!empty($file)) {
+                self::readfile($contents, $file, $ext);
+            }
         }
 
         $contents = implode('', $contents);
