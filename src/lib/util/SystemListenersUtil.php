@@ -380,7 +380,7 @@ class SystemListenersUtil
     }
 
     /**
-     * Dynamically add menu links to administration for hook providers.
+     * Dynamically add menu links to administration for system services.
      *
      * Listens for 'module_dispatch.postexecute' events.
      *
@@ -388,20 +388,26 @@ class SystemListenersUtil
      *
      * @return void
      */
-    public static function addHooksAdminLinks(Zikula_Event $event)
+    public static function addServiceLink(Zikula_Event $event)
     {
         // check if this is for this handler
         if (!($event['modfunc'][1] == 'getlinks' && $event['type'] == 'admin' && $event['api'] == true)) {
             return;
         }
 
-        if (HookUtil::isSubscriberCapable($event['modname'])) {
-            $event->data[] = array('url' => ModUtil::url($event['modname'], 'admin', 'hookproviders'), 'text' => __('Hook Providers'));
-        }
+        $sublinks = array();
 
-        if (HookUtil::isProviderCapable($event['modname'])) {
-            $event->data[] = array('url' => ModUtil::url($event['modname'], 'admin', 'hooksubscribers'), 'text' => __('Hook Subscribers'));
+        // notify EVENT here to gather any system service links
+        $localevent = new Zikula_Event('module_dispatch.services.links', $sublinks);
+        EventUtil::notify($localevent);
+        $sublinks = $localevent->getData();
+
+        if (!empty($sublinks)) {
+            $event->data[] = array(
+                'url' => ModUtil::url($event['modname'], 'admin', ''), // main url points back to admin page
+                'text' => __('Services'),
+                'class' => 'z-icon-es-exec', //could use z-icon-es-attach
+                'links' => $sublinks);
         }
     }
-
 }
