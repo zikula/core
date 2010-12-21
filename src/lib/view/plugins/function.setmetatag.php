@@ -32,12 +32,13 @@
 function smarty_function_setmetatag($params, $view)
 {
     $name = isset($params['name']) ? $params['name'] : null;
-    $value = isset($params['default']) ? $params['default'] : null;
+    $value = isset($params['value']) ? $params['value'] : null;
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('setmetatag', 'name')));
         return false;
     }
 
-    $view->serviceManager['zikula_view.metatags'][$key] = DataUtil::formatForDisplay($value);
+    $sm = $view->getServiceManager();
+    $sm['zikula_view.metatags'][$name] = DataUtil::formatForDisplay($value);
 }
