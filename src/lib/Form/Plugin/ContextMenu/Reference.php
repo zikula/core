@@ -62,7 +62,7 @@ class Form_Plugin_ContextMenu_Reference extends Form_Plugin
     {
         $imageURL = ($this->imageURL == null ? 'images/icons/extrasmall/tab_right.gif' : $this->imageURL);
 
-        $menuPlugin = & $render->getPluginById($this->menuId);
+        $menuPlugin = $render->getPluginById($this->menuId);
         $menuId = $menuPlugin->id;
         $html = "<img src=\"{$imageURL}\" alt=\"\" class=\"contextMenu\" onclick=\"Form.contextMenu.showMenu(event, '{$menuId}', '{$this->commandArgument}')\" />";
 
