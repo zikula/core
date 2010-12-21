@@ -90,4 +90,22 @@ class Modules_HookUI
         $event->setData($view->fetch('modules_hookui_subscribers.tpl'));
         $event->setNotified();
     }
+
+    /**
+     * populate Services menu with hook links if capable
+     * 
+     * @param Zikula_Event $event
+     */
+    public static function servicelinks(Zikula_Event $event)
+    {
+        $module = ModUtil::getName();
+
+        if (HookUtil::isSubscriberCapable($module)) {
+            $event->data[] = array('url' => ModUtil::url($module, 'admin', 'hookproviders'), 'text' => __('Hook Providers'));
+        }
+
+        if (HookUtil::isProviderCapable($module)) {
+            $event->data[] = array('url' => ModUtil::url($module, 'admin', 'hooksubscribers'), 'text' => __('Hook Subscribers'));
+        }
+    }
 }
