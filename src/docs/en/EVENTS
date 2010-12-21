@@ -98,6 +98,13 @@ This allows to override the methods using inheritance.
 Receives no subject, args of `array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
 and 'event data' of `$className`.  This can be altered by setting `$event->setData()` followed by `$event->setNotified()`
 
+#### `module_dispatch.services.links`
+Occurs when building admin menu items. Adds sublinks to a Services menu that is appended to all modules if populated.
+triggered by module_dispatch.postexecute in bootstrap.
+format data like so:
+
+    $event->data[] = array('url' => ModUtil::url(<modname>, <type>, <method>), 'text' => __('Link Text'));
+
 #### `module.mailer.api.sendmessage`
 Invoked from `Mailer_Api_User#sendmessage`. Subject is `Mailer_Api_User` with `$args`.
 This is a notifyUntil event so the event must `$event->setNotified()` and set any
