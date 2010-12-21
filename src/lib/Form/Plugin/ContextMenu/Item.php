@@ -120,7 +120,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
      */
     function render($render)
     {
-        $contextMenu = & $this->getParentContextMenu();
+        $contextMenu = $this->getParentContextMenu();
 
         if (!$contextMenu) {
             return '';
