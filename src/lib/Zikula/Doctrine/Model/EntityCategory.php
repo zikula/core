@@ -45,6 +45,8 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
      */
     public function setUp()
     {
+        $this->actAs('Zikula_Doctrine_Template_StandardFields', array('oldColumnPrefix' => 'cmo_'));
+
         $this->hasOne('Zikula_Doctrine_Model_Registry as Registry', array(
             'local' => 'reg_id',
             'foreign' => 'id'
