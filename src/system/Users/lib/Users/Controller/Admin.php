@@ -545,55 +545,9 @@ class Users_Controller_Admin extends Zikula_Controller
         $do     = FormUtil::getPassedValue('do', null, 'POST');
         $userid = FormUtil::getPassedValue('userid', null, 'POST');
 
-        if ($op == 'edit' && !empty($userid)) {
-            if ($do != 'yes') {
-                return System::redirect(ModUtil::url('Users', 'admin', 'modify', array('userid' => $userid)));
-            } else {
-                $userinfo             = FormUtil::getPassedValue('userinfo', null, 'POST');
-                $passAgain            = FormUtil::getPassedValue('passagain', null, 'POST');
-                $emailAgain           = FormUtil::getPassedValue('emailagain', null, 'POST');
-                $access_permissions   = FormUtil::getPassedValue('access_permissions', null, 'POST');
-                $userinfo['dynadata'] = FormUtil::getPassedValue('dynadata', array(), 'POST');
-
-                $return = ModUtil::apiFunc('Users', 'admin', 'updateUser', array(
-                    'userinfo'           => $userinfo,
-                    'emailagain'         => $emailAgain,
-                    'passagain'          => $passAgain,
-                    'access_permissions' => $access_permissions,
-                ));
-
-                if ($return) {
-                    LogUtil::registerStatus($this->__("Done! Saved user's account information."));
-                    return System::redirect(ModUtil::url('Users', 'admin', 'main'));
-                } else {
-                    return false;
-                }
-            }
-
-        } elseif ($op == 'delete' && !empty($userid)) {
-            $userid = FormUtil::getPassedValue('userid', null, 'POST');
-            if ($do != 'yes') {
-                return System::redirect(ModUtil::url('Users', 'admin', 'deleteUsers', array('userid' => $userid)));
-            } else {
-                // Ensure that the current user's uid is not selected for deletion.
-                $currentUserId = UserUtil::getVar('uid');
-                if (!is_array($userid)) {
-                    $userid = array($userid);
-                }
-                foreach ($userid as $uid) {
-                    if ($uid == $currentUserId) {
-                        return LogUtil::registerError($this->__("Error! You can't delete the account you are currently logged into."));
-                    }
-                }
-
-                // Current user is not in the list to be deleted. Proceed.
-                $return = ModUtil::apiFunc('Users', 'admin', 'deleteUser', array('uid' => $userid));
-                if ($return == true) {
-                    return LogUtil::registerStatus($this->__('Done! Deleted user account.'), ModUtil::url('Users', 'admin', 'main'));
-                } else {
-                    return false;
-                }
-            }
+        if ($op == 'delete' && !empty($userid)) {
+            // Handle multi-user delete after search
+            return ModUtil::func('Users', 'admin', 'remove');
 
         } elseif ($op == 'mail' && !empty($userid) && SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT)) {
             $userid   = FormUtil::getPassedValue('userid', array(), 'POST');
@@ -940,6 +894,42 @@ class Users_Controller_Admin extends Zikula_Controller
 
         // return output
         return $this->view->fetch('users_admin_deleteusers.tpl');
+    }
+
+    public function remove()
+    {
+        if (!SecurityUtil::confirmAuthKey('Users')) {
+            return LogUtil::registerAuthidError(ModUtil::url('Users', 'admin', 'view'));
+        }
+
+        // API function checks permissions
+
+        // Get uid
+        $userid = FormUtil::getPassedValue('userid', null, 'POST');
+
+        // Ensure that the current user's uid is not selected for deletion.
+        $currentUserId = UserUtil::getVar('uid');
+        if (!is_array($userid)) {
+            $userid = array($userid);
+        }
+        foreach ($userid as $uid) {
+            if ($uid == $currentUserId) {
+                return LogUtil::registerError($this->__("Error! You can't delete the account you are currently logged into."));
+            }
+        }
+
+        // Current user is not in the list to be deleted. Proceed.
+        $return = ModUtil::apiFunc('Users', 'admin', 'deleteUser', array('uid' => $userid));
+        if ($return == true) {
+            $count = count($userid);
+            return LogUtil::registerStatus($this->_fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', $count, array($count)), ModUtil::url('Users', 'admin', 'main'));
+        } else {
+            if (LogUtil::hasErrors()) {
+                return false;
+            } else {
+                return LogUtil::registerError($this->__('An unspecified error occurred while trying to remove users.'));
+            }
+        }
     }
 
     /**
