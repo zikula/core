@@ -91,7 +91,7 @@ class JCSSUtil
         // update stylesheets as there might be some additions for js
         $stylesheets = array_merge((array)$stylesheets, (array)PageUtil::getVar('stylesheet'));
         $stylesheets = self::prepareStylesheets($stylesheets, $combine);
-
+//dump($javascripts);
         if ($combine) {
             $javascripts = (array)self::save($javascripts, 'js', $cache_dir);
             $stylesheets = (array)self::save($stylesheets, 'css', $cache_dir);
@@ -374,8 +374,8 @@ class JCSSUtil
                             'require' => array('zikula', 'scriptaculous', 'builder', 'controls', 'dragdrop', 'effects', 'slider', 'sound'),
                             'aliases' => array('prototype', 'scriptaculous'),
                     ),
-                    'scriptaculous' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/scriptaculous.js',
+                    'effects' => array(
+                            'path' => 'javascript/ajax/original_uncompressed/effects.js',
                     ),
                     'builder' => array(
                             'path' => 'javascript/ajax/original_uncompressed/builder.js',
@@ -385,9 +385,6 @@ class JCSSUtil
                     ),
                     'dragdrop' => array(
                             'path' => 'javascript/ajax/original_uncompressed/dragdrop.js',
-                    ),
-                    'effects' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/effects.js',
                     ),
                     'slider' => array(
                             'path' => 'javascript/ajax/original_uncompressed/slider.js',
