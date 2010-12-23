@@ -9,6 +9,7 @@
     <h2>{$templatetitle}</h2>
 
     <form id="userlist" class="z-form" method="post" action="{modurl modname="Users" type="admin" func="processusers"}">
+        <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Users'}" />
         <div>
             <table class="z-datatable">
                 <thead>
@@ -97,6 +98,7 @@
 
             <div class="z-formbuttons z-buttons">
                 {if $mailusers eq true || $deleteusers eq true}
+                <label for="op">{gt text='With selected users:'}</label>
                 <select name="op" id="op">
                     {if $mailusers eq true}
                     <option value="mail">{gt text="Send"}</option>
