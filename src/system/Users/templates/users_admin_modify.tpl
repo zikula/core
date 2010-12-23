@@ -18,17 +18,15 @@
 
     <h2>{$templatetitle}</h2>
 
-    {if ($userid == $coredata.user.uid)}
+    {if ($userinfo.uid == $coredata.user.uid)}
     <div class="z-informationmsg">{gt text='You are editing your own record, therefore you are not permitted to change your membership in certain system groups, and you are not permitted to change your activated state. These fields are disabled below.'}</div>
     {/if}
 
-    <form class="z-form" id="form_users_modify" action="{modurl modname='Users' type='admin' func='processusers' op=$op}" method="post">
+    <form class="z-form" id="form_users_modify" action="{modurl modname='Users' type='admin' func='update'}" method="post">
         <div>
             {capture name='authid' assign='usersModifyFormAuthId'}{insert name='generateauthkey' module='Users'}{/capture}
             <input type="hidden" name="authid" value="{$usersModifyFormAuthId}" />
-            <input type="hidden" name="userid" value="{$userid}" />
-            <input type="hidden" name="userinfo[uid]" value="{$userid}" />
-            <input type="hidden" name="do"     value="yes" />
+            <input type="hidden" name="userinfo[uid]" value="{$userinfo.uid}" />
             <fieldset>
                 <legend>{gt text='Group membership'}</legend>
                 <table class="z-datatable">
@@ -39,10 +37,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {foreach key='group_id' item='group' from=$groups_infos}
+                        {foreach key='group_id' item='group' from=$accessPermissions}
                         <tr class="{cycle values='z-odd,z-even'}">
                             <td>{$group.name}</td>
-                            <td style="text-align:right;">{if ($userid == $coredata.user.uid) && ((($group_id == $defaultgroupid) && $group.access) || ($group_id == $primaryadmingroupid))}<input type="hidden" name="access_permissions[]" value="{$group_id}" />{/if}<input type="checkbox" {if ($userid == $coredata.user.uid) && ((($group_id == $defaultgroupid) && $group.access) || ($group_id == $primaryadmingroupid))}disabled="disabled"{else}name="access_permissions[]" value="{$group_id}"{/if} {if $group.access}checked="checked" {/if}/></td>
+                            <td style="text-align:right;">{if ($userinfo.uid == $coredata.user.uid) && ((($group_id == $defaultgroupid) && $group.access) || ($group_id == $primaryadmingroupid))}<input type="hidden" name="access_permissions[]" value="{$group_id}" />{/if}<input type="checkbox" {if ($userinfo.uid == $coredata.user.uid) && ((($group_id == $defaultgroupid) && $group.access) || ($group_id == $primaryadmingroupid))}disabled="disabled"{else}name="access_permissions[]" value="{$group_id}"{/if} {if $group.access}checked="checked" {/if}/></td>
                         </tr>
                         {/foreach}
                     </tbody>
@@ -73,8 +71,8 @@
                 </div>
                 <div class="z-formrow">
                     <label for="users_activated">{gt text='User status'}</label>
-                    {if $userid == $coredata.user.uid}<input type="hidden" name="userinfo[activated]" value="{$userinfo.activated}" />{/if}
-                    <select id="users_activated" {if $userid != $coredata.user.uid}name="userinfo[activated]"{else}name="displayonly_activated" disabled="disabled"{/if}>
+                    {if $userinfo.uid == $coredata.user.uid}<input type="hidden" name="userinfo[activated]" value="{$userinfo.activated}" />{/if}
+                    <select id="users_activated" {if $userinfo.uid != $coredata.user.uid}name="userinfo[activated]"{else}name="displayonly_activated" disabled="disabled"{/if}>
                         <option value="{'UserUtil::ACTIVATED_INACTIVE'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE'|constant}selected="selected"{/if}>{gt text="Inactive"}</option>
                         {if $legal && ($tou_active || $pp_active eq true)}
                         <option value="{'UserUtil::ACTIVATED_INACTIVE_TOUPP'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE_TOUPP'|constant}selected="selected"{/if}>{gt text="Inactive until %s accepted" tag1=$touppTextString}</option>
@@ -106,9 +104,9 @@
             <div class="z-center z-buttons">
                 {button src='button_ok.gif' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
                 <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
-                {if $userid != $coredata.user.uid}<a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userid}">{img modname='core' set='icons/extrasmall' src="delete_user.gif" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}
-                <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$userid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
-                <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$userid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
+                {if $userinfo.uid != $coredata.user.uid}<a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userinfo.uid}">{img modname='core' set='icons/extrasmall' src="delete_user.gif" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}
+                <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$userinfo.uid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
+                <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$userinfo.uid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
             </div>
         </div>
     </form>
