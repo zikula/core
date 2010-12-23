@@ -685,86 +685,123 @@ class Users_Controller_Admin extends Zikula_Controller
      */
     public function modify($args)
     {
-        // security check
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
+        // security check for generic edit access
+        if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
         // get arguments
-        $userid = FormUtil::getPassedValue('userid', (isset($args['userid']) ? $args['userid'] : null), 'GET');
+        $uid = FormUtil::getPassedValue('userid', (isset($args['userid']) ? $args['userid'] : null), 'GET');
         $uname  = FormUtil::getPassedValue('uname', (isset($args['uname']) ? $args['uname'] : null), 'GET');
 
         // check arguments
-        if (is_null($userid) && is_null($uname)) {
-            LogUtil::registerError($this->__('Sorry! No such user found.'));
-            return System::redirect(ModUtil::url('Users', 'admin', 'main'));
+        if (is_null($uid) && is_null($uname)) {
+            return LogUtil::registerArgsError(ModUtil::url('Users', 'admin', 'main'));
         }
 
         // retreive userid from uname
-        if (is_null($userid) && !empty($uname)) {
-            $userid = UserUtil::getIdFromName($uname);
+        if (is_null($uid) && !empty($uname)) {
+            $uid = UserUtil::getIdFromName($uname);
         }
 
         // warning for guest account
-        if ($userid == 1) {
+        if ($uid == 1) {
             LogUtil::registerError($this->__("Error! You can't edit the guest account."));
             return System::redirect(ModUtil::url('Users', 'admin', 'main'));
         }
 
         // get the user vars
-        $uservars = UserUtil::getVars($userid);
-        if ($uservars == false) {
+        $userinfo = UserUtil::getVars($uid);
+        if ($userinfo == false) {
             LogUtil::registerError($this->__('Sorry! No such user found.'));
             return System::redirect(ModUtil::url('Users', 'admin', 'main'));
         }
 
+        // security check for this record
+        if (!SecurityUtil::checkPermission('Users::', "{$userinfo['uname']}::{$userinfo['uid']}", ACCESS_EDIT)) {
+            return LogUtil::registerPermissionError();
+        }
+
         // if module Legal is not available show the equivalent states for user activation value
         if (!ModUtil::available('Legal') || (!ModUtil::getVar('Legal', 'termsofuse') && !ModUtil::getVar('Legal', 'privacypolicy'))) {
-            if ($uservars['activated'] == UserUtil::ACTIVATED_INACTIVE_TOUPP) {
-                $uservars['activated'] = UserUtil::ACTIVATED_ACTIVE;
-            } else if ($uservars['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP) {
-                $uservars['activated'] = UserUtil::ACTIVATED_INACTIVE_PWD;
+            if ($userinfo['activated'] == UserUtil::ACTIVATED_INACTIVE_TOUPP) {
+                $userinfo['activated'] = UserUtil::ACTIVATED_ACTIVE;
+            } else if ($userinfo['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP) {
+                $userinfo['activated'] = UserUtil::ACTIVATED_INACTIVE_PWD;
             }
         }
 
-        // urls
-        $this->view->assign('urlprocessusers', ModUtil::url('Users', 'admin', 'processUsers', array('op' => 'edit', 'do' => 'yes')))
-                   ->assign('op', 'edit')
-                   ->assign('userid', $userid)
-                   ->assign('userinfo', $uservars);
-
         // groups
-        $groups_infos = array();
-        $user_groups_register = array();
-        $user_groups = ModUtil::apiFunc('Groups', 'user', 'getusergroups', array('uid' => $userid));
-        $all_groups = ModUtil::apiFunc('Groups', 'user', 'getall');
+        $accessPermissions = array();
+        $gidsUserMemberOf = array();
+        $groupsUserMemberOf = ModUtil::apiFunc('Groups', 'user', 'getusergroups', array('uid' => $uid));
+        $allGroups = ModUtil::apiFunc('Groups', 'user', 'getall');
 
-        foreach ($user_groups as $user_group) {
-            $user_groups_register[] = $user_group['gid'];
+        foreach ($groupsUserMemberOf as $user_group) {
+            $gidsUserMemberOf[] = $user_group['gid'];
         }
 
-        foreach ($all_groups as $group) {
+        foreach ($allGroups as $group) {
             if (SecurityUtil::checkPermission('Groups::', "$group[gid]::", ACCESS_EDIT)) {
-                $groups_infos[$group['gid']] = array();
-                $groups_infos[$group['gid']]['name'] = $group['name'];
+                $accessPermissions[$group['gid']] = array();
+                $accessPermissions[$group['gid']]['name'] = $group['name'];
 
-                if (in_array($group['gid'], $user_groups_register)) {
-                    $groups_infos[$group['gid']]['access'] = true;
+                if (in_array($group['gid'], $gidsUserMemberOf)) {
+                    $accessPermissions[$group['gid']]['access'] = true;
                 } else {
-                    $groups_infos[$group['gid']]['access'] = false;
+                    $accessPermissions[$group['gid']]['access'] = false;
                 }
             }
         }
 
         $this->view->add_core_data()
+            ->assign('userinfo', $userinfo)
             ->assign('defaultgroupid', ModUtil::getVar('Groups', 'defaultgroup', 1))
             ->assign('primaryadmingroupid', ModUtil::getVar('Groups', 'primaryadmingroup', 2))
-            ->assign('groups_infos', $groups_infos)
+            ->assign('accessPermissions', $accessPermissions)
             ->assign('legal', ModUtil::available('Legal'))
             ->assign('tou_active', ModUtil::getVar('Legal', 'termsofuse', true))
             ->assign('pp_active',  ModUtil::getVar('Legal', 'privacypolicy', true));
 
         return $this->view->fetch('users_admin_modify.tpl');
+    }
+
+    /**
+     * Updates a user record in response to a submitted admin modify user form.
+     *
+     * @return bool True and redirect on success; otherwise false.
+     */
+    public function update()
+    {
+        if (!SecurityUtil::confirmAuthKey('Users')) {
+            return LogUtil::registerAuthidError(ModUtil::url('Users', 'admin', 'view'));
+        }
+
+        // API function checks permissions
+
+        $userinfo             = FormUtil::getPassedValue('userinfo', null, 'POST');
+        $passAgain            = FormUtil::getPassedValue('passagain', null, 'POST');
+        $emailAgain           = FormUtil::getPassedValue('emailagain', null, 'POST');
+        $access_permissions   = FormUtil::getPassedValue('access_permissions', null, 'POST');
+        $userinfo['dynadata'] = FormUtil::getPassedValue('dynadata', array(), 'POST');
+
+        $return = ModUtil::apiFunc('Users', 'admin', 'updateUser', array(
+            'userinfo'           => $userinfo,
+            'emailagain'         => $emailAgain,
+            'passagain'          => $passAgain,
+            'access_permissions' => $access_permissions,
+        ));
+
+        if ($return) {
+            LogUtil::registerStatus($this->__("Done! Saved user's account information."));
+            return System::redirect(ModUtil::url('Users', 'admin', 'main'));
+        } else {
+            if (LogUtil::hasErrors()) {
+                return false;
+            } else {
+                return LogUtil::registerError($this->__f('An unspecified error occurred while trying to save user %1$d.', array($userinfo['uid'])));
+            }
+        }
     }
 
     /**

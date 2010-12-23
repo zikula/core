@@ -134,6 +134,7 @@ class Users_Api_Admin extends Zikula_Api
      */
     public function updateUser($args)
     {
+        // check permission to edit any generic user
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
@@ -154,6 +155,7 @@ class Users_Api_Admin extends Zikula_Api
         if (!$oldUserObj) {
             return LogUtil::registerError($this->__('Error! Could not find the user record in order to update it.'));
         } elseif (!SecurityUtil::checkPermission('Users::', "{$oldUserObj['uname']}::{$oldUserObj['uid']}", ACCESS_EDIT)) {
+            // above elseif checks permission to edit the specific user
             return LogUtil::registerPermissionError();
         }
 
