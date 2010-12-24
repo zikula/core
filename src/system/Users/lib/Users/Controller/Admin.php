@@ -510,6 +510,29 @@ class Users_Controller_Admin extends Zikula_Controller
         return $this->view->fetch('users_admin_listusers.tpl');
     }
 
+    public function sendmail()
+    {
+        if (!SecurityUtil::confirmAuthKey('Users')) {
+            return LogUtil::registerAuthidError(ModUtil::url('Users', 'admin', 'view'));
+        }
+
+        // API function checks permissions
+
+        $uid = FormUtil::getPassedValue('userid', null, 'POST');
+        $sendmail = FormUtil::getPassedValue('sendmail', null, 'POST');
+
+        $mailSent = pnModAPIFunc('Users', 'admin', 'sendmail', array(
+            'uid'       => $uid,
+            'sendmail'  => $sendmail,
+        ));
+
+        if (!$mailSent) {
+            return pnRedirect(pnModURL('Users', 'admin', 'search'));
+        } else {
+            return pnRedirect(pnModURL('Users', 'admin', 'main'));
+        }
+    }
+
     /**
      * Perform one of several possible operations on a user as a result of a form post.
      *
@@ -542,79 +565,18 @@ class Users_Controller_Admin extends Zikula_Controller
 
         // get the arguments from our input
         $op     = FormUtil::getPassedValue('op', null, 'GETPOST');
-        $do     = FormUtil::getPassedValue('do', null, 'POST');
         $userid = FormUtil::getPassedValue('userid', null, 'POST');
 
-        if ($op == 'delete' && !empty($userid)) {
-            // Handle multi-user delete after search
-            return ModUtil::func('Users', 'admin', 'remove');
+        if (!empty($userid)) {
+            if ($op == 'delete') {
+                // Handle multi-user delete after search
+                return ModUtil::func('Users', 'admin', 'remove');
 
-        } elseif ($op == 'mail' && !empty($userid) && SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT)) {
-            $userid   = FormUtil::getPassedValue('userid', array(), 'POST');
-            $sendmail = FormUtil::getPassedValue('sendmail', array(), 'POST');
-            if (empty($sendmail['from']) || empty($sendmail['rpemail']) || empty($sendmail['subject']) || empty($sendmail['message'])) {
-                return LogUtil::registerError($this->__('Error! One or more information items needed to send an e-mail message are missing.'),
-                                              null,
-                                              ModUtil::url('Users', 'admin', 'search'));
+            } elseif ($op == 'mail') {
+                return ModUtil::func('Users', 'admin', 'sendmail');
+            } else {
+                return LogUtil::registerError($this->__('Error! Invalid or blank operation received.'));
             }
-
-            $bcclist = array();
-            $mailssent = 0;
-            $recipientscount = 0;
-            foreach ($sendmail['recipientsemail'] as $uid => $recipient) {
-                if (in_array($uid, $userid)) {
-                    $bcclist[] = array('name'    => $sendmail['recipientsname'][$uid],
-                                       'address' => $recipient);
-                }
-                if (count($bcclist) == $sendmail['batchsize']) {
-                    if (ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                                     array('fromname'       => $sendmail['from'],
-                                           'fromaddress'    => $sendmail['rpemail'],
-                                           'toname'         => UserUtil::getVar('uname'),
-                                           'toaddress'      => UserUtil::getVar('email'),
-                                           'replytoname'    => UserUtil::getVar('uname'),
-                                           'replytoaddress' => $sendmail['rpemail'],
-                                           'subject'        => $sendmail['subject'],
-                                           'body'           => $sendmail['message'],
-                                           'bcc'            => $bcclist)) == true) {
-                        $mailssent++;
-                        $recipientscount += count($bcclist);
-                        $bcclist = array();
-                    } else {
-                        return LogUtil::registerError($this->__('Error! Could not send the e-mail message.'),
-                                                      null,
-                                                      ModUtil::url('Users', 'admin', 'main'));
-                    }
-                }
-            }
-            if (count($bcclist) <> 0) {
-                if (ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                                 array('fromname'       => $sendmail['from'],
-                                       'fromaddress'    => $sendmail['rpemail'],
-                                       'toname'         => UserUtil::getVar('uname'),
-                                       'toaddress'      => UserUtil::getVar('email'),
-                                       'replytoname'    => UserUtil::getVar('uname'),
-                                       'replytoaddress' => $sendmail['rpemail'],
-                                       'subject'        => $sendmail['subject'],
-                                       'body'           => $sendmail['message'],
-                                       'bcc'            => $bcclist)) == true) {
-                    $mailssent++;
-                    $recipientscount += count($bcclist);
-                } else {
-                    return LogUtil::registerError($this->__('Error! Could not send the e-mail message.'),
-                                                  null,
-                                                  ModUtil::url('Users', 'admin', 'main'));
-                }
-            }
-            if ($mailssent > 0) {
-                LogUtil::registerStatus($this->_fn(
-                    'Done! %1$c e-mail message has been sent to %2$c user.',
-                    'Done! %1$c e-mail messages have been sent to %2$c users.',
-                    $mailssent,
-                    array($mailssent, $recipientscount)));
-            }
-            return System::redirect(ModUtil::url('Users', 'admin', 'main'));
-
         } else {
             return LogUtil::registerError($this->__('Error! No users were selected.'));
         }
