@@ -510,6 +510,12 @@ class Users_Controller_Admin extends Zikula_Controller
         return $this->view->fetch('users_admin_listusers.tpl');
     }
 
+    /**
+     * Send an e-mail message to one or more users from a submission from listusers
+     * after a search.
+     *
+     * @return bool True if successful; otherwise false.
+     */
     public function sendmail()
     {
         if (!SecurityUtil::confirmAuthKey('Users')) {
@@ -534,44 +540,30 @@ class Users_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Perform one of several possible operations on a user as a result of a form post.
+     * Process a multi-user delete request, or an email to multiple users request.
+     *
+     * This function simply dispatches the submission of the listusers form to
+     * the appropriate operation, based on the op (operation) selected on that form.
      *
      * Available Post Parameters:
      * - op                 (string)  The operation. One of: 'edit', 'delete', 'mail', 'approve', or 'deny'.
      * - do                 (string)  Used only for 'edit' or 'delete' operations; either the value 'yes' or null. Controls whether
      *                                  a confirmation page is displayed for the operation (value of null) or the operation is actually
      *                                  performed (value 'yes').
-     * - userid             (numeric) The user id of the user record on which the operation is to be performed.
-     * - uname              (string)  Used only for 'edit' operations; the user name to be saved to the user record.
-     * - email              (string)  Used only for 'edit' operations; the e-mail address to be saved to the user record.
-     * - activated          (bool)    Used only for 'edit' operations; the activation state to be saved to the user record.
-     * - pass               (string)  Used only for 'edit' operations; the new password to be saved to the user record.
-     * - vpass              (string)  Used only for 'edit' operations; the confirmation of the new password to be saved to the user record.
-     * - theme              (string)  Used only for 'edit' operations; the name of the theme to be saved to the user record.
-     * - access_permissions (array)   Used only for 'edit' operations; an array of group ids to which the user should belong.
-     * - dynadata           (array)   Used only for 'edit' operations; an array of dynamic user data to be stored with the designated profile module for the user account.
+     * - userid             (numeric) The user ids of the user records on which the operation is to be performed.
      * - sendmail           (array)   Used only for 'mail' operations; an array containing the e-mail to be sent.
-     * - tag                (int)     Used only for 'approve' and 'deny' operations; if not 1, then a confirmation page is displayed; if 1 the operation is carried out.
-     * - action             (string)  Used only for 'approve' and 'deny' operations; a fragment of the name of the function to call, either 'approve' or 'deny'.
      *
      * @return mixed true successful, false or string otherwise
      */
     public function processUsers()
     {
-        // security check
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
-
         // get the arguments from our input
         $op     = FormUtil::getPassedValue('op', null, 'GETPOST');
         $userid = FormUtil::getPassedValue('userid', null, 'POST');
 
         if (!empty($userid)) {
             if ($op == 'delete') {
-                // Handle multi-user delete after search
                 return ModUtil::func('Users', 'admin', 'remove');
-
             } elseif ($op == 'mail') {
                 return ModUtil::func('Users', 'admin', 'sendmail');
             } else {
@@ -858,6 +850,11 @@ class Users_Controller_Admin extends Zikula_Controller
         return $this->view->fetch('users_admin_deleteusers.tpl');
     }
 
+    /**
+     * Remove (delete) a user account as a result of a confirmed deleteusers operation.
+     *
+     * @return bool True if successful; otherwise false.
+     */
     public function remove()
     {
         if (!SecurityUtil::confirmAuthKey('Users')) {
