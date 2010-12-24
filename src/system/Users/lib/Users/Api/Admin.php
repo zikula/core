@@ -323,6 +323,110 @@ class Users_Api_Admin extends Zikula_Api
     }
 
     /**
+     * Send an e-mail message to one or more users.
+     *
+     * @param array $args All arguments passed to this function.
+     *
+     * @return bool True on success; otherwise false
+     */
+    public function sendmail($args)
+    {
+        if (!SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        if (isset($args['uid']) && !empty($args['uid'])) {
+            if (is_array($args['uid'])) {
+                $recipientUidList = $args['uid'];
+            } else {
+                $recipientUidList = array($args['uid']);
+            }
+        } else {
+            return LogUtil::registerError(__('Error! No users selected for removal, or invalid uid list.'));
+        }
+
+        if (isset($args['sendmail']) && !empty($args['sendmail']) && is_array($args['sendmail'])) {
+            $sendmail = $args['sendmail'];
+        } else {
+            return LogUtil::registerError(__('Error! E-mail message to be sent not specified or invalid.'));
+        }
+
+        $missingFields = array();
+        if (empty($sendmail['from'])) {
+            $missingFields[] = 'from';
+        }
+        if (empty($sendmail['rpemail'])) {
+            $missingFields[] = 'reply-to e-mail address';
+        }
+        if (empty($sendmail['subject'])) {
+            $missingFields[] = 'subject';
+        }
+        if (empty($sendmail['message'])) {
+            $missingFields[] = 'message';
+        }
+        if (!empty($missingFields)) {
+            $count = count($missingFields);
+            $msg = _fn('Error! The required field \'%2$s\' was blank or missing',
+                    'Error! %1$d required fields were blank or missing: \'%2$s\'.',
+                    $count, array($count, implode("', '", $missingFields)));
+            return LogUtil::registerError($msg);
+        }
+        unset($missingFields);
+
+        $bcclist = array();
+        $recipientlist = array();
+        $recipientscount = 0;
+        foreach ($sendmail['recipientsemail'] as $uid => $recipient) {
+            if (in_array($uid, $recipientUidList)) {
+                $bcclist[] = array('name'    => $sendmail['recipientsname'][$uid],
+                                   'address' => $recipient);
+                $recipientlist[] = $recipient;
+            }
+            if (count($bcclist) == $sendmail['batchsize']) {
+                if (ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+                                 array('fromname'       => $sendmail['from'],
+                                       'fromaddress'    => $sendmail['rpemail'],
+                                       'toname'         => UserUtil::getVar('uname'),
+                                       'toaddress'      => UserUtil::getVar('email'),
+                                       'replytoname'    => UserUtil::getVar('uname'),
+                                       'replytoaddress' => $sendmail['rpemail'],
+                                       'subject'        => $sendmail['subject'],
+                                       'body'           => $sendmail['message'],
+                                       'bcc'            => $bcclist)) == true) {
+                    $recipientscount += count($bcclist);
+                    $bcclist = array();
+                } else {
+                    return LogUtil::registerError($this->__('Error! Could not send the e-mail message.'));
+                }
+            }
+        }
+        if (count($bcclist) <> 0) {
+            if (ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+                             array('fromname'       => $sendmail['from'],
+                                   'fromaddress'    => $sendmail['rpemail'],
+                                   'toname'         => UserUtil::getVar('uname'),
+                                   'toaddress'      => UserUtil::getVar('email'),
+                                   'replytoname'    => UserUtil::getVar('uname'),
+                                   'replytoaddress' => $sendmail['rpemail'],
+                                   'subject'        => $sendmail['subject'],
+                                   'body'           => $sendmail['message'],
+                                   'bcc'            => $bcclist)) == true) {
+                $recipientscount += count($bcclist);
+            } else {
+                return LogUtil::registerError($this->__('Error! Could not send the e-mail message.'));
+            }
+        }
+        if ($recipientscount > 0) {
+            LogUtil::registerStatus($this->_fn(
+                'Done! E-mail message has been sent to %1$d user. ',
+                'Done! E-mail message has been sent to %1$d users. ',
+                $recipientscount,
+                array($recipientscount)));
+        }
+        return true;
+    }
+
+    /**
      * Get available admin panel links.
      *
      * @return array Array of admin links.
