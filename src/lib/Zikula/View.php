@@ -2537,22 +2537,7 @@ function z_prefilter_add_literal($tpl_source, $view)
  */
 function z_prefilter_gettext_params($tpl_source, $view)
 {
-    $tpl_source = (preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_gettext_params_callback($m);'), $tpl_source));
-    return $tpl_source;
-}
-
-/**
- * Callback function for self::z_prefilter_gettext_params().
- *
- * @param string $m Tag token.
- *
- * @return string
- */
-function z_prefilter_gettext_params_callback($m)
-{
-    $m[1] = preg_replace('#__([a-zA-Z0-9]+=".*?(?<!\\\)")#', '$1|gt:$zikula_view', $m[1]);
-    $m[1] = preg_replace('#__([a-zA-Z0-9]+=\'.*?(?<!\\\)\')#', '$1|gt:$zikula_view', $m[1]);
-    return '{' . $m[1] . '}';
+    return preg_replace('#((?:(?<!\{)\{(?!\{)(?:\s*)|\G)(?:.+?))__([a-zA-Z0-9]+=([\'"])(?:\\\\?+.)*?\3)#', '$1$2|gt:\$zikula_view', $tpl_source);
 }
 
 /**
