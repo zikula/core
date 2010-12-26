@@ -172,7 +172,7 @@ class HookUtil
      */
     public static function getSubscriber($eventName)
     {
-        return Doctrine_Core::getTable('Zikula_Doctrine_Model_HookSubscriber')->findOneBy('eventname', $eventName, Doctrine_Core::HYDRATE_ARRAY);
+        return Doctrine_Core::getTable('Zikula_Doctrine_Model_HookSubscribers')->findOneBy('eventname', $eventName, Doctrine_Core::HYDRATE_ARRAY);
     }
 
     /**
