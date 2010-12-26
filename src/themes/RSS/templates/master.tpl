@@ -4,7 +4,7 @@
 <atom:link href="{getcurrenturl}" rel="self" type="application/rss+xml" />
 <title>{pagegetvar name='title'}</title>
 <link>{getbaseurl}</link>
-<description>{$metatag.description}</description>
+<description>{$metatags.description}</description>
 <language>{lang}</language>
 {* here you can add your image if you want to *}
 {* <image>
