@@ -313,7 +313,7 @@ class Users_Controller_Admin extends Zikula_Controller
                 if ($useProfileModule) {
                     $options[] = array('url'   => ModUtil::url($profileModule, 'user', 'view', array('uid' => $item['uid'])),
                                        'image' => 'personal.gif',
-                                       'title' => $this->__f('View the profile of \'%s\''), $item['uname']);
+                                       'title' => $this->__f('View the profile of \'%s\'', $item['uname']));
                 }
                 if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_MODERATE)) {
                     $options[] = array('url'   => ModUtil::url('Users', 'admin', 'lostUsername', array('uid' => $item['uid'], 'authid' => $authId)),
