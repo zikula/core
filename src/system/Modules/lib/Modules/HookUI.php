@@ -108,4 +108,33 @@ class Modules_HookUI
             $event->data[] = array('url' => ModUtil::url($module, 'admin', 'hooksubscribers'), 'text' => __('Hook Subscribers'));
         }
     }
+
+
+    public static function servicelinkspage(Zikula_Event $event)
+    {
+        // check if this is for this handler
+        $subject = $event->getSubject();
+        if (!($event['method'] == 'servicelinkspage' && strrpos(get_class($subject), '_Controller_Admin'))) {
+           return;
+        }
+
+        $moduleName = $subject->getName();
+        if (!SecurityUtil::checkPermission($moduleName.'::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $view = Zikula_View::getInstance('Modules', false);
+        $view->assign('currentmodule', $moduleName);
+
+        $sublinks = array();
+
+        // notify EVENT here to gather any system service links
+        $localevent = new Zikula_Event('module_dispatch.services.links', $sublinks);
+        EventUtil::notify($localevent);
+        $sublinks = $localevent->getData();
+        $view->assign('sublinks', $sublinks);
+
+        $event->setData($view->fetch('modules_hookui_servicelinkspage.tpl'));
+        $event->setNotified();
+    }
 }
