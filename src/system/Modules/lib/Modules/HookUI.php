@@ -110,11 +110,11 @@ class Modules_HookUI
     }
 
 
-    public static function servicelinkspage(Zikula_Event $event)
+    public static function moduleservices(Zikula_Event $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();
-        if (!($event['method'] == 'servicelinkspage' && strrpos(get_class($subject), '_Controller_Admin'))) {
+        if (!($event['method'] == 'moduleservices' && strrpos(get_class($subject), '_Controller_Admin'))) {
            return;
         }
 
@@ -134,7 +134,7 @@ class Modules_HookUI
         $sublinks = $localevent->getData();
         $view->assign('sublinks', $sublinks);
 
-        $event->setData($view->fetch('modules_hookui_servicelinkspage.tpl'));
+        $event->setData($view->fetch('modules_hookui_moduleservices.tpl'));
         $event->setNotified();
     }
 }
