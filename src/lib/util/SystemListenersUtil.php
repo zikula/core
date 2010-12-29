@@ -404,7 +404,7 @@ class SystemListenersUtil
 
         if (!empty($sublinks)) {
             $event->data[] = array(
-                'url' => ModUtil::url($event['modname'], 'admin', 'servicelinkspage'),
+                'url' => ModUtil::url($event['modname'], 'admin', 'moduleservices'),
                 'text' => __('Services'),
                 'class' => 'z-icon-es-exec', //could use z-icon-es-attach
                 'links' => $sublinks);
