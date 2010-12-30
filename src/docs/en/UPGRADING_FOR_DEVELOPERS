@@ -226,10 +226,6 @@ MODULES
   upgrade_step2()
   etc.
 
-  For security reasons, when an interactive process starts, a session variable is set called 'interactive_process'.
-  When the interactive installer process finishes, either successfully, or because of an error please make sure
-  to delete this with SessionUtil::delVar('interactive_process');
-
 - If you need any bootstrapping, like making a library available create bootstrap.php, this is
   included when the Module is first 'loaded'.
 
