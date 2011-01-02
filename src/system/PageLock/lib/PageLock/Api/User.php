@@ -54,8 +54,7 @@ class PageLock_Api_User extends Zikula_Api
 
         $html = "<script type=\"text/javascript\">\n";
 
-        if (!empty($lockName))
-        {
+        if (!empty($lockName)) {
             if ($hasLock) {
                 $html .= "Event.observe(window, 'load', PageLock.UnlockedPage);\n";
             } else {
@@ -68,7 +67,9 @@ class PageLock_Api_User extends Zikula_Api
 
         // Use "PageLockLifetime*2/3" to add a good margin to lock timeout when pinging
 
-        $returnUrl = DataUtil::formatForDisplayHTML($returnUrl);
+        // disabled due to #2556 and #2745
+        // $returnUrl = DataUtil::formatForDisplayHTML($returnUrl);
+
         $html .= "
 PageLock.LockName = '$lockName';
 PageLock.BreakLockWarning = '" . __('Are you sure you want to break this lock?')  . "';
@@ -92,8 +93,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $this->_pageLockRequireAccess();
 
-        $locks = ModUtil::apiFunc('pagelock', 'user', 'getLocks',
-                $args);
+        $locks = ModUtil::apiFunc('pagelock', 'user', 'getLocks', $args);
         if (count($locks) > 0) {
             $lockedBy = '';
             foreach ($locks as $lock) {
