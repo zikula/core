@@ -1373,3 +1373,142 @@ Object.extend(Zikula.Ajax.Response,/** @lends Zikula.Ajax.Response.prototype */{
         return Object.extend(response,Zikula.Ajax.Response);
     }
 });
+
+Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
+    /**
+     * Class for creating ajax requests queue.
+     * Each request from queue is executed using {@link Zikula.Ajax.Request} class.
+     * Requests are send when previous one is completed. By default queue will stop
+     * on first non successful request (eg not found, forbiden etc).
+     * Using requestOptions option it is possible to pass to queue common params for each request.
+     *
+     * @example
+     * var queue = new Zikula.Ajax.Queue({
+     *     onFinish: yourCallbackFunction,
+     *     requestOptions: {
+     *         onSuccess: yourCallbackForSuccessRequests
+     *     }
+     * });
+     * queue.add('ajax.php?module=mymodule&func=myfunc',{
+     *     authid: 'authidElementId',
+     *     parameters: {
+     *         id: someID,
+     *         foo: bar
+     *     }
+     * );
+     * queue.add('ajax.php?module=foo&func=bar');
+     * queue.start();
+     *
+     * @class Zikula.Ajax.Queue
+     * @constructs
+     *
+     * @param {Object} [options] Config object
+     * @param {Boolean} [options.stopOnError=true] Should queue stop on first error response
+     * @param {Object} [options.requestOptions=null] Object with request option common for each request from queue
+     * @param {Function} [options.onComplete=null] Callback called after each request is completed, with response and headerJSON params (the same as prototype Ajax.Request callbacks).
+     * @param {Function} [options.onFinish=null] Callback called after queue is finished, with boolean flag param, which tells if queue was successfully finished (true) or stopped (false, due to request error or stop method).
+     *
+     * @return {Zikula.Ajax.Queue} New Zikula.Ajax.Queue instance
+     */
+    initialize: function(options) {
+        this.options = Object.extend({
+            stopOnError: true,
+            requestOptions: {}
+        }, options || { });
+        this.queue = [];
+        this.inProgress = false;
+    },
+    /**
+     * Add new {@link Zikula.Ajax.Request} to queue.
+     * All params are passed to Zikula.Ajax.Request constructor.
+     * Options object can be extended with options.requestOptions from Zikula.Ajax.Queue constructor.
+     *
+     * @param {String} url Request url
+     * @param {Object} [options=null] Options for request
+     *
+     * @return void
+     */
+    add: function(url, options) {
+        this.queue.push([url, options || {}]);
+    },
+    /**
+     * Starts queqe execution.
+     *
+     * @return void
+     */
+    start: function() {
+        if(this.inProgress) {
+            return;
+        }
+        this.inProgress = true;
+        this.stopped = false;
+        this.send();
+    },
+    /**
+     * Stops queue execution on first, not send request.
+     *
+     * @return void
+     */
+    stop: function() {
+        this.stopped = true;
+    },
+    /**
+     * Sends next request from queue.
+     *
+     * @private
+     *
+     * @return void
+     */
+    send: function() {
+        if (this.queue.size() == 0 || this.stopped) {
+            this.inProgress = false;
+            if(Object.isFunction(this.options.onFinish)) {
+                this.options.onFinish(!this.stopped);
+            }
+            this.stopped = false;
+            return;
+        }
+        var params = this.getParams();
+        new Zikula.Ajax.Request(params[0], params[1]);
+    },
+    /**
+     * Prepares request params.
+     *
+     * @private
+     *
+     * @return {Array} Array of params (url and options) form request
+     */
+    getParams: function() {
+        var params = this.queue.shift(),
+            url = params[0],
+            options = Object.extend(params[1] || {}, this.options.requestOptions || {});
+        if (!Object.isUndefined(options['onComplete'])) {
+            this.notify = options['onComplete'];
+        }
+        options['onComplete'] = this.onComplete.bind(this);
+        return [url, options];
+    },
+    /**
+     * Internal callback called after request is complete
+     *
+     * @private
+     * @param {Ajax.Response} response Response object returned by Ajax.Request
+     * @param {Object|Array} headerJSON
+     *
+     * @return void
+     */
+    onComplete: function(response, headerJSON) {
+        response = Zikula.Ajax.Response.extend(response);
+        if (Object.isFunction(this.notify)) {
+            this.notify(response,headerJSON);
+        }
+        if (Object.isFunction(this.options.onComplete)) {
+            this.options.onComplete(response, headerJSON);
+        }
+        if (this.options.stopOnError && !response.isSuccess()) {
+            this.stopped = true;
+        }
+        this.send();
+    }
+});
+
