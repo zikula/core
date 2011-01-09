@@ -194,7 +194,7 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
     public function logModControllerNotFound(Zikula_Event $event)
     {
         $this->_log[] = array('type'    => Zikula_ErrorHandler::EMERG,
-                              'errstr' => 'Execute Controller method faild: Method not found '.get_class($event->getSubject()).'->'.$event['method']);
+                              'errstr' => 'Execute Controller method failed: Method not found '.get_class($event->getSubject()).'->'.$event['method']);
     }
 
     /**
@@ -207,6 +207,6 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
     public function logModControllerAPINotFound(Zikula_Event $event)
     {
         $this->_log[] = array('type'   =>  Zikula_ErrorHandler::EMERG,
-                              'errstr' => 'Execute Controller API method faild: Method not found '.get_class($event->getSubject()).'->'.$event['method']);
+                              'errstr' => 'Execute Controller API method failed: Method not found '.get_class($event->getSubject()).'->'.$event['method']);
     }
 }
