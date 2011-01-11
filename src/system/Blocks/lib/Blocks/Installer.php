@@ -74,6 +74,7 @@ class Blocks_Installer extends Zikula_Installer
                     $this->migrateMessages();
                 }
 
+                $this->migrateBlockNames();
                 $this->migrateExtMenu();
 
             case '3.7':
@@ -227,12 +228,21 @@ class Blocks_Installer extends Zikula_Installer
     {
         $blocks = DBUtil::selectObjectArray('blocks');
         foreach ($blocks as $block) {
-            if ($block['bkey'] == 'extmenu') {
+            if ($block['bkey'] == 'Extmenu') {
                 $content = unserialize($block['content']);
                 $content['template'] = str_replace('blocks_block_extmenu.htm', 'blocks_block_extmenu.tpl', $content['template']);
                 $block['content'] = serialize($content);
                 DBUtil::updateObject($block, 'blocks', '', 'bid');
             }
+        }
+    }
+
+    protected function migrateBlockNames()
+    {
+        $blocks = DBUtil::selectObjectArray('blocks');
+        foreach ($blocks as $block) {
+            $block['bkey'] = ucfirst($block['bkey']);
+            DBUtil::updateObject($block, 'blocks', '', 'bid');
         }
     }
 
