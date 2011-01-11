@@ -101,24 +101,24 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     /**
      * Create event handler.
      *
-     * @param Form_View $render  Reference to Form render object.
+     * @param Form_View $view    Reference to Form render object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, &$params)
+    function create($view, &$params)
     {
     }
 
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         $contextMenu = $this->getParentContextMenu();
 
@@ -132,22 +132,22 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
         }
 
         if (!empty($this->commandName)) {
-            $click = 'javascript:' . $this->renderConfirm($render, $render->getPostBackEventReference($this, $this->commandName));
+            $click = 'javascript:' . $this->renderConfirm($view, $view->getPostBackEventReference($this, $this->commandName));
 
         } else if (!empty($this->commandScript)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
-            $click = 'javascript:' . $this->renderConfirm($render, "Form.contextMenu.commandScript('{$hiddenName}', function(commandArgument){{$this->commandScript}})");
+            $click = 'javascript:' . $this->renderConfirm($view, "Form.contextMenu.commandScript('{$hiddenName}', function(commandArgument){{$this->commandScript}})");
 
         } else if (!empty($this->commandRedirect)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
             $url = urlencode($this->commandRedirect);
-            $click = 'javascript:' . $this->renderConfirm($render, "Form.contextMenu.redirect('{$hiddenName}','{$url}')");
+            $click = 'javascript:' . $this->renderConfirm($view, "Form.contextMenu.redirect('{$hiddenName}','{$url}')");
         } else {
             LogUtil::registerError('Missing commandName, commandScript, or commandRedirect in context menu item');
         }
 
         $url = $click;
-        $title = $render->translateForDisplay($this->title);
+        $title = $view->translateForDisplay($this->title);
 
         if (!empty($this->imageURL)) {
             $style = " style=\"background-image: url({$this->imageURL})\"";
@@ -163,15 +163,15 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     /**
      * Renders the confirmation action.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view   Reference to Form render object.
      * @param string    $script JavaScript code to run.
      *
      * @return string The rendered output.
      */
-    function renderConfirm($render, $script)
+    function renderConfirm($view, $script)
     {
         if (!empty($this->confirmMessage)) {
-            $msg = $render->translateForDisplay($this->confirmMessage) . '?';
+            $msg = $view->translateForDisplay($this->confirmMessage) . '?';
             return "if (confirm('{$msg}')) { {$script} }";
         } else {
             return $script;
@@ -181,12 +181,12 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     /**
      * Called by Forms framework due to the use of getPostBackEventReference() above.
      *
-     * @param Form_View $render        Reference to Form render object.
+     * @param Form_View $view          Reference to Form render object.
      * @param string    $eventArgument The event argument.
      *
      * @return void
      */
-    function raisePostBackEvent($render, $eventArgument)
+    function raisePostBackEvent($view, $eventArgument)
     {
         $contextMenu = $this->getParentContextMenu();
 
@@ -195,7 +195,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
 
         $args = array('commandName' => $eventArgument, 'commandArgument' => $commandArgument);
 
-        $render->raiseEvent($contextMenu->onCommand == null ? 'handleCommand' : $contextMenu->onCommand, $args);
+        $view->raiseEvent($contextMenu->onCommand == null ? 'handleCommand' : $contextMenu->onCommand, $args);
     }
 
     /**
