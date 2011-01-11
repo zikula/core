@@ -270,7 +270,7 @@ class Form_View extends Zikula_View
             $plugin->id = $id;
 
             if ($stackCount > 0) {
-                $plugin->parentPlugin = &$this->blockStack[$stackCount - 1];
+                $plugin->parentPlugin = $this->blockStack[$stackCount - 1];
                 $this->blockStack[$stackCount - 1]->registerPlugin($this, $plugin);
             } else {
                 // Store plugin for later reference
@@ -363,7 +363,7 @@ class Form_View extends Zikula_View
     public function registerBlockBegin($pluginName, &$params)
     {
         $output = $this->registerPlugin($pluginName, $params, true);
-        $plugin = &$this->blockStack[count($this->blockStack) - 1];
+        $plugin = $this->blockStack[count($this->blockStack) - 1];
         $plugin->blockBeginOutput = $output;
     }
 
@@ -379,8 +379,10 @@ class Form_View extends Zikula_View
      */
     public function registerBlockEnd($pluginName, &$params, $content)
     {
-        $plugin = &$this->blockStack[count($this->blockStack) - 1];
+        $plugin = $this->blockStack[count($this->blockStack) - 1];
         array_pop($this->blockStack);
+
+        $output = null;
 
         if ($plugin->visible) {
             $output = $plugin->blockBeginOutput . $plugin->renderContent($this, $content) . $plugin->renderEnd($this);
@@ -438,7 +440,7 @@ class Form_View extends Zikula_View
      *
      * @return Form_Plugin|null
      */
-    public function getPluginById_rec(&$plugin, $id)
+    public function getPluginById_rec($plugin, $id)
     {
         if ($plugin->id == $id) {
             return $plugin;
@@ -502,13 +504,13 @@ class Form_View extends Zikula_View
     /**
      * Add Validator.
      *
-     * @param validator &$validator Validator to add.
+     * @param object $validator Validator to add.
      *
      * @return void
      */
-    public function addValidator(&$validator)
+    public function addValidator($validator)
     {
-        $this->validators[] = &$validator;
+        $this->validators[] = $validator;
     }
 
     /**
@@ -1223,7 +1225,7 @@ class Form_View extends Zikula_View
      *
      * @return boolean
      */
-    public function setValues2(&$values, $group = null, $plugins)
+    public function setValues2(&$values, $group = null, $plugins = null)
     {
         if ($plugins == null) {
             $this->setValues_rec($values, $group, $this->plugins);
