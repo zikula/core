@@ -73,6 +73,7 @@ class Modules_Installer extends Zikula_Installer
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
+            case '3.6':
             case '3.7':
                 // legacy is no longer supported
                 System::delVar('loadlegacy');
