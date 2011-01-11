@@ -1082,9 +1082,12 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * Add core data to the template.
      *
      * This function adds some basic data to the template depending on the
-     * current user and the Zikula settings.
+     * current user and the Zikula settings.  There is no need to call this as it's
+     * invoked automatically on instanciation.
      *
-     * @deprecated since 1.3.0
+     * In legacy mode 'coredata' will contain the module vars, but not when disabled.
+     * This is just for BC legacy - to access module vars there is a 'modvars' property
+     * assigned to all templates.
      *
      * @return Zikula_View
      */
