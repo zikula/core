@@ -20,17 +20,17 @@
  * you want the error message to be displayed. Then, on postback, you can do as shown here to set the
  * error message:
  * <code>
- * function handleCommand($render, &$args)
+ * function handleCommand($view, &$args)
  * {
  * if ($args['commandName'] == 'update')
  * {
- * if (!$render->isValid())
+ * if (!$view->isValid())
  * return false;
  *
- * $data = $render->getValues();
+ * $data = $view->getValues();
  * if (... something is wrong ...)
  * {
- * $errorPlugin = $render->getPluginById('MyPluginId');
+ * $errorPlugin = $view->getPluginById('MyPluginId');
  * $errorPlugin->message = 'Something happend';
  * return false;
  * }
@@ -72,11 +72,11 @@ class Form_Plugin_ErrorMessage extends Form_Plugin
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         if ($this->message != '') {
             $cssClass = ($this->cssClass == null ? 'z-errormsg' : $this->cssClass);

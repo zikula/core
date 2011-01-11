@@ -134,23 +134,23 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Initialize event handler.
      *
-     * @param FormRender $render Reference to Form_View object.
+     * @param FormRender $view Reference to Form_View object.
      *
      * @return void
      */
-    function initialize($render)
+    function initialize($view)
     {
-        $render->addValidator($this);
+        $view->addValidator($this);
     }
 
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         $idHtml = $this->getIdHtml();
         $nameHtml = " name=\"{$this->inputName}\"";
@@ -166,7 +166,7 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
         }
 
         $titleHtml = ($this->errorMessage != null ? " title=\"{$this->errorMessage}\"" : '');
-        $attributes = $this->renderAttributes($render);
+        $attributes = $this->renderAttributes($view);
         $result = "<input{$idHtml}{$nameHtml} type=\"file\" class=\"{$class}\"{$readOnlyHtml}{$titleHtml}{$attributes} />";
 
         return $result;
@@ -175,11 +175,11 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Decode event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return void
      */
-    function decode($render)
+    function decode($view)
     {
         if (isset($_FILES[$this->inputName])) {
             $this->result = $_FILES[$this->inputName];
@@ -189,13 +189,13 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Validates the input.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return void
      */
-    function validate($render)
+    function validate($view)
     {
-        $this->clearValidation($render);
+        $this->clearValidation($view);
 
         if (isset($this->result['error']) && $this->result['error'] != 0 && $this->result['name'] != '') {
             $this->setError(__('Error! Did not succeed in uploading file.'));
@@ -223,11 +223,11 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Clears the validation data.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return void
      */
-    function clearValidation($render)
+    function clearValidation($view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
