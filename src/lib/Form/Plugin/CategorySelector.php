@@ -152,12 +152,12 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
     /**
      * Load event handler.
      *
-     * @param Form_View $render  Reference to Form render object.
+     * @param Form_View $view    Reference to Form render object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load($render, &$params)
+    function load($view, &$params)
     {
         $this->includeEmptyElement = (isset($params['includeEmptyElement']) ? $params['includeEmptyElement'] : false);
         $this->enableDBUtil = (isset($params['enableDBUtil']) ? $params['enableDBUtil'] : false);
@@ -165,19 +165,19 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
 
         self::loadParameters($this, $this->includeEmptyElement, $params);
 
-        parent::load($render, $params);
+        parent::load($view, $params);
     }
 
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
-        $result = parent::render($render);
+        $result = parent::render($view);
 
         if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('Categories::', "$this->category[id]::", ACCESS_EDIT)) {
             $url = DataUtil::formatForDisplay(ModUtil::url('Categories', 'user', 'edit', array('dr' => $this->category['id'])));
@@ -193,12 +193,12 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      * @param array     &$data  Data object.
      *
      * @return void
      */
-    function saveValue($render, &$data)
+    function saveValue($view, &$data)
     {
         if ($this->enableDBUtil && $this->dataBased) {
             if ($this->group == null) {
@@ -221,7 +221,7 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
                                                                             'reg_property' => $this->dataField);
             }
         } else {
-            parent::saveValue($render, $data);
+            parent::saveValue($view, $data);
         }
     }
 
@@ -231,12 +231,12 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Form_View::setValues.
      *
-     * @param Form_View $render  Reference to Form_View render object.
+     * @param Form_View $view    Reference to Form_View render object.
      * @param array     &$values Values to load.
      *
      * @return void
      */
-    function loadValue($render, &$values)
+    function loadValue($view, &$values)
     {
         if ($this->enableDBUtil && $this->dataBased) {
             $items = null;
@@ -295,7 +295,7 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
 
             $this->setSelectedValue($value);
         } else {
-            parent::loadValue($render, $values);
+            parent::loadValue($view, $values);
         }
     }
 }

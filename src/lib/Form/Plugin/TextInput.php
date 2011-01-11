@@ -292,20 +292,14 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     function render($view)
     {
         $idHtml = $this->getIdHtml();
-
         $nameHtml = " name=\"{$this->inputName}\"";
-
         $titleHtml = ($this->toolTip != null ? ' title="' . $view->translateForDisplay($this->toolTip) . '"' : '');
-
         $readOnlyHtml = ($this->readOnly ? ' readonly="readonly" tabindex="-1"' : '');
-
         $sizeHtml = ($this->size > 0 ? " size=\"{$this->size}\"" : '');
-
         $maxLengthHtml = ($this->maxLength > 0 ? " maxlength=\"{$this->maxLength}\"" : '');
-
         $text = DataUtil::formatForDisplay($this->text);
-
         $class = 'text';
+
         if (!$this->isValid) {
             $class .= ' error';
         }

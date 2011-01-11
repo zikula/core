@@ -160,7 +160,6 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
         $href = htmlspecialchars($href);
 
         $result = "<a{$idHtml} href=\"javascript:{$href}\"{$onclickHtml}{$attributes}>{$imageHtml}$text</a>";
-        //$result = "<input{$idHtml} name=\"{$fullName}\" value=\"{$text}\" type=\"submit\"{$onclickHtml}{$attributes} />";
 
         return $result;
     }
