@@ -92,12 +92,13 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View $view Reference to Form_View object.
+     * @param Form_View $view   Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Zikula_View plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($view)
+    function create($view, &$params)
     {
         $this->styleAttributes['display'] = 'none';
         $this->styleAttributes['z-index'] = ($this->zIndex === null ? 10 : $this->zIndex);

@@ -54,15 +54,15 @@ class Form_Plugin_ContextMenu_Reference extends Form_Plugin
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         $imageURL = ($this->imageURL == null ? 'images/icons/extrasmall/tab_right.gif' : $this->imageURL);
 
-        $menuPlugin = $render->getPluginById($this->menuId);
+        $menuPlugin = $view->getPluginById($this->menuId);
         $menuId = $menuPlugin->id;
         $html = "<img src=\"{$imageURL}\" alt=\"\" class=\"contextMenu\" onclick=\"Form.contextMenu.showMenu(event, '{$menuId}', '{$this->commandArgument}')\" />";
 

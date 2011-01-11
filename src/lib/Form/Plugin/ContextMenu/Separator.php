@@ -34,11 +34,11 @@ class Form_Plugin_ContextMenu_Separator extends Form_Plugin
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         $contextMenu = $this->getParentContextMenu();
 
