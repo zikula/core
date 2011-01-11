@@ -615,37 +615,6 @@ abstract class Zikula_Base implements Zikula_Translatable
     }
 
     /**
-     * Notify any hookable events.
-     * 
-     * @param string $name    The event name for the hookable event.
-     * @param mixed  $subject The subject of the event.
-     * @param mixed  $id      The ID of the subject.
-     * @param array  $args    Extra meta data.
-     * @param mixes  $data    Any data to filter.
-     * 
-     * @return Zikula_Event 
-     */
-    public function notifyHooks($name, $subject=null, $id=null, $args=array(), $data=null)
-    {
-        // set ID.
-        $args['id'] = $id;
-        
-        // set caller's name
-        $args['caller'] = $this->name;
-
-        if (!isset($args['controller'])) {
-            $args['controller'] = $this;
-        }
-
-        if (!$args['controller'] instanceof Zikula_Controller) {
-            throw new InvalidArgumentException(__f('%s is not an instance of Zikula_Controller, the $args[\'controller\'] argument must be the controller who is notifying these hooks', get_class($this)));
-        }
-        
-        $event = new Zikula_Event($name, $subject, $args, $data);
-        return $this->eventManager->notify($event);
-    }
-
-    /**
      * Convenience Module SetVar.
      *
      * @param string $key   Key.
