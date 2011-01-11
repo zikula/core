@@ -24,6 +24,7 @@
  * - 'id'        The ID if the subject.
  * - 'returnurl' The return URL, defaults to URL of called page, [required].
  * - 'assign'    If set, the results array is assigned to the named variable instead display [optional].
+ * - 'caller'    This is filled in automatically - for normal use this field is not required.
  * - all remaining parameters are passed to the hook via the args param in the event.
  *
  * Example:
