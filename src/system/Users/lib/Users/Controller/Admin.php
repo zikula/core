@@ -210,9 +210,10 @@ class Users_Controller_Admin extends Zikula_Controller
             return System::redirect(ModUtil::url('Users', 'admin', 'newUser'));
         }
 
-        $currentUserEmail = UserUtil::getVar('email');
-        $adminNotifyEmail = $this->getVar('reg_notifyemail', '');
-        $adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
+        // TODO - Future functionality to suppress e-mail notifications, see ticket #2351
+        //$currentUserEmail = UserUtil::getVar('email');
+        //$adminNotifyEmail = $this->getVar('reg_notifyemail', '');
+        //$adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
 
         $registeredObj = ModUtil::apiFunc('Users', 'registration', 'registerNewUser', array(
             'reginfo'           => $reginfo,
