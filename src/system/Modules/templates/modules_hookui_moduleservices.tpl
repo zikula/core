@@ -13,7 +13,7 @@
     {if count($sublinks) > 0}
         <ul style='list-style: none'>
             {foreach from=$sublinks item='sublink'}
-            <li><a href='{$sublink.url}' class='z-icon-es-exec'>{$sublink.text}</a></li>
+            <li><a href='{$sublink.url|safetext}' class='z-icon-es-exec'>{$sublink.text|safetext}</a></li>
             {/foreach}
         </ul>
     {else}
