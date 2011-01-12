@@ -337,7 +337,7 @@ class FormUtil
      *
      * @deprecated
      * @see    FormUtil::newForm()
-     * @return Form_Render The newly created Form_Render instance.
+     * @return pnFormRender The newly created Form_Render instance.
      */
     public static function newPNForm($name)
     {
@@ -348,13 +348,21 @@ class FormUtil
     /**
      * Return a newly created pormRender instance with the given name.
      *
-     * @param string $name Module name.
+     * @param string            $name       Module name.
+     * @param Zikula_Controller $controller Controller.
      *
-     * @return Form_Render The newly created Form_Render instance.
+     * @return Form_View The newly created Form_View instance.
      */
-    public static function newForm($name)
+    public static function newForm($name, Zikula_Controller $controller = null)
     {
-        return new Form_View($name);
+        $form = new Form_View($name);
+        if ($controller) {
+            $form->assign('controller', $controller);
+        } else {
+            LogUtil::log(__('FormUtil::newForm should also include the Zikula_Controller as the second argument to enable hooks to work.'), Zikula_ErrorHandler::NOTICE);
+        }
+        
+        return $form;
     }
 
 }
