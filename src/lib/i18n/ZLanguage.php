@@ -412,6 +412,11 @@ class ZLanguage
         }
 
         $_this  = self::getInstance();
+        // Hack refs #2740
+        if (!$_this->locale) {
+            $_this->setup();
+        }
+
         $domain = self::getModuleDomain($modName);
         $path = $_this->searchOverrides($domain, "modules/$modName/locale");
         return self::bindDomain($domain, $path);
