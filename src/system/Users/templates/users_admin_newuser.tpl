@@ -31,14 +31,6 @@
                     <input id="users_reginfo_uname"{if isset($errorflds.reginfo_uname)} class="errorrequired"{/if} type="text" name="reginfo[uname]" size="21" maxlength="25" value="{$reginfo.uname|default:''}" />
                     <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</em>
                 </div>
-                <div class="z-formrow">
-                    <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                    <input id="users_reginfo_email"{if isset($errorflds.reginfo_email) || isset($errorflds.emailagain)} class="errorrequired"{/if} type="text" name="reginfo[email]" size="21" maxlength="60" value="{$reginfo.email|default:''}" />
-                </div>
-                <div class="z-formrow">
-                    <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                    <input id="users_emailagain"{if isset($errorflds.emailagain)} class="errorrequired"{/if} type="text" name="emailagain" size="21" maxlength="60" value="{$emailagain|default:''}" />
-                </div>
                 <div id="users_setpass_container" class="z-formrow{if !empty($reginfo.pass) || isset($errorflds.reginfo_pass) || isset($errorflds.passagain)} z-hide{/if}">
                     <label for="users_setpass">{gt text="Set the user's password now?"}</label>
                     <div id="users_setpass">
@@ -89,6 +81,14 @@
                         </div>
                         <p class="z-formnote z-warningmsg">{gt text="Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication."}</p>
                     </div>
+                </div>
+                <div class="z-formrow">
+                    <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <input id="users_reginfo_email"{if isset($errorflds.reginfo_email) || isset($errorflds.emailagain)} class="errorrequired"{/if} type="text" name="reginfo[email]" size="21" maxlength="60" value="{$reginfo.email|default:''}" />
+                </div>
+                <div class="z-formrow">
+                    <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <input id="users_emailagain"{if isset($errorflds.emailagain)} class="errorrequired"{/if} type="text" name="emailagain" size="21" maxlength="60" value="{$emailagain|default:''}" />
                 </div>
                 <div id="users_setpass_no_wrap" class="z-formrow z-hide">
                     {if $modvars.Users.reg_verifyemail == 'UserUtil::VERIFY_NO'|constant}
