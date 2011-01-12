@@ -110,19 +110,18 @@ abstract class Form_Handler implements Zikula_Translatable
      * <code>
      * function initialize($view)
      * {
-     *   if (!HasAccess) // your access check here
-     *      return $view->setErrorMsg('No access');
+     *     if (!HasAccess) { // your access check here
+     *        return $view->setErrorMsg('No access');
+     *     }
      *
-     *   $id = FormUtil::getPassedValue('id');
+     *     $id = FormUtil::getPassedValue('id');
+     *     $data = ModUtil::apiFunc('MyModule', 'user', 'get', array('id' => $id));
+     *     if (count($data) == 0) {
+     *         return $view->setErrorMsg('Unknown data');
+     *     }
      *
-     *  $data = ModUtil::apiFunc('MyModule', 'user', 'get',
-     *                       array('id' => $id));
-     *   if (count($data) == 0)
-     *     return $view->setErrorMsg('Unknown data');
-     *
-     *   $view->assign($data);
-     *
-     *   return true;
+     *     $view->assign($data);
+     *     return true;
      * }
      * </code>
      *
