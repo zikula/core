@@ -54,20 +54,20 @@
                     <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</em>
                 </div>
                 <div class="z-formrow">
-                    <label for="users_email">{gt text='E-mail address'}</label>
-                    <input id="users_email" type="text" name="userinfo[email]" value="{$userinfo.email|safetext}" size="30" maxlength="60" />
-                </div>
-                <div class="z-formrow">
-                    <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}</label>
-                    <input id="users_emailagain" type="text" name="emailagain" value="{$userinfo.email|safetext}" size="30" maxlength="60" />
-                </div>
-                <div class="z-formrow">
                     <label for="password1">{gt text='Password'}</label>
                     <input id="password1" type="password" name="userinfo[pass]" size="15" />
                 </div>
                 <div class="z-formrow">
                     <label for="password2">{gt text='Password (repeat for verification)'}</label>
                     <input id="password2" type="password" name="passagain" size="15" />
+                </div>
+                <div class="z-formrow">
+                    <label for="users_email">{gt text='E-mail address'}</label>
+                    <input id="users_email" type="text" name="userinfo[email]" value="{$userinfo.email|safetext}" size="30" maxlength="60" />
+                </div>
+                <div class="z-formrow">
+                    <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}</label>
+                    <input id="users_emailagain" type="text" name="emailagain" value="{$userinfo.email|safetext}" size="30" maxlength="60" />
                 </div>
                 <div class="z-formrow">
                     <label for="users_activated">{gt text='User status'}</label>
