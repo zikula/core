@@ -201,7 +201,7 @@ abstract class Form_Handler implements Zikula_Translatable
         $args['caller'] = $args['controller']->getName();
 
         $event = new Zikula_Event($name, $subject, $args, $data);
-        return $this->eventManager->notify($event);
+        return $this->view->getEventManager()->notify($event);
     }
 
     /**
