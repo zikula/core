@@ -85,6 +85,7 @@ class Users_Installer extends Zikula_Installer
 
         // Register persistent event listeners (handlers)
         EventUtil::registerPersistentModuleHandler('Users', 'get.pending_content', array('Users_Listeners', 'pendingContentListener'));
+        HookUtil::registerHookSubscriberBundles($this->version);
 
         // Initialisation successful
         return true;
@@ -157,7 +158,9 @@ class Users_Installer extends Zikula_Installer
                     return '2.1.1';
                 }
             case '2.1.2':
-                // Current version: add 2.1.2 --> next when appropriate
+                HookUtil::registerHookSubscriberBundles($this->version);
+            case '2.1.3':
+                // Current version: add 2.1.3 --> next when appropriate
         }
 
         // Update successful

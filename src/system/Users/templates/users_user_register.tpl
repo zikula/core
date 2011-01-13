@@ -168,6 +168,13 @@
         </fieldset>
         {/if}
 
+        {* NOTE: hookproviders should do something like the following:
+            if ($module == "Users" && (isset($z_event['userregistration']) && $event['userregistration'])) {
+                        $access_type = ACCESS_READ;
+                    }
+         in order to display here *}
+        {notifydisplayhooks eventname='users.hook.user.ui.edit' area='modulehook_area.users.user' subject=null id=null userregistration=true caller="Users"}
+
         <fieldset>
             <legend>{gt text="Check your entries and submit your registration"}</legend>
             <p id="users_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit new user' to continue."}</p>

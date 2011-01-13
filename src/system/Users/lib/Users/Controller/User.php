@@ -269,7 +269,9 @@ class Users_Controller_User extends Zikula_Controller
             'antispamanswer'    => $antiSpamUserAnswer,
         ));
 
-        if ($registrationErrors) {
+        $validators = $this->notifyHooks('users.hook.user.validate.edit', $reginfo, null, array(), new Zikula_Collection_HookValidationProviders())->getData();
+
+        if ($registrationErrors || $validators->hasErrors()) {
             SessionUtil::requireSession();
             SessionUtil::setVar('reginfo', $reginfo, 'Users_User_register', true, true);
             //SessionUtil::setVar('passagain', $passwordAgain, 'Users_User_register', true, true);
@@ -290,7 +292,7 @@ class Users_Controller_User extends Zikula_Controller
         ));
 
         if ($registeredObj) {
-
+            $this->notifyHooks('users.hook.user.process.edit', $registeredObj, $registeredObj['uid']);
             if ($registeredObj['activated'] == UserUtil::ACTIVATED_PENDING_REG) {
                 $moderation = $this->getVar('moderation');
                 $moderationOrder = $this->getVar('moderation_order');
@@ -987,7 +989,7 @@ class Users_Controller_User extends Zikula_Controller
             $loggedIn = UserUtil::loginUsing($authModuleName, $authinfo, $rememberMe, null, false, $authenticatedUid);
 
             if ($loggedIn) {
-                // start login hook
+                // start login event
                 $uid = UserUtil::getVar('uid');
                 $loginRedirect = $this->getVar('login_redirect');
                 if ($loginRedirect == 1) {
@@ -1020,7 +1022,7 @@ class Users_Controller_User extends Zikula_Controller
     {
         $login_redirect = $this->getVar('login_redirect');
 
-        // start logout hook
+        // start logout event
         $uid = UserUtil::getVar('uid');
         if (UserUtil::logout()) {
             if ($login_redirect == 1) {

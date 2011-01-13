@@ -112,9 +112,11 @@ class Users_Controller_Ajax extends Zikula_Controller
             'antispamanswer'    => $antiSpamUserAnswer
         ));
 
+        $validators = $this->notifyHooks('users.hook.user.validate.edit', $reginfo, null, array(), new Zikula_Collection_HookValidationProviders())->getData();
+
+        $errorMessages = array();
+        $errorFields = array();
         if ($registrationErrors) {
-            $errorMessages = array();
-            $errorFields = array();
             foreach ($registrationErrors as $field => $messageList) {
                 if ($field == 'reginfo_dynadata') {
                     foreach ($messageList['fields'] as $propField) {
@@ -131,14 +133,25 @@ class Users_Controller_Ajax extends Zikula_Controller
                 'messages'  => $errorMessages,
             );
             
-            return new Zikula_Response_Ajax($returnValue);
+        } elseif ($validators->hasErrors()) {
+            $areaErrorCollections = $validators->getCollection();
+            foreach ($areaErrorCollections as $area => $errorCollection) {
+                $areaErrors = $errorCollection->getErrors();
+                foreach ($areaErrors as $field => $message) {
+                    $errorMessages[] = $message;
+                }
+            }
+            $returnValue = array(
+                'fields'    => $errorFields,
+                'messages'  => $errorMessages,
+            );
         } else {
             $returnValue = array(
                 'fields'    => array(),
                 'messages'  => array(),
             );
             
-            return new Zikula_Response_Ajax($returnValue);
         }
+        return new Zikula_Response_Ajax($returnValue);
     }
 }
