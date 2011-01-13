@@ -269,7 +269,9 @@ class Users_Controller_User extends Zikula_Controller
             'antispamanswer'    => $antiSpamUserAnswer,
         ));
 
-        if ($registrationErrors) {
+        $validators = $this->notifyHooks('users.hook.user.validate.edit', $reginfo, null, array(), new Zikula_Collection_HookValidationProviders())->getData();
+
+        if ($registrationErrors || $validators->hasErrors()) {
             SessionUtil::requireSession();
             SessionUtil::setVar('reginfo', $reginfo, 'Users_User_register', true, true);
             //SessionUtil::setVar('passagain', $passwordAgain, 'Users_User_register', true, true);

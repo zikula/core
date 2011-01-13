@@ -101,6 +101,8 @@
                 {modfunc modname=$profilemodule type='form' func='edit' userid=$userinfo.uid}
             {/if}
 
+            {notifydisplayhooks eventname='users.hook.user.ui.edit' area='modulehook_area.users.user' subject=$userinfo id=$userinfo.uid caller="Users"}
+
             <div class="z-center z-buttons">
                 {button src='button_ok.gif' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
                 <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>

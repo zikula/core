@@ -210,20 +210,24 @@ class Users_Controller_Admin extends Zikula_Controller
             return System::redirect(ModUtil::url('Users', 'admin', 'newUser'));
         }
 
+        $validators = $this->notifyHooks('users.hook.user.validate.edit', $reginfo, null, array(), new Zikula_Collection_HookValidationProviders())->getData();
+
         // TODO - Future functionality to suppress e-mail notifications, see ticket #2351
         //$currentUserEmail = UserUtil::getVar('email');
         //$adminNotifyEmail = $this->getVar('reg_notifyemail', '');
         //$adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
 
-        $registeredObj = ModUtil::apiFunc('Users', 'registration', 'registerNewUser', array(
-            'reginfo'           => $reginfo,
-            'usermustverify'    => $userMustVerify,
-            'sendpass'          => $sendPassword,
-            'usernotification'  => true,
-            'adminnotification' => true,
-        ));
+        if (!$validators->hasErrors()) {
+            $registeredObj = ModUtil::apiFunc('Users', 'registration', 'registerNewUser', array(
+                'reginfo'           => $reginfo,
+                'usermustverify'    => $userMustVerify,
+                'sendpass'          => $sendPassword,
+                'usernotification'  => true,
+                'adminnotification' => true,
+            ));
+        }
 
-        if ($registeredObj) {
+        if (isset($registeredObj)) {
             if ($registeredObj['activated'] == UserUtil::ACTIVATED_PENDING_REG) {
                 LogUtil::registerStatus($this->__('Done! Created new registration application.'));
             } elseif (isset($registeredObj['activated'])) {
@@ -701,7 +705,9 @@ class Users_Controller_Admin extends Zikula_Controller
             'access_permissions' => $access_permissions,
         ));
 
-        if ($return) {
+        $validators = $this->notifyHooks('users.hook.user.validate.edit', $userinfo, $userinfo['uid'], array(), new Zikula_Collection_HookValidationProviders())->getData();
+
+        if ($return && !$validators->hasErrors()) {
             LogUtil::registerStatus($this->__("Done! Saved user's account information."));
             return System::redirect(ModUtil::url('Users', 'admin', 'main'));
         } else {
@@ -878,8 +884,14 @@ class Users_Controller_Admin extends Zikula_Controller
             }
         }
 
-        // Current user is not in the list to be deleted. Proceed.
-        $return = ModUtil::apiFunc('Users', 'admin', 'deleteUser', array('uid' => $userid));
+        $validators = $this->notifyHooks('users.hook.user.validate.delete', null, $userid, array(), new Zikula_Collection_HookValidationProviders())->getData();
+
+        // Current user is not in the list to be deleted AND hooks validate. Proceed.
+        if (!$validators->hasErrors()) {
+            $return = ModUtil::apiFunc('Users', 'admin', 'deleteUser', array('uid' => $userid));
+        } else {
+            $return = false;
+        }
         if ($return == true) {
             $count = count($userid);
             return LogUtil::registerStatus($this->_fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', $count, array($count)), ModUtil::url('Users', 'admin', 'main'));

@@ -112,9 +112,11 @@ class Users_Controller_Ajax extends Zikula_Controller
             'antispamanswer'    => $antiSpamUserAnswer
         ));
 
+        $validators = $this->notifyHooks('users.hook.user.validate.edit', $reginfo, null, array(), new Zikula_Collection_HookValidationProviders())->getData();
+
+        $errorMessages = array();
+        $errorFields = array();
         if ($registrationErrors) {
-            $errorMessages = array();
-            $errorFields = array();
             foreach ($registrationErrors as $field => $messageList) {
                 if ($field == 'reginfo_dynadata') {
                     foreach ($messageList['fields'] as $propField) {
@@ -132,6 +134,17 @@ class Users_Controller_Ajax extends Zikula_Controller
             );
             
             return new Zikula_Response_Ajax($returnValue);
+//  THIS IS WRONG AND I KNOW IT, BUT I DON'T KNOW WHAT IT SHOULD BE TO BE USEFUL VIA AJAX....
+//        } elseif ($validators->hasErrors()) {
+//            $hookErrors = $validators->getCollection()->getErrors();
+//            foreach ($hookErrors as $field => $message) {
+//                $errorFields[] = $field;
+//                $errorMessages[] = $message;
+//            }
+//            $returnValue = array(
+//                'fields'    => $errorFields,
+//                'messages'  => $errorMessages,
+//            );
         } else {
             $returnValue = array(
                 'fields'    => array(),
