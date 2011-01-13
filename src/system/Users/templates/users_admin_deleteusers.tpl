@@ -19,6 +19,7 @@
                     <span>{$uname}</span>
                 </div>
             </fieldset>
+            {notifydisplayhooks eventname='users.hook.user.ui.delete' area='modulehook_area.users.user' subject=null id=$userid caller="Users"}
             <div class="z-formbuttons z-buttons">
                 {button class="z-btgreen" src='button_ok.gif' set='icons/extrasmall' __alt='Delete user account' __title='Delete user account' __text='Delete user account'}
                 <a class="z-btred" href="{modurl modname='Users' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
