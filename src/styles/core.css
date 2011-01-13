@@ -1195,15 +1195,11 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 /*******************************************************************************/
 
 .z-tooltip {
-    background: #ddd; /*non-CSS3 browsers*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /* for IE */
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /*webkit*/
-    background: -moz-linear-gradient(top, #fff, #cfcfcf); /*gecko*/
-    background: linear-gradient(#fff, #cfcfcf); /*CSS3*/
-    border: solid 1px #b4b4b4;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    background: #ffffcc; /*non-CSS3 browsers*/
+    border: solid 1px #cc9933;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
     box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
