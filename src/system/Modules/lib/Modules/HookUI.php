@@ -129,7 +129,7 @@ class Modules_HookUI
         $sublinks = array();
 
         // notify EVENT here to gather any system service links
-        $localevent = new Zikula_Event('module_dispatch.services.links', $sublinks);
+        $localevent = new Zikula_Event('module_dispatch.service_links', $sublinks);
         EventUtil::notify($localevent);
         $sublinks = $localevent->getData();
         $view->assign('sublinks', $sublinks);

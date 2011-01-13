@@ -51,7 +51,7 @@ class Modules_Installer extends Zikula_Installer
         EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hookproviders'));
         EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hooksubscribers'));
         EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'moduleservices'));
-        EventUtil::registerPersistentModuleHandler('Modules', 'module_dispatch.services.links', array('Modules_HookUI', 'servicelinks'));
+        EventUtil::registerPersistentModuleHandler('Modules', 'module_dispatch.service_links', array('Modules_HookUI', 'servicelinks'));
 
         // populate default data
         $this->defaultdata();
@@ -91,7 +91,7 @@ class Modules_Installer extends Zikula_Installer
                 EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hooksubscribers'));
             case '3.7.8':
                 EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'moduleservices'));
-                EventUtil::registerPersistentModuleHandler('Modules', 'module_dispatch.services.links', array('Modules_HookUI', 'servicelinks'));
+                EventUtil::registerPersistentModuleHandler('Modules', 'module_dispatch.service_links', array('Modules_HookUI', 'servicelinks'));
             case '3.7.9':
                 // future upgrade routines
 
