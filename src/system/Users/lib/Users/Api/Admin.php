@@ -240,11 +240,6 @@ class Users_Api_Admin extends Zikula_Api
         // Let other modules know we have updated an item
         $updateEvent = new Zikula_Event('user.update', $userInfo);
         $this->eventManager->notify($updateEvent);
-        $hookEventArgs = array(
-            'id' => $userInfo['uid'],
-            'caller' => 'Users');
-        $hookEvent = new Zikula_Event('users.hook.user.process.edit', $userInfo, $hookEventArgs);
-        $this->eventManager->notify($hookEvent);
 
         return true;
     }

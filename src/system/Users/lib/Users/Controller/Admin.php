@@ -708,6 +708,7 @@ class Users_Controller_Admin extends Zikula_Controller
         $validators = $this->notifyHooks('users.hook.user.validate.edit', $userinfo, $userinfo['uid'], array(), new Zikula_Collection_HookValidationProviders())->getData();
 
         if ($return && !$validators->hasErrors()) {
+            $this->notifyHooks('users.hook.user.process.edit', $userinfo, $userinfo['uid']);
             LogUtil::registerStatus($this->__("Done! Saved user's account information."));
             return System::redirect(ModUtil::url('Users', 'admin', 'main'));
         } else {
