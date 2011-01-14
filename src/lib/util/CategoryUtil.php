@@ -111,8 +111,10 @@ class CategoryUtil
 
         $cache[$cid] = DBUtil::selectObjectByID('categories_category', (int)$cid, 'id', null, $permFilter);
 
-        $cache[$cid]['display_name'] = DataUtil::formatForDisplayHTML(unserialize($cache[$cid]['display_name']));
-        $cache[$cid]['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($cache[$cid]['display_desc']));
+        if ($cache[$cid]) {
+            $cache[$cid]['display_name'] = DataUtil::formatForDisplayHTML(unserialize($cache[$cid]['display_name']));
+            $cache[$cid]['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($cache[$cid]['display_desc']));
+        }
 
         return $cache[$cid];
     }
