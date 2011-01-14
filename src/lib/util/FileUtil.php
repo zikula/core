@@ -441,25 +441,41 @@ class FileUtil
             if ($rc) {
                 return true;
             } else {
-                switch ($_FILES[$key]['error'])
-                {
-                    case 1:
-                        $msg = __('The uploaded file exceeds the upload_max_filesize directive in php.ini.');
-                        break;
-                    case 2:
-                        $msg = __('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form.');
-                        break;
-                    case 3:
-                        $msg = __('The uploaded file was only partially uploaded.');
-                        break;
-                    case 4:
-                        $msg = __('No file was uploaded.');
-                        break;
-                    case 5:
-                        $msg = __('Uploaded file size 0 bytes.');
-                        break;
-                }
+                $msg = self::uploadErrorMsg($_FILES[$key]['error']);
             }
+        }
+
+        return $msg;
+    }
+
+    /**
+     * Get the upload error message.
+     *
+     * @param integer $code Upload result code.
+     *
+     * @return string Empty on success, error message string otherwise.
+     */
+    public static function uploadErrorMsg($code)
+    {
+        $msg = '';
+
+        switch ($code)
+        {
+            case 1:
+                $msg = __('The uploaded file exceeds the upload_max_filesize directive in php.ini.');
+                break;
+            case 2:
+                $msg = __('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form.');
+                break;
+            case 3:
+                $msg = __('The uploaded file was only partially uploaded.');
+                break;
+            case 4:
+                $msg = __('No file was uploaded.');
+                break;
+            case 5:
+                $msg = __('Uploaded file size 0 bytes.');
+                break;
         }
 
         return $msg;
