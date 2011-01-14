@@ -198,7 +198,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
      * @param {Number} [options.initMaxHeight=400] Default window height for ajax windows
      * @param {Number[]} [options.offset=[50,50]] Minimal left and top offsets from browsers edge
      * @param {HTMLElement} [options.indicator] Element used as loading indicator for ajax windows
-     * @param {Number} [options.overlayOpacity=0.5] Overlay opacity for modal windows
+     * @param {Number} [options.overlayOpacity=0.3] Overlay opacity for modal windows
      * @param {String} [options.method='get'] Method for ajax calls
      * @param {Boolean} [options.modal=false] Should widnow be modal
      * @param {Boolean} [options.destroyOnClose=false] Should window be destroyed on close
@@ -220,7 +220,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
             initMaxHeight: 400,
             offset: [0,0],//left, top
             indicator: this.window.indicator,
-            overlayOpacity: 0.5,
+            overlayOpacity: 0.3,
             method: 'get',
             modal: false,
             destroyOnClose: false,
