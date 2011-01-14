@@ -715,14 +715,13 @@ class Zikula_View_Theme extends Zikula_View
      */
     public function get_template_path($template)
     {
-        static $cache = array();
-
-        if (isset($cache[$template])) {
-            return $cache[$template];
+        if (isset($this->templateCache[$template])) {
+            return $this->templateCache[$template];
         }
 
         // get the theme path to templates
         $os_theme = DataUtil::formatForOS($this->directory);
+        $ostemplate = DataUtil::formatForOS($template);
 
         // Define the locations in which we will look for templates
         // (in this order)
@@ -733,12 +732,10 @@ class Zikula_View_Theme extends Zikula_View
         // 4. The block template path
         $blockpath = "themes/$os_theme/templates/blocks";
 
-        $ostemplate = DataUtil::formatForOS($template);
-
         $search_path = array($masterpath, $modulepath, $blockpath);
         foreach ($search_path as $path) {
             if (is_readable("$path/$ostemplate")) {
-                $cache[$template] = $path;
+                $this->templateCache[$template] = $path;
                 return $path;
             }
         }
