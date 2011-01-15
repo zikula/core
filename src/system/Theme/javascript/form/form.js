@@ -28,11 +28,19 @@ Form.contextMenu.showMenu = function(evt, menuId, commandArgument)
   Event.observe(document, 'click', function() {Form.contextMenu.hideMenu(menuId);});
   Form.contextMenu.visibleMenus[menuId] = true;
 
+  var offset;
+  // ugly hack for IE, in which getOffsetParent doesn't work,
+  if(Prototype.Browser.IE == true) {
+    $(document.body).insert(contextMenu);
+    offset = {left: 0, top: 0};
+  } else {
+    offset = contextMenu.getOffsetParent().positionedOffset();
+  }
+
   contextMenu.style.display = 'block';
   contextMenu.style.position = 'absolute';
-  contextMenu.style.left = cursorPos.x + 'px';
-  contextMenu.style.top = cursorPos.y + 'px';
-
+  contextMenu.style.left = (cursorPos.x - offset.left) + 'px';
+  contextMenu.style.top = (cursorPos.y - offset.top) + 'px';
   Event.stop(evt);
 }
 
