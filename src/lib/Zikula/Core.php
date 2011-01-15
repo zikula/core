@@ -200,7 +200,7 @@ class Zikula_Core
         $this->stages = $this->stages | $stages;
 
         if (($stages & System::STAGES_PRE) && ($this->stages & ~System::STAGES_PRE)) {
-            $this->eventManager->notify(new Zikula_Event('core.preinit'), $this);
+            $this->eventManager->notify(new Zikula_Event('core.preinit', $this));
         }
 
         // Initialise and load configuration
@@ -332,7 +332,7 @@ class Zikula_Core
             PageUtil::registerVar('rawtext', true);
             PageUtil::registerVar('footer', true);
 
-            Zikula_View_Theme::getInstance();
+            $theme = Zikula_View_Theme::getInstance();
 
             // set some defaults
             // Metadata for SEO
