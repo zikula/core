@@ -410,4 +410,18 @@ class SystemListenersUtil
                 'links' => $sublinks);
         }
     }
+
+    /**
+     * Setup template overrides.
+     *
+     * Implements 'core.preinit' event.
+     *
+     * @param Zikula_Event $event
+     *
+     * @return void
+     */
+    public static function templateOverrides(Zikula_Event $event)
+    {
+        $override = new Zikula_View_TemplateOverridesYaml($event->getSubject()->getServiceManager());
+    }
 }

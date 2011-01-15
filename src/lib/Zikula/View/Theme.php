@@ -214,6 +214,13 @@ class Zikula_View_Theme extends Zikula_View
     public $isloggedin;
 
     /**
+     * Internal override Map.
+     *
+     * @var array
+     */
+    protected $_overrideMap = array();
+
+    /**
      * Constructor.
      *
      * @param string  $theme      Theme name.
@@ -239,7 +246,7 @@ class Zikula_View_Theme extends Zikula_View
 
         EventUtil::attachCustomHandlers("themes/$theme/lib/$theme/EventHandlers");
         if (is_readable("themes/$theme/templates/overrides.yml")) {
-            $this->eventManager->attach('zikula_view.template_override', array($this, '_templateOverride'), -5);
+            $this->eventManager->attach('zikula_view.template_override', array($this, '_templateOverride'), 0);
             $this->_overrideMap = Doctrine_Parser::load("themes/$theme/templates/overrides.yml", 'yml');
         }
 
@@ -1043,6 +1050,21 @@ class Zikula_View_Theme extends Zikula_View
             $this->config_dir = $dir;
         } else {
             $this->config_dir = $this->themepath . '/templates/config';
+        }
+    }
+
+    /**
+     * Template override handler for 'zikula_view.template_override'.
+     *
+     * @param Zikula_Event $event Event handler.
+     *
+     * @return void
+     */
+    public function _templateOverride(Zikula_Event $event)
+    {
+        if (array_key_exists($event->data, $this->_overrideMap)) {
+            $event->data = $this->_overrideMap[$event->data];
+            $event->setNotified();
         }
     }
 }

@@ -130,13 +130,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     protected $templatePaths = array();
 
     /**
-     * Internal override Map.
-     *
-     * @var array
-     */
-    protected $_overrideMap = array();
-
-    /**
      * Constructor.
      *
      * @param string       $module  Module name ("zikula" for system plugins).
@@ -205,12 +198,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         if ($type === 'admin') {
             $this->addPluginDir('system/Admin/templates/plugins');
             $this->load_filter('output', 'admintitle');
-        }
-
-        // template override handling
-        if (is_readable("config/template_overrides.yml")) {
-            $this->eventManager->attach('zikula_view.template_override', array($this, '_templateOverride'));
-            $this->_overrideMap = Doctrine_Parser::load("config/template_overrides.yml", 'yml');
         }
 
         //---- Cache handling -------------------------------------------------
@@ -2403,21 +2390,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         }
 
         return false;
-    }
-
-    /**
-     * Template override handler for 'zikula_view.template_override'.
-     *
-     * @param Zikula_Event $event Event handler.
-     *
-     * @return void
-     */
-    public function _templateOverride(Zikula_Event $event)
-    {
-        if (array_key_exists($event->data, $this->_overrideMap)) {
-            $event->data = $this->_overrideMap[$event->data];
-            $event->setNotified();
-        }
     }
 }
 
