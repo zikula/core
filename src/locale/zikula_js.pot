@@ -8,13 +8,66 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-28 16:53-0500\n"
+"POT-Creation-Date: 2011-01-15 07:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: javascript/helpers/Zikula.UI.js:841 javascript/helpers/Zikula.UI.js:925
+#: javascript/helpers/Zikula.UI.js:1122
+msgid "Ok"
+msgstr ""
+
+#: javascript/helpers/Zikula.UI.js:926 javascript/helpers/Zikula.UI.js:1032
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:42
+msgid "Cancel"
+msgstr ""
+
+#: javascript/helpers/Zikula.UI.js:1031
+msgid "Submit"
+msgstr ""
+
+#: javascript/helpers/Zikula.UI.js:1101 javascript/helpers/Zikula.UI.js:1102
+msgid "Select multiple"
+msgstr ""
+
+#: javascript/helpers/Zikula.itemlist.js:236
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:46
+msgid "Maximum depth reached. Limit is: "
+msgstr ""
+
+#: javascript/helpers/Zikula.itemlist.js:237
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:47
+msgid "You have unsaved changes!"
+msgstr ""
+
+#: javascript/helpers/Zikula.ImageViewer.js:64
+msgid "Close"
+msgstr ""
+
+#: javascript/helpers/Zikula.ImageViewer.js:65
+msgid "Next"
+msgstr ""
+
+#: javascript/helpers/Zikula.ImageViewer.js:66
+msgid "Prev"
+msgstr ""
+
+#: javascript/helpers/Zikula.ImageViewer.js:67
+msgid "Image #{index} of #{total}"
+msgstr ""
+
+#: javascript/helpers/Zikula.js:101
+#, php-format
+msgid "illegal JSON response: \\n%1$s in\\n%2$s"
+msgstr ""
+
+#: javascript/helpers/Zikula.js:408
+msgid "Ajax connection time out!"
+msgstr ""
 
 #: javascript/helpers/Zikula.js:674 javascript/helpers/Zikula.js:766
 msgid "hello"
@@ -126,10 +179,6 @@ msgstr ""
 msgid "Use one for all langs"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:42
-msgid "Cancel"
-msgstr ""
-
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:43
 msgid "Save"
 msgstr ""
@@ -142,10 +191,6 @@ msgstr ""
 msgid "Marked fields are required"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:46
-msgid "Maximum depth reached. Limit is: "
-msgstr ""
-
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:47
-msgid "You have unsaved changes!"
+#: system/Admin/javascript/admin_admin_ajax.js:399
+msgid "You must enter a name for the new category"
 msgstr ""
