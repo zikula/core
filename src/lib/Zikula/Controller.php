@@ -75,6 +75,8 @@ abstract class Zikula_Controller extends Zikula_Base
      * @param array  $args    Extra meta data.
      * @param mixes  $data    Any data to filter.
      *
+     * @throws InvalidArgumentException If args['controller'] is not a Zikula_Controller instance.
+     *
      * @return Zikula_Event
      */
     public function notifyHooks($name, $subject=null, $id=null, $args=array(), $data=null)
