@@ -76,6 +76,20 @@ TEMPLATES
   just alter with `$this->serviceManager['zikula_view.metatags][$foo] = $bar;` no special
   API is required.
 
+THEMES
+======
+- While it's not compulsory, it is more efficient to update the block configuration
+  templates to the relative path of block templates.
+
+  e.g. in config/master.ini change
+
+    [blockpositions]
+    left = leftblock.tpl
+
+  to
+
+    [blockpositions]
+    left = blocks/leftblock.tpl
 
 MODULES
 =======
