@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-28 16:53-0500\n"
+"POT-Creation-Date: 2011-01-15 07:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,11 +138,11 @@ msgstr ""
 #: system/Settings/lib/Settings/Controller/Admin.php:122
 #: system/Modules/lib/Modules/Controller/Admin.php:1062
 #: system/Search/lib/Search/Controller/Admin.php:120
-#: system/Users/lib/Users/Controller/Admin.php:1866
+#: system/Users/lib/Users/Controller/Admin.php:1856
 #: system/Categories/lib/Categories/Controller/Adminform.php:310
 #: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:308
 #: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:821
-#: system/Admin/lib/Admin/Controller/Admin.php:502
+#: system/Admin/lib/Admin/Controller/Admin.php:501
 msgid "Done! Saved module configuration."
 msgstr ""
 
@@ -167,8 +167,8 @@ msgstr ""
 #: system/Permissions/lib/Permissions/Api/Admin.php:517
 #: system/Groups/lib/Groups/Api/Admin.php:486
 #: system/Theme/lib/Theme/Api/Admin.php:137
-#: system/Modules/lib/Modules/Api/Admin.php:1196
-#: system/Users/lib/Users/Api/Admin.php:356
+#: system/Modules/lib/Modules/Api/Admin.php:1201
+#: system/Users/lib/Users/Api/Admin.php:462
 #: system/Categories/lib/Categories/Api/Admin.php:37
 #: system/SecurityCenter/lib/SecurityCenter/Api/Admin.php:47
 #: system/Admin/lib/Admin/Api/Admin.php:412
@@ -197,7 +197,7 @@ msgstr ""
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:7
 #: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:6
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:1
-#: system/Admin/templates/admin_admin_help.tpl:29
+#: system/Admin/templates/admin_admin_help.tpl:35
 #: themes/SeaBreeze/templates/includes/adminheader.tpl:13
 msgid "Settings"
 msgstr ""
@@ -335,9 +335,9 @@ msgid "Error! in %1$s: the %2$s parameter must be specified."
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:92
-#: system/Modules/lib/Modules/Api/Admin.php:1150
-#: system/Modules/lib/Modules/Api/Admin.php:1170
-#: system/Modules/lib/Modules/Api/Admin.php:1187 lib/util/HtmlUtil.php:515
+#: system/Modules/lib/Modules/Api/Admin.php:1155
+#: system/Modules/lib/Modules/Api/Admin.php:1175
+#: system/Modules/lib/Modules/Api/Admin.php:1192 lib/util/HtmlUtil.php:515
 #: lib/Form/Plugin/LanguageSelector.php:67
 #: lib/view/plugins/function.html_select_languages.php:49
 #: lib/view/plugins/function.html_select_locales.php:47
@@ -351,87 +351,37 @@ msgid "All"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:111
-#: system/Modules/lib/Modules/Controller/Admin.php:262
-#: system/Modules/lib/Modules/Controller/Admin.php:1192
-msgid "Deactivate"
+#, php-format
+msgid "Deactivate '%s'"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:117
 #: system/Modules/lib/Modules/Controller/Admin.php:290
-#: system/Modules/lib/Modules/Controller/Admin.php:1219
-#: system/Modules/templates/modules_admin_extendedhooks.tpl:21
-#: system/Modules/templates/modules_admin_hooks.tpl:19
-msgid "Activate"
+#, php-format
+msgid "Activate '%s'"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:123
-#: system/Blocks/lib/Blocks/Controller/Admin.php:145
-#: system/Groups/lib/Groups/Controller/Admin.php:97
 #: system/Modules/lib/Modules/Controller/Admin.php:390
-#: system/Users/lib/Users/Controller/Admin.php:327
-#: system/Admin/lib/Admin/Controller/Admin.php:241
-#: lib/Form/Plugin/CategorySelector.php:184
-#: lib/Form/Plugin/CategoryCheckboxList.php:77
-#: system/Permissions/templates/permissions_admin_view.tpl:82
-#: system/Permissions/templates/permissions_admin_view.tpl:84
-#: system/Permissions/templates/permissions_admin_view.tpl:126
-#: system/Groups/templates/groups_admin_view.tpl:85
-#: system/Groups/templates/groups_admin_view.tpl:86
-#: system/Groups/templates/groups_admin_view.tpl:168
-#: system/Theme/templates/theme_admin_view.tpl:42
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:21
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:42
-#: system/Users/templates/users_admin_listusers.tpl:44
-#: system/Users/templates/users_admin_displayregistration.tpl:29
-#: system/Users/templates/users_admin_view.tpl:12
-#: system/Categories/templates/categories_user_list.tpl:16
-#: system/Categories/templates/categories_user_list.tpl:58
-#: system/Categories/templates/categories_admin_registry_edit.tpl:39
-#: system/Categories/templates/categories_admin_edit.tpl:125
-#: system/Admin/templates/admin_admin_help.tpl:12
-msgid "Edit"
+#: system/Users/lib/Users/Controller/Admin.php:331
+#, php-format
+msgid "Edit '%s'"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:127
+#: system/Users/lib/Users/Controller/Admin.php:336
+#, php-format
+msgid "Delete '%s'"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:145
+#, php-format
+msgid "Edit blockposition '%s'"
+msgstr ""
+
 #: system/Blocks/lib/Blocks/Controller/Admin.php:149
-#: system/Groups/lib/Groups/Controller/Admin.php:104
-#: system/Users/lib/Users/Controller/Admin.php:332
-#: system/Admin/lib/Admin/Controller/Admin.php:246
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:125
-#: system/Blocks/templates/blocks_admin_deleteposition.tpl:16
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:79
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:120
-#: system/Blocks/templates/blocks_admin_delete.tpl:15
-#: system/Blocks/templates/blocks_block_menu_modify.tpl:19
-#: system/Permissions/templates/permissions_admin_view.tpl:83
-#: system/Permissions/templates/permissions_admin_view.tpl:89
-#: system/Permissions/templates/permissions_admin_view.tpl:131
-#: system/Permissions/templates/permissions_admin_delete.tpl:17
-#: system/Groups/templates/groups_admin_delete.tpl:2
-#: system/Groups/templates/groups_admin_delete.tpl:16
-#: system/Groups/templates/groups_admin_view.tpl:87
-#: system/Groups/templates/groups_admin_view.tpl:100
-#: system/Groups/templates/groups_admin_view.tpl:172
-#: system/Theme/templates/theme_admin_deletepageconfigurationassignment.tpl:16
-#: system/Theme/templates/theme_admin_view.tpl:44
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:22
-#: system/Theme/templates/theme_admin_delete.tpl:21
-#: system/Modules/templates/modules_admin_remove.tpl:59
-#: system/Users/templates/users_admin_modify.tpl:109
-#: system/Users/templates/users_admin_listusers.tpl:45
-#: system/Users/templates/users_admin_listusers.tpl:105
-#: system/Users/templates/users_admin_view.tpl:13
-#: system/Categories/templates/categories_admin_delete.tpl:38
-#: system/Categories/templates/categories_user_list.tpl:17
-#: system/Categories/templates/categories_user_list.tpl:65
-#: system/Categories/templates/categories_admin_registry_edit.tpl:40
-#: system/Categories/templates/categories_include_editattributes.tpl:19
-#: system/Categories/templates/categories_admin_edit.tpl:123
-#: system/SecurityCenter/templates/securitycenter_admin_purgeidslog.tpl:21
-#: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:72
-#: system/Admin/templates/admin_admin_help.tpl:16
-#: system/Admin/templates/admin_admin_delete.tpl:16
-msgid "Delete"
+#, php-format
+msgid "Delete blockposition '%s'"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:188
@@ -548,7 +498,7 @@ msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Ajax.php:48
 #: system/Blocks/lib/Blocks/Controller/Ajax.php:60
-#: system/Blocks/lib/Blocks/Block/Menutree.php:319
+#: system/Blocks/lib/Blocks/Block/Menutree.php:320
 #: system/Blocks/lib/Blocks/Api/Admin.php:76
 #: system/Blocks/lib/Blocks/Api/Admin.php:108
 #: system/Blocks/lib/Blocks/Api/Admin.php:365
@@ -615,27 +565,27 @@ msgstr ""
 msgid "Only in some themes"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Menutree.php:395
+#: system/Blocks/lib/Blocks/Block/Menutree.php:399
 #: lib/util/SecurityUtil.php:602
 msgid "Edit access"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Menutree.php:396
+#: system/Blocks/lib/Blocks/Block/Menutree.php:400
 #: lib/util/SecurityUtil.php:603
 msgid "Add access"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Menutree.php:397
+#: system/Blocks/lib/Blocks/Block/Menutree.php:401
 #: lib/util/SecurityUtil.php:604
 msgid "Delete access"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Menutree.php:398
+#: system/Blocks/lib/Blocks/Block/Menutree.php:402
 #: lib/util/SecurityUtil.php:605
 msgid "Admin access"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Menutree.php:472
+#: system/Blocks/lib/Blocks/Block/Menutree.php:476
 msgid "no name"
 msgstr ""
 
@@ -705,115 +655,115 @@ msgstr ""
 msgid "HTML"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:124
+#: system/Blocks/lib/Blocks/Installer.php:125
 msgid "Left blocks"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:125
+#: system/Blocks/lib/Blocks/Installer.php:126
 msgid "Right blocks"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:126
+#: system/Blocks/lib/Blocks/Installer.php:127
 msgid "Center blocks"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:127
-#: system/Blocks/lib/Blocks/Installer.php:173
-#: system/Blocks/lib/Blocks/Installer.php:245
+#: system/Blocks/lib/Blocks/Installer.php:128
+#: system/Blocks/lib/Blocks/Installer.php:174
+#: system/Blocks/lib/Blocks/Installer.php:255
 msgid "Search block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:128
-#: system/Blocks/lib/Blocks/Installer.php:267
+#: system/Blocks/lib/Blocks/Installer.php:129
+#: system/Blocks/lib/Blocks/Installer.php:277
 msgid "Header block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:129
-#: system/Blocks/lib/Blocks/Installer.php:270
+#: system/Blocks/lib/Blocks/Installer.php:130
+#: system/Blocks/lib/Blocks/Installer.php:280
 msgid "Footer block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:130
-#: system/Blocks/lib/Blocks/Installer.php:276
+#: system/Blocks/lib/Blocks/Installer.php:131
+#: system/Blocks/lib/Blocks/Installer.php:286
 msgid "Top navigation block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:131
-#: system/Blocks/lib/Blocks/Installer.php:273
+#: system/Blocks/lib/Blocks/Installer.php:132
+#: system/Blocks/lib/Blocks/Installer.php:283
 msgid "Bottom navigation block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:145
-#: system/Blocks/lib/Blocks/Installer.php:172
+#: system/Blocks/lib/Blocks/Installer.php:146
+#: system/Blocks/lib/Blocks/Installer.php:173
 msgid "Main menu"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:147
-#: system/Blocks/lib/Blocks/Installer.php:158
-#: system/Blocks/lib/Blocks/Installer.php:289
+#: system/Blocks/lib/Blocks/Installer.php:148
+#: system/Blocks/lib/Blocks/Installer.php:159
+#: system/Blocks/lib/Blocks/Installer.php:299
 #: themes/SeaBreeze/templates/includes/adminheader.tpl:10
 msgid "Home"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:147
-#: system/Blocks/lib/Blocks/Installer.php:158
-#: system/Blocks/lib/Blocks/Installer.php:289
+#: system/Blocks/lib/Blocks/Installer.php:148
+#: system/Blocks/lib/Blocks/Installer.php:159
+#: system/Blocks/lib/Blocks/Installer.php:299
 msgid "Go to the site's home page"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:148
+#: system/Blocks/lib/Blocks/Installer.php:149
 #: system/Admin/templates/admin_admin_categorymenu.tpl:15
 msgid "Administration"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:148
+#: system/Blocks/lib/Blocks/Installer.php:149
 msgid "Go to the site administration"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:149
-#: system/Blocks/lib/Blocks/Installer.php:159
-#: system/Blocks/lib/Blocks/Installer.php:290
+#: system/Blocks/lib/Blocks/Installer.php:150
+#: system/Blocks/lib/Blocks/Installer.php:160
+#: system/Blocks/lib/Blocks/Installer.php:300
 msgid "My Account"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:149
-#: system/Blocks/lib/Blocks/Installer.php:159
-#: system/Blocks/lib/Blocks/Installer.php:290
+#: system/Blocks/lib/Blocks/Installer.php:150
+#: system/Blocks/lib/Blocks/Installer.php:160
+#: system/Blocks/lib/Blocks/Installer.php:300
 msgid "Go to your account panel"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:150
+#: system/Blocks/lib/Blocks/Installer.php:151
 #: system/Users/lib/Users/Api/Account.php:79
 #: lib/view/plugins/function.userlinks.php:46
 msgid "Log out"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:150
+#: system/Blocks/lib/Blocks/Installer.php:151
 msgid "Log out of this site"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:151
-#: system/Blocks/lib/Blocks/Installer.php:160
-#: system/Blocks/lib/Blocks/Installer.php:291
+#: system/Blocks/lib/Blocks/Installer.php:152
+#: system/Blocks/lib/Blocks/Installer.php:161
+#: system/Blocks/lib/Blocks/Installer.php:301
 #: system/Search/lib/Search/Version.php:20
 #: system/Search/templates/search_user_menu.tpl:2
 msgid "Site search"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:151
-#: system/Blocks/lib/Blocks/Installer.php:160
-#: system/Blocks/lib/Blocks/Installer.php:291
+#: system/Blocks/lib/Blocks/Installer.php:152
+#: system/Blocks/lib/Blocks/Installer.php:161
+#: system/Blocks/lib/Blocks/Installer.php:301
 msgid "Search this site"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:156
-#: system/Blocks/lib/Blocks/Installer.php:177
-#: system/Blocks/lib/Blocks/Installer.php:288
-#: system/Blocks/lib/Blocks/Installer.php:296
+#: system/Blocks/lib/Blocks/Installer.php:157
+#: system/Blocks/lib/Blocks/Installer.php:178
+#: system/Blocks/lib/Blocks/Installer.php:298
+#: system/Blocks/lib/Blocks/Installer.php:306
 msgid "Top navigation"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:171
+#: system/Blocks/lib/Blocks/Installer.php:172
 msgid ""
 "<p><a href=\"http://zikula.org\">Zikula</a> is a content management system "
 "(CMS) and application framework. It is secure and stable, and is a good "
@@ -834,39 +784,39 @@ msgid ""
 "licensed under the GNU General Public License.</em></p>"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:173
-#: system/Blocks/lib/Blocks/Installer.php:256
+#: system/Blocks/lib/Blocks/Installer.php:174
+#: system/Blocks/lib/Blocks/Installer.php:266
 #: system/Search/lib/Search/Block/Search.php:33
 msgid "Search box"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:174
+#: system/Blocks/lib/Blocks/Installer.php:175
 msgid "This site is powered by Zikula!"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:174
+#: system/Blocks/lib/Blocks/Installer.php:175
 msgid "HTML block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:175
+#: system/Blocks/lib/Blocks/Installer.php:176
 #: system/Users/templates/users_user_loginscreen.tpl:2
 msgid "User log-in"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:175
+#: system/Blocks/lib/Blocks/Installer.php:176
 msgid "Login block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:176
+#: system/Blocks/lib/Blocks/Installer.php:177
 #: system/Users/lib/Users/Block/Online.php:41
 msgid "Who's on-line"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:176
+#: system/Blocks/lib/Blocks/Installer.php:177
 msgid "Online block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Installer.php:177
+#: system/Blocks/lib/Blocks/Installer.php:178
 msgid "Theme navigation"
 msgstr ""
 
@@ -879,9 +829,9 @@ msgstr ""
 #: system/Blocks/lib/Blocks/Api/Admin.php:325
 #: system/Groups/lib/Groups/Api/Admin.php:52
 #: system/Groups/lib/Groups/Api/Admin.php:225
-#: system/Groups/lib/Groups/Api/User.php:371
-#: system/Groups/lib/Groups/Api/User.php:566
-#: system/Groups/lib/Groups/Api/User.php:614
+#: system/Groups/lib/Groups/Api/User.php:377
+#: system/Groups/lib/Groups/Api/User.php:572
+#: system/Groups/lib/Groups/Api/User.php:620
 #: system/Theme/lib/Theme/Api/Admin.php:471
 #: system/Theme/lib/Theme/Api/Admin.php:492
 #: system/Admin/lib/Admin/Api/Admin.php:41
@@ -901,7 +851,7 @@ msgstr ""
 #: system/Blocks/lib/Blocks/Api/Admin.php:396
 #: system/Groups/lib/Groups/Api/Admin.php:115
 #: system/Groups/lib/Groups/Api/Admin.php:421
-#: system/Groups/lib/Groups/Api/User.php:403
+#: system/Groups/lib/Groups/Api/User.php:409
 #: system/Theme/lib/Theme/Api/Admin.php:281
 #: system/Admin/lib/Admin/Controller/Ajax.php:141
 #: system/Admin/lib/Admin/Api/Admin.php:92
@@ -919,9 +869,9 @@ msgstr ""
 #: system/Groups/lib/Groups/Api/Admin.php:145
 #: system/Groups/lib/Groups/Api/Admin.php:210
 #: system/Groups/lib/Groups/Api/Admin.php:255
-#: system/Groups/lib/Groups/Api/User.php:349
-#: system/Groups/lib/Groups/Api/User.php:541
-#: system/Groups/lib/Groups/Api/User.php:595
+#: system/Groups/lib/Groups/Api/User.php:355
+#: system/Groups/lib/Groups/Api/User.php:547
+#: system/Groups/lib/Groups/Api/User.php:601
 #: system/Theme/lib/Theme/Controller/Admin.php:796
 #: system/Theme/lib/Theme/Api/Admin.php:265
 #: system/Theme/lib/Theme/Api/Admin.php:425
@@ -1077,7 +1027,7 @@ msgstr ""
 #: lib/util/HtmlUtil.php:540 lib/util/HtmlUtil.php:563
 #: system/Permissions/templates/permissions_admin_view.tpl:29
 #: system/Permissions/templates/permissions_admin_view.tpl:190
-#: system/Users/templates/users_admin_modify.tpl:37
+#: system/Users/templates/users_admin_modify.tpl:35
 msgid "Group"
 msgstr ""
 
@@ -1147,7 +1097,7 @@ msgstr ""
 msgid "Notice: You cannot delete the main administration permission rule."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Ajax.php:197
+#: system/Permissions/lib/Permissions/Controller/Ajax.php:197 test.php:79
 #, php-format
 msgid "Error! Could not delete permission rule with ID %s."
 msgstr ""
@@ -1221,7 +1171,7 @@ msgstr ""
 msgid "Error! Lock broken!"
 msgstr ""
 
-#: system/PageLock/lib/PageLock/Api/User.php:74
+#: system/PageLock/lib/PageLock/Api/User.php:75
 msgid "Are you sure you want to break this lock?"
 msgstr ""
 
@@ -1240,10 +1190,73 @@ msgstr ""
 msgid "pagelock"
 msgstr ""
 
+#: system/Groups/lib/Groups/Controller/Admin.php:97
+#: system/Admin/lib/Admin/Controller/Admin.php:241
+#: lib/Form/Plugin/CategorySelector.php:184
+#: lib/Form/Plugin/CategoryCheckboxList.php:77
+#: system/Permissions/templates/permissions_admin_view.tpl:82
+#: system/Permissions/templates/permissions_admin_view.tpl:84
+#: system/Permissions/templates/permissions_admin_view.tpl:126
+#: system/Groups/templates/groups_admin_view.tpl:85
+#: system/Groups/templates/groups_admin_view.tpl:86
+#: system/Groups/templates/groups_admin_view.tpl:168
+#: system/Theme/templates/theme_admin_view.tpl:42
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:21
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:42
+#: system/Users/templates/users_admin_listusers.tpl:45
+#: system/Users/templates/users_admin_displayregistration.tpl:29
+#: system/Users/templates/users_admin_view.tpl:12
+#: system/Categories/templates/categories_user_list.tpl:16
+#: system/Categories/templates/categories_user_list.tpl:58
+#: system/Categories/templates/categories_admin_registry_edit.tpl:39
+#: system/Categories/templates/categories_admin_edit.tpl:125
+#: system/Admin/templates/admin_admin_help.tpl:13
+msgid "Edit"
+msgstr ""
+
+#: system/Groups/lib/Groups/Controller/Admin.php:104
+#: system/Admin/lib/Admin/Controller/Admin.php:246
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:125
+#: system/Blocks/templates/blocks_admin_deleteposition.tpl:16
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:79
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:120
+#: system/Blocks/templates/blocks_admin_delete.tpl:15
+#: system/Blocks/templates/blocks_block_menu_modify.tpl:19
+#: system/Permissions/templates/permissions_admin_view.tpl:83
+#: system/Permissions/templates/permissions_admin_view.tpl:89
+#: system/Permissions/templates/permissions_admin_view.tpl:131
+#: system/Permissions/templates/permissions_admin_delete.tpl:17
+#: system/Groups/templates/groups_admin_delete.tpl:2
+#: system/Groups/templates/groups_admin_delete.tpl:16
+#: system/Groups/templates/groups_admin_view.tpl:87
+#: system/Groups/templates/groups_admin_view.tpl:100
+#: system/Groups/templates/groups_admin_view.tpl:172
+#: system/Theme/templates/theme_admin_deletepageconfigurationassignment.tpl:16
+#: system/Theme/templates/theme_admin_view.tpl:44
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:22
+#: system/Theme/templates/theme_admin_delete.tpl:21
+#: system/Modules/templates/modules_admin_remove.tpl:59
+#: system/Users/templates/users_admin_modify.tpl:107
+#: system/Users/templates/users_admin_listusers.tpl:46
+#: system/Users/templates/users_admin_listusers.tpl:107
+#: system/Users/templates/users_admin_view.tpl:13
+#: system/Categories/templates/categories_admin_delete.tpl:38
+#: system/Categories/templates/categories_user_list.tpl:17
+#: system/Categories/templates/categories_user_list.tpl:65
+#: system/Categories/templates/categories_admin_registry_edit.tpl:40
+#: system/Categories/templates/categories_include_editattributes.tpl:19
+#: system/Categories/templates/categories_admin_edit.tpl:123
+#: system/SecurityCenter/templates/securitycenter_admin_purgeidslog.tpl:21
+#: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:72
+#: system/Admin/templates/admin_admin_help.tpl:17
+#: system/Admin/templates/admin_admin_delete.tpl:16
+msgid "Delete"
+msgstr ""
+
 #: system/Groups/lib/Groups/Controller/Admin.php:108
 #: system/Groups/templates/groups_admin_view.tpl:88
 #: system/Groups/templates/groups_admin_groupmembership.tpl:1
-#: system/Users/templates/users_admin_modify.tpl:33
+#: system/Users/templates/users_admin_modify.tpl:31
 #: system/Users/templates/users_admin_search.tpl:21
 msgid "Group membership"
 msgstr ""
@@ -1371,7 +1384,7 @@ msgid "Error! Could not delete the '%s' group."
 msgstr ""
 
 #: system/Groups/lib/Groups/Controller/User.php:134
-#: system/Groups/lib/Groups/Api/User.php:457
+#: system/Groups/lib/Groups/Api/User.php:463
 msgid ""
 "Error! You must register for a user account on this site before you can "
 "apply for membership of a group."
@@ -1382,7 +1395,7 @@ msgid "Error! That group does not exist."
 msgstr ""
 
 #: system/Groups/lib/Groups/Controller/User.php:151
-#: system/Groups/lib/Groups/Api/User.php:561
+#: system/Groups/lib/Groups/Api/User.php:567
 msgid "Error! You are already a member of this group."
 msgstr ""
 
@@ -1413,9 +1426,9 @@ msgstr ""
 #: system/Groups/lib/Groups/Api/User.php:205
 #: system/Groups/lib/Groups/Api/User.php:253
 #: system/Modules/lib/Modules/Api/Admin.php:173
-#: system/Modules/lib/Modules/Api/Admin.php:607
-#: system/Modules/lib/Modules/Api/Admin.php:688
-#: system/Modules/lib/Modules/Api/Admin.php:1125
+#: system/Modules/lib/Modules/Api/Admin.php:604
+#: system/Modules/lib/Modules/Api/Admin.php:685
+#: system/Modules/lib/Modules/Api/Admin.php:1130
 #: system/Users/lib/Users/Api/Registration.php:981
 #: system/Users/lib/Users/Api/Registration.php:1121
 #: system/Users/lib/Users/Api/User.php:127
@@ -1519,31 +1532,31 @@ msgstr ""
 msgid "Groups manager"
 msgstr ""
 
-#: system/Groups/lib/Groups/Api/User.php:362
+#: system/Groups/lib/Groups/Api/User.php:368
 msgid "Error! You have already applied for membership of this group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Api/User.php:482
+#: system/Groups/lib/Groups/Api/User.php:488
 msgid "Administrator"
 msgstr ""
 
-#: system/Groups/lib/Groups/Api/User.php:484
+#: system/Groups/lib/Groups/Api/User.php:490
 msgid "Group membership application registered"
 msgstr ""
 
-#: system/Groups/lib/Groups/Api/User.php:485
+#: system/Groups/lib/Groups/Api/User.php:491
 #, php-format
 msgid ""
 "The registered user %1$s has applied for membership of a group. The details "
 "of the application are as follows: %2$s"
 msgstr ""
 
-#: system/Groups/lib/Groups/Api/User.php:495
+#: system/Groups/lib/Groups/Api/User.php:501
 msgid "Error! Could not add the user to the group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Api/User.php:506
-#: system/Groups/lib/Groups/Api/User.php:516
+#: system/Groups/lib/Groups/Api/User.php:512
+#: system/Groups/lib/Groups/Api/User.php:522
 msgid "Error! Could not remove the user from the group."
 msgstr ""
 
@@ -1838,7 +1851,7 @@ msgstr ""
 #: system/Categories/templates/categories_admin_preferences.tpl:9
 #: system/Categories/templates/categories_admin_edit.tpl:22
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:12
-#: system/Admin/templates/admin_admin_help.tpl:32
+#: system/Admin/templates/admin_admin_help.tpl:40
 msgid "General settings"
 msgstr ""
 
@@ -1860,10 +1873,10 @@ msgstr ""
 #: system/Modules/lib/Modules/Controller/Admin.php:993
 #: system/Modules/lib/Modules/Controller/Admin.php:1090
 #: system/Modules/lib/Modules/Api/Admin.php:285
-#: system/Modules/lib/Modules/Api/Admin.php:783
-#: system/Modules/lib/Modules/Api/Admin.php:912
-#: system/Modules/lib/Modules/Api/Admin.php:1594
-#: system/Modules/lib/Modules/Api/Admin.php:1649
+#: system/Modules/lib/Modules/Api/Admin.php:780
+#: system/Modules/lib/Modules/Api/Admin.php:914
+#: system/Modules/lib/Modules/Api/Admin.php:1599
+#: system/Modules/lib/Modules/Api/Admin.php:1654
 msgid "Error! No such module ID exists."
 msgstr ""
 
@@ -1881,47 +1894,49 @@ msgstr ""
 msgid "Errors were detected regenerating the modules list from file system."
 msgstr ""
 
+#: system/Modules/lib/Modules/Controller/Admin.php:262
+#, php-format
+msgid "Deactivate '%s' module"
+msgstr ""
+
 #: system/Modules/lib/Modules/Controller/Admin.php:270
-msgid "Hook settings"
+#, php-format
+msgid "Hook settings for '%s'"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:278
-msgid "Plugins"
+#, php-format
+msgid "Plugins for '%s'"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:299
 #: system/Modules/lib/Modules/Controller/Admin.php:310
 #: system/Modules/lib/Modules/Controller/Admin.php:346
-#: system/Modules/templates/modules_admin_compinfo.tpl:3
-#: system/Modules/templates/modules_admin_remove.tpl:3
-#: system/Modules/templates/modules_admin_remove.tpl:4
-#: system/Modules/templates/modules_admin_remove.tpl:30
-msgid "Remove module"
+#, php-format
+msgid "Remove '%s' module"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:321
-#: system/Modules/lib/Modules/Controller/Admin.php:1252
-msgid "Upgrade"
+#, php-format
+msgid "Upgrade '%s'"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:359
-#: system/Modules/lib/Modules/Controller/Admin.php:1165
-#: system/Modules/templates/modules_admin_initialise.tpl:3
-#: system/Modules/templates/modules_admin_initialise.tpl:4
-#: system/Modules/templates/modules_admin_initialise.tpl:20
-msgid "Install"
+#, php-format
+msgid "Install '%s'"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:380
-msgid "Incompatible version"
+#, php-format
+msgid "Incompatible version: '%s'"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:396
 #: system/Modules/lib/Modules/Controller/Admin.php:1207
-#: system/Modules/lib/Modules/Api/Admin.php:1154
-#: system/Modules/lib/Modules/Api/Admin.php:1174
-#: system/Modules/lib/Modules/Api/Admin.php:1191
-#: system/Users/lib/Users/Controller/Admin.php:393
+#: system/Modules/lib/Modules/Api/Admin.php:1159
+#: system/Modules/lib/Modules/Api/Admin.php:1179
+#: system/Modules/lib/Modules/Api/Admin.php:1196
+#: system/Users/lib/Users/Controller/Admin.php:397
 #: system/Categories/lib/Categories/Installer.php:399
 #: lib/view/plugins/modifier.activeinactive.php:34
 #: system/Blocks/templates/blocks_admin_view.tpl:32
@@ -1938,16 +1953,16 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:80
 #: system/Modules/templates/modules_admin_viewPlugins.tpl:48
 #: system/Modules/templates/modules_admin_view.tpl:29
-#: system/Users/templates/users_admin_modify.tpl:78
+#: system/Users/templates/users_admin_modify.tpl:76
 msgid "Inactive"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:400
 #: system/Modules/lib/Modules/Controller/Admin.php:1168
-#: system/Modules/lib/Modules/Api/Admin.php:1156
-#: system/Modules/lib/Modules/Api/Admin.php:1176
-#: system/Modules/lib/Modules/Api/Admin.php:1193
-#: system/Users/lib/Users/Controller/Admin.php:378
+#: system/Modules/lib/Modules/Api/Admin.php:1161
+#: system/Modules/lib/Modules/Api/Admin.php:1181
+#: system/Modules/lib/Modules/Api/Admin.php:1198
+#: system/Users/lib/Users/Controller/Admin.php:382
 #: system/Categories/lib/Categories/Installer.php:387
 #: lib/view/plugins/modifier.activeinactive.php:32
 #: system/Blocks/templates/blocks_admin_view.tpl:31
@@ -1965,7 +1980,7 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:78
 #: system/Modules/templates/modules_admin_viewPlugins.tpl:49
 #: system/Modules/templates/modules_admin_view.tpl:30
-#: system/Users/templates/users_admin_modify.tpl:86
+#: system/Users/templates/users_admin_modify.tpl:84
 #: system/Categories/templates/categories_user_edit.tpl:73
 #: system/Categories/templates/categories_user_list.tpl:9
 #: system/Categories/templates/categories_admin_edit.tpl:59
@@ -1973,7 +1988,7 @@ msgid "Active"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:404
-#: system/Modules/lib/Modules/Api/Admin.php:1158
+#: system/Modules/lib/Modules/Api/Admin.php:1163
 #: system/Modules/templates/modules_admin_view.tpl:31
 msgid "Files missing"
 msgstr ""
@@ -1985,7 +2000,7 @@ msgid "New version"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:412
-#: system/Modules/lib/Modules/Api/Admin.php:1162
+#: system/Modules/lib/Modules/Api/Admin.php:1167
 #: system/Modules/templates/modules_admin_view.tpl:37
 msgid "Invalid structure"
 msgstr ""
@@ -2003,9 +2018,9 @@ msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:425
 #: system/Modules/lib/Modules/Controller/Admin.php:1153
-#: system/Modules/lib/Modules/Api/Admin.php:1152
-#: system/Modules/lib/Modules/Api/Admin.php:1172
-#: system/Modules/lib/Modules/Api/Admin.php:1189
+#: system/Modules/lib/Modules/Api/Admin.php:1157
+#: system/Modules/lib/Modules/Api/Admin.php:1177
+#: system/Modules/lib/Modules/Api/Admin.php:1194
 #: system/Modules/templates/modules_admin_viewPlugins.tpl:47
 #: system/Modules/templates/modules_admin_view.tpl:28
 msgid "Not installed"
@@ -2067,14 +2082,35 @@ msgid ""
 "you entered was corrected."
 msgstr ""
 
+#: system/Modules/lib/Modules/Controller/Admin.php:1165
+#: system/Modules/templates/modules_admin_initialise.tpl:3
+#: system/Modules/templates/modules_admin_initialise.tpl:4
+#: system/Modules/templates/modules_admin_initialise.tpl:20
+msgid "Install"
+msgstr ""
+
 #: system/Modules/lib/Modules/Controller/Admin.php:1180
 msgid "Configure plugin"
+msgstr ""
+
+#: system/Modules/lib/Modules/Controller/Admin.php:1192
+msgid "Deactivate"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:1203
 #: system/Modules/lib/Modules/Controller/Admin.php:1230
 #: system/Modules/lib/Modules/Controller/Admin.php:1263
 msgid "Remove plugin"
+msgstr ""
+
+#: system/Modules/lib/Modules/Controller/Admin.php:1219
+#: system/Modules/templates/modules_admin_extendedhooks.tpl:21
+#: system/Modules/templates/modules_admin_hooks.tpl:19
+msgid "Activate"
+msgstr ""
+
+#: system/Modules/lib/Modules/Controller/Admin.php:1252
+msgid "Upgrade"
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Admin.php:1336
@@ -2115,17 +2151,22 @@ msgid "Provider module \"%s\" is not available."
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Ajax.php:47
-#: system/Modules/lib/Modules/Controller/Ajax.php:103
+#: system/Modules/lib/Modules/Controller/Ajax.php:107
 msgid "No subscriber module passed."
 msgstr ""
 
 #: system/Modules/lib/Modules/Controller/Ajax.php:50
-#: system/Modules/lib/Modules/Controller/Ajax.php:106
+#: system/Modules/lib/Modules/Controller/Ajax.php:110
 #, php-format
 msgid "Subscriber module \"%s\" is not available."
 msgstr ""
 
-#: system/Modules/lib/Modules/Controller/Ajax.php:116
+#: system/Modules/lib/Modules/Controller/Ajax.php:54
+#, php-format
+msgid "%s can't be attached to itself."
+msgstr ""
+
+#: system/Modules/lib/Modules/Controller/Ajax.php:120
 msgid "Providers order is not an array."
 msgstr ""
 
@@ -2137,6 +2178,18 @@ msgstr ""
 #: system/Modules/lib/Modules/Controller/AdminPlugin.php:71
 #, php-format
 msgid "Plugin \"%s\" is not configurable"
+msgstr ""
+
+#: system/Modules/lib/Modules/HookUI.php:104
+#: system/Modules/templates/modules_hookui_providers.tpl:10
+#: system/Modules/templates/modules_hookui_providers.tpl:11
+msgid "Hook Providers"
+msgstr ""
+
+#: system/Modules/lib/Modules/HookUI.php:108
+#: system/Modules/templates/modules_hookui_subscribers.tpl:12
+#: system/Modules/templates/modules_hookui_subscribers.tpl:13
+msgid "Hook Subscribers"
 msgstr ""
 
 #: system/Modules/lib/Modules/Api/Admin.php:65
@@ -2156,75 +2209,75 @@ msgid "Error! Invalid module state transition."
 msgstr ""
 
 #: system/Modules/lib/Modules/Api/Admin.php:291
-#: system/Modules/lib/Modules/Api/Admin.php:918
+#: system/Modules/lib/Modules/Api/Admin.php:920
 #, php-format
 msgid "Error! No permission to upgrade %s."
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:327
-#: system/Modules/lib/Modules/Api/Admin.php:822
-#: system/Modules/lib/Modules/Api/Admin.php:950
+#: system/Modules/lib/Modules/Api/Admin.php:329
+#: system/Modules/lib/Modules/Api/Admin.php:819
+#: system/Modules/lib/Modules/Api/Admin.php:952
 #, php-format
 msgid "Error! Could not load a required file: '%s'."
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:335
-#: system/Modules/lib/Modules/Api/Admin.php:343
-#: system/Modules/lib/Modules/Api/Admin.php:832
-#: system/Modules/lib/Modules/Api/Admin.php:840
-#: system/Modules/lib/Modules/Api/Admin.php:960
-#: system/Modules/lib/Modules/Api/Admin.php:968
+#: system/Modules/lib/Modules/Api/Admin.php:337
+#: system/Modules/lib/Modules/Api/Admin.php:345
+#: system/Modules/lib/Modules/Api/Admin.php:829
+#: system/Modules/lib/Modules/Api/Admin.php:837
+#: system/Modules/lib/Modules/Api/Admin.php:962
+#: system/Modules/lib/Modules/Api/Admin.php:970
 #, php-format
 msgid "%s must be an instance of Zikula_Installer"
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:692
+#: system/Modules/lib/Modules/Api/Admin.php:689
 msgid "Error! Could not retrieve module ID."
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:789
+#: system/Modules/lib/Modules/Api/Admin.php:786
 #, php-format
 msgid "Error! No permission to install %s."
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:793
-#: system/Modules/lib/Modules/Api/Admin.php:922
+#: system/Modules/lib/Modules/Api/Admin.php:790
+#: system/Modules/lib/Modules/Api/Admin.php:924
 #, php-format
 msgid "Error! %s is not compatible with this version of Zikula."
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:881
+#: system/Modules/lib/Modules/Api/Admin.php:878
 msgid "Error! Could not change module state."
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:1021
+#: system/Modules/lib/Modules/Api/Admin.php:1023
 msgid "Done! Module has been upgraded. Its status is now 'Active'."
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:1146
+#: system/Modules/lib/Modules/Api/Admin.php:1151
 #: system/Modules/templates/modules_admin_view.tpl:7
 msgid "Modules list"
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:1160
+#: system/Modules/lib/Modules/Api/Admin.php:1165
 #: system/Modules/templates/modules_admin_view.tpl:32
 msgid "New version uploaded"
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:1166
+#: system/Modules/lib/Modules/Api/Admin.php:1171
 #: system/Modules/templates/modules_admin_viewPlugins.tpl:9
 msgid "Plugins list"
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:1180
+#: system/Modules/lib/Modules/Api/Admin.php:1185
 msgid "System hooks"
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:1183
+#: system/Modules/lib/Modules/Api/Admin.php:1188
 msgid "System Plugins"
 msgstr ""
 
-#: system/Modules/lib/Modules/Api/Admin.php:1203
+#: system/Modules/lib/Modules/Api/Admin.php:1208
 msgid "Upgrade All"
 msgstr ""
 
@@ -2246,17 +2299,24 @@ msgstr ""
 msgid "modules"
 msgstr ""
 
-#: system/Modules/lib/Modules/Util.php:33
+#: system/Modules/lib/Modules/Util.php:34
+#: system/Modules/lib/Modules/Util.php:35
+#, php-format
+msgid "%1$s threw an exception reporting: \"%2$s\""
+msgstr ""
+
+#: system/Modules/lib/Modules/Util.php:38
 #, php-format
 msgid "%s is not an instance of Zikula_Version"
 msgstr ""
 
-#: system/Modules/lib/Modules/Util.php:36
+#: system/Modules/lib/Modules/Util.php:41
 #, php-format
 msgid "Could not find %1$s for module %2$s"
 msgstr ""
 
-#: system/Modules/lib/Modules/Util.php:41 lib/legacy/Loader.php:57
+#: system/Modules/lib/Modules/Util.php:46
+#: system/Modules/lib/Modules/Util.php:47 lib/legacy/Loader.php:57
 #, php-format
 msgid "Error! Could not load the file '%s'."
 msgstr ""
@@ -2306,190 +2366,188 @@ msgstr ""
 msgid "Sorry! New user registration is currently disabled."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:178
+#: system/Users/lib/Users/Controller/Admin.php:181
 msgid "(Password provided by site administrator)"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:224
+#: system/Users/lib/Users/Controller/Admin.php:228
 msgid "Done! Created new registration application."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:226
+#: system/Users/lib/Users/Controller/Admin.php:230
 msgid "Done! Created new user account."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:228
+#: system/Users/lib/Users/Controller/Admin.php:232
 msgid ""
 "Warning! New user information has been saved, however there may have been an "
 "issue saving it properly."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:231
+#: system/Users/lib/Users/Controller/Admin.php:235
 msgid ""
 "Error! Could not create the new user account or registration application."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:313
-msgid "View the profile"
-msgstr ""
-
-#: system/Users/lib/Users/Controller/Admin.php:318
-#: system/Users/templates/users_admin_modify.tpl:110
-msgid "Send user name"
+#: system/Users/lib/Users/Controller/Admin.php:317
+#, php-format
+msgid "View the profile of '%s'"
 msgstr ""
 
 #: system/Users/lib/Users/Controller/Admin.php:322
-#: system/Users/templates/users_admin_modify.tpl:111
-msgid "Send password recovery code"
+#, php-format
+msgid "Send user name to '%s'"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:353
-#: system/Users/lib/Users/Controller/Admin.php:359
+#: system/Users/lib/Users/Controller/Admin.php:326
+#, php-format
+msgid "Send password recovery code to '%s'"
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Admin.php:357
+#: system/Users/lib/Users/Controller/Admin.php:363
 msgid "%m-%d-%Y"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:381
+#: system/Users/lib/Users/Controller/Admin.php:385
 msgid "Inactive until Legal terms accepted"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:384
+#: system/Users/lib/Users/Controller/Admin.php:388
 msgid "Inactive until changing password"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:387
+#: system/Users/lib/Users/Controller/Admin.php:391
 msgid "Inactive until change password and accept legal terms"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:390
+#: system/Users/lib/Users/Controller/Admin.php:394
 msgid "Inactive, pending deletion"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:396
+#: system/Users/lib/Users/Controller/Admin.php:400
 msgid "Status unknown"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:478
+#: system/Users/lib/Users/Controller/Admin.php:482
 msgid "Sorry! No matching users found."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:563
-msgid "Done! Saved user's account information."
+#: system/Users/lib/Users/Controller/Admin.php:571
+msgid "Error! Invalid or blank operation received."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:582
-#: system/Users/lib/Users/Controller/Admin.php:887
-msgid "Error! You can't delete the account you are currently logged into."
-msgstr ""
-
-#: system/Users/lib/Users/Controller/Admin.php:589
-msgid "Done! Deleted user account."
-msgstr ""
-
-#: system/Users/lib/Users/Controller/Admin.php:599
-msgid ""
-"Error! One or more information items needed to send an e-mail message are "
-"missing."
-msgstr ""
-
-#: system/Users/lib/Users/Controller/Admin.php:627
-#: system/Users/lib/Users/Controller/Admin.php:647
-msgid "Error! Could not send the e-mail message."
-msgstr ""
-
-#: system/Users/lib/Users/Controller/Admin.php:654
-#, php-format
-msgid "Done! %1$c e-mail message has been sent to %2$c user."
-msgid_plural "Done! %1$c e-mail messages have been sent to %2$c users."
-msgstr[0] ""
-msgstr[1] ""
-
-#: system/Users/lib/Users/Controller/Admin.php:662
+#: system/Users/lib/Users/Controller/Admin.php:574
 msgid "Error! No users were selected."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:696
-#: system/Users/lib/Users/Controller/Admin.php:714
-#: system/Users/lib/Users/Controller/Admin.php:873
-#: system/Users/lib/Users/Controller/Admin.php:894
-msgid "Sorry! No such user found."
-msgstr ""
-
-#: system/Users/lib/Users/Controller/Admin.php:707
+#: system/Users/lib/Users/Controller/Admin.php:618
 msgid "Error! You can't edit the guest account."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:786
-#: system/Users/lib/Users/Controller/Admin.php:825
+#: system/Users/lib/Users/Controller/Admin.php:625
+#: system/Users/lib/Users/Controller/Admin.php:822
+#: system/Users/lib/Users/Controller/Admin.php:843
+msgid "Sorry! No such user found."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Admin.php:705
+msgid "Done! Saved user's account information."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Admin.php:711
+#, php-format
+msgid "An unspecified error occurred while trying to save user %1$d."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Admin.php:735
+#: system/Users/lib/Users/Controller/Admin.php:774
 msgid "Sorry! Unable to retrieve information for that user id."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:800
+#: system/Users/lib/Users/Controller/Admin.php:749
 #: system/Users/lib/Users/Controller/User.php:421
 #, php-format
 msgid "Done! The user name for %s has been sent via e-mail."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:839
+#: system/Users/lib/Users/Controller/Admin.php:788
 #, php-format
 msgid ""
 "Done! The password recovery verification code for %s has been sent via e-"
 "mail."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:884
+#: system/Users/lib/Users/Controller/Admin.php:833
 msgid "Error! You can't delete the guest account."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1079
+#: system/Users/lib/Users/Controller/Admin.php:836
+#: system/Users/lib/Users/Controller/Admin.php:877
+msgid "Error! You can't delete the account you are currently logged into."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Admin.php:885
+#, php-format
+msgid "Done! Deleted %1$d user account."
+msgid_plural "Done! Deleted %1$d user accounts."
+msgstr[0] ""
+msgstr[1] ""
+
+#: system/Users/lib/Users/Controller/Admin.php:890
+msgid "An unspecified error occurred while trying to remove users."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Admin.php:1069
 msgid "An error occurred while trying to retrieve the registration records."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1130
+#: system/Users/lib/Users/Controller/Admin.php:1120
 msgid ""
 "Unable to retrieve registration record. The record with the specified id "
 "might not exist, or you might not have permission to access that record."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1148
-#: system/Users/lib/Users/Controller/Admin.php:1232
-#: system/Users/lib/Users/Controller/Admin.php:1430
-#: system/Users/lib/Users/Controller/Admin.php:1535
-#: system/Users/lib/Users/Controller/Admin.php:1622
+#: system/Users/lib/Users/Controller/Admin.php:1138
+#: system/Users/lib/Users/Controller/Admin.php:1222
+#: system/Users/lib/Users/Controller/Admin.php:1420
+#: system/Users/lib/Users/Controller/Admin.php:1525
+#: system/Users/lib/Users/Controller/Admin.php:1612
 msgid "%m-%d-%Y %H:%M"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1185
+#: system/Users/lib/Users/Controller/Admin.php:1175
 msgid "Error! Invalid registration uid."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1192
+#: system/Users/lib/Users/Controller/Admin.php:1182
 msgid "Error! Unable to load registration record."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1202
+#: system/Users/lib/Users/Controller/Admin.php:1192
 msgid ""
 "Error! Invalid registration id, or invalid arguments returned after "
 "validation."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1357
+#: system/Users/lib/Users/Controller/Admin.php:1347
 msgid "Done! Updated registration."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1359
+#: system/Users/lib/Users/Controller/Admin.php:1349
 msgid "Error! Could not update the registration."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1390
-#: system/Users/lib/Users/Controller/Admin.php:1489
-#: system/Users/lib/Users/Controller/Admin.php:1596
+#: system/Users/lib/Users/Controller/Admin.php:1380
+#: system/Users/lib/Users/Controller/Admin.php:1479
+#: system/Users/lib/Users/Controller/Admin.php:1586
 #: system/Users/lib/Users/Api/Registration.php:1303
 #: system/Users/lib/Users/Api/Registration.php:1439
 #, php-format
 msgid "Error! Unable to retrieve registration record with uid '%1$s'"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1403
+#: system/Users/lib/Users/Controller/Admin.php:1393
 #: system/Users/lib/Users/Api/Registration.php:1326
 #, php-format
 msgid ""
@@ -2497,7 +2555,7 @@ msgid ""
 "$s'. It is already verified."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1408
+#: system/Users/lib/Users/Controller/Admin.php:1398
 #: system/Users/lib/Users/Api/Registration.php:1328
 #, php-format
 msgid ""
@@ -2505,254 +2563,254 @@ msgid ""
 "$s'. It must first be approved."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1457
+#: system/Users/lib/Users/Controller/Admin.php:1447
 #, php-format
 msgid "Sorry! There was a problem sending a verification code to '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1459
+#: system/Users/lib/Users/Controller/Admin.php:1449
 #, php-format
 msgid "Done! Verification code sent to '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1502
+#: system/Users/lib/Users/Controller/Admin.php:1492
 #, php-format
 msgid ""
 "Warning! Nothing to do! The registration record with uid '%1$s' is already "
 "approved."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1508
+#: system/Users/lib/Users/Controller/Admin.php:1498
 #, php-format
 msgid ""
 "Error! The registration record with uid '%1$s' cannot be approved. The "
 "registration's e-mail address must first be verified."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1513
+#: system/Users/lib/Users/Controller/Admin.php:1503
 #, php-format
 msgid ""
 "Error! E-mail verification cannot be skipped for '%1$s'. The user must "
 "establish a password as part of the verification process."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1562
+#: system/Users/lib/Users/Controller/Admin.php:1552
 #, php-format
 msgid "Sorry! There was a problem approving the registration for '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1565
+#: system/Users/lib/Users/Controller/Admin.php:1555
 #, php-format
 msgid ""
 "Done! The registration for '%1$s' has been approved and a new user account "
 "has been created."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1567
+#: system/Users/lib/Users/Controller/Admin.php:1557
 #, php-format
 msgid ""
 "Done! The registration for '%1$s' has been approved and is awaiting e-mail "
 "verification."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1651
+#: system/Users/lib/Users/Controller/Admin.php:1641
 #, php-format
 msgid "Sorry! There was a problem deleting the registration for '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1668
+#: system/Users/lib/Users/Controller/Admin.php:1658
 #, php-format
 msgid "Done! The registration for '%1$s' has been denied and deleted."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1737
+#: system/Users/lib/Users/Controller/Admin.php:1727
 msgid "You must provide a display name for anonymous users."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1744
+#: system/Users/lib/Users/Controller/Admin.php:1734
 msgid ""
 "The number of items displayed per page must be a positive integer, or -1 to "
 "display all items."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1748
+#: system/Users/lib/Users/Controller/Admin.php:1738
 msgid "You must provide a path to user's avatar images."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1752
+#: system/Users/lib/Users/Controller/Admin.php:1742
 msgid "You must provide a file name for the default gravatar image."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1756
+#: system/Users/lib/Users/Controller/Admin.php:1746
 msgid "You must provide a path to account page images."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1762
+#: system/Users/lib/Users/Controller/Admin.php:1752
 msgid "The number of links per account page must be a positive integer."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1768
+#: system/Users/lib/Users/Controller/Admin.php:1758
 msgid "The number of links per account page row must be a positive integer."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1774
+#: system/Users/lib/Users/Controller/Admin.php:1764
 msgid "The minimum password length must be a positive integer."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1780
+#: system/Users/lib/Users/Controller/Admin.php:1770
 msgid ""
 "The minimum age permitted to register must be zero (0) or a positive integer."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1786
+#: system/Users/lib/Users/Controller/Admin.php:1776
 msgid ""
 "The number of days before a registration pending verification is expired "
 "must be zero (0) or a positive integer."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1791
+#: system/Users/lib/Users/Controller/Admin.php:1781
 msgid ""
 "If a spam protection question is provided, then the corresponding answer "
 "must also be provided."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1798
+#: system/Users/lib/Users/Controller/Admin.php:1788
 msgid ""
 "The number of days before an e-mail change request pending verification is "
 "expired must be zero (0) or a positive integer."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1804
+#: system/Users/lib/Users/Controller/Admin.php:1794
 msgid ""
 "The number of days before a password reset request pending verification is "
 "expired must be zero (0) or a positive integer."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1917
+#: system/Users/lib/Users/Controller/Admin.php:1907
 msgid "Done! Users imported successfully."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2181
+#: system/Users/lib/Users/Controller/Admin.php:2171
 msgid "Error! You have not chosen any file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2186
+#: system/Users/lib/Users/Controller/Admin.php:2176
 msgid ""
 "Error! The file extension is incorrect. The only allowed extension is csv."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2191
+#: system/Users/lib/Users/Controller/Admin.php:2181
 msgid "Error! It has not been possible to read the import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2204
+#: system/Users/lib/Users/Controller/Admin.php:2194
 #, php-format
 msgid ""
 "Error! The import file does not have the expected field %s in the first row. "
 "Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2216
+#: system/Users/lib/Users/Controller/Admin.php:2206
 #, php-format
 msgid ""
 "Error! The number of parameters in line %s is not correct. Please check your "
 "import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2224
+#: system/Users/lib/Users/Controller/Admin.php:2214
 #, php-format
 msgid ""
 "Sorry! The user name is not valid in line %s. The user name is mandatory and "
 "the maximum length is 25 characters. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2233
+#: system/Users/lib/Users/Controller/Admin.php:2223
 #, php-format
 msgid ""
 "Sorry! The user name %1$s is reserved and cannot be registered in line %2$s. "
 "Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2239
+#: system/Users/lib/Users/Controller/Admin.php:2229
 #, php-format
 msgid ""
 "Sorry! The user name %1$s cannot contain spaces in line %2$s. Please check "
 "your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2244
+#: system/Users/lib/Users/Controller/Admin.php:2234
 #, php-format
 msgid ""
 "Sorry! The user name %1$s is repeated in line %2$s, and it cannot be used "
 "twice for creating accounts. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2252
+#: system/Users/lib/Users/Controller/Admin.php:2242
 #, php-format
 msgid ""
 "Sorry! You did not provide a password in line %s. Please check your import "
 "file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2257
+#: system/Users/lib/Users/Controller/Admin.php:2247
 #, php-format
 msgid ""
 "Sorry! The password must be at least %1$s characters long in line %2$s. "
 "Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2263
+#: system/Users/lib/Users/Controller/Admin.php:2253
 #, php-format
 msgid ""
 "Sorry! You did not provide a email in line %s. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2268
+#: system/Users/lib/Users/Controller/Admin.php:2258
 #, php-format
 msgid ""
 "Sorry! The e-mail address you entered was incorrectly formatted or is "
 "unacceptable for other reasons in line %s. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2274
+#: system/Users/lib/Users/Controller/Admin.php:2264
 #, php-format
 msgid ""
 "Sorry! The %1$s e-mail address is repeated in line %2$s, and it cannot be "
 "used twice for creating accounts. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2301
+#: system/Users/lib/Users/Controller/Admin.php:2291
 #, php-format
 msgid ""
 "Sorry! The identity of the group %1$s is not not valid in line %2$s. Perhaps "
 "it do not exist. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2310
+#: system/Users/lib/Users/Controller/Admin.php:2300
 msgid "Error! The import file does not have values."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2318
+#: system/Users/lib/Users/Controller/Admin.php:2308
 msgid "Error! Trying to read the existing user names in database."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2321
+#: system/Users/lib/Users/Controller/Admin.php:2311
 msgid ""
 "Sorry! One or more user names really exist in database. The user names must "
 "be uniques."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2331
+#: system/Users/lib/Users/Controller/Admin.php:2321
 msgid "Error! Trying to read the existing users' email addressess in database."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2334
+#: system/Users/lib/Users/Controller/Admin.php:2324
 msgid ""
 "Sorry! One or more users' email addresses exist in the database. Each user's "
 "e-mail address must be unique."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2341
+#: system/Users/lib/Users/Controller/Admin.php:2331
 msgid "Error! The creation of users has failed."
 msgstr ""
 
@@ -2771,11 +2829,11 @@ msgstr ""
 #: install/templates/installer_login.tpl:20
 #: install/templates/installer_createadmin.tpl:27
 #: system/Theme/templates/system/siteoff.tpl:173
-#: system/Users/templates/users_admin_modify.tpl:67
+#: system/Users/templates/users_admin_modify.tpl:57
 #: system/Users/templates/users_user_passwordreminder.tpl:44
 #: system/Users/templates/users_email_welcome_html.tpl:11
 #: system/Users/templates/users_email_welcome_txt.tpl:11
-#: system/Users/templates/users_admin_newuser.tpl:53
+#: system/Users/templates/users_admin_newuser.tpl:45
 #: system/Users/templates/users_user_register.tpl:80
 #: system/Users/templates/users_admin_includeregistration.tpl:30
 #: system/Users/templates/users_user_verifyregistration.tpl:38
@@ -3260,68 +3318,95 @@ msgstr ""
 msgid "Custom block content for %s"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:155
+#: system/Users/lib/Users/Api/Admin.php:156
 msgid "Error! Could not find the user record in order to update it."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:334
+#: system/Users/lib/Users/Api/Admin.php:345
+msgid "Error! No users selected for removal, or invalid uid list."
+msgstr ""
+
+#: system/Users/lib/Users/Api/Admin.php:351
+msgid "Error! E-mail message to be sent not specified or invalid."
+msgstr ""
+
+#: system/Users/lib/Users/Api/Admin.php:369
+#, php-format
+msgid "Error! The required field '%2$s' was blank or missing"
+msgid_plural "Error! %1$d required fields were blank or missing: '%2$s'."
+msgstr[0] ""
+msgstr[1] ""
+
+#: system/Users/lib/Users/Api/Admin.php:399
+#: system/Users/lib/Users/Api/Admin.php:416
+msgid "Error! Could not send the e-mail message."
+msgstr ""
+
+#: system/Users/lib/Users/Api/Admin.php:421
+#, php-format
+msgid "Done! E-mail message has been sent to %1$d user. "
+msgid_plural "Done! E-mail message has been sent to %1$d users. "
+msgstr[0] ""
+msgstr[1] ""
+
+#: system/Users/lib/Users/Api/Admin.php:440
 #: system/Users/templates/users_admin_view.tpl:1
 msgid "Users list"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:339
+#: system/Users/lib/Users/Api/Admin.php:445
 msgid "Pending registrations"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:343
-#: system/Users/lib/Users/Api/Admin.php:348
+#: system/Users/lib/Users/Api/Admin.php:449
+#: system/Users/lib/Users/Api/Admin.php:454
 #: system/Users/templates/users_admin_newuser.tpl:3
 msgid "Create new user"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:344
+#: system/Users/lib/Users/Api/Admin.php:450
 #: system/Users/templates/users_admin_import.tpl:1
 msgid "Import users"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:346
+#: system/Users/lib/Users/Api/Admin.php:452
 #: system/Users/templates/users_admin_export.tpl:1
 msgid "Export users"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:351
+#: system/Users/lib/Users/Api/Admin.php:457
 #: system/Users/templates/users_admin_search.tpl:1
 msgid "Find and e-mail users"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:353
+#: system/Users/lib/Users/Api/Admin.php:459
 #: system/Users/templates/users_admin_search.tpl:11
 msgid "Find users"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:370
-#: system/Users/lib/Users/Api/Admin.php:372
+#: system/Users/lib/Users/Api/Admin.php:476
+#: system/Users/lib/Users/Api/Admin.php:478
 msgid "Account panel manager"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:452
+#: system/Users/lib/Users/Api/Admin.php:558
 msgid ""
 "Error! The users have been created but something has failed trying to get "
 "them from the database. Now all these users do not have group."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:479
+#: system/Users/lib/Users/Api/Admin.php:585
 msgid ""
 "Error! The users have been created but something has failed while trying to "
 "add the users to their groups. These users are not assigned to a group."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:504
+#: system/Users/lib/Users/Api/Admin.php:610
 #, php-format
 msgid "Password for %1$s from %2$s"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Admin.php:512
+#: system/Users/lib/Users/Api/Admin.php:618
 #, php-format
 msgid ""
 "Error! A problem has occurred while sending e-mail messages. The error "
@@ -3804,7 +3889,7 @@ msgid ""
 msgstr ""
 
 #: system/Categories/lib/Categories/Controller/Userform.php:141
-#: lib/util/SessionUtil.php:350
+#: lib/util/SessionUtil.php:351
 #, php-format
 msgid "Error! Invalid [%s] received."
 msgstr ""
@@ -4138,7 +4223,7 @@ msgstr ""
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:16
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:38
 #: system/Admin/templates/admin_admin_view.tpl:11
-#: system/Admin/templates/admin_admin_help.tpl:23
+#: system/Admin/templates/admin_admin_help.tpl:27
 #: system/Admin/templates/admin_admin_newcat.tpl:13
 #: system/Admin/templates/admin_admin_modify.tpl:14
 msgid "Name"
@@ -4401,32 +4486,32 @@ msgstr ""
 msgid "Done! Category deleted."
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:464
+#: system/Admin/lib/Admin/Controller/Admin.php:463
 msgid "Error! You must enter a number for the 'Modules per row' setting."
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:470
+#: system/Admin/lib/Admin/Controller/Admin.php:469
 msgid "Error! You must enter a number for the 'Modules per page' setting."
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:495
+#: system/Admin/lib/Admin/Controller/Admin.php:494
 #: system/Admin/lib/Admin/Controller/Ajax.php:58
 msgid "Error! Could not add module to module category."
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:732
-#: system/Admin/lib/Admin/Controller/Admin.php:744
+#: system/Admin/lib/Admin/Controller/Admin.php:730
+#: system/Admin/lib/Admin/Controller/Admin.php:742
 #: system/Theme/templates/zdebug.tpl:27
 msgid "Compile check"
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:736
-#: system/Admin/lib/Admin/Controller/Admin.php:748
+#: system/Admin/lib/Admin/Controller/Admin.php:734
+#: system/Admin/lib/Admin/Controller/Admin.php:746
 msgid "Force compile"
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:740
-#: system/Admin/lib/Admin/Controller/Admin.php:752
+#: system/Admin/lib/Admin/Controller/Admin.php:738
+#: system/Admin/lib/Admin/Controller/Admin.php:750
 #: system/Theme/templates/theme_admin_modifyconfig.tpl:46
 msgid "Caching"
 msgstr ""
@@ -4540,7 +4625,7 @@ msgid "Module categories list"
 msgstr ""
 
 #: system/Admin/lib/Admin/Api/Admin.php:408
-#: system/Admin/templates/admin_admin_help.tpl:19
+#: system/Admin/templates/admin_admin_help.tpl:22
 #: system/Admin/templates/admin_admin_newcat.tpl:1
 msgid "Create new module category"
 msgstr ""
@@ -4550,7 +4635,7 @@ msgstr ""
 #: system/Theme/templates/theme_admin_credits.tpl:30
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:108
 #: system/Admin/templates/admin_admin_view.tpl:32
-#: system/Admin/templates/admin_admin_help.tpl:4
+#: system/Admin/templates/admin_admin_help.tpl:5
 #: system/Admin/templates/admin_admin_newcat.tpl:25
 #: system/Admin/templates/admin_admin_modify.tpl:26
 msgid "Help"
@@ -4771,8 +4856,8 @@ msgstr ""
 #: lib/legacy/Compat.php:3496 lib/legacy/Compat.php:3514
 #: lib/legacy/Compat.php:3530 lib/legacy/Compat.php:3544
 #: lib/legacy/Compat.php:3551 lib/legacy/Compat.php:3558
-#: lib/util/UserUtil.php:598 lib/util/DataUtil.php:533
-#: lib/util/DataUtil.php:749
+#: lib/util/UserUtil.php:598 lib/util/DataUtil.php:528
+#: lib/util/DataUtil.php:744
 #, php-format
 msgid "Warning! Function %1$s is deprecated. Please use %2$s instead."
 msgstr ""
@@ -4883,7 +4968,7 @@ msgstr ""
 
 #: lib/util/FileUtil.php:31 lib/util/FileUtil.php:57 lib/util/FileUtil.php:74
 #: lib/util/FileUtil.php:100 lib/util/FileUtil.php:296
-#: lib/util/FileUtil.php:381 lib/util/FileUtil.php:488
+#: lib/util/FileUtil.php:381 lib/util/FileUtil.php:504
 #, php-format
 msgid "%1$s: %2$s is empty"
 msgstr ""
@@ -4907,29 +4992,29 @@ msgstr ""
 msgid "The destination path does not exist or is not writable"
 msgstr ""
 
-#: lib/util/FileUtil.php:447
+#: lib/util/FileUtil.php:465
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
 msgstr ""
 
-#: lib/util/FileUtil.php:450
+#: lib/util/FileUtil.php:468
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the html form."
 msgstr ""
 
-#: lib/util/FileUtil.php:453
+#: lib/util/FileUtil.php:471
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
 
-#: lib/util/FileUtil.php:456
+#: lib/util/FileUtil.php:474
 msgid "No file was uploaded."
 msgstr ""
 
-#: lib/util/FileUtil.php:459
+#: lib/util/FileUtil.php:477
 msgid "Uploaded file size 0 bytes."
 msgstr ""
 
-#: lib/util/FileUtil.php:483
+#: lib/util/FileUtil.php:499
 #, php-format
 msgid "%1$s: %2$s is not an array"
 msgstr ""
@@ -5014,8 +5099,8 @@ msgstr ""
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:143
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:170
 #: system/Users/templates/users_admin_denyregistration.tpl:27
-#: system/Users/templates/users_admin_newuser.tpl:48
-#: system/Users/templates/users_admin_newuser.tpl:87
+#: system/Users/templates/users_admin_newuser.tpl:40
+#: system/Users/templates/users_admin_newuser.tpl:79
 #: system/Users/templates/users_admin_modifyconfig.tpl:32
 #: system/Users/templates/users_admin_modifyconfig.tpl:49
 #: system/Users/templates/users_admin_modifyconfig.tpl:70
@@ -5058,8 +5143,8 @@ msgstr ""
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:141
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:168
 #: system/Users/templates/users_admin_denyregistration.tpl:25
-#: system/Users/templates/users_admin_newuser.tpl:46
-#: system/Users/templates/users_admin_newuser.tpl:85
+#: system/Users/templates/users_admin_newuser.tpl:38
+#: system/Users/templates/users_admin_newuser.tpl:77
 #: system/Users/templates/users_admin_modifyconfig.tpl:30
 #: system/Users/templates/users_admin_modifyconfig.tpl:47
 #: system/Users/templates/users_admin_modifyconfig.tpl:68
@@ -5162,6 +5247,12 @@ msgstr ""
 msgid "Invalid input source [%s] received."
 msgstr ""
 
+#: lib/util/FormUtil.php:362
+msgid ""
+"FormUtil::newForm should also include the Zikula_Controller as the second "
+"argument to enable hooks to work."
+msgstr ""
+
 #: lib/util/LogUtil.php:135 lib/util/LogUtil.php:158 lib/util/LogUtil.php:173
 #: lib/util/LogUtil.php:277 lib/Zikula/Base.php:497 lib/Zikula/Base.php:563
 #, php-format
@@ -5196,7 +5287,7 @@ msgstr ""
 msgid "Error! Non-existing root category '%s' received"
 msgstr ""
 
-#: lib/util/CategoryUtil.php:870 lib/util/CategoryUtil.php:1131
+#: lib/util/CategoryUtil.php:872 lib/util/CategoryUtil.php:1133
 msgid "Root category"
 msgstr ""
 
@@ -5218,15 +5309,15 @@ msgstr ""
 
 #: lib/util/DBUtil.php:131 lib/util/DBUtil.php:457 lib/util/DBUtil.php:460
 #: lib/util/DBUtil.php:463 lib/util/DBUtil.php:505 lib/util/DBUtil.php:509
-#: lib/util/DBUtil.php:551 lib/util/DBUtil.php:555 lib/util/DBUtil.php:1389
-#: lib/util/DBUtil.php:1425 lib/util/DBUtil.php:1429 lib/util/DBUtil.php:1943
-#: lib/util/DBUtil.php:2198 lib/util/DBUtil.php:2690 lib/util/DBUtil.php:2863
-#: lib/util/DBUtil.php:2903 lib/util/DBUtil.php:2969 lib/util/DBUtil.php:3040
-#: lib/util/DBUtil.php:3113 lib/util/DBUtil.php:3227 lib/util/DBUtil.php:3261
-#: lib/util/DBUtil.php:3264 lib/util/DBUtil.php:3301 lib/util/DBUtil.php:3337
-#: lib/util/DBUtil.php:3341 lib/util/DBUtil.php:3345 lib/util/DBUtil.php:3409
-#: lib/util/DBUtil.php:3413 lib/util/DBUtil.php:3466 lib/util/DBUtil.php:3499
-#: lib/util/DBUtil.php:3525 lib/util/DBUtil.php:3550
+#: lib/util/DBUtil.php:551 lib/util/DBUtil.php:555 lib/util/DBUtil.php:1390
+#: lib/util/DBUtil.php:1426 lib/util/DBUtil.php:1430 lib/util/DBUtil.php:1944
+#: lib/util/DBUtil.php:2200 lib/util/DBUtil.php:2693 lib/util/DBUtil.php:2866
+#: lib/util/DBUtil.php:2906 lib/util/DBUtil.php:2972 lib/util/DBUtil.php:3043
+#: lib/util/DBUtil.php:3116 lib/util/DBUtil.php:3230 lib/util/DBUtil.php:3264
+#: lib/util/DBUtil.php:3267 lib/util/DBUtil.php:3304 lib/util/DBUtil.php:3340
+#: lib/util/DBUtil.php:3344 lib/util/DBUtil.php:3348 lib/util/DBUtil.php:3412
+#: lib/util/DBUtil.php:3416 lib/util/DBUtil.php:3469 lib/util/DBUtil.php:3502
+#: lib/util/DBUtil.php:3528 lib/util/DBUtil.php:3553
 #: lib/Zikula/Doctrine/Table.php:321
 #, php-format
 msgid "The parameter %s must not be empty"
@@ -5255,7 +5346,7 @@ msgstr ""
 msgid "Invalid join information retrieved (alias %s already exists)"
 msgstr ""
 
-#: lib/util/DBUtil.php:476 lib/util/DBUtil.php:3054 lib/util/DBUtil.php:3127
+#: lib/util/DBUtil.php:476 lib/util/DBUtil.php:3057 lib/util/DBUtil.php:3130
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table array contain the dictionary "
@@ -5323,159 +5414,159 @@ msgstr ""
 msgid "Object does not have an ID"
 msgstr ""
 
-#: lib/util/DBUtil.php:1448
+#: lib/util/DBUtil.php:1449
 #, php-format
 msgid "Unable to find assocKey [%1$s] in objectColumns for resultset."
 msgstr ""
 
-#: lib/util/DBUtil.php:1462 lib/util/DBUtil.php:3349
+#: lib/util/DBUtil.php:1463 lib/util/DBUtil.php:3352
 #, php-format
 msgid "The parameter %s must be an array"
 msgstr ""
 
-#: lib/util/DBUtil.php:1474
+#: lib/util/DBUtil.php:1475
 msgid ""
 "Permission filter iterator did not return an array (must be an array of "
 "arrays)"
 msgstr ""
 
-#: lib/util/DBUtil.php:1501
+#: lib/util/DBUtil.php:1502
 #, php-format
 msgid "Permission filter level is invalid: [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:1549
+#: lib/util/DBUtil.php:1550
 msgid "Got no rows to select from"
 msgstr ""
 
-#: lib/util/DBUtil.php:1557
+#: lib/util/DBUtil.php:1558
 msgid "Got no columns to select from"
 msgstr ""
 
-#: lib/util/DBUtil.php:1947 lib/util/DBUtil.php:2202
+#: lib/util/DBUtil.php:1948 lib/util/DBUtil.php:2204
 #, php-format
 msgid "The parameter %s must be numeric"
 msgstr ""
 
-#: lib/util/DBUtil.php:2650 lib/util/DBUtil.php:2910 lib/util/DBUtil.php:3067
-#: lib/util/DBUtil.php:3140 lib/util/DBUtil.php:3234 lib/util/DBUtil.php:3272
-#: lib/util/DBUtil.php:3276 lib/util/DBUtil.php:3308 lib/util/DBUtil.php:3420
-#: lib/util/DBUtil.php:3473 lib/util/DBUtil.php:3506 lib/util/DBUtil.php:3532
-#: lib/util/DBUtil.php:3557
+#: lib/util/DBUtil.php:2653 lib/util/DBUtil.php:2913 lib/util/DBUtil.php:3070
+#: lib/util/DBUtil.php:3143 lib/util/DBUtil.php:3237 lib/util/DBUtil.php:3275
+#: lib/util/DBUtil.php:3279 lib/util/DBUtil.php:3311 lib/util/DBUtil.php:3423
+#: lib/util/DBUtil.php:3476 lib/util/DBUtil.php:3509 lib/util/DBUtil.php:3535
+#: lib/util/DBUtil.php:3560
 #, php-format
 msgid "%s does not point to a valid table definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:2654
+#: lib/util/DBUtil.php:2657
 #, php-format
 msgid "%s does not point to a valid field definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:2665
+#: lib/util/DBUtil.php:2668
 msgid "Exiting after SQL-error"
 msgstr ""
 
-#: lib/util/DBUtil.php:2741 lib/util/DBUtil.php:2878
+#: lib/util/DBUtil.php:2744 lib/util/DBUtil.php:2881
 #, php-format
 msgid "Invalid field pattern detected in table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2761
+#: lib/util/DBUtil.php:2764
 #, php-format
 msgid "Error in table definition for %1$s, column %2$s"
 msgstr ""
 
-#: lib/util/DBUtil.php:2809
+#: lib/util/DBUtil.php:2812
 #, php-format
 msgid "Missing default value in field datadict specification for %1$s.%2$s"
 msgstr ""
 
-#: lib/util/DBUtil.php:2848
+#: lib/util/DBUtil.php:2851
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table structure contain the data "
 "dictionary representation of table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2888
+#: lib/util/DBUtil.php:2891
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table structure contain the ADODB "
 "dictionary representation of table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2979
+#: lib/util/DBUtil.php:2982
 #, php-format
 msgid "Unable to retrieve table definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:2984
+#: lib/util/DBUtil.php:2987
 #, php-format
 msgid "Unable to retrieve table columns definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:2989
+#: lib/util/DBUtil.php:2992
 #, php-format
 msgid "Unable to retrieve table columns_def definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:3007
+#: lib/util/DBUtil.php:3010
 #, php-format
 msgid ""
 "Inconsistent table definition detected for table [%1$s]: column [%2$s] has "
 "no counterpart in column_def structure"
 msgstr ""
 
-#: lib/util/DBUtil.php:3016
+#: lib/util/DBUtil.php:3019
 #, php-format
 msgid ""
 "Inconsistent table definition detected for table [%1$s]: column_def [%2$s] "
 "has no counterpart in column structure"
 msgstr ""
 
-#: lib/util/DBUtil.php:3045 lib/util/DBUtil.php:3118
+#: lib/util/DBUtil.php:3048 lib/util/DBUtil.php:3121
 #, php-format
 msgid "Table consistency check failed for %s"
 msgstr ""
 
-#: lib/util/DBUtil.php:3073
+#: lib/util/DBUtil.php:3076
 #, php-format
 msgid "Error! Table creation failed for %s"
 msgstr ""
 
-#: lib/util/DBUtil.php:3154 lib/util/DBUtil.php:3164 lib/util/DBUtil.php:3178
-#: lib/util/DBUtil.php:3189 lib/util/DoctrineUtil.php:383
-#: lib/util/DoctrineUtil.php:393 lib/util/DoctrineUtil.php:407
-#: lib/util/DoctrineUtil.php:418
+#: lib/util/DBUtil.php:3157 lib/util/DBUtil.php:3167 lib/util/DBUtil.php:3181
+#: lib/util/DBUtil.php:3192 lib/util/DoctrineUtil.php:390
+#: lib/util/DoctrineUtil.php:400 lib/util/DoctrineUtil.php:414
+#: lib/util/DoctrineUtil.php:425
 msgid "Error! Table update failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3282
+#: lib/util/DBUtil.php:3285
 msgid "Error! Table rename failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3315
+#: lib/util/DBUtil.php:3318
 msgid "Error! Table drop failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3357
+#: lib/util/DBUtil.php:3360
 #, php-format
 msgid "%s does not point to a valid column definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:3393
+#: lib/util/DBUtil.php:3396
 msgid "Error! Index creation failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3427
+#: lib/util/DBUtil.php:3430
 msgid "Error! Index deletion failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3563
+#: lib/util/DBUtil.php:3567
 msgid "Error! Fetching table index list failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3603
+#: lib/util/DBUtil.php:3607
 #, php-format
 msgid ""
 "%1$s: unable to limit tablename [%2$s] because database prefix is too long "
@@ -5759,7 +5850,7 @@ msgstr ""
 msgid "%s: Invalid join information!"
 msgstr ""
 
-#: lib/util/SessionUtil.php:266
+#: lib/util/SessionUtil.php:267
 msgid ""
 "Error! This use of 'SessionUtil::setVar()' is no longer valid. Please use "
 "the LogUtil API to manipulate status messages and error messages."
@@ -5924,36 +6015,40 @@ msgstr ""
 msgid "Moderate access"
 msgstr ""
 
-#: lib/util/DoctrineUtil.php:27
+#: lib/util/DoctrineUtil.php:34
 #, php-format
 msgid "Static class %s cannot be instanciated"
 msgstr ""
 
-#: lib/util/DoctrineUtil.php:363
+#: lib/util/DoctrineUtil.php:370
 #, php-format
 msgid "Class %s cannot be found."
 msgstr ""
 
-#: lib/util/SystemListenersUtil.php:170
+#: lib/util/SystemListenersUtil.php:171
 #, php-format
-msgid "%s: %s in %s line %s"
+msgid ""
+"PHP issued an error at line 0, so reporting entire trace to be more helpful: "
+"%1$s: %2$s"
 msgstr ""
 
-#: lib/util/SystemListenersUtil.php:224
+#: lib/util/SystemListenersUtil.php:179
+#, php-format
+msgid "traced in %1$s line %2$s"
+msgstr ""
+
+#: lib/util/SystemListenersUtil.php:183
+#, php-format
+msgid "%1$s: %2$s in %3$s line %4$s"
+msgstr ""
+
+#: lib/util/SystemListenersUtil.php:227
 #, php-format
 msgid "SQL Query: %s took %s sec"
 msgstr ""
 
-#: lib/util/SystemListenersUtil.php:396
-#: system/Modules/templates/modules_hookui_providers.tpl:10
-#: system/Modules/templates/modules_hookui_providers.tpl:11
-msgid "Hook Providers"
-msgstr ""
-
-#: lib/util/SystemListenersUtil.php:401
-#: system/Modules/templates/modules_hookui_subscribers.tpl:12
-#: system/Modules/templates/modules_hookui_subscribers.tpl:13
-msgid "Hook Subscribers"
+#: lib/util/SystemListenersUtil.php:408
+msgid "Services"
 msgstr ""
 
 #: lib/Zikula/DebugToolbar/Panel/RenderTime.php:53
@@ -6050,7 +6145,7 @@ msgstr ""
 
 #: lib/Zikula/DebugToolbar/Panel/Log.php:93
 #: system/Mailer/templates/mailer_admin_testconfig.tpl:48
-#: system/Users/templates/users_admin_listusers.tpl:85
+#: system/Users/templates/users_admin_listusers.tpl:86
 msgid "Message"
 msgstr ""
 
@@ -6106,7 +6201,7 @@ msgstr ""
 msgid "Query"
 msgstr ""
 
-#: lib/Zikula/Block.php:86 lib/Zikula/Controller.php:87
+#: lib/Zikula/Block.php:86 lib/Zikula/Controller.php:118
 #, php-format
 msgid "%1$s::%2$s() does not exist."
 msgstr ""
@@ -6115,12 +6210,19 @@ msgstr ""
 msgid "You have been logged out."
 msgstr ""
 
-#: lib/Zikula/Response/Ajax/Error.php:30
+#: lib/Zikula/Response/Ajax/Error.php:46
 msgid "An unknown error occurred"
 msgstr ""
 
 #: lib/Zikula/InteractiveInstaller.php:61
 msgid "This doesnt appear to be an interactive session."
+msgstr ""
+
+#: lib/Zikula/Controller.php:93 lib/Form/Handler.php:197
+#, php-format
+msgid ""
+"%s is not an instance of Zikula_Controller, the $args['controller'] argument "
+"must be the controller who is notifying these hooks"
 msgstr ""
 
 #: lib/Zikula/Version.php:383
@@ -6146,22 +6248,22 @@ msgstr ""
 msgid "Hook provider area %s does not exist"
 msgstr ""
 
-#: lib/Zikula/View.php:1010
+#: lib/Zikula/View.php:1029
 #, php-format
 msgid "%s is a protected template variable and may not be assigned"
 msgstr ""
 
-#: lib/Zikula/View.php:2121
+#: lib/Zikula/View.php:2143
 #, php-format
 msgid "%s does not exist as as assigned variable"
 msgstr ""
 
-#: lib/Zikula/View.php:2366
+#: lib/Zikula/View.php:2388
 #, php-format
 msgid "zikula_view.template_override returned a non-existent template path %s"
 msgstr ""
 
-#: lib/Zikula/View.php:2412
+#: lib/Zikula/View.php:2434
 #, php-format
 msgid "Error! The template [%1$s] is not available in the [%2$s] module."
 msgstr ""
@@ -6328,2153 +6430,2153 @@ msgstr ""
 msgid "Error! The requested language %s is not available."
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:640
+#: lib/i18n/ZLanguage.php:645
 #, php-format
 msgid "Error! Could not set encoding based on database character set '%s'."
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:802
+#: lib/i18n/ZLanguage.php:807
 msgid "Afar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:803
+#: lib/i18n/ZLanguage.php:808
 msgid "Abkhazian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:804
+#: lib/i18n/ZLanguage.php:809
 msgid "Avestan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:805 lib/i18n/ZLanguage.php:1250
+#: lib/i18n/ZLanguage.php:810 lib/i18n/ZLanguage.php:1255
 msgid "Afrikaans"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:806
+#: lib/i18n/ZLanguage.php:811
 msgid "Akan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:807
+#: lib/i18n/ZLanguage.php:812
 msgid "Amharic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:808
+#: lib/i18n/ZLanguage.php:813
 msgid "Aragonese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:809 lib/i18n/ZLanguage.php:1251
+#: lib/i18n/ZLanguage.php:814 lib/i18n/ZLanguage.php:1256
 msgid "Arabic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:810
+#: lib/i18n/ZLanguage.php:815
 msgid "Assamese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:811
+#: lib/i18n/ZLanguage.php:816
 msgid "Avaric"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:812
+#: lib/i18n/ZLanguage.php:817
 msgid "Aymara"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:813
+#: lib/i18n/ZLanguage.php:818
 msgid "Azerbaijani"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:814
+#: lib/i18n/ZLanguage.php:819
 msgid "Bashkir"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:815 lib/i18n/ZLanguage.php:1269
+#: lib/i18n/ZLanguage.php:820 lib/i18n/ZLanguage.php:1274
 msgid "Belarusian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:816 lib/i18n/ZLanguage.php:1271
+#: lib/i18n/ZLanguage.php:821 lib/i18n/ZLanguage.php:1276
 msgid "Bulgarian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:817
+#: lib/i18n/ZLanguage.php:822
 msgid "Bihari"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:818
+#: lib/i18n/ZLanguage.php:823
 msgid "Bislama"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:819
+#: lib/i18n/ZLanguage.php:824
 msgid "Bambara"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:820
+#: lib/i18n/ZLanguage.php:825
 msgid "Bengali"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:821
+#: lib/i18n/ZLanguage.php:826
 msgid "Tibetan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:822
+#: lib/i18n/ZLanguage.php:827
 msgid "Breton"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:823
+#: lib/i18n/ZLanguage.php:828
 msgid "Bosnian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:824 lib/i18n/ZLanguage.php:1274
+#: lib/i18n/ZLanguage.php:829 lib/i18n/ZLanguage.php:1279
 msgid "Catalan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:825
+#: lib/i18n/ZLanguage.php:830
 msgid "Chechen"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:826
+#: lib/i18n/ZLanguage.php:831
 msgid "Chamorro"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:827
+#: lib/i18n/ZLanguage.php:832
 msgid "Corsican"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:828
+#: lib/i18n/ZLanguage.php:833
 msgid "Cree"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:829 lib/i18n/ZLanguage.php:1276
+#: lib/i18n/ZLanguage.php:834 lib/i18n/ZLanguage.php:1281
 msgid "Czech"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:830
+#: lib/i18n/ZLanguage.php:835
 msgid "Church Slavic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:831
+#: lib/i18n/ZLanguage.php:836
 msgid "Chuvash"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:832
+#: lib/i18n/ZLanguage.php:837
 msgid "Welsh"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:833 lib/i18n/ZLanguage.php:1278
+#: lib/i18n/ZLanguage.php:838 lib/i18n/ZLanguage.php:1283
 msgid "Danish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:834 lib/i18n/ZLanguage.php:1280
+#: lib/i18n/ZLanguage.php:839 lib/i18n/ZLanguage.php:1285
 msgid "German"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:835
+#: lib/i18n/ZLanguage.php:840
 msgid "Divehi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:836
+#: lib/i18n/ZLanguage.php:841
 msgid "Dzongkha"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:837
+#: lib/i18n/ZLanguage.php:842
 msgid "Ewe"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:838 lib/i18n/ZLanguage.php:1285
+#: lib/i18n/ZLanguage.php:843 lib/i18n/ZLanguage.php:1290
 msgid "Greek"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:839 lib/i18n/ZLanguage.php:1288
+#: lib/i18n/ZLanguage.php:844 lib/i18n/ZLanguage.php:1293
 msgid "English"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:840
+#: lib/i18n/ZLanguage.php:845
 msgid "Esperanto"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:841 lib/i18n/ZLanguage.php:1300
+#: lib/i18n/ZLanguage.php:846 lib/i18n/ZLanguage.php:1305
 msgid "Spanish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:842 lib/i18n/ZLanguage.php:1321
+#: lib/i18n/ZLanguage.php:847 lib/i18n/ZLanguage.php:1326
 msgid "Estonian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:843 lib/i18n/ZLanguage.php:1323
+#: lib/i18n/ZLanguage.php:848 lib/i18n/ZLanguage.php:1328
 msgid "Basque"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:844 lib/i18n/ZLanguage.php:1324
+#: lib/i18n/ZLanguage.php:849 lib/i18n/ZLanguage.php:1329
 msgid "Persian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:845
+#: lib/i18n/ZLanguage.php:850
 msgid "Fulah"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:846 lib/i18n/ZLanguage.php:1325
+#: lib/i18n/ZLanguage.php:851 lib/i18n/ZLanguage.php:1330
 msgid "Finnish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:847
+#: lib/i18n/ZLanguage.php:852
 msgid "Fijian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:848
+#: lib/i18n/ZLanguage.php:853
 msgid "Faroese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:849 lib/i18n/ZLanguage.php:1327
+#: lib/i18n/ZLanguage.php:854 lib/i18n/ZLanguage.php:1332
 msgid "French"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:850
+#: lib/i18n/ZLanguage.php:855
 msgid "Frisian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:851 lib/i18n/ZLanguage.php:1334
+#: lib/i18n/ZLanguage.php:856 lib/i18n/ZLanguage.php:1339
 msgid "Irish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:852
+#: lib/i18n/ZLanguage.php:857
 msgid "Scottish Gaelic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:853 lib/i18n/ZLanguage.php:1336
+#: lib/i18n/ZLanguage.php:858 lib/i18n/ZLanguage.php:1341
 msgid "Galician"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:854
+#: lib/i18n/ZLanguage.php:859
 msgid "Guarani"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:855
+#: lib/i18n/ZLanguage.php:860
 msgid "Gujarati"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:856
+#: lib/i18n/ZLanguage.php:861
 msgid "Manx"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:857
+#: lib/i18n/ZLanguage.php:862
 msgid "Hausa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:858
+#: lib/i18n/ZLanguage.php:863
 msgid "Hawaiian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:859 lib/i18n/ZLanguage.php:1351
+#: lib/i18n/ZLanguage.php:864 lib/i18n/ZLanguage.php:1356
 msgid "Hebrew"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:860 lib/i18n/ZLanguage.php:1337
+#: lib/i18n/ZLanguage.php:865 lib/i18n/ZLanguage.php:1342
 msgid "Hindi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:861
+#: lib/i18n/ZLanguage.php:866
 msgid "Hiri Motu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:862 lib/i18n/ZLanguage.php:1339
+#: lib/i18n/ZLanguage.php:867 lib/i18n/ZLanguage.php:1344
 msgid "Croatian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:863
+#: lib/i18n/ZLanguage.php:868
 msgid "Haitian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:864 lib/i18n/ZLanguage.php:1341
+#: lib/i18n/ZLanguage.php:869 lib/i18n/ZLanguage.php:1346
 msgid "Hungarian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:865
+#: lib/i18n/ZLanguage.php:870
 msgid "Armenian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:866
+#: lib/i18n/ZLanguage.php:871
 msgid "Herero"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:867
+#: lib/i18n/ZLanguage.php:872
 msgid "Interlingua"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:868 lib/i18n/ZLanguage.php:1343
-#: lib/i18n/ZLanguage.php:1344
+#: lib/i18n/ZLanguage.php:873 lib/i18n/ZLanguage.php:1348
+#: lib/i18n/ZLanguage.php:1349
 msgid "Indonesian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:869
+#: lib/i18n/ZLanguage.php:874
 msgid "Interlingue"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:870
+#: lib/i18n/ZLanguage.php:875
 msgid "Igbo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:871
+#: lib/i18n/ZLanguage.php:876
 msgid "Sichuan Yi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:872
+#: lib/i18n/ZLanguage.php:877
 msgid "Inupiaq"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:873
+#: lib/i18n/ZLanguage.php:878
 msgid "Ido"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:874 lib/i18n/ZLanguage.php:1346
+#: lib/i18n/ZLanguage.php:879 lib/i18n/ZLanguage.php:1351
 msgid "Icelandic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:875 lib/i18n/ZLanguage.php:1348
+#: lib/i18n/ZLanguage.php:880 lib/i18n/ZLanguage.php:1353
 msgid "Italian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:876
+#: lib/i18n/ZLanguage.php:881
 msgid "Inuktitut"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:877
+#: lib/i18n/ZLanguage.php:882
 msgid "Javanese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:878 lib/i18n/ZLanguage.php:1353
+#: lib/i18n/ZLanguage.php:883 lib/i18n/ZLanguage.php:1358
 msgid "Japanese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:879 lib/i18n/ZLanguage.php:1355
+#: lib/i18n/ZLanguage.php:884 lib/i18n/ZLanguage.php:1360
 msgid "Georgian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:880
+#: lib/i18n/ZLanguage.php:885
 msgid "Kongo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:881
+#: lib/i18n/ZLanguage.php:886
 msgid "Kikuyu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:882
+#: lib/i18n/ZLanguage.php:887
 msgid "Kwanyama"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:883
+#: lib/i18n/ZLanguage.php:888
 msgid "Kazakh"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:884
+#: lib/i18n/ZLanguage.php:889
 msgid "Kalaallisut"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:885
+#: lib/i18n/ZLanguage.php:890
 msgid "Khmer"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:886
+#: lib/i18n/ZLanguage.php:891
 msgid "Kannada"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:887 lib/i18n/ZLanguage.php:1356
+#: lib/i18n/ZLanguage.php:892 lib/i18n/ZLanguage.php:1361
 msgid "Korean"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:888
+#: lib/i18n/ZLanguage.php:893
 msgid "Kanuri"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:889
+#: lib/i18n/ZLanguage.php:894
 msgid "Kashmiri"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:890
+#: lib/i18n/ZLanguage.php:895
 msgid "Kurdish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:891
+#: lib/i18n/ZLanguage.php:896
 msgid "Komi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:892
+#: lib/i18n/ZLanguage.php:897
 msgid "Cornish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:893
+#: lib/i18n/ZLanguage.php:898
 msgid "Kirghiz"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:894
+#: lib/i18n/ZLanguage.php:899
 msgid "Latin"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:895
+#: lib/i18n/ZLanguage.php:900
 msgid "Luxembourgish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:896
+#: lib/i18n/ZLanguage.php:901
 msgid "Ganda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:897
+#: lib/i18n/ZLanguage.php:902
 msgid "Limburgish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:898
+#: lib/i18n/ZLanguage.php:903
 msgid "Lingala"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:899
+#: lib/i18n/ZLanguage.php:904
 msgid "Lao"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:900 lib/i18n/ZLanguage.php:1358
+#: lib/i18n/ZLanguage.php:905 lib/i18n/ZLanguage.php:1363
 msgid "Lithuanian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:901
+#: lib/i18n/ZLanguage.php:906
 msgid "Luba-Katanga"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:902 lib/i18n/ZLanguage.php:1360
+#: lib/i18n/ZLanguage.php:907 lib/i18n/ZLanguage.php:1365
 msgid "Latvian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:903
+#: lib/i18n/ZLanguage.php:908
 msgid "Malagasy"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:904
+#: lib/i18n/ZLanguage.php:909
 msgid "Marshallese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:905
+#: lib/i18n/ZLanguage.php:910
 msgid "Maori"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:906 lib/i18n/ZLanguage.php:1362
+#: lib/i18n/ZLanguage.php:911 lib/i18n/ZLanguage.php:1367
 msgid "Macedonian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:907 lib/i18n/ZLanguage.php:1364
+#: lib/i18n/ZLanguage.php:912 lib/i18n/ZLanguage.php:1369
 msgid "Malayalam"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:908
+#: lib/i18n/ZLanguage.php:913
 msgid "Mongolian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:909
+#: lib/i18n/ZLanguage.php:914
 msgid "Marathi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:910 lib/i18n/ZLanguage.php:1365
+#: lib/i18n/ZLanguage.php:915 lib/i18n/ZLanguage.php:1370
 msgid "Malay"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:911 lib/i18n/ZLanguage.php:1367
+#: lib/i18n/ZLanguage.php:916 lib/i18n/ZLanguage.php:1372
 msgid "Maltese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:912
+#: lib/i18n/ZLanguage.php:917
 msgid "Burmese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:913 lib/i18n/ZLanguage.php:1160
+#: lib/i18n/ZLanguage.php:918 lib/i18n/ZLanguage.php:1165
 msgid "Nauru"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:914
+#: lib/i18n/ZLanguage.php:919
 msgid "Norwegian Bokmal"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:915
+#: lib/i18n/ZLanguage.php:920
 msgid "North Ndebele"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:916 lib/i18n/ZLanguage.php:1370
+#: lib/i18n/ZLanguage.php:921 lib/i18n/ZLanguage.php:1375
 msgid "Nepali"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:917
+#: lib/i18n/ZLanguage.php:922
 msgid "Ndonga"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:918 lib/i18n/ZLanguage.php:1371
+#: lib/i18n/ZLanguage.php:923 lib/i18n/ZLanguage.php:1376
 msgid "Dutch"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:919
+#: lib/i18n/ZLanguage.php:924
 msgid "Norwegian Nynorsk"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:920 lib/i18n/ZLanguage.php:1374
+#: lib/i18n/ZLanguage.php:925 lib/i18n/ZLanguage.php:1379
 msgid "Norwegian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:921
+#: lib/i18n/ZLanguage.php:926
 msgid "South Ndebele"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:922
+#: lib/i18n/ZLanguage.php:927
 msgid "Navajo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:923
+#: lib/i18n/ZLanguage.php:928
 msgid "Chichewa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:924
+#: lib/i18n/ZLanguage.php:929
 msgid "Occitan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:925
+#: lib/i18n/ZLanguage.php:930
 msgid "Ojibwa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:926
+#: lib/i18n/ZLanguage.php:931
 msgid "Oromo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:927
+#: lib/i18n/ZLanguage.php:932
 msgid "Oriya"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:928
+#: lib/i18n/ZLanguage.php:933
 msgid "Ossetian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:929
+#: lib/i18n/ZLanguage.php:934
 msgid "Panjabi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:930
+#: lib/i18n/ZLanguage.php:935
 msgid "Pali"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:931 lib/i18n/ZLanguage.php:1377
+#: lib/i18n/ZLanguage.php:936 lib/i18n/ZLanguage.php:1382
 msgid "Polish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:932
+#: lib/i18n/ZLanguage.php:937
 msgid "Pushto"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:933 lib/i18n/ZLanguage.php:1379
+#: lib/i18n/ZLanguage.php:938 lib/i18n/ZLanguage.php:1384
 msgid "Portuguese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:934
+#: lib/i18n/ZLanguage.php:939
 msgid "Quechua"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:935
+#: lib/i18n/ZLanguage.php:940
 msgid "Raeto-Romance"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:936
+#: lib/i18n/ZLanguage.php:941
 msgid "Rundi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:937 lib/i18n/ZLanguage.php:1382
+#: lib/i18n/ZLanguage.php:942 lib/i18n/ZLanguage.php:1387
 msgid "Romanian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:938 lib/i18n/ZLanguage.php:1384
+#: lib/i18n/ZLanguage.php:943 lib/i18n/ZLanguage.php:1389
 msgid "Russian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:939
+#: lib/i18n/ZLanguage.php:944
 msgid "Kinyarwanda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:940
+#: lib/i18n/ZLanguage.php:945
 msgid "Sanskrit"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:941
+#: lib/i18n/ZLanguage.php:946
 msgid "Sardinian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:942
+#: lib/i18n/ZLanguage.php:947
 msgid "Sindhi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:943
+#: lib/i18n/ZLanguage.php:948
 msgid "Northern Sami"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:944
+#: lib/i18n/ZLanguage.php:949
 msgid "Sango"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:945
+#: lib/i18n/ZLanguage.php:950
 msgid "Sinhalese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:946 lib/i18n/ZLanguage.php:1386
+#: lib/i18n/ZLanguage.php:951 lib/i18n/ZLanguage.php:1391
 msgid "Slovak"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:947 lib/i18n/ZLanguage.php:1388
+#: lib/i18n/ZLanguage.php:952 lib/i18n/ZLanguage.php:1393
 msgid "Slovenian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:948
+#: lib/i18n/ZLanguage.php:953
 msgid "Samoan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:949
+#: lib/i18n/ZLanguage.php:954
 msgid "Shona"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:950
+#: lib/i18n/ZLanguage.php:955
 msgid "Somali"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:951 lib/i18n/ZLanguage.php:1390
+#: lib/i18n/ZLanguage.php:956 lib/i18n/ZLanguage.php:1395
 msgid "Albanian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:952 lib/i18n/ZLanguage.php:1392
+#: lib/i18n/ZLanguage.php:957 lib/i18n/ZLanguage.php:1397
 msgid "Serbian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:953
+#: lib/i18n/ZLanguage.php:958
 msgid "Swati"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:954
+#: lib/i18n/ZLanguage.php:959
 msgid "Southern Sotho"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:955
+#: lib/i18n/ZLanguage.php:960
 msgid "Sundanese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:956 lib/i18n/ZLanguage.php:1398
+#: lib/i18n/ZLanguage.php:961 lib/i18n/ZLanguage.php:1403
 msgid "Swedish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:957
+#: lib/i18n/ZLanguage.php:962
 msgid "Swahili"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:958
+#: lib/i18n/ZLanguage.php:963
 msgid "Tamil"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:959
+#: lib/i18n/ZLanguage.php:964
 msgid "Telugu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:960
+#: lib/i18n/ZLanguage.php:965
 msgid "Tajik"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:961 lib/i18n/ZLanguage.php:1400
+#: lib/i18n/ZLanguage.php:966 lib/i18n/ZLanguage.php:1405
 msgid "Thai"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:962
+#: lib/i18n/ZLanguage.php:967
 msgid "Tigrinya"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:963
+#: lib/i18n/ZLanguage.php:968
 msgid "Turkmen"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:964
+#: lib/i18n/ZLanguage.php:969
 msgid "Tagalog"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:965
+#: lib/i18n/ZLanguage.php:970
 msgid "Tswana"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:966 lib/i18n/ZLanguage.php:1210
+#: lib/i18n/ZLanguage.php:971 lib/i18n/ZLanguage.php:1215
 msgid "Tonga"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:967 lib/i18n/ZLanguage.php:1403
+#: lib/i18n/ZLanguage.php:972 lib/i18n/ZLanguage.php:1408
 msgid "Turkish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:968
+#: lib/i18n/ZLanguage.php:973
 msgid "Tsonga"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:969
+#: lib/i18n/ZLanguage.php:974
 msgid "Tatar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:970
+#: lib/i18n/ZLanguage.php:975
 msgid "Twi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:971
+#: lib/i18n/ZLanguage.php:976
 msgid "Tahitian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:972
+#: lib/i18n/ZLanguage.php:977
 msgid "Uighur"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:973 lib/i18n/ZLanguage.php:1405
+#: lib/i18n/ZLanguage.php:978 lib/i18n/ZLanguage.php:1410
 msgid "Ukrainian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:974
+#: lib/i18n/ZLanguage.php:979
 msgid "Urdu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:975
+#: lib/i18n/ZLanguage.php:980
 msgid "Uzbek"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:976
+#: lib/i18n/ZLanguage.php:981
 msgid "Venda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:977 lib/i18n/ZLanguage.php:1407
+#: lib/i18n/ZLanguage.php:982 lib/i18n/ZLanguage.php:1412
 msgid "Vietnamese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:978
+#: lib/i18n/ZLanguage.php:983
 msgid "Volapuk"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:979
+#: lib/i18n/ZLanguage.php:984
 msgid "Walloon"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:980 lib/i18n/ZLanguage.php:1409
+#: lib/i18n/ZLanguage.php:985 lib/i18n/ZLanguage.php:1414
 msgid "Wolof"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:981
+#: lib/i18n/ZLanguage.php:986
 msgid "Xhosa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:982
+#: lib/i18n/ZLanguage.php:987
 msgid "Yiddish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:983
+#: lib/i18n/ZLanguage.php:988
 msgid "Yoruba"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:984
+#: lib/i18n/ZLanguage.php:989
 msgid "Zhuang"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:985 lib/i18n/ZLanguage.php:1410
+#: lib/i18n/ZLanguage.php:990 lib/i18n/ZLanguage.php:1415
 msgid "Chinese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:986
+#: lib/i18n/ZLanguage.php:991
 msgid "Zulu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:997
+#: lib/i18n/ZLanguage.php:1002
 msgid "Andorra"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:998
+#: lib/i18n/ZLanguage.php:1003
 msgid "United Arab Emirates"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:999
+#: lib/i18n/ZLanguage.php:1004
 msgid "Afghanistan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1000
+#: lib/i18n/ZLanguage.php:1005
 msgid "Antigua & Barbuda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1001
+#: lib/i18n/ZLanguage.php:1006
 msgid "Anguilla"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1002
+#: lib/i18n/ZLanguage.php:1007
 msgid "Albania"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1003
+#: lib/i18n/ZLanguage.php:1008
 msgid "Armenia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1004
+#: lib/i18n/ZLanguage.php:1009
 msgid "Netherlands Antilles"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1005
+#: lib/i18n/ZLanguage.php:1010
 msgid "Angola"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1006
+#: lib/i18n/ZLanguage.php:1011
 msgid "Antarctica"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1007
+#: lib/i18n/ZLanguage.php:1012
 msgid "Argentina"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1008
+#: lib/i18n/ZLanguage.php:1013
 msgid "American Samoa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1009
+#: lib/i18n/ZLanguage.php:1014
 msgid "Austria"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1010
+#: lib/i18n/ZLanguage.php:1015
 msgid "Australia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1011
+#: lib/i18n/ZLanguage.php:1016
 msgid "Aruba"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1012
+#: lib/i18n/ZLanguage.php:1017
 msgid "Aland Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1013
+#: lib/i18n/ZLanguage.php:1018
 msgid "Azerbaijan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1014
+#: lib/i18n/ZLanguage.php:1019
 msgid "Bosnia and Herzegovina"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1015
+#: lib/i18n/ZLanguage.php:1020
 msgid "Barbados"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1016
+#: lib/i18n/ZLanguage.php:1021
 msgid "Bangladesh"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1017
+#: lib/i18n/ZLanguage.php:1022
 msgid "Belgium"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1018
+#: lib/i18n/ZLanguage.php:1023
 msgid "Burkina Faso"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1019
+#: lib/i18n/ZLanguage.php:1024
 msgid "Bulgaria"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1020
+#: lib/i18n/ZLanguage.php:1025
 msgid "Bahrain"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1021
+#: lib/i18n/ZLanguage.php:1026
 msgid "Burundi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1022
+#: lib/i18n/ZLanguage.php:1027
 msgid "Benin"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1023
+#: lib/i18n/ZLanguage.php:1028
 msgid "Bermuda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1024
+#: lib/i18n/ZLanguage.php:1029
 msgid "Brunei Darussalam"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1025
+#: lib/i18n/ZLanguage.php:1030
 msgid "Bolivia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1026
+#: lib/i18n/ZLanguage.php:1031
 msgid "Brazil"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1027
+#: lib/i18n/ZLanguage.php:1032
 msgid "Bahama"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1028
+#: lib/i18n/ZLanguage.php:1033
 msgid "Bhutan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1029
+#: lib/i18n/ZLanguage.php:1034
 msgid "Bouvet Island"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1030
+#: lib/i18n/ZLanguage.php:1035
 msgid "Botswana"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1031
+#: lib/i18n/ZLanguage.php:1036
 msgid "Belarus"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1032
+#: lib/i18n/ZLanguage.php:1037
 msgid "Belize"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1033
+#: lib/i18n/ZLanguage.php:1038
 msgid "Canada"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1034
+#: lib/i18n/ZLanguage.php:1039
 msgid "Cocos (Keeling) Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1035
+#: lib/i18n/ZLanguage.php:1040
 msgid "Central African Republic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1036
+#: lib/i18n/ZLanguage.php:1041
 msgid "Congo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1037
+#: lib/i18n/ZLanguage.php:1042
 msgid "Switzerland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1038
+#: lib/i18n/ZLanguage.php:1043
 msgid "Cote d'Ivoire (Ivory Coast)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1039
+#: lib/i18n/ZLanguage.php:1044
 msgid "Cook Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1040
+#: lib/i18n/ZLanguage.php:1045
 msgid "Chile"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1041
+#: lib/i18n/ZLanguage.php:1046
 msgid "Cameroon"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1042
+#: lib/i18n/ZLanguage.php:1047
 msgid "China"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1043
+#: lib/i18n/ZLanguage.php:1048
 msgid "Colombia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1044
+#: lib/i18n/ZLanguage.php:1049
 msgid "Costa Rica"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1045
+#: lib/i18n/ZLanguage.php:1050
 msgid "Cuba"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1046
+#: lib/i18n/ZLanguage.php:1051
 msgid "Cape Verde"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1047
+#: lib/i18n/ZLanguage.php:1052
 msgid "Christmas Island"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1048
+#: lib/i18n/ZLanguage.php:1053
 msgid "Cyprus"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1049
+#: lib/i18n/ZLanguage.php:1054
 msgid "Czech Republic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1050
+#: lib/i18n/ZLanguage.php:1055
 msgid "Germany"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1051
+#: lib/i18n/ZLanguage.php:1056
 msgid "Djibouti"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1052
+#: lib/i18n/ZLanguage.php:1057
 msgid "Denmark"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1053
+#: lib/i18n/ZLanguage.php:1058
 msgid "Dominica"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1054
+#: lib/i18n/ZLanguage.php:1059
 msgid "Dominican Republic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1055
+#: lib/i18n/ZLanguage.php:1060
 msgid "Algeria"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1056
+#: lib/i18n/ZLanguage.php:1061
 msgid "Ecuador"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1057
+#: lib/i18n/ZLanguage.php:1062
 msgid "Estonia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1058
+#: lib/i18n/ZLanguage.php:1063
 msgid "Egypt"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1059
+#: lib/i18n/ZLanguage.php:1064
 msgid "Western Sahara"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1060
+#: lib/i18n/ZLanguage.php:1065
 msgid "Eritrea"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1061
+#: lib/i18n/ZLanguage.php:1066
 msgid "Spain"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1062
+#: lib/i18n/ZLanguage.php:1067
 msgid "Ethiopia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1063
+#: lib/i18n/ZLanguage.php:1068
 msgid "Finland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1064
+#: lib/i18n/ZLanguage.php:1069
 msgid "Fiji"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1065
+#: lib/i18n/ZLanguage.php:1070
 msgid "Falkland Islands (Malvinas)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1066
+#: lib/i18n/ZLanguage.php:1071
 msgid "Micronesia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1067
+#: lib/i18n/ZLanguage.php:1072
 msgid "Faroe Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1068
+#: lib/i18n/ZLanguage.php:1073
 msgid "France"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1069
+#: lib/i18n/ZLanguage.php:1074
 msgid "France, Metropolitan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1070
+#: lib/i18n/ZLanguage.php:1075
 msgid "Gabon"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1071
+#: lib/i18n/ZLanguage.php:1076
 msgid "United Kingdom (Great Britain)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1072
+#: lib/i18n/ZLanguage.php:1077
 msgid "Grenada"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1073
+#: lib/i18n/ZLanguage.php:1078
 msgid "Georgia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1074
+#: lib/i18n/ZLanguage.php:1079
 msgid "French Guiana"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1075
+#: lib/i18n/ZLanguage.php:1080
 msgid "Ghana"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1076
+#: lib/i18n/ZLanguage.php:1081
 msgid "Gibraltar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1077
+#: lib/i18n/ZLanguage.php:1082
 msgid "Greenland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1078
+#: lib/i18n/ZLanguage.php:1083
 msgid "Gambia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1079
+#: lib/i18n/ZLanguage.php:1084
 msgid "Guinea"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1080
+#: lib/i18n/ZLanguage.php:1085
 msgid "Guadeloupe"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1081
+#: lib/i18n/ZLanguage.php:1086
 msgid "Equatorial Guinea"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1082
+#: lib/i18n/ZLanguage.php:1087
 msgid "Greece"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1083
+#: lib/i18n/ZLanguage.php:1088
 msgid "South Georgia and the South Sandwich Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1084
+#: lib/i18n/ZLanguage.php:1089
 msgid "Guatemala"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1085
+#: lib/i18n/ZLanguage.php:1090
 msgid "Guam"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1086
+#: lib/i18n/ZLanguage.php:1091
 msgid "Guinea-Bissau"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1087
+#: lib/i18n/ZLanguage.php:1092
 msgid "Guyana"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1088
+#: lib/i18n/ZLanguage.php:1093
 msgid "Hong Kong"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1089
+#: lib/i18n/ZLanguage.php:1094
 msgid "Heard & McDonald Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1090
+#: lib/i18n/ZLanguage.php:1095
 msgid "Honduras"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1091
+#: lib/i18n/ZLanguage.php:1096
 msgid "Croatia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1092
+#: lib/i18n/ZLanguage.php:1097
 msgid "Haiti"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1093
+#: lib/i18n/ZLanguage.php:1098
 msgid "Hungary"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1094
+#: lib/i18n/ZLanguage.php:1099
 msgid "Indonesia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1095
+#: lib/i18n/ZLanguage.php:1100
 msgid "Ireland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1096
+#: lib/i18n/ZLanguage.php:1101
 msgid "Israel"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1097
+#: lib/i18n/ZLanguage.php:1102
 msgid "Isle of Man"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1098
+#: lib/i18n/ZLanguage.php:1103
 msgid "India"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1099
+#: lib/i18n/ZLanguage.php:1104
 msgid "British Indian Ocean Territory"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1100
+#: lib/i18n/ZLanguage.php:1105
 msgid "Iraq"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1101
+#: lib/i18n/ZLanguage.php:1106
 msgid "Islamic Republic of Iran"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1102
+#: lib/i18n/ZLanguage.php:1107
 msgid "Iceland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1103
+#: lib/i18n/ZLanguage.php:1108
 msgid "Italy"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1104
+#: lib/i18n/ZLanguage.php:1109
 msgid "Jamaica"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1105
+#: lib/i18n/ZLanguage.php:1110
 msgid "Jordan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1106
+#: lib/i18n/ZLanguage.php:1111
 msgid "Japan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1107
+#: lib/i18n/ZLanguage.php:1112
 msgid "Kenya"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1108
+#: lib/i18n/ZLanguage.php:1113
 msgid "Kyrgyzstan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1109
+#: lib/i18n/ZLanguage.php:1114
 msgid "Cambodia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1110
+#: lib/i18n/ZLanguage.php:1115
 msgid "Kiribati"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1111
+#: lib/i18n/ZLanguage.php:1116
 msgid "Comoros"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1112
+#: lib/i18n/ZLanguage.php:1117
 msgid "St. Kitts and Nevis"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1113
+#: lib/i18n/ZLanguage.php:1118
 msgid "Kosovo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1114
+#: lib/i18n/ZLanguage.php:1119
 msgid "Korea, Democratic People's Republic of"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1115
+#: lib/i18n/ZLanguage.php:1120
 msgid "Korea, Republic of"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1116
+#: lib/i18n/ZLanguage.php:1121
 msgid "Kuwait"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1117
+#: lib/i18n/ZLanguage.php:1122
 msgid "Cayman Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1118
+#: lib/i18n/ZLanguage.php:1123
 msgid "Kazakhstan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1119
+#: lib/i18n/ZLanguage.php:1124
 msgid "Lao People's Democratic Republic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1120
+#: lib/i18n/ZLanguage.php:1125
 msgid "Lebanon"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1121
+#: lib/i18n/ZLanguage.php:1126
 msgid "Saint Lucia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1122
+#: lib/i18n/ZLanguage.php:1127
 msgid "Liechtenstein"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1123
+#: lib/i18n/ZLanguage.php:1128
 msgid "Sri Lanka"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1124
+#: lib/i18n/ZLanguage.php:1129
 msgid "Liberia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1125
+#: lib/i18n/ZLanguage.php:1130
 msgid "Lesotho"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1126
+#: lib/i18n/ZLanguage.php:1131
 msgid "Lithuania"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1127
+#: lib/i18n/ZLanguage.php:1132
 msgid "Luxembourg"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1128
+#: lib/i18n/ZLanguage.php:1133
 msgid "Latvia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1129
+#: lib/i18n/ZLanguage.php:1134
 msgid "Libyan Arab Jamahiriya"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1130
+#: lib/i18n/ZLanguage.php:1135
 msgid "Morocco"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1131
+#: lib/i18n/ZLanguage.php:1136
 msgid "Monaco"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1132
+#: lib/i18n/ZLanguage.php:1137
 msgid "Moldova, Republic of"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1133
+#: lib/i18n/ZLanguage.php:1138
 msgid "Madagascar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1134
+#: lib/i18n/ZLanguage.php:1139
 msgid "Marshall Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1135
+#: lib/i18n/ZLanguage.php:1140
 msgid "Macedonia, the form Republic of"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1136
+#: lib/i18n/ZLanguage.php:1141
 msgid "Mali"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1137
+#: lib/i18n/ZLanguage.php:1142
 msgid "Mongolia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1138
+#: lib/i18n/ZLanguage.php:1143
 msgid "Myanmar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1139
+#: lib/i18n/ZLanguage.php:1144
 msgid "Macau"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1140
+#: lib/i18n/ZLanguage.php:1145
 msgid "Northern Mariana Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1141
+#: lib/i18n/ZLanguage.php:1146
 msgid "Martinique"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1142
+#: lib/i18n/ZLanguage.php:1147
 msgid "Mauritania"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1143
+#: lib/i18n/ZLanguage.php:1148
 msgid "Monserrat"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1144
+#: lib/i18n/ZLanguage.php:1149
 msgid "Malta"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1145
+#: lib/i18n/ZLanguage.php:1150
 msgid "Mauritius"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1146
+#: lib/i18n/ZLanguage.php:1151
 msgid "Maldives"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1147
+#: lib/i18n/ZLanguage.php:1152
 msgid "Malawi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1148
+#: lib/i18n/ZLanguage.php:1153
 msgid "Mexico"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1149
+#: lib/i18n/ZLanguage.php:1154
 msgid "Malaysia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1150
+#: lib/i18n/ZLanguage.php:1155
 msgid "Mozambique"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1151
+#: lib/i18n/ZLanguage.php:1156
 msgid "Namibia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1152
+#: lib/i18n/ZLanguage.php:1157
 msgid "New Caledonia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1153
+#: lib/i18n/ZLanguage.php:1158
 msgid "Niger"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1154
+#: lib/i18n/ZLanguage.php:1159
 msgid "Norfolk Island"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1155
+#: lib/i18n/ZLanguage.php:1160
 msgid "Nigeria"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1156
+#: lib/i18n/ZLanguage.php:1161
 msgid "Nicaragua"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1157
+#: lib/i18n/ZLanguage.php:1162
 msgid "Netherlands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1158
+#: lib/i18n/ZLanguage.php:1163
 msgid "Norway"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1159
+#: lib/i18n/ZLanguage.php:1164
 msgid "Nepal"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1161
+#: lib/i18n/ZLanguage.php:1166
 msgid "Niue"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1162
+#: lib/i18n/ZLanguage.php:1167
 msgid "New Zealand"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1163
+#: lib/i18n/ZLanguage.php:1168
 msgid "Oman"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1164
+#: lib/i18n/ZLanguage.php:1169
 msgid "Panama"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1165
+#: lib/i18n/ZLanguage.php:1170
 msgid "Peru"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1166
+#: lib/i18n/ZLanguage.php:1171
 msgid "French Polynesia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1167
+#: lib/i18n/ZLanguage.php:1172
 msgid "Papua New Guinea"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1168
+#: lib/i18n/ZLanguage.php:1173
 msgid "Philippines"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1169
+#: lib/i18n/ZLanguage.php:1174
 msgid "Pakistan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1170
+#: lib/i18n/ZLanguage.php:1175
 msgid "Poland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1171
+#: lib/i18n/ZLanguage.php:1176
 msgid "St. Pierre & Miquelon"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1172
+#: lib/i18n/ZLanguage.php:1177
 msgid "Pitcairn"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1173
+#: lib/i18n/ZLanguage.php:1178
 msgid "Puerto Rico"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1174
+#: lib/i18n/ZLanguage.php:1179
 msgid "Portugal"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1175
+#: lib/i18n/ZLanguage.php:1180
 msgid "Palau"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1176
+#: lib/i18n/ZLanguage.php:1181
 msgid "Paraguay"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1177
+#: lib/i18n/ZLanguage.php:1182
 msgid "Qatar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1178
+#: lib/i18n/ZLanguage.php:1183
 msgid "Reunion"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1179
+#: lib/i18n/ZLanguage.php:1184
 msgid "Romania"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1180
+#: lib/i18n/ZLanguage.php:1185
 msgid "Serbia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1181
+#: lib/i18n/ZLanguage.php:1186
 msgid "Russian Federation"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1182
+#: lib/i18n/ZLanguage.php:1187
 msgid "Rwanda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1183
+#: lib/i18n/ZLanguage.php:1188
 msgid "Saudi Arabia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1184
+#: lib/i18n/ZLanguage.php:1189
 msgid "Solomon Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1185
+#: lib/i18n/ZLanguage.php:1190
 msgid "Seychelles"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1186
+#: lib/i18n/ZLanguage.php:1191
 msgid "Sudan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1187
+#: lib/i18n/ZLanguage.php:1192
 msgid "Sweden"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1188
+#: lib/i18n/ZLanguage.php:1193
 msgid "Singapore"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1189
+#: lib/i18n/ZLanguage.php:1194
 msgid "St. Helena"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1190
+#: lib/i18n/ZLanguage.php:1195
 msgid "Slovenia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1191
+#: lib/i18n/ZLanguage.php:1196
 msgid "Svalbard & Jan Mayen Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1192
+#: lib/i18n/ZLanguage.php:1197
 msgid "Slovakia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1193
+#: lib/i18n/ZLanguage.php:1198
 msgid "Sierra Leone"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1194
+#: lib/i18n/ZLanguage.php:1199
 msgid "San Marino"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1195
+#: lib/i18n/ZLanguage.php:1200
 msgid "Senegal"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1196
+#: lib/i18n/ZLanguage.php:1201
 msgid "Somalia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1197
+#: lib/i18n/ZLanguage.php:1202
 msgid "Suriname"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1198
+#: lib/i18n/ZLanguage.php:1203
 msgid "Sao Tome & Principe"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1199
+#: lib/i18n/ZLanguage.php:1204
 msgid "Syrian Arab Republic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1200
+#: lib/i18n/ZLanguage.php:1205
 msgid "Swaziland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1201
+#: lib/i18n/ZLanguage.php:1206
 msgid "Turks & Caicos Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1202
+#: lib/i18n/ZLanguage.php:1207
 msgid "Chad"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1203
+#: lib/i18n/ZLanguage.php:1208
 msgid "French Southern Territories"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1204
+#: lib/i18n/ZLanguage.php:1209
 msgid "Togo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1205
+#: lib/i18n/ZLanguage.php:1210
 msgid "Thailand"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1206
+#: lib/i18n/ZLanguage.php:1211
 msgid "Tajikistan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1207
+#: lib/i18n/ZLanguage.php:1212
 msgid "Tokelau"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1208
+#: lib/i18n/ZLanguage.php:1213
 msgid "Turkmenistan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1209
+#: lib/i18n/ZLanguage.php:1214
 msgid "Tunisia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1211
+#: lib/i18n/ZLanguage.php:1216
 msgid "East Timor"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1212
+#: lib/i18n/ZLanguage.php:1217
 msgid "Turkey"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1213
+#: lib/i18n/ZLanguage.php:1218
 msgid "Trinidad & Tobago"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1214
+#: lib/i18n/ZLanguage.php:1219
 msgid "Tuvalu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1215
+#: lib/i18n/ZLanguage.php:1220
 msgid "Taiwan, Province of China"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1216
+#: lib/i18n/ZLanguage.php:1221
 msgid "Tanzania, United Republic of"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1217
+#: lib/i18n/ZLanguage.php:1222
 msgid "Ukraine"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1218
+#: lib/i18n/ZLanguage.php:1223
 msgid "Uganda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1219
+#: lib/i18n/ZLanguage.php:1224
 msgid "United States Minor Outlying Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1220
+#: lib/i18n/ZLanguage.php:1225
 msgid "United States of America"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1221
+#: lib/i18n/ZLanguage.php:1226
 msgid "Uruguay"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1222
+#: lib/i18n/ZLanguage.php:1227
 msgid "Uzbekistan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1223
+#: lib/i18n/ZLanguage.php:1228
 msgid "Vatican City State (Holy See)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1224
+#: lib/i18n/ZLanguage.php:1229
 msgid "St. Vincent & the Grenadines"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1225
+#: lib/i18n/ZLanguage.php:1230
 msgid "Venezuela"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1226
+#: lib/i18n/ZLanguage.php:1231
 msgid "British Virgin Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1227
+#: lib/i18n/ZLanguage.php:1232
 msgid "United States Virgin Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1228
+#: lib/i18n/ZLanguage.php:1233
 msgid "Vietnam"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1229
+#: lib/i18n/ZLanguage.php:1234
 msgid "Vanuatu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1230
+#: lib/i18n/ZLanguage.php:1235
 msgid "Wallis & Futuna Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1231
+#: lib/i18n/ZLanguage.php:1236
 msgid "Samoa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1232
+#: lib/i18n/ZLanguage.php:1237
 msgid "Yemen"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1233
+#: lib/i18n/ZLanguage.php:1238
 msgid "Mayotte"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1234
+#: lib/i18n/ZLanguage.php:1239
 msgid "South Africa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1235
+#: lib/i18n/ZLanguage.php:1240
 msgid "Zambia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1236
+#: lib/i18n/ZLanguage.php:1241
 msgid "Zaire"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1237
+#: lib/i18n/ZLanguage.php:1242
 msgid "Zimbabwe"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1238
+#: lib/i18n/ZLanguage.php:1243
 msgid "Unknown or unspecified country"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1252
+#: lib/i18n/ZLanguage.php:1257
 msgid "Arabic (United Arab Emirates)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1253
+#: lib/i18n/ZLanguage.php:1258
 msgid "Arabic (Bahrain)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1254
+#: lib/i18n/ZLanguage.php:1259
 msgid "Arabic (Algeria)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1255
+#: lib/i18n/ZLanguage.php:1260
 msgid "Arabic (Egypt)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1256
+#: lib/i18n/ZLanguage.php:1261
 msgid "Arabic (Iraq)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1257
+#: lib/i18n/ZLanguage.php:1262
 msgid "Arabic (Jordan)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1258
+#: lib/i18n/ZLanguage.php:1263
 msgid "Arabic (Kuwait)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1259
+#: lib/i18n/ZLanguage.php:1264
 msgid "Arabic (Lebanon)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1260
+#: lib/i18n/ZLanguage.php:1265
 msgid "Arabic (Libya)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1261
+#: lib/i18n/ZLanguage.php:1266
 msgid "Arabic (Morocco)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1262
+#: lib/i18n/ZLanguage.php:1267
 msgid "Arabic (Oman)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1263
+#: lib/i18n/ZLanguage.php:1268
 msgid "Arabic (Qatar)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1264
+#: lib/i18n/ZLanguage.php:1269
 msgid "Arabic (Saudi Arabia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1265
+#: lib/i18n/ZLanguage.php:1270
 msgid "Arabic (Sudan)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1266
+#: lib/i18n/ZLanguage.php:1271
 msgid "Arabic (Syria)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1267
+#: lib/i18n/ZLanguage.php:1272
 msgid "Arabic (Tunisia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1268
+#: lib/i18n/ZLanguage.php:1273
 msgid "Arabic (Yemen)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1270
+#: lib/i18n/ZLanguage.php:1275
 msgid "Belarusian (Belarus)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1272
+#: lib/i18n/ZLanguage.php:1277
 msgid "Bulgarian (Bulgaria)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1273
+#: lib/i18n/ZLanguage.php:1278
 msgid "Bengali (India)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1275
+#: lib/i18n/ZLanguage.php:1280
 msgid "Catalan (Spain)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1277
+#: lib/i18n/ZLanguage.php:1282
 msgid "Czech (Czech Republic)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1279
+#: lib/i18n/ZLanguage.php:1284
 msgid "Danish (Denmark)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1281
+#: lib/i18n/ZLanguage.php:1286
 msgid "German (Austria)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1282
+#: lib/i18n/ZLanguage.php:1287
 msgid "German (Switzerland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1283
+#: lib/i18n/ZLanguage.php:1288
 msgid "German (Germany)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1284 lib/i18n/ZLanguage.php:1369
+#: lib/i18n/ZLanguage.php:1289 lib/i18n/ZLanguage.php:1374
 msgid "German (Luxembourg)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1286
+#: lib/i18n/ZLanguage.php:1291
 msgid "Greek (Cyprus)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1287
+#: lib/i18n/ZLanguage.php:1292
 msgid "Greek (Greece)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1289
+#: lib/i18n/ZLanguage.php:1294
 msgid "English (Australia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1290
+#: lib/i18n/ZLanguage.php:1295
 msgid "English (Canada)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1291
+#: lib/i18n/ZLanguage.php:1296
 msgid "English (United Kingdom)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1292
+#: lib/i18n/ZLanguage.php:1297
 msgid "English (Ireland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1293
+#: lib/i18n/ZLanguage.php:1298
 msgid "English (India)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1294
+#: lib/i18n/ZLanguage.php:1299
 msgid "English (Malta)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1295
+#: lib/i18n/ZLanguage.php:1300
 msgid "English (New Zealand)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1296
+#: lib/i18n/ZLanguage.php:1301
 msgid "English (Philippines)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1297
+#: lib/i18n/ZLanguage.php:1302
 msgid "English (Singapore)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1298
+#: lib/i18n/ZLanguage.php:1303
 msgid "English (United States)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1299
+#: lib/i18n/ZLanguage.php:1304
 msgid "English (South Africa)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1301
+#: lib/i18n/ZLanguage.php:1306
 msgid "Spanish (Argentina)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1302
+#: lib/i18n/ZLanguage.php:1307
 msgid "Spanish (Bolivia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1303
+#: lib/i18n/ZLanguage.php:1308
 msgid "Spanish (Chile)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1304
+#: lib/i18n/ZLanguage.php:1309
 msgid "Spanish (Colombia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1305
+#: lib/i18n/ZLanguage.php:1310
 msgid "Spanish (Costa Rica)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1306
+#: lib/i18n/ZLanguage.php:1311
 msgid "Spanish (Dominican Republic)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1307
+#: lib/i18n/ZLanguage.php:1312
 msgid "Spanish (Ecuador)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1308
+#: lib/i18n/ZLanguage.php:1313
 msgid "Spanish (Spain)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1309
+#: lib/i18n/ZLanguage.php:1314
 msgid "Spanish (Guatemala)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1310
+#: lib/i18n/ZLanguage.php:1315
 msgid "Spanish (Honduras)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1311
+#: lib/i18n/ZLanguage.php:1316
 msgid "Spanish (Mexico)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1312
+#: lib/i18n/ZLanguage.php:1317
 msgid "Spanish (Nicaragua)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1313
+#: lib/i18n/ZLanguage.php:1318
 msgid "Spanish (Panama)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1314
+#: lib/i18n/ZLanguage.php:1319
 msgid "Spanish (Peru)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1315
+#: lib/i18n/ZLanguage.php:1320
 msgid "Spanish (Puerto Rico)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1316
+#: lib/i18n/ZLanguage.php:1321
 msgid "Spanish (Paraguay)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1317
+#: lib/i18n/ZLanguage.php:1322
 msgid "Spanish (El Salvador)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1318
+#: lib/i18n/ZLanguage.php:1323
 msgid "Spanish (United States)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1319
+#: lib/i18n/ZLanguage.php:1324
 msgid "Spanish (Uruguay)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1320
+#: lib/i18n/ZLanguage.php:1325
 msgid "Spanish (Venezuela)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1322
+#: lib/i18n/ZLanguage.php:1327
 msgid "Estonian (Estonia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1326
+#: lib/i18n/ZLanguage.php:1331
 msgid "Finnish (Finland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1328
+#: lib/i18n/ZLanguage.php:1333
 msgid "French (Belgium)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1329
+#: lib/i18n/ZLanguage.php:1334
 msgid "French (Canada)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1330
+#: lib/i18n/ZLanguage.php:1335
 msgid "French (Switzerland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1331
+#: lib/i18n/ZLanguage.php:1336
 msgid "French (France)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1332
+#: lib/i18n/ZLanguage.php:1337
 msgid "French (Luxembourg)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1333
+#: lib/i18n/ZLanguage.php:1338
 msgid "Friulian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1335
+#: lib/i18n/ZLanguage.php:1340
 msgid "Irish (Ireland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1338
+#: lib/i18n/ZLanguage.php:1343
 msgid "Hindi (India)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1340
+#: lib/i18n/ZLanguage.php:1345
 msgid "Croatian (Croatia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1342
+#: lib/i18n/ZLanguage.php:1347
 msgid "Hungarian (Hungary)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1345
+#: lib/i18n/ZLanguage.php:1350
 msgid "Indonesian (Indonesia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1347
+#: lib/i18n/ZLanguage.php:1352
 msgid "Icelandic (Iceland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1349
+#: lib/i18n/ZLanguage.php:1354
 msgid "Italian (Switzerland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1350
+#: lib/i18n/ZLanguage.php:1355
 msgid "Italian (Italy)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1352
+#: lib/i18n/ZLanguage.php:1357
 msgid "Hebrew (Israel)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1354
+#: lib/i18n/ZLanguage.php:1359
 msgid "Japanese (Japan)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1357
+#: lib/i18n/ZLanguage.php:1362
 msgid "Korean (South Korea)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1359
+#: lib/i18n/ZLanguage.php:1364
 msgid "Lithuanian (Lithuania)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1361
+#: lib/i18n/ZLanguage.php:1366
 msgid "Latvian (Latvia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1363
+#: lib/i18n/ZLanguage.php:1368
 msgid "Macedonian (Macedonia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1366
+#: lib/i18n/ZLanguage.php:1371
 msgid "Malay (Malaysia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1368
+#: lib/i18n/ZLanguage.php:1373
 msgid "Maltese (Malta)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1372
+#: lib/i18n/ZLanguage.php:1377
 msgid "Dutch (Belgium)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1373
+#: lib/i18n/ZLanguage.php:1378
 msgid "Dutch (Netherlands)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1375
+#: lib/i18n/ZLanguage.php:1380
 msgid "Norwegian (Norway)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1376
+#: lib/i18n/ZLanguage.php:1381
 msgid "Norwegian (Norway, Nynorsk)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1378
+#: lib/i18n/ZLanguage.php:1383
 msgid "Polish (Poland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1380
+#: lib/i18n/ZLanguage.php:1385
 msgid "Portuguese (Brazil)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1381
+#: lib/i18n/ZLanguage.php:1386
 msgid "Portuguese (Portugal)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1383
+#: lib/i18n/ZLanguage.php:1388
 msgid "Romanian (Romania)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1385
+#: lib/i18n/ZLanguage.php:1390
 msgid "Russian (Russia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1387
+#: lib/i18n/ZLanguage.php:1392
 msgid "Slovak (Slovakia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1389
+#: lib/i18n/ZLanguage.php:1394
 msgid "Slovenian (Slovenia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1391
+#: lib/i18n/ZLanguage.php:1396
 msgid "Albanian (Albania)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1393
+#: lib/i18n/ZLanguage.php:1398
 msgid "Serbian (Bosnia and Herzegovina)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1394
+#: lib/i18n/ZLanguage.php:1399
 msgid "Serbian (Serbia and Montenegro)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1395
+#: lib/i18n/ZLanguage.php:1400
 msgid "Serbian (Montenegro)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1396
+#: lib/i18n/ZLanguage.php:1401
 msgid "Serbian (Serbia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1397
+#: lib/i18n/ZLanguage.php:1402
 msgid "Sotho, Southern"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1399
+#: lib/i18n/ZLanguage.php:1404
 msgid "Swedish (Sweden)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1401
+#: lib/i18n/ZLanguage.php:1406
 msgid "Thai (Thailand)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1402
+#: lib/i18n/ZLanguage.php:1407
 msgid "Thai (Thailand, TH)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1404
+#: lib/i18n/ZLanguage.php:1409
 msgid "Turkish (Turkey)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1406
+#: lib/i18n/ZLanguage.php:1411
 msgid "Ukrainian (Ukraine)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1408
+#: lib/i18n/ZLanguage.php:1413
 msgid "Vietnamese (Vietnam)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1411
+#: lib/i18n/ZLanguage.php:1416
 msgid "Chinese (China)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1412
+#: lib/i18n/ZLanguage.php:1417
 msgid "Chinese (Hong Kong)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1413
+#: lib/i18n/ZLanguage.php:1418
 msgid "Chinese (Singapore)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1414
+#: lib/i18n/ZLanguage.php:1419
 msgid "Chinese (Taiwan)"
 msgstr ""
 
@@ -8543,7 +8645,8 @@ msgstr ""
 msgid "Error! Did not succeed in uploading file."
 msgstr ""
 
-#: lib/Form/Plugin/UploadInput.php:205 lib/Form/Plugin/TextInput.php:402
+#: lib/Form/Plugin/UploadInput.php:205 lib/Form/Plugin/TextInput.php:396
+#: lib/Form/Plugin/Coordinate.php:396
 msgid "Error! An entry in this field is mandatory."
 msgstr ""
 
@@ -8551,19 +8654,26 @@ msgstr ""
 msgid "Error! Invalid number."
 msgstr ""
 
-#: lib/Form/Plugin/TextInput.php:360
+#: lib/Form/Plugin/TextInput.php:354 lib/Form/Plugin/Coordinate.php:354
 #, php-format
 msgid "Unknown value [%1$s] for '%2$s'."
 msgstr ""
 
-#: lib/Form/Plugin/TextInput.php:404
+#: lib/Form/Plugin/TextInput.php:398 lib/Form/Plugin/Coordinate.php:398
 #, php-format
 msgid "Error! Input text must be no longer than %s characters."
 msgstr ""
 
-#: lib/Form/View.php:263
+#: lib/Form/View.php:264
 #, php-format
 msgid "Plugin %s must be an instance of Form_Plugin"
+msgstr ""
+
+#: lib/Form/View.php:994
+#, php-format
+msgid ""
+"Cannot restore Form_View plugin of type '%s' since stored and actual number "
+"of member vars differ"
 msgstr ""
 
 #: lib/view/plugins/function.blockgetinfo.php:63
@@ -8594,12 +8704,12 @@ msgstr ""
 #: system/Groups/templates/groups_admin_view.tpl:190
 #: system/Groups/templates/groups_admin_groupmembership.tpl:10
 #: system/Theme/templates/system/siteoff.tpl:169
-#: system/Users/templates/users_admin_modify.tpl:54
+#: system/Users/templates/users_admin_modify.tpl:52
 #: system/Users/templates/users_user_passwordreminder.tpl:9
-#: system/Users/templates/users_admin_deleteusers.tpl:19
+#: system/Users/templates/users_admin_deleteusers.tpl:18
 #: system/Users/templates/users_email_welcome_html.tpl:10
 #: system/Users/templates/users_admin_search.tpl:13
-#: system/Users/templates/users_admin_listusers.tpl:19
+#: system/Users/templates/users_admin_listusers.tpl:20
 #: system/Users/templates/users_email_welcome_txt.tpl:10
 #: system/Users/templates/users_admin_newuser.tpl:30
 #: system/Users/templates/users_admin_viewregistrations.tpl:13
@@ -8620,10 +8730,10 @@ msgstr ""
 
 #: lib/view/plugins/function.userlogin.php:51
 #: install/templates/installer_createadmin.tpl:35
-#: system/Users/templates/users_admin_modify.tpl:59
+#: system/Users/templates/users_admin_modify.tpl:65
 #: system/Users/templates/users_admin_search.tpl:17
-#: system/Users/templates/users_admin_listusers.tpl:23
-#: system/Users/templates/users_admin_newuser.tpl:35
+#: system/Users/templates/users_admin_listusers.tpl:24
+#: system/Users/templates/users_admin_newuser.tpl:85
 #: system/Users/templates/users_admin_viewregistrations.tpl:14
 #: system/Users/templates/users_user_lostpassword.tpl:18
 #: system/Users/templates/users_user_register.tpl:120
@@ -8722,7 +8832,8 @@ msgstr ""
 
 #: lib/view/plugins/function.sortlink.php:46
 #: lib/view/plugins/function.sortlink.php:49
-#: lib/view/plugins/function.notifydisplayhooks.php:45
+#: lib/view/plugins/function.notifydisplayhooks.php:46
+#: lib/view/plugins/function.notifydisplayhooks.php:51
 #, php-format
 msgid "Error! \"%1$s\" must be set in %2$s"
 msgstr ""
@@ -8745,7 +8856,7 @@ msgid "Welcome, %s!"
 msgstr ""
 
 #: lib/view/plugins/modifier.userprofilelink.php:77
-#: system/Users/templates/users_admin_modify.tpl:52
+#: system/Users/templates/users_admin_modify.tpl:50
 msgid "Personal information"
 msgstr ""
 
@@ -9742,9 +9853,9 @@ msgstr ""
 #: system/Modules/templates/modules_admin_modifyconfig.tpl:22
 #: system/Modules/templates/modules_admin_modify.tpl:30
 #: system/Search/templates/search_admin_modifyconfig.tpl:33
-#: system/Users/templates/users_admin_modify.tpl:107
+#: system/Users/templates/users_admin_modify.tpl:105
 #: system/Users/templates/users_user_changeemail.tpl:24
-#: system/Users/templates/users_admin_listusers.tpl:108
+#: system/Users/templates/users_admin_listusers.tpl:110
 #: system/Users/templates/users_admin_export.tpl:53
 #: system/Users/templates/users_user_changepassword.tpl:51
 #: system/Users/templates/users_user_changelang.tpl:21
@@ -9809,10 +9920,10 @@ msgstr ""
 #: system/Modules/templates/modules_admin_modifyconfig.tpl:23
 #: system/Modules/templates/modules_admin_modify.tpl:31
 #: system/Search/templates/search_admin_modifyconfig.tpl:34
-#: system/Users/templates/users_admin_modify.tpl:108
+#: system/Users/templates/users_admin_modify.tpl:106
 #: system/Users/templates/users_admin_approveregistration.tpl:35
 #: system/Users/templates/users_user_passwordreminder.tpl:59
-#: system/Users/templates/users_admin_deleteusers.tpl:25
+#: system/Users/templates/users_admin_deleteusers.tpl:24
 #: system/Users/templates/users_admin_search.tpl:46
 #: system/Users/templates/users_user_changeemail.tpl:25
 #: system/Users/templates/users_admin_export.tpl:54
@@ -9851,7 +9962,7 @@ msgid "Settings test"
 msgstr ""
 
 #: system/Mailer/templates/mailer_admin_testconfig.tpl:13
-#: system/Users/templates/users_admin_listusers.tpl:73
+#: system/Users/templates/users_admin_listusers.tpl:74
 msgid "Sender's name"
 msgstr ""
 
@@ -9868,7 +9979,7 @@ msgid "Recipient's e-mail address"
 msgstr ""
 
 #: system/Mailer/templates/mailer_admin_testconfig.tpl:29
-#: system/Users/templates/users_admin_listusers.tpl:81
+#: system/Users/templates/users_admin_listusers.tpl:82
 msgid "Subject"
 msgstr ""
 
@@ -9944,7 +10055,7 @@ msgstr ""
 #: system/Categories/templates/categories_user_edit.tpl:94
 #: system/Categories/templates/categories_admin_edit.tpl:78
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:66
-#: system/Admin/templates/admin_admin_help.tpl:26
+#: system/Admin/templates/admin_admin_help.tpl:30
 #: system/Admin/templates/admin_admin_newcat.tpl:17
 #: system/Admin/templates/admin_admin_modify.tpl:18
 msgid "Description"
@@ -10474,7 +10585,7 @@ msgstr ""
 #: system/Theme/templates/theme_admin_pageconfigurations.tpl:34
 #: system/Modules/templates/modules_admin_viewPlugins.tpl:55
 #: system/Modules/templates/modules_admin_view.tpl:42
-#: system/Users/templates/users_admin_listusers.tpl:24
+#: system/Users/templates/users_admin_listusers.tpl:25
 #: system/Users/templates/users_admin_viewregistrations.tpl:17
 #: system/Users/templates/users_admin_view.tpl:47
 #: system/Categories/templates/categories_admin_registry_edit.tpl:19
@@ -10516,7 +10627,7 @@ msgstr ""
 #: system/Theme/templates/theme_admin_deletepageconfigurationassignment.tpl:14
 #: system/Theme/templates/theme_admin_setasdefault.tpl:13
 #: system/Theme/templates/theme_admin_delete.tpl:13
-#: system/Users/templates/users_admin_deleteusers.tpl:16
+#: system/Users/templates/users_admin_deleteusers.tpl:15
 #: system/Categories/templates/categories_admin_delete.tpl:17
 #: system/Categories/templates/categories_admin_config.tpl:11
 #: system/SecurityCenter/templates/securitycenter_admin_purgeidslog.tpl:19
@@ -10896,6 +11007,7 @@ msgstr ""
 
 #: system/Groups/templates/groups_admin_userpending.tpl:45
 #: system/Groups/templates/groups_admin_view.tpl:204
+#: system/Groups/templates/groups_admin_view.tpl:205
 #: system/Theme/templates/theme_admin_setasdefault.tpl:21
 #: system/Modules/templates/modules_admin_initialise.tpl:60
 #: system/Users/templates/users_admin_pendingaction.tpl:30
@@ -10945,7 +11057,7 @@ msgstr ""
 
 #: system/Groups/templates/groups_user_view.tpl:15
 #: system/Groups/templates/groups_user_memberslist.tpl:13
-#: system/Admin/templates/admin_admin_adminpanel.tpl:29
+#: system/Admin/templates/admin_admin_adminpanel.tpl:27
 msgid "Functions"
 msgstr ""
 
@@ -11010,7 +11122,7 @@ msgstr ""
 
 #: system/Groups/templates/groups_user_memberslist.tpl:57
 #: system/Modules/templates/modules_admin_view.tpl:14
-#: system/Users/templates/users_admin_listusers.tpl:21
+#: system/Users/templates/users_admin_listusers.tpl:22
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:39
 msgid "Internal name"
 msgstr ""
@@ -11039,10 +11151,10 @@ msgstr ""
 #: system/Groups/templates/groups_admin_view.tpl:36
 #: system/Groups/templates/groups_admin_view.tpl:181
 #: system/Users/templates/users_admin_newuser.tpl:30
-#: system/Users/templates/users_admin_newuser.tpl:35
-#: system/Users/templates/users_admin_newuser.tpl:39
-#: system/Users/templates/users_admin_newuser.tpl:53
-#: system/Users/templates/users_admin_newuser.tpl:78
+#: system/Users/templates/users_admin_newuser.tpl:45
+#: system/Users/templates/users_admin_newuser.tpl:70
+#: system/Users/templates/users_admin_newuser.tpl:85
+#: system/Users/templates/users_admin_newuser.tpl:89
 #: system/Users/templates/users_user_register.tpl:71
 #: system/Users/templates/users_user_register.tpl:80
 #: system/Users/templates/users_user_register.tpl:109
@@ -11094,6 +11206,10 @@ msgstr ""
 #: system/Groups/templates/groups_admin_view.tpl:36
 #: system/Groups/templates/groups_admin_view.tpl:182
 msgid "**"
+msgstr ""
+
+#: system/Groups/templates/groups_admin_view.tpl:172
+msgid "Delete:"
 msgstr ""
 
 #: system/Groups/templates/groups_admin_view.tpl:181
@@ -11627,7 +11743,7 @@ msgid ""
 msgstr ""
 
 #: system/Theme/templates/zdebug.tpl:22
-#: system/Users/templates/users_admin_modify.tpl:93
+#: system/Users/templates/users_admin_modify.tpl:91
 msgid "Theme"
 msgstr ""
 
@@ -12117,6 +12233,13 @@ msgid ""
 "found in the 'docs' documentation directory."
 msgstr ""
 
+#: system/Modules/templates/modules_admin_compinfo.tpl:3
+#: system/Modules/templates/modules_admin_remove.tpl:3
+#: system/Modules/templates/modules_admin_remove.tpl:4
+#: system/Modules/templates/modules_admin_remove.tpl:30
+msgid "Remove module"
+msgstr ""
+
 #: system/Modules/templates/modules_admin_compinfo.tpl:4
 msgid "Incompatible version with the core"
 msgstr ""
@@ -12394,6 +12517,21 @@ msgstr ""
 
 #: system/Modules/templates/modules_admin_modify.tpl:25
 msgid "This may break your existing indexed URLs"
+msgstr ""
+
+#: system/Modules/templates/modules_hookui_moduleservices.tpl:8
+#: system/Modules/templates/modules_hookui_moduleservices.tpl:9
+msgid "Module Services"
+msgstr ""
+
+#: system/Modules/templates/modules_hookui_moduleservices.tpl:11
+msgid ""
+"Module Services are functions provided by the core or other modules for this "
+"module."
+msgstr ""
+
+#: system/Modules/templates/modules_hookui_moduleservices.tpl:20
+msgid "There aren't any modules services available."
 msgstr ""
 
 #: system/Search/templates/search_user_recent.tpl:1
@@ -12702,58 +12840,66 @@ msgid ""
 "change your activated state. These fields are disabled below."
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:38
+#: system/Users/templates/users_admin_modify.tpl:36
 msgid "Member"
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:56
+#: system/Users/templates/users_admin_modify.tpl:54
 #: system/Users/templates/users_admin_newuser.tpl:32
 #: system/Users/templates/users_user_register.tpl:73
 #: system/Users/templates/users_admin_modifyregistration.tpl:33
 msgid "User names can contain letters, numbers, underscores, and/or periods."
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:63
-#: system/Users/templates/users_admin_newuser.tpl:39
-#: system/Users/templates/users_user_register.tpl:124
-#: system/Users/templates/users_admin_modifyregistration.tpl:40
-msgid "E-mail address (repeat for verification)"
-msgstr ""
-
-#: system/Users/templates/users_admin_modify.tpl:71
+#: system/Users/templates/users_admin_modify.tpl:61
 #: system/Users/templates/users_user_passwordreminder.tpl:48
-#: system/Users/templates/users_admin_newuser.tpl:78
+#: system/Users/templates/users_admin_newuser.tpl:70
 #: system/Users/templates/users_user_register.tpl:109
 #: system/Users/templates/users_user_verifyregistration.tpl:62
 msgid "Password (repeat for verification)"
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:75
+#: system/Users/templates/users_admin_modify.tpl:69
+#: system/Users/templates/users_admin_newuser.tpl:89
+#: system/Users/templates/users_user_register.tpl:124
+#: system/Users/templates/users_admin_modifyregistration.tpl:40
+msgid "E-mail address (repeat for verification)"
+msgstr ""
+
+#: system/Users/templates/users_admin_modify.tpl:73
 msgid "User status"
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:80
+#: system/Users/templates/users_admin_modify.tpl:78
 #, php-format
 msgid "Inactive until %s accepted"
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:82
+#: system/Users/templates/users_admin_modify.tpl:80
 msgid "Force password change on login"
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:84
+#: system/Users/templates/users_admin_modify.tpl:82
 #, php-format
 msgid "Force password change and accept %s"
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:89
+#: system/Users/templates/users_admin_modify.tpl:87
 msgid ""
 "Notice: The option \"Inactive until 'Terms of use' and 'Privacy policy' "
 "accepted\" is not possible because the module Legal is not available."
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:95
+#: system/Users/templates/users_admin_modify.tpl:93
 msgid "Site's default theme"
+msgstr ""
+
+#: system/Users/templates/users_admin_modify.tpl:108
+msgid "Send user name"
+msgstr ""
+
+#: system/Users/templates/users_admin_modify.tpl:109
+msgid "Send password recovery code"
 msgstr ""
 
 #: system/Users/templates/users_admin_approveregistration.tpl:1
@@ -12931,7 +13077,7 @@ msgid ""
 msgstr ""
 
 #: system/Users/templates/users_admin_deleteusers.tpl:1
-#: system/Users/templates/users_admin_deleteusers.tpl:24
+#: system/Users/templates/users_admin_deleteusers.tpl:23
 msgid "Delete user account"
 msgstr ""
 
@@ -13096,19 +13242,19 @@ msgid ""
 "URL into your browser:"
 msgstr ""
 
-#: system/Users/templates/users_admin_listusers.tpl:54
+#: system/Users/templates/users_admin_listusers.tpl:55
 msgid "Select all"
 msgstr ""
 
-#: system/Users/templates/users_admin_listusers.tpl:54
+#: system/Users/templates/users_admin_listusers.tpl:55
 msgid "De-select all"
 msgstr ""
 
-#: system/Users/templates/users_admin_listusers.tpl:70
+#: system/Users/templates/users_admin_listusers.tpl:71
 msgid "Send e-mail message"
 msgstr ""
 
-#: system/Users/templates/users_admin_listusers.tpl:71
+#: system/Users/templates/users_admin_listusers.tpl:72
 msgid ""
 "Notice: This e-mail message will be sent to your address and to all other "
 "recipients you select. Your address will be the entered as the main "
@@ -13121,19 +13267,23 @@ msgid ""
 "provider."
 msgstr ""
 
-#: system/Users/templates/users_admin_listusers.tpl:77
+#: system/Users/templates/users_admin_listusers.tpl:78
 msgid "Address to which replies should be sent"
 msgstr ""
 
-#: system/Users/templates/users_admin_listusers.tpl:89
+#: system/Users/templates/users_admin_listusers.tpl:90
 msgid "Send e-mail messages in batches"
 msgstr ""
 
-#: system/Users/templates/users_admin_listusers.tpl:92
+#: system/Users/templates/users_admin_listusers.tpl:93
 msgid "messages per batch"
 msgstr ""
 
-#: system/Users/templates/users_admin_listusers.tpl:102
+#: system/Users/templates/users_admin_listusers.tpl:101
+msgid "With selected users:"
+msgstr ""
+
+#: system/Users/templates/users_admin_listusers.tpl:104
 msgid "Send"
 msgstr ""
 
@@ -13230,7 +13380,7 @@ msgid "New password"
 msgstr ""
 
 #: system/Users/templates/users_user_changepassword.tpl:27
-#: system/Users/templates/users_admin_newuser.tpl:66
+#: system/Users/templates/users_admin_newuser.tpl:58
 #: system/Users/templates/users_user_register.tpl:95
 #: system/Users/templates/users_user_loginscreen.tpl:44
 #: system/Users/templates/users_user_verifyregistration.tpl:49
@@ -13239,7 +13389,7 @@ msgid "The minimum length for user passwords is %s characters."
 msgstr ""
 
 #: system/Users/templates/users_user_changepassword.tpl:30
-#: system/Users/templates/users_admin_newuser.tpl:69
+#: system/Users/templates/users_admin_newuser.tpl:61
 #: system/Users/templates/users_user_register.tpl:98
 #: system/Users/templates/users_user_loginscreen.tpl:47
 #: system/Users/templates/users_user_verifyregistration.tpl:52
@@ -13247,7 +13397,7 @@ msgid "Weak"
 msgstr ""
 
 #: system/Users/templates/users_user_changepassword.tpl:31
-#: system/Users/templates/users_admin_newuser.tpl:70
+#: system/Users/templates/users_admin_newuser.tpl:62
 #: system/Users/templates/users_user_register.tpl:99
 #: system/Users/templates/users_user_loginscreen.tpl:48
 #: system/Users/templates/users_user_verifyregistration.tpl:53
@@ -13255,7 +13405,7 @@ msgid "Normal"
 msgstr ""
 
 #: system/Users/templates/users_user_changepassword.tpl:32
-#: system/Users/templates/users_admin_newuser.tpl:71
+#: system/Users/templates/users_admin_newuser.tpl:63
 #: system/Users/templates/users_user_register.tpl:100
 #: system/Users/templates/users_user_loginscreen.tpl:49
 #: system/Users/templates/users_user_verifyregistration.tpl:54
@@ -13263,7 +13413,7 @@ msgid "Strong"
 msgstr ""
 
 #: system/Users/templates/users_user_changepassword.tpl:33
-#: system/Users/templates/users_admin_newuser.tpl:72
+#: system/Users/templates/users_admin_newuser.tpl:64
 #: system/Users/templates/users_user_register.tpl:101
 #: system/Users/templates/users_user_loginscreen.tpl:50
 #: system/Users/templates/users_user_verifyregistration.tpl:55
@@ -13542,25 +13692,30 @@ msgstr ""
 msgid "The items that are marked with an asterisk ('*') are required entries."
 msgstr ""
 
+#: system/Users/templates/users_admin_newuser.tpl:14
+#: system/Users/templates/users_user_register.tpl:55
+msgid "Please correct the following items:"
+msgstr ""
+
 #: system/Users/templates/users_admin_newuser.tpl:28
 msgid "New user account"
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:43
+#: system/Users/templates/users_admin_newuser.tpl:35
 msgid "Set the user's password now?"
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:55
+#: system/Users/templates/users_admin_newuser.tpl:47
 #: system/Users/templates/users_user_register.tpl:111
 #, php-format
 msgid "Notice: The minimum length for user passwords is %s characters."
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:82
+#: system/Users/templates/users_admin_newuser.tpl:74
 msgid "Send password via e-mail?"
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:89
+#: system/Users/templates/users_admin_newuser.tpl:81
 msgid ""
 "Sending a password via e-mail is considered unsafe. It is recommended that "
 "you provide the password to the user using a secure method of communication."
@@ -13817,10 +13972,6 @@ msgid ""
 "Before you will be able to log in, you must verify your e-mail address. You "
 "will receive an e-mail asking to verify your e-mail address after submitting "
 "the information below."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:55
-msgid "Please correct the following items:"
 msgstr ""
 
 #: system/Users/templates/users_user_register.tpl:69
@@ -15458,7 +15609,7 @@ msgid ""
 msgstr ""
 
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:14
-#: system/Admin/templates/admin_admin_help.tpl:35
+#: system/Admin/templates/admin_admin_help.tpl:44
 msgid "Ignore check for installer"
 msgstr ""
 
@@ -15470,12 +15621,12 @@ msgid ""
 msgstr ""
 
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:26
-#: system/Admin/templates/admin_admin_help.tpl:38
+#: system/Admin/templates/admin_admin_help.tpl:49
 msgid "Display settings"
 msgstr ""
 
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:28
-#: system/Admin/templates/admin_admin_help.tpl:41
+#: system/Admin/templates/admin_admin_help.tpl:53
 msgid "Display icons"
 msgstr ""
 
@@ -15496,7 +15647,7 @@ msgid "Modules per row in admin panel"
 msgstr ""
 
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:52
-#: system/Admin/templates/admin_admin_help.tpl:44
+#: system/Admin/templates/admin_admin_help.tpl:56
 msgid "Theme to use"
 msgstr ""
 
@@ -15505,23 +15656,23 @@ msgid "Use site's theme"
 msgstr ""
 
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:59
-#: system/Admin/templates/admin_admin_help.tpl:45
+#: system/Admin/templates/admin_admin_help.tpl:57
 msgid "Style sheet to use"
 msgstr ""
 
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:63
-#: system/Admin/templates/admin_admin_help.tpl:46
+#: system/Admin/templates/admin_admin_help.tpl:58
 msgid "Category initially selected"
 msgstr ""
 
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:76
-#: system/Admin/templates/admin_admin_help.tpl:49
-#: system/Admin/templates/admin_admin_help.tpl:53
+#: system/Admin/templates/admin_admin_help.tpl:62
+#: system/Admin/templates/admin_admin_help.tpl:67
 msgid "Modules categorisation"
 msgstr ""
 
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:78
-#: system/Admin/templates/admin_admin_help.tpl:52
+#: system/Admin/templates/admin_admin_help.tpl:66
 msgid "Default category for newly-added modules"
 msgstr ""
 
@@ -15543,7 +15694,7 @@ msgid "New module category"
 msgstr ""
 
 #: system/Admin/templates/admin_admin_securityanalyzer.tpl:5
-#: system/Admin/templates/admin_admin_help.tpl:59
+#: system/Admin/templates/admin_admin_help.tpl:79
 msgid "Security analyser warnings"
 msgstr ""
 
@@ -15554,29 +15705,29 @@ msgid ""
 msgstr ""
 
 #: system/Admin/templates/admin_admin_securityanalyzer.tpl:14
-#: system/Admin/templates/admin_admin_help.tpl:74
+#: system/Admin/templates/admin_admin_help.tpl:94
 msgid "PHP 'magic_quotes_gpc' setting is ON, but should be OFF."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_securityanalyzer.tpl:19
-#: system/Admin/templates/admin_admin_help.tpl:77
+#: system/Admin/templates/admin_admin_help.tpl:97
 msgid "PHP 'register_globals' setting is ON, but should be OFF."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_securityanalyzer.tpl:24
-#: system/Admin/templates/admin_admin_help.tpl:80
+#: system/Admin/templates/admin_admin_help.tpl:100
 msgid ""
 "There is no '.htaccess' file in the temporary directory ('/ztemp' or other "
 "location), but one should be present."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_securityanalyzer.tpl:29
-#: system/Admin/templates/admin_admin_help.tpl:89
+#: system/Admin/templates/admin_admin_help.tpl:109
 msgid "Security center module is not installed, but preferably should be."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_securityanalyzer.tpl:34
-#: system/Admin/templates/admin_admin_help.tpl:86
+#: system/Admin/templates/admin_admin_help.tpl:106
 msgid "PHPIDS is activated, but requests are NOT blocked."
 msgstr ""
 
@@ -15600,54 +15751,50 @@ msgstr ""
 msgid "Clear all cache and compile directories"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:6
-msgid "Help page"
-msgstr ""
-
-#: system/Admin/templates/admin_admin_help.tpl:8
+#: system/Admin/templates/admin_admin_help.tpl:9
 msgid ""
 "Displays the list view of module categories included within the category tab "
 "menu. In the 'Actions' column on the right, you can choose to edit or delete "
 "a module category"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:12
+#: system/Admin/templates/admin_admin_help.tpl:13
 msgid "Lets you edit the name and description of an existing module category."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:16
+#: system/Admin/templates/admin_admin_help.tpl:17
 msgid ""
 "Lets you delete a module category from the tab menu. You will be prompted "
 "for confirmation before the category is deleted."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:20
+#: system/Admin/templates/admin_admin_help.tpl:24
 msgid ""
 "Lets you add a new category to the module categories tab list. You can edit "
 "the following:"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:23
+#: system/Admin/templates/admin_admin_help.tpl:27
 msgid "Enter the name to be displayed within the categories tab menu."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:26
+#: system/Admin/templates/admin_admin_help.tpl:30
 msgid ""
 "Enter an informative description to be displayed after the category name, "
 "when this category is displayed in the Administration panel."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:30
+#: system/Admin/templates/admin_admin_help.tpl:37
 msgid ""
 "The 'Settings' page contains three sections: 'General settings', 'Display "
 "settings' and 'Modules categorisation'. Each is covered below."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:33
+#: system/Admin/templates/admin_admin_help.tpl:42
 msgid "There is currently only one option in the General settings section."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:36
+#: system/Admin/templates/admin_admin_help.tpl:45
 msgid ""
 "This option enables you to disable the Security analyser's check to see if "
 "the Installer is present in your site's root directory. Preferably, you "
@@ -15655,76 +15802,76 @@ msgid ""
 "you omit to remove the Installer's components after completing installation."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:39
+#: system/Admin/templates/admin_admin_help.tpl:51
 msgid "There are six display settings."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:41
+#: system/Admin/templates/admin_admin_help.tpl:53
 msgid ""
 "When checked, this option causes graphic icons to be displayed for each "
 "module in the Administration panel."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:42
+#: system/Admin/templates/admin_admin_help.tpl:54
 msgid "Modules per page"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:42
+#: system/Admin/templates/admin_admin_help.tpl:54
 msgid ""
 "Enter a whole number for the number of modules to be displayed on each page "
 "of the Administration panel."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:43
+#: system/Admin/templates/admin_admin_help.tpl:55
 msgid "Modules per row"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:43
+#: system/Admin/templates/admin_admin_help.tpl:55
 msgid ""
 "Enter a whole number for the number of modules to be displayed on each line "
 "of the Administration panel."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:44
+#: system/Admin/templates/admin_admin_help.tpl:56
 msgid ""
 "Open the dropdown list and choose the theme to be applied to the "
 "Administration panel."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:45
+#: system/Admin/templates/admin_admin_help.tpl:57
 msgid ""
 "Open the dropdown list and choose the style sheet to be used to render the "
 "Administration panel."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:46
+#: system/Admin/templates/admin_admin_help.tpl:58
 msgid ""
 "Open the dropdown list and choose the modules category to be shown when the "
 "Administration panel first displays."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:50
+#: system/Admin/templates/admin_admin_help.tpl:64
 msgid "In the Modules categorisation section, you can choose two things:"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:52
+#: system/Admin/templates/admin_admin_help.tpl:66
 msgid ""
 "Open the dropdown list and choose the module category in which to put all "
 "newly-installed and activated modules."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:53
+#: system/Admin/templates/admin_admin_help.tpl:67
 msgid ""
 "You will see listed all the modules currently installed and activated. Open "
 "the dropdown list beside each module and choose the module category in which "
 "that module should be placed."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:58
+#: system/Admin/templates/admin_admin_help.tpl:78
 msgid "Messages you might see"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:60
+#: system/Admin/templates/admin_admin_help.tpl:80
 #, php-format
 msgid ""
 "In the Administration panel, you will see security warnings displayed if the "
@@ -15735,22 +15882,22 @@ msgid ""
 "explanations for each vulnerability possibly identified."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:62
-#: system/Admin/templates/admin_admin_help.tpl:65
-#: system/Admin/templates/admin_admin_help.tpl:68
-#: system/Admin/templates/admin_admin_help.tpl:71
-#: system/Admin/templates/admin_admin_help.tpl:74
-#: system/Admin/templates/admin_admin_help.tpl:77
-#: system/Admin/templates/admin_admin_help.tpl:80
-#: system/Admin/templates/admin_admin_help.tpl:83
-#: system/Admin/templates/admin_admin_help.tpl:86
-#: system/Admin/templates/admin_admin_help.tpl:89
-#: system/Admin/templates/admin_admin_help.tpl:92
-#: system/Admin/templates/admin_admin_help.tpl:95
+#: system/Admin/templates/admin_admin_help.tpl:82
+#: system/Admin/templates/admin_admin_help.tpl:85
+#: system/Admin/templates/admin_admin_help.tpl:88
+#: system/Admin/templates/admin_admin_help.tpl:91
+#: system/Admin/templates/admin_admin_help.tpl:94
+#: system/Admin/templates/admin_admin_help.tpl:97
+#: system/Admin/templates/admin_admin_help.tpl:100
+#: system/Admin/templates/admin_admin_help.tpl:103
+#: system/Admin/templates/admin_admin_help.tpl:106
+#: system/Admin/templates/admin_admin_help.tpl:109
+#: system/Admin/templates/admin_admin_help.tpl:112
+#: system/Admin/templates/admin_admin_help.tpl:115
 msgid "You see the message"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:62
+#: system/Admin/templates/admin_admin_help.tpl:82
 msgid ""
 "Stop, please! The Swiss Army Knife tool ('psak.php' file) is in the site "
 "root, but must be removed before you can access the site admin panel. "
@@ -15758,7 +15905,7 @@ msgid ""
 "Zikula recovery console ('zrc.php')."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:63
+#: system/Admin/templates/admin_admin_help.tpl:83
 msgid ""
 "The Zikula recovery console tool (a file called 'zrc.php') is a useful "
 "utility for resolving certain problems, but should not be left in any "
@@ -15768,14 +15915,14 @@ msgid ""
 "Administration panel."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:65
+#: system/Admin/templates/admin_admin_help.tpl:85
 msgid ""
 "Stop, please! The installer file 'install.php' and directory 'install' are "
 "in the site root, but must be removed before you can access the site admin "
 "panel."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:66
+#: system/Admin/templates/admin_admin_help.tpl:86
 #, php-format
 msgid ""
 "After completing the installation process, it is very important to delete "
@@ -15788,13 +15935,13 @@ msgid ""
 "optimally configure a site from the security viewpoint."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:68
+#: system/Admin/templates/admin_admin_help.tpl:88
 msgid ""
 "Configuration file 'config/config.php' is writeable, but should be read-only "
 "(chmod 400, 440 or at worst 444)."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:69
+#: system/Admin/templates/admin_admin_help.tpl:89
 #, php-format
 msgid ""
 "When a site is originally installed, the Installer script creates a "
@@ -15807,12 +15954,12 @@ msgid ""
 "viewpoint."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:71
+#: system/Admin/templates/admin_admin_help.tpl:91
 msgid ""
 "Installer file 'upgrade.php' is in the site root, but should be removed."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:72
+#: system/Admin/templates/admin_admin_help.tpl:92
 msgid ""
 "The file 'upgrade.php' is used by the Installer script if a previously-"
 "existing site is upgraded to a more-recent version. Once the new site is "
@@ -15820,7 +15967,7 @@ msgid ""
 "and could make a security breach possible."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:75
+#: system/Admin/templates/admin_admin_help.tpl:95
 #, php-format
 msgid ""
 "In some hosting environments, the PHP setting 'magic_quotes_gpc' may be set "
@@ -15830,7 +15977,7 @@ msgid ""
 "this, please consult the <a href=\"%s\">security documentation</a>."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:78
+#: system/Admin/templates/admin_admin_help.tpl:98
 #, php-format
 msgid ""
 "In some hosting environments, the PHP setting 'register_globals' may be set "
@@ -15840,7 +15987,7 @@ msgid ""
 "this, please consult the <a href=\"%s\">security documentation</a>."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:81
+#: system/Admin/templates/admin_admin_help.tpl:101
 #, php-format
 msgid ""
 "If properly installed, a site will include an '.htaccess' file in the site's "
@@ -15852,12 +15999,12 @@ msgid ""
 "please consult the <a href=\"%s\">security documentation</a>."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:83
+#: system/Admin/templates/admin_admin_help.tpl:103
 msgid ""
 "PHPIDS with the Security Center is not activated, but preferably should be."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:84
+#: system/Admin/templates/admin_admin_help.tpl:104
 msgid ""
 "PHPIDS is a feature of the Security center module that enhances the security "
 "of a site, and the Security analyser has detected that it is not enabled. "
@@ -15867,14 +16014,14 @@ msgid ""
 "help."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:87
+#: system/Admin/templates/admin_admin_help.tpl:107
 msgid ""
 "PHPIDS is enabled and you have set the Block action to 'Warn only'. Thus "
 "requests are not blocked. This is useful only for debugging the PHPIDS "
 "ruleset in order to verify correct operation."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:90
+#: system/Admin/templates/admin_admin_help.tpl:110
 msgid ""
 "When a site is originally installed, the Security center is installed and "
 "activated by default. You will see the above message if the Security center "
@@ -15882,11 +16029,11 @@ msgid ""
 "installed, as it enhances a site's security."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:92
+#: system/Admin/templates/admin_admin_help.tpl:112
 msgid "Security center module is not activated, but preferably should be."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:93
+#: system/Admin/templates/admin_admin_help.tpl:113
 msgid ""
 "When a site is originally installed, the Security center is installed and "
 "activated by default. You will see the above message if the Security center "
@@ -15894,11 +16041,11 @@ msgid ""
 "activated, as it enhances a site's security."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:95
+#: system/Admin/templates/admin_admin_help.tpl:115
 msgid "Legacy module support is enabled, but preferably should be disabled."
 msgstr ""
 
-#: system/Admin/templates/admin_admin_help.tpl:96
+#: system/Admin/templates/admin_admin_help.tpl:116
 msgid ""
 "You have the possibility of enabling support for legacy PostNuke modules. "
 "However, legacy modules can contain security holes that can compromise a "
@@ -15928,11 +16075,11 @@ msgstr ""
 msgid "Please download the new Zikula core"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_adminpanel.tpl:23
+#: system/Admin/templates/admin_admin_adminpanel.tpl:21
 msgid "Drag and drop into a new module category"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_adminpanel.tpl:64
+#: system/Admin/templates/admin_admin_adminpanel.tpl:62
 msgid "There are currently no modules in this category."
 msgstr ""
 
