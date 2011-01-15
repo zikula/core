@@ -108,7 +108,7 @@ class HookUtil
      * @param string $type      Hook type.
      * @param string $eventName EventName called.
      *
-     * @return void
+     * @return array
      */
     public static function unregisterSubscriber($owner, $area, $type, $eventName)
     {
@@ -389,8 +389,8 @@ class HookUtil
     /**
      * Sort out display hooks according to configuration.
      *
-     * @param string $subscriberArea  Owner.
-     * @param string $results         Assoc-array of results.
+     * @param string $subscriberArea Owner.
+     * @param string $results        Assoc-array of results.
      *
      * @return array
      */
@@ -420,7 +420,7 @@ class HookUtil
     /**
      * Set Display Hook sorting information.
      *
-     * @param string $area Owner.
+     * @param string $area  Owner.
      * @param array  $array Non-assoc array of owners in order, array('Comments', 'Ratings').
      *
      * @return void
@@ -797,7 +797,7 @@ class HookUtil
                         ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
 
-     /**
+    /**
      * Get all areas of a subscriber.
      *
      * @param string $subscriberName Subscriber's name.
