@@ -1,0 +1,4 @@
+## YAML Override template
+## original/file.tpl: override/file.tpl
+---
+system/Search/templates/search_block_search.tpl: themes/Andreas08/templates/modules/Search/search_block_search.tpl
