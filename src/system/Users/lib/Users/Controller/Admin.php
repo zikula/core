@@ -231,6 +231,7 @@ class Users_Controller_Admin extends Zikula_Controller
             if ($registeredObj['activated'] == UserUtil::ACTIVATED_PENDING_REG) {
                 LogUtil::registerStatus($this->__('Done! Created new registration application.'));
             } elseif (isset($registeredObj['activated'])) {
+                $this->notifyHooks('users.hook.user.process.edit', $registeredObj, $registeredObj['uid']);
                 LogUtil::registerStatus($this->__('Done! Created new user account.'));
             } else {
                 LogUtil::registerError($this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
@@ -879,21 +880,28 @@ class Users_Controller_Admin extends Zikula_Controller
         if (!is_array($userid)) {
             $userid = array($userid);
         }
+
+        $valid = true;
         foreach ($userid as $uid) {
             if ($uid == $currentUserId) {
                 return LogUtil::registerError($this->__("Error! You can't delete the account you are currently logged into."));
             }
+            $validators = $this->notifyHooks('users.hook.user.validate.delete', null, $uid, array(), new Zikula_Collection_HookValidationProviders())->getData();
+            if ($validators->hasErrors()) {
+                $valid = false;
+            }
         }
 
-        $validators = $this->notifyHooks('users.hook.user.validate.delete', null, $userid, array(), new Zikula_Collection_HookValidationProviders())->getData();
-
         // Current user is not in the list to be deleted AND hooks validate. Proceed.
-        if (!$validators->hasErrors()) {
+        if ($valid) {
             $return = ModUtil::apiFunc('Users', 'admin', 'deleteUser', array('uid' => $userid));
         } else {
             $return = false;
         }
         if ($return == true) {
+            foreach ($userdid as $uid) {
+                $this->notifyHooks('users.hook.user.process.delete', null, $uid); // null for subject?
+            }
             $count = count($userid);
             return LogUtil::registerStatus($this->_fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', $count, array($count)), ModUtil::url('Users', 'admin', 'main'));
         } else {

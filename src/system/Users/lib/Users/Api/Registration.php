@@ -841,11 +841,6 @@ class Users_Api_Registration extends Zikula_Api
             // data can be properly saved before the hook is fired.
             $createEvent = new Zikula_Event('user.create', $userObj);
             $this->eventManager->notify($createEvent);
-            $hookEventArgs = array(
-                'id' => $userObj['uid'],
-                'caller' => 'Users');
-            $hookEvent = new Zikula_Event('users.hook.user.process.edit', $userObj, $hookEventArgs);
-            $this->eventManager->notify($hookEvent);
 
             $regErrors = array();
 
