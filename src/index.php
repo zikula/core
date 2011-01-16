@@ -43,7 +43,12 @@ $startPage = System::getVar('startpage');
 $arguments = array();
 if (!$module) {
     if ((System::getVar('shorturls') && System::getVar('shorturlstype') == 0)) {
-        $p = explode('/', str_replace(System::getBaseUri() . '/', '', $_SERVER["REQUEST_URI"]));
+        // remove entry point from the path (otherwise they are part of the module name)
+        $customentrypoint = System::getVar('entrypoint');
+        $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
+        // REQUEST_URI contains the query string so we use parse_url to get the path without it
+        $uri = parse_url($_SERVER["REQUEST_URI"]);
+        $p = explode('/', str_replace(array(System::getBaseUri() . '/', "$root"), '', $uri['path']));
         $module = (empty($p[0])) ? $startPage : $p[0];
         if (ZLanguage::isLangParam($module) && in_array($module, ZLanguage::getInstalledLanguages())) {
             $module = '';
