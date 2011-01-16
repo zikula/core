@@ -134,17 +134,19 @@ class Users_Controller_Ajax extends Zikula_Controller
             );
             
             return new Zikula_Response_Ajax($returnValue);
-//  THIS IS WRONG AND I KNOW IT, BUT I DON'T KNOW WHAT IT SHOULD BE TO BE USEFUL VIA AJAX....
-//        } elseif ($validators->hasErrors()) {
-//            $hookErrors = $validators->getCollection()->getErrors();
-//            foreach ($hookErrors as $field => $message) {
-//                $errorFields[] = $field;
-//                $errorMessages[] = $message;
-//            }
-//            $returnValue = array(
-//                'fields'    => $errorFields,
-//                'messages'  => $errorMessages,
-//            );
+        } elseif ($validators->hasErrors()) {
+            $areaErrorCollections = $validators->getCollection();
+            foreach ($areaErrorCollections as $area => $errorCollection) {
+                $areaErrors = $errorCollection->getErrors();
+                foreach ($areaErrors as $field => $message) {
+                    $errorFields[] = $field;
+                    $errorMessages[] = $message;
+                }
+            }
+            $returnValue = array(
+                'fields'    => $errorFields,
+                'messages'  => $errorMessages,
+            );
         } else {
             $returnValue = array(
                 'fields'    => array(),
