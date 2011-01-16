@@ -48,8 +48,8 @@ class ValidationUtil
         $rc = true;
 
         // if this field already has an error, don't perform further checks
-        $t = SessionUtil::getVar($field, null, "/validationFailedObjects/$objectType", false, false);
-        if ($t !== null) {
+        $t = SessionUtil::getVar($field, false, "/validationFailedObjects/$objectType", false, false);
+        if ($t !== false) {
             return $rc;
         }
 
