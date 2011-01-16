@@ -395,10 +395,9 @@ class SystemListenersUtil
             return;
         }
 
-        $sublinks = array();
-
         // notify EVENT here to gather any system service links
-        $localevent = new Zikula_Event('module_dispatch.service_links', $sublinks);
+        $args = array('modname' => $event->getArg('modname'));
+        $localevent = new Zikula_Event('module_dispatch.service_links', $event->getSubject(), $args);
         EventUtil::notify($localevent);
         $sublinks = $localevent->getData();
 
