@@ -98,7 +98,7 @@ class Modules_HookUI
      */
     public static function servicelinks(Zikula_Event $event)
     {
-        $module = ModUtil::getName();
+        $module = $event->getArg('modname');
 
         if (HookUtil::isSubscriberCapable($module)) {
             $event->data[] = array('url' => ModUtil::url($module, 'admin', 'hookproviders'), 'text' => __('Hook Providers'));
@@ -126,10 +126,8 @@ class Modules_HookUI
         $view = Zikula_View::getInstance('Modules', false);
         $view->assign('currentmodule', $moduleName);
 
-        $sublinks = array();
-
         // notify EVENT here to gather any system service links
-        $localevent = new Zikula_Event('module_dispatch.service_links', $sublinks);
+        $localevent = new Zikula_Event('module_dispatch.service_links', $subject, array('modname' => $moduleName));
         EventUtil::notify($localevent);
         $sublinks = $localevent->getData();
         $view->assign('sublinks', $sublinks);
