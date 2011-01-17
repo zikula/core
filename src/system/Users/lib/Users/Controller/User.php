@@ -989,7 +989,7 @@ class Users_Controller_User extends Zikula_Controller
             $loggedIn = UserUtil::loginUsing($authModuleName, $authinfo, $rememberMe, null, false, $authenticatedUid);
 
             if ($loggedIn) {
-                // start login hook
+                // start login event
                 $uid = UserUtil::getVar('uid');
                 $loginRedirect = $this->getVar('login_redirect');
                 if ($loginRedirect == 1) {
@@ -1022,7 +1022,7 @@ class Users_Controller_User extends Zikula_Controller
     {
         $login_redirect = $this->getVar('login_redirect');
 
-        // start logout hook
+        // start logout event
         $uid = UserUtil::getVar('uid');
         if (UserUtil::logout()) {
             if ($login_redirect == 1) {
@@ -1147,6 +1147,7 @@ class Users_Controller_User extends Zikula_Controller
                                             LogUtil::registerStatus($regErrorsMessage);
                                             return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         } else {
+                                            $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                             return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
                                         }
                                         break;
@@ -1157,6 +1158,7 @@ class Users_Controller_User extends Zikula_Controller
                                             LogUtil::registerStatus($regErrorsMessage);
                                             return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         } else {
+                                            $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                             return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
                                         }
                                         break;
@@ -1167,6 +1169,7 @@ class Users_Controller_User extends Zikula_Controller
                                             LogUtil::registerStatus($regErrorsMessage);
                                             return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         } else {
+                                            $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                             return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
                                         }
                                         break;
@@ -1176,6 +1179,7 @@ class Users_Controller_User extends Zikula_Controller
                                             LogUtil::registerStatus($regErrorsMessage);
                                             return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         } else {
+                                            $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                             return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
                                         }
                                         break;
