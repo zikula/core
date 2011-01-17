@@ -133,13 +133,11 @@ class Users_Controller_Ajax extends Zikula_Controller
                 'messages'  => $errorMessages,
             );
             
-            return new Zikula_Response_Ajax($returnValue);
         } elseif ($validators->hasErrors()) {
             $areaErrorCollections = $validators->getCollection();
             foreach ($areaErrorCollections as $area => $errorCollection) {
                 $areaErrors = $errorCollection->getErrors();
                 foreach ($areaErrors as $field => $message) {
-                    $errorFields[] = $field;
                     $errorMessages[] = $message;
                 }
             }
@@ -153,7 +151,7 @@ class Users_Controller_Ajax extends Zikula_Controller
                 'messages'  => array(),
             );
             
-            return new Zikula_Response_Ajax($returnValue);
         }
+        return new Zikula_Response_Ajax($returnValue);
     }
 }
