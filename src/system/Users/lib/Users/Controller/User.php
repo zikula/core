@@ -1143,43 +1143,43 @@ class Users_Controller_User extends Zikula_Controller
                                     case UserUtil::ACTIVATED_INACTIVE_PWD:
                                         LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
                                         LogUtil::registerStatus($this->__('NOTE: During your first attempt to log in you will be asked to establish a new password.'));
+                                        $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             LogUtil::registerStatus($regErrorsMessage);
                                             return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         } else {
-                                            $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                             return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
                                         }
                                         break;
                                     case UserUtil::ACTIVATED_INACTIVE_TOUPP:
                                         LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
                                         LogUtil::registerStatus($this->__('NOTE: During your first attempt to log in you will be asked to accept the site\'s terms.'));
+                                        $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             LogUtil::registerStatus($regErrorsMessage);
                                             return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         } else {
-                                            $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                             return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
                                         }
                                         break;
                                     case UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP:
                                         LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
                                         LogUtil::registerStatus($this->__('NOTE: During your first attempt to log in you will be asked to establish a new password, and to accept the site\'s terms.'));
+                                        $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             LogUtil::registerStatus($regErrorsMessage);
                                             return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         } else {
-                                            $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                             return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
                                         }
                                         break;
                                     case UserUtil::ACTIVATED_ACTIVE:
                                         LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
+                                        $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             LogUtil::registerStatus($regErrorsMessage);
                                             return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         } else {
-                                            $this->notifyHooks('users.hook.user.process.edit', $reginfo, $reginfo['uid']);
                                             return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
                                         }
                                         break;
