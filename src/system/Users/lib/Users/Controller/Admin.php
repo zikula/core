@@ -899,7 +899,7 @@ class Users_Controller_Admin extends Zikula_Controller
             $return = false;
         }
         if ($return == true) {
-            foreach ($userdid as $uid) {
+            foreach ($userid as $uid) {
                 $this->notifyHooks('users.hook.user.process.delete', null, $uid); // null for subject?
             }
             $count = count($userid);

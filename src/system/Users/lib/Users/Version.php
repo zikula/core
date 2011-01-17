@@ -47,12 +47,12 @@ class Users_Version extends Zikula_Version
     protected function setupHookBundles()
     {
         $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.users.user', $this->__('User Hooks'));
-        $bundle->addType('ui.edit', 'users.hook.user.ui.edit'); // users_admin_newuser.tpl L#111 & users_user_register.tpl L#172 & user_admin_modify.tpl L#104
-        $bundle->addType('ui.delete', 'users.hook.user.ui.delete'); // users_admin_deleteusers.tpl L#22
-        $bundle->addType('validate.edit', 'users.hook.user.validate.edit'); // Users_Controller_Admin L#703 & Users_Controller_User L#272 & Users_Controller_Ajax L#115
-        $bundle->addType('validate.delete', 'users.hook.user.validate.delete'); // Users_Controller_Admin L#882
-        $bundle->addType('process.edit', 'users.hook.user.process.edit'); // Users_Api_Registration L#847 & Users_Api_Admin L#247
-        $bundle->addType('process.delete', 'users.hook.user.process.delete'); // Users_Api_Admin L#328
+        $bundle->addType('ui.edit', 'users.hook.user.ui.edit');
+        $bundle->addType('ui.delete', 'users.hook.user.ui.delete');
+        $bundle->addType('validate.edit', 'users.hook.user.validate.edit');
+        $bundle->addType('validate.delete', 'users.hook.user.validate.delete');
+        $bundle->addType('process.edit', 'users.hook.user.process.edit');
+        $bundle->addType('process.delete', 'users.hook.user.process.delete');
         $this->registerHookSubscriberBundle($bundle);
     }
 }
