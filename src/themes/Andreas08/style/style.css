@@ -170,50 +170,36 @@ dd {
 }
 
 .z-blockposition-search #theme_search{
-    background: #467AA7;
+    background: #27587F;
     margin: 0;
     padding: 0;
+    border-left: 1px solid #fff;
 }
 
 .z-blockposition-search #theme_search .theme_search_input {
-    background: #467AA7;
+    background: inherit;
     border: none;
-    border-left: 1px solid #fff;
     color: #FFFFFF;
     float: left;
-    font-size: 13px;
+    font-size: 10px;
     margin: 0;
-    padding: 5px;
-    -webkit-appearance: none;
-    -webkit-border-radius: 0px;
-}
-
-.z-blockposition-search #theme_search .theme_search_input:hover,
-.z-blockposition-search #theme_search .theme_search_input:focus,
-.z-blockposition-search #theme_search .theme_search_input:active {
-    background: #27587F;
-}
-
-.z-blockposition-search #theme_search .theme_search_button {
-    background: #467AA7;
-    border: none;
-    border-left: 1px solid #fff;
-    color: #FAFAFA;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: bold;
-    margin: 0;
-    padding: 5px;
+    padding: 7px;
+    font-family: inherit;
     text-transform: uppercase;
     -webkit-appearance: none;
     -webkit-border-radius: 0px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, .3);
-}
-.z-blockposition-search #theme_search .theme_search_button:hover {
-    background: #27587F;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, .8);
 }
 
+.z-blockposition-search #theme_search:hover,
+.z-blockposition-search #theme_search:focus,
+.z-blockposition-search #theme_search:active {
+    background: #15476D;
+}
+
+.z-blockposition-search #theme_search .theme_search_button {
+    margin: 0 2px !important;
+    padding: 1px 4px !important;
+}
 
 /**************** Content styles ****************/
 #theme_content {
