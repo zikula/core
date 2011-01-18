@@ -79,7 +79,7 @@
         <fieldset>
             <legend>{gt text="Localised output"}</legend>
             <div class="z-formrow">
-                <label>{gt text="Name"}</label>
+                <label>{gt text="Name"}<span class="z-mandatorysym">*</span></label>
                 {array_field_isset assign="displayNames" array=$category field="display_name" returnValue=1}
                 {if ($displayNames || !$catID)}
                 {foreach item=language from=$languages}

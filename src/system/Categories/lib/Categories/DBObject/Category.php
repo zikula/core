@@ -66,7 +66,7 @@ class Categories_DBObject_Category extends DBObject
         $languages = ZLanguage::getInstalledLanguages();
         foreach ($languages as $lang) {
             if (!isset($data['display_name'][$lang]) || !$data['display_name'][$lang]) {
-                $data['display_name'][$lang] = __('Error! The localised name has not been defined.');
+                $data['display_name'][$lang] = $data['name'];
             }
         }
 
