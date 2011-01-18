@@ -87,11 +87,20 @@ class Users_Block_Login extends Zikula_Block
             // If there is more than one authmodule available don't assume a default.
             $authmodule = false;
             $numAuthmodules = count($authmodules);
-            if ($numAuthmodules == 1) {
+            if (!$numAuthmodules || ($numAuthmodules <= 0)) {
+                // No auth modules?! We know Users is installed, so force that one.
+                $authmodules[] = ModUtil::getInfoFromName('Users');
+                $authmodule = 'Users';
+
+                // Also, log the situation.
+                LogUtil::log('There were no modules capable of authentication. Forcing use of the Users module.', Zikula_ErrorHandler::CRIT);
+            } elseif ($numAuthmodules == 1) {
                 // There is exactly one authmodule available, so use that as the default
-                $authmodule = FormUtil::getPassedValue('loginwith', array_pop(array_keys($authmodules)), 'GET');
-            } elseif (!$numAuthmodules) {
-                return LogUtil::registerError($this->__("It appears that there are no authorization modules available for processing user log-in requests."));
+                $authmodule = $modules[0]['name'];
+            } else {
+                // There is more than one authmodule available, get the one selected.
+                // If there are none selected, then do not default.
+                $authmodule = FormUtil::getPassedValue('loginwith', false, 'GET');
             }
 
             $this->view->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
