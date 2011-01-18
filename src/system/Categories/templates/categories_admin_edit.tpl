@@ -58,6 +58,7 @@
                 <div class="z-formrow">
                     <label for="category_status">{gt text="Active"}</label>
                     {array_field_isset assign="catStatus" array=$category field="status" returnValue=1}
+                    {if $mode != "edit"} {assign var="catStatus" value="A"}{/if}
                     <input id="category_status" name="category[status]" value="A" type="checkbox" {if ($catStatus == 'A')} checked="checked"{/if} />&nbsp;&nbsp;
                 </div>
             </fieldset>
