@@ -64,7 +64,7 @@
             <fieldset>
                 <legend>{gt text="Localised output"}</legend>
                 <div class="z-formrow">
-                    <label>{gt text="Name"}</label>
+                    <label>{gt text="Name"}<span class="z-mandatorysym">*</span></label>
                     {array_field_isset assign="displayNames" array=$category field="display_name" returnValue=1}
                     {foreach item=language from=$languages}
                     {array_field_isset assign="displayName" array=$displayNames field=$language returnValue=1}
@@ -124,10 +124,10 @@
                 {if (!$category.is_leaf && $haveSubcategories && $haveLeafSubcategories)}
                 {button src=edit.gif set=icons/extrasmall name="category_user_edit" value="edit" __alt="Edit" __title="Edit" __text="Edit"}
                 {/if}
-                <a href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a class="z-btred" href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 {else}
                 {button class="z-btgreen" src=button_ok.gif set=icons/extrasmall name="category_submit" value="add" __alt="Save" __title="Save" __text="Save"}
-                <a href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a class="z-btred" href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 {/if}
             </div>
         </form>
