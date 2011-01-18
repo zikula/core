@@ -98,15 +98,15 @@ div.z-accountlink  img {
     padding:0;
 }
 
-#users_block_loginform .users_block_box {
+.users_block_box {
     margin:1em 0 0;
     padding:0 1em 1em 0;
 }
 
-#users_block_loginform .users_block_box h5 {
+.users_block_box h5 {
     font-size:1em;
     font-weight:bold;
-    margin:0;
+    margin: 1em 0 0 0;
     padding:0 0 0.5em;
     text-decoration:underline;
 }
