@@ -228,10 +228,10 @@ class Users_Controller_Admin extends Zikula_Controller
         }
 
         if (isset($registeredObj)) {
+            $this->notifyHooks('users.hook.user.process.edit', $registeredObj, $registeredObj['uid']);
             if ($registeredObj['activated'] == UserUtil::ACTIVATED_PENDING_REG) {
                 LogUtil::registerStatus($this->__('Done! Created new registration application.'));
             } elseif (isset($registeredObj['activated'])) {
-                $this->notifyHooks('users.hook.user.process.edit', $registeredObj, $registeredObj['uid']);
                 LogUtil::registerStatus($this->__('Done! Created new user account.'));
             } else {
                 LogUtil::registerError($this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
@@ -1661,6 +1661,7 @@ class Users_Controller_Admin extends Zikula_Controller
             if (!$denied) {
                 return LogUtil::registerError($this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']), null, $cancelUrl);
             } else {
+                $this->notifyHooks('users.hook.user.process.delete', null, $uid); // null for subject?
                 if ($sendNotification) {
                     $siteurl   = System::getBaseUrl();
                     $rendererArgs = array(
