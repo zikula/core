@@ -23,7 +23,7 @@ class Form_Plugin_ValidationSummary extends Form_Plugin
      *
      * @var string
      */
-    public $cssClass = 'validationSummary z-errormsg';
+    public $cssClass = 'z-form-validationSummary z-errormsg';
 
     /**
      * Get filename of this file.

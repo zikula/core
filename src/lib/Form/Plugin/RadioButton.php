@@ -293,12 +293,12 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
             $postbackHtml = " onclick=\"" . $view->getPostBackEventReference($this, '') . "\"";
         }
 
-        $class = 'radio';
+        $class = 'z-form-radio';
         if ($this->mandatory && $this->mandatorysym) {
-            $class .= ' z-mandatoryinput';
+            $class .= ' z-form-mandatory';
         }
         if ($this->readOnly) {
-            $class .= ' readonly';
+            $class .= ' z-form-readonly';
         }
         if ($this->cssClass != null) {
             $class .= ' ' . $this->cssClass;
@@ -308,7 +308,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
         $result = "<input{$idHtml}{$nameHtml} type=\"radio\" value=\"{$this->value}\"{$readOnlyHtml}{$checkedHtml}{$postbackHtml}{$attributes} class=\"{$class}\" />";
         if ($this->mandatory && $this->mandatorysym) {
-            $result .= '<span class="z-mandatorysym">*</span>';
+            $result .= '<span class="z-form-mandatory-flag">*</span>';
         }
 
         return $result;

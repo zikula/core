@@ -73,6 +73,7 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
         }
 
         $this->maxLength = 30;
+        $this->cssClass = 'z-form-float';
         $params['width'] = '6em';
 
         parent::create($view, $params);

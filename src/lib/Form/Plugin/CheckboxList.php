@@ -169,9 +169,9 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     {
         $readOnlyHtml = ($this->readOnly ? " disabled=\"disabled\"" : '');
 
-        $class = '';
+        $class = 'z-form-checkboxlist';
         if ($this->readOnly) {
-            $class .= ' readonly';
+            $class .= ' z-form-readonly';
         }
         if ($this->cssClass != null) {
             $class .= ' ' . $this->cssClass;

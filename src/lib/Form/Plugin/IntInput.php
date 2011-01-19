@@ -57,6 +57,7 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
     function create($view, &$params)
     {
         $this->maxLength = 20;
+        $this->cssClass = 'z-form-int';
         $params['width'] = '6em';
 
         parent::create($view, $params);

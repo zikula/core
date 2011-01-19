@@ -73,7 +73,7 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
 
         parent::create($view, $params);
 
-        $this->cssClass .= ' url';
+        $this->cssClass .= ' z-form-url';
     }
 
     /**
