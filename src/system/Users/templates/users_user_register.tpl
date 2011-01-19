@@ -169,9 +169,9 @@
         {/if}
 
         {* NOTE: hookproviders should do something like the following:
-            if ($module == "Users" && (isset($z_event['userregistration']) && $event['userregistration'])) {
-                        $access_type = ACCESS_READ;
-                    }
+            if ($event['caller'] == "Users" && (isset($event['userregistration']) && $event['userregistration'])) {
+                $access_type = ACCESS_READ;
+            }
          in order to display here *}
         {notifydisplayhooks eventname='users.hook.user.ui.edit' area='modulehook_area.users.user' subject=null id=null userregistration=true caller="Users"}
 
