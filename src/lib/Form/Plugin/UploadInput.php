@@ -156,13 +156,13 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
         $nameHtml = " name=\"{$this->inputName}\"";
         $readOnlyHtml = ($this->readOnly ? " readonly=\"readonly\"" : '');
 
-        $class = 'upload';
+        $class = 'z-form-upload';
         if (!$this->isValid) {
-            $class .= ' error';
+            $class .= ' z-form-error';
         }
 
         if ($this->readOnly) {
-            $class .= ' readonly';
+            $class .= ' z-form-readonly';
         }
 
         $titleHtml = ($this->errorMessage != null ? " title=\"{$this->errorMessage}\"" : '');

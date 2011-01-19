@@ -110,7 +110,7 @@ class Form_Plugin_Label extends Form_StyledPlugin
         $result = "<label{$idHtml} for=\"{$this->for}\"{$classHtml}{$attributes}>{$text}";
 
         if ($this->mandatorysym) {
-            $result .= '<span class="z-mandatorysym">*</span>';
+            $result .= '<span class="z-form-mandatory-flag">*</span>';
         }
 
         $result .= '</label>';

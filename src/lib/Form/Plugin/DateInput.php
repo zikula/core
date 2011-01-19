@@ -109,7 +109,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
 
         parent::create($view, $params);
 
-        $this->cssClass .= ' date';
+        $this->cssClass .= ' z-form-date';
     }
 
     /**
@@ -215,10 +215,10 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
             }
             $result .= '</span></div>';
             if ($this->mandatory && $this->mandatorysym) {
-                $result .= '<span class="z-mandatorysym">*</span>';
+                $result .= '<span class="z-form-mandatory-flag">*</span>';
             }
         } else {
-            $result .= '<span class="date" style="white-space: nowrap">';
+            $result .= '<span class="z-form-date" style="white-space: nowrap">';
             $result .= parent::render($view);
 
             $txt = __('Select date');

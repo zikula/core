@@ -48,7 +48,7 @@ class Form_Plugin_EMailInput extends Form_Plugin_TextInput
 
         parent::create($view, $params);
 
-        $this->cssClass .= ' email';
+        $this->cssClass .= ' z-form-email';
     }
 
     /**

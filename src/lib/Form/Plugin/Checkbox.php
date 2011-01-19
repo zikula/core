@@ -176,7 +176,7 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
 
         $attributes = $this->renderAttributes($view);
 
-        $result = "<input{$idHtml}{$nameHtml} type=\"checkbox\" value=\"1\" class=\"cbx\"{$readOnlyHtml}{$checkedHtml}{$attributes} />";
+        $result = "<input{$idHtml}{$nameHtml} type=\"checkbox\" value=\"1\" class=\"z-form-checkbox\"{$readOnlyHtml}{$checkedHtml}{$attributes} />";
 
         return $result;
     }

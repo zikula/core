@@ -298,16 +298,16 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         $sizeHtml = ($this->size > 0 ? " size=\"{$this->size}\"" : '');
         $maxLengthHtml = ($this->maxLength > 0 ? " maxlength=\"{$this->maxLength}\"" : '');
         $text = DataUtil::formatForDisplay($this->text);
-        $class = 'text';
+        $class = 'z-form-text';
 
         if (!$this->isValid) {
-            $class .= ' error';
+            $class .= ' z-form-error';
         }
         if ($this->mandatory && $this->mandatorysym) {
-            $class .= ' z-mandatoryinput';
+            $class .= ' z-form-mandatory';
         }
         if ($this->readOnly) {
-            $class .= ' readonly';
+            $class .= ' z-form-readonly';
         }
         if ($this->cssClass != null) {
             $class .= ' ' . $this->cssClass;
@@ -319,14 +319,14 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
             case 'singleline':
                 $result = "<input type=\"text\"{$idHtml}{$nameHtml}{$titleHtml}{$sizeHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
                 if ($this->mandatory && $this->mandatorysym) {
-                    $result .= '<span class="z-mandatorysym">*</span>';
+                    $result .= '<span class="z-form-mandatory-flag">*</span>';
                 }
                 break;
 
             case 'password':
                 $result = "<input type=\"password\"{$idHtml}{$nameHtml}{$titleHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
                 if ($this->mandatory && $this->mandatorysym) {
-                    $result .= '<span class="z-mandatorysym">*</span>';
+                    $result .= '<span class="z-form-mandatory-flag">*</span>';
                 }
                 break;
 
@@ -342,7 +342,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
                 $result = "<textarea{$idHtml}{$nameHtml}{$titleHtml}{$readOnlyHtml}{$colsrowsHtml} class=\"{$class}\"{$attributes}>{$text}</textarea>";
                 if ($this->mandatory && $this->mandatorysym) {
-                    $result .= '<span class="z-mandatorysym">*</span>';
+                    $result .= '<span class="z-form-mandatory-flag">*</span>';
                 }
                 break;
 

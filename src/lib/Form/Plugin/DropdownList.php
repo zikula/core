@@ -246,15 +246,15 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
         $readOnlyHtml = ($this->readOnly ? " disabled=\"disabled\"" : '');
 
-        $class = '';
+        $class = 'z-form-dropdownlist';
         if (!$this->isValid) {
-            $class .= ' error';
+            $class .= ' z-form-error';
         }
         if ($this->mandatorysym) {
-            $class .= ' z-mandatoryinput';
+            $class .= ' z-form-mandatory';
         }
         if ($this->readOnly) {
-            $class .= ' readonly';
+            $class .= ' z-form-readonly';
         }
         if ($this->cssClass != null) {
             $class .= ' ' . $this->cssClass;
@@ -312,7 +312,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         }
         $result .= "</select>\n";
         if ($this->mandatorysym) {
-            $result .= '<span class="z-mandatorysym">*</span>';
+            $result .= '<span class="z-form-mandatory-flag">*</span>';
         }
 
         return $result;

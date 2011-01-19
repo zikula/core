@@ -102,16 +102,6 @@ ul.z-menulinks li {
     margin:0 !important;
 }
 
-/*
-ul.z-menulinks li a {
-color: #555;
-}
-
-ul.z-menulinks li a:hover {
-color: #000;
-}
-*/
-
 ul.z-menulinks li:first-child {
     border-left:1px solid #aaa;
     margin-left:5px;
@@ -347,13 +337,6 @@ table.z-admintable ul {
     text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.8);
 }
 
-.z-form .z-formrow .z-mandatorysym {
-    color: #f00;
-    font-weight: bold;
-    padding-left: 3px;
-    display: inline;
-}
-
 .z-form .z-formrow input,
 .z-form .z-formrow textarea,
 .z-form .z-formrow select {
@@ -486,12 +469,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     position: relative;
 }
 
-.z-form div.z-formrow input[type=text].z-mandatoryinput,
-.z-form div.z-formrow select.z-mandatoryinput,
-.z-form div.z-formrow textarea.z-mandatoryinput {
-    width: 66%;
-}
-
 .z-form div.z-formrow select {
     padding: 0.3em 2px 0.3em 1px;
     cursor: pointer;
@@ -533,21 +510,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     width: auto;
 }
 
-.z-form .z-formrow .readonly {
-    background: #FAFAFA;
-    color: #AAAAAA;
-    cursor: not-allowed;
-}
-
-.z-form .z-formrow .error {
-    background: #ffe1da;
-    border: 1px solid #f34f4f;
-}
-
-.validationSummary label {
-    cursor: pointer;
-}
-
 /******************************************************************************
 * Form styles (linearize elements / use additional class 'z-linear')
 *******************************************************************************/
@@ -586,6 +548,46 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-linear .z-formbuttons {
     padding: 0;
     margin: 0;
+}
+
+/******************************************************************************
+* Special styles for the Zikula Form Handler
+*******************************************************************************/
+
+.z-form div.z-formrow input[type=text].z-form-mandatory,
+.z-form div.z-formrow select.z-form-mandatory,
+.z-form div.z-formrow textarea.z-form-mandatory {
+    width: 66%;
+}
+
+.z-form .z-formrow .z-mandatorysym, /* mandatorysym will be removed in future version */
+.z-form .z-formrow .z-form-mandatory-flag {
+    color: #f00;
+    font-weight: bold;
+    padding-left: 3px;
+    display: inline;
+}
+
+.z-form .z-formrow input.z-form-float,
+.z-form .z-formrow input.z-form-int {
+    text-align: right;
+    max-width: 15%;
+    display: inline;
+}
+
+.z-form .z-formrow .z-form-readonly {
+    background: #FAFAFA;
+    color: #AAAAAA;
+    cursor: not-allowed;
+}
+
+.z-form .z-formrow .z-form-error {
+    background: #ffe1da;
+    border: 1px solid #f34f4f;
+}
+
+.z-form-validationSummary label {
+    cursor: pointer;
 }
 
 /******************************************************************************

@@ -226,7 +226,7 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
 
         parent::create($view, $params);
 
-        $this->cssClass .= ' relationlist';
+        $this->cssClass .= ' z-form-relationlist';
     }
 
     /**
