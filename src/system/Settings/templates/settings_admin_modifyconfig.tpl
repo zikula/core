@@ -123,13 +123,13 @@
                     <label for="settings_permasearch">{gt text="List to search for"} </label>
                     <input id="settings_permasearch" name="settings[permasearch]" value="{$modvars.ZConfig.permasearch}" size="60" /><br />
                     <label for="settings_permasearch_default">{gt text="Default"}</label>
-                    <input id="settings_permasearch_default" type="text" readonly="readonly" class="readonly" value="{gt text="À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü"}" />
+                    <input id="settings_permasearch_default" type="text" readonly="readonly" class="z-form-readonly" value="{gt text="À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü"}" />
                 </div>
                 <div class="z-formrow">
                     <label for="settings_permareplace">{gt text="List to replace with"}</label>
                     <input id="settings_permareplace" name="settings[permareplace]" value="{$modvars.ZConfig.permareplace}" size="60" /><br />
                     <label for="settings_permareplace_default">{gt text="Default"}</label>
-                    <input id="settings_permareplace_default" type="text" readonly="readonly" class="readonly" value="{gt text="A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U"}" />
+                    <input id="settings_permareplace_default" type="text" readonly="readonly" class="z-form-readonly" value="{gt text="A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U"}" />
                 </div>
             </fieldset>
             <fieldset>
