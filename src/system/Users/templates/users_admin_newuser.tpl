@@ -27,7 +27,7 @@
             <fieldset>
                 <legend>{gt text='New user account'}</legend>
                 <div class="z-formrow">
-                    <label for="users_reginfo_uname">{gt text='User name'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <label for="users_reginfo_uname">{gt text='User name'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <input id="users_reginfo_uname"{if isset($errorflds.reginfo_uname)} class="errorrequired"{/if} type="text" name="reginfo[uname]" size="21" maxlength="25" value="{$reginfo.uname|default:''}" />
                     <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</em>
                 </div>
@@ -42,7 +42,7 @@
                 </div>
                 <div id="users_setpass_yes_wrap">
                     <div class="z-formrow">
-                        <label for="users_reginfo_pass">{gt text='Password'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                        <label for="users_reginfo_pass">{gt text='Password'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                         <input id="users_reginfo_pass"{if isset($errorflds.reginfo_pass) || isset($errorflds.passagain)} class="errorrequired"{/if} type="password" name="reginfo[pass]" size="21" maxlength="20" />
                         <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.Users.minpass}</em>
                     </div>
@@ -68,7 +68,7 @@
                     </script>
                     {/if}
                     <div class="z-formrow">
-                        <label for="users_passagain">{gt text='Password (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                        <label for="users_passagain">{gt text='Password (repeat for verification)'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                         <input id="users_passagain"{if isset($errorflds.passagain)} class="errorrequired"{/if} type="password" name="passagain" size="21" maxlength="20" />
                     </div>
                     <div id="users_sendpass_container" class="z-formrow">
@@ -83,11 +83,11 @@
                     </div>
                 </div>
                 <div class="z-formrow">
-                    <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <input id="users_reginfo_email"{if isset($errorflds.reginfo_email) || isset($errorflds.emailagain)} class="errorrequired"{/if} type="text" name="reginfo[email]" size="21" maxlength="60" value="{$reginfo.email|default:''}" />
                 </div>
                 <div class="z-formrow">
-                    <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <input id="users_emailagain"{if isset($errorflds.emailagain)} class="errorrequired"{/if} type="text" name="emailagain" size="21" maxlength="60" value="{$emailagain|default:''}" />
                 </div>
                 <div id="users_setpass_no_wrap" class="z-formrow z-hide">

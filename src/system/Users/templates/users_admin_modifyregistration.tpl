@@ -28,16 +28,16 @@
             <fieldset>
                 <legend>{gt text='Registration info'}</legend>
                 <div class="z-formrow">
-                    <label for="users_reginfo_uname">{gt text='User name'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <label for="users_reginfo_uname">{gt text='User name'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <input id="users_reginfo_uname"{if isset($errorFields.reginfo_uname)} class="errorrequired"{/if} type="text" name="reginfo[uname]" size="21" maxlength="25" value="{$reginfo.uname|default:''}" />
                     <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</em>
                 </div>
                 <div class="z-formrow">
-                    <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <input id="users_reginfo_email"{if isset($errorFields.reginfo_email) || isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" name="reginfo[email]" size="21" maxlength="60" value="{$reginfo.email|default:''}" />
                 </div>
                 <div class="z-formrow">
-                    <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <input id="users_emailagain"{if isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" name="emailagain" size="21" maxlength="60" value="{$emailagain|default:''}" />
                 </div>
             </fieldset>

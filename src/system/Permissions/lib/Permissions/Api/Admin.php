@@ -517,7 +517,7 @@ class Permissions_Api_Admin extends Zikula_Api
             $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'permissions_modifyconfig', 'class' => 'z-icon-es-config');
         }
         if (ModUtil::getName() == 'Permissions') {
-            $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'class' => 'z-icon-es-info showinstanceinformation');
+            $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'class' => 'z-icon-es-info showinstanceinformation');
         }
 
 
