@@ -84,12 +84,12 @@ div.z-accountlink  img {
 }
 
 .user-icon-adduser {
-    background: url("../../../images/icons/extrasmall/add_user.gif") no-repeat scroll 0 50% transparent;
+    background: transparent url("../../../images/icons/extrasmall/add_user.gif") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
 
 .user-icon-lostusername {
-    background: url("../../../images/icons/extrasmall/lostusername.png") no-repeat scroll 0 50% transparent;
+    background: transparent url("../../../images/icons/extrasmall/lostusername.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
 
@@ -146,3 +146,32 @@ div.z-accountlink  img {
     padding: 0 0 0 20px;
 }
 
+.users_block_loginwith_button {
+    border: none;
+    cursor: pointer;
+    padding: 0 0 0 20px;
+    height: 16px;
+    font-size: 100%;
+    color: #467aa7;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.users_block_loginwith_button:hover {
+    color: #2a5a8a;
+}
+
+input#users_block_loginwith_button_Users {
+    background: transparent url("../../../images/icons/extrasmall/user.png") no-repeat scroll center left;
+}
+
+.users_block_loginwith_button {
+    border: none;
+    cursor: pointer;
+    padding: 0 0 0 20px;
+    height: 16px;
+    font-size: 100%;
+    color: #467aa7;
+    font-weight: bold;
+    text-decoration: none;
+}
