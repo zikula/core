@@ -18,16 +18,8 @@ function smarty_function_iswriteable($params, &$smarty)
     }
     $file = $params['file'];
 
-    // is_writable() is not reliable enough - drak
-    if (is_dir($file)) {
-        $result = is_writable($file);
-    } else {
-        $result = @fopen($file, 'a');
-        if ($result === true) {
-            fclose($result);
-        }
-    }
-
+    $result = is_writable($file);
+    
     if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $result);
     } else {

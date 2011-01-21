@@ -53,7 +53,6 @@ class CacheUtil
         if (!FileUtil::mkdirs($path, $mode)) {
             return false;
         }
-        touch("{$path}/index.html");
 
         return true;
     }

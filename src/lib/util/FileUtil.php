@@ -537,4 +537,14 @@ class FileUtil
 
         exit;
     }
+
+    /**
+     * Get system data directory path.
+     *
+     * @return string The path to the data directory.
+     */
+    public function getDataDirectory()
+    {
+        return DataUtil::formatForOS(System::getVar('datadir'));
+    }
 }

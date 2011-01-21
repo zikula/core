@@ -79,15 +79,21 @@
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="config/config.php"}</li>{assign var=checkfailed value=true}
                 {/if}
+                {iswriteable file="`$datadir`" assign="file"}
+                {if $file}
+                <li class="passed">{gt text="%s/ is writeable." tag1=$datadir}</li>
+                {else}
+                <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1=$datadir}</li>{assign var=checkfailed value=true}
+                {/if}
                 {iswriteable file="`$temp`" assign="file"}
                 {if $file}
-                <li class="passed">{gt text="%s is writeable." tag1=$temp}</li>
+                <li class="passed">{gt text="%s/ is writeable." tag1=$temp}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1=$temp}</li>{assign var=checkfailed value=true}
                 {/if}
                 {iswriteable file="`$temp`/error_logs" assign="file"}
                 {if $file}
-                <li class="passed">{gt text="%s is writeable." tag1="$temp/error_logs"}</li>
+                <li class="passed">{gt text="%s/ is writeable." tag1="$temp/error_logs"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/error_logs"}</li>{assign var=checkfailed value=true}
                 {/if}
@@ -99,25 +105,25 @@
                 {/if}
                 {iswriteable file="`$temp`/view_cache" assign="file"}
                 {if $file}
-                <li class="passed">{gt text="%s is writeable." tag1="$temp/view_cache"}</li>
+                <li class="passed">{gt text="%s/ is writeable." tag1="$temp/view_cache"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/view_cache"}</li>{assign var=checkfailed value=true}
                 {/if}
                 {iswriteable file="`$temp`/Theme_compiled" assign="file"}
                 {if $file}
-                <li class="passed">{gt text="%s is writeable." tag1="$temp/Theme_compiled"}</li>
+                <li class="passed">{gt text="%s/ is writeable." tag1="$temp/Theme_compiled"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/Theme_compiled"}</li>{assign var=checkfailed value=true}
                 {/if}
                 {iswriteable file="`$temp`/Theme_cache" assign="file"}
                 {if $file}
-                <li class="passed">{gt text="%s is writeable." tag1="$temp/Theme_cache"}</li>
+                <li class="passed">{gt text="%s/ is writeable." tag1="$temp/Theme_cache"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/Theme_cache"}</li>{assign var=checkfailed value=true}
                 {/if}
                 {iswriteable file="`$temp`/Theme_Config" assign="file"}
                 {if $file}
-                <li class="passed">{gt text="%s is writeable." tag1="$temp/Theme_Config"}</li>
+                <li class="passed">{gt text="%s/ is writeable." tag1="$temp/Theme_Config"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/Theme_Config"}</li>{assign var=checkfailed value=true}
                 {/if}
