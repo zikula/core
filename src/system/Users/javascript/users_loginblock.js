@@ -8,14 +8,43 @@ Zikula.Users.LoginBlock =
 {
     init: function()
     {
-        if ($('users_block_loginwith_Users') != null) {
-            $('users_block_loginwith_Users').observe('submit', Zikula.Users.LoginBlock.onSubmitLoginWithUsers());
+        if ($('users_loginblock_loginwith_Users') != null) {
+            $('users_loginblock_loginwith_Users').observe('submit', Zikula.Users.LoginBlock.onSubmitLoginWithUsers);
         }
     },
 
-    onSubmitLoginWithUsers: function()
+    changingLoginBlockFields: function(changeInProgress)
     {
-        new Zikula.Ajax.Request(
+        var loginForm = $('users_loginblock_loginform');
+        var subTitle = $('loginblock_h5_no_authmodule');
+        if (changeInProgress) {
+            $('users_loginblock_waiting').removeClassName('z-hide');
+            if (!loginForm.hasClassName('z-hide')) {
+                loginForm.addClassName('z-hide');
+            }
+            if (subTitle.hasClassName('z-hide')) {
+                subTitle.removeClassName('z-hide');
+                $('loginblock_h5_authmodule').addClassName('z-hide');
+            }
+        } else {
+            $('users_loginblock_waiting').addClassName('z-hide');
+            if (loginForm.hasClassName('z-hide')) {
+                loginForm.removeClassName('z-hide');
+            }
+            if (!subTitle.hasClassName('z-hide')) {
+                subTitle.addClassName('z-hide');
+                $('loginblock_h5_authmodule').removeClassName('z-hide');
+            }
+        }
+
+        $$('form.users_loginblock_loginwith').each(function(item) {item.removeClassName('z-hide');});
+    },
+
+    onSubmitLoginWithUsers: function(event)
+    {
+        Zikula.Users.LoginBlock.changingLoginBlockFields(true);
+
+        var r = new Zikula.Ajax.Request(
             Zikula.Config.baseURL + "ajax.php?module=Users&func=getLoginBlockFields",
             {
                 method: 'post',
@@ -23,22 +52,28 @@ Zikula.Users.LoginBlock =
                 onComplete: Zikula.Users.LoginBlock.getLoginWithUsersResponse
             });
 
-        // Return false so the form does not submit.
-        return false;
+        event.stop();
     },
 
     getLoginWithUsersResponse: function(req)
     {
         if (!req.isSuccess()) {
+            $('users_loginblock_waiting').addClassName('z-hide');
             Zikula.showajaxerror(req.getMessage());
             return;
         }
 
         var data = req.getData();
 
+        Element.update('users_loginblock_fields', data.content);
+
+        Zikula.Users.LoginBlock.changingLoginBlockFields(false);
+
+        $('users_loginblock_loginwith_Users').addClassName('z-hide');
     }
 
 }
 
-// Load and execute the initialization when the DOM is ready. This must be below the definition of the init function!
+// Load and execute the initialization when the DOM is ready.
+// This must be below the definition of the init function!
 document.observe("dom:loaded", Zikula.Users.LoginBlock.init);

@@ -301,14 +301,14 @@ dd {
     padding: 0.5em;
 }
 
-#theme_content .users_block_box {
+#theme_content .users_loginblock_box {
     background-color: #FAFBFC;
     border:1px solid #E0E8EF;
     margin:0.5em 0;
     padding:1em;
 }
 
-#theme_content .users_block_box h5 {
+#theme_content .users_loginblock_box h5 {
     margin: 0.5em 0 0 0;
     color:#555;
 }

@@ -164,6 +164,6 @@ class Users_Controller_Ajax extends Zikula_Controller
 
         $loginBlockFields = ModUtil::func('Users', 'Auth', 'loginBlockFields');
 
-        return new Zikula_Response_Ajax($loginBlockFields);
+        return new Zikula_Response_Ajax(array('content' => $loginBlockFields));
     }
 }
