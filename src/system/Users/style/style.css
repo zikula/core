@@ -93,17 +93,17 @@ div.z-accountlink  img {
     padding: 2px 0 2px 20px;
 }
 
-#users_block_loginform {
+#users_loginblock_loginform {
     margin:0;
     padding:0;
 }
 
-.users_block_box {
+.users_loginblock_box {
     margin:1em 0 0;
     padding:0 1em 1em 0;
 }
 
-.users_block_box h5 {
+.users_loginblock_box h5 {
     font-size:1em;
     font-weight:bold;
     margin: 1em 0 0 0;
@@ -111,17 +111,17 @@ div.z-accountlink  img {
     text-decoration:underline;
 }
 
-#users_block_loginform div.z-formrow {
+#users_loginblock_loginform div.z-formrow {
     padding: 0;
 }
 
-#users_block_loginform ul#user-block-login-tools {
+#users_loginblock_loginform ul#user-block-login-tools {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-#users_block_loginform ul#user-block-login-tools li {
+#users_loginblock_loginform ul#user-block-login-tools li {
     margin: 0.5em 0;
     padding: 0;
 }
@@ -146,7 +146,7 @@ div.z-accountlink  img {
     padding: 0 0 0 20px;
 }
 
-.users_block_loginwith_button {
+.users_loginblock_loginwith_button {
     border: none;
     cursor: pointer;
     padding: 0 0 0 20px;
@@ -157,15 +157,15 @@ div.z-accountlink  img {
     text-decoration: none;
 }
 
-.users_block_loginwith_button:hover {
+.users_loginblock_loginwith_button:hover {
     color: #2a5a8a;
 }
 
-input#users_block_loginwith_button_Users {
+input#users_loginblock_loginwith_button_Users {
     background: transparent url("../../../images/icons/extrasmall/user.png") no-repeat scroll center left;
 }
 
-.users_block_loginwith_button {
+.users_loginblock_loginwith_button {
     border: none;
     cursor: pointer;
     padding: 0 0 0 20px;
