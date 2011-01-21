@@ -154,4 +154,16 @@ class Users_Controller_Ajax extends Zikula_Controller
         }
         return new Zikula_Response_Ajax($returnValue);
     }
+
+    public function getLoginBlockFields()
+    {
+        if (!SecurityUtil::confirmAuthKey()) {
+            LogUtil::registerAuthidError();
+            throw new Zikula_Exception_Fatal();
+        }
+
+        $loginBlockFields = ModUtil::func('Users', 'Auth', 'loginBlockFields');
+
+        return new Zikula_Response_Ajax($loginBlockFields);
+    }
 }
