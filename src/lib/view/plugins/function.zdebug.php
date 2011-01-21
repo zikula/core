@@ -28,6 +28,9 @@
  *   { pndebug }
  *
  * Parameters:
+ *  checkpermission: If false, then a security check is not performed, allowing debug information to
+ *              be displayed, for example, when there is no user logged in. $ZConfig['System']['developement']
+ *              must also be true. Defaults to true;
  *  output   If html, show debug in rendered page, otherwise open popup window
  *  template Specify different debug template, default zdebug.tpl,
  *                                        must be stored in Theme/pntemplates.
@@ -39,9 +42,12 @@
  */
 function smarty_function_zdebug($params, $view)
 {
+    global $ZConfig;
     $out = '';
     $thismodule = ModUtil::getName();
-    if (SecurityUtil::checkPermission($thismodule.'::debug', '::', ACCESS_ADMIN)) {
+    $skipPermissionCheck = isset($ZConfig['System']['development']) && $ZConfig['System']['development']
+                            && isset($params['checkpermission']) && !$params['checkpermission'];
+    if ($skipPermissionCheck || SecurityUtil::checkPermission($thismodule.'::debug', '::', ACCESS_ADMIN)) {
         if (isset($params['output']) && !empty($params['output'])) {
             $view->assign('_smarty_debug_output', $params['output']);
         }
