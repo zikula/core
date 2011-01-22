@@ -603,12 +603,12 @@ class HookUtil
         foreach ($bundles as $bundle) {
             foreach ($bundle->getHookTypes() as $type => $eventName) {
                 $exists = Doctrine_Query::create()->select()
-                    ->where('owner = ?', $owner)
-                    ->andWhere('area = ?', $bundle->getArea())
-                    ->andWhere('type = ?', $type)
-                    ->andWhere('eventname = ?', $eventName)
-                    ->from('Zikula_Doctrine_Model_HookSubscribers')
-                    ->count();
+                                ->where('owner = ?', $owner)
+                                ->andWhere('area = ?', $bundle->getArea())
+                                ->andWhere('type = ?', $type)
+                                ->andWhere('eventname = ?', $eventName)
+                                ->from('Zikula_Doctrine_Model_HookSubscribers')
+                                ->count();
                 if (!$exists) {
                     self::registerSubscriber($owner, $bundle->getArea(), $type, $eventName);
                 }
@@ -652,16 +652,16 @@ class HookUtil
         foreach ($bundles as $bundle) {
             foreach ($bundle->getHooks() as $name => $hook) {
                 $exists = Doctrine_Query::create()->select()
-                    ->where('owner = ?', $owner)
-                    ->andWhere('area = ?', $bundle->getArea())
-                    ->andWhere('type = ?', $hook['type'])
-                    ->andWhere('name = ?', $name)
-                    ->andWhere('classname = ?', $hook['classname'])
-                    ->andWhere('method = ?', $hook['method'])
-                    ->andWhere('weight = ?', $hook['weight'])
-                    ->andWhere('serviceid = ?', $hook['serviceid'])
-                    ->from('Zikula_Doctrine_Model_HookProviders')
-                    ->count();
+                                ->where('owner = ?', $owner)
+                                ->andWhere('area = ?', $bundle->getArea())
+                                ->andWhere('type = ?', $hook['type'])
+                                ->andWhere('name = ?', $name)
+                                ->andWhere('classname = ?', $hook['classname'])
+                                ->andWhere('method = ?', $hook['method'])
+                                ->andWhere('weight = ?', $hook['weight'])
+                                ->andWhere('serviceid = ?', $hook['serviceid'])
+                                ->from('Zikula_Doctrine_Model_HookProviders')
+                                ->count();
                 if (!$exists) {
                     self::registerProvider($name, $owner, $bundle->getArea(), $hook['type'], $hook['classname'], $hook['method'], $hook['serviceid'], $hook['weight']);
                 }
@@ -894,9 +894,9 @@ class HookUtil
     public static function getProviderAreasByOwner($providerName)
     {
         return (array)Doctrine_Query::create()->select('DISTINCT p.area')
-                        ->where('p.owner = ?', $providerName)
-                        ->from('Zikula_Doctrine_Model_HookProviders p')
-                        ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+                ->where('p.owner = ?', $providerName)
+                ->from('Zikula_Doctrine_Model_HookProviders p')
+                ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
 
     /**
@@ -909,9 +909,9 @@ class HookUtil
     public static function getSubscriberAreasByOwner($subscriberName)
     {
         return (array)Doctrine_Query::create()->select('DISTINCT s.area')
-                        ->where('s.owner = ?', $subscriberName)
-                        ->from('Zikula_Doctrine_Model_HookSubscribers s')
-                        ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+                ->where('s.owner = ?', $subscriberName)
+                ->from('Zikula_Doctrine_Model_HookSubscribers s')
+                ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
 
     /**
@@ -924,9 +924,9 @@ class HookUtil
     public static function getOwnerBySubscriberArea($area)
     {
         return Doctrine_Query::create()->select('DISTINCT s.owner')
-                        ->where('s.area = ?', $area)
-                        ->from('Zikula_Doctrine_Model_HookSubscribers s')
-                        ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+                ->where('s.area = ?', $area)
+                ->from('Zikula_Doctrine_Model_HookSubscribers s')
+                ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
 
     /**
@@ -939,10 +939,9 @@ class HookUtil
     public static function getOwnerByProviderArea($area)
     {
         return Doctrine_Query::create()->select('DISTINCT p.owner')
-                        ->where('p.area = ?', $area)
-                        ->from('Zikula_Doctrine_Model_HookProviders p')
-                        ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+                ->where('p.area = ?', $area)
+                ->from('Zikula_Doctrine_Model_HookProviders p')
+                ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
-
 
 }
