@@ -6,7 +6,6 @@ var adding = Array();
  *
  *@params none;
  *@return none;
- *@author Frank Chestnut
  */
 function groupinit(defgroupid, frstgroup, admingroupid)
 {
@@ -46,7 +45,6 @@ function groupinit(defgroupid, frstgroup, admingroupid)
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function groupappend()
 {
@@ -69,7 +67,6 @@ function groupappend()
  *
  *@params req reponse from ajax call;
  *@return none;
- *@author Frank Schummertz
  */
 function groupappend_response(req)
 {
@@ -150,7 +147,6 @@ function groupappend_response(req)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function groupmodifyinit(groupid)
 {
@@ -172,7 +168,6 @@ function groupmodifyinit(groupid)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function enableeditfields(groupid)
 {
@@ -195,7 +190,6 @@ function enableeditfields(groupid)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function disableeditfields(groupid)
 {
@@ -218,7 +212,6 @@ function disableeditfields(groupid)
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function groupmodifycancel(groupid)
 {
@@ -236,7 +229,6 @@ function groupmodifycancel(groupid)
  *
  *@params permid the permission id;
  *@return 1 if modification is in progress, otherwise 0;
- *@author Frank Schummertz
  */
 function getmodifystatus(groupid)
 {
@@ -248,7 +240,6 @@ function getmodifystatus(groupid)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function setmodifystatus(groupid, newvalue)
 {
@@ -260,7 +251,6 @@ function setmodifystatus(groupid, newvalue)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function groupmodify(groupid)
 {
@@ -295,7 +285,6 @@ function groupmodify(groupid)
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function groupmodify_response(req)
 {
@@ -355,7 +344,6 @@ function groupmodify_response(req)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function groupdelete(groupid)
 {
@@ -383,7 +371,6 @@ function groupdelete(groupid)
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function groupdelete_response(req)
 {
@@ -424,7 +411,6 @@ function groupfailure_response(groupid)
  *@params permid the permission id;
  *@params infotext the text to show;
  *@return none;
- *@author Frank Schummertz
  */
 function showinfo(groupid, infotext)
 {

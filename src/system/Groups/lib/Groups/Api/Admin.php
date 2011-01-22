@@ -12,12 +12,18 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Groups_Api_Admin class.
+ */
 class Groups_Api_Admin extends Zikula_Api
 {
+
     /**
-     * create a new group item
-     * @param string $args['name'] name of the group
-     * @return mixed group ID on success, false on failure
+     * Create a new group item.
+     *
+     * @param string $args['name'] name of the group.
+     *
+     * @return mixed group ID on success, false on failure.
      */
     public function create($args)
     {
@@ -40,10 +46,10 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // Add item
-        $obj = array('name'        => $args['name'],
-                'gtype'       => $args['gtype'],
-                'state'       => $args['state'],
-                'nbumax'      => $args['nbumax'],
+        $obj = array('name' => $args['name'],
+                'gtype' => $args['gtype'],
+                'state' => $args['state'],
+                'nbumax' => $args['nbumax'],
                 'description' => $args['description']);
         $result = DBUtil::insertObject($obj, 'groups', 'gid');
 
@@ -64,10 +70,13 @@ class Groups_Api_Admin extends Zikula_Api
     }
 
     /**
-     * delete a group item
-     * @param int $args['gid'] ID of the item
-     * @return bool true on success, false on failure
+     * Delete a group item.
+     *
+     * @param int $args['gid'] ID of the item.
+     *
      * @todo call permissions API to remove group permissions associated with the group
+     *
+     * @return boolean true on success, false on failure.
      */
     public function delete($args)
     {
@@ -78,14 +87,14 @@ class Groups_Api_Admin extends Zikula_Api
 
         // The user API function is called.
         $item = ModUtil::apiFunc('Groups', 'user', 'get',
-                array('gid' => $args['gid']));
+                        array('gid' => $args['gid']));
 
         if ($item == false) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'].'::', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -124,36 +133,39 @@ class Groups_Api_Admin extends Zikula_Api
     }
 
     /**
-     * update a group item
-     * @param int $args['gid'] the ID of the item
-     * @param string $args['name'] the new name of the item
-     * @return bool true if successful, false otherwise
-     * @todo add missing 'name' to modargs check
+     * Update a group item.
+     *
+     * @param int $args['gid'] the ID of the item.
+     * @param string $args['name'] the new name of the item.
+     *
+     * @todo add missing 'name' to modargs check.
+     *
+     * @return bool true if successful, false otherwise.
      */
     public function update($args)
     {
         // Argument check
-        if (!isset($args['gid'])){
+        if (!isset($args['gid'])) {
             return LogUtil::registerArgsError();
         }
 
         // The user API function is called.
         $item = ModUtil::apiFunc('Groups', 'user', 'get',
-                array('gid' => $args['gid']));
+                        array('gid' => $args['gid']));
 
         if ($item == false) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'].'::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
         // Other check
         $checkname = ModUtil::apiFunc('Groups', 'admin', 'getgidbyname',
-                array('name'      => $args['name'],
-                'checkgid'  => $args['gid']));
+                        array('name' => $args['name'],
+                                'checkgid' => $args['gid']));
         if ($checkname != false) {
             return LogUtil::registerError($this->__('Error! There is already a group with that name.'));
         }
@@ -167,12 +179,12 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // Update the item
-        $object = array('name'        => $args['name'],
-                'gtype'       => $args['gtype'],
-                'state'       => $args['state'],
-                'nbumax'      => (int)$args['nbumax'],
+        $object = array('name' => $args['name'],
+                'gtype' => $args['gtype'],
+                'state' => $args['state'],
+                'nbumax' => (int)$args['nbumax'],
                 'description' => $args['description'],
-                'gid'         => (int)$args['gid']);
+                'gid' => (int)$args['gid']);
 
         $result = DBUtil::updateObject($object, 'groups', '', 'gid');
 
@@ -190,10 +202,12 @@ class Groups_Api_Admin extends Zikula_Api
     }
 
     /**
-     * add a user to a group item
-     * @param int $args['gid'] the ID of the item
-     * @param int $args['uid'] the ID of the user
-     * @return bool true if successful, false otherwise
+     * Add a user to a group item.
+     *
+     * @param int $args['gid'] the ID of the item.
+     * @param int $args['uid'] the ID of the user.
+     *
+     * @return bool true if successful, false otherwise.
      */
     public function adduser($args)
     {
@@ -204,14 +218,14 @@ class Groups_Api_Admin extends Zikula_Api
 
         // The user API function is called.
         $item = ModUtil::apiFunc('Groups', 'user', 'get',
-                array('gid' => $args['gid']));
+                        array('gid' => $args['gid']));
 
         if ($item == false) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'].'::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -234,10 +248,12 @@ class Groups_Api_Admin extends Zikula_Api
     }
 
     /**
-     * remove a user from a group item
-     * @param int $args['gid'] the ID of the item
-     * @param int $args['uid'] the ID of the user
-     * @return bool true if successful, false otherwise
+     * Remove a user from a group item.
+     *
+     * @param int $args['gid'] the ID of the item.
+     * @param int $args['uid'] the ID of the user.
+     *
+     * @return bool true if successful, false otherwise.
      */
     public function removeuser($args)
     {
@@ -249,14 +265,14 @@ class Groups_Api_Admin extends Zikula_Api
 
         // The user API function is called.
         $item = ModUtil::apiFunc('Groups', 'user', 'get',
-                array('gid' => $args['gid']));
+                        array('gid' => $args['gid']));
 
         if ($item == false) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'].'::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -276,7 +292,7 @@ class Groups_Api_Admin extends Zikula_Api
 
         // Let other modules know we have updated a group
         $removeuserEvent = new Zikula_Event('group.removeuser', array('gid' => $args['gid'],
-                                                                      'uid' => $args['uid']));
+                        'uid' => $args['uid']));
         $this->eventManager->notify($removeuserEvent);
 
         // Let the calling process know that we have finished successfully
@@ -284,10 +300,12 @@ class Groups_Api_Admin extends Zikula_Api
     }
 
     /**
-     * get a specific group id from a group name
-     * @param $args['name'] name of group item to get
-     * @param $args['checkgid'] optional gid of the group
-     * @return int item, or false on failure
+     * Get a specific group id from a group name.
+     *
+     * @param $args['name'] name of group item to get.
+     * @param $args['checkgid'] optional gid of the group.
+     *
+     * @return int item, or false on failure.
      */
     public function getgidbyname($args)
     {
@@ -306,7 +324,7 @@ class Groups_Api_Admin extends Zikula_Api
         // Optional Where to use when modifying a group to check if there is
         // already another group by that name.
         if (isset($args['checkgid']) && is_numeric($args['checkgid'])) {
-            $where .= " AND $groupcolumn[gid] != '" . DataUtil::formatForStore($args['checkgid']) ."'";
+            $where .= " AND $groupcolumn[gid] != '" . DataUtil::formatForStore($args['checkgid']) . "'";
         }
         $result = DBUtil::selectObject('groups', $where);
 
@@ -320,11 +338,12 @@ class Groups_Api_Admin extends Zikula_Api
     }
 
     /**
-     * get applications
+     * Get applications.
      *
-     * @param int $args['startnum']
-     * @param int $args['numitems']
-     * @return mixed array, false on failure
+     * @param int $args['startnum'].
+     * @param int $args['numitems'].
+     *
+     * @return mixed array, false on failure.
      */
     public function getapplications($args)
     {
@@ -346,16 +365,16 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         $items = array();
-        foreach($objArray as $obj) {
-            $group       = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $obj['gid']));
-            if (SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_EDIT)&& $group<>false){
-                $items[] = array('app_id'      => $obj['app_id'],
-                        'userid'      => $obj['uid'],
-                        'username'    => UserUtil::getVar('uname', $obj['uid']),
-                        'appgid'      => $obj['gid'],
-                        'gname'       => $group['name'],
+        foreach ($objArray as $obj) {
+            $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $obj['gid']));
+            if (SecurityUtil::checkPermission('Groups::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
+                $items[] = array('app_id' => $obj['app_id'],
+                        'userid' => $obj['uid'],
+                        'username' => UserUtil::getVar('uname', $obj['uid']),
+                        'appgid' => $obj['gid'],
+                        'gname' => $group['name'],
                         'application' => nl2br($obj['application']),
-                        'status'      => $obj['status']);
+                        'status' => $obj['status']);
             }
         }
 
@@ -363,11 +382,11 @@ class Groups_Api_Admin extends Zikula_Api
     }
 
     /**
-     * get application info
+     * Get application info.
      *
-     * @author F. Chestnut
      * @param int $args['gid']
      * @param int $args['userid']
+     *
      * @return array
      */
     public function getapplicationinfo($args)
@@ -379,8 +398,8 @@ class Groups_Api_Admin extends Zikula_Api
         $dbtable = DBUtil::getTables();
         $col = $dbtable['group_applications_column'];
 
-        $where = "WHERE  $col[gid] = '".DataUtil::formatForStore($args['gid'])."'
-              AND    $col[uid] = '".DataUtil::formatForStore($args['userid'])."'";
+        $where = "WHERE  $col[gid] = '" . DataUtil::formatForStore($args['gid']) . "'
+              AND    $col[uid] = '" . DataUtil::formatForStore($args['userid']) . "'";
 
         $result = DBUtil::selectObject('group_applications', $where);
 
@@ -388,23 +407,23 @@ class Groups_Api_Admin extends Zikula_Api
             return LogUtil::registerError($this->__('Error! Could not load data.'));
         }
 
-        $appinfo = array('app_id'      => $result['app_id'],
-                'appuid'      => $result['uid'],
-                'appgid'      => $result['gid'],
+        $appinfo = array('app_id' => $result['app_id'],
+                'appuid' => $result['uid'],
+                'appgid' => $result['gid'],
                 'application' => nl2br($result['application']),
-                'status'      => $result['status']);
+                'status' => $result['status']);
 
         return $appinfo;
     }
 
     /**
-     * pending action
+     * Pending action.
      *
-     * @author F. Chestnut
      * @param int $args['gid']
      * @param int $args['userid']
      * @param string $args['action']
-     * @return bool
+     *
+     * @return boolean
      */
     public function pendingaction($args)
     {
@@ -415,8 +434,8 @@ class Groups_Api_Admin extends Zikula_Api
         $dbtable = DBUtil::getTables();
         $col = $dbtable['group_applications_column'];
 
-        $where = "WHERE $col[gid] = '".(int)DataUtil::formatForStore($args['gid'])."'
-              AND   $col[uid] = '".(int)DataUtil::formatForStore($args['userid'])."'";
+        $where = "WHERE $col[gid] = '" . (int)DataUtil::formatForStore($args['gid']) . "'
+              AND   $col[uid] = '" . (int)DataUtil::formatForStore($args['userid']) . "'";
         if (!DBUtil::deleteWhere('group_applications', $where)) {
             return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
         }
@@ -426,12 +445,12 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // Send message part
-        switch($args['sendtag']) {
+        switch ($args['sendtag']) {
             case 1:
                 $send = ModUtil::apiFunc('Messages', 'user', 'create',
-                        array('to_userid' => $args['userid'],
-                        'subject'   => $args['reasontitle'],
-                        'message'   => $args['reason']));
+                                array('to_userid' => $args['userid'],
+                                        'subject' => $args['reasontitle'],
+                                        'message' => $args['reason']));
 
                 if ($send == false) {
                     LogUtil::registerError($this->__('Error! Could not send the private message to the user.'));
@@ -442,12 +461,12 @@ class Groups_Api_Admin extends Zikula_Api
             case 2:
                 if (ModUtil::available('Mailer')) {
                     $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                            array('toname'    => UserUtil::getVar('uname', $args['userid']),
-                            'toaddress' => UserUtil::getVar('email', $args['userid']),
-                            'subject'   => $args['reasontitle'],
-                            'body'      => $args['reason']));
+                                    array('toname' => UserUtil::getVar('uname', $args['userid']),
+                                            'toaddress' => UserUtil::getVar('email', $args['userid']),
+                                            'subject' => $args['reasontitle'],
+                                            'body' => $args['reason']));
                 } else {
-                    $send = System::mail(UserUtil::getVar('email', $args['userid']), $args['reasontitle'], $args['reason'], "From: ".System::getVar('adminmail')."\nX-Mailer: PHP/" . phpversion(), 0);
+                    $send = System::mail(UserUtil::getVar('email', $args['userid']), $args['reasontitle'], $args['reason'], "From: " . System::getVar('adminmail') . "\nX-Mailer: PHP/" . phpversion(), 0);
                 }
                 break;
         }
@@ -456,10 +475,9 @@ class Groups_Api_Admin extends Zikula_Api
     }
 
     /**
-     * utility function to count the number of items held by this module
+     * Utility function to count the number of items held by this module.
      *
-     * @author Mark West
-     * @return int number of items held by this module
+     * @return int number of items held by this module.
      */
     public function countitems()
     {
@@ -467,10 +485,9 @@ class Groups_Api_Admin extends Zikula_Api
     }
 
     /**
-     * get available admin panel links
+     * Get available admin panel links.
      *
-     * @author Mark West
-     * @return array array of admin links
+     * @return array array of admin links.
      */
     public function getlinks()
     {
@@ -488,4 +505,5 @@ class Groups_Api_Admin extends Zikula_Api
 
         return $links;
     }
+
 }

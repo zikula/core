@@ -12,19 +12,23 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Blocks_Controller_Ajax class.
+ */
 class Blocks_Controller_Ajax extends Zikula_Controller
 {
+
     public function _postSetup()
     {
         // no need for a Zikula_View so override it.
     }
-    
+
     /**
-     * changeblockorder
+     * Changeblockorder.
      *
-     * @author Frank Schummertz
      * @param blockorder array of sorted blocks (value = block id)
      * @param position int zone id
+     *
      * @return mixed true or Ajax error
      */
     public function changeblockorder()
@@ -65,11 +69,12 @@ class Blocks_Controller_Ajax extends Zikula_Controller
     }
 
     /**
-     * toggleblock
-     * This function toggles active/inactive
+     * Toggleblock.
      *
-     * @author Frank Schummertz
-     * @param bid int  id of block to toggle
+     * This function toggles active/inactive.
+     *
+     * @param bid int  id of block to toggle.
+     * 
      * @return mixed true or Ajax error
      */
     public function toggleblock()
@@ -98,4 +103,5 @@ class Blocks_Controller_Ajax extends Zikula_Controller
 
         return new Zikula_Response_Ajax(array('bid' => $bid));
     }
+
 }

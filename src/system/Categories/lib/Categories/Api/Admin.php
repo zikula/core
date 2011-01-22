@@ -12,14 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * Categories_Api_Admin class.
+ */
 class Categories_Api_Admin extends Zikula_Api
 {
     /**
-     * get available admin panel links
+     * Get available admin panel links.
      *
-     * @author Mark West
-     * @return array array of admin links
+     * @return array array of admin links.
      */
     public function getlinks()
     {

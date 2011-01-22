@@ -12,6 +12,9 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Modules_Controller_Admin class.
+ */
 class Modules_Controller_Admin extends Zikula_Controller
 {
     public function postInitialize()
@@ -470,8 +473,8 @@ class Modules_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Initialise a module
-     * @author Jim McDonald
+     * Initialise a module.
+     * 
      * @param int 'id' module id
      * @return bool true
      */

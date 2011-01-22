@@ -11,18 +11,24 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+/**
+ * SecurityCenter_Controller_Admin class.
+ */
 class SecurityCenter_Controller_Admin extends Zikula_Controller
 {
 
     /**
-     * the main administration function
+     * The main administration function.
+     *
      * This function is the default function, and is called whenever the
      * module is initiated without defining arguments.  As such it can
      * be used for a number of things, but most commonly it either just
      * shows the module menu and returns or calls whatever the module
      * designer feels should be the default function (often this is the
-     * view() function)
-     * @return string HTML string
+     * view() function).
+     *
+     * @return string HTML string.
      */
     public function main()
     {
@@ -31,9 +37,9 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * This is a standard function to modify the configuration parameters of the
-     * module
-     * @return string HTML string
+     * This is a standard function to modify the configuration parameters of the module.
+     *
+     * @return string HTML string.
      */
     public function modifyconfig()
     {
@@ -58,6 +64,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
      * This is a standard function to update the configuration parameters of the
      * module given the information passed back by the modification form
      * @see securitycenter_admin_modifyconfig()
+     *
      * @param int enableanticracker
      * @param int itemsperpage
      * @param int emailhackattempt
@@ -88,8 +95,8 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
      * @param int outputfilter
      * @param string summarycontent
      * @param string fullcontent
-     * @return bool true if successful, false otherwise
-     * @todo documement parameters
+     *
+     * @return bool true if successful, false otherwise.
      */
     public function updateconfig()
     {
@@ -320,6 +327,9 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
+     * HTMLPurifier configuration.
+     * 
+     * @return void
      */
     public function purifierconfig()
     {
@@ -439,6 +449,9 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
+     * Update HTMLPurifier configuration.
+     *
+     * @return void
      */
     public function updatepurifierconfig()
     {
@@ -557,8 +570,9 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Function to view ids log events
-     * @return string HTML output string
+     * Function to view ids log events.
+     *
+     * @return string HTML output string.
      */
     public function viewidslog()
     {
@@ -605,8 +619,9 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * export ids log
+     * Export ids log.
      *
+     * @return string
      */
     public function exportidslog()
     {
@@ -715,8 +730,9 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * purge ids log
+     * Purge ids log.
      *
+     * @return void
      */
     public function purgeidslog()
     {
@@ -752,10 +768,9 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * display the allowed html form
+     * Display the allowed html form.
      *
-     * @author Zikula development team
-     * @return string html output
+     * @return string html output.
      */
     public function allowedhtml($args)
     {
@@ -780,10 +795,9 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * update allowed html settings
+     * Update allowed html settings.
      *
-     * @author Zikula development team
-     * @return mixed true if successful, false if unsuccessful, error string otherwise
+     * @return mixed true if successful, false if unsuccessful, error string otherwise.
      */
     public function updateallowedhtml($args)
     {
@@ -824,10 +838,9 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * utility function to return the list of available tags
+     * Utility function to return the list of available tags.
      *
-     * @access private
-     * @return string html output
+     * @return string html output.
      */
     private function _gethtmltags()
     {

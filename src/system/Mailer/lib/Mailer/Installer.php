@@ -12,6 +12,9 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Mailer_Installer class.
+ */
 class Mailer_Installer extends Zikula_Installer
 {
 
@@ -47,7 +50,6 @@ class Mailer_Installer extends Zikula_Installer
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @author       Mark West
      * @param        string   $oldVersion   version number string to upgrade from
      * @return       mixed    true on success, last valid version string or false if fails
      */

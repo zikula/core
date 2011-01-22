@@ -13,16 +13,10 @@
 /**
  * Smarty modifier to convert lanugage define into textual string
  *
- * This modifier converts a lanugage define (currently a defined contant e.g.
- * _MYCONST) into the language string represented by that define
- *
- *
  * Example
  *
  *   <!--[$var|errortype]-->
  *
- * @author       Mark West
- * @since        16. Sept. 2003
  * @see          modifier.errortype.php::smarty_modifier_errortype()
  * @param        array    $string     the contents to transform
  * @return       string   the modified output

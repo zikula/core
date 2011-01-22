@@ -12,18 +12,22 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Permissions_Api_Admin class.
+ */
 class Permissions_Api_Admin extends Zikula_Api
 {
+
     /**
-     * increment sequence number of a permission
+     * Increment sequence number of a permission.
      *
      * This function raises a permission higher up in the overall
      * permissions sequence, thus making it more likely to be acted
-     * against
+     * against.
      *
-     * @author Jim McDonald
-     * @param int $args ['pid'] the ID of the permission to increment
-     * @return bool true on success, false on failure
+     * @param int $args ['pid'] the ID of the permission to increment.
+     *
+     * @return bool true on success, false on failure.
      */
     public function inc($args)
     {
@@ -41,9 +45,8 @@ class Permissions_Api_Admin extends Zikula_Api
         // various other bits and pieces
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
-        // MMaes, 2003-06-23; Filter-view
         if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
-            $where = " AND ($permcolumn[gid]=".SecurityUtil::PERMS_ALL." OR $permcolumn[gid]='".DataUtil::formatForStore($args['permgrp'])."')";
+            $where = " AND ($permcolumn[gid]=" . SecurityUtil::PERMS_ALL . " OR $permcolumn[gid]='" . DataUtil::formatForStore($args['permgrp']) . "')";
             $showpartly = true;
         } else {
             $where = '';
@@ -58,14 +61,12 @@ class Permissions_Api_Admin extends Zikula_Api
         $sequence = $result['sequence'];
 
         if ($sequence != 1) {
-            $altsequence = $sequence-1;
+            $altsequence = $sequence - 1;
             // Get info on displaced perm
-            // MMaes, 2003-06-23; Filter-view: added extra check to select
             $where = "WHERE $permcolumn[sequence] = '" . (int)DataUtil::formatForStore($altsequence) . "' $where";
             $result = DBUtil::selectObject('group_perms', $where);
             if (!$result) {
                 if ($showpartly) {
-                    // MMaes, 2003-06-23; Filter-view
                     // Changing the sequence by moving while in partial view may only be done if there
                     // are no invisible permissions inbetween that might be affected by the move.
                     LogUtil::registerError($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
@@ -89,12 +90,12 @@ class Permissions_Api_Admin extends Zikula_Api
     }
 
     /**
-     * decrement sequence number of a permission
-     * @author Jim McDonald
-     * @param string $args ['type'] the type of the permission to
-     *         decrement (user or group)
-     * @param int $args ['pid'] the ID of the permission to decrement
-     * @return bool true on success, false on failure
+     * Decrement sequence number of a permission.
+     *
+     * @param string $args ['type'] the type of the permission to decrement (user or group).
+     * @param int $args ['pid'] the ID of the permission to decrement.
+     *
+     * @return boolean true on success, false on failure.
      */
     public function dec($args)
     {
@@ -111,9 +112,8 @@ class Permissions_Api_Admin extends Zikula_Api
         // Work out which tables to operate against
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
-        // MMaes, 2003-06-23; Filter-view
         if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
-            $where = " AND ($permcolumn[gid]=".SecurityUtil::PERMS_ALL." OR  $permcolumn[gid]='".(int)DataUtil::formatForStore($args['permgrp'])."')";
+            $where = " AND ($permcolumn[gid]=" . SecurityUtil::PERMS_ALL . " OR  $permcolumn[gid]='" . (int)DataUtil::formatForStore($args['permgrp']) . "')";
             $showpartly = true;
         } else {
             $where = '';
@@ -129,14 +129,14 @@ class Permissions_Api_Admin extends Zikula_Api
 
         $maxsequence = $this->maxsequence(array('column' => 'sequence'));
         if ($sequence != $maxsequence) {
-            $altsequence = $sequence+1;
+            $altsequence = $sequence + 1;
             // Get info on displaced perm
-            // MMaes, 2003-06-23; Filter-view: added extra check to select-query
+            // Filter-view: added extra check to select-query
             $where = "WHERE $permcolumn[sequence] = '" . (int)DataUtil::formatForStore($altsequence) . "' $where";
             $result = DBUtil::selectObject('group_perms', $where);
             if (!$result) {
                 if ($showpartly) {
-                    // MMaes, 2003-06-23; Filter-view
+                    // Filter-view
                     // Changing the sequence by moving while in partial view may only be done if there
                     // are no invisible permissions inbetween that might be affected by the move.
                     LogUtil::registerError($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
@@ -160,15 +160,16 @@ class Permissions_Api_Admin extends Zikula_Api
     }
 
     /**
-     * update attributes of a permission
-     * @author Jim McDonald
-     * @param int $args ['pid'] the ID of the permission to update
-     * @param string $args ['realm'] the new realm of the permission
-     * @param int $args ['id'] the new group/user id of the permission
-     * @param string $args ['component'] the new component of the permission
-     * @param string $args ['instance'] the new instance of the permission
-     * @param int $args ['level'] the new level of the permission
-     * @return bool true on success, false on failure
+     * Update attributes of a permission.
+     *
+     * @param int $args ['pid'] the ID of the permission to update.
+     * @param string $args ['realm'] the new realm of the permission.
+     * @param int $args ['id'] the new group/user id of the permission.
+     * @param string $args ['component'] the new component of the permission.
+     * @param string $args ['instance'] the new instance of the permission.
+     * @param int $args ['level'] the new level of the permission.
+     * 
+     * @return bool true on success, false on failure.
      */
     public function update($args)
     {
@@ -193,11 +194,11 @@ class Permissions_Api_Admin extends Zikula_Api
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
 
-        $obj = array('realm'     => $args['realm'],
-                'gid'       => $args['id'],
+        $obj = array('realm' => $args['realm'],
+                'gid' => $args['id'],
                 'component' => $args['component'],
-                'instance'  => $args['instance'],
-                'level'     => $args['level']);
+                'instance' => $args['instance'],
+                'level' => $args['level']);
         $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($args['pid']) . "'";
         $result = DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
 
@@ -206,21 +207,22 @@ class Permissions_Api_Admin extends Zikula_Api
         }
 
         if ($args['seq'] != $args['oldseq']) {
-            $this->resequence(array('type' => 'group', 'newseq'=> $args['seq'], 'oldseq'=> $args['oldseq']));
+            $this->resequence(array('type' => 'group', 'newseq' => $args['seq'], 'oldseq' => $args['oldseq']));
         }
 
         return true;
     }
 
     /**
-     * create a new perm
-     * @author Jim McDonald
-     * @param string $args ['realm'] the new realm of the permission
-     * @param int $args ['id'] the new group/user id of the permission
-     * @param string $args ['component'] the new component of the permission
-     * @param string $args ['instance'] the new instance of the permission
-     * @param int $args ['level'] the new level of the permission
-     * @return bool true on success, false on failure
+     * Create a new perm.
+     *
+     * @param string $args ['realm'] the new realm of the permission.
+     * @param int $args ['id'] the new group/user id of the permission.
+     * @param string $args ['component'] the new component of the permission.
+     * @param string $args ['instance'] the new instance of the permission.
+     * @param int $args ['level'] the new level of the permission.
+     *
+     * @return boolean true on success, false on failure.
      */
     public function create($args)
     {
@@ -230,13 +232,12 @@ class Permissions_Api_Admin extends Zikula_Api
         }
 
         // Argument check
-        // MMaes, 2003-06-20: Insert Capability: added $insseq
         if ((!isset($args['realm'])) ||
-            (!isset($args['id'])) ||
-            (!isset($args['component'])) ||
-            (!isset($args['instance'])) ||
-            (!isset($args['level'])) ||
-            (!isset($args['insseq']))) {
+                (!isset($args['id'])) ||
+                (!isset($args['component'])) ||
+                (!isset($args['instance'])) ||
+                (!isset($args['level'])) ||
+                (!isset($args['insseq']))) {
             return LogUtil::registerArgsError();
         }
 
@@ -245,19 +246,12 @@ class Permissions_Api_Admin extends Zikula_Api
         $permtable = $dbtable['group_perms'];
         $permcolumn = $dbtable['group_perms_column'];
 
-        // MMaes, 2003-06-20: Insert Capability
+        // Insert Capability
         if ($args['insseq'] == -1) {
             $maxseq = $this->maxsequence(array('column' => 'sequence'));
             $newseq = $maxseq + 1;
         } else {
             // Increase sequence numbers
-            //DBUtil currently doesn't support this kind of stuff
-            //$where = "WHERE $permcolumn[sequence] >= '" . (int)DataUtil::formatForStore($insseq) . "'";
-            //$resequence = "$permcolumn[sequence] + 1";
-            //$obj = array('sequence' => $resequence);
-            //if (!DBUtil::updateObject($obj, 'group_perms', $where, 'pid')) {
-            //    return LogUtil::registerError($this->__('Error! Could not save permission rule sequences.'));
-            //}
             $query = "UPDATE $permtable
                   SET $permcolumn[sequence] = $permcolumn[sequence] + 1
                   WHERE $permcolumn[sequence] >= '" . (int)DataUtil::formatForStore($args['insseq']) . "'";
@@ -267,30 +261,30 @@ class Permissions_Api_Admin extends Zikula_Api
             $newseq = $args['insseq'];
         }
 
-        $obj = array('realm'     => (int)$args['realm'],
-                'gid'       => (int)$args['id'],
-                'sequence'  => $newseq,
+        $obj = array('realm' => (int)$args['realm'],
+                'gid' => (int)$args['id'],
+                'sequence' => $newseq,
                 'component' => $args['component'],
-                'instance'  => $args['instance'],
-                'level'     => (int)$args['level']);
+                'instance' => $args['instance'],
+                'level' => (int)$args['level']);
 
         $newobj = DBUtil::insertObject($obj, 'group_perms', 'pid');
         if ($newobj === false) {
             return LogUtil::registerError('Error adding group permission');
         }
 
-        // MMaes, 2003-06-20: Clean-up
+        // Clean-up
         $this->resequence();
         return $newobj;
     }
 
     /**
-     * delete a perm
-     * @author Jim McDonald <jim@mcdee.net>
-     * @link http://www.mcdee.net
-     * @param string $args ['type'] the type of the permission to update (user or group)
-     * @param int $args ['pid'] the ID of the permission to delete
-     * @return bool true on success, false on failure
+     * Delete a perm.
+     *
+     * @param string $args ['type'] the type of the permission to update (user or group).
+     * @param int $args ['pid'] the ID of the permission to delete.
+     *
+     * @return boolean true on success, false on failure.
      */
     public function delete($args)
     {
@@ -319,11 +313,11 @@ class Permissions_Api_Admin extends Zikula_Api
     }
 
     /**
-     * get the maximum sequence number currently in a given table
-     * @author Jim McDonald <jim@mcdee.net>
-     * @link http://www.mcdee.net
-     * @param string $args ['column'] the sequence column name
-     * @return int the maximum sequence number
+     * Get the maximum sequence number currently in a given table.
+     *
+     * @param string $args ['column'] the sequence column name.
+     *
+     * @return int the maximum sequence number.
      */
     public function maxsequence($args)
     {
@@ -341,10 +335,9 @@ class Permissions_Api_Admin extends Zikula_Api
     }
 
     /**
-     * resequence a permissions table
-     * @author Jim McDonald <jim@mcdee.net>
-     * @link http://www.mcdee.net
-     * @return bool
+     * Resequence a permissions table.
+     *
+     * @return boolean
      */
     public function resequence()
     {
@@ -364,9 +357,9 @@ class Permissions_Api_Admin extends Zikula_Api
         }
 
         // Fix sequence numbers
-        $sequence=1;
+        $sequence = 1;
         $ak = array_keys($objArray);
-        foreach($ak as $v){
+        foreach ($ak as $v) {
             $pid = $objArray[$v]['pid'];
             $curseq = $objArray[$v]['sequence'];
             if ($curseq != $sequence) {
@@ -381,13 +374,14 @@ class Permissions_Api_Admin extends Zikula_Api
     }
 
     /**
-     * resequence permissions
-     * called when a permission is assigned the same sequence number
-     * as an existing permission
-     * @author Chris Miller
-     * @param string $args ['newseq'] the desired sequence
-     * @param string $args ['oldseq'] the original sequence number
-     * @return bool
+     * Resequence permissions.
+     *
+     * Called when a permission is assigned the same sequence number as an existing permission.
+     *
+     * @param string $args ['newseq'] the desired sequence.
+     * @param string $args ['oldseq'] the original sequence number.
+     *
+     * @return boolean
      */
     public function full_resequence($args)
     {
@@ -397,13 +391,13 @@ class Permissions_Api_Admin extends Zikula_Api
         }
 
         // Argument check
-        if (!isset($args['newseq']) || !isset($args['oldseq'])){
+        if (!isset($args['newseq']) || !isset($args['oldseq'])) {
             return LogUtil::registerArgsError();
         }
 
         $newseq = $args['newseq'];
         $oldseq = $args['oldseq'];
-        unset ($args);
+        unset($args);
 
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
@@ -423,7 +417,7 @@ class Permissions_Api_Admin extends Zikula_Api
             $objArray = DBUtil::selectObjectArray('group_perms', $where, $orderBy, -1, -1, '', null, array('pid', 'sequence'));
 
             $key = 0;
-            while(list($pid, $curseq) = $objArray[$key]) {
+            while (list($pid, $curseq) = $objArray[$key]) {
                 if ($curseq == $oldseq) {
                     // we are dealing with the old value so make it the new value
                     $curseq = $newseq;
@@ -451,7 +445,7 @@ class Permissions_Api_Admin extends Zikula_Api
             $objArray = DBUtil::selectObjectArray('group_perms', $where, $orderBy, -1, -1, '', null, array('pid', 'sequence'));
 
             $key = 0;
-            while(list($pid, $curseq) = $objArray[$key]) {
+            while (list($pid, $curseq) = $objArray[$key]) {
                 if ($curseq == $oldseq) {
                     // we are dealing with the old value so make it the new value
                     $curseq = $newseq;
@@ -468,12 +462,10 @@ class Permissions_Api_Admin extends Zikula_Api
         return true;
     }
 
-
     /**
-     * get all security permissions schemas
+     * Get all security permissions schemas.
      *
-     * @author Mark West
-     * @return array array if permission schema values
+     * @return array array if permission schema values.
      */
     public function getallschemas()
     {
@@ -485,7 +477,7 @@ class Permissions_Api_Admin extends Zikula_Api
         $schemas = SecurityUtil::getSchemas();
         BlockUtil::loadAll();
         $modinfos = ModUtil::getAllMods();
-        foreach($modinfos as $modinfo) {
+        foreach ($modinfos as $modinfo) {
             if (!empty($modinfo['securityschema'])) {
                 $schemas = array_merge($schemas, $modinfo['securityschema']);
             }
@@ -496,10 +488,9 @@ class Permissions_Api_Admin extends Zikula_Api
     }
 
     /**
-     * get available admin panel links
+     * Get available admin panel links.
      *
-     * @author Mark West
-     * @return array array of admin links
+     * @return array array of admin links.
      */
     public function getlinks($args)
     {
@@ -520,7 +511,7 @@ class Permissions_Api_Admin extends Zikula_Api
             $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'class' => 'z-icon-es-info showinstanceinformation');
         }
 
-
         return $links;
     }
+
 }

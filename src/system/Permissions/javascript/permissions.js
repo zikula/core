@@ -5,7 +5,6 @@
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function permissioninit()
 {
@@ -96,7 +95,6 @@ function permissioninit()
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function permappend()
 {
@@ -118,7 +116,6 @@ function permappend()
  *
  *@params req reponse from ajax call;
  *@return none;
- *@author Frank Schummertz
  */
 function permappend_response(req)
 {
@@ -215,7 +212,6 @@ function permappend_response(req)
  *
  *@params permid thie permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function permtestinit(permid)
 {
@@ -233,7 +229,6 @@ function permtestinit(permid)
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function sortorderchanged()
 {
@@ -261,7 +256,6 @@ function sortorderchanged()
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function sortorderchanged_response(req)
 {
@@ -277,7 +271,6 @@ function sortorderchanged_response(req)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function permmodifyinit(permid)
 {
@@ -294,7 +287,6 @@ function permmodifyinit(permid)
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function permmodifycancel(permid)
 {
@@ -306,7 +298,6 @@ function permmodifycancel(permid)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function permmodify(permid)
 {
@@ -342,7 +333,6 @@ function permmodify(permid)
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function permmodify_response(req)
 {
@@ -381,7 +371,6 @@ function permmodify_response(req)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function permdelete(permid)
 {
@@ -409,7 +398,6 @@ function permdelete(permid)
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function permdelete_response(req)
 {
@@ -428,7 +416,6 @@ function permdelete_response(req)
  *@params permid the permission id;
  *@params newperm true if we are adding a new permission;
  *@return none;
- *@author Frank Schummertz
  */
 function enableeditfields(permid)
 {
@@ -449,7 +436,6 @@ function enableeditfields(permid)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function disableeditfields(permid)
 {
@@ -470,7 +456,6 @@ function disableeditfields(permid)
  *
  *@params permid the permission id;
  *@return 1 if modification is in progress, otherwise 0;
- *@author Frank Schummertz
  */
 function getmodifystatus(permid)
 {
@@ -482,7 +467,6 @@ function getmodifystatus(permid)
  *
  *@params permid the permission id;
  *@return none;
- *@author Frank Schummertz
  */
 function setmodifystatus(permid, newvalue)
 {
@@ -500,7 +484,6 @@ function setmodifystatus(permid, newvalue)
  *@params permid the permission id;
  *@params infotext the text to show;
  *@return none;
- *@author Frank Schummertz
  */
 function showinfo(permid, infotext)
 {
@@ -533,7 +516,6 @@ function showinfo(permid, infotext)
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function permgroupfilter()
 {
@@ -601,7 +583,6 @@ function permgroupfilter()
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function performpermissiontest()
 {
@@ -623,7 +604,6 @@ function performpermissiontest()
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function performpermissiontest_response(req)
 {

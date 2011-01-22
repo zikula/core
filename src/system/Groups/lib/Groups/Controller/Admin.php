@@ -22,7 +22,7 @@ class Groups_Controller_Admin extends Zikula_Controller
      * shows the module menu and returns or calls whatever the module
      * designer feels should be the default function (often this is the
      * view() function)
-     * @author Mark West
+     * 
      * @return string HTML output string
      */
     public function main()
@@ -53,9 +53,10 @@ class Groups_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * View all groups
-     * this function creates a tabular output of all group items in the module
-     * @author Mark West
+     * View all groups.
+     *
+     * This function creates a tabular output of all group items in the module.
+     *
      * @return string HTML output string
      */
     public function view()
@@ -157,11 +158,12 @@ class Groups_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Add a new group
+     * Add a new group.
+     *
      * This is a standard function that is called whenever an administrator
-     * wishes to create a new group
-     * @author Mark West
-     * @return string HTML output string
+     * wishes to create a new group.
+     *
+     * @return string HTML output string.
      */
     public function newgroup()
     {
@@ -186,10 +188,11 @@ class Groups_Controller_Admin extends Zikula_Controller
 
     /**
      * This is a standard function that is called with the results of the
-     * form supplied by groups admin_new() to create a new group
-     * @author Mark West
-     * @param string 'name' the name of the group to be created
-     * @return bool true if group created succesfully, false otherwise
+     * form supplied by groups admin_new() to create a new group.
+     *
+     * @param string 'name' the name of the group to be created.
+     *
+     * @return bool true If group created succesfully, false otherwise.
      */
     public function create($args)
     {
@@ -232,13 +235,15 @@ class Groups_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * modify a group
+     * Modify a group.
+     *
      * This is a standard function that is called whenever an administrator
-     * wishes to modify a current group item
-     * @author Mark West
-     * @param int 'gid' the id of the group to be modified
-     * @param int 'objectid' generic object id mapped onto gid if present
-     * @return string HTML output string
+     * wishes to modify a current group item.
+     *
+     * @param int 'gid' the id of the group to be modified.
+     * @param int 'objectid' generic object id mapped onto gid if present.
+     *
+     * @return string HTML output string.
      */
     public function modify($args)
     {
@@ -286,12 +291,13 @@ class Groups_Controller_Admin extends Zikula_Controller
 
     /**
      * This is a standard function that is called with the results of the
-     * form supplied by groups_admin_modify() to update a current group item
-     * @author Mark West
-     * @param int 'gid' the id of the group to be modified
-     * @param int 'objectid' generic object id mapped onto gid if present
-     * @param string 'name' the name of the group to be updated
-     * @return bool true if group updated successfully, false otherwise
+     * form supplied by groups_admin_modify() to update a current group item.
+     *
+     * @param int 'gid' the id of the group to be modified.
+     * @param int 'objectid' generic object id mapped onto gid if present.
+     * @param string 'name' the name of the group to be updated.
+     *
+     * @return bool true If group updated successfully, false otherwise.
      */
     public function update($args)
     {
@@ -331,7 +337,8 @@ class Groups_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * delete group
+     * Delete group.
+     *
      * This is a standard function that is called whenever an administrator
      * wishes to delete a current group item.  Note that this function is
      * the equivalent of both of the modify() and update() functions above as
@@ -340,12 +347,13 @@ class Groups_Controller_Admin extends Zikula_Controller
      * modification it is generally easier to separate them into separate
      * functions.  There is no requirement in the Zikula MDG to do one or the
      * other, so either or both can be used as seen appropriate by the module
-     * developer
-     * @author Mark West
-     * @param int 'gid' the id of the item to be deleted
-     * @param bool 'confirmation' confirmation that this item can be deleted
-     * @param int 'objectid' generic object id mapped onto gid if present
-     * @return mixed HTML output string if no confirmation, true if group deleted succesfully, false otherwise
+     * developer.
+     *
+     * @param int 'gid' the id of the item to be deleted.
+     * @param bool 'confirmation' confirmation that this item can be deleted.
+     * @param int 'objectid' generic object id mapped onto gid if present.
+     *
+     * @return mixed HTML output string if no confirmation, true if group deleted succesfully, false otherwise.
      */
     public function delete($args)
     {
@@ -413,12 +421,12 @@ class Groups_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * This is a standard function to display members of a group
-     * @author Mark West
-     * @link http://www.markwest.me.uk/
-     * @param int 'gid' the id of the group to list membership for
-     * @param int 'objectid' generic object id mapped onto gid if present
-     * @return string HTML output string
+     * This is a standard function to display members of a group.
+     *
+     * @param int 'gid' the id of the group to list membership for.
+     * @param int 'objectid' generic object id mapped onto gid if present.
+     *
+     * @return string HTML output string.
      */
     public function groupmembership($args)
     {
@@ -557,11 +565,12 @@ class Groups_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * This is a standard function to add a user to a group
-     * @author Mark West
-     * @param int 'gid' the id of the group
-     * @param mixed 'uid' the id of the user (int) or an array of userids
-     * @return string true is user added succesfully, false otherwise
+     * This is a standard function to add a user to a group.
+     *
+     * @param int 'gid' The id of the group.
+     * @param mixed 'uid' The id of the user (int) or an array of userids.
+     *
+     * @return boolean True is user added succesfully, false otherwise.
      */
     public function adduser($args)
     {
@@ -598,11 +607,12 @@ class Groups_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * This is a standard function to add a user to a group
-     * @author Mark West
-     * @param int 'gid' the id of the group
-     * @param int 'uid' the id of the user
-     * @return string true is user added succesfully, false otherwise
+     * This is a standard function to add a user to a group.
+     *
+     * @param int 'gid' the id of the group.
+     * @param int 'uid' the id of the user.
+     *
+     * @return boolean true is user added succesfully, false otherwise.
      */
     public function removeuser($args)
     {
@@ -616,9 +626,7 @@ class Groups_Controller_Admin extends Zikula_Controller
         }
 
         // The API function is called.
-        if (ModUtil::apiFunc('Groups', 'admin', 'removeuser',
-        array('gid' => $gid,
-        'uid' => $uid))) {
+        if (ModUtil::apiFunc('Groups', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
             // Success
             LogUtil::registerStatus($this->__('Done! The user was removed from the group.'));
         } else {
@@ -748,10 +756,8 @@ class Groups_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * This is a standard function to modify the configuration parameters of the
-     * module
-     * @author Mark West
-     * @since 1.14
+     * This is a standard function to modify the configuration parameters of the module.
+     *
      * @return string HTML string
      */
     public function modifyconfig()
@@ -787,10 +793,9 @@ class Groups_Controller_Admin extends Zikula_Controller
 
     /**
      * This is a standard function to update the configuration parameters of the
-     * module given the information passed back by the modification form
-     * @author Mark West
-     * @since 1.14
-     * @return bool true
+     * module given the information passed back by the modification form.
+     *
+     * @return boolean True.
      */
     public function updateconfig()
     {
