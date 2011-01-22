@@ -43,8 +43,6 @@
  *
  * will generate unordered list with id "listid" and class "menutree"
  *
- * @author       Jusuff
- * @since        28/07/2005
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      $smarty     Reference to the Smarty object
  * @return       string      unordered html list

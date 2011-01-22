@@ -12,8 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Groups_Controller_Ajax class.
+ */
 class Groups_Controller_Ajax extends Zikula_Controller
 {
+
     public function _postSetup()
     {
         // no need for a Zikula_View so override it.
@@ -22,14 +26,14 @@ class Groups_Controller_Ajax extends Zikula_Controller
     /**
      * Updates a group in the database
      *
-     * @author Frank Schummertz - Frank Chestnut
-     * @param gid the group id
-     * @param gtype the group type
-     * @param state the group state
-     * @param nbumax the maximum of users
-     * @param name the group name
-     * @param description the group description
-     * @return Ajax Response
+     * @param gid the group id.
+     * @param gtype the group type.
+     * @param state the group state.
+     * @param nbumax the maximum of users.
+     * @param name the group name.
+     * @param description the group description.
+     *
+     * @return Zikula_Response_Ajax
      */
     public function updategroup($args)
     {
@@ -38,14 +42,14 @@ class Groups_Controller_Ajax extends Zikula_Controller
             throw new Zikula_Exception_Fatal();
         }
 
-        $gid          = FormUtil::getPassedValue('gid', null,    'post');
-        $gtype        = FormUtil::getPassedValue('gtype', 9999,  'post');
-        $state        = FormUtil::getPassedValue('state', null,  'post');
-        $nbumax       = FormUtil::getPassedValue('nbumax', 9999, 'post');
-        $name         = DataUtil::convertFromUTF8(FormUtil::getPassedValue('name',        null, 'post'));
-        $description  = DataUtil::convertFromUTF8(FormUtil::getPassedValue('description', null, 'post'));
+        $gid = FormUtil::getPassedValue('gid', null, 'post');
+        $gtype = FormUtil::getPassedValue('gtype', 9999, 'post');
+        $state = FormUtil::getPassedValue('state', null, 'post');
+        $nbumax = FormUtil::getPassedValue('nbumax', 9999, 'post');
+        $name = DataUtil::convertFromUTF8(FormUtil::getPassedValue('name', null, 'post'));
+        $description = DataUtil::convertFromUTF8(FormUtil::getPassedValue('description', null, 'post'));
 
-        if (!SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT)) {
             LogUtil::registerPermissionError(null, true);
             throw new Zikula_Exception_Forbidden();
         }
@@ -63,14 +67,14 @@ class Groups_Controller_Ajax extends Zikula_Controller
 
         // Pass to API
         $res = ModUtil::apiFunc('Groups',
-                'admin',
-                'update',
-                array('gid'         => $gid,
-                'name'        => $name,
-                'gtype'       => $gtype,
-                'state'       => $state,
-                'nbumax'      => $nbumax,
-                'description' => $description));
+                        'admin',
+                        'update',
+                        array('gid' => $gid,
+                                'name' => $name,
+                                'gtype' => $gtype,
+                                'state' => $state,
+                                'nbumax' => $nbumax,
+                                'description' => $description));
 
         if ($res == false) {
             // check for sessionvar
@@ -99,11 +103,9 @@ class Groups_Controller_Ajax extends Zikula_Controller
     }
 
     /**
-     * Create a blank group and return it
+     * Create a blank group and return it.
      *
-     * @author Frank Schummertz - Frank Chestnut
-     * @param none
-     * @return Ajax Response
+     * @return Zikula_Response_Ajax
      */
     public function creategroup()
     {
@@ -123,11 +125,11 @@ class Groups_Controller_Ajax extends Zikula_Controller
 
         // Default values
         $obj = array(
-            'name'        => '',
-            'gtype'       => Groups_Helper_Common::GTYPE_CORE,
-            'state'       => Groups_Helper_Common::STATE_CLOSED,
-            'nbumax'      => 0,
-            'description' => ''
+                'name' => '',
+                'gtype' => Groups_Helper_Common::GTYPE_CORE,
+                'state' => Groups_Helper_Common::STATE_CLOSED,
+                'nbumax' => 0,
+                'description' => ''
         );
 
         $newgroup = ModUtil::apiFunc('Groups', 'admin', 'create', $obj);
@@ -138,8 +140,8 @@ class Groups_Controller_Ajax extends Zikula_Controller
 
         // temporary group name
         $updobj = array(
-            'name' => $this->__f('Group %s', $newgroup),
-            'gid'  => $newgroup
+                'name' => $this->__f('Group %s', $newgroup),
+                'gid' => $newgroup
         );
 
         DBUtil::updateObject($updobj, 'groups', null, 'gid');
@@ -147,19 +149,19 @@ class Groups_Controller_Ajax extends Zikula_Controller
         // finally select the new group
         $obj = DBUtil::selectObjectByID('groups', $newgroup, 'gid', null, null, null, false);
 
-        $obj['statelbl']   = $statelabel[$obj['state']];
-        $obj['gtypelbl']   = $typelabel[$obj['gtype']];
+        $obj['statelbl'] = $statelabel[$obj['state']];
+        $obj['gtypelbl'] = $typelabel[$obj['gtype']];
         $obj['membersurl'] = ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $newgroup));
 
         return new Zikula_Response_Ajax($obj);
     }
 
     /**
-     * Delete a group
+     * Delete a group.
      *
-     * @author Frank Schummertz - Frank Chestnut
-     * @param gid the group id
-     * @return Ajax Response
+     * @param gid the group id.
+     *
+     * @return Zikula_Response_Ajax
      */
     public function deletegroup()
     {
@@ -168,10 +170,10 @@ class Groups_Controller_Ajax extends Zikula_Controller
             throw new Zikula_Exception_Fatal();
         }
 
-        $gid   = FormUtil::getPassedValue('gid', null, 'get');
+        $gid = FormUtil::getPassedValue('gid', null, 'get');
         $group = DBUtil::selectObjectByID('groups', $gid, 'gid');
 
-        if (!SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_DELETE)) {
             LogUtil::registerPermissionError(null, true);
             throw new Zikula_Exception_Forbidden();
         }
@@ -189,4 +191,5 @@ class Groups_Controller_Ajax extends Zikula_Controller
 
         throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete the \'%s\' group.', $gid));
     }
+
 }

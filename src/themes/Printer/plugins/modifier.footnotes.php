@@ -19,11 +19,7 @@
  * File:         modifier.footnotes.php
  * Type:         modifier
  * Name:         footnotes
- * Date:         Feb 23, 2005
  * Purpose:      Generate footnotes for printable page
- * @author        Jochen Roemling
- * @author      Mark West
- * @version      1.3
  * @param         string
  * @param         Smarty
  */

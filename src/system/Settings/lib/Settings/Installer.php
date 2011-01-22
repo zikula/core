@@ -30,7 +30,7 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('debug', '0');
         System::setVar('sitename', $this->__('Site name'));
         System::setVar('slogan', $this->__('Site description'));
-        System::setVar('metakeywords', $this->__('zikula, community, portal, portal web, open source, gpl, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework'));
+        System::setVar('metakeywords', $this->__('zikula, portal, portal web, open source, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework'));
         System::setVar('defaultpagetitle', $this->__('Site name'));
         System::setVar('defaultmetadescription', $this->__('Site description'));
         System::setVar('startdate', date('m/Y', time()));

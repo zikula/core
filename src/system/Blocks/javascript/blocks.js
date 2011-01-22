@@ -5,7 +5,6 @@
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function blocksmodifyinit()
 {
@@ -51,7 +50,6 @@ function initactivationbuttons()
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function blockorderchanged()
 {
@@ -73,7 +71,6 @@ function blockorderchanged()
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function blockorderchanged_response(req)
 {
@@ -92,7 +89,6 @@ function blockorderchanged_response(req)
  *
  *@params bid;
  *@return none;
- *@author Frank Schummertz
  */
 function toggleblock(bid)
 {
@@ -112,7 +108,6 @@ function toggleblock(bid)
  *
  *@params none;
  *@return none;
- *@author Frank Schummertz
  */
 function toggleblock_response(req)
 {

@@ -18,13 +18,10 @@
  * Example
  *   <!--[footnotes]-->
  *
- * @author      Jochen Roemling
- * @author      Mark West
- * @since       23/02/2004
  * @param       array       $params      All attributes passed to this function from the template
- * @param       object      &$smarty     Reference to the Smarty object
+ * @param       object      $smarty     Reference to the Smarty object
  */
-function smarty_function_footnotes($params, &$smarty)
+function smarty_function_footnotes($params, $smarty)
 {
     // globalise the links array
     global $link_arr;

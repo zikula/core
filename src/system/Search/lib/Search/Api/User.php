@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Search_Api_User class.
+ */
 class Search_Api_User extends Zikula_Api
 {
+
     /**
-     * perform the search
+     * Perform the search.
      *
      * @param    string $args['g']              query string to search
      * @param    bool   $args['firstPage']      is this first search attempt? is so - basic search is performed
@@ -25,12 +29,13 @@ class Search_Api_User extends Zikula_Api
      * @param    int    $args['page']           (optional) page number (default=1)
      * @param    array  $args['active']         (optional) array of search plugins to search (if empty all plugins are used)
      * @param    array  $args['modvar']         (optional) array with extrainfo for search plugins
+     *
      * @return   array  array of items array and result count, or false on failure
      */
     public function search($args)
     {
         // query string and firstPage params are required
-        if(!isset($args['q']) || empty($args['q']) || !isset($args['firstPage'])) {
+        if (!isset($args['q']) || empty($args['q']) || !isset($args['firstPage'])) {
             return LogUtil::registerArgsError();
         }
         $vars = array();
@@ -46,13 +51,13 @@ class Search_Api_User extends Zikula_Api
         $modvar = isset($args['modvar']) && is_array($args['modvar']) && !empty($args['modvar']) ? $args['modvar'] : array();
 
         // work out row index from page number
-        $vars['startnum'] =  $vars['numlimit'] > 0 ? (($vars['page'] - 1) * $vars['numlimit']) + 1 : 1;
+        $vars['startnum'] = $vars['numlimit'] > 0 ? (($vars['page'] - 1) * $vars['numlimit']) + 1 : 1;
 
         // Load database stuff
         ModUtil::dbInfoLoad('Search');
-        $dbtable      = DBUtil::getTables();
-        $userId       = (int)UserUtil::getVar('uid');
-        $searchTable  = $dbtable['search_result'];
+        $dbtable = DBUtil::getTables();
+        $userId = (int)UserUtil::getVar('uid');
+        $searchTable = $dbtable['search_result'];
         $searchColumn = $dbtable['search_result_column'];
 
         // Create restriction on result table (so user only sees own results)
@@ -63,14 +68,14 @@ class Search_Api_User extends Zikula_Api
             // Clear current search result for current user - before showing the first page
             // Clear also older searches from other users.
             $dbType = DBConnectionStack::getConnectionDBType();
-            $where  = $userResultWhere;
-            if ($dbType=='postgres') {
-                $where .= " OR $searchColumn[found] + INTERVAL '8 HOUR' < NOW()" ;
+            $where = $userResultWhere;
+            if ($dbType == 'postgres') {
+                $where .= " OR $searchColumn[found] + INTERVAL '8 HOUR' < NOW()";
             } else {
-                $where .= " OR DATE_ADD($searchColumn[found], INTERVAL 8 HOUR) < NOW()" ;
+                $where .= " OR DATE_ADD($searchColumn[found], INTERVAL 8 HOUR) < NOW()";
             }
 
-            DBUtil::deleteWhere ('search_result', $where);
+            DBUtil::deleteWhere('search_result', $where);
 
             // get all the search plugins
             $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
@@ -79,7 +84,7 @@ class Search_Api_User extends Zikula_Api
             // At the same time convert modules list from numeric index to modname index
 
             $searchModulesByName = array();
-            foreach($search_modules as $mod) {
+            foreach ($search_modules as $mod) {
                 // check we've a valid search plugin
                 if (isset($mod['functions']) && (empty($active) || isset($active[$mod['title']]))) {
                     foreach ($mod['functions'] as $contenttype => $function) {
@@ -99,7 +104,7 @@ class Search_Api_User extends Zikula_Api
             }
 
             // Count number of found results
-            $resultCount = DBUtil::selectObjectCount ('search_result', $userResultWhere);
+            $resultCount = DBUtil::selectObjectCount('search_result', $userResultWhere);
             SessionUtil::setVar('searchResultCount', $resultCount);
             SessionUtil::setVar('searchModulesByName', $searchModulesByName);
         } else {
@@ -108,7 +113,6 @@ class Search_Api_User extends Zikula_Api
         }
 
         // Fetch search result - do sorting and paging in database
-
         // Figure out what to sort by
         switch ($args['searchorder']) {
             case 'alphabetical':
@@ -131,11 +135,11 @@ class Search_Api_User extends Zikula_Api
         // 2) let the modules add "url" to the found (and viewed) items
         $checker = new search_result_checker($searchModulesByName);
         $sqlResult = DBUtil::selectObjectArrayFilter('search_result', $userResultWhere, $sort,
-                $vars['startnum']-1, $vars['numlimit'], '',
-                $checker, null);
+                        $vars['startnum'] - 1, $vars['numlimit'], '',
+                        $checker, null);
         // add displayname of modules found
         $cnt = count($sqlResult);
-        for ($i=0; $i<$cnt; $i++) {
+        for ($i = 0; $i < $cnt; $i++) {
             $modinfo = ModUtil::getInfoFromName($sqlResult[$i]['module']);
             $sqlResult[$i]['displayname'] = $modinfo['displayname'];
         }
@@ -148,11 +152,12 @@ class Search_Api_User extends Zikula_Api
     }
 
     /**
-     * get all previous search queries
+     * Get all previous search queries.
      *
-     * @param    int     $args['starnum']    (optional) first item to return
-     * @param    int     $args['numitems']   (optional) number if items to return
-     * @return   array   array of items, or false on failure
+     * @param    int     $args['starnum']    (optional) first item to return.
+     * @param    int     $args['numitems']   (optional) number if items to return.
+     *
+     * @return   array   array of items, or false on failure.
      */
     public function getall($args)
     {
@@ -175,28 +180,26 @@ class Search_Api_User extends Zikula_Api
         }
 
         // Get items
-        $sort  = isset($args['sortorder']) ? "ORDER BY {$args['sortorder']} DESC" : '';
-        $items = DBUtil::selectObjectArray('search_stat', '', $sort, $args['startnum']-1, $args['numitems']);
+        $sort = isset($args['sortorder']) ? "ORDER BY {$args['sortorder']} DESC" : '';
+        $items = DBUtil::selectObjectArray('search_stat', '', $sort, $args['startnum'] - 1, $args['numitems']);
 
         return $items;
     }
 
-
     /**
-     * utility function to count the number of previous search queries
+     * Utility function to count the number of previous search queries.
      *
-     * @return   integer   number of items held by this module
+     * @return   integer   number of items held by this module.
      */
     public function countitems()
     {
-        return DBUtil::selectObjectCount ('search_stat');
+        return DBUtil::selectObjectCount('search_stat');
     }
 
-
     /**
-     * get all search plugins
+     * Get all search plugins.
      *
-     * @return   array   array of items, or false on failure
+     * @return   array   array of items, or false on failure.
      */
     public function getallplugins($args)
     {
@@ -219,16 +222,14 @@ class Search_Api_User extends Zikula_Api
                     $search_modules[] = $info;
                     $plugins_found = 'yes';
                 }
-
             }
         }
 
         return $search_modules;
     }
 
-
     /**
-     * log search query for search statistics
+     * Log search query for search statistics.
      */
     public function log($args)
     {
@@ -236,14 +237,14 @@ class Search_Api_User extends Zikula_Api
 
         $obj = DBUtil::selectObjectByID('search_stat', $searchterms, 'search');
 
-        $newobj['count']  = isset($obj['count']) ? $obj['count'] + 1 : 1;
-        $newobj['date']   = date('Y-m-d H:i:s');
+        $newobj['count'] = isset($obj['count']) ? $obj['count'] + 1 : 1;
+        $newobj['date'] = date('Y-m-d H:i:s');
         $newobj['search'] = $searchterms;
 
         if (!isset($obj) || empty($obj)) {
-            $res = DBUtil::insertObject ($newobj, 'search_stat');
+            $res = DBUtil::insertObject($newobj, 'search_stat');
         } else {
-            $res = DBUtil::updateObject ($newobj, 'search_stat', '', 'search');
+            $res = DBUtil::updateObject($newobj, 'search_stat', '', 'search');
         }
 
         if (!$res) {
@@ -253,11 +254,10 @@ class Search_Api_User extends Zikula_Api
         return true;
     }
 
-
     /**
-     * form custom url string
+     * Form custom url string.
      *
-     * @return string custom url string
+     * @return string custom url string.
      */
     public function encodeurl($args)
     {
@@ -283,7 +283,7 @@ class Search_Api_User extends Zikula_Api
         if ($args['func'] == 'process' && isset($args['args']['q'])) {
             $vars = $args['args']['q'];
             if (isset($args['args']['page']) && $args['args']['page'] != 1) {
-                $vars .= '/page/'.$args['args']['page'];
+                $vars .= '/page/' . $args['args']['page'];
             }
         }
 
@@ -298,7 +298,7 @@ class Search_Api_User extends Zikula_Api
         } elseif (empty($args['func'])) {
             return $args['modname'] . '/' . $vars . '/';
         } elseif (empty($vars) && isset($args['args']['startnum']) && !empty($args['args']['startnum'])) {
-            return $args['modname'] . '/' . $args['func'] . '/'. $args['args']['startnum'];
+            return $args['modname'] . '/' . $args['func'] . '/' . $args['args']['startnum'];
         } elseif (empty($vars)) {
             return $args['modname'] . '/' . $args['func'];
         } else {
@@ -306,11 +306,10 @@ class Search_Api_User extends Zikula_Api
         }
     }
 
-
     /**
-     * decode the custom url string
+     * Decode the custom url string.
      *
-     * @return bool true if successful, false otherwise
+     * @return bool true if successful, false otherwise.
      */
     public function decodeurl($args)
     {
@@ -335,7 +334,7 @@ class Search_Api_User extends Zikula_Api
             $nextvar = 3;
         }
 
-        if (FormUtil::getPassedValue('func') == 'recent'){
+        if (FormUtil::getPassedValue('func') == 'recent') {
             System::queryStringSetVar('startnum', $args['vars'][$nextvar]);
         }
 
@@ -344,24 +343,24 @@ class Search_Api_User extends Zikula_Api
             System::queryStringSetVar('q', $args['vars'][$nextvar]);
             $nextvar++;
             if (isset($args['vars'][$nextvar]) && $args['vars'][$nextvar] == 'page') {
-                System::queryStringSetVar('page', (int)$args['vars'][$nextvar+1]);
+                System::queryStringSetVar('page', (int)$args['vars'][$nextvar + 1]);
             }
         }
 
         return true;
     }
 
-    /*
-* Splits the query string into words suitable for a mysql query
-*
-* This function is ported 'as is' from the old, nonAPI, module
-* it is called from each plugin so we can't delete it or change it's name
-*
-* @author Patrick Kellum
-* @param string $q the string to parse and split
-* @param string $dbwildcard wrap each word in a DB wildcard character (%)
-* @return array an array of words optionally surrounded by '%'
-    */
+    /**
+     * Splits the query string into words suitable for a SQL query.
+     *
+     * This function is ported 'as is' from the old, nonAPI, module
+     * it is called from each plugin so we can't delete it or change it's name
+     *
+     * @param string $q the string to parse and split.
+     * @param string $dbwildcard wrap each word in a DB wildcard character (%).
+     * 
+     * @return array an array of words optionally surrounded by '%'
+     */
     public static function split_query($q, $dbwildcard = true)
     {
         if (!isset($q)) {
@@ -372,7 +371,7 @@ class Search_Api_User extends Zikula_Api
         $stripped = DataUtil::formatForStore($q);
         $qwords = preg_split('/ /', $stripped, -1, PREG_SPLIT_NO_EMPTY);
 
-        foreach($qwords as $word) {
+        foreach ($qwords as $word) {
             if ($dbwildcard) {
                 $w[] = '%' . $word . '%';
             } else {
@@ -383,10 +382,9 @@ class Search_Api_User extends Zikula_Api
         return $w;
     }
 
-    /*
-* Contruct part of a where clause out of the supplied search parameters
-*
-    */
+    /**
+     * Contruct part of a where clause out of the supplied search parameters
+     */
     public static function construct_where($args, $fields, $mlfield = null)
     {
         $where = '';
@@ -406,13 +404,13 @@ class Search_Api_User extends Zikula_Api
                 $searchwords = array("%{$q}%");
             }
             $start = true;
-            foreach($searchwords as $word) {
-                $where .= (!$start ? $connector : '') . ' (';
+            foreach ($searchwords as $word) {
+                $where .= ( !$start ? $connector : '') . ' (';
                 // I'm not sure if "LIKE" is the best solution in terms of DB portability (PC)
                 foreach ($fields as $field) {
                     $where .= "{$field} LIKE '$word' OR ";
                 }
-                $where = substr($where, 0 , -4);
+                $where = substr($where, 0, -4);
                 $where .= ')';
                 $start = false;
             }
@@ -429,9 +427,9 @@ class Search_Api_User extends Zikula_Api
     }
 
     /**
-     * get available menu links
+     * Get available menu links.
      *
-     * @return array array of menu links
+     * @return array array of menu links.
      */
     public function getlinks($args)
     {
@@ -447,31 +445,28 @@ class Search_Api_User extends Zikula_Api
 
 }
 
-/** Class for doing module based access check and URL creation of search result
+/**
+ * Class for doing module based access check and URL creation of search result
  *
  * - The module based access is somewhat deprecated (it still works but is not
  *   used since it makes it impossible to count the number of search result).
  * - The URL for each found item is created here. By doing this we only create
  *   URLs for results the user actually view and save some time this way.
- * @package Zikula_System_Modules
- * @subpackage Search
  */
 class search_result_checker
 {
     // This variable contains a table of all search plugins (indexed by module name)
-    var $search_modules = array();
+    public $search_modules = array();
 
-
-    function __construct($search_modules)
+    public function __construct($search_modules)
     {
         $this->search_modules = $search_modules;
     }
 
-
     // This method is called by DBUtil::selectObjectArrayFilter() for each and every search result.
     // A return value of true means "keep result" - false means "discard".
     // The decision is delegated to the search plugin (module) that generated the result
-    function checkResult(&$datarow)
+    public function checkResult(&$datarow)
     {
         // Get module name
         $module = $datarow['module'];
@@ -485,14 +480,13 @@ class search_result_checker
             foreach ($mod['functions'] as $contenttype => $function) {
                 // Delegate check to search plugin
                 // (also allow plugin to write 'url' => ... into $datarow by passing it by reference)
-                $ok = $ok && ModUtil::apiFunc($mod['title'], 'search', $function.'_check',
-                        array('datarow'     => &$datarow,
-                        'contenttype' => $contenttype));
+                $ok = $ok && ModUtil::apiFunc($mod['title'], 'search', $function . '_check',
+                                array('datarow' => &$datarow,
+                                        'contenttype' => $contenttype));
             }
         }
 
         return $ok;
     }
+
 }
-
-

@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Search_Controller_Admin class.
+ */
 class Search_Controller_Admin extends Zikula_Controller
 {
+
     /**
-     * the main administration function
+     * The main administration function.
      *
      * This function is the default function, and is called whenever the
      * module is called without defining arguments.
@@ -24,7 +28,7 @@ class Search_Controller_Admin extends Zikula_Controller
      * the module designer feels should be the default function (often this
      * is the view() function)
      *
-     * @return       output       The main module admin page.
+     * @return string The main module admin page.
      */
     public function main()
     {
@@ -38,12 +42,11 @@ class Search_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Modify configuration
+     * Modify configuration.
      *
-     * This is a standard function to modify the configuration parameters of the
-     * module
+     * This is a standard function to modify the configuration parameters of the module.
      *
-     * @return       output       The configuration page
+     * @return string The configuration page.
      */
     public function modifyconfig()
     {
@@ -75,15 +78,13 @@ class Search_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Update the configuration
+     * Update the configuration.
      *
      * This is a standard function to update the configuration parameters of the
      * module given the information passed back by the modification form
-     * Modify configuration
+     * Modify configuration.
      *
-     * @author       Jim McDonald
-     * @param        bold           print items in bold
-     * @param        itemsperpage   number of items per page
+     * @return void
      */
     public function updateconfig()
     {
@@ -94,7 +95,7 @@ class Search_Controller_Admin extends Zikula_Controller
 
         // Confirm authorisation code.
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Search','admin','main'));
+            return LogUtil::registerAuthidError(ModUtil::url('Search', 'admin', 'main'));
         }
 
         // Update module variables.
@@ -123,4 +124,5 @@ class Search_Controller_Admin extends Zikula_Controller
         // the user to an appropriate page for them to carry on their work
         return System::redirect(ModUtil::url('Search', 'admin', 'main'));
     }
+
 }

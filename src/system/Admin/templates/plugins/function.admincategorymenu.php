@@ -18,8 +18,6 @@
  * Admin
  * <!--[admincategorymenu]-->
  *
- * @author       Frank Schummertz
- * @since        16.01.2005
  * @see          function.admincategorymenu.php::smarty_function_admincategoreymenu()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      $smarty     Reference to the Smarty object

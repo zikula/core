@@ -12,12 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Mailer_Api_Admin class.
+ */
 class Mailer_Api_Admin extends Zikula_Api
 {
     /**
      * Get available admin panel links.
      *
-     * @author Mark West
      * @return array array of admin links
      */
     function getlinks()
@@ -33,4 +35,5 @@ class Mailer_Api_Admin extends Zikula_Api
 
         return $links;
     }
+
 }

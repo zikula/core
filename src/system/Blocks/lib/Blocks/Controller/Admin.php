@@ -12,14 +12,16 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Blocks_Controller_Admin class.
+ */
 class Blocks_Controller_Admin extends Zikula_Controller
 {
+
     /**
-     * the main administration function
+     * The main administration function.
      *
-     * view() function)
-     * @author Jim McDonald
-     * @return string HTML output string
+     * @return string HTML output string.
      */
     public function main()
     {
@@ -28,9 +30,9 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * View all blocks
-     * @author Jim McDonald
-     * @return string HTML output string
+     * View all blocks.
+     *
+     * @return string HTML output string.
      */
     public function view()
     {
@@ -42,19 +44,20 @@ class Blocks_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         $sfilter = SessionUtil::getVar('filter', array(), '/Blocks');
-        $filter  = FormUtil::getPassedValue('filter', $sfilter);
-        $clear   = FormUtil::getPassedValue('clear', 0);
+        $filter = FormUtil::getPassedValue('filter', $sfilter);
+        $clear = FormUtil::getPassedValue('clear', 0);
         if ($clear) {
-            $filter  = array();
+            $filter = array();
             SessionUtil::setVar('filter', $filter, '/Blocks');
         }
 
         // sort and sortdir GET parameters override filter values
-        $sort = (isset($filter['sort']) && !empty($filter['sort'])) ? strtolower($filter['sort']): 'bid';
-        $sortdir = (isset($filter['sortdir']) && !empty($filter['sortdir'])) ? strtoupper($filter['sortdir']): 'ASC';
+        $sort = (isset($filter['sort']) && !empty($filter['sort'])) ? strtolower($filter['sort']) : 'bid';
+        $sortdir = (isset($filter['sortdir']) && !empty($filter['sortdir'])) ? strtoupper($filter['sortdir']) : 'ASC';
         $filter['sort'] = FormUtil::getPassedValue('sort', $sort, 'GET');
         $filter['sortdir'] = FormUtil::getPassedValue('sortdir', $sortdir, 'GET');
-        if ($filter['sortdir'] != 'ASC' && $filter['sortdir'] != 'DESC') $filter['sortdir'] = 'ASC';
+        if ($filter['sortdir'] != 'ASC' && $filter['sortdir'] != 'DESC')
+                $filter['sortdir'] = 'ASC';
 
         // generate an authorisation key for the links
         $authid = SecurityUtil::generateAuthKey();
@@ -76,7 +79,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         // get all possible block positions
         $blockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
         // build assoc array for easier usage later on
-        foreach($blockspositions as $blocksposition) {
+        foreach ($blockspositions as $blocksposition) {
             $allbposarray[$blocksposition['pid']] = $blocksposition['name'];
         }
         // loop round each item calculating the additional information
@@ -96,7 +99,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
             $thisblockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallblockspositions', array('bid' => $block['bid']));
             $bposarray = array();
-            foreach($thisblockspositions as $singleblockposition){
+            foreach ($thisblockspositions as $singleblockposition) {
                 $bposarray[] = $allbposarray[$singleblockposition['pid']];
             }
             $block['positions'] = implode(', ', $bposarray);
@@ -106,13 +109,13 @@ class Blocks_Controller_Admin extends Zikula_Controller
             $block['options'] = array();
             if ($block['active']) {
                 $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'deactivate',
-                        array('bid' => $block['bid'], 'authid' => $authid)),
+                                array('bid' => $block['bid'], 'authid' => $authid)),
                         'image' => 'folder_grey.gif',
                         'title' => $this->__f('Deactivate \'%s\'', $block['title']),
                         'noscript' => true);
             } else {
-                $block['options'][] = array ('url' => ModUtil::url('Blocks', 'admin', 'activate',
-                        array('bid' => $block['bid'], 'authid' => $authid)),
+                $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'activate',
+                                array('bid' => $block['bid'], 'authid' => $authid)),
                         'image' => 'folder_green.gif',
                         'title' => $this->__f('Activate \'%s\'', $block['title']),
                         'noscript' => true);
@@ -128,7 +131,6 @@ class Blocks_Controller_Admin extends Zikula_Controller
                     'noscript' => false);
 
             $blocksitems[] = $block;
-
         }
         $this->view->assign('blocks', $blocksitems);
 
@@ -140,11 +142,11 @@ class Blocks_Controller_Admin extends Zikula_Controller
             if (SecurityUtil::checkPermission('Blocks::', "$item[name]::", ACCESS_READ)) {
                 $options = array();
                 if (SecurityUtil::checkPermission('Blocks::', "$item[name]::$", ACCESS_EDIT)) {
-                    $options[] = array('url'   => ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $item['pid'])),
+                    $options[] = array('url' => ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $item['pid'])),
                             'image' => 'xedit.gif',
                             'title' => $this->__f('Edit blockposition \'%s\'', $item['name']));
                     if (SecurityUtil::checkPermission('Blocks::', "$item[name]::", ACCESS_DELETE)) {
-                        $options[] = array('url'   => ModUtil::url('Blocks', 'admin', 'deleteposition', array('pid' => $item['pid'])),
+                        $options[] = array('url' => ModUtil::url('Blocks', 'admin', 'deleteposition', array('pid' => $item['pid'])),
                                 'image' => '14_layer_deletelayer.gif',
                                 'title' => $this->__f('Delete blockposition \'%s\'', $item['name']));
                     }
@@ -159,18 +161,19 @@ class Blocks_Controller_Admin extends Zikula_Controller
         $this->view->assign('positions', $items);
 
         $this->view->assign('filter', $filter)
-                   ->assign('sort', $filter['sort'])
-                   ->assign('sortdir', $filter['sortdir']);
+                ->assign('sort', $filter['sort'])
+                ->assign('sortdir', $filter['sortdir']);
 
         // Return the output that has been generated by this function
         return $this->view->fetch('blocks_admin_view.tpl');
     }
 
     /**
-     * deactivate a block
-     * @author Jim McDonald
+     * Deactivate a block.
+     *
      * @param int $bid block id
-     * @return string HTML output string
+     *
+     * @return string HTML output string.
      */
     public function deactivate()
     {
@@ -179,7 +182,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
+            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         // Pass to API
@@ -193,10 +196,11 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * activate a block
-     * @author Jim McDonald
-     * @param int $bid block id
-     * @return string HTML output string
+     * Activate a block.
+     *
+     * @param int $bid block id.
+     *
+     * @return string HTML output string.
      */
     public function activate()
     {
@@ -205,7 +209,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
+            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         // Pass to API
@@ -219,10 +223,11 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * modify a block
-     * @author Jim McDonald
-     * @param int $bid block ind
-     * @return string HTML output string
+     * Modify a block.
+     *
+     * @param int $bid block id.
+     *
+     * @return string HTML output string.
      */
     public function modify()
     {
@@ -245,7 +250,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         // get the block placements
         $where = "WHERE z_bid = '" . DataUtil::formatForStore($bid) . "'";
         $placements = DBUtil::selectObjectArray('block_placements', $where, 'z_order', -1, -1, '', null);
-        $blockinfo['placements']  = array();
+        $blockinfo['placements'] = array();
         foreach ($placements as $placement) {
             $blockinfo['placements'][] = $placement['pid'];
         }
@@ -309,9 +314,6 @@ class Blocks_Controller_Admin extends Zikula_Controller
             }
         }
 
-        // the blocks will have reset the renderDomain property (bad singleton design) - drak
-        //889$renderer->renderDomain = null;
-
         // Block output
         $this->view->assign('blockoutput', $blockoutput);
 
@@ -329,7 +331,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         $this->view->assign($GLOBALS['blocks_modules'][$blockinfo['mid']][$blockinfo['bkey']]);
 
         // Refresh
-        $refreshtimes = array(   60 => $this->__('One minute'),
+        $refreshtimes = array(60 => $this->__('One minute'),
                 120 => $this->__('Two minutes'),
                 300 => $this->__('Five minutes'),
                 600 => $this->__('Ten minutes'),
@@ -346,44 +348,46 @@ class Blocks_Controller_Admin extends Zikula_Controller
                 432000 => $this->__('Five days'),
                 518400 => $this->__('Six days'),
                 604800 => $this->__('Seven days'));
-        $this->view->assign('blockrefreshtimes' , $refreshtimes);
+        $this->view->assign('blockrefreshtimes', $refreshtimes);
 
         // Return the output that has been generated by this function
         return $this->view->fetch('blocks_admin_modify.tpl');
     }
 
     /**
-     * update a block
-     * @author Jim McDonald
+     * Update a block.
+     *
+     * @param int $bid block id to update.
+     * @param string $title the new title of the block.
+     * @param string $description the new description of the block.
+     * @param array $positions the new position(s) of the block.
+     * @param array $modules the modules to display the block on.
+     * @param string $url the new URL of the block.
+     * @param string $language the new language of the block.
+     * @param string $content the new content of the block.
+     *
      * @see blocks_admin_modify()
-     * @param int $bid block id to update
-     * @param string $title the new title of the block
-     * @param string $description the new description of the block
-     * @param array $positions the new position(s) of the block
-     * @param array $modules the modules to display the block on
-     * @param string $url the new URL of the block
-     * @param string $language the new language of the block
-     * @param string $content the new content of the block
+     *
      * @return bool true if succesful, false otherwise
      */
     public function update()
     {
         // Get parameters
-        $bid           = FormUtil::getPassedValue('bid');
-        $title         = FormUtil::getPassedValue('title');
-        $description   = FormUtil::getPassedValue('description');
-        $language      = FormUtil::getPassedValue('language');
-        $collapsable   = FormUtil::getPassedValue('collapsable', 0);
-        $defaultstate  = FormUtil::getPassedValue('defaultstate', 1);
-        $content       = FormUtil::getPassedValue('content');
-        $refresh       = FormUtil::getPassedValue('refresh');
-        $positions     = FormUtil::getPassedValue('positions');
-        $filter        = FormUtil::getPassedValue('filter', array());
+        $bid = FormUtil::getPassedValue('bid');
+        $title = FormUtil::getPassedValue('title');
+        $description = FormUtil::getPassedValue('description');
+        $language = FormUtil::getPassedValue('language');
+        $collapsable = FormUtil::getPassedValue('collapsable', 0);
+        $defaultstate = FormUtil::getPassedValue('defaultstate', 1);
+        $content = FormUtil::getPassedValue('content');
+        $refresh = FormUtil::getPassedValue('refresh');
+        $positions = FormUtil::getPassedValue('positions');
+        $filter = FormUtil::getPassedValue('filter', array());
         $returntoblock = FormUtil::getPassedValue('returntoblock');
 
         // not stored in a block
-        $redirect      = FormUtil::getPassedValue('redirect', null);
-        $cancel        = FormUtil::getPassedValue('cancel', null);
+        $redirect = FormUtil::getPassedValue('redirect', null);
+        $cancel = FormUtil::getPassedValue('cancel', null);
 
         if (isset($cancel)) {
             if (isset($redirect) && !empty($redirect)) {
@@ -400,7 +404,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
+            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         // Get and update block info
@@ -451,15 +455,15 @@ class Blocks_Controller_Admin extends Zikula_Controller
         if (!empty($returntoblock)) {
             // load the block config again
             return System::redirect(ModUtil::url('Blocks', 'admin', 'modify',
-                    array('bid' => $returntoblock)));
+                            array('bid' => $returntoblock)));
         }
         return System::redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     /**
-     * display form for a new block
-     * @author Jim McDonald
-     * @return string HTML output string
+     * Display form for a new block.
+     *
+     * @return string HTML output string.
      */
     public function newblock()
     {
@@ -483,7 +487,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         foreach ($blocks as $moduleblocks) {
             foreach ($moduleblocks as $block) {
                 $modinfo = ModUtil::getInfoFromName($block['module']);
-                $blockinfo[$block['mid'] . ':' . $block['bkey']] =   $modinfo['displayname'] . '/' . $block['text_type_long'];
+                $blockinfo[$block['mid'] . ':' . $block['bkey']] = $modinfo['displayname'] . '/' . $block['text_type_long'];
             }
         }
         $this->view->assign('blockids', $blockinfo);
@@ -501,26 +505,28 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * create a new block
-     * @author Jim McDonald
+     * Create a new block.
+     *
+     * @param string $title the new title of the block.
+     * @param string $description the new description of the block.
+     * @param int $blockid block id to create.
+     * @param string $language the language to assign to the block.
+     * @param string $position the position of the block.
+     *
      * @see blocks_admin_new()
-     * @param string $title the new title of the block
-     * @param string $description the new description of the block
-     * @param int $blockid block id to create
-     * @param string $language the language to assign to the block
-     * @param string $position the position of the block
-     * @return bool true if successful, false otherwise
+     *
+     * @return bool true if successful, false otherwise.
      */
     public function create()
     {
         // Get parameters
-        $title        = FormUtil::getPassedValue('title');
-        $description  = FormUtil::getPassedValue('description');
-        $blockid      = FormUtil::getPassedValue('blockid');
-        $language     = FormUtil::getPassedValue('language');
-        $collapsable  = FormUtil::getPassedValue('collapsable', 0);
+        $title = FormUtil::getPassedValue('title');
+        $description = FormUtil::getPassedValue('description');
+        $blockid = FormUtil::getPassedValue('blockid');
+        $language = FormUtil::getPassedValue('language');
+        $collapsable = FormUtil::getPassedValue('collapsable', 0);
         $defaultstate = FormUtil::getPassedValue('defaultstate', 1);
-        $positions    = FormUtil::getPassedValue('positions');
+        $positions = FormUtil::getPassedValue('positions');
 
         list($mid, $bkey) = explode(':', $blockid);
 
@@ -531,18 +537,18 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
+            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         $blockinfo = array(
-            'bkey'         => $bkey,
-            'title'        => $title,
-            'description'  => $description,
-            'positions'    => $positions,
-            'mid'          => $mid,
-            'language'     => $language,
-            'collapsable'  => $collapsable,
-            'defaultstate' => $defaultstate
+                'bkey' => $bkey,
+                'title' => $title,
+                'description' => $description,
+                'positions' => $positions,
+                'mid' => $mid,
+                'language' => $language,
+                'collapsable' => $collapsable,
+                'defaultstate' => $defaultstate
         );
 
         // Pass to API
@@ -556,16 +562,17 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * delete a block
-     * @author Jim McDonald
-     * @param int bid the block id
-     * @param bool confirm to delete block
-     * @return string HTML output string
+     * Delete a block.
+     *
+     * @param int bid the block id.
+     * @param bool confirm to delete block.
+     *
+     * @return string HTML output string.
      */
     public function delete()
     {
         // Get parameters
-        $bid          = FormUtil::getPassedValue('bid');
+        $bid = FormUtil::getPassedValue('bid');
         $confirmation = FormUtil::getPassedValue('confirmation');
 
         // Get details on current block
@@ -603,12 +610,12 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
+            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         // Pass to API
         if (ModUtil::apiFunc('Blocks', 'admin', 'delete',
-        array('bid' => $bid))) {
+                        array('bid' => $bid))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Deleted block.'));
         }
@@ -617,9 +624,9 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * display a form to create a new block position
+     * Display a form to create a new block position.
      *
-     * @author Mark West
+     * @return string HTML output string.
      */
     public function newposition()
     {
@@ -635,9 +642,9 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * display a form to create a new block position
+     * Display a form to create a new block position.
      *
-     * @author Mark West
+     * @return string HTML output string.
      */
     public function createposition()
     {
@@ -656,7 +663,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
+            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         // add the new block position
@@ -669,9 +676,9 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * display a form to create a new block position
+     * Display a form to create a new block position.
      *
-     * @author Mark West
+     * @return string HTML output string.
      */
     public function modifyposition()
     {
@@ -696,7 +703,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
         // get all defined blocks
         $allblocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array('active_status' => 0));
-        foreach($allblocks as $key => $allblock) {
+        foreach ($allblocks as $key => $allblock) {
             // set the module that holds the block
             $modinfo = ModUtil::getInfo($allblock['mid']);
             $allblocks[$key]['modname'] = $modinfo['name'];
@@ -709,7 +716,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         foreach ($block_placements as $blockplacement) {
             $block = BlockUtil::getBlockInfo($blockplacement['bid']);
             $block['order'] = $blockplacement['order'];
-            foreach($allblocks as $key => $allblock) {
+            foreach ($allblocks as $key => $allblock) {
                 if ($allblock['bid'] == $blockplacement['bid']) {
                     unset($allblocks[$key]);
                     $block['modname'] = $allblock['modname'];
@@ -719,16 +726,16 @@ class Blocks_Controller_Admin extends Zikula_Controller
         }
 
         $this->view->assign('assignedblocks', $blocks)
-                   ->assign('unassignedblocks', $allblocks);
+                ->assign('unassignedblocks', $allblocks);
 
         // Return the output that has been generated by this function
         return $this->view->fetch('blocks_admin_modifyposition.tpl');
     }
 
     /**
-     * display a form to create a new block position
+     * Display a form to create a new block position.
      *
-     * @author Mark West
+     * @return string HTML output string.
      */
     public function updateposition()
     {
@@ -742,12 +749,12 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
         // Confirm authorisation code
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
+            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         // update the position
         if (ModUtil::apiFunc('Blocks', 'admin', 'updateposition',
-        array('pid' => $position['pid'], 'name' => $position['name'], 'description' => $position['description']))) {
+                        array('pid' => $position['pid'], 'name' => $position['name'], 'description' => $position['description']))) {
             // all done
             LogUtil::registerStatus($this->__('Done! Saved block.'));
         }
@@ -756,13 +763,13 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * delete a block position
+     * Delete a block position.
      *
-     * @author Mark West
-     * @param int $args['pid'] the id of the position to be deleted
-     * @param int $args['objectid'] generic object id maps to pid if present
-     * @param bool $args['confirmation'] confirmation that this item can be deleted
-     * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise
+     * @param int $args['pid'] the id of the position to be deleted.
+     * @param int $args['objectid'] generic object id maps to pid if present.
+     * @param bool $args['confirmation'] confirmation that this item can be deleted.
+     *
+     * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise.
      */
     public function deleteposition($args)
     {
@@ -794,7 +801,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
+            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         if (ModUtil::apiFunc('Blocks', 'admin', 'deleteposition', array('pid' => $pid))) {
@@ -806,9 +813,9 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Any config options would likely go here in the future
-     * @author Jim McDonald
-     * @return string HTML output string
+     * Any config options would likely go here in the future.
+     *
+     * @return string HTML output string.
      */
     public function modifyconfig()
     {
@@ -827,9 +834,9 @@ class Blocks_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Set config variable(s)
-     * @author Jim McDonald
-     * @return string bool true if successful, false otherwise
+     * Set config variable(s).
+     *
+     * @return string bool true if successful, false otherwise.
      */
     public function updateconfig()
     {
@@ -841,7 +848,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         $collapseable = FormUtil::getPassedValue('collapseable');
 
         if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','main'));
+            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'main'));
         }
 
         if (!isset($collapseable) || !is_numeric($collapseable)) {
@@ -855,4 +862,5 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
         return System::redirect(ModUtil::url('Blocks', 'admin', 'main'));
     }
+
 }
