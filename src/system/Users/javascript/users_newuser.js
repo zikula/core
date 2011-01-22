@@ -92,7 +92,7 @@ Zikula.Users.NewUser = {
         for (i = 0, len = errorFields.length; i < len; i++) {
             field = $(errorFields[i]);
             if (field.type == 'checkbox') {
-                fieldWrapper = field.id + '_field';
+                fieldWrapper = $(field.id + '_field');
                 if ((typeof(fieldWrapper) != undefined) && (fieldWrapper != null)) {
                     fieldWrapper.addClassName('errorrequired');
                 }
