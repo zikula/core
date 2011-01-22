@@ -523,7 +523,10 @@ class ModUtil
         if (empty($modsarray)) {
             $all = self::getModsTable();
             foreach ($all as $key => $mod) {
-                if ($mod['state'] == self::STATE_ACTIVE) {
+                // "Core" modules should be returned in this list
+                if (($mod['state'] == self::STATE_ACTIVE)
+                    || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $mod['name'])
+                        && ($mod['state'] == self::STATE_UPGRADED || $mod['state'] == self::STATE_INACTIVE))) {
                     $modsarray[$key] = $mod;
                 }
             }
