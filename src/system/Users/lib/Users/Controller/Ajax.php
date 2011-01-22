@@ -39,24 +39,23 @@ class Users_Controller_Ajax extends Zikula_Controller
     {
         $view = Zikula_View::getInstance('Users');
 
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            return new Zikula_Response_Ajax_Plain(DataUtil::convertToUTF8($view->fetch('users_ajax_getusers.tpl')));
+        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+            $fragment = FormUtil::getPassedValue('fragment');
+
+            ModUtil::dbInfoLoad('Users');
+            $tables = DBUtil::getTables();
+
+            $usersColumn = $tables['users_column'];
+
+            $where = 'WHERE ' . $usersColumn['uname'] . ' REGEXP \'(' . DataUtil::formatForStore($fragment) . ')\'';
+            $results = DBUtil::selectObjectArray('users', $where);
+
+            $view->assign('results', $results);
         }
 
-        $fragment = FormUtil::getPassedValue('fragment');
-
-        ModUtil::dbInfoLoad('Users');
-        $tables = DBUtil::getTables();
-
-        $usersColumn = $tables['users_column'];
-
-        $where = 'WHERE ' . $usersColumn['uname'] . ' REGEXP \'(' . DataUtil::formatForStore($fragment) . ')\'';
-        $results = DBUtil::selectObjectArray('users', $where);
-
-        $view->assign('results', $results);
         $output = $view->fetch('users_ajax_getusers.tpl');
 
-        return new Zikula_Response_Ajax_Plain(DataUtil::convertToUTF8($output));
+        return new Zikula_Response_Ajax_Plain($output);
     }
 
     /**
@@ -83,14 +82,12 @@ class Users_Controller_Ajax extends Zikula_Controller
      */
     public function getRegistrationErrors()
     {
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
+        // Check for a good authid
+        $this->throwForbiddenUnless(SecurityUtil::confirmAuthKey(), LogUtil::getErrorMsgAuthid());
 
-        if (!$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            throw new Zikula_Exception_Fatal($this->__('Sorry! New user registration is currently disabled.'));
-        }
+        // Check if registration is disabled and the user is not an admin.
+        $this->throwForbiddenIf(!$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN),
+            $this->__('Sorry! New user registration is currently disabled.'));
 
         $reginfo            = DataUtil::convertFromUTF8(FormUtil::getPassedValue('reginfo', null, 'POST'));
         $checkMode          = DataUtil::convertFromUTF8(FormUtil::getPassedValue('checkmode', 'new', 'POST'));
@@ -157,13 +154,8 @@ class Users_Controller_Ajax extends Zikula_Controller
 
     public function getLoginBlockFields()
     {
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
-
+        $this->throwForbiddenUnless(SecurityUtil::confirmAuthKey(), LogUtil::getErrorMsgAuthid());
         $loginBlockFields = ModUtil::func('Users', 'Auth', 'loginBlockFields');
-
         return new Zikula_Response_Ajax(array('content' => $loginBlockFields));
     }
 }
