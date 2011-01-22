@@ -585,6 +585,108 @@ class HookUtil
     }
 
     /**
+     * Upgrade subscriber bundles.
+     *
+     * Adds any new area bundles, or types within a bundle.
+     * Removes any removed areas.  Does not remove single types within an area.
+     * 
+     * @param Zikula_Version $version Zikula version instance.
+     *
+     * @return void
+     */
+    public static function upgradeHookSubscriberBundles(Zikula_Version $version)
+    {
+        $bundles = $version->getHookSubscriberBundles();
+        $owner = $version->getName();
+
+        // add missing elements of bundles
+        foreach ($bundles as $bundle) {
+            foreach ($bundle->getHookTypes() as $type => $eventName) {
+                $exists = Doctrine_Query::create()->select()
+                    ->where('owner = ?', $owner)
+                    ->andWhere('area = ?', $bundle->getArea())
+                    ->andWhere('type = ?', $type)
+                    ->andWhere('eventname = ?', $eventName)
+                    ->from('Zikula_Doctrine_Model_HookSubscribers')
+                    ->count();
+                if (!$exists) {
+                    self::registerSubscriber($owner, $bundle->getArea(), $type, $eventName);
+                }
+            }
+        }
+
+        // remove any areas that no longer exist
+        $subscribers = self::getSubscribersForOwner($owner);
+        foreach ($subscribers as $subscriber) {
+            try {
+                $bundle = $version->getHookSubscriberBundle($subscriber['area']);
+            } catch (InvalidArgumentException $e) {
+                // this area doesnt exist any more so delete the bundle and unassociate hook bindings
+                $providers = self::getProvidersInUseBy($owner);
+                foreach ($providers as $provider) {
+                    // remove handlers for this binding, the associated sorts and update bindings table.
+                    self::unbindSubscribersFromProvider($provider['subarea'], $provider['providerarea']);
+                }
+                self::unregisterSubscriber($subscriber['owner'], $subscriber['area'], $subscriber['type'], $subscriber['eventname']);
+                continue;
+            }
+        }
+    }
+
+    /**
+     * Upgrade provider bundles.
+     *
+     * Adds any new area bundles, or types within a bundle.
+     * Removes any removed areas.  Does not remove single types within an area.
+     *
+     * @param Zikula_Version $version Zikula version instance.
+     *
+     * @return void
+     */
+    public static function upgradeHookProviderBundles(Zikula_Version $version)
+    {
+        $bundles = $version->getHookProviderBundles();
+        $owner = $version->getName();
+
+        // add missing elements of bundles
+        foreach ($bundles as $bundle) {
+            foreach ($bundle->getHooks() as $name => $hook) {
+                $exists = Doctrine_Query::create()->select()
+                    ->where('owner = ?', $owner)
+                    ->andWhere('area = ?', $bundle->getArea())
+                    ->andWhere('type = ?', $hook['type'])
+                    ->andWhere('name = ?', $name)
+                    ->andWhere('classname = ?', $hook['classname'])
+                    ->andWhere('method = ?', $hook['method'])
+                    ->andWhere('weight = ?', $hook['weight'])
+                    ->andWhere('serviceid = ?', $hook['serviceid'])
+                    ->from('Zikula_Doctrine_Model_HookProviders')
+                    ->count();
+                if (!$exists) {
+                    self::registerProvider($name, $owner, $bundle->getArea(), $hook['type'], $hook['classname'], $hook['method'], $hook['serviceid'], $hook['weight']);
+                }
+            }
+        }
+
+        // remove any areas that no longer exist
+        $providers = self::getProvidersForOwner($owner);
+        foreach ($providers as $provider) {
+            try {
+                $bundle = $version->getHookProviderBundle($provider['area']);
+            } catch (InvalidArgumentException $e) {
+                // this area doesnt exist any more so delete the bundle and unassociate hook bindings
+                $providersInUse = self::getSubscribersInUseBy($owner);
+                foreach ($providersInUse as $inUse) {
+                    // remove any subscribers to this provider and removing any bindings
+                    self::unbindSubscribersFromProvider($inUse['subarea'], $inUse['providerarea']);
+                }
+                self::unregisterProvider($provider['name']);
+                continue;
+            }
+        }
+    }
+
+    /**
      * Unregister all subscribers from the system.
      * 
      * This cascades to remove all event handlers, sorting data and update bindings table.
