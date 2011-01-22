@@ -11,6 +11,10 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+/**
+ * Search_Block_Search class.
+ */
 class Search_Block_Search extends Zikula_Block
 {
     /**
@@ -59,7 +63,7 @@ class Search_Block_Search extends Zikula_Block
             $vars['displaySearchBtn'] = 0;
         }
 
-        $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'GETPOST');
+        $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive', null), 'GETPOST');
 
         // assign the block vars array
         $this->view->assign('vars', $vars);
