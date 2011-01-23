@@ -250,7 +250,7 @@ class Zikula_Core
             // Initialise dbtables
             $GLOBALS['dbtables'] = isset($GLOBALS['dbtables']) ? $GLOBALS['dbtables'] : array();
             // ensure that the base modules info is available
-            ModUtil::dbInfoLoad('Modules', 'Modules');
+            ModUtil::dbInfoLoad('Extensions', 'Extensions');
             ModUtil::initCoreVars();
             ModUtil::dbInfoLoad('Settings', 'Settings');
             ModUtil::dbInfoLoad('Theme', 'Theme');

@@ -392,7 +392,7 @@ function createuser($username, $password, $email)
 
     // get the database connection
     ModUtil::dbInfoLoad('Users', 'Users');
-    ModUtil::dbInfoLoad('Modules', 'Modules');
+    ModUtil::dbInfoLoad('Extensions', 'Extensions');
     $dbtables = DBUtil::getTables();
 
     // create the password hash
@@ -438,7 +438,7 @@ function installmodules($lang = 'en')
     $sm = ServiceUtil::getManager();
     $em = EventUtil::getManager();
 
-    $coremodules = array('Modules',
+    $coremodules = array('Extensions',
 			 'Settings',
 			 'Theme',
 			 'Admin',
@@ -451,7 +451,7 @@ function installmodules($lang = 'en')
     // manually install the modules module
     foreach ($coremodules as $coremodule) {
         // sanity check - check if module is already installed
-        if ($coremodule != 'Modules' && ModUtil::available($coremodule)) {
+        if ($coremodule != 'Extensions' && ModUtil::available($coremodule)) {
             continue;
         }
 
@@ -474,25 +474,25 @@ function installmodules($lang = 'en')
     }
 
     // regenerate modules list
-    $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
-    ModUtil::apiFunc('Modules', 'admin', 'regenerate',
+    $filemodules = ModUtil::apiFunc('Extensions', 'admin', 'getfilemodules');
+    ModUtil::apiFunc('Extensions', 'admin', 'regenerate',
                       array('filemodules' => $filemodules));
 
     // set each of the core modules to active
     reset($coremodules);
     foreach ($coremodules as $coremodule) {
         $mid = ModUtil::getIdFromName($coremodule, true);
-        ModUtil::apiFunc('Modules', 'admin', 'setstate',
+        ModUtil::apiFunc('Extensions', 'admin', 'setstate',
                           array('id' => $mid,
                                 'state' => ModUtil::STATE_INACTIVE));
-        ModUtil::apiFunc('Modules', 'admin', 'setstate',
+        ModUtil::apiFunc('Extensions', 'admin', 'setstate',
                           array('id' => $mid,
                                 'state' => ModUtil::STATE_ACTIVE));
     }
     // Add them to the appropriate category
     reset($coremodules);
 
-    $coremodscat = array('Modules' => __('System'),
+    $coremodscat = array('Extensions' => __('System'),
 		         'Permissions' => __('Users'),
 		         'Groups' => __('Users'),
 		         'Blocks' => __('Layout'),
@@ -562,10 +562,10 @@ function installmodules($lang = 'en')
         $mid = ModUtil::getIdFromName($module['module']);
 
         // init it
-        if (ModUtil::apiFunc('Modules', 'admin', 'initialise',
+        if (ModUtil::apiFunc('Extensions', 'admin', 'initialise',
                               array('id' => $mid)) == true) {
             // activate it
-            if (ModUtil::apiFunc('Modules', 'admin', 'setstate',
+            if (ModUtil::apiFunc('Extensions', 'admin', 'setstate',
                                   array('id' => $mid,
                                         'state' => ModUtil::STATE_ACTIVE))) {
                 $results[$module['module']] = true;

@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-class Modules_Installer extends Zikula_Installer
+class Extensions_Installer extends Zikula_Installer
 {
     /**
-     * initialise the Modules module
+     * initialise the Extensions module
      *
      * This function is only ever called once during the lifetime of a particular
      * module instance.
@@ -48,8 +48,8 @@ class Modules_Installer extends Zikula_Installer
         // create hook provider table.
         Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders', 'Zikula_Doctrine_Model_HookSubscribers',
                 'Zikula_Doctrine_Model_HookBindings'));
-        EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hooks'));
-        EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'moduleservices'));
+        EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
+        EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
 
         // populate default data
         $this->defaultdata();
@@ -85,8 +85,8 @@ class Modules_Installer extends Zikula_Installer
                 // create the new hooks tables
                 Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders', 'Zikula_Doctrine_Model_HookSubscribers',
                 'Zikula_Doctrine_Model_HookBindings'));
-                EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'hooks'));
-                EventUtil::registerPersistentModuleHandler('Modules', 'controller.method_not_found', array('Modules_HookUI', 'moduleservices'));
+                EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
+                EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
             case '3.7.9':
                 // future upgrade routines
 
@@ -113,7 +113,7 @@ class Modules_Installer extends Zikula_Installer
     }
 
     /**
-     * create the default data for the Modules module
+     * create the default data for the Extensions module
      *
      * This function is only ever called once during the lifetime of a particular
      * module instance
@@ -122,7 +122,7 @@ class Modules_Installer extends Zikula_Installer
      */
     public function defaultdata()
     {
-        $version = new Modules_Version();
+        $version = new Extensions_Version();
         $meta = $version->toArray();
         $meta['capabilities'] = serialize($meta['capabilities']);
         $meta['securityschema'] = serialize($meta['securityschema']);

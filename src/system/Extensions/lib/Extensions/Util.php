@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Modules_Util
+class Extensions_Util
 {
     /**
      * Get version metadata for a module.

@@ -41,7 +41,7 @@ if (in_array('pn_id', array_keys($columns))) {
 }
 
 if (!isset($columns['capabilities'])) {
-    ModUtil::dbInfoLoad('Modules', 'Modules');
+    ModUtil::dbInfoLoad('Extensions', 'Extensions');
     DBUtil::changeTable('modules');
     ModUtil::dbInfoLoad('Blocks', 'Blocks');
     DBUtil::changeTable('blocks');
@@ -253,7 +253,7 @@ function _upg_upgrademodules($username, $password)
     }
 
     // force load the modules admin API
-    ModUtil::loadApi('Modules', 'admin', true);
+    ModUtil::loadApi('Extensions', 'admin', true);
 
     echo '<h2>' . __('Starting upgrade') . '</h2>' . "\n";
     echo '<ul id="upgradelist" class="check">' . "\n";
@@ -261,7 +261,7 @@ function _upg_upgrademodules($username, $password)
     // reset for User module
     //$_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = false;
 
-    $results = ModUtil::apiFunc('Modules', 'admin', 'upgradeall');
+    $results = ModUtil::apiFunc('Extensions', 'admin', 'upgradeall');
     if ($results) {
         foreach ($results as $modname => $result) {
             if ($result) {
@@ -571,6 +571,7 @@ function upgrade_columns($connection)
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_help z_help VARCHAR(255) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_license z_license VARCHAR(255) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_securityschema z_securityschema TEXT NOT NULL";
+    $commands[] = "UPDATE {$prefix}_modules SET z_name = 'Extensions', z_displayname = 'Extensions manager', z_url = 'extensions', z_description = 'Provides support for extensions and plugins.', z_directory =  'Extensions', z_securityschema = 'a:1:{s:9:\"Extensions::\";s:2:\"::\";}' WHERE {$prefix}_modules.z_id = 1 AND {$prefix}_modules.z_name = 'Modules'";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_id z_id INT(11) AUTO_INCREMENT";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_modname z_modname VARCHAR(64) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_name z_name VARCHAR(64) NOT NULL";

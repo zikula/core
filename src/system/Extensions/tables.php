@@ -20,7 +20,7 @@
  *
  * @return  array The table information.
  */
-function Modules_tables()
+function Extensions_tables()
 {
     // Initialise table array
     $dbtable = array();

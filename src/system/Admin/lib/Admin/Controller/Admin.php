@@ -776,7 +776,7 @@ class Admin_Controller_Admin extends Zikula_Controller
             // handle SSL connections
             $path_query = (isset($urlArray['query']) ? $urlArray['path'] . $urlArray['query'] : $urlArray['path']);
             $host = ($port==443 ? "ssl://$urlArray[host]" : $urlArray['host']);
-            $fp = fsockopen($host, $port, $errno, $errstr, $timeout);
+            $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
             if (!$fp) {
                 return false;
             } else {
@@ -813,7 +813,7 @@ class Admin_Controller_Admin extends Zikula_Controller
                 // retry non ssl
                 $url = str_replace('https://', 'http://', $url);
                 curl_setopt($ch, CURLOPT_URL, "$url?");
-                $data = curl_exec($ch);
+                $data = @curl_exec($ch);
             }
             //$headers = curl_getinfo($ch);
             curl_close($ch);

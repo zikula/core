@@ -1,12 +1,12 @@
-{include file="modules_admin_menu.tpl"}
+{include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=editdelete.gif set=icons/large __alt="Remove module"}</div>
     <h2>{gt text="Remove module"} - {modgetinfo modid=$id info=displayname}</h2>
     <p class="z-warningmsg">{gt text="Warning! Removing this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>
 
-    <form class="z-form" action="{modurl modname="Modules" type="admin" func="remove"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname="Extensions" type="admin" func="remove"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Modules"}" />
+            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Extensions"}" />
             <input type="hidden" name="confirmation" value="1" />
             <input type="hidden" name="id" value="{$id|safetext}" />
             <input type="hidden" name="startnum" value="{$startnum}" />
@@ -57,7 +57,7 @@
                 {/if}
                 <div class="z-buttons z-formbuttons">
                     {button class="z-btgreen" src=button_ok.gif set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
-                    <a class="z-btred" href="{modurl modname=Modules type=admin func=view}">{img modname=core src=button_cancel.gif set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                    <a class="z-btred" href="{modurl modname=Extensions type=admin func=view}">{img modname=core src=button_cancel.gif set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 </div>
             </fieldset>
         </div>

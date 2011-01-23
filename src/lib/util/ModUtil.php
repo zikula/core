@@ -525,7 +525,7 @@ class ModUtil
             foreach ($all as $key => $mod) {
                 // "Core" modules should be returned in this list
                 if (($mod['state'] == self::STATE_ACTIVE)
-                    || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $mod['name'])
+                    || (preg_match('/(extensions|admin|theme|block|groups|permissions|users)/i', $mod['name'])
                         && ($mod['state'] == self::STATE_UPGRADED || $mod['state'] == self::STATE_INACTIVE))) {
                     $modsarray[$key] = $mod;
                 }
@@ -687,7 +687,7 @@ class ModUtil
         $available = self::available($modname, $force);
 
         // check the modules state
-        if (!$force && !$available && $modname != 'Modules') {
+        if (!$force && !$available && $modname != 'Extensions') {
             return false;
         }
 
@@ -830,7 +830,7 @@ class ModUtil
         }
 
         // check the modules state
-        if (!$force && !self::available($modname) && $modname != 'Modules') {
+        if (!$force && !self::available($modname) && $modname != 'Extensions') {
             return false;
         }
 
@@ -961,6 +961,12 @@ class ModUtil
         // validate
         if (!System::varValidate($modname, 'mod')) {
             return null;
+        }
+
+        // Remove from 1.4
+        if (System::isLegacyMode() && $modname == 'Modules') {
+            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
+            $modname = 'Extensions';
         }
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
@@ -1325,7 +1331,7 @@ class ModUtil
         }
 
         if ((isset($modstate[$modname]) &&
-                $modstate[$modname] == self::STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) &&
+                $modstate[$modname] == self::STATE_ACTIVE) || (preg_match('/(extensions|admin|theme|block|groups|permissions|users)/i', $modname) &&
                 (isset($modstate[$modname]) && ($modstate[$modname] == self::STATE_UPGRADED || $modstate[$modname] == self::STATE_INACTIVE)))) {
             return true;
         }
