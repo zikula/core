@@ -63,7 +63,8 @@ class Search_Block_Search extends Zikula_Block
             $vars['displaySearchBtn'] = 0;
         }
 
-        $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive', null), 'GETPOST');
+        // commented out as per bug #2764
+        // $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive', null), 'GETPOST');
 
         // assign the block vars array
         $this->view->assign('vars', $vars);
