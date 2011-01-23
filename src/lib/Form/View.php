@@ -163,6 +163,10 @@ class Form_View extends Zikula_View
      */
     public function execute($template, Form_Handler $eventHandler)
     {
+        if (!$eventHandler instanceof Form_Handler) {
+            throw new Zikula_Exception_Fatal('Form handlers must inherit from Form_Handler.');
+        }
+
         // Save handler for later use
         $this->eventHandler = $eventHandler;
         $this->eventHandler->setView($this);
