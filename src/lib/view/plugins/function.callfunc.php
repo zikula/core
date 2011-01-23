@@ -40,7 +40,7 @@
  */
 function smarty_function_callfunc($params, $view)
 {
-    $assign = (array_key_exists($params['x_assign']) && $params['x_assign']) ? true : false;
+    $assign = (isset($params['x_assign']) && !empty($params['x_assign'])) ? $params['x_assign'] : '';
     
     if (array_key_exists('x_class', $params)) {
         $class = $params['x_class'];
