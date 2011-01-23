@@ -66,9 +66,9 @@ Zikula.Users.LoginBlock =
         var data = req.getData();
 
         Element.update('users_loginblock_fields', data.content);
+        $('users_authmodule').setValue('Users');
 
         Zikula.Users.LoginBlock.changingLoginBlockFields(false);
-
         $('users_loginblock_loginwith_Users').addClassName('z-hide');
     }
 
