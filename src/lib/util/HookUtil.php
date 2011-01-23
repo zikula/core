@@ -943,5 +943,57 @@ class HookUtil
                 ->from('Zikula_Doctrine_Model_HookProviders p')
                 ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
+    
+    /**
+     * Check if given areas (subscriberarea and providerarea) are binded together
+     *
+     * @param string $subscriberarea Subscriber's area.
+     * @param string $providerarea   Provider's area.
+     *
+     * @return array
+     */
+    public static function bindingBetweenAreas($subscriberarea, $providerarea)
+    {
+        return Doctrine_Query::create()->select()
+                ->andWhere('subarea = ?', $subscriberarea)
+                ->andWhere('providerarea  = ?', $providerarea)
+                ->from('Zikula_Doctrine_Model_HookBindings')
+                ->fetchOne();
+    }
+    
+    /**
+     * Check if given areas (subscriberarea and providerarea) can be binded together
+     *
+     * @param string $subscriberarea Subscriber's area.
+     * @param string $providerarea   Provider's area.
+     *
+     * @return array
+     */
+    public static function allowBindingBetweenAreas($subscriberarea, $providerarea)
+    {
+        $subscribers = Doctrine_Query::create()->select()
+                        ->where('area = ?', $subscriberarea)
+                        ->from('Zikula_Doctrine_Model_HookSubscribers')
+                        ->fetchArray();
 
+        if (!$subscribers) {
+            return false;
+        }
+
+        $allow = false;
+        foreach ($subscribers as $subscriber) {
+            $hookprovider = Doctrine_Query::create()->select()
+                            ->where('area = ?', $providerarea)
+                            ->andWhere('type = ?', $subscriber['type'])
+                            ->from('Zikula_Doctrine_Model_HookProviders')
+                            ->fetchArray();
+
+             if ($hookprovider) {
+                $allow = true;
+                break;
+            }
+        }
+
+        return $allow;
+    }
 }
