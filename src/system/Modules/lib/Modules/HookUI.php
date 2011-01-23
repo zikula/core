@@ -16,11 +16,11 @@
  */
 class Modules_HookUI
 {
-    public static function hookproviders(Zikula_Event $event)
+    public static function hooks(Zikula_Event $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();
-        if (!($event['method'] == 'hookproviders' && strrpos(get_class($subject), '_Controller_Admin'))) {
+        if (!($event['method'] == 'hooks' && strrpos(get_class($subject), '_Controller_Admin'))) {
            return;
         }
 
@@ -32,83 +32,63 @@ class Modules_HookUI
         $view = Zikula_View::getInstance('Modules', false);
         $view->assign('currentmodule', $moduleName);
 
-        // get all areas of the subscriber
-        $subscriberAreas = HookUtil::getSubscriberAreasByOwner($moduleName);
+        // find out the capabilities of the module
+        $isProvider = (HookUtil::isProviderCapable($moduleName)) ? true : false;
+        $view->assign('isProvider', $isProvider);
 
-        // get current sorting
-        $currentSorting = array();
-        foreach ($subscriberAreas as $subscriberArea) {
-            $currentSorting[$subscriberArea] = array();
-            $sortsByArea = HookUtil::getDisplaySortsByArea($subscriberArea);
-            foreach ($sortsByArea as $sba) {
-                array_push($currentSorting[$subscriberArea], $sba);
-            }
+        $isSubscriber = (HookUtil::isSubscriberCapable($moduleName)) ? true : false;
+        $view->assign('isSubscriber', $isSubscriber);
+
+        // get areas of module
+        if ($isProvider) {
+            $providerAreas = HookUtil::getProviderAreasByOwner($moduleName);
+            $view->assign('providerAreas', $providerAreas);
         }
 
-        $hookproviders = array();
-        foreach ($currentSorting as $areaSorting) {
-            foreach ($areaSorting as $sorting) {
-                $provider = HookUtil::getOwnerByProviderArea($sorting);
-                if (!array_key_exists($provider, $hookproviders) && ModUtil::available($provider)) {
-                    $hookproviders[$provider] = ModUtil::getInfoFromName($provider);
+        if ($isSubscriber) {
+            $subscriberAreas = HookUtil::getSubscriberAreasByOwner($moduleName);
+            $view->assign('subscriberAreas', $subscriberAreas);
+        }
+
+        // get available subscribers for provider
+        if ($isProvider) {
+            $hooksubscribers = HookUtil::getHookSubscribers();
+            $total_hooksubscribers = count($hooksubscribers);
+            for ($i=0 ; $i < $total_hooksubscribers ; $i++) {
+                if ($hooksubscribers[$i]['name'] == $moduleName) {
+                    unset($hooksubscribers[$i]);
+                    continue;
+                }
+
+                if (!SecurityUtil::checkPermission($hooksubscribers[$i]['name']."::", '::', ACCESS_ADMIN)) {
+                    unset($hooksubscribers[$i]);
+                    continue;
+                }
+
+                // get areas of subscriber
+                $subscriberAreas = HookUtil::getSubscriberAreasByOwner($hooksubscribers[$i]['name']);
+                $hooksubscribers[$i]['areas'] = $subscriberAreas;
+            }
+            $view->assign('hooksubscribers', $hooksubscribers);
+        }
+
+        // get providers for subscriber
+        if ($isSubscriber) {
+            // get current sorting
+            $currentSorting = array();
+            for ($i=0 ; $i < count($subscriberAreas) ; $i++) {
+                $currentSorting[$subscriberAreas[$i]] = array();
+                $sortsByArea = HookUtil::getDisplaySortsByArea($subscriberAreas[$i]);
+                foreach ($sortsByArea as $sba) {
+                    array_push($currentSorting[$subscriberAreas[$i]], $sba);
                 }
             }
+            $view->assign('areasSorting', $currentSorting);
         }
-        $view->assign('hookproviders', $hookproviders);
         
-        $event->setData($view->fetch('modules_hookui_providers.tpl'));
+        $event->setData($view->fetch('modules_hookui_hooks.tpl'));
         $event->setNotified();
-    }
-
-    public static function hooksubscribers(Zikula_Event $event)
-    {
-        // check if this is for this handler
-        $subject = $event->getSubject();
-        if (!($event['method'] == 'hooksubscribers' && strrpos(get_class($subject), '_Controller_Admin'))) {
-           return;
-        }
-
-        $moduleName = $subject->getName();
-        if (!SecurityUtil::checkPermission($moduleName.'::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        $view = Zikula_View::getInstance('Modules', false);
-        $view->assign('currentmodule', $moduleName);
-
-        $hooksubscribers = HookUtil::getHookSubscribers();
-        $total_hooksubscribers = count($hooksubscribers);
-        for ($i=0 ; $i < $total_hooksubscribers ; $i++) {
-            if ($hooksubscribers[$i]['name'] == $moduleName) {
-                unset($hooksubscribers[$i]);
-                continue;
-            }
-            $hooksubscribers[$i]['attached'] = (count(HookUtil::bindingsBetweenProviderAndSubscriber($hooksubscribers[$i]['name'], $moduleName)) > 0) ? true : false;
-        }
-        $view->assign('hooksubscribers', $hooksubscribers);
-
-        $event->setData($view->fetch('modules_hookui_subscribers.tpl'));
-        $event->setNotified();
-    }
-
-    /**
-     * populate Services menu with hook links if capable
-     * 
-     * @param Zikula_Event $event
-     */
-    public static function servicelinks(Zikula_Event $event)
-    {
-        $module = $event->getArg('modname');
-
-        if (HookUtil::isSubscriberCapable($module)) {
-            $event->data[] = array('url' => ModUtil::url($module, 'admin', 'hookproviders'), 'text' => __('Hook Providers'));
-        }
-
-        if (HookUtil::isProviderCapable($module)) {
-            $event->data[] = array('url' => ModUtil::url($module, 'admin', 'hooksubscribers'), 'text' => __('Hook Subscribers'));
-        }
-    }
-
+    } 
 
     public static function moduleservices(Zikula_Event $event)
     {
