@@ -1,5 +1,9 @@
 {foreach from=$authmodules key='curAuthmoduleName' item='curAuthmodule' name='curAuthmodule'}
-{ajaxheader modname=$curAuthmoduleName filename=$curAuthmoduleName|lower|cat:'_loginblock.js'}
+{if ('Users' == $curAuthModuleName)}
+    {ajaxheader modname=$curAuthmoduleName filename='Zikula.Users.LoginBlock.js'}
+{else}
+    {ajaxheader modname=$curAuthmoduleName filename=$curAuthModuleName|cat:'.LoginBlock.js'}
+{/if}
 {/foreach}
 <div class="users_loginblock_box">{insert name='generateauthkey' module='Users' assign='authkey'}
     {if (isset($authmodule) && $authmodule)}{modfunc modname=$authmodule type='auth' func='loginBlockFields' assign='loginblockfields'}{/if}
