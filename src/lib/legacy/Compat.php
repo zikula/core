@@ -348,6 +348,15 @@ class pnFormRender extends Form_View
         return $this->execute($template, $eventHandler);
     }
 
+    public function execute($template, pnFormHandler $eventHandler)
+    {
+        if (!$eventHandler instanceof pnFormHandler) {
+            throw new Zikula_Exception_Fatal('Form handlers must inherit from pnFormHandler.');
+        }
+
+        return parent::execute($template, $eventHandler);
+    }
+
     /**
      * Alias to Form_View::registerPlugin for backward compatibility.
      *
