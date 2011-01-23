@@ -348,6 +348,17 @@ class pnFormRender extends Form_View
         return $this->execute($template, $eventHandler);
     }
 
+    /**
+     * Alias to Form_View::execute for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_View::execute
+     *
+     * @param boolean       $template     Name of template file.
+     * @param pnFormHandler $eventHandler Instance of object that inherits from pnFormHandler.
+     *
+     * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
+     */
     public function execute($template, pnFormHandler $eventHandler)
     {
         if (!$eventHandler instanceof pnFormHandler) {
