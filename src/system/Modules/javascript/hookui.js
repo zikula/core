@@ -1,64 +1,62 @@
 /**
- * Toggle a subscribers's attached/detached status
+ * Toggle a subscribers's area attached/detached status
  *
- *@params subscriber;
- *@params provider;
+ *@params subscriberarea;
+ *@params providerarea;
  *@return none;
  */
-function togglesubscriberstatus(subscriber, provider)
+function subscriberAreaToggle()
 {
-    var pars = "subscriber=" + subscriber + "&provider=" + provider;
+    var pars = this.value.replace("#", "&");
 
     new Zikula.Ajax.Request(
-        "ajax.php?module=Modules&func=togglesubscriberstatus",
+        "ajax.php?module=Modules&func=togglesubscriberareastatus",
         {
             method: 'get',
             parameters: pars,
-            onComplete: togglesubscriberstatus_response
+            onComplete: togglesubscriberareastatus_response
         });
 }
 
 /**
- * Ajax response function for updating subscriber module status
+ * Ajax response function for updating subscriber's area binding status
  *
  *@params req Ajax response;
  *@return none;
  */
-function togglesubscriberstatus_response(req)
+function togglesubscriberareastatus_response(req)
 {
     if (!req.isSuccess()) {
         Zikula.showajaxerror(req.getMessage());
         return;
     }
-
-    var data = req.getData();
-    
-    $('attached_' + data.id).toggle();
-    $('detached_' + data.id).toggle();
 }
 
 /**
- * Inits sorting of providers
+ * Inits sorting of provider areas
  *
  *@params none;
  *@return none;
  */
-function initprovidersorting()
+function initproviderareassorting()
 {
-    Sortable.create('providerssortlist',
-                    {
-                      dropOnEmpty: true,
-                      only: 'z-sortable',
-                      containment:['providerssortlist'],
-                      onUpdate: changeproviderorder
-                    });
+    for(var i=0; i < providerareas.length; i++) {
+        var area = 'providerareassortlist_'+providerareas[i];
+        Sortable.create(area,
+        {
+            dropOnEmpty: true,
+            only: 'z-sortable',
+            containment:[area],
+            onUpdate: changeproviderareaorder
+        });
 
-    $A(document.getElementsByClassName('z-sortable')).each(
-        function(node) {
-            var thisproviderid = node.id.split('_')[1];
-            Element.addClassName('provider_' + thisproviderid, 'z-itemsort');
-        }
-    )
+        $A(document.getElementsByClassName('z-sortable')).each(
+            function(node) {
+                var thisproviderarea = node.id.split('_')[1];
+                Element.addClassName('providerarea_' + thisproviderarea, 'z-itemsort');
+            }
+        )
+    }
 }
 
 /**
@@ -68,17 +66,33 @@ function initprovidersorting()
  *@params none;
  *@return none;
  */
-function changeproviderorder()
+function changeproviderareaorder()
 {
-    var pars = 'subscriber=' + subscriber +
-               '&' + Sortable.serialize('providerssortlist', { 'name': 'providersorder' });
+    // this will be the id of the ol
+    var ol_id = this.element.id;
+
+    // the area of our subscriber
+    var subscriber_area = $(ol_id+'_h').value;
+    
+    // the areas of the providers that are attached to the area of our subscriber
+    // note that the loop starts from 1 and not 0, because the first item (0)
+    // is the area of our subscriber (which we already have)
+    var providers_areas = '';
+    var areas = $$('#' + ol_id + ' input');
+    for (var i=1 ; i < areas.length ; i++) {
+        providers_areas += '&providerarea[]=' + areas[i].value;
+    }
+
+    var pars = 'ol_id=' + ol_id +
+               '&subscriberarea=' + subscriber_area +
+               providers_areas;
 
     new Zikula.Ajax.Request(
-        'ajax.php?module=Modules&func=changeproviderorder',
+        'ajax.php?module=Modules&func=changeproviderareaorder',
         {
             method: 'get',
             parameters: pars,
-            onComplete: changeproviderorder_response
+            onComplete: changeproviderareaorder_response
         });
 }
 
@@ -88,12 +102,14 @@ function changeproviderorder()
  *@params req;
  *@return none;
  */
-function changeproviderorder_response(req)
+function changeproviderareaorder_response(req)
 {
     if (!req.isSuccess()) {
         Zikula.showajaxerror(req.getMessage());
         return;
     }
-    
-    pnrecolor('providerssortlist', 'providerssortlistheader');
+
+    var data = req.getData();
+
+    pnrecolor(data.ol_id, $(data.ol_id).down(0).id);
 }

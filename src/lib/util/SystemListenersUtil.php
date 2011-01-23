@@ -378,6 +378,39 @@ class SystemListenersUtil
             $event->setNotified();
         }
     }
+    
+    /**
+     * Dynamically add Hooks link to administration.
+     *
+     * Listens for 'module_dispatch.postexecute' events.
+     *
+     * @param Zikula_Event $event The event handler.
+     *
+     * @return void
+     */
+    public static function addHooksLink(Zikula_Event $event)
+    {
+        // check if this is for this handler
+        if (!($event['modfunc'][1] == 'getlinks' && $event['type'] == 'admin' && $event['api'] == true)) {
+            return;
+        }
+
+        if (!SecurityUtil::checkPermission($event['modname'].'::Hooks', '::', ACCESS_ADMIN)) {
+            return;
+        }
+
+        // return if we don't have any hook providers
+        $hookproviders = HookUtil::getHookProviders();
+        if (empty($hookproviders)) {
+            return;
+        }
+
+        $event->data[] = array(
+            'url' => ModUtil::url($event['modname'], 'admin', 'hooks'), 
+            'text' => __('Hooks'),
+            'class' => 'z-icon-es-attach'
+        );
+    }
 
     /**
      * Dynamically add menu links to administration for system services.
