@@ -13,9 +13,9 @@
  */
 
 /**
- * Administrative API functions for the Modules module.
+ * Administrative API functions for the Extensions module.
  */
-class Modules_Api_Admin extends Zikula_Api
+class Extensions_Api_Admin extends Zikula_Api
 {
     /**
      * Update module information.
@@ -51,7 +51,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Modules::', "::$args[id]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('Extensions::', "::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -104,7 +104,7 @@ class Modules_Api_Admin extends Zikula_Api
     {
         // Security check
         if (!System::isInstalling()) {
-            if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
                 return LogUtil::registerPermissionError();
             }
         }
@@ -198,7 +198,7 @@ class Modules_Api_Admin extends Zikula_Api
 
         // Security check
         if (!System::isInstalling()) {
-            if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_EDIT)) {
+            if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_EDIT)) {
                 return LogUtil::registerPermissionError();
             }
         }
@@ -222,7 +222,7 @@ class Modules_Api_Admin extends Zikula_Api
         switch ($args['state']) {
             case ModUtil::STATE_UNINITIALISED:
                 if ($this->serviceManager['multisites.enabled'] == 1) {
-                    if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
+                    if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
                         return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
                     }
                 }
@@ -275,7 +275,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -301,7 +301,7 @@ class Modules_Api_Admin extends Zikula_Api
             ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
-        $version = Modules_Util::getVersionMeta($osdir, $modpath);
+        $version = Extensions_Util::getVersionMeta($osdir, $modpath);
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -430,7 +430,7 @@ class Modules_Api_Admin extends Zikula_Api
     {
         // Security check
         if (!System::isInstalling()) {
-            if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
                 return LogUtil::registerPermissionError();
             }
         }
@@ -462,7 +462,7 @@ class Modules_Api_Admin extends Zikula_Api
                     }
 
                     try {
-                        $modversion = Modules_Util::getVersionMeta($dir, $rootdir);
+                        $modversion = Extensions_Util::getVersionMeta($dir, $rootdir);
                     } catch (Exception $e) {
                         LogUtil::registerError($e->getMessage());
                         continue;
@@ -583,7 +583,7 @@ class Modules_Api_Admin extends Zikula_Api
     {
         // Security check
         if (!System::isInstalling()) {
-            if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
                 return LogUtil::registerPermissionError();
             }
         }
@@ -1014,7 +1014,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
         $modversion['version'] = '0';
 
-        $modversion = Modules_Util::getVersionMeta($osdir, $modpath);
+        $modversion = Extensions_Util::getVersionMeta($osdir, $modpath);
         $version = $modversion['version'];
 
         // Update state of module
@@ -1027,7 +1027,7 @@ class Modules_Api_Admin extends Zikula_Api
 
         // Note the changes in the database...
         // Get module database info
-        ModUtil::dbInfoLoad('Modules');
+        ModUtil::dbInfoLoad('Extensions');
 
         $obj = array('id'      => $args['id'],
                      'version' => $version);
@@ -1061,7 +1061,7 @@ class Modules_Api_Admin extends Zikula_Api
             $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED));
 
             // Sort upgrade order according to this list.
-            $priorities = array('Users', 'Modules', 'Groups', 'Permissions', 'Admin', 'Blocks', 'Themes', 'Settings', 'Categories', 'SecurityCenter', 'Errors');
+            $priorities = array('Extensions', 'Users' , 'Groups', 'Permissions', 'Admin', 'Blocks', 'Themes', 'Settings', 'Categories', 'SecurityCenter', 'Errors');
             $sortedList = array();
             foreach ($priorities as $priority) {
                 foreach ($newmods as $key => $modinfo) {
@@ -1146,66 +1146,66 @@ class Modules_Api_Admin extends Zikula_Api
         $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
         $letter = FormUtil::getPassedValue('letter', null, 'GET');
 
-        if (SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'view'),
+        if (SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
+            $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'view'),
                              'text' => $this->__('Modules list'),
                              'class' => 'z-icon-es-list',
                              'links' => array(
-                                             array('url' => ModUtil::url('Modules', 'admin', 'view'),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'view'),
                                                    'text' => $this->__('All')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_UNINITIALISED)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_UNINITIALISED)),
                                                    'text' => $this->__('Not installed')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_INACTIVE)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_INACTIVE)),
                                                    'text' => $this->__('Inactive')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_ACTIVE)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_ACTIVE)),
                                                    'text' => $this->__('Active')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_MISSING)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_MISSING)),
                                                    'text' => $this->__('Files missing')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_UPGRADED)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_UPGRADED)),
                                                    'text' => $this->__('New version uploaded')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'view', array('state'=>ModUtil::STATE_INVALID)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_INVALID)),
                                                    'text' => $this->__('Invalid structure'))
                                                ));
 
-            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins'),
+            $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins'),
                              'text' => $this->__('Plugins list'),
                              'class' => 'z-icon-es-cubes',
                              'links' => array(
-                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins'),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins'),
                                                    'text' => $this->__('All')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('state'=>PluginUtil::NOTINSTALLED)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('state'=>PluginUtil::NOTINSTALLED)),
                                                    'text' => $this->__('Not installed')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('state'=>PluginUtil::DISABLED)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('state'=>PluginUtil::DISABLED)),
                                                    'text' => $this->__('Inactive')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('state'=>PluginUtil::ENABLED)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('state'=>PluginUtil::ENABLED)),
                                                    'text' => $this->__('Active'))
                                                ));
 
             if (System::isLegacyMode()) {
-                $links[] = array('url' => ModUtil::url('Modules', 'admin', 'hooks', array('id' => 0)), 'text' => $this->__('System hooks'), 'class' => 'z-icon-es-package');
+                $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'hooks', array('id' => 0)), 'text' => $this->__('System hooks'), 'class' => 'z-icon-es-package');
             }
-            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true)),
+            $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true)),
                              'text' => $this->__('System Plugins'),
                              'class' => 'z-icon-es-cubes',
                              'links' => array(
-                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true)),
                                                    'text' => $this->__('All')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::NOTINSTALLED)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::NOTINSTALLED)),
                                                    'text' => $this->__('Not installed')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::DISABLED)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::DISABLED)),
                                                    'text' => $this->__('Inactive')),
-                                             array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::ENABLED)),
+                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::ENABLED)),
                                                    'text' => $this->__('Active'))
                                                ));
 
-            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
-            //$filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
-            //ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
+            $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
+            //$filemodules = ModUtil::apiFunc('Extensions', 'admin', 'getfilemodules');
+            //ModUtil::apiFunc('Extensions', 'admin', 'regenerate', array('filemodules' => $filemodules));
 
             // get a list of modules needing upgrading
-            $newmods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED));
+            $newmods = ModUtil::apiFunc('Extensions', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED));
             if ($newmods) {
-                $links[] = array('url' => ModUtil::url('Modules', 'admin', 'upgradeall'), 'text' => $this->__('Upgrade All'), 'class' => 'z-icon-es-config');
+                $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'upgradeall'), 'text' => $this->__('Upgrade All'), 'class' => 'z-icon-es-config');
             }
         }
 
@@ -1279,7 +1279,7 @@ class Modules_Api_Admin extends Zikula_Api
     {
         // Security check
         if (!System::isInstalling()) {
-            if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
                 return LogUtil::registerPermissionError();
             }
         }
@@ -1345,7 +1345,7 @@ class Modules_Api_Admin extends Zikula_Api
                 'Errors',
                 'Groups',
                 'Mailer',
-                'Modules',
+                'Extensions',
                 'Permissions',
                 'SecurityCenter',
                 'Settings',
@@ -1379,7 +1379,7 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
         // Security check
-        if (!SecurityUtil::checkPermission('Modules::', "::$args[id]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('Extensions::', "::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -1710,7 +1710,7 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
         // Security check
-        if (!SecurityUtil::checkPermission('Modules::', "::$args[id]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('Extensions::', "::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

@@ -12,20 +12,20 @@
  * information regarding copyright and licensing.
  */
 
-class Modules_Version extends Zikula_Version
+class Extensions_Version extends Zikula_Version
 {
     public function getMetaData()
     {
         $meta = array();
-        $meta['name'] = 'Modules';
+        $meta['name'] = 'Extensions';
         // need to keep these two notice suppressions for the benefit of the installer
         // @ is only relevent for this module, please do not replicate elsewhere, refs #980- drak
-        @$meta['displayname'] = $this->__('Modules manager');
-        @$meta['description'] = $this->__('Provides support for modules, and incorporates an interface for adding, removing and administering core system modules and add-on modules.');
+        @$meta['displayname'] = $this->__('Extensions manager');
+        @$meta['description'] = $this->__('Provides support for extensions.');
         //! module name that appears in URL
-        $meta['url']  = $this->__('modules');
+        $meta['url']  = $this->__('extensions');
         $meta['version'] = '3.7.9';
-        $meta['securityschema'] = array('Modules::' => '::');
+        $meta['securityschema'] = array('Extensions::' => '::');
         return $meta;
     }
 }

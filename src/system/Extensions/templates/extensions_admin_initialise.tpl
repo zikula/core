@@ -1,10 +1,10 @@
-{include file="modules_admin_menu.tpl"}
+{include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=editdelete.gif set=icons/large __alt="Install"}</div>
     <h2>{gt text="Install"} - {modgetinfo modid=$id info=displayname}</h2>
-    <form class="z-form" action="{modurl modname="Modules" type="admin" func="initialise"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname="Extensions" type="admin" func="initialise"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Modules"}" />
+            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Extensions"}" />
             <input type="hidden" name="confirmation" value="1" />
             <input type="hidden" name="id" value="{$id|safetext}" />
             <div class="z-formrow">
@@ -59,7 +59,7 @@
                 {if !$fataldependency}
                 {button src=button_ok.gif set=icons/extrasmall __alt="Accept" __title="Accept" __text="Accept"}
                 {/if}
-                <a href="{modurl modname=Modules type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </div>
     </form>

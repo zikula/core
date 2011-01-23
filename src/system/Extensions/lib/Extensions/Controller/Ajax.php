@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Modules_Controller_Ajax extends Zikula_Controller
+class Extensions_Controller_Ajax extends Zikula_Controller
 {
     public function _postSetup()
     {

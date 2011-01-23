@@ -13,9 +13,9 @@
  */
 
 /**
- * Modules_Plugin controller.
+ * Extensions_Plugin controller.
  */
-class Modules_Controller_AdminPlugin extends Zikula_Controller
+class Extensions_Controller_AdminPlugin extends Zikula_Controller
 {
     /**
      * Plugin instance.
@@ -38,7 +38,7 @@ class Modules_Controller_AdminPlugin extends Zikula_Controller
      */
     public function dispatch()
     {
-        if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

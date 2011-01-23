@@ -14,7 +14,7 @@
 /**
  * HooksUI class.
  */
-class Modules_HookUI
+class Extensions_HookUI
 {
     public static function hooks(Zikula_Event $event)
     {
@@ -29,7 +29,7 @@ class Modules_HookUI
             return LogUtil::registerPermissionError();
         }
 
-        $view = Zikula_View::getInstance('Modules', false);
+        $view = Zikula_View::getInstance('Extensions', false);
         $view->assign('currentmodule', $moduleName);
 
         // find out the capabilities of the module
@@ -86,7 +86,7 @@ class Modules_HookUI
             $view->assign('areasSorting', $currentSorting);
         }
         
-        $event->setData($view->fetch('modules_hookui_hooks.tpl'));
+        $event->setData($view->fetch('extensions_hookui_hooks.tpl'));
         $event->setNotified();
     } 
 
@@ -103,7 +103,7 @@ class Modules_HookUI
             return LogUtil::registerPermissionError();
         }
 
-        $view = Zikula_View::getInstance('Modules', false);
+        $view = Zikula_View::getInstance('Extensions', false);
         $view->assign('currentmodule', $moduleName);
 
         // notify EVENT here to gather any system service links
@@ -112,7 +112,7 @@ class Modules_HookUI
         $sublinks = $localevent->getData();
         $view->assign('sublinks', $sublinks);
 
-        $event->setData($view->fetch('modules_hookui_moduleservices.tpl'));
+        $event->setData($view->fetch('extensions_hookui_moduleservices.tpl'));
         $event->setNotified();
     }
 }

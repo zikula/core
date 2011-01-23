@@ -119,13 +119,13 @@ class Theme_Installer extends Zikula_Installer
                 }
 
                 // Set Module pnRender 'Inactive'
-                if (!ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
+                if (!ModUtil::apiFunc('Extensions', 'admin', 'setstate', array(
                 'id' => $modid,
                 'state' => ModUtil::STATE_INACTIVE))) {
                     return '3.3';
                 }
                 // Remove Module pnRender from Modulelist
-                if (!ModUtil::apiFunc('Modules', 'admin', 'remove', array(
+                if (!ModUtil::apiFunc('Extensions', 'admin', 'remove', array(
                 'id' => $modid))) {
                     return '3.3';
                 }

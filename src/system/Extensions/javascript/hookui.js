@@ -1,3 +1,5 @@
+// Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
+
 /**
  * Toggle a subscribers's area attached/detached status
  *
@@ -10,7 +12,7 @@ function subscriberAreaToggle()
     var pars = this.value.replace("#", "&");
 
     new Zikula.Ajax.Request(
-        "ajax.php?module=Modules&func=togglesubscriberareastatus",
+        "ajax.php?module=Extensions&func=togglesubscriberareastatus",
         {
             method: 'get',
             parameters: pars,
@@ -88,7 +90,7 @@ function changeproviderareaorder()
                providers_areas;
 
     new Zikula.Ajax.Request(
-        'ajax.php?module=Modules&func=changeproviderareaorder',
+        'ajax.php?module=Extensions&func=changeproviderareaorder',
         {
             method: 'get',
             parameters: pars,

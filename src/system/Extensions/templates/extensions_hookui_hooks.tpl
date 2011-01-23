@@ -1,4 +1,4 @@
-{ajaxheader modname='Modules' filename='hookui.js'}
+{ajaxheader modname='Extensions' filename='hookui.js'}
 
 {admincategorymenu}
 <div class="z-adminbox">
