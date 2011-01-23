@@ -17,6 +17,7 @@
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    _width: 1%;
 }
 #ImageViewer * {
     padding: 0;
@@ -38,12 +39,12 @@
 #ImageViewerTitle {
     text-align: left;
     float:left;
-    width: 49%;
+    max-width: 49%;
 }
 #ImageViewerPager {
     float: right;
     text-align: right;
-    width: 49%;
+    max-width: 49%;
 }
 #ImageViewerClose {
     position: absolute;
@@ -60,6 +61,9 @@
 }
 #ImageViewerImg {
     margin: 5px;
+    min-width: 50px;
+    min-height: 50px;
+    display: block;
 }
 #ImageViewerNext,
 #ImageViewerPrev {
