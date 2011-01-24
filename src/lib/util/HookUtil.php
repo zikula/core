@@ -945,7 +945,7 @@ class HookUtil
     }
     
     /**
-     * Check if given areas (subscriberarea and providerarea) are binded together
+     * Check if given areas (subscriberarea and providerarea) are bound together.
      *
      * @param string $subscriberarea Subscriber's area.
      * @param string $providerarea   Provider's area.
@@ -962,7 +962,7 @@ class HookUtil
     }
     
     /**
-     * Check if given areas (subscriberarea and providerarea) can be binded together
+     * Check if given areas (subscriberarea and providerarea) can be bound together.
      *
      * @param string $subscriberarea Subscriber's area.
      * @param string $providerarea   Provider's area.
