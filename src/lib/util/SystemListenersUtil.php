@@ -455,5 +455,7 @@ class SystemListenersUtil
     public static function templateOverrides(Zikula_Event $event)
     {
         $override = new Zikula_View_TemplateOverridesYaml($event->getSubject()->getServiceManager());
+        $override->setup();
+        $override->attach();
     }
 }
