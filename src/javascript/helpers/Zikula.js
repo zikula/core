@@ -1432,6 +1432,15 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
         this.queue.push([url, options || {}]);
     },
     /**
+     * Clears the queue and  stops queue execution on first, not send request.
+     *
+     * @return void
+     */
+    clear: function() {
+        this.stop();
+        this.queue = [];
+    },
+    /**
      * Starts queqe execution.
      *
      * @return void
@@ -1451,6 +1460,7 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
      */
     stop: function() {
         this.stopped = true;
+        this.inProgress = false;
     },
     /**
      * Sends next request from queue.
