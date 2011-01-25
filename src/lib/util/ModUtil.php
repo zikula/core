@@ -525,7 +525,7 @@ class ModUtil
             foreach ($all as $key => $mod) {
                 // "Core" modules should be returned in this list
                 if (($mod['state'] == self::STATE_ACTIVE)
-                    || (preg_match('/(extensions|admin|theme|block|groups|permissions|users)/i', $mod['name'])
+                    || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $mod['name'])
                         && ($mod['state'] == self::STATE_UPGRADED || $mod['state'] == self::STATE_INACTIVE))) {
                     $modsarray[$key] = $mod;
                 }
@@ -1331,7 +1331,7 @@ class ModUtil
         }
 
         if ((isset($modstate[$modname]) &&
-                $modstate[$modname] == self::STATE_ACTIVE) || (preg_match('/(extensions|admin|theme|block|groups|permissions|users)/i', $modname) &&
+                $modstate[$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $modname) &&
                 (isset($modstate[$modname]) && ($modstate[$modname] == self::STATE_UPGRADED || $modstate[$modname] == self::STATE_INACTIVE)))) {
             return true;
         }
