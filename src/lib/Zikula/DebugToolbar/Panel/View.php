@@ -83,10 +83,10 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
     {
         $id = substr($name, 0, strpos($name, '.'));
 
-        $html = '<a href="#" title="'.__('Click to show the assigned template variables').'" onclick="$(\'DebugToolbarPanelconfigContent'.$id.'\').toggle();return false;"><h2>'.$name.'</h2></a>';
-        $html .= '<div id="DebugToolbarPanelconfigContent'.$id.'" style="display:none;"><pre>';
+        $html = '<h2><a href="#" title="'.__('Click to show the assigned template variables').'" onclick="$(\'DebugToolbarPanelconfigContent'.$id.'\').toggle();return false;">'.$name.'</a></h2>';
+        $html .= '<div id="DebugToolbarPanelconfigContent'.$id.'" style="display:none;">';
         $html .= $this->outputVar('', $array, true);
-        $html .= '</pre></div>';
+        $html .= '</div>';
 
         return $html;
     }
@@ -103,7 +103,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
     protected function outputVar($key, $var, $isFirstLevel=false)
     {
         if (is_object($var)) {
-            $html =  '<li><strong>' . $key . '</strong>  <span style="color:#666666;font-style:italic;">('.
+            $html =  "<li><strong>" . $key . '</strong>  <span style="color:#666666;font-style:italic;">('.
                        get_class($var).')</span>: <ul>';
 
             $cls = new ReflectionClass(get_class($var));
@@ -123,9 +123,13 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
                 $html =  '<ul>';
             }
 
-            foreach ($var as $akey => $avar) {
-                $akey = (strpos($akey, '[') !== false)? '["'.$akey.'"]' : ($isFirstLevel? $akey : '.'.$akey);
-                $html .= $this->outputVar(($isFirstLevel? $akey : $key.$akey), $avar);
+            if (!empty($var) && (count($var) > 0)) {
+                foreach ($var as $akey => $avar) {
+                    $akey = (strpos($akey, '[') !== false)? '["'.$akey.'"]' : ($isFirstLevel? $akey : '.'.$akey);
+                    $html .= $this->outputVar(($isFirstLevel? $akey : $key.$akey), $avar);
+                }
+            } else {
+                $html .= '<li><em>'.__('(empty)').'</em></li>';
             }
 
             if (!$isFirstLevel) {
@@ -136,7 +140,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
             return $html;
         } else {
             return '<li><code>{$' . $key . '}</code> <span style="color:#666666;font-style:italic;">('.
-                     gettype($var).')</span>: ' . DataUtil::formatForDisplay($var) . '</li>';
+                     gettype($var).')</span>: <pre class="DebugToolbarVarDump">' . DataUtil::formatForDisplay($var) . '</pre></li>';
         } 
     }
 

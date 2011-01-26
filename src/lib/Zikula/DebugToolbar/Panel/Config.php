@@ -82,10 +82,10 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_Panel
     {
         $id = str_replace(' ', '', $name);
 
-        $html = '<a href="#" title="'.__('Click to show the configuration variables').'" onclick="$(\'DebugToolbarPanelconfigContent'.$id.'\').toggle();return false;"><h2>'.$name.'</h2></a>';
-        $html .= '<div id="DebugToolbarPanelconfigContent'.$id.'" style="display:none;"><pre>';
-        $html .= '<ul>' . $this->outputVar($arrayname, $array) .'</ul>';
-        $html .= '</pre></div>';
+        $html = '<h2><a href="#" title="'.__('Click to show the configuration variables').'" onclick="$(\'DebugToolbarPanelconfigContent'.$id.'\').toggle();return false;">'.$name.'</a></h2>';
+        $html .= '<div id="DebugToolbarPanelconfigContent'.$id.'" style="display:none;">';
+        $html .= '<ul>' . $this->outputVar($arrayname, $array, '<pre>', '</pre>') .'</ul>';
+        $html .= '</div>';
 
         return $html;
     }
@@ -101,15 +101,19 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_Panel
     protected function outputVar($key, $var)
     {
         if (!is_array($var)) {
-            return '<li><strong>' . $key . ':</strong> ' . DataUtil::formatForDisplay($var) . '</li>';
+            return "<li><strong>{$key}:</strong> <pre class=\"DebugToolbarVarDump\">" . DataUtil::formatForDisplay($var) . '</pre></li>';
         } else {
-            $html =  '<li><strong>' . $key . ':</strong> <ul>';
+            $html =  "<li><strong>" . $key . ':</strong> <ul>';
 
-            foreach ($var as $akey => $avar) {
-                $html .= $this->outputVar($akey, $avar);
+            if (!empty($var) && (count($var) > 0)) {
+                foreach ($var as $akey => $avar) {
+                    $html .= $this->outputVar($akey, $avar);
+                }
+            } else {
+                $html .= '<li><em>'.__('(empty)').'</em></li>';
             }
 
-            $html .= '</ul></li>';
+            $html .= "</ul></li>";
             return $html;
         }
     }

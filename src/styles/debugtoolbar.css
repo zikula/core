@@ -172,3 +172,7 @@
 #DebugToolbarContainer .DebugToolbarLogsMessage {
     width: 50%;
 }
+
+#DebugToolbarContainer pre.DebugToolbarVarDump {
+    display: inline;
+}
