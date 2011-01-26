@@ -8,7 +8,7 @@
             <input type="hidden" name="confirmation" value="1" />
             <input type="hidden" name="id" value="{$id|safetext}" />
             <div class="z-formrow">
-                <p class="z-informationmsg">{gt text="Notice! This module either requires other modules recommends modules be installed.  The report below details these requirements and/or recommendations."}</p>
+                <p class="z-informationmsg">{gt text="Notice! This module either requires or recommends additional modules be installed. The report below details these requirements and/or recommendations."}</p>
             </div>
             {if $dependencies}
             <div class="z-formrow">
