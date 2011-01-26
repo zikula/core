@@ -111,8 +111,8 @@
                 </div>
                 <div class="z-formrow">
                     <label for="settings_ajaxtimeout">{gt text="Time-out for Ajax connections"}</label>
-                    <input id="settings_ajaxtimeout" name="settings[ajaxtimeout]" value="{$modvars.ZConfig.ajaxtimeout}" />
-                    <em class="z-formnote">{gt text="(in milliseconds, default 5000 = 5 seconds)"}</em>
+                    <input class="z-form-int" id="settings_ajaxtimeout" name="settings[ajaxtimeout]" value="{$modvars.ZConfig.ajaxtimeout}" />
+                    <em>{gt text="(in milliseconds, default 5000 = 5 seconds)"}</em>
                     <p class="z-formnote z-informationmsg">{gt text="Notice: Increase this value if mobile appliances experience problems with using the site."}</p>
                 </div>
             </fieldset>
@@ -134,8 +134,9 @@
             </fieldset>
             <fieldset>
                 <legend>{gt text="Short URL settings"}</legend>
+                <input type="hidden" id="settings_shorturlstype_directory" name="settings[shorturlstype]" value="0" />
                 <div class="z-formrow">
-                    <label for="settings_shorturls">{gt text="Enable short URLs"}</label>
+                    <label for="settings_shorturls">{gt text="Enable directory-based short URLs"}</label>
                     <div id="settings_shorturls">
                         <input id="settings_shorturls_yes" type="radio" name="settings[shorturls]" value="1" {if $modvars.ZConfig.shorturls eq 1}checked="checked"{/if} />
                         <label for="settings_shorturls_yes">{gt text="Yes"}</label>
@@ -144,13 +145,6 @@
                     </div>
                 </div>
                 <div id="settings_shorturls_container">
-                    <div class="z-formrow">
-                        <label for="settings_shorturlstype">{gt text="Type of URLs generated"}</label>
-                        <div id="settings_shorturlstype">
-                            <input id="settings_shorturlstype_directory" type="radio" name="settings[shorturlstype]" value="0" checked="checked" />
-                            <label for="settings_shorturlstype_directory">{gt text="Directory"}</label>
-                        </div>
-                    </div>
                     <div id="settings_shorturlsstripentrypoint_container" class="z-formrow">
                         <label for="settings_shorturlsstripentrypoint">{gt text="Strip entry point from directory-based URLs"}</label>
                         <div id="settings_shorturlsstripentrypoint">
@@ -170,9 +164,6 @@
                             <option value="">{gt text="No default module"}</option>
                             {html_select_modules selected=$modvars.ZConfig.shorturlsdefaultmodule type=user}
                         </select>
-                    </div>
-                    <div id="settings_shorturlsextwarning_container">
-                        <p class="z-warningmsg">{gt text="Notice: You must place an '.htaccess' file in the site root directory if you set 'Type of URLs generated' to 'File', or if you set 'Strip entry point from directory-based URLs' to 'Yes', or if a permalink title separator is used. Copies of the appropriate '.htaccess' file to use for each case can be found in the 'docs' documentation directory."}</p>
                     </div>
                 </div>
             </fieldset>
