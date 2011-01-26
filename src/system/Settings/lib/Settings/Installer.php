@@ -27,56 +27,55 @@ class Settings_Installer extends Zikula_Installer
         // than just left blank, this helps the user-side code and means that
         // there doesn't need to be a check to see if the variable is set in
         // the rest of the code as it always will be
-        System::setVar('debug', '0');
-        System::setVar('sitename', $this->__('Site name'));
-        System::setVar('slogan', $this->__('Site description'));
-        System::setVar('metakeywords', $this->__('zikula, portal, portal web, open source, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework'));
-        System::setVar('defaultpagetitle', $this->__('Site name'));
-        System::setVar('defaultmetadescription', $this->__('Site description'));
-        System::setVar('startdate', date('m/Y', time()));
-        System::setVar('adminmail', 'example@example.com');
-        System::setVar('Default_Theme', 'Andreas08');
-        System::setVar('anonymous', $this->__('Guest'));
-        System::setVar('timezone_offset', '0');
-        System::setVar('timezone_server', '0');
-        System::setVar('funtext', '1');
-        System::setVar('reportlevel', '0');
-        System::setVar('startpage', '');
-        System::setVar('Version_Num', System::VERSION_NUM);
-        System::setVar('Version_ID', System::VERSION_ID);
-        System::setVar('Version_Sub', System::VERSION_SUB);
-        System::setVar('debug_sql', '0');
-        System::setVar('multilingual', '1');
-        System::setVar('useflags', '0');
-        System::setVar('theme_change', '0');
-        System::setVar('UseCompression', '0');
-        System::setVar('siteoff', 0);
-        System::setVar('siteoffreason', '');
-        System::setVar('starttype', '');
-        System::setVar('startfunc', '');
-        System::setVar('startargs', '');
-        System::setVar('entrypoint', 'index.php');
-        System::setVar('language_detect', 0);
-        System::setVar('shorturls', false);
-        System::setVar('shorturlstype', '0');
-        System::setVar('shorturlsext', 'html');
-        System::setVar('shorturlsseparator', '-');
-        System::setVar('shorturlsstripentrypoint', false);
-        System::setVar('shorturlsdefaultmodule', '');
-        System::setVar('profilemodule', ModUtil::available('Profile') ? 'Profile' : '');
-        System::setVar('messagemodule', '');
-        System::setVar('languageurl', 0);
-        System::setVar('ajaxtimeout', 5000);
+        $this->setVar('debug', '0');
+        $this->setVar('sitename', $this->__('Site name'));
+        $this->setVar('slogan', $this->__('Site description'));
+        $this->setVar('metakeywords', $this->__('zikula, portal, portal web, open source, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework'));
+        $this->setVar('defaultpagetitle', $this->__('Site name'));
+        $this->setVar('defaultmetadescription', $this->__('Site description'));
+        $this->setVar('startdate', date('m/Y', time()));
+        $this->setVar('adminmail', 'example@example.com');
+        $this->setVar('Default_Theme', 'Andreas08');
+        $this->setVar('anonymous', $this->__('Guest'));
+        $this->setVar('timezone_offset', '0');
+        $this->setVar('timezone_server', '0');
+        $this->setVar('funtext', '1');
+        $this->setVar('reportlevel', '0');
+        $this->setVar('startpage', '');
+        $this->setVar('Version_Num', System::VERSION_NUM);
+        $this->setVar('Version_ID', System::VERSION_ID);
+        $this->setVar('Version_Sub', System::VERSION_SUB);
+        $this->setVar('debug_sql', '0');
+        $this->setVar('multilingual', '1');
+        $this->setVar('useflags', '0');
+        $this->setVar('theme_change', '0');
+        $this->setVar('UseCompression', '0');
+        $this->setVar('siteoff', 0);
+        $this->setVar('siteoffreason', '');
+        $this->setVar('starttype', '');
+        $this->setVar('startfunc', '');
+        $this->setVar('startargs', '');
+        $this->setVar('entrypoint', 'index.php');
+        $this->setVar('language_detect', 0);
+        $this->setVar('shorturls', false);
+        $this->setVar('shorturlstype', '0');
+        $this->setVar('shorturlsseparator', '-');
+        $this->setVar('shorturlsstripentrypoint', false);
+        $this->setVar('shorturlsdefaultmodule', '');
+        $this->setVar('profilemodule', ModUtil::available('Profile') ? 'Profile' : '');
+        $this->setVar('messagemodule', '');
+        $this->setVar('languageurl', 0);
+        $this->setVar('ajaxtimeout', 5000);
         //! this is a comma-separated list of special characters to search for in permalinks
-        System::setVar('permasearch',  $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+        $this->setVar('permasearch',  $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
         //! this is a comma-separated list of special characters to replace in permalinks
-        System::setVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
+        $this->setVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
 
-        System::setVar('language',ZLanguage::getLanguageCodeLegacy());
-        System::setVar('locale', ZLanguage::getLocale());
-        System::setVar('language_i18n', ZLanguage::getlanguageCode());
+        $this->setVar('language',ZLanguage::getLanguageCodeLegacy());
+        $this->setVar('locale', ZLanguage::getLocale());
+        $this->setVar('language_i18n', ZLanguage::getlanguageCode());
 
-        System::setVar('idnnames', 1);
+        $this->setVar('idnnames', 1);
 
         if (!DBUtil::createTable('workflows')) {
             return false;
@@ -99,53 +98,54 @@ class Settings_Installer extends Zikula_Installer
     }
 
     /**
-     * upgrade the settings module from an old version
+     * Upgrade the settings module from an old version.
      *
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param        string   $oldVersion   version number string to upgrade from
-     * @return       mixed    true on success, last valid version string or false if fails
+     * @param  string   $oldVersion   version number string to upgrade from.
+     *
+     * @return boolean|string True on success, last valid version string or false if fails.
      */
     public function upgrade($oldversion)
     {
         // always ensure that the version info is upgraded
-        System::setVar('Version_Num', System::VERSION_NUM);
-        System::setVar('Version_ID', System::VERSION_ID);
-        System::setVar('Version_Sub', System::VERSION_SUB);
+        $this->setVar('Version_Num', System::VERSION_NUM);
+        $this->setVar('Version_ID', System::VERSION_ID);
+        $this->setVar('Version_Sub', System::VERSION_SUB);
 
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
             case '2.5':
-                System::delVar('jsquicktags');
-                System::delVar('backend_title');
-                System::delVar('refereronprint');
-                System::delVar('storyorder');
-                System::delVar('backend_language');
-                System::delVar('site_logo');
+                $this->delVar('jsquicktags');
+                $this->delVar('backend_title');
+                $this->delVar('refereronprint');
+                $this->delVar('storyorder');
+                $this->delVar('backend_language');
+                $this->delVar('site_logo');
 
             case '2.6':
-                System::setVar('updatelastchecked', 0);
-                System::setVar('updatefrequency', 7);
-                System::setVar('updateversion', System::VERSION_NUM);
-                System::setVar('updatecheck', true);
+                $this->setVar('updatelastchecked', 0);
+                $this->setVar('updatefrequency', 7);
+                $this->setVar('updateversion', System::VERSION_NUM);
+                $this->setVar('updatecheck', true);
 
             case '2.7':
-                System::setVar('language_i18n', 'en');
-                System::setVar('language_bc', 1);
-                System::setVar('languageurl', 0);
-                System::setVar('ajaxtimeout', 5000);
+                $this->setVar('language_i18n', 'en');
+                $this->setVar('language_bc', 1);
+                $this->setVar('languageurl', 0);
+                $this->setVar('ajaxtimeout', 5000);
                 //! this is a comma-separated list of special characters to search for in permalinks
-                System::setVar('permasearch',  $this->$this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+                $this->setVar('permasearch',  $this->$this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
                 //! this is a comma-separated list of special characters to replace in permalinks
-                System::setVar('permareplace', $this->$this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
+                $this->setVar('permareplace', $this->$this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
 
             case '2.8':
-                System::delVar('dyn_keywords');
+                $this->delVar('dyn_keywords');
             case '2.9':
             case '2.9.1':
-                System::delVar('timezone_info');
+                $this->delVar('timezone_info');
             case '2.9.2':
                 $tables = DBUtil::getTables();
                 $modulesTable = $tables['modules'];
@@ -154,20 +154,21 @@ class Settings_Installer extends Zikula_Installer
                 DBUtil::executeSQL($sql);
             case '2.9.3':
                 // This may have been set by the Users module upgrade already, so only set it if it does not exist.
-                $systemIdnSetting = System::getVar('idnnames', null);
+                $systemIdnSetting = $this->getVar('idnnames', null);
                 if (isset($systemIdnSetting)) {
                     if (ModUtil::available('Users')) {
                         $usersIdnSetting = ModUtil::getVar('Users', 'idnnames', null);
                     }
-                    System::setVar('idnnames', isset($usersIdnSetting) ? (bool)$usersIdnSetting : true);
+                    $this->setVar('idnnames', isset($usersIdnSetting) ? (bool)$usersIdnSetting : true);
                 }
-                System::delVar('language_bc');
+                $this->delVar('language_bc');
             case '2.9.4':
-                System::setVar('defaultpagetitle', $this->__('Site name'));
-                System::setVar('defaultmetadescription', $this->__('Site description'));
+                $this->setVar('defaultpagetitle', $this->__('Site name'));
+                $this->setVar('defaultmetadescription', $this->__('Site description'));
             case '2.9.5':
+                $this->delVar('shorturlsext');
             case '2.9.6':
-            // future upgrade routines
+                // future upgrade routines
         }
 
         // Update successful
@@ -175,14 +176,13 @@ class Settings_Installer extends Zikula_Installer
     }
 
     /**
-     * delete the settings module
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     * @return bool true if successful, false otherwise
+     * Delete the settings module.
+     *
+     * @return boolean false
      */
     public function uninstall()
     {
-        // Deletion fail - we dont want users disabling this module!
+        // This module cannot be uninstalled.
         return false;
     }
 }
