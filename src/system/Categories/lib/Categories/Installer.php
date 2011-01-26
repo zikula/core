@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
@@ -11,9 +12,9 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 class Categories_Installer extends Zikula_Installer
 {
+
     /**
      * initialise module
      */
@@ -25,16 +26,28 @@ class Categories_Installer extends Zikula_Installer
 
         // Create the index
         if (!DBUtil::createIndex('idx_categories_parent', 'categories_category', 'parent_id') || !DBUtil::createIndex('idx_categories_is_leaf', 'categories_category', 'is_leaf') || !DBUtil::createIndex('idx_categories_name', 'categories_category', 'name') || !DBUtil::createIndex('idx_categories_ipath', 'categories_category', array(
-                'ipath',
-                'is_leaf',
-                'status')) || !DBUtil::createIndex('idx_categories_status', 'categories_category', 'status') || !DBUtil::createIndex('idx_categories_ipath_status', 'categories_category', array('ipath', 'status'))) {
+                        'ipath',
+                        'is_leaf',
+                        'status')) || !DBUtil::createIndex('idx_categories_status', 'categories_category', 'status') || !DBUtil::createIndex('idx_categories_ipath_status', 'categories_category', array('ipath', 'status'))) {
             return false;
         }
 
         $this->insertData_10();
 
         // Set autonumber to 10000 (for DB's that support autonumber fields)
-        $cat['id'] = 9999;
+
+        $cat = array('id'              => 9999,
+                     'parent_id'       => 1,
+                     'is_locked'       => 0,
+                     'is_leaf'         => 0,
+                     'name'            => '',
+                     'value'           => '',
+                     'sort_value'      => 0,
+                     'display_name'    => '',
+                     'display_desc'    => '',
+                     'path'            => '',
+                     'ipath'           => '',
+                     'status'          => '');
         DBUtil::insertObject($cat, 'categories_category', 'id', true);
 
         // for postgres, we need to explicitly set the sequence value to reflect the inserted data
@@ -54,7 +67,7 @@ class Categories_Installer extends Zikula_Installer
 
         // new column used in doctrine categorisable template
         DoctrineUtil::createColumn('categories_mapobj', 'cmo_reg_property', array('type' => 'string',
-                                                                                  'length' => 60), false);
+                        'length' => 60), false);
 
         $this->setVar('userrootcat', '/__SYSTEM__/Users');
         $this->setVar('allowusercatedit', 0);
@@ -77,8 +90,7 @@ class Categories_Installer extends Zikula_Installer
      */
     public function upgrade($oldversion)
     {
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '1.04':
                 $this->upgrade_fixSerializedData();
                 $this->upgrade_MigrateLanguageCodes();
@@ -88,7 +100,7 @@ class Categories_Installer extends Zikula_Installer
             case '1.2':
                 // new column used in doctrine categorisable template
                 DoctrineUtil::createColumn('categories_mapobj', 'cmo_reg_property', array('type' => 'string',
-                                                                                          'length' => 60), false);
+                                'length' => 60), false);
             case '1.2.1':
             // future upgrade routines
         }
@@ -113,7 +125,7 @@ class Categories_Installer extends Zikula_Installer
         $cols = $dbtable['module_vars_column'];
         $name = DataUtil::formatForStore('enablecategorization');
         $where = "$cols[name]='$name'";
-        $res = (bool) DBUtil::deleteWhere('module_vars', $where);
+        $res = (bool)DBUtil::deleteWhere('module_vars', $where);
 
         // Deletion successful
         return true;
@@ -157,14 +169,15 @@ class Categories_Installer extends Zikula_Installer
     public function insertData_10()
     {
         $objArray = array();
-        $objArray[] = array('id' => 1, 'parent_id' => 0, 'is_locked' => 1, 'is_leaf' => 0, 'name' => '__SYSTEM__', 'display_name' => 'b:0;', 'display_desc' => 'b:0;', 'path' => '/__SYSTEM__', 'ipath' => '/1', 'status' => 'A');
-        $objArray[] = array('id' => 2, 'parent_id' => 1, 'is_locked' => 0, 'is_leaf' => 0, 'name' => 'Modules', 'display_name' => $this->makeDisplayName($this->__('Modules')), 'display_desc' => $this->makeDisplayDesc(), 'path' => '/__SYSTEM__/Modules', 'ipath' => '/1/2', 'status' => 'A');
-        $objArray[] = array('id' => 3, 'parent_id' => 1, 'is_locked' => 0, 'is_leaf' => 0, 'name' => 'General', 'display_name' => $this->makeDisplayName($this->__('General')), 'display_desc' => $this->makeDisplayDesc(), 'path' => '/__SYSTEM__/General', 'ipath' => '/1/3', 'status' => 'A');
+        $objArray[] = array('id' => 1, 'parent_id' => 0, 'is_locked' => 1, 'is_leaf' => 0, 'value' => '', 'name' => '__SYSTEM__', 'display_name' => 'b:0;', 'display_desc' => 'b:0;', 'path' => '/__SYSTEM__', 'ipath' => '/1', 'status' => 'A');
+        $objArray[] = array('id' => 2, 'parent_id' => 1, 'is_locked' => 0, 'is_leaf' => 0, 'value' => '', 'name' => 'Modules', 'display_name' => $this->makeDisplayName($this->__('Modules')), 'display_desc' => $this->makeDisplayDesc(), 'path' => '/__SYSTEM__/Modules', 'ipath' => '/1/2', 'status' => 'A');
+        $objArray[] = array('id' => 3, 'parent_id' => 1, 'is_locked' => 0, 'is_leaf' => 0, 'value' => '', 'name' => 'General', 'display_name' => $this->makeDisplayName($this->__('General')), 'display_desc' => $this->makeDisplayDesc(), 'path' => '/__SYSTEM__/General', 'ipath' => '/1/3', 'status' => 'A');
         $objArray[] = array(
                 'id' => 4,
                 'parent_id' => 3,
                 'is_locked' => 0,
                 'is_leaf' => 0,
+                'value' => '',
                 'name' => 'YesNo',
                 'display_name' => $this->makeDisplayName($this->__('Yes/No')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -176,6 +189,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 4,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => '1 - Yes',
                 'display_name' => 'b:0;',
                 'display_desc' => 'b:0;',
@@ -188,6 +202,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 4,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => '2 - No',
                 'display_name' => 'b:0;',
                 'display_desc' => 'b:0;',
@@ -200,6 +215,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 3,
                 'is_locked' => 0,
                 'is_leaf' => 0,
+                'value' => '',
                 'name' => 'Publication Status (extended)',
                 'display_name' => $this->makeDisplayName($this->__('Publication status (extended)')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -211,6 +227,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 10,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Pending',
                 'display_name' => $this->makeDisplayName($this->__('Pending')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -223,6 +240,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 10,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Checked',
                 'display_name' => $this->makeDisplayName($this->__('Checked')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -235,6 +253,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 10,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Approved',
                 'display_name' => $this->makeDisplayName($this->__('Approved')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -247,6 +266,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 10,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'On-line',
                 'display_name' => $this->makeDisplayName($this->__('On-line')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -259,6 +279,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 10,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Rejected',
                 'display_name' => $this->makeDisplayName($this->__('Rejected')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -271,6 +292,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 3,
                 'is_locked' => 0,
                 'is_leaf' => 0,
+                'value' => '',
                 'name' => 'Gender',
                 'display_name' => $this->makeDisplayName($this->__('Gender')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -282,6 +304,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 16,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Male',
                 'display_name' => $this->makeDisplayName($this->__('Male')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -294,6 +317,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 16,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Female',
                 'display_name' => $this->makeDisplayName($this->__('Female')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -306,6 +330,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 3,
                 'is_locked' => 0,
                 'is_leaf' => 0,
+                'value' => '',
                 'name' => 'Title',
                 'display_name' => $this->makeDisplayName($this->__('Title')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -317,6 +342,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 19,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Mr',
                 'display_name' => $this->makeDisplayName($this->__('Mr.')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -328,6 +354,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 19,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Mrs',
                 'display_name' => $this->makeDisplayName($this->__('Mrs.')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -339,6 +366,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 19,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Ms',
                 'display_name' => $this->makeDisplayName($this->__('Ms.')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -350,6 +378,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 19,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Miss',
                 'display_name' => $this->makeDisplayName($this->__('Miss')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -361,6 +390,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 19,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Dr',
                 'display_name' => $this->makeDisplayName($this->__('Dr.')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -372,6 +402,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 3,
                 'is_locked' => 0,
                 'is_leaf' => 0,
+                'value' => '',
                 'name' => 'ActiveStatus',
                 'display_name' => $this->makeDisplayName($this->__('Activity status')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -383,6 +414,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 25,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Active',
                 'display_name' => $this->makeDisplayName($this->__('Active')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -395,6 +427,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 25,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Inactive',
                 'display_name' => $this->makeDisplayName($this->__('Inactive')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -407,6 +440,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 3,
                 'is_locked' => 0,
                 'is_leaf' => 0,
+                'value' => '',
                 'name' => 'Publication status (basic)',
                 'display_name' => $this->makeDisplayName($this->__('Publication status (basic)')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -418,6 +452,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 28,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Pending',
                 'display_name' => $this->makeDisplayName($this->__('Pending')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -430,6 +465,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 28,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Approved',
                 'display_name' => $this->makeDisplayName($this->__('Approved')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -442,6 +478,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 1,
                 'is_locked' => 0,
                 'is_leaf' => 0,
+                'value' => '',
                 'name' => 'Users',
                 'display_name' => $this->makeDisplayName($this->__('Users')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -453,6 +490,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 2,
                 'is_locked' => 0,
                 'is_leaf' => 0,
+                'value' => '',
                 'name' => 'Global',
                 'display_name' => $this->makeDisplayName($this->__('Global')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -464,6 +502,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 32,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Blogging',
                 'display_name' => $this->makeDisplayName($this->__('Blogging')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -475,6 +514,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 32,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Music and audio',
                 'display_name' => $this->makeDisplayName($this->__('Music and audio')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -486,6 +526,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 32,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Art and photography',
                 'display_name' => $this->makeDisplayName($this->__('Art and photography')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -497,6 +538,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 32,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Writing and thinking',
                 'display_name' => $this->makeDisplayName($this->__('Writing and thinking')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -508,6 +550,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 32,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Communications and media',
                 'display_name' => $this->makeDisplayName($this->__('Communications and media')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -519,6 +562,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 32,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Travel and culture',
                 'display_name' => $this->makeDisplayName($this->__('Travel and culture')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -530,6 +574,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 32,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Science and technology',
                 'display_name' => $this->makeDisplayName($this->__('Science and technology')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -541,6 +586,7 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 32,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Sport and activities',
                 'display_name' => $this->makeDisplayName($this->__('Sport and activities')),
                 'display_desc' => $this->makeDisplayDesc(),
@@ -552,24 +598,14 @@ class Categories_Installer extends Zikula_Installer
                 'parent_id' => 32,
                 'is_locked' => 0,
                 'is_leaf' => 1,
+                'value' => '',
                 'name' => 'Business and work',
                 'display_name' => $this->makeDisplayName($this->__('Business and work')),
                 'display_desc' => $this->makeDisplayDesc(),
                 'path' => '/__SYSTEM__/Modules/Global/BusinessAndWork',
                 'ipath' => '/1/2/32/41',
                 'status' => 'A');
-        $objArray[] = array(
-                'id' => 42,
-                'parent_id' => 32,
-                'is_locked' => 0,
-                'is_leaf' => 1,
-                'name' => 'Activism and action',
-                'display_name' => $this->makeDisplayName($this->__('Activism and action')),
-                'display_desc' => $this->makeDisplayDesc(),
-                'path' => '/__SYSTEM__/Modules/Global/ActivismAndAction',
-                'ipath' => '/1/2/32/42',
-                'status' => 'A');
-
+        
         DBUtil::insertObjectArray($objArray, 'categories_category', 'id', true);
     }
 
@@ -618,8 +654,7 @@ class Categories_Installer extends Zikula_Installer
         $objArray = DBUtil::selectObjectArray('categories_category');
         DBUtil::truncateTable('categories_category');
 
-        foreach ($objArray as $category)
-        {
+        foreach ($objArray as $category) {
             $data = DataUtil::mb_unserialize($category['display_name']);
             $category['display_name'] = serialize($data);
             $data = DataUtil::mb_unserialize($category['display_desc']);
@@ -636,8 +671,7 @@ class Categories_Installer extends Zikula_Installer
         DBUtil::truncateTable('categories_category');
 
         $newObjArray = array();
-        foreach ($objArray as $category)
-        {
+        foreach ($objArray as $category) {
             // translate display_name l3 -> l2
             $data = unserialize($category['display_name']);
             if (is_array($data)) {

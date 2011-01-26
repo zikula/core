@@ -122,14 +122,14 @@ class Zikula_Version implements ArrayAccess
      *
      * @var string
      */
-    protected $core_min;
+    protected $core_min = '';
 
     /**
      * The maximum core version supported by the module.
      *
      * @var string
      */
-    protected $core_max;
+    protected $core_max = '';
 
     /**
      * A list of names this module used to be known as.
@@ -224,6 +224,8 @@ class Zikula_Version implements ArrayAccess
         $meta['type'] = $this->type;
         $meta['directory'] = $this->directory;
         $meta['securityschema'] = $this->securityschema;
+        $meta['core_min'] = $this->core_min;
+        $meta['core_max'] = $this->core_max;
         return $meta;
     }
 
