@@ -27,6 +27,8 @@ Before you begin, there are some requirements and guidelines you should consider
 to make installing, running, and securing Zikula easier. Please read the Zikula
 software recommendations document.
 
+It is not recommended to install Zikula with MySQL STRICT mode enabled.
+
 3. New Installation
 ===================
 There are two installation methods for Zikula:
