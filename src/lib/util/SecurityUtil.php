@@ -141,6 +141,12 @@ class SecurityUtil
             $modname = ModUtil::getName();
         }
 
+        // Remove from 1.4
+        if (System::isLegacyMode() && $modname == 'Modules') {
+            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Warning! "Modules" module has been renamed to "Extensions".  Please update any "confirmAuthKey" calls in PHP or templates.'));
+            $modname = 'Extensions';
+        }
+
         // get the module info
         $modinfo = ModUtil::getInfoFromName($modname);
         $modname = strtolower($modinfo['name']);
@@ -199,6 +205,12 @@ class SecurityUtil
 
         if (empty($modname)) {
             $modname = ModUtil::getName();
+        }
+
+        // Remove from 1.4
+        if (System::isLegacyMode() && $modname == 'Modules') {
+            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update any generateAuthKey calls in PHP or templates.'));
+            $modname = 'Extensions';
         }
 
         // get the module info
