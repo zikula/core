@@ -16,7 +16,7 @@
 /**
  * The search for items in the Users module.
  */
-class Users_Api_Search extends Zikula_Api
+class Users_Api_Search extends Zikula_AbstractApi
 {
     /**
      * Return search plugin info.
@@ -25,8 +25,12 @@ class Users_Api_Search extends Zikula_Api
      */
     public function info()
     {
-        return array('title' => 'Users',
-                     'functions' => array('Users' => 'search'));
+        return array(
+            'title'     => 'Users',
+            'functions' => array(
+                'Users'     => 'search'
+            )
+        );
     }
 
     /**
@@ -39,15 +43,17 @@ class Users_Api_Search extends Zikula_Api
      */
     public function options($args)
     {
+        $options = '';
+
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
             // Create output object - this object will store all of our output so that
             // we can return it easily when required
-            $renderer = Zikula_View::getInstance('Users');
-            $renderer->assign('active', !isset($args['active']) || isset($args['active']['Users']));
-            return $renderer->fetch('users_search_options.tpl');
+            $renderer = Zikula_View::getInstance($this->name);
+            $options = $renderer->assign('active', !isset($args['active']) || isset($args['active']['Users']))
+                    ->fetch('users_search_options.tpl');
         }
 
-        return '';
+        return $options;
     }
 
     /**
@@ -83,7 +89,7 @@ class Users_Api_Search extends Zikula_Api
 
         // build the where clause
         $where   = array();
-        $where[] = "({$userscolumn['activated']} != " . UserUtil::ACTIVATED_PENDING_REG . ')';
+        $where[] = "({$userscolumn['activated']} != " . Users::ACTIVATED_PENDING_REG . ')';
 
         $unameClause = Search_Api_User::construct_where($args, array($userscolumn['uname']));
 
@@ -129,7 +135,8 @@ class Users_Api_Search extends Zikula_Api
                                'session' => $sessionId);
                 $insertResult = DBUtil::insertObject($items, 'search_result');
                 if (!$insertResult) {
-                    return LogUtil::registerError($this->__("Error! Could not load the results of the user's search."));
+                    $this->registerError($this->__("Error! Could not load the results of the user's search."));
+                    return false;
                 }
             }
         }

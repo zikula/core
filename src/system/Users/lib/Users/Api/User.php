@@ -15,7 +15,7 @@
 /**
  * The system-level and database-level functions for user-initiated actions for the Users module.
  */
-class Users_Api_User extends Zikula_Api
+class Users_Api_User extends Zikula_AbstractApi
 {
     /**
      * Get all users (for which the current user has permission to read).
@@ -27,12 +27,16 @@ class Users_Api_User extends Zikula_Api
      *                      array   $args['sort']     The field(s) on which to sort the result (optional).
      *
      * @return array An array of users, or false on failure.
+     * 
+     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are received in $args, or if the data cannot be loaded from the database.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have overview access.
      */
     public function getAll($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW)) {
-            return false;
+            throw new Zikula_Exception_Forbidden();
         }
 
         // Check validity of startnum arg, or set default
@@ -42,7 +46,7 @@ class Users_Api_User extends Zikula_Api
             if (is_numeric($args['startnum']) && ((int)$args['startnum'] == $args['startnum'])) {
                 $limitOffset = (int)$args['startnum'] - 1;
             } else {
-                return LogUtil::registerArgsError();
+                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
             }
         }
 
@@ -53,14 +57,14 @@ class Users_Api_User extends Zikula_Api
             if (is_numeric($args['numitems']) && ((int)$args['numitems'] == $args['numitems']) && ($args['numitems'] >= 1)) {
                 $limitNumRows = (int)$args['numitems'];
             } else {
-                return LogUtil::registerArgsError();
+                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
             }
         }
 
         // Check validity of letter arg.
         // $args['letter'] is really an SQL LIKE filter
         if (isset($args['letter']) && (empty($args['letter']) || !is_string($args['letter']) || strstr($args['letter'], '%'))) {
-            return LogUtil::registerArgsError();
+            throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
         }
 
         // Sort
@@ -72,7 +76,7 @@ class Users_Api_User extends Zikula_Api
             } elseif (is_array($args['sort'])) {
                 $sortBy = $args['sort'];
             } else {
-                return LogUtil::registerArgsError();
+                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
             }
 
             $orderBy = array();
@@ -85,11 +89,11 @@ class Users_Api_User extends Zikula_Api
                     $direction = $value;
                 }
                 if (!empty($direction) && ($direction != 'ASC') && ($direction != 'DESC')) {
-                    return LogUtil::registerArgsError();
+                    throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
                 } elseif (isset($usersColumn[$fieldName])) {
                     $orderBy[] = $usersColumn[$fieldName] . (!empty($direction) ? ' ' . $direction : '');
                 } else {
-                    return LogUtil::registerArgsError();
+                    throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
                 }
             }
 
@@ -103,7 +107,7 @@ class Users_Api_User extends Zikula_Api
         // Administrators | Users:: | Anonymous:: | None
         $permFilter[] = array(
             'realm'             => 0,
-            'component_left'    => 'Users',
+            'component_left'    => $this->name,
             'component_middle'  => '',
             'component_right'   => '',
             'instance_left'     => 'uname',
@@ -117,14 +121,14 @@ class Users_Api_User extends Zikula_Api
         if (isset($args['letter'])) {
             $where[] = "({$usersColumn['uname']} LIKE '".DataUtil::formatForStore($args['letter'])."%')";
         }
-        $where[] = "({$usersColumn['activated']} NOT IN (" . implode(', ', array(UserUtil::ACTIVATED_PENDING_REG, UserUtil::ACTIVATED_PENDING_DELETE)) . '))';
+        $where[] = "({$usersColumn['activated']} NOT IN (" . implode(', ', array(Users::ACTIVATED_PENDING_REG, Users::ACTIVATED_PENDING_DELETE)) . '))';
         $where = 'WHERE ' . implode(' AND ', $where);
 
         $objArray = DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows, null, $permFilter);
 
         // Check for a DB error
         if ($objArray === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            throw new Zikula_Exception_Fatal($this->__('Error! Could not load data.'));
         }
 
         return $objArray;
@@ -144,13 +148,15 @@ class Users_Api_User extends Zikula_Api
         // Argument check
         if (isset($args['uid'])) {
             if (!is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-                return LogUtil::registerArgsError();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             } else {
                 $key = (int)$args['uid'];
                 $field = 'uid';
             }
         } elseif (!isset($args['uname']) || !is_string($args['uname'])) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         } else {
             $key = $args['uname'];
             $field = 'uname';
@@ -160,7 +166,8 @@ class Users_Api_User extends Zikula_Api
 
         // Check for a DB error
         if ($obj === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            $this->registerError($this->__('Error! Could not load data.'));
+            return false;
         }
 
         // Return the item array
@@ -182,7 +189,8 @@ class Users_Api_User extends Zikula_Api
         // Check validity of letter arg.
         // $args['letter'] is really an SQL LIKE filter
         if (isset($args['letter']) && (empty($args['letter']) || !is_string($args['letter']) || strstr($args['letter'], '%'))) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
         $table = DBUtil::getTables();
@@ -198,7 +206,8 @@ class Users_Api_User extends Zikula_Api
 
         // Check for a DB error
         if ($objCount === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            $this->registerError($this->__('Error! Could not load data.'));
+            return false;
         }
 
         return $objCount;
@@ -240,7 +249,7 @@ class Users_Api_User extends Zikula_Api
         $objArray = DBUtil::selectObjectArray('user_property', $where, $orderby);
 
         if ($objArray === false) {
-            LogUtil::registerError($this->__('Error! Could not load data.'));
+            $this->registerError($this->__('Error! Could not load data.'));
             return $objArray;
         }
 
@@ -278,7 +287,7 @@ class Users_Api_User extends Zikula_Api
         $notificationType = $args['notificationType'];
         $templateArgs = $args['templateArgs'];
 
-        $renderer = Zikula_View::getInstance('Users', false);
+        $renderer = Zikula_View::getInstance($this->name, false);
 
         $mailerArgs = array();
         $mailerArgs['toaddress'] = $toAddress;
@@ -359,8 +368,8 @@ class Users_Api_User extends Zikula_Api
 
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) 
                 || (($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))) {
-            
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
@@ -376,26 +385,29 @@ class Users_Api_User extends Zikula_Api
         $user = UserUtil::getVars($args['id'], true, $args['idfield']);
 
         if ($user) {
-            $renderer = Zikula_View::getInstance('Users', false);
-            $renderer->assign('uname', $user['uname']);
-            $renderer->assign('sitename', System::getVar('sitename'));
-            $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
-            $renderer->assign('url',  ModUtil::url('Users', 'user', 'loginScreen', array(), null, null, true));
-            $renderer->assign('adminRequested',  $adminRequested);
-            $htmlBody = $renderer->fetch('users_email_lostuname_html.tpl');
-            $plainTextBody = $renderer->fetch('users_email_lostuname_txt.tpl');
+            $view = Zikula_View::getInstance($this->name, false);
+            $viewArgs = array(
+                'uname'         => $user['uname'],
+                'sitename'      => System::getVar('sitename'),
+                'hostname'      => System::serverGetVar('REMOTE_ADDR'),
+                'url'           => ModUtil::url($this->name, 'user', 'login', array(), null, null, true),
+                'adminRequested'=> $adminRequested,
+            );
+            $view->assign($viewArgs);
+            $htmlBody = $view->fetch('users_email_lostuname_html.tpl');
+            $plainTextBody = $view->fetch('users_email_lostuname_txt.tpl');
 
             $subject = $this->__f('User name for %s', $user['uname']);
 
-            $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage',
-                array(
-                    'toaddress' => $user['email'],
-                    'subject'   => $subject,
-                    'body'      => $htmlBody,
-                    'altbody'   => $plainTextBody
-                ));
+            $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array(
+                'toaddress' => $user['email'],
+                'subject'   => $subject,
+                'body'      => $htmlBody,
+                'altbody'   => $plainTextBody
+            ));
+            
             if (!$emailMessageSent) {
-                LogUtil::registerError($this->__('Error! Unable to send user name e-mail message.'));
+                $this->registerError($this->__('Error! Unable to send user name e-mail message.'));
             }
         }
 
@@ -415,9 +427,10 @@ class Users_Api_User extends Zikula_Api
         $emailMessageSent = false;
 
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) 
-                || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))) {
-            
-            return LogUtil::registerArgsError();
+                || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))
+                ) {
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
         if ($args['idfield'] == 'email') {
@@ -440,16 +453,16 @@ class Users_Api_User extends Zikula_Api
                 $tables = DBUtil::getTables();
                 $verifychgColumn = $tables['users_verifychg_column'];
                 DBUtil::deleteWhere('users_verifychg',
-                    "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_PWD . ")");
+                    "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . Users::VERIFYCHGTYPE_PWD . ")");
 
                 $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
 
                 $verifyChangeObj = array(
-                    'changetype'    => UserUtil::VERIFYCHGTYPE_PWD,
+                    'changetype'    => Users::VERIFYCHGTYPE_PWD,
                     'uid'           => $user['uid'],
                     'newemail'      => '',
                     'verifycode'    => $hashedConfirmationCode,
-                    'created_dt'    => $nowUTC->format(UserUtil::DATETIME_FORMAT),
+                    'created_dt'    => $nowUTC->format(Users::DATETIME_FORMAT),
                 );
                 $codeSaved = DBUtil::insertObject($verifyChangeObj, 'users_verifychg');
 
@@ -458,33 +471,36 @@ class Users_Api_User extends Zikula_Api
                     $urlArgs['code'] = urlencode($confirmationCode);
                     $urlArgs[$args['idfield']] = urlencode($args['id']);
 
-                    $renderer = Zikula_View::getInstance('Users', false);
-                    $renderer->assign('uname', $user['uname']);
-                    $renderer->assign('sitename', System::getVar('sitename'));
-                    $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
-                    $renderer->assign('code', $confirmationCode);
-                    $renderer->assign('url',  ModUtil::url('Users', 'user', 'lostPasswordCode', $urlArgs, null, null, true));
-                    $renderer->assign('adminRequested',  $adminRequested);
-                    $htmlBody = $renderer->fetch('users_email_lostpassword_html.tpl');
-                    $plainTextBody = $renderer->fetch('users_email_lostpassword_txt.tpl');
+                    $view = Zikula_View::getInstance($this->name, false);
+                    $viewArgs=array(
+                        'uname'         => $user['uname'],
+                        'sitename'      => System::getVar('sitename'),
+                        'hostname'      => System::serverGetVar('REMOTE_ADDR'),
+                        'code'          => $confirmationCode,
+                        'url'           => ModUtil::url($this->name, 'user', 'lostPasswordCode', $urlArgs, null, null, true),
+                        'adminRequested'=> $adminRequested,
+                    );
+                    $view->assign($viewArgs);
+                    $htmlBody = $view->fetch('users_email_lostpassword_html.tpl');
+                    $plainTextBody = $view->fetch('users_email_lostpassword_txt.tpl');
 
                     $subject = $this->__f('Confirmation code for %s', $user['uname']);
 
-                    $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage',
-                        array(
-                            'toaddress' => $user['email'],
-                            'subject'   => $subject,
-                            'body'      => $htmlBody,
-                            'altbody'   => $plainTextBody
-                        ));
+                    $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array(
+                        'toaddress' => $user['email'],
+                        'subject'   => $subject,
+                        'body'      => $htmlBody,
+                        'altbody'   => $plainTextBody
+                    ));
+                    
                     if (!$emailMessageSent) {
-                        LogUtil::registerError($this->__('Error! Unable to send confirmation code e-mail message.'));
+                        $this->registerError($this->__('Error! Unable to send confirmation code e-mail message.'));
                     }
                 } else {
-                    LogUtil::registerError($this->__('Error! Unable to save confirmation code.'));
+                    $this->registerError($this->__('Error! Unable to save confirmation code.'));
                 }
             } else {
-                LogUtil::registerError($this->__("Error! Unable to create confirmation code."));
+                $this->registerError($this->__("Error! Unable to create confirmation code."));
             }
         }
 
@@ -507,34 +523,35 @@ class Users_Api_User extends Zikula_Api
 
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) || !isset($args['code'])
                 || empty($args['code']) || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email'))) {
-            
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
         $user = UserUtil::getVars($args['id'], true, $args['idfield']);
 
         if (!$user) {
-            LogUtil::registerError('Sorry! Could not find any matching user account.');
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         } else {
             // delete all the records for password reset confirmation that have expired
-            $chgPassExpireDays = $this->getVar('chgpass_expiredays', 0);
+            $chgPassExpireDays = $this->getVar(Users::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, Users::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
             if ($chgPassExpireDays > 0) {
                 $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
                 $staleRecordUTC->modify("-{$chgPassExpireDays} days");
-                $staleRecordUTCStr = $staleRecordUTC->format(UserUtil::DATETIME_FORMAT);
-                $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_PWD . ")";
+                $staleRecordUTCStr = $staleRecordUTC->format(Users::DATETIME_FORMAT);
+                $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . Users::VERIFYCHGTYPE_PWD . ")";
                 DBUtil::deleteWhere ('users_verifychg', $where);
             }
 
             $tables = DBUtil::getTables();
             $verifychgColumn = $tables['users_verifychg_column'];
             $verifychgObj = DBUtil::selectObject('users_verifychg',
-                "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_PWD . ")");
+                "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . Users::VERIFYCHGTYPE_PWD . ")");
 
             if ($verifychgObj) {
                 $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
             } else {
-                LogUtil::registerError('Sorry! Could not retrieve a confirmation code for that account.');
+                $this->registerError('Sorry! Could not retrieve a confirmation code for that account.');
             }
         }
 
@@ -548,7 +565,7 @@ class Users_Api_User extends Zikula_Api
      */
     public function expiredSession()
     {
-        $view = Zikula_View::getInstance('Users', false);
+        $view = Zikula_View::getInstance($this->name, false);
         return $view->fetch('users_userapi_expiredsession.tpl');
     }
 
@@ -570,7 +587,7 @@ class Users_Api_User extends Zikula_Api
 
         foreach ($mods as $mod) {
             // saves 17 system checks
-            if ($mod['type'] == 3 && !in_array($mod['name'], array('Admin', 'Categories', 'Groups', 'Theme', 'Users'))) {
+            if ($mod['type'] == 3 && !in_array($mod['name'], array('Admin', 'Categories', 'Groups', 'Theme', $this->name))) {
                 continue;
             }
 
@@ -607,11 +624,13 @@ class Users_Api_User extends Zikula_Api
      *                    $args['newemail'] (string) The new e-mail address to store pending confirmation.
      *
      * @return bool True if success and false otherwise.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the current user is logged in.
      */
     public function savePreEmail($args)
     {
         if (!UserUtil::isLoggedIn()) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         $dbinfo = DBUtil::getTables();
@@ -627,15 +646,15 @@ class Users_Api_User extends Zikula_Api
         $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
 
         $obj = array(
-            'changetype'    => UserUtil::VERIFYCHGTYPE_EMAIL,
+            'changetype'    => Users::VERIFYCHGTYPE_EMAIL,
             'uid'           => $uid,
             'newemail'      => DataUtil::formatForStore($args['newemail']),
             'verifycode'    => $confirmCodeHash,
-            'created_dt'    => $nowUTC->format(UserUtil::DATETIME_FORMAT),
+            'created_dt'    => $nowUTC->format(Users::DATETIME_FORMAT),
         );
 
         DBUtil::deleteWhere('users_verifychg',
-            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")");
+            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . Users::VERIFYCHGTYPE_EMAIL . ")");
         $obj = DBUtil::insertObject($obj, 'users_verifychg', 'id');
 
         if (!$obj) {
@@ -645,15 +664,23 @@ class Users_Api_User extends Zikula_Api
         // send confirmation e-mail to user with the changing code
         $subject = $this->__f('Confirmation change of e-mail for %s', $uname);
 
-        $renderer = Zikula_View::getInstance('Users', false);
-        $renderer->assign('uname', $uname);
-        $renderer->assign('email', UserUtil::getVar('email'));
-        $renderer->assign('newemail', $args['newemail']);
-        $renderer->assign('sitename', System::getVar('sitename'));
-        $renderer->assign('url',  ModUtil::url('Users', 'user', 'confirmChEmail', array('confirmcode' => $confirmCode), null, null, true));
+        $view = Zikula_View::getInstance($this->name, false);
+        $viewArgs = array(
+            'uname'     => $uname,
+            'email'     => UserUtil::getVar('email'),
+            'newemail'  => $args['newemail'],
+            'sitename'  => System::getVar('sitename'),
+            'url'       =>  ModUtil::url($this->name, 'user', 'confirmChEmail', array('confirmcode' => $confirmCode), null, null, true),
+        );
+        $view->assign($viewArgs);
 
-        $message = $renderer->fetch('users_email_userverifyemail_html.tpl');
-        $sent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array('toaddress' => $args['newemail'], 'subject' => $subject, 'body' => $message, 'html' => true));
+        $message = $view->fetch('users_email_userverifyemail_html.tpl');
+        $sent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array(
+            'toaddress' => $args['newemail'],
+            'subject'   => $subject,
+            'body'      => $message,
+            'html'      => true
+        ));
 
         if (!$sent) {
             return false;
@@ -666,30 +693,32 @@ class Users_Api_User extends Zikula_Api
      * Retrieve the user's new e-mail address that is awaiting his confirmation.
      *
      * @return string The e-mail address waiting for confirmation for the current user.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the current user is logged in.
      */
     public function getUserPreEmail()
     {
         if (!UserUtil::isLoggedIn()) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         $dbinfo = DBUtil::getTables();
         $verifychgColumn = $dbinfo['users_verifychg_column'];
 
         // delete all the records from e-mail confirmation that have expired
-        $chgEmailExpireDays = $this->getVar('chgemail_expiredays', 0);
+        $chgEmailExpireDays = $this->getVar(Users::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, Users::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL);
         if ($chgEmailExpireDays > 0) {
             $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
             $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
-            $staleRecordUTCStr = $staleRecordUTC->format(UserUtil::DATETIME_FORMAT);
-            $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")";
+            $staleRecordUTCStr = $staleRecordUTC->format(Users::DATETIME_FORMAT);
+            $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . Users::VERIFYCHGTYPE_EMAIL . ")";
             DBUtil::deleteWhere ('users_verifychg', $where);
         }
 
         $uid = UserUtil::getVar('uid');
 
         $item = DBUtil::selectObject('users_verifychg',
-            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")");
+            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . Users::VERIFYCHGTYPE_EMAIL . ")");
 
         if (!$item) {
             return false;
@@ -713,11 +742,13 @@ class Users_Api_User extends Zikula_Api
     public function resetVerifyChgFor($args)
     {
         if (!isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
         $uid = $args['uid'];
         if (!is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
         if (!isset($args['changetype'])) {
@@ -731,7 +762,8 @@ class Users_Api_User extends Zikula_Api
             }
             foreach ($changeType as $theType) {
                 if (!is_numeric($theType) || ((int)$theType != $theType) || ($theType < 0)) {
-                    return LogUtil::registerArgsError();
+                    $this->registerError(LogUtil::getErrorMsgArgs());
+                    return false;
                 }
             }
         }
@@ -759,12 +791,24 @@ class Users_Api_User extends Zikula_Api
         $links = array();
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('Users', 'user', 'loginScreen'), 'text' => $this->__('Log in'), 'class' => 'z-icon-es-user');
-            $links[] = array('url' => ModUtil::url('Users', 'user', 'lostPwdUname'), 'text' => $this->__('Lost user name or password'), 'class' => 'user-icon-password');
+            $links[] = array(
+                'url'   => ModUtil::url($this->name, 'user', 'login'),
+                'text'  => $this->__('Log in'),
+                'class' => 'z-icon-es-user',
+            );
+            $links[] = array(
+                'url'   => ModUtil::url($this->name, 'user', 'lostPwdUname'),
+                'text'  => $this->__('Lost user name or password'),
+                'class' => 'user-icon-password',
+            );
         }
 
         if ($allowregistration) {
-            $links[] = array('url' => ModUtil::url('Users', 'user', 'register'), 'text' => $this->__('New account'), 'class' => 'user-icon-adduser');
+            $links[] = array(
+                'url'   => ModUtil::url($this->name, 'user', 'register'),
+                'text'  => $this->__('New account'),
+                'class' => 'user-icon-adduser',
+            );
         }
 
         return $links;
@@ -790,15 +834,7 @@ class Users_Api_User extends Zikula_Api
 
             foreach ($registrationErrors as $field => $messageList) {
                 $errorFields[$field] = true;
-                if ($field == 'reginfo_dynadata') {
-                    $errorMessages[] = $messageList['result'] . ' ' . $this->_n(
-                        '(Note: This field is not highlighted below, but it must still be corrected.)',
-                        '(Note: These fields are not highlighted below, but they must still be corrected.)',
-                        count($messageList['fields'])
-                        );
-                } else {
-                    $errorMessages = array_merge($errorMessages, $messageList);
-                }
+                $errorMessages = array_merge($errorMessages, $messageList);
             }
         }
 

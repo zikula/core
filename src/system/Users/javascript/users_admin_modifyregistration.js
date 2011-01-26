@@ -54,7 +54,6 @@ Zikula.Users.AdminModifyRegistration = {
             {
                 method: 'post',
                 parameters: pars,
-                authid: 'users_authid',
                 onComplete: Zikula.Users.AdminModifyRegistration.responseGetRegistrationErrors
             });
     },

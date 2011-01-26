@@ -8,7 +8,7 @@
 
 <form id="changeemail" class="z-form" action="{modurl modname="Users" type="user" func="updateemail"}" method="post">
     <div>
-        <input type="hidden" id="changeemailauthid" name="authid" value="{insert name="generateauthkey" module="Users"}" />
+        <input type="hidden" id="changeemailcsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
             <legend>{gt text="Update e-mail address"}</legend>
             <div class="z-formrow">

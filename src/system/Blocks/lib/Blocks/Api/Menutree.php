@@ -750,7 +750,7 @@ class Blocks_Api_Menutree extends Zikula_Api
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Login', $dom),
-                            'href' => ModUtil::url('Users','user','loginscreen'),
+                            'href' => ModUtil::url('Users','user','login'),
                             'title' =>__('Login', $dom),
                             'className' => '',
                             'state' => 1,

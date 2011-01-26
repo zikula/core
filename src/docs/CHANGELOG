@@ -12,9 +12,15 @@ Added system-wide and module specific event based plugin system.
 Merged all templating and rendering control to Theme module.
 Complete overhaul of Users module.
 Removed old Authentication API.
-Introduced new Authentication API capable of dealing with modern authentication methods.
+Introduced new Authentication API capable of dealing with modern authentication (login) methods.
+The Users module configuration variable 'changepassword', which indicated that the Users module did not manage an account's password, has been deprecated. To provide alternate management, override the appropriate template(s) and/or function(s). To provide full authentication services, implement the Authentication API in a module.
+The mechanics of the authentication (login) process have changed, and the templates and functions have been updated accordingly. Templates that override the standard templates used for the login process will need to be updated, or removed.
+Added the ability to register a new account that is associated with an authentication method other than a username and password (Users module authentication).
+The mechanics of the registration process have changed, and the templates and functions have been updated accordingly. Templates that override the standard templates used for the login process will need to be updated, or removed.
+Several functions throughout the Users module have been either deprecated or removed entirely, in order to support the new log-in and registration paradigms. Customizations at the function level must be updated accordingly.
+Elements of the Legal module that were found in the Users module have been removed, and their functionality replaced with hooks or events. The age-check during registration has moved to the Legal module.
 Introduced new AJAX workflow.
-Removed and replaced debugging archetecture.
+Removed and replaced debugging architecture.
 Removed all old legacy support.
 Added database caching capabilities to DBUtil.
 Migrated to using { } in templates with backward compatability for old delimiters.

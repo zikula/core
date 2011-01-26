@@ -230,7 +230,7 @@ class LogUtil
         $code = 403;
         if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
-                $url = ModUtil::url('Users', 'user', 'loginscreen', array('returnpage' => urlencode(System::getCurrentUri())));
+                $url = ModUtil::url('Users', 'user', 'login', array('returnurl' => urlencode(System::getCurrentUri())));
             }
             $code = null;
         }

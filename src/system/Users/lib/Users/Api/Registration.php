@@ -16,7 +16,7 @@
 /**
  * The system-level and database-level functions for user-initiated actions related to new account registrations.
  */
-class Users_Api_Registration extends Zikula_Api
+class Users_Api_Registration extends Zikula_AbstractApi
 {
     /**
      * Determines if the user currently logged in has administrative access for the Users module.
@@ -65,36 +65,33 @@ class Users_Api_Registration extends Zikula_Api
         }
 
         $passwordAgain = isset($args['passagain']) ? $args['passagain'] : '';
-
         $minPasswordLength = $this->getVar('minpass', 5);
-
         $passwordErrors = array();
 
         if (!isset($reginfo['pass']) || empty($reginfo['pass'])) {
-            $passwordErrors['reginfo_pass'][] = $this->__('Please enter a password.');
+            $passwordErrors['pass'] = $this->__('Please enter a password.');
         } elseif (isset($reginfo['pass']) && (strlen($reginfo['pass']) < $minPasswordLength)) {
-            $passwordErrors['reginfo_pass'][] = $this->_fn(
+            $passwordErrors['pass'] = $this->_fn(
                 'Your password must be at least %s character long',
                 'Your password must be at least %s characters long',
                 $minPasswordLength,
                 $minPasswordLength
             );
         } elseif (isset($reginfo['uname']) && !empty($reginfo['uname']) && ($reginfo['pass'] == $reginfo['uname'])) {
-            $passwordErrors['reginfo_pass'][] = $this->__('The password cannot be the same as the user name. Please choose a different password.');
+            $passwordErrors['pass'] = $this->__('The password cannot be the same as the user name. Please choose a different password.');
         } elseif (!isset($passwordAgain) || empty($passwordAgain) || ($reginfo['pass'] !== $passwordAgain)) {
-            $passwordErrors['passagain'][] = $this->__('You did not enter the same password in each password field. '
-                                . 'Please enter the same password once in each password field (this is required for verification).');
+            $passwordErrors['passagain'] = $this->__('You did not enter the same password in each password field. Please enter the same password once in each password field (this is required for verification).');
         }
 
         if (!$this->currentUserIsAdminOrSubAdmin()) {
             if (!isset($reginfo['passreminder']) || empty($reginfo['passreminder'])) {
-                $passwordErrors['reginfo_passreminder'][] = $this->__('Please enter a password reminder.');
+                $passwordErrors['passreminder'] = $this->__('Please enter a password reminder.');
             } else {
                 $testPass = mb_strtolower(trim($reginfo['pass']));
                 $testPassreminder = mb_strtolower(trim($reginfo['passreminder']));
 
                 if ((strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
-                    $passwordErrors['reginfo_passreminder'][] = $this->__('You cannot include your password in your password reminder.');
+                    $passwordErrors['passreminder'] = $this->__('You cannot include your password in your password reminder.');
                 } else {
                     // See if they included their password with extra character in the middle--only tests if they included non alpha-numerics in the middle.
                     // Removes non-alphanumerics (mb-safe), and then checks to see that the strings are still of sufficient length to have a reasonable test.
@@ -102,7 +99,7 @@ class Users_Api_Registration extends Zikula_Api
                     $testPassreminder = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPassreminder));
                     if (!empty($testPass) && !empty($testPassreminder) && (strlen($testPass) >= $minPasswordLength)
                             && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
-                        $passwordErrors['reginfo_passreminder'][] = $this->__('Your password reminder is too similar to your password.');
+                        $passwordErrors['passreminder'] = $this->__('Your password reminder is too similar to your password.');
                     }
                 }
             }
@@ -142,9 +139,9 @@ class Users_Api_Registration extends Zikula_Api
         $emailErrors = array();
 
         if (!isset($reginfo['email']) || empty($reginfo['email'])) {
-            $emailErrors['reginfo_email'][] = $this->__('You must provide an e-mail address.');
+            $emailErrors['email'] = $this->__('You must provide an e-mail address.');
         } elseif (!System::varValidate($reginfo['email'], 'email')) {
-            $emailErrors['reginfo_email'][] = $this->__('The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons.');
+            $emailErrors['email'] = $this->__('The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons.');
         } else {
             $tempValid = true;
 
@@ -158,17 +155,17 @@ class Users_Api_Registration extends Zikula_Api
                     if (!empty($illegalDomains)) {
                         if (preg_match("/@({$illegalDomains})/iD", $emailDomain)) {
                             $tempValid = false;
-                            $emailErrors['reginfo_email'][] = $this->__('Sorry! The domain of the e-mail address you specified is banned.');
+                            $emailErrors['email'] = $this->__('Sorry! The domain of the e-mail address you specified is banned.');
                         }
                     }
                 }
             } else {
                 $tempValid = false;
-                $emailErrors['reginfo_email'][] = $this->__('The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons.');
+                $emailErrors['email'] = $this->__('The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons.');
             }
 
 
-            if ($tempValid && $this->getVar('reg_uniemail', false)) {
+            if ($tempValid && $this->getVar(Users::MODVAR_REQUIRE_UNIQUE_EMAIL, false)) {
                 if ($checkMode == 'modify') {
                     $emailUsageCount = UserUtil::getEmailUsageCount($reginfo['email'], $reginfo['uid']);
                 } else {
@@ -176,18 +173,16 @@ class Users_Api_Registration extends Zikula_Api
                 }
 
                 if ($emailUsageCount) {
-                    $emailErrors['reginfo_email'][] = $this->__('The e-mail address you entered has already been registered.');
+                    $emailErrors['email'] = $this->__('The e-mail address you entered has already been registered.');
                     $tempValid = false;
                 }
             }
         }
 
         if (!isset($emailAgain) || empty($emailAgain)) {
-            $emailErrors['emailagain'][] = $this->__('You did not repeat the e-mail address for verification. '
-                                . 'Please enter the same e-mail address once in each field.');
+            $emailErrors['emailagain'] = $this->__('You did not repeat the e-mail address for verification. Please enter the same e-mail address once in each field.');
         } elseif (isset($reginfo['email']) && !empty($reginfo['email']) && ($reginfo['email'] !== $emailAgain)) {
-            $emailErrors['emailagain'][] = $this->__('You did not enter the same e-mail address in each e-mail address field. '
-                                . 'Please enter the same e-mail address once in each field (this is required for verification).');
+            $emailErrors['emailagain'] = $this->__('You did not enter the same e-mail address in each e-mail address field. Please enter the same e-mail address once in each field (this is required for verification).');
         }
 
         return $emailErrors;
@@ -208,21 +203,24 @@ class Users_Api_Registration extends Zikula_Api
      *                                                      or modified record, affecting error checking.
      *
      * @return array An array containing errors organized by field.
-     *
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the user does not have read access.
+     * 
+     * @throws Zikula_Exception_Fatal If a required parameter is missing from $args.
      */
     public function getRegistrationErrors($args)
     {
         $registrationErrors = array();
 
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError(System::getHomepageUrl(), false);
+            throw new Zikula_Exception_Forbidden();
         }
 
         $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
 
         if (!isset($args['reginfo']) || !is_array($args['reginfo'])) {
-            return z_exit($this->__('Internal Error! Missing required parameter.'));
+            throw new Zikula_Exception_Fatal($this->__('Internal Error! Missing required parameter.'));
         }
         $reginfo = $args['reginfo'];
 
@@ -242,26 +240,21 @@ class Users_Api_Registration extends Zikula_Api
         $spamProtectionUserAnswer   = isset($args['antispamanswer'])? $args['antispamanswer']   : '';
 
         if (!isset($reginfo['uname']) || empty($reginfo['uname'])) {
-            $registrationErrors['reginfo_uname'][] = $this->__('You must provide a user name.');
-        } elseif (strrpos($reginfo['uname'], ' ') > 0) {
-            $registrationErrors['reginfo_uname'][] = $this->__('A user name cannot contain any space characters.');
-        } elseif (strlen($reginfo['uname']) > 25) {
-            $registrationErrors['reginfo_uname'][] = $this->__('The user name you entered is too long. The maximum length is 25 characters.');
-        } elseif (preg_match("/[[:space:]]/", $reginfo['uname']) || !System::varValidate($reginfo['uname'], 'uname')) {
-            $registrationErrors['reginfo_uname'][] = $this->__(
-                'The user name you entered contains unacceptable characters.'
-                . ' A valid user name consists of letters, numbers, underscores, and/or periods.');
+            $registrationErrors['uname'] = $this->__('You must provide a user name.');
+        } elseif (!System::varValidate($reginfo['uname'], 'uname')) {
+            $registrationErrors['uname'] = $this->__('The user name you entered contains unacceptable characters. A valid user name consists of lowercase letters, numbers, underscores, periods, and/or dashes.');
+        } elseif (mb_strlen($reginfo['uname']) > Users::UNAME_VALIDATION_MAX_LENGTH) {
+            $registrationErrors['uname'] = $this->__f('The user name you entered is too long. The maximum length is %1$d characters.', array(Users::UNAME_VALIDATION_MAX_LENGTH));
         } else {
             $tempValid = true;
             if (!$isAdmin) {
-                // Yes, the capital I in the module var name below is required.
-                $illegalUserNames = $this->getVar('reg_Illegalusername', '');
+                $illegalUserNames = $this->getVar(Users::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
                 if (!empty($illegalUserNames)) {
                     $pattern = array('/^(\s*,\s*|\s+)+/D', '/\b(\s*,\s*|\s+)+\b/D', '/(\s*,\s*|\s+)+$/D');
                     $replace = array('', '|', '');
                     $illegalUserNames = preg_replace($pattern, $replace, preg_quote($illegalUserNames, '/'));
                     if (preg_match("/^({$illegalUserNames})/iD", $reginfo['uname'])) {
-                        $registrationErrors['reginfo_uname'][] = $this->__('The user name you entered is a reserved name.');
+                        $registrationErrors['uname'] = $this->__('The user name you entered is reserved. It cannot be used.');
                         $tempValid = false;
                     }
                 }
@@ -275,14 +268,14 @@ class Users_Api_Registration extends Zikula_Api
                 }
 
                 if ($unameUsageCount) {
-                    $registrationErrors['reginfo_uname'][] = $this->__('The user name you entered has already been registered.');
+                    $registrationErrors['uname'] = $this->__('The user name you entered has already been registered.');
                     $tempValid = false;
                 }
             }
             unset($tempValid);
         }
 
-        $emailErrors = ModUtil::apiFunc('Users', 'registration', 'getEmailErrors', array(
+        $emailErrors = ModUtil::apiFunc($this->name, 'registration', 'getEmailErrors', array(
             'uid'        => isset($reginfo['uid'])        ? $reginfo['uid']        : null,
             'email'      => isset($reginfo['email'])      ? $reginfo['email']      : null,
             'emailagain' => isset($emailAgain)            ? $emailAgain            : null,
@@ -292,77 +285,35 @@ class Users_Api_Registration extends Zikula_Api
             $registrationErrors = array_merge($registrationErrors, $emailErrors);
         }
 
-        if ($checkMode != 'modify') {
-            $verificationAndPassword = $this->getVar('reg_verifyemail', UserUtil::VERIFY_NO);
-            if ($verificationAndPassword == UserUtil::VERIFY_SYSTEMPWD) {
-                return z_exit($this->__('Internal Error! System-generated passwords are no longer supported!'));
-            }
-            if (($verificationAndPassword != UserUtil::VERIFY_SYSTEMPWD) && (!$isAdminOrSubAdmin || $setPassword)) {
-                $passwordErrors = ModUtil::apiFunc('Users', 'registration', 'getPasswordErrors', array(
-                    'reginfo'       => isset($reginfo)          ? $reginfo          : null,
-                    'passagain'     => isset($passwordAgain)    ? $passwordAgain    : null,
-                ));
-
-                if (!empty($passwordErrors)) {
-                    $registrationErrors = array_merge($registrationErrors, $passwordErrors);
-                }
-            }
+        $verificationAndPassword = $this->getVar(Users::MODVAR_REGISTRATION_VERIFICATION_MODE, Users::VERIFY_NO);
+        if ($verificationAndPassword == Users::VERIFY_SYSTEMPWD) {
+            throw new Zikula_Exception_Fatal($this->__('Internal Error! System-generated passwords are no longer supported!'));
         }
+        if (!$isAdminOrSubAdmin || $setPassword) {
+            $passwordErrors = ModUtil::apiFunc($this->name, 'registration', 'getPasswordErrors', array(
+                'reginfo'       => isset($reginfo)          ? $reginfo          : null,
+                'passagain'     => isset($passwordAgain)    ? $passwordAgain    : null,
+            ));
 
-        if ($checkMode != 'modify') {
-            if (ModUtil::available('Legal')) {
-                $touInEffect = ModUtil::getVar('Legal', 'termsofuse', true);
-                $ppInEffect  = ModUtil::getVar('Legal', 'privacypolicy', true);
-                if ($touInEffect || $ppInEffect) {
-                    if ($isAdminOrSubAdmin && !isset($reginfo['agreetoterms'])) {
-                        $registrationErrors['reginfo_agreetoterms'][] = $this->__('The registration record must indicate whether the user agreed to the terms of use or privacy policy or not.');
-                    } elseif (!$isAdminOrSubAdmin && (!isset($reginfo['agreetoterms']) || !$reginfo['agreetoterms'])) {
-                        if ($touInEffect && $ppInEffect) {
-                            $registrationErrors['reginfo_agreetoterms'][] = $this->__('You must agree to our terms of use and privacy policy before you can register a new account.');
-                        } elseif ($touInEffect) {
-                            $registrationErrors['reginfo_agreetoterms'][] = $this->__('You must agree to our terms of use before you can register a new account.');
-                        } else {
-                            $registrationErrors['reginfo_agreetoterms'][] = $this->__('You must agree to our privacy policy before you can register a new account.');
-                        }
-                    }
-                }
-            }
-        }
-
-        $showProfile = $this->getVar('reg_optitems', false);
-        $profileModule = System::getVar('profilemodule', '');
-        if ($showProfile && !empty($profileModule) && ModUtil::available($profileModule)) {
-            if (isset($reginfo['dynadata'])) {
-                $dynadata = $reginfo['dynadata'];
-            } else {
-                $dynadata = array();
-            }
-            if (is_array($dynadata)) {
-                $dudError = ModUtil::apiFunc($profileModule, 'user', 'checkrequired', array(
-                    'dynadata'  => $dynadata,
-                ));
-
-                if ($dudError) {
-                    $fieldCount = count($dudError['fields']);
-                    $dudError['result'] = $this->_fn(
-                        'You must provide a value for the \'%s\' field in the \'Personal info\' section.',
-                        'The following fields in the \'Personal info\' section are required: %s. You must provide a value for each of them.',
-                        $fieldCount,
-                        array($dudError['translatedFieldsStr']));
-                    $registrationErrors['reginfo_dynadata'] = $dudError;
-                }
-            } else {
-                return z_exit($this->__('Internal Error! The profile properties field(s) on the form are not constructed properly!'));
+            if (!empty($passwordErrors)) {
+                $registrationErrors = array_merge($registrationErrors, $passwordErrors);
             }
         }
 
         if (!$isAdminOrSubAdmin && ($checkMode != 'modify')) {
-            $spamProtectionQuestion = $this->getVar('reg_question', '');
-            $spamProtectionCorrectAnswer = $this->getVar('reg_answer', '');
+            $spamProtectionQuestion = $this->getVar(Users::MODVAR_REGISTRATION_ANTISPAM_QUESTION, '');
+            $spamProtectionCorrectAnswer = $this->getVar(Users::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '');
             if (!empty($spamProtectionQuestion) && !empty($spamProtectionCorrectAnswer)) {
                 if ($spamProtectionUserAnswer != $spamProtectionCorrectAnswer) {
-                    $registrationErrors['antispamanswer'][] = $this->__('You gave the wrong answer to the anti-spam registration question.');
+                    $registrationErrors['antispamanswer'] = $this->__('You gave the wrong answer to the anti-spam registration question.');
                 }
+            }
+        }
+        
+        if (isset($reginfo['theme']) && !empty($reginfo['theme'])) {
+            $themeId = ThemeUtil::getIDFromName($reginfo['theme']);
+            if (!$themeId) {
+                $registrationErrors['theme'] = $this->__f('\'%1$s\' is not a valid theme.', array($reginfo['theme']));
             }
         }
 
@@ -390,11 +341,13 @@ class Users_Api_Registration extends Zikula_Api
      * @return array|bool If the user registration information is successfully saved (either full user record was
      *                      created or a pending registration record was created in the users table), then the array containing
      *                      the information saved is returned; false on error.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the user does not have read access.
      */
     public function registerNewUser($args)
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         $isAdmin = $this->currentUserIsAdmin();
@@ -402,17 +355,19 @@ class Users_Api_Registration extends Zikula_Api
 
         if (!$isAdmin && !$this->getVar('reg_allowreg', false)) {
             $registrationUnavailableReason = $this->getVar('reg_noregreasons', $this->__('New user registration is currently disabled.'));
-            return LogUtil::registerError($registrationUnavailableReason, 403, System::getHomepageUrl());
+            $this->registerError($registrationUnavailableReason, 403, System::getHomepageUrl());
+            return false;
         }
 
         if (!isset($args['reginfo']) || empty($args['reginfo']) || !is_array($args['reginfo'])) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
         $reginfo = $args['reginfo'];
 
         $adminWantsVerification = $isAdminOrSubAdmin && ((isset($args['usermustverify']) ? (bool)$args['usermustverify'] : false)
             || !isset($reginfo['pass']) || empty($reginfo['pass']));
-        $reginfo['isverified'] = ($isAdminOrSubAdmin && !$adminWantsVerification) || (!$isAdminOrSubAdmin && ($this->getVar('reg_verifyemail') == UserUtil::VERIFY_NO));
+        $reginfo['isverified'] = ($isAdminOrSubAdmin && !$adminWantsVerification) || (!$isAdminOrSubAdmin && ($this->getVar('reg_verifyemail') == Users::VERIFY_NO));
         $reginfo['isapproved'] = $isAdminOrSubAdmin || !$this->getVar('moderation', false);
         $createRegistration = !$reginfo['isapproved'] || !$reginfo['isverified'];
 
@@ -515,7 +470,8 @@ class Users_Api_Registration extends Zikula_Api
     protected function createRegistration(array $reginfo, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
     {
         if (!isset($reginfo) || empty($reginfo)) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
         $createdByAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
@@ -531,32 +487,30 @@ class Users_Api_Registration extends Zikula_Api
         // Just check some basic things we need directly in this function.
         if (!isset($reginfo['isapproved']) || !isset($reginfo['isverified'])) {
             // Both must be set in order to determine the appropriate flags, but one or the other can be false.
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         } elseif ($reginfo['isapproved'] && $reginfo['isverified']) {
             // One or the other must be false, otherwise why are we in this function?
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         } elseif ((!isset($reginfo['pass']) || empty($reginfo['pass'])) && ($reginfo['isverified'] || !$createdByAdminOrSubAdmin)) {
             // If the password is not set (or is empty) then both isverified must be set to false AND this
             // function call must be the result of an admin or sub-admin creating the record.
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
-        $approvalOrder = $this->getVar('moderation_order', UserUtil::APPROVAL_BEFORE);
-
-        if (!isset($reginfo['dynadata'])) {
-            $reginfo['dynadata'] = array();
-        }
-        $reginfo['dynadata'] = serialize($reginfo['dynadata']);
+        $approvalOrder = $this->getVar('moderation_order', Users::APPROVAL_BEFORE);
 
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-        $nowUTCStr = $nowUTC->format(UserUtil::DATETIME_FORMAT);
+        $nowUTCStr = $nowUTC->format(Users::DATETIME_FORMAT);
 
         // Finally, save it.
         $userObj = $reginfo;
         unset($userObj['isapproved']);
         $userObj = $this->cleanFieldsToAttributes($userObj);
 
-        $userObj['activated'] = UserUtil::ACTIVATED_PENDING_REG;
+        $userObj['activated'] = Users::ACTIVATED_PENDING_REG;
         $userObj['user_regdate'] = $nowUTCStr;
         if (!$reginfo['isapproved']) {
             $userObj['approved_by'] = 0;
@@ -598,35 +552,37 @@ class Users_Api_Registration extends Zikula_Api
                 $rendererArgs['admincreated'] = $createdByAdminOrSubAdmin;
                 $rendererArgs['approvalorder'] = $approvalOrder;
 
-                if (!$reginfo['isverified'] && (($approvalOrder != UserUtil::APPROVAL_BEFORE) || $reginfo['isapproved'])) {
-                    $verificationSent = ModUtil::apiFunc('Users', 'registration', 'sendVerificationCode', array(
+                if (!$reginfo['isverified'] && (($approvalOrder != Users::APPROVAL_BEFORE) || $reginfo['isapproved'])) {
+                    $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
                         'reginfo'       => $reginfo,
                         'rendererArgs'  => $rendererArgs,
                     ));
                     if (!$verificationSent) {
-                        $loggedErrorMessages = LogUtil::getErrorMessages('true');
-                        foreach($loggedErrorMessages as $lem) {
+                        $regErrors[] = $this->__('Warning! The verification code for the new registration could not be sent.');
+                        $loggedErrorMessages = $this->request->getSession()->getMessages(Zikula_Session::MESSAGE_ERROR);
+                        $this->request->getSession()->clearMessages(Zikula_Session::MESSAGE_ERROR);
+                        foreach ($loggedErrorMessages as $lem) {
                             if (!in_array($lem, $regErrors)) {
                                 $regErrors[] = $lem;
                             }
                         }
-                        $regErrors[] = $this->__('Warning! The verification code for the new registration could not be sent.');
                     }
                     $userObj['verificationsent'] = $verificationSent;
                 } elseif (($userNotification && $reginfo['isapproved']) || !empty($passwordCreatedForUser)) {
-                    $notificationSent = ModUtil::apiFunc('Users', 'user', 'sendNotification',
+                    $notificationSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification',
                                             array('toAddress'         => $reginfo['email'],
                                                   'notificationType'  => 'welcome',
                                                   'templateArgs'      => $rendererArgs
                     ));
 
                     if (!$notificationSent) {
-                        $loggedErrorMessages = LogUtil::getErrorMessages('true');
-                        foreach($loggedErrorMessages as $lem) {
+                        $regErrors[] = $this->__('Warning! The welcoming email for the new registration could not be sent.');
+                        $loggedErrorMessages = $this->request->getSession()->getMessages(Zikula_Session::MESSAGE_ERROR);
+                        $this->request->getSession()->clearMessages(Zikula_Session::MESSAGE_ERROR);
+                        foreach ($loggedErrorMessages as $lem) {
                             if (!in_array($lem, $regErrors)) {
                                 $regErrors[] = $lem;
                             }
-                            $regErrors[] = $this->__('Warning! The welcoming email for the new registration could not be sent.');
                         }
                     }
                 }
@@ -635,18 +591,19 @@ class Users_Api_Registration extends Zikula_Api
                     // mail notify email to inform admin about registration
                     $notificationEmail = $this->getVar('reg_notifyemail', '');
                     if (!empty($notificationEmail)) {
-                        $notificationSent = ModUtil::apiFunc('Users', 'user', 'sendNotification',
+                        $notificationSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification',
                                                 array('toAddress'         => $notificationEmail,
                                                       'notificationType'  => 'regadminnotify',
                                                       'templateArgs'      => $rendererArgs));
 
                         if (!$notificationSent) {
-                            $loggedErrorMessages = LogUtil::getErrorMessages('true');
-                            foreach($loggedErrorMessages as $lem) {
+                            $regErrors[] = $this->__('Warning! The notification email for the new registration could not be sent.');
+                            $loggedErrorMessages = $this->request->getSession()->getMessages(Zikula_Session::MESSAGE_ERROR);
+                            $this->request->getSession()->clearMessages(Zikula_Session::MESSAGE_ERROR);
+                            foreach ($loggedErrorMessages as $lem) {
                                 if (!in_array($lem, $regErrors)) {
                                     $regErrors[] = $lem;
                                 }
-                                $regErrors[] = $this->__('Warning! The notification email for the new registration could not be sent.');
                             }
                         }
                     }
@@ -657,7 +614,8 @@ class Users_Api_Registration extends Zikula_Api
 
             return $userObj;
         } else {
-            return LogUtil::registerError($this->__('Unable to store the new user registration record.'));
+            $this->registerError($this->__('Unable to store the new user registration record.'));
+            return false;
         }
     }
 
@@ -687,13 +645,13 @@ class Users_Api_Registration extends Zikula_Api
      *
      * @return array|bool The user info, as saved in the users table; false on error.
      */
-    protected function createUser(array $reginfo, $userNotification = true, $adminNotification = true,
-        $passwordCreatedForUser = '')
+    protected function createUser(array $reginfo, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
     {
          $currentUserIsAdminOrSubadmin = $this->currentUserIsAdminOrSubAdmin();
 
         if (!isset($reginfo) || empty($reginfo)) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
         // It is only considered 'created by admin' if the reginfo has no id. If it has an id, then the
@@ -703,7 +661,8 @@ class Users_Api_Registration extends Zikula_Api
         // Protected method (not callable from the api), so assume that the data has been validated in registerNewUser().
         // Just check some basic things we need directly in this function.
         if (!isset($reginfo['email']) || empty($reginfo['email'])) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
         // Check to see if we are getting a record directly from the registration request process, or one
@@ -714,26 +673,34 @@ class Users_Api_Registration extends Zikula_Api
             // Protected method (not callable from the api), so assume that the data has been validated in registerNewUser().
             // Just check some basic things we need directly in this function.
             if (!isset($reginfo['isapproved']) || empty($reginfo['isapproved'])) {
-                return LogUtil::registerArgsError();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
 
             // Ensure that no user gets created without a password, and that the password is reasonable (no spaces, salted)
-            // TODO - We need to not do this when we do alternate authmodule registrations
+            // If the user is being registered with an authentication method other than one from the Users module, then the
+            // password will be the unsalted, unhashed string stored in Users::PWD_NO_USERS_AUTHENTICATION.
             $hasPassword = isset($reginfo['pass']) && is_string($reginfo['pass']) && !empty($reginfo['pass']);
-            $hasSaltedPassord = $hasPassword && (strpos($reginfo['pass'], UserUtil::SALT_DELIM) != strrpos($reginfo['pass'], UserUtil::SALT_DELIM));
-            if (!$hasPassword || !$hasSaltedPassord) {
-                return LogUtil::registerArgsError();
+            if ($reginfo['pass'] === Users::PWD_NO_USERS_AUTHENTICATION) {
+                $hasSaltedPassword = false;
+                $hasNoUsersAuthenticationPassword = true;
+            } else {
+                $hasSaltedPassord = $hasPassword && (strpos($reginfo['pass'], Users::SALT_DELIM) != strrpos($reginfo['pass'], Users::SALT_DELIM));
+                $hasNoUsersAuthenticationPassword = false;
+            }
+            if (!$hasPassword || (!$hasSaltedPassord && !$hasNoUsersAuthenticationPassword)) {
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
 
             $reginfo['uname'] = mb_strtolower($reginfo['uname']);
             $reginfo['email'] = mb_strtolower($reginfo['email']);
 
             $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-            $nowUTCStr = $nowUTC->format(UserUtil::DATETIME_FORMAT);
+            $nowUTCStr = $nowUTC->format(Users::DATETIME_FORMAT);
 
             // Finally, save it.
             $userObj = $reginfo;
-            unset($userObj['dynadata']);
             unset($userObj['agreetoterms']);
             unset($userObj['isapproved']);
             unset($userObj['isverified']);
@@ -746,7 +713,7 @@ class Users_Api_Registration extends Zikula_Api
 
             // Set activated state as pending registration for now to prevent firing of update hooks after the insert until the
             // activated state is set properly further below.
-            $userObj['activated'] = UserUtil::ACTIVATED_PENDING_REG;
+            $userObj['activated'] = Users::ACTIVATED_PENDING_REG;
 
             // NOTE: See below for the firing of the item-create hook.
             $userObj = DBUtil::insertObject($userObj, 'users', 'uid');
@@ -769,15 +736,14 @@ class Users_Api_Registration extends Zikula_Api
             // Protected method (not callable from the api), so assume that the data has been validated in registerNewUser().
             // Just check some basic things we need directly in this function.
             if (!isset($reginfo['approved_by']) || empty($reginfo['approved_by'])) {
-                return LogUtil::registerArgsError();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
 
             $userObj = $reginfo;
 
             $reginfo['isapproved'] = isset($reginfo['approved_by']) && !empty($reginfo['approved_by']);
 
-            unset($userObj['dynadata']);
-            UserUtil::delVar('dynadata', $userObj['uid']);
             UserUtil::delVar('agreetoterms', $userObj['uid']);
             UserUtil::delVar('isverified', $userObj['uid']);
 
@@ -786,59 +752,26 @@ class Users_Api_Registration extends Zikula_Api
 
         if ($userObj) {
             // Set appropriate activated status
-            $legalModuleAvailable = ModUtil::available('Legal');
-            $termsActive = $legalModuleAvailable && ModUtil::getVar('Legal', 'termsofuse', true);
-            $privacyActive = $legalModuleAvailable && ModUtil::getVar('Legal', 'privacypolicy', true);
-            $userAgreementRequired = $legalModuleAvailable && ($termsActive || $privacyActive);
-            if (!$userAgreementRequired || ($userAgreementRequired && isset($reginfo['agreetoterms']) && $reginfo['agreetoterms'])) {
-                UserUtil::setVar('activated', UserUtil::ACTIVATED_ACTIVE, $userObj['uid']);
-                $userObj['activated'] = UserUtil::ACTIVATED_ACTIVE;
-            } else {
-                // $userAgreementRequired && (!isset($reginfo['agreetoterms']) || !$reginfo['agreetoterms'])
-                UserUtil::setVar('activated', UserUtil::ACTIVATED_INACTIVE_TOUPP, $userObj['uid']);
-                $userObj['activated'] = UserUtil::ACTIVATED_INACTIVE_TOUPP;
-            }
+            UserUtil::setVar('activated', Users::ACTIVATED_ACTIVE, $userObj['uid']);
+            $userObj['activated'] = Users::ACTIVATED_ACTIVE;
+            
             // Don't do any more UserUtil::setVar() operations or other direct modifications to the user record from this point until
             // the end of the function, or an update event/hook will be fired!
 
             // Add user to default group
             $defaultGroup = ModUtil::getVar('Groups', 'defaultgroup', false);
             if (!$defaultGroup) {
-                LogUtil::registerError($this->__('Warning! The user account was created, but there was a problem granting access to the account.'));
+                $this->registerError($this->__('Warning! The user account was created, but there was a problem granting access to the account.'));
             }
             $groupAdded = ModUtil::apiFunc('Groups', 'user', 'adduser', array('gid' => $defaultGroup, 'uid' => $userObj['uid']));
             if (!$groupAdded) {
-                LogUtil::registerError($this->__('Warning! The user account was created, but there was a problem granting access to the account.'));
-            }
-
-            // Process profile data
-            $profileModuleName = System::getVar('profilemodule', '');
-            $gatherProfileProperties = $this->getVar('reg_optitems', false);
-            $profileModuleInUse = $gatherProfileProperties && !empty($profileModuleName) && ModUtil::available($profileModuleName);
-
-            if ($profileModuleInUse && !empty($reginfo['dynadata'])) {
-                $profileArgs = array(
-                    'uid'       => $userObj['uid'],
-                    'dynadata'  => $reginfo['dynadata'],
-                );
-                $profileData = ModUtil::apiFunc($profileModuleName, 'user', 'insertDyndata', $profileArgs);
-
-                if ($profileData && is_array($profileData)) {
-                    // From array_merge: If the input arrays have the same string keys, then the later value for that key will overwrite the previous one.
-                    // We want profileData to overwrite userinfo if __ATTRIBUTES__ is returned. The assumption is that the profile module will get the
-                    // existing attributes and merge with its data before it returns here.
-                    // Note that if the profile module removes attributes for some reason, then they will no longer be on the $userinfo object after this,
-                    // but they will have been saved by DBUtil::insertObject().
-                    $userObj = array_merge($userObj, $profileData);
-                } else {
-                    LogUtil::registerError($this->__('Warning! The new user was created, but the additional profile module properties were not saved.'));
-                }
+                $this->registerError($this->__('Warning! The user account was created, but there was a problem granting access to the account.'));
             }
 
             // ATTENTION: This is the proper place for the item-create hook, not when a pending
             // registration is created. It is not a "real" record until now, so it wasn't really
-            // "created" until now. It is way down here so that the activated state and profile
-            // data can be properly saved before the hook is fired.
+            // "created" until now. It is way down here so that the activated state can be properly 
+            // saved before the hook is fired.
             $createEvent = new Zikula_Event('user.create', $userObj);
             $this->eventManager->notify($createEvent);
 
@@ -847,7 +780,7 @@ class Users_Api_Registration extends Zikula_Api
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $sitename  = System::getVar('sitename');
                 $siteurl   = System::getBaseUrl();
-                $approvalOrder = $this->getVar('moderation_order', UserUtil::APPROVAL_BEFORE);
+                $approvalOrder = $this->getVar('moderation_order', Users::APPROVAL_BEFORE);
 
                 $rendererArgs = array();
                 $rendererArgs['sitename'] = $sitename;
@@ -858,14 +791,15 @@ class Users_Api_Registration extends Zikula_Api
                 $rendererArgs['approvalorder'] = $approvalOrder;
 
                 if ($userNotification || !empty($passwordCreatedForUser)) {
-                    $notificationSent = ModUtil::apiFunc('Users', 'user', 'sendNotification',
+                    $notificationSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification',
                                             array('toAddress'         => $userObj['email'],
                                                   'notificationType'  => 'welcome',
                                                   'templateArgs'      => $rendererArgs));
 
                     if (!$notificationSent) {
-                        $loggedErrorMessages = LogUtil::getErrorMessages('true');
-                        foreach($loggedErrorMessages as $lem) {
+                        $loggedErrorMessages = $this->request->getSession()->getMessages(Zikula_Session::MESSAGE_ERROR);
+                        $this->request->getSession()->clearMessages(Zikula_Session::MESSAGE_ERROR);
+                        foreach ($loggedErrorMessages as $lem) {
                             if (!in_array($lem, $regErrors)) {
                                 $regErrors[] = $lem;
                             }
@@ -880,15 +814,16 @@ class Users_Api_Registration extends Zikula_Api
                     if (!empty($notificationEmail)) {
                         $subject = $this->__f('New registration: %s', $userObj['uname']);
 
-                        $notificationSent = ModUtil::apiFunc('Users', 'user', 'sendNotification',
+                        $notificationSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification',
                                                 array('toAddress'         => $notificationEmail,
                                                       'notificationType'  => 'regadminnotify',
                                                       'templateArgs'      => $rendererArgs,
                                                       'subject'           => $subject));
 
                         if (!$notificationSent) {
-                            $loggedErrorMessages = LogUtil::getErrorMessages('true');
-                            foreach($loggedErrorMessages as $lem) {
+                            $loggedErrorMessages = $this->request->getSession()->getMessages(Zikula_Session::MESSAGE_ERROR);
+                            $this->request->getSession()->clearMessages(Zikula_Session::MESSAGE_ERROR);
+                            foreach ($loggedErrorMessages as $lem) {
                                 if (!in_array($lem, $regErrors)) {
                                     $regErrors[] = $lem;
                                 }
@@ -903,7 +838,8 @@ class Users_Api_Registration extends Zikula_Api
 
             return $userObj;
         } else {
-            return LogUtil::registerError($this->__('Unable to store the new user registration record.'));
+            $this->registerError($this->__('Unable to store the new user registration record.'));
+            return false;
         }
     }
 
@@ -924,12 +860,15 @@ class Users_Api_Registration extends Zikula_Api
      *                                                  more than once; required if id and uname are not specified, otherwise not allowed.
      *
      * @return array|bool An array containing the record, or false on error.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     *                                      and does not have moderate access.
      */
     public function get($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         $uniqueEmails = $this->getVar('reg_uniemail', false);
@@ -942,22 +881,26 @@ class Users_Api_Registration extends Zikula_Api
                 || (isset($args['uid']) && (isset($args['uname']) || isset($args['email'])))
                 || (isset($args['uname']) && isset($args['email']))
                 || (isset($args['email']) && !$uniqueEmails)) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
         if (isset($args['uid'])) {
             if (empty($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-                return LogUtil::registerArgsError ();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
             $idField = 'uid';
         } elseif (isset($args['uname'])) {
             if (empty($args['uname']) || !is_string($args['uname'])) {
-                return LogUtil::registerArgsError ();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
             $idField = 'uname';
         } elseif (isset($args['email'])) {
             if (empty($args['email']) || !is_string($args['email'])) {
-                return LogUtil::registerArgsError ();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
             $idField = 'email';
         }
@@ -978,7 +921,7 @@ class Users_Api_Registration extends Zikula_Api
         $userObj = UserUtil::getVars($idValue, false, $idField, true);
 
         if ($userObj === false) {
-            LogUtil::registerError($this->__('Error! Could not load data.'));
+            $this->registerError($this->__('Error! Could not load data.'));
         }
 
         return $userObj;
@@ -1053,12 +996,15 @@ class Users_Api_Registration extends Zikula_Api
      *                      int   $args['numitems'] The number (count) of items to return.
      *
      * @return array|bool Array of registration requests, or false on failure.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     *                                      and does not have moderate access.
      */
     public function getAll($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (isset($args['limitoffset']) && is_numeric($args['limitoffset'])
@@ -1081,12 +1027,13 @@ class Users_Api_Registration extends Zikula_Api
         $where = '';
         if (isset($args['filter'])) {
             if (!is_array($args['filter'])) {
-                return LogUtil::registerArgsError();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
-            $args['filter']['activated'] = UserUtil::ACTIVATED_PENDING_REG;
+            $args['filter']['activated'] = Users::ACTIVATED_PENDING_REG;
             $where = $this->whereFromFilter($args['filter']);
         } else {
-            $where = $this->whereFromFilter(array('activated' => UserUtil::ACTIVATED_PENDING_REG));
+            $where = $this->whereFromFilter(array('activated' => Users::ACTIVATED_PENDING_REG));
         }
         if ($where === false) {
             return false;
@@ -1098,7 +1045,8 @@ class Users_Api_Registration extends Zikula_Api
             );
         }
         if (!is_array($args['orderby'])) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
         $orderBy = array();
         foreach ($args['orderby'] as $field => $value) {
@@ -1108,7 +1056,8 @@ class Users_Api_Registration extends Zikula_Api
             }
             $value = strtoupper($value);
             if (!isset($regColumn[$field]) || (!empty($value) && ($value != 'ASC') && ($value != 'DESC'))) {
-                return LogUtil::registerArgsError();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
             $orderBy[] = $regColumn[$field] . (!empty($value) ? " {$value}" : '');
         }
@@ -1118,7 +1067,7 @@ class Users_Api_Registration extends Zikula_Api
         $reglist = DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows);
 
         if ($reglist === false) {
-            LogUtil::registerError($this->__('Error! Could not load data.'));
+            $this->registerError($this->__('Error! Could not load data.'));
         } elseif (!empty($reglist)) {
             // Fix 'zero dates' and blank dates
             foreach ($reglist as $key => $userObj) {
@@ -1150,16 +1099,17 @@ class Users_Api_Registration extends Zikula_Api
         $where = '';
         if (isset($args['filter'])) {
             if (!is_array($args['filter'])) {
-                return LogUtil::registerArgsError();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
             if (isset($args['filter']['isverified'])) {
                 $isVerifiedFilter = $args['filter']['isverified'];
                 unset($args['filter']['isverified']);
             }
-            $args['filter']['activated'] = UserUtil::ACTIVATED_PENDING_REG;
+            $args['filter']['activated'] = Users::ACTIVATED_PENDING_REG;
             $where = $this->whereFromFilter($args['filter']);
         } else {
-            $where = $this->whereFromFilter(array('activated' => UserUtil::ACTIVATED_PENDING_REG));
+            $where = $this->whereFromFilter(array('activated' => Users::ACTIVATED_PENDING_REG));
         }
         if ($where === false) {
             return false;
@@ -1199,30 +1149,35 @@ class Users_Api_Registration extends Zikula_Api
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success; otherwise false.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     *                                      and does not have moderate access.
      */
     public function remove($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE))) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (isset($args['uid'])) {
             if (empty($args['uid']) || !is_numeric($args['uid'])) {
-                return LogUtil::registerArgsError();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
 
             $uid = $args['uid'];
         } elseif (!isset($args['reginfo']) || empty($args['reginfo']) || !is_array($args['reginfo'])
                 || !isset($args['reginfo']['uid']) || empty($args['reginfo']['uid']) || !is_numeric($args['reginfo']['uid'])) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         } else {
             $uid = $args['reginfo']['uid'];
         }
 
-        ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array(
+        ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid'        => $uid,
-            'changetype' => UserUtil::VERIFYCHGTYPE_REGEMAIL,
+            'changetype' => Users::VERIFYCHGTYPE_REGEMAIL,
         ));
 
         // NOTE: This is a registration, not a "real" user, so no user.delete event and no item delete hook
@@ -1246,10 +1201,10 @@ class Users_Api_Registration extends Zikula_Api
             // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
             $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
             $staleRecordUTC->modify("-{$regExpireDays} days");
-            $staleRecordUTCStr = $staleRecordUTC->format(UserUtil::DATETIME_FORMAT);
+            $staleRecordUTCStr = $staleRecordUTC->format(Users::DATETIME_FORMAT);
 
             // The zero date is there to guard against odd DB errors
-            $where = "WHERE ({$verifyChgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_REGEMAIL .") "
+            $where = "WHERE ({$verifyChgColumn['changetype']} = " . Users::VERIFYCHGTYPE_REGEMAIL .") "
                     . "AND ({$verifyChgColumn['created_dt']} IS NOT NULL) "
                     . "AND ({$verifyChgColumn['created_dt']} != '0000-00-00 00:00:00') "
                     . "AND ({$verifyChgColumn['created_dt']} < '{$staleRecordUTCStr}')";
@@ -1259,9 +1214,9 @@ class Users_Api_Registration extends Zikula_Api
             if (is_array($staleVerifyChgRecs) && !empty($staleVerifyChgRecs)) {
                 foreach ($staleVerifyChgRecs as $verifyChg) {
                     DBUtil::deleteObjectByID('users', $verifyChg['uid'], 'uid');
-                    ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array(
+                    ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
                         'uid'       => $verifyChg['uid'],
-                        'changetype'=> UserUtil::VERIFYCHGTYPE_REGEMAIL,
+                        'changetype'=> Users::VERIFYCHGTYPE_REGEMAIL,
                     ));
                 }
             }
@@ -1274,6 +1229,9 @@ class Users_Api_Registration extends Zikula_Api
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success; otherwise false.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     *                                      and does not have moderate access.
      */
     public function sendVerificationCode($args)
     {
@@ -1282,28 +1240,33 @@ class Users_Api_Registration extends Zikula_Api
         // registration record, so allow not-logged-in plus READ, as well as moderator.
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (isset($args['reginfo'])) {
             // Got a full reginfo record
             if (!is_array($args['reginfo'])) {
-                return LogUtil::registerArgsError();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
             $reginfo = $args['reginfo'];
             if (!$reginfo || !is_array($reginfo) || !isset($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
-                return LogUtil::registerError($this->__('Error! Invalid registration record.'));
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
         } elseif (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         } else {
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
             if (!$reginfo || empty($reginfo)) {
-                return LogUtil::registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+                $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+                return false;
             }
             if (!isset($reginfo['email'])) {
-                return LogUtil::registerError($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
+                $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
+                return false;
             }
         }
 
@@ -1319,34 +1282,37 @@ class Users_Api_Registration extends Zikula_Api
             $rendererArgs = array();
         }
 
-        $approvalOrder = $this->getVar('moderation_order', UserUtil::APPROVAL_BEFORE);
+        $approvalOrder = $this->getVar('moderation_order', Users::APPROVAL_BEFORE);
 
         // Set the verification code
         if (isset($reginfo['isverified']) && $reginfo['isverified']) {
-            return LogUtil::registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
-        } elseif (!$forceVerification && ($approvalOrder == UserUtil::APPROVAL_BEFORE) && isset($reginfo['approvedby']) && !empty($reginfo['approved_by'])) {
-            return LogUtil::registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
+            $this->registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
+            return false;
+        } elseif (!$forceVerification && ($approvalOrder == Users::APPROVAL_BEFORE) && isset($reginfo['approvedby']) && !empty($reginfo['approved_by'])) {
+            $this->registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
+            return false;
         }
 
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
         $verificationCode = UserUtil::generatePassword();
 
-        ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array(
+        ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid'       => $reginfo['uid'],
-            'changetype'=> UserUtil::VERIFYCHGTYPE_REGEMAIL,
+            'changetype'=> Users::VERIFYCHGTYPE_REGEMAIL,
         ));
 
         $verifyChgObj = array(
-            'changetype'=> UserUtil::VERIFYCHGTYPE_REGEMAIL,
+            'changetype'=> Users::VERIFYCHGTYPE_REGEMAIL,
             'uid'       => $reginfo['uid'],
             'newemail'  => $reginfo['email'],
             'verifycode'=> UserUtil::getHashedPassword($verificationCode),
-            'created_dt'=> $nowUTC->format(UserUtil::DATETIME_FORMAT),
+            'created_dt'=> $nowUTC->format(Users::DATETIME_FORMAT),
         );
         $verifyChgObj = DBUtil::insertObject($verifyChgObj, 'users_verifychg');
 
         if (!$verifyChgObj) {
-            return LogUtil::registerError($this->__f('Error! Unable to save the verification code for the registration for \'%1$s\'.', $reginfo['uname']));
+            $this->registerError($this->__f('Error! Unable to save the verification code for the registration for \'%1$s\'.', $reginfo['uname']));
+            return false;
         }
 
         if (empty($rendererArgs)) {
@@ -1360,7 +1326,7 @@ class Users_Api_Registration extends Zikula_Api
         $rendererArgs['verifycode'] = $verificationCode;
         $rendererArgs['approvalorder'] = $approvalOrder;
 
-        $codeSent = ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
+        $codeSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification', array(
             'toAddress'         => $reginfo['email'],
             'notificationType'  => 'regverifyemail',
             'templateArgs'      => $rendererArgs,
@@ -1382,22 +1348,26 @@ class Users_Api_Registration extends Zikula_Api
      *
      * @return array|bool An array containing the object from the users_verifychg table; an empty array if not found;
      *                      false on error.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     *                                      and does not have moderate access.
      */
     public function getVerificationCode($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid']) || ($args['uid'] <= 1)) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
         $dbinfo = DBUtil::getTables();
         $verifyChgColumn = $dbinfo['users_verifychg_column'];
         $where = "WHERE ({$verifyChgColumn['uid']} = {$args['uid']}) AND ({$verifyChgColumn['changetype']} = "
-            . UserUtil::VERIFYCHGTYPE_REGEMAIL . ")";
+            . Users::VERIFYCHGTYPE_REGEMAIL . ")";
         $verifyChgList = DBUtil::selectObjectArray('users_verifychg', $where, '', -1, 1);
         if (($verifyChgList === false) || !is_array($verifyChgList)) {
             $verifyChg = false;
@@ -1424,29 +1394,34 @@ class Users_Api_Registration extends Zikula_Api
         if (isset($args['reginfo'])) {
             // Got a full reginfo record
             if (!is_array($args['reginfo'])) {
-                return LogUtil::registerArgsError();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
             $reginfo = $args['reginfo'];
             if (!$reginfo || !is_array($reginfo) || !isset($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
-                return LogUtil::registerError($this->__('Error! Invalid registration record.'));
+                $this->registerError($this->__('Error! Invalid registration record.'));
+                return false;
             }
         } elseif (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         } else {
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
             if (!$reginfo || empty($reginfo)) {
-                return LogUtil::registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+                $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+                return false;
             }
             if (!isset($reginfo['email'])) {
-                return LogUtil::registerError($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
+                $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
+                return false;
             }
         }
 
         UserUtil::setVar('isverified', true, $reginfo['uid']);
-        ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array(
+        ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid'       => $reginfo['uid'],
-            'changetype'=> UserUtil::VERIFYCHGTYPE_REGEMAIL,
+            'changetype'=> Users::VERIFYCHGTYPE_REGEMAIL,
         ));
 
         if (!empty($reginfo['approved_by'])) {
@@ -1466,29 +1441,35 @@ class Users_Api_Registration extends Zikula_Api
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success; otherwise false.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if the user does not have add access.
      */
     public function approve($args)
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (isset($args['reginfo'])) {
             // Got a full reginfo record
             if (!is_array($args['reginfo'])) {
-                return LogUtil::registerArgsError();
+                $this->registerError(LogUtil::getErrorMsgArgs());
+                return false;
             }
             $reginfo = $args['reginfo'];
             if (!$reginfo || !is_array($reginfo) || !isset($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
-                return LogUtil::registerError($this->__('Error! Invalid registration record.'));
+                $this->registerError($this->__('Error! Invalid registration record.'));
+                return false;
             }
         } elseif (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         } else {
             // Got just an id.
-            $reginfo = ModUtil::apiFunc('Users', 'registration', 'get', array('uid' => $args['uid']));
+            $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $args['uid']));
             if (!$reginfo) {
-                return LogUtil::registerError($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $id));
+                $this->registerError($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $id));
+                return false;
             }
         }
 
@@ -1498,20 +1479,21 @@ class Users_Api_Registration extends Zikula_Api
         $reginfo['approved_by'] = UserUtil::getVar('uid');
         UserUtil::setVar('approved_by', $reginfo['approved_by'], $reginfo['uid']);
 
-        $reginfo['approved_date'] = $nowUTC->format(UserUtil::DATETIME_FORMAT);
+        $reginfo['approved_date'] = $nowUTC->format(Users::DATETIME_FORMAT);
         UserUtil::setVar('approved_date', $reginfo['approved_date'], $reginfo['uid']);
 
 
         if (isset($args['force']) && $args['force']) {
             if (!isset($reginfo['email']) || empty($reginfo['email'])) {
-                return LogUtil::registerError($this->__f('Error: Unable to force registration for \'%1$s\' to be verified during approval. No e-mail address.', array($reginfo['uname'])));
+                $this->registerError($this->__f('Error: Unable to force registration for \'%1$s\' to be verified during approval. No e-mail address.', array($reginfo['uname'])));
+                return false;
             }
 
             $reginfo['isverified'] = true;
 
-            ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array(
+            ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
                 'uid'       => $reginfo['uid'],
-                'changetype'=> UserUtil::VERIFYCHGTYPE_REGEMAIL,
+                'changetype'=> Users::VERIFYCHGTYPE_REGEMAIL,
             ));
         }
 
@@ -1544,9 +1526,11 @@ class Users_Api_Registration extends Zikula_Api
 
         // Preventing reactivation from same link !
         $newregdate = DateUtil::getDatetime(strtotime($args['regdate'])+1);
-        $obj = array('uid'          => $args['uid'],
-                'activated'    => UserUtil::ACTIVATED_ACTIVE,
-                'user_regdate' => DataUtil::formatForStore($newregdate));
+        $obj = array(
+            'uid'           => $args['uid'],
+            'activated'     => Users::ACTIVATED_ACTIVE,
+            'user_regdate'  => DataUtil::formatForStore($newregdate)
+        );
 
         $res = DBUtil::updateObject($obj, 'users', '', 'uid');
 

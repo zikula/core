@@ -148,7 +148,7 @@ switch (true)
         break;
     case ($httpCode == 403):
         if (!UserUtil::isLoggedIn()) {
-            $url = ModUtil::url('Users', 'user', 'loginscreen', array('returnpage' => urlencode(System::getCurrentUri())));
+            $url = ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
             LogUtil::registerError(LogUtil::getErrorMsgPermission(), $httpCode, $url);
             System::shutDown();
         }

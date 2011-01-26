@@ -1,4 +1,4 @@
-{gt text='Lost password reminder' assign='templatetitle'}
+{gt text='Lost password recovery' assign='templatetitle'}
 {modulelinks modname='Users' type='user'}
 {include file='users_user_menu.tpl'}
 
@@ -7,7 +7,7 @@
     <div class="z-fieldset">
         <div class="z-formrow">
             <p class="z-label">{gt text='User name'}</p>
-            <div class="z-text z-bold">{$lostpassword_uname}</div>
+            <div class="z-text z-bold">{$uname}</div>
         </div>
         <div class="z-formrow">
             <p class="z-label">{gt text='Password reminder'}</p>
@@ -15,7 +15,7 @@
         </div>
         <div class="z-formbuttons z-buttons">
             <p>{gt text="I remember my password now."}</p>
-            <a href="{modurl modname='Users' type='user' func='loginScreen'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='1rightarrow.png' __alt='Go to log-in screen' __title='Go to log-in screen'} {gt text="Go to log-in screen"}</a>
+            <a href="{modurl modname='Users' type='user' func='login'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='1rightarrow.png' __alt='Go to log-in screen' __title='Go to log-in screen'} {gt text="Go to log-in screen"}</a>
         </div>
     </div>
 </div>
@@ -34,8 +34,8 @@
 
 <form class="z-form" action="{modurl modname='Users' type='user' func='resetPassword'}" method="post">
     <div>
-        <input type="hidden" id="users_authid" name="passwordresetauthid" value="{insert name='generateauthkey' module='Users'}" />
-        <input type="hidden" id="users_uname" name="lostpassword_uname" value="{$lostpassword_uname}" />
+        <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input type="hidden" id="users_uname" name="uname" value="{$uname}" />
         <input type="hidden" id="users_setpass" name="setpass" value="1" />
         <fieldset>
             <legend>{gt text='Reset your password'}</legend>

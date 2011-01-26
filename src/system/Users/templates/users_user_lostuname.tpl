@@ -6,10 +6,10 @@
 
 <form class="z-form" action="{modurl modname='Users' type='user' func='mailuname'}" method="post">
     <fieldset>
-        <input type="hidden" id="lostunameauthid" name="authid" value="{insert name='generateauthkey' module='Users'}" />
+        <input type="hidden" id="lostunamecsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <div class="z-formrow">
             <label for="users_email">{gt text='E-mail address'}</label>
-            <input id="users_email" type="text" name="email" size="40" maxlength="60" value="{sessiongetvar name='lostuname_email'}" />
+            <input id="users_email" type="text" name="email" size="40" maxlength="60" value="{$email}" />
         </div>
     </fieldset>
     <div class="z-formbuttons z-buttons">

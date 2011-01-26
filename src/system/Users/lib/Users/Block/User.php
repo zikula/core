@@ -16,7 +16,7 @@
 /**
  * A user-customizable block.
  */
-class Users_Block_User extends Zikula_Controller_Block
+class Users_Block_User extends Zikula_Controller_AbstractBlock
 {
     /**
      * Initialise block.
@@ -35,13 +35,15 @@ class Users_Block_User extends Zikula_Controller_Block
      */
     public function info()
     {
-        return array('module'         => 'Users',
-                     'text_type'      => $this->__('User'),
-                     'text_type_long' => $this->__("User's custom box"),
-                     'allow_multiple' => false,
-                     'form_content'   => false,
-                     'form_refresh'   => false,
-                     'show_preview'   => true);
+        return array(
+            'module'         => $this->name,
+            'text_type'      => $this->__('User'),
+            'text_type_long' => $this->__("User's custom box"),
+            'allow_multiple' => false,
+            'form_content'   => false,
+            'form_refresh'   => false,
+            'show_preview'   => true,
+        );
     }
 
     /**

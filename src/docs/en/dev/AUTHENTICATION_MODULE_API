@@ -198,9 +198,9 @@ A custom authentication module must __not__...
 Data Structures
 ---------------
 
-*`$args['authinfo']`*
+*`$args['authentication_info']`
 
-Many functions accept, as part of its `$args` parameter array, an `'authinfo'`
+Many functions accept, as part of its `$args` parameter array, an `'authentication_info'`
 data structure. This structure contains all of the information necessary to
 identify and authenticate a user for the given authentication method. What is
 contained in this data structure is defined entirely by the custom
@@ -209,8 +209,8 @@ requirements, the contents cannot be described definitively here.
 
 For example, the _Users_ system module (which implements the Authentication
 Module API) requires that a user name or e-mail address, and a password be
-provided as elements of an associative array (`'loginid'` or `'email'` and
-`'pass'` array elements) called `'authinfo'`. In addition, it requires that
+provided as elements of an associative array (`'loginID'` or `'email'` and
+`'pass'` array elements) called `'authentication_info'`. In addition, it requires that
 a `'loginviaoption'` element be present, indicating whether a user name or an
 e-mail address is expected.
 
@@ -220,10 +220,10 @@ element, containing the user-specified OpenID URL.
 Other custom authentication modules may require similar data, completely
 different data, or no data at all.
 
-Additional information may be added to the `'authinfo'` associative array
+Additional information may be added to the `'authentication_info'` associative array
 during the execution of the authentication process by the authentication
 module, or the execution of the log in process by the _Users_ module, therefore
-custom authentication modules should treat `'authinfo'` as an associative array
+custom authentication modules should treat `'authentication_info'` as an associative array
 and add any data it needs as elements of this array.
 
 Api Classes and Methods
@@ -255,7 +255,7 @@ imposed on the module implementation, which are described below.
 *`authenticateUser(...)` Function*
 
 Perform all steps necessary to uniquely identify and authenticate a user based
-on the information passed to it in the `$args['authinfo']` data structure. If
+on the information passed to it in the `$args['authentication_info']` data structure. If
 the user information results in a positively identified and authenticated user
 mapped to a Zikula `uid`, then return that `uid`; otherwise return `false`.
 This is the primary function called by Zikula during the log in process. If the
@@ -270,7 +270,7 @@ process anew.
 
 Similar to the `authenticateUser(...)` function, perform all steps necessary
 to uniquely identify and authenticate a user based on the information passed
-to it in the `$args['authinfo']` data structure. Instead of returning a `uid`,
+to it in the `$args['authentication_info']` data structure. Instead of returning a `uid`,
 however, simply return `true` if the user is positively authenticated. Return
 `false` if the user information cannot be authenticated. This allows Zikula
 to authenticate user identifying information without any attempt to log a user
@@ -284,9 +284,9 @@ made, and the method is reentrant, then the call to the external system likely
 happens within this function (or some function called by it), and likewise
 this function __must__ be reentrant.
 
-*`getUidForAuthinfo(...)` Function*
+*`getUidForAuthenticationInfo(...)` Function*
 
-Given the `'authinfo'` gathered from the user, return the `uid` mapped to that
+Given the `'authentication_info'` gathered from the user, return the `uid` mapped to that
 authentication information. This function allows a `uid` to be retrieved
 without going through the full authentication process. This function should
 only be called after a successful call to `authenticateUser(...)`, as data
@@ -330,7 +330,7 @@ Controller Classes and Functions
 
 The _Users_ system module's log in screen and log in block have been designed
 to detect and display additional authentication methods as options, and to
-pass the `'authinfo'` appropriate for the chosen authentication method to the
+pass the `'authentication_info'` appropriate for the chosen authentication method to the
 proper authentication module.  Use of this facility is optional, and if not
 used can be replaced by custom templates put in place by the site's
 administrator.
@@ -341,7 +341,7 @@ In order to use this facility, certain functions must be defined.
 
 (_Optional and ignored if the multiple authentication log in block facility is
 not used, required if this facility is used._) Return the fields to display
-to gather the authentication information (the `'authinfo'`) entered by the
+to gather the authentication information (the `'authentication_info'`) entered by the
 user for this authentication method on the _users_ module's log in block. The
 return value should be a rendered template of form fields compatible with the
 _Users_ module's log in block (or the equivalent of a rendered template).
@@ -359,7 +359,7 @@ functions (or the equivalent of a rendered template).
 
 (_Optional and ignored if the multiple authentication log in form facility is
 not used, required if this facility is used._) Return the fields to display
-to gather the authentication information (the `'authinfo'`) entered by the
+to gather the authentication information (the `'authentication_info'`) entered by the
 user for this authentication method on the _Users_ module log in form. The
 return value should be a rendered template of form fields compatible with the
 _Users_ module's log in form (or the equivalent of a rendered template).

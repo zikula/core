@@ -56,6 +56,7 @@ $icons = array(
     'saveas'     => 'filesaveas.png',
     'search'     => 'search.png',
     'url'        => 'web.png',
+    'utilities'  => 'utilities.png',
     'user'       => 'user.png',
     'view'       => 'windowlist.png',
     'warning'    => 'bell.png',

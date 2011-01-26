@@ -5,9 +5,9 @@
     <h2>{gt text='Delete user account'}</h2>
     <p class="z-warningmsg">{gt text='Do you really want to delete this user account?'}</p>
 
-    <form class="z-form" action="{modurl modname='Users' type='admin' func='remove'}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname='Users' type='admin' func='deleteUsers'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Users'}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text='Confirmation prompt'}</legend>
                 <input type="hidden" name="userid[]" value="{$userid|safetext}" />

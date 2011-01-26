@@ -241,7 +241,16 @@ function install(Zikula_Core $core)
                     // TODO: Email username/password to administrator email address.  Cannot use ModUtil::apiFunc for this.
                     createuser($username, $password, $email);
                     $serviceManager->getService('session')->start();
-                    UserUtil::loginUsing('Users', array('loginid' => $username, 'pass' => $password));
+
+                    $authenticationInfo = array(
+                        'login_id'  => $username,
+                        'pass'      => $password
+                    );
+                    $authenticationMethod = array(
+                        'modname'   => 'Users',
+                        'method'    => 'uname',
+                    );
+                    UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
 
                     // add admin email as site email
                     System::setVar('adminmail', $email);
@@ -335,7 +344,7 @@ function createuser($username, $password, $email)
     $email = mb_strtolower(DataUtil::formatForStore($email));
 
     $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-    $nowUTCStr = $nowUTC->format(UserUtil::DATETIME_FORMAT);
+    $nowUTCStr = $nowUTC->format(Users::DATETIME_FORMAT);
 
     // create the admin user
     $sql = "UPDATE {$dbtables['users']}
