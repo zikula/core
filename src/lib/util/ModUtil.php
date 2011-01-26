@@ -1144,6 +1144,12 @@ class ModUtil
             return null;
         }
 
+        // Remove from 1.4
+        if (System::isLegacyMode() && $modname == 'Modules') {
+            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::url() or {modurl} calls with $module = "Extensions".'));
+            $modname = 'Extensions';
+        }
+
         //get the module info
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
