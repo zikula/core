@@ -84,7 +84,7 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_Panel
 
         $html = '<h2><a href="#" title="'.__('Click to show the configuration variables').'" onclick="$(\'DebugToolbarPanelconfigContent'.$id.'\').toggle();return false;">'.$name.'</a></h2>';
         $html .= '<div id="DebugToolbarPanelconfigContent'.$id.'" style="display:none;">';
-        $html .= '<ul>' . $this->outputVar($arrayname, $array, '<pre>', '</pre>') .'</ul>';
+        $html .= '<ul>' . $this->outputVar($arrayname, $array) .'</ul>';
         $html .= '</div>';
 
         return $html;
