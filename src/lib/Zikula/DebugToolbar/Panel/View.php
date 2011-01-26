@@ -83,8 +83,8 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
     {
         $id = substr($name, 0, strpos($name, '.'));
 
-        $html = '<h2><a href="#" title="'.__('Click to show the assigned template variables').'" onclick="$(\'DebugToolbarPanelconfigContent'.$id.'\').toggle();return false;">'.$name.'</a></h2>';
-        $html .= '<div id="DebugToolbarPanelconfigContent'.$id.'" style="display:none;">';
+        $html = '<h2><a href="#" title="'.__('Click to show the assigned template variables').'" onclick="$(\'DebugToolbarPanelTemplateVarContent'.$id.'\').toggle();return false;">'.$name.'</a></h2>';
+        $html .= '<div id="DebugToolbarPanelTemplateVarContent'.$id.'" style="display:none;">';
         $html .= $this->outputVar('', $array, true);
         $html .= '</div>';
 
