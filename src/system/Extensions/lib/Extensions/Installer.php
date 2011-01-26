@@ -15,13 +15,9 @@
 class Extensions_Installer extends Zikula_Installer
 {
     /**
-     * initialise the Extensions module
+     * Install the Extensions module.
      *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance.
-     * This function MUST exist in the pninit file for a module
-     *
-     * @return       bool       true on success, false otherwise
+     * @return boolean
      */
     public function install()
     {
@@ -60,13 +56,14 @@ class Extensions_Installer extends Zikula_Installer
     }
 
     /**
-     * upgrade the module from an old version
+     * Upgrade the module from an old version.
      *
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param        string   $oldVersion   version number string to upgrade from
-     * @return       mixed    true on success, last valid version string or false if fails
+     * @param string $oldVersion Version number string to upgrade from.
+     *
+     * @return  boolean|string True on success, last valid version string or false if fails.
      */
     public function upgrade($oldversion)
     {
@@ -100,11 +97,10 @@ class Extensions_Installer extends Zikula_Installer
      * delete the modules module
      *
      * This function is only ever called once during the lifetime of a particular
-     * module instance
-     * This function MUST exist in the pninit file for a module
+     * module instance.
      *
      * Since the modules module should never be deleted we'all always return false here
-     * @return       bool       false
+     * @return boolean False
      */
     public function uninstall()
     {
@@ -113,12 +109,9 @@ class Extensions_Installer extends Zikula_Installer
     }
 
     /**
-     * create the default data for the Extensions module
+     * Create the default data for the Extensions module.
      *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * @return       bool       false
+     * @return void
      */
     public function defaultdata()
     {
