@@ -13,7 +13,7 @@
                 <a href="{modurl modname=Settings type=admin}"><span>{gt text="Settings"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname=Modules type=admin}"><span>{gt text="Modules manager"}</span></a>
+                <a href="{modurl modname=Extensions type=admin}"><span>{gt text="Extensions manager"}</span></a>
             </li>
             <li class="page_item">
                 <a href="{modurl modname=Blocks type=admin}"><span>{gt text="Blocks manager"}</span></a>
