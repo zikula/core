@@ -144,21 +144,11 @@
                     </div>
                 </div>
                 <div id="settings_shorturls_container">
-                    <p class="z-formnote z-informationmsg">{gt text="Notice: If running PHP as CGI, you must ensure the line 'cgi.fix_pathinfo = 0' is present in your php.ini configuration file for short URLs to function correctly."}</p>
                     <div class="z-formrow">
                         <label for="settings_shorturlstype">{gt text="Type of URLs generated"}</label>
                         <div id="settings_shorturlstype">
-                            {if $modvars.ZConfig.shorturlstype eq 0}
                             <input id="settings_shorturlstype_directory" type="radio" name="settings[shorturlstype]" value="0" checked="checked" />
                             <label for="settings_shorturlstype_directory">{gt text="Directory"}</label>
-                            <input id="settings_shorturlstype_file" type="radio" name="settings[shorturlstype]" value="1" />
-                            <label for="settings_shorturlstype_file">{gt text="File"}</label>
-                            {else}
-                            <input id="settings_shorturlstype_directory" type="radio" name="settings[shorturlstype]" value="0" />
-                            <label for="settings_shorturlstype_directory">{gt text="Directory"}</label>
-                            <input id="settings_shorturlstype_file" type="radio" name="settings[shorturlstype]" value="1" checked="checked" />
-                            <label for="settings_shorturlstype_file">{gt text="File"}</label>
-                            {/if}
                         </div>
                     </div>
                     <div id="settings_shorturlsstripentrypoint_container" class="z-formrow">
@@ -173,10 +163,6 @@
                     <div id="settings_shorturlsseparator_container" class="z-formrow">
                         <label for="settings_shorturlsseparator">{gt text="Separator for permalink titles"}</label>
                         <input id="settings_shorturlsseparator" size="1" maxlength="1" name="settings[shorturlsseparator]" value="{$modvars.ZConfig.shorturlsseparator}" />
-                    </div>
-                    <div id="settings_shorturlsext_container" class="z-formrow">
-                        <label for="settings_shorturlsext">{gt text="Extension for file-based URLs"}</label>
-                        <input id="settings_shorturlsext" name="settings[shorturlsext]" value="{$modvars.ZConfig.shorturlsext}" />
                     </div>
                     <div id="settings_shorturls_defaultmodule_container" class="z-formrow">
                         <label for="settings_shorturls_defaultmodule">{gt text="Module to use when permalink contains no module name"}</label>
