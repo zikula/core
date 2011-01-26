@@ -21,7 +21,7 @@ class Extensions_Version extends Zikula_Version
         // need to keep these two notice suppressions for the benefit of the installer
         // @ is only relevent for this module, please do not replicate elsewhere, refs #980- drak
         @$meta['displayname'] = $this->__('Extensions manager');
-        @$meta['description'] = $this->__('Provides support for extensions.');
+        @$meta['description'] = $this->__('Manage your modules and plugins.');
         //! module name that appears in URL
         $meta['url']  = $this->__('extensions');
         $meta['version'] = '3.7.9';
