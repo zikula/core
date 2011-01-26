@@ -4,6 +4,11 @@
 
 .z-hide { display: none !important; }
 .z-show { display: inherit !important; }
+.z-invisible { visibility: hidden !important; }
+.z-visible { visibility: inherit !important; }
+.z-top { vertical-align: top !important; }
+.z-middle { vertical-align: middle !important; }
+.z-bottom { vertical-align: bottom !important; }
 .z-center { text-align: center !important; }
 .z-left { text-align: left !important; }
 .z-right { text-align: right !important; }

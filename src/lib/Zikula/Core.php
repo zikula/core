@@ -477,11 +477,13 @@ class Zikula_Core
         // check the users status, if not 1 then log him out
         if (UserUtil::isLoggedIn()) {
             $userstatus = UserUtil::getVar('activated');
-            if ($userstatus != 1) {
+            if ($userstatus != Users::ACTIVATED_ACTIVE) {
                 UserUtil::logout();
+                // TODO - When getting logged out this way, the existing session is destroyed and
+                //        then a new one is created on the reentry into index.php. The message
+                //        set by the registerStatus call below gets lost.
                 LogUtil::registerStatus(__('You have been logged out.'));
-                $params = ($userstatus == 2) ? array('confirmtou' => 1) : array();
-                System::redirect(ModUtil::url('Users', 'user', 'loginscreen', $params));
+                System::redirect(ModUtil::url('Users', 'user', 'login'));
             }
         }
 

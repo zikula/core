@@ -77,10 +77,10 @@ function Users_tables_for_210()
     // pass             - Password: User's password for logging in. This value is salted and hashed. The salt is stored in this field,
     //                      delimited from the hash with a dollar sign character ($). The hash algorithm is stored as a numeric code
     //                      in the hash_method field. This field may be blank in instances where the user registered with an
-    //                      alternative authmodule (e.g., OpenID) and did not also establish a password for his web site account.
+    //                      alternative authentication module (e.g., OpenID) and did not also establish a password for his web site account.
     // passreminder     - Password reminder: Set during registration or password changes, to remind the user what his password is.
     //                      This field may be blank if pass is blank.
-    // activated        - Account State: The user's current state, see UserUtil::ACTIVE_* for defined constants. A state
+    // activated        - Account State: The user's current state, see Users::ACTIVE_* for defined constants. A state
     //                      represented by a negative integer means that the user's account is in a pending state, and
     //                      should not yet be considered a "real" user account. For example, user
     //                      accounts pending the completion of the registration process (because either moderation, e-mail
@@ -286,7 +286,7 @@ function Users_tables_for_117()
     // theme            - User's Theme: The name (identifier) of the per-user theme the user would like to use while viewing the site, when
     //                      user theme switching is enabled.
     // counter          - DEPRECATED - DO NOT USE
-    // activated        - Account State (was Activated?): The user's current state, see UserUtil::ACTIVE_* for defined constants
+    // activated        - Account State (was Activated?): The user's current state, see Users::ACTIVE_* for defined constants
     // lastlogin        - Last Login Date/Time: Date/time user last successfully logged into the site.
     //                      NOTE: This is stored as an SQL datetime, which is highly dependent on both PHP's timezone setting,
     //                      and on the database server's timezone setting. If they do not match, then inconsistencies will propogate.

@@ -15,7 +15,7 @@
 /**
  * Access to actions initiated through AJAX for the Users module.
  */
-class Users_Controller_Ajax extends Zikula_Controller_Ajax
+class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
     /**
      * Performs a user search based on the user name fragment entered so far.
@@ -27,12 +27,12 @@ class Users_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function getUsers()
     {
-        $view = Zikula_View::getInstance('Users');
+        $view = Zikula_View::getInstance($this->name);
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $fragment = FormUtil::getPassedValue('fragment');
 
-            ModUtil::dbInfoLoad('Users');
+            ModUtil::dbInfoLoad($this->name);
             $tables = DBUtil::getTables();
 
             $usersColumn = $tables['users_column'];
@@ -52,100 +52,125 @@ class Users_Controller_Ajax extends Zikula_Controller_Ajax
      * Validate new user information entered by the user.
      *
      * Available Post Parameters:
-     * - authid       (string) The system authid used to prevent XSS.
      * - uname        (string) The proposed user name for the new user record.
      * - email        (string) The proposed e-mail address for the new user record.
      * - vemail       (string) A verification of the proposed e-mail address for the new user record.
-     * - dynadata     (array)  An array containing data to be stored by the designated profile module and associated with the new account.
      * - agreetoterms (int)    A flag indicating that the user has agreed to the site's terms and policies; 0 indicates no, otherwise yes.
      * - pass         (string) The proposed password for the new user record.
      * - vpass        (string) A verification of the proposed password for the new user record.
      * - reg_answer   (string) The user-entered answer to the registration question.
      *
-     * @return array A Zikula_Response_Ajax containing an array of error code and a result message. Possible error codes are:
-     *               -1=NoPermission 1=EverythingOK 2=NotaValidatedEmailAddr
-     *               3=NotAgreeToTerms 4=InValidatedUserName 5=UserNameTooLong
-     *               6=UserNameReserved 7=UserNameIncludeSpace 8=UserNameTaken
-     *               9=EmailTaken 10=emails different 11=User Agent Banned
-     *               12=Email Domain banned 13=DUD incorrect 14=spam question incorrect
-     *               15=Pass too short 16=Pass different 17=No pass 18=no password reminder
+     * @return array A Zikula_Response_Ajax containing error messages and message counts.
+     * 
+     * @throws Zikula_Exception_Forbidden Thrown if registration is disbled.
      */
     public function getRegistrationErrors()
     {
-        // Check for a good authid
-        $this->throwForbiddenUnless(SecurityUtil::confirmAuthKey(), LogUtil::getErrorMsgAuthid());
-
+        $userOrRegistration = array(
+            'uid'           => $this->request->getPost()->get('uid', null),
+            'uname'         => $this->request->getPost()->get('uname', null),
+            'pass'          => $this->request->getPost()->get('pass', null),
+            'passreminder'  => $this->request->getPost()->get('passreminder', null),
+            'email'         => $this->request->getPost()->get('email', null),
+        );
+        
+        $checkMode = $this->request->getPost()->get('checkmode', 'new');
+        $isRegistration = ($checkMode == 'new') || !isset($userOrRegistration['uid']) || empty($userOrRegistration['uid']);
+        
         // Check if registration is disabled and the user is not an admin.
-        $this->throwForbiddenIf(!$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN),
-            $this->__('Sorry! New user registration is currently disabled.'));
+        if ($isRegistration && !$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+            throw new Zikula_Exception_Forbidden($this->__('Sorry! New user registration is currently disabled.'));
+        }
+        
+        $returnValue = array(
+            'errorMessagesCount'    => 0,
+            'errorMessages'         => array(),
+            'errorFieldsCount'      => 0,
+            'errorFields'           => array(),
+            'validatorErrorsCount'  => 0,
+            'validatorErrors'       => array(),
+        );
 
-        $reginfo            = DataUtil::convertFromUTF8(FormUtil::getPassedValue('reginfo', null, 'POST'));
-        $checkMode          = DataUtil::convertFromUTF8(FormUtil::getPassedValue('checkmode', 'new', 'POST'));
-        $userAgreesToTOUPP  = DataUtil::convertFromUTF8(FormUtil::getPassedValue('agreetoterms', false, 'POST'));
-        $emailAgain         = DataUtil::convertFromUTF8(FormUtil::getPassedValue('emailagain', '', 'POST'));
-        $setPassword        = DataUtil::convertFromUTF8(FormUtil::getPassedValue('setpass', false, 'POST'));
-        $passwordAgain      = DataUtil::convertFromUTF8(FormUtil::getPassedValue('passagain', '', 'POST'));
-        $antiSpamUserAnswer = DataUtil::convertFromUTF8(FormUtil::getPassedValue('antispamanswer', '', 'POST'));
-        $reginfo['dynadata']= DataUtil::convertFromUTF8(FormUtil::getPassedValue('dynadata', array(), 'POST'));
+        $emailAgain         = $this->request->getPost()->get('emailagain', '');
+        $setPassword        = $this->request->getPost()->get('setpass', false);
+        $passwordAgain      = $this->request->getPost()->get('passagain', '');
+        $antiSpamUserAnswer = $this->request->getPost()->get('antispamanswer', '');
 
-        // Notice: profile fields are checked inside registrationErrors
-        $registrationErrors = ModUtil::apiFunc('Users', 'registration', 'getRegistrationErrors', array(
+        $registrationErrors = ModUtil::apiFunc($this->name, 'registration', 'getRegistrationErrors', array(
             'checkmode'         => $checkMode,
-            'reginfo'           => $reginfo,
-            'agreetoterms'      => $userAgreesToTOUPP,
+            'reginfo'           => $userOrRegistration,
             'setpass'           => $setPassword,
             'passagain'         => $passwordAgain,
             'emailagain'        => $emailAgain,
             'antispamanswer'    => $antiSpamUserAnswer
         ));
 
-        $validators = $this->notifyHooks('users.hook.user.validate.edit', $reginfo, null, array(), new Zikula_Collection_HookValidationProviders())->getData();
-
         $errorMessages = array();
         $errorFields = array();
+        $fields = array();
         if ($registrationErrors) {
-            foreach ($registrationErrors as $field => $messageList) {
-                if ($field == 'reginfo_dynadata') {
-                    foreach ($messageList['fields'] as $propField) {
-                        $errorFields[] = 'prop_' . $propField;
-                    }
-                    $errorMessages[] = $messageList['result'];
-                } else {
-                    $errorFields[] = 'users_' . $field;
-                    $errorMessages = array_merge($errorMessages, $messageList);
-                }
+            foreach ($registrationErrors as $field => $message) {
+                $returnValue['errorFields'][$field] = $message;
+                $returnValue['errorFieldsCount']++;
             }
-            $returnValue = array(
-                'fields'    => $errorFields,
-                'messages'  => $errorMessages,
-            );
-            
-        } elseif ($validators->hasErrors()) {
+        }
+        
+        $validators = $this->notifyHooks('users.hook.user.validate.edit', $userOrRegistration, ((isset($userOrRegistration['uid']) && !empty($userOrRegistration['uid'])) ? $userOrRegistration['uid'] : null), array(), new Zikula_Hook_ValidationProviders())->getData();
+
+        if ($validators->hasErrors()) {
             $areaErrorCollections = $validators->getCollection();
             foreach ($areaErrorCollections as $area => $errorCollection) {
-                $areaErrors = $errorCollection->getErrors();
-                foreach ($areaErrors as $field => $message) {
-                    $errorMessages[] = $message;
-                }
+                $returnValue['validatorErrors'][$area]['errorFields'] = $errorCollection->getErrors();
+                $returnValue['validatorErrors'][$area]['errorFieldsCount'] = count($returnValue['validatorErrors'][$area]['errorFields']);
+                $returnValue['validatorErrorsCount']++;
             }
-            $returnValue = array(
-                'fields'    => $errorFields,
-                'messages'  => $errorMessages,
-            );
-        } else {
-            $returnValue = array(
-                'fields'    => array(),
-                'messages'  => array(),
-            );
-            
         }
+
+        $totalErrors = $returnValue['errorFieldsCount'];
+        foreach ($returnValue['validatorErrors'] as $area => $errorInfo) {
+            $totalErrors += $errorInfo['errorFieldsCount'];
+        }
+        if ($totalErrors > 0) {
+            $returnValue['errorMessages'][] = $this->_fn('There was an error with one of the fields, below. Please review the message, and correct your entry.',
+                    'There were errors with %1$d of the fields, below. Please review the messages, and correct your entries.',
+                    $totalErrors, array($totalErrors));
+            $returnValue['errorMessagesCount']++;
+        }
+        
         return new Zikula_Response_Ajax($returnValue);
     }
 
-    public function getLoginBlockFields()
+    /**
+     * Retrieve the form fields for the login form that are appropriate for the selected authentication method.
+     *
+     * @return Zikula_Response_Ajax An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
+     * 
+     * @throws Zikula_Exception_Fatal Thrown if the authentication module name or method name are not valid.
+     */
+    public function getLoginFormFields()
     {
-        $this->throwForbiddenUnless(SecurityUtil::confirmAuthKey(), LogUtil::getErrorMsgAuthid());
-        $loginBlockFields = ModUtil::func('Users', 'Auth', 'loginBlockFields');
-        return new Zikula_Response_Ajax(array('content' => $loginBlockFields));
+        $formType = $this->request->getPost()->get('formType', false);
+        $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
+        $modname = (isset($selectedAuthenticationMethod['modname']) && !empty($selectedAuthenticationMethod['modname']) ? $selectedAuthenticationMethod['modname'] : false);
+        $method = (isset($selectedAuthenticationMethod['method']) && !empty($selectedAuthenticationMethod['method']) ? $selectedAuthenticationMethod['method'] : false);
+
+        if (empty($modname) || !is_string($modname)) {
+            throw new Zikula_Exception_Fatal($this->__('An invalid authentication module name was received.'));
+        } elseif (!ModUtil::available($modname)) {
+            throw new Zikula_Exception_Fatal($this->__f('The \'%1$s\' module is not in an available state.', array($modname)));
+        } elseif (!ModUtil::isCapable($modname, 'authentication')) {
+            throw new Zikula_Exception_Fatal($this->__f('The \'%1$s\' module is not an authentication module.', array($modname)));
+        }
+
+        $loginFormFields = ModUtil::func($modname, 'Authentication', 'getLoginFormFields', array(
+            'formType' => $formType,
+            'method'    => $method,
+        ));
+        
+        return new Zikula_Response_Ajax(array(
+            'content'   => $loginFormFields,
+            'modname'   => $modname,
+            'method'    => $method,
+        ));
     }
 }

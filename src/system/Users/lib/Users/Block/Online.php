@@ -16,7 +16,7 @@
 /**
  * A block that shows who is currently using the system.
  */
-class Users_Block_Online extends Zikula_Controller_Block
+class Users_Block_Online extends Zikula_Controller_AbstractBlock
 {
     /**
      * Initialise the block.
@@ -37,13 +37,15 @@ class Users_Block_Online extends Zikula_Controller_Block
      */
     public function info()
     {
-        return array('module'         => 'Users',
-                     'text_type'      => $this->__("Who's on-line"),
-                     'text_type_long' => $this->__('On-line block'),
-                     'allow_multiple' => false,
-                     'form_content'   => false,
-                     'form_refresh'   => false,
-                     'show_preview'   => true);
+        return array(
+            'module'         => $this->name,
+            'text_type'      => $this->__("Who's on-line"),
+            'text_type_long' => $this->__('On-line block'),
+            'allow_multiple' => false,
+            'form_content'   => false,
+            'form_refresh'   => false,
+            'show_preview'   => true,
+        );
     }
 
     /**
@@ -83,14 +85,15 @@ class Users_Block_Online extends Zikula_Controller_Block
         $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] = '0'";
         $numguests = DBUtil::selectObjectCount('session_info', $where, 'ipaddr', true);
 
-        $this->view->assign('registerallowed', $this->getVar('reg_allowreg'))
-                   ->assign('loggedin', UserUtil::isLoggedIn())
-                   ->assign('userscount', $numusers )
-                   ->assign('guestcount', $numguests )
-                   ->assign('username', UserUtil::getVar('uname'));
-
         $msgmodule = System::getVar('messagemodule', '');
-        $this->view->assign('msgmodule', $msgmodule);
+
+        $this->view->assign('registerallowed', $this->getVar('reg_allowreg'))
+                ->assign('loggedin', UserUtil::isLoggedIn())
+                ->assign('userscount', $numusers )
+                ->assign('guestcount', $numguests )
+                ->assign('username', UserUtil::getVar('uname'))
+                ->assign('msgmodule', $msgmodule);
+        
         if ($msgmodule && SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
             // check if message module is available and add the necessary info
             if (ModUtil::available($msgmodule)) {

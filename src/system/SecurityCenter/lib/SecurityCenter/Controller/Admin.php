@@ -318,7 +318,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         // we need to auto logout the user if they changed from DB to FILE
         if ($cause_logout == true) {
             UserUtil::logout();
-            return System::redirect(ModUtil::url('Users', 'user', 'loginscreen'));
+            return System::redirect(ModUtil::url('Users', 'user', 'login'));
         }
 
         // This function generated no output, and so now it is complete we redirect

@@ -1,59 +1,75 @@
-{foreach from=$authmodules key='curAuthmoduleName' item='curAuthmodule' name='curAuthmodule'}
-{if ('Users' == $curAuthmoduleName)}
-    {ajaxheader modname=$curAuthmoduleName filename='Zikula.Users.LoginBlock.js'}
-{else}
-    {ajaxheader modname=$curAuthmoduleName filename=$curAuthmoduleName|cat:'.LoginBlock.js'}
-{/if}
+{strip}
+{ajaxheader modname='Users' filename='Zikula.Users.LoginBlock.js'}
+{foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
+    {if ('Users' != $authentication_method.modname)}
+        {ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.LoginBlock.js'}
+    {/if}
 {/foreach}
-<div class="users_loginblock_box">{insert name='generateauthkey' module='Users' assign='authkey'}
-    {if (isset($authmodule) && $authmodule)}{modfunc modname=$authmodule type='auth' func='loginBlockFields' assign='loginblockfields'}{/if}
-    <div id="users_loginblock_waiting" class="z-center z-hide">{img modname='core' set='ajax' src='indicator_circle.gif'}</div>
-    <form id="users_loginblock_loginform" class="z-form z-linear{if (empty($loginblockfields) || !$loginblockfields)} z-hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
+{/strip}<div class="users_loginblock_box">{strip}
+    {assign var='show_login_form' value=false}
+    {if (isset($selected_authentication_method) && $selected_authentication_method)}
+        {login_form_fields formType='block' authentication_method=$selected_authentication_method assign='login_form_fields'}
+        {if isset($login_form_fields) && $login_form_fields}
+            {assign var='show_login_form' value=true}
+        {/if}
+    {/if}
+    {/strip}<div id="users_loginblock_waiting" class="z-center z-hide">
+        {img modname='core' set='ajax' src='indicator_circle.gif'}
+    </div>
+    <form id="users_loginblock_login_form" class="z-form z-linear{if !$show_login_form} z-hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
         <div>
-            <input type="hidden" name="url" value="{$returnurl|safetext}" />
-            <input type="hidden" id="users_authid" name="authid" value="{$authkey}" />
-            <input type="hidden" id="users_authmodule" name="authmodule" value="{$authmodule|default:'false'}" />
-            <div id="users_loginblock_fields">{if (!empty($loginblockfields) && $loginblockfields)}{$loginblockfields}{/if}</div>
-            {if $seclevel != 'High'}<div class="z-formrow">
+            <input type="hidden" id="users_loginblock_returnurl" name="returnurl" value="{getcurrenturi}" />
+            <input type="hidden" id="users_loginblock_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
+            <input type="hidden" id="users_loginblock_selected_authentication_module" name="authentication_method[modname]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|default:'false'}{/if}" />
+            <input type="hidden" id="users_loginblock_selected_authentication_method" name="authentication_method[method]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.method|default:'false'}{/if}" />
+            {if ($modvars.ZConfig.seclevel|lower == 'high')}
+            <input id="users_loginblock_rememberme" type="hidden" name="rememberme" value="0" />
+            {/if}
+            <div id="users_loginblock_fields">
+            {if !empty($login_form_fields)}
+                {$login_form_fields}
+            {/if}
+            </div>
+            {if $modvars.ZConfig.seclevel|lower != 'high'}
+            <div class="z-formrow z-clearer">
                 <div>
-                    <input id="loginblock_rememberme" type="checkbox" value="1" name="rememberme" />
-                    <label for="loginblock_rememberme">{gt text="Remember me" domain='zikula'}</label>
+                    <input id="users_loginblock_rememberme" type="checkbox" name="rememberme" value="1" />
+                    <label for="users_loginblock_rememberme">{gt text="Keep me logged in on this computer"}</label>
                 </div>
             </div>
+
+            {notifydisplayhooks eventname='users.hook.login.ui.edit' area='modulehook_area.users.login' formType='block'}
+
             {/if}
             <div class="z-buttons z-right">
-                <input class="z-bt-ok z-bt-small" type="submit" value="{gt text="Log in" domain='zikula'}" />
+                <input class="z-bt-ok z-bt-small" id="users_loginblock_submit" name="users_loginblock_submit" type="submit" value="{gt text="Log in"}" />
             </div>
         </div>
     </form>
-    <div id="loginblock_no_loginblockfields"{if (empty($authmodule) || !$authmodule) || (!empty($authmodule) && $authmodule && !empty($loginblockfields) && $loginblockfields)} class="z-hide"{/if}>
-        <h5>{$authmodule}</h5>
+    <div id="users_loginblock_no_loginformfields"{if (!isset($selected_authentication_method) || !$selected_authentication_method) || (isset($selected_authentication_method) && $selected_authentication_method && isset($login_form_fields) && $login_form_fields)} class="z-hide"{/if}>
+        <h5>{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|default:''}{/if}</h5>
         <p class="z-errormsg">
-            {gt text='This log-in option is not available right now.' domain='zikula'}
-            {if count($authmodules) > 1}
-            {gt text='Please choose another or contact the site administrator for assistance.' domain='zikula'}
+            {gt text='The log-in option you chose is not available at the moment.'}
+            {if count($authentication_method_display_order) > 1}
+            {gt text='Please choose another or contact the site administrator for assistance.'}
             {else}
-            {gt text='Please contact the site administrator for assistance.' domain='zikula'}
+            {gt text='Please contact the site administrator for assistance.'}
             {/if}
         </p>
     </div>
-    {if (count($authmodules) > 1)}
-    <h5 id="loginblock_h5_authmodule"{if (empty($authmodule) || !$authmodule)} class="z-hide"{/if}>{gt text="Or instead, login with your..." domain='zikula'}</h5>
-    <h5 id="loginblock_h5_no_authmodule"{if (!empty($authmodule) && $authmodule)} class="z-hide"{/if}>{gt text="Login with your..." domain='zikula'}</h5>
-    {foreach from=$authmodules key='curAuthmoduleName' item='curAuthmodule' name='curAuthmodule'}
-    {modfunc modname=$curAuthmoduleName type='auth' func='loginBlockIcon' assign='loginblockicon'}
-    {if $loginblockicon}
-    {$loginblockicon}
-    {else}
-    <a id="users_loginblock_loginwith_{$curAuthmoduleName}" class="users_loginblock_loginwith" href="{modurl modname='Users' func='loginScreen'}">{$curAuthmoduleName}</a>
-    {if !$smarty.foreach.curAuthmodule.last}<br />{/if}
-    {/if}
-    {/foreach}
+    {if (count($authentication_method_display_order) > 1)}
+        <h5 id="users_loginblock_h5_authentication_method"{if (!isset($selected_authentication_method) || !$selected_authentication_method)} class="z-hide"{/if}>{gt text="Or instead, login with your..."}</h5>
+        <h5 id="users_loginblock_h5_no_authentication_method"{if (isset($selected_authentication_method) && $selected_authentication_method)} class="z-hide"{/if}>{gt text="Login with your..."}</h5>
+        {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
+            {authentication_method_selector formType='block' authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}
+        {/foreach}
     {/if}
 
-    <h5>{gt text="Do you need to..." domain='zikula'}</h5>
-    {if $allowregistration}
-    <a class="user-icon-adduser" style="display:block;" href="{modurl modname='Users' func='register'}">{gt text="Create an account?" domain='zikula'}</a>
+    {notifydisplayhooks eventname='users.hook.authentication_method_selectors.ui.view' area='modulehook_area.users.authentication_method_selectors' formType='block'}
+
+    <h5>{gt text="Do you need to..."}</h5>
+    {if $modvars.Users.reg_allowreg}
+    <a class="user-icon-adduser" style="display:block;" href="{modurl modname='Users' func='register'}">{gt text="Create an account?"}</a>
     {/if}
-    <a class="user-icon-lostusername" style="display:block;" href="{modurl modname='Users' func='lostpwduname'}">{gt text="Recover your account information?" domain='zikula'}</a>
+    <a class="user-icon-lostusername" style="display:block;" href="{modurl modname='Users' func='lostpwduname'}">{gt text="Recover your account information?"}</a>
 </div>

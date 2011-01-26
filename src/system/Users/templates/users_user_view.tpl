@@ -3,7 +3,7 @@
 
 <p>{gt text="Please choose an action:"}</p>
 <ul>
-    <li><a href="{modurl modname='Users' type='user' func='loginscreen'}">{gt text="Log in"}</a></li>
+    <li><a href="{modurl modname='Users' type='user' func='login'}">{gt text="Log in"}</a></li>
 
     {if $reg_allowreg}
     <li><a href="{modurl modname='Users' type='user' func='register'}">{gt text="Register new account"}</a></li>

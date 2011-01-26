@@ -1,0 +1,1 @@
+<ul><li><a href="{modurl modname='Users' type='user' func='login}">Log in</a></li></ul>

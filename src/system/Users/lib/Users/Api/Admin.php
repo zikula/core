@@ -16,7 +16,7 @@
 /**
  * The administrative system-level and database-level functions for the Users module.
  */
-class Users_Api_Admin extends Zikula_Api
+class Users_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * Find users.
@@ -102,18 +102,20 @@ class Users_Api_Admin extends Zikula_Api
             }
         }
         // TODO - Should this exclude pending delete too?
-        $where[] = "({$userscolumn['activated']} != " . UserUtil::ACTIVATED_PENDING_REG . ")";
+        $where[] = "({$userscolumn['activated']} != " . Users::ACTIVATED_PENDING_REG . ")";
         $where = 'WHERE ' . implode(' AND ', $where);
 
         $permFilter = array();
-        $permFilter[] = array('realm' => 0,
-                          'component_left'   => 'Users',
-                          'component_middle' => '',
-                          'component_right'  => '',
-                          'instance_left'    => 'uname',
-                          'instance_middle'  => '',
-                          'instance_right'   => 'uid',
-                          'level'            => ACCESS_READ);
+        $permFilter[] = array(
+            'realm'             => 0,
+            'component_left'    => $this->name,
+            'component_middle'  => '',
+            'component_right'   => '',
+            'instance_left'     => 'uname',
+            'instance_middle'   => '',
+            'instance_right'    => 'uid',
+            'level'             => ACCESS_READ,
+        );
         $objArray = DBUtil::selectObjectArray('users', $where, 'uname', null, null, null, $permFilter);
 
         return $objArray;
@@ -131,114 +133,113 @@ class Users_Api_Admin extends Zikula_Api
      *                    array $args['access_permissions'] An array of group ids to which the user should belong.
      *
      * @return bool true if successful, false otherwise.
+     * 
+     * @throws Zikula_Exception_Forbidden If the user does not have edit access to any user account records.
      */
     public function updateUser($args)
     {
         // check permission to edit any generic user
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         // Checking for necessary basics
         if (!isset($args['userinfo']) || !is_array($args['userinfo']) || empty($args['userinfo'])) {
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
-        $userInfo = $args['userinfo'];
-        if (!isset($userInfo['uid']) || empty($userInfo['uid']) || !isset($userInfo['uname'])
-                || empty($userInfo['uname']) || !isset($userInfo['email'])  || empty($userInfo['email'])) {
+        $updatedUser = $args['userinfo'];
+        if (!isset($updatedUser['uid']) || empty($updatedUser['uid']) || !isset($updatedUser['uname'])
+                || empty($updatedUser['uname']) || !isset($updatedUser['email'])  || empty($updatedUser['email'])) {
 
-            return LogUtil::registerArgsError();
+            $this->registerError(LogUtil::getErrorMsgArgs());
+            return false;
         }
 
-        $oldUserObj = UserUtil::getVars($userInfo['uid']);
-        if (!$oldUserObj) {
-            return LogUtil::registerError($this->__('Error! Could not find the user record in order to update it.'));
-        } elseif (!SecurityUtil::checkPermission('Users::', "{$oldUserObj['uname']}::{$oldUserObj['uid']}", ACCESS_EDIT)) {
+        $originalUser = UserUtil::getVars($updatedUser['uid']);
+        if (!$originalUser) {
+            $originalUser = UserUtil::getVars($updatedUser['uid'], false, 'uid', true);
+        }
+        
+        if (!$originalUser) {
+            $this->registerError($this->__('Error! Could not find the user record in order to update it.'));
+            return false;
+        } elseif (!SecurityUtil::checkPermission('Users::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
             // above elseif checks permission to edit the specific user
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
-        if (isset($userInfo['pass']) && !empty($userInfo['pass'])) {
+        if (isset($updatedUser['pass']) && !empty($updatedUser['pass'])) {
             $setpass = true;
         } else {
             $setpass = false;
         }
 
-        $registrationErrors = ModUtil::apiFunc('Users', 'registration', 'getRegistrationErrors', array(
+        $registrationErrors = ModUtil::apiFunc($this->name, 'registration', 'getRegistrationErrors', array(
             'checkmode'  => 'modify',
             'setpass'    => $setpass,
-            'reginfo'    => $userInfo,
-            'passagain'  => $args['passagain'],
+            'reginfo'    => $updatedUser,
+            'passagain'  => isset($args['passagain']) ? $args['passagain'] : '',
             'emailagain' => $args['emailagain'],
         ));
         if ($registrationErrors) {
-            foreach ($registrationErrors as $fieldGroup) {
-                foreach ($fieldGroup as $message) {
-                    LogUtil::registerError($message);
-                }
+            foreach ($registrationErrors as $message) {
+                $this->registerError($message);
             }
             return false;
         }
 
         if ($setpass) {
-            $userInfo['pass'] = UserUtil::getHashedPassword($userInfo['pass']);
+            $updatedUser['pass'] = UserUtil::getHashedPassword($updatedUser['pass']);
         } else {
-            unset($userInfo['pass']);
+            unset($updatedUser['pass']);
         }
 
-        // process the dynamic data
-        $dynadata = isset($userInfo['dynadata']) ? $userInfo['dynadata'] : array();
-        unset($userInfo['dynadata']);
+        DBUtil::updateObject($updatedUser, 'users', '', 'uid');
 
-        // call the profile manager to handle dynadata if needed
-        $profileModule = System::getVar('profilemodule', '');
-        $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
-        if ($useProfileMod) {
-            $adddata = ModUtil::apiFunc($profileModule, 'user', 'insertDyndata', $userInfo);
-            if (is_array($adddata)) {
-                $userInfo = array_merge($adddata, $userInfo);
-            }
-        }
+        if ($args['access_permissions'] !== false) {
+            // Fixing a high numitems to be sure to get all groups
+            $groups = ModUtil::apiFunc('Groups', 'user', 'getAll', array('numitems' => 10000));
+            $curUserGroupMembership = ModUtil::apiFunc('Groups', 'user', 'getUserGroups', array('uid' => $updatedUser['uid']));
 
-        DBUtil::updateObject($userInfo, 'users', '', 'uid');
-
-        // Fixing a high numitems to be sure to get all groups
-        $groups = ModUtil::apiFunc('Groups', 'user', 'getAll', array('numitems' => 10000));
-        $curUserGroupMembership = ModUtil::apiFunc('Groups', 'user', 'getUserGroups', array('uid' => $userInfo['uid']));
-
-        foreach ($groups as $group) {
-            if (in_array($group['gid'], $args['access_permissions'])) {
-                // Check if the user is already in the group
-                $userIsMember = false;
-                if ($curUserGroupMembership) {
-                    foreach ($curUserGroupMembership as $alreadyMemberOf) {
-                        if ($group['gid'] == $alreadyMemberOf['gid']) {
-                            $userIsMember = true;
-                            break;
+            foreach ($groups as $group) {
+                if (in_array($group['gid'], $args['access_permissions'])) {
+                    // Check if the user is already in the group
+                    $userIsMember = false;
+                    if ($curUserGroupMembership) {
+                        foreach ($curUserGroupMembership as $alreadyMemberOf) {
+                            if ($group['gid'] == $alreadyMemberOf['gid']) {
+                                $userIsMember = true;
+                                break;
+                            }
                         }
                     }
-                }
-                if ($userIsMember == false) {
-                    // User is not in this group
-                    ModUtil::apiFunc('Groups', 'admin', 'addUser', array(
+                    if ($userIsMember == false) {
+                        // User is not in this group
+                        ModUtil::apiFunc('Groups', 'admin', 'addUser', array(
+                            'gid' => $group['gid'],
+                            'uid' => $updatedUser['uid']
+                        ));
+                        $curUserGroupMembership[] = $group;
+                    }
+                } else {
+                    // We don't need to do a complex check, if the user is not in the group, the SQL will not return
+                    // an error anyway.
+                    ModUtil::apiFunc('Groups', 'admin', 'removeUser', array(
                         'gid' => $group['gid'],
-                        'uid' => $userInfo['uid']
+                        'uid' => $updatedUser['uid']
                     ));
-                    $curUserGroupMembership[] = $group;
                 }
-            } else {
-                // We don't need to do a complex check, if the user is not in the group, the SQL will not return
-                // an error anyway.
-                ModUtil::apiFunc('Groups', 'admin', 'removeUser', array(
-                    'gid' => $group['gid'],
-                    'uid' => $userInfo['uid']
-                ));
             }
         }
 
         // Let other modules know we have updated an item
-        $updateEvent = new Zikula_Event('user.update', $userInfo);
+        if ($originalUser['activated'] == Users::ACTIVATED_PENDING_REG) {
+            $updateEvent = new Zikula_Event('registration.update', $updatedUser);
+        } else {
+            $updateEvent = new Zikula_Event('user.update', $updatedUser);
+        }
         $this->eventManager->notify($updateEvent);
 
         return true;
@@ -266,7 +267,8 @@ class Users_Api_Admin extends Zikula_Api
         }
 
         if (!isset($args['uid']) || (!is_numeric($args['uid']) && !is_array($args['uid']))) {
-            return LogUtil::registerError("Error! Illegal argument were passed to 'deleteuser'");
+            $this->registerError("Error! Illegal argument were passed to 'deleteuser'");
+            return false;
         }
 
         if (isset($args['mark']) && is_bool($args['mark'])) {
@@ -299,14 +301,14 @@ class Users_Api_Admin extends Zikula_Api
 
         foreach ($userList as $userObj) {
             if ($markOnly) {
-                UserUtil::setVar('activated', UserUtil::ACTIVATED_PENDING_DELETE, $userObj['uid']);
+                UserUtil::setVar('activated', Users::ACTIVATED_PENDING_DELETE, $userObj['uid']);
             } else {
                 // TODO - This should be in the Groups module, and happen as a result of an event.
                 if (!DBUtil::deleteObjectByID('group_membership', $userObj['uid'], 'uid')) {
                     return false;
                 }
 
-                ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array('uid' => $userObj['uid']));
+                ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $userObj['uid']));
                 DBUtil::deleteObjectByID('session_info', $userObj['uid'], 'uid');
 
                 if (!DBUtil::deleteObject($userObj, 'users', '', 'uid')) {
@@ -328,11 +330,13 @@ class Users_Api_Admin extends Zikula_Api
      * @param array $args All arguments passed to this function.
      *
      * @return bool True on success; otherwise false
+     * 
+     * @throws Zikula_Exception_Forbidden if the current user does not have sufficient access to send mail.
      */
     public function sendmail($args)
     {
         if (!SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT)) {
-            return LogUtil::registerPermissionError();
+            throw new Zikula_Exception_Forbidden();
         }
 
         if (isset($args['uid']) && !empty($args['uid'])) {
@@ -342,13 +346,15 @@ class Users_Api_Admin extends Zikula_Api
                 $recipientUidList = array($args['uid']);
             }
         } else {
-            return LogUtil::registerError(__('Error! No users selected for removal, or invalid uid list.'));
+            $this->registerError(__('Error! No users selected for removal, or invalid uid list.'));
+            return false;
         }
 
         if (isset($args['sendmail']) && !empty($args['sendmail']) && is_array($args['sendmail'])) {
             $sendmail = $args['sendmail'];
         } else {
-            return LogUtil::registerError(__('Error! E-mail message to be sent not specified or invalid.'));
+            $this->registerError(__('Error! E-mail message to be sent not specified or invalid.'));
+            return false;
         }
 
         $missingFields = array();
@@ -369,7 +375,8 @@ class Users_Api_Admin extends Zikula_Api
             $msg = _fn('Error! The required field \'%2$s\' was blank or missing',
                     'Error! %1$d required fields were blank or missing: \'%2$s\'.',
                     $count, array($count, implode("', '", $missingFields)));
-            return LogUtil::registerError($msg);
+            $this->registerError($msg);
+            return false;
         }
         unset($missingFields);
 
@@ -396,32 +403,37 @@ class Users_Api_Admin extends Zikula_Api
                     $recipientscount += count($bcclist);
                     $bcclist = array();
                 } else {
-                    return LogUtil::registerError($this->__('Error! Could not send the e-mail message.'));
+                    $this->registerError($this->__('Error! Could not send the e-mail message.'));
+                    return false;
                 }
             }
         }
         if (count($bcclist) <> 0) {
-            if (ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                             array('fromname'       => $sendmail['from'],
-                                   'fromaddress'    => $sendmail['rpemail'],
-                                   'toname'         => UserUtil::getVar('uname'),
-                                   'toaddress'      => UserUtil::getVar('email'),
-                                   'replytoname'    => UserUtil::getVar('uname'),
-                                   'replytoaddress' => $sendmail['rpemail'],
-                                   'subject'        => $sendmail['subject'],
-                                   'body'           => $sendmail['message'],
-                                   'bcc'            => $bcclist)) == true) {
+            $sendMessageArgs = array(
+                'fromname'      => $sendmail['from'],
+                'fromaddress'   => $sendmail['rpemail'],
+                'toname'        => UserUtil::getVar('uname'),
+                'toaddress'     => UserUtil::getVar('email'),
+                'replytoname'   => UserUtil::getVar('uname'),
+                'replytoaddress'=> $sendmail['rpemail'],
+                'subject'       => $sendmail['subject'],
+                'body'          => $sendmail['message'],
+                'bcc'           => $bcclist,
+            );
+            if (ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $sendMessageArgs)) {
                 $recipientscount += count($bcclist);
             } else {
-                return LogUtil::registerError($this->__('Error! Could not send the e-mail message.'));
+                $this->registerError($this->__('Error! Could not send the e-mail message.'));
+                return false;
             }
         }
         if ($recipientscount > 0) {
-            LogUtil::registerStatus($this->_fn(
+            $this->registerStatus($this->_fn(
                 'Done! E-mail message has been sent to %1$d user. ',
                 'Done! E-mail message has been sent to %1$d users. ',
                 $recipientscount,
-                array($recipientscount)));
+                array($recipientscount)
+            ));
         }
         return true;
     }
@@ -437,47 +449,30 @@ class Users_Api_Admin extends Zikula_Api
         $submenulinks = array();
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'view'), 'text' => $this->__('Users list'), 'class' => 'z-icon-es-view');
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view'), 'text' => $this->__('Users list'), 'class' => 'z-icon-es-view');
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            $pending = ModUtil::apiFunc('Users', 'registration', 'countAll');
+            $pending = ModUtil::apiFunc($this->name, 'registration', 'countAll');
             if ($pending) {
-                $links[] = array('url' => ModUtil::url('Users', 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'class' => 'user-icon-adduser');
+                $links[] = array('url' => ModUtil::url($this->name, 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'class' => 'user-icon-adduser');
             }
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-            $submenulinks[] = array('url' => ModUtil::url('Users', 'admin', 'newUser'), 'text' => $this->__('Create new user'));
-            $submenulinks[] = array('url' => ModUtil::url('Users', 'admin', 'import'), 'text' => $this->__('Import users'));
+            $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'));
+            $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'import'), 'text' => $this->__('Import users'));
             if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-                 $submenulinks[] = array('url' => ModUtil::url('Users', 'admin', 'exporter'), 'text' => $this->__('Export users'));
+                 $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'exporter'), 'text' => $this->__('Export users'));
             }
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new', 'links' => $submenulinks);
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new', 'links' => $submenulinks);
+        }
+        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'search'), 'text' => $this->__('Find users'), 'class' => 'z-icon-es-search');
         }
         if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'search'), 'text' => $this->__('Find and e-mail users'), 'class' => 'z-icon-es-search');
-        } else if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'search'), 'text' => $this->__('Find users'), 'class' => 'z-icon-es-search');
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'mailUsers'), 'text' => $this->__('E-mail users'), 'class' => 'z-icon-es-mail');
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'modifyConfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
-        }
-
-        $profileModule = System::getVar('profilemodule', '');
-        $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
-        if ($useProfileMod) {
-            // Make sure there are links for the user to see in the submenu. Don't try
-            // to guess at what permission level the profule module might have for its
-            // links in its getlinks function. Just try to get the links and see if
-            // it is not empty. If it is not empty, then the user has permissions for
-            // at least one function in there (maybe more).
-            $profileAdminLinks = ModUtil::apiFunc($profileModule, 'admin', 'getLinks');
-            if (!empty($profileAdminLinks)) {
-                if (ModUtil::getName() == 'Users') {
-                    $links[] = array('url' => 'javascript:showdynamicsmenu()', 'text' => $this->__('Account panel manager'), 'class' => 'z-icon-es-profile');
-                } else {
-                    $links[] = array('url' => ModUtil::url($profileModule, 'admin', 'main'), 'text' => $this->__('Account panel manager'), 'class' => 'z-icon-es-profile');
-                }
-            }
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'config'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }
 
         return $links;
@@ -550,13 +545,14 @@ class Users_Api_Admin extends Zikula_Api
         }
 
         // get users. We need the users identities set them into their groups
-        $usersInDB = ModUtil::apiFunc('Users', 'admin', 'checkMultipleExistence',
+        $usersInDB = ModUtil::apiFunc($this->name, 'admin', 'checkMultipleExistence',
                                       array('valuesArray' => $usersArray,
                                             'key' => 'uname'));
         if (!$usersInDB) {
-            return LogUtil::registerError($this->__(
+            $this->registerError($this->__(
                 'Error! The users have been created but something has failed trying to get them from the database. '
                 . 'Now all these users do not have group.'));
+            return false;
         }
 
         // get available groups
@@ -582,7 +578,8 @@ class Users_Api_Admin extends Zikula_Api
         // execute sql to create users
         $result = DBUtil::insertObjectArray($groups, 'group_membership', 'gid', true);
         if (!$result) {
-            return LogUtil::registerError($this->__('Error! The users have been created but something has failed while trying to add the users to their groups. These users are not assigned to a group.'));
+            $this->registerError($this->__('Error! The users have been created but something has failed while trying to add the users to their groups. These users are not assigned to a group.'));
+            return false;
         }
 
         // check if module Mailer is active
@@ -591,16 +588,16 @@ class Users_Api_Admin extends Zikula_Api
             $sitename  = System::getVar('sitename');
             $siteurl   = System::getBaseUrl();
 
-            $renderer = Zikula_View::getInstance('Users', false);
+            $renderer = Zikula_View::getInstance($this->name, false);
             $renderer->assign('sitename', $sitename);
             $renderer->assign('siteurl', $siteurl);
 
             foreach ($importValues as $value) {
-                if ($value['activated'] != UserUtil::ACTIVATED_PENDING_REG) {
+                if ($value['activated'] != Users::ACTIVATED_PENDING_REG) {
                     $createEvent = new Zikula_Event('user.create', $value);
                     $this->eventManager->notify($createEvent);
                 }
-                if (($value['activated'] != UserUtil::ACTIVATED_PENDING_REG) && ($value['activated'] != UserUtil::ACTIVATED_INACTIVE)
+                if (($value['activated'] != Users::ACTIVATED_PENDING_REG) && ($value['activated'] != Users::ACTIVATED_INACTIVE)
                         && ($value['sendMail'] == 1)) {
 
                     $renderer->assign('email', $value['email']);
@@ -615,7 +612,7 @@ class Users_Api_Admin extends Zikula_Api
                         'html'      => true,
                     );
                     if (!ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $sendMessageArgs)) {
-                        LogUtil::registerError($this->__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. After this error, no more messages were sent.', $value['uname']));
+                        $this->registerError($this->__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. After this error, no more messages were sent.', $value['uname']));
                         break;
                     }
                 }

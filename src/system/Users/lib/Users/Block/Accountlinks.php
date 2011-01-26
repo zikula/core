@@ -16,7 +16,7 @@
 /**
  * A user-customizable block.
  */
-class Users_Block_Accountlinks extends Zikula_Controller_Block
+class Users_Block_Accountlinks extends Zikula_Controller_AbstractBlock
 {
     /**
      * Initialise block.
@@ -35,13 +35,15 @@ class Users_Block_Accountlinks extends Zikula_Controller_Block
      */
     public function info()
     {
-        return array('module'         => 'Users',
-                     'text_type'      => $this->__('User account'),
-                     'text_type_long' => $this->__("User account links"),
-                     'allow_multiple' => false,
-                     'form_content'   => false,
-                     'form_refresh'   => false,
-                     'show_preview'   => true);
+        return array(
+            'module'         => $this->name,
+            'text_type'      => $this->__('User account'),
+            'text_type_long' => $this->__("User account links"),
+            'allow_multiple' => false,
+            'form_content'   => false,
+            'form_refresh'   => false,
+            'show_preview'   => true
+        );
     }
 
     /**
@@ -49,7 +51,7 @@ class Users_Block_Accountlinks extends Zikula_Controller_Block
      *
      * @param array $blockInfo A blockinfo structure.
      *
-     * @return string|void The rendered bock.
+     * @return string|void The rendered block.
      */
     public function display($blockInfo)
     {
@@ -61,20 +63,19 @@ class Users_Block_Accountlinks extends Zikula_Controller_Block
         $vars = BlockUtil::varsFromContent($blockInfo['content']);
 
         // Call the modules API to get the items
-        if (!ModUtil::available('Users')) {
+        if (!ModUtil::available($this->name)) {
             return;
         }
 
-        $accountlinks = ModUtil::apiFunc('Users', 'user', 'accountLinks');
+        $accountlinks = ModUtil::apiFunc($this->name, 'user', 'accountLinks');
 
         // Check for no items returned
         if (empty($accountlinks)) {
             return;
         }
 
-        $this->view->setCaching(false);
-
-        $this->view->assign('accountlinks', $accountlinks);
+        $this->view->setCaching(false)
+                ->assign('accountlinks', $accountlinks);
 
         // Populate block info and pass to theme
         $blockInfo['content'] = $this->view->fetch('users_block_accountlinks.tpl');

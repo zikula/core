@@ -137,8 +137,9 @@ Zikula.Users._PassMeter = Class.create({
 })
 
 Zikula.Users.PassMeter = Class.create({
-    initialize: function(element,options) {
-        this.passwordInput = $(element);
+    initialize: function(passwordElementId, visualizationElementId, options) {
+        this.passwordInput = $(passwordElementId);
+        this.visualizationDiv = $(visualizationElementId);
         this.options = Object.extend({
             username: false,
             onChange: false,
@@ -154,6 +155,8 @@ Zikula.Users.PassMeter = Class.create({
                 msg: 'Password is the same as login!'
             }
         }
+    },
+    start: function() {
         if(!this.options.onChange) {
             this.prepareVisualisation()
         }
@@ -194,8 +197,8 @@ Zikula.Users.PassMeter = Class.create({
         })
         this.passindicatorScore = new Element('div',{'class':'passindicatorscore'})
         this.passindicatorMsg = new Element('div',{'class':'passindicatormsg'})
-        this.passwordInput.insert({
-            after: this.passindicatorContainer.insert(this.passindicatorScore).insert(this.passindicatorBarContainer).insert(this.passindicatorMsg)
+        this.visualizationDiv.insert({
+            top: this.passindicatorContainer.insert(this.passindicatorScore).insert(this.passindicatorBarContainer).insert(this.passindicatorMsg)
         });
         this.passindicatorBarContainer.insert(this.passindicatorBar);
     }

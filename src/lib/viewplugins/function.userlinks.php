@@ -49,7 +49,7 @@ function smarty_function_userlinks($params, Zikula_View $view)
 
     } else {
         $links = "$start <a href=\"" . DataUtil::formatForDisplay(ModUtil::url('Users', 'user', 'register')) . '">' . __('Register new account') . "</a> $seperator "
-               . "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url('Users', 'user', 'loginscreen')) . '">' . __('Login') . "</a> $end";
+               . "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url('Users', 'user', 'login')) . '">' . __('Login') . "</a> $end";
     }
 
     return DataUtil::formatForDisplayHTML($links);

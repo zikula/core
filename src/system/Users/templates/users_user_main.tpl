@@ -1,18 +1,18 @@
 {gt text='My account' assign='templatetitle'}
 {include file='users_user_menu.tpl'}
 
-{foreach item='accountlink' from=$accountlinks}
+{foreach item='accountLink' from=$accountLinks}
 <div class="z-accountlink" style="width:{math equation='100/x' x=$modvars.Users.accountitemsperrow format='%.0d'}%;">
     {if $modvars.Users.accountdisplaygraphics eq 1}
-        {if isset($accountlink.set) && !empty($accountlink.set)}
-            {assign var="iconset" value=$accountlink.set}
+        {if isset($accountLink.set) && !empty($accountLink.set)}
+            {assign var="iconset" value=$accountLink.set}
     {else}
             {assign var="iconset" value=null}
     {/if}
-        <a href="{$accountlink.url|safetext}">{img src=$accountlink.icon modname=$accountlink.module set=$iconset}</a>
+        <a href="{$accountLink.url|safetext}">{img src=$accountLink.icon modname=$accountLink.module set=$iconset}</a>
         <br />
     {/if}
-    <a href="{$accountlink.url|safetext}">{$accountlink.title|safetext}</a>
+    <a href="{$accountLink.url|safetext}">{$accountLink.title|safetext}</a>
 </div>
 {/foreach}
 <br style="clear: left" />

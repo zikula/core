@@ -3527,7 +3527,17 @@ function themesideblock($row)
 function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::loginUsing()')), E_USER_DEPRECATED);
-    return UserUtil::loginUsing('Users', array('loginid' => $uname, 'pass' => $pass), $rememberme, null, $checkPassword);
+
+    $authenticationMethod = array(
+        'modname'   => 'Users',
+    );
+    if (ModUtil::getVar(Users::MODNAME, Users::MODVAR_LOGIN_METHOD, Users::LOGIN_METHOD_UNAME) == Users::LOGIN_METHOD_EMAIL) {
+        $authenticationMethod['method'] = 'email';
+    } else {
+        $authenticationMethod['method'] = 'uname';
+    }
+
+    return (bool)UserUtil::loginUsing($authenticationMethod, array('login_id' => $uname, 'pass' => $pass), $rememberme, null, $checkPassword);
 }
 
 /**

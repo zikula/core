@@ -15,12 +15,11 @@
 
 <form class="z-form" action="{modurl modname='Users' type='user' func='verifyRegistration'}" method="post">
     <div>
-        <input type="hidden" id="users_authid" name="verifyauthid" value="{insert name='generateauthkey' module='Users'}" />
+        <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_setpass" name="setpass" value="{$setpass}" />
         <fieldset>
             <legend>{gt text='Verification code'}</legend>
             <p class="z-informationmsg">{gt text="Please enter your user name and the verification code you received."}</p>
-            <input type="hidden" id="lostpasswordauthid" name="authid" value="{insert name='generateauthkey' module='Users'}" />
             <div class="z-formrow">
                 <label for="users_uname">{gt text='User name'}</label>
                 <input id="users_uname" type="text" name="uname" size="25" maxlength="25" value="{$verify_uname}" />

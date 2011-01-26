@@ -237,8 +237,13 @@ class System
 
         if ($type == 'uname') {
             // check for invalid characters
-            if (preg_match('/[^\p{L}\p{N}_\.\-]/u', $var)) {
+            if (!preg_match('/^[\p{L}\p{N}_\.\-]+$/uD', $var)) {
                 return false;
+            } else {
+                $lowerUname = mb_strtolower($var);
+                if ($lowerUname != $var) {
+                    return false;
+                }
             }
         }
 

@@ -16,8 +16,27 @@
 /**
  * Provides module installation and upgrade services for the Users module.
  */
-class Users_Installer extends Zikula_Installer
+class Users_Installer extends Zikula_AbstractInstaller
 {
+    /**
+     * Convenience access to the modname.
+     *
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * Initializes the intstaller.
+     *
+     * @param Zikula_ServiceManager $serviceManager The service manager instance for the current core instance.
+     * @param array                 $options        The {@link Zikula_AbstractBase} options; optional; not used.
+     */
+    public function  __construct(Zikula_ServiceManager $serviceManager, array $options = array()) {
+        parent::__construct($serviceManager, $options);
+
+        $this->name = Users::MODNAME;
+    }
+
     /**
      * Initialise the users module.
      *
@@ -40,52 +59,19 @@ class Users_Installer extends Zikula_Installer
             return false;
         }
 
-        // Set default values for module
+        // Set default values and modvars for module
         $this->defaultdata();
-
-        $this->setVar('itemsperpage', 25)
-             ->setVar('accountdisplaygraphics', 1)
-             ->setVar('accountitemsperpage', 25)
-             ->setVar('accountitemsperrow', 5)
-             ->setVar('changepassword', 1)
-             ->setVar('changeemail', 1)
-             ->setVar('reg_allowreg', 1)
-             ->setVar('reg_verifyemail', UserUtil::VERIFY_USERPWD)
-             ->setVar('reg_Illegalusername', __(/* illegal username list */'root webmaster admin administrator nobody anonymous username'))
-             ->setVar('reg_Illegaldomains', '')
-             ->setVar('reg_Illegaluseragents', '')
-             ->setVar('reg_noregreasons', __('Sorry! New user registration is currently disabled.'))
-             ->setVar('reg_uniemail', 1)
-             ->setVar('reg_notifyemail', '')
-             ->setVar('reg_optitems', 0)
-             ->setVar('userimg', 'images/menu')
-             ->setVar('avatarpath', 'images/avatar')
-             ->setVar('allowgravatars', 1)
-             ->setVar('gravatarimage', 'gravatar.gif')
-             ->setVar('minage', 13)
-             ->setVar('minpass', 5)
-             ->setVar('anonymous', $this->__('Guest'))
-             ->setVar('loginviaoption', 0)
-             ->setVar('moderation', 0)
-             ->setVar('hash_method', 'sha256')
-             ->setVar('login_redirect', 1)
-             ->setVar('reg_question', '')
-             ->setVar('reg_answer', '')
-             ->setVar('use_password_strength_meter', 0)
-             ->setVar('default_authmodule', 'Users')
-             ->setVar('moderation_order', UserUtil::APPROVAL_BEFORE)
-             ->setVar('login_displaymarkeddel', false)
-             ->setVar('login_displayinactive', false)
-             ->setVar('login_displayverify', false)
-             ->setVar('login_displayapproval', false)
-             ->setVar('chgemail_expiredays', 0)
-             ->setVar('chgpass_expiredays', 0)
-             ->setVar('reg_expiredays', 0)
-                ;
+        $this->setVars($this->getDefaultModvars());
 
         // Register persistent event listeners (handlers)
-        EventUtil::registerPersistentModuleHandler('Users', 'get.pending_content', array('Users_Listeners', 'pendingContentListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users_Listener_PendingContent', 'pendingContentListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('Users_Listener_ForcedPasswordChange', 'forcedPasswordChangeListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
+        
+        // Register persistent hook bundles
         HookUtil::registerHookSubscriberBundles($this->version);
+        HookUtil::registerHookProviderBundles($this->version);
 
         // Initialisation successful
         return true;
@@ -107,10 +93,10 @@ class Users_Installer extends Zikula_Installer
         if (version_compare($oldVersion, '1.11') === -1) {
             return $oldVersion;
         }
-        // Versions 1.18 and 2.0.0 were development versions that were released only to developers, and many changes
-        // in those two versions regarding database structure were radically modified. Upgrading from those versions
-        // is not possible.
-        if ((version_compare($oldVersion, '1.17') === 1) && (version_compare($oldVersion, '2.1.0') === -1)) {
+        // Versions 1.14 through 2.1.0 were development versions that were released only to developers, and many changes
+        // over the course of those versions regarding database structure were radically modified. Upgrading from any of
+        // those versions is not possible.
+        if ((version_compare($oldVersion, '1.13') === 1) && (version_compare($oldVersion, '2.2.0') === -1)) {
             return $oldVersion;
         }
 
@@ -121,46 +107,77 @@ class Users_Installer extends Zikula_Installer
                 $this->upgrade_migrateSerialisedUserTemp();
             case '1.12':
                 // upgrade 1.12 to 1.13
-                $this->setVar('avatarpath', 'images/avatar');
+                $this->setVar(Users::MODVAR_AVATAR_IMAGE_PATH, Users::MODVAR_AVATAR_IMAGE_PATH);
                 // lowercaseuname Removed in 2.0.0
                 //$this->setVar('lowercaseuname', 1);
+                // **************************************************************
+                // 1.12->1.13 is the last known upgrade of Users for Zikula 1.2.x
+                // Users module 1.13 is the last known 1.2.x version released.
+                // If the 1.2.x branch gets a new version, this must be updated.
+                // **************************************************************
             case '1.13':
-                // upgrade 1.13 to 1.14
-                $this->setVar('use_password_strength_meter', 0);
-            case '1.14':
-                // upgrade 1.14 to 1.15
-                if ($this->getVar('hash_method') == 'md5') {
-                    $this->setVar('hash_method', 'sha256');
+                // upgrade 1.13 to 2.2.0
+                // Check if the hash method is md5. If so, it is not used any more. Change it to the new default.
+                if ($this->getVar(Users::MODVAR_HASH_METHOD, false) == 'md5') {
+                    $this->setVar(Users::MODVAR_HASH_METHOD, Users::DEFAULT_HASH_METHOD);
                 }
-            case '1.15':
-                // upgrade 1.15 to 1.16
-                $this->delVar('savelastlogindate');
-                $this->setVar('allowgravatars', 1);
-                $this->setVar('gravatarimage', 'gravatar.gif');
+                
+                // Convert the banned user names to a comma separated list.
+                $bannedUnames = $this->getVar(Users::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
+                $bannedUnames = preg_split('/\s+/', $bannedUnames);
+                $bannedUnames = implode(', ', $bannedUnames);
+                $this->setVar(Users::MODVAR_REGISTRATION_ILLEGAL_UNAMES, $bannedUnames);
+                
+                // System-generated passwords are deprecated since 1.3.0. Change it to
+                // User-generated passwords.
+                $regVerifyEmail = $this->getVar(Users::MODVAR_REGISTRATION_VERIFICATION_MODE, Users::VERIFY_NO);
+                if ($regVerifyEmail == Users::VERIFY_SYSTEMPWD) {
+                    $this->setVar(Users::MODVAR_REGISTRATION_VERIFICATION_MODE, Users::VERIFY_USERPWD);
+                }
+
+                // IDN domains setting moving to system settings.
+                System::setVar('idnnames', (bool)$this->getVar('idnnames', true));
+
                 if (!DBUtil::changeTable('users_temp')) {
-                    return '1.15';
+                    return '1.13';
                 }
-            case '1.16':
-                // upgrade 1.16 to 1.17
-                // authmodules removed in 2.0.0
-                //$this->setVar('authmodules', 'Users');
-            case '1.17':
-                // upgrade 1.17 to 2.1.0
+
                 if (!$this->upgrade117Xto210($oldVersion)) {
-                    return '1.17';
+                    return '1.13';
                 }
-            case '2.1.0':
-                // Register persistent event listeners (handlers)
-                EventUtil::registerPersistentModuleHandler('Users', 'get.pending_content', array('Users_Listeners', 'pendingContentListener'));
-            case '2.1.1':
+
+                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users_Listeners', 'pendingContentListener'));
+
                 // Update users table for data type change of activated field.
                 if (!DBUtil::changeTable('users')) {
-                    return '2.1.1';
+                    return '1.13';
                 }
-            case '2.1.2':
-                HookUtil::registerHookSubscriberBundles($this->version);
-            case '2.1.3':
-                // Current version: add 2.1.3 --> next when appropriate
+
+                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users_Listener_PendingContent', 'pendingContentListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('Users_Listener_ForcedPasswordChange', 'forcedPasswordChangeListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
+                HookUtil::upgradeHookSubscriberBundles($this->version);
+                HookUtil::upgradeHookProviderBundles($this->version);
+            case '2.2.0':
+                // This s the current version: add 2.2.0 --> next when appropriate
+        }
+
+        $currentModVars = $this->getVars();
+        $defaultModVars = $this->getDefaultModvars();
+
+        // Remove modvars that are no longer defined.
+        foreach ($currentModVars as $modVar => $currentValue) {
+            if (!array_key_exists($modVar, $defaultModVars)) {
+                $this->delVar($modVar);
+            }
+        }
+
+        // Add modvars that are new to the version
+        foreach ($defaultModVars as $modVar => $defaultValue) {
+            if (!array_key_exists($modVar, $currentModVars)) {
+                $this->setVar($modVar, $defaultValue);
+            }
         }
 
         // Update successful
@@ -184,6 +201,51 @@ class Users_Installer extends Zikula_Installer
     }
 
     /**
+     * Build and return an array of all current module variables, with their default values.
+     *
+     * @return array An array of all current module variables, with their default values, suitable for {@link setVars()}.
+     */
+    private function getDefaultModvars()
+    {
+        return array(
+            Users::MODVAR_ACCOUNT_DISPLAY_GRAPHICS              => Users::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS,
+            Users::MODVAR_ACCOUNT_ITEMS_PER_PAGE                => Users::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
+            Users::MODVAR_ACCOUNT_ITEMS_PER_ROW                 => Users::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
+            Users::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => Users::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
+            Users::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->__(/* Anonymous (guest) account display name */'Guest'),
+            Users::MODVAR_AVATAR_IMAGE_PATH                     => Users::DEFAULT_AVATAR_IMAGE_PATH,
+            Users::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL              => Users::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
+            Users::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD           => Users::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
+            Users::MODVAR_GRAVATARS_ENABLED                     => Users::DEFAULT_GRAVATARS_ENABLED,
+            Users::MODVAR_GRAVATAR_IMAGE                        => Users::DEFAULT_GRAVATAR_IMAGE,
+            Users::MODVAR_HASH_METHOD                           => Users::DEFAULT_HASH_METHOD,
+            Users::MODVAR_ITEMS_PER_PAGE                        => Users::DEFAULT_ITEMS_PER_PAGE,
+            Users::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS         => Users::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
+            Users::MODVAR_LOGIN_DISPLAY_DELETE_STATUS           => Users::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS,
+            Users::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS         => Users::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
+            Users::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS           => Users::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
+            Users::MODVAR_LOGIN_METHOD                          => Users::DEFAULT_LOGIN_METHOD,
+            Users::MODVAR_LOGIN_WCAG_COMPLIANT                  => Users::DEFAULT_LOGIN_WCAG_COMPLIANT,
+            Users::MODVAR_MANAGE_EMAIL_ADDRESS                  => Users::DEFAULT_MANAGE_EMAIL_ADDRESS,
+            Users::MODVAR_PASSWORD_MINIMUM_LENGTH               => Users::DEFAULT_PASSWORD_MINIMUM_LENGTH,
+            Users::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => Users::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
+            Users::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
+            Users::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',
+            Users::MODVAR_REGISTRATION_ANTISPAM_ANSWER          => '',
+            Users::MODVAR_REGISTRATION_APPROVAL_REQUIRED        => Users::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
+            Users::MODVAR_REGISTRATION_APPROVAL_SEQUENCE        => Users::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE,
+            Users::MODVAR_REGISTRATION_DISABLED_REASON          => __(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
+            Users::MODVAR_REGISTRATION_ENABLED                  => Users::DEFAULT_REGISTRATION_ENABLED,
+            Users::MODVAR_EXPIRE_DAYS_REGISTRATION              => Users::DEFAULT_EXPIRE_DAYS_REGISTRATION,
+            Users::MODVAR_REGISTRATION_ILLEGAL_AGENTS           => '',
+            Users::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
+            Users::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => __(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
+            Users::MODVAR_REGISTRATION_VERIFICATION_MODE        => Users::DEFAULT_REGISTRATION_VERIFICATION_MODE,
+            Users::MODVAR_REQUIRE_UNIQUE_EMAIL                  => Users::DEFAULT_REQUIRE_UNIQUE_EMAIL,
+        );
+    }
+
+    /**
      * Create the default data for the users module.
      *
      * This function is only ever called once during the lifetime of a particular
@@ -191,10 +253,10 @@ class Users_Installer extends Zikula_Installer
      *
      * @return void
      */
-    public function defaultdata()
+    private function defaultdata()
     {
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-        $nowUTCStr = $nowUTC->format(UserUtil::DATETIME_FORMAT);
+        $nowUTCStr = $nowUTC->format(Users::DATETIME_FORMAT);
 
         // Anonymous
         $record = array(
@@ -203,7 +265,7 @@ class Users_Installer extends Zikula_Installer
             'email'         => '',
             'pass'          => '',
             'passreminder'  => '',
-            'activated'     => UserUtil::ACTIVATED_ACTIVE,
+            'activated'     => Users::ACTIVATED_ACTIVE,
             'approved_date' => $nowUTCStr,
             'approved_by'   => 2,
             'user_regdate'  => $nowUTCStr,
@@ -220,7 +282,7 @@ class Users_Installer extends Zikula_Installer
             'email'         => '',
             'pass'          => '1$$dc647eb65e6711e155375218212b3964',
             'passreminder'  => '',
-            'activated'     => UserUtil::ACTIVATED_ACTIVE,
+            'activated'     => Users::ACTIVATED_ACTIVE,
             'approved_date' => $nowUTCStr,
             'approved_by'   => 2,
             'user_regdate'  => $nowUTCStr,
@@ -263,10 +325,24 @@ class Users_Installer extends Zikula_Installer
         $dbinfoSystem = $serviceManager['dbtables'];
         $dbinfo117X = Users_tables('1.17');
         $dbinfo210 = Users_tables('2.1.0');
-        $usersOldFields = array('user_theme', 'user_viewemail', 'storynum', 'counter', 'hash_method', 'validfrom', 'validuntil');
-        $usersOldFieldsDB = array($dbinfo117X['users_column']['user_theme'], $dbinfo117X['users_column']['user_viewemail'],
-            $dbinfo117X['users_column']['storynum'], $dbinfo117X['users_column']['counter'], $dbinfo117X['users_column']['hash_method'],
-            $dbinfo117X['users_column']['validfrom'], $dbinfo117X['users_column']['validuntil']);
+        $usersOldFields = array(
+            'user_theme',
+            'user_viewemail',
+            'storynum',
+            'counter',
+            'hash_method',
+            'validfrom',
+            'validuntil',
+        );
+        $usersOldFieldsDB = array(
+            $dbinfo117X['users_column']['user_theme'],
+            $dbinfo117X['users_column']['user_viewemail'],
+            $dbinfo117X['users_column']['storynum'],
+            $dbinfo117X['users_column']['counter'],
+            $dbinfo117X['users_column']['hash_method'],
+            $dbinfo117X['users_column']['validfrom'],
+            $dbinfo117X['users_column']['validuntil']
+        );
 
         // Upgrade the tables
 
@@ -298,8 +374,9 @@ class Users_Installer extends Zikula_Installer
         $limitOffset = 0;
         $updated = true;
         $userCount = DBUtil::selectObjectCount('users_temp');
-        // Pass through the users_temp table in chunks of 100, ensuring unames and email addresses are lower case,
-        // and converting pending email change request data in preparation for converstion to users_verifychg
+        // Pass through the users_temp table in chunks of 100
+        //  * ensure unames and email addresses are lower case,
+        //  * convert pending email change request data in preparation for converstion to users_verifychg
         while ($limitOffset < $userCount) {
             $userArray = DBUtil::selectObjectArray('users_temp', '', '', $limitOffset, $limitNumRows, '', null, null,
                 array('tid', 'type', 'uname', 'email', 'pass', 'hash_method', 'dynamics', 'comment'));
@@ -319,7 +396,7 @@ class Users_Installer extends Zikula_Installer
                                 && is_numeric($userArray[$key]['dynamics'])) {
                             // Convert the date to a date/time format instead of a UNIX timestamp
                             $theDate = new DateTime("@{$userArray[$key]['dynamics']}", $tzUTC);
-                            $userArray[$key]['dynamics'] = $theDate->format(UserUtil::DATETIME_FORMAT);
+                            $userArray[$key]['dynamics'] = $theDate->format(Users::DATETIME_FORMAT);
                         }
                         if (isset($userArray[$key]['comment']) && !empty($userArray[$key]['comment']) 
                                 && is_string($userArray[$key]['comment'])) {
@@ -344,7 +421,7 @@ class Users_Installer extends Zikula_Installer
         $sql = "INSERT INTO {$dbinfo210['users_verifychg']}
                     ({$verifyColumn['changetype']}, {$verifyColumn['uid']}, {$verifyColumn['newemail']},
                      {$verifyColumn['verifycode']}, {$verifyColumn['created_dt']})
-                SELECT " . UserUtil::VERIFYCHGTYPE_EMAIL . " AS {$verifyColumn['changetype']},
+                SELECT " . Users::VERIFYCHGTYPE_EMAIL . " AS {$verifyColumn['changetype']},
                     users.{$usersColumn['uid']} AS {$verifyColumn['uid']},
                     ut.{$tempColumn['email']} AS {$verifyColumn['newemail']},
                     ut.{$tempColumn['comment']} AS {$verifyColumn['verifycode']},
@@ -420,7 +497,7 @@ class Users_Installer extends Zikula_Installer
                 SELECT {$tempColumn['uname']} AS {$usersColumn['uname']},
                     {$tempColumn['email']} AS {$usersColumn['email']},
                     {$tempColumn['pass']} AS {$usersColumn['pass']},
-                    ".UserUtil::ACTIVATED_PENDING_REG." AS {$usersColumn['activated']},
+                    ".Users::ACTIVATED_PENDING_REG." AS {$usersColumn['activated']},
                     0 AS {$usersColumn['approved_by']}
                 FROM {$dbinfo117X['users_temp']}
                 WHERE {$dbinfo117X['users_temp']}.{$tempColumn['type']} = 1";
@@ -441,7 +518,7 @@ class Users_Installer extends Zikula_Installer
                 LEFT JOIN {$dbinfo210['users']} AS users
                     ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
                 WHERE (ut.{$tempColumn['type']} = 1)
-                    AND (users.{$usersColumn['activated']} = ".UserUtil::ACTIVATED_PENDING_REG.")";
+                    AND (users.{$usersColumn['activated']} = ".Users::ACTIVATED_PENDING_REG.")";
         $updated = DBUtil::executeSQL($sql);
         if (!$updated) {
             return false;
@@ -459,7 +536,7 @@ class Users_Installer extends Zikula_Installer
                 LEFT JOIN {$dbinfo210['users']} AS users
                     ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
                 WHERE (ut.{$tempColumn['type']} = 1)
-                    AND (users.{$usersColumn['activated']} = ".UserUtil::ACTIVATED_PENDING_REG.")";
+                    AND (users.{$usersColumn['activated']} = ".Users::ACTIVATED_PENDING_REG.")";
         $updated = DBUtil::executeSQL($sql);
         if (!$updated) {
             return false;
@@ -477,7 +554,7 @@ class Users_Installer extends Zikula_Installer
                 LEFT JOIN {$dbinfo210['users']} AS users
                     ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
                 WHERE (ut.{$tempColumn['type']} = 1)
-                    AND (users.{$usersColumn['activated']} = ".UserUtil::ACTIVATED_PENDING_REG.")";
+                    AND (users.{$usersColumn['activated']} = ".Users::ACTIVATED_PENDING_REG.")";
         $updated = DBUtil::executeSQL($sql);
         if (!$updated) {
             return false;
@@ -497,33 +574,6 @@ class Users_Installer extends Zikula_Installer
             $dbinfoSystem[$key] = $value;
         }
         $serviceManager['dbtables'] = $dbinfoSystem;
-
-        // done with db changes. Now handle some final stuff.
-        $this->delVar('authmodules');
-        $this->setVar('default_authmodule', 'Users');
-
-        $regVerifyEmail = $this->getVar('reg_verifyemail', UserUtil::VERIFY_NO);
-        if ($regVerifyEmail == UserUtil::VERIFY_SYSTEMPWD) {
-            $this->setVar('reg_verifyemail', UserUtil::VERIFY_USERPWD);
-        }
-
-        $this->setVar('moderation_order', UserUtil::APPROVAL_BEFORE)
-             ->setVar('login_displaymarkeddel', false)
-             ->setVar('login_displayinactive', false)
-             ->setVar('login_displayverify', false)
-             ->setVar('login_displayapproval', false)
-             ->setVar('chgemail_expiredays', 0)
-             ->setVar('chgpass_expiredays', 0)
-             ->setVar('reg_expiredays', 0)
-                ;
-
-        $this->delVar('reg_forcepwdchg');
-        $this->delVar('lowercaseuname');
-        $this->delVar('recovery_forcepwdchg');
-
-        // IDN domains setting moving to system settings.
-        System::setVar('idnnames', (bool)$this->getVar('idnnames', true));
-        $this->delVar('idnnames');
 
         return true;
     }

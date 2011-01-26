@@ -16,7 +16,7 @@
 /**
  * The Account API provides links for modules on the "user account page"; this class provides them for the Users module.
  */
-class Users_Api_Account extends Zikula_Api
+class Users_Api_Account extends Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the the user's account panel.
@@ -29,55 +29,66 @@ class Users_Api_Account extends Zikula_Api
     {
         $items = array();
 
-        $modvars = $this->getVars();
-
-        if ($modvars['changepassword'] == 1) {
+        // Show change password action only if the account record contains a password, and the password is not the
+        // special marker for an account created without a Users module authentication password.
+        $pass = UserUtil::getVar('pass');
+        if (!empty($pass) && ($pass != Users::PWD_NO_USERS_AUTHENTICATION)) {
             // show edit password link
-            $items['1'] = array('url' => ModUtil::url('Users', 'user', 'changePassword'),
-                                'module' => 'Users',
-                                'title' => $this->__('Password changer'),
-                                'icon' => 'password.png');
+            $items['1'] = array(
+                'url'   => ModUtil::url($this->name, 'user', 'changePassword'),
+                'module'=> $this->name,
+                'title' => $this->__('Password changer'),
+                'icon'  => 'password.png'
+            );
         }
 
-        if ($modvars['changeemail'] == 1) {
-            // show edit email link
-            $items['2'] = array('url' => ModUtil::url('Users', 'user', 'changeEmail'),
-                                'module' => 'Users',
-                                'title' => $this->__('E-mail address manager'),
-                                'icon' => 'message.png');
+        // show edit email link if configured to manage email address
+        if ($this->getVar('changeemail', true)) {
+            $items['2'] = array(
+                'url'   => ModUtil::url($this->name, 'user', 'changeEmail'),
+                'module'=> $this->name,
+                'title' => $this->__('E-mail address manager'),
+                'icon'  => 'message.png'
+            );
         }
 
         // check if the users block exists
         $blocks = ModUtil::apiFunc('Blocks', 'user', 'getAll');
-        $mid = ModUtil::getIdFromName('Users');
+        $usersModuleID = ModUtil::getIdFromName($this->name);
         $found = false;
         foreach ($blocks as $block) {
-            if ($block['mid'] == $mid && $block['bkey'] == 'user') {
+            if (($block['mid'] == $usersModuleID) && ($block['bkey'] == 'user')) {
                 $found = true;
                 break;
             }
         }
 
         if ($found) {
-            $items['3'] = array('url' => ModUtil::url('Users', 'user', 'usersBlock'),
-                                'module' => 'Users',
-                                'title' => $this->__('Personal custom block'),
-                                'icon' => 'folder_home.png');
+            $items['3'] = array(
+                'url'   => ModUtil::url($this->name, 'user', 'usersBlock'),
+                'module'=> $this->name,
+                'title' => $this->__('Personal custom block'),
+                'icon'  => 'folder_home.png'
+            );
         }
 
         if (System::getVar('multilingual')) {
             if (count(ZLanguage::getInstalledLanguages()) > 1) {
-                $items['4'] = array('url' => ModUtil::url('Users', 'user', 'changeLang'),
-                                'module' => 'Users',
-                                'title' => $this->__('Language switcher'),
-                                'icon' => 'locale.png');
+                $items['4'] = array(
+                    'url'   => ModUtil::url($this->name, 'user', 'changeLang'),
+                    'module'=> $this->name,
+                    'title' => $this->__('Language switcher'),
+                    'icon'  => 'locale.png'
+                );
             }
         }
 
-        $items['5'] = array('url' => ModUtil::url('Users', 'user', 'logout'),
-                            'module' => 'Users',
-                            'title' => $this->__('Log out'),
-                            'icon' => 'exit.png');
+        $items['5'] = array(
+            'url'   => ModUtil::url($this->name, 'user', 'logout'),
+            'module'=> $this->name,
+            'title' => $this->__('Log out'),
+            'icon'  => 'exit.png'
+        );
 
         // Return the items
         return $items;

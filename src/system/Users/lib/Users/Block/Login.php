@@ -15,8 +15,13 @@
 
 /**
  * A block that allows users to log into the system.
+ *
+ * @todo Add modify/update methods to allow the admin to show only certain methods on the
+ *          block, to allow him to set the order that methods appear, and to allow him to
+ *          set the blocktitle and method descriptions for different languages. See extmenu
+ *          for an example.
  */
-class Users_Block_Login extends Zikula_Controller_Block
+class Users_Block_Login extends Zikula_Controller_AbstractBlock
 {
 
     /**
@@ -49,13 +54,15 @@ class Users_Block_Login extends Zikula_Controller_Block
      */
     public function info()
     {
-        return array('module'         => 'Users',
-                     'text_type'      => $this->__('Log-in'),
-                     'text_type_long' => $this->__('Log-in block'),
-                     'allow_multiple' => false,
-                     'form_content'   => false,
-                     'form_refresh'   => false,
-                     'show_preview'   => false);
+        return array(
+            'module'         => $this->name,
+            'text_type'      => $this->__('Log-in'),
+            'text_type_long' => $this->__('Log-in block'),
+            'allow_multiple' => false,
+            'form_content'   => false,
+            'form_refresh'   => false,
+            'show_preview'   => false,
+        );
     }
 
     /**
@@ -76,63 +83,45 @@ class Users_Block_Login extends Zikula_Controller_Block
                 $blockInfo['title'] = DataUtil::formatForDisplay('Login');
             }
 
-            $authmodules = array();
-            $modules = ModUtil::getModulesCapableOf('authentication');
-            foreach ($modules as $modinfo) {
-                if (ModUtil::available($modinfo['name'])) {
-                    $authmodules[$modinfo['name']] = $modinfo;
+            $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this);
+
+            if ($authenticationMethodList->countEnabledForAuthentication() > 1) {
+                $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', false);
+            } else {
+                // There is only one (or there is none), so auto-select it.
+                $authenticationMethod = $authenticationMethodList->getAuthenticationMethodForDefault();
+                $selectedAuthenticationMethod = array(
+                    'modname'   => $authenticationMethod->modname,
+                    'method'    => $authenticationMethod->method,
+                );
+            }
+
+            // TODO - The order and availability should be set by block configuration
+            $authenticationMethodDisplayOrder = array();
+            foreach ($authenticationMethodList as $authenticationMethod) {
+                if ($authenticationMethod->isEnabledForAuthentication()) {
+                    $authenticationMethodDisplayOrder[] = array(
+                        'modname'   => $authenticationMethod->modname,
+                        'method'    => $authenticationMethod->method,
+                    );
                 }
             }
 
-            // If there is more than one authmodule available don't assume a default.
-            $authmodule = false;
-            $numAuthmodules = count($authmodules);
-            if (!$numAuthmodules || ($numAuthmodules <= 0)) {
-                // NOTE: as of commit [cd4edce22fc1c123a6fb4ffc5b60b05b56a472df 22-Jan-2011 02:51:46 UTC
-                // (The 'mods list' should always contain the essential core modules refs #2709)]
-                // this condition should be impossible, as the commit ensures that the Users module will
-                // always respond to ModUtil::getModulesCapableOf('authentication') regardless of its
-                // state. We're leaving the code here for now until we decide how to make logging in
-                // with a uname/pwd optional. At some point someone will want to allow access to a site
-                // using *only* an authmodule other than Users. For example, the site might want to
-                // accept only authentication from OpenID, or might want to accept authentication only
-                // from an internal corporate LDAP server. In those cases, we need to decide what to
-                // do about (1) preventing users from accessing the default uname/pwd method, and (2)
-                // ensuring that the admin user can *always* log in with a Users module uname/pwd in
-                // cases where everything else is broken or unavailable. If we make it possible again
-                // for the Users module to not be on the getModulesCapableOf('authentication') list,
-                // then we'll need this again.
-                //
-                // If we go another way, then this specific 'if' condition can be removed (although
-                // the others are still required).
+            $this->view->assign('authentication_method_display_order', $authenticationMethodDisplayOrder)
+                       ->assign('selected_authentication_method', $selectedAuthenticationMethod);
 
-                // No auth modules?! We know Users is installed, so force that one.
-                $authmodules[] = ModUtil::getInfoFromName('Users');
-                $authmodule = 'Users';
-
-                // Also, log the situation.
-                LogUtil::log('There were no modules capable of authentication. Forcing the Users module to be used for authentication.', Zikula_ErrorHandler::CRIT);
-            } elseif ($numAuthmodules == 1) {
-                // There is exactly one authmodule available, so use that as the default
-                $authmodule = $modules[0]['name'];
+            $tplName = mb_strtolower("users_block_login_{$blockInfo['position']}.tpl");
+            if ($this->view->template_exists($tplName)) {
+                $blockInfo['content'] = $this->view->fetch($tplName);
             } else {
-                // There is more than one authmodule available, get the one selected.
-                // If there are none selected, then do not default.
-                $authmodule = FormUtil::getPassedValue('loginwith', false, 'GETPOST');
+                $blockInfo['content'] = $this->view->fetch('users_block_login.tpl');
             }
 
-            $this->view->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
-                       ->assign('authmodule', $authmodule)
-                       ->assign('authmodules', $authmodules)
-                       ->assign('seclevel', System::getVar('seclevel'))
-                       ->assign('allowregistration', $this->getVar('reg_allowreg'))
-                       ->assign('returnurl', System::getCurrentUri());
-
-            $blockInfo['content'] = $this->view->fetch('users_block_login.tpl');
-
             return BlockUtil::themeBlock($blockInfo);
+        } else {
+            return;
         }
 
-        return;
     }
+
 }

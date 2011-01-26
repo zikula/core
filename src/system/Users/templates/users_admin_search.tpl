@@ -1,12 +1,18 @@
-{gt text="Find and e-mail users" assign=templatetitle}
+{if ($callbackFunc == 'mailUsers')}
+    {gt text='Find and e-mail users' assign='templatetitle'}
+{else}
+    {gt text='Find users' assign='templatetitle'}
+{/if}
 {include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="search" size="large"}</div>
+    <div class="z-adminpageicon">{if ($callbackFunc == 'composeMail')}{icon type='mail' size='large'}{/if}{icon type='search' size='large'}</div>
 
     <h2>{$templatetitle}</h2>
 
-    <form class="z-form" method="post" action="{modurl modname="Users" type="admin"  func="listusers"}">
+    <form id="users_search" class="z-form" method="post" action="{modurl modname='Users' type='admin'  func=$callbackFunc|default:'search'}">
+        <input id="users_search_csrftoken" name="csrftoken" type="hidden" value="{insert name='csrftoken'}" />
+        <input id="users_search_formid" name="formid" type="hidden" value="users_search" />
         <fieldset>
             <legend>{gt text="Find users"}</legend>
             <div class="z-formrow">
@@ -35,15 +41,16 @@
                 <input id="users_regdatebefore" type="text" name="regdatebefore" size="40" maxlength="10" />
             </div>
         </fieldset>
-
-        {configgetvar name='profilemodule' assign='profilemodule'}
-        {if $profilemodule}
-            {modfunc modname=$profilemodule type='form' func='search'}
+        
+        {if $callbackFunc == 'mailUsers'}
+            {notifydisplayhooks eventname='users.hook.mailuserssearch.ui.edit' area='mailusers'}
+        {else}
+            {notifydisplayhooks eventname='users.hook.search.ui.edit' area='search'}
         {/if}
 
         <div class="z-formbuttons z-buttons">
-            {button src=button_ok.png set=icons/extrasmall __alt="Search" __title="Search" __text="Search"}
-            <a href="{modurl modname=Users type=admin func=view}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+            {button src='button_ok.png' set='icons/extrasmall' __alt='Search' __title='Search' __text='Search'}
+            <a href="{modurl modname='Users' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
         </div>
     </form>
 </div>

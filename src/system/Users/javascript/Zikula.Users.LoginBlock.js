@@ -8,68 +8,156 @@ Zikula.Users.LoginBlock =
 {
     init: function()
     {
-        if ($('users_loginblock_loginwith_Users') != null) {
-            $('users_loginblock_loginwith_Users').observe('submit', Zikula.Users.LoginBlock.onSubmitLoginWithUsers);
+        if ($('users_loginblock_select_authentication_form_users_uname') != null) {
+            $('users_loginblock_select_authentication_form_users_uname').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'users_loginblock_select_authentication_form_users_uname');});
+        }
+        if ($('users_loginblock_select_authentication_form_users_email') != null) {
+            $('users_loginblock_select_authentication_form_users_email').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'users_loginblock_select_authentication_form_users_email');});
         }
     },
 
-    changingLoginBlockFields: function(changeInProgress)
+    showAjaxInProgress: function()
     {
-        var loginForm = $('users_loginblock_loginform');
-        var subTitle = $('loginblock_h5_no_authmodule');
-        if (changeInProgress) {
-            $('users_loginblock_waiting').removeClassName('z-hide');
-            if (!loginForm.hasClassName('z-hide')) {
-                loginForm.addClassName('z-hide');
+        // Hide login form
+        var elementChangingClass = $('users_loginblock_login_form');
+        if (!elementChangingClass.hasClassName('z-hide')) {
+            elementChangingClass.addClassName('z-hide');
+        }
+
+        // Hide error notice
+        elementChangingClass = $('users_loginblock_no_loginformfields');
+        if (!elementChangingClass.hasClassName('z-hide')) {
+            elementChangingClass.addClassName('z-hide');
+        }
+
+        // Unhide heading used when no authentication module is chosen
+        elementChangingClass = $('users_loginblock_h5_no_authentication_method');
+        if (elementChangingClass.hasClassName('z-hide')) {
+            elementChangingClass.removeClassName('z-hide');
+        }
+
+        // Hide heading used when authentication module is chosen
+        elementChangingClass = $('users_loginblock_h5_authentication_method');
+        if (!elementChangingClass.hasClassName('z-hide')) {
+            elementChangingClass.addClassName('z-hide');
+        }
+
+        // Unhide all authentication method selectors
+        $$('form.users_loginblock_select_authentication').invoke('removeClassName', 'z-hide');
+
+        // Unhide the waiting indicator
+        $('users_loginblock_waiting').removeClassName('z-hide');
+    },
+
+    showAjaxComplete: function(isError)
+    {
+        // Unhide waiting indicator
+        $('users_loginblock_waiting').addClassName('z-hide');
+
+        var elementChangingClass;
+        if (isError) {
+            // Hide login form
+            elementChangingClass = $('users_loginblock_login_form');
+            if (!elementChangingClass.hasClassName('z-hide')) {
+                elementChangingClass.addClassName('z-hide');
             }
-            if (subTitle.hasClassName('z-hide')) {
-                subTitle.removeClassName('z-hide');
-                $('loginblock_h5_authmodule').addClassName('z-hide');
+
+            // Unhide error notification
+            elementChangingClass = $('users_loginblock_no_loginformfields');
+            if (elementChangingClass.hasClassName('z-hide')) {
+                elementChangingClass.removeClassName('z-hide');
+            }
+
+            // Unhide heading used when there is no authentication method selected
+            elementChangingClass = $('users_loginblock_h5_no_authentication_method');
+            if (elementChangingClass.hasClassName('z-hide')) {
+                elementChangingClass.removeClassName('z-hide');
+            }
+
+            // Hide heading used when authentication method selected
+            elementChangingClass = $('users_loginblock_h5_authentication_method');
+            if (!elementChangingClass.hasClassName('z-hide')) {
+                elementChangingClass.addClassName('z-hide');
             }
         } else {
-            $('users_loginblock_waiting').addClassName('z-hide');
-            if (loginForm.hasClassName('z-hide')) {
-                loginForm.removeClassName('z-hide');
+            // No error
+
+            // Unhide login form
+            elementChangingClass = $('users_loginblock_login_form');
+            if (elementChangingClass.hasClassName('z-hide')) {
+                elementChangingClass.removeClassName('z-hide');
             }
-            if (!subTitle.hasClassName('z-hide')) {
-                subTitle.addClassName('z-hide');
-                $('loginblock_h5_authmodule').removeClassName('z-hide');
+
+            // Hide error notification
+            elementChangingClass = $('users_loginblock_no_loginformfields');
+            if (!elementChangingClass.hasClassName('z-hide')) {
+                elementChangingClass.addClassName('z-hide');
+            }
+
+            // Hide heading used when there is no authentication method selected
+            elementChangingClass = $('users_loginblock_h5_no_authentication_method');
+            if (!elementChangingClass.hasClassName('z-hide')) {
+                elementChangingClass.addClassName('z-hide');
+            }
+
+            // Unhide heading used when authentication method selected
+            elementChangingClass = $('users_loginblock_h5_authentication_method');
+            if (elementChangingClass.hasClassName('z-hide')) {
+                elementChangingClass.removeClassName('z-hide');
             }
         }
-
-        $$('form.users_loginblock_loginwith').each(function(item) {item.removeClassName('z-hide');});
     },
 
-    onSubmitLoginWithUsers: function(event)
+    onSubmitSelectAuthenticationMethod: function(event, formId)
     {
-        Zikula.Users.LoginBlock.changingLoginBlockFields(true);
+        Zikula.Users.LoginBlock.showAjaxInProgress();
+
+        var parameterObj = $(formId).serialize({hash: true, submit: false});
+        parameterObj.formType = 'block';
 
         var r = new Zikula.Ajax.Request(
-            Zikula.Config.baseURL + "ajax.php?module=Users&func=getLoginBlockFields",
+            Zikula.Config.baseURL + 'ajax.php?module=Users&type=Ajax&func=getLoginFormFields',
             {
                 method: 'post',
-                authid: 'users_authid',
-                onComplete: Zikula.Users.LoginBlock.getLoginWithUsersResponse
+                parameters: parameterObj,
+                onSuccess: Zikula.Users.LoginBlock.getSelectAuthenticationMethodResponse,
+                onFailure: Zikula.Users.LoginBlock.selectAuthenticationMethodResponseFailure
             });
 
+        // Prevent form from sumitting itself. We just did it here.
         event.stop();
     },
 
-    getLoginWithUsersResponse: function(req)
+    getSelectAuthenticationMethodResponse: function(req)
     {
-        if (!req.isSuccess()) {
-            $('users_loginblock_waiting').addClassName('z-hide');
-            Zikula.showajaxerror(req.getMessage());
-            return;
-        }
-
         var data = req.getData();
 
-        Element.update('users_loginblock_fields', data.content);
-        $('users_authmodule').setValue('Users');
+        // Zikula.Ajax.Request calls onSuccess and onFailure if the AJAX operation times out.
+        if (data) {
+            // No timeout
+            Element.update('users_loginblock_fields', data.content);
+            $('users_loginblock_selected_authentication_module').setValue(data.modname);
+            $('users_loginblock_selected_authentication_method').setValue(data.method);
 
-        Zikula.Users.LoginBlock.changingLoginBlockFields(false);
-        $('users_loginblock_loginwith_Users').addClassName('z-hide');
+            if (data.method !== false) {
+                // Hide the chosen authentication method in the list
+                $('users_loginblock_select_authentication_form_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase()).addClassName('z-hide');
+            }
+
+            Zikula.Users.LoginBlock.showAjaxComplete(false);
+        } else {
+            Zikula.Users.LoginBlock.showAjaxComplete(true);
+        }
+    },
+
+    selectAuthenticationMethodResponseFailure: function(req)
+    {
+        // Zikula.Ajax.Request calls both onSuccess and onFailure if the AJAX operation times out.
+        Zikula.Users.LoginBlock.showAjaxComplete(true);
+        if (req.readyState != 0) {
+            // readyState 0: uninitialized. This is probably a timeout.
+            Zikula.showajaxerror(req.getStatus() + ': ' + req.getMessage());
+        }
     }
 
 }

@@ -14,6 +14,7 @@
     <form class="z-form" action="{modurl modname='Users' type='admin' func='import'}" method="post" enctype="multipart/form-data">
         <div>
             <input type="hidden" name="confirmed" value="1" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="Select the CSV file"}</legend>
                 <div class="z-formrow">
@@ -37,18 +38,18 @@
         </div>
     </form>
     <div class="z-informationmsg">
-        <h3>{gt text="About the CVS file"}</h3>
+        <h3>{gt text="About the CSV file"}</h3>
         <dl>
-            <dt>{gt text="The first row of the CVS file must contain the field names. It must be like this:"}</dt>
-            <dd>uname,pass,email,activated,sendMail,groups</dd>
+            <dt>{gt text="The first row of the CSV file must contain the field names. It must be like this:"}</dt>
+            <dd>uname,pass,email,activated,sendmail,groups</dd>
         </dl>
         <dl>
             <dt>{gt text="where:"}</dt>
 
             <dd>* uname{gt text=" (mandatory) - The user name. This value must be unique."}</dd>
-            <dd>* pass{gt text=" (mandatory) - The user password. It must have %s characters or more. Preferentially containing letters and numbers." tag1=$minpass}</dd>
+            <dd>* pass{gt text=" (mandatory) - The user password. It must have %s characters or more. Preferentially containing letters and numbers." tag1=$modvars.Users.minpass}</dd>
             <dd>* email{gt text=" (mandatory) - The user email. If the validation method is based on the user email this value must be unique."}</dd>
-            <dd>* activated{gt text=" - Type 0 if user is not active, 1 if the user must be active, 2 if user has to accept the 'Terms of use' before being active (only if legal module is activated), 4 if user has to change the passwords on login and 6 if user has both: accept the 'Terms of use' and change the password. The default value is 1."}</dd>
+            <dd>* activated{gt text=" - Type 0 if user is not active, 1 if the user must be active. The default value is 1."}</dd>
             <dd>* sendmail{gt text=" - Type 1 if the system must send the password to the user via email and 0 otherwise. The default value is 1. The module Mailer must be active and correctly configured. The email is sent only if user activated value is upper than 0."}</dd>
             <dd>* groups{gt text=" - The identities of the groups where the user must belong separated by the character |. If you do not specify any group, the default group is %s." tag1=$defaultGroup}</dd>
         </dl>
