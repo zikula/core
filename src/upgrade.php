@@ -379,8 +379,9 @@ function _upg_sanity_check($username, $password)
     if ($validupgrade) {
         $defaultTheme = System::getVar('Default_Theme');
         $dir = is_dir("themes/$defaultTheme");
-        $casing = ord(substr($defaultTheme, 0, 1)) < 91;
-        if (!$dir || !$casing) {
+        $casing = preg_match('/\p{Lu}/u', substr($defaultTheme, 0, 1)); // first letter is uppercase.
+        $underscore = preg_match('/_/', $defaultTheme); // has underscore
+        if (!$dir || !$casing || $underscore) {
             // The default theme must be installed!
             $validupgrade = false;
             echo '<h2>' . __f("Theme Check Failed", $defaultTheme) . "</h2>\n";
@@ -389,6 +390,9 @@ function _upg_sanity_check($username, $password)
             }
             if (!$casing) {
                 echo '<p class="z-errormsg">' . __f("Your configuration specifies a theme called '%s' which begins with a lower case letter.  You must first upgrade the theme's name to start with a capital letter.  This should be done in your 1.2.x installation before attempting this upgrade again.", array($defaultTheme, $defaultTheme)) . "</p>\n";
+            }
+            if ($underscore) {
+                echo '<p class="z-errormsg">' . __f("Your theme called '%s' contains an underscore, this is now deprecated.  You must first upgrade the theme's name so it does not contain any underscore character.  This should be done in your 1.2.x installation before attempting this upgrade again.", array($defaultTheme, $defaultTheme)) . "</p>\n";
             }
         }
 
