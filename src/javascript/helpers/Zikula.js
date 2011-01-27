@@ -1463,7 +1463,7 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
         } else {
             this.queue.push([url, options || {}]);
         }
-        if (this.config.autoExecute || execute) {
+        if (this.options.autoExecute || execute) {
             this.start();
         }
     },
@@ -1527,7 +1527,7 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
     getParams: function() {
         var params = this.queue.shift(),
             url = Object.isArray(params) ? params[0] : params,
-            options = Object.extend(Object.isArray(params) ? params[1] : {}, this.options.requestOptions || {});
+            options = Object.extend(Object.isArray(params) ? params[1] || {} : {}, this.options.requestOptions || {});
         if (!Object.isUndefined(options['onComplete'])) {
             this.notify = options['onComplete'];
         } else {
