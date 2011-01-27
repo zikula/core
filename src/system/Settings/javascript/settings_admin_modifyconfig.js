@@ -33,7 +33,7 @@ function settings_shorturls_onchange()
 
 function settings_shorturls_type_onchange()
 {
-    if ($('settings_shorturlstype_file').checked == true) {
+    if ($('settings_shorturls_yes').checked == true) {
         $('settings_shorturlsstripentrypoint_container').hide();
         $('settings_shorturlsseparator_container').hide();
         $('settings_shorturls_defaultmodule_container').hide();
