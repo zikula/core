@@ -1,11 +1,11 @@
 {include file="extensions_admin_menu.tpl"}
 {ajaxheader modname="Extensions" filename="hooks.js"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=package.gif set=icons/large __alt="Hooks to enable for this module"}</div>
-    <h2>{gt text="Basic hook settings for"} {modgetinfo modid=$id info=displayname}</h2>
+    <div class="z-adminpageicon">{img modname=core src=package.gif set=icons/large __alt="Legacy hooks to enable for this module"}</div>
+    <h2>{gt text="Basic legacy hook settings for"} {modgetinfo modid=$id info=displayname}</h2>
     <ul id="extendedhookslinks" class="z-hide z-menulinks">
-        <li><a href="{modurl modname=Extensions type=admin func=hooks id=$id}" title="{gt text="Basic hook settings"}">{gt text="Basic hook settings"}</a></li>
-        <li><a href="{modurl modname=Extensions type=admin func=extendedhooks id=$id}" title="{gt text="Extended hook settings"}">{gt text="Extended hook settings"}</a></li>
+        <li><a href="{modurl modname=Extensions type=admin func=hooks id=$id}" title="{gt text="Basic hook settings"}">{gt text="Basic legacy hook settings"}</a></li>
+        <li><a href="{modurl modname=Extensions type=admin func=extendedhooks id=$id}" title="{gt text="Extended hook settings"}">{gt text="Extended legacy hook settings"}</a></li>
     </ul>
     {if $hooks}
     <form class="z-form" action="{modurl modname="Extensions" type="admin" func="updatehooks"}" method="post" enctype="application/x-www-form-urlencoded">
@@ -13,7 +13,7 @@
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Extensions"}" />
             <input type="hidden" name="id" value="{$id|safetext}" />
             <fieldset>
-                <legend>{gt text="Hooked modules"}</legend>
+                <legend>{gt text="Legacy hooked modules"}</legend>
                 {section name=hook loop=$hooks}
                 <div class="z-formrow">
                     <label for="extensions_{$hooks[hook].tmodule|safetext}" style="width:40%;">{gt text="Activate"} {$hooks[hook].tmodule|safetext} {gt text="for"} {$modinfo.displayname}</label>
@@ -32,6 +32,6 @@
         </div>
     </form>
     {else}
-    <p class="z-warningmsg">{gt text="No hookable modules installed."}</p>
+    <p class="z-warningmsg">{gt text="No legacy hookable modules installed."}</p>
     {/if}
 </div>

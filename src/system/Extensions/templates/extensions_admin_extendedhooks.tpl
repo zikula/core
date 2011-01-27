@@ -2,17 +2,16 @@
 {ajaxheader modname="Extensions" filename="extendedhooks.js"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=package.gif set=icons/large alt=""}</div>
-    <h2>{gt text="Extended hook settings for"} {modgetinfo modid=$id info=displayname}</h2>
+    <h2>{gt text="Extended legacy hook settings for"} {modgetinfo modid=$id info=displayname}</h2>
     <ul class="z-menulinks">
-        <li><a href="{modurl modname=Extensions type=admin func=hooks id=$id}" title="{gt text="Basic hook settings"}">{gt text="Basic hook settings"}</a></li>
-        <li><a href="{modurl modname=Extensions type=admin func=extendedhooks id=$id}" title="{gt text="Extended hook settings"}">{gt text="Extended hook settings"}</a></li>
+        <li><a href="{modurl modname="Extensions" type="admin" func="hooks" id=$id}" title="{gt text="Basic legacy hook settings"}">{gt text="Basic legacy hook settings"}</a></li>
+        <li><a href="{modurl modname=Extensions type=admin func=extendedhooks id=$id}" title="{gt text="Extended legacy hook settings"}">{gt text="Extended legacy hook settings"}</a></li>
     </ul>
-    <p class="z-informationmsg">{gt text="Notice: In this page, you can enable individual hooked modules and change the order in which they are invoked. If you are not sure about the effects, you are recommended to not change their order. You can drag and drop hooked modules to position them where you want <strong>within</strong> sections. You cannot move a hooked module from one section to another."}</p>
     {if $grouped_hooks}
     <form class="z-form" action="{modurl modname="Extensions" type="admin" func="extendedupdatehooks"}" method="post" enctype="application/x-www-form-urlencoded">
         {foreach key=hookaction item=hookgroup from=$grouped_hooks}
         <fieldset>
-            <legend>{$hookaction|capitalize}&nbsp;Hooked modules</legend>
+            <legend>{gt text="Legacy '%s' hook modules" tag1=$hookaction}</legend>
             <div id="{$hookaction}" class="hookcontainer">
                 <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Extensions"}" />
                 <input type="hidden" name="id" value="{$id|safetext}" />
@@ -27,10 +26,10 @@
         {/foreach}
         <div class="z-buttons z-formbuttons">
             {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a href="{modurl modname="Extensions" type="admin" func="view"}" title="{gt text="Cancel"}">{img modname="core" src="button_cancel.gif" set="icons/extrasmall" __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         </div>
     </form>
     {else}
-    <p class="z-warningmsg">{gt text="No hookable modules installed."}</p>
+    <p class="z-warningmsg">{gt text="No legacy hookable modules installed."}</p>
     {/if}
 </div>
