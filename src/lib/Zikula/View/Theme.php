@@ -897,23 +897,6 @@ class Zikula_View_Theme extends Zikula_View
                 $customargs = str_replace(System::getBaseUri(), '', $this->requesturi);
                 $entrypoint = System::getVar('entrypoint');
                 $customargs = str_replace("/{$entrypoint}/", '/', $customargs);
-            } else {
-                // remove the base URI, extension, entrypoint, module name and, if it exists, the function name from the request URI
-                $extension = System::getVar('shorturlsext');
-                $qstring = str_replace(array(
-                    System::getBaseUri() . '/',
-                    ".{$extension}",
-                    $this->type,
-                    $this->func,
-                    'module-' . $this->toplevelmodule,
-                    'module-' . $this->module[$this->toplevelmodule]['url']), '', $this->requesturi);
-                $qstring = trim($qstring, '-');
-                $argsarray = explode('-', $qstring);
-                $argsarray = array_chunk($argsarray, 2);
-                foreach ($argsarray as $argarray) {
-                    $customargs[] = implode('=', $argarray);
-                }
-                $customargs = '/' . implode('/', $customargs);
             }
         } else {
             $queryparts = explode('&', $this->qstring);

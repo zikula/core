@@ -597,7 +597,6 @@ INSERT INTO `z_module_vars` VALUES (31,'ZConfig','entrypoint','s:9:\"index.php\"
 INSERT INTO `z_module_vars` VALUES (32,'ZConfig','language_detect','i:0;');
 INSERT INTO `z_module_vars` VALUES (33,'ZConfig','shorturls','b:0;');
 INSERT INTO `z_module_vars` VALUES (34,'ZConfig','shorturlstype','s:1:\"0\";');
-INSERT INTO `z_module_vars` VALUES (35,'ZConfig','shorturlsext','s:4:\"html\";');
 INSERT INTO `z_module_vars` VALUES (36,'ZConfig','shorturlsseparator','s:1:\"-\";');
 INSERT INTO `z_module_vars` VALUES (37,'ZConfig','shorturlsstripentrypoint','b:0;');
 INSERT INTO `z_module_vars` VALUES (38,'ZConfig','shorturlsdefaultmodule','s:0:\"\";');

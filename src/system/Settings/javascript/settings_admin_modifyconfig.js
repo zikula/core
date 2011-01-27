@@ -30,3 +30,16 @@ function settings_shorturls_onchange()
 {
     radioswitchdisplaystate('settings_shorturls', 'settings_shorturls_container', true);
 }
+
+function settings_shorturls_type_onchange()
+{
+    if ($('settings_shorturlstype_file').checked == true) {
+        $('settings_shorturlsstripentrypoint_container').hide();
+        $('settings_shorturlsseparator_container').hide();
+        $('settings_shorturls_defaultmodule_container').hide();
+    } else {
+        $('settings_shorturlsstripentrypoint_container').show();
+        $('settings_shorturlsseparator_container').show();
+        $('settings_shorturls_defaultmodule_container').show();
+    }
+}
