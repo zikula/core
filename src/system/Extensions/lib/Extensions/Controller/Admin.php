@@ -267,7 +267,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
 
                             if (System::isLegacyMode() && !ModUtil::isOO($mod['name'])) {
                                 $actions[] = array(
-                                        'url' => ModUtil::url('Extensions', 'admin', 'hooks', array(
+                                        'url' => ModUtil::url('Extensions', 'admin', 'legacyhooks', array(
                                         'id' => $mod['id'])),
                                         'image' => 'attach.gif',
                                         'title' => $this->__f('Legacy hook settings for \'%s\'', $mod['name']));
@@ -935,11 +935,13 @@ class Extensions_Controller_Admin extends Zikula_Controller
 
 
     /**
-     * display available hooks
-     * @param int 'id' module id
+     * Display available hooks.
+     *
+     * @param int 'id' module id.
+     *
      * @return string HTML output string
      */
-    public function hooks()
+    public function legacyhooks()
     {
         // get our input
         $id = (int) FormUtil::getPassedValue('id', null, 'GET');
