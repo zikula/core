@@ -166,8 +166,11 @@ div.property_selector_noscript {
 /*****************************************************************************/
 
 div#z-securityanalyzer {
-    background: #fff6bf url(../../../images/icons/large/bell.gif) center no-repeat;
-    background-position: 15px 50%;
+    background: url("../../../images/icons/large/bell.gif") #FFF6BF 15px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/large/bell.gif") 15px 50% no-repeat, -moz-linear-gradient(top,  #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/large/bell.gif") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/large/bell.gif") 15px 50% no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
     padding: 1em 20px 1em 90px !important;
     border: 2px solid #ffd324;
@@ -185,11 +188,14 @@ div#z-securityanalyzer {
 
 /* styling for status update checker */
 div#z-updatechecker {
-    background: #ffffea url(../../../images/icons/large/agt_update-product.gif) center no-repeat;
-    background-position: 15px 50%;
+    background: url("../../../images/icons/large/agt_update-product.gif") #C4E6BD 15px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/large/agt_update-product.gif") 15px 50% no-repeat, -moz-linear-gradient(top,  #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/large/agt_update-product.gif") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/large/agt_update-product.gif") 15px 50% no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
     padding: 1em 20px 1em 90px !important;
-    border: 2px solid #32CD32;
+    border: 2px solid #3E9533;
     min-height: 1em;
     margin: 1em auto 2em auto;
     width: 75%;
@@ -204,11 +210,14 @@ div#z-updatechecker {
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
 div#z-adminwarning {
-    background: #FFCBCA url(../../../images/icons/large/error.gif) center no-repeat;
-    background-position: 15px 50%;
+    background: url("../../../images/icons/large/error.gif") #FFCBCA 15px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/large/error.gif") 15px 50% no-repeat, -moz-linear-gradient(top,  #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/large/error.gif") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/large/error.gif") 15px 50% no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
     padding: 1em 20px 1em 90px !important;
-    border: 2px solid red;
+    border: 2px solid #990000;
     min-height: 1em;
     margin: 1em auto 2em auto;
     width: 75%;
@@ -222,8 +231,11 @@ div#z-adminwarning {
 }
 
 div#z-developernotices {
-    background: #CFECFF url(../../../images/icons/large/package_system.gif) center no-repeat;
-    background-position: 15px 50%;
+    background: url("../../../images/icons/large/package_system.gif") #C5E8F1 15px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/large/package_system.gif") 15px 50% no-repeat, -moz-linear-gradient(top,  #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/large/package_system.gif") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/large/package_system.gif") 15px 50% no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
     padding: 1em 20px 1em 90px !important;
     border: 2px solid #95C9EF;
