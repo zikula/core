@@ -27,7 +27,7 @@ class SystemListenersUtil
      */
     public static function sessionLogging(Zikula_Event $event)
     {
-        if ($event['stage'] & System::STAGES_SESSIONS) {
+        if ($event['stage'] & Zikula_Core::STAGE_SESSIONS) {
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
             if (isset($GLOBALS['ZConfig']['Log']['log.apache_uname']) && UserUtil::isLoggedIn()) {
                 if (function_exists('apache_setenv')) {
@@ -66,7 +66,7 @@ class SystemListenersUtil
      */
     public static function systemPlugins(Zikula_Event $event)
     {
-        if ($event['stage'] & System::STAGES_LANGS) {
+        if ($event['stage'] & Zikula_Core::STAGE_LANGS) {
             if (!System::isInstalling()) {
                 ServiceUtil::loadPersistentServices();
                 PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");
@@ -96,7 +96,7 @@ class SystemListenersUtil
         }
 
         $class = 'Zikula_ErrorHandler_Standard';
-        if ($event['stage'] & System::STAGES_AJAX) {
+        if ($event['stage'] & Zikula_Core::STAGE_AJAX) {
             $class = 'Zikula_ErrorHandler_Ajax';
         }
 
@@ -115,7 +115,7 @@ class SystemListenersUtil
      */
     public static function setupLoggers(Zikula_Event $event)
     {
-        if (!($event['stage'] & System::STAGES_CONFIG)) {
+        if (!($event['stage'] & Zikula_Core::STAGE_CONFIG)) {
             return;
         }
 
@@ -244,7 +244,7 @@ class SystemListenersUtil
      */
     public static function setupDebugToolbar(Zikula_Event $event)
     {
-        if ($event['stage'] == System::STAGES_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
+        if ($event['stage'] == Zikula_Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
             include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
             $sm = $event->getSubject()->getServiceManager();
@@ -327,7 +327,7 @@ class SystemListenersUtil
      */
     public static function setupAutoloaderForGeneratedCategoryModels(Zikula_Event $event)
     {
-        if ($event['stage'] == System::STAGES_CONFIG) {
+        if ($event['stage'] == Zikula_Core::STAGE_CONFIG) {
             ZLoader::addAutoloader('GeneratedDoctrineModel', CacheUtil::getLocalDir('doctrinemodels'));
         }
     }

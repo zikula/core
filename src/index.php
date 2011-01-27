@@ -29,7 +29,7 @@ $type   = FormUtil::getPassedValue('type', '', 'GET', FILTER_SANITIZE_STRING);
 $func   = FormUtil::getPassedValue('func', '', 'GET', FILTER_SANITIZE_STRING);
 
 // Check for site closed
-if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (System::VERSION_NUM != System::getVar('Version_Num'))) {
+if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula_Core::VERSION_NUM != System::getVar('Version_Num'))) {
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
         UserUtil::logout();
     }

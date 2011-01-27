@@ -699,7 +699,7 @@ class Admin_Controller_Admin extends Zikula_Controller
         }
 
         // if 1 then there is a later version available
-        if (version_compare($onlineVersion, System::VERSION_NUM) == 1) {
+        if (version_compare($onlineVersion, Zikula_Core::VERSION_NUM) == 1) {
             return array('update_show' => true,
                     'update_version' => $onlineVersion);
         } else {
@@ -769,7 +769,7 @@ class Admin_Controller_Admin extends Zikula_Controller
     {
         $urlArray = parse_url($url);
         $data = '';
-        $userAgent = 'Zikula/' . System::VERSION_NUM;
+        $userAgent = 'Zikula/' . Zikula_Core::VERSION_NUM;
         $ref = System::getBaseUrl();
         $port = (($urlArray['scheme'] == 'https') ? 443 : 80);
         if (ini_get('allow_url_fopen')) {

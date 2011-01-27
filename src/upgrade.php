@@ -21,7 +21,7 @@ EventUtil::attach('core.init', 'upgrade_suppressErrors');
 ini_set('max_execution_time', 86400);
 
 // load zikula core
-define('_ZINSTALLVER', '1.3.0');
+define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 define('_Z_MINUPGVER', '1.2.0');
 
 // include config file for retrieving name of temporary directory
@@ -54,7 +54,7 @@ if (version_compare($installedVersion, '1.3.0-dev') === -1) {
     $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = true;
 }
 
-$core->init(System::STAGES_ALL);
+$core->init(Zikula_Core::STAGE_ALL);
 
 $action = FormUtil::getPassedValue('action', false, 'GETPOST');
 
@@ -285,7 +285,7 @@ function _upg_upgrademodules($username, $password)
     ModUtil::apiFunc('Theme', 'admin', 'regenerate');
 
     // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
-    System::setVar('Version_Num', System::VERSION_NUM);
+    System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
     System::setVar('language_i18n', ZLanguage::getLanguageCode());
 
     // Relogin the admin user to give a proper admin link
@@ -410,7 +410,7 @@ function upgrade_clear_caches()
  */
 function upgrade_suppressErrors(Zikula_Event $event)
 {
-    if (!$event['stage'] == System::STAGES_CONFIG) {
+    if (!$event['stage'] == Zikula_Core::STAGE_CONFIG) {
         return;
     }
 

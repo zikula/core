@@ -35,7 +35,7 @@ class Zikula_DebugToolbar_Panel_Version implements Zikula_DebugToolbar_Panel
      */
     public function getTitle()
     {
-        return System::VERSION_NUM;
+        return Zikula_Core::VERSION_NUM;
     }
 
     /**

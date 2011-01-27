@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 include 'lib/bootstrap.php';
-$core->init(System::STAGES_ALL | System::STAGES_AJAX & ~System::STAGES_DECODEURLS);
+$core->init(Zikula_Core::STAGE_ALL | Zikula_Core::STAGE_AJAX & ~Zikula_Core::STAGE_DECODEURLS);
 
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);

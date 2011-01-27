@@ -20,36 +20,6 @@
 class System
 {
     /**
-     * The core Zikula version number.
-     */
-    const VERSION_NUM = '1.3.0-dev';
-
-    /**
-     * The version ID.
-     */
-    const VERSION_ID = 'Zikula';
-
-    /**
-     * The version sub-ID.
-     */
-    const VERSION_SUB = 'vai';
-
-    const STAGES_NONE = 0;
-    const STAGES_PRE = 1;
-    const STAGES_POST = 2;
-    const STAGES_CONFIG = 4;
-    const STAGES_DB = 8;
-    const STAGES_TABLES = 16;
-    const STAGES_SESSIONS = 32;
-    const STAGES_LANGS = 64;
-    const STAGES_MODS = 128;
-    const STAGES_DECODEURLS = 1024;
-    const STAGES_THEME = 2048;
-    const STAGES_ALL = 4095;
-    const STAGES_AJAX = 4096;
-    // needs to be set explicitly, STAGES_ALL | STAGES_AJAX
-
-    /**
      * Get a configuration variable.
      *
      * @param string $name    The name of the variable.
