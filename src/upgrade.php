@@ -378,12 +378,20 @@ function _upg_sanity_check($username, $password)
 
     if ($validupgrade) {
         $defaultTheme = System::getVar('Default_Theme');
-        if (!is_dir("themes/$defaultTheme")) {
+        $dir = is_dir("themes/$defaultTheme");
+        $casing = ord(substr($defaultTheme, 0, 1)) < 91;
+        if (!$dir || !$casing) {
             // The default theme must be installed!
             $validupgrade = false;
             echo '<h2>' . __f("Theme Check Failed", $defaultTheme) . "</h2>\n";
-            echo '<p class="z-errormsg">' . __f("Your configuration specifies a theme called '%s' that doesn't exist.  Please ensure that theme exists in themes/%s", array($defaultTheme, $defaultTheme)) . "</p>\n";
+            if (!$dir) {
+                echo '<p class="z-errormsg">' . __f("Your configuration specifies a theme called '%s' that doesn't exist.  Please ensure that theme exists in themes/%s", array($defaultTheme, $defaultTheme)) . "</p>\n";
+            }
+            if (!$casing) {
+                echo '<p class="z-errormsg">' . __f("Your configuration specifies a theme called '%s' which begins with a lower case letter.  You must first upgrade the theme's name to start with a capital letter.  This should be done in your 1.2.x installation before attempting this upgrade again.", array($defaultTheme, $defaultTheme)) . "</p>\n";
+            }
         }
+
     }
 
     if (!$validupgrade) {
