@@ -1862,7 +1862,7 @@ class UserUtil
         }
 
         if (!System::isInstalling()) {
-            throw new RuntimeException(__('UserUtil::getTheme: unable to calculate theme name.'));
+            throw new RuntimeException(__('UserUtil::getTheme() is unable to calculate theme name.'));
         }
     }
 
