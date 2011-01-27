@@ -270,7 +270,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                         'url' => ModUtil::url('Extensions', 'admin', 'hooks', array(
                                         'id' => $mod['id'])),
                                         'image' => 'attach.gif',
-                                        'title' => $this->__f('Hook settings for \'%s\'', $mod['name']));
+                                        'title' => $this->__f('Legacy hook settings for \'%s\'', $mod['name']));
                             }
 
                             if (PluginUtil::hasModulePlugins($mod['name'])) {
