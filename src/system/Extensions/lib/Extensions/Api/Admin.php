@@ -1197,7 +1197,7 @@ class Extensions_Api_Admin extends Zikula_Api
 
             $legacyHooks = DBUtil::selectObjectArray('hooks');
             if (System::isLegacyMode() && $legacyHooks) {
-                $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'hooks', array('id' => 0)), 'text' => $this->__('Legacy hooks'), 'class' => 'z-icon-es-package');
+                $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'legacyhooks', array('id' => 0)), 'text' => $this->__('Legacy hooks'), 'class' => 'z-icon-es-package');
             }
 
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
