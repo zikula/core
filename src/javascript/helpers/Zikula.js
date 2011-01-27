@@ -1357,6 +1357,7 @@ Zikula.Ajax.Response = /** @lends Zikula.Ajax.Response */{
         return this.ZikulaResponse;
     }
 }
+
 Object.extend(Zikula.Ajax.Response,/** @lends Zikula.Ajax.Response.prototype */{
     /**
      * Static method allowing to extend prototype Ajax.Response with Zikula.Ajax.Response methods
@@ -1379,7 +1380,7 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
      * Class for creating ajax requests queue.
      * Each request from queue is executed using {@link Zikula.Ajax.Request} class.
      * Requests are send when previous one is completed. By default queue will stop
-     * on first non successful request (eg not found, forbiden etc).
+     * on first non successful request (eg not found, forbidden etc).
      * Using requestOptions option it is possible to pass to queue common params for each request.
      *
      * @example
@@ -1404,6 +1405,7 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
      *
      * @param {Object} [options] Config object
      * @param {Boolean} [options.stopOnError=true] Should queue stop on first error response
+     * @param {Boolean} [options.autoExecute=false] If set to true - each new request added to queue will be automaticaly executed without need to use {@link Zikula.Ajax.Queue#start} method
      * @param {Object} [options.requestOptions=null] Object with request option common for each request from queue
      * @param {Function} [options.onComplete=null] Callback called after each request is completed, with response and headerJSON params (the same as prototype Ajax.Request callbacks).
      * @param {Function} [options.onFinish=null] Callback called after queue is finished, with boolean flag param, which tells if queue was successfully finished (true) or stopped (false, due to request error or stop method).
@@ -1413,6 +1415,7 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
     initialize: function(options) {
         this.options = Object.extend({
             stopOnError: true,
+            autoExecute: false,
             requestOptions: {}
         }, options || { });
         this.queue = [];
@@ -1422,14 +1425,47 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
      * Add new {@link Zikula.Ajax.Request} to queue.
      * All params are passed to Zikula.Ajax.Request constructor.
      * Options object can be extended with options.requestOptions from Zikula.Ajax.Queue constructor.
+     * options param can be omitted.
      *
-     * @param {String} url Request url
+     * @example
+     * // all params
+     * queue.add('ajax.php?module=mymodule&func=myfunc',{
+     *     authid: 'authidElementId',
+     *     parameters: {
+     *         id: someID,
+     *         foo: bar
+     *     },
+     *     true
+     * );
+     *
+     * // options param can be omitted
+     * queue.add('ajax.php?module=mymodule&func=myfunc',true);
+     *
+     * // requests can be added as array
+     * queue.add([
+     *     'ajax.php?module=mymodule&func=myfunc&n=1', // this can be single url
+     *     'ajax.php?module=mymodule&func=myfunc&n=2',
+     *     ['ajax.php?module=mymodule&func=myfunc&n=3,{onComplete: doSomething}] // or complete array with url and other params
+     * );
+     *
+     * @param {String|Array} url Request url or array of requests params (it can be simple array or urls or array or arrays with single entry containing url, options, execute params)
      * @param {Object} [options=null] Options for request
+     * @param {Boolean} [execute=null] Should request be autoexecuted - if set to true, whole queue will be ececuted
      *
      * @return void
      */
-    add: function(url, options) {
-        this.queue.push([url, options || {}]);
+    add: function(url, options, execute) {
+        if (Object.isUndefined(execute) && typeof options != 'object') {
+            execute = options, options = {}
+        }
+        if (Object.isArray(url)) {
+            Array.prototype.push.apply(this.queue, url);
+        } else {
+            this.queue.push([url, options || {}]);
+        }
+        if (this.config.autoExecute || execute) {
+            this.start();
+        }
     },
     /**
      * Clears the queue and  stops queue execution on first, not send request.
@@ -1441,7 +1477,7 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
         this.queue = [];
     },
     /**
-     * Starts queqe execution.
+     * Starts queue execution.
      *
      * @return void
      */
@@ -1490,10 +1526,12 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
      */
     getParams: function() {
         var params = this.queue.shift(),
-            url = params[0],
-            options = Object.extend(params[1] || {}, this.options.requestOptions || {});
+            url = Object.isArray(params) ? params[0] : params,
+            options = Object.extend(Object.isArray(params) ? params[1] : {}, this.options.requestOptions || {});
         if (!Object.isUndefined(options['onComplete'])) {
             this.notify = options['onComplete'];
+        } else {
+            this.notify = null;
         }
         options['onComplete'] = this.onComplete.bind(this);
         return [url, options];
