@@ -659,7 +659,7 @@ class Extensions_Api_Admin extends Zikula_Api
             $minok = 0;
             $maxok = 0;
             // strip any -dev, -rcN etc from version number
-            $coreVersion = preg_replace('#(\d+\.\d+\.\d+).*#', '$1', System::VERSION_NUM);
+            $coreVersion = preg_replace('#(\d+\.\d+\.\d+).*#', '$1', Zikula_Core::VERSION_NUM);
             if (!empty($filemodules[$name]['core_min'])) {
                 $minok = version_compare($coreVersion, $filemodules[$name]['core_min']);
             }
@@ -1078,7 +1078,7 @@ class Extensions_Api_Admin extends Zikula_Api
                 $upgradeResults[$mod['name']] = $this->upgrade(array('id' => $mod['id']));
             }
 
-            System::setVar('Version_Num', System::VERSION_NUM);
+            System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
         }
 
         return $upgradeResults;

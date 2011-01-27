@@ -48,9 +48,9 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('funtext', '1');
         System::setVar('reportlevel', '0');
         System::setVar('startpage', '');
-        System::setVar('Version_Num', System::VERSION_NUM);
-        System::setVar('Version_ID', System::VERSION_ID);
-        System::setVar('Version_Sub', System::VERSION_SUB);
+        System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
+        System::setVar('Version_ID', Zikula_Core::VERSION_ID);
+        System::setVar('Version_Sub', Zikula_Core::VERSION_SUB);
         System::setVar('debug_sql', '0');
         System::setVar('multilingual', '1');
         System::setVar('useflags', '0');
@@ -116,9 +116,9 @@ class Settings_Installer extends Zikula_Installer
     public function upgrade($oldversion)
     {
         // always ensure that the version info is upgraded
-        System::setVar('Version_Num', System::VERSION_NUM);
-        System::setVar('Version_ID', System::VERSION_ID);
-        System::setVar('Version_Sub', System::VERSION_SUB);
+        System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
+        System::setVar('Version_ID', Zikula_Core::VERSION_ID);
+        System::setVar('Version_Sub', Zikula_Core::VERSION_SUB);
 
         // Upgrade dependent on old version number
         switch ($oldversion)
@@ -134,7 +134,6 @@ class Settings_Installer extends Zikula_Installer
             case '2.6':
                 System::setVar('updatelastchecked', 0);
                 System::setVar('updatefrequency', 7);
-                System::setVar('updateversion', System::VERSION_NUM);
                 System::setVar('updatecheck', true);
 
             case '2.7':

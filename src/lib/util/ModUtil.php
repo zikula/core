@@ -1018,7 +1018,7 @@ class ModUtil
             }
 
             // get the theme
-            if (ServiceUtil::getManager()->getService('zikula')->getStages() & System::STAGES_THEME) {
+            if (ServiceUtil::getManager()->getService('zikula')->getStages() & Zikula_Core::STAGE_THEME) {
                 $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
                 if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php") || file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                     include_once $file;
@@ -1645,7 +1645,7 @@ class ModUtil
         }
 
         // add Core module (hack).
-        $modstable[0] = array('id' => '0', 'name' => 'zikula', 'type' => self::TYPE_CORE, 'directory' => '', 'displayname' => 'Zikula Core v' . System::VERSION_NUM, 'version' => System::VERSION_NUM, 'state' => self::STATE_ACTIVE);
+        $modstable[0] = array('id' => '0', 'name' => 'zikula', 'type' => self::TYPE_CORE, 'directory' => '', 'displayname' => 'Zikula Core v' . Zikula_Core::VERSION_NUM, 'version' => Zikula_Core::VERSION_NUM, 'state' => self::STATE_ACTIVE);
 
         return $modstable;
     }

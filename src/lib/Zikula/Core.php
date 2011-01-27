@@ -35,6 +35,35 @@ mb_regex_encoding('UTF-8');
 class Zikula_Core
 {
     /**
+     * The core Zikula version number.
+     */
+    const VERSION_NUM = '1.3.0-dev';
+
+    /**
+     * The version ID.
+     */
+    const VERSION_ID = 'Zikula';
+
+    /**
+     * The version sub-ID.
+     */
+    const VERSION_SUB = 'vai';
+
+    const STAGE_NONE = 0;
+    const STAGE_PRE = 1;
+    const STAGE_POST = 2;
+    const STAGE_CONFIG = 4;
+    const STAGE_DB = 8;
+    const STAGE_TABLES = 16;
+    const STAGE_SESSIONS = 32;
+    const STAGE_LANGS = 64;
+    const STAGE_MODS = 128;
+    const STAGE_DECODEURLS = 1024;
+    const STAGE_THEME = 2048;
+    const STAGE_ALL = 4095;
+    const STAGE_AJAX = 4096; // needs to be set explicitly, STAGE_ALL | STAGE_AJAX
+
+    /**
      * Stages.
      *
      * @var integer
@@ -188,23 +217,23 @@ class Zikula_Core
      *
      * @return boolean True initialisation successful false otherwise.
      */
-    public function init($stages = System::STAGES_ALL)
+    public function init($stages = self::STAGE_ALL)
     {
         $coreInitEvent = new Zikula_Event('core.init', $this);
 
         if (!is_numeric($stages)) {
-            $stages = System::STAGES_ALL;
+            $stages = self::STAGE_ALL;
         }
 
         // store the load stages in a global so other API's can check whats loaded
         $this->stages = $this->stages | $stages;
 
-        if (($stages & System::STAGES_PRE) && ($this->stages & ~System::STAGES_PRE)) {
+        if (($stages & self::STAGE_PRE) && ($this->stages & ~self::STAGE_PRE)) {
             $this->eventManager->notify(new Zikula_Event('core.preinit', $this));
         }
 
         // Initialise and load configuration
-        if ($stages & System::STAGES_CONFIG) {
+        if ($stages & self::STAGE_CONFIG) {
             if (System::isLegacyMode()) {
                 require_once 'lib/legacy/Compat.php';
             }
@@ -217,7 +246,7 @@ class Zikula_Core
             }
 
             // initialise custom event listeners from config.php settings
-            $coreInitEvent->setArg('stage', System::STAGES_CONFIG);
+            $coreInitEvent->setArg('stage', self::STAGE_CONFIG);
             $this->eventManager->notify($coreInitEvent);
         }
 
@@ -229,7 +258,7 @@ class Zikula_Core
             System::shutDown();
         }
 
-        if ($stages & System::STAGES_DB) {
+        if ($stages & self::STAGE_DB) {
             try {
                 DBConnectionStack::init();
             } catch (PDOException $e) {
@@ -242,11 +271,11 @@ class Zikula_Core
                 }
             }
 
-            $coreInitEvent->setArg('stage', System::STAGES_DB);
+            $coreInitEvent->setArg('stage', self::STAGE_DB);
             $this->eventManager->notify($coreInitEvent);
         }
 
-        if ($stages & System::STAGES_TABLES) {
+        if ($stages & self::STAGE_TABLES) {
             // Initialise dbtables
             $GLOBALS['dbtables'] = isset($GLOBALS['dbtables']) ? $GLOBALS['dbtables'] : array();
             // ensure that the base modules info is available
@@ -262,32 +291,32 @@ class Zikula_Core
             if (!System::isInstalling()) {
                 ModUtil::registerAutoloaders();
             }
-            $coreInitEvent->setArg('stage', System::STAGES_TABLES);
+            $coreInitEvent->setArg('stage', self::STAGE_TABLES);
             $this->eventManager->notify($coreInitEvent);
         }
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
         // start block
-        if ($stages & System::STAGES_LANGS) {
+        if ($stages & self::STAGE_LANGS) {
             $lang = ZLanguage::getInstance();
         }
 
-        if ($stages & System::STAGES_DECODEURLS) {
+        if ($stages & self::STAGE_DECODEURLS) {
             System::queryStringDecode();
-            $coreInitEvent->setArg('stage', System::STAGES_DECODEURLS);
+            $coreInitEvent->setArg('stage', self::STAGE_DECODEURLS);
             $this->eventManager->notify($coreInitEvent);
         }
 
-        if ($stages & System::STAGES_LANGS) {
+        if ($stages & self::STAGE_LANGS) {
             $lang->setup();
-            $coreInitEvent->setArg('stage', System::STAGES_LANGS);
+            $coreInitEvent->setArg('stage', self::STAGE_LANGS);
             $this->eventManager->notify($coreInitEvent);
         }
         // end block
 
         System::checks();
 
-        if ($stages & System::STAGES_SESSIONS) {
+        if ($stages & self::STAGE_SESSIONS) {
             // Other includes
             // ensure that the sesssions table info is available
             ModUtil::dbInfoLoad('Users', 'Users');
@@ -304,11 +333,11 @@ class Zikula_Core
                 }
             }
 
-            $coreInitEvent->setArg('stage', System::STAGES_SESSIONS);
+            $coreInitEvent->setArg('stage', self::STAGE_SESSIONS);
             $this->eventManager->notify($coreInitEvent);
         }
 
-        if ($stages & System::STAGES_MODS) {
+        if ($stages & self::STAGE_MODS) {
             // Set compression on if desired
             if (System::getVar('UseCompression') == 1) {
                 //ob_start("ob_gzhandler");
@@ -316,11 +345,11 @@ class Zikula_Core
 
             ModUtil::load('SecurityCenter');
 
-            $coreInitEvent->setArg('stage', System::STAGES_MODS);
+            $coreInitEvent->setArg('stage', self::STAGE_MODS);
             $this->eventManager->notify($coreInitEvent);
         }
 
-        if ($stages & System::STAGES_THEME) {
+        if ($stages & self::STAGE_THEME) {
             // register default page vars
             PageUtil::registerVar('title');
             PageUtil::setVar('title', System::getVar('defaultpagetitle'));
@@ -339,7 +368,7 @@ class Zikula_Core
             $this->serviceManager['zikula_view.metatags']['description'] = System::getVar('defaultmetadescription');
             $this->serviceManager['zikula_view.metatags']['keywords'] = System::getVar('metakeywords');
 
-            $coreInitEvent->setArg('stage', System::STAGES_THEME);
+            $coreInitEvent->setArg('stage', self::STAGE_THEME);
             $this->eventManager->notify($coreInitEvent);
         }
 
@@ -354,7 +383,7 @@ class Zikula_Core
             }
         }
 
-        if (($stages & System::STAGES_POST) && ($this->stages & ~System::STAGES_POST)) {
+        if (($stages & self::STAGE_POST) && ($this->stages & ~self::STAGE_POST)) {
             $this->eventManager->notify(new Zikula_Event('core.postinit', $this, array('stages' => $stages)));
         }
     }

@@ -30,7 +30,7 @@ function smarty_function_version($params, $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
-    $return = System::VERSION_NUM;
+    $return = Zikula_Core::VERSION_NUM;
 
     if ($assign) {
         $view->assign($assign, $return);

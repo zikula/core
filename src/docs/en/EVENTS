@@ -33,7 +33,7 @@ Occurs after the config.php is loaded.
 
 #### `core.init`
 Occurs after each `System::init()` stage, `$event['stage']` contains the stage.
-To check if the handler should execute, do `if($event['stage'] & System::CORE_STAGES_*)`
+To check if the handler should execute, do `if($event['stage'] & Zikula_Core::STAGE_*)`
 
 #### `core.postinit`
 Occurs just before System::init() exits from normal execution.

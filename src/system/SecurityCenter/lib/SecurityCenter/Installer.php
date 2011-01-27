@@ -34,7 +34,7 @@ class SecurityCenter_Installer extends Zikula_Installer
         System::setVar('updatecheck', 1);
         System::setVar('updatefrequency', 7);
         System::setVar('updatelastchecked', 0);
-        System::setVar('updateversion', System::VERSION_NUM);
+        System::setVar('updateversion', Zikula_Core::VERSION_NUM);
         System::setVar('keyexpiry', 0);
         System::setVar('sessionauthkeyua', false);
         System::setVar('secure_domain', '');

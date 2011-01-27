@@ -26,9 +26,9 @@ class SysInfo_Controller_Admin extends Zikula_Controller
 
         $this->view->setCaching(false);
 
-        $this->view->assign('pnversionnum', System::VERSION_NUM)
-                   ->assign('pnversionid', System::VERSION_ID)
-                   ->assign('pnversionsub', System::VERSION_SUB);
+        $this->view->assign('pnversionnum', Zikula_Core::VERSION_NUM)
+                   ->assign('pnversionid', Zikula_Core::VERSION_ID)
+                   ->assign('pnversionsub', Zikula_Core::VERSION_SUB);
 
         $serversig = System::serverGetVar('SERVER_SIGNATURE');
         if (!isset($serversig) || empty($serversig)) {

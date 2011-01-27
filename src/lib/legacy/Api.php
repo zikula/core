@@ -3,9 +3,9 @@
  * Core version informations - should be upgraded on each release for
  * better control on config settings
  */
-define('PN_VERSION_NUM', System::VERSION_NUM);
-define('PN_VERSION_ID', System::VERSION_ID);
-define('PN_VERSION_SUB', System::VERSION_SUB);
+define('PN_VERSION_NUM', Zikula_Core::VERSION_NUM);
+define('PN_VERSION_ID', Zikula_Core::VERSION_ID);
+define('PN_VERSION_SUB', Zikula_Core::VERSION_SUB);
 
 /**
  * Yes/no integer

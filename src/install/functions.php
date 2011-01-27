@@ -20,15 +20,15 @@ function install()
     ini_set('max_execution_time', 86400);
     ini_set('memory_limit', '64M');
 
-    define('_ZINSTALLVER', '1.3.0-dev');
-
     $installbySQL = (file_exists('install/sql/custom.sql') ? true : false);
-
+;
     require_once 'install/modify_config.php';
 
     // start the basics of Zikula
     include 'lib/ZLoader.php';
     ZLoader::register();
+
+    define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 
     $core = new Zikula_Core();
     $core->boot();
@@ -44,7 +44,7 @@ function install()
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
     DBConnectionStack::init('default', true);
 
-    $core->init(System::STAGES_ALL & ~System::STAGES_THEME & ~System::STAGES_MODS & ~System::STAGES_LANGS & ~System::STAGES_DECODEURLS & ~System::STAGES_SESSIONS);
+    $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS);
 
     // get our input
     $vars = array(
@@ -283,9 +283,6 @@ function install()
 
         case 'gotosite':
             if (!$installbySQL) {
-                if (!class_exists('ThemeUtil')) {
-                    require_once 'lib/util/ThemeUtil.php';
-                }
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
             // set site status as installed and protect config.php file
@@ -605,7 +602,7 @@ function _forcelogin($action = '')
             System::shutDown();
         }
 
-        ServiceUtil::getManager()->getService('zikula')->init(System::STAGES_SESSIONS);
+        ServiceUtil::getManager()->getService('zikula')->init(Zikula_Core::STAGE_SESSIONS);
         if (UserUtil::isLoggedIn()) {
             if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                 UserUtil::logout(); // not administrator user so boot them.

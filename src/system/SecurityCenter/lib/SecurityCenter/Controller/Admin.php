@@ -118,7 +118,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
 
         // if update checks are disabled, reset values to force new update check if re-enabled
         if ($updatecheck == 0) {
-            System::setVar('updateversion', System::VERSION_NUM);
+            System::setVar('updateversion', Zikula_Core::VERSION_NUM);
             System::setVar('updatelastchecked', 0);
         }
 
