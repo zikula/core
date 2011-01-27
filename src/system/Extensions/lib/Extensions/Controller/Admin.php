@@ -57,21 +57,9 @@ class Extensions_Controller_Admin extends Zikula_Controller
 
         $restore = (bool)FormUtil::getPassedValue('restore', false, 'GET');
         if ($restore) {
-            $modversion = array();
             // load the version array
             $baseDir = ($obj['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-            $version = "$baseDir/$obj[directory]/version.php";
-            $pnversion = "$baseDir/$obj[directory]/pnversion.php";
-
-            if (is_readable($version)) {
-                include $version;
-            } elseif (is_readable($pnversion)) {
-                include $pnversion;
-            } else {
-                return LogUtil::registerError($this->__('Error! Unable to load version file for this module.'),
-                        404,
-                        ModUtil::url('Extensions', 'admin', 'modify', array('id' => $id)));
-            }
+            $modversion = Extensions_Util::getVersionMeta($obj['directory'], $baseDir);
 
             // load defaults
             $name = (isset($modversion['name']) ? $modversion['name'] : '');
