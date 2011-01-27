@@ -1053,9 +1053,20 @@ class Extensions_Api_Admin extends Zikula_Api
                      'version' => $version);
 
         DBUtil::updateObject($obj, 'modules');
+
+        // legacy to be removed from 1.4 - remove hooks during upgrade since we cannot rely on
+        // module authors to do this - drak
         if ($oomod) {
-            // legacy to be removed from 1.4
-            DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
+            $tables = DBUtil::getTables();
+            $hooksCol = $tables['hooks_column'];
+            $where = "$hooksCol[smodule] = '$modinfo[name]' OR $hooksCol[tmodule] = '$modinfo[name]'";
+            $hooks = DBUtil::selectObjectArray('hooks', $where);
+            if ($hooks) {
+                foreach ($hooks as $hook) {
+                    DBUtil::deleteObject($hook, 'hooks');
+                }
+                LogUtil::registerStatus($this->__f("NOTICE! Legacy hook configurations for %s have been removed.", $modinfo['name']));
+            }
         }
 
         // Upgrade succeeded, issue event.
