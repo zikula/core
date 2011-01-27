@@ -632,11 +632,31 @@ class Extensions_Api_Admin extends Zikula_Api
                         $dbname = $modinfo['name'];
                         $dbmodules[$dbname] = $save;
                         DBUtil::updateObject($dbmodules[$dbname], 'modules');
+
+                        // rename hooks in the hooks table.
+                        $hooksColumns = $tables['hooks_column'];
+                        $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[smodule] = '$save[name]'");
+                        if ($hooks) {
+                            foreach ($hooks as $hook) {
+                                $hook['smodule'] = $dbmodinfo['name'];
+                                DBUtil::updateObject($hook, 'hooks');
+                            }
+                        }
+                        
+                        $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[tmodule] = '$save[name]'");
+                        if ($hooks) {
+                            foreach ($hooks as $hook) {
+                                $hook['tmodule'] = $dbmodinfo['name'];
+                                DBUtil::updateObject($hook, 'hooks');
+                            }
+                        }
+
+                        DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
                     }
                 }
                 unset($tables);
             }
-
+            
             if (isset($dbmodules[$name]) && $dbmodules[$name]['state'] > 10) {
                 $dbmodules[$name]['state'] = $dbmodules[$name]['state'] - 20;
                 $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => $dbmodules[$name]['state']));
@@ -1033,6 +1053,10 @@ class Extensions_Api_Admin extends Zikula_Api
                      'version' => $version);
 
         DBUtil::updateObject($obj, 'modules');
+        if ($oomod) {
+            // legacy to be removed from 1.4
+            DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
+        }
 
         // Upgrade succeeded, issue event.
         $event = new Zikula_Event('installer.module.upgraded', null, $modinfo);
