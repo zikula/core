@@ -306,6 +306,21 @@ function install()
             } else {
                 return System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
             }
+        case 'requirements':
+            $checks = _check_requirements();
+            $ok = true;
+            foreach($checks as $check) {
+                if (!$check['writable']) {
+                    $ok = false;
+                    $smarty->assign('checks', $checks);
+                    break;
+                }
+            }
+            if ($ok) {
+                System::redirect(System::getBaseUri()."/install.php?action=dbinformation&lang=$lang");
+                exit;
+            }
+            
     }
 
     // assign some generic variables
@@ -631,4 +646,29 @@ function validateMail($mail)
     }
 
     return true;
+}
+
+
+function _check_requirements()
+{
+    $results = array();
+    $results['phpsatisfied'] = version_compare(phpversion(), '5.2.6', ">=");
+    $results['checkdatetimezone'] = version_compare(phpversion(), '5.3.0', ">=");
+    $results['pdo'] = extension_loaded('pdo');
+    $results['phptokens'] = function_exists('token_get_all');
+    $results['mbstring'] = function_exists('mb_get_info');
+    $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
+    $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
+    $results['json_encode'] = function_exists('json_encode');
+    $temp = (isset($GLOBALS['ZConfig']['System']['temp']) ? $GLOBALS['ZConfig']['System']['temp'] : 'ztemp');
+    $datadir = (isset($GLOBALS['ZConfig']['System']['datadir']) ? $GLOBALS['ZConfig']['System']['datadir'] : 'data');
+    $results['config_personal_config_php'] = !is_writable('config/personal_config.php');
+    $files = array('config/config.php', $datadir, $temp, "$temp/error_logs", "$temp/view_compiled",
+            "$temp/view_cache", "$temp/Theme_compiled", "$temp/Theme_cache", "$temp/Theme_Config");
+    $results['files'] = array();
+    foreach ($files as $file) {
+        $results['files'][] = array('filename' => $file, 'writable' => is_writable($file));
+    }
+
+    return $results;
 }
