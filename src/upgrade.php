@@ -376,6 +376,16 @@ function _upg_sanity_check($username, $password)
         }
     }
 
+    if ($validupgrade) {
+        $defaultTheme = System::getVar('Default_Theme');
+        if (!is_dir("themes/$defaultTheme")) {
+            // The default theme must be installed!
+            $validupgrade = false;
+            echo '<h2>' . __f("Theme Check Failed", $defaultTheme) . "</h2>\n";
+            echo '<p class="z-errormsg">' . __f("Your configuration specifies a theme called '%s' that doesn't exist.  Please ensure that theme exists in themes/%s", array($defaultTheme, $defaultTheme)) . "</p>\n";
+        }
+    }
+
     if (!$validupgrade) {
         _upg_footer();
         System::shutdown();
