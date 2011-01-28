@@ -37,7 +37,7 @@
             </div>
         </fieldset>
         <div class="z-buttons z-formbuttons">
-            <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />
+            <input type="submit" value="{gt text="Proceed with Installation"}" class="z-bt-ok" />
         </div>
     </div>
 </form>
