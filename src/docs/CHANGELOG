@@ -1,26 +1,30 @@
 CHANGELOG - ZIKULA 1.3.0
 ------------------------
+Removed support for PHP register_globals = On.
 Moved minimum PHP version to 5.2.6.
-Removed all old legacy support .
+Removed ADODB and replaced with Doctrine 1.2.3.
+Upgraded to PHPMailer 5.1.
+Replaced SafeHTML with HTMLPurifier.
+Introduced LivePipe UI library.
+Improved installer - less steps, less fiddling required and no need to delete installation/upgrade scripts.
+New fully OO MVC module format.
+Added system-wide and module specific event based plugin system.
+Merged all templating and rendering control to Theme module.
+Complete overhaul of Users module.
+Removed old Authentication API.
+Introduced new Authentication API capable of dealing with modern authentication methods.
+Introduced new AJAX workflow.
+Removed and replaced debugging archetecture.
+Removed all old legacy support.
 Added database caching capabilities to DBUtil.
 Migrated to using { } in templates with backward compatability for old delimiters.
 Removed requirement to delete install* and upgrade.php to access administration.
 Fixed UserUtil::getVars & UserUtil::getIDFromName functions can retrieve by all-numeric username.
-Removed AuthPN, Admin_Messages, legal, and Ephemerids modules.
 Removed on-the-fly JS minifier for performance reasons.
-Removed ADODB and replaced with Doctrine 1.2.3.
-Upgraded to PHPMailer 5.1.
-Complete overhaul of the Users module
 Removed the need to 'regenerate' module list, this is now done automatically each time the module list is viewed.  It will also automatically remove invalid modules that have been removed from the file system.
-Replaced SafeHTML with HTMLPurifier.
 Removed MD5 as a valid hash method for user passwords.
-Improved installer.
-Introduced LivePipe UI library.
 Removed dependency for legal module in Users module.
-Removed voodoodolly theme.
 Removed unneeded permission check in users_user_view, issue #1850.
-Clear and fix functions called when we try to delete/edit an user.
-Users module use DBUtil object in searchapi.
 Prevent a rare Smarty exception when viewing pending registrations. Issue #1854.
 Removed unused instance permission checks on pending registrations. Issue #1848.
 Fixed problem with deleting group via ajax with insufficient permissions (issue #1568).
@@ -34,7 +38,6 @@ When accessing the site through the admin.php entry point with no module specifi
 The category_path plugin now uses the idcolumn attribute. (issue #1884).
 Improved prefilter for script tags to (properly) match a wider set of cases. (Issue #1899).
 Corrected minor defects that generated notices. (issues #1901, #1902).
-The old pndebug plugin is now zdebug (cannot be named simply debug), and updated template and related plugins for Zikula.  (issues #1897, #1898, #1900).
 The Mailer module can now send multipart/alternative e-mails with the specification of a plain-text altbody. (Issue #1768).
 Fix a problem with the encodeurl function of the Search module. (issue #1866).
 New modulelinks navigation plugin (Issue #1238).
@@ -44,11 +47,10 @@ Missing language domain in themeswitcher block (issue #1896).
 HTML Settings: check all radios (issue #1551).
 The generic stylesheet (styles/core.css) is now loaded before all other stylesheets that are loaded through pagevars. (Issue #1911).
 Add requirement/warning messsage into the admin panel for the blocks. (issue #757).
-Installer will chmod 0444 the config.php file after installation.
 Permission checks in the Users module were made more consistent throughout. (issue #1872).
 New APIs DataUtil::decodeNVP(), DataUtil::encodeNVP(), DataUtil::encodeNVPArray().
-Changed old password checker js sytem to a new one called "passwordchecker" under a compatible licence (#1841).
-Adapted the module Modules for a Zikula multisites system with multiple domains (issue #1968).
+Changed old password checker js sytem to "passwordchecker" (#1841).
+Adapted the Extensions module for a Zikula multisites system with multiple domains (issue #1968).
 Modify html maxlength of block title to reflect the database structure. (issue #1980).
 Addition of FileSystem class libraries to allow easy interaction with file systems via local/ftp(s)/sftp. (issue #1517).
 Ability to export CSV file from users module added (issue #1954).
@@ -56,11 +58,9 @@ Escaped illegal char in pagelock template (issue #2004).
 Added html exception to htaccess file (pagelock window was unreadable due an apache message) (issue #2006).
 Added minute based refresh times for blocks (issue #1999).
 Added ability to administrate adminpanel with ajax, move modules to different categories, create/edit/delete admin categories (issue #1919).
-SecurityCenter's version has incremented to 1.4.1, adding a new internal configuration variable. It will be upgraded automatically during the system upgrade. (Issue #170)
 [Issue #2017] Altered ZLanguage::countryMap() for Sweden from sv to se.  Note the language code should be so, but the country code should be se.
 Blocks module admin section now has filtering options for block-position, module, language and active-status. The allows remove of the old showall/showinactive link in the admin section. (Issue #2012 & Issue #2020)
 Blocks module now has sorting options for the main columns in the admin view (Issue #2012).
-Introduced Zikula_EventManager.
 Added various events through out the core execution cycle.
 Fixed Form_Render::registerPlugin() in environments where the installation is not in the server document root.
 Added adapter to support the illegal use of DBUtil::executeSQL() processing the ADODB object manually (without the use of DBUtil::marshallObjects().
@@ -68,7 +68,6 @@ Fixed theme list not sorted correctly on Theme view (Issue #1974).
 Fixed pager plugin images always in english (Issue #1883).
 Fixed wrong contents in modvar 'permareplace' (Issue #2044).
 Updated css messages (Issue #2043 & Issue #2030).
-Added MVC OO module format.
 Added support for HTTP 500 response in Errors module.
 Improved password recovery workflow (Issue #1631).
 Added user name recovery (Issue #243).
@@ -79,8 +78,6 @@ Added exception support in front controller and module controllers.
 Removed core hack for AdvMailer module, use mailer.sendmessage events instead.
 Removed core hack for MultiHook module, use theme.init events instead.
 Added const render plugin and modifier to allow class constants in templates.
-Added Zikula_ServiceManager for systemwide dependency injection.
-Added system-wide and module specific event based plugin system.
 Added front controller exception handling.
 Removed Zikula_View singleton pattern, this is now handled via Zikula_ServiceManager, one instance per module or plugin.
 Removed need to specify domain= in template {gt} calls.
@@ -108,8 +105,8 @@ Added Upgrade All options, and Module API to upgrade all modules with one click.
 Fixed LogUtil errors in CategoryUtil, Issue #2276 (patch by Craig Heydenburg).
 Admin icons update of the system modules (Issue #2300).
 tables.php now supports index options in the _column_idx array.  array(inxname, array('columns' => array(fld1, fld2..), 'options' => 'unique') Issue #1885.
-Merged the menutree project into the core (Blocks module).
-Added htmlentities modifier to properly convert utf8 chars to html entities
+Merged the menutree into the Blocks module.
+Added htmlentities modifier to properly convert utf8 chars to html entities.
 Replaced SetEnvIf with FilesMatch in .htaccess files (Issue #2334). Removed extensions tif, flv, ico, cur from all .htaccess, swf from all except modules/ and html from all except system/Theme/includes
 Added FileUtil::exportCSV() to simplify data export to csv files.
 Themes can now process ajax request natively - issue #2326.
@@ -137,10 +134,8 @@ New user names are required to consist of only letters, numbers, underscores and
 When retrieving user accounts (for any purpose, including for logging in) by e-mail address, a duplicate e-mail address check is performed even if the Users module is set to require unique e-mail addresses. This is to prevent the wrong account from being returned if duplicate e-mail addresses were allowed at any point or were added by the administrator.
 A user with rights to delete user accounts is prevented from deleting his own account.
 The registration date, last login date, and all other dates saved to the database tables by the Users module are now guaranteed to be UTC date/times in the database. They might be adjusted for display by other functions, however.
-Zikula no longer supports PHP register_globals = On.
 Added option to translate the language changer block option into native language - issue #2119.
 Added {gettext} block issue #2414.
-Reworked logging and debug settings in config.php.  Error reporting configuration was removed from the Admin -> Settings.  Zikula no longer hides errors unless you specifically set it to.
 Added debugging toolbar (configurable in config.php).
 Changed the label for the user's account activated status from 'Activated' to 'Status' in the administrator's Users manager.
 The users list in the administrator's Users manager is now sortable by user name, uid (internal ID), registration date, date last logged in, and status.
@@ -154,4 +149,4 @@ Added missing member var for display area format in dateinput form plugin (issue
 Added doctrine support to selectmodobject(Array) view plugins (issue #2542)
 Included generic url routing classes (issue #2557)
 Added a new attribute, precision, to the formfloatinput Form plugin, which controls the number of digits after the decimal. (issue #2616)
-The userprofilelink Smarty modifier now accepts a wider range of user names, including user names with '@' (issue #2404)
+The userprofilelink Smarty modifier now accepts a wider range of user names, including user names with '@' (issue #2404).
