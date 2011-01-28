@@ -3487,57 +3487,7 @@ class DBUtil
 
         return $rows;
     }
-
-    /**
-     * Get a list of primary keys for a table.
-     *
-     * @param string $table The treated table reference.
-     *
-     * @return array of primary keys.
-     * @throws Exception If the table parameter is empty or does not point to a valid table definition.
-     */
-    public static function metaPrimaryKeys($table)
-    {
-        if (empty($table)) {
-            throw new Exception(__f('The parameter %s must not be empty', 'table'));
-        }
-
-        $tables = self::getTables();
-        $tableName = $tables[$table];
-
-        if (empty($tableName)) {
-            throw new Exception(__f('%s does not point to a valid table definition', $table));
-        }
-
-        return DBConnectionStack::getConnection()->MetaPrimaryKeys($tableName);
-    }
-
-    /**
-     * Get a list of foreign keys for a table.
-     *
-     * @param string  $table The treated table reference.
-     * @param boolean $owner Owner (optional) (default=false).
-     * @param boolean $upper Upper case key names.
-     *
-     * @return array of foreign keys.
-     * @throws Exception If the table parameter is empty or does not point to a valid table definition.
-     */
-    public static function metaForeignKeys($table, $owner = false, $upper = false)
-    {
-        if (empty($table)) {
-            throw new Exception(__f('The parameter %s must not be empty', 'table'));
-        }
-
-        $tables = self::getTables();
-        $tableName = $tables[$table];
-
-        if (empty($tableName)) {
-            throw new Exception(__f('%s does not point to a valid table definition', $table));
-        }
-
-        return DBConnectionStack::getConnection()->MetaForeignKeys($tableName, $owner, $upper);
-    }
-
+    
     /**
      * Get a list of indexes for a table.
      *
