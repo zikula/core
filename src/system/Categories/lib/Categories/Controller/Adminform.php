@@ -73,7 +73,7 @@ class Categories_Controller_Adminform extends Zikula_Controller
 
         // retrieve old category from DB
         $category = FormUtil::getPassedValue ('category', null, 'POST');
-        $oldCat = new Categories_DBObject_Category ($cat->_GET_FROM_DB, $category['id']);
+        $oldCat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $category['id']);
 
         // update new category data
         $cat->update ();
