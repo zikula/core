@@ -1,84 +1,28 @@
 CHANGELOG - ZIKULA 1.3.0
 ------------------------
 Moved minimum PHP version to 5.2.6.
-Deprecated module type 1.
-Deprecated language define based support.
-Removed all legacy block handling.
-Removed all legacy support (old-old stuff) in the Core.
-Deprecated support for non type 3 themes.
+Removed all old legacy support .
 Added database caching capabilities to DBUtil.
-Migrated to using  { } in templates with backward compatability for old delimiters.
-When using template logic inside <script> or <style> tag contents use the delimiters {{ and }}.
+Migrated to using { } in templates with backward compatability for old delimiters.
 Removed requirement to delete install* and upgrade.php to access administration.
 Fixed UserUtil::getVars & UserUtil::getIDFromName functions can retrieve by all-numeric username.
-Outsourced AuthPN, Admin_Messages, legal, and Ephemerids to their own projects.
-Replacement HTML center block to replace Admin_Messages which was outsourced to VA.
-Remove the writable bits from config.php after install is possible.
-Removed autocreate of 'thelang' and 'online' blocks from new install.
-Set installer script memory limit to 64M.
-Fixed JS/CSS minifying.
+Removed AuthPN, Admin_Messages, legal, and Ephemerids modules.
 Removed on-the-fly JS minifier for performance reasons.
 Removed ADODB and replaced with Doctrine 1.2.3.
-DBUtil updated to use Doctrine for backward compatibility.
 Upgraded to PHPMailer 5.1.
-Added password complexity meter to User's module.
+Complete overhaul of the Users module
 Removed the need to 'regenerate' module list, this is now done automatically each time the module list is viewed.  It will also automatically remove invalid modules that have been removed from the file system.
-Merged pnRender module to Theme module.
-Refactored $PNConfig, $PNRuntime and $PNDebug -> Z*.
-Deprecated entire pn* API.
-Renamed pnTemp to ztemp.
 Replaced SafeHTML with HTMLPurifier.
-Removed Header_Footer, pnRender and pnForm modules. Removed ObjectData and Workflow modules and moved their tables to Settings.
-Removed header.php and footer.php.
-Simplified security checks.
-Theme list now auto regenerates on view.
-Moved includes/ -> lib/.
-Moved classes/ -> vendor/.
-Moved *Util.php -> util/.
-Moved all template plugins to lib/view/plugins.
-Added class autoloading.
 Removed MD5 as a valid hash method for user passwords.
-Improved installer requirements.
-Fixed theme force_compile.
-Introduced DSN DB representation into config.php.
-Deprecated base64 encoding in config.php.
-Removed prefix from smarty plugins and added a backward compatibility prefilter.
-Updated robots.txt.
+Improved installer.
 Introduced LivePipe UI library.
-SecurityUtil::checkPermission - possibility to test if user has ANY access to given component.
-Display active groups of a user in user overview.
-Related module blocks are now removed during module uninstall.
-Bulk import of users via CSV file import.
-Rewrote ZLanguageBrowser.
-When you regenerate the list of modules the "hooks" are refreshed correctly.
-Confirm e-mail when user changes the e-mail address.
-When an administrator creates a new user it is set as active although the moderation is required.
-Allow forced password change on login.
 Removed dependency for legal module in Users module.
-Fix permission check with JavaScript disable for permission module.
-Set colors (green, red) for permission check results.
-The system modules don't initialise variables by creating insert queries with serialised data.
-Users' last login is always saved if the system is configured accordingly.
-Fix max length of userprofilelink modifier.
-Ability for an administrator to set user status when creating a new account.
-Corrected link for undefined blocks positions in theme configuration.
-Store the hash_method of users who are pending registrations.
-Users can be deleted from edit screen.
-Update hooks is called on user activation.
-Fixed problem in function selectExpandedObjectArray from DBUtil object when categoryFilter argument was null.
-Clear the Zikula_View cached/compiled files and Themes cached/compiled/cssjs combination files after a module upgrade.
-Removal of unnecessary security check and redirects on some _admin_main functions.
-Functions theme_userapi_clear_compiled(), theme_userapi_clear_cache(), pnrender_userapi_clear_compiled(), pnrender_userapi_clear_cache() are deprecated.
-Added new methods: Zikula_View->clear_compiled(), Zikula_View->clear_cache() and Theme->clear_compiled(), Theme->clear_cache().
-Fix a php error that occur if there is a parameter with the scriptaculous.js file for combination of js/css.
-Changed permission check for viewtempuserinfo in Users from ACCESS_ADD to ACCESS_EDIT to match viewapplications.
 Removed voodoodolly theme.
 Removed unneeded permission check in users_user_view, issue #1850.
 Clear and fix functions called when we try to delete/edit an user.
 Users module use DBUtil object in searchapi.
 Prevent a rare Smarty exception when viewing pending registrations. Issue #1854.
 Removed unused instance permission checks on pending registrations. Issue #1848.
-Removed bannerdisplay plugin from core, which is specific to the Banners module.
 Fixed problem with deleting group via ajax with insufficient permissions (issue #1568).
 Allow module to specify core version requirements.
 Added missing icons for blocks collapsible function (issue #1847).
@@ -116,8 +60,6 @@ SecurityCenter's version has incremented to 1.4.1, adding a new internal configu
 [Issue #2017] Altered ZLanguage::countryMap() for Sweden from sv to se.  Note the language code should be so, but the country code should be se.
 Blocks module admin section now has filtering options for block-position, module, language and active-status. The allows remove of the old showall/showinactive link in the admin section. (Issue #2012 & Issue #2020)
 Blocks module now has sorting options for the main columns in the admin view (Issue #2012).
-Added $ZConfig['System']['legacy_prefilters'] to the config.php to enable/disable legacy template prefilters.
-Added $ZConfig['System']['compat_layer'] to config.php to enable/disable the compatibility layer.
 Introduced Zikula_EventManager.
 Added various events through out the core execution cycle.
 Fixed Form_Render::registerPlugin() in environments where the installation is not in the server document root.
@@ -127,10 +69,6 @@ Fixed pager plugin images always in english (Issue #1883).
 Fixed wrong contents in modvar 'permareplace' (Issue #2044).
 Updated css messages (Issue #2043 & Issue #2030).
 Added MVC OO module format.
-Added bootstrapping for OO modules may have a bootstrap.php which will be included during first ModUtil::load*() call.
-Added recursive lists for extmenu blocks.
-Removed prefixes from module directories for the following folders, docs, style, javascript, templates, blocks, includes (remains backward compatible).
-Removed prefixed from the following module files, init.php, tables.php and version.php (remains backward compatible).
 Added support for HTTP 500 response in Errors module.
 Improved password recovery workflow (Issue #1631).
 Added user name recovery (Issue #243).
@@ -210,7 +148,6 @@ Added markdown and markdown-extra support and with Smarty modifiers issue #2487.
 Added doctrine templates for ObjectUtil services (issue #2447)
 Added doctrine support to DropdownRelationlist form view plugin (issue #2442)
 Added more HTML5 tags to allowed HTML settings page (issue #2460)
-Upgraded to HTMLPurifier 4.2.0 (issue #2533)
 Fixed conflict in search module short-urls url (issue #2494)
 Fixed minor issue in uploadinput form plugin (issue #2551)
 Added missing member var for display area format in dateinput form plugin (issue #2552)
