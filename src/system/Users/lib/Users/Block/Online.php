@@ -90,9 +90,9 @@ class Users_Block_Online extends Zikula_Block
                    ->assign('username', UserUtil::getVar('uname'));
 
         $msgmodule = System::getVar('messagemodule', '');
-        if (SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
+        $this->view->assign('msgmodule', $msgmodule);
+        if ($msgmodule && SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
             // check if message module is available and add the necessary info
-            $this->view->assign('msgmodule', $msgmodule);
             if (ModUtil::available($msgmodule)) {
                 $this->view->assign('messages', ModUtil::apiFunc($msgmodule, 'user', 'getmessagecount'));
             } else {
