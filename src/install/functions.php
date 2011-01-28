@@ -37,7 +37,6 @@ function install()
 
     $core = new Zikula_Core();
     $core->boot();
-    $eventManager = $core->getEventManager();
     $serviceManager = $core->getServiceManager();
 
     require 'config/config.php';
@@ -51,36 +50,22 @@ function install()
 
     $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS);
 
-    // get our input
-    $vars = array(
-            'lang',
-            'dbhost',
-            'dbusername',
-            'dbpassword',
-            'dbname',
-            'dbprefix',
-            'dbtype',
-            'dbtabletype',
-            'createdb',
-            'username',
-            'password',
-            'repeatpassword',
-            'email',
-            'action',
-            'loginuser',
-            'loginpassword',
-            'defaulttheme');
-
-    foreach ($vars as $var) {
-        // in the install we're sure we don't wany any html so we can be stricter than
-        // the FormUtil::getPassedValue API
-        $$var = strip_tags(stripslashes(FormUtil::getPassedValue($var, '', 'GETPOST')));
-    }
-
-    // Power users might have moved the temp folder out of the root and changed the config.php
-    // accordingly. Make sure we respect this security related settings
-    $tempDir = (isset($GLOBALS['ZConfig']['System']['temp']) ? $GLOBALS['ZConfig']['System']['temp'] : 'ztemp');
-    $dataDir = (isset($GLOBALS['ZConfig']['System']['datadir']) ? $GLOBALS['ZConfig']['System']['datadir'] : 'data');
+    $lang = FormUtil::getPassedValue('lang', '', 'GETPOST');
+    $dbhost = FormUtil::getPassedValue('dbhost', '', 'GETPOST');
+    $dbusername = FormUtil::getPassedValue('dbusername', '', 'GETPOST');
+    $dbpassword = FormUtil::getPassedValue('dbpassword', '', 'GETPOST');
+    $dbname = FormUtil::getPassedValue('dbname', '', 'GETPOST');
+    $dbprefix = FormUtil::getPassedValue('dbprefix', '', 'GETPOST');
+    $dbtype = FormUtil::getPassedValue('dbtype', '', 'GETPOST');
+    $dbtabletype = FormUtil::getPassedValue('dbtabletype', '', 'GETPOST');
+    $createdb = FormUtil::getPassedValue('createdb', '', 'GETPOST');
+    $username = FormUtil::getPassedValue('username', '', 'POST');
+    $password = FormUtil::getPassedValue('password', '', 'POST');
+    $repeatpassword = FormUtil::getPassedValue('repeatpassword', '', 'POST');
+    $email = FormUtil::getPassedValue('email', '', 'GETPOST');
+    $action = FormUtil::getPassedValue('action', '', 'GETPOST');
+    $loginuser = FormUtil::getPassedValue('loginuser', '', 'POST');
+    $loginpassword = FormUtil::getPassedValue('loginpassword', '', 'POST');
 
     // define our smarty object
     $smarty = new Smarty();
@@ -454,8 +439,6 @@ function installmodules($lang = 'en')
     $connection = Doctrine_Manager::connection();
     $connection->setCharset(DBConnectionStack::getConnectionDBCharset());
     $connection->setCollate(DBConnectionStack::getConnectionDBCollate());
-
-    static $modscat;
 
     // Lang validation
     $lang = DataUtil::formatForOS($lang);
