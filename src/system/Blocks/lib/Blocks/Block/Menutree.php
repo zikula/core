@@ -19,7 +19,7 @@ class Blocks_Block_Menutree extends Zikula_Block
      */
     public function init()
     {
-        SecurityUtil::registerPermissionSchema('menutree:menutreeblock:', 'Block ID:Link name:');
+        SecurityUtil::registerPermissionSchema('Menutree:menutreeblock:', 'Block ID:Link name:');
     }
 
     /**
@@ -43,7 +43,7 @@ class Blocks_Block_Menutree extends Zikula_Block
     public function display($blockinfo)
     {
         // Security check
-        if (!Securityutil::checkPermission('menutree:menutreeblock:', "{$blockinfo['bid']}::", ACCESS_READ)) {
+        if (!Securityutil::checkPermission('Menutree:menutreeblock:', "{$blockinfo['bid']}::", ACCESS_READ)) {
             return false;
         }
 
@@ -85,7 +85,7 @@ class Blocks_Block_Menutree extends Zikula_Block
             foreach ($vars['menutree_content'] as $item) {
                 $item = $item[$lang];
                 // due to bug #9 we have to check two possible perms syntax
-                $perms = !Securityutil::checkPermission('menutree:menutreeblock:',"$blockinfo[title]::$item[name]",ACCESS_READ) || !Securityutil::checkPermission('menutree:menutreeblock:',"$blockinfo[title]:$item[name]:",ACCESS_READ);
+                $perms = !Securityutil::checkPermission('Menutree:menutreeblock:',"$blockinfo[title]::$item[name]",ACCESS_READ) || !Securityutil::checkPermission('Menutree:menutreeblock:',"$blockinfo[title]:$item[name]:",ACCESS_READ);
                 if ($perms || in_array($item['parent'], $blocked)) {
                     $blocked[] = $item['id'];
                 } elseif ($item['state'] != 1) {
@@ -142,7 +142,7 @@ class Blocks_Block_Menutree extends Zikula_Block
             PageUtil::addVar('stylesheet', $vars['menutree_stylesheet']);
         }
 
-        $this->view->assign('menutree_editlinks', $vars['menutree_editlinks'] && Securityutil::checkPermission('Blocks::', 'menutree:'.$blockinfo['title'].':'.$blockinfo['bid'], ACCESS_EDIT))
+        $this->view->assign('menutree_editlinks', $vars['menutree_editlinks'] && Securityutil::checkPermission('Blocks::', 'Menutree:'.$blockinfo['title'].':'.$blockinfo['bid'], ACCESS_EDIT))
                    ->assign('menutree_content', $newTree)
                    ->assign('blockinfo', $blockinfo);
 
