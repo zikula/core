@@ -36,11 +36,12 @@ class Categories_Controller_Ajax extends Zikula_Controller
         $data = json_decode(FormUtil::getPassedValue('data', null, 'post'), true);
         $cats = CategoryUtil::getSubCategories(1, true, true, true, true, true, '', 'id');
 
-        foreach ($cats as $id => $cat) {
-            if(isset($data[$id])) {
-                $cats[$id]['sort_value'] = $data[$id]['lineno'];
-                $cats[$id]['parent_id'] = $data[$id]['parent'];
-                $obj = new Categories_DBObject_Category($cats[$id]);
+        foreach ($cats as $k => $cat) {
+            $cid = $cat['id'];
+            if(isset($data[$cid])) {
+                $cats[$k]['sort_value'] = $data[$cid]['lineno'];
+                $cats[$k]['parent_id'] = $data[$cid]['parent'];
+                $obj = new Categories_DBObject_Category($cats[$k]);
                 $obj->update();
             }
         }
