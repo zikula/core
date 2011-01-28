@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
@@ -12,6 +11,12 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+/**
+ * Install controller.
+ * 
+ * @return void
+ */
 function install()
 {
     // configure our installation environment
@@ -21,7 +26,7 @@ function install()
     ini_set('memory_limit', '64M');
 
     $installbySQL = (file_exists('install/sql/custom.sql') ? true : false);
-;
+
     require_once 'install/modify_config.php';
 
     // start the basics of Zikula
