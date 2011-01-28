@@ -39,7 +39,7 @@
                     </ol>
                     <h3>{gt text="Useful resources"}</h3>
                     <ul>
-                        <li><a href="{gt text="docs/en/README"}" onclick="window.open('{gt text="docs/en/README"}');return false;">{gt text="Installation guide"}</a></li>
+                        <li><a href="docs/{$lang}/INSTALL" onclick="window.open('docs/{$lang}/INSTALL');return false;">{gt text="Installation guide"}</a></li>
                         <li><a href="{gt text="http://community.zikula.org/module-Wiki.htm"}">{gt text="Zikula documentation"}</a></li>
                         <li><a href="{gt text="http://community.zikula.org/module-Forum.htm"}">{gt text="Support forums"}</a></li>
                         {* custom links for each action go here*}
@@ -59,7 +59,11 @@
                 <div id="content">
                     <h1>{gt text="Zikula installer script"}</h1>
                     {insert name="getstatusmsg"}
-                    <p>{gt text="Please refer to the <a style=\"color: red\" href=\"docs/en/README\" onclick=\"window.open('docs/en/README');return false;\">Installation guide</a> during the process." html=1}</p>
+                    {php}
+                        $lang = $this->_tpl_vars['lang'];
+                        $this->assign('doclink', "docs/$lang/INSTALL");
+                    {/php}
+                    <p>{gt text="Please refer to the <a style=\"color: red\" href=\"%1\$s\" onclick=\"window.open('%2\$s');return false;\">Installation guide</a> during the process." html=1 tag1=$doclink tag2=$doclink}</p>
                     {$maincontent}
                 </div>
             </div>
