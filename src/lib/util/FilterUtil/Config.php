@@ -525,19 +525,21 @@ class FilterUtil_Config
     private function _setColumnsFromDoctrineTables($tables)
     {
         $this->_column = array();
-
         $aliases = array();
         foreach ($tables as $alias => $table) {
             $fields = $table['table']->getFieldNames();
 
+            if (strpos($alias, '.') === false) {
+                // add main table aliases only
+                $aliases[] = "$alias.";
+            }
             foreach ($fields as $field) {
-                $key = ($table['table'] == $this->_doctrineTable ? '' : $alias . '.') . $field;
-                // strip other table aliases of the field key
+                $key = $alias . '.' . $field;
+                // strip the main table alias of the field key
                 $key = str_replace($aliases, '', $key);
 
                 $this->_column[$key] = $alias . '.' . $field;
             }
-            $aliases[] = "$alias.";
         }
     }
 
