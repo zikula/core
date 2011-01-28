@@ -306,6 +306,7 @@ function install()
             } else {
                 return System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
             }
+            break;
         case 'requirements':
             $checks = _check_requirements();
             $ok = true;
@@ -320,6 +321,7 @@ function install()
                 System::redirect(System::getBaseUri()."/install.php?action=dbinformation&lang=$lang");
                 exit;
             }
+            break;
             
     }
 
