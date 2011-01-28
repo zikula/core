@@ -310,10 +310,17 @@ function install()
         case 'requirements':
             $checks = _check_requirements();
             $ok = true;
+
             foreach($checks as $check) {
+                if (!$check) {
+                    $ok = false;
+                    break;
+                }
+            }
+            
+            foreach($checks['files'] as $check) {
                 if (!$check['writable']) {
                     $ok = false;
-                    $smarty->assign('checks', $checks);
                     break;
                 }
             }
@@ -321,8 +328,10 @@ function install()
                 System::redirect(System::getBaseUri()."/install.php?action=dbinformation&lang=$lang");
                 exit;
             }
+
+            $smarty->assign('checks', $checks);
+
             break;
-            
     }
 
     // assign some generic variables
@@ -665,8 +674,8 @@ function _check_requirements()
     $temp = (isset($GLOBALS['ZConfig']['System']['temp']) ? $GLOBALS['ZConfig']['System']['temp'] : 'ztemp');
     $datadir = (isset($GLOBALS['ZConfig']['System']['datadir']) ? $GLOBALS['ZConfig']['System']['datadir'] : 'data');
     $results['config_personal_config_php'] = !is_writable('config/personal_config.php');
-    $files = array('config/config.php', $datadir, $temp, "$temp/error_logs", "$temp/view_compiled",
-            "$temp/view_cache", "$temp/Theme_compiled", "$temp/Theme_cache", "$temp/Theme_Config");
+    $files = array('config/config.php', "$datadir/", "$temp/", "$temp/error_logs/", "$temp/view_compiled/",
+            "$temp/view_cache/", "$temp/Theme_compiled/", "$temp/Theme_cache/", "$temp/Theme_Config/");
     $results['files'] = array();
     foreach ($files as $file) {
         $results['files'][] = array('filename' => $file, 'writable' => is_writable($file));

@@ -37,12 +37,6 @@
                         <li{if $action eq createadmin} class="menu_selected"{/if}>{$createaduser}</li>
                         <li{if $action eq finish} class="menu_selected"{/if}>{$finish}</li>
                     </ol>
-                    <h3>{gt text="Free software"}</h3>
-                    <ul>
-                        <li><a href="{gt text="docs/NOTICE"}">{gt text="Notice"}</a></li>
-                        <li><a href="{gt text="docs/LGPL"}">{gt text="LGPL v3"}</a></li>
-                        <li><a href="{gt text="http://www.gnu.org/philosophy/"}">{gt text="GNU philosophy"}</a></li>
-                    </ul>
                     <h3>{gt text="Useful resources"}</h3>
                     <ul>
                         <li><a href="{gt text="docs/en/README"}" onclick="window.open('{gt text="docs/en/README"}');return false;">{gt text="Installation guide"}</a></li>
