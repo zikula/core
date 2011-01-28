@@ -150,7 +150,7 @@ function install()
                 $action = 'dbinformation';
                 $smarty->assign('dbinvalidprefix', true);
             } elseif (!preg_match('/^[\w-]*$/', $dbname) ||
-                      strlen($dbname) > 64) {
+                    strlen($dbname) > 64) {
                 $action = 'dbinformation';
                 $smarty->assign('dbinvalidname', true);
             } else {
@@ -220,7 +220,7 @@ function install()
                 if ($installbySQL) {
                     // checks if exists a previous installation with the same prefix
                     $proceed = true;
-                    $exec = ($dbtype == 'mysql' || $dbtype == 'mysqli') ? 
+                    $exec = ($dbtype == 'mysql' || $dbtype == 'mysqli') ?
                             "SHOW TABLES FROM `$dbname` LIKE '" . $dbprefix . "_%'" :
                             "SHOW TABLES FROM $dbname LIKE '" . $dbprefix . "_%'";
                     $tables = DBUtil::executeSQL($exec);
@@ -243,7 +243,8 @@ function install()
                             $exec = '';
                             foreach ($lines as $line_num => $line) {
                                 $line = trim($line);
-                                if (empty($line) || strpos($line, '--') === 0) continue;
+                                if (empty($line) || strpos($line, '--') === 0)
+                                        continue;
                                 $exec .= $line;
                                 if (strrpos($line, ';') === strlen($line) - 1) {
                                     if (!DBUtil::executeSQL(str_replace('z_', $dbprefix . '_', $exec))) {
@@ -258,64 +259,65 @@ function install()
                     }
                 } else {
                     installmodules($lang);
-                }
-                // create our new site admin
-                // TODO test the call the users module api to create the user
-                //ModUtil::apiFunc('Users', 'user', 'finishnewuser', array('uname' => $username, 'email' => $email, 'pass' => $password));
-                createuser($username, $password, $email);
-                SessionUtil::requireSession();
-                UserUtil::loginUsing('Users', array('loginid' => $username, 'pass' => $password));
 
-                // add admin email as site email
-                System::setVar('adminmail', $email);
+                    // create our new site admin
+                    // TODO test the call the users module api to create the user
+                    //ModUtil::apiFunc('Users', 'user', 'finishnewuser', array('uname' => $username, 'email' => $email, 'pass' => $password));
+                    createuser($username, $password, $email);
+                    SessionUtil::requireSession();
+                    UserUtil::loginUsing('Users', array('loginid' => $username, 'pass' => $password));
+
+                    // add admin email as site email
+                    System::setVar('adminmail', $email);
+
+                    if (!$installbySQL) {
+                        Theme_Util::regenerate();
+                    }
+
+                    // set site status as installed and protect config.php file
+                    update_installed_status();
+                    @chmod('config/config.php', 0400);
+                    if (!is_readable('config/config.php')) {
+                        @chmod('config/config.php', 0440);
+                        if (!is_readable('config/config.php')) {
+                            @chmod('config/config.php', 0444);
+                        }
+                    }
+                    // install all plugins
+                    $systemPlugins = PluginUtil::loadAllSystemPlugins();
+                    foreach ($systemPlugins as $plugin) {
+                        PluginUtil::install($plugin);
+                    }
+
+                    if (!UserUtil::isLoggedIn()) {
+                        return System::redirect();
+                    } else {
+                        LogUtil::registerStatus('Zikula was successfullly installed.');
+                        return System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
+                    }
+                }
             }
             break;
 
-        case 'gotosite':
-            if (!$installbySQL) {
-                ModUtil::apiFunc('Theme', 'admin', 'regenerate');
-            }
-            // set site status as installed and protect config.php file
-            update_installed_status();
-            @chmod('config/config.php', 0400);
-            if (!is_readable('config/config.php')) {
-                @chmod('config/config.php', 0440);
-                if (!is_readable('config/config.php')) {
-                    @chmod('config/config.php', 0444);
-                }
-            }
-            // install all plugins
-            $systemPlugins = PluginUtil::loadAllSystemPlugins();
-            foreach ($systemPlugins as $plugin) {
-                PluginUtil::install($plugin);
-            }
-
-            SessionUtil::requireSession();
-            if (!UserUtil::isLoggedIn()) {
-                return System::redirect();
-            } else {
-                return System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
-            }
-            break;
         case 'requirements':
             $checks = _check_requirements();
             $ok = true;
 
-            foreach($checks as $check) {
+            foreach ($checks as $check) {
                 if (!$check) {
                     $ok = false;
                     break;
                 }
             }
-            
-            foreach($checks['files'] as $check) {
+
+            foreach ($checks['files'] as $check) {
                 if (!$check['writable']) {
                     $ok = false;
                     break;
                 }
             }
             if ($ok) {
-                System::redirect(System::getBaseUri()."/install.php?action=dbinformation&lang=$lang");
+                System::redirect(System::getBaseUri() . "/install.php?action=dbinformation&lang=$lang");
                 exit;
             }
 
@@ -450,14 +452,14 @@ function installmodules($lang = 'en')
     $em = EventUtil::getManager();
 
     $coremodules = array('Extensions',
-			 'Settings',
-			 'Theme',
-			 'Admin',
-			 'Permissions',
-			 'Groups',
-			 'Blocks',
-			 'Users',
-                        );
+            'Settings',
+            'Theme',
+            'Admin',
+            'Permissions',
+            'Groups',
+            'Blocks',
+            'Users',
+    );
 
     // manually install the modules module
     foreach ($coremodules as $coremodule) {
@@ -487,30 +489,30 @@ function installmodules($lang = 'en')
     // regenerate modules list
     $filemodules = ModUtil::apiFunc('Extensions', 'admin', 'getfilemodules');
     ModUtil::apiFunc('Extensions', 'admin', 'regenerate',
-                      array('filemodules' => $filemodules));
+                    array('filemodules' => $filemodules));
 
     // set each of the core modules to active
     reset($coremodules);
     foreach ($coremodules as $coremodule) {
         $mid = ModUtil::getIdFromName($coremodule, true);
         ModUtil::apiFunc('Extensions', 'admin', 'setstate',
-                          array('id' => $mid,
+                        array('id' => $mid,
                                 'state' => ModUtil::STATE_INACTIVE));
         ModUtil::apiFunc('Extensions', 'admin', 'setstate',
-                          array('id' => $mid,
+                        array('id' => $mid,
                                 'state' => ModUtil::STATE_ACTIVE));
     }
     // Add them to the appropriate category
     reset($coremodules);
 
     $coremodscat = array('Extensions' => __('System'),
-		         'Permissions' => __('Users'),
-		         'Groups' => __('Users'),
-		         'Blocks' => __('Layout'),
-		         'Users' => __('Users'),
-		         'Theme' => __('Layout'),
-		         'Admin' => __('System'),
-		         'Settings' => __('System'));
+            'Permissions' => __('Users'),
+            'Groups' => __('Users'),
+            'Blocks' => __('Layout'),
+            'Users' => __('Users'),
+            'Theme' => __('Layout'),
+            'Admin' => __('System'),
+            'Settings' => __('System'));
 
     $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
     $modscat = array();
@@ -520,7 +522,7 @@ function installmodules($lang = 'en')
     foreach ($coremodules as $coremodule) {
         $category = $coremodscat[$coremodule];
         ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
-                          array('module' => $coremodule,
+                        array('module' => $coremodule,
                                 'category' => $modscat[$category]));
     }
     // create the default blocks.
@@ -528,24 +530,24 @@ function installmodules($lang = 'en')
     $blockInstance->defaultdata();
 
     // install all the basic modules
-    $modules =array(array('module'   => 'SecurityCenter',
-                          'category' => __('Security')),
-                    array('module'   => 'Tour',
-                          'category' => __('Content')),
-                    array('module'   => 'Categories',
-                          'category' => __('Content')),
-                    array('module'   => 'Legal',
-                          'category' => __('Content')),
-                    array('module'   => 'Mailer',
-                          'category' => __('System')),
-                    array('module'   => 'Errors',
-                          'category' => __('System')),
-                    array('module'   => 'Theme',
-                          'category' => __('Layout')),
-                    array('module'   => 'Search',
-                          'category' => __('Content')),
-                    array('module'   => 'SysInfo',
-                          'category' => __('Security')));
+    $modules = array(array('module' => 'SecurityCenter',
+                    'category' => __('Security')),
+            array('module' => 'Tour',
+                    'category' => __('Content')),
+            array('module' => 'Categories',
+                    'category' => __('Content')),
+            array('module' => 'Legal',
+                    'category' => __('Content')),
+            array('module' => 'Mailer',
+                    'category' => __('System')),
+            array('module' => 'Errors',
+                    'category' => __('System')),
+            array('module' => 'Theme',
+                    'category' => __('Layout')),
+            array('module' => 'Search',
+                    'category' => __('Content')),
+            array('module' => 'SysInfo',
+                    'category' => __('Security')));
 
     foreach ($modules as $module) {
         // sanity check - check if module is already installed
@@ -574,16 +576,16 @@ function installmodules($lang = 'en')
 
         // init it
         if (ModUtil::apiFunc('Extensions', 'admin', 'initialise',
-                              array('id' => $mid)) == true) {
+                        array('id' => $mid)) == true) {
             // activate it
             if (ModUtil::apiFunc('Extensions', 'admin', 'setstate',
-                                  array('id' => $mid,
-                                        'state' => ModUtil::STATE_ACTIVE))) {
+                            array('id' => $mid,
+                                    'state' => ModUtil::STATE_ACTIVE))) {
                 $results[$module['module']] = true;
             }
             // Set category
             ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
-                              array('module' => $module['module'],
+                            array('module' => $module['module'],
                                     'category' => $modscat[$module['category']]));
         }
     }
@@ -646,7 +648,6 @@ function validateMail($mail)
 
     return true;
 }
-
 
 function _check_requirements()
 {
