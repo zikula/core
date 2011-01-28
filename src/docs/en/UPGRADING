@@ -1,121 +1,126 @@
 ZIKULA UPGRADE INSTRUCTIONS
 
-More detailed documentation is available in the Documentation Wiki at
-http://community.zikula.org/ - Support and help with upgrading to this version can
-be obtained from the forums.
+Support and help with upgrading to this version can be obtained from the
+forums at http://community.zikula.org/
 
-========
-CONTENTS
-========
-1. Server Considerations
-2. Upgrading
-3. Caution
-4. Final Note
-
-
-1. Server Consideration
-=======================
-Zikula can be upgraded to this version from any of the following versions: 1.2.x
-or greater. If your installation is less than that, please upgrade to one of these
-versions before proceeding with these instructions.
-
-Before you begin your upgrade, there are some requirements and guidelines you
-should consider to make upgrading, installing, running, and securing Zikula easier.
-Please read the Zikula software condsiderations document.
-
+Server Consideration
+====================
 - If you are using PHP 5.3.0 or greater please make sure the php.ini file has
-  date.timezone set to a valid timezone like UTC, GMT+5, Europe/Berlin.
+  date.timezone set to a valid timezone like UTC, GMT+5, Europe/Berlin.  If this
+  is not set, you will experience problems,
 
-- The PCRE (Perl Compatible Regular Expression) library used with your PHP
-  installation must support Unicode properties. For most installations this
-  should not be an issue. The PHP command:
+- Ensure your server has PCRE with unicode support enabled.
 
-      echo preg_match('/^\p{L}+$/u', 'TheseAreLetters');
-
-  should return the value 1 or true without generating an error. If not, then
-  the PCRE library used by your PHP installation must be replaced with one
-  compiled with the '--enable-unicode-properties' option.
-
-2. Upgrading
+Requirements
 ============
-Please follow the steps below in order, and read each in detail before proceeding.
-Providing the instructions are followed exactly, the upgrade should proceed with
-no problems.
+This upgrade can only be performed on a Zikula Core 1.2.x installation.  If you
+are on a lower version, you must first upgrade sucessfully before proceeding to
+this upgrade.
 
-  2.1 Backup your database and files
-  2.2 Prepare your existing installation
-  2.3 Run the upgrade
-  2.4 Clean up and additional configuration
-  2.1 Backup your database and files
+Before you upgrade
+==================
+There are several issues to contend with before you begin the upgrade process.
 
-  It is vital to backup your database and file system before proceeding with the
-  upgrade. Upgrades cannot be rolled back, therefore the only solution is to
-  restore from backup if problems occur. To backup your database, try using a
-  tool such as mysqldumper, phpMyAdmin or alternately use SSH or your hosting
-  control panel. Full instructions and tutorials on database backups can be found
-  by searching the web and the documentation of your tool set.
- 
-  2.2 Prepare your existing installation
-  ---------------------------------------------
-  i.   If you use login by email address, you must change the login method to
-       login by username in the administration panel.  You will be required to
-       login using your administation username.
+Theme naming considerations
+---------------------------
+   Themes must start with a capital letter and must not contain an underscore character _
+   If you need to rename your theme, please follow the following steps:
 
-  ii. Before unpacking any files:
-      - Delete entire system/ folder.
-      - Delete includes/.
-      - Delete pnTemp/.
+  - Change your theme to different theme in Zikula's administation.
 
-  iii. Upload all files from the package you downloaded, copying over your files.
-       Manually edit the NEW config/config.php with your database credentials. Please
-       be aware the config.php is quite different so please make sure you merge in
-       the differences from the old config.php to the new one. To make this easy
-       pay close attention to lines
-            line 26: $ZConfig['System']['installed']
-            line 28: $ZConfig['System']['prefix']
-            line 46: $ZConfig['DBInfo']['default']['dsn']
+  - Rename your theme folder with a capital letter.  If you are on a Windows machine,
+    please note that Windows does not care about casing so you have to first
+    rename the folder in two steps like this:-
+         `mytheme => mythemeX`
+         and then
+         `mythemeX => Mytheme`
 
-       Do not change the following lines.
-            line $ZConfig['System']['temp']
+    If you are on a linux or mac system, you can rename directly.
 
-  2.3 Run the upgrade
-  -------------------
-  Run the upgrade script upgrade.php and follow the steps as described. There is
-  no real interaction needed other than clicking on 'next'. All database changes
-  that are necessary will be done automatically. At the end you will be redirected
-  to your admin panel.
+  - Edit the version.php of the theme to reflect the new name.
 
-  2.4 Clean up and additional configuration
-  -----------------------------------------
-  After a successful upgrade you can remove the install folder and the files
-  install.php and upgrade.php from the root folder of your site.
-  If you use your own themes, please note that themes now require specific header
-  information which you must update to use the lang, langdirection and charset
-  plugin tags. Please refer to both andreas08's master.tpl template.
-  If you disabled your site before starting the upgrade (see 2.2) you should
-  re-enable it now.
+  - Switch back to your theme and make any adjustments to your site as necessary.
 
-  2.5 Post upgrade notes
-  ----------------------
-  If you use the Menutree module please note the following:
-  The Menutree functionality has been ported into the Zikula Core, but this is not
-  to be considered the same as the Menutree module because implementation in the
-  Zikula Core is substantially different so the upgrade process will not 'import'
-  the configurations from your Menutree module: they should be recreated manually.
+Module considerations
+---------------------
+  Make sure all your modules are compatible with Zikula 1.2.x and have been completely
+  converted to 'gettext'.  Modules that are not will not function in Zikula 1.3.
 
+  Zikula 1.2.x compliant modules will work in Zikula Core 1.3.x
 
-3. Caution
-==========
-It should be noted that Zikula does not support any modification of the core code
-or data structure. Zikula has been designed to be flexible enough to avoid any
-need to modify the core, but if you find something missing that you believe could
-be of widespread use, please submit a feature request to the feature request tracker
-at http://code.zikula.org/core
+  If you use 'menutree', please delete the module files entirely as the functionality
+  is now available in the Core as standard.
 
+Make a backup of your files and database once you are ready to make the upgrade.
 
-4. Final Note
-=============
+Prepare your existing installation
+==================================
+  - If you use login by email address, you must change the login method to
+    login by username in the administration panel.  You will be required to
+    login using your administation username.  Make sure you know it.
+
+  - Before unpacking *any* files, delete the following directories:
+      - system/
+      - themes/
+      - includes/
+      - pnTemp/
+
+  - Unpack the Zikula installation files.
+
+  - Copy back your default theme for your site.  If you forget this stage, you
+    will be unable to proceed with the upgrade.
+
+  - Upload all files from the package you downloaded, copying over your files.
+    Manually edit the NEW config/config.php with your database credentials. Please
+    be aware the config.php is quite different so please make sure you merge in
+    the differences from the old config.php to the new one. To make this easy
+    pay close attention to lines
+           $ZConfig['System']['installed']
+           $ZConfig['System']['prefix']
+           $ZConfig['DBInfo']['default']['dsn']
+
+    Do not change the following lines.
+           $ZConfig['System']['temp']
+
+Run the upgrade
+===============
+WARNING - the moment you run upgrade.php, preparitory changes will be made the
+the database for the 1.3 upgrade.  Your system will no longer function until you
+then manually complete the remaining step.
+
+Run the upgrade.php from the browser http://example.com/upgrade.php
+Simply follow the instructions - this will involve chosing language, entering
+your administrator login and pressing next a few times.
+
+All database changes that are necessary will be done automatically.
+At the end you will be redirected to your admin panel.
+
+Post upgrade notes
+==================
+If you use the Menutree module please note the following:
+The Menutree functionality has been ported into the Zikula Core, but this is not
+to be considered the same as the Menutree module because implementation in the
+Zikula Core is substantially different so the upgrade process will not 'import'
+the configurations from your Menutree module: they should be recreated manually.
+
+Please note that once you have successfully upgraded, you should follow the steps
+in UPGRADING_THEME to refactor your theme to the new standards.  There are only
+a few changes to make, but you will benefit from all the new features by doing
+so.  Until you complete this, certain things may not work as expected.
+
+Hooks
+=====
+There are now two kinds of module, 'legacy' meaning modules that comply with
+Zikula 1.2.x gettext standards, and those which are written specifically for
+Zikula 1.3.x, these are called 'native'.
+
+Zikula Core 1.3.x contains a new hook system.  Legacy modules can only talk with
+legacy hook modules.  Native hook modules can only communicate with other native
+modules.  We recommend you use modules native to Zikula Core 1.3.  If you upgrade
+from a module that was legacy, it will disconnect from the old hooks system.
+This will be reported after the upgrade.
+
 Congratulations! Your upgrade is complete. We hope you enjoy using this new
-Zikula version. If you have any comments, please use the feedback forum on
+Zikula Core version. If you have any comments, please use the feedback forum on
 http://community.zikula.org.
 
