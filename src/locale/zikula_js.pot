@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-15 07:45-0500\n"
+"POT-Creation-Date: 2011-01-28 13:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,19 +44,19 @@ msgstr ""
 msgid "You have unsaved changes!"
 msgstr ""
 
-#: javascript/helpers/Zikula.ImageViewer.js:64
+#: javascript/helpers/Zikula.ImageViewer.js:68
 msgid "Close"
 msgstr ""
 
-#: javascript/helpers/Zikula.ImageViewer.js:65
+#: javascript/helpers/Zikula.ImageViewer.js:69
 msgid "Next"
 msgstr ""
 
-#: javascript/helpers/Zikula.ImageViewer.js:66
+#: javascript/helpers/Zikula.ImageViewer.js:70
 msgid "Prev"
 msgstr ""
 
-#: javascript/helpers/Zikula.ImageViewer.js:67
+#: javascript/helpers/Zikula.ImageViewer.js:71
 msgid "Image #{index} of #{total}"
 msgstr ""
 
