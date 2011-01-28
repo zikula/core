@@ -100,15 +100,15 @@ class Blocks_Block_Extmenu extends Zikula_Block
         }
 
         // Content
-        $menuitems =array();
+        $menuitems = array();
         if (!empty($vars['links'][$thislang])) {
             $blocked = array();
             foreach ($vars['links'][$thislang] as $linkid => $link) {
                 $link['parentid'] = isset($link['parentid']) ? $link['parentid'] : null;
                 $denied = !SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . ':' . $linkid . ':', ACCESS_READ);
-                if($denied || in_array($link['parentid'], $blocked)) {
+                if ($denied || (!is_null($link['parentid']) && in_array($link['parentid'], $blocked))) {
                     $blocked[] = $linkid;
-                } elseif ($link['active'] != 1) {
+                } elseif (!isset($link['active']) || $link['active'] != '1') {
                     $blocked[] = $linkid;
                 } else {
                     // pre zk1.2 check
