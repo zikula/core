@@ -81,7 +81,7 @@
                         Zikula is unable to correctly start sessions. This is because sessions cannot be written to the database which is usually caused by either your site being out of disk space or disk quota, or that the sessions table has become corrupted.  Running a repair on the sessions table may fix the problem. For further help please visit the Zikula website.
                     </p>
                     <p>
-                        Zikula is free software released under the LGPL v3.  For more information, please visit <a href="http://zikula.org" title="Zikula Homepage">http://zikula.org</a>.
+                        Zikula is free software released under the GPL license.  For more information, please visit <a href="http://zikula.org/" title="Zikula Homepage">http://zikula.org</a>.
                     </p>
                     <p>
                         <a href="http://zikula.org"><img src="images/powered/small/cms_zikula.png" alt="Proudly powered by Zikula" width="80" height="15" /></a>

@@ -86,11 +86,11 @@
                         ?>
                     </p>
                     <p>
-                        Zikula is free software released under the LGPL v3.  For more information, please visit <a href="http://zikula.org" title="Zikula Homepage">http://zikula.org</a>.
+                        Zikula is free software released under GPL license.  For more information, please visit <a href="http://zikula.org" title="Zikula Homepage">http://zikula.org</a>.
                     </p>
                     <p>
-                        <a href="http://zikula.org"><img src="images/powered/small/cms_zikula.png" alt="Proudly powered by Zikula" width="80" height="15" /></a>
-                        <a href="http://www.php.net"><img src="images/powered/small/php_powered.png" alt="PHP Language" width="80" height="15" /></a>
+                        <a href="http://zikula.org/"><img src="images/powered/small/cms_zikula.png" alt="Proudly powered by Zikula" width="80" height="15" /></a>
+                        <a href="http://www.php.net/"><img src="images/powered/small/php_powered.png" alt="PHP Language" width="80" height="15" /></a>
                     </p>
                 </div>
             </div>

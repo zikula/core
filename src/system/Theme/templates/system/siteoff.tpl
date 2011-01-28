@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=<?php echo ZLanguage::getEncoding(); ?>" />
         <title><?php echo __('The site is currently off-line.'); ?></title>
-        <base href="<?php echo pnGetBaseURL(); ?>" />
+        <base href="<?php echo System::getBaseURL(); ?>" />
         <style type="text/css">
             html, body {
                 height: 100%;
