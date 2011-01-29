@@ -1,4 +1,4 @@
-{ajaxheader filename='categories_admin_view.js'}
+{ajaxheader filename='categories_admin_view.js' ui=true}
 {include file="categories_admin_menu.tpl"}
 <input type="hidden" id="categoriesauthid" name="authid" value="{insert name='generateauthkey' module='Categories'}" />
 <div class="z-admincontainer">
@@ -6,3 +6,6 @@
     <h2>{gt text="Categories list"}</h2>
     {$menuTxt}
 </div>
+
+
+
