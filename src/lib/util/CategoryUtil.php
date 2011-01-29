@@ -860,6 +860,7 @@ class CategoryUtil
         $lang = ZLanguage::getLanguageCode();
         $params = array();
         $params['mode'] = 'edit';
+
         foreach ($cats as $i => $c) {
 
             $params['cid'] = $c['id'];
@@ -874,13 +875,21 @@ class CategoryUtil
 
             if (isset($c['display_name'][$lang]) && !empty($c['display_name'][$lang])) {
                 $name = DataUtil::formatForDisplay($c['display_name'][$lang]);
+                $displayName = $name;
             } else {
                 $name = DataUtil::formatForDisplay($c['name']);
+                $displayName = '';
             }
 
             $cats[$i]['active'] = $c['status'] == 'A' ? true : false;
             $cats[$i]['href'] = $url;
             $cats[$i]['name'] = $name;
+            $cats[$i]['title'] = array();
+            $cats[$i]['title'][] = "ID: " . $c['id'];
+            $cats[$i]['title'][] = "Name: " . DataUtil::formatForDisplay($c['name']);
+            $cats[$i]['title'][] = "Display name: " . $displayName;
+            $cats[$i]['title'][] = "Active: " . ($c['status'] == 'A' ? 'Yes' : 'No');
+            $cats[$i]['title'] = implode('&lt;br /&gt;',$cats[$i]['title']);
         }
 
         $tree = new Zikula_Tree();
