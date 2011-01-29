@@ -152,7 +152,7 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
      * @return void
      */
     expandAll: function(node) {
-        var base = node ? node : this.tree;
+        var base = Object.isElement(node) ? node : this.tree;
         base.select('ul').each(function(ul){
             this.showNode(ul);
         }.bind(this));
@@ -164,7 +164,7 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
      * @return void
      */
     collapseAll: function(node) {
-        var base = node ? node : this.tree;
+        var base = Object.isElement(node) ? node : this.tree;
         base.select('ul').reverse(true).each(function(ul){
             this.hideNode(ul);
         }.bind(this));

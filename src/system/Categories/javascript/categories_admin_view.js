@@ -2,6 +2,14 @@
 
 Event.observe(window, 'load', function() {
     Zikula.TreeSortable.trees.categoriesTree.config.onSave = CategoriesSave;
+    $('catExpand').observe('click',function(e){
+        e.preventDefault();
+        Zikula.TreeSortable.trees.categoriesTree.expandAll();
+    });
+    $('catCollapse').observe('click',function(e){
+        e.preventDefault();
+        Zikula.TreeSortable.trees.categoriesTree.collapseAll();
+    });
 });
 
 function CategoriesSave(node,params,data) {
