@@ -11,7 +11,7 @@
     {/if}
 </div>
 {/if}
-<form class="z-form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
+<form id="dbinformation_form" class="z-form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
     <div>
         <input type="hidden" name="action" value="processBDInfo" />
         <input type="hidden" name="locale" value="{$locale}" />

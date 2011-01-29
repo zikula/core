@@ -13,7 +13,7 @@
     {/if}
 </div>
 {/if}
-<form class="z-form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
+<form id="createadmin_form" class="z-form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
     <div>
         <input type="hidden" name="action" value="finish" />
         <input type="hidden" name="locale" value="{$locale}" />
