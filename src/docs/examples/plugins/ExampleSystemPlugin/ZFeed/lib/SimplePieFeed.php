@@ -13,12 +13,12 @@
  */
 
 /**
- * ZFeed.
+ * SimplePieFeedn class.
  */
-class ZFeed extends SimplePie
+class SimplePieFeed extends SimplePie
 {
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param string  $feed_url       The URL to the feed (optional).
      * @param integer $cache_duration The duration (in seconds) that the feed contents will be retained in cache.
@@ -29,3 +29,6 @@ class ZFeed extends SimplePie
         $this->SimplePie($feed_url, $cache_dir, $cache_duration);
     }
 }
+
+if (System::isLegacyMode()) {
+    class ZFeeds extends SimplePieFeed {}
