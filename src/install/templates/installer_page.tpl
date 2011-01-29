@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="install/style/style.css" type="text/css" />
     <link rel="stylesheet" href="styles/core.css" type="text/css" />
     {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" />{/browserhack}
-    <script type="text/javascript" src="install/javascript/install.js"></script>
 </head>
 {if not $installbySQL}
 {gt text="Select language" assign=selectlang}
