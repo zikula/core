@@ -657,6 +657,15 @@ function _check_requirements()
 {
     $results = array();
     $results['phpsatisfied'] = version_compare(phpversion(), '5.2.6', ">=");
+
+    if (version_compare(phpversion(), '5.3.0', ">=")) {
+        // date.timezone must be set when PHP >= 5.3.0
+        $results['checkdatetimezone'] = ini_get('date.timezone') ? true : false;
+    } else {
+        // don't care, PHP is < 5.3.0
+        $results['checkdatetimezone'] = true;
+    }
+
     $results['checkdatetimezone'] = version_compare(phpversion(), '5.3.0', ">=");
     $results['pdo'] = extension_loaded('pdo');
     $results['phptokens'] = function_exists('token_get_all');
