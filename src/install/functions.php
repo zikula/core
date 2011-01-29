@@ -67,6 +67,10 @@ function install()
     $loginuser = FormUtil::getPassedValue('loginuser', '', 'POST');
     $loginpassword = FormUtil::getPassedValue('loginpassword', '', 'POST');
 
+    // Power users might have moved the temp folder out of the root and changed the config.php
+    // accordingly. Make sure we respect this security related settings
+    $tempDir = (isset($GLOBALS['ZConfig']['System']['temp']) ? $GLOBALS['ZConfig']['System']['temp'] : 'ztemp');
+
     // define our smarty object
     $smarty = new Smarty();
     $smarty->left_delimiter = '{';
