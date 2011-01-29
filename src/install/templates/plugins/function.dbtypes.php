@@ -47,26 +47,26 @@ function smarty_function_dbtypes($params, &$smarty)
 
     $dbtypesdropdown = "<select name=\"$name\" id=\"$id\" onchange=\"dbtype_onchange()\">\n";
     if (function_exists('mysql_connect')) {
-        $sel = $sv=='mysql' ? 'selected' : '';
+        $sel = $sv=='mysql' ? 'selected="selected"' : '';
         $dbtypesdropdown .= "<option value=\"mysql\" $sel>" . __('MySQL') . "</option>\n";
     }
     // disabled ref #2068
 //    if (function_exists('mysqli_connect')) {
-//        $sel = $sv=='mysqli' ? 'selected' : '';
+//        $sel = $sv=='mysqli' ? 'selected="selected"' : '';
 //        $dbtypesdropdown .= "<option value=\"mysqli\" $sel>" . __('MySQL Improved') . "</option>\n";
 //    }
     if (function_exists('mssql_connect')) {
-        $sel = $sv=='mssql' ? 'selected' : '';
+        $sel = $sv=='mssql' ? 'selected="selected"' : '';
         $dbtypesdropdown .= "<option value=\"mssql\" $sel>" . __('MSSQL (alpha)') . "</option>\n";
     }
     if (function_exists('OCIPLogon')) {
-        $sel = $sv=='oci8' ? 'selected' : '';
+        $sel = $sv=='oci8' ? 'selected="selected"' : '';
         $dbtypesdropdown .= "<option value=\"oci8\" $sel>" . __('Oracle (alpha) via OCI8 driver') . "</option>\n";
-        $sel = $sv=='oracle' ? 'selected' : '';
+        $sel = $sv=='oracle' ? 'selected="selected"' : '';
         $dbtypesdropdown .= "<option value=\"oracle\" $sel>" . __('Oracle (alpha) via Oracle driver') . "</option>\n";
     }
     if (function_exists('pg_connect')) {
-        $sel = $sv=='postgres' ? 'selected' : '';
+        $sel = $sv=='postgres' ? 'selected="selected"' : '';
         $dbtypesdropdown .= "<option value=\"postgres\" $sel>" . __('PostgreSQL') . "</option>\n";
     }
     $dbtypesdropdown .= "</select>\n";
