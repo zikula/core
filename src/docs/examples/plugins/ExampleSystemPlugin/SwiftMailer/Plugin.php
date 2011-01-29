@@ -23,9 +23,9 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Pl
      */
     protected function getMeta()
     {
-        return array('displayname' => $this->__('SwiftMailer Plugin'),
-                     'description' => $this->__('Provides Swift Mailer.'),
-                     'version'     => '4.0.7'
+        return array('displayname' => $this->__('SwiftMailer'),
+                     'description' => $this->__('Provides SwiftMailer'),
+                     'version'     => '4.0.6'
                       );
     }
 
