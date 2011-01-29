@@ -124,20 +124,18 @@ Zikula.ImageViewerUtil = Class.create(/** @lends Zikula.ImageViewerUtil.prototyp
         if (this.config.scaleImage) {
             var w = this.imgPreloader.width / globalDim.width,
                 h = this.imgPreloader.height / globalDim.height;
-            if (w > this.config.scaleFactor || h > this.config.scaleFactor) {
-                if (w > h) {
-                    var nw = Math.round(globalDim.width * this.config.scaleFactor);
-                    this.ImageViewerImg.setStyle({
-                        maxWidth: nw + 'px',
-                        maxHeight: Math.round((nw / this.imgPreloader.width) * this.imgPreloader.height) + 'px'
-                    });
-                } else {
-                    var nh = Math.round(globalDim.height * this.config.scaleFactor);
-                    this.ImageViewerImg.setStyle({
-                        maxHeight: nh + 'px',
-                        maxWidth: Math.round((nh / this.imgPreloader.height) * this.imgPreloader.width) + 'px'
-                    });
-                }
+            if (w > h) {
+                var nw = Math.round(globalDim.width * this.config.scaleFactor);
+                this.ImageViewerImg.setStyle({
+                    maxWidth: nw + 'px',
+                    maxHeight: Math.round((nw / this.imgPreloader.width) * this.imgPreloader.height) + 'px'
+                });
+            } else {
+                var nh = Math.round(globalDim.height * this.config.scaleFactor);
+                this.ImageViewerImg.setStyle({
+                    maxHeight: nh + 'px',
+                    maxWidth: Math.round((nh / this.imgPreloader.height) * this.imgPreloader.width) + 'px'
+                });
             }
         }
 
