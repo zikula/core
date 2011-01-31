@@ -51,7 +51,7 @@ function smarty_function_modgetvar($params, $view)
     }
 
     if (!$name && !$assign) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnmodgetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modgetvar', 'name')));
         return false;
     }
 

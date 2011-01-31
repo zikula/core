@@ -533,15 +533,15 @@ class Users_Controller_Admin extends Zikula_Controller
         $uid = FormUtil::getPassedValue('userid', null, 'POST');
         $sendmail = FormUtil::getPassedValue('sendmail', null, 'POST');
 
-        $mailSent = pnModAPIFunc('Users', 'admin', 'sendmail', array(
+        $mailSent = ModUtil::apiFunc('Users', 'admin', 'sendmail', array(
             'uid'       => $uid,
             'sendmail'  => $sendmail,
         ));
 
         if (!$mailSent) {
-            return pnRedirect(pnModURL('Users', 'admin', 'search'));
+            return $this->redirect(ModUtil::url('Users', 'admin', 'search'));
         } else {
-            return pnRedirect(pnModURL('Users', 'admin', 'main'));
+            return $this->redirect(ModUtil::url('Users', 'admin', 'main'));
         }
     }
 
