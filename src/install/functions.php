@@ -82,6 +82,8 @@ function install()
 
     // define our smarty object
     $smarty = new Smarty();
+    $smarty->caching = false;
+    $smarty->compile_check = true;
     $smarty->left_delimiter = '{';
     $smarty->right_delimiter = '}';
     $smarty->compile_dir = $tempDir . '/view_compiled';
@@ -302,42 +304,18 @@ function install()
             break;
     }
 
-    $smarty->assign(get_defined_vars());
     // check our action template exists
     $action = DataUtil::formatForOS($action);
     if ($smarty->template_exists("installer_$action.tpl")) {
         $smarty->assign('action', $action);
-        $templatename = "install/templates/installer_$action.tpl";
+        $templateName = "installer_$action.tpl";
     } else {
         $smarty->assign('action', 'error');
-        $templatename = 'install/templates/installer_error.tpl';
+        $templateName = 'installer_error.tpl';
     }
 
-    // at this point we now have all the information requried to display
-    // the output. We don't use normal smarty functions here since we
-    // want to avoid the need for a template compilation directory
-    // TODO: smarty kicks up some odd errors when eval'ing templates
-    // this way so the evaluation is suppressed.
-    // get and evaluate the action specific template and assign to our
-    // main smarty object as a new template variable
-    $template = file_get_contents($templatename);
-    $smarty->_compile_source('evaluated template', $template, $_var_compiled);
-    ob_start();
-    @$smarty->_eval('?>' . $_var_compiled);
-    $_includecontents = ob_get_contents();
-    ob_end_clean();
-    $smarty->assign('maincontent', $_includecontents);
-
-    // get and evaluate the page template
-    $template = file_get_contents('install/templates/installer_page.tpl');
-    $smarty->_compile_source('evaluated template', $template, $_var_compiled);
-    ob_start();
-    @$smarty->_eval('?>' . $_var_compiled);
-    $_contents = ob_get_contents();
-    ob_end_clean();
-
-    // echo our final result - the combination of the two templates
-    echo $_contents;
+    $smarty->assign('maincontent', $smarty->fetch($templateName));
+    $smarty->display('installer_page.tpl');
 }
 
 /**
