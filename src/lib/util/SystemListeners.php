@@ -20,6 +20,8 @@ class SystemListeners
     /**
      * If enabled and logged in, save login name of user in Apache session variable for Apache logs.
      *
+     * Implements 'core.init' event when Zikula_Core::STAGE_SESSIONS.
+     *
      * @param Zikula_Event $event The event handler.
      *
      * @return void
@@ -39,6 +41,8 @@ class SystemListeners
     /**
      * Initialise DB connection.
      *
+     * Implements 'core.init' event when Zikula_Core::STAGE_DB.
+     *
      * @param Zikula_Event $event The event handler.
      *
      * @return void
@@ -53,6 +57,10 @@ class SystemListeners
 
     /**
      * Call system hooks.
+     *
+     * Implements 'core.postinit' event.
+     *
+     * This is just here for legacy systeminit hooks.
      *
      * @param Zikula_Event $event The event handler.
      *
@@ -74,6 +82,8 @@ class SystemListeners
     /**
      * Load system plugins.
      *
+     * Implements 'core.init' event when Zikula_Core::STAGE_LANGS.
+     *
      * @param Zikula_Event $event The event handler.
      *
      * @return void
@@ -92,6 +102,8 @@ class SystemListeners
 
     /**
      * Setup default error reporting.
+     *
+     * Implements 'setup.errorreporting' event.
      *
      * @param Zikula_Event $event The event.
      *
@@ -122,6 +134,8 @@ class SystemListeners
 
     /**
      * Establish the necessary instances for logging.
+     *
+     * Implements 'core.init' event when Zikula_Core::STAGE_CONFIG.
      *
      * @param Zikula_Event $event The event to log.
      *
@@ -161,6 +175,8 @@ class SystemListeners
 
     /**
      * Log an error.
+     *
+     * Implements 'log' event.
      *
      * @param Zikula_Event $event The log event to log.
      *
@@ -223,7 +239,7 @@ class SystemListeners
     }
 
     /**
-     * Listener for log.sql events.
+     * Listener for 'log.sql' events.
      *
      * This listener logs the queries via Zend_Log to file / console.
      *
@@ -251,6 +267,8 @@ class SystemListeners
 
     /**
      * Debug toolbar startup.
+     *
+     * Implements 'core.init' event when Zikula_Core::STAGE_CONFIG in development mode.
      *
      * @param Zikula_Event $event Event.
      *
@@ -318,7 +336,7 @@ class SystemListeners
     }
 
     /**
-     * Debug toolbar rendering (listener for theme.prefooter event).
+     * Debug toolbar rendering (listener for 'theme.prefooter' event).
      *
      * @param Zikula_Event $event Event.
      *
@@ -334,6 +352,8 @@ class SystemListeners
 
     /**
      * Adds an autoloader entry for the cached (generated) doctrine models.
+     *
+     * Implements 'core.init' events when Zikula_Core::STAGE_CONFIG.
      *
      * @param Zikula_Event $event Event.
      *
@@ -377,6 +397,8 @@ class SystemListeners
 
     /**
      * Core stylesheet override.
+     *
+     * Implements 'pageutil.addvar_filter' event.
      *
      * @param Zikula_Event $event The event handler.
      *
