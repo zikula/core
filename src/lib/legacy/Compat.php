@@ -147,6 +147,7 @@ class DBConnectionStack
      */
     public static function init($name = 'default', $lazyConnect = false)
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         $serviceManager = ServiceUtil::getManager();
         $eventManager = EventUtil::getManager();
 
@@ -178,6 +179,7 @@ class DBConnectionStack
      */
     public static function getConnectionInfo($name = null, $field = null)
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         if (!self::$manager instanceof Doctrine_Manager) {
             self::init($name);
         }
@@ -232,6 +234,7 @@ class DBConnectionStack
      */
     public static function getConnectionName()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return self::getConnectionInfo(null, 'alias');
     }
 
@@ -242,6 +245,7 @@ class DBConnectionStack
      */
     public static function getConnectionDBName()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return self::getConnectionInfo(null, 'dbname');
     }
 
@@ -252,6 +256,7 @@ class DBConnectionStack
      */
     public static function getConnectionDBHost()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return self::getConnectionInfo(null, 'dbhost');
     }
 
@@ -262,6 +267,7 @@ class DBConnectionStack
      */
     public static function getConnectionDBType()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return self::getConnectionInfo(null, 'dbtype');
     }
 
@@ -275,6 +281,7 @@ class DBConnectionStack
      */
     public static function getConnectionDBDriver()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return self::getConnectionInfo(null, 'dbdriver');
     }
 
@@ -285,6 +292,7 @@ class DBConnectionStack
      */
     public static function getConnectionDBCharset()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return self::getConnectionInfo(null, 'dbcharset');
     }
 
@@ -295,6 +303,7 @@ class DBConnectionStack
      */
     public static function getConnectionDBCollate()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return self::getConnectionInfo(null, 'dbcollate');
     }
 
@@ -305,6 +314,7 @@ class DBConnectionStack
      */
     public static function getConnectionDBTableType()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return self::getConnectionInfo(null, 'dbtabletype');
     }
 
@@ -315,6 +325,7 @@ class DBConnectionStack
      */
     public static function getConnectionDSN()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return self::getConnectionInfo(null, 'dsn');
     }
 
@@ -325,6 +336,7 @@ class DBConnectionStack
      */
     public static function isDefaultConnection()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return (self::getConnectionName() == 'default');
     }
 
@@ -337,6 +349,7 @@ class DBConnectionStack
      */
     public static function getConnection()
     {
+        LogUtil::log(__('Warning! %1$s is deprecated. Use %2$s instead.', array(__CLASS__ . '::' . __FUNCTION__, 'Doctrine_Manager::getInstance()->getCurrentConnection()')), E_USER_DEPRECATED);
         if (!isset(self::$manager)) {
             self::init();
         }
@@ -360,6 +373,7 @@ class DBConnectionStack
      */
     public static function pushConnection($name)
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         if (self::init($name)) {
             return self::getConnection();
         }
@@ -377,6 +391,7 @@ class DBConnectionStack
      */
     public static function popConnection($close = false)
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         if (!self::$manager->count()) {
             throw new Exception(__('Attempted to pop connection from empty connection stack'));
         }
