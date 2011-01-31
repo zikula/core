@@ -10,17 +10,7 @@
     {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" />{/browserhack}
     <script type="text/javascript" src="install/javascript/install.js"></script>
 </head>
-{if not $installbySQL}
-{gt text="Select language" assign=selectlang}
-{else}
-{gt text="Welcome" assign=welcome}
-{/if}
-{gt text="System requirements" assign=sysrequir}
-{gt text="Database information" assign=dbinfos}
-{gt text="Select installation" assign=selinstalltype}
-{gt text="Create administrator's account" assign=createaduser}
-{gt text="Select start page" assign=selstartpage}
-{gt text="Finish" assign=finish}
+
 <body onload="setFocus();">
     <div id="container">
         <div id="wrapper" class="z-clearfix">
@@ -31,11 +21,11 @@
                 <div class="menu">
                     <h3>{gt text="Installation steps"}</h3>
                     <ol>
-                        <li{if $action eq lang} class="menu_selected"{/if}>{$selectlang}{$welcome}</li>
-                        <li{if $action eq requirements} class="menu_selected"{/if}>{$sysrequir}</li>
-                        <li{if $action eq dbinformation} class="menu_selected"{/if}>{$dbinfos}</li>
-                        <li{if $action eq createadmin} class="menu_selected"{/if}>{$createaduser}</li>
-                        <li{if $action eq finish} class="menu_selected"{/if}>{$finish}</li>
+                        <li{if $action eq lang} class="menu_selected"{/if}>{gt text="Select language"}</li>
+                        <li{if $action eq requirements} class="menu_selected"{/if}>{gt text="Check requirements"}</li>
+                        <li{if $action eq dbinformation} class="menu_selected"{/if}>{gt text="Database information"}</li>
+                        <li{if $action eq createadmin} class="menu_selected"{/if}>{gt text="Create administrator's account"}</li>
+                        <li{if $action eq finish} class="menu_selected"{/if}>{gt text="Finish"}</li>
                     </ol>
                     <h3>{gt text="Useful resources"}</h3>
                     <ul>
@@ -52,7 +42,7 @@
                     </ul>
                     {if not $installbySQL}
                     <p id="notice">
-                        {gt text="Note: Official Zikula distributions are only available from zikula.org. Please ensure that you are installing an official distribution."}
+                        {gt text="NOTICE: Official copies of Zikula are only from zikula.org"}
                     </p>
                     {/if}
                 </div>

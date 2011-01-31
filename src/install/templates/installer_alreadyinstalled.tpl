@@ -54,8 +54,7 @@
                 <div class="content">
                     <h1>{gt text='Zikula is already installed!'}</h1>
                     <p>{lang assign='lang'}
-                        {gt text='You are seeing this message because Zikula is already installed so the installer has been disabled.  <a href="index.php">%s</a>.' tag1='Click here to visit your homepage'}
-                        {gt text="If you are a system administrator you can proceed to the installer <a href='install.php?lang=$lang&action=login'>%s</a>." tag1='here'}
+                        {gt text='Zikula is already installed so the installer has been disabled.  If you need to run the installer a second time, you must reset the config.php to the original state.  <a href="index.php">%s</a>.' tag1='Click here to visit your homepage'}
                         {gt text='Further information can be found in the <a href="http://community.zikula.org/Wiki-UserDocs.htm">%s</a>.' tag1='online documentation'}
                     </p>
                 </div>
