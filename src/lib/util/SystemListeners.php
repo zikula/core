@@ -303,7 +303,7 @@ class SystemListeners
 
             $em = $sm->getService('zikula.eventmanager');
             // setup rendering event listeners
-            $em->attach('theme.prefooter', array('SystemListenersUtil', 'debugToolbarRendering'));
+            $em->attach('theme.prefooter', array('SystemListeners', 'debugToolbarRendering'));
 
             // setup event listeners
             $em->attach('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
