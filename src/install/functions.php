@@ -64,6 +64,18 @@ function install()
     $email = FormUtil::getPassedValue('email', '', 'GETPOST');
     $action = FormUtil::getPassedValue('action', '', 'GETPOST');
 
+    // see if the language was already selected
+    $languageAlreadySelected = ($lang) ? true : false;
+    if ($languageAlreadySelected && empty($action)) {
+        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
+    }
+
+    // see if the language was already selected
+    $languageAlreadySelected = ($lang) ? true : false;
+    if ($languageAlreadySelected && empty($action)) {
+        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
+    }
+
     // Power users might have moved the temp folder out of the root and changed the config.php
     // accordingly. Make sure we respect this security related settings
     $tempDir = (isset($GLOBALS['ZConfig']['System']['temp']) ? $GLOBALS['ZConfig']['System']['temp'] : 'ztemp');
@@ -106,13 +118,8 @@ function install()
     // assign the values from config.php
     $smarty->assign($GLOBALS['ZConfig']['System']);
 
-    // if the system is already installed, require login
+    // if the system is already installed, halt.
     if ($GLOBALS['ZConfig']['System']['installed']) {
-        $action = _forcelogin($action);
-    }
-
-    if ($GLOBALS['ZConfig']['System']['installed'] && !isset($_GET['lang'])) {
-        // // need auth because Zikula is already installed.
         _installer_alreadyinstalled($smarty);
     }
 
@@ -123,24 +130,6 @@ function install()
 
     // perform tasks based on our action
     switch ($action) {
-        case 'login' :
-            if (empty($loginuser) && empty($loginpassword)) {
-
-            } elseif (UserUtil::loginUsing('Users', array('loginid' => $loginuser, 'pass' => $loginpassword), null, false)) {
-                if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
-                    // not admin user so boot
-                    UserUtil::logout();
-                    $action = 'login';
-                    $smarty->assign(array('loginstate' => 'notadmin'));
-                } else {
-                    $action = 'lang';
-                }
-            } else {
-                // not a valid user
-                $smarty->assign(array('loginstate' => 'failed'));
-            }
-            break;
-
         case 'processBDInfo':
             $dbname = trim($dbname);
             $dbusername = trim($dbusername);
@@ -549,47 +538,9 @@ function installmodules($lang = 'en')
     return $results;
 }
 
-function _forcelogin($action = '')
-{
-    // login to supplied admin credentials
-    if ($GLOBALS['ZConfig']['System']['installed']) { // need auth because Zikula is already installed.
-        $dsnParts = Doctrine_Manager::getInstance()->parseDsn($GLOBALS['ZConfig']['DBInfo']['default']['dsn']);
-        $connInfo = array();
-        $connInfo['dbtype'] = strtolower($dsnParts['scheme']);
-        $connInfo['dbhost'] = $dsnParts['host'];
-        $connInfo['dbname'] = $dsnParts['database'];
-        $connInfo['prefix'] = System::getVar('prefix') . '_';
-
-        try {
-            $dbh = new PDO("$connInfo[dbtype]:host=$connInfo[dbhost];dbname=$connInfo[dbname]", $dsnParts['user'], $dsnParts['pass']);
-        } catch (PDOException $e) {
-            header('HTTP/1.1 503 Service Unavailable');
-            $templateFile = 'dbconnectionerror.tpl';
-            if (file_exists("config/templates/$templateFile")) {
-                include "config/templates/$templateFile";
-            } else {
-                include "system/Theme/templates/system/$templateFile";
-            }
-            System::shutDown();
-        }
-
-        ServiceUtil::getManager()->getService('zikula')->init(Zikula_Core::STAGE_SESSIONS);
-        if (UserUtil::isLoggedIn()) {
-            if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
-                UserUtil::logout(); // not administrator user so boot them.
-                $action = 'login';
-            }
-        } else { // login failed
-            $action = 'login';
-        }
-    }
-
-    return $action;
-}
-
 function _installer_alreadyinstalled(Smarty $smarty)
 {
-    header('HTTP/1.1 400 Bad Request');
+    header('HTTP/1.1 500 Internal Server Error');
     $smarty->display('installer_alreadyinstalled.tpl');
     System::shutDown();
     exit;
