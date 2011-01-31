@@ -89,7 +89,7 @@ class ExampleDoctrine_Handler_Edit extends Form_Handler
         $user->merge($data);
         $user->save();
 
-        return $view->redirect(pnModURL('ExampleDoctrine', 'user','view'));
+        return $view->redirect(ModUtil::url('ExampleDoctrine', 'user','view'));
     }
 }
 
