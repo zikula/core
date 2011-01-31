@@ -34,9 +34,11 @@ class DoctrineListener extends Zikula_EventHandler
     /**
      * Inialise a Doctrine 1 connection.
      *
-     * stage - Initialise stage.
-     * lazy - lazy connect.
-     * name - connection name.
+     * Listens for 'doctrine.init_connection' events.
+     *
+     * Event arguments are:
+     * boolean 'lazy'  - lazy connect.
+     * string 'name' - connection name.
      *
      * @param Zikula_Event $internalEvent Event.
      *
@@ -109,6 +111,9 @@ class DoctrineListener extends Zikula_EventHandler
     /**
      * Configure caching.
      *
+     * Listens for 'doctrine.configure' events.
+     * Subject is expected to be the Doctrine_Manager.
+     *
      * @param Zikula_Event $event Event.
      */
     public function configureCache(Zikula_Event $event)
@@ -141,6 +146,9 @@ class DoctrineListener extends Zikula_EventHandler
 
     /**
      * Configure Doctrine 1.x instance.
+     *
+     * Listens for 'doctrine.configure' events.
+     * Subject is either Doctrine_Manager, Doctrine_Connection or Doctrine_Table.
      *
      * @param Zikula_Event $event Event.
      *

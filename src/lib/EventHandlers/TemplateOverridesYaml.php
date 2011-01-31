@@ -50,7 +50,7 @@ class TemplateOverridesYaml extends Zikula_EventHandler
     }
 
     /**
-     * Event handler here.
+     * Listens for 'zikula_view.template_override' events.
      *
      * @param Zikula_Event $event Event handler.
      *
