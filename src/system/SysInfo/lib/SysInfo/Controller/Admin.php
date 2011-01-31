@@ -40,8 +40,8 @@ class SysInfo_Controller_Admin extends Zikula_Controller
 
         // Mess around with PHP functions for the various databases
         $serverInfo = DBUtil::serverInfo();
-        $connectionInfo = DBConnectionStack::getConnectionInfo();
-        switch ($connectionInfo['dbtype']) {
+        $connectionInfo = Doctrine_Manager::getInstance()->getCurrentConnection();
+        switch (strtolower($connectionInfo->getDriverName())) {
             case 'mysql':
                 $dbinfo = 'MySQL ' . $serverInfo['description'];
                 break;

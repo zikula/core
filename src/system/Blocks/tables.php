@@ -26,9 +26,6 @@ function Blocks_tables()
     // Initialise table array
     $dbtable = array();
 
-    // get the db driver
-    $dbdriver = DBConnectionStack::getConnectionDBDriver();
-
     $blocks = DBUtil::getLimitedTablename('blocks') ;
     $dbtable['blocks'] = $blocks;
     $dbtable['blocks_column'] = array ('bid'         => 'z_bid',

@@ -32,7 +32,11 @@ $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
 
-$connection = DBConnectionStack::init('default');
+$eventManager = $core->getEventManager();
+
+// Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
+$dbEvent = new Zikula_Event('doctrine.init_connection', null, array('lazy' => true));
+$connection = $eventManager->notify($dbEvent)->getData();
 
 $columns = upgrade_getColumnsForTable($connection, 'modules');
 
@@ -403,7 +407,7 @@ function _upg_sanity_check($username, $password)
         System::shutdown();
     }
 
-    _upg_continue('upgrademodules', __('Proceed to upgrade.'), $username, $password);
+    _upg_continue('upgrademodules', __('Proceed to upgrade (click once and wait)'), $username, $password);
     _upg_footer();
 }
 

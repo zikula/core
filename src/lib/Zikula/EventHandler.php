@@ -128,8 +128,6 @@ abstract class Zikula_EventHandler
     /**
      * Attach handler with EventManager.
      *
-     * @throws InvalidArgumentException If $this->eventNames data is invalid.
-     *
      * @return void
      */
     public function attach()

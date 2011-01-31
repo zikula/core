@@ -47,7 +47,7 @@ if (!ModUtil::load($modinfo['name'], $type)) {
 
 // Handle database transactions
 if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-    $dbConn = DBConnectionStack::getConnection();
+    $dbConn = Doctrine_Manager::getInstance()->getCurrentConnection();
     $dbConn->beginTransaction();
 }
 

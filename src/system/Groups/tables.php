@@ -20,7 +20,7 @@ function Groups_tables()
     $dbtable = array();
 
     // get the db driver
-    $dbdriver = DBConnectionStack::getConnectionDBDriver();
+    $dbdriver = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
 
     $group_membership = DBUtil::getLimitedTablename('group_membership') ;
     $dbtable['group_membership'] = $group_membership;
@@ -72,7 +72,7 @@ function Groups_tables()
     $dbtable['group_applications_column_def'] = array ('app_id'      => 'I4 NOTNULL AUTO PRIMARY',
                                                        'uid'         => 'I4 NOTNULL DEFAULT 0',
                                                        'gid'         => 'I4 NOTNULL DEFAULT 0',
-                                                       'application' => ($dbdriver=='oci8') ? 'XL NOTNULL' : 'B NOTNULL',
+                                                       'application' => ($dbdriver=='oracle') ? 'XL NOTNULL' : 'B NOTNULL',
                                                        'status'      => 'I1 NOTNULL DEFAULT 0');
 
     return $dbtable;

@@ -44,7 +44,7 @@ class DBUtil
         if (!self::$cache_enabled) {
             self::$cache_enabled = ServiceUtil::getManager()->getArgument('dbcache.enable');
         }
-        return ($tablename != 'session_info' && !System::isInstalling() && DBConnectionStack::isDefaultConnection() && self::$cache_enabled);
+        return ($tablename != 'session_info' && !System::isInstalling() && self::$cache_enabled);
     }
 
     /**
@@ -59,8 +59,10 @@ class DBUtil
     {
         if (self::hasObjectCache($table)) {
             $key = md5($key);
-            $prefix = md5(DBConnectionStack::getConnectionDSN());
-            $cacheDriver = DBConnectionStack::getCacheDriver();
+            $databases = ServiceUtil::getManager()->getArgument('databases');
+            $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
+            $prefix = md5(serialize($databases[$connName]));
+            $cacheDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
             return $cacheDriver->fetch($prefix . $table . $key);
         }
 
@@ -80,8 +82,10 @@ class DBUtil
     {
         if (self::hasObjectCache($table)) {
             $key = md5($key);
-            $prefix = md5(DBConnectionStack::getConnectionDSN());
-            $cacheDriver = DBConnectionStack::getCacheDriver();
+            $databases = ServiceUtil::getManager()->getArgument('databases');
+            $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
+            $prefix = md5(serialize($databases[$connName]));
+            $cacheDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
             $cacheDriver->save($prefix . $table . $key, $fields);
         }
     }
@@ -96,8 +100,10 @@ class DBUtil
     public static function flushCache($table)
     {
         if (self::hasObjectCache($table)) {
-            $prefix = md5(DBConnectionStack::getConnectionDSN());
-            $cacheDriver = DBConnectionStack::getCacheDriver();
+            $databases = ServiceUtil::getManager()->getArgument('databases');
+            $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
+            $prefix = md5(serialize($databases[$connName]));
+            $cachDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
             $cacheDriver->deleteByPrefix($prefix . $table);
         }
     }
@@ -109,7 +115,7 @@ class DBUtil
      */
     public static function serverInfo()
     {
-        $connection = DBConnectionStack::getConnection();
+        $connection = Doctrine_Manager::getInstance()->getCurrentConnection();
 
         // we will form an array to keep formally compatible to the old ado-db style for now
         return array('description' => $connection->getAttribute(PDO::ATTR_SERVER_INFO),
@@ -131,7 +137,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'dbname'));
         }
 
-        $connection = DBConnectionStack::getConnection();
+        $connection = Doctrine_Manager::getInstance()->getCurrentConnection();
 
         try {
             // create the new database
@@ -151,7 +157,7 @@ class DBUtil
      */
     public static function metaDatabases()
     {
-        return DBConnectionStack::getConnection()->import->listDatabases();
+        return Doctrine_Manager::getInstance()->getCurrentConnection()->import->listDatabases();
     }
 
     /**
@@ -165,7 +171,7 @@ class DBUtil
      */
     public static function metaTables($ttype = false, $showSchema = false, $mask = false)
     {
-        return DBConnectionStack::getConnection()->import->listTables();
+        return Doctrine_Manager::getInstance()->getCurrentConnection()->import->listTables();
     }
 
     /**
@@ -189,13 +195,17 @@ class DBUtil
     public static function getDefaultTableOptions()
     {
         $tableoptions = array();
-        $dbType = DBConnectionStack::getConnectionDBType();
-        if ($dbType == 'mysql' || $dbType == 'mysqli') {
-            $tableoptions['type'] = DBConnectionStack::getConnectionDBTableType();
+        $serviceManager = ServiceUtil::getManager();
+
+        $databases = $serviceManager['databases'];
+        $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
+        $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+        if ($dbType == 'mysql') {
+            $tableoptions['type'] = $dbType;
         }
 
-        $tableoptions['charset'] = DBConnectionStack::getConnectionDBCharset();
-        $tableoptions['collate'] = DBConnectionStack::getConnectionDBCollate();
+        $tableoptions['charset'] = $databases[$connName]['charset'];
+        $tableoptions['collate'] = $databases[$connName]['collate'];
 
         return $tableoptions;
     }
@@ -243,7 +253,7 @@ class DBUtil
             throw new Exception(__('No SQL statement to execute'));
         }
 
-        $connection = DBConnectionStack::getConnection();
+        $connection = Doctrine_Manager::getInstance()->getCurrentConnection();
 
         if (!$connection && System::isInstalling()) {
             return false;
@@ -481,7 +491,7 @@ class DBUtil
                         'name' => $newcolumn,
                         'definition' => $definition));
         try {
-            DBConnectionStack::getConnection()->export->alterTable($tableName, array('rename' => $renameColumnArray));
+            Doctrine_Manager::getInstance()->getCurrentConnection()->export->alterTable($tableName, array('rename' => $renameColumnArray));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column rename failed.') . ' ' . $e->getMessage());
         }
@@ -517,7 +527,7 @@ class DBUtil
         $tableName = $tables[$table];
 
         try {
-            $connection = DBConnectionStack::getConnection();
+            $connection = Doctrine_Manager::getInstance()->getCurrentConnection();
             foreach ($fields as $field) {
                 $options = self::getTableOptions($table);
                 $definition = self::getTableDefinition($table);
@@ -569,7 +579,7 @@ class DBUtil
         $tableName = $tables[$table];
 
         try {
-            DBConnectionStack::getConnection()->export->alterTable($tableName, array('remove' => $arrayFields));
+            Doctrine_Manager::getInstance()->getCurrentConnection()->export->alterTable($tableName, array('remove' => $arrayFields));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column deletion failed.') . ' ' . $e->getMessage());
         }
@@ -646,7 +656,7 @@ class DBUtil
         $cArray = array();
         $vArray = array();
 
-        $dbType = DBConnectionStack::getConnectionDBType ();
+        $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
         foreach ($columnList as $key => $val) {
             $hasMath = (bool)(strcmp($val, str_replace($search, $replace, $val)));
             if ($hasMath) {
@@ -700,10 +710,6 @@ class DBUtil
         if ((!$preserve || !isset($object[$idfield])) && isset($columnList[$idfield])) {
             $obj_id = self::getInsertID($table, $idfield);
             $object[$idfield] = $obj_id;
-        }
-
-        if (!DBConnectionStack::isDefaultConnection()) {
-            return $object;
         }
 
         if ($cArray && $vArray) {
@@ -801,10 +807,6 @@ class DBUtil
         }
 
         self::flushCache($table);
-
-        if (!DBConnectionStack::isDefaultConnection()) {
-            return $object;
-        }
 
         $object = self::_savePostProcess($object, $table, $idfield, true);
 
@@ -1037,12 +1039,8 @@ class DBUtil
         // If we come from deleteWhere, we simply don't do any of this as in that
         // case we don't know the object ID to map attributes to.
         // TODO D [there should be a dangling attribute cleanup function somewhere]
-        if (!DBConnectionStack::isDefaultConnection() || $where) {
-            return $object;
-        } else {
-            self::_deletePostProcess($object, $table, $idfield);
-        }
-
+        self::_deletePostProcess($object, $table, $idfield);
+        
         return $res;
     }
 
@@ -1210,7 +1208,9 @@ class DBUtil
         }
 
         $tables = self::getTables();
-        $dbType = DBConnectionStack::getConnectionDBType();
+        $databases = ServiceUtil::getManager()->getArgument('databases');
+        $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
+        $dbType = $databases[$connName]['dbtype'];
 
         // given that we use quotes in our generated SQL, oracle requires the same quotes in the order-by
         if ($dbType == 'oracle') {
@@ -1286,7 +1286,7 @@ class DBUtil
             return $orderby;
         }
 
-        $dbType = DBConnectionStack::getConnectionDBType();
+        $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
         $tables = self::getTables();
         $columns = $tables["{$table}_column"];
         $columnsdef = $tables["{$table}_column_def"];
@@ -2014,10 +2014,6 @@ class DBUtil
             $objects = array_slice($objects, 0, $limitNumRows);
         }
 
-        if (!DBConnectionStack::isDefaultConnection()) {
-            return $objects;
-        }
-
         $tables = self::getTables();
         $idFieldName = isset($tables["{$table}_primary_key_column"]) ? $tables["{$table}_primary_key_column"] : 'id';
 
@@ -2093,10 +2089,6 @@ class DBUtil
                 }
             }
         } while ($limitNumRows != -1 && $limitNumRows > 0 && $fetchedObjectCount > 0 && count($objects) < $limitNumRows);
-
-        if (!DBConnectionStack::isDefaultConnection()) {
-            return $objects;
-        }
 
         $tables = self::getTables();
         $idFieldName = isset($tables["{$table}_primary_key_column"]) ? $tables["{$table}_primary_key_column"] : 'id';
@@ -2393,10 +2385,6 @@ class DBUtil
             $objects = array_slice($objects, 0, $limitNumRows);
         }
 
-        if (!DBConnectionStack::isDefaultConnection()) {
-            return $objects;
-        }
-
         $idFieldName = isset($tables["{$table}_primary_key_column"]) ? $tables["{$table}_primary_key_column"] : 'id';
 
         $objects = self::_selectPostProcess($objects, $table, $idFieldName);
@@ -2659,11 +2647,7 @@ class DBUtil
 
         $resultID = 0;
         try {
-            if (!$resultID = DBConnectionStack::getConnection()->lastInsertId($tableName, $fieldName)) {
-                if ($verbose) {
-                    print '<br />' . $dbconn->ErrorMsg() . '<br />'; //TODO A this isnt right (drak)
-                }
-
+            if (!$resultID = Doctrine_Manager::getInstance()->getCurrentConnection()->lastInsertId($tableName, $fieldName)) {
                 if ($exitOnError) {
                     throw new Exception(__('Exiting after SQL-error'));
                 }
@@ -2914,7 +2898,7 @@ class DBUtil
         }
 
         //try {
-        //    return DBConnectionStack::getConnection()->import->listTableConstraints($tableName);
+        //    return Doctrine_Manager::getInstance()->getCurrentConnection()->import->listTableConstraints($tableName);
         //} catch (Exception $e) {
         //    return LogUtil::registerError(__('Error! Table constraints determination failed.') . ' ' . $e->getMessage());
         //}
@@ -3049,7 +3033,7 @@ class DBUtil
             return false;
         }
 
-        $connection = DBConnectionStack::getConnection();
+        $connection = Doctrine_Manager::getInstance()->getCurrentConnection();
 
         if (empty($definition) || !is_array($definition)) {
             $definition = self::getTableDefinition($table);
@@ -3122,7 +3106,7 @@ class DBUtil
             return false;
         }
 
-        $connection = DBConnectionStack::getConnection();
+        $connection = Doctrine_Manager::getInstance()->getCurrentConnection();
 
         if (empty($definition) || !is_array($definition)) {
             $definition = self::getTableDefinition($table);
@@ -3280,7 +3264,7 @@ class DBUtil
         }
 
         try {
-            DBConnectionStack::getConnection()->export->alterTable($tableName, array('name' => $newTableName));
+            Doctrine_Manager::getInstance()->getCurrentConnection()->export->alterTable($tableName, array('name' => $newTableName));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Table rename failed.') . ' ' . $e->getMessage());
         }
@@ -3312,7 +3296,7 @@ class DBUtil
         }
 
         try {
-            DBConnectionStack::getConnection()->export->dropTable($tableName);
+            Doctrine_Manager::getInstance()->getCurrentConnection()->export->dropTable($tableName);
             ObjectUtil::deleteAllObjectTypeAttributes($table);
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Table drop failed.') . ' ' . $e->getMessage());
@@ -3390,7 +3374,7 @@ class DBUtil
         }
 
         try {
-            DBConnectionStack::getConnection()->export->createIndex($tableName, $idxname, $indexDefinition);
+            Doctrine_Manager::getInstance()->getCurrentConnection()->export->createIndex($tableName, $idxname, $indexDefinition);
             return true;
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Index creation failed.') . ' ' . $e->getMessage());
@@ -3424,7 +3408,7 @@ class DBUtil
         }
 
         try {
-            DBConnectionStack::getConnection()->export->dropIndex($tableName, $idxname);
+            Doctrine_Manager::getInstance()->getCurrentConnection()->export->dropIndex($tableName, $idxname);
             return true;
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Index deletion failed.') . ' ' . $e->getMessage());
@@ -3476,7 +3460,7 @@ class DBUtil
             throw new Exception(__f('%s does not point to a valid table definition', $table));
         }
 
-        $rows = DBConnectionStack::getConnection()->import->listTableColumns($tableName);
+        $rows = Doctrine_Manager::getInstance()->getCurrentConnection()->import->listTableColumns($tableName);
         $array = array();
         if ($numericIndex) {
             foreach ($rows as $row) {
@@ -3512,7 +3496,7 @@ class DBUtil
 
         try {
             // Using array_unique here because Doctrine is sometimes returning a duplicate of the last index key - drak refs #2676
-            return array_unique(DBConnectionStack::getConnection()->import->listTableIndexes($tableName));
+            return array_unique(Doctrine_Manager::getInstance()->getCurrentConnection()->import->listTableIndexes($tableName));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Fetching table index list failed.') . ' ' . $e->getMessage());
         }
@@ -3537,14 +3521,13 @@ class DBUtil
     public static function getLimitedTablename($table, $dbType = '')
     {
         if (!$dbType) {
-            $dbType = DBConnectionStack::getConnectionDBType();
+            $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
         }
 
         $prefix = self::getTablePrefix($table);
 
         switch ($dbType) {
-            case 'oci8': // Oracle
-            case 'oci': // oracle
+            case 'oracle': // Oracle
                 $maxlen = 30; // max length for a tablename
                 $_tablename = $table; // save for later if we need to show an error
                 $lenTable = strlen($table);

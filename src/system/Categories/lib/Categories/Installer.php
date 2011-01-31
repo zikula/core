@@ -51,8 +51,8 @@ class Categories_Installer extends Zikula_Installer
         DBUtil::insertObject($cat, 'categories_category', 'id', true);
 
         // for postgres, we need to explicitly set the sequence value to reflect the inserted data
-        $dbType = DBConnectionStack::getConnectionDBType();
-        if ($dbType == 'postgres') {
+        $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+        if ($dbType == 'pgsql') {
             $dbtables = DBUtil::getTables();
             $tab = $dbtables['categories_category'];
             $col = $dbtables['categories_category_column'];

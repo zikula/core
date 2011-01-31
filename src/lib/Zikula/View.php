@@ -839,7 +839,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $auto_source = DataUtil::formatForOS($auto_source);
 
         // create a hash from default dsn + $auto_source and use it in the filename
-        $hash = md5($GLOBALS['ZConfig']['DBInfo']['default']['dsn'] . '+' . $auto_source);
+        $hash = md5(serialize($this->serviceManager['databases'] . '+' . $auto_source));
         $filebase = FileUtil::getFilebase($auto_source);
         $filebase_hashed = $filebase . '-' . $hash;
         $auto_source = str_replace($filebase, $filebase_hashed, $auto_source);

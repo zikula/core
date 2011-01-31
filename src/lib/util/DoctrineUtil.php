@@ -99,7 +99,7 @@ class DoctrineUtil
             return;
         }
 
-        $driver = DBConnectionStack::getConnection()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
+        $driver = Doctrine_Manager::getInstance()->getCurrentConnection()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
         $driver->deleteByPrefix($driver->getOption('prefix'));
     }
 
@@ -114,7 +114,7 @@ class DoctrineUtil
             return;
         }
 
-        $driver = DBConnectionStack::getConnection()->getAttribute(Doctrine_Core::ATTR_QUERY_CACHE);
+        $driver = Doctrine_Manager::getInstance()->getCurrentConnection()->getAttribute(Doctrine_Core::ATTR_QUERY_CACHE);
         $driver->deleteByPrefix($driver->getOption('prefix'));
     }
 

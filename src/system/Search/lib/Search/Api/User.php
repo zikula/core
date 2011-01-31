@@ -67,9 +67,9 @@ class Search_Api_User extends Zikula_Api
         if ($firstPage) {
             // Clear current search result for current user - before showing the first page
             // Clear also older searches from other users.
-            $dbType = DBConnectionStack::getConnectionDBType();
+            $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
             $where = $userResultWhere;
-            if ($dbType == 'postgres') {
+            if ($dbType == 'pgsql') {
                 $where .= " OR $searchColumn[found] + INTERVAL '8 HOUR' < NOW()";
             } else {
                 $where .= " OR DATE_ADD($searchColumn[found], INTERVAL 8 HOUR) < NOW()";

@@ -512,7 +512,7 @@ class JCSSUtil
         }
 
         global $ZConfig;
-        $signingKey = md5($ZConfig['DBInfo']['default']['dsn']);
+        $signingKey = md5(serialize($ZConfig['DBInfo']['databases']['default']));
         $signature = md5($contents . $ctype . $lifetime . $themevars['cssjscompress'] . $signingKey);
         $data = array('contents' => $contents, 'ctype' => $ctype, 'lifetime' => $lifetime, 'gz' => $themevars['cssjscompress'], 'signature' => $signature);
         fwrite($dest, serialize($data));

@@ -652,8 +652,8 @@ class ZLanguage
      * @return void
      */
     private function setDBCharset()
-    {
-        $this->dbCharset = (System::isInstalling() ? 'utf8' : strtolower(DBConnectionStack::getConnectionInfo('default', 'dbcharset')));
+    {   
+        $this->dbCharset = (System::isInstalling() ? 'utf8' : strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getCharset()));
     }
 
     /**
