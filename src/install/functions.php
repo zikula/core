@@ -195,7 +195,6 @@ function install()
                         'repeatpassword' => $repeatpassword,
                         'email' => $email));
             } else {
-                // create database
                 // if it is the distribution and the process have not failed in a previous step
                 if ($installbySQL) {
                     // checks if exists a previous installation with the same prefix
@@ -267,12 +266,9 @@ function install()
                         PluginUtil::install($plugin);
                     }
 
-                    if (!UserUtil::isLoggedIn()) {
-                        return System::redirect();
-                    } else {
-                        LogUtil::registerStatus(__('Congratulations! Zikula has been successfullly installed.'));
-                        return System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
-                    }
+                    LogUtil::registerStatus(__('Congratulations! Zikula has been successfullly installed.'));
+                    System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
+                    exit;
                 }
             }
             break;
