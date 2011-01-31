@@ -40,10 +40,11 @@ class Categories_Controller_Admin extends Zikula_Controller
 
         // disable attribution for performance
         $GLOBALS['dbtables']['categories_category_db_extra_enable_attribution'] = false;
-        $dbtables = DBUtil::getTables();
-        $columnArray = array('id', 'name', 'display_name', 'parent_id', 'path', 'ipath', 'status', 'sort_value');
-        $cats = CategoryUtil::getSubCategories($root_id, true, true, true, true, true, '', '', null, '', $columnArray);
-        $menuTxt = CategoryUtil::getCategoryTreeJS($cats, true, true);
+        $dbtables    = DBUtil::getTables();
+        $columnArray = array ('id', 'name', 'display_name', 'parent_id', 'path', 'ipath', 'status','sort_value');
+//        $cats        = CategoryUtil::getSubCategories ($root_id, true, true, true, true, true, '', '', null, '', $columnArray);
+        $cats        = CategoryUtil::getSubCategories ($root_id, true, true, true, true, true);
+        $menuTxt     = CategoryUtil::getCategoryTreeJS ($cats, true, true);
         $GLOBALS['dbtables']['categories_category_db_extra_enable_attribution'] = true;
 
         $this->view->setCaching(false);

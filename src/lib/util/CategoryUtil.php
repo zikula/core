@@ -862,7 +862,6 @@ class CategoryUtil
         $params['mode'] = 'edit';
 
         foreach ($cats as $i => $c) {
-
             $params['cid'] = $c['id'];
             $url = ModUtil::url('Categories', 'admin', 'edit', $params);
 
@@ -884,12 +883,25 @@ class CategoryUtil
             $cats[$i]['active'] = $c['status'] == 'A' ? true : false;
             $cats[$i]['href'] = $url;
             $cats[$i]['name'] = $name;
+
             $cats[$i]['title'] = array();
             $cats[$i]['title'][] = "ID: " . $c['id'];
             $cats[$i]['title'][] = "Name: " . DataUtil::formatForDisplay($c['name']);
             $cats[$i]['title'][] = "Display name: " . $displayName;
+            $cats[$i]['title'][] = "Description: " . (isset($c['display_desc'][$lang]) ? DataUtil::formatForDisplay($c['display_desc'][$lang]) : '');
             $cats[$i]['title'][] = "Active: " . ($c['status'] == 'A' ? 'Yes' : 'No');
+            $cats[$i]['title'][] = "Leaf: " . ($c['is_locked'] ? 'Yes' : 'No');
+            $cats[$i]['title'][] = "Locked: " . ($c['is_locked'] ? 'Yes' : 'No');
             $cats[$i]['title'] = implode('&lt;br /&gt;',$cats[$i]['title']);
+
+            $cats[$i]['class'] = array();
+            if($c['is_locked']) {
+                $cats[$i]['class'][] = 'locked';
+            }
+            if($c['is_leaf']) {
+                $cats[$i]['class'][] = 'leaf';
+            }
+            $cats[$i]['class'] = implode(' ',$cats[$i]['class']);
         }
 
         $tree = new Zikula_Tree();
