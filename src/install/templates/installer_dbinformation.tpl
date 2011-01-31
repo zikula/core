@@ -1,11 +1,10 @@
 <h2>{gt text="Enter database information"}</h2>
-{if $dbcreatefailed or $dbconnectfailed or $dbconnectmissing or $dbinvalidprefix or $dbinvalidname or $dbdumpfailed or $dbexists}
+{if $dbconnectfailed or $dbconnectmissing or $dbinvalidprefix or $dbinvalidname or $dbdumpfailed or $dbexists}
 <div class="z-errormsg">
     {if $dbconnectmissing}{gt text="Error! Some of the required information was not entered. Please check your entries and try again."}<br />{$reason}
     {elseif $dbinvalidprefix}{gt text="Error! Invalid table prefix. Please use only letters or numbers."}<br />{$reason}
     {elseif $dbinvalidname}{gt text="Error! Invalid database name. Please use only letters, numbers, '-' or '_' with a maximum of 64 characters."}<br />{$reason}
     {elseif $dbconnectfailed}{gt text="Error! Could not connect to the database. Please check that you have entered the correct database information and try again."}<br />{$reason}
-    {elseif $dbcreatefailed}{gt text="Error! Could not create database. Please check that you have entered the correct database information and try again."}<br />{$reason}
     {elseif $dbdumpfailed}{gt text="Error! Could not dump the database. Please check that the file zikulacms.sql is located within the folder install/sql and it is readable."}<br />{$reason}
     {elseif $dbexists}{gt text="Error! The database exists and contain tables. Please delete all tables before to proceed."}<br />{$reason}
     {/if}
@@ -43,20 +42,16 @@
             <div class="z-formrow">
                 <label for="dbname">{gt text="Database name"}</label>
                 <input type="text" name="dbname" id="dbname" maxlength="80" value="{$dbname}" />
-            </div>
-            <div class="z-formrow">
-                <label for="dbprefix">{gt text="Table prefix (for table sharing)"}</label>
-                <input type="text" name="dbprefix" id="dbprefix" maxlength="40" value="{$dbprefix|default:'z'}" />
-            </div>
-            <div class="z-formrow">
-                <label for="createdb">{gt text="Let this installer create the database."}</label>
-                <input type="checkbox" name="createdb" id="createdb" value="1" />
                 <p class="z-formnote z-informationmsg">
-                    {gt text="Requires that the user details above have database CREATE privileges."}
-                    {gt text="If not you will need to create the database manually through your hosting control panel."}
-                    <strong>{gt text="If you create your database manually you must create it as UTF8."}</strong>
+                    <strong>{gt text="Please ensure the database is in UTF8 format."}</strong>
                 </p>
             </div>
+
+            <div class="z-formrow">
+                <label for="dbprefix">{gt text="Table prefix"}</label>
+                <input type="text" name="dbprefix" id="dbprefix" maxlength="40" value="{$dbprefix|default:'z'}" />
+            </div>
+            
         </fieldset>
         <div class="z-buttons z-formbuttons">
             <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />

@@ -58,14 +58,11 @@ function install()
     $dbprefix = FormUtil::getPassedValue('dbprefix', '', 'GETPOST');
     $dbtype = FormUtil::getPassedValue('dbtype', '', 'GETPOST');
     $dbtabletype = FormUtil::getPassedValue('dbtabletype', '', 'GETPOST');
-    $createdb = FormUtil::getPassedValue('createdb', '', 'GETPOST');
     $username = FormUtil::getPassedValue('username', '', 'POST');
     $password = FormUtil::getPassedValue('password', '', 'POST');
     $repeatpassword = FormUtil::getPassedValue('repeatpassword', '', 'POST');
     $email = FormUtil::getPassedValue('email', '', 'GETPOST');
     $action = FormUtil::getPassedValue('action', '', 'GETPOST');
-    $loginuser = FormUtil::getPassedValue('loginuser', '', 'POST');
-    $loginpassword = FormUtil::getPassedValue('loginpassword', '', 'POST');
 
     // Power users might have moved the temp folder out of the root and changed the config.php
     // accordingly. Make sure we respect this security related settings
@@ -160,24 +157,12 @@ function install()
             } else {
                 update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbtype, $dbtabletype);
                 update_installed_status('0');
-                // Easier to create initial DB direct with PDO
-                if ($createdb) {
-                    try {
-                        $dbh = new PDO("$dbtype:host=$dbhost", $dbusername, $dbpassword);
-                        makedb($dbh, $dbname, $dbtype);
-                    } catch (PDOException $e) {
-                        $action = 'dbinformation';
-                        $smarty->assign('reason', $e->getMessage());
-                        $smarty->assign('dbcreatefailed', true);
-                    }
-                } else {
-                    try {
-                        $dbh = new PDO("$dbtype:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
-                    } catch (PDOException $e) {
-                        $action = 'dbinformation';
-                        $smarty->assign('reason', $e->getMessage());
-                        $smarty->assign('dbconnectfailed', true);
-                    }
+                try {
+                    $dbh = new PDO("$dbtype:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
+                } catch (PDOException $e) {
+                    $action = 'dbinformation';
+                    $smarty->assign('reason', $e->getMessage());
+                    $smarty->assign('dbconnectfailed', true);
                 }
             }
             if ($action != 'dbinformation') {
@@ -234,7 +219,6 @@ function install()
                         $smarty->assign('dbexists', true);
                     }
                     if ($proceed) {
-                        // create the database
                         // set sql dump file path
                         $fileurl = 'install/sql/custom.sql';
                         // checks if file exists
@@ -265,8 +249,7 @@ function install()
                     installmodules($lang);
 
                     // create our new site admin
-                    // TODO test the call the users module api to create the user
-                    //ModUtil::apiFunc('Users', 'user', 'finishnewuser', array('uname' => $username, 'email' => $email, 'pass' => $password));
+                    // TODO: Email username/password to administrator email address.  Cannot use ModUtil::apiFunc for this.
                     createuser($username, $password, $email);
                     SessionUtil::requireSession();
                     UserUtil::loginUsing('Users', array('loginid' => $username, 'pass' => $password));
@@ -296,7 +279,7 @@ function install()
                     if (!UserUtil::isLoggedIn()) {
                         return System::redirect();
                     } else {
-                        LogUtil::registerStatus('Zikula was successfullly installed.');
+                        LogUtil::registerStatus(__('Congratulations! Zikula has been successfullly installed.'));
                         return System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
                     }
                 }
@@ -330,9 +313,7 @@ function install()
             break;
     }
 
-    // assign some generic variables
-    $smarty->assign(compact($vars));
-
+    $smarty->assign(get_defined_vars());
     // check our action template exists
     $action = DataUtil::formatForOS($action);
     if ($smarty->template_exists("installer_$action.tpl")) {
@@ -368,36 +349,6 @@ function install()
 
     // echo our final result - the combination of the two templates
     echo $_contents;
-}
-
-/**
- * Creates the DB on new install
- *
- * This function creates the DB on new installs.
- *
- * @param string $dbconn Database connection.
- * @param string $dbname Database name.
- */
-function makedb($dbh, $dbname, $dbtype)
-{
-    switch ($dbtype) {
-        case 'mysql':
-        case 'mysqli':
-            $query = "CREATE DATABASE `$dbname` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci";
-            break;
-        case 'pgsql':
-            $query = "CREATE DATABASE $dbname ENCODING='utf8'";
-            break;
-        case 'oci':
-            $query = "CREATE DATABASE $dbname national character set utf8";
-            break;
-    }
-
-    try {
-        $dbh->query($query);
-    } catch (PDOException $e) {
-        throw new PDOException($e);
-    }
 }
 
 /**
