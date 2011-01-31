@@ -75,7 +75,7 @@ class EventUtil
      */
     static public function notifyUntil(Zikula_Event $event)
     {
-        return self::getManager()->notify($event);
+        return self::getManager()->notifyUntil($event);
     }
 
     /**
