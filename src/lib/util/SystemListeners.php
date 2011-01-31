@@ -13,11 +13,10 @@
  */
 
 /**
- * System listeners util.
+ * System listeners.
  */
-class SystemListenersUtil
+class SystemListeners
 {
-
     /**
      * If enabled and logged in, save login name of user in Apache session variable for Apache logs.
      *
@@ -34,6 +33,21 @@ class SystemListenersUtil
                     apache_setenv('Zikula-Username', UserUtil::getVar('uname'));
                 }
             }
+        }
+    }
+
+    /**
+     * Initialise DB connection.
+     *
+     * @param Zikula_Event $event The event handler.
+     *
+     * @return void
+     */
+    public static function initDB(Zikula_Event $event)
+    {
+        if ($event['stage'] & Zikula_Core::STAGE_DB) {
+            $dbEvent = new Zikula_Event('doctrine.init_connection');
+            EventUtil::getManager()->notify($dbEvent);
         }
     }
 
@@ -441,21 +455,5 @@ class SystemListenersUtil
                 'class' => 'z-icon-es-exec', //could use z-icon-es-attach
                 'links' => $sublinks);
         }
-    }
-
-    /**
-     * Setup template overrides.
-     *
-     * Implements 'core.preinit' event.
-     *
-     * @param Zikula_Event $event
-     *
-     * @return void
-     */
-    public static function templateOverrides(Zikula_Event $event)
-    {
-        $override = new Zikula_View_TemplateOverridesYaml($event->getSubject()->getServiceManager());
-        $override->setup();
-        $override->attach();
     }
 }

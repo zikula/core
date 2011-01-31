@@ -15,7 +15,7 @@
 /**
  * Event handler to override templates.
  */
-class Zikula_View_TemplateOverridesYaml extends Zikula_EventHandler
+class TemplateOverridesYaml extends Zikula_EventHandler
 {
     /**
      * Associative array.

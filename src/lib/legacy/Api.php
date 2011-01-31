@@ -171,8 +171,8 @@ function pnInit($stages = PN_CORE_ALL)
  */
 function pnDBGetConn($pass_by_reference = false, $fetchmode = Doctrine::HYDRATE_NONE)
 {
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'DBConnectionStack::getConnection')), E_USER_DEPRECATED);
-    return DBConnectionStack::getConnection();
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'Doctrine_Manager::getInstance()->getCurrentConnection();')), E_USER_DEPRECATED);
+    return Doctrine_Manager::getInstance()->getCurrentConnection();
 }
 
 /**

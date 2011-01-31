@@ -4,6 +4,7 @@
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
+ *
  * @license GNU/LGPL version 3 (or at your option any later version).
  * @package Zikula
  *
@@ -44,21 +45,28 @@ $ZConfig['System']['system.chmod_dir'] = 0777;  // The default chmod for new dir
 // This is the definition for the default Zikula system database.
 // It must be named 'default'
 // ----------------------------------------------------------------------
-$ZConfig['DBInfo']['default']['dsn'] = 'mysql://user:password@localhost/test';
-$ZConfig['DBInfo']['default']['dbtabletype'] = 'myisam';
-$ZConfig['DBInfo']['default']['dbcharset'] = 'utf8';
-$ZConfig['DBInfo']['default']['dbcollate'] = 'utf8_general_ci';
-
+$ZConfig['DBInfo']['databases']['default']['host'] = 'localhost';
+$ZConfig['DBInfo']['databases']['default']['user'] = 'root';
+$ZConfig['DBInfo']['databases']['default']['password'] = '';
+$ZConfig['DBInfo']['databases']['default']['dbname'] = 'test';
+$ZConfig['DBInfo']['databases']['default']['dbdriver'] = 'mysql';
+$ZConfig['DBInfo']['databases']['default']['dbtype'] = 'myisam';
+$ZConfig['DBInfo']['databases']['default']['charset'] = 'utf8';
+$ZConfig['DBInfo']['databases']['default']['collate'] = 'utf8_general_ci';
 
 // ----------------------------------------------------------------------
 // The following define the list of databases the system can access. You
 // can define as many as you like provided you give each one a unique
 // name (the key value following the DBInfo array element)
 // ----------------------------------------------------------------------
-$ZConfig['DBInfo']['external1']['dsn'] = 'mysql://user:password@localhost/test2';
-$ZConfig['DBInfo']['external1']['dbtabletype'] = 'innodb';
-$ZConfig['DBInfo']['external1']['dbcharset'] = 'utf8';
-$ZConfig['DBInfo']['external1']['dbcollate'] = 'utf8_general_ci';
+$ZConfig['DBInfo']['databases']['external1']['host'] = 'localhost';
+$ZConfig['DBInfo']['databases']['external1']['user'] = 'root';
+$ZConfig['DBInfo']['databases']['external1']['password'] = '';
+$ZConfig['DBInfo']['databases']['external1']['dbname'] = 'test';
+$ZConfig['DBInfo']['databases']['external1']['dbdriver'] = 'mysql';
+$ZConfig['DBInfo']['databases']['external1']['dbtype'] = 'myisam';
+$ZConfig['DBInfo']['databases']['external1']['charset'] = 'utf8';
+$ZConfig['DBInfo']['databases']['external1']['collate'] = 'utf8_general_ci';
 
 // additional DB can be configured here as above external2, external3 etc...
 
@@ -82,7 +90,7 @@ $ZConfig['Log']['log_dir'] = $ZConfig['System']['temp'] . '/error_logs/';   // t
 $ZConfig['Log']['log_file'] = $ZConfig['Log']['log_dir'] . 'zikula-%s.log'; // %s is where todays date will go
 $ZConfig['Log']['log_file_uid'] = 0;                                        // wether or not a separate log file is used for each user. The filename is derived from $ZConfig['Log']['log_file']
 $ZConfig['Log']['log_file_date_format'] = 'Ymd';                            // dateformat to be used for the generated log filename
-$ZConfig['Log']['log_date_format'] = "Y-m-d H:i:s";                         // 2006-07-19 18:41:50
+$ZConfig['Log']['log_date_format'] = "Y-m-d H:i:s";                         // 2011-09-15 12:24:56
 $ZConfig['Log']['log_level_dest'] = array('DB' => 'PRINT');                 // array of level-specific log destinations
 $ZConfig['Log']['log_level_files'] = array('DB' => $ZConfig['System']['temp'] . '/error_logs/zikula-sql-%s.log'); // array of level-specific log files (only used if destination=="FILE")
 
@@ -90,10 +98,10 @@ $ZConfig['Log']['log.apache_uname'] = 0;          // log username to apache logs
 
 $ZConfig['Log']['log.enabled'] = 1;               // Enable to allow Zikula to handle errors, 0 passes everything to PHP directly.
 $ZConfig['Log']['log.to_display'] = 1;            // Display errors.
-$ZConfig['Log']['log.display_level'] = 5;         // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
-$ZConfig['Log']['log.display_ajax_level'] = 5;    // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
+$ZConfig['Log']['log.display_level'] = 4;         // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
+$ZConfig['Log']['log.display_ajax_level'] = 4;    // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
 $ZConfig['Log']['log.to_file'] = 0;               // Log to file 1 yes, 0 no.
-$ZConfig['Log']['log.file_level'] = 7;            // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
+$ZConfig['Log']['log.file_level'] = 5;            // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
 
 
 $ZConfig['Log']['log.show_php_errorhandler'] = 0; // Allow PHP error handlers to display additionally? Set this to 1 if you want to see PHP's error handler

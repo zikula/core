@@ -361,8 +361,8 @@ class DataUtil
                 $var[$k] = self::formatForStore($v);
             }
         } else {
-            $dbType = DBConnectionStack::getConnectionDBType();
-            if ($dbType == 'mssql' || $dbType == 'oci8' || $dbType == 'oracle') {
+            $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+            if ($dbType == 'mssql' || $dbType == 'oracle') {
                 $var = str_replace("'", "''", $var);
             } else {
                 $var = addslashes($var);

@@ -77,7 +77,7 @@ Prepare your existing installation
     pay close attention to lines
            $ZConfig['System']['installed']
            $ZConfig['System']['prefix']
-           $ZConfig['DBInfo']['default']['dsn']
+           $ZConfig['DBInfo']['databases']['default']*
 
     Do not change the following lines.
            $ZConfig['System']['temp']

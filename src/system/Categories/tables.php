@@ -45,7 +45,7 @@ function Categories_tables()
     $dbtable['categories_category_db_extra_enable_attribution'] = true;
 
     $pathType = 'X';
-    $dbType = DBConnectionStack::getConnectionDBType();
+    $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
 
    // mssql can't sort on fields of type text
     if ($dbType == 'mssql') {

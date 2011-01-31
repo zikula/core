@@ -97,6 +97,307 @@ class WorkflowUtil extends Zikula_Workflow_Util
 }
 
 /**
+ * This class maintains a stack of database connections.
+ *
+ * Getting a connection will always return the connection object which is
+ * currently on top of the connections stack (ie: the latest added connection).
+ */
+class DBConnectionStack
+{
+    /**
+     * Reference to Doctrine_Manager instance.
+     *
+     * The DBConnectionStack acts only as a forwarder, as it is more limited in its use cases.
+     *
+     * @var Doctrine_Manager
+     */
+    private static $manager;
+
+    /**
+     * Cache driver.
+     *
+     * @var ReflectionClass
+     */
+    protected static $cacheDriver;
+
+    /**
+     * Contains additional connection configuration arrays.
+     *
+     * Taken from config.php.
+     *
+     * @var array
+     */
+    private static $connectionInfo = null;
+
+    /**
+     * Constructor.
+     */
+    private function __construct()
+    {
+    }
+
+    /**
+     * Initialize a DBConnection and place it on the connection stack.
+     *
+     * @param string  $name        The database alias name in the DBInfo configuration array (optional) (default=null which then defaults to 'default').
+     * @param boolean $lazyConnect Whether or not to connect lazy.
+     *
+     * @throws PDOException If database connection failed.
+     * @return Doctrine_Connection Desired database connection reference.
+     */
+    public static function init($name = 'default', $lazyConnect = false)
+    {
+        $serviceManager = ServiceUtil::getManager();
+        $eventManager = EventUtil::getManager();
+
+        // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
+        $dbEvent = new Zikula_Event('doctrine.init_connection', null, array('lazy' => $lazyConnect, 'name' => $name));
+        $connection = $eventManager->notify($dbEvent)->getData();
+        if (!self::$manager instanceof Doctrine_Manager) {
+            self::$manager = Doctrine_Manager::getInstance();
+        }
+        $databases = $serviceManager['databases'];
+        self::$connectionInfo[$name] = $databases[$name];
+
+        return $connection;
+    }
+
+    /**
+     * Get the DB connection info structure for a connection as defined in config.php.
+     *
+     * If $field is supplied, the value of the specified field is retuerned, otherwise
+     * the entire connection info array is returned.
+     *
+     * @param string $name  The name of the connection info to get. Passing null returns the current (ie: top) connection (optional) (default=null).
+     * @param string $field The field of the connection info record to return.
+     *
+     * @throws Exception If no connection is available.
+     * @throws Exception If the given connection does not exist.
+     * @throws Exception If the given field does not exist.
+     * @return void|mixed The connection info array or the specified field value.
+     */
+    public static function getConnectionInfo($name = null, $field = null)
+    {
+        if (!self::$manager instanceof Doctrine_Manager) {
+            self::init($name);
+        }
+
+        if (!self::$manager->count()) {
+            if (System::isInstalling()) {
+                return;
+            }
+            throw new Exception(__('Attempted to get info from empty connection stack'));
+        }
+
+        // look if $name points to a valid connection
+        if (!is_null($name) && !self::$manager->contains($name)) {
+            throw new Exception(__f('Invalid connection key [%s]', $name));
+        }
+
+        if (is_null($name)) {
+            // take the current connection which is the last element on the stack
+            $name = self::$manager->getCurrentConnection()->getName();
+        }
+
+        if (!isset(self::$connectionInfo[$name])) {
+            self::init($name);
+        }
+
+        if (!isset(self::$connectionInfo[$name])) {
+            throw new Exception(__f('Invalid connection key [%s]', $name));
+        }
+
+        $connectionInfo = self::$connectionInfo[$name];
+
+        if ($field) {
+            if ($field == 'alias') {
+                return $name;
+            }
+
+            // only return a specific field
+            if (!isset($connectionInfo[$field])) {
+                throw new Exception(__f('Unknown field [%s] requested', $field));
+            }
+            return $connectionInfo[$field];
+        }
+
+        // return the complete information array
+        return $connectionInfo;
+    }
+
+    /**
+     * Get the alias name name of the currently active connection
+     *
+     * @return string the name of the currently active connection
+     */
+    public static function getConnectionName()
+    {
+        return self::getConnectionInfo(null, 'alias');
+    }
+
+    /**
+     * Get the DB Alias name of the currently active connection
+     *
+     * @return string the dbname of the currently active connection
+     */
+    public static function getConnectionDBName()
+    {
+        return self::getConnectionInfo(null, 'dbname');
+    }
+
+    /**
+     * Get the DB Host of the currently active connection
+     *
+     * @return string the host of the currently active connection
+     */
+    public static function getConnectionDBHost()
+    {
+        return self::getConnectionInfo(null, 'dbhost');
+    }
+
+    /**
+     * Get the DB Type of the currently active connection
+     *
+     * @return string the type of the currently active connection
+     */
+    public static function getConnectionDBType()
+    {
+        return self::getConnectionInfo(null, 'dbtype');
+    }
+
+    /**
+     * Get the DB driver of the currently active connection.
+     *
+     * This is not necessarily the same as the DB Type and
+     * should be used to distinguish between different database types.
+     *
+     * @return string the driver of the currently active connection
+     */
+    public static function getConnectionDBDriver()
+    {
+        return self::getConnectionInfo(null, 'dbdriver');
+    }
+
+    /**
+     * Get the default DB charset of the currently active connection.
+     *
+     * @return string the driver of the currently active connection
+     */
+    public static function getConnectionDBCharset()
+    {
+        return self::getConnectionInfo(null, 'dbcharset');
+    }
+
+    /**
+     * Get the default DB collation of the currently active connection.
+     *
+     * @return string the driver of the currently active connection
+     */
+    public static function getConnectionDBCollate()
+    {
+        return self::getConnectionInfo(null, 'dbcollate');
+    }
+
+    /**
+     * Get the default DB table type of the currently active connection.
+     *
+     * @return string the driver of the currently active connection
+     */
+    public static function getConnectionDBTableType()
+    {
+        return self::getConnectionInfo(null, 'dbtabletype');
+    }
+
+    /**
+     * Get the DSN string of the currently active connection
+     *
+     * @return string the DSN of the currently active connection
+     */
+    public static function getConnectionDSN()
+    {
+        return self::getConnectionInfo(null, 'dsn');
+    }
+
+    /**
+     * Check whether the current connection is the default one
+     *
+     * @return boolean whether or not the current connection is the default one
+     */
+    public static function isDefaultConnection()
+    {
+        return (self::getConnectionName() == 'default');
+    }
+
+    /**
+     * Get the currently active connection (the connection on top of the connection stack).
+     *
+     * @throws Exception If no connection is available.
+     *
+     * @return void|Doctrine_Connection The connection object.
+     */
+    public static function getConnection()
+    {
+        if (!isset(self::$manager)) {
+            self::init();
+        }
+
+        if (!self::$manager->count()) {
+            if (System::isInstalling()) {
+                return;
+            }
+            throw new Exception(__('Attempted to get connection from empty connection stack'));
+        }
+        $connection = self::$manager->getCurrentConnection();
+        return $connection;
+    }
+
+    /**
+     * Push a new database connection onto the connection stack
+     *
+     * @param string $name The database alias name in the DBInfo configuration array.
+     *
+     * @return Doctrine_Connection The database connection.
+     */
+    public static function pushConnection($name)
+    {
+        if (self::init($name)) {
+            return self::getConnection();
+        }
+
+        return false;
+    }
+
+    /**
+     * Pop the currently active connection off the stack.
+     *
+     * @param boolean $close Whether or not to close the connection (optional) (default=false).
+     *
+     * @throws Exception If no connection is available.
+     * @return Doctrine_Connection The newly active connection.
+     */
+    public static function popConnection($close = false)
+    {
+        if (!self::$manager->count()) {
+            throw new Exception(__('Attempted to pop connection from empty connection stack'));
+        }
+
+        $connection = self::$manager->getConnection();
+        if ($close) {
+            $name = $connection->getName();
+            $connInfo = self::$connectionInfo[$name];
+
+            // close
+            $connection->close();
+
+            // reopen connection
+            self::$manager->openConnection($connInfo['dsn'], $name, true);
+        }
+
+        return self::$manager->getConnection();
+    }
+}
+
+/**
  * Alias to the DBObject class for backward compatibility to Zikula 1.2.x.
  *
  * @deprecated

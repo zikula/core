@@ -260,7 +260,8 @@ class Zikula_Core
 
         if ($stages & self::STAGE_DB) {
             try {
-                DBConnectionStack::init();
+                $dbEvent = new Zikula_Event('core.init', $this, array('stage' => self::STAGE_DB));
+                $this->eventManager->notify($dbEvent);
             } catch (PDOException $e) {
                 if (!System::isInstalling()) {
                     header('HTTP/1.1 503 Service Unavailable');
@@ -270,9 +271,6 @@ class Zikula_Core
                     return false;
                 }
             }
-
-            $coreInitEvent->setArg('stage', self::STAGE_DB);
-            $this->eventManager->notify($coreInitEvent);
         }
 
         if ($stages & self::STAGE_TABLES) {

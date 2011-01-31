@@ -95,14 +95,20 @@ function add_src_rep2($key, $rep)
 }
 
 // Update the config.php file with the database information.
-function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbtype, $dbtabletype)
+function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbdriver, $dbtype)
 {
     global $reg_src, $reg_rep;
     $dsn = "$dbtype://$dbusername:$dbpassword@$dbhost/$dbname";
     add_src_rep('dsn', $dsn);
     add_src_rep('prefix', $dbprefix);
+    add_src_rep('dbname', $dbname);
+    add_src_rep('dbdriver', $dbdriver);
     add_src_rep('dbtype', $dbtype);
-    add_src_rep('dbtabletype', $dbtabletype);
+    add_src_rep('user', $dbusername);
+    add_src_rep('password', $dbpassword);
+    add_src_rep('host', $dbhost);
+    add_src_rep('dbname', $dbname);
+
     return modify_file($reg_src, $reg_rep);
 }
 

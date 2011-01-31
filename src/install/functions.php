@@ -28,25 +28,17 @@ function install()
     $installbySQL = (file_exists('install/sql/custom.sql') ? true : false);
 
     require_once 'install/modify_config.php';
-
-    // start the basics of Zikula
-    include 'lib/ZLoader.php';
+    include 'lib/bootstrap.php';
     ZLoader::register();
 
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 
-    $core = new Zikula_Core();
-    $core->boot();
     $serviceManager = $core->getServiceManager();
-
-    require 'config/config.php';
-    $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
-    $serviceManager->loadArguments($GLOBALS['ZConfig']['Debug']);
-    $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
-    $serviceManager->loadArguments($GLOBALS['ZConfig']['Multisites']);
+    $eventManager = $core->getEventManager();
 
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
-    DBConnectionStack::init('default', true);
+    $dbEvent = new Zikula_Event('doctrine.init_connection', null, array('lazy' => true));
+    $eventManager->notify($dbEvent);
 
     $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS);
 
@@ -320,9 +312,7 @@ function install()
 function createuser($username, $password, $email)
 {
     $connection = Doctrine_Manager::connection();
-    $connection->setCharset(DBConnectionStack::getConnectionDBCharset());
-    $connection->setCollate(DBConnectionStack::getConnectionDBCollate());
-
+    
     // get the database connection
     ModUtil::dbInfoLoad('Users', 'Users');
     ModUtil::dbInfoLoad('Extensions', 'Extensions');
@@ -357,8 +347,6 @@ function createuser($username, $password, $email)
 function installmodules($lang = 'en')
 {
     $connection = Doctrine_Manager::connection();
-    $connection->setCharset(DBConnectionStack::getConnectionDBCharset());
-    $connection->setCollate(DBConnectionStack::getConnectionDBCollate());
 
     // Lang validation
     $lang = DataUtil::formatForOS($lang);

@@ -37,7 +37,7 @@ if (!is_readable($f)) {
 }
 
 // child lock
-$signingKey = md5($ZConfig['DBInfo']['default']['dsn']);
+$signingKey = md5(serialize($ZConfig['DBInfo']['databases']['default']));
 
 $contents = file_get_contents($f);
 if (!is_serialized($contents)) {

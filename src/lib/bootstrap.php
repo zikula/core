@@ -22,21 +22,22 @@ $serviceManager = $core->getServiceManager();
 
 // load eventhandlers from config/EventHandlers directory if any.
 EventUtil::attachCustomHandlers('config/EventHandlers');
+EventUtil::attachCustomHandlers('lib/EventHandlers');
 
-$eventManager->attach('setup.errorreporting', array('SystemListenersUtil', 'defaultErrorReporting'));
-$eventManager->attach('core.init', array('SystemListenersUtil', 'setupLoggers'));
-$eventManager->attach('log', array('SystemListenersUtil', 'errorLog'));
-$eventManager->attach('core.init', array('SystemListenersUtil', 'sessionLogging'));
-$eventManager->attach('core.init', array('SystemListenersUtil', 'systemPlugins'));
-$eventManager->attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
-$eventManager->attach('core.init', array('SystemListenersUtil', 'setupDebugToolbar'));
-$eventManager->attach('log.sql', array('SystemListenersUtil', 'logSqlQueries'));
-$eventManager->attach('core.init', array('SystemListenersUtil', 'setupAutoloaderForGeneratedCategoryModels'));
-$eventManager->attach('installer.module.uninstalled', array('SystemListenersUtil', 'deleteGeneratedCategoryModelsOnModuleRemove'));
-$eventManager->attach('pageutil.addvar_filter', array('SystemListenersUtil', 'coreStylesheetOverride'));
-$eventManager->attach('module_dispatch.postexecute', array('SystemListenersUtil', 'addHooksLink'));
-$eventManager->attach('module_dispatch.postexecute', array('SystemListenersUtil', 'addServiceLink'));
-$eventManager->attach('core.preinit', array('SystemListenersUtil', 'templateOverrides'));
+$eventManager->attach('setup.errorreporting', array('SystemListeners', 'defaultErrorReporting'));
+$eventManager->attach('core.init', array('SystemListeners', 'setupLoggers'));
+$eventManager->attach('log', array('SystemListeners', 'errorLog'));
+$eventManager->attach('core.init', array('SystemListeners', 'sessionLogging'));
+$eventManager->attach('core.init', array('SystemListeners', 'systemPlugins'));
+$eventManager->attach('core.postinit', array('SystemListeners', 'systemHooks'));
+$eventManager->attach('core.init', array('SystemListeners', 'setupDebugToolbar'));
+$eventManager->attach('log.sql', array('SystemListeners', 'logSqlQueries'));
+$eventManager->attach('core.init', array('SystemListeners', 'setupAutoloaderForGeneratedCategoryModels'));
+$eventManager->attach('installer.module.uninstalled', array('SystemListeners', 'deleteGeneratedCategoryModelsOnModuleRemove'));
+$eventManager->attach('pageutil.addvar_filter', array('SystemListeners', 'coreStylesheetOverride'));
+$eventManager->attach('module_dispatch.postexecute', array('SystemListeners', 'addHooksLink'));
+$eventManager->attach('module_dispatch.postexecute', array('SystemListeners', 'addServiceLink'));
+$eventManager->attach('core.init', array('SystemListeners', 'initDB'));
 
 include 'config/config.php';
 global $ZRuntime;
@@ -44,4 +45,5 @@ $ZRuntime = array();
 $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
 $serviceManager->loadArguments($GLOBALS['ZConfig']['Debug']);
 $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
+$serviceManager->loadArguments($GLOBALS['ZConfig']['DBInfo']);
 $serviceManager->loadArguments($GLOBALS['ZConfig']['Multisites']);
