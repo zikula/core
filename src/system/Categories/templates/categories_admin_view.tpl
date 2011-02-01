@@ -4,7 +4,7 @@
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="view" size="large"}</div>
     <h2>{gt text="Categories list"}</h2>
-    <p><a href="#" id="catExpand">Expand All</a> | <a href="#" id="catCollapse">Collapse All</a</p>
+    <p><a href="#" id="catExpand">Expand All</a> | <a href="#" id="catCollapse">Collapse All</a></p>
     {$menuTxt}
 </div>
 
