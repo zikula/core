@@ -12,5 +12,5 @@
  * information regarding copyright and licensing.
  */
 
-include 'install/functions.php';
+include 'install/lib.php';
 install();
