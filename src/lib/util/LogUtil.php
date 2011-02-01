@@ -227,29 +227,6 @@ class LogUtil
      */
     public static function registerPermissionError($url = null, $redirect = true)
     {
-        //static $strLevels = array();
-        //if (!$strLevels) {
-        //    $strLevels[ACCESS_INVALID] = 'INVALID';
-        //    $strLevels[ACCESS_NONE] = 'NONE';
-        //    $strLevels[ACCESS_OVERVIEW] = 'OVERVIEW';
-        //    $strLevels[ACCESS_READ] = 'READ';
-        //    $strLevels[ACCESS_COMMENT] = 'COMMENT';
-        //    $strLevels[ACCESS_MODERATE] = 'MODERATE';
-        //    $strLevels[ACCESS_EDIT] = 'EDIT';
-        //    $strLevels[ACCESS_ADD] = 'ADD';
-        //    $strLevels[ACCESS_DELETE] = 'DELETE';
-        //    $strLevels[ACCESS_ADMIN] = 'ADMIN';
-        //}
-        //
-        //global $ZRuntime;
-        //$obj = array();
-        //$obj['component'] = 'PERMISSION';
-        //$obj['sec_component'] = $ZRuntime['security']['last_failed_check']['component'];
-        //$obj['sec_instance'] = $ZRuntime['security']['last_failed_check']['instance'];
-        //$obj['sec_permission'] = $strLevels[$ZRuntime['security']['last_failed_check']['level']];
-        //
-        //self::_write(__('Sorry! You have not been granted access to this page.'), 'PERMISSION', $obj);
-
         $code = 403;
         if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
