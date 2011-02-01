@@ -244,5 +244,8 @@ function z_exit($msg, $html = true)
  */
 function exception_handler(Exception $e)
 {
-    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+    echo "<pre>";
+    echo 'Uncaught exception ' . $e->getMessage() . ' in ' . $e->getFile() . ' line, ' . $e->getLine() . "\n";
+    echo $e->getTraceAsString() . "</pre>";
+    
 }
