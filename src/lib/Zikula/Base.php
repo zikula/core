@@ -204,6 +204,27 @@ abstract class Zikula_Base implements Zikula_Translatable
     }
 
     /**
+     * Get the ServiceManager.
+     *
+     * @return Zikula_ServiceManager
+     */
+    public function getServiceManager()
+    {
+        return $this->serviceManager;
+    }
+
+    /**
+     * Get the EventManager.
+     *
+     * @return Zikula_EventManager
+     */
+    public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
+
+    /**
      * Get module info.
      *
      * @return array
