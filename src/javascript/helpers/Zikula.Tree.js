@@ -309,16 +309,14 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
                 scroll: window
             });
         }
-        if(!this.config.disabledForDrop.include(this.getNodeId(node))) {
-            node.addClassName(this.config.droppableClass);
-            Droppables.add(node, {
-                accept:this.config.draggableClass,
-                hoverclass:this.config.dropOnClass,
-                overlap:'vertical',
-                onDrop:this.dropNode.bind(this),
-                onHover:this.hoverNode.bind(this)
-            });
-        }
+        node.addClassName(this.config.droppableClass);
+        Droppables.add(node, {
+            accept:this.config.draggableClass,
+            hoverclass: this.config.dropOnClass,
+            overlap:'vertical',
+            onDrop:this.dropNode.bind(this),
+            onHover:this.hoverNode.bind(this)
+        });
     },
     /**
      * Draggable callback called when drag is started.
@@ -365,10 +363,12 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
             .invoke('removeClassName',this.config.dropAfterClass);
         this.tree.select('.'+this.config.dropBeforeClass)
             .invoke('removeClassName',this.config.dropBeforeClass);
-        if (overlap > this.config.dropAfterOverlap[1]) {
+        var o0 = this.config.disabledForDrop.include(this.getNodeId(dropOnNode)) ? 0.5 : this.config.dropAfterOverlap[0],
+            o1 = this.config.disabledForDrop.include(this.getNodeId(dropOnNode)) ? 0.5 : this.config.dropAfterOverlap[1];
+        if (overlap > o1) {
             dropOnNode.addClassName(this.config.dropBeforeClass);
             this.dropCache.lastElement = ['before',dropOnNode.id];
-        } else if (overlap < this.config.dropAfterOverlap[0]) {
+        } else if (overlap <= o0) {
             dropOnNode.addClassName(this.config.dropAfterClass);
             this.dropCache.lastElement = ['after',dropOnNode.id];
         } else {
