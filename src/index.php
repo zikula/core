@@ -85,6 +85,7 @@ $httpCode = 404;
 $message = '';
 $debug = null;
 $return = false;
+$e = null;
 
 if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
     $dbConn = Doctrine_Manager::getInstance()->getCurrentConnection();
@@ -104,7 +105,7 @@ try {
     }
 } catch (Exception $e) {
     $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
-    EventUtil::notifyUntil($event);
+    $core->getEventManager()->notifyUntil($event);
     if ($event->hasNotified()) {
         $httpCode = $event['httpcode'];
         $message = $event['message'];
@@ -149,14 +150,14 @@ switch (true)
         if (!LogUtil::hasErrors()) {
             LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'. %3$s', array($modinfo['url'], $func, $message)), $httpCode, null, $debug);
         }
-        echo ModUtil::func('Errors', 'user', 'main');
+        echo ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));
         break;
     case ($httpCode == 200):
         echo $return;
         break;
     default:
         LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'. %3$s', array($modinfo['url'], $func, $message)), $httpCode, null, $debug);
-        echo ModUtil::func('Errors', 'user', 'main');
+        echo ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));
         break;
 }
 
