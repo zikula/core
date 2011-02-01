@@ -15,8 +15,10 @@
 include 'lib/legacy/Api.php';
 
 // backwards compatibility references
+
+global $PNRuntime;
+$PNRuntime = array();
 $GLOBALS['PNConfig'] = &$GLOBALS['ZConfig'];
-$GLOBALS['PNRuntime'] = &$GLOBALS['ZRuntime'];
 $GLOBALS['pntables'] = &$GLOBALS['dbtables'];
 
 define('_MARKER_NONE', '&nbsp;&nbsp;');

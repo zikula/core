@@ -20,6 +20,12 @@ $core->boot();
 $eventManager = $core->getEventManager();
 $serviceManager = $core->getServiceManager();
 
+// Load system configuration
+include 'config/config.php';
+foreach ($GLOBALS['ZConfig'] as $config) {
+    $serviceManager->loadArguments($config);
+}
+
 // load eventhandlers from config/EventHandlers directory if any.
 EventUtil::attachCustomHandlers('config/EventHandlers');
 EventUtil::attachCustomHandlers('lib/EventHandlers');
@@ -38,12 +44,3 @@ $eventManager->attach('pageutil.addvar_filter', array('SystemListeners', 'coreSt
 $eventManager->attach('module_dispatch.postexecute', array('SystemListeners', 'addHooksLink'));
 $eventManager->attach('module_dispatch.postexecute', array('SystemListeners', 'addServiceLink'));
 $eventManager->attach('core.init', array('SystemListeners', 'initDB'));
-
-include 'config/config.php';
-global $ZRuntime;
-$ZRuntime = array();
-$serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
-$serviceManager->loadArguments($GLOBALS['ZConfig']['Debug']);
-$serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
-$serviceManager->loadArguments($GLOBALS['ZConfig']['DBInfo']);
-$serviceManager->loadArguments($GLOBALS['ZConfig']['Multisites']);

@@ -6,33 +6,34 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
+ * @package Installer
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
+ini_set('memory_limit', '64M');
+ini_set('max_execution_time', 86400);
 
 include 'lib/bootstrap.php';
-EventUtil::attach('core.init', 'upgrade_suppressErrors');
-
-ini_set('max_execution_time', 86400);
+$eventManager = $core->getEventManager();
+$eventManager->attach('core.init', 'upgrade_suppressErrors');
 
 // load zikula core
 define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 define('_Z_MINUPGVER', '1.2.0');
 
 // include config file for retrieving name of temporary directory
-require_once 'install/modify_config.php';
 $GLOBALS['ZConfig']['System']['multilingual'] = true;
 
 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
 
-$eventManager = $core->getEventManager();
+
 
 // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
 $dbEvent = new Zikula_Event('doctrine.init_connection', null, array('lazy' => true));
