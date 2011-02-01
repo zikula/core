@@ -19,6 +19,10 @@ if (!defined('E_USER_DEPRECATED')) {
     define('E_USER_DEPRECATED', 16384);
 }
 
+if (!extension_loaded('xdebug')) {
+    set_exception_handler('exception_handler');
+}
+
 include 'lib/i18n/ZGettextFunctions.php';
 include 'lib/Zikula/KernelClassLoader.php';
 
@@ -226,4 +230,19 @@ function z_exit($msg, $html = true)
     trigger_error($msg, E_USER_ERROR);
     return false;
     //throw new Zikula_Exception_Fatal($msg);
+}
+
+/**
+ * Default exception handler.
+ *
+ * PHP by default doesn't display uncaught exception stacktraces in HTML.
+ * This function halts execution of PHP after is finishes.
+ *
+ * @param Exception $e
+ *
+ * @return void
+ */
+function exception_handler(Exception $e)
+{
+    echo "<pre>" . $e->getTraceAsString() . "</pre>";
 }
