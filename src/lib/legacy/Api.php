@@ -210,7 +210,7 @@ function pnDBGetTables()
 function pnDBGetTablePrefix($table)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'DBUtil::getTablePrefix')), E_USER_DEPRECATED);
-    return System::dbGetTablePrefix($table);
+    return DBUtil::getTablePrefix($table);
 }
 
 /**
