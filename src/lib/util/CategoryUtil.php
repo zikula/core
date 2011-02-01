@@ -861,6 +861,7 @@ class CategoryUtil
         $params = array();
         $params['mode'] = 'edit';
 
+        $leafNodes = array();
         foreach ($cats as $i => $c) {
             $params['cid'] = $c['id'];
             $url = ModUtil::url('Categories', 'admin', 'edit', $params);
@@ -890,7 +891,7 @@ class CategoryUtil
             $cats[$i]['title'][] = "Display name: " . $displayName;
             $cats[$i]['title'][] = "Description: " . (isset($c['display_desc'][$lang]) ? DataUtil::formatForDisplay($c['display_desc'][$lang]) : '');
             $cats[$i]['title'][] = "Active: " . ($c['status'] == 'A' ? 'Yes' : 'No');
-            $cats[$i]['title'][] = "Leaf: " . ($c['is_locked'] ? 'Yes' : 'No');
+            $cats[$i]['title'][] = "Leaf: " . ($c['is_leaf'] ? 'Yes' : 'No');
             $cats[$i]['title'][] = "Locked: " . ($c['is_locked'] ? 'Yes' : 'No');
             $cats[$i]['title'] = implode('&lt;br /&gt;',$cats[$i]['title']);
 
@@ -900,6 +901,7 @@ class CategoryUtil
             }
             if($c['is_leaf']) {
                 $cats[$i]['class'][] = 'leaf';
+                $leafNodes[] = $c['id'];
             }
             $cats[$i]['class'] = implode(' ',$cats[$i]['class']);
         }
@@ -909,6 +911,7 @@ class CategoryUtil
         $tree->setOption('sortable', $sortable);
         // disable drag and drop for root category
         $tree->setOption('disabled', array(1));
+        $tree->setOption('disabledForDrop', $leafNodes);
         $tree->loadArrayData($cats);
         return $tree->getHTML();
     }
