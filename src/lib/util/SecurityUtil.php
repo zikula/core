@@ -91,15 +91,6 @@ class SecurityUtil
 
         $res = self::getSecurityLevel($groupperms[$user], $component, $instance) >= $level;
 
-        // if the check failed, we save the info so that LogUtil has it readily available
-        if (!$res) {
-            global $ZRuntime;
-            $ZRuntime['security']['last_failed_check']['component'] = $component;
-            $ZRuntime['security']['last_failed_check']['instance'] = $instance;
-            $ZRuntime['security']['last_failed_check']['level'] = $level;
-            $ZRuntime['security']['last_failed_check']['user'] = $user;
-        }
-
         return $res;
     }
 

@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
+ * @package Installer
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,20 +17,10 @@
  * 
  * @return void
  */
-function install()
+function install(Zikula_Core $core)
 {
-    // configure our installation environment
-    // no time limit since installation might take a while
-    // error reporting level for debugging
-    ini_set('max_execution_time', 86400);
-    ini_set('memory_limit', '64M');
-
-    $installbySQL = (file_exists('install/sql/custom.sql') ? true : false);
-
-    include 'lib/bootstrap.php';
-    ZLoader::register();
-
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
+    $installbySQL = (file_exists('install/sql/custom.sql') ? true : false);
 
     $serviceManager = $core->getServiceManager();
     $eventManager = $core->getEventManager();
