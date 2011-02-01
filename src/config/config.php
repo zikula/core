@@ -12,34 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-
-// ----------------------------------------------------------------------
-// NOTICE
-// Zikula includes an install script which can populate the database
-// and write this config file automatically.  There is normally no need
-// to manually edit this file!
-// ----------------------------------------------------------------------
-
-// ----------------------------------------------------------------------
-// The following define some global settings for the application
-// ----------------------------------------------------------------------
 global $ZConfig;
 $ZConfig['System']['installed'] = 0;        // installer will change this during installation
-$ZConfig['System']['temp'] = 'ztemp';       // installer will change this during installation
-$ZConfig['System']['datadir'] = 'data';     // installer will change this during installation
-$ZConfig['System']['prefix'] = 'z';         // installer will change this during installation
-$ZConfig['System']['development'] = 0;      // should be set to 0/false when cutting a release for production use
+$ZConfig['System']['temp'] = 'ztemp';       // location of temporary folder
+$ZConfig['System']['datadir'] = 'data';     // location of site data files
+$ZConfig['System']['prefix'] = 'z';         // database prefix
+$ZConfig['System']['development'] = 0;      // development mode 1/0 for on or off.  Disable in production mode.
 $ZConfig['System']['legacy_prefilters'] = true; // enable legacy template prefilters
 $ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers
 $ZConfig['System']['system.chmod_dir'] = 0777;  // The default chmod for new directories created by Zikula.
-
-// ----------------------------------------------------------------------
-// Database & System Config
-//      dsn:          Connection details for database in the form
-//                    engine://user:pass@localhost/database
-//      engine types: mysql, mysqli, pgsql, and oci
-//      dbtabletype:  type of table for MySQL database: MYISAM, INNODB
-// ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
 // This is the definition for the default Zikula system database.
@@ -53,21 +34,6 @@ $ZConfig['DBInfo']['databases']['default']['dbdriver'] = 'mysql';
 $ZConfig['DBInfo']['databases']['default']['dbtype'] = 'myisam';
 $ZConfig['DBInfo']['databases']['default']['charset'] = 'utf8';
 $ZConfig['DBInfo']['databases']['default']['collate'] = 'utf8_general_ci';
-
-// ----------------------------------------------------------------------
-// The following define the list of databases the system can access. You
-// can define as many as you like provided you give each one a unique
-// name (the key value following the DBInfo array element)
-// ----------------------------------------------------------------------
-$ZConfig['DBInfo']['databases']['external1']['host'] = 'localhost';
-$ZConfig['DBInfo']['databases']['external1']['user'] = 'root';
-$ZConfig['DBInfo']['databases']['external1']['password'] = '';
-$ZConfig['DBInfo']['databases']['external1']['dbname'] = 'test';
-$ZConfig['DBInfo']['databases']['external1']['dbdriver'] = 'mysql';
-$ZConfig['DBInfo']['databases']['external1']['dbtype'] = 'myisam';
-$ZConfig['DBInfo']['databases']['external1']['charset'] = 'utf8';
-$ZConfig['DBInfo']['databases']['external1']['collate'] = 'utf8_general_ci';
-
 // additional DB can be configured here as above external2, external3 etc...
 
 // ----------------------------------------------------------------------
@@ -80,11 +46,9 @@ $ZConfig['Debug']['error_reporting_production'] = E_ALL & ~E_NOTICE & ~E_WARNING
 $ZConfig['Debug']['debug_key'] = ($ZConfig['System']['development'] ? 'error_reporting_development' : 'error_reporting_production');
 error_reporting($ZConfig['Debug'][$ZConfig['Debug']['debug_key']]); // now set the appropriate level
 
-
 // ----------------------------------------------------------------------
 // Logging Settings
 // ----------------------------------------------------------------------
-
 $ZConfig['Log']['log_dest'] = 'FILE';   // the default logging destination. Can be "FILE", "PRINT", "EMAIL" or "DB".
 $ZConfig['Log']['log_dir'] = $ZConfig['System']['temp'] . '/error_logs/';   // the directory containing all log files
 $ZConfig['Log']['log_file'] = $ZConfig['Log']['log_dir'] . 'zikula-%s.log'; // %s is where todays date will go
