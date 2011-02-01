@@ -125,6 +125,11 @@ sent to `PageUtil::addVar()`.
 
 ERRORS
 ------
+#### `frontcontroller.exception`
+Invoked if an exception is trapped in the front controller (index.php).
+Subject is the exception that was caught.
+Receives arguments array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
+Event handler must `setNotified()` if it executes.
 
 #### `setup.errorreporting`
 Invoked during `System::init()`.  Used to activate `set_error_handler()`.  Event must `setNotified()`.
