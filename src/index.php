@@ -24,9 +24,9 @@ if (SessionUtil::hasExpired()) {
 }
 
 // Get variables
-$module = FormUtil::getPassedValue('module', '', 'GET', FILTER_SANITIZE_STRING);
-$type   = FormUtil::getPassedValue('type', '', 'GET', FILTER_SANITIZE_STRING);
-$func   = FormUtil::getPassedValue('func', '', 'GET', FILTER_SANITIZE_STRING);
+$module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
+$type   = FormUtil::getPassedValue('type', '', 'GETPOST', FILTER_SANITIZE_STRING);
+$func   = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
 // Check for site closed
 if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula_Core::VERSION_NUM != System::getVar('Version_Num'))) {
@@ -42,7 +42,7 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
 $startPage = System::getVar('startpage');
 $arguments = array();
 if (!$module) {
-    if ((System::getVar('shorturls') && System::getVar('shorturlstype') == 0)) {
+    if (System::getVar('shorturls')) {
         // remove entry point from the path (otherwise they are part of the module name)
         $customentrypoint = System::getVar('entrypoint');
         $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
@@ -57,9 +57,9 @@ if (!$module) {
         $module = $startPage;
     }
 
-    $type   = System::getVar('starttype');
-    $func   = System::getVar('startfunc');
-    $args   = explode(',', System::getVar('startargs'));
+    $type = System::getVar('starttype');
+    $func = System::getVar('startfunc');
+    $args = explode(',', System::getVar('startargs'));
 
     foreach ($args as $arg) {
         if (!empty($arg)) {
