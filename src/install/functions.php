@@ -524,13 +524,12 @@ function _check_requirements()
 
     if (version_compare(phpversion(), '5.3.0', ">=")) {
         // date.timezone must be set when PHP >= 5.3.0
-        $results['checkdatetimezone'] = ini_get('date.timezone') ? true : false;
+        $results['checkdatetimezone'] = empty(ini_get('date.timezone'));
     } else {
         // don't care, PHP is < 5.3.0
         $results['checkdatetimezone'] = true;
     }
 
-    $results['checkdatetimezone'] = version_compare(phpversion(), '5.3.0', ">=");
     $results['pdo'] = extension_loaded('pdo');
     $results['phptokens'] = function_exists('token_get_all');
     $results['mbstring'] = function_exists('mb_get_info');
