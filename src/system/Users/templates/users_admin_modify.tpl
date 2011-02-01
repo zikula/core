@@ -96,9 +96,8 @@
                 </div>
             </fieldset>
 
-            {configgetvar name='profilemodule' assign='profilemodule'}
-            {if $profilemodule}
-                {modfunc modname=$profilemodule type='form' func='edit' userid=$userinfo.uid}
+            {if !empty($modvars.ZConfig.profilemodule)}
+                {modfunc modname=$modvars.ZConfig.profilemodule type='form' func='edit' userid=$userinfo.uid}
             {/if}
 
             {notifydisplayhooks eventname='users.hook.user.ui.edit' area='modulehook_area.users.user' subject=$userinfo id=$userinfo.uid caller="Users"}
