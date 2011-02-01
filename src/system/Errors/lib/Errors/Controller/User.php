@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
@@ -11,9 +12,9 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 class Errors_Controller_User extends Zikula_Controller
 {
+
     /**
      * Display an error
      * This function displays a generic error form
@@ -25,6 +26,8 @@ class Errors_Controller_User extends Zikula_Controller
     public function main($args)
     {
         $type = FormUtil::getPassedValue('errtype', isset($args['type']) ? $args['type'] : LogUtil::getErrorType(), 'GET');
+        $exception = isset($args['exception']) ? $args['exception'] : null;
+        $message = isset($args['message']) ? $args['message'] : '';
 
         // perform any error specific tasks
         $protocol = System::serverGetVar('SERVER_PROTOCOL');
@@ -50,14 +53,22 @@ class Errors_Controller_User extends Zikula_Controller
 
         // assign the document info
         $this->view->assign('reportlevel', System::getVar('reportlevel'))
-                   ->assign('currenturi', System::getCurrentUri())
-                   ->assign('localreferer', System::localReferer())
-                   ->assign('sitename', System::getVar('sitename'))
-                   ->assign('reportlevel', System::getVar('reportlevel'))
-                   ->assign('funtext', System::getVar('funtext'));
+                ->assign('currenturi', System::getCurrentUri())
+                ->assign('localreferer', System::localReferer())
+                ->assign('sitename', System::getVar('sitename'))
+                ->assign('reportlevel', System::getVar('reportlevel'))
+                ->assign('funtext', System::getVar('funtext'));
 
         // assign the list of registered errors
         $this->view->assign('messages', LogUtil::getErrorMessages());
+        $trace = array();
+        if (System::isDevelopmentMode() && $exception instanceof Exception) {
+            $line = $exception->getLine();
+            $file = $exception->getFile();
+            $trace = explode("\n", $exception->getTraceAsString());
+            $trace[0] .= " in $file, line $line";
+        }
+        $this->view->assign('trace', $trace);
 
         // return the template output
         if ($this->view->template_exists($template = "errors_user_{$type}.tpl")) {
@@ -76,4 +87,5 @@ class Errors_Controller_User extends Zikula_Controller
         $this->view->assign($args);
         return $this->view->fetch('errors_user_system.tpl');
     }
+
 }
