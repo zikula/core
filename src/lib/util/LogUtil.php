@@ -245,11 +245,10 @@ class LogUtil
      * @param string  $message The error message.
      * @param intiger $type    The type of error (numeric and corresponding to a HTTP status code) (optional) (default=null).
      * @param string  $url     The url to redirect to (optional) (default=null).
-     * @param string  $debug   Debug information.
      *
      * @return false or system redirect if url is set.
      */
-    public static function registerError($message, $type = null, $url = null, $debug=null)
+    public static function registerError($message, $type = null, $url = null)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
 
