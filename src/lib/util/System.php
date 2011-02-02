@@ -768,30 +768,35 @@ class System
         $die = false;
 
         if (get_magic_quotes_runtime()) {
-            echo __f('Sorry, but Zikula does not support PHP magic_quotes_runtime - please disable this feature in your php.ini file.');
+            echo __('Error! Zikula does not support PHP magic_quotes_runtime - please disable this feature in php.ini.');
+            $die = true;
+        }
+
+        if (ini_get('magic_quotes_gpc')) {
+            echo __('Error! Zikula does not support PHP magic_quotes_gpc = On - please disable this feature in your php.ini file.');
             $die = true;
         }
 
         if (ini_get('register_globals')) {
-            echo __f('Sorry, but Zikula does not support PHP register_globals = On - please disable this feature in your php.ini or .htaccess file.');
+            echo __('Error! Zikula does not support PHP register_globals = On - please disable this feature in your php.ini or .htaccess file.');
             $die = true;
         }
 
         // check PHP version, shouldn't be necessary, but....
         if (version_compare(PHP_VERSION, '5.2.6', '>=') == false) {
-            echo __f('Error! Stop, please! PHP version 5.2.6 or a newer version is needed. The latest version of PHP 5 is what is actually recommended. Your server seems to be using version %s.', PHP_VERSION);
+            echo __f('Error! Zikula requires PHP version 5.2.6+. Your server seems to be using version %s.', PHP_VERSION);
             $die = true;
         }
 
         // token_get_all needed for Smarty
         if (!function_exists('token_get_all')) {
-            echo __("Error! Stop, please! The PHP function 'token_get_all()' is needed, but is not available.");
+            echo __("Error! PHP 'token_get_all()' is required but unavailable.");
             $die = true;
         }
 
         // mb_string is needed too
         if (!function_exists('mb_get_info')) {
-            echo __("Error! Stop, please! The 'mbstring' extension for PHP is needed, but is not available.");
+            echo __("Error! PHP must have the mbstring extension loaded.");
             $die = true;
         }
 
@@ -821,7 +826,7 @@ class System
                     mkdir($folder, ServiceUtil::getManager()->getArgument('system.chmod_dir'), true);
                 }
                 if (!is_writable($folder)) {
-                    echo __f("Error! Stop, please! '%s' was not found, or else the server does not have write permission for it.", $folder) . '<br />';
+                    echo __f("Error! Folder '%s' was not found.", $folder) . '<br />';
                     $die = true;
                 }
             }
