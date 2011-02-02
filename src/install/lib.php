@@ -37,7 +37,7 @@ function install(Zikula_Core $core)
     $dbpassword = FormUtil::getPassedValue('dbpassword', '', 'GETPOST');
     $dbname = FormUtil::getPassedValue('dbname', '', 'GETPOST');
     $dbprefix = FormUtil::getPassedValue('dbprefix', '', 'GETPOST');
-    $dbtype = FormUtil::getPassedValue('dbtype', '', 'GETPOST');
+    $dbdriver = FormUtil::getPassedValue('dbdriver', '', 'GETPOST');
     $dbtabletype = FormUtil::getPassedValue('dbtabletype', '', 'GETPOST');
     $username = FormUtil::getPassedValue('username', '', 'POST');
     $password = FormUtil::getPassedValue('password', '', 'POST');
@@ -127,10 +127,10 @@ function install(Zikula_Core $core)
                 $action = 'dbinformation';
                 $smarty->assign('dbinvalidname', true);
             } else {
-                update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbtype, $dbtabletype);
+                update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbdriver, $dbtabletype);
                 update_installed_status(0);
                 try {
-                    $dbh = new PDO("$dbtype:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
+                    $dbh = new PDO("$dbdriver:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
                 } catch (PDOException $e) {
                     $action = 'dbinformation';
                     $smarty->assign('reason', $e->getMessage());
@@ -180,7 +180,7 @@ function install(Zikula_Core $core)
                 if ($installbySQL) {
                     // checks if exists a previous installation with the same prefix
                     $proceed = true;
-                    $exec = ($dbtype == 'mysql' || $dbtype == 'mysqli') ?
+                    $exec = ($dbdriver == 'mysql' || $dbdriver == 'mysqli') ?
                             "SHOW TABLES FROM `$dbname` LIKE '" . $dbprefix . "_%'" :
                             "SHOW TABLES FROM $dbname LIKE '" . $dbprefix . "_%'";
                     $tables = DBUtil::executeSQL($exec);
@@ -545,13 +545,13 @@ function _installer_replace_keys($searchKey, $replaceWith, $string)
     return preg_replace($search, $replace, $string);
 }
 
-function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbdriver, $dbtype)
+function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbdriver, $dbtabletype)
 {
     $file = file_get_contents('config/config.php');
     $file = _installer_replace_keys('prefix', $dbprefix, $file);
     $file = _installer_replace_keys('dbname', $dbname, $file);
     $file = _installer_replace_keys('dbdriver', $dbdriver, $file);
-    $file = _installer_replace_keys('dbtype', $dbtype, $file);
+    $file = _installer_replace_keys('dbtabletype', $dbtabletype, $file);
     $file = _installer_replace_keys('user', $dbusername, $file);
     $file = _installer_replace_keys('password', $dbpassword, $file);
     $file = _installer_replace_keys('host', $dbhost, $file);
