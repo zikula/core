@@ -193,8 +193,9 @@ and therefore this may not be supplied). If authentication was attempted with Zi
 `$event['loginid']` will contain the uname attempted.
 
 #### `user.gettheme`
-This is invoked with notifyUntil so you should execute `$event->setNotified()` in the event handler.
-receives `$event['name']` the chosen theme name, it can modify the name.
+Called during UserUtil::getTheme() and is used to filter the results.  Receives arg['type']
+with the type of result to be filtered and the $themeName in the $event->data which can
+be modified.  Must $event->setNotified() if handler performs filter.
 
 #### `user.create`
 Occurs after a user is created. It does not apply to creation of a pending registration.
