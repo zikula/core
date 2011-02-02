@@ -53,7 +53,7 @@
             </div>
             
         </fieldset>
-        <div class="z-buttons z-formbuttons">
+        <div class="z-buttons z-center">
             <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />
         </div>
     </div>

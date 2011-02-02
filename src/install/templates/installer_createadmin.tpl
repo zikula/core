@@ -36,7 +36,7 @@
                 <input type="text" name="email" id="email" maxlength="80" value="{$email}"{if $emailvalidatefailed} class="validationfailed"{/if} />
             </div>
         </fieldset>
-        <div class="z-buttons z-formbuttons">
+        <div class="z-buttons z-center">
             <input type="submit" value="{gt text="Proceed with Installation"}" class="z-bt-ok" />
         </div>
     </div>

@@ -6,9 +6,9 @@
         <link rel="stylesheet" href="install/style/notinstalled.css" type="text/css" />
     </head>
     <body>
-        <div class="container">
-            <div class="cell">
-                <div class="content">
+        <div id="container">
+            <div id="cell">
+                <div id="content">
                     <h1>{gt text="Zikula Application Framework"}</h1>
                     <h2>{gt text="System is not installed!"}</h2>
                     <p>
