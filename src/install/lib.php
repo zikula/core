@@ -82,6 +82,13 @@ function install(Zikula_Core $core)
         $available = ZLanguage::getInstalledLanguages();
         $detector = new ZLanguageBrowser($available);
         $lang = $detector->discover();
+    } elseif ($notinstalled) {
+        $installerConfig = array('language' => 'en');
+        if (is_readable('config/installer.ini')) {
+            $test = parse_ini_file('config/installer.ini');
+            $installerConfig = isset($test['language']) ? $test : $installerConfig;
+        }
+        $lang = DataUtil::formatForDisplay($installerConfig['language']);
     }
 
     // setup multilingual
@@ -103,12 +110,6 @@ function install(Zikula_Core $core)
 
     // show not installed case
     if ($notinstalled) {
-        $installerConfig = array('language' => 'en');
-        if (is_readable('config/installer.ini')) {
-            $test = parse_ini_file('config/installer.ini');
-            $installerConfig = isset($test['language']) ? $test : $installerConfig;
-        }
-        $lang = DataUtil::formatForDisplay($installerConfig['language']);
         header('HTTP/1.1 503 Service Unavailable');
         $smarty->assign('lang', $lang);
         $smarty->display('notinstalled.tpl');
