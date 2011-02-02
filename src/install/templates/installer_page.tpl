@@ -21,7 +21,7 @@
                 <div class="menu">
                     <h3>{gt text="Installation steps"}</h3>
                     <ol>
-                        <li{if $action eq lang} class="menu_selected"{/if}>{gt text="Select language"}</li>
+                        <li{if $action eq lang} class="menu_selected"{/if}><a href="install.php?lang=">{gt text="Select language"}</a></li>
                         <li{if $action eq requirements} class="menu_selected"{/if}>{gt text="Check requirements"}</li>
                         <li{if $action eq dbinformation} class="menu_selected"{/if}>{gt text="Database information"}</li>
                         <li{if $action eq createadmin} class="menu_selected"{/if}>{gt text="Create administrator's account"}</li>

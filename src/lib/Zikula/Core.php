@@ -252,9 +252,7 @@ class Zikula_Core
 
         // Check that Zikula is installed before continuing
         if (System::getVar('installed') == 0 && !System::isInstalling()) {
-            header('HTTP/1.1 503 Service Unavailable');
-            $templateFile = 'notinstalled.tpl';
-            require_once System::getSystemErrorTemplate('notinstalled.tpl');
+            System::redirect('install.php?notinstalled');
             System::shutDown();
         }
 
