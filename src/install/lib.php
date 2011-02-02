@@ -31,32 +31,6 @@ function install(Zikula_Core $core)
 
     $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS);
 
-    $lang = FormUtil::getPassedValue('lang', '', 'GETPOST');
-    $dbhost = FormUtil::getPassedValue('dbhost', '', 'GETPOST');
-    $dbusername = FormUtil::getPassedValue('dbusername', '', 'GETPOST');
-    $dbpassword = FormUtil::getPassedValue('dbpassword', '', 'GETPOST');
-    $dbname = FormUtil::getPassedValue('dbname', '', 'GETPOST');
-    $dbprefix = FormUtil::getPassedValue('dbprefix', '', 'GETPOST');
-    $dbdriver = FormUtil::getPassedValue('dbdriver', '', 'GETPOST');
-    $dbtabletype = FormUtil::getPassedValue('dbtabletype', '', 'GETPOST');
-    $username = FormUtil::getPassedValue('username', '', 'POST');
-    $password = FormUtil::getPassedValue('password', '', 'POST');
-    $repeatpassword = FormUtil::getPassedValue('repeatpassword', '', 'POST');
-    $email = FormUtil::getPassedValue('email', '', 'GETPOST');
-    $action = FormUtil::getPassedValue('action', '', 'GETPOST');
-
-    // see if the language was already selected
-    $languageAlreadySelected = ($lang) ? true : false;
-    if ($languageAlreadySelected && empty($action)) {
-        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
-    }
-
-    // see if the language was already selected
-    $languageAlreadySelected = ($lang) ? true : false;
-    if ($languageAlreadySelected && empty($action)) {
-        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
-    }
-
     // Power users might have moved the temp folder out of the root and changed the config.php
     // accordingly. Make sure we respect this security related settings
     $tempDir = (isset($GLOBALS['ZConfig']['System']['temp']) ? $GLOBALS['ZConfig']['System']['temp'] : 'ztemp');
@@ -73,9 +47,38 @@ function install(Zikula_Core $core)
             'plugins',
             'install/templates/plugins',
             'lib/view/plugins');
+    $smarty->clear_compiled_tpl();
+    
+    $lang = FormUtil::getPassedValue('lang', '', 'GETPOST');
+    $dbhost = FormUtil::getPassedValue('dbhost', '', 'GETPOST');
+    $dbusername = FormUtil::getPassedValue('dbusername', '', 'GETPOST');
+    $dbpassword = FormUtil::getPassedValue('dbpassword', '', 'GETPOST');
+    $dbname = FormUtil::getPassedValue('dbname', '', 'GETPOST');
+    $dbprefix = FormUtil::getPassedValue('dbprefix', '', 'GETPOST');
+    $dbdriver = FormUtil::getPassedValue('dbdriver', '', 'GETPOST');
+    $dbtabletype = FormUtil::getPassedValue('dbtabletype', '', 'GETPOST');
+    $username = FormUtil::getPassedValue('username', '', 'POST');
+    $password = FormUtil::getPassedValue('password', '', 'POST');
+    $repeatpassword = FormUtil::getPassedValue('repeatpassword', '', 'POST');
+    $email = FormUtil::getPassedValue('email', '', 'GETPOST');
+    $action = FormUtil::getPassedValue('action', '', 'GETPOST');
+
+    $notinstalled = isset($_GET['notinstalled']);
+
+    // see if the language was already selected
+    $languageAlreadySelected = ($lang) ? true : false;
+    if (!$notinstalled && $languageAlreadySelected && empty($action)) {
+        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
+    }
+
+    // see if the language was already selected
+    $languageAlreadySelected = ($lang) ? true : false;
+    if (!$notinstalled && $languageAlreadySelected && empty($action)) {
+        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
+    }
 
     // load the installer language files
-    if (empty($lang)) {
+    if (!$notinstalled && empty($lang)) {
         $available = ZLanguage::getInstalledLanguages();
         $detector = new ZLanguageBrowser($available);
         $lang = $detector->discover();
@@ -97,6 +100,21 @@ function install(Zikula_Core $core)
     $smarty->assign('installbySQL', $installbySQL);
     $smarty->assign('langdirection', ZLanguage::getDirection());
     $smarty->assign('charset', ZLanguage::getEncoding());
+
+    // show not installed case
+    if ($notinstalled) {
+        $installerConfig = array('language' => 'en');
+        if (is_readable('config/installer.ini')) {
+            $test = parse_ini_file('config/installer.ini');
+            $installerConfig = isset($test['language']) ? $test : $installerConfig;
+        }
+        $lang = DataUtil::formatForDisplay($installerConfig['language']);
+        header('HTTP/1.1 503 Service Unavailable');
+        $smarty->assign('lang', $lang);
+        $smarty->display('notinstalled.tpl');
+        $smarty->clear_compiled_tpl();
+        exit;
+    }
 
     // assign the values from config.php
     $smarty->assign($GLOBALS['ZConfig']['System']);
@@ -293,6 +311,7 @@ function install(Zikula_Core $core)
 
     $smarty->assign('maincontent', $smarty->fetch($templateName));
     $smarty->display('installer_page.tpl');
+    $smarty->clear_compiled_tpl();
 }
 
 /**

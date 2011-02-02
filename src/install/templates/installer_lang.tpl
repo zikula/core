@@ -1,4 +1,3 @@
-<p>{gt text="Welcome to the Zikula installer script. This script will set-up the Zikula database and will guide you through choosing the various options for installing your new site. You will be walked through a series of pages. Each page constitutes one step in the installation process. The entire process commonly takes about ten minutes. If you have questions or problems, please visit the project support forums for help."}</p>
 {if not $installbySQL}
 <h2>{gt text="Select language"}</h2>
 {/if}
