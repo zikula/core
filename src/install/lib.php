@@ -111,7 +111,6 @@ function install(Zikula_Core $core)
     // show not installed case
     if ($notinstalled) {
         header('HTTP/1.1 503 Service Unavailable');
-        $smarty->assign('lang', $lang);
         $smarty->display('notinstalled.tpl');
         $smarty->clear_compiled_tpl();
         exit;
