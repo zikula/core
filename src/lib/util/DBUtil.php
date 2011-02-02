@@ -201,7 +201,7 @@ class DBUtil
         $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
         $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
         if ($dbDriverName == 'mysql') {
-            $tableoptions['type'] = $dbDriverName;
+            $tableoptions['type'] = Doctrine_Manager::getInstance()->getCurrentConnection()->getAttribute(Doctrine_Core::ATTR_DEFAULT_TABLE_TYPE);
         }
 
         $tableoptions['charset'] = $databases[$connName]['charset'];
