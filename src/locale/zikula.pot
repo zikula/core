@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-28 13:23-0500\n"
+"POT-Creation-Date: 2011-02-02 13:14-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -564,22 +564,22 @@ msgid "Only in some themes"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Block/Menutree.php:399
-#: lib/util/SecurityUtil.php:614
+#: lib/util/SecurityUtil.php:605
 msgid "Edit access"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Block/Menutree.php:400
-#: lib/util/SecurityUtil.php:615
+#: lib/util/SecurityUtil.php:606
 msgid "Add access"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Block/Menutree.php:401
-#: lib/util/SecurityUtil.php:616
+#: lib/util/SecurityUtil.php:607
 msgid "Delete access"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Block/Menutree.php:402
-#: lib/util/SecurityUtil.php:617
+#: lib/util/SecurityUtil.php:608
 msgid "Admin access"
 msgstr ""
 
@@ -606,8 +606,8 @@ msgstr ""
 msgid "Language selector block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Lang.php:105 upgrade.php:169
-#: install/templates/installer_lang.tpl:16
+#: system/Blocks/lib/Blocks/Block/Lang.php:105 upgrade.php:174
+#: install/templates/installer_lang.tpl:15
 msgid "Choose a language"
 msgstr ""
 
@@ -1095,7 +1095,7 @@ msgstr ""
 msgid "Notice: You cannot delete the main administration permission rule."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Ajax.php:197 test.php:95
+#: system/Permissions/lib/Permissions/Controller/Ajax.php:197 test.php:98
 #, php-format
 msgid "Error! Could not delete permission rule with ID %s."
 msgstr ""
@@ -1233,7 +1233,7 @@ msgstr ""
 #: system/Theme/templates/theme_admin_view.tpl:44
 #: system/Theme/templates/theme_admin_pageconfigurations.tpl:22
 #: system/Theme/templates/theme_admin_delete.tpl:21
-#: system/Users/templates/users_admin_modify.tpl:109
+#: system/Users/templates/users_admin_modify.tpl:108
 #: system/Users/templates/users_admin_listusers.tpl:46
 #: system/Users/templates/users_admin_listusers.tpl:107
 #: system/Users/templates/users_admin_view.tpl:13
@@ -1474,8 +1474,8 @@ msgstr ""
 
 #: system/Groups/lib/Groups/Installer.php:110
 #: system/Categories/lib/Categories/Installer.php:483
-#: system/Admin/lib/Admin/Installer.php:131 install/functions.php:509
-#: install/functions.php:510 install/functions.php:512
+#: system/Admin/lib/Admin/Installer.php:131 install/lib.php:423
+#: install/lib.php:424 install/lib.php:426
 msgid "Users"
 msgstr ""
 
@@ -2425,9 +2425,8 @@ msgid "Current password"
 msgstr ""
 
 #: system/Users/lib/Users/Controller/User.php:106
-#: lib/view/plugins/function.userlogin.php:70 upgrade.php:219
-#: install/templates/installer_dbinformation.tpl:40
-#: install/templates/installer_login.tpl:20
+#: lib/view/plugins/function.userlogin.php:70 upgrade.php:224
+#: install/templates/installer_dbinformation.tpl:39
 #: install/templates/installer_createadmin.tpl:27
 #: system/Theme/templates/system/siteoff.tpl:173
 #: system/Users/templates/users_admin_modify.tpl:57
@@ -2895,8 +2894,7 @@ msgstr ""
 msgid "User account links"
 msgstr ""
 
-#: system/Users/lib/Users/Block/Login.php:53 upgrade.php:217
-#: install/templates/installer_login.tpl:14
+#: system/Users/lib/Users/Block/Login.php:53 upgrade.php:222
 #: system/Errors/templates/errors_user_403.tpl:15
 msgid "Log-in"
 msgstr ""
@@ -4537,9 +4535,9 @@ msgstr ""
 msgid "Display administration categories and modules"
 msgstr ""
 
-#: system/Admin/lib/Admin/Installer.php:127 install/functions.php:508
-#: install/functions.php:514 install/functions.php:515
-#: install/functions.php:542 install/functions.php:544
+#: system/Admin/lib/Admin/Installer.php:127 install/lib.php:422
+#: install/lib.php:428 install/lib.php:429 install/lib.php:456
+#: install/lib.php:458
 msgid "System"
 msgstr ""
 
@@ -4547,8 +4545,8 @@ msgstr ""
 msgid "Core modules at the heart of operation of the site."
 msgstr ""
 
-#: system/Admin/lib/Admin/Installer.php:129 install/functions.php:511
-#: install/functions.php:513 install/functions.php:546
+#: system/Admin/lib/Admin/Installer.php:129 install/lib.php:425
+#: install/lib.php:427 install/lib.php:460
 msgid "Layout"
 msgstr ""
 
@@ -4560,9 +4558,8 @@ msgstr ""
 msgid "Modules for controlling user membership, access rights and profiles."
 msgstr ""
 
-#: system/Admin/lib/Admin/Installer.php:133 install/functions.php:536
-#: install/functions.php:538 install/functions.php:540
-#: install/functions.php:548
+#: system/Admin/lib/Admin/Installer.php:133 install/lib.php:450
+#: install/lib.php:452 install/lib.php:454 install/lib.php:462
 #: system/Blocks/templates/blocks_admin_modify.tpl:92
 #: system/Blocks/templates/blocks_block_extmenu_modify.tpl:38
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:12
@@ -4581,8 +4578,8 @@ msgstr ""
 msgid "Newly-installed or uncategorized modules."
 msgstr ""
 
-#: system/Admin/lib/Admin/Installer.php:137 install/functions.php:534
-#: install/functions.php:550
+#: system/Admin/lib/Admin/Installer.php:137 install/lib.php:448
+#: install/lib.php:464
 msgid "Security"
 msgstr ""
 
@@ -4674,18 +4671,8 @@ msgid ""
 "together."
 msgstr ""
 
-#: install/modify_config.php:27
-#, php-format
-msgid "Error! Could not open '%s' for reading."
-msgstr ""
-
-#: install/modify_config.php:47
-msgid "Processed! But no lines were changed, so no action was taken."
-msgstr ""
-
-#: install/modify_config.php:53
-#, php-format
-msgid "Error! Could not open '%s' for writing."
+#: install/lib.php:268
+msgid "Congratulations! Zikula has been successfullly installed."
 msgstr ""
 
 #: lib/legacy/plugins/function.modulestylesheet.php:32
@@ -4773,75 +4760,75 @@ msgstr ""
 #: lib/legacy/Api.php:341 lib/legacy/Api.php:362 lib/legacy/Api.php:379
 #: lib/legacy/Api.php:395 lib/legacy/Api.php:411 lib/legacy/Api.php:428
 #: lib/legacy/Api.php:446 lib/legacy/Api.php:462 lib/legacy/Api.php:473
-#: lib/legacy/Api.php:489 lib/legacy/Compat.php:347 lib/legacy/Compat.php:385
-#: lib/legacy/Compat.php:401 lib/legacy/Compat.php:417
-#: lib/legacy/Compat.php:436 lib/legacy/Compat.php:453
-#: lib/legacy/Compat.php:467 lib/legacy/Compat.php:481
-#: lib/legacy/Compat.php:498 lib/legacy/Compat.php:512
-#: lib/legacy/Compat.php:526 lib/legacy/Compat.php:538
-#: lib/legacy/Compat.php:550 lib/legacy/Compat.php:562
-#: lib/legacy/Compat.php:574 lib/legacy/Compat.php:586
-#: lib/legacy/Compat.php:598 lib/legacy/Compat.php:610
-#: lib/legacy/Compat.php:622 lib/legacy/Compat.php:634
-#: lib/legacy/Compat.php:646 lib/legacy/Compat.php:658
-#: lib/legacy/Compat.php:670 lib/legacy/Compat.php:682
-#: lib/legacy/Compat.php:694 lib/legacy/Compat.php:706
-#: lib/legacy/Compat.php:718 lib/legacy/Compat.php:730
-#: lib/legacy/Compat.php:742 lib/legacy/Compat.php:754
-#: lib/legacy/Compat.php:766 lib/legacy/Compat.php:778
-#: lib/legacy/Compat.php:790 lib/legacy/Compat.php:813
-#: lib/legacy/Compat.php:825 lib/legacy/Compat.php:837
-#: lib/legacy/Compat.php:849 lib/legacy/Compat.php:861
-#: lib/legacy/Compat.php:873 lib/legacy/Compat.php:885
-#: lib/legacy/Compat.php:897 lib/legacy/Compat.php:909
-#: lib/legacy/Compat.php:921 lib/legacy/Compat.php:933
-#: lib/legacy/Compat.php:945 lib/legacy/Compat.php:957
-#: lib/legacy/Compat.php:1806 lib/legacy/Compat.php:1833
-#: lib/legacy/Compat.php:1859 lib/legacy/Compat.php:1875
-#: lib/legacy/Compat.php:1895 lib/legacy/Compat.php:1920
-#: lib/legacy/Compat.php:1939 lib/legacy/Compat.php:1952
-#: lib/legacy/Compat.php:1969 lib/legacy/Compat.php:1987
-#: lib/legacy/Compat.php:2002 lib/legacy/Compat.php:2017
-#: lib/legacy/Compat.php:2060 lib/legacy/Compat.php:2091
-#: lib/legacy/Compat.php:2125 lib/legacy/Compat.php:2159
-#: lib/legacy/Compat.php:2192 lib/legacy/Compat.php:2221
-#: lib/legacy/Compat.php:2257 lib/legacy/Compat.php:2274
-#: lib/legacy/Compat.php:2290 lib/legacy/Compat.php:2332
-#: lib/legacy/Compat.php:2352 lib/legacy/Compat.php:2372
-#: lib/legacy/Compat.php:2394 lib/legacy/Compat.php:2424
-#: lib/legacy/Compat.php:2451 lib/legacy/Compat.php:2470
-#: lib/legacy/Compat.php:2487 lib/legacy/Compat.php:2507
-#: lib/legacy/Compat.php:2523 lib/legacy/Compat.php:2541
-#: lib/legacy/Compat.php:2555 lib/legacy/Compat.php:2569
-#: lib/legacy/Compat.php:2583 lib/legacy/Compat.php:2597
-#: lib/legacy/Compat.php:2613 lib/legacy/Compat.php:2627
-#: lib/legacy/Compat.php:2645 lib/legacy/Compat.php:2663
-#: lib/legacy/Compat.php:2681 lib/legacy/Compat.php:2700
-#: lib/legacy/Compat.php:2719 lib/legacy/Compat.php:2738
-#: lib/legacy/Compat.php:2758 lib/legacy/Compat.php:2787
-#: lib/legacy/Compat.php:2804 lib/legacy/Compat.php:2818
-#: lib/legacy/Compat.php:2839 lib/legacy/Compat.php:2861
-#: lib/legacy/Compat.php:2881 lib/legacy/Compat.php:2898
-#: lib/legacy/Compat.php:2943 lib/legacy/Compat.php:2959
-#: lib/legacy/Compat.php:2980 lib/legacy/Compat.php:3000
-#: lib/legacy/Compat.php:3017 lib/legacy/Compat.php:3034
-#: lib/legacy/Compat.php:3046 lib/legacy/Compat.php:3062
-#: lib/legacy/Compat.php:3076 lib/legacy/Compat.php:3091
-#: lib/legacy/Compat.php:3105 lib/legacy/Compat.php:3122
-#: lib/legacy/Compat.php:3138 lib/legacy/Compat.php:3154
-#: lib/legacy/Compat.php:3176 lib/legacy/Compat.php:3188
-#: lib/legacy/Compat.php:3208 lib/legacy/Compat.php:3224
-#: lib/legacy/Compat.php:3239 lib/legacy/Compat.php:3254
-#: lib/legacy/Compat.php:3269 lib/legacy/Compat.php:3286
-#: lib/legacy/Compat.php:3316 lib/legacy/Compat.php:3331
-#: lib/legacy/Compat.php:3358 lib/legacy/Compat.php:3379
-#: lib/legacy/Compat.php:3395 lib/legacy/Compat.php:3410
-#: lib/legacy/Compat.php:3425 lib/legacy/Compat.php:3440
-#: lib/legacy/Compat.php:3457 lib/legacy/Compat.php:3470
-#: lib/legacy/Compat.php:3482 lib/legacy/Compat.php:3503
-#: lib/legacy/Compat.php:3516 lib/legacy/Compat.php:3534
-#: lib/legacy/Compat.php:3550 lib/legacy/Compat.php:3564
-#: lib/legacy/Compat.php:3571 lib/legacy/Compat.php:3578
+#: lib/legacy/Api.php:489 lib/legacy/Compat.php:667 lib/legacy/Compat.php:705
+#: lib/legacy/Compat.php:721 lib/legacy/Compat.php:737
+#: lib/legacy/Compat.php:756 lib/legacy/Compat.php:773
+#: lib/legacy/Compat.php:787 lib/legacy/Compat.php:801
+#: lib/legacy/Compat.php:818 lib/legacy/Compat.php:832
+#: lib/legacy/Compat.php:846 lib/legacy/Compat.php:858
+#: lib/legacy/Compat.php:870 lib/legacy/Compat.php:882
+#: lib/legacy/Compat.php:894 lib/legacy/Compat.php:906
+#: lib/legacy/Compat.php:918 lib/legacy/Compat.php:930
+#: lib/legacy/Compat.php:942 lib/legacy/Compat.php:954
+#: lib/legacy/Compat.php:966 lib/legacy/Compat.php:978
+#: lib/legacy/Compat.php:990 lib/legacy/Compat.php:1002
+#: lib/legacy/Compat.php:1014 lib/legacy/Compat.php:1026
+#: lib/legacy/Compat.php:1038 lib/legacy/Compat.php:1050
+#: lib/legacy/Compat.php:1062 lib/legacy/Compat.php:1074
+#: lib/legacy/Compat.php:1086 lib/legacy/Compat.php:1098
+#: lib/legacy/Compat.php:1110 lib/legacy/Compat.php:1133
+#: lib/legacy/Compat.php:1145 lib/legacy/Compat.php:1157
+#: lib/legacy/Compat.php:1169 lib/legacy/Compat.php:1181
+#: lib/legacy/Compat.php:1193 lib/legacy/Compat.php:1205
+#: lib/legacy/Compat.php:1217 lib/legacy/Compat.php:1229
+#: lib/legacy/Compat.php:1241 lib/legacy/Compat.php:1253
+#: lib/legacy/Compat.php:1265 lib/legacy/Compat.php:1277
+#: lib/legacy/Compat.php:2126 lib/legacy/Compat.php:2153
+#: lib/legacy/Compat.php:2179 lib/legacy/Compat.php:2195
+#: lib/legacy/Compat.php:2215 lib/legacy/Compat.php:2240
+#: lib/legacy/Compat.php:2259 lib/legacy/Compat.php:2272
+#: lib/legacy/Compat.php:2289 lib/legacy/Compat.php:2307
+#: lib/legacy/Compat.php:2322 lib/legacy/Compat.php:2337
+#: lib/legacy/Compat.php:2380 lib/legacy/Compat.php:2411
+#: lib/legacy/Compat.php:2445 lib/legacy/Compat.php:2479
+#: lib/legacy/Compat.php:2512 lib/legacy/Compat.php:2541
+#: lib/legacy/Compat.php:2577 lib/legacy/Compat.php:2594
+#: lib/legacy/Compat.php:2610 lib/legacy/Compat.php:2652
+#: lib/legacy/Compat.php:2672 lib/legacy/Compat.php:2692
+#: lib/legacy/Compat.php:2714 lib/legacy/Compat.php:2744
+#: lib/legacy/Compat.php:2771 lib/legacy/Compat.php:2790
+#: lib/legacy/Compat.php:2807 lib/legacy/Compat.php:2827
+#: lib/legacy/Compat.php:2843 lib/legacy/Compat.php:2861
+#: lib/legacy/Compat.php:2875 lib/legacy/Compat.php:2889
+#: lib/legacy/Compat.php:2903 lib/legacy/Compat.php:2917
+#: lib/legacy/Compat.php:2933 lib/legacy/Compat.php:2947
+#: lib/legacy/Compat.php:2965 lib/legacy/Compat.php:2983
+#: lib/legacy/Compat.php:3001 lib/legacy/Compat.php:3020
+#: lib/legacy/Compat.php:3039 lib/legacy/Compat.php:3058
+#: lib/legacy/Compat.php:3078 lib/legacy/Compat.php:3107
+#: lib/legacy/Compat.php:3124 lib/legacy/Compat.php:3138
+#: lib/legacy/Compat.php:3159 lib/legacy/Compat.php:3181
+#: lib/legacy/Compat.php:3201 lib/legacy/Compat.php:3218
+#: lib/legacy/Compat.php:3263 lib/legacy/Compat.php:3279
+#: lib/legacy/Compat.php:3300 lib/legacy/Compat.php:3320
+#: lib/legacy/Compat.php:3337 lib/legacy/Compat.php:3354
+#: lib/legacy/Compat.php:3366 lib/legacy/Compat.php:3382
+#: lib/legacy/Compat.php:3396 lib/legacy/Compat.php:3411
+#: lib/legacy/Compat.php:3425 lib/legacy/Compat.php:3442
+#: lib/legacy/Compat.php:3458 lib/legacy/Compat.php:3474
+#: lib/legacy/Compat.php:3496 lib/legacy/Compat.php:3508
+#: lib/legacy/Compat.php:3528 lib/legacy/Compat.php:3544
+#: lib/legacy/Compat.php:3559 lib/legacy/Compat.php:3574
+#: lib/legacy/Compat.php:3589 lib/legacy/Compat.php:3606
+#: lib/legacy/Compat.php:3636 lib/legacy/Compat.php:3651
+#: lib/legacy/Compat.php:3678 lib/legacy/Compat.php:3699
+#: lib/legacy/Compat.php:3715 lib/legacy/Compat.php:3730
+#: lib/legacy/Compat.php:3745 lib/legacy/Compat.php:3760
+#: lib/legacy/Compat.php:3777 lib/legacy/Compat.php:3790
+#: lib/legacy/Compat.php:3802 lib/legacy/Compat.php:3823
+#: lib/legacy/Compat.php:3836 lib/legacy/Compat.php:3854
+#: lib/legacy/Compat.php:3870 lib/legacy/Compat.php:3884
+#: lib/legacy/Compat.php:3891 lib/legacy/Compat.php:3898
 #: lib/util/UserUtil.php:598 lib/util/DataUtil.php:528
 #: lib/util/DataUtil.php:744
 #, php-format
@@ -4875,52 +4862,90 @@ msgid ""
 "absolutely necessary, %2$s instead."
 msgstr ""
 
-#: lib/legacy/Compat.php:43 lib/legacy/Compat.php:58 lib/legacy/Compat.php:73
-#: lib/legacy/Compat.php:124 lib/legacy/Compat.php:166
-#: lib/legacy/Compat.php:319 lib/legacy/Compat.php:979
-#: lib/legacy/Compat.php:1000 lib/legacy/Compat.php:1020
-#: lib/legacy/Compat.php:1041 lib/legacy/Compat.php:1062
-#: lib/legacy/Compat.php:1083 lib/legacy/Compat.php:1104
-#: lib/legacy/Compat.php:1125 lib/legacy/Compat.php:1146
-#: lib/legacy/Compat.php:1167 lib/legacy/Compat.php:1188
-#: lib/legacy/Compat.php:1209 lib/legacy/Compat.php:1230
-#: lib/legacy/Compat.php:1251 lib/legacy/Compat.php:1272
-#: lib/legacy/Compat.php:1293 lib/legacy/Compat.php:1314
-#: lib/legacy/Compat.php:1335 lib/legacy/Compat.php:1356
-#: lib/legacy/Compat.php:1377 lib/legacy/Compat.php:1398
-#: lib/legacy/Compat.php:1419 lib/legacy/Compat.php:1440
-#: lib/legacy/Compat.php:1461 lib/legacy/Compat.php:1482
-#: lib/legacy/Compat.php:1503 lib/legacy/Compat.php:1524
-#: lib/legacy/Compat.php:1545 lib/legacy/Compat.php:1566
-#: lib/legacy/Compat.php:1587 lib/legacy/Compat.php:1608
-#: lib/legacy/Compat.php:1629 lib/legacy/Compat.php:1650
+#: lib/legacy/Compat.php:45 lib/legacy/Compat.php:60 lib/legacy/Compat.php:75
+#: lib/legacy/Compat.php:444 lib/legacy/Compat.php:486
+#: lib/legacy/Compat.php:639 lib/legacy/Compat.php:1299
+#: lib/legacy/Compat.php:1320 lib/legacy/Compat.php:1340
+#: lib/legacy/Compat.php:1361 lib/legacy/Compat.php:1382
+#: lib/legacy/Compat.php:1403 lib/legacy/Compat.php:1424
+#: lib/legacy/Compat.php:1445 lib/legacy/Compat.php:1466
+#: lib/legacy/Compat.php:1487 lib/legacy/Compat.php:1508
+#: lib/legacy/Compat.php:1529 lib/legacy/Compat.php:1550
+#: lib/legacy/Compat.php:1571 lib/legacy/Compat.php:1592
+#: lib/legacy/Compat.php:1613 lib/legacy/Compat.php:1634
+#: lib/legacy/Compat.php:1655 lib/legacy/Compat.php:1676
+#: lib/legacy/Compat.php:1697 lib/legacy/Compat.php:1718
+#: lib/legacy/Compat.php:1739 lib/legacy/Compat.php:1760
+#: lib/legacy/Compat.php:1781 lib/legacy/Compat.php:1802
+#: lib/legacy/Compat.php:1823 lib/legacy/Compat.php:1844
+#: lib/legacy/Compat.php:1865 lib/legacy/Compat.php:1886
+#: lib/legacy/Compat.php:1907 lib/legacy/Compat.php:1928
+#: lib/legacy/Compat.php:1949 lib/legacy/Compat.php:1970
 #, php-format
 msgid "Warning! Class %1$s is deprecated. Please use %2$s instead."
 msgstr ""
 
-#: lib/legacy/Compat.php:802 lib/legacy/Compat.php:2033
-#: lib/legacy/Compat.php:2239
+#: lib/legacy/Compat.php:154 lib/legacy/Compat.php:186
+#: lib/legacy/Compat.php:241 lib/legacy/Compat.php:252
+#: lib/legacy/Compat.php:263 lib/legacy/Compat.php:274
+#: lib/legacy/Compat.php:288 lib/legacy/Compat.php:299
+#: lib/legacy/Compat.php:310 lib/legacy/Compat.php:321
+#: lib/legacy/Compat.php:332 lib/legacy/Compat.php:343
+#: lib/legacy/Compat.php:380 lib/legacy/Compat.php:398
+#, php-format
+msgid "Warning! %1$s is deprecated."
+msgstr ""
+
+#: lib/legacy/Compat.php:195
+msgid "Attempted to get info from empty connection stack"
+msgstr ""
+
+#: lib/legacy/Compat.php:200 lib/legacy/Compat.php:213
+#, php-format
+msgid "Invalid connection key [%s]"
+msgstr ""
+
+#: lib/legacy/Compat.php:225
+#, php-format
+msgid "Unknown field [%s] requested"
+msgstr ""
+
+#: lib/legacy/Compat.php:356
+#, php-format
+msgid "Warning! %1$s is deprecated. Use %2$s instead."
+msgstr ""
+
+#: lib/legacy/Compat.php:365
+msgid "Attempted to get connection from empty connection stack"
+msgstr ""
+
+#: lib/legacy/Compat.php:400
+msgid "Attempted to pop connection from empty connection stack"
+msgstr ""
+
+#: lib/legacy/Compat.php:1122 lib/legacy/Compat.php:2353
+#: lib/legacy/Compat.php:2559
 #, php-format
 msgid "Warning! Function %1$s is deprecated."
 msgstr ""
 
-#: lib/legacy/Compat.php:2240
+#: lib/legacy/Compat.php:2560
 msgid "Assertion failed"
 msgstr ""
 
-#: lib/legacy/Compat.php:2302
+#: lib/legacy/Compat.php:2622
 #, php-format
 msgid ""
 "Error! The 'pnVarCensor' function used in '%s' is deprecated. Instead, "
 "please activate the 'MultiHook' for this module."
 msgstr ""
 
-#: lib/legacy/Compat.php:2915
+#: lib/legacy/Compat.php:3235
 msgid "Error! Function pnModLangLoad is deprecated."
 msgstr ""
 
-#: lib/legacy/Compat.php:3595 lib/legacy/Compat.php:3610
-#: lib/legacy/Compat.php:3627
+#: lib/legacy/Compat.php:3915 lib/legacy/Compat.php:3930
+#: lib/legacy/Compat.php:3947
 #, php-format
 msgid "Warning! Function %s is deprecated."
 msgstr ""
@@ -5157,11 +5182,11 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: lib/util/HtmlUtil.php:581 lib/util/SecurityUtil.php:609
+#: lib/util/HtmlUtil.php:581 lib/util/SecurityUtil.php:600
 msgid "No access"
 msgstr ""
 
-#: lib/util/HtmlUtil.php:582 lib/util/SecurityUtil.php:611
+#: lib/util/HtmlUtil.php:582 lib/util/SecurityUtil.php:602
 msgid "Read access"
 msgstr ""
 
@@ -5252,7 +5277,7 @@ msgid ""
 msgstr ""
 
 #: lib/util/LogUtil.php:135 lib/util/LogUtil.php:158 lib/util/LogUtil.php:173
-#: lib/util/LogUtil.php:277 lib/Zikula/Base.php:497 lib/Zikula/Base.php:563
+#: lib/util/LogUtil.php:253 lib/Zikula/Base.php:518 lib/Zikula/Base.php:584
 #, php-format
 msgid "Empty [%s] received."
 msgstr ""
@@ -5262,7 +5287,7 @@ msgstr ""
 msgid "Invalid type %s for LogUtil::_addPopup"
 msgstr ""
 
-#: lib/util/LogUtil.php:316
+#: lib/util/LogUtil.php:292
 msgid ""
 "Sorry! Invalid authorisation key ('authkey'). This is probably either "
 "because you pressed the 'Back' button to return to a page which does not "
@@ -5270,11 +5295,11 @@ msgid ""
 "prolonged inactivity. Please refresh the page and try again."
 msgstr ""
 
-#: lib/util/LogUtil.php:326 lib/Zikula/Exception/Forbidden.php:31
+#: lib/util/LogUtil.php:302 lib/Zikula/Exception/Forbidden.php:31
 msgid "Sorry! You have not been granted access to this page."
 msgstr ""
 
-#: lib/util/LogUtil.php:336
+#: lib/util/LogUtil.php:312
 msgid ""
 "Error! The action you wanted to perform was not successful for some reason, "
 "maybe because of a problem with what you input. Please check and try again."
@@ -5305,264 +5330,264 @@ msgstr ""
 msgid "Installed version and plugin version are equal, nothing to do for %s"
 msgstr ""
 
-#: lib/util/DBUtil.php:131 lib/util/DBUtil.php:457 lib/util/DBUtil.php:460
-#: lib/util/DBUtil.php:463 lib/util/DBUtil.php:505 lib/util/DBUtil.php:509
-#: lib/util/DBUtil.php:551 lib/util/DBUtil.php:555 lib/util/DBUtil.php:1390
-#: lib/util/DBUtil.php:1426 lib/util/DBUtil.php:1430 lib/util/DBUtil.php:1944
-#: lib/util/DBUtil.php:2200 lib/util/DBUtil.php:2693 lib/util/DBUtil.php:2866
-#: lib/util/DBUtil.php:2906 lib/util/DBUtil.php:2972 lib/util/DBUtil.php:3043
-#: lib/util/DBUtil.php:3116 lib/util/DBUtil.php:3230 lib/util/DBUtil.php:3264
-#: lib/util/DBUtil.php:3267 lib/util/DBUtil.php:3304 lib/util/DBUtil.php:3340
-#: lib/util/DBUtil.php:3344 lib/util/DBUtil.php:3348 lib/util/DBUtil.php:3412
-#: lib/util/DBUtil.php:3416 lib/util/DBUtil.php:3469 lib/util/DBUtil.php:3503
+#: lib/util/DBUtil.php:137 lib/util/DBUtil.php:467 lib/util/DBUtil.php:470
+#: lib/util/DBUtil.php:473 lib/util/DBUtil.php:515 lib/util/DBUtil.php:519
+#: lib/util/DBUtil.php:561 lib/util/DBUtil.php:565 lib/util/DBUtil.php:1388
+#: lib/util/DBUtil.php:1424 lib/util/DBUtil.php:1428 lib/util/DBUtil.php:1942
+#: lib/util/DBUtil.php:2190 lib/util/DBUtil.php:2675 lib/util/DBUtil.php:2848
+#: lib/util/DBUtil.php:2888 lib/util/DBUtil.php:2954 lib/util/DBUtil.php:3025
+#: lib/util/DBUtil.php:3098 lib/util/DBUtil.php:3212 lib/util/DBUtil.php:3246
+#: lib/util/DBUtil.php:3249 lib/util/DBUtil.php:3286 lib/util/DBUtil.php:3322
+#: lib/util/DBUtil.php:3326 lib/util/DBUtil.php:3330 lib/util/DBUtil.php:3394
+#: lib/util/DBUtil.php:3398 lib/util/DBUtil.php:3451 lib/util/DBUtil.php:3485
 #: lib/Zikula/Doctrine/Table.php:321
 #, php-format
 msgid "The parameter %s must not be empty"
 msgstr ""
 
-#: lib/util/DBUtil.php:243
+#: lib/util/DBUtil.php:253
 msgid "No SQL statement to execute"
 msgstr ""
 
-#: lib/util/DBUtil.php:257
+#: lib/util/DBUtil.php:267
 msgid "Paging parameters can only be used for SELECT statements"
 msgstr ""
 
-#: lib/util/DBUtil.php:305 lib/util/DBUtil.php:340
+#: lib/util/DBUtil.php:315 lib/util/DBUtil.php:350
 #, php-format
 msgid "Invalid table-key [%s] retrieved"
 msgstr ""
 
-#: lib/util/DBUtil.php:316 lib/util/DBUtil.php:355 lib/util/DBUtil.php:391
+#: lib/util/DBUtil.php:326 lib/util/DBUtil.php:365 lib/util/DBUtil.php:401
 #, php-format
 msgid "Empty query generated for [%s] filtered by columnArray"
 msgstr ""
 
-#: lib/util/DBUtil.php:431
+#: lib/util/DBUtil.php:441
 #, php-format
 msgid "Invalid join information retrieved (alias %s already exists)"
 msgstr ""
 
-#: lib/util/DBUtil.php:476 lib/util/DBUtil.php:3057 lib/util/DBUtil.php:3130
+#: lib/util/DBUtil.php:486 lib/util/DBUtil.php:3039 lib/util/DBUtil.php:3112
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table array contain the dictionary "
 "representation of table [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:486
+#: lib/util/DBUtil.php:496
 msgid "Error! Column rename failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:513
+#: lib/util/DBUtil.php:523
 #, php-format
 msgid "The parameter %s must be an array of field arrays"
 msgstr ""
 
-#: lib/util/DBUtil.php:525
+#: lib/util/DBUtil.php:535
 #, php-format
 msgid "%1$s does not exist in table definition for %2$s."
 msgstr ""
 
-#: lib/util/DBUtil.php:532
+#: lib/util/DBUtil.php:542
 msgid "Error! Column creation failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:559
+#: lib/util/DBUtil.php:569
 #, php-format
 msgid "The parameter %s must be an array."
 msgstr ""
 
-#: lib/util/DBUtil.php:574
+#: lib/util/DBUtil.php:584
 msgid "Error! Column deletion failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:634 lib/util/DBUtil.php:748
+#: lib/util/DBUtil.php:644 lib/util/DBUtil.php:754
 #, php-format
 msgid "%s_column is not an array"
 msgstr ""
 
-#: lib/util/DBUtil.php:640 lib/util/DBUtil.php:754
+#: lib/util/DBUtil.php:650 lib/util/DBUtil.php:760
 #, php-format
 msgid "%s_column_def is not an array"
 msgstr ""
 
-#: lib/util/DBUtil.php:687
+#: lib/util/DBUtil.php:697
 msgid "Unable to find anything to insert in supplied object ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:734
+#: lib/util/DBUtil.php:740
 msgid "Neither object ID nor where parameters are provided"
 msgstr ""
 
-#: lib/util/DBUtil.php:888
+#: lib/util/DBUtil.php:890
 msgid "Invalid idfield received"
 msgstr ""
 
-#: lib/util/DBUtil.php:1006
+#: lib/util/DBUtil.php:1008
 msgid "Can't specify both object and where-clause"
 msgstr ""
 
-#: lib/util/DBUtil.php:1010
+#: lib/util/DBUtil.php:1012
 msgid "Missing either object or where-clause"
 msgstr ""
 
-#: lib/util/DBUtil.php:1021
+#: lib/util/DBUtil.php:1023
 msgid "Object does not have an ID"
 msgstr ""
 
-#: lib/util/DBUtil.php:1449
+#: lib/util/DBUtil.php:1447
 #, php-format
 msgid "Unable to find assocKey [%1$s] in objectColumns for resultset."
 msgstr ""
 
-#: lib/util/DBUtil.php:1463 lib/util/DBUtil.php:3352
+#: lib/util/DBUtil.php:1461 lib/util/DBUtil.php:3334
 #, php-format
 msgid "The parameter %s must be an array"
 msgstr ""
 
-#: lib/util/DBUtil.php:1475
+#: lib/util/DBUtil.php:1473
 msgid ""
 "Permission filter iterator did not return an array (must be an array of "
 "arrays)"
 msgstr ""
 
-#: lib/util/DBUtil.php:1502
+#: lib/util/DBUtil.php:1500
 #, php-format
 msgid "Permission filter level is invalid: [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:1550
+#: lib/util/DBUtil.php:1548
 msgid "Got no rows to select from"
 msgstr ""
 
-#: lib/util/DBUtil.php:1558
+#: lib/util/DBUtil.php:1556
 msgid "Got no columns to select from"
 msgstr ""
 
-#: lib/util/DBUtil.php:1948 lib/util/DBUtil.php:2204
+#: lib/util/DBUtil.php:1946 lib/util/DBUtil.php:2194
 #, php-format
 msgid "The parameter %s must be numeric"
 msgstr ""
 
-#: lib/util/DBUtil.php:2653 lib/util/DBUtil.php:2913 lib/util/DBUtil.php:3070
-#: lib/util/DBUtil.php:3143 lib/util/DBUtil.php:3237 lib/util/DBUtil.php:3275
-#: lib/util/DBUtil.php:3279 lib/util/DBUtil.php:3311 lib/util/DBUtil.php:3423
-#: lib/util/DBUtil.php:3476 lib/util/DBUtil.php:3510
+#: lib/util/DBUtil.php:2639 lib/util/DBUtil.php:2895 lib/util/DBUtil.php:3052
+#: lib/util/DBUtil.php:3125 lib/util/DBUtil.php:3219 lib/util/DBUtil.php:3257
+#: lib/util/DBUtil.php:3261 lib/util/DBUtil.php:3293 lib/util/DBUtil.php:3405
+#: lib/util/DBUtil.php:3458 lib/util/DBUtil.php:3492
 #, php-format
 msgid "%s does not point to a valid table definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:2657
+#: lib/util/DBUtil.php:2643
 #, php-format
 msgid "%s does not point to a valid field definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:2668
+#: lib/util/DBUtil.php:2650
 msgid "Exiting after SQL-error"
 msgstr ""
 
-#: lib/util/DBUtil.php:2744 lib/util/DBUtil.php:2881
+#: lib/util/DBUtil.php:2726 lib/util/DBUtil.php:2863
 #, php-format
 msgid "Invalid field pattern detected in table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2764
+#: lib/util/DBUtil.php:2746
 #, php-format
 msgid "Error in table definition for %1$s, column %2$s"
 msgstr ""
 
-#: lib/util/DBUtil.php:2812
+#: lib/util/DBUtil.php:2794
 #, php-format
 msgid "Missing default value in field datadict specification for %1$s.%2$s"
 msgstr ""
 
-#: lib/util/DBUtil.php:2851
+#: lib/util/DBUtil.php:2833
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table structure contain the data "
 "dictionary representation of table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2891
+#: lib/util/DBUtil.php:2873
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table structure contain the ADODB "
 "dictionary representation of table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2982
+#: lib/util/DBUtil.php:2964
 #, php-format
 msgid "Unable to retrieve table definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:2987
+#: lib/util/DBUtil.php:2969
 #, php-format
 msgid "Unable to retrieve table columns definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:2992
+#: lib/util/DBUtil.php:2974
 #, php-format
 msgid "Unable to retrieve table columns_def definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:3010
+#: lib/util/DBUtil.php:2992
 #, php-format
 msgid ""
 "Inconsistent table definition detected for table [%1$s]: column [%2$s] has "
 "no counterpart in column_def structure"
 msgstr ""
 
-#: lib/util/DBUtil.php:3019
+#: lib/util/DBUtil.php:3001
 #, php-format
 msgid ""
 "Inconsistent table definition detected for table [%1$s]: column_def [%2$s] "
 "has no counterpart in column structure"
 msgstr ""
 
-#: lib/util/DBUtil.php:3048 lib/util/DBUtil.php:3121
+#: lib/util/DBUtil.php:3030 lib/util/DBUtil.php:3103
 #, php-format
 msgid "Table consistency check failed for %s"
 msgstr ""
 
-#: lib/util/DBUtil.php:3076
+#: lib/util/DBUtil.php:3058
 #, php-format
 msgid "Error! Table creation failed for %s"
 msgstr ""
 
-#: lib/util/DBUtil.php:3157 lib/util/DBUtil.php:3167 lib/util/DBUtil.php:3181
-#: lib/util/DBUtil.php:3192 lib/util/DoctrineUtil.php:390
+#: lib/util/DBUtil.php:3139 lib/util/DBUtil.php:3149 lib/util/DBUtil.php:3163
+#: lib/util/DBUtil.php:3174 lib/util/DoctrineUtil.php:390
 #: lib/util/DoctrineUtil.php:400 lib/util/DoctrineUtil.php:414
 #: lib/util/DoctrineUtil.php:425
 msgid "Error! Table update failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3285
+#: lib/util/DBUtil.php:3267
 msgid "Error! Table rename failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3318
+#: lib/util/DBUtil.php:3300
 msgid "Error! Table drop failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3360
+#: lib/util/DBUtil.php:3342
 #, php-format
 msgid "%s does not point to a valid column definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:3396
+#: lib/util/DBUtil.php:3378
 msgid "Error! Index creation failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3430
+#: lib/util/DBUtil.php:3412
 msgid "Error! Index deletion failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3517
+#: lib/util/DBUtil.php:3499
 msgid "Error! Fetching table index list failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3557
+#: lib/util/DBUtil.php:3539
 #, php-format
 msgid ""
 "%1$s: unable to limit tablename [%2$s] because database prefix is too long "
@@ -5815,32 +5840,6 @@ msgstr ""
 msgid "Dateformat did not match known format in %s"
 msgstr ""
 
-#: lib/util/DBConnectionStack.php:123
-msgid "Connection failed to database"
-msgstr ""
-
-#: lib/util/DBConnectionStack.php:183
-msgid "Attempted to get info from empty connection stack"
-msgstr ""
-
-#: lib/util/DBConnectionStack.php:188 lib/util/DBConnectionStack.php:201
-#, php-format
-msgid "Invalid connection key [%s]"
-msgstr ""
-
-#: lib/util/DBConnectionStack.php:213
-#, php-format
-msgid "Unknown field [%s] requested"
-msgstr ""
-
-#: lib/util/DBConnectionStack.php:342
-msgid "Attempted to get connection from empty connection stack"
-msgstr ""
-
-#: lib/util/DBConnectionStack.php:375
-msgid "Attempted to pop connection from empty connection stack"
-msgstr ""
-
 #: lib/util/FilterUtil/Config.php:390
 #, php-format
 msgid "%s: Invalid join information!"
@@ -5963,6 +5962,38 @@ msgstr ""
 msgid "Invalid object in %s"
 msgstr ""
 
+#: lib/util/SystemListeners.php:201
+#, php-format
+msgid ""
+"PHP issued an error at line 0, so reporting entire trace to be more helpful: "
+"%1$s: %2$s"
+msgstr ""
+
+#: lib/util/SystemListeners.php:209
+#, php-format
+msgid "traced in %1$s line %2$s"
+msgstr ""
+
+#: lib/util/SystemListeners.php:213
+#, php-format
+msgid "%1$s: %2$s in %3$s line %4$s"
+msgstr ""
+
+#: lib/util/SystemListeners.php:257
+#, php-format
+msgid "SQL Query: %s took %s sec"
+msgstr ""
+
+#: lib/util/SystemListeners.php:446
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:11
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:12
+msgid "Hooks"
+msgstr ""
+
+#: lib/util/SystemListeners.php:476
+msgid "Services"
+msgstr ""
+
 #: lib/util/ValidationUtil.php:37
 #, php-format
 msgid "%1s: %2s is not an array."
@@ -5999,28 +6030,28 @@ msgstr ""
 msgid "Invalid security level [%1$s] received in %2$s"
 msgstr ""
 
-#: lib/util/SecurityUtil.php:146
+#: lib/util/SecurityUtil.php:137
 msgid ""
 "Warning! \"Modules\" module has been renamed to \"Extensions\".  Warning! "
 "\"Modules\" module has been renamed to \"Extensions\".  Please update any "
 "\"confirmAuthKey\" calls in PHP or templates."
 msgstr ""
 
-#: lib/util/SecurityUtil.php:212
+#: lib/util/SecurityUtil.php:203
 msgid ""
 "Warning! \"Modules\" module has been renamed to \"Extensions\".  Please "
 "update any generateAuthKey calls in PHP or templates."
 msgstr ""
 
-#: lib/util/SecurityUtil.php:610
+#: lib/util/SecurityUtil.php:601
 msgid "Overview access"
 msgstr ""
 
-#: lib/util/SecurityUtil.php:612
+#: lib/util/SecurityUtil.php:603
 msgid "Comment access"
 msgstr ""
 
-#: lib/util/SecurityUtil.php:613
+#: lib/util/SecurityUtil.php:604
 msgid "Moderate access"
 msgstr ""
 
@@ -6032,38 +6063,6 @@ msgstr ""
 #: lib/util/DoctrineUtil.php:370
 #, php-format
 msgid "Class %s cannot be found."
-msgstr ""
-
-#: lib/util/SystemListenersUtil.php:171
-#, php-format
-msgid ""
-"PHP issued an error at line 0, so reporting entire trace to be more helpful: "
-"%1$s: %2$s"
-msgstr ""
-
-#: lib/util/SystemListenersUtil.php:179
-#, php-format
-msgid "traced in %1$s line %2$s"
-msgstr ""
-
-#: lib/util/SystemListenersUtil.php:183
-#, php-format
-msgid "%1$s: %2$s in %3$s line %4$s"
-msgstr ""
-
-#: lib/util/SystemListenersUtil.php:227
-#, php-format
-msgid "SQL Query: %s took %s sec"
-msgstr ""
-
-#: lib/util/SystemListenersUtil.php:410
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:11
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:12
-msgid "Hooks"
-msgstr ""
-
-#: lib/util/SystemListenersUtil.php:440
-msgid "Services"
 msgstr ""
 
 #: lib/Zikula/DebugToolbar/Panel/RenderTime.php:53
@@ -6225,7 +6224,7 @@ msgstr ""
 msgid "%1$s::%2$s() does not exist."
 msgstr ""
 
-#: lib/Zikula/Core.php:380
+#: lib/Zikula/Core.php:376
 msgid "You have been logged out."
 msgstr ""
 
@@ -8714,8 +8713,8 @@ msgid ""
 msgstr ""
 
 #: lib/view/plugins/function.userlogin.php:46
-#: lib/view/plugins/function.userlogin.php:47 upgrade.php:218
-#: install/templates/installer_dbinformation.tpl:36
+#: lib/view/plugins/function.userlogin.php:47 upgrade.php:223
+#: install/templates/installer_dbinformation.tpl:35
 #: install/templates/installer_createadmin.tpl:23
 #: system/Permissions/templates/permissions_admin_view.tpl:147
 #: system/Groups/templates/groups_admin_userpending.tpl:20
@@ -8922,6 +8921,10 @@ msgstr ""
 msgid "Error! Category [%1$s] does not have the field [%2$s] set."
 msgstr ""
 
+#: lib/EventHandlers/DoctrineConnector.php:78
+msgid "Connection failed to database"
+msgstr ""
+
 #: themes/Printer/version.php:16
 msgid "Printer"
 msgstr ""
@@ -8976,33 +8979,33 @@ msgstr ""
 msgid "An unknown error occurred in module %s, controller %s, action %s"
 msgstr ""
 
-#: index.php:98
+#: index.php:99
 msgid "Page not found."
 msgstr ""
 
-#: index.php:127
+#: index.php:128
 msgid "Error! The transaction failed. Performing rollback."
 msgstr ""
 
-#: index.php:130
+#: index.php:131
 msgid "Error! The transaction failed."
 msgstr ""
 
-#: index.php:150
+#: index.php:151
 #, php-format
 msgid "Could not load the '%1$s' module at '%2$s'. %3$s"
 msgstr ""
 
-#: index.php:158
+#: index.php:159
 #, php-format
 msgid "The '%1$s' module returned an error in '%2$s'. %3$s"
 msgstr ""
 
-#: upgrade.php:107
+#: upgrade.php:112
 msgid "Zikula Upgrade script"
 msgstr ""
 
-#: upgrade.php:119
+#: upgrade.php:124
 msgid ""
 "For more information about the upgrade process, please read the <a href="
 "\"docs/' . $lang . '/UPGRADING\">upgrade documentation</a>, visit our <a "
@@ -9010,31 +9013,31 @@ msgid ""
 "\"http://community.zikula.org/module-Forum.htm\">support forum</a>."
 msgstr ""
 
-#: upgrade.php:123
+#: upgrade.php:128
 #, php-format
 msgid "Zikula version %1$s Upgrade script (for Zikula version %2$s and up)"
 msgstr ""
 
-#: upgrade.php:124
+#: upgrade.php:129
 #, php-format
 msgid ""
 "This script will upgrade any Zikula v%1$s+ installation to v%2$s. Upgrades "
 "from less than Zikula v%1$s are not supported by this script."
 msgstr ""
 
-#: upgrade.php:156
+#: upgrade.php:161
 msgid "FATAL ERROR!"
 msgstr ""
 
-#: upgrade.php:157
+#: upgrade.php:162
 msgid "Zikula does not appear to be installed."
 msgstr ""
 
-#: upgrade.php:167
+#: upgrade.php:172
 msgid "Please select your language"
 msgstr ""
 
-#: upgrade.php:177 upgrade.php:226
+#: upgrade.php:182 upgrade.php:231
 #: system/Users/templates/users_user_passwordreminder.tpl:58
 #: system/Users/templates/users_user_lostpassword.tpl:23
 #: system/Users/templates/users_user_lostpasswordcode.tpl:29
@@ -9043,89 +9046,89 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: upgrade.php:193
+#: upgrade.php:198
 msgid "BEFORE proceeding you should backup your database!"
 msgstr ""
 
-#: upgrade.php:213
+#: upgrade.php:218
 msgid "Failed to login to your site"
 msgstr ""
 
-#: upgrade.php:215
+#: upgrade.php:220
 msgid ""
 "For the next upgrade steps you need to be logged in. Please provide your "
 "admin account credentials"
 msgstr ""
 
-#: upgrade.php:258
+#: upgrade.php:263
 msgid "Starting upgrade"
 msgstr ""
 
-#: upgrade.php:268
+#: upgrade.php:273
 msgid "upgraded"
 msgstr ""
 
-#: upgrade.php:270
+#: upgrade.php:275
 msgid "not upgraded"
 msgstr ""
 
-#: upgrade.php:276
+#: upgrade.php:281
 msgid "No modules required upgrading"
 msgstr ""
 
-#: upgrade.php:294
+#: upgrade.php:299
 msgid "Finished upgrade"
 msgstr ""
 
-#: upgrade.php:297
+#: upgrade.php:302
 #, php-format
 msgid "Go to the startpage for %s"
 msgstr ""
 
-#: upgrade.php:301
+#: upgrade.php:306
 #, php-format
 msgid "Go to the admin panel for %s"
 msgstr ""
 
-#: upgrade.php:354
+#: upgrade.php:359
 msgid "Already up to date"
 msgstr ""
 
-#: upgrade.php:355
+#: upgrade.php:360
 #, php-format
 msgid ""
 "It seems that you have already installed version %s. Please remove this "
 "upgrade script, you do not need it anymore."
 msgstr ""
 
-#: upgrade.php:359
+#: upgrade.php:364
 msgid "Possible incompatible version found."
 msgstr ""
 
-#: upgrade.php:360
+#: upgrade.php:365
 #, php-format
 msgid ""
 "The current installed version of Zikula is reporting (%1$s). You must "
 "upgrade to version (%2$s) before you can use this upgrade."
 msgstr ""
 
-#: upgrade.php:363
+#: upgrade.php:368
 msgid ""
 "date.timezone is currently not set. Since PHP 5.3.0, it needs to be set to a "
 "valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/"
 "Berlin."
 msgstr ""
 
-#: upgrade.php:364 install/templates/installer_requirements.tpl:83
+#: upgrade.php:369 install/templates/installer_requirements.tpl:83
 #: system/PageLock/templates/PageLock_lockedwindow.tpl:13
 msgid "Check again"
 msgstr ""
 
-#: upgrade.php:374
+#: upgrade.php:379
 msgid "PCRE Unicode Property Support Needed."
 msgstr ""
 
-#: upgrade.php:375
+#: upgrade.php:380
 msgid ""
 "The PCRE (Perl Compatible Regular Expression) library being used with your "
 "PHP installation does not support Unicode properties. This is required to "
@@ -9133,18 +9136,18 @@ msgid ""
 "used must be compiled with the '--enable-unicode-properties' option."
 msgstr ""
 
-#: upgrade.php:387
+#: upgrade.php:392
 msgid "Theme Check Failed"
 msgstr ""
 
-#: upgrade.php:389
+#: upgrade.php:394
 #, php-format
 msgid ""
 "Your configuration specifies a theme called '%s' that doesn't exist.  Please "
 "ensure that theme exists in themes/%s"
 msgstr ""
 
-#: upgrade.php:392
+#: upgrade.php:397
 #, php-format
 msgid ""
 "Your configuration specifies a theme called '%s' which begins with a lower "
@@ -9153,7 +9156,7 @@ msgid ""
 "attempting this upgrade again."
 msgstr ""
 
-#: upgrade.php:395
+#: upgrade.php:400
 #, php-format
 msgid ""
 "Your theme called '%s' contains an underscore, this is now deprecated.  You "
@@ -9162,15 +9165,15 @@ msgid ""
 "this upgrade again."
 msgstr ""
 
-#: upgrade.php:406
-msgid "Proceed to upgrade."
+#: upgrade.php:411
+msgid "Proceed to upgrade (click once and wait)"
 msgstr ""
 
-#: upgrade.php:457 upgrade.php:475
+#: upgrade.php:462 upgrade.php:480
 msgid "FATAL ERROR: Cannot start, unable to determine installed Core version."
 msgstr ""
 
-#: upgrade.php:497
+#: upgrade.php:502
 msgid "FATAL ERROR: Cannot start, unable access database."
 msgstr ""
 
@@ -9182,11 +9185,12 @@ msgstr ""
 #: install/templates/installer_alreadyinstalled.tpl:55
 #, php-format
 msgid ""
-"You are seeing this message because Zikula is already installed so the "
-"installer has been disabled.  <a href=\"index.php\">%s</a>."
+"Zikula is already installed so the installer has been disabled.  If you need "
+"to run the installer a second time, you must reset the config.php to the "
+"original state.  <a href=\"index.php\">%s</a>."
 msgstr ""
 
-#: install/templates/installer_alreadyinstalled.tpl:57
+#: install/templates/installer_alreadyinstalled.tpl:56
 #, php-format
 msgid ""
 "Further information can be found in the <a href=\"http://community.zikula."
@@ -9221,96 +9225,49 @@ msgstr ""
 
 #: install/templates/installer_dbinformation.tpl:8
 msgid ""
-"Error! Could not create database. Please check that you have entered the "
-"correct database information and try again."
-msgstr ""
-
-#: install/templates/installer_dbinformation.tpl:9
-msgid ""
 "Error! Could not dump the database. Please check that the file zikulacms.sql "
 "is located within the folder install/sql and it is readable."
 msgstr ""
 
-#: install/templates/installer_dbinformation.tpl:10
+#: install/templates/installer_dbinformation.tpl:9
 msgid ""
 "Error! The database exists and contain tables. Please delete all tables "
 "before to proceed."
 msgstr ""
 
-#: install/templates/installer_dbinformation.tpl:19
-#: install/templates/installer_page.tpl:19
+#: install/templates/installer_dbinformation.tpl:18
+#: install/templates/installer_page.tpl:26
 msgid "Database information"
 msgstr ""
 
-#: install/templates/installer_dbinformation.tpl:21
+#: install/templates/installer_dbinformation.tpl:20
 msgid "Database type"
 msgstr ""
 
-#: install/templates/installer_dbinformation.tpl:25
+#: install/templates/installer_dbinformation.tpl:24
 msgid "Database table type (MySQL only)"
 msgstr ""
 
-#: install/templates/installer_dbinformation.tpl:32
+#: install/templates/installer_dbinformation.tpl:31
 msgid "Host"
 msgstr ""
 
-#: install/templates/installer_dbinformation.tpl:44
+#: install/templates/installer_dbinformation.tpl:43
 msgid "Database name"
 msgstr ""
 
-#: install/templates/installer_dbinformation.tpl:48
-msgid "Table prefix (for table sharing)"
+#: install/templates/installer_dbinformation.tpl:46
+msgid "Please ensure the database is in UTF8 format."
 msgstr ""
 
-#: install/templates/installer_dbinformation.tpl:52
-msgid "Let this installer create the database."
-msgstr ""
-
-#: install/templates/installer_dbinformation.tpl:55
-msgid "Requires that the user details above have database CREATE privileges."
-msgstr ""
-
-#: install/templates/installer_dbinformation.tpl:56
-msgid ""
-"If not you will need to create the database manually through your hosting "
-"control panel."
+#: install/templates/installer_dbinformation.tpl:51
+msgid "Table prefix"
 msgstr ""
 
 #: install/templates/installer_dbinformation.tpl:57
-msgid "If you create your database manually you must create it as UTF8."
-msgstr ""
-
-#: install/templates/installer_dbinformation.tpl:62
-#: install/templates/installer_login.tpl:25
 #: install/templates/installer_requirements.tpl:80
-#: install/templates/installer_lang.tpl:22
+#: install/templates/installer_lang.tpl:21
 msgid "Next"
-msgstr ""
-
-#: install/templates/installer_login.tpl:1
-msgid "Log-in for existing installation"
-msgstr ""
-
-#: install/templates/installer_login.tpl:2
-msgid ""
-"An existing Zikula installation has been found. Please log-in as "
-"administrator before proceeding further."
-msgstr ""
-
-#: install/templates/installer_login.tpl:5
-msgid ""
-"Error! Could not log you in. Please check your user name and password then "
-"try again."
-msgstr ""
-
-#: install/templates/installer_login.tpl:6
-msgid ""
-"Error! The user name you entered in order to log-in does not have "
-"administration rights."
-msgstr ""
-
-#: install/templates/installer_login.tpl:16
-msgid "Administrator's user name"
 msgstr ""
 
 #: install/templates/installer_createadmin.tpl:1
@@ -9338,7 +9295,7 @@ msgid "Error! Passwords must be at least 7 characters long."
 msgstr ""
 
 #: install/templates/installer_createadmin.tpl:21
-#: install/templates/installer_page.tpl:21
+#: install/templates/installer_page.tpl:27
 msgid "Create administrator's account"
 msgstr ""
 
@@ -9350,103 +9307,110 @@ msgstr ""
 msgid "Proceed with Installation"
 msgstr ""
 
-#: install/templates/installer_finish.tpl:1
-msgid "Finish the installation"
-msgstr ""
-
-#: install/templates/installer_finish.tpl:3
-msgid ""
-"The installation is almost finished. Click the button below to finish and go "
-"to the site administration panel."
-msgstr ""
-
-#: install/templates/installer_finish.tpl:10
-msgid "Finish installation and go to site"
-msgstr ""
-
 #: install/templates/installer_page.tpl:4
-#: install/templates/installer_page.tpl:60
+#: install/templates/installer_page.tpl:50
 msgid "Zikula installer script"
 msgstr ""
 
-#: install/templates/installer_page.tpl:14
-#: install/templates/installer_lang.tpl:3
-#: install/templates/installer_lang.tpl:14
-msgid "Select language"
-msgstr ""
-
-#: install/templates/installer_page.tpl:16
-msgid "Welcome"
-msgstr ""
-
-#: install/templates/installer_page.tpl:18
-msgid "System requirements"
-msgstr ""
-
-#: install/templates/installer_page.tpl:20
-msgid "Select installation"
-msgstr ""
-
 #: install/templates/installer_page.tpl:22
-msgid "Select start page"
-msgstr ""
-
-#: install/templates/installer_page.tpl:23
-msgid "Finish"
-msgstr ""
-
-#: install/templates/installer_page.tpl:32
 msgid "Installation steps"
 msgstr ""
 
-#: install/templates/installer_page.tpl:40
+#: install/templates/installer_page.tpl:24
+#: install/templates/installer_lang.tpl:2
+#: install/templates/installer_lang.tpl:13
+msgid "Select language"
+msgstr ""
+
+#: install/templates/installer_page.tpl:25
+msgid "Check requirements"
+msgstr ""
+
+#: install/templates/installer_page.tpl:28
+msgid "Finish"
+msgstr ""
+
+#: install/templates/installer_page.tpl:30
 msgid "Useful resources"
 msgstr ""
 
-#: install/templates/installer_page.tpl:42
+#: install/templates/installer_page.tpl:32
 msgid "Installation guide"
 msgstr ""
 
-#: install/templates/installer_page.tpl:43
+#: install/templates/installer_page.tpl:33
 msgid "http://community.zikula.org/module-Wiki.htm"
 msgstr ""
 
-#: install/templates/installer_page.tpl:43
+#: install/templates/installer_page.tpl:33
 msgid "Zikula documentation"
 msgstr ""
 
-#: install/templates/installer_page.tpl:44
+#: install/templates/installer_page.tpl:34
 msgid "http://community.zikula.org/module-Forum.htm"
 msgstr ""
 
-#: install/templates/installer_page.tpl:44
+#: install/templates/installer_page.tpl:34
 msgid "Support forums"
 msgstr ""
 
-#: install/templates/installer_page.tpl:47
+#: install/templates/installer_page.tpl:37
 msgid "http://www.wikipedia.org/wiki/File_system_permissions"
 msgstr ""
 
-#: install/templates/installer_page.tpl:47
+#: install/templates/installer_page.tpl:37
 #: install/templates/installer_requirements.tpl:65
 msgid "File system permissions"
 msgstr ""
 
-#: install/templates/installer_page.tpl:50
+#: install/templates/installer_page.tpl:40
 msgid "Theme extensions database"
 msgstr ""
 
-#: install/templates/installer_page.tpl:55
-msgid ""
-"Note: Official Zikula distributions are only available from zikula.org. "
-"Please ensure that you are installing an official distribution."
+#: install/templates/installer_page.tpl:45
+msgid "NOTICE: Official copies of Zikula are only from zikula.org"
 msgstr ""
 
-#: install/templates/installer_page.tpl:66
+#: install/templates/installer_page.tpl:56
 #, php-format
 msgid ""
 "Please refer to the <a style=\"color: red\" href=\"%1$s\" onclick=\"window."
 "open('%2$s');return false;\">Installation guide</a> during the process."
+msgstr ""
+
+#: install/templates/notinstalled.tpl:5
+msgid "Zikula is not installed!"
+msgstr ""
+
+#: install/templates/notinstalled.tpl:12
+msgid "Zikula Application Framework"
+msgstr ""
+
+#: install/templates/notinstalled.tpl:13
+msgid "System is not installed!"
+msgstr ""
+
+#: install/templates/notinstalled.tpl:15
+msgid ""
+"You are seeing this message because Zikula is not yet installed.  You can "
+"install Zikula by clicking on the install button, but before doing so please "
+"read the <a href=\"docs/en/README\">installation instructions</a>. Further "
+"information can be found in the <a href=\"http://community.zikula.org/Wiki-"
+"UserDocs.htm\">online documentation</a>."
+msgstr ""
+
+#: install/templates/notinstalled.tpl:19
+msgid "Install Zikula!"
+msgstr ""
+
+#: install/templates/notinstalled.tpl:20
+msgid "Zikula is free software released under the GPL license!"
+msgstr ""
+
+#: install/templates/notinstalled.tpl:24
+msgid ""
+"For more information, please visit <a href=\"http://zikula.org/\" title="
+"\"Zikula Homepage\">http://zikula.org</a>."
 msgstr ""
 
 #: install/templates/installer_requirements.tpl:1
@@ -9563,16 +9527,6 @@ msgstr ""
 msgid ""
 "You have a problem! '%s' is not writeable. Please ensure that the "
 "permissions are set correctly for the installation process."
-msgstr ""
-
-#: install/templates/installer_lang.tpl:1
-msgid ""
-"Welcome to the Zikula installer script. This script will set-up the Zikula "
-"database and will guide you through choosing the various options for "
-"installing your new site. You will be walked through a series of pages. Each "
-"page constitutes one step in the installation process. The entire process "
-"commonly takes about ten minutes. If you have questions or problems, please "
-"visit the project support forums for help."
 msgstr ""
 
 #: system/SysInfo/templates/sysinfo_admin_main.tpl:6
@@ -9846,7 +9800,7 @@ msgstr ""
 #: system/Settings/templates/settings_admin_multilingual.tpl:80
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:172
 #: system/Search/templates/search_admin_modifyconfig.tpl:33
-#: system/Users/templates/users_admin_modify.tpl:107
+#: system/Users/templates/users_admin_modify.tpl:106
 #: system/Users/templates/users_user_changeemail.tpl:24
 #: system/Users/templates/users_admin_listusers.tpl:110
 #: system/Users/templates/users_admin_export.tpl:53
@@ -9911,7 +9865,7 @@ msgstr ""
 #: system/Settings/templates/settings_admin_multilingual.tpl:81
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:173
 #: system/Search/templates/search_admin_modifyconfig.tpl:34
-#: system/Users/templates/users_admin_modify.tpl:108
+#: system/Users/templates/users_admin_modify.tpl:107
 #: system/Users/templates/users_admin_approveregistration.tpl:35
 #: system/Users/templates/users_user_passwordreminder.tpl:59
 #: system/Users/templates/users_admin_deleteusers.tpl:25
@@ -12199,11 +12153,11 @@ msgid "Separator for permalink titles"
 msgstr ""
 
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:162
-msgid "Module to use when permalink contains no module name"
+msgid "Default route (when no module is specified)"
 msgstr ""
 
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:164
-msgid "No default module"
+msgid "Nowhere"
 msgstr ""
 
 #: system/Search/templates/search_user_recent.tpl:1
@@ -12566,11 +12520,11 @@ msgstr ""
 msgid "Site's default theme"
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:110
+#: system/Users/templates/users_admin_modify.tpl:109
 msgid "Send user name"
 msgstr ""
 
-#: system/Users/templates/users_admin_modify.tpl:111
+#: system/Users/templates/users_admin_modify.tpl:110
 msgid "Send password recovery code"
 msgstr ""
 
@@ -15535,7 +15489,7 @@ msgid "(Check file '%1$s' at line %2$s.)"
 msgstr ""
 
 #: system/Errors/templates/errors_user_system.tpl:11
-#: system/Errors/templates/errors_user_main.tpl:8
+#: system/Errors/templates/errors_user_main.tpl:16
 #: system/Errors/templates/errors_user_404.tpl:27
 #: system/Errors/templates/errors_user_403.tpl:27
 msgid "Go back to previous page"
@@ -15550,6 +15504,10 @@ msgstr ""
 #: system/Errors/templates/errors_user_main.tpl:2
 #, php-format
 msgid "Error on %s"
+msgstr ""
+
+#: system/Errors/templates/errors_user_main.tpl:10
+msgid "Exception Trace"
 msgstr ""
 
 #: system/Errors/templates/errors_user_404.tpl:2
@@ -16081,6 +16039,42 @@ msgstr ""
 
 #: system/Admin/templates/admin_admin_warning.tpl:8
 msgid "Continue"
+msgstr ""
+
+#: themes/Printer/templates/modules/News/user/articlecontent.tpl:3
+msgid "#{chars"
+msgstr ""
+
+#: themes/Printer/templates/modules/News/user/articlecontent.tpl:24
+msgid "Contributed"
+msgstr ""
+
+#: themes/Printer/templates/modules/News/user/articlecontent.tpl:24
+#: themes/Printer/templates/modules/News/user/article.tpl:37
+#, php-format
+msgid "by %1$s on %2$s"
+msgstr ""
+
+#: themes/Printer/templates/modules/News/user/articlecontent.tpl:33
+#: themes/Printer/templates/modules/News/user/articlecontent.tpl:54
+#, php-format
+msgid "Picture %s for %s"
+msgstr ""
+
+#: themes/Printer/templates/modules/News/user/articlecontent.tpl:50
+msgid "Picture gallery"
+msgstr ""
+
+#: themes/Printer/templates/modules/News/user/article.tpl:15
+msgid "Show"
+msgstr ""
+
+#: themes/Printer/templates/modules/News/user/article.tpl:16
+msgid "Hide"
+msgstr ""
+
+#: themes/Printer/templates/modules/News/user/article.tpl:31
+msgid "More articles in category "
 msgstr ""
 
 #: themes/Printer/templates/master.tpl:16
