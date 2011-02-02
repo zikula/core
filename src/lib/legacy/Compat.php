@@ -144,6 +144,8 @@ class DBConnectionStack
      * @param string  $name        The database alias name in the DBInfo configuration array (optional) (default=null which then defaults to 'default').
      * @param boolean $lazyConnect Whether or not to connect lazy.
      *
+     * @deprecated
+     * 
      * @throws PDOException If database connection failed.
      * @return Doctrine_Connection Desired database connection reference.
      */
@@ -270,7 +272,7 @@ class DBConnectionStack
     public static function getConnectionDBType()
     {
         LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
-        return self::getConnectionInfo(null, 'dbtype');
+        return strtolower(self::getConnectionInfo(null, 'dbdriver')); // this is a duplicate of DBDriver
     }
 
     /**
@@ -284,7 +286,7 @@ class DBConnectionStack
     public static function getConnectionDBDriver()
     {
         LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
-        return self::getConnectionInfo(null, 'dbdriver');
+        return strtolower(self::getConnectionInfo(null, 'dbdriver'));
     }
 
     /**

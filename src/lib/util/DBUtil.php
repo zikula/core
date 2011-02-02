@@ -199,9 +199,9 @@ class DBUtil
 
         $databases = $serviceManager['databases'];
         $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
-        $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
-        if ($dbType == 'mysql') {
-            $tableoptions['type'] = $dbType;
+        $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+        if ($dbDriverName == 'mysql') {
+            $tableoptions['type'] = $dbDriverName;
         }
 
         $tableoptions['charset'] = $databases[$connName]['charset'];
@@ -656,7 +656,7 @@ class DBUtil
         $cArray = array();
         $vArray = array();
 
-        $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+        $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
         foreach ($columnList as $key => $val) {
             $hasMath = (bool)(strcmp($val, str_replace($search, $replace, $val)));
             if ($hasMath) {
@@ -682,7 +682,7 @@ class DBUtil
                 }
             } else {
                 if ($key == $idfield) {
-                    if ($dbType == 'pgsql') {
+                    if ($dbDriverName == 'pgsql') {
                         $cArray[] = $columnList[$key];
                         $vArray[] = 'DEFAULT';
                     }
@@ -1208,12 +1208,10 @@ class DBUtil
         }
 
         $tables = self::getTables();
-        $databases = ServiceUtil::getManager()->getArgument('databases');
-        $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
-        $dbType = $databases[$connName]['dbtype'];
+        $dbDriverName = Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName();
 
         // given that we use quotes in our generated SQL, oracle requires the same quotes in the order-by
-        if ($dbType == 'oracle') {
+        if ($dbDriverName == 'oracle') {
             $t = str_replace('ORDER BY ', '', $orderby); // remove "ORDER BY" for easier parsing
             $t = str_replace('order by ', '', $t); // remove "order by" for easier parsing
 
@@ -1286,14 +1284,14 @@ class DBUtil
             return $orderby;
         }
 
-        $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+        $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
         $tables = self::getTables();
         $columns = $tables["{$table}_column"];
         $columnsdef = $tables["{$table}_column_def"];
         $fieldName = $columns[$field];
         $fieldDef = $columnsdef[$field];
 
-        if ($dbType == 'oracle') {
+        if ($dbDriverName == 'oracle') {
             // we are using oracle - split up the field definition and check if it is defined as a LOB
             // oracle does not like LOBs in an ORDERBY
             $definition = explode(' ', $fieldDef);
@@ -3511,22 +3509,23 @@ class DBUtil
      * We use this function as a central point to shorten table name (there might be restrictions in ' other RDBMS too). If the resulting tablename is
      * empty we will show an error. In this case the prefix is too long.
      *
-     * @param string $table  The treated table reference.
-     * @param string $dbType The driver used for this DB (optional).
+     * @param string $table        The treated table reference.
+     * @param string $dbDriverName The driver used for this DB (optional).
+     *
+     * @deprecated
+     * @see Doctrines DBAL layer.
      *
      * @return boolean
-     * @deprecated
-     * @see    Doctrines DBAL layer
      */
-    public static function getLimitedTablename($table, $dbType = '')
+    public static function getLimitedTablename($table, $dbDriverName = '')
     {
-        if (!$dbType) {
-            $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+        if (!$dbDriverName) {
+            $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
         }
 
         $prefix = self::getTablePrefix($table);
 
-        switch ($dbType) {
+        switch ($dbDriverName) {
             case 'oracle': // Oracle
                 $maxlen = 30; // max length for a tablename
                 $_tablename = $table; // save for later if we need to show an error

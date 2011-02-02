@@ -80,7 +80,7 @@ class DoctrineListener extends Zikula_EventHandler
 
         // set mysql engine type
         if ($connectionInfo['dbdriver'] == 'mysql') {
-            $connection->setAttribute(Doctrine_Core::ATTR_DEFAULT_TABLE_TYPE, $connectionInfo['dbtype']);
+            $connection->setAttribute(Doctrine_Core::ATTR_DEFAULT_TABLE_TYPE, $connectionInfo['dbdriver']);
         }
 
         try {
