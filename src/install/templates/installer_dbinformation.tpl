@@ -17,8 +17,8 @@
         <fieldset>
             <legend>{gt text="Database information"}</legend>
             <div class="z-formrow">
-                <label for="dbtype">{gt text="Database type"}</label>
-                {dbtypes name=dbtype selectedValue=$dbtype id=dbtype}
+                <label for="dbdriver">{gt text="Database type"}</label>
+                {dbtypes name=dbdriver selectedValue=$dbdriver id=dbdriver}
             </div>
             <div class="z-formrow">
                 <label for="dbtabletype">{gt text="Database table type (MySQL only)"}</label>
