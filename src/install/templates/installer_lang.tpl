@@ -1,3 +1,4 @@
+{assign var="step" value=0}
 {if not $installbySQL}
 <h2>{gt text="Select language"}</h2>
 {/if}
