@@ -5,62 +5,67 @@
         <title><?php echo __('The site is currently off-line.'); ?></title>
         <base href="<?php echo System::getBaseURL(); ?>" />
         <style type="text/css">
-            html, body {
-                height: 100%;
-                margin: 0;
-                padding: 0;
-                font-family: Verdana, Arial, Helvetica, Sans-serif;
-                font-size: 14px;
-                background: #F2F2F2; /*non-CSS3 browsers*/
+            html {
+                background: #eaeaea; /*non-CSS3 browsers*/
                 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#eaeaea'); /*IE*/
                 background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) ); /*webkit*/
-                background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent; /*gecko*/
-                background: linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent; /*CSS3*/
+                background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*gecko*/
+                background: linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*CSS3*/
+                height: 100%;
+            }
+            body {
+                font-family: Verdana, Arial, Helvetica, Sans-serif;
+                font-size: 14px;
                 line-height: 1.6em;
+                color: #444;
+                margin: 0;
+                padding: 0;
+                height: 100%;
             }
             a {
                 color: #2147B3;
                 border: none;
             }
+            a:hover {
+                text-decoration: none;
+            }
             img {
                 border: none;
             }
             h1 {
-                font-size:24px;
-                line-height:28px;
+                color: #E5352C;
+                font-size: 22px;
+                line-height: 26px;
+                text-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
+                text-transform: uppercase;
             }
-            h2 {
-                color:#770000;
-                font-size:22px;
-                line-height:26px;
-                text-transform:uppercase;
-            }
-            .container {
+            #container {
                 display: table;
                 height: 100%;
                 width: 100%;
             }
-            .cell {
+            #cell {
                 display: table-cell;
                 vertical-align: middle;
                 /* For IE6/7 */
                 position: relative;
                 top:expression(this.parentNode.clientHeight/2 - this.firstChild.clientHeight/2 + " px");
             }
-            .content {
+            #content {
                 /* center horizontally */
                 margin: 0 auto;
                 width: 50%;
                 padding: 1.5em;
                 background: #fafafa;
-                border: 1px solid #2147B3;
+                border: 1px solid #42403E\9; /* IE6/7/8 */
                 -webkit-border-radius: 5px;
                 -moz-border-radius: 5px;
                 border-radius: 5px;
-                -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
-                -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
-                box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
+                -webkit-box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
+                -moz-box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
+                box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
                 text-align: center;
+                color: #444;
             }
             .showloginbutton {
                 display: inline-block;
@@ -156,9 +161,9 @@
     </head>
     <body>
 
-        <div class="container">
-            <div class="cell">
-                <div class="content">
+        <div id="container">
+            <div id="cell">
+                <div id="content">
                     <h1><?php echo __('The site is currently off-line.'); ?></h1>
                     <h2><?php echo (Zikula_Core::VERSION_NUM != System::getVar('Version_Num')) ? __('This site needs to be upgraded, please contact the system administrator.') : System::getVar('siteoffreason');?></h2>
                     <p>

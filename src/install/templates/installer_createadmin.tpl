@@ -1,3 +1,4 @@
+{assign var="step" value=3}
 <h2>{gt text="Create administrator's user account"}</h2>
 {if $passwordcomparefailed or $emailvalidatefailed or $urlvalidatefailed or $uservalidatefailed or $badpassword}
 <div class="z-errormsg">

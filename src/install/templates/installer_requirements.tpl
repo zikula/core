@@ -1,3 +1,4 @@
+{assign var="step" value=1}
 <h2>{gt text="Check system requirements"}</h2>
 <form class="z-form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
     <div>
