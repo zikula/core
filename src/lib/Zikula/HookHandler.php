@@ -40,16 +40,25 @@ abstract class Zikula_HookHandler implements Zikula_Translatable
     protected $domain;
 
     /**
-     *
+     * Display hook response object.
+     * 
      * @var Zikula_Response_DisplayHook
      */
     protected $display;
 
     /**
+     * Validation object.
      *
      * @var Zikula_Provider_HookValidation
      */
     protected $validation;
+    
+    /**
+     * This object's reflection.
+     *
+     * @var ReflectionObject
+     */
+    protected $reflection;
     
     /**
      * Constructor.
@@ -63,6 +72,19 @@ abstract class Zikula_HookHandler implements Zikula_Translatable
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
         $this->setup();
+    }
+
+    /**
+     * Get reflection of this object.
+     *
+     * @return ReflectionObject
+     */
+    public function getReflection()
+    {
+        if (!$this->reflection) {
+            $this->reflection = new ReflectionObject($this);
+        }
+        return $this->reflection;
     }
 
     /**
