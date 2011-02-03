@@ -10,7 +10,7 @@
         BUILD_NUMBER - The current build number, such as "153"
         BUILD_ID - The current build id, (YYYY-MM-DD_hh-mm-ss)
         JOB_NAME - Name of the project of this build, such as "foo"
-        BUILD_TAG - String of "hudson-${JOBNAME}-${BUILD_NUMBER}".
+        BUILD_TAG - String of "jenkins-${JOBNAME}-${BUILD_NUMBER}".
         WORKSPACE - The absolute path of the workspace.
         SVN_REVISION - The revision this build is based on.
     -->
@@ -196,7 +196,7 @@
     <!-- Compress own JS -->
     <target name="compressownjs">
         <echo msg="YUI_Compressor for JS files..." />
-        <!-- <exec command="BAREFILENAME=`echo ${filename}|sed 's/.js//g'`; /usr/bin/java -jar /var/lib/hudson/yuicompressor-2.4.2.jar -o ${packagepath}/$BAREFILENAME-min.js ${packagepath}/${filename}" /> -->
-        <exec command="/usr/bin/java -jar /var/lib/hudson/yuicompressor-2.4.2.jar -o ${packagepath}/${filename}.tmp ${packagepath}/${filename};echo '// Copyright Zikula Foundation 2010 - license GNU/LGPLv3 (or at your option, any later version).' > ${packagepath}/${filename};cat ${packagepath}/${filename}.tmp >> ${packagepath}/${filename};rm -f ${packagepath}/${filename}.tmp" />
+        <!-- <exec command="BAREFILENAME=`echo ${filename}|sed 's/.js//g'`; /usr/bin/java -jar /var/lib/jenkins/yuicompressor-2.4.2.jar -o ${packagepath}/$BAREFILENAME-min.js ${packagepath}/${filename}" /> -->
+        <exec command="/usr/bin/java -jar /var/lib/jenkins/yuicompressor-2.4.2.jar -o ${packagepath}/${filename}.tmp ${packagepath}/${filename};echo '// Copyright Zikula Foundation 2010 - license GNU/LGPLv3 (or at your option, any later version).' > ${packagepath}/${filename};cat ${packagepath}/${filename}.tmp >> ${packagepath}/${filename};rm -f ${packagepath}/${filename}.tmp" />
     </target>
 </project>
