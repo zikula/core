@@ -25,7 +25,7 @@
  * This plugin is basing on the original debug plugin written by Monte Ohrt <monte@ispi.net>
  *
  * Example
- *   { pndebug }
+ *   { zdebug }
  *
  * Parameters:
  *  checkpermission: If false, then a security check is not performed, allowing debug information to

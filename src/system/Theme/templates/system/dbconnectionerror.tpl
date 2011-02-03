@@ -4,70 +4,80 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Website temporarily unavailable</title>
         <style type="text/css">
-            html, body {
-                height: 100%;
-                margin: 0;
-                padding: 0;
-                font-family: Verdana, Arial, Helvetica, Sans-serif;
-                font-size: 14px;
-                background: #F2F2F2; /*non-CSS3 browsers*/
+            html {
+                background: #eaeaea; /*non-CSS3 browsers*/
                 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#eaeaea'); /*IE*/
                 background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) ); /*webkit*/
-                background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent; /*gecko*/
-                background: linear-gradient(center top , #FAFAFA, #eaeaea) repeat scroll 0 0 transparent; /*CSS3*/
+                background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*gecko*/
+                background: linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*CSS3*/
+                height: 100%;
+            }
+            body {
+                font-family: Verdana, Arial, Helvetica, Sans-serif;
+                font-size: 14px;
                 line-height: 1.6em;
+                color: #444;
+                margin: 0;
+                padding: 0;
+                height: 100%;
             }
             a {
                 color: #2147B3;
-                font-weight: bold;
                 border: none;
+            }
+            a:hover {
+                text-decoration: none;
             }
             img {
                 border: none;
             }
             h1 {
-                font-size:24px;
-                line-height:28px;
+                background: url("/images/logo_with_title.gif") no-repeat scroll 50% 50% transparent;
+                font-size: 24px;
+                line-height: 90px;
+                text-indent: -9000px;
             }
             h2 {
-                color:#770000;
-                font-size:22px;
-                line-height:26px;
-                text-transform:uppercase;
+                color: #E5352C;
+                font-size: 22px;
+                line-height: 26px;
+                text-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
+                text-transform: uppercase;
             }
-            .container {
+            #container {
                 display: table;
                 height: 100%;
                 width: 100%;
             }
-            .cell {
+            #cell {
                 display: table-cell;
                 vertical-align: middle;
                 /* For IE6/7 */
                 position: relative;
                 top:expression(this.parentNode.clientHeight/2 - this.firstChild.clientHeight/2 + " px");
             }
-            .content {
+            #content {
                 /* center horizontally */
                 margin: 0 auto;
                 width: 50%;
                 padding: 1.5em;
-                background: #FAFAFA;
-                border: 1px solid #2147B3;
+                background: #fafafa;
+                border: 1px solid #42403E\9; /* IE6/7/8 */
                 -webkit-border-radius: 5px;
                 -moz-border-radius: 5px;
                 border-radius: 5px;
-                -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
-                -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
-                box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
+                -webkit-box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
+                -moz-box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
+                box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
                 text-align: center;
+                color: #444;
             }
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="cell">
-                <div class="content">
+        <div id="container">
+            <div id="cell">
+                <div id="content">
                     <h1>Zikula Application Framework</h1>
                     <h2>Problem in database connection</h2>
                     <p>
@@ -77,8 +87,8 @@
                         This website is powered by the Zikula Application Framework, although run independantly by the website administrator. Please do not contact the Zikula team about this error, as it is specfic to this website.
                     </p>
                     <p>
-                        <strong>If you are the website administrator...</strong><br/>
-                        Zikula is unable to connect to your database. Please ensure your database access details are correct. Also, check to make sure your database is running correctly.<br />
+                    <strong>If you are the website administrator...</strong><br/>
+                    Zikula is unable to connect to your database. Please ensure your database access details are correct. Also, check to make sure your database is running correctly.<br />
                         <?php
                         if (System::getVar('development')) {
                             echo('Error: ' . $e->getMessage());
@@ -97,5 +107,3 @@
         </div>
     </body>
 </html>
-
-

@@ -1,3 +1,4 @@
+{assign var="step" value=0}
 {if not $installbySQL}
 <h2>{gt text="Select language"}</h2>
 {/if}
@@ -5,7 +6,7 @@
 {if !$mbstring}
 <div class="z-errormsg">FATAL ERROR: mbstring is not installed in PHP.  Zikula will not install without this extension.</div>
 {else}
-<form id="lang_form" class="z-form" action="install.php?lang={$lang}" method="get">
+<form id="lang_form" class="z-form z-gap" action="install.php?lang={$lang}" method="get">
     <div>
         <input type="hidden" name="action" value="requirements" />
         {if not $installbySQL}
@@ -17,7 +18,7 @@
             </div>
         </fieldset>
         {/if}
-        <div class="z-buttons z-formbuttons">
+        <div class="z-buttons z-center">
             <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />
         </div>
     </div>
