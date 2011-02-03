@@ -57,7 +57,7 @@ class Zikula_Plugin_Controller extends Zikula_Controller
      */
     protected function _setup()
     {
-        $parts = explode('_', $this->getReflection()->getName());
+        $parts = explode('_', get_class($this));
         $this->name = $parts[0];
         $this->baseDir = $this->plugin->getBaseDir();
         $this->pluginName = $this->plugin->getPluginName();
