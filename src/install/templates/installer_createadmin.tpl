@@ -1,3 +1,4 @@
+{assign var="step" value=3}
 <h2>{gt text="Create administrator's user account"}</h2>
 {if $passwordcomparefailed or $emailvalidatefailed or $urlvalidatefailed or $uservalidatefailed or $badpassword}
 <div class="z-errormsg">
@@ -36,7 +37,7 @@
                 <input type="text" name="email" id="email" maxlength="80" value="{$email}"{if $emailvalidatefailed} class="validationfailed"{/if} />
             </div>
         </fieldset>
-        <div class="z-buttons z-formbuttons">
+        <div class="z-buttons z-center">
             <input type="submit" value="{gt text="Proceed with Installation"}" class="z-bt-ok" />
         </div>
     </div>

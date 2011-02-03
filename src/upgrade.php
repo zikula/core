@@ -110,22 +110,18 @@ function _upg_header()
     echo '<head>' . "\n";
     echo '<meta http-equiv="Content-Type" content="text/html; charset=' . $charset . '" />' . "\n";
     echo '<title>' . __('Zikula Upgrade script') . "</title>\n";
-    echo '<link rel="stylesheet" href="install/style/upgrade.css" type="text/css" />' . "\n";
+    echo '<link rel="stylesheet" href="install/style/install.css" type="text/css" />' . "\n";
     echo '<link rel="stylesheet" href="styles/core.css" type="text/css" />' . "\n";
     echo '<!--[if IE]><link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" /><![endif]-->' . "\n";
     echo '</head>' . "\n";
     echo '<body>' . "\n";
-    echo '<div id="container"><div id="wrapper" class="z-clearfix">' . "\n";
-    echo '<div id="header" class="z-clearfix">' . "\n";
-    echo '<div id="headertopleft"><img src="install/images/top1.jpg" alt="" /></div>' . "\n";
-    echo '<div id="headertopright"><img src="install/images/top2.jpg" alt="" /></div>' . "\n";
-    echo '</div>' . "\n";
-    echo '<div class="menu">' . "\n";
-    echo '<p id="notice">' . __('For more information about the upgrade process, please read the <a href="docs/\' . $lang . \'/UPGRADING">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.') . '</p>';
-    echo '</div>';
-    echo '<div id="content">';
+    echo '<div id="container"><div id="content">' . "\n";
+    echo '<div id="header">' . "\n";
+    echo '<h1>' . __('Zikula Application Framework') . '</h1>' . "\n";
+    echo '<h2>' . __('Upgrade script') . '</h2></div>' . "\n";
+    echo '<div id="maincontent">';
     if (UserUtil::isLoggedIn()) {
-        echo '<h1>' . __f('Zikula version %1$s Upgrade script (for Zikula version %2$s and up)', array(_ZINSTALLVER, _Z_MINUPGVER)) . '</h1>' . "\n";
+        echo '<h3>' . __f('Zikula version %1$s Upgrade script (for Zikula version %2$s and up)', array(_ZINSTALLVER, _Z_MINUPGVER)) . '</h3>' . "\n";
         echo '<p>' . __f('This script will upgrade any Zikula v%1$s+ installation to v%2$s. Upgrades from less than Zikula v%1$s are not supported by this script.', array(_Z_MINUPGVER, _ZINSTALLVER)) . "</p>\n";
     }
 }
@@ -139,8 +135,12 @@ function _upg_header()
  */
 function _upg_footer()
 {
-    echo '</div></div></div>' . "\n";
-    echo '</body>' . "\n";
+    $lang = ZLanguage::getLanguageCode();
+    echo '</div></div>' . "\n";
+    echo '<div id="footer">' . "\n";
+    echo '<p id="notice">' . __f('For more information about the upgrade process, please read the <a href="docs/%1$s/UPGRADING">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.', $lang) . '</p>';
+    echo '</div>' . "\n";
+    echo '</div></body>' . "\n";
     echo '</html>';
     exit();
 }
@@ -179,7 +179,7 @@ function _upg_selectlanguage()
         echo '<option value="' . $lang . '" label="' . $name . '"' . $selected . '>' . $name . "</option>\n";
     }
     echo '</select></div></fieldset>' . "\n";
-    echo '<div class="z-formbuttons"><input type="submit" value="' . __('Submit') . '" /></div>' . "\n";
+    echo '<div class="z-buttons z-center"><input type="submit" value="' . __('Submit') . '" /></div>' . "\n";
     echo '</form>' . "\n";
     _upg_footer();
 }
@@ -228,7 +228,7 @@ function _upg_login($showheader = true)
         echo '<input type="hidden" name="lang" value="' . htmlspecialchars($lang) . '" />' . "\n";
     }
     echo '</fieldset>' . "\n";
-    echo '<div class="z-formbuttons"><input name="submit" type="submit" value="' . __('Submit') . '" /></div>' . "\n";
+    echo '<div class="z-buttons z-center"><input name="submit" type="submit" value="' . __('Submit') . '" /></div>' . "\n";
     echo '</form>' . "\n";
     if ($showheader == true) {
         _upg_footer();
@@ -332,7 +332,7 @@ function _upg_continue($action, $text, $username, $password)
         echo '<input type="hidden" name="password" value="' . DataUtil::formatForDisplay($password) . '" />' . "\n";
     }
     echo '<input type="hidden" name="action" value="' . htmlspecialchars($action) . '" />' . "\n";
-    echo '<div class="z-formbuttons"><input type="submit" name="submit" value="' . htmlspecialchars($text) . '" /></div>' . "\n";
+    echo '<div class="z-buttons z-center"><input type="submit" name="submit" value="' . htmlspecialchars($text) . '" /></div>' . "\n";
     echo '</fieldset></div>' . "\n";
     echo '</form>' . "\n";
     return;

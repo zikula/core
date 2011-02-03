@@ -3,12 +3,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{gt text="Zikula is not installed!"}</title>
-        <link rel="stylesheet" href="install/style/notinstalled.css" type="text/css" />
+        <link rel="stylesheet" href="install/style/style.css" type="text/css" />
     </head>
     <body>
-        <div class="container">
-            <div class="cell">
-                <div class="content">
+        <div id="container">
+            <div id="cell">
+                <div id="content">
                     <h1>{gt text="Zikula Application Framework"}</h1>
                     <h2>{gt text="System is not installed!"}</h2>
                     <p>

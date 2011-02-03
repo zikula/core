@@ -9,7 +9,7 @@
 {* here you can add your image if you want to *}
 {* <image>
  <title>{configgetvar name="sitename"}</title>
- <url>{getbaseurl}images/yourlogo.gif</url>
+ <url>{getbaseurl}images/logo.gif</url>
  <link>{getbaseurl}</link>
 </image> *}
 <managingEditor>{gt text="Administrator"} {configgetvar name="adminmail"} ({configgetvar name="sitename"})</managingEditor>

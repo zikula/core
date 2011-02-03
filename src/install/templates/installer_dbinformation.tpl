@@ -1,3 +1,4 @@
+{assign var="step" value=2}
 <h2>{gt text="Enter database information"}</h2>
 {if $dbconnectfailed or $dbconnectmissing or $dbinvalidprefix or $dbinvalidname or $dbdumpfailed or $dbexists}
 <div class="z-errormsg">
@@ -53,7 +54,7 @@
             </div>
             
         </fieldset>
-        <div class="z-buttons z-formbuttons">
+        <div class="z-buttons z-center">
             <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />
         </div>
     </div>
