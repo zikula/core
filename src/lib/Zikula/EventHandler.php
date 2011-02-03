@@ -50,6 +50,13 @@ abstract class Zikula_EventHandler
     protected $serviceManager;
 
     /**
+     * This object's reflection.
+     *
+     * @var ReflectionObject
+     */
+    protected $reflection;
+
+    /**
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
@@ -61,6 +68,19 @@ abstract class Zikula_EventHandler
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
         $this->setupHandlerDefinitions();
+    }
+
+    /**
+     * Get reflection of this object.
+     *
+     * @return ReflectionObject
+     */
+    public function getReflection()
+    {
+        if (!$this->reflection) {
+            $this->reflection = new ReflectionObject($this);
+        }
+        return $this->reflection;
     }
 
     /**
