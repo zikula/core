@@ -127,8 +127,7 @@ abstract class Zikula_Base implements Zikula_Translatable
      */
     protected function _setup()
     {
-        $this->reflection = new ReflectionObject($this);
-        $parts = explode('_', $this->reflection->getName());
+        $parts = explode('_', get_class($this));
         $this->name = $parts[0];
         $this->modinfo = ModUtil::getInfoFromName($this->name);
         $modbase = ($this->modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
@@ -166,10 +165,13 @@ abstract class Zikula_Base implements Zikula_Translatable
     /**
      * Get reflection of this object.
      *
-     * @return object Reflection.
+     * @return ReflectionObject
      */
     public function getReflection()
     {
+        if (!$this->reflection) {
+            $this->reflection = new ReflectionObject($this);
+        }
         return $this->reflection;
     }
 
