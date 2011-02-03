@@ -127,7 +127,7 @@ abstract class Zikula_Base implements Zikula_Translatable
      */
     protected function _setup()
     {
-        $parts = explode('_', $this->getReflection()->getName());
+        $parts = explode('_', get_class($this));
         $this->name = $parts[0];
         $this->modinfo = ModUtil::getInfoFromName($this->name);
         $modbase = ($this->modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
