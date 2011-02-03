@@ -60,8 +60,6 @@ abstract class Zikula_EventHandler
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     *
-     * @throws InvalidArgumentException If $this->eventNames is invalid.
      */
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
