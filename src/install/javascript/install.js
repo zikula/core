@@ -7,3 +7,10 @@ function setFocus(){
         document.getElementById('username').focus();
     }
 }
+document.observe('dom:loaded',function(){
+    $$('form').invoke('observe','submit',showOverlay);
+    $(document.body).insert(new Element('div', {id: 'ZikulaOverlay'}).setStyle({opacity: 0.9, display: 'none'}));
+})
+function showOverlay() {
+    $('ZikulaOverlay').show();
+}

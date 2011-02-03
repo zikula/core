@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="install/style/install.css" type="text/css" />
         <link rel="stylesheet" href="styles/core.css" type="text/css" />
         {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" />{/browserhack}
+        <script type="text/javascript" src="javascript/ajax/proto_scriptaculous.combined.min.js"></script>
         <script type="text/javascript" src="install/javascript/install.js"></script>
     </head>
     <body onload="setFocus();">
