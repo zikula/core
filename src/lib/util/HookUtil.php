@@ -372,11 +372,10 @@ class HookUtil
      *
      * @param array $handler Handler.
      *
-     * @return mixed Array or instance of Zikula_ServiceHandler
+     * @return array|Zikula_ServiceHandler
      */
     protected static function resolveCallable($handler)
     {
-        $serviceManager = ServiceUtil::getManager();
         if ($handler['serviceid']) {
             $callable = new Zikula_ServiceHandler($handler['serviceid'], $handler['method']);
         } else {
