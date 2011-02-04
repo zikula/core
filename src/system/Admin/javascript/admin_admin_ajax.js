@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
+// Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
 /**
  * Onload function adds droppable locations to all the tabs as well as context
