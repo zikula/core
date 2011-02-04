@@ -142,7 +142,7 @@ class EventUtil
             }
 
             if (!isset($classes[$className])) {
-                self::registerEventHandler($className, $serviceManager);
+                self::attachEventHandler($className, $serviceManager);
                 $classes[$className] = true;
             }
         }
@@ -153,7 +153,7 @@ class EventUtil
     /**
      * Load and attach handlers for Zikula_EventHandler listeners.
      *
-     * Loads eventhandlers that extend Zikula_EventHandler
+     * Loads event handlers that extend Zikula_EventHandler
      *
      * @param string                $className      The name of the class.
      * @param Zikula_ServiceManager $serviceManager The service manager instance (optional).
@@ -162,7 +162,7 @@ class EventUtil
      *
      * @return void
      */
-    public static function registerEventHandler($className, Zikula_ServiceManager $serviceManager = null)
+    public static function attachEventHandler($className, Zikula_ServiceManager $serviceManager = null)
     {
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();
