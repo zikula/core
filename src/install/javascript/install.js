@@ -9,7 +9,7 @@ function setFocus(){
 }
 document.observe('dom:loaded',function(){
     $$('form').invoke('observe','submit',showOverlay);
-    $(document.body).insert(new Element('div', {id: 'ZikulaOverlay'}).setStyle({opacity: 0.9, display: 'none'}));
+    $(document.body).insert(new Element('div', {id: 'ZikulaOverlay'}).setStyle({opacity: 0.7, display: 'none'}));
 })
 function showOverlay() {
     $('ZikulaOverlay').show();
