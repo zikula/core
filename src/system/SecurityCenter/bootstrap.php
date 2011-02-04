@@ -27,5 +27,5 @@ ZLoader::addAutoloader('IDS', realpath(dirname(__FILE__) . '/lib/vendor'));
 
 // register event handlers
 //EventUtil::attachCustomHandlers('system/SecurityCenter/lib/SecurityCenter/EventHandler');
-EventUtil::registerEventHandler('SecurityCenter_EventHandler_Filter');
+EventUtil::attachEventHandler('SecurityCenter_EventHandler_Filter');
 
