@@ -166,7 +166,8 @@ class Blocks_Installer extends Zikula_Installer
 
         $menucontent = serialize($menucontent);
         $topnavcontent = serialize($topnavcontent);
-        $searchcontent['displaySearchBtn'] = 1;
+        $searchcontent = array( 'displaySearchBtn'  => 1,
+                                'active'            => array('Users' => 1));
         $searchcontent = serialize($searchcontent);
 
         $hellomessage = $this->__('<p><a href="http://zikula.org">Zikula</a> is a content management system (CMS) and application framework. It is secure and stable, and is a good choice for sites with a large volume of traffic.</p><p>With Zikula:</p><ul><li>you can customise all aspects of the site\'s appearance through themes, with support for CSS style sheets, JavaScript, Flash and all other modern web development technologies;</li><li>you can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation and internationalisation of your site and pages;</li><li>you can be sure that your pages will display properly in all browsers, thanks to Zikula\'s full compliance with W3C HTML standards;</li><li>you get a standard application-programming interface (API) that lets you easily augment your site\'s functionality through modules, blocks and other extensions;</li><li>you can get help and support from the Zikula community of webmasters and developers at <a href="http://www.zikula.org">zikula.org</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>');
