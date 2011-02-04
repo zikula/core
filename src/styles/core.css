@@ -1263,12 +1263,12 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 }
 
 .z-window .z-window-header {
-    background: #474747; /*non-CSS3 browsers*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#474747', endColorstr='#1B1B1B'); /* for IE */
-    background: -webkit-gradient(linear,left top, left bottom,from(#474747),to(#1B1B1B)); /*webkit*/
-    background: -moz-linear-gradient(center top, #474747, #1B1B1B) repeat scroll 0 0 transparent; /*gecko*/
-    background: linear-gradient(#474747, #1B1B1B); /*CSS3*/
-    border-bottom: 1px solid #6A6A6A;
+    background: #3F5969; /*non-CSS3 browsers*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7090B0', endColorstr='#3F5969'); /* for IE */
+    background: -webkit-gradient(linear,left top, left bottom,from(#7090B0),to(#3F5969)); /*webkit*/
+    background: -moz-linear-gradient(center top, #7090B0, #3F5969) repeat scroll 0 0 transparent; /*gecko*/
+    background: linear-gradient(#7090B0, #3F5969); /*CSS3*/
+    border-bottom: 1px solid #6b808d;
     color: #FFFFFF;
     font-weight: bold;
     text-align: center;
@@ -1280,6 +1280,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     -moz-border-radius-topright: 3px;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    text-shadow:0 -1px 0 rgba(0,0,0,0.7);
 }
 
 .z-window .z-window-footer {
