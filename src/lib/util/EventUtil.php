@@ -180,12 +180,12 @@ class EventUtil
     }
 
     /**
-     * Register a persistent event for a module.
+     * Register a static persistent event for a module.
      *
-     * @param string   $moduleName Module name.
-     * @param string   $eventName  Event name.
-     * @param callable $callable   PHP static callable or instance of Zikula_ServiceHandler.
-     * @param integer  $weight     Weight of handler, default = 10.
+     * @param string       $moduleName Module name.
+     * @param string       $eventName  Event name.
+     * @param string|array $callable   PHP static callable.
+     * @param integer      $weight     Weight of handler, default = 10.
      *
      * @throws InvalidArgumentException If the callable given is not callable.
      *
@@ -193,24 +193,34 @@ class EventUtil
      */
     public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight=10)
     {
-        if (!is_callable($callable) && !$callable instanceof Zikula_ServiceHandler) {
-            throw new InvalidArgumentException('$callable is not a valid PHP callable or instance of Zikula_ServiceHandler');
+        if (!is_callable($callable)) {
+            if (is_array($callable)) {
+                throw new InvalidArgumentException(sprintf('array(%s, %s) is not a valid PHP callable', $callable[0], $callable[1]));
+            }
+
+            throw new InvalidArgumentException(sprintf('%s is not a valid PHP callable', $callable));
         }
-        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
+        
+        if (is_array($callable) && is_object($callable[0])) {
+            throw new InvalidArgumentException('Callable cannot be an instanciated class');
+        }
+
+        $handlers = ModUtil::getVar(self::HANDLERS, $owner, array());
         $handlers[] = array('eventname' => $eventName, 'callable' => $callable, 'weight' => $weight);
         ModUtil::setVar(self::HANDLERS, $moduleName, $handlers);
     }
 
     /**
-     * Unregister a single persistent event handler for a module.
+     * Unregister a static persistent event handler for a module.
      *
-     * @param string   $moduleName Module name.
-     * @param string   $eventName  Event name.
-     * @param callable $callable   PHP callable. No instanciated callables allowed.
+     * @param string       $moduleName Module name.
+     * @param string       $eventName  Event name.
+     * @param string|array $callable   PHP static callable.
+     * @param integer      $weight     Weight.
      *
      * @return void
      */
-    public static function unregisterPersistentModuleHandler($moduleName, $eventName, $callable)
+    public static function unregisterPersistentModuleHandler($moduleName, $eventName, $callable, $weight=10)
     {
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, false);
         if (!$handlers) {
@@ -218,7 +228,56 @@ class EventUtil
         }
         $filteredHandlers = array();
         foreach ($handlers as $handler) {
-            if ($handler !== array('eventname' => $eventName, 'callable' => $callable)) {
+            if ($handler !== array('eventname' => $eventName, 'callable' => $callable, 'weight' => $weight)) {
+                $filteredHandlers[] = $handler;
+            }
+        }
+        ModUtil::setVar(self::HANDLERS, $moduleName, $filteredHandlers);
+    }
+
+    /**
+     * Register a Zikula_EventHandler as a persistent handler.
+     *
+     * @param string  $moduleName Module name.
+     * @param string  $className  Class name (subclass of Zikula_EventHandler).
+     *
+     * @throws InvalidArgumentException If class is not available or not a subclass of Zikula_EventHandler.
+     *
+     * @return void
+     */
+    public static function registerPersistentEventHandlerClass($moduleName, $className)
+    {
+        if (!class_exists($className)) {
+            throw new InvalidArgumentException(sprintf('Class %s does not exist or cannot be found', $className));
+        }
+        
+        $reflection = new ReflectionClass($className);
+        if (!$reflection->isSubclassOf('Zikula_EventHandler')) {
+            throw new InvalidArgumentException(sprintf('%s is not a subclass of Zikula_EventHandler', $className));
+        }
+
+        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
+        $handlers[] = array('classname' => $className);
+        ModUtil::setVar(self::HANDLERS, $moduleName, $handlers);
+    }
+
+    /**
+     * Unregister a Zikula_EventHandler event handler.
+     *
+     * @param string $moduleName Module name.
+     * @param string $className  Class name (subclass of Zikula_EventHandler).
+     *
+     * @return void
+     */
+    public static function unregisterPersistentStaticHandler($moduleName, $className)
+    {
+        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, false);
+        if (!$handlers) {
+            return;
+        }
+        $filteredHandlers = array();
+        foreach ($handlers as $handler) {
+            if ($handler !== array('classname' => $className)) {
                 $filteredHandlers[] = $handler;
             }
         }
@@ -232,80 +291,9 @@ class EventUtil
      *
      * @return void
      */
-    public static function unregisterPersistentModuleHandlers($moduleName)
+    public static function unregisterPersistentHandlers($moduleName)
     {
         ModUtil::delVar(self::HANDLERS, $moduleName);
-    }
-
-    /**
-     * Register a persistent plugin handler.
-     *
-     * @param string   $moduleName Module name.
-     * @param string   $pluginName Plugin name.
-     * @param string   $eventName  Event name.
-     * @param callable $callable   PHP static callable or instance of Zikula_ServiceHandler.
-     * @param integer  $weight     Weight of handler, default = 10.
-     *
-     * @throws InvalidArgumentException If callable is not callable.
-     *
-     * @return void
-     */
-    public static function registerPersistentPluginHandler($moduleName, $pluginName, $eventName, $callable, $weight=10)
-    {
-        if (!is_callable($callable) && !$callable instanceof Zikula_ServiceHandler) {
-            throw new InvalidArgumentException('$callable is not a valid PHP callable or instance of Zikula_ServiceHandler');
-        }
-        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
-        $handlers[] = array('plugin' => $pluginName, 'eventname' => $eventName, 'callable' => $callable, 'weight' => 10);
-        ModUtil::setVar(self::HANDLERS, $moduleName, $handlers);
-    }
-
-    /**
-     * Unregister a single event handler for a given module plugin.
-     *
-     * @param string   $moduleName Module name.
-     * @param string   $pluginName Plugin name.
-     * @param string   $eventName  Event name.
-     * @param callable $callable   PHP callable. No instanciated callables allowed.
-     *
-     * @return void
-     */
-    public static function unregisterPersistentPluginHandler($moduleName, $pluginName, $eventName, $callable)
-    {
-        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, false);
-        if (!$handlers) {
-            return;
-        }
-        $filteredHandlers = array();
-        foreach ($handlers as $handler) {
-            if ($handler !== array('plugin' => $pluginName, 'eventname' => $eventName, 'callable' => $callable)) {
-                $filteredHandlers[] = $handler;
-            }
-        }
-        ModUtil::setVar(self::HANDLERS, $moduleName, $filteredHandlers);
-    }
-
-    /**
-     * Unregister all persistent events handlers for a given module plugin.
-     *
-     * @param string $moduleName Module name.
-     * @param string $pluginName Plugin name.
-     *
-     * @return void
-     */
-    public static function unregisterPersistentPluginHandlers($moduleName, $pluginName)
-    {
-        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, false);
-        if (!$handlers) {
-            return;
-        }
-        $filteredHandlers = array();
-        foreach ($handlers as $handler) {
-            if ($handler['plugin'] !== $pluginName) {
-                $filteredHandlers[] = $handler;
-            }
-        }
-        ModUtil::setVar(self::HANDLERS, $moduleName, $filteredHandlers);
     }
 
     /**
@@ -328,24 +316,39 @@ class EventUtil
                 continue;
             }
             foreach ($handlers as $handler) {
-                if (isset($handler['plugin'])) {
-                    $className = "{$module}_{$handler[plugin]}_Plugin";
-                    $plugin = PluginUtil::loadPlugin($className);
-                    if (!$plugin->hasBooted() || !$plugin->isInstalled() || !$plugin->isEnabled()) {
-                        // don't attach an event if the plugin is disables
-                        continue;
-                    }
-                }
-
                 if (ModUtil::available($module)) {
                     try {
-                        self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
+                        if (isset($handler['classname'])) {
+                            foreach ($handlers as $handler) {
+                                self::attachEventHandler($handler['classname']);
+                            }
+                        } else {
+                            self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
+                        }
                     } catch (InvalidArgumentException $e) {
                         LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), Zikula_ErrorHandler::ERR);
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Resolve the correct callable for a handler.
+     *
+     * @param array $handler Handler.
+     *
+     * @return array|Zikula_ServiceHandler
+     */
+    protected static function resolveCallable($handler)
+    {
+        if ($handler['serviceid']) {
+            $callable = new Zikula_ServiceHandler($handler['serviceid'], $handler['method']);
+        } else {
+            $callable = array($handler['classname'], $handler['method']);
+        }
+
+        return $callable;
     }
 
 }
