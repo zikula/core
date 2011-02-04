@@ -175,29 +175,29 @@ img {
     padding: 2px 0 2px 20px;
 }
 
-ul.check  {
+ul.systemrequirements  {
     margin-left: 0;
     padding-left: 0;
     list-style: none;
 }
 
-ul.check li {
-    padding-left: 25px;
-    min-height: 22px;
-    background-repeat: no-repeat;
-    background-position: 0;
+ul.systemrequirements li {
+  background-position: left 2px;
+  background-repeat: no-repeat;
+  margin: 0.5em 0;
+  padding-left: 25px;
 }
 
-ul.check li.passed {
-    background-image: url(../../images/icons/small/ok.gif);
+ul.systemrequirements li.passed {
+    background-image: url(../../images/icons/extrasmall/ok.gif);
 }
 
-ul.check li.failed {
-    background-image: url(../../images/icons/small/cancel.gif);
+ul.systemrequirements li.failed {
+    background-image: url(../../images/icons/extrasmall/cancel.gif);
 }
 
-ul.check li.warning {
-    background-image: url(../../images/icons/small/info.gif);
+ul.systemrequirements li.warning {
+    background-image: url(../../images/icons/extrasmall/info.gif);
 }
 
 .validationfailed {
