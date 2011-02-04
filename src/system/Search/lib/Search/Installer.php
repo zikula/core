@@ -35,6 +35,9 @@ class Search_Installer extends Zikula_Installer
         $this->setVar('itemsperpage', 10);
         $this->setVar('limitsummary', 255);
 
+        // register event handler to activate new modules in the search block
+        EventUtil::registerPersistentModuleHandler('Search', 'installer.module.installed', array('Search_EventHandlers', 'moduleInstall'));
+
         // Initialisation successful
         return true;
     }
@@ -53,7 +56,11 @@ class Search_Installer extends Zikula_Installer
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
-            case '1.5':
+            case '1.5.1':
+                // register event handler to activate new modules in the search block
+                EventUtil::registerPersistentModuleHandler('Search', 'installer.module.installed', array('Search_EventHandlers', 'moduleInstall'));
+
+            case '1.5.2':
             // future upgrade routines
         }
 
@@ -78,6 +85,9 @@ class Search_Installer extends Zikula_Installer
 
         // Delete any module variables
         $this->delVars();
+
+        // unregister event handlers
+        EventUtil::unregisterPersistentModuleHandlers('Search');
 
         // Deletion successful
         return true;
