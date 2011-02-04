@@ -30,7 +30,7 @@ body {
     -moz-box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
     box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
     margin: 3% 1% 0;
-    padding: 1%;
+    padding: 1% 0;
     border: 1px solid #42403E\9; /* IE6/7/8 */
 }
 
@@ -91,10 +91,11 @@ img {
     font-weight: bold;
     overflow: hidden;
     padding: 0;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
     -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
     box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
 }
 
 .breadcrumb li {
@@ -104,7 +105,7 @@ img {
     display: inline;
     line-height: 24px;
     list-style-type: none;
-    padding: 5px 15px 5px 10px;
+    padding: 5px 12px 5px 7px;
 }
 
 .breadcrumb a {
@@ -168,11 +169,11 @@ img {
 
 .icon-ok {
     background: url("../images/ok.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
+    padding: 2px 0 2px 18px;
 }
 .icon-nok {
     background: url("../images/nok.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
+    padding: 2px 0 2px 18px;
 }
 
 ul.systemrequirements  {
