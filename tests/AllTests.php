@@ -4,8 +4,8 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 }
 
 require_once dirname(__FILE__) . '/bootstrap.php';
-require_once dirname(__FILE__) . '/lib/i18n/AllTests.php';
-require_once dirname(__FILE__) . '/lib/FileSystem/AllTests.php';
+require_once dirname(__FILE__) . '/lib/Tests/i18n/AllTests.php';
+require_once dirname(__FILE__) . '/lib/Tests/Zikula/FileSystem/AllTests.php';
 
 class AllTests
 {
