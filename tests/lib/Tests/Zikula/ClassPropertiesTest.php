@@ -1,6 +1,5 @@
 <?php
-require_once __DIR__ . '/../../bootstrap.php';
-require_once dirname(__FILE__) . '/../../../src/lib/Zikula/ClassProperties.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 class Foo
 {
@@ -44,7 +43,7 @@ class Foo
 /**
  * ClassProperties test case.
  */
-class ClassPropertiesTest extends PHPUnit_Framework_TestCase
+class Tests_Zikula_ClassPropertiesTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Tests ClassProperties::setters()

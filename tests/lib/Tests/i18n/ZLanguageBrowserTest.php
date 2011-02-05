@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__FILE__) . '/../../bootstrap.php';
-require_once dirname(__FILE__) . '/../../../src/lib/i18n/ZLanguageBrowser.php';
+require_once __DIR__ . '/../../../bootstrap.php';
+require_once dirname(__FILE__) . '/../../../../src/lib/i18n/ZLanguageBrowser.php';
 
 /**
  * @backupGlobals enabled
