@@ -112,16 +112,3 @@ $ZConfig['System']['dbcache.cache_result_ttl'] = 30; // seconds, 3600 = 1 hour.
 $ZConfig['Multisites'] = array();
 $ZConfig['Multisites']['multisites.enabled'] = 0;
 $ZConfig['Multisites']['protected.systemvars'] = array();
-
-// * NOTE  If you copy this file to personal_config.php, remove the includes below
-if (!strpos(__FILE__, 'personal_config.php')) {
-    // Multisites configuration
-    if (is_readable('config/multisites_config.php')) {
-        include 'config/multisites_config.php';
-    }
-
-    // personal configuration
-    if (is_readable('config/personal_config.php')) {
-        include 'config/personal_config.php';
-    }
-}

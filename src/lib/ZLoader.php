@@ -200,7 +200,6 @@ class ZLoader
                 'SessionUtil' => 'util',
                 'StringUtil' => 'util',
                 'System' => 'util',
-                'SystemListeners' => 'util',
                 'ThemeUtil' => 'util',
                 'UserUtil' => 'util',
                 'ValidationUtil' => 'util',
