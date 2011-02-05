@@ -361,10 +361,10 @@ class SystemListeners extends Zikula_EventHandler
      *
      * @return void
      */
-    public static function debugToolbarRendering(Zikula_Event $event)
+    public function debugToolbarRendering(Zikula_Event $event)
     {
         if (!$event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
-            $toolbar = ServiceUtil::getManager()->getService('debug.toolbar');
+            $toolbar = $this->serviceManager->getService('debug.toolbar');
             $toolbar->addHTMLToFooter();
         }
     }
