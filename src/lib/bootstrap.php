@@ -22,5 +22,8 @@ EventUtil::attachCustomHandlers('config/EventHandlers');
 EventUtil::attachCustomHandlers('lib/EventHandlers');
 
 // Load system configuration
-$event = new Zikula_Event('bootstrap.getconfig');
+$event = new Zikula_Event('bootstrap.getconfig', $core);
 $core->getEventManager()->notifyUntil($event);
+
+$event = new Zikula_Event('bootstrap.custom', $core);
+$core->getEventManager()->notify($event);
