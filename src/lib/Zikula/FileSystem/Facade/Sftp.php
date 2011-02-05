@@ -7,18 +7,18 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package FileSystem
- * @subpackage FileSystem_Facade
+ * @subpackage Zikula_FileSystem_Facade
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 /**
- * FileSystem_Facade_sFtp is a facade interface for SFTP connections.
+ * Zikula_FileSystem_Facade_sFtp is a facade interface for SFTP connections.
  *
  * Created especially to allow easy unit testing.
  */
-class FileSystem_Facade_Sftp
+class Zikula_FileSystem_Facade_Sftp
 {
     /**
      * Facade for ssh2_connect.

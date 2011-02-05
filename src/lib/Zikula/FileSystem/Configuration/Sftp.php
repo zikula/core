@@ -7,7 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package FileSystem
- * @subpackage FileSystem_Configuration
+ * @subpackage Zikula_FileSystem_Configuration
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -16,12 +16,12 @@
 /**
  * SFTP Configuration class.
  *
- * Configuration class for SFTP driver. please see documentation for FileSystem_Configuration
- * for more details on configuration classes. This class implments FileSystem_Configuration.
+ * Configuration class for SFTP driver. please see documentation for Zikula_FileSystem_Configuration
+ * for more details on configuration classes. This class implments Zikula_FileSystem_Configuration.
  * The only purpose to this class is to provide a configuration object to be used by the
  * sftp driver.
  */
-class FileSystem_Configuration_Sftp implements FileSystem_Configuration
+class Zikula_FileSystem_Configuration_Sftp implements Zikula_FileSystem_Configuration
 {
     /**
      * SFTP host.

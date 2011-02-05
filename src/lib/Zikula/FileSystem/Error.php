@@ -13,11 +13,11 @@
  */
 
 /**
- * FileSystem_Error class deals with errors which may be thrown by drivers.
+ * Zikula_FileSystem_Error class deals with errors which may be thrown by drivers.
  *
- * FileSystem_Driver class extends this class.
+ * Zikula_FileSystem_Driver class extends this class.
  */
-class FileSystem_Error
+class Zikula_FileSystem_Error
 {
     /**
      * Error level.
