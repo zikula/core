@@ -2,8 +2,6 @@
 
 {* zdebug.tpl, based on debug.tpl, last updated version 2.0.1 *}
 
-{pageaddvar name='javascript' value='javascript/openwindow.js'}
-
 {assign_debug_info}
 {debugenvironment}
 {capture name='debugoutput' assign='debugoutput'}
