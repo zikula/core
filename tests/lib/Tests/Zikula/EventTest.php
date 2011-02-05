@@ -18,7 +18,7 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->Event = new Zikula_Event('test.event', $this, array('name' => 'Event'));
+        $this->Event = new Zikula_Event('test.event', $this, array('name' => 'Event'), 'foo');
     }
 
     /**
@@ -32,17 +32,13 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
 
     public function test__construct()
     {
-        //$this->assertSame($this->Event, new Zikula_Event('test.event', $this, array('name' => 'Event')));
+        $this->assertEquals($this->Event, new Zikula_Event('test.event', $this, array('name' => 'Event'), 'foo'));
     }
 
     public function test__constructNameException()
     {
         $this->setExpectedException('InvalidArgumentException');
-        try {
-           $event = new Zikula_Event('', $this, array());
-        } catch (InvalidArgumentException $e) {
-
-        }
+        $event = new Zikula_Event('', $this, array());
     }
 
     /**
@@ -64,11 +60,7 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
 
         // test getting invalid arg
         $this->setExpectedException('InvalidArgumentException');
-        try {
-            $this->assertFalse($this->Event->getArg('nameNotExist'));
-        } catch (InvalidArgumentException $e) {
-
-        }
+        $this->assertFalse($this->Event->getArg('nameNotExist'));
     }
 
     /**
