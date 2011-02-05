@@ -129,7 +129,7 @@ class Zikula_KernelClassLoader
      *
      * @return string|boolean $file Path or boolean false if this loader does apply.
      */
-    public function getClassIncludePath($namespace, $array, $class)
+    public function getClassIncludePath($namespace, array $array, $class)
     {
         // execute only if namespace is empty or namespace+separator matches in the beginning of the requested class:
         // namespace 'Foo', class Another\BadFoo\Class should not match (namespace somewhere in path).
