@@ -205,7 +205,7 @@ class EventUtil
             throw new InvalidArgumentException('Callable cannot be an instanciated class');
         }
 
-        $handlers = ModUtil::getVar(self::HANDLERS, $owner, array());
+        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
         $handlers[] = array('eventname' => $eventName, 'callable' => $callable, 'weight' => $weight);
         ModUtil::setVar(self::HANDLERS, $moduleName, $handlers);
     }
