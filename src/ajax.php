@@ -20,10 +20,7 @@ $type = FormUtil::getPassedValue('type', 'ajax', 'GETPOST', FILTER_SANITIZE_STRI
 $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
 // Check for site closed
-if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
-    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
-        UserUtil::logout();
-    }
+if (System::getVar('siteoff')) {
     die(new Zikula_Response_Ajax_Unavailable(__('The site is currently off-line.')));
 }
 
