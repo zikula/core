@@ -8,9 +8,11 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Event
+     * @var Zikula_Event
      */
-    private $Event;
+    private $event;
+
+    private $subject;
 
     /**
      * Prepares the environment before running a test.
@@ -18,7 +20,8 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->Event = new Zikula_Event('test.event', $this, array('name' => 'Event'), 'foo');
+        $this->subject = new stdClass();
+        $this->event = new Zikula_Event('test.event', $this->subject, array('name' => 'Event'), 'foo');
     }
 
     /**
@@ -26,13 +29,13 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        $this->Event = null;
+        $this->event = null;
         parent::tearDown();
     }
 
     public function test__construct()
     {
-        $this->assertEquals($this->Event, new Zikula_Event('test.event', $this, array('name' => 'Event'), 'foo'));
+        $this->assertEquals($this->event, new Zikula_Event('test.event', $this->subject, array('name' => 'Event'), 'foo'));
     }
 
     public function test__constructNameException()
@@ -47,7 +50,33 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
     public function testGetArgs()
     {
         // test getting all
-        $this->assertSame(array('name' => 'Event'), $this->Event->getArgs());
+        $this->assertSame(array('name' => 'Event'), $this->event->getArgs());
+    }
+
+    public function testSetArgs()
+    {
+        $result = $this->event->setArgs(array('foo' => 'bar'));
+        $this->assertAttributeSame(array('foo' => 'bar'), 'args', $this->event);
+        $this->assertSame($this->event, $result);
+    }
+
+    public function testSetArg()
+    {
+        $result = $this->event->setArg('foo2', 'bar2');
+        $this->assertAttributeSame(array('name' => 'Event', 'foo2' => 'bar2'), 'args', $this->event);
+        $this->assertEquals($this->event, $result);
+    }
+
+    public function testOffsetSet()
+    {
+        $this->event['foo2'] = 'bar2';
+        $this->assertAttributeSame(array('name' => 'Event', 'foo2' => 'bar2'), 'args', $this->event);
+    }
+
+    public function testOffsetUnset()
+    {
+        unset($this->event['name']);
+        $this->assertAttributeSame(array(), 'args', $this->event);
     }
 
     /**
@@ -56,11 +85,24 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
     public function testGetArg()
     {
         // test getting key
-        $this->assertEquals('Event', $this->Event->getArg('name'));
+        $this->assertEquals('Event', $this->event->getArg('name'));
 
         // test getting invalid arg
         $this->setExpectedException('InvalidArgumentException');
-        $this->assertFalse($this->Event->getArg('nameNotExist'));
+        $this->assertFalse($this->event->getArg('nameNotExist'));
+    }
+
+    /**
+     * Tests Event->offsetGet() ArrayAccess
+     */
+    public function testOffsetGet()
+    {
+        // test getting key
+        $this->assertEquals('Event', $this->event['name']);
+
+        // test getting invalid arg
+        $this->setExpectedException('InvalidArgumentException');
+        $this->assertFalse($this->event['nameNotExist']);
     }
 
     /**
@@ -68,8 +110,17 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
      */
     public function testHasArg()
     {
-        $this->assertTrue($this->Event->hasArg('name'));
-        $this->assertFalse($this->Event->hasArg('nameNotExist'));
+        $this->assertTrue($this->event->hasArg('name'));
+        $this->assertFalse($this->event->hasArg('nameNotExist'));
+    }
+
+    /**
+     * Tests Event->offsetIsset() ArrayAccess
+     */
+    public function testOffsetIsset()
+    {
+        $this->assertTrue(isset($this->event['name']));
+        $this->assertFalse(isset($this->event['nameNotExist']));
     }
 
     /**
@@ -77,7 +128,7 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
      */
     public function testGetSubject()
     {
-        $this->assertSame($this, $this->Event->getSubject());
+        $this->assertSame($this->subject, $this->event->getSubject());
     }
 
     /**
@@ -85,7 +136,7 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
      */
     public function testGetName()
     {
-        $this->assertEquals('test.event', $this->Event->getName());
+        $this->assertEquals('test.event', $this->event->getName());
     }
 
     /**
@@ -93,8 +144,11 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
      */
     public function testGetData()
     {
-        $this->Event->setData("Don't drink and drive.");
-        $this->assertEquals("Don't drink and drive.", $this->Event->getData());
+        $this->event->setData("Don't drink and drive.");
+        $this->assertEquals("Don't drink and drive.", $this->event->getData());
+
+        // test this is public
+        $this->assertEquals("Don't drink and drive.", $this->event->data);
     }
 
     /**
@@ -102,8 +156,8 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
      */
     public function testSetNotified()
     {
-        $this->Event->setNotified();
-        $this->assertTrue($this->Event->hasNotified());
+        $this->event->setNotified();
+        $this->assertTrue($this->event->hasNotified());
     }
 
     /**
@@ -111,8 +165,12 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
      */
     public function testSetData()
     {
-        $this->Event->setData("Don't drink and drive.");
-        $this->assertEquals("Don't drink and drive.", $this->Event->getData());
+        $this->event->setData("Don't drink and drive.");
+        $this->assertEquals("Don't drink and drive.", $this->event->getData());
+
+        // test this is public
+        $this->event->data = "Eat lots of green vegetables.";
+        $this->assertEquals("Eat lots of green vegetables.", $this->event->getData());
     }
 
     /**
@@ -120,7 +178,7 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
      */
     public function testHasNotified()
     {
-        $this->assertFalse($this->Event->hasNotified());
+        $this->assertFalse($this->event->hasNotified());
     }
 }
 
