@@ -340,7 +340,7 @@ class SystemListeners extends Zikula_EventHandler
             $this->serviceManager->registerService(new Zikula_ServiceManager_Service('debug.toolbar', $toolbar, true));
 
             // setup rendering event listeners
-            $this->eventManager->attach('theme.prefooter', array('SystemListeners', 'debugToolbarRendering'));
+            $this->eventManager->attach('theme.prefooter', array($this, 'debugToolbarRendering'));
 
             // setup event listeners
             $this->eventManager->attach('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
