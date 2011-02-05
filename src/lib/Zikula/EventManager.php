@@ -212,7 +212,7 @@ class Zikula_EventManager
      *
      * @return boolean
      */
-    protected function existsHandler($name)
+    public function existsHandler($name)
     {
         return array_key_exists($name, $this->handlers);
     }
