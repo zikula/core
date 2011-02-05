@@ -11,36 +11,16 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 include 'lib/ZLoader.php';
 ZLoader::register();
 
 $core = new Zikula_Core();
 $core->boot();
-$eventManager = $core->getEventManager();
-$serviceManager = $core->getServiceManager();
 
-// Load system configuration
-include 'config/config.php';
-foreach ($GLOBALS['ZConfig'] as $config) {
-    $serviceManager->loadArguments($config);
-}
-
-// load eventhandlers from config/EventHandlers directory if any.
+// Load eventhandlers
 EventUtil::attachCustomHandlers('config/EventHandlers');
 EventUtil::attachCustomHandlers('lib/EventHandlers');
 
-$eventManager->attach('setup.errorreporting', array('SystemListeners', 'defaultErrorReporting'));
-$eventManager->attach('core.init', array('SystemListeners', 'setupLoggers'));
-$eventManager->attach('log', array('SystemListeners', 'errorLog'));
-$eventManager->attach('core.init', array('SystemListeners', 'sessionLogging'));
-$eventManager->attach('core.init', array('SystemListeners', 'systemPlugins'));
-$eventManager->attach('core.postinit', array('SystemListeners', 'systemHooks'));
-$eventManager->attach('core.init', array('SystemListeners', 'setupDebugToolbar'));
-$eventManager->attach('log.sql', array('SystemListeners', 'logSqlQueries'));
-$eventManager->attach('core.init', array('SystemListeners', 'setupAutoloaderForGeneratedCategoryModels'));
-$eventManager->attach('installer.module.uninstalled', array('SystemListeners', 'deleteGeneratedCategoryModelsOnModuleRemove'));
-$eventManager->attach('pageutil.addvar_filter', array('SystemListeners', 'coreStylesheetOverride'));
-$eventManager->attach('module_dispatch.postexecute', array('SystemListeners', 'addHooksLink'));
-$eventManager->attach('module_dispatch.postexecute', array('SystemListeners', 'addServiceLink'));
-$eventManager->attach('core.init', array('SystemListeners', 'initDB'));
+// Load system configuration
+$event = new Zikula_Event('bootstrap.getconfig');
+$core->getEventManager()->notifyUntil($event);
