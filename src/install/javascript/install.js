@@ -12,5 +12,5 @@ document.observe('dom:loaded',function(){
     $(document.body).insert(new Element('div', {id: 'ZikulaOverlay'}).setStyle({opacity: 0.7, display: 'none'}));
 })
 function showOverlay() {
-    $('ZikulaOverlay').show();
+    $('ZikulaOverlay').appear({to: 0.7, duration: 0.2});
 }
