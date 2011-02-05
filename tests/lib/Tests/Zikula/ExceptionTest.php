@@ -26,6 +26,12 @@ class Zikula_ExceptionTest extends PHPUnit_Framework_TestCase
         
     }
 
+    protected function  tearDown()
+    {
+        $this->exception = null;
+        parent::tearDown();
+    }
+
     /**
      * @todo Implement testGetDebug().
      */
