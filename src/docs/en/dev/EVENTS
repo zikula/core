@@ -20,8 +20,14 @@ BOOTSTRAP
 ---------
 
 #### `boostrap.getconfig`
-Called in bootstrap.  Handler should setNotified().
+Called in bootstrap.
+Receives Zikula_Core as subject.
+Handler should setNotified().
 Purpose is to load the config/config.php
+
+#### `bootstrap.custom`
+Called in bootstrap.
+Receives Zikula_Core as subject.
 
 CORE
 ----

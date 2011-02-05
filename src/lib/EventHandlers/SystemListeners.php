@@ -516,7 +516,7 @@ class SystemListeners extends Zikula_EventHandler
         }
         
         foreach ($GLOBALS['ZConfig'] as $config) {
-            $this->serviceManager->loadArguments($config);
+            $event->getSubject()->getServiceManager()->loadArguments($config);
         }
 
         $event->setNotified();
