@@ -16,15 +16,15 @@
  * Driver Abstract.
  *
  * This abstract class contains the basic construct for every driver, which
- * simply gets the FileSystem_Configuration and saves it. all drivers which
- * extend this class must implement FileSystem_Interface.
+ * simply gets the Zikula_FileSystem_Configuration and saves it. all drivers which
+ * extend this class must implement Zikula_FileSystem_Interface.
  */
-abstract class FileSystem_AbstractDriver
+abstract class Zikula_FileSystem_AbstractDriver
 {
     /**
      * Configuration object.
      *
-     * @var FileSystem_Configuration
+     * @var Zikula_FileSystem_Configuration
      */
     protected $configuration;
 
@@ -45,15 +45,15 @@ abstract class FileSystem_AbstractDriver
     /**
      * Construct the driver with the configuration.
      *
-     * @param FileSystem_Configuration $configuration The configuration to be used.
+     * @param Zikula_FileSystem_Configuration $configuration The configuration to be used.
      *
      * @throws InvalidArgumentException If wrong configuration class received.
      */
-    public function __construct(FileSystem_Configuration $configuration)
+    public function __construct(Zikula_FileSystem_Configuration $configuration)
     {
         // validate we get correct configuration class type.
-        $type = str_ireplace('FileSystem_', '', get_class($this));
-        $validName = "FileSystem_Configuration_{$type}";
+        $type = str_ireplace('Zikula_FileSystem_', '', get_class($this));
+        $validName = "Zikula_FileSystem_Configuration_{$type}";
 
         if ($validName != get_class($configuration)) {
             throw new InvalidArgumentException(
@@ -63,9 +63,9 @@ abstract class FileSystem_AbstractDriver
 
         $this->configuration = $configuration;
 
-        $facade = "FileSystem_Facade_{$type}";
+        $facade = "Zikula_FileSystem_Facade_{$type}";
         $this->driver = new $facade();
-        $this->errorHandler = new FileSystem_Error();
+        $this->errorHandler = new Zikula_FileSystem_Error();
     }
 
     /**

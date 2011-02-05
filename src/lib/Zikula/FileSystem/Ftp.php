@@ -13,11 +13,11 @@
  */
 
 /**
- * FileSystem_Ftp is the standard driver for FTP connections.
+ * Zikula_FileSystem_Ftp is the standard driver for FTP connections.
  *
- * This class extends FileSystem_AbstractDriver.
+ * This class extends Zikula_FileSystem_AbstractDriver.
  */
-class FileSystem_Ftp extends FileSystem_AbstractDriver
+class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
 {
     /**
      * The php ftp resource handle.
@@ -37,7 +37,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
      * Standard function for creating a FTP connection and logging in.
      *
      * This must be called before any of the other functions in the
-     * FileSystem_Interface. However the construct itself calles this
+     * Zikula_FileSystem_Interface. However the construct itself calles this
      * function upon completion, which alleviates the need to ever call
      * this function manualy.
      *

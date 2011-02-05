@@ -13,11 +13,11 @@
  */
 
 /**
- * FileSystem_Local is the standard driver for Local/Direct connections.
+ * Zikula_FileSystem_Local is the standard driver for Local/Direct connections.
  *
- * This class extends FileSystem_AbstractDriver.
+ * This class extends Zikula_FileSystem_AbstractDriver.
  */
-class FileSystem_Local extends FileSystem_AbstractDriver {
+class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver {
 
     /**
      * Resource handle.
@@ -30,7 +30,7 @@ class FileSystem_Local extends FileSystem_AbstractDriver {
      * Create local connection.
      *
      * Standard function for creating a Local connection, this must be called
-     * before any of the other functions in the FileSystem_Interface. However the construct
+     * before any of the other functions in the Zikula_FileSystem_Interface. However the construct
      * itself calles this function upon completion, which alleviates the need to ever call
      * this function manualy. For Local this function does very little, most local functions
      * will work even without the connect() function being called.
@@ -106,7 +106,7 @@ class FileSystem_Local extends FileSystem_AbstractDriver {
      * resource handle which can then be saved with fput(), or can be manipulated
      * in the same manner as any other file resouce handle.
      * <samp>
-     * $local = new FileSystem_Local($config);
+     * $local = new Zikula_FileSystem_Local($config);
      * $resource = $local->fget('filename.ext');
      * $local->fput($resource,'filename2.ext');
      *

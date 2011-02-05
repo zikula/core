@@ -7,18 +7,18 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package FileSystem
- * @subpackage FileSystem_Facade
+ * @subpackage Zikula_FileSystem_Facade
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 /**
- * FileSystem_Facade_Ftp is a facade interface for FTP connections.
+ * Zikula_FileSystem_Facade_Ftp is a facade interface for FTP connections.
  *
  * Created especially to allow easy unit testing.
  */
-class FileSystem_Facade_Ftp
+class Zikula_FileSystem_Facade_Ftp
 {
     /**
      * Facade for ftp_connect.

@@ -13,11 +13,11 @@
  */
 
 /**
- * FileSystem_SFtp is the standard driver for SFTP connections.
+ * Zikula_FileSystem_SFtp is the standard driver for SFTP connections.
  *
- * This class extends FileSystem_AbstractDriver.
+ * This class extends Zikula_FileSystem_AbstractDriver.
  */
-class FileSystem_Sftp extends FileSystem_AbstractDriver
+class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
 {
     /**
      * Resource.
@@ -51,7 +51,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
      * Standard function for creating a SFTP connection and logging in.
      *
      * This must be called before any of the other functions in the
-     * FileSystem_Interface. However the construct itself calles this function
+     * Zikula_FileSystem_Interface. However the construct itself calles this function
      * upon completion, which alleviates the need to ever call this function
      * manually.
      *
