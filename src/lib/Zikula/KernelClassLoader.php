@@ -52,7 +52,7 @@ class Zikula_KernelClassLoader
             throw new LogicException(sprintf('%s is already registered with this autoloader', $namespace));
         }
 
-        $this->namespaces[$namespace] = array('path' => realpath($path), 'separator' => $separator);
+        $this->namespaces[$namespace] = array('path' => str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $path)), 'separator' => $separator);
     }
 
     /**
@@ -136,7 +136,7 @@ class Zikula_KernelClassLoader
         // namespace 'Foo', class Foo\BadFoo\Class should match and become Foo/BadFoo/Class.php
         // namespace 'Bar', separator '_', class Bar should match and become Bar.php
         // namespace 'Bar', separator '_', class Bar_Exception should match and become Bar\Exception.php
-        if (strpos($class, $namespace.$array['separator']) === 0 || $class == $namespace) {
+        if (strpos($class, $namespace.$array['separator']) === 0 || $class == $namespace || empty($namespace)) {
             // replace namespace separator with \DIRECTORY_SEPARATOR
             $file = str_replace($array['separator'], DIRECTORY_SEPARATOR, $class);
 
