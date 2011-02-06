@@ -94,19 +94,24 @@ Event.observe(window, 'load', function() {
         var nodes = list.getElementsByTagName("a");
         for ( var i = 0; i < nodes.length; i++) {
             var nid = nodes[i].getAttribute('id');
-            if (nid != null && nodes[i].id != 'addcatlink') {
-                Admin.Context.Add(nid);
-                Admin.Editor.Add(nid);
-                if ($(nodes[i]).up('li').hasClassName('active'))
-                    continue;
-                var droppable = Droppables.add(nid, {
+            Admin.Editor.Add(nid);
+            var droppable = Droppables.add(nid, {
                     accept : 'draggable',
                     hoverclass : 'ajaxhover',
                     onDrop : function(drag, drop) {
                         Admin.Module.Move(drag.id, drop.id);
                 }
-                });
-                droppables.push(droppable);
+            });
+        }
+        droppables.push(droppable);
+        
+        var nodes = list.getElementsByTagName("span");
+        for ( var i = 0; i < nodes.length; i++) {
+            var nid = nodes[i].getAttribute('id');
+            if (nid != null && nodes[i].id != 'addcatlink') {
+                Admin.Context.Add(nid);
+                if ($(nodes[i]).up('li').hasClassName('active'))
+                    continue;
             }
         }
     }
@@ -141,7 +146,7 @@ context_menu.push(new Control.ContextMenu(nid, {animation: false}));
     context_menu[context_menu.length - 1].addItem( {
         label : lblEdit,
         callback : function(nid) {
-            var cid = nid.href.match(/acid=(\d+)/)[1];
+            var cid = nid.id.match(/catcontext(\d+)/)[1];
             if (cid) {
                 Admin.Editor.Get("C" + cid).enterEditMode();
             }
@@ -151,7 +156,7 @@ context_menu.push(new Control.ContextMenu(nid, {animation: false}));
     context_menu[context_menu.length - 1].addItem( {
         label : lblDelete,
         callback : function(nid) {
-            var cid = nid.href.match(/acid=(\d+)/)[1];
+            var cid = nid.id.match(/catcontext(\d+)/)[1];
             if (cid) {
                 Admin.Tab.Delete(cid);
             }
@@ -161,7 +166,7 @@ context_menu.push(new Control.ContextMenu(nid, {animation: false}));
     context_menu[context_menu.length - 1].addItem( {
         label : lblMakeDefault,
         callback : function(nid) {
-            var cid = nid.href.match(/acid=(\d+)/)[1];
+            var cid = nid.id.match(/catcontext(\d+)/)[1];
             if (cid) {
                 Admin.Tab.setDefault(cid);
             }
