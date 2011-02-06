@@ -26,7 +26,8 @@ class Zikula_Provider_HookValidation
     protected $key;
 
     /**
-     *
+     * The object of validation.
+     * 
      * @var array|object
      */
     protected $object;
@@ -41,6 +42,7 @@ class Zikula_Provider_HookValidation
     /**
      * Constructor.
      *
+     * @param string       $key    Key.
      * @param array|object $object Object to be validated.
      */
     public function __construct($key, $object)

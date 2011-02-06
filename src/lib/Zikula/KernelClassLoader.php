@@ -52,7 +52,7 @@ class Zikula_KernelClassLoader
             throw new LogicException(sprintf('%s is already registered with this autoloader', $namespace));
         }
 
-        $this->namespaces[$namespace] = array('path' => realpath($path), 'separator' => $separator);
+        $this->namespaces[$namespace] = array('path' => str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $path)), 'separator' => $separator);
     }
 
     /**
@@ -129,14 +129,14 @@ class Zikula_KernelClassLoader
      *
      * @return string|boolean $file Path or boolean false if this loader does apply.
      */
-    public function getClassIncludePath($namespace, $array, $class)
+    public function getClassIncludePath($namespace, array $array, $class)
     {
         // execute only if namespace is empty or namespace+separator matches in the beginning of the requested class:
         // namespace 'Foo', class Another\BadFoo\Class should not match (namespace somewhere in path).
         // namespace 'Foo', class Foo\BadFoo\Class should match and become Foo/BadFoo/Class.php
         // namespace 'Bar', separator '_', class Bar should match and become Bar.php
         // namespace 'Bar', separator '_', class Bar_Exception should match and become Bar\Exception.php
-        if (strpos($class, $namespace.$array['separator']) === 0 || $class == $namespace) {
+        if (strpos($class, $namespace.$array['separator']) === 0 || $class == $namespace || empty($namespace)) {
             // replace namespace separator with \DIRECTORY_SEPARATOR
             $file = str_replace($array['separator'], DIRECTORY_SEPARATOR, $class);
 
