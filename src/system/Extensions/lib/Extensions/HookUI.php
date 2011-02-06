@@ -140,6 +140,12 @@ class Extensions_HookUI
             $suggested_providers = HookUtil::getHookProviders();
             $total_suggestions = count($suggested_providers);
             for ($i=0 ; $i < $total_suggestions ; $i++) {
+                // don't allow subscriber and suggested provider to be the same
+                if ($suggested_providers[$i]['name'] == $moduleName) {
+                    unset($suggested_providers[$i]);
+                    continue;
+                }
+
                 // check for binding and exclude this provider if he is already attached
                 $binding = HookUtil::bindingsBetweenProviderAndSubscriber($moduleName, $suggested_providers[$i]['name']);
                 if (!empty($binding)) {
