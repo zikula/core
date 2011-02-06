@@ -651,7 +651,10 @@ class Zikula_View_Theme extends Zikula_View
         $this->assign_by_ref('maincontent', $maincontent);
 
         // render the page using the correct template
-        $this->display($this->themeconfig['page'], $this->pageid);
+        $output = $this->fetch($this->themeconfig['page'], $this->pageid);
+
+        $event = new Zikula_Event('theme.postfooter', $this, array(), $output);
+        echo $this->eventManager->notify($event)->getData();
     }
 
     /**
