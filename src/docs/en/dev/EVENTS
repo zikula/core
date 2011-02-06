@@ -168,9 +168,14 @@ Occurs just before `Theme#__construct()` exits.  Subject is `$this`, args are
 Runs just before `Theme#_load_config()` completed.  Subject is the Theme instance.
 
 #### `theme.prefooter`
-Occurs in `Theme::themefooter()` just after getting the `$maincontent`.  The
-event subject is `$this` (Theme instance) and has event data which you can modify
-with `$event->setData()` in the event handler.
+Occurs in `Theme::themefooter()` just before getting the `$maincontent`.  The
+event subject is `$this` (Theme instance) and has $maincontent as the event data
+which you can modify with `$event->setData()` in the event handler.
+
+#### `theme.postfooter`
+Occurs in `Theme::themefooter()` just after rendering the theme.  The
+event subject is `$this` (Theme instance) and the event data is the rendered
+output which you can modify with `$event->setData()` in the event handler.
 
 #### `view.init`
 Occurs just before `Zikula_View#__construct()` exits. Subject is `$this`, args are
