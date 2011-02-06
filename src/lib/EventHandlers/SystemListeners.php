@@ -341,6 +341,7 @@ class SystemListeners extends Zikula_EventHandler
 
             // setup rendering event listeners
             $this->eventManager->attach('theme.prefooter', array($this, 'debugToolbarRendering'));
+            $this->eventManager->attach('theme.postfooter', array($this, 'debugToolbarRendering'));
 
             // setup event listeners
             $this->eventManager->attach('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
@@ -355,7 +356,7 @@ class SystemListeners extends Zikula_EventHandler
     }
 
     /**
-     * Debug toolbar rendering (listener for 'theme.prefooter' event).
+     * Debug toolbar rendering (listener for 'theme.prefooter' and 'theme.postfooter' events).
      *
      * @param Zikula_Event $event Event.
      *
@@ -364,8 +365,14 @@ class SystemListeners extends Zikula_EventHandler
     public function debugToolbarRendering(Zikula_Event $event)
     {
         if (!$event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
-            $toolbar = $this->serviceManager->getService('debug.toolbar');
-            $toolbar->addHTMLToFooter();
+            if($event->getName() == 'theme.prefooter') {
+                // force object construction (debug toolbar constructor registers javascript and css files via PageUtil)
+                $this->serviceManager->getService('debug.toolbar');
+            } else {
+                $toolbar = $this->serviceManager->getService('debug.toolbar');
+                $html = $toolbar->asHTML() . "\n</body>";
+                $event->setData(str_replace('</body>', $html, $event->getData()));
+            }
         }
     }
 
