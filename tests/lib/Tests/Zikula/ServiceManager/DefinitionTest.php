@@ -10,9 +10,9 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
 {
 
     /**
-     * @var Definition
+     * @var Zikula_ServiceManager_Definition
      */
-    private $Definition;
+    private $definition;
 
     /**
      * Prepares the environment before running a test.
@@ -20,7 +20,7 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
     protected function setUp()
     {
         parent::setUp();
-        $this->Definition = new Zikula_ServiceManager_Definition('StdClass');
+        $this->definition = new Zikula_ServiceManager_Definition('StdClass');
     }
 
     /**
@@ -28,7 +28,7 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
      */
     protected function tearDown()
     {
-        $this->Definition = null;
+        $this->definition = null;
         parent::tearDown();
     }
 
@@ -37,9 +37,9 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
      */
     public function test__construct()
     {
-        $this->assertAttributeEquals('StdClass', 'className', $this->Definition);
-        $this->assertAttributeEquals(array(), 'constructorArgs', $this->Definition);
-        $this->assertAttributeEquals(array(), 'methods', $this->Definition);
+        $this->assertAttributeEquals('StdClass', 'className', $this->definition);
+        $this->assertAttributeEquals(array(), 'constructorArgs', $this->definition);
+        $this->assertAttributeEquals(array(), 'methods', $this->definition);
     }
 
     /**
@@ -47,7 +47,7 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
      */
     public function testGetClassName()
     {
-        $this->assertEquals('StdClass', 'StdClass', $this->Definition->getClassName());
+        $this->assertEquals('StdClass', 'StdClass', $this->definition->getClassName());
     }
 
     /**
@@ -55,9 +55,9 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
      */
     public function testGetConstructorArgs()
     {
-        $this->assertEquals(array(), $this->Definition->getConstructorArgs());
-        $this->Definition->setConstructorArgs(array(1, 2, 3, 4));
-        $this->assertEquals(array(1, 2, 3, 4), $this->Definition->getConstructorArgs());
+        $this->assertEquals(array(), $this->definition->getConstructorArgs());
+        $this->definition->setConstructorArgs(array(1, 2, 3, 4));
+        $this->assertEquals(array(1, 2, 3, 4), $this->definition->getConstructorArgs());
     }
 
     /**
@@ -65,8 +65,8 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
      */
     public function testSetConstructorArgs()
     {
-        $this->Definition->setConstructorArgs(array(1, 2, 3, 4));
-        $this->assertAttributeEquals(array(1, 2, 3, 4), 'constructorArgs', $this->Definition);
+        $this->definition->setConstructorArgs(array(1, 2, 3, 4));
+        $this->assertAttributeEquals(array(1, 2, 3, 4), 'constructorArgs', $this->definition);
     }
 
     /**
@@ -74,7 +74,19 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
      */
     public function testGetMethods()
     {
-        $this->assertEquals(array(), $this->Definition->getMethods());
+        $this->assertEquals(array(), $this->definition->getMethods());
+    }
+
+    /**
+     * Tests Definition->getMethods()
+     */
+    public function testHasConstructorArgs()
+    {
+        $this->assertFalse($this->definition->hasConstructorArgs());
+        $args = array();
+        $args['setup'][] = array('var1' => 'var2');
+        $defintion = new Zikula_ServiceManager_Definition('StdClass', $args);
+        $this->assertTrue($defintion->hasConstructorArgs());
     }
 
     /**
@@ -83,8 +95,8 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
     public function testSetMethods()
     {
         $methods = array('foo' => array('bar'));
-        $this->Definition->setMethods($methods);
-        $this->assertAttributeEquals($methods, 'methods', $this->Definition);
+        $this->definition->setMethods($methods);
+        $this->assertAttributeEquals($methods, 'methods', $this->definition);
     }
 
     /**
@@ -92,13 +104,16 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
      */
     public function testAddMethod()
     {
-        $methods = array('foo' => array('bar'));
-        $this->Definition->addMethod('foo', array('bar'));
-        $this->assertAttributeEquals($methods, 'methods', $this->Definition);
+        $methods = array();
+        $methods['foo'][] = array('bar');
+        $this->definition->addMethod('foo', array('bar'));
+        $this->assertAttributeEquals($methods, 'methods', $this->definition);
 
-        $methods = array('foo' => array('bar'), 'boo' => array('bar'));
-        $this->Definition->addMethod('boo', array('bar'));
-        $this->assertAttributeEquals($methods, 'methods', $this->Definition);
+        $methods = array();
+        $methods['foo'][] = array('bar');
+        $methods['boo'][] = array('bar');
+        $this->definition->addMethod('boo', array('bar'));
+        $this->assertAttributeEquals($methods, 'methods', $this->definition);
     }
 
     /**
@@ -106,11 +121,11 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
      */
     public function testHasMethods()
     {
-        $this->assertFalse($this->Definition->hasMethods());
-        $this->Definition->addMethod('foo', array('bar'));
-        $this->assertTrue($this->Definition->hasMethods());
-        $this->Definition->addMethod('test', array('ing'));
-        $this->assertTrue($this->Definition->hasMethods());
+        $this->assertFalse($this->definition->hasMethods());
+        $this->definition->addMethod('foo', array('bar'));
+        $this->assertTrue($this->definition->hasMethods());
+        $this->definition->addMethod('test', array('ing'));
+        $this->assertTrue($this->definition->hasMethods());
     }
 
 }
