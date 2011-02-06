@@ -24,6 +24,11 @@ class DoctrineListener extends Zikula_EventHandler
      */
     protected $doctrineManager;
 
+    /**
+     * Setup handlers.
+     *
+     * @return void
+     */
     public function setupHandlerDefinitions()
     {
         $this->addHandlerDefinition('doctrine.init_connection', 'doctrineInit');
@@ -40,7 +45,7 @@ class DoctrineListener extends Zikula_EventHandler
      * boolean 'lazy'  - lazy connect.
      * string 'name' - connection name.
      *
-     * @param Zikula_Event $internalEvent Event.
+     * @param Zikula_Event $event Event.
      *
      * @return void
      */

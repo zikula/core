@@ -15,12 +15,12 @@
 /**
  * Template plugin to display timezone list.
  *
- * <!--[timezoneselect selected="Timezone"]-->
+ * Example <!--[timezoneselect selected="Timezone"]-->.
  *
- * @see    function.timezoneselect.php::smarty_function_timezoneselect().
+ * @see function.timezoneselect.php::smarty_function_timezoneselect().
  *
- * @param  array       $params   All attributes passed to this function from the template.
- * @param  Zikula_View $view     The Zikula_View.
+ * @param array       $params   All attributes passed to this function from the template.
+ * @param Zikula_View $view     The Zikula_View.
  *
  * @return string The results of the module function.
  */

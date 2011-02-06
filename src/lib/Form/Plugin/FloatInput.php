@@ -37,10 +37,10 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
 
     /**
      * Number of decimal places to display.
-     *
-     * @var int
+     * 
+     * @var integer
      */
-    var $precision;
+    public $precision;
 
     /**
      * Get filename of this file.
