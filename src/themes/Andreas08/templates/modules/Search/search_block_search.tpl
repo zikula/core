@@ -4,9 +4,11 @@
         {if $vars.displaySearchBtn eq 1}
         <input class="z-button z-bt-small theme_search_button" type="submit" value="{gt text="Go" domain='zikula'}" />
         {/if}
+        {if isset($vars.active) && is_array($vars.active)}
         {foreach item="dummy" key="actives" from=$vars.active}
         <input type="hidden" name="active[{$actives|safetext}]" value="1" />
         {/foreach}
+        {/if}
 
         {searchvartofieldnames data=$modvars.Search prefix="modvar" assign="modvariables"}
         {foreach item="value" key="name" from=$modvariables}
