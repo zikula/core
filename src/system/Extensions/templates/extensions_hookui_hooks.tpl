@@ -99,7 +99,7 @@
 	</fieldset>
     {/if}
 
-    {if $isSubscriber && !empty($subscriberAreas) && $total_attached_provider_areas gt 0}
+    {if $isSubscriber && !empty($subscriberAreas)}
 	<fieldset>
 	<legend>{gt text="Reorder attached areas"}</legend>
 
@@ -148,7 +148,7 @@
                     <li class="z-clearfix"><span class="z-itemcell z-w100">{gt text="There aren't any areas attached here"}</span></li>
                 {/foreach}
             </ol>
-
+        
         {/foreach}
         </fieldset>
     {/if}
