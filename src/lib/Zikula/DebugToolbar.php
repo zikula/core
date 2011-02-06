@@ -146,15 +146,5 @@ class Zikula_DebugToolbar
                     '.implode(' ', $panelContents).'
                 </div>';
     }
-
-    /**
-     * Adds the HTML code of this toolbar to the footer of the page via PageUtil.
-     *
-     * @return void
-     */
-    public function addHTMLToFooter()
-    {
-        PageUtil::addVar('footer', $this->asHTML());
-    }
 }
 
