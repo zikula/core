@@ -63,6 +63,10 @@ class Search_Block_Search extends Zikula_Block
             $vars['displaySearchBtn'] = 0;
         }
 
+        if (!isset($vars['active'])) {
+            $vars['active'] = array();
+        }
+
         // assign the block vars array
         $this->view->assign('vars', $vars);
 
