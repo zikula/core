@@ -31,8 +31,8 @@
         <thead>
         <tr>
             <th class="z-w05">{gt text='ID'}</th>
-            <th class="z-w20">{gt text='Display name'}</th>
-            <th class="z-w75">{gt text='Connections'}</th>
+            <th class="z-w15">{gt text='Display name'}</th>
+            <th class="z-w80">{gt text='Connections'}</th>
         </tr>
         </thead>
         <tbody>
@@ -67,22 +67,22 @@
                     {/if}
 
                     <div class="z-clearfix">
-                        <div class="z-floatleft z-w30">
-                        {$subscriber.areasTitles.$sarea} ({$sarea})
+                        <div class="z-floatleft z-w45">
+                        {$subscriber.areasTitles.$sarea} <span class="z-sub">({$sarea})</span>
                         </div>
 
-                        <div class="z-floatleft z-w04 z-center">
+                        <div class="z-floatleft z-w10 z-center">
                         {img src="attach.gif" modname="core" set="icons/extrasmall"}
                         </div>
 
-                        <div class="z-floatleft">
+                        <div class="z-floatleft z-w45">
                         {foreach from=$providerAreas item='parea'}
                             {assign var="parea_md5" value=$parea|md5}
 
                             {callfunc x_class='HookUtil' x_method='allowBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
                             {if !$allow_binding}{continue}{/if}
                             {callfunc x_class='HookUtil' x_method='bindingBetweenAreas' sarea=$sarea parea=$parea x_assign='binding'}
-                            <input type="checkbox" id="chk_{$sarea_md5}_{$parea_md5}" name="chk[{$sarea_md5}][{$parea_md5}]" value="subscriberarea={$sarea}#providerarea={$parea}" {if $binding}checked="checked"{/if} /> {$providerAreasTitles.$parea} ({$parea})<br />
+                            <input type="checkbox" id="chk_{$sarea_md5}_{$parea_md5}" name="chk[{$sarea_md5}][{$parea_md5}]" value="subscriberarea={$sarea}#providerarea={$parea}" {if $binding}checked="checked"{/if} /> {$providerAreasTitles.$parea} <span class="z-sub">({$parea})</span><br />
                         {/foreach}
                         </div>
                     </div>
