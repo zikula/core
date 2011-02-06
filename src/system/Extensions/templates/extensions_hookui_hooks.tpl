@@ -13,21 +13,19 @@
 	
     <div class="z-form">
 
-    {if $isProvider}
+    {if $isProvider && !empty($providerAreas) && $total_available_subscriber_areas gt 0}
 	<fieldset>
 	<legend>{gt text="Connect %s to other modules" tag1=$currentmodule}</legend>
-
-	<p class="z-warningmsg">
-            {gt text="%s module has the following areas:" tag1=$currentmodule}
+	<p class="z-informationmsg">
+            {assign var="total_provider_areas" value=$providerAreas|@count}
+            {gt text="%s module provides the following area:" plural="%s module provides the following areas:" tag1=$currentmodule count=$total_provider_areas}
             <br />
             {foreach from=$providerAreas item='providerarea' name="loop"}
-                {assign var="providerarealastdotpos" value=$providerarea|strrpos:'.'}
-                {assign var="providerareashort" value=$providerarea|substr:$providerarealastdotpos+1}
-                {$smarty.foreach.loop.iteration}) {$providerareashort}<br />
+                {if $total_provider_areas gt 1}{$smarty.foreach.loop.iteration}) {/if}<strong>{$providerAreasTitles.$providerarea} ({$providerarea})</strong><br />
             {/foreach}
+            <br />
+            {gt text="To connect %s to one of the modules from the list below, click on the checkbox(es) next to the corresponding area." tag1=$currentmodule}
 	</p>
-
-	<p class="z-informationmsg">{gt text="To connect %s to one of the modules from the list below, click on the checkbox(es) next to the corresponding area." tag1=$currentmodule}</p>
 
 	<table class="z-datatable" id="subscriberslist">
         <thead>
@@ -47,12 +45,30 @@
                 <td>
 
                 {foreach from=$subscriber.areas item='sarea' name='loop_sareas'}
-                    {assign var="sarealastdotpos" value=$sarea|strrpos:'.'}
-                    {assign var="sareashort" value=$sarea|substr:$sarealastdotpos+1}
+                    {assign var="sarea_md5" value=$sarea|md5}
+
+                    {* preliminary check to see if binding is allowed, if no bindings are allowed we don't show this row. Better usability. *}
+                    {assign var="total_bindings" value=0}
+                    {foreach from=$providerAreas item='parea'}
+                        {callfunc x_class='HookUtil' x_method='allowBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
+                        {if $allow_binding}
+                            {assign var="total_bindings" value=$total_bindings+1}
+                            {break}
+                        {/if}
+                    {/foreach}
+                    
+                    {if $total_bindings eq 0}
+                        {continue}
+                    {/if}
+
+                    {if $smarty.foreach.loop_sareas.iteration lte $smarty.foreach.loop_sareas.total && $smarty.foreach.loop_sareas.iteration gt 1}
+                    {* TODO - do this with styles perhaps ? *}
+                    <div style="height:5px; margin-top: 5px; border-top:1px dotted #dedede;"></div>
+                    {/if}
 
                     <div class="z-clearfix">
-                        <div class="z-floatleft z-w20">
-                        {$sareashort}
+                        <div class="z-floatleft z-w30">
+                        {$subscriber.areasTitles.$sarea} ({$sarea})
                         </div>
 
                         <div class="z-floatleft z-w04 z-center">
@@ -61,20 +77,15 @@
 
                         <div class="z-floatleft">
                         {foreach from=$providerAreas item='parea'}
-                            {assign var="parealastdotpos" value=$parea|strrpos:'.'}
-                            {assign var="pareashort" value=$parea|substr:$parealastdotpos+1}
+                            {assign var="parea_md5" value=$parea|md5}
+
                             {callfunc x_class='HookUtil' x_method='allowBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
                             {if !$allow_binding}{continue}{/if}
                             {callfunc x_class='HookUtil' x_method='bindingBetweenAreas' sarea=$sarea parea=$parea x_assign='binding'}
-                            <input type="checkbox" id="chk_{$sareashort}_{$pareashort}" name="chk[{$sareashort}][{$pareashort}]" value="subscriberarea={$sarea}#providerarea={$parea}" {if $binding}checked="checked"{/if} /> {$pareashort}<br />
+                            <input type="checkbox" id="chk_{$sarea_md5}_{$parea_md5}" name="chk[{$sarea_md5}][{$parea_md5}]" value="subscriberarea={$sarea}#providerarea={$parea}" {if $binding}checked="checked"{/if} /> {$providerAreasTitles.$parea} ({$parea})<br />
                         {/foreach}
                         </div>
                     </div>
-
-                    {if $smarty.foreach.loop_sareas.iteration lt $smarty.foreach.loop_sareas.total}
-                    {* TODO - do this with styles perhaps ? *}
-                    <div style="height:5px; margin-bottom: 5px; border-bottom:1px dotted #dedede;"></div>
-                    {/if}
 
                 {/foreach}
                     
@@ -88,42 +99,56 @@
 	</fieldset>
     {/if}
 
-    {if $isSubscriber}
+    {if $isSubscriber && !empty($subscriberAreas) && $total_attached_provider_areas gt 0}
 	<fieldset>
-	<legend>{gt text="Reorder areas"}</legend>
+	<legend>{gt text="Reorder attached areas"}</legend>
 
-        <p class="z-warningmsg">
-            {gt text="%s module has the following areas:" tag1=$currentmodule}
+        <p class="z-informationmsg">
+            {assign var="total_subscriber_areas" value=$subscriberAreas|@count}
+            {gt text="%s module subscribes with the following area:" plural="%s module subscribes with the following areas:" tag1=$currentmodule count=$total_subscriber_areas}
             <br />
             {foreach from=$subscriberAreas item='subscriberarea' name="loop"}
-                {assign var="subscriberarealastdotpos" value=$subscriberarea|strrpos:'.'}
-                {assign var="subscriberareashort" value=$subscriberarea|substr:$subscriberarealastdotpos+1}
-                {$smarty.foreach.loop.iteration}) {$subscriberareashort}<br />
+                {if $total_subscriber_areas gt 1}{$smarty.foreach.loop.iteration}) {/if}<strong>{$subscriberAreasTitles.$subscriberarea} ({$subscriberarea})</strong><br />
             {/foreach}
+            <br />
+            {gt text="To reorder the attached areas from the list below, drag the area that you want to change and drop it to your desired position. To attach another area to %s module, please visit the module that provides it." tag1=$currentmodule}
+
+            {if count($suggestedProviders) gt 0}
+                {assign var="suggested_modules" value=""}
+                {foreach from=$suggestedProviders item=suggestedProvider name="loop_suggested_providers"}
+                    {modurl modname=$suggestedProvider.name type='admin' func='hooks' assign='suggested_module_url'}
+                    {if $smarty.foreach.loop_suggested_providers.iteration lt $smarty.foreach.loop_suggested_providers.total}
+                        {assign var="suggested_module_comma" value=", "}
+                    {else}
+                        {assign var="suggested_module_comma" value=""}
+                    {/if}
+                    {assign var="suggested_modules" value="`$suggested_modules`<a href=\"`$suggested_module_url`\">`$suggestedProvider.name`</a>`$suggested_module_comma`"}
+                {/foreach}
+                {gt text="(eg %s)" tag1=$suggested_modules}
+            {/if}
 	</p>
 
-        <p class="z-informationmsg">{gt text="To reorder the areas from the list below (for each of %s areas), drag and drop the corresponding area. To attach another area, please visit the module that provides it." tag1=$currentmodule}</p>
-
         {foreach from=$areasSorting key='sarea' item='pareas' name='loop_sareas'}
-            {assign var="sarealastdotpos" value=$sarea|strrpos:'.'}
-            {assign var="sareashort" value=$sarea|substr:$sarealastdotpos+1}
+            {assign var="sarea_md5" value=$sarea|md5}
             
-            <ol id="providerareassortlist_{$sareashort}" class="z-itemlist">
-		<li id="providerareassortlistheader_{$sareashort}" class="z-itemheader z-clearfix">
-                    <span class="z-itemcell z-w100">{$sareashort}</span>
-                    <input type="hidden" id="providerareassortlist_{$sareashort}_h" value="{$sarea}" />
+            <ol id="providerareassortlist_{$sarea_md5}" class="z-itemlist">
+		<li id="providerareassortlistheader_{$sarea_md5}" class="z-itemheader z-clearfix">
+                    <span class="z-itemcell z-w100">{$subscriberAreasTitles.$sarea} ({$sarea})</span>
+                    <input type="hidden" id="providerareassortlist_{$sarea_md5}_h" value="{$sarea}" />
 		</li>
 
                 {foreach from=$pareas item='parea'}
-                    {assign var="parealastdotpos" value=$parea|strrpos:'.'}
-                    {assign var="pareashort" value=$parea|substr:$parealastdotpos+1}
+                    {assign var="parea_md5" value=$parea|md5}
                     
-                    <li id="providerarea_{$pareashort}" class="{cycle name='providerareaslist' values='z-odd,z-even'} z-sortable z-clearfix">
-			<span class="z-itemcell z-w100">{$pareashort}</span>
-                        <input type="hidden" id="providerarea_{$pareashort}_h" value="{$parea}" />
+                    <li id="providerarea_{$parea_md5}" class="{cycle name='providerareaslist' values='z-odd,z-even'} z-sortable z-clearfix">
+			<span class="z-itemcell z-w100">{$areasSortingTitles.$parea} ({$parea})</span>
+                        <input type="hidden" id="providerarea_{$parea_md5}_h" value="{$parea}" />
                     </li>
+                {foreachelse}
+                    <li class="z-clearfix"><span class="z-itemcell z-w100">{gt text="There aren't any areas attached here"}</span></li>
                 {/foreach}
             </ol>
+
         {/foreach}
         </fieldset>
     {/if}
@@ -133,20 +158,18 @@
 </div>
 
 <script type="text/javascript">
-{{if $isProvider}}
+{{if $isProvider && !empty($providerAreas) && $total_available_subscriber_areas gt 0}}
 $$('#subscriberslist input').each(function(obj) {
 	obj.observe('click', subscriberAreaToggle);
 });
 {{/if}}
 
-{{if $isSubscriber}}
+{{if $isSubscriber && !empty($subscriberAreas) && $total_attached_provider_areas gt 0}}
 var providerareas = new Array();
 {{foreach from=$areasSorting key='sarea' item='parea'}}
-    {{assign var="sarealastdotpos" value=$sarea|strrpos:'.'}}
-    {{assign var="sareashort" value=$sarea|substr:$sarealastdotpos+1}}
-    providerareas.push('{{$sareashort}}');
+    {{assign var="sarea_md5" value=$sarea|md5}}
+    providerareas.push('{{$sarea_md5}}');
 {{/foreach}}
 Event.observe(window, 'load', initproviderareassorting);
 {{/if}}
 </script>
-
