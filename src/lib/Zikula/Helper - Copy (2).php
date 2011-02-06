@@ -123,4 +123,80 @@ abstract class Zikula_Helper implements Zikula_Translatable
     {
         return $this->serviceManager;
     }
+
+    /**
+     * Get translation domain property.
+     *
+     * @return string|null Domain.
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
+     * Set the translation domain property.
+     *
+     * @param string $domain Translation domain.
+     *
+     * @return void
+     */
+    public function setDomain($domain)
+    {
+        $this->domain = $domain;
+    }
+
+    /**
+     * Translate.
+     *
+     * @param string $msgid String to be translated.
+     *
+     * @return string
+     */
+    public function __($msgid)
+    {
+        return __($msgid, $this->domain);
+    }
+
+    /**
+     * Translate with sprintf().
+     *
+     * @param string       $msgid  String to be translated.
+     * @param string|array $params Args for sprintf().
+     *
+     * @return string
+     */
+    public function __f($msgid, $params)
+    {
+        return __f($msgid, $params, $this->domain);
+    }
+
+    /**
+     * Translate plural string.
+     *
+     * @param string $singular Singular instance.
+     * @param string $plural   Plural instance.
+     * @param string $count    Object count.
+     *
+     * @return string Translated string.
+     */
+    public function _n($singular, $plural, $count)
+    {
+        return _n($singular, $plural, $count, $this->domain);
+    }
+
+    /**
+     * Translate plural string with sprintf().
+     *
+     * @param string       $sin    Singular instance.
+     * @param string       $plu    Plural instance.
+     * @param string       $n      Object count.
+     * @param string|array $params Sprintf() arguments.
+     *
+     * @return string
+     */
+    public function _fn($sin, $plu, $n, $params)
+    {
+        return _fn($sin, $plu, $n, $params, $this->domain);
+    }
 }
