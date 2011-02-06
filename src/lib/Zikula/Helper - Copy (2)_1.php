@@ -54,7 +54,7 @@ abstract class Zikula_Helper implements Zikula_Translatable
     protected $reflection;
 
     /**
-     * Setup of class.
+     * Constructor.
      *
      * Generally helpers are instaciated with new Zikula_Helper($this), but it
      * will accept most Zikula classes, and can be customised with
@@ -66,7 +66,7 @@ abstract class Zikula_Helper implements Zikula_Translatable
      *
      * @param object $object Zikula_Base, Zikula_ServiceManager, Zikula_EventHandler, Zikula_HookHandler, or other.
      */
-    public function inject($object)
+    public function __construct($object)
     {
         $this->object = $object;
         if ($object instanceof Zikula_Base || $object instanceof Zikula_EventHandler || $object instanceof Zikula_HookHandler) {
@@ -76,8 +76,19 @@ abstract class Zikula_Helper implements Zikula_Translatable
             $this->serviceManager = $object;
             $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
         } else {
-            $this->customInject($object);
+            $this->customConstruct($object);
         }
+
+        $this->setup();
+    }
+
+    /**
+     * Setup hook, called from constructor.
+     *
+     * @return void
+     */
+    protected function setup()
+    {
     }
 
     /**
@@ -87,7 +98,7 @@ abstract class Zikula_Helper implements Zikula_Translatable
      *
      * @return void
      */
-    protected function customInject($object)
+    protected function customConstruct($object)
     {
     }
 
