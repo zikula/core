@@ -178,6 +178,36 @@ class Zikula_Core
     }
 
     /**
+     * Reboot.
+     *
+     * Shutdown the system flushing all event handlers, services and service arguments.
+     *
+     * @return void
+     */
+    public function reboot()
+    {
+        $event = new Zikula_Event('shutdown', $this);
+        $this->eventManager->notify($event);
+
+        // flush handlers
+        $this->eventManager->flushHandlers();
+
+        // flush all services
+        $services = $this->serviceManager->listServices();
+        rsort($services);
+        foreach ($services as $id) {
+            if (!in_array($id, array('zikula', 'zikula.servicemanager', 'zikula.eventmanager'))) {
+                $this->serviceManager->unregisterService($id);
+            }
+        }
+
+        // flush arguments.
+        $this->serviceManager->setArguments(array());
+        $this->stage = 0;
+        $this->bootime = microtime(true);
+    }
+
+    /**
      * Get uptime.
      *
      * @return float
@@ -220,10 +250,6 @@ class Zikula_Core
     public function init($stage = self::STAGE_ALL)
     {
         $coreInitEvent = new Zikula_Event('core.init', $this);
-
-        if (!is_numeric($stage)) {
-            $stage = self::STAGE_ALL;
-        }
 
         // store the load stages in a global so other API's can check whats loaded
         $this->stage = $this->stage | $stage;
@@ -273,8 +299,6 @@ class Zikula_Core
 
         if ($stage & self::STAGE_TABLES) {
             // Initialise dbtables
-            $GLOBALS['dbtables'] = isset($GLOBALS['dbtables']) ? $GLOBALS['dbtables'] : array();
-            // ensure that the base modules info is available
             ModUtil::dbInfoLoad('Extensions', 'Extensions');
             ModUtil::initCoreVars();
             ModUtil::dbInfoLoad('Settings', 'Settings');
