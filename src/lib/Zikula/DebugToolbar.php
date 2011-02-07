@@ -62,7 +62,7 @@ class Zikula_DebugToolbar
     {
         PageUtil::addVar("javascript", "prototype");
         PageUtil::addVar("javascript", "javascript/debugtoolbar/main.js");
-        PageUtil::addVar('stylesheet', 'styles/debugtoolbar.css');
+        PageUtil::addVar('stylesheet', 'style/debugtoolbar.css');
 
         // allow modules and plugins to extend the toolbar
         $event = new Zikula_Event('debugtoolbar.init', $this);

@@ -5,8 +5,8 @@
     <title>{title}</title>
     <meta name="description" content="{$modvars.ZConfig.slogan}" />
     <meta name="keywords" content="{$metatags.keywords}" />
-    <link rel="stylesheet" type="text/css" href="styles/core.css" media="print,projection,screen" />
-    {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" />{/browserhack}
+    <link rel="stylesheet" type="text/css" href="style/core.css" media="print,projection,screen" />
+    {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" />{/browserhack}
     <link rel="stylesheet" type="text/css" href="{$stylepath}/style.css" media="print,projection,screen" />
     <link rel="stylesheet" type="text/css" href="{$stylepath}/print.css" media="print" />
 </head>

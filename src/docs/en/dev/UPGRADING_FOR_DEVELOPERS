@@ -40,7 +40,7 @@ TEMPLATES
 
 - Remove {addition_headers} plugin from any themes, this doesn't work anymore.
 
-- Replace all occurrences of "javascript/style.css" with "styles/core.css"
+- Replace all occurrences of "javascript/style.css" with "style/core.css"
 
 - The {pager} plugin  no longer requires the parameter shift
 

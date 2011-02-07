@@ -242,7 +242,7 @@ class ThemeUtil
         $osmodname = DataUtil::formatForOS($modname);
 
         // config directory
-        $configstyledir = 'config/styles';
+        $configstyledir = 'config/style';
         $configpath = "$configstyledir/$osmodname";
 
         // theme directory

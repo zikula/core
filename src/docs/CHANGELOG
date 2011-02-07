@@ -45,7 +45,7 @@ Searchbox toggle (issue #1810).
 Link to help page for each security alert (issue #1692).
 Missing language domain in themeswitcher block (issue #1896).
 HTML Settings: check all radios (issue #1551).
-The generic stylesheet (styles/core.css) is now loaded before all other stylesheets that are loaded through pagevars. (Issue #1911).
+The generic stylesheet (style/core.css) is now loaded before all other stylesheets that are loaded through pagevars. (Issue #1911).
 Add requirement/warning messsage into the admin panel for the blocks. (issue #757).
 Permission checks in the Users module were made more consistent throughout. (issue #1872).
 New APIs DataUtil::decodeNVP(), DataUtil::encodeNVP(), DataUtil::encodeNVPArray().
@@ -71,7 +71,7 @@ Updated css messages (Issue #2043 & Issue #2030).
 Added support for HTTP 500 response in Errors module.
 Improved password recovery workflow (Issue #1631).
 Added user name recovery (Issue #243).
-New location for core stylesheet in /styles/core.css (Issue #2211).
+New location for core stylesheet in /style/core.css (Issue #2211).
 Added @import handling to css combiner (Issue #1801).
 Fixed issue with system vars and modvars that prevented retrieval of a stored NULL value which would return the default value instead.
 Added exception support in front controller and module controllers.
@@ -90,14 +90,14 @@ tables.php: $module_column is now unnecessary if the there is no column prefix, 
 All templates now have $eventManager, $serverManager and $controller (being the OO controller owner).
 OO controllers now automatically creates renderer object and store in $renderer.
 Issue #1838 (DataUtil::formatForOS() not Windows file path compatible).
-New location for core stylesheet in /styles/core.css (Issue #2211).
+New location for core stylesheet in /style/core.css (Issue #2211).
 Deprecated ZFeed and SimplePie from the core.
 Added @import handling to css combiner (Issue #1801).
 New button styling (Issue #1574).
 Relocated system fatal error templates (siteoff.tpl, notinstalled.tpl, dbconnectionerror.tpl and sessionfailed.tpl) to system/Theme/templates/system.
 Changed core module templates to use .tpl
 Issue #2209 Add date in Zikula error log file.
-Allow override of styles/core.css with config/styles/core.css.
+Allow override of style/core.css with config/style/core.css.
 Provide 'pageutil.addvar_filter' event to override anything added by PageUtil::addVar, or {pageaddvar}.  This allows for complete override freedom.
 New default pager style (Issue #2264).
 Streamlined user frontend of Themes module (Issue #2279).

@@ -87,7 +87,7 @@ class Blocks_MenutreeUtil
 
         // module stylesheets
         $modulesStyles = FileUtil::getFiles('system/Blocks/style/menutree', false, false, 'css', false);
-        $configStyles = FileUtil::getFiles('config/styles/Blocks/menutree', false, false, 'css', false);
+        $configStyles = FileUtil::getFiles('config/style/Blocks/menutree', false, false, 'css', false);
         $styles['modules'] = array_merge($modulesStyles, $configStyles);
 
         // themes stylesheets - get user and admin themes
