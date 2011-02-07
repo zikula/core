@@ -114,7 +114,7 @@ class JCSSUtil
     public static function prepareStylesheets($stylesheets)
     {
         // Add generic stylesheet as the first stylesheet.
-        $event = new Zikula_Event('pageutil.addvar_filter', 'stylesheet', array(), array('styles/core.css'));
+        $event = new Zikula_Event('pageutil.addvar_filter', 'stylesheet', array(), array('style/core.css'));
         $coreStyle = EventUtil::getManager()->notify($event)->getData();
         if (is_array($stylesheets)) {
             array_unshift($stylesheets, $coreStyle[0]);
@@ -123,7 +123,7 @@ class JCSSUtil
         }
         $stylesheets = array_unique(array_values($stylesheets));
 
-        $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="styles/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
+        $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
         PageUtil::addVar('rawtext', $iehack);
 
         return $stylesheets;

@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------
 # Purpose of file: block any web access to files stored under
-#                  the styles/ directory
+#                  the style/ directory
 # ----------------------------------------------------------------------
 deny from all
 <FilesMatch "\.(css)$">
