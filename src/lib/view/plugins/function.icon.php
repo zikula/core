@@ -73,9 +73,6 @@ function smarty_function_icon($params, $view)
     $params['title']  = isset($params['title'])   ? $params['title']   : $params['alt'];
     $size   = isset($params['size'])    ? $params['size']    : 'extrasmall';
 
-    // language
-    //$lang =  DataUtil::formatForOS(UserUtil::getLang());
-
     $iconpath = 'images/icons/';
 
     // Include icon config file
