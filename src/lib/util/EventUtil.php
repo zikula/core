@@ -34,6 +34,7 @@ class EventUtil
      */
     private function __construct()
     {
+
     }
 
     /**
@@ -113,41 +114,7 @@ class EventUtil
      */
     static public function attachCustomHandlers($dir)
     {
-        static $loaded;
-        static $classes;
-
-        $dir = realpath($dir);
-
-        if (isset($loaded[$dir])) {
-            return;
-        }
-
-        $serviceManager = ServiceUtil::getManager();
-
-        $it = FileUtil::getFiles($dir, false, false, 'php', 'f');
-
-        foreach ($it as $file) {
-            $before = get_declared_classes();
-            include realpath($file);
-            $after = get_declared_classes();
-
-            $diff = new ArrayIterator(array_diff($after, $before));
-            if (count($diff) > 1) {
-                while ($diff->valid()) {
-                    $className = $diff->current();
-                    $diff->next();
-                }
-            } else {
-                $className = $diff->current();
-            }
-
-            if (!isset($classes[$className])) {
-                self::attachEventHandler($className, $serviceManager);
-                $classes[$className] = true;
-            }
-        }
-
-        $loaded[$dir] = true;
+        self::$eventManager->getServiceManager()->getService('zikula')->attachHandlers($dir);
     }
 
     /**
@@ -155,28 +122,14 @@ class EventUtil
      *
      * Loads event handlers that extend Zikula_EventHandler
      *
-     * @param string                $className      The name of the class.
-     * @param Zikula_ServiceManager $serviceManager The service manager instance (optional).
-     *
-     * @throws LogicException If class is not instance of Zikula_EventHandler.
+     * @param string $className      The name of the class.
      *
      * @return void
      */
-    public static function attachEventHandler($className, Zikula_ServiceManager $serviceManager = null)
+    public static function attachEventHandler($className)
     {
-        if (!$serviceManager) {
-            $serviceManager = ServiceUtil::getManager();
-        }
-
-        $r = new ReflectionClass($className);
-        $handler = $r->newInstance($serviceManager);
-
-        if (!$handler instanceof Zikula_EventHandler) {
-            throw new LogicException(sprintf('Class %s must be an instance of Zikula_EventHandler', $className));
-        }
-
-        $handler->setup();
-        $handler->attach();
+        $serviceManager = ServiceUtil::getManager();
+        $serviceManager->getService('zikula')->attachEventHandler($className);
     }
 
     /**
@@ -200,7 +153,7 @@ class EventUtil
 
             throw new InvalidArgumentException(sprintf('%s is not a valid PHP callable', $callable));
         }
-        
+
         if (is_array($callable) && is_object($callable[0])) {
             throw new InvalidArgumentException('Callable cannot be an instanciated class');
         }
@@ -250,7 +203,7 @@ class EventUtil
         if (!class_exists($className)) {
             throw new InvalidArgumentException(sprintf('Class %s does not exist or cannot be found', $className));
         }
-        
+
         $reflection = new ReflectionClass($className);
         if (!$reflection->isSubclassOf('Zikula_EventHandler')) {
             throw new InvalidArgumentException(sprintf('%s is not a subclass of Zikula_EventHandler', $className));
