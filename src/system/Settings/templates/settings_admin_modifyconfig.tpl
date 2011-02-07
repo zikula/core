@@ -159,7 +159,7 @@
                         <input id="settings_shorturlsseparator" size="1" maxlength="1" name="settings[shorturlsseparator]" value="{$modvars.ZConfig.shorturlsseparator}" />
                     </div>
                     <div id="settings_shorturls_defaultmodule_container" class="z-formrow">
-                        <label for="settings_shorturls_defaultmodule">{gt text="Default route (when no module is specified)"}</label>
+                        <label for="settings_shorturls_defaultmodule">{gt text="Use the following module as a main short URL module and strip the module name from the generated URLs"}</label>
                         <select id="settings_shorturls_defaultmodule" name="settings[shorturlsdefaultmodule]">
                             <option value="">{gt text="Nowhere"}</option>
                             {html_select_modules selected=$modvars.ZConfig.shorturlsdefaultmodule type=user}
