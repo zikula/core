@@ -101,17 +101,25 @@ class Theme_Api_User extends Zikula_Api
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
+        $templatedir = realpath('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates');
 
         if (!isset($args['type']) || $args['type'] == 'modules') {
             $args['type'] = 'modules';
-            $templatelist = FileUtil::getFiles('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates/', false, true, null, false);
+            $templatelist = FileUtil::getFiles($templatedir, false, false, '.tpl', 'f');
         } else {
             $templatelist = array();
         }
 
-        $templatelist = array_merge($templatelist, FileUtil::getFiles('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates/'.DataUtil::formatForOS($args['type']), false, true, null, false));
+        $templatelist = array_merge($templatelist, FileUtil::getFiles($templatedir.'/'.DataUtil::formatForOS($args['type']), false, false, '.tpl', 'f'));
 
-        return $templatelist;
+        $templates = array();
+        $dirlen = strlen($templatedir . '/');
+        foreach ($templatelist as $template) {
+            $template = realpath($template);
+            $templates[] = substr($template, $dirlen, strlen($template));
+        }
+
+        return $templates;
     }
 
     /**
