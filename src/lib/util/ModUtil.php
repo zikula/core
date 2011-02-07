@@ -1018,7 +1018,7 @@ class ModUtil
             }
 
             // get the theme
-            if (ServiceUtil::getManager()->getService('zikula')->getStages() & Zikula_Core::STAGE_THEME) {
+            if (ServiceUtil::getManager()->getService('zikula')->getStage() & Zikula_Core::STAGE_THEME) {
                 $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
                 if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php") || file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                     include_once $file;

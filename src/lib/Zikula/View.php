@@ -235,7 +235,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $this->default_resource_type = 'z';
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
-        if (($this->serviceManager->getService('zikula')->getStages() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
+        if (($this->serviceManager->getService('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
             $this->load_filter('output', 'shorturls');
         }
 
