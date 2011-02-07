@@ -8,45 +8,64 @@
             <ul class="systemrequirements">
                 {phpversion assign="phpversion"}
                 {if $checks.phpsatisfied}
-                <li class="passed">{gt text="Your PHP version is %s."  tag1=$phpversion}</li>
+                    <li class="passed">{gt text="Your PHP version is %s."  tag1=$phpversion}</li>
                 {else}
-                <li class="failed">{gt text="You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version 5.2.6 or later." tag1=$phpversion}</li>{assign var=checkfailed value=true}
+                    <li class="failed">{gt text="You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version 5.2.6 or later." tag1=$phpversion}</li>{assign var=checkfailed value=true}
                 {/if}
+
                 {* PHP 5.3.0 or greater requires date.timezone to be set in php.ini *}
                 {if $checks.checkdatetimezone}
                 {ini_get varname="date.timezone" assign="datetimezone"}
-                {if $datetimezone}
-                <li class="passed">{gt text="php.ini: date.timezone is set to %s"  tag1=$datetimezone}</li>
+
+                    {if $datetimezone}
+                        <li class="passed">{gt text="php.ini: date.timezone is set to %s"  tag1=$datetimezone}</li>
+                    {else}
+                        <li class="failed">{gt text="date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."}</li>{assign var=checkfailed value=true}
+                    {/if}
                 {else}
-                <li class="failed">{gt text="date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."}</li>{assign var=checkfailed value=true}
+                    <li class="passed">{gt text="date.timezone not needed for php version %s."  tag1=$phpversion}</li>
                 {/if}
+
+                {if $checks.register_globals}
+                    <li class="passed">{gt text="PHP register_globals = Off"}</li>
                 {else}
-                <li class="passed">{gt text="date.timezone not needed for php version %s."  tag1=$phpversion}</li>
+                    <li class="failed">{gt text="PHP register_globals = On and must be turned off in php.ini, or .htaccess"}</li>{assign var=checkfailed value=true}
                 {/if}
+
+                {if $checks.magic_quotes_gpc}
+                    <li class="passed">{gt text="PHP magic_quotes_gpc = Off"}</li>
+                {else}
+                    <li class="failed">{gt text="PHP magic_quotes_gpc = On and must be turned off in php.ini"}</li>{assign var=checkfailed value=true}
+                {/if}
+
                 {if $checks.pdo}
-                <li class="passed">{gt text="PDO extension loaded."}</li>
+                    <li class="passed">{gt text="PDO extension loaded."}</li>
                 {else}
-                <li class="failed">{gt text="You PHP installation doesn't have the PDO extension loaded."}</li>{assign var=checkfailed value=true}
+                    <li class="failed">{gt text="You PHP installation doesn't have the PDO extension loaded."}</li>{assign var=checkfailed value=true}
                 {/if}
+
                 {if $checks.phptokens}
-                <li class="passed">{gt text="Your PHP installation has the necessary token functions available."}</li>
+                    <li class="passed">{gt text="Your PHP installation has the necessary token functions available."}</li>
                 {else}
-                <li class="failed">{gt text="You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."}</li>{assign var=checkfailed value=true}
+                    <li class="failed">{gt text="You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."}</li>{assign var=checkfailed value=true}
                 {/if}
+
                 {if $checks.mbstring}
-                <li class="passed">{gt text="Your PHP installation has the multi-byte string functions available."}</li>
+                    <li class="passed">{gt text="Your PHP installation has the multi-byte string functions available."}</li>
                 {else}
-                <li class="failed">{gt text="Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets."}</li>
+                    <li class="failed">{gt text="Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets."}</li>
                 {/if}
+
                 {if $checks.pcreUnicodePropertiesEnabled}
-                <li class="passed">{gt text="Your PHP installation's PCRE library has Unicode property support enabled."}</li>
+                    <li class="passed">{gt text="Your PHP installation's PCRE library has Unicode property support enabled."}</li>
                 {else}
-                <li class="failed">{gt text="Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."}</li>{assign var=checkfailed value=true}
+                    <li class="failed">{gt text="Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."}</li>{assign var=checkfailed value=true}
                 {/if}
+
                 {if $checks.json_encode}
-                <li class="passed">{gt text="Your PHP installation has the JSON functions available."}</li>
+                    <li class="passed">{gt text="Your PHP installation has the JSON functions available."}</li>
                 {else}
-                <li class="failed">{gt text="Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests."}</li>
+                    <li class="failed">{gt text="Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests."}</li>
                 {/if}
             </ul>
         </fieldset>
