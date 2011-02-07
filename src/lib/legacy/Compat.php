@@ -3706,14 +3706,14 @@ function pnUserGetTheme($force = false)
  * This function returns the deprecated 3 digit language codes, you need to switch APIs
  *
  * @deprecated
- * @see UserUtil::getLang()
+ * @see ZLanguage::getLanguageCode()
  *
  * @return string the name of the user's language
  */
 function pnUserGetLang()
 {
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getLang()')), E_USER_DEPRECATED);
-    return UserUtil::getLang();
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ZLanguage::getLanguageCode()')), E_USER_DEPRECATED);
+    return ZLanguage::getLanguageCodeLegacy();
 }
 
 /**
