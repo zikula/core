@@ -1191,47 +1191,25 @@ class ModUtil
             $modname = rawurlencode($modinfo['url']);
         }
 
-        // define some statics as this API is likely to be called many times
-        static $entrypoint, $host, $baseuri, $https, $shorturls, $shorturlstype, $shorturlsstripentrypoint, $shorturlsdefaultmodule;
+        $entrypoint = System::getVar('entrypoint');
+        $host = System::serverGetVar('HTTP_HOST');
 
-        // entry point
-        if (!isset($entrypoint)) {
-            $entrypoint = System::getVar('entrypoint');
-        }
-        // Hostname
-        if (!isset($host)) {
-            $host = System::serverGetVar('HTTP_HOST');
-        }
         if (empty($host)) {
             return false;
         }
-        // Base URI
-        if (!isset($baseuri)) {
-            $baseuri = System::getBaseUri();
-        }
-        // HTTPS Support
-        if (!isset($https)) {
-            $https = System::serverGetVar('HTTPS');
-        }
-        // use friendly url setup
-        if (!isset($shorturls)) {
-            $shorturls = System::getVar('shorturls');
-        }
-        if (!isset($shorturlstype)) {
-            $shorturlstype = System::getVar('shorturlstype');
-        }
-        if (!isset($shorturlsstripentrypoint)) {
-            $shorturlsstripentrypoint = System::getVar('shorturlsstripentrypoint');
-        }
-        if (!isset($shorturlsdefaultmodule)) {
-            $shorturlsdefaultmodule = System::getVar('shorturlsdefaultmodule');
-        }
 
-        // copy shorturls var so we don't overwrite static var
-        $_shorturls = $shorturls;
-        if (isset($args['returnpage'])) {
-            $_shorturls = false;
-        }
+        $baseuri = System::getBaseUri();
+        $https = System::serverGetVar('HTTPS');
+        $shorturls = System::getVar('shorturls');
+        $shorturlstype = System::getVar('shorturlstype');
+        $shorturlsstripentrypoint = System::getVar('shorturlsstripentrypoint');
+        $shorturlsdefaultmodule = System::getVar('shorturlsdefaultmodule');
+
+        // copy shorturls var so we don't overwrite static var (this can probably go, we're not using static vars - drak)
+//        $_shorturls = $shorturls;
+//        if (isset($args['returnpage'])) {
+//            $_shorturls = false;
+//        }
 
         $language = ($forcelang ? $forcelang : ZLanguage::getLanguageCode());
 
