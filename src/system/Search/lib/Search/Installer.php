@@ -87,7 +87,7 @@ class Search_Installer extends Zikula_Installer
         $this->delVars();
 
         // unregister event handlers
-        EventUtil::unregisterPersistentModuleHandlers('Search');
+        EventUtil::unregisterPersistentHandlers('Search');
 
         // Deletion successful
         return true;
