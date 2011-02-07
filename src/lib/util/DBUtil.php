@@ -181,7 +181,7 @@ class DBUtil
      */
     public static function getTables()
     {
-        return $GLOBALS['dbtables'];
+        return ServiceUtil::getManager()->getArgument('dbtables');
     }
 
     /**
