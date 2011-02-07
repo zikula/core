@@ -244,7 +244,7 @@ class EventUtil
      *
      * @return void
      */
-    public static function unregisterPersistentHandlers($moduleName)
+    public static function unregisterPersistentModuleHandlers($moduleName)
     {
         ModUtil::delVar(self::HANDLERS, $moduleName);
     }
