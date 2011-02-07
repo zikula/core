@@ -15,16 +15,16 @@
 
     {if $isProvider && !empty($providerAreas) && $total_available_subscriber_areas gt 0}
 	<fieldset>
-	<legend>{gt text="Connect %s to other modules" tag1=$currentmodule}</legend>
+	<legend>{gt text="Connect %s to other modules" tag1=$currentmodule|safehtml}</legend>
 	<p class="z-informationmsg">
             {assign var="total_provider_areas" value=$providerAreas|@count}
-            {gt text="%s module provides the following area:" plural="%s module provides the following areas:" tag1=$currentmodule count=$total_provider_areas}
+            {gt text="%s module provides the following area:" plural="%s module provides the following areas:" tag1=$currentmodule|safetext count=$total_provider_areas}
             <br />
             {foreach from=$providerAreas item='providerarea' name="loop"}
                 {if $total_provider_areas gt 1}{$smarty.foreach.loop.iteration}) {/if}<strong>{$providerAreasTitles.$providerarea} ({$providerarea})</strong><br />
             {/foreach}
             <br />
-            {gt text="To connect %s to one of the modules from the list below, click on the checkbox(es) next to the corresponding area." tag1=$currentmodule}
+            {gt text="To connect %s to one of the modules from the list below, click on the checkbox(es) next to the corresponding area." tag1=$currentmodule|safetext}
 	</p>
 
 	<table class="z-datatable" id="subscriberslist">
@@ -105,13 +105,13 @@
 
         <p class="z-informationmsg">
             {assign var="total_subscriber_areas" value=$subscriberAreas|@count}
-            {gt text="%s module subscribes with the following area:" plural="%s module subscribes with the following areas:" tag1=$currentmodule count=$total_subscriber_areas}
+            {gt text="%s module subscribes with the following area:" plural="%s module subscribes with the following areas:" tag1=$currentmodule|safetext count=$total_subscriber_areas}
             <br />
             {foreach from=$subscriberAreas item='subscriberarea' name="loop"}
                 {if $total_subscriber_areas gt 1}{$smarty.foreach.loop.iteration}) {/if}<strong>{$subscriberAreasTitles.$subscriberarea} ({$subscriberarea})</strong><br />
             {/foreach}
             <br />
-            {gt text="To reorder the attached areas from the list below, drag the area that you want to change and drop it to your desired position. To attach another area to %s module, please visit the module that provides it." tag1=$currentmodule}
+            {gt text="To reorder the attached areas from the list below, drag the area that you want to change and drop it to your desired position. To attach another area to %s module, please visit the module that provides it." tag1=$currentmodule|safetext}
 
             {if count($suggestedProviders) gt 0}
                 {assign var="suggested_modules" value=""}
@@ -124,7 +124,7 @@
                     {/if}
                     {assign var="suggested_modules" value="`$suggested_modules`<a href=\"`$suggested_module_url`\">`$suggestedProvider.name`</a>`$suggested_module_comma`"}
                 {/foreach}
-                {gt text="(eg %s)" tag1=$suggested_modules}
+                {gt text="(eg %s)" tag1=$suggested_modules|safehtml}
             {/if}
 	</p>
 
