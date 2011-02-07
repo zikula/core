@@ -187,6 +187,18 @@ class Zikula_EventManager
     }
 
     /**
+     * Flush handlers.
+     *
+     * Clears all handlers.
+     *
+     * @return void
+     */
+    public function flushHandlers()
+    {
+        $this->handlers = array();
+    }
+
+    /**
      * Invoke handler.
      *
      * @param callable     $handler Callable by PHP.
