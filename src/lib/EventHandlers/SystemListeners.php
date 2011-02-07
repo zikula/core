@@ -25,6 +25,7 @@ class SystemListeners extends Zikula_EventHandler
      */
     protected function setupHandlerDefinitions()
     {
+        $this->addHandlerDefinition('bootstrap.getconfig', 'initialHandlerScan', -10);
         $this->addHandlerDefinition('bootstrap.getconfig', 'getConfigFile');
         $this->addHandlerDefinition('setup.errorreporting', 'defaultErrorReporting');
         $this->addHandlerDefinition('core.init', 'setupLoggers');
@@ -40,6 +41,19 @@ class SystemListeners extends Zikula_EventHandler
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
         $this->addHandlerDefinition('core.init', 'initDB');
+    }
+
+    /**
+     * Listens for 'bootstrap.getconfig' event.
+     *
+     * @param Zikula_Event $event
+     */
+    public function initialHandlerScan(Zikula_Event $event)
+    {
+        $core = $this->serviceManager->getService('zikula');
+        ServiceUtil::getManager($core);
+        EventUtil::getManager($core);
+        $core->attachHandlers('config/EventHandlers');
     }
 
     /**
@@ -136,13 +150,11 @@ class SystemListeners extends Zikula_EventHandler
      */
     public function defaultErrorReporting(Zikula_Event $event)
     {
-        $serviceManager = ServiceUtil::getManager();
-
-        if (!$serviceManager['log.enabled']) {
+        if (!$this->serviceManager['log.enabled']) {
             return;
         }
 
-        if ($serviceManager->hasService('system.errorreporting')) {
+        if ($this->serviceManager->hasService('system.errorreporting')) {
             return;
         }
 
@@ -151,8 +163,8 @@ class SystemListeners extends Zikula_EventHandler
             $class = 'Zikula_ErrorHandler_Ajax';
         }
 
-        $errorHandler = new $class($serviceManager);
-        $serviceManager->attachService('system.errorreporting', $errorHandler);
+        $errorHandler = new $class($this->serviceManager);
+        $this->serviceManager->attachService('system.errorreporting', $errorHandler);
         set_error_handler(array($errorHandler, 'handler'));
         $event->setNotified();
     }
@@ -172,13 +184,12 @@ class SystemListeners extends Zikula_EventHandler
             return;
         }
 
-        $serviceManager = ServiceUtil::getManager();
-        if (!$serviceManager['log.enabled']) {
+        if (!$this->serviceManager['log.enabled']) {
             return;
         }
 
-        if ($serviceManager['log.to_display'] || $serviceManager['log.sql.to_display']) {
-            $displayLogger = $serviceManager->attachService('zend.logger.display', new Zend_Log());
+        if ($this->serviceManager['log.to_display'] || $this->serviceManager['log.sql.to_display']) {
+            $displayLogger = $this->serviceManager->attachService('zend.logger.display', new Zend_Log());
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream('php://output');
             $formatter = new Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />' . PHP_EOL);
@@ -186,8 +197,8 @@ class SystemListeners extends Zikula_EventHandler
             $displayLogger->addWriter($writer);
         }
 
-        if ($serviceManager['log.to_file'] || $serviceManager['log.sql.to_file']) {
-            $fileLogger = $serviceManager->attachService('zend.logger.file', new Zend_Log());
+        if ($this->serviceManager['log.to_file'] || $this->serviceManager['log.sql.to_file']) {
+            $fileLogger = $this->serviceManager->attachService('zend.logger.file', new Zend_Log());
             $filename = LogUtil::getLogFileName();
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream($filename);

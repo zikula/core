@@ -17,10 +17,6 @@ ZLoader::register();
 $core = new Zikula_Core();
 $core->boot();
 
-// Load eventhandlers
-EventUtil::attachCustomHandlers('config/EventHandlers');
-EventUtil::attachCustomHandlers('lib/EventHandlers');
-
 // Load system configuration
 $event = new Zikula_Event('bootstrap.getconfig', $core);
 $core->getEventManager()->notifyUntil($event);

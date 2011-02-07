@@ -106,14 +106,6 @@ class Zikula_Core
     protected $booted = false;
 
     /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->baseMemory = memory_get_usage();
-    }
-
-    /**
      * Get base memory.
      * 
      * @return integer
@@ -133,6 +125,28 @@ class Zikula_Core
         return $this->booted;
     }
 
+    /**
+     * Array of the attached handlers.
+     *
+     * @var array
+     */
+    protected $attachedHandlers = array();
+
+    /**
+     * Array of handler files per directory.
+     *
+     * The key is the directory, with a non-indexed array of files.
+     *
+     * @var array
+     */
+    protected $directoryContents = array();
+
+    /**
+     * Array of scanned directories.
+     *
+     * @var array
+     */
+    protected $scannedDirs = array();
 
     /**
      * Getter for servicemanager property.
@@ -155,6 +169,17 @@ class Zikula_Core
     }
 
     /**
+     * Constructor.
+     * 
+     * @param <type> $handlerDir
+     */
+    public function __construct($handlerDir = 'lib/EventHandlers')
+    {
+        $this->handlerDir = $handlerDir;
+        $this->baseMemory = memory_get_usage();
+    }
+
+    /**
      * Boot Zikula.
      *
      * @throws LogicException If already booted.
@@ -173,8 +198,7 @@ class Zikula_Core
         $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new Zikula_EventManager($this->serviceManager));
         $this->serviceManager->attachService('zikula', $this);
 
-        ServiceUtil::getManager($this);
-        EventUtil::getManager($this);
+        $this->attachHandlers($this->handlerDir);
     }
 
     /**
@@ -203,8 +227,81 @@ class Zikula_Core
 
         // flush arguments.
         $this->serviceManager->setArguments(array());
+
+        $this->attachedHandlers = array();
         $this->stage = 0;
         $this->bootime = microtime(true);
+        $this->attachHandlers($this->handlerDir);
+    }
+
+    /**
+     * Loader for custom handlers.
+     *
+     * @param string $dir Path to the folder holding the eventhandler classes.
+     *
+     * @return void
+     */
+    public function attachHandlers($dir)
+    {
+        $dir = realpath($dir);
+
+        // only ever scan a directory once at runtime (even if Core is restarted).
+        if (!isset($this->scannedDirs[$dir])) {
+            $it = FileUtil::getFiles($dir, false, false, 'php', 'f');
+
+            foreach ($it as $file) {
+                $before = get_declared_classes();
+                include realpath($file);
+                $after = get_declared_classes();
+
+                $diff = new ArrayIterator(array_diff($after, $before));
+                if (count($diff) > 1) {
+                    while ($diff->valid()) {
+                        $className = $diff->current();
+                        $diff->next();
+                    }
+                } else {
+                    $className = $diff->current();
+                }
+
+                if (!isset($this->directoryContents[$dir])) {
+                    $this->directoryContents[$dir] = array();
+                }
+                $this->directoryContents[$dir][] = $className;
+            }
+            $this->scannedDirs[$dir] = true;
+        }
+
+        if (!isset($this->attachedHandlers[$dir]) && isset($this->directoryContents[$dir])) {
+            foreach ($this->directoryContents[$dir] as $className) {
+                $this->attachEventHandler($className);
+                $this->attachedHandlers[$dir] = true;
+            }
+        }
+    }
+
+    /**
+     * Load and attach handlers for Zikula_EventHandler listeners.
+     *
+     * Loads event handlers that extend Zikula_EventHandler
+     *
+     * @param string $className The name of the class.
+     *
+     * @throws LogicException If class is not instance of Zikula_EventHandler.
+     *
+     * @return void
+     */
+    public function attachEventHandler($className)
+    {
+        $r = new ReflectionClass($className);
+        $handler = $r->newInstance($this->serviceManager);
+
+        if (!$handler instanceof Zikula_EventHandler) {
+            throw new LogicException(sprintf('Class %s must be an instance of Zikula_EventHandler', $className));
+        }
+
+        $handler->setup();
+        $handler->attach();
     }
 
     /**
