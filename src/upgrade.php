@@ -121,8 +121,8 @@ function _upg_header()
     echo '<h2>' . __('Upgrade script') . '</h2></div>' . "\n";
     echo '<div id="maincontent">';
     if (UserUtil::isLoggedIn()) {
-        echo '<h3>' . __f('Zikula version %1$s Upgrade script (for Zikula version %2$s and up)', array(_ZINSTALLVER, _Z_MINUPGVER)) . '</h3>' . "\n";
-        echo '<p>' . __f('This script will upgrade any Zikula v%1$s+ installation to v%2$s. Upgrades from less than Zikula v%1$s are not supported by this script.', array(_Z_MINUPGVER, _ZINSTALLVER)) . "</p>\n";
+        echo '<h3>' . __f('Zikula Upgrade script (for Zikula version %s and up)', array(_Z_MINUPGVER)) . '</h3>' . "\n";
+        echo '<p>' . __f('This script will upgrade any Zikula v%1$s+ installation. Upgrades from less than Zikula v%1$s are not supported by this script.', array(_Z_MINUPGVER)) . "</p>\n";
     }
 }
 
