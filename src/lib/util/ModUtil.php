@@ -557,7 +557,12 @@ class ModUtil
             return $data;
         }
 
-        static $loaded = array();
+        $serviceManager = ServiceUtil::getManager();
+        if (!isset($serviceManager['modutil.dbinfoload.loaded'])) {
+            $serviceManager['modutil.dbinfoload.loaded'] = array();
+        }
+        
+        $loaded = $serviceManager['modutil.dbinfoload.loaded'];
 
         // check to ensure we aren't doing this twice
         if (isset($loaded[$modname]) && !$force) {
@@ -580,6 +585,7 @@ class ModUtil
         $doctrineModelDir = "$modpath/$directory/lib/$directory/Model";
         if (is_dir($doctrineModelDir)) {
             $loaded[$modname] = true;
+            $serviceManager['modutil.dbinfoload.loaded'] = $loaded;
             return true;
         }
 
@@ -609,12 +615,17 @@ class ModUtil
                 }
             }
 
-            $GLOBALS['dbtables'] = isset($GLOBALS['dbtables']) ? $GLOBALS['dbtables'] : array();
-            $GLOBALS['dbtables'] = array_merge((array)$GLOBALS['dbtables'], (array)$data);
+            if (!isset($serviceManager['dbtables'])) {
+                $serviceManager['dbtables'] = array();
+            }
+            
+            $dbtables = $serviceManager['dbtables'];
+            $serviceManager['dbtables'] = array_merge($dbtables, (array)$data);
             $loaded[$modname] = true;
         }
 
         // return data so we know which tables were loaded by this module
+        $serviceManager['modutil.dbinfoload.loaded'] = $loaded;
         return $data;
     }
 
