@@ -58,6 +58,13 @@ class ModUtil
     protected static $modvars;
 
     /**
+     * Internal module cache.
+     * 
+     * @var array
+     */
+    protected static $cache = array();
+
+    /**
      * Module variables getter.
      *
      * @return array
@@ -65,6 +72,16 @@ class ModUtil
     public static function getModvars()
     {
         return self::$modvars;
+    }
+
+    /**
+     * Flush this static class' cache.
+     *
+     * @return void
+     */
+    public static function flushCache()
+    {
+        self::$cache = array();
     }
 
     /**
@@ -81,7 +98,6 @@ class ModUtil
             return;
         }
 
-        // if we haven't got vars for this module yet then lets get them
         self::$modvars = new ArrayObject(array(EventUtil::HANDLERS => array(), 'Settings' => array())); // These empty arrays are required for E_ALL - drak
         $modvars = DBUtil::selectObjectArray('module_vars');
         foreach ($modvars as $var) {
@@ -325,9 +341,11 @@ class ModUtil
             return false;
         }
 
-        static $modid;
+        if (!isset(self::$cache['modid'])) {
+            self::$cache['modid'] = null;
+        }
 
-        if (!is_array($modid) || System::isInstalling()) {
+        if (!is_array(self::$cache['modid']) || System::isInstalling()) {
             $modules = self::getModsTable();
 
             if ($modules === false) {
@@ -336,21 +354,21 @@ class ModUtil
 
             foreach ($modules as $mod) {
                 $mName = strtolower($mod['name']);
-                $modid[$mName] = $mod['id'];
+                self::$cache['modid'][$mName] = $mod['id'];
                 if (isset($mod['url']) && $mod['url']) {
                     $mdName = strtolower($mod['url']);
-                    $modid[$mdName] = $mod['id'];
+                    self::$cache['modid'][$mdName] = $mod['id'];
                 }
             }
 
-            if (!isset($modid[$module])) {
-                $modid[$module] = false;
+            if (!isset(self::$cache['modid'][$module])) {
+                self::$cache['modid'][$module] = false;
                 return false;
             }
         }
 
-        if (isset($modid[$module])) {
-            return $modid[$module];
+        if (isset(self::$cache['modid'][$module])) {
+            return self::$cache['modid'][$module];
         }
 
         return false;
@@ -447,19 +465,21 @@ class ModUtil
      */
     public static function getModulesCapableOf($capability = 'user')
     {
-        static $modcache = array();
+        if (!isset(self::$cache['modcache'])) {
+            self::$cache['modcache'] = array();
+        }
 
-        if (!isset($modcache[$capability]) || !$modcache[$capability]) {
-            $modcache[$capability] = array();
+        if (!isset(self::$cache['modcache'][$capability]) || !self::$cache['modcache'][$capability]) {
+            self::$cache['modcache'][$capability] = array();
             $mods = self::getAllMods();
             foreach ($mods as $key => $mod) {
                 if (isset($mod['capabilities'][$capability])) {
-                    $modcache[$capability][] = $mods[$key];
+                    self::$cache['modcache'][$capability][] = $mods[$key];
                 }
             }
         }
 
-        return $modcache[$capability];
+        return self::$cache['modcache'][$capability];
     }
 
     /**
@@ -516,21 +536,23 @@ class ModUtil
      */
     public static function getAllMods()
     {
-        static $modsarray = array();
+        if (!isset(self::$cache['modsarray'])) {
+            self::$cache['modsarray'] = array();
+        }
 
-        if (empty($modsarray)) {
+        if (empty(self::$cache['modsarray'])) {
             $all = self::getModsTable();
             foreach ($all as $key => $mod) {
                 // "Core" modules should be returned in this list
                 if (($mod['state'] == self::STATE_ACTIVE)
                     || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $mod['name'])
                         && ($mod['state'] == self::STATE_UPGRADED || $mod['state'] == self::STATE_INACTIVE))) {
-                    $modsarray[$key] = $mod;
+                    self::$cache['modsarray'][$key] = $mod;
                 }
             }
         }
 
-        return $modsarray;
+        return self::$cache['modsarray'];
     }
 
     /**
@@ -685,11 +707,13 @@ class ModUtil
         $modname = isset($modname) ? ((string)$modname) : '';
         $modtype = strtolower("$modname{$type}{$osapi}");
 
-        static $loaded = array();
+        if (!isset(self::$cache['loaded'])) {
+            self::$cache['loaded'] = array();
+        }
 
-        if (!empty($loaded[$modtype])) {
+        if (!empty(self::$cache['loaded'][$modtype])) {
             // Already loaded from somewhere else
-            return $loaded[$modtype];
+            return self::$cache['loaded'][$modtype];
         }
 
         // this is essential to call separately and not in the condition below - drak
@@ -741,7 +765,7 @@ class ModUtil
             }
         }
 
-        $loaded[$modtype] = $modname;
+        self::$cache['loaded'][$modtype] = $modname;
 
         if ($modinfo['type'] == self::TYPE_MODULE) {
             ZLanguage::bindModuleDomain($modname);
@@ -1332,22 +1356,25 @@ class ModUtil
             return false;
         }
 
-        static $modstate = array();
+        if (!isset(self::$cache['modstate'])) {
+            self::$cache['modstate'] = array();
+        }
 
-        if (!isset($modstate[$modname]) || $force == true) {
+        if (!isset(self::$cache['modstate'][$modname]) || $force == true) {
             $modinfo = self::getInfo(self::getIDFromName($modname));
             if (isset($modinfo['state'])) {
-                $modstate[$modname] = $modinfo['state'];
+                self::$cache['modstate'][$modname] = $modinfo['state'];
             }
         }
 
         if ($force == true) {
-            $modstate[$modname] = self::STATE_ACTIVE;
+            self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
         }
 
-        if ((isset($modstate[$modname]) &&
-                $modstate[$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $modname) &&
-                (isset($modstate[$modname]) && ($modstate[$modname] == self::STATE_UPGRADED || $modstate[$modname] == self::STATE_INACTIVE)))) {
+        if ((isset(self::$cache['modstate'][$modname]) &&
+                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $modname) &&
+                (isset(self::$cache['modstate'][$modname]) && (self::$cache['modstate'][$modname] == self::STATE_UPGRADED || self::$cache['modstate'][$modname] == self::STATE_INACTIVE)))) {
+            self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
             return true;
         }
 
@@ -1361,28 +1388,26 @@ class ModUtil
      */
     public static function getName()
     {
-        static $module;
-
-        if (!isset($module)) {
+        if (!isset(self::$cache['modgetname'])) {
             $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
-            $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+            self::$cache['modgetname'] = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
-            if (empty($module)) {
-                $module = System::getVar('startpage');
+            if (empty(self::$cache['modgetname'])) {
+                self::$cache['modgetname'] = System::getVar('startpage');
             }
 
             // the parameters may provide the module alias so lets get
             // the real name from the db
-            $modinfo = self::getInfo(self::getIdFromName($module));
+            $modinfo = self::getInfo(self::getIdFromName(self::$cache['modgetname']));
             if (isset($modinfo['name'])) {
-                $module = $modinfo['name'];
-                if ((!$type == 'init' || !$type == 'initeractiveinstaller') && !self::available($module)) {
-                    $module = System::getVar('startpage');
+                self::$cache['modgetname'] = $modinfo['name'];
+                if ((!$type == 'init' || !$type == 'initeractiveinstaller') && !self::available(self::$cache['modgetname'])) {
+                    self::$cache['modgetname'] = System::getVar('startpage');
                 }
             }
         }
 
-        return $module;
+        return self::$cache['modgetname'];
     }
 
     /**
@@ -1483,7 +1508,9 @@ class ModUtil
             return null;
         }
 
-        static $modulehooks;
+        if (!isset(self::$cache['modulehooks'])) {
+            self::$cache['modulehooks'] = array();
+        }
 
         if (!isset($hookaction)) {
             return null;
@@ -1501,21 +1528,21 @@ class ModUtil
         }
 
         $lModname = strtolower($modname);
-        if (!isset($modulehooks[$lModname])) {
+        if (!isset(self::$cache['modulehooks'][$lModname])) {
             // Get database info
             $tables = DBUtil::getTables();
             $cols = $tables['hooks_column'];
             $where = "WHERE $cols[smodule] = '" . DataUtil::formatForStore($modname) . "'";
             $orderby = "$cols[sequence] ASC";
             $hooks = DBUtil::selectObjectArray('hooks', $where, $orderby);
-            $modulehooks[$lModname] = $hooks;
+            self::$cache['modulehooks'][$lModname] = $hooks;
         }
 
         $gui = false;
         $output = array();
 
         // Call each hook
-        foreach ($modulehooks[$lModname] as $modulehook) {
+        foreach (self::$cache['modulehooks'][$lModname] as $modulehook) {
             if (!isset($extrainfo['tmodule']) || (isset($extrainfo['tmodule']) && $extrainfo['tmodule'] == $modulehook['tmodule'])) {
                 if (($modulehook['action'] == $hookaction) && ($modulehook['object'] == $hookobject)) {
                     if (isset($modulehook['tarea']) && $modulehook['tarea'] == 'GUI') {
@@ -1561,10 +1588,12 @@ class ModUtil
      */
     public static function isHooked($tmodule, $smodule)
     {
-        static $hooked = array();
+        if (!isset(self::$cache['ishooked'])) {
+            self::$cache['ishooked'] = array();
+        }
 
-        if (isset($hooked[$tmodule][$smodule])) {
-            return $hooked[$tmodule][$smodule];
+        if (isset(self::$cache['ishooked'][$tmodule][$smodule])) {
+            return self::$cache['ishooked'][$tmodule][$smodule];
         }
 
         // define input, all numbers and booleans to strings
@@ -1584,10 +1613,10 @@ class ModUtil
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($smodule) . "'
                     AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($tmodule) . "'";
 
-        $hooked[$tmodule][$smodule] = $numitems = DBUtil::selectObjectCount('hooks', $where);
-        $hooked[$tmodule][$smodule] = ($numitems > 0);
+        self::$cache['ishooked'][$tmodule][$smodule] = $numitems = DBUtil::selectObjectCount('hooks', $where);
+        self::$cache['ishooked'][$tmodule][$smodule] = ($numitems > 0);
 
-        return $hooked[$tmodule][$smodule];
+        return self::$cache['ishooked'][$tmodule][$smodule];
     }
 
     /**
@@ -1640,23 +1669,25 @@ class ModUtil
      */
     public static function getModsTable()
     {
-        static $modstable;
+        if (!isset(self::$cache['modstable'])) {
+            self::$cache['modstable'] = array();
+        }
 
-        if (!isset($modstable) || System::isInstalling()) {
-            $modstable = DBUtil::selectObjectArray('modules', '', '', -1, -1, 'id');
-            foreach ($modstable as $mid => $module) {
+        if (!self::$cache['modstable'] || System::isInstalling()) {
+            self::$cache['modstable'] = DBUtil::selectObjectArray('modules', '', '', -1, -1, 'id');
+            foreach (self::$cache['modstable'] as $mid => $module) {
                 if (!isset($module['url']) || empty($module['url'])) {
-                    $modstable[$mid]['url'] = $module['displayname'];
+                    self::$cache['modstable'][$mid]['url'] = $module['displayname'];
                 }
-                $modstable[$mid]['capabilities'] = unserialize($module['capabilities']);
-                $modstable[$mid]['securityschema'] = unserialize($module['securityschema']);
+                self::$cache['modstable'][$mid]['capabilities'] = unserialize($module['capabilities']);
+                self::$cache['modstable'][$mid]['securityschema'] = unserialize($module['securityschema']);
             }
         }
 
         // add Core module (hack).
-        $modstable[0] = array('id' => '0', 'name' => 'zikula', 'type' => self::TYPE_CORE, 'directory' => '', 'displayname' => 'Zikula Core v' . Zikula_Core::VERSION_NUM, 'version' => Zikula_Core::VERSION_NUM, 'state' => self::STATE_ACTIVE);
+        self::$cache['modstable'][0] = array('id' => '0', 'name' => 'zikula', 'type' => self::TYPE_CORE, 'directory' => '', 'displayname' => 'Zikula Core v' . Zikula_Core::VERSION_NUM, 'version' => Zikula_Core::VERSION_NUM, 'state' => self::STATE_ACTIVE);
 
-        return $modstable;
+        return self::$cache['modstable'];
     }
 
     /**

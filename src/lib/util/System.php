@@ -20,6 +20,23 @@
 class System
 {
     /**
+     * Internals cache.
+     * 
+     * @var array
+     */
+    static protected $cache = array();
+
+    /**
+     * Flush this static class' cache.
+     *
+     * @return void
+     */
+    public static function flushCache()
+    {
+        self::$cache = array();
+    }
+
+    /**
      * Get a configuration variable.
      *
      * @param string $name    The name of the variable.
@@ -252,19 +269,21 @@ class System
      */
     public static function getBaseUri()
     {
-        static $path;
+        if (!array_key_exists('baseuri.path', self::$cache)) {
+            self::$cache['baseuri.path'] = null;
+        }
 
-        if (!isset($path)) {
+        if (!isset(self::$cache['baseuri.path'])) {
             $script_name = self::serverGetVar('SCRIPT_NAME');
-            $path = substr($script_name, 0, strrpos($script_name, '/'));
+            self::$cache['baseuri.path'] = substr($script_name, 0, strrpos($script_name, '/'));
         }
 
         $serviceManager = ServiceUtil::getManager();
         if ($serviceManager['multisites.enabled'] == 1) {
-            $path = $serviceManager['multisites.sitedns'];
+            self::$cache['baseuri.path'] = $serviceManager['multisites.sitedns'];
         }
 
-        return $path;
+        return self::$cache['baseuri.path'];
     }
 
     /**

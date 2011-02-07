@@ -255,6 +255,8 @@ class Zikula_Core
         $this->stage = $this->stage | $stage;
 
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
+            ModUtil::flushCache();
+            System::flushCache();
             $this->eventManager->notify(new Zikula_Event('core.preinit', $this));
         }
 
