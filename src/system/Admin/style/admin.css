@@ -150,11 +150,17 @@ div.property_selector_noscript {
 }
 
 .z-pointericon {
+    background: url("../../../images/global/arrow_down_grey.gif") no-repeat scroll 50% 50% transparent;
     border: 1px solid transparent;
     cursor: pointer;
+    height: 1em;
+    margin-left: 0;
+    padding: 0 5px;
+    width: 1em;
 }
 
 .z-pointericon:hover {
+    background: url("../../../images/global/arrow_down_black.gif") no-repeat scroll 50% 50% transparent;
     border: 1px solid #999;
     -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
