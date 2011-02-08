@@ -136,7 +136,7 @@ function replace_pnApi($contents)
     'pnusersetpassword' => 'UserUtil::setPassword',
     'pnuserdelvar' => 'UserUtil::delVar',
     'pnusergettheme' => 'UserUtil::getTheme',
-    'pnusergetlang' => 'ZLanguage::getLanguageCodeLegacy',
+    'pnusergetlang' => 'ZLanguage::getLanguageCode',
     'pnusergetall' => 'UserUtil::getAll',
     'pnusergetidfromname' => 'UserUtil::getIdFromName',
     'pnusergetidfromemail' => 'UserUtil::getIdFromEmail',
