@@ -107,16 +107,6 @@ class SessionUtil
     {
         self::_setup();
 
-        // First thing we do is ensure that there is no attempted pollution
-        // of the session namespace
-        if (ini_get('register_globals')) {
-            foreach ($GLOBALS as $k => $v) {
-                if (substr($k, 0, 4) == 'ZSV') {
-                    return false;
-                }
-            }
-        }
-
         // create IP finger print
         $current_ipaddr = '';
         $_REMOTE_ADDR = System::serverGetVar('REMOTE_ADDR');
