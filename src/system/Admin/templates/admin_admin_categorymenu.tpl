@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
     /* <![CDATA[ */
-    var lblclickToEdit = "{{gt text='Right-click to edit module category'}}";
+    var lblclickToEdit = "{{gt text='Right-click down arrows to edit tab name'}}";
     var lblEdit = "{{gt text='Edit category'}}";
     var lblDelete = "{{gt text='Delete category'}}";
     var lblMakeDefault = "{{gt text='Make default category'}}";
