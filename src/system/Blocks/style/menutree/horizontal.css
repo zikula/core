@@ -1,87 +1,69 @@
-
-
-body {
-    behavior: url("system/Blocks/javascript/csshover.htc");
-  }
-
-
-.menutree_horiziontal {
-    background-color : inherit;
-    width : inherit;
-  }
-
-
-.menutree_horiziontal ul, .menutree_horiziontal li {
-    background-color: transparent;
-    zoom: 1;
-  }
-
-
-.menutree_horiziontal ul {
-
-    list-style: none;
+.menutree_horizontal,
+.menutree_horizontal ul {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #CCCCCC;
+    font-weight: bold;
+    line-height: 2em;
+    list-style: none outside none;
+    margin: 1em 0;
+    padding: 0;
+}
+.menutree_horizontal li {
+    float: left;
     margin: 0;
     padding: 0;
-    float: left;
-  }
-
-
-.menutree_horiziontal li {
-    background-color : inherit;
-    margin: 0;
-
-    float : left;
-    position : relative;
-    text-decoration : none;
-    white-space : nowrap;
-    width : auto;
-  }
-
-div.menutree_horiziontal ul ul, .menutree_horiziontal ul ul {
-    background-color : inherit;
-    position: absolute;
-  }
-
-div.menutree_horiziontal ul ul ul,
-div.menutree_horiziontal ul ul ul ul,
-div.menutree_horiziontal ul ul ul ul ul {
-
-    position: absolute;
-    background-color : inherit;
-
-
-    top: 0;
-    left: 100%;
-    width: 100%;
-  }
-
-
-div.menutree_horiziontal ul ul,
-div.menutree_horiziontal ul li:hover ul ul,
-div.menutree_horiziontal ul ul ul,
-div.menutree_horiziontal ul ul li:hover ul ul,
-div.menutree_horiziontal ul ul ul ul,
-div.menutree_horiziontal ul ul ul li:hover ul ul,
-div.menutree_horiziontal ul ul ul ul ul,
-div.menutree_horiziontal ul ul ul ul li:hover ul ul {
-    display: none;
-    background-color : inherit;
-  }
-
-
-div.menutree_horiziontal ul li:hover ul,
-div.menutree_horiziontal ul ul li:hover ul,
-div.menutree_horiziontal ul ul ul li:hover ul,
-div.menutree_horiziontal ul ul ul ul li:hover ul {
-    background-color : inherit;
+    position: relative;
+}
+.menutree_horizontal li a {
+    border-right: 1px solid #CCCCCC;
     display: block;
-    z-index: 1000;
-  }
-
-
-.menutree_horiziontal p.menutreecontrols {
-    float : left;
-    padding-top: 3px;
-    width : auto;
-  }
-
+    padding: 2px 10px;
+    text-decoration: none;
+}
+.menutree_horizontal li.parent > a {
+    background: url("../../../../images/global/arrow_down_grey.gif") no-repeat scroll 95% 50% transparent;
+    padding-right: 18px;
+}
+.menutree_horizontal li.parent > a:hover {
+    background: url("../../../../images/global/arrow_down_black.gif") no-repeat scroll 95% 50% transparent;
+}
+.menutree_horizontal li ul {
+    font-weight: normal;
+    height: auto;
+    left: -9999px;
+    margin: 0;
+    position: absolute;
+    width: 15em;
+}
+.menutree_horizontal li li {
+    width: 15em;
+}
+.menutree_horizontal li li a {
+    border: none;
+}
+.menutree_horizontal li li.parent > a {
+    background: url("../../../../images/global/arrow_right_grey.gif") no-repeat scroll 95% 50% transparent;
+    padding-right: 18px;
+}
+.menutree_horizontal li li.parent > a:hover {
+    background: url("../../../../images/global/arrow_right_black.gif") no-repeat scroll 95% 50% transparent;
+}
+.menutree_horizontal li ul ul {
+    margin: -1.75em 0 0 15.1em;
+}
+.menutree_horizontal li:hover ul ul,
+.menutree_horizontal li:hover ul ul ul {
+    left: -9999px;
+}
+.menutree_horizontal li:hover ul {
+    left: -1px;
+    position: absolute;
+}
+.menutree_horizontal li li:hover ul,
+.menutree_horizontal li li li:hover ul {
+    left: -1px;
+    top: 1.75em;
+}
+.menutree_horizontal li:hover {
+    background: none repeat scroll 0 0 #EEEEEE;
+}
