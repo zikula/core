@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Block_Themeswitcher extends Zikula_Block
+class Theme_Block_Themeswitcher extends Zikula_Controller_Block
 {
     /**
      * initialise block

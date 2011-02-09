@@ -16,7 +16,7 @@
 /**
  * A block that shows who is currently using the system.
  */
-class Users_Block_Online extends Zikula_Block
+class Users_Block_Online extends Zikula_Controller_Block
 {
     /**
      * Initialise the block.

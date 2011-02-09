@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_Xslt extends Zikula_Block
+class Blocks_Block_Xslt extends Zikula_Controller_Block
 {
     /**
      * initialise block

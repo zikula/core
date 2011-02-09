@@ -16,7 +16,7 @@
 /**
  * A user-customizable block.
  */
-class Users_Block_Accountlinks extends Zikula_Block
+class Users_Block_Accountlinks extends Zikula_Controller_Block
 {
     /**
      * Initialise block.
