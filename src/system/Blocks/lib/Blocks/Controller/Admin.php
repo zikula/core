@@ -15,7 +15,7 @@
 /**
  * Blocks_Controller_Admin class.
  */
-class Blocks_Controller_Admin extends Zikula_Controller_Block
+class Blocks_Controller_Admin extends Zikula_Controller
 {
 
     /**
