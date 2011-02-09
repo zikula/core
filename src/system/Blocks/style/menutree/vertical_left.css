@@ -68,7 +68,7 @@ ul.menutree_vertical_left ul ul ul li:hover ul {
     z-index: 1000;
 }
 
-.menutreecontrols {
+.menutree_vertical_left_controls {
     font-size: 0.8em;
     margin: 0.5em 0;
 }
