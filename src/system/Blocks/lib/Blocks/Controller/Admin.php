@@ -304,7 +304,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
 
         // Block-specific
         $blockoutput = '';
-        if ($blockObj instanceof Zikula_Block) {
+        if ($blockObj instanceof Zikula_Controller_Block) {
             $blockoutput = call_user_func(array($blockObj, 'modify'), $blockinfo);
         } else {
             $usname = preg_replace('/ /', '_', $modinfo['name']);
@@ -428,7 +428,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         }
 
         // Do block-specific update
-        if ($blockObj instanceof Zikula_Block) {
+        if ($blockObj instanceof Zikula_Controller_Block) {
             $blockinfo = call_user_func(array($blockObj, 'update'), $blockinfo);
         } else {
             $usname = preg_replace('/ /', '_', $modinfo['name']);
