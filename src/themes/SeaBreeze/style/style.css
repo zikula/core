@@ -221,12 +221,12 @@ textarea:focus {
 
 .z-blockposition-search #theme_search .theme_search_input {
     margin:0;
-    padding:2px 4px;
+    padding:2px;
 }
 
 .z-blockposition-search #theme_search .theme_search_button {
     margin:0;
-    padding:1px 6px;
+    padding:1px 6px !important;
 }
 
 /******************************************************************************
