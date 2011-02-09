@@ -127,6 +127,10 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
         }
 
+        if (!$allCats) {
+            $allCats = array();
+        }
+
         if ($list->mandatory) {
             $list->addItem('- - -', null);
         }
