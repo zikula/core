@@ -137,7 +137,6 @@ textarea:focus {
 
 #leftcol {
     float: left;
-    overflow: hidden;
     position: relative;
     width: 20%;
 }
