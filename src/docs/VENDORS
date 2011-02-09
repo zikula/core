@@ -131,3 +131,10 @@ PHP Layers Menu 3.2.0-rc
     License: LGPL
     Location in Zikula: javascript/phplayersmenu
     Patch details: none
+
+Whatever:hover 3.11
+    Vendor website: http://www.xs4all.nl/~peterned/csshover.html
+    Downloaded from: http://www.xs4all.nl/~peterned/csshover.html
+    License: LGPL
+    Location in Zikula: javascript/csshover.htc
+    Patch details: none

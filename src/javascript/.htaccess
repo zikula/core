@@ -3,7 +3,7 @@
 #                  the javascript/ directory
 # ----------------------------------------------------------------------
 deny from all
-<FilesMatch "\.(css|js|jpg|gif|png)$">
+<FilesMatch "\.(css|js|jpg|gif|png|htc)$">
 order allow,deny
 allow from all
 </filesmatch>
