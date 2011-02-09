@@ -20,6 +20,8 @@ class RandomUtil
     /**
      * Return a seed value for the srand() function
      *
+     * @deprecated Since 1.3.0, as this is not required since PHP 4.2.0.
+     *
      * @return The resulting seed value
      */
     public static function getSeed()
@@ -30,26 +32,18 @@ class RandomUtil
     }
 
     /**
-     * Return a random integer between $floor and $ceil (inclusive)
+     * Return a random integer between $floor and $ceil (inclusive).
      *
      * @param intiger $floor The lower bound.
      * @param intiger $ceil  The upper bound.
-     * @param boolean $seed  Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
      * @return The resulting random integer
      */
-    public static function getInteger($floor, $ceil, $seed = false)
+    public static function getInteger($floor, $ceil)
     {
-        if ($seed) {
-            srand(self::getSeed());
-        }
-
         $diff = $ceil - $floor;
 
-        // mr_rand seems to sometimes generate idential
-        // series of random numbers. rand seems to do better.
-        //$inc  = mt_rand (0, $diff);
-        $inc = rand(0, $diff);
+        $inc = mt_rand(0, $diff);
 
         return $floor + $inc;
     }
@@ -60,17 +54,12 @@ class RandomUtil
      * This function uses md5() to generate the string.
      *
      * @param intiger $length The length of string to generate.
-     * @param boolean $seed   Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
      * @return The resulting random integer.
      */
-    public static function getRandomString($length, $seed = true)
+    public static function getRandomString($length)
     {
         $res = '';
-
-        if ($seed) {
-            srand(self::getSeed());
-        }
 
         while (strlen($res) < $length) {
             $res .= md5(self::getInteger(0, 100000));
@@ -90,7 +79,7 @@ class RandomUtil
      * @param boolean $useSpace       Whether or not to also use whitespace letters (optional) (default=true).
      * @param boolean $useNumber      Whether or not to also use numeric characters (optional) (default=false).
      * @param boolean $useSpecial     Whether or not to also use special characters (optional) (default=false).
-     * @param boolean $seed           Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
+     * @param boolean $seed           (ununsed since 1.3.0) Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      * @param array   $dontuse        Array of characters not to use (optional) (default=null) eg $dontuse=array('a', 'b', 'c');.
      *
      * @return The resulting random string.
@@ -103,10 +92,6 @@ class RandomUtil
         $lower = "abcdefghijklmnopqrstuvwxyz";
         $number = "0123456789";
         $special = "~@#$%^*()_+-={}|][";
-
-        if ($seed) {
-            srand(self::getSeed());
-        }
 
         if ($useLower) {
             $chars .= $lower;
@@ -184,11 +169,10 @@ class RandomUtil
      *
      * @param intiger $nWords    The number of words to put in the sentence.
      * @param array   $dictArray The array of dictionary words to use.
-     * @param boolean $seed      Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
      * @return The resulting random date string.
      */
-    public static function getSentence($nWords, $dictArray, $seed = false)
+    public static function getSentence($nWords, $dictArray)
     {
         if (!$nWords) {
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('nWords', 'RandomUtil::getSentence')));
@@ -196,10 +180,6 @@ class RandomUtil
 
         if (!$dictArray) {
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('dictArray', 'RandomUtil::getSentence')));
-        }
-
-        if ($seed) {
-            srand(self::getSeed());
         }
 
         //$dictArray = explode (' ', $dict);
@@ -240,11 +220,10 @@ class RandomUtil
      * @param intiger $irndS          The number of sentences in a paragraph (optional) (default=0=randomlyGenerated).
      * @param intiger $irndW          The number of words in a sentence (optional) (default=0=randomlyGenerated).
      * @param boolean $startCustomary Whether or not to start with the customary phrase (optional) (default=false).
-     * @param boolean $seed           Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
      * @return The resulting random date string.
      */
-    public static function getParagraphs($nParas, $dict = '', $irndS = 0, $irndW = 0, $startCustomary = false, $seed = false)
+    public static function getParagraphs($nParas, $dict = '', $irndS = 0, $irndW = 0, $startCustomary = false)
     {
         if (!$nParas) {
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('nParas', 'RandomUtil::getParagraphs')));
@@ -252,10 +231,6 @@ class RandomUtil
 
         if (!$dict) {
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('dictionary', 'RandomUtil::getParagraphs')));
-        }
-
-        if ($seed) {
-            srand(self::getSeed());
         }
 
         $dictArray = explode(' ', $dict);
@@ -297,16 +272,11 @@ class RandomUtil
      * @param string  $startDate The lower date bound.
      * @param string  $endDate   The high date bound.
      * @param string  $format    The date format to use.
-     * @param boolean $seed      Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
      * @return The resulting random date string.
      */
-    public static function getDate($startDate, $endDate, $format = DATEFORMAT_FIXED, $seed = false)
+    public static function getDate($startDate, $endDate, $format = DATEFORMAT_FIXED)
     {
-        if ($seed) {
-            srand(self::getSeed());
-        }
-
         $t1 = strtotime($startDate);
         $t2 = strtotime($endDate);
 
@@ -320,16 +290,10 @@ class RandomUtil
     /**
      * Return a random user-id.
      *
-     * @param boolean $seed Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
-     *
      * @return The resulting random user-id.
      */
-    public static function getUserID($seed = false)
+    public static function getUserID()
     {
-        if ($seed) {
-            srand(self::getSeed());
-        }
-
         $fa = DBUtil::selectFieldArray('users', 'uid');
         $pos = self::getInteger(0, count($fa));
         return $fa[$pos];
