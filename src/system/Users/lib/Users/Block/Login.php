@@ -16,7 +16,7 @@
 /**
  * A block that allows users to log into the system.
  */
-class Users_Block_Login extends Zikula_Block
+class Users_Block_Login extends Zikula_Controller_Block
 {
 
     /**
