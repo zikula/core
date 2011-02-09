@@ -1,49 +1,74 @@
-body {
-    behavior: url("system/Blocks/javascript/csshover.htc");
-}
-
-.menutree_vertical ul, .menutree_vertical li {
-    zoom: 1;
-}
-
-.menutree_vertical ul {
+ul.menutree_vertical_left,
+ul.menutree_vertical_left ul {
+    background: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-bottom: none;
+    font-weight: bold;
+    line-height: 2em;
     list-style: none;
+    margin: 1em 0;
+    padding: 0;
+}
+
+ul.menutree_vertical_left li {
+    padding: 0;
     margin: 0;
-    padding: 2px;
-    background-color: #FFFFFF;
-    border: 1px solid #9D9DA1;
-}
-
-.menutree_vertical li a, .menutree_vertical li span {
-    display: block;
-    width: auto;
-    line-height: 19px;
-}
-
-.menutree_vertical li {
     position: relative;
-    height: 19px;
-    margin: 0;
-    background-color: transparent;
 }
 
-.menutree_vertical li:hover {
-    background-color: #B2B4BF;
+ul.menutree_vertical_left li:hover {
+    background-color: #eeeeee;
 }
 
-.menutree_vertical ul ul, .menutree_vertical ul ul ul, .menutree_vertical ul ul ul ul, .menutree_vertical ul ul ul ul ul {
-    position: absolute;
-    top: -3px;
-    top: 0;
+ul.menutree_vertical_left li a,
+ul.menutree_vertical_left li span {
+    border-bottom: 1px solid #CCCCCC;
+    display: block;
+    padding: 2px 10px;
+    text-decoration: none;
+}
+
+ul.menutree_vertical_left li.parent > a,
+ul.menutree_vertical_left li.parent > span {
+    background: url("../../../../images/global/arrow_right_grey.gif") no-repeat scroll 95% 50% transparent;
+    padding-right: 18px;
+}
+
+ul.menutree_vertical_left li.parent > a:hover,
+u.menutree_vertical_left li.parent > span:hover {
+    background: url("../../../../images/global/arrow_right_black.gif") no-repeat scroll 95% 50% transparent;
+}
+
+ul.menutree_vertical_left ul,
+ul.menutree_vertical_left ul ul,
+ul.menutree_vertical_left ul ul ul,
+ul.menutree_vertical_left ul ul ul ul {
     left: 100%;
+    position: absolute;
+    top: -45%;
     width: 100%;
 }
 
-div.menutree_vertical ul ul, div.menutree_vertical ul li:hover ul ul, div.menutree_vertical ul ul ul, div.menutree_vertical ul ul li:hover ul ul, div.menutree_vertical ul ul ul ul, div.menutree_vertical ul ul ul li:hover ul ul, div.menutree_vertical ul ul ul ul ul, div.menutree_vertical ul ul ul ul li:hover ul ul {
+ul.menutree_vertical_left ul,
+ul.menutree_vertical_left li:hover ul ul,
+ul.menutree_vertical_left ul ul,
+ul.menutree_vertical_left ul li:hover ul ul,
+ul.menutree_vertical_left ul ul ul,
+ul.menutree_vertical_left ul ul li:hover ul ul,
+ul.menutree_vertical_left ul ul ul ul,
+ul.menutree_vertical_left ul ul ul li:hover ul ul {
     display: none;
 }
 
-div.menutree_vertical ul li:hover ul, div.menutree_vertical ul ul li:hover ul, div.menutree_vertical ul ul ul li:hover ul, div.menutree_vertical ul ul ul ul li:hover ul {
+ul.menutree_vertical_left li:hover ul,
+ul.menutree_vertical_left ul li:hover ul,
+ul.menutree_vertical_left ul ul li:hover ul,
+ul.menutree_vertical_left ul ul ul li:hover ul {
     display: block;
     z-index: 1000;
+}
+
+.menutreecontrols {
+    font-size: 0.8em;
+    margin: 0.5em 0;
 }
