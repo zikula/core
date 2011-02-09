@@ -58,6 +58,11 @@ class Blocks_Block_Menutree extends Zikula_Block
             $vars['menutree_tpl'] = 'menutree/blocks_block_menutree_default.tpl';
         }
 
+        // stylesheet
+        if (file_exists($vars['menutree_stylesheet'])) {
+            PageUtil::addVar('stylesheet', $vars['menutree_stylesheet']);
+        }
+
         //check if block is cached, if so - fetch cached tpl to aviod further proceedeing
         if ($this->view->is_cached($vars['menutree_tpl'])) {
             $blockinfo['content'] = $this->view->fetch($vars['menutree_tpl']);
@@ -135,11 +140,6 @@ class Blocks_Block_Menutree extends Zikula_Block
         // block title
         if (!empty($vars['menutree_titles'][$lang])) {
             $blockinfo['title'] = $vars['menutree_titles'][$lang];
-        }
-
-        // stylesheet
-        if (file_exists($vars['menutree_stylesheet'])) {
-            PageUtil::addVar('stylesheet', $vars['menutree_stylesheet']);
         }
 
         $this->view->assign('menutree_editlinks', $vars['menutree_editlinks'] && Securityutil::checkPermission('Blocks::', 'Menutree:'.$blockinfo['title'].':'.$blockinfo['bid'], ACCESS_EDIT))
