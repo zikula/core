@@ -486,8 +486,8 @@ class SessionUtil
         }
 
         $chance = 100 - System::getVar('sessionregeneratefreq');
-        $a = rand(0, $chance);
-        $b = rand(0, $chance);
+        $a = mt_rand(0, $chance);
+        $b = mt_rand(0, $chance);
         if ($a == $b) {
             self::regenerate();
         }

@@ -39,7 +39,7 @@ class SecurityCenter_Installer extends Zikula_Installer
         System::setVar('sessionauthkeyua', false);
         System::setVar('secure_domain', '');
         System::setVar('signcookies', 1);
-        System::setVar('signingkey', sha1(rand(0, time())));
+        System::setVar('signingkey', sha1(mt_rand(0, time())));
         System::setVar('seclevel', 'Medium');
         System::setVar('secmeddays', 7);
         System::setVar('secinactivemins', 20);
