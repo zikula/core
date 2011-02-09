@@ -133,7 +133,6 @@ dd {
     height: 26px;
     line-height: 26px;
     margin: 0 1px;
-    overflow: hidden;
 }
 
 #theme_navigation_bar ul {
@@ -177,7 +176,7 @@ dd {
 }
 
 .z-blockposition-search #theme_search .theme_search_input {
-    background: inherit;
+    background: #27587F;
     border: none;
     color: #FFFFFF;
     float: left;
