@@ -51,6 +51,13 @@ abstract class Form_Handler implements Zikula_Translatable
     protected $view;
 
     /**
+     * This name.
+     *
+     * @var string
+     */
+    protected $name;
+
+    /**
      * Post construction hook.
      *
      * @return mixed
@@ -102,6 +109,29 @@ abstract class Form_Handler implements Zikula_Translatable
     {
         $this->domain = $domain;
     }
+
+    /**
+     * Get name property.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set name property.
+     *
+     * @param string $name Name.
+     *
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
 
     /**
      * Initialize form handler.
@@ -202,6 +232,46 @@ abstract class Form_Handler implements Zikula_Translatable
 
         $event = new Zikula_Event($name, $subject, $args, $data);
         return $this->view->getEventManager()->notify($event);
+    }
+
+    /**
+     * Convenience Module SetVar.
+     *
+     * @param string $key   Key.
+     * @param mixed  $value Value, default empty.
+     *
+     * @return object This.
+     */
+    public function setVar($key, $value='')
+    {
+        ModUtil::setVar($this->name, $key, $value);
+        return $this;
+    }
+
+    /**
+     * Convenience Module GetVar.
+     *
+     * @param string  $key     Key.
+     * @param boolean $default Default, false if not found.
+     *
+     * @return mixed
+     */
+    public function getVar($key, $default=false)
+    {
+        return ModUtil::getVar($this->name, $key, $default);
+    }
+
+    /**
+     * Convenience Module DelVar.
+     *
+     * @param string $key Key.
+     *
+     * @return object This.
+     */
+    public function delVar($key)
+    {
+        ModUtil::delVar($this->name, $key);
+        return $this;
     }
 
     /**
