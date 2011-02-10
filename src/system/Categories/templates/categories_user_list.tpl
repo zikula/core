@@ -52,7 +52,7 @@
             </td>
             <td style="text-align:center">
                 {if ($cat.is_locked)}
-                {img modname=core src=locked.png set=icons/extrasmall __alt="Category is locked" __title="Category is locked"}
+                {img modname=core src=locked.gif set=icons/extrasmall __alt="Category is locked" __title="Category is locked"}
                 {else}
                 <a href="{modurl modname="Categories" type="user" func="edit" dr=$dr cid=$cat.id}">
                     {img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}

@@ -1,7 +1,7 @@
 {include file="mailer_admin_menu.tpl"}
 {ajaxheader modname=Mailer filename=mailer_admin_testconfig.js noscriptaculous=true effects=true}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=inbox.gif set=icons/large __alt="Test current settings"}</div>
+    <div class="z-adminpageicon">{img modname=core src=mail.gif set=icons/large __alt="Test current settings"}</div>
     <h2>{gt text="Test current settings"}</h2>
     <form class="z-form" action="{modurl modname="Mailer" type="admin" func="sendmessage"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

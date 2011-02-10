@@ -323,11 +323,11 @@ class Users_Controller_Admin extends Zikula_Controller
                 }
                 if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_MODERATE)) {
                     $options[] = array('url'   => ModUtil::url('Users', 'admin', 'lostUsername', array('uid' => $item['uid'], 'authid' => $authId)),
-                                       'image' => 'lostusername.png',
+                                       'image' => 'lostusername.gif',
                                        'title' => $this->__f('Send user name to \'%s\'', $item['uname']));
 
                     $options[] = array('url'   => ModUtil::url('Users', 'admin', 'lostPassword', array('uid' => $item['uid'], 'authid' => $authId)),
-                                       'image' => 'lostpassword.png',
+                                       'image' => 'lostpassword.gif',
                                        'title' => $this->__f('Send password recovery code to \'%s\'', $item['uname']));
 
                     if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_EDIT)) {
