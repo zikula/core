@@ -66,11 +66,6 @@
                 <input id="category_value" name="category[value]" value="{$catValue|safetext}" type="text" size="16" maxlength="255" />
             </div>
             <div class="z-formrow">
-                <label for="category_sort_value">{gt text="Sort value"}</label>
-                {array_field_isset assign="catSortValue" array=$category field="sort_value" returnValue=1}
-                <input id="category_sort_value" name="category[sort_value]" value="{$catSortValue|safetext}" type="text" size="16" maxlength="16" />
-            </div>
-            <div class="z-formrow">
                 <label for="category_status">{gt text="Active"}</label>
                 {array_field_isset assign="catStatus" array=$category field="status" returnValue=1}
                 {if $mode != "edit"} {assign var="catStatus" value="A"}{/if}
