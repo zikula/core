@@ -27,10 +27,10 @@ abstract class Zikula_Controller_Ajax extends Zikula_Controller
      */
     public function checkCsfrToken()
     {
-        $token = isset($_SERVER['X_ZIKULA_AJAX_TOKEN']) ? $_SERVER['X_ZIKULA_AJAX_TOKEN'] : '';
+        $token = isset($_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN']) ? $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] : '';
         // we might have to account for session regeneration here - drak
         if (!$token == session_id()) {
-            throw new Zikula_Response_Ajax_Forbidden(__('Ajax security checks failed.'));
+            throw new Zikula_Exception_Forbidden(__('Ajax security checks failed.'));
         }
     }
 }
