@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+  
+
+  
+
+
+  <head>
+    <title>
+      filter.png on Ticket #2829 – Attachment
+     – core
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="search" href="/core/search" />
+        <link rel="help" href="/core/wiki/TracGuide" />
+        <link rel="alternate" href="/core/attachment/ticket/2829/filter.png?format=txt" type="image/png; charset=utf-8" title="Plain Text" /><link rel="alternate" href="/core/raw-attachment/ticket/2829/filter.png" type="image/png; charset=utf-8" title="Original Format" />
+        <link rel="up" href="/core/ticket/2829" title="Ticket #2829" />
+        <link rel="start" href="/core/wiki" />
+        <link rel="stylesheet" href="/core/chrome/common/css/trac.css" type="text/css" /><link rel="stylesheet" href="/core/chrome/common/css/code.css" type="text/css" /><link rel="stylesheet" href="/core/chrome/breadcrumbs/css/breadcrumbs.css" type="text/css" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+      <link type="application/opensearchdescription+xml" rel="search" href="/core/search/opensearch" title="Search core" />
+    <script type="text/javascript" src="/core/chrome/common/js/jquery.js"></script><script type="text/javascript" src="/core/chrome/common/js/babel.js"></script><script type="text/javascript" src="/core/chrome/common/js/trac.js"></script><script type="text/javascript" src="/core/chrome/common/js/search.js"></script>
+    <!--[if lt IE 7]>
+    <script type="text/javascript" src="/core/chrome/common/js/ie_pre7_hacks.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="/core/chrome/common/js/folding.js"></script><script type="text/javascript">
+        jQuery(document).ready(function($) {
+          $('#preview table.code').enableCollapsibleColumns($('#preview table.code thead th.content'));
+        });
+      </script>
+    <link rel="stylesheet" type="text/css" href="/projectstyle.css" />
+ </head>
+  <body>
+  <div id="layout_container">
+  <div id="layout_container_inner">
+  <div id="layout_wrapper">
+    <div id="topbar">
+      <div id="topbar_content">
+        <a href="http://zikula.org" id="topbar_home"> </a>
+        <a href="http://community.zikula.org" id="topbar_community"> </a>
+        <a href="http://community.zikula.org/module-Extensions.htm" id="topbar_addons"> </a>
+        <a href="http://blog.zikula.org" id="topbar_blog"> </a>
+        <a href="http://demo.zikula.org" id="topbar_demo"> </a>
+        <a href="http://code.zikula.org" id="topbar_code" class="topbar_selected"> </a>
+        <div class="clearer"> </div>
+      </div>
+    </div>
+    <div class="clearer"> </div>
+    <div id="layout_header">
+      <div id="logo">
+        <a href="/"><img src="/logo.gif" width="241" height="72" alt="" /></a>
+        <div class="clearer"> </div>
+      </div>
+    <div id="sso_note">(Each <a href="http://code.zikula.org/projects.html">project</a> requires you to login separately)</div>
+      <div id="metanav" class="nav">
+    <ul>
+      <li class="first">logged in as herr.vorragend</li><li><a href="/core/logout">Logout</a></li><li><a href="/core/prefs">Preferences</a></li><li><a href="/core/rpc">RPC API</a></li><li class="last"><a href="/core/wiki/TracGuide">Help/Guide</a></li>
+    </ul><ul class="nav" id="breadcrumbs">Breadcrumbs:<li><a href="/core/ticket/2827" title="#2827">#2827</a></li><li><a href="/core/ticket/2820" title="#2820">#2820</a></li><li><a href="/core/ticket/2806" title="#2806">#2806</a></li><li><a href="/core/ticket/2805" title="#2805">#2805</a></li><li><a href="/core/ticket/2604" title="#2604">#2604</a></li><li><a href="/core/ticket/2786" title="#2786">#2786</a></li></ul>
+  </div>
+      <div id="navigation">
+        <div class="navigation_edge left" id="navigation_edge_left"></div>
+        <div class="navigation_edge right" id="navigation_edge_right"></div>
+        <div id="mainnav" class="nav">
+    <ul>
+      <li class="first"><a href="/core/wiki">Wiki</a></li><li><a href="/core/timeline">Timeline</a></li><li><a href="/core/roadmap">Roadmap</a></li><li><a href="/core/browser">Browse Source</a></li><li><a href="/core/report">View Tickets</a></li><li><a href="/core/newticket">New Ticket</a></li><li><a href="/core/search">Search</a></li><li><a href="/core/admin" title="Administration">Admin</a></li><li class="last"><a href="/core/wiki/downloads">Downloads</a></li>
+    </ul>
+  </div>
+        <div class="side-header">
+        <form id="search" action="/core/search" method="get">
+          <div if="search_all">
+            <label for="search_question" class="overlabel">Search</label>
+            <input type="text" id="search_question" name="q" size="18" value="" />
+            <input type="image" id="search_submit" alt="Search" src="/nav_search.gif" />
+          </div>
+        </form>
+        </div>
+        <div class="clearer"> </div>
+      </div>
+    </div>
+    <div id="layout_body">
+      <div id="pagetitle">
+        <h1>core</h1>
+      </div>
+      <div id="main">
+        <div id="main_content">
+        <div id="ctxtnav" class="nav">
+          <h2>Context Navigation</h2>
+          <ul>
+            <li class="first last"><a href="/core/ticket/2829">Back to Ticket #2829</a></li>
+          </ul>
+          <hr />
+        </div>
+    <div id="content" class="attachment">
+        <h1><a href="/core/ticket/2829">Ticket #2829</a>: filter.png</h1>
+        <table id="info" summary="Description">
+          <tbody>
+            <tr>
+              <th scope="col">File filter.png,
+                <span title="3615 bytes">3.5 KB</span>
+                (added by craigh, <a class="timeline" href="/core/timeline?from=2011-02-10T04%3A25%3A37%2B01%3A00&amp;precision=second" title="2011-02-10T04:25:37+01:00 in Timeline">7 hours</a> ago)</th>
+            </tr>
+            <tr>
+              <td class="message searchable">
+                <p>
+filter graphic that was left out of the commit for some reason...
+</p>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="preview" class="searchable">
+          
+  <div class="image-file"><img src="/core/raw-attachment/ticket/2829/filter.png" alt="filter.png" /></div>
+
+        </div>
+          <div class="buttons">
+            <form method="get" action="">
+              <div id="delete">
+                <input type="hidden" name="action" value="delete" />
+                <input type="submit" value="Delete attachment" />
+              </div>
+            </form>
+          </div>
+    </div>
+    <div id="altlinks">
+      <h3>Download in other formats:</h3>
+      <ul>
+        <li class="first">
+          <a rel="nofollow" href="/core/attachment/ticket/2829/filter.png?format=txt">Plain Text</a>
+        </li><li class="last">
+          <a rel="nofollow" href="/core/raw-attachment/ticket/2829/filter.png">Original Format</a>
+        </li>
+      </ul>
+    </div>
+        <div class="clearer"> </div>
+        </div>
+        </div>
+      <div class="clearer"> </div>
+    </div>
+    <!--div id="layout_footer_ads">
+      Ads code
+    </div-->
+    <div id="layout_footer">
+      <div class="left">
+        © Zikula Foundation<br />
+        <span class="zk-sub">Zikula was established 2001 - over 4 Million downloads</span>
+      </div>
+      <div class="right text_taright">
+        <a href="http://blog.zikula.org">Developer's Blog</a> <span class="text_separator">|</span> <a href="http://code.zikula.org/core/">Core Project</a> <span class="text_separator">|</span> <a href="http://www.zikulapro.com">Hire a Zikula Professional</a>
+        <br />Visit the Zikula open source project at <a href="http://zikula.org">zikula.org</a>
+      </div>
+      <div class="clearer"> </div>
+    </div>
+    <div id="layout_bottom">
+      <div class="left">
+        Powered by <a href="http://trac.edgewall.org">Trac</a>
+      </div>
+      <div class="right text_taright">
+        Design by <a href="http://arcsin.se/">Arcsin</a>
+      </div>
+      <div class="clearer"> </div>
+    </div>
+	<script type="text/javascript"> var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); </script>
+	<script type="text/javascript"> try { var pageTracker = _gat._getTracker("UA-6664176-7"); pageTracker._trackPageview(); } catch(err) {}</script>
+  </div>
+  </div>
+  </div>
+ </body>
+</html>
