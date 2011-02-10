@@ -56,7 +56,7 @@ function smarty_function_selector_category ($params, $view)
     // disable attribution if we don't need it
     $_dbTables = null;
     if (!$fieldIsAttribute) {
-        $t = $_dbTables = $GLOBALS['dbtables'];
+        $t = $_dbTables = DBUtil::getTables();
         $t['categories_category_db_extra_enable_attribution'] = false;
         $GLOBALS['dbtables'] = $t;
     }
