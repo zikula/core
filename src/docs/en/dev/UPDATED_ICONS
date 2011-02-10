@@ -1,0 +1,185 @@
+Since Zikula 1.3 we are using the "Crystal Project Icons".
+In earlier core version the icons were based on the "Crystal Clear icon set".
+
+All original icons are available in PNG format. For backward compatibility, we
+have renamed all the PNG files to GIF. However, it has only changed the file
+name! The header of the images is still PNG.
+
+In this major update, many new symbols were added, duplicate files were deleted 
+and also old pictures were kept. It isn't possible to include all files of 
+the original package, since the file size would be too large.
+
+
+================================================================
+Icon-Set: Extrasmall (16x16px)
+================================================================
+
+Files removed:
+---------------------
+Community-Help.gif
+easymoblog.gif
+file_important.gif
+folder_blank.gif
+folder_doments.gif
+folder_home2.gif
+folder_home3.gif
+folder_txt.gif
+services_flag.gif
+
+
+Old files kept:
+---------------------
+filter.png
+greenled.gif
+insert_table_row_above.gif
+locked.png
+lostpassword.png
+lostusername.png
+nextend.gif
+nextinactive.gif
+previousend.gif
+previousinactive.gif
+yellowled.gif
+
+
+Files renamed:
+---------------------
+package_favourite.gif => package_favorite.gif
+
+
+================================================================
+Icon-Set: Small (22x22px)
+================================================================
+
+Files removed:
+---------------------
+add.gif
+admintab.gif
+file_important.gif
+folder_blank.gif
+folder_doments.gif
+folder_home2.gif
+folder_home3.gif
+folder_txt.gif
+
+
+Old files kept:
+---------------------
+locked.png
+lostpassword.png
+lostusername.png
+unlocked.png
+user.png
+
+
+Files renamed:
+---------------------
+package_favourite.gif => package_favorite.gif
+
+
+
+================================================================
+Icon-Set: Medium (32x32px)
+================================================================
+
+Files removed:
+---------------------
+add.gif
+add_new.gif
+admintab.gif
+admintab.png
+delete.gif
+file_important.gif
+folder_home2.gif
+folder_home3.gif
+folder_txt.gif
+main.gif
+modify.gif
+
+Old files kept:
+---------------------
+locked.png
+lostpassword.png
+lostusername.png
+unlocked.png
+user.png
+
+Files renamed:
+---------------------
+package_favourite.gif => package_favorite.gif
+
+
+
+================================================================
+Icon-Set: Large (48x48px)
+================================================================
+
+Files removed:
+---------------------
+1downarrow.gif
+1leftarrow.gif
+1rightarrow.gif
+1uparrow.gif
+2downarrow.gif
+2leftarrow.gif
+2rightarrow.gif
+2uparrow.gif
+agt_login.gif
+agt_pause-queue.gif
+agt_resume.gif
+agt_runit.gif
+encrypted.gif
+file_important.gif
+fileclose.gif
+folder_home2.gif
+folder_home3.gif
+folder_txt.gif
+inbox.gif
+run.gif
+server.gif
+spellcheck.gif
+
+Old files kept:
+---------------------
+agt_back.gif
+agt_family-off.gif
+agt_family.gif
+agt_forum.gif
+agt_forward.gif
+agt_reload.gif
+agt_stop.gif
+agt_support.gif
+agt_uninstall-product.gif
+agt_update-product.gif
+agt_update_drivers.gif
+agt_update_misc.gif
+agt_update_recommended.gif
+button_cancel.gif
+button_ok.gif
+configure.gif
+db_add.gif
+db_comit.gif
+db_remove.gif
+db_status.gif
+db_update.gif
+decrypted.gif
+edit.gif
+edit_add.gif
+edit_remove.gif
+editcopy.gif
+editcut.gif
+editdelete.gif
+editpaste.gif
+filenew.gif
+fileprint.gif
+info.gif
+locked.png
+lostpassword.png
+lostusername.png
+reload.gif
+unlocked.png
+user.png
+
+Files renamed:
+---------------------
+package_favourite.gif => package_favorite.gif
