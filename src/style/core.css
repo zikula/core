@@ -830,7 +830,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-rss {
-    background: url("../images/feeds/feed-icon-12x12.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/feeds/feed-icon-16x16.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-copy {
@@ -1007,6 +1007,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 * Buttons based on HTML tag: Input
 *******************************************************************************/
 
+.z-buttons input.z-bt-icon,
 .z-buttons input.z-bt-ok,
 .z-buttons input.z-bt-cancel,
 .z-buttons input.z-bt-preview,
@@ -1015,11 +1016,11 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-buttons input.z-bt-edit,
 .z-buttons input.z-bt-archive,
 .z-buttons input.z-bt-delete,
-.z-buttons input.z-bt-icon,
 .z-buttons input.z-bt-filter {
     padding: 5px 7px 5px 32px;
 }
 
+.z-buttons input.z-bt-icon.z-bt-small,
 .z-buttons input.z-bt-ok.z-bt-small,
 .z-buttons input.z-bt-cancel.z-bt-small,
 .z-buttons input.z-bt-preview.z-bt-small,
@@ -1028,7 +1029,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-buttons input.z-bt-edit.z-bt-small,
 .z-buttons input.z-bt-archive.z-bt-small,
 .z-buttons input.z-bt-delete.z-bt-small,
-.z-buttons input.z-bt-icon.z-bt-small,
 .z-buttons input.z-bt-filter.z-bt-small {
     margin: 0 1px 0 0;
     padding: 3px 8px 4px 27px !important;
