@@ -7,7 +7,7 @@
 {/foreach}
 <div class="users_loginblock_box">{insert name='generateauthkey' module='Users' assign='authkey'}
     {if (isset($authmodule) && $authmodule)}{modfunc modname=$authmodule type='auth' func='loginBlockFields' assign='loginblockfields'}{/if}
-    <div id="users_loginblock_waiting" class="z-center z-hide">{img modname='core' set='icons' src='extrasmall/indicator_circle.gif'}</div>
+    <div id="users_loginblock_waiting" class="z-center z-hide">{img modname='core' set='ajax' src='indicator_circle.gif'}</div>
     <form id="users_loginblock_loginform" class="z-form z-linear{if (empty($loginblockfields) || !$loginblockfields)} z-hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
         <div>
             <input type="hidden" name="url" value="{$returnurl|safetext}" />

@@ -3,7 +3,7 @@
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"http://community.zikula.org/module-Extensions.htm\">`$extdbtitle`</a></strong>" var=extdblink}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="Available themes"}</div>
+    <div class="z-adminpageicon">{img modname=core src=windows_list.gif set=icons/large __alt="Available themes"}</div>
     <h2>{gt text="Themes list"}</h2>
     <p class="z-informationmsg">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
     <div id="themes-alphafilter" style="padding:1em 0;"><strong>[{pagerabc posvar="startlet" forwardvars=''}]</strong></div>
@@ -39,9 +39,9 @@
                     {else}
                     <a href="{entrypoint}?theme={$theme.name}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview: `$theme.displayname`" class="tooltips"}</a>&nbsp;
                     {/if}
-                    <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit: `$theme.displayname` " class="tooltips"}</a>&nbsp;
+                    <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{img modname=core src=edit.gif set=icons/extrasmall __alt="Edit" __title="Edit: `$theme.displayname` " class="tooltips"}</a>&nbsp;
                     {if $theme.name neq $currenttheme and $theme.state neq 2}
-                    <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete: `$theme.displayname`" class="tooltips"}</a>&nbsp;
+                    <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{img modname=core src=editdelete.gif set=icons/extrasmall __alt="Delete" __title="Delete: `$theme.displayname`" class="tooltips"}</a>&nbsp;
                     {/if}
                     {if $theme.name neq $currenttheme and $theme.user and $theme.state neq 2}
                     <a href="{modurl modname="Theme" type="admin" func="setasdefault" themename=$theme.name}">{img modname=core src=ok.gif set=icons/extrasmall __alt="Set as default" __title="Set as default: `$theme.displayname`" class="tooltips"}</a>&nbsp;

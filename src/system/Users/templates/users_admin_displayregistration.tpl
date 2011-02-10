@@ -26,7 +26,7 @@
         <a href="{$regactions.deny|safetext}">{img src='delete_user.gif' modname='core' set='icons/extrasmall' __title='Deny (deletes registration)' __alt='Deny (deletes registration)'} {gt text='Deny'}</a>
         {/if}
         {if isset($regactions.modify) && $regactions.modify}
-        <a href="{$regactions.modify|safetext}">{img src='xedit.gif' modname='core' set='icons/extrasmall' __title='Edit registration details' __alt='Edit registration details'} {gt text='Edit'}</a>
+        <a href="{$regactions.modify|safetext}">{img src='edit.gif' modname='core' set='icons/extrasmall' __title='Edit registration details' __alt='Edit registration details'} {gt text='Edit'}</a>
         {/if}
 
         {if isset($regactions.verify) && $regactions.verify}
