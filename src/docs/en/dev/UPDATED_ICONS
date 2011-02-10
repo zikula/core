@@ -26,26 +26,25 @@ folder_home3.gif
 folder_txt.gif
 services_flag.gif
 
-
 Old files kept:
 ---------------------
-filter.png
 greenled.gif
 insert_table_row_above.gif
-locked.png
-lostpassword.png
-lostusername.png
 nextend.gif
 nextinactive.gif
 previousend.gif
 previousinactive.gif
 yellowled.gif
 
-
 Files renamed:
 ---------------------
 package_favourite.gif => package_favorite.gif
-
+filter.png => filter.gif
+locked.png => locked.gif
+lostusername.png => lostusername.gif
+lostpassword.png => lostpassword.gif
+unlocked.png = unlocked.gif
+user.png => user.gif
 
 ================================================================
 Icon-Set: Small (22x22px)
@@ -62,19 +61,15 @@ folder_home2.gif
 folder_home3.gif
 folder_txt.gif
 
-
-Old files kept:
----------------------
-locked.png
-lostpassword.png
-lostusername.png
-unlocked.png
-user.png
-
-
 Files renamed:
 ---------------------
 package_favourite.gif => package_favorite.gif
+filter.png => filter.gif
+locked.png => locked.gif
+lostusername.png => lostusername.gif
+lostpassword.png => lostpassword.gif
+unlocked.png = unlocked.gif
+user.png => user.gif
 
 
 
@@ -96,17 +91,15 @@ folder_txt.gif
 main.gif
 modify.gif
 
-Old files kept:
----------------------
-locked.png
-lostpassword.png
-lostusername.png
-unlocked.png
-user.png
-
 Files renamed:
 ---------------------
 package_favourite.gif => package_favorite.gif
+filter.png => filter.gif
+locked.png => locked.gif
+lostusername.png => lostusername.gif
+lostpassword.png => lostpassword.gif
+unlocked.png = unlocked.gif
+user.png => user.gif
 
 
 
@@ -173,13 +166,14 @@ editpaste.gif
 filenew.gif
 fileprint.gif
 info.gif
-locked.png
-lostpassword.png
-lostusername.png
 reload.gif
-unlocked.png
-user.png
 
 Files renamed:
 ---------------------
 package_favourite.gif => package_favorite.gif
+filter.png => filter.gif
+locked.png => locked.gif
+lostusername.png => lostusername.gif
+lostpassword.png => lostpassword.gif
+unlocked.png = unlocked.gif
+user.png => user.gif
