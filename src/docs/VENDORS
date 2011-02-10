@@ -68,7 +68,7 @@ Markdown Extra 1.2.4 (includes Markdown 1.0.1n)
 
 
 JAVASCRIPT LIBRARIES
--------------
+--------------------
 PickyColor 0.1
     Vendor website: http://code.google.com/p/picky-color/
     Downloaded from: http://code.google.com/p/picky-color/
@@ -138,3 +138,19 @@ Whatever:hover 3.11
     License: LGPL
     Location in Zikula: javascript/csshover.htc
     Patch details: none
+
+
+ICON LIBRARIES
+--------------
+
+Crystal Project Icons
+    Vendor website: http://www.everaldo.com/
+    Downloaded from: http://www.everaldo.com/
+    License: LGPL
+    Location in Zikula: images/icons
+
+Crystal Clear icon set (only a few)
+    Vendor website: http://www.everaldo.com/
+    Downloaded from: http://www.everaldo.com/
+    License: LGPL
+    Location in Zikula: images/icons
