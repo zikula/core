@@ -1222,6 +1222,12 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
             }
             options.onComplete = this.responseComplete.bind(this);
         }
+        if (Zikula.Config.sessionName) {
+            var cookieName = Zikula.Cookie.get(Zikula.Config.sessionName, false);
+            if (cookieName) {
+                options.requestHeaders = {'X-ZIKULA-AJAX-TOKEN': cookieName};
+            }
+        }
         $super(url, options);
     },
     /**
