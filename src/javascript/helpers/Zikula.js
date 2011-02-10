@@ -877,6 +877,7 @@ Zikula.CookieUtil = Class.create(/** @lends Zikula.CookieUtil */{
      * @param {String} [options.path=Zikula.Config.baseURI] Default path for cookies, if not set Zikula.Config.baseURI will be used
      * @param {String} [options.domain=''] Domain for cookies, if not set current domain will be used
      * @param {Boolean} [options.secure=false] Should cookies be secured (transmitted over secure protocol as https)
+     * @param {Boolean} [options.json=true] Should cookies values be encoded to and decoded from json
      *
      * @return {Zikula.CookieUtil} New Zikula.CookieUtil instance
      */
@@ -884,7 +885,8 @@ Zikula.CookieUtil = Class.create(/** @lends Zikula.CookieUtil */{
         this.options = Object.extend({
             path: Zikula.Config.baseURI,
             domain: '',
-            secure: false
+            secure: false,
+            json: true
         }, options || { });
     },
     /**
@@ -908,7 +910,7 @@ Zikula.CookieUtil = Class.create(/** @lends Zikula.CookieUtil */{
         try {
             var cookieStr = this.cookie.interpolate({
                 name: name,
-                value: this.encode(value),
+                value: this.options.json ? this.encode(value) : value,
                 expires: expires instanceof Date ? expires.toGMTString() : this.secondsFromNow(expires),
                 path: path ? path : this.options.path,
                 domain: this.options.domain,
@@ -925,12 +927,14 @@ Zikula.CookieUtil = Class.create(/** @lends Zikula.CookieUtil */{
      * Cookie value is returned in original format as it was stored.
      *
      * @param {String} name Cookie name.
+     * @param {Boolean} json Cookie name.
      *
      * @return {mixed} Returns cookie value or null.
      */
-    get: function(name){
+    get: function(name, json){
+        json = Object.isUndefined(json) ? this.options.json : json;
         var cookie = document.cookie.match(name + '=(.*?)(;|$)');
-        return cookie ? this.decode(cookie[1]) : null
+        return cookie ? (json ? this.decode(cookie[1]) : cookie[1]) : null
     },
     /**
      * Delete cookie
