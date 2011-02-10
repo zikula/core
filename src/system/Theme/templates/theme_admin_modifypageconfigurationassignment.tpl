@@ -2,7 +2,7 @@
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.tpl"}
     {gt text="Edit page configuration assignment" assign=templatetitle}
-    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=edit.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

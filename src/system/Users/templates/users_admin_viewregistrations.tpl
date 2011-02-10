@@ -60,7 +60,7 @@
                 {if isset($regactions.modify)}
                 <td class="z-center">
                     {if $regactions.modify}
-                    <a href="{$regactions.modify|safetext}">{img src='xedit.gif' modname='core' set='icons/extrasmall' __title='Modify registration details' __alt='Modify registration details' class='tooltips'}</a>
+                    <a href="{$regactions.modify|safetext}">{img src='edit.gif' modname='core' set='icons/extrasmall' __title='Modify registration details' __alt='Modify registration details' class='tooltips'}</a>
                     {else}
                     {img style='visibility: hidden;' src='agt_stop.gif' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
                     {/if}
