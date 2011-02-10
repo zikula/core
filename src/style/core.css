@@ -702,7 +702,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-locked {
-    background: url("../images/icons/extrasmall/locked.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/locked.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-warning {
@@ -1202,22 +1202,22 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 }
 
 .z-buttons input.z-bt-filter {
-    background: url("../images/icons/extrasmall/filter.png") #dfdfdf 10px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../images/icons/extrasmall/filter.png") 10px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../images/icons/extrasmall/filter.png") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../images/icons/extrasmall/filter.png") 10px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
+    background: url("../images/icons/extrasmall/filter.gif") #dfdfdf 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/filter.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/filter.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/filter.gif") 10px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
 }
 .z-buttons input.z-bt-filter:hover {
-    background: url("../images/icons/extrasmall/filter.png") #cfcfcf 10px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../images/icons/extrasmall/filter.png") 10px 50% no-repeat, -moz-linear-gradient(top,  #fafafa, #cfcfcf) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../images/icons/extrasmall/filter.png") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cfcfcf)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../images/icons/extrasmall/filter.png") 10px 50% no-repeat, linear-gradient(#fafafa, #cfcfcf); /*CSS3*/
+    background: url("../images/icons/extrasmall/filter.gif") #cfcfcf 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/filter.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #fafafa, #cfcfcf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/filter.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cfcfcf)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/filter.gif") 10px 50% no-repeat, linear-gradient(#fafafa, #cfcfcf); /*CSS3*/
 }
 .z-buttons input.z-bt-filter:active {
-    background: url("../images/icons/extrasmall/filter.png") #fafafa 10px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../images/icons/extrasmall/filter.png") 10px 50% no-repeat, -moz-linear-gradient(top,  #cfcfcf, #fafafa) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../images/icons/extrasmall/filter.png") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), to(#fafafa)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../images/icons/extrasmall/filter.png") 10px 50% no-repeat, linear-gradient(#cfcfcf, #fafafa); /*CSS3*/
+    background: url("../images/icons/extrasmall/filter.gif") #fafafa 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/filter.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #cfcfcf, #fafafa) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/filter.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), to(#fafafa)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/filter.gif") 10px 50% no-repeat, linear-gradient(#cfcfcf, #fafafa); /*CSS3*/
 }
 
 /* Old input image buttons. Backward compatibility < Zikula 1.3 */

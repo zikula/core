@@ -106,8 +106,8 @@
                 {button src='button_ok.gif' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
                 <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
                 {if $userinfo.uid != $coredata.user.uid}<a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userinfo.uid}">{img modname='core' set='icons/extrasmall' src="delete_user.gif" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}
-                <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$userinfo.uid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
-                <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$userinfo.uid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
+                <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$userinfo.uid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostusername.gif" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
+                <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$userinfo.uid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostpassword.gif" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
             </div>
         </div>
     </form>
