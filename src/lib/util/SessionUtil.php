@@ -18,27 +18,12 @@
 class SessionUtil
 {
     /**
-     * Set up session handling.
-     *
-     * Set all PHP options for Zikula session handling.
-     *
-     * @return void
-     */
-    public static function _setup()
-    {
-        
-    }
-
-    /**
      * Initialise session.
      *
      * @return boolean
      */
     public static function initialize()
     {
-        self::_setup();
-
-        
     }
 
     /**
@@ -81,28 +66,8 @@ class SessionUtil
      */
     public static function getVar($name, $default = false, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
-//        throw new Exception('woops');
         $session = ServiceUtil::getManager()->getService('session');
         return $session->get($name, $default, $path);
-        if ($path == '/' || $path === '') {
-            if (isset($_SESSION['ZSV' . $name])) {
-                return $_SESSION['ZSV' . $name];
-            }
-        } else {
-            $parent = & self::_resolvePath($path, $autocreate, $overwriteExistingVar);
-            if ($parent === false) {
-                // path + autocreate or overwriteExistingVar Error
-                return false;
-            }
-
-            if (isset($parent[$name])) {
-                return $parent[$name];
-            } else if ($autocreate) {
-                $parent[$name] = $default;
-            }
-        }
-
-        return $default;
     }
 
     /**
@@ -119,23 +84,8 @@ class SessionUtil
     public static function setVar($name, $value, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
         $session = ServiceUtil::getManager()->getService('session');
-
-        if ($name == '_ZErrorMsg' || $name == 'errormsg') {
-            return LogUtil::registerError($value);
-        }
-        if ($name == '_ZStatusMsg' || $name == 'statusmsg') {
-            return LogUtil::registerStatus($value);
-        }
-
-        if ($name == 'uid') {
-            $session->regenerate();
-        }
-
-        return $session->set($name, $value, $path);
-        global $ZConfig;
-
         if (($name == 'errormsg' || $name == 'statusmsg' || $name == '_ZErrorMsg' || $name == '_ZStatusMsg') && !is_array($value)) {
-            if ($ZConfig['System']['development']) {
+            if (System::isDevelopmentMode()) {
                 LogUtil::log(__("Error! This use of 'SessionUtil::setVar()' is no longer valid. Please use the LogUtil API to manipulate status messages and error messages."));
             }
             if ($name == '_ZErrorMsg' || $name == 'errormsg') {
@@ -146,24 +96,11 @@ class SessionUtil
             }
         }
 
-        // cause session on regeration on uid change
         if ($name == 'uid') {
-            self::regenerate();
+            $session->regenerate();
         }
 
-        if ($path == '/' || $path === '') {
-            $_SESSION['ZSV' . $name] = $value;
-        } else {
-            $parent = & self::_resolvePath($path, $autocreate, $overwriteExistingVar);
-            if ($parent === false) {
-                // path + autocreate or overwriteExistingVar Error
-                return false;
-            }
-
-            $parent[$name] = $value;
-        }
-
-        return true;
+        return $session->set($name, $value, $path);
     }
 
     /**
@@ -179,34 +116,6 @@ class SessionUtil
     {
         $session = ServiceUtil::getManager()->getService('session');
         return $session->del($name);
-        $value = false;
-
-        if ($path == '/' || $path === '') {
-            if (isset($_SESSION['ZSV' . $name])) {
-                $value = $_SESSION['ZSV' . $name];
-                unset($_SESSION['ZSV' . $name]);
-            } else {
-                $value = $default;
-            }
-        } else {
-            $parent = & self::_resolvePath($path, false, false);
-            if ($parent === false) {
-                // path + autocreate or overwriteExistingVar Error
-                return false;
-            }
-
-            if (isset($parent[$name])) {
-                $value = $parent[$name];
-                unset($parent[$name]);
-            } else {
-                $value = $default;
-            }
-        }
-
-        // unset if registerglobals are on
-        unset($GLOBALS['ZSV' . $name]);
-
-        return $value;
     }
 
     /**
@@ -269,17 +178,8 @@ class SessionUtil
      */
     public static function requireSession()
     {
-        // TODO A [make an API to process these fatal errors] (drak)
-        // check if we need to create a session
-        if (!session_id()) {
-            // Start session
-            if (!self::initialize()) {
-                // session initialization failed so display templated error
-                header('HTTP/1.1 503 Service Unavailable');
-                require_once System::getSystemErrorTemplate('sessionfailed.tpl');
-                System::shutdown();
-            }
-        }
+        $event = new Zikula_Event('session.require');
+        EventUtil::getManager()->notify($event);
     }
 
     /**
