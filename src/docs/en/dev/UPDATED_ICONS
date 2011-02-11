@@ -16,6 +16,7 @@ Icon-Set: Extrasmall (16x16px)
 
 Files removed:
 ---------------------
+agt_aisles.gif
 Community-Help.gif
 file_important.gif
 folder_blank.gif
@@ -28,9 +29,12 @@ nextend.gif
 nextinactive.gif
 previousend.gif
 previousinactive.gif
+configure_toolbars.gif
+
 
 Files renamed:
 ---------------------
+agt_resume.gif => agt_pause-queue.gif
 package_favourite.gif => package_favorite.gif
 filter.png => filter.gif
 locked.png => locked.gif
@@ -47,6 +51,7 @@ Files removed:
 ---------------------
 add.gif
 admintab.gif
+agt_aisles.gif
 file_important.gif
 folder_blank.gif
 folder_doments.gif
@@ -56,6 +61,7 @@ folder_txt.gif
 
 Files renamed:
 ---------------------
+agt_resume.gif => agt_pause-queue.gif
 package_favourite.gif => package_favorite.gif
 filter.png => filter.gif
 locked.png => locked.gif
@@ -74,6 +80,7 @@ Files removed:
 ---------------------
 add.gif
 add_new.gif
+agt_aisles.gif
 admintab.gif
 admintab.png
 delete.gif
@@ -86,6 +93,7 @@ modify.gif
 
 Files renamed:
 ---------------------
+agt_resume.gif => agt_pause-queue.gif
 package_favourite.gif => package_favorite.gif
 filter.png => filter.gif
 locked.png => locked.gif
@@ -110,9 +118,8 @@ Files removed:
 2leftarrow.gif
 2rightarrow.gif
 2uparrow.gif
+agt_aisles.gif
 agt_login.gif
-agt_pause-queue.gif
-agt_resume.gif
 agt_runit.gif
 encrypted.gif
 file_important.gif
@@ -163,6 +170,7 @@ reload.gif
 
 Files renamed:
 ---------------------
+agt_resume.gif => agt_pause-queue.gif
 package_favourite.gif => package_favorite.gif
 filter.png => filter.gif
 locked.png => locked.gif
@@ -170,3 +178,4 @@ lostusername.png => lostusername.gif
 lostpassword.png => lostpassword.gif
 unlocked.png = unlocked.gif
 user.png => user.gif
+software-development.gif => softwareD.gif
