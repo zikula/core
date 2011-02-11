@@ -433,25 +433,8 @@ class Zikula_Core
         }
         // end block
 
-        System::checks();
-
         if ($stage & self::STAGE_SESSIONS) {
-            // Other includes
-            // ensure that the sesssions table info is available
-            ModUtil::dbInfoLoad('Users', 'Users');
-            $anonymoussessions = System::getVar('anonymoussessions');
-            if ($anonymoussessions == '1' || !empty($_COOKIE[SessionUtil::getCookieName()])) {
-                // we need to create a session for guests as configured or
-                // a cookie exists which means we have been here before
-                // Start session
-                $this->serviceManager->getService('session')->start();
-
-                // Auto-login via HTTP(S) REMOTE_USER property
-                if (System::getVar('session_http_login') && !UserUtil::isLoggedIn()) {
-                    UserUtil::loginHttp();
-                }
-            }
-
+            SessionUtil::requireSession();
             $coreInitEvent->setArg('stage', self::STAGE_SESSIONS);
             $this->eventManager->notify($coreInitEvent);
         }

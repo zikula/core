@@ -959,26 +959,26 @@ class UserUtil
         }
     }
 
-    /**
-     * Log the user in via the REMOTE_USER SERVER property.
-     *
-     * This routine simply
-     * checks if the REMOTE_USER exists in the environment: if he does a
-     * session is created for him, regardless of the password being used.
-     *
-     * @return bool true if the user successfully logged in, false otherwise
-     */
-    public static function loginHttp()
-    {
-        $uname = System::serverGetVar('REMOTE_USER');
-        $hSec = System::getVar('session_http_login_high_security', true);
-        $rc = self::loginUsing('Users', array('loginid' => $uname, 'pass' => null), false, false);
-        if ($rc && $hSec) {
-            System::setVar('seclevel', 'High');
-        }
-
-        return $rc;
-    }
+//    /**
+//     * Log the user in via the REMOTE_USER SERVER property.
+//     *
+//     * This routine simply
+//     * checks if the REMOTE_USER exists in the environment: if he does a
+//     * session is created for him, regardless of the password being used.
+//     *
+//     * @return bool true if the user successfully logged in, false otherwise
+//     */
+//    public static function loginHttp()
+//    {
+//        $uname = System::serverGetVar('REMOTE_USER');
+//        $hSec = System::getVar('session_http_login_high_security', true);
+//        $rc = self::loginUsing('Users', array('loginid' => $uname, 'pass' => null), false, false);
+//        if ($rc && $hSec) {
+//            System::setVar('seclevel', 'High');
+//        }
+//
+//        return $rc;
+//    }
 
     /**
      * Log the user out.

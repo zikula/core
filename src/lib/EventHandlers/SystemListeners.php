@@ -28,10 +28,12 @@ class SystemListeners extends Zikula_EventHandler
         $this->addHandlerDefinition('bootstrap.getconfig', 'initialHandlerScan', -10);
         $this->addHandlerDefinition('bootstrap.getconfig', 'getConfigFile');
         $this->addHandlerDefinition('setup.errorreporting', 'defaultErrorReporting');
+        $this->addHandlerDefinition('core.preinit', 'systemCheck');
         $this->addHandlerDefinition('core.preinit', 'setupSessions');
         $this->addHandlerDefinition('core.init', 'setupLoggers');
         $this->addHandlerDefinition('log', 'errorLog');
         $this->addHandlerDefinition('core.init', 'sessionLogging');
+        $this->addHandlerDefinition('session.require', 'requireSession');
         $this->addHandlerDefinition('core.init', 'systemPlugins');
         $this->addHandlerDefinition('core.preinit', 'request');
         $this->addHandlerDefinition('core.postinit', 'systemHooks');
@@ -126,6 +128,30 @@ class SystemListeners extends Zikula_EventHandler
                     apache_setenv('Zikula-Username', UserUtil::getVar('uname'));
                 }
             }
+        }
+    }
+
+    /**
+     * If enabled and logged in, save login name of user in Apache session variable for Apache logs.
+     *
+     * Implements 'session.require'.
+     *
+     * @param Zikula_Event $event The event handler.
+     *
+     * @return void
+     */
+    public function requireSession(Zikula_Event $event)
+    {
+        $session = $this->serviceManager->getService('session');
+        try {
+            if (!$session->start()) {
+                throw new RuntimeException('Failed to start session');
+            }
+        } catch (Exception $e) {
+            // session initialization failed so display templated error
+            header('HTTP/1.1 503 Service Unavailable');
+            require_once System::getSystemErrorTemplate('sessionfailed.tpl');
+            System::shutdown();
         }
     }
 
@@ -590,6 +616,88 @@ class SystemListeners extends Zikula_EventHandler
         }
 
         $event->setNotified();
+    }
+
+    /**
+     * Perform some checks that might result in a die() upon failure.
+     *
+     * Listens on the 'core.preinit' event.
+     *
+     * @param Zikula_Event $event Event.
+     * 
+     * @return void
+     */
+    public function systemCheck(Zikula_Event $event)
+    {
+        $die = false;
+
+        if (get_magic_quotes_runtime()) {
+            echo __('Error! Zikula does not support PHP magic_quotes_runtime - please disable this feature in php.ini.');
+            $die = true;
+        }
+
+        if (ini_get('magic_quotes_gpc')) {
+            echo __('Error! Zikula does not support PHP magic_quotes_gpc = On - please disable this feature in your php.ini file.');
+            $die = true;
+        }
+
+        if (ini_get('register_globals')) {
+            echo __('Error! Zikula does not support PHP register_globals = On - please disable this feature in your php.ini or .htaccess file.');
+            $die = true;
+        }
+
+        // check PHP version, shouldn't be necessary, but....
+        if (version_compare(PHP_VERSION, '5.2.6', '>=') == false) {
+            echo __f('Error! Zikula requires PHP version 5.2.6+. Your server seems to be using version %s.', PHP_VERSION);
+            $die = true;
+        }
+
+        // token_get_all needed for Smarty
+        if (!function_exists('token_get_all')) {
+            echo __("Error! PHP 'token_get_all()' is required but unavailable.");
+            $die = true;
+        }
+
+        // mb_string is needed too
+        if (!function_exists('mb_get_info')) {
+            echo __("Error! PHP must have the mbstring extension loaded.");
+            $die = true;
+        }
+
+        if (!function_exists('fsockopen')) {
+            echo __("Error! The PHP function 'fsockopen()' is needed within the Zikula mailer module, but is not available.");
+            $die = true;
+        }
+
+        if (System::isDevelopmentMode() || System::isInstalling()) {
+            $temp = $this->serviceManager->getArgument('temp');
+
+            $folders = array(
+                    $temp,
+                    "$temp/error_logs",
+                    "$temp/view_compiled",
+                    "$temp/view_cache",
+                    "$temp/Theme_compiled",
+                    "$temp/Theme_cache",
+                    "$temp/Theme_Config",
+                    "$temp/Theme_cache",
+                    "$temp/purifierCache",
+                    "$temp/idsTmp"
+            );
+
+            foreach ($folders as $folder) {
+                if (!is_dir($folder)) {
+                    mkdir($folder, $this->serviceManager->getArgument('system.chmod_dir'), true);
+                }
+                if (!is_writable($folder)) {
+                    echo __f("Error! Folder '%s' was not found.", $folder) . '<br />';
+                    $die = true;
+                }
+            }
+        }
+        if ($die == true) {
+            exit;
+        }
     }
 
 }
