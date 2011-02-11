@@ -17,7 +17,6 @@
                 <div id="header">
                     <h1>{gt text="Zikula Application Framework"}</h1>
                     <h2>{gt text="Installer script"}</h2>
-                    {insert name="getstatusmsg"}
                     {php}
                     $lang = $this->_tpl_vars['lang'];
                     $this->assign('doclink', "docs/$lang/INSTALL");
