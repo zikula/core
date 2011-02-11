@@ -70,9 +70,9 @@
                 <td class="z-center">
                     {if $regactions.approve && !$reginfo.isverified}
                     {if isset($modvars.Users.moderation_order) && ($modvars.Users.moderation_order == 'UserUtil::APPROVAL_AFTER'|const)}
-                    <a href="{$regactions.approve|safetext}">{img src='ok.gif' modname='core' set='icons/extrasmall' __title='Pre-approve (verification still required)' __alt='Pre-approve (verification still required)' class='tooltips'}</a>
+                    <a href="{$regactions.approve|safetext}">{img src='button_ok.gif' modname='core' set='icons/extrasmall' __title='Pre-approve (verification still required)' __alt='Pre-approve (verification still required)' class='tooltips'}</a>
                     {else}
-                    <a href="{$regactions.approve|safetext}">{img src='ok.gif' modname='core' set='icons/extrasmall' __title='Approve' __alt='Approve' class='tooltips'}</a>
+                    <a href="{$regactions.approve|safetext}">{img src='button_ok.gif' modname='core' set='icons/extrasmall' __title='Approve' __alt='Approve' class='tooltips'}</a>
                     {/if}
                     {elseif $regactions.approve && $reginfo.isverified}
                     <a href="{$regactions.approve|safetext}">{img src='add_user.gif' modname='core' set='icons/extrasmall' __title='Approve (creates a new user account)' __alt='Approve (creates a new user account)' class='tooltips'}</a>

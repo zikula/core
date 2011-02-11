@@ -18,7 +18,7 @@
         {* For the following, (isset($regactions.optname) == true) means that the current user can, in general, perform the operation; *}
         {* ($regactions.optname == true) means that the operation can be performed for that individual registration record. *}
         {if isset($regactions.approve) && $regactions.approve && !$reginfo.isverified}
-        <a href="{$regactions.approve|safetext}">{img src='ok.gif' modname='core' set='icons/extrasmall' __title='Approve' __alt='Approve'} {gt text='Approve'}</a>
+        <a href="{$regactions.approve|safetext}">{img src='button_ok.gif' modname='core' set='icons/extrasmall' __title='Approve' __alt='Approve'} {gt text='Approve'}</a>
         {elseif isset($regactions.approve) && $regactions.approve && $reginfo.isverified}
         <a href="{$regactions.approve|safetext}">{img src='add_user.gif' modname='core' set='icons/extrasmall' __title='Approve (creates a new user account)' __alt='Approve (creates a new user account)'} {gt text='Approve and Add User'}</a>
         {/if}

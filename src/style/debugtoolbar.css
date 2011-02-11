@@ -76,7 +76,7 @@
 }
 
 #DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.config {
-    background: url("../images/icons/extrasmall/configure_toolbars.gif") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/configure_shortcuts.gif") no-repeat scroll 0 50% transparent;
     padding-left: 20px;
 }
 

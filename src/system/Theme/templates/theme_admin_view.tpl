@@ -44,7 +44,7 @@
                     <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{img modname=core src=trashcan_empty.gif set=icons/extrasmall __alt="Delete" __title="Delete: `$theme.displayname`" class="tooltips"}</a>&nbsp;
                     {/if}
                     {if $theme.name neq $currenttheme and $theme.user and $theme.state neq 2}
-                    <a href="{modurl modname="Theme" type="admin" func="setasdefault" themename=$theme.name}">{img modname=core src=ok.gif set=icons/extrasmall __alt="Set as default" __title="Set as default: `$theme.displayname`" class="tooltips"}</a>&nbsp;
+                    <a href="{modurl modname="Theme" type="admin" func="setasdefault" themename=$theme.name}">{img modname=core src=button_ok.gif set=icons/extrasmall __alt="Set as default" __title="Set as default: `$theme.displayname`" class="tooltips"}</a>&nbsp;
                     {/if}
                     <a href="{modurl modname="Theme" type="admin" func="credits" themename=$theme.name}">{img modname=core src=documentinfo.gif set=icons/extrasmall __alt="Credits" __title="Credits: `$theme.displayname`" class="tooltips"}</a>
                 </td>
