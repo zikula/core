@@ -46,7 +46,7 @@ class Zikula_Session
     /**
      * Start session.
      *
-     * @return void
+     * @return boolean
      */
     public function start()
     {
@@ -60,6 +60,18 @@ class Zikula_Session
             $_SESSION['_zikula_messages'] = array_key_exists('_zikula_messages', $_SESSION) ? $_SESSION['_zikula_messages'] : array();
             $this->started = true;
         }
+
+        return $this->started;
+    }
+
+    /**
+     * Check if session has started.
+     *
+     * @return boolean
+     */
+    public function hasStarted()
+    {
+        return $this->started;
     }
 
     /**
