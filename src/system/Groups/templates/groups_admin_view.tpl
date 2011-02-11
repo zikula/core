@@ -84,7 +84,7 @@
                     <span id="groupaction_{$group.gid}" class="z-itemcell z-w10">
                         <button class="z-imagebutton z-hide tooltips" id="modifyajax_{$group.gid}" title="{gt text="Edit group: `$group.name`"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
                         <a id="modify_{$group.gid}"  href="{$group.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit group: `$group.name`" __alt="Edit" class='tooltips'}</a>
-                        <a id="delete_{$group.gid}"     href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=trashcan_empty.gif modname=core set=icons/extrasmall __title="Delete group: `$group.name`" __alt="Delete" class='tooltips'}</a>
+                        <a id="delete_{$group.gid}"     href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __title="Delete group: `$group.name`" __alt="Delete" class='tooltips'}</a>
                         <a id="members_{$group.gid}"  href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=edit_group.gif modname=core set=icons/extrasmall __title="Membership of group: `$group.name`" __alt="Group membership" class='tooltips'}</a>
                         <script type="text/javascript">
                             //$('insert_{{$group.gid}}').addClassName('z-hide');
@@ -98,7 +98,7 @@
                     </span>
                     <span id="editgroupaction_{$group.gid}" class="z-itemcell z-w10 z-hide">
                         <button class="z-imagebutton tooltips" id="groupeditsave_{$group.gid}"   title="{gt text="Save group: `$group.name`"}">{img src=button_ok.gif modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
-                        <button class="z-imagebutton tooltips" id="groupeditdelete_{$group.gid}" title="{gt text="Delete group: `$group.name`"}">{img src=trashcan_empty.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
+                        <button class="z-imagebutton tooltips" id="groupeditdelete_{$group.gid}" title="{gt text="Delete group: `$group.name`"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
                         <button class="z-imagebutton tooltips" id="groupeditcancel_{$group.gid}" title="{gt text="Cancel group: `$group.name`"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                     </span>
                 </div>
@@ -170,7 +170,7 @@
                     </span>
                     <span id="editgroupaction_1" class="z-itemcell z-w12">
                         <button class="z-imagebutton" id="groupeditsave_1"   title="{gt text="Save"}">{img src=button_ok.gif modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
-                        <button class="z-imagebutton" id="groupeditdelete_1" title="{gt text="Delete"}">{img src=trashcan_empty.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete:"}</button>
+                        <button class="z-imagebutton" id="groupeditdelete_1" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete:"}</button>
                         <button class="z-imagebutton" id="groupeditcancel_1" title="{gt text="Cancel"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                     </span>
                 </div>

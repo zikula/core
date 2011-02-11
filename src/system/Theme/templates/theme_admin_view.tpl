@@ -41,7 +41,7 @@
                     {/if}
                     <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit: `$theme.displayname` " class="tooltips"}</a>&nbsp;
                     {if $theme.name neq $currenttheme and $theme.state neq 2}
-                    <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{img modname=core src=trashcan_empty.gif set=icons/extrasmall __alt="Delete" __title="Delete: `$theme.displayname`" class="tooltips"}</a>&nbsp;
+                    <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete: `$theme.displayname`" class="tooltips"}</a>&nbsp;
                     {/if}
                     {if $theme.name neq $currenttheme and $theme.user and $theme.state neq 2}
                     <a href="{modurl modname="Theme" type="admin" func="setasdefault" themename=$theme.name}">{img modname=core src=button_ok.gif set=icons/extrasmall __alt="Set as default" __title="Set as default: `$theme.displayname`" class="tooltips"}</a>&nbsp;

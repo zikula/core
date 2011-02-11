@@ -86,7 +86,7 @@
                     </span>
                     <span id="editpermaction_{$permission.permid}" class="z-itemcell z-w07 z-hide">
                         <button class="z-imagebutton tooltips" id="permeditsave_{$permission.permid}"   title="{gt text="Save"}">{img src=button_ok.gif modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
-                        <button class="z-imagebutton tooltips" id="permeditdelete_{$permission.permid}" title="{gt text="Delete"}">{img src=trashcan_empty.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
+                        <button class="z-imagebutton tooltips" id="permeditdelete_{$permission.permid}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
                         <button class="z-imagebutton tooltips" id="permeditcancel_{$permission.permid}" title="{gt text="Cancel"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                     </span>
                 </div>
@@ -128,7 +128,7 @@
                     </span>
                     <span id="editpermaction_1" class="z-itemcell z-w07">
                         <button class="z-imagebutton tooltips" id="permeditsave_1"   title="{gt text="Save"}">{img src=button_ok.gif modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
-                        <button class="z-imagebutton tooltips" id="permeditdelete_1" title="{gt text="Delete"}">{img src=trashcan_empty.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
+                        <button class="z-imagebutton tooltips" id="permeditdelete_1" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
                         <button class="z-imagebutton tooltips" id="permeditcancel_1" title="{gt text="Cancel"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                     </span>
                 </div>
