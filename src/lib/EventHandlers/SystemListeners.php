@@ -28,10 +28,12 @@ class SystemListeners extends Zikula_EventHandler
         $this->addHandlerDefinition('bootstrap.getconfig', 'initialHandlerScan', -10);
         $this->addHandlerDefinition('bootstrap.getconfig', 'getConfigFile');
         $this->addHandlerDefinition('setup.errorreporting', 'defaultErrorReporting');
+        $this->addHandlerDefinition('core.preinit', 'setupSessions');
         $this->addHandlerDefinition('core.init', 'setupLoggers');
         $this->addHandlerDefinition('log', 'errorLog');
         $this->addHandlerDefinition('core.init', 'sessionLogging');
         $this->addHandlerDefinition('core.init', 'systemPlugins');
+        $this->addHandlerDefinition('core.preinit', 'request');
         $this->addHandlerDefinition('core.postinit', 'systemHooks');
         $this->addHandlerDefinition('core.init', 'setupDebugToolbar');
         $this->addHandlerDefinition('log.sql', 'logSqlQueries');
@@ -41,6 +43,38 @@ class SystemListeners extends Zikula_EventHandler
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
         $this->addHandlerDefinition('core.init', 'initDB');
+    }
+
+    /**
+     * Listen for the 'core.preinit' event.
+     *
+     * @param Zikula_Event $event Event.
+     *
+     * @return void
+     */
+    public function request(Zikula_Event $event)
+    {
+        $requestDef = new Zikula_ServiceManager_Definition('Zikula_Request_Http');
+        $requestDef->addMethod('setSession', array(new Zikula_ServiceManager_Service('session')));
+        $this->serviceManager->registerService(new Zikula_ServiceManager_Service('request', $requestDef));
+    }
+
+    /**
+     * Listen for the 'core.init' event & STAGE_DECODEURLS.
+     *
+     * This is basically a hack until the routing framework takes over (drak).
+     *
+     * @param Zikula_Event $event Event.
+     *
+     * @return void
+     */
+    public function setupRequest(Zikula_Event $event)
+    {
+        $request = $this->serviceManager->getService('request');
+        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $controller = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $action = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $request->addRequest($module, $controller, $action);
     }
 
     /**
@@ -54,6 +88,24 @@ class SystemListeners extends Zikula_EventHandler
         ServiceUtil::getManager($core);
         EventUtil::getManager($core);
         $core->attachHandlers('config/EventHandlers');
+    }
+
+    /**
+     * Start sessions.
+     *
+     * Implements 'core.preinit' event.
+     *
+     * @param Zikula_Event $event The event handler.
+     *
+     * @return void
+     */
+    public function setupSessions(Zikula_Event $event)
+    {
+        $storage = new Zikula_ServiceManager_Definition('Zikula_Session_Storage_Legacy');
+        $storageService = new Zikula_ServiceManager_Service('session.storage', $storage);
+        $this->serviceManager->registerService($storageService);
+        $session = new Zikula_ServiceManager_Definition('Zikula_Session', array($storageService));
+        $this->serviceManager->registerService(new Zikula_ServiceManager_Service('session', $session));
     }
 
     /**

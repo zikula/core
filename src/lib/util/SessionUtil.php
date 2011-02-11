@@ -26,76 +26,7 @@ class SessionUtil
      */
     public static function _setup()
     {
-        $path = System::getBaseUri();
-        if (empty($path)) {
-            $path = '/';
-        } elseif (substr($path, -1, 1) != '/') {
-            $path .= '/';
-        }
-
-        $host = System::serverGetVar('HTTP_HOST');
-
-        if (($pos = strpos($host, ':')) !== false) {
-            $host = substr($host, 0, $pos);
-        }
-
-        // PHP configuration variables
-        ini_set('session.use_trans_sid', 0); // Stop adding SID to URLs
-        @ini_set('url_rewriter.tags', ''); // some environments dont allow this value to be set causing an error that prevents installation
-        ini_set('session.serialize_handler', 'php'); // How to store data
-        ini_set('session.use_cookies', 1); // Use cookie to store the session ID
-        ini_set('session.auto_start', 1); // Auto-start session
-
-
-        ini_set('session.name', self::getCookieName()); // Name of our cookie
-        // Set lifetime of session cookie
-        $seclevel = System::getVar('seclevel');
-        switch ($seclevel) {
-            case 'High':
-                // Session lasts duration of browser
-                $lifetime = 0;
-                // Referer check
-                // ini_set('session.referer_check', $host.$path);
-                ini_set('session.referer_check', $host);
-                break;
-            case 'Medium':
-                // Session lasts set number of days
-                $lifetime = System::getVar('secmeddays') * 86400;
-                break;
-            case 'Low':
-            default:
-                // Session lasts unlimited number of days (well, lots, anyway)
-                // (Currently set to 25 years)
-                $lifetime = 788940000;
-                break;
-        }
-        ini_set('session.cookie_lifetime', $lifetime);
-
-        // domain and path settings for session cookie
-        // if (System::getVar('intranet') == false) {
-        // Cookie path
-        ini_set('session.cookie_path', $path);
-
-        // Garbage collection
-        ini_set('session.gc_probability', System::getVar('gc_probability'));
-        ini_set('session.gc_divisor', 10000);
-        ini_set('session.gc_maxlifetime', System::getVar('secinactivemins') * 60); // Inactivity timeout for user sessions
-
-        ini_set('session.hash_function', 1);
-
-        // Set custom session handlers
-        ini_set('session.save_handler', 'user');
-        if (System::getVar('sessionstoretofile')) {
-            ini_set('session.save_path', System::getVar('sessionsavepath'));
-        }
-        // PHP 5.2 workaround
-        if (version_compare(phpversion(), '5.2.0', '>=')) {
-            register_shutdown_function('session_write_close');
-        }
-        // Do not call any of these functions directly.  Marked as private with _
-        session_set_save_handler('_SessionUtil__Start', '_SessionUtil__Close', '_SessionUtil__Read', '_SessionUtil__Write', //use session_write_close();
-                '_SessionUtil__Destroy', // use session_destroy();
-                '_SessionUtil__GC');
+        
     }
 
     /**
@@ -107,71 +38,7 @@ class SessionUtil
     {
         self::_setup();
 
-        // create IP finger print
-        $current_ipaddr = '';
-        $_REMOTE_ADDR = System::serverGetVar('REMOTE_ADDR');
-        $_HTTP_X_FORWARDED_FOR = System::serverGetVar('HTTP_X_FORWARDED_FOR');
-
-        if (System::getVar('sessionipcheck')) {
-            // feature for future release
-        }
-
-        // create the ip fingerprint
-        $current_ipaddr = md5($_REMOTE_ADDR . $_HTTP_X_FORWARDED_FOR);
-
-        // start session check expiry and ip fingerprint if required
-        if (session_start() && isset($GLOBALS['_ZSession']['obj']) && $GLOBALS['_ZSession']['obj']) {
-            // check if session has expired or not
-            $now = time();
-            $inactive = ($now - (int)(System::getVar('secinactivemins') * 60));
-            $daysold = ($now - (int)(System::getVar('secmeddays') * 86400));
-            $lastused = strtotime($GLOBALS['_ZSession']['obj']['lastused']);
-            $rememberme = self::getVar('rememberme');
-            $uid = $GLOBALS['_ZSession']['obj']['uid'];
-            $ipaddr = $GLOBALS['_ZSession']['obj']['ipaddr'];
-
-            // IP check
-            if (System::getVar('sessionipcheck', false)) {
-                if ($ipaddr !== $current_ipaddr) {
-                    session_destroy();
-                    return false;
-                }
-            }
-
-            switch (System::getVar('seclevel')) {
-                case 'Low':
-                    // Low security - users stay logged in permanently
-                    //                no special check necessary
-                    break;
-                case 'Medium':
-                    // Medium security - delete session info if session cookie has
-                    // expired or user decided not to remember themself and inactivity timeout
-                    // OR max number of days have elapsed without logging back in
-                    if ((!$rememberme && $lastused < $inactive) || ($lastused < $daysold) || ($uid == '0' && $lastused < $inactive)) {
-                        self::expire();
-                    }
-                    break;
-                case 'High':
-                default:
-                    // High security - delete session info if user is inactive
-                    //if ($rememberme && ($lastused < $inactive)) { // see #427
-                    if ($lastused < $inactive) {
-                        self::expire();
-                    }
-                    break;
-            }
-        } else {
-            // *must* regenerate new session otherwise the default sessid will be
-            // taken from any session cookie that was submitted (bad bad bad)
-            self::regenerate(true);
-            self::_createNew(session_id(), $current_ipaddr);
-        }
-
-        if (isset($_SESSION['_ZSession']['obj'])) {
-            unset($_SESSION['_ZSession']['obj']);
-        }
-
-        return true;
+        
     }
 
     /**
@@ -196,8 +63,6 @@ class SessionUtil
         self::setVar('useragent', sha1(System::serverGetVar('HTTP_USER_AGENT')));
 
         // init status & error message arrays
-        self::setVar('_ZErrorMsg', array());
-        self::setVar('_ZStatusMsg', array());
         self::setVar('uid', 0);
 
         return true;
@@ -216,6 +81,9 @@ class SessionUtil
      */
     public static function getVar($name, $default = false, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
+//        throw new Exception('woops');
+        $session = ServiceUtil::getManager()->getService('session');
+        return $session->get($name, $default, $path);
         if ($path == '/' || $path === '') {
             if (isset($_SESSION['ZSV' . $name])) {
                 return $_SESSION['ZSV' . $name];
@@ -250,6 +118,20 @@ class SessionUtil
      */
     public static function setVar($name, $value, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
+        $session = ServiceUtil::getManager()->getService('session');
+
+        if ($name == '_ZErrorMsg' || $name == 'errormsg') {
+            return LogUtil::registerError($value);
+        }
+        if ($name == '_ZStatusMsg' || $name == 'statusmsg') {
+            return LogUtil::registerStatus($value);
+        }
+
+        if ($name == 'uid') {
+            $session->regenerate();
+        }
+
+        return $session->set($name, $value, $path);
         global $ZConfig;
 
         if (($name == 'errormsg' || $name == 'statusmsg' || $name == '_ZErrorMsg' || $name == '_ZStatusMsg') && !is_array($value)) {
@@ -295,6 +177,8 @@ class SessionUtil
      */
     public static function delVar($name, $default = false, $path = '/')
     {
+        $session = ServiceUtil::getManager()->getService('session');
+        return $session->del($name);
         $value = false;
 
         if ($path == '/' || $path === '') {
@@ -509,270 +393,3 @@ class SessionUtil
     }
 
 }
-// Following _Session__* API are for internal class use.  Do not call directly
-
-/**
- * PHP function to start the session.
- *
- * @param string $path Session path.
- * @param string $name Session name.
- *
- * @access private
- * @return bool true
- */
-function _SessionUtil__Start($path, $name)
-{
-    // Nothing to do
-    return true;
-}
-
-/**
- * PHP function to close the session
- *
- * @access private
- * @return bool true
- */
-function _SessionUtil__Close()
-{
-    // nothing to do
-    return true;
-}
-
-/**
- * PHP function to read a set of session variables.
- *
- * @param string $sessid Session Id.
- *
- * @return mixed bool of false or string session variable if true.
- */
-function _SessionUtil__Read($sessid)
-{
-    if (System::getVar('sessionstoretofile')) {
-        $path = DataUtil::formatForOS(session_save_path());
-        if (file_exists("$path/$sessid")) {
-            $result = file_get_contents("$path/$sessid");
-            if ($result) {
-                $result = unserialize($result);
-            }
-        }
-    } else {
-        $result = DBUtil::selectObjectByID('session_info', $sessid, 'sessid');
-        if (!$result) {
-            return false;
-        }
-    }
-
-    if (is_array($result) && isset($result['sessid'])) {
-        $GLOBALS['_ZSession']['obj'] = array('sessid' => $result['sessid'], 'ipaddr' => $result['ipaddr'], 'uid' => $result['uid'], 'lastused' => $result['lastused']);
-    }
-
-    // security feature to change session id's periodically
-    SessionUtil::random_regenerate();
-
-    return (isset($result['vars']) ? $result['vars'] : '');
-}
-
-/**
- * PHP function to write a set of session variables.
- *
- * DO NOT CALL THIS DIRECTLY use session_write_close().
- *
- * @param string $sessid Session Id.
- * @param string $vars   Session variables.
- *
- * @return boolean
- */
-function _SessionUtil__Write($sessid, $vars)
-{
-    $obj = $GLOBALS['_ZSession']['obj'];
-    $obj['vars'] = $vars;
-    $obj['remember'] = (SessionUtil::getVar('rememberme') ? SessionUtil::getVar('rememberme') : 0);
-    $obj['uid'] = (SessionUtil::getVar('uid') ? SessionUtil::getVar('uid') : 0);
-    $obj['lastused'] = date('Y-m-d H:i:s', time());
-
-    if (System::getVar('sessionstoretofile')) {
-        $path = DataUtil::formatForOS(session_save_path());
-
-        // if session was regenerate, delete it first
-        if (isset($GLOBALS['_ZSession']['regenerated']) && $GLOBALS['_ZSession']['regenerated'] == true) {
-            unlink("$path/$sessid");
-        }
-
-        // now write session
-        if ($fp = @fopen("$path/$sessid", "w")) {
-            $res = fwrite($fp, serialize($obj));
-            fclose($fp);
-        } else {
-            return false;
-        }
-    } else {
-        if (isset($GLOBALS['_ZSession']['new']) && $GLOBALS['_ZSession']['new'] == true) {
-            $res = DBUtil::insertObject($obj, 'session_info', 'sessid', true);
-            unset($GLOBALS['_ZSession']['new']);
-        } else {
-            // check for regenerated session and update ID in database
-            if (isset($GLOBALS['_ZSession']['regenerated']) && $GLOBALS['_ZSession']['regenerated'] == true) {
-                $sessiontable = DBUtil::getTables();
-                $columns = $sessiontable['session_info_column'];
-                $where = "WHERE $columns[sessid] = '" . DataUtil::formatForStore($GLOBALS['_ZSession']['sessid_old']) . "'";
-                $res = DBUtil::updateObject($obj, 'session_info', $where, 'sessid', true, true);
-            } else {
-                $res = DBUtil::updateObject($obj, 'session_info', '', 'sessid', true);
-            }
-        }
-    }
-
-    return (bool)$res;
-}
-
-/**
- * PHP function to destroy a session.
- *
- * DO NOT CALL THIS FUNCTION DIRECTLY use session_destroy();
- *
- * @param string $sessid Session Id.
- *
- * @return boolean
- */
-function _SessionUtil__Destroy($sessid)
-{
-    if (isset($GLOBALS['_ZSession'])) {
-        unset($GLOBALS['_ZSession']);
-    }
-
-    // expire the cookie
-    setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
-
-    // ensure we delete the stored session (not a regenerated one)
-    if (isset($GLOBALS['_ZSession']['regenerated']) && $GLOBALS['_ZSession']['regenerated'] == true) {
-        $sessid = $GLOBALS['_ZSession']['sessid_old'];
-    } else {
-        $sessid = session_id();
-    }
-
-    if (System::getVar('sessionstoretofile')) {
-        $path = DataUtil::formatForOS(session_save_path(), true);
-        return unlink("$path/$sessid");
-    } else {
-        $res = DBUtil::deleteObjectByID('session_info', $sessid, 'sessid');
-        return (bool)$res;
-    }
-}
-
-/**
- * PHP function to garbage collect session information.
- *
- * @param integer $maxlifetime Maxlifetime of the session.
- *
- * @return boolean
- */
-function _SessionUtil__GC($maxlifetime)
-{
-    $now = time();
-    $inactive = ($now - (int)(System::getVar('secinactivemins') * 60));
-    $daysold = ($now - (int)(System::getVar('secmeddays') * 86400));
-
-    // find the hash length dynamically
-    $hash = ini_get('session.hash_function');
-    if (empty($hash) || $hash == 0) {
-        $sessionlength = 32;
-    } else {
-        $sessionlength = 40;
-    }
-
-    if (System::getVar('sessionstoretofile')) {
-        // file based GC
-        $path = DataUtil::formatForOS(session_save_path(), true);
-        // get files
-        $files = array();
-        if ($handle = opendir($path)) {
-            while (false !== ($file = readdir($handle))) {
-                if ($file != '.' && $file != '..' && strlen($file) == $sessionlength) {
-                    // filename, created, last modified
-                    $file = "$path/$file";
-                    $files[] = array('name' => $file, 'lastused' => filemtime($file));
-                }
-            }
-        }
-
-        // check we have something to do
-        if (count($files) == 0) {
-            return true;
-        }
-
-        // do GC
-        switch (System::getVar('seclevel')) {
-            case 'Low':
-                // Low security - delete session info if user decided not to
-                //                remember themself and session is inactive
-                foreach ($files as $file) {
-                    $name = $file['name'];
-                    $lastused = $file['lastused'];
-                    $session = unserialize(file_get_contents($name));
-                    if ($lastused < $inactive && !isset($session['ZSVrememberme'])) {
-                        unlink($name);
-                    }
-                }
-                break;
-            case 'Medium':
-                // Medium security - delete session info if session cookie has
-                // expired or user decided not to remember themself and inactivity timeout
-                // OR max number of days have elapsed without logging back in
-                foreach ($files as $file) {
-                    $name = $file['name'];
-                    $lastused = $file['lastused'];
-                    $session = unserialize(file_get_contents($name));
-                    if ($lastused < $inactive && !isset($session['ZSVrememberme'])) {
-                        unlink($name);
-                    } else if (($lastused < $daysold)) {
-                        unlink($name);
-                    }
-                }
-                break;
-            case 'High':
-                // High security - delete session info if user is inactive
-                foreach ($files as $file) {
-                    $name = $file['name'];
-                    $lastused = $file['lastused'];
-                    if ($lastused < $inactive) {
-                        unlink($name);
-                    }
-                }
-                break;
-        }
-        return true;
-    } else {
-        // DB based GC
-        $dbtable = DBUtil::getTables();
-        $sessioninfocolumn = $dbtable['session_info_column'];
-        $inactive = DataUtil::formatForStore(date('Y-m-d H:i:s', $inactive));
-        $daysold = DataUtil::formatForStore(date('Y-m-d H:i:s', $daysold));
-
-        switch (System::getVar('seclevel')) {
-            case 'Low':
-                // Low security - delete session info if user decided not to
-                //                remember themself and inactivity timeout
-                $where = "WHERE $sessioninfocolumn[remember] = 0
-                          AND $sessioninfocolumn[lastused] < '$inactive'";
-                break;
-            case 'Medium':
-                // Medium security - delete session info if session cookie has
-                // expired or user decided not to remember themself and inactivity timeout
-                // OR max number of days have elapsed without logging back in
-                $where = "WHERE ($sessioninfocolumn[remember] = 0
-                          AND $sessioninfocolumn[lastused] < '$inactive')
-                          OR ($sessioninfocolumn[lastused] < '$daysold')
-                          OR ($sessioninfocolumn[uid] = 0 AND $sessioninfocolumn[lastused] < '$inactive')";
-                break;
-            case 'High':
-            default:
-                // High security - delete session info if user is inactive
-                $where = "WHERE $sessioninfocolumn[lastused] < '$inactive'";
-                break;
-        }
-
-        $res = DBUtil::deleteWhere('session_info', $where);
-        return (bool)$res;
-    }
-}
-
