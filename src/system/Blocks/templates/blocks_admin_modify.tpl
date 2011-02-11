@@ -2,7 +2,7 @@
 {ajaxheader modname=Blocks filename=blocks_admin_modify.js}
 {gt text="Edit block" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=edit.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form id="blockupdateform" class="z-form" action="{modurl modname="Blocks" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

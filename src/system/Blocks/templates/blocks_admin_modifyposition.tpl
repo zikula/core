@@ -2,7 +2,7 @@
 {include file="blocks_admin_menu.tpl"}
 {gt text="Edit block position" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=edit.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname="Blocks" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

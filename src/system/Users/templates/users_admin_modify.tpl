@@ -14,7 +14,7 @@
 {/if}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='edit.gif' set='icons/large' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname='core' src='xedit.gif' set='icons/large' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 

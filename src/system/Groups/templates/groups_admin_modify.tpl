@@ -2,7 +2,7 @@
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=edit.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname="Groups" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

@@ -332,12 +332,12 @@ class Users_Controller_Admin extends Zikula_Controller
 
                     if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_EDIT)) {
                         $options[] = array('url'   => ModUtil::url('Users', 'admin', 'modify', array('userid' => $item['uid'])),
-                                           'image' => 'edit.gif',
+                                           'image' => 'xedit.gif',
                                            'title' => $this->__f('Edit \'%s\'', $item['uname']));
 
                         if (($currentUid != $item['uid']) && SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_DELETE)) {
                             $options[] = array('url'   => ModUtil::url('Users', 'admin', 'deleteUsers', array('userid' => $item['uid'])),
-                                               'image' => 'editdelete.gif',
+                                               'image' => 'trashcan_empty.gif',
                                                'title' => $this->__f('Delete \'%s\'', $item['uname']));
                         }
                     }
@@ -395,7 +395,7 @@ class Users_Controller_Admin extends Zikula_Controller
                 $activationImg = 'yellowled.gif';
                 $activationTitle = $this->__('Inactive until change password and accept legal terms');
             } elseif ($items[$key]['activated'] == UserUtil::ACTIVATED_PENDING_DELETE) {
-                $activationImg = 'editdelete.gif';
+                $activationImg = 'trashcan_empty.gif';
                 $activationTitle = $this->__('Inactive, pending deletion');
             } elseif ($items[$key]['activated'] == UserUtil::ACTIVATED_INACTIVE) {
                 $activationImg = 'yellowled.gif';

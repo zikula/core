@@ -21,15 +21,15 @@
 
 $icons = array(
   'ok'       => 'button_ok.gif',
-  'delete'   => 'editdelete.gif',
+  'delete'   => 'trashcan_empty.gif',
   'help'     => 'agt_support.gif',
   'cancel'   => 'button_cancel.gif',
-  'edit'     => 'edit.gif',
+  'edit'     => 'xedit.gif',
   'config'   => 'configure.gif',
   'new'      => 'edit_add.gif',
   'error'    => 'error.gif',
   'home'     => 'folder_home.gif',
-  'view'     => 'windows_list.gif',
+  'view'     => 'windowlist.gif',
   'active'   => 'greenled.gif',
   'inactive' => 'yellowled.gif',
   'broken'   => 'redled.gif',

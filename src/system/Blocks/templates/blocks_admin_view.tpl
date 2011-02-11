@@ -4,7 +4,7 @@
 {gt text="Click to deactivate this block" assign=deactivate}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windows_list.gif set=icons/large __alt="View" }</div>
+    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View" }</div>
     <h2>{gt text="Blocks list"}</h2>
     <p class="z-informationmsg">{gt text="This is the list of blocks present in your system, you can use the filter to display only certain blocks. The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}</p>
     <form class="z-form" action="{modurl modname="Blocks" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
@@ -91,7 +91,7 @@
                 <td class="z-right">
                     {foreach item=option from=$block.options}
                     {if $option.noscript eq true}<noscript><div>{/if}
-                        <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title class='tooltips'}</a>&nbsp;
+                        <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title class='tooltips'}</a>
                     {if $option.noscript eq true}</div></noscript>{/if}
                     {/foreach}
                 </td>
@@ -121,7 +121,7 @@
                 <td><pre style="margin:0;padding:0;">&#123blockposition name={$position.name|safehtml}&#125</pre></td>
                 <td class="z-right">
                     {foreach item=option from=$position.options}
-                    <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title class='tooltips'}</a>&nbsp;
+                    <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title class='tooltips'}</a>
                     {/foreach}
                 </td>
             </tr>

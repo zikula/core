@@ -4,7 +4,7 @@
 <div class="z-admincontainer" id="top">
     {if $mode == "edit"}
     {gt text="Edit category" assign=templatetitle}
-    <div class="z-adminpageicon">{img modname=core src=edit.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
         {else}
@@ -123,9 +123,9 @@
                 {button class="z-btgreen" src=button_ok.gif set=icons/extrasmall name="category_submit" value="update"  __alt="Save" __title="Save" __text="Save"}
                 {button class="z-btblue" src=editcopy.gif set=icons/extrasmall name="category_copy" value="copy" __alt="Copy" __title="Copy" __text="Copy"}
                 {button class="z-btblue" src=editcut.gif set=icons/extrasmall name="category_move" value="move" __alt="Move" __title="Move" __text="Move"}
-                {button class="z-btred" src=editdelete.gif set=icons/extrasmall name="category_delete" value="delete" __alt="Delete" __title="Delete" __text="Delete"}
+                {button class="z-btred" src=trashcan_empty.gif set=icons/extrasmall name="category_delete" value="delete" __alt="Delete" __title="Delete" __text="Delete"}
                 {if (!$category.is_leaf && $haveSubcategories && $haveLeafSubcategories)}
-                {button src=edit.gif set=icons/extrasmall name="category_user_edit" value="edit" __alt="Edit" __title="Edit" __text="Edit"}
+                {button src=xedit.gif set=icons/extrasmall name="category_user_edit" value="edit" __alt="Edit" __title="Edit" __text="Edit"}
                 {/if}
                 <a class="z-btred" href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 {else}

@@ -2,7 +2,7 @@
 {include file="permissions_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windows_list.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
 
     <p class="z-informationmsg z-hide" id="permissiondraganddrophint">
@@ -79,14 +79,14 @@
                     </span>
                     <span id="permaction_{$permission.permid}" class="z-itemcell z-w07">
                         <a id="insert_{$permission.permid}"     href="{$permission.inserturl|safetext}" title="{gt text="Insert permission rule before"}">{img src=insert_table_row.gif modname=core set=icons/extrasmall __title="Insert permission rule before" __alt="Insert permission rule before"}</a>
-                        <a id="modify_{$permission.permid}"     href="{$permission.editurl|safetext}" title="{gt text="Edit"}">{img src=edit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</a>
+                        <a id="modify_{$permission.permid}"     href="{$permission.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</a>
                         <a id="delete_{$permission.permid}"     href="{$permission.deleteurl|safetext}" title="{gt text="Delete"}">{img src=delete_table_row.gif modname=core set=icons/extrasmall __title="Delete" __alt="Delete"}</a>
-                        <button class="z-imagebutton z-hide tooltips" id="modifyajax_{$permission.permid}"   title="{gt text="Edit"}">{img src=edit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
+                        <button class="z-imagebutton z-hide tooltips" id="modifyajax_{$permission.permid}"   title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
                         <button class="z-imagebutton z-hide tooltips" id="testpermajax_{$permission.permid}" title="{gt text="User permission check"}">{img src=testbed_protocol.gif modname=core set=icons/extrasmall __title="Check a users permission" __alt="Check a users permission"}</button>
                     </span>
                     <span id="editpermaction_{$permission.permid}" class="z-itemcell z-w07 z-hide">
                         <button class="z-imagebutton tooltips" id="permeditsave_{$permission.permid}"   title="{gt text="Save"}">{img src=button_ok.gif modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
-                        <button class="z-imagebutton tooltips" id="permeditdelete_{$permission.permid}" title="{gt text="Delete"}">{img src=editdelete.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
+                        <button class="z-imagebutton tooltips" id="permeditdelete_{$permission.permid}" title="{gt text="Delete"}">{img src=trashcan_empty.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
                         <button class="z-imagebutton tooltips" id="permeditcancel_{$permission.permid}" title="{gt text="Cancel"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                     </span>
                 </div>
@@ -123,12 +123,12 @@
                         </select>
                     </span>
                     <span id="permaction_1" class="z-itemcell z-w07 z-hide">
-                        <button class="z-imagebutton tooltips" id="modifyajax_1"   title="{gt text="Edit"}">{img src=edit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
+                        <button class="z-imagebutton tooltips" id="modifyajax_1"   title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
                         <button class="z-imagebutton tooltips" id="testpermajax_1" title="{gt text="User permission check"}">{img src=testbed_protocol.gif modname=core set=icons/extrasmall __title="Check a users permission" __alt="Check a users permission"}</button>
                     </span>
                     <span id="editpermaction_1" class="z-itemcell z-w07">
                         <button class="z-imagebutton tooltips" id="permeditsave_1"   title="{gt text="Save"}">{img src=button_ok.gif modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
-                        <button class="z-imagebutton tooltips" id="permeditdelete_1" title="{gt text="Delete"}">{img src=editdelete.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
+                        <button class="z-imagebutton tooltips" id="permeditdelete_1" title="{gt text="Delete"}">{img src=trashcan_empty.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
                         <button class="z-imagebutton tooltips" id="permeditcancel_1" title="{gt text="Cancel"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                     </span>
                 </div>
@@ -200,8 +200,8 @@
                     </select>
                 </div>
                 <div class="z-buttons z-formbuttons">
-                    <button id="permgroupfiltersubmit" class="z-button" name="permgroupfiltersubmit" type="submit">{img modname=core src=button_ok.gif set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
-                    <button id="permgroupfiltersubmitajax" class="z-button z-hide" onclick="javascript:permgroupfilter();">{img modname=core src=button_ok.gif set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
+                    <button id="permgroupfiltersubmit" class="z-button" name="permgroupfiltersubmit" type="submit">{img modname=core src=filter.gif set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
+                    <button id="permgroupfiltersubmitajax" class="z-button z-hide" onclick="javascript:permgroupfilter();">{img modname=core src=filter.gif set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
                 </div>
             </fieldset>
         </div>

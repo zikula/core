@@ -2,15 +2,15 @@
 {include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windows_list.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 
     <div id="liveusersearch" class="z-hide z-form">
         <fieldset>
             <label for="username">{gt text="Search"}:</label>&nbsp;<input size="25" maxlength="25" type="text" id="username" value="" />
-            <a id="modifyuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="edit.gif" __title="Edit" __alt="Edit" class='tooltips'}</a>
-            <a id="deleteuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="editdelete.gif" __title="Delete" __alt="Delete" class='tooltips'}</a>
+            <a id="modifyuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="xedit.gif" __title="Edit" __alt="Edit" class='tooltips'}</a>
+            <a id="deleteuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="trashcan_empty.gif" __title="Delete" __alt="Delete" class='tooltips'}</a>
             {img id="ajax_indicator" style="display: none;" modname=core set="ajax" src="indicator_circle.gif" alt=""}
             <div id="username_choices" class="autocomplete_user"></div>
             <script type="text/javascript">

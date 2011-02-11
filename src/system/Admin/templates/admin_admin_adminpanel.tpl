@@ -24,7 +24,7 @@
                         {assign var="modlinks" value=false}
                         {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
                         {if $modlinks}
-                        <span id="mcontext{$moduleid}" class="z-pointericon" __alt='Functions'>&nbsp;</span>
+                        <span id="mcontext{$moduleid}" class="z-pointericon" title='Functions'>&nbsp;</span>
                         {/if}
 
                         <script type="text/javascript">

@@ -50,7 +50,7 @@
                 {if isset($regactions.display)}
                 <td class="z-center">
                     {if $regactions.display}
-                    <a href="{$regactions.display|safetext}">{img src='info.gif' modname='core' set='icons/extrasmall' __title='Display registration details' __alt='Display registration details' class='tooltips'}</a>
+                    <a href="{$regactions.display|safetext}">{img src='documentinfo.gif' modname='core' set='icons/extrasmall' __title='Display registration details' __alt='Display registration details' class='tooltips'}</a>
                     {else}
                     {* For each option, invisible image to take up as much space as a normal image to maintain alignment. Must be visibility: hidden, not display: none. *}
                     {img style='visibility: hidden;' src='agt_stop.gif' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
@@ -60,7 +60,7 @@
                 {if isset($regactions.modify)}
                 <td class="z-center">
                     {if $regactions.modify}
-                    <a href="{$regactions.modify|safetext}">{img src='edit.gif' modname='core' set='icons/extrasmall' __title='Modify registration details' __alt='Modify registration details' class='tooltips'}</a>
+                    <a href="{$regactions.modify|safetext}">{img src='xedit.gif' modname='core' set='icons/extrasmall' __title='Modify registration details' __alt='Modify registration details' class='tooltips'}</a>
                     {else}
                     {img style='visibility: hidden;' src='agt_stop.gif' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
                     {/if}

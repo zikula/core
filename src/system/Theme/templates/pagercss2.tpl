@@ -10,7 +10,7 @@
         </a>
     {else}
         <span class="skip">
-            {img modname=core set=icons/extrasmall src="previousinactive.gif" __alt="No previous pages" __title="No previous pages"}
+            {img modname=core set=icons/extrasmall src="1leftarrow_inactive.gif" __alt="No previous pages" __title="No previous pages"}
         </span>
     {/if}
     <span>{$separator}</span>
@@ -47,7 +47,7 @@
         </a>
     {else}
         <span class="skip">
-            {img modname=core set=icons/extrasmall src="nextinactive.gif" __alt="No further pages" __title="No further pages"}
+            {img modname=core set=icons/extrasmall src="1rightarrow_inactive.gif" __alt="No further pages" __title="No further pages"}
         </span>
     {/if}
 </div>

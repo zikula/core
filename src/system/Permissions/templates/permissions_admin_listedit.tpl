@@ -4,7 +4,7 @@
     {if $action eq "add"}
     <div class="z-adminpageicon">{img modname=core src=filenew.gif set=icons/large alt=$submit}</div>
     {else}
-    <div class="z-adminpageicon">{img modname=core src=edit.gif set=icons/large alt=$submit}</div>
+    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$submit}</div>
     {/if}
     <h2>{$title|safetext}</h2>
 
