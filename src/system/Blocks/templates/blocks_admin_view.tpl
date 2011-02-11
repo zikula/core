@@ -33,8 +33,8 @@
                 </select>
             </span>
             <span class="z-nowrap z-buttons">
-                <input class="z-bt-small" name="submit" type="submit" value="{gt text='Filter'}" />
-                <input class="z-bt-small" name="clear" type="submit" value="{gt text='Clear'}" />
+                <input class="z-bt-filter" name="submit" type="submit" value="{gt text='Filter'}" />
+                <input class="z-bt-cancel" name="clear" type="submit" value="{gt text='Clear'}" />
             </span>
         </fieldset>
     </form>
