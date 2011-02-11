@@ -33,7 +33,7 @@ class JCSSUtil
                 'baseURI' => System::getBaseUri() . '/',
                 'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
                 'lang' => ZLanguage::getLanguageCode(),
-                'sessionName' => SessionUtil::getCookieName(),
+                'sessionName' => session_name(),
         );
         $config = DataUtil::formatForDisplay($config);
         $return .= "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
