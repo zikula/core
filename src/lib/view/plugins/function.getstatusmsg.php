@@ -62,14 +62,11 @@ function smarty_function_getstatusmsg($params, $view)
     // show a status or an error
     $session = $view->getServiceManager()->getService('session');
     $msgStatus = $session->getMessages('status');
-    //$msgStatus = SessionUtil::getVar('_ZStatusMsg');
     $msgtype   = ($class ? $class : 'z-statusmsg');
     $session->clearMessages('status');
-    //SessionUtil::delVar('_ZStatusMsg');
-
-    $msgError = $session->getMessages('error');//SessionUtil::getVar('_ZErrorMsg');
+    $msgError = $session->getMessages('error');
     $session->clearMessages('error');
-    //SessionUtil::delVar('_ZErrorMsg');
+
     // Error message overrides status message
     if (!empty($msgError)) {
         $msgStatus = $msgError;
