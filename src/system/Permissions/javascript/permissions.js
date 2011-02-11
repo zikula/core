@@ -244,7 +244,7 @@ function sortorderchanged()
     new Zikula.Ajax.Request(
         "ajax.php?module=Permissions&func=changeorder",
         {
-            method: 'get', 
+            method: 'post',
             parameters: pars,
             authid: 'permissionsauthid',
             onComplete: sortorderchanged_response
@@ -385,7 +385,7 @@ function permdelete(permid)
         new Zikula.Ajax.Request(
             "ajax.php?module=Permissions&func=deletepermission",
             {
-                method: 'get', 
+                method: 'post',
                 parameters: pars,
                 authid: 'permissionsauthid',
                 onComplete: permdelete_response
