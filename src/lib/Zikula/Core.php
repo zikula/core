@@ -444,7 +444,7 @@ class Zikula_Core
                 // we need to create a session for guests as configured or
                 // a cookie exists which means we have been here before
                 // Start session
-                SessionUtil::requireSession();
+                $this->serviceManager->getService('session')->start();
 
                 // Auto-login via HTTP(S) REMOTE_USER property
                 if (System::getVar('session_http_login') && !UserUtil::isLoggedIn()) {

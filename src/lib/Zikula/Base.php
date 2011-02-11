@@ -82,6 +82,13 @@ abstract class Zikula_Base implements Zikula_Translatable
     protected $eventManager;
 
     /**
+     * Request.
+     *
+     * @var Zikula_Request_Http
+     */
+    protected $request;
+    
+    /**
      * This object's reflection.
      *
      * @var ReflectionObject
@@ -101,6 +108,7 @@ abstract class Zikula_Base implements Zikula_Translatable
         $this->options = $options;
         Zikula_ClassProperties::load($this, $options);
         $this->_setup();
+        $this->request = $this->serviceManager->getService('request');
         $this->_postSetup();
 
         $this->_setupLanguageDomain();

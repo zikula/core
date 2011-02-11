@@ -28,16 +28,18 @@ class LogUtil
      */
     public static function getStatusMessages($delete = true, $override = true, $reverse = true)
     {
-        $msgs = SessionUtil::getVar('_ZStatusMsg', array());
-        $errs = SessionUtil::getVar('_ZErrorMsg', array());
+        $session = ServiceUtil::getManager()->getService('session');
+        $msgs = $session->getMessages('status');
+        $errs = $session->getMessages('error');
+
         if (!empty($errs) && $override) {
             $msgs = $errs;
         }
 
         if ($delete) {
-            SessionUtil::delVar('_ZErrorMsg');
+            $session->clearMessages('status');
             SessionUtil::delVar('_ZErrorMsgType');
-            SessionUtil::delVar('_ZStatusMsg');
+            $session->clearMessages('error');
             SessionUtil::delVar('_ZStatusMsgType');
         }
 
@@ -73,10 +75,11 @@ class LogUtil
      */
     public static function getErrorMessages($delete = true, $reverse = true)
     {
-        $msgs = SessionUtil::getVar('_ZErrorMsg', array());
+        $session = ServiceUtil::getManager()->getService('session');
+        $msgs = $session->getMessages('error');
 
         if ($delete) {
-            SessionUtil::delVar('_ZErrorMsg');
+            $session->clearMessages('error');
             SessionUtil::delVar('_ZErrorMsgType');
         }
 
@@ -187,18 +190,15 @@ class LogUtil
     private static function _addPopup($message, $type = E_USER_NOTICE)
     {
         self::log($message, Zikula_ErrorHandler::DEBUG);
+        $session = ServiceUtil::getManager()->getService('session');
 
         if ($type === Zikula_ErrorHandler::INFO) {
-            $key = '_ZStatusMsg';
+            return $session->addMessage('status', DataUtil::formatForDisplayHTML($message));
         } elseif ($type === E_USER_ERROR) {
-            $key = '_ZErrorMsg';
+            return $session->addMessage('error', DataUtil::formatForDisplayHTML($message));
         } else {
             throw new InvalidArgumentException(__f('Invalid type %s for LogUtil::_addPopup', $type));
         }
-
-        $msgs = SessionUtil::getVar($key, array());
-        $msgs[] = DataUtil::formatForDisplayHTML($message);
-        SessionUtil::setVar($key, $msgs);
     }
 
     /**
