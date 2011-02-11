@@ -42,8 +42,8 @@
                             {$items[item].email}{/if}
                         </td>
                         <td class="z-right">
-                            {if $actions[item].modifyUrl}<a href="{$actions[item].modifyUrl|safehtml}">{img modname=core set=icons/extrasmall src=edit.gif __alt="Edit" __title="Edit" class="tooltips"}</a>{/if}
-                            {if $actions[item].deleteUrl}<a href="{$actions[item].deleteUrl|safehtml}">{img modname=core set=icons/extrasmall src=editdelete.gif __alt="Delete" __title="Delete" class="tooltips"}</a>{/if}
+                            {if $actions[item].modifyUrl}<a href="{$actions[item].modifyUrl|safehtml}">{img modname=core set=icons/extrasmall src=xedit.gif __alt="Edit" __title="Edit" class="tooltips"}</a>{/if}
+                            {if $actions[item].deleteUrl}<a href="{$actions[item].deleteUrl|safehtml}">{img modname=core set=icons/extrasmall src=trashcan_empty.gif __alt="Delete" __title="Delete" class="tooltips"}</a>{/if}
                         </td>
                     </tr>
                     {/section}

@@ -701,6 +701,10 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: url("../images/icons/extrasmall/info.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
+.z-icon-es-documentinfo {
+    background: url("../images/icons/extrasmall/documentinfo.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
 .z-icon-es-locked {
     background: url("../images/icons/extrasmall/locked.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
@@ -717,6 +721,10 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: url("../images/icons/extrasmall/configure.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
+.z-icon-es-configure {
+    background: url("../images/icons/extrasmall/configure_shortcuts.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
 .z-icon-es-home {
     background: url("../images/icons/extrasmall/home.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
@@ -726,7 +734,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-list {
-    background: url("../images/icons/extrasmall/windows_list.gif") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/windowlist.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-view {
@@ -734,7 +742,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-preview {
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-new {
@@ -750,7 +758,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-delete {
-    background: url("../images/icons/extrasmall/editdelete.gif") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-flag {
@@ -821,12 +829,16 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: url("../images/icons/extrasmall/agt_internet.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
+.z-icon-es-locale {
+    background: url("../images/icons/extrasmall/locale.gif") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
 .z-icon-es-cubes {
     background: url("../images/icons/extrasmall/kcmdf.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-log {
-    background: url("../images/icons/extrasmall/easymoblog.gif") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/enumList.gif") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-rss {
@@ -1076,24 +1088,24 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 }
 
 .z-buttons input.z-bt-preview {
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") #dfdfdf 10px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") #dfdfdf 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") 10px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
 }
 
 .z-buttons input.z-bt-preview:hover {
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") #cfcfcf 10px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #fafafa, #cfcfcf) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cfcfcf)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, linear-gradient(#fafafa, #cfcfcf); /*CSS3*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") #cfcfcf 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #fafafa, #cfcfcf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cfcfcf)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") 10px 50% no-repeat, linear-gradient(#fafafa, #cfcfcf); /*CSS3*/
 }
 
 .z-buttons input.z-bt-preview:active {
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") #fafafa 10px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #cfcfcf, #fafafa) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), to(#fafafa)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../images/icons/extrasmall/14_layer_visible.gif") 10px 50% no-repeat, linear-gradient(#cfcfcf, #fafafa); /*CSS3*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") #fafafa 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #cfcfcf, #fafafa) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), to(#fafafa)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/14_layer_novisible.gif") 10px 50% no-repeat, linear-gradient(#cfcfcf, #fafafa); /*CSS3*/
 }
 
 .z-buttons input.z-bt-new {
@@ -1181,24 +1193,24 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 }
 
 .z-buttons input.z-bt-delete {
-    background: url("../images/icons/extrasmall/editdelete.gif") #dfdfdf 10px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../images/icons/extrasmall/editdelete.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../images/icons/extrasmall/editdelete.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../images/icons/extrasmall/editdelete.gif") 10px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") #dfdfdf 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") 10px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") 10px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
 }
 
 .z-buttons input.z-bt-delete:hover {
-    background: url("../images/icons/extrasmall/editdelete.gif") #cfcfcf 10px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../images/icons/extrasmall/editdelete.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #fafafa, #cfcfcf) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../images/icons/extrasmall/editdelete.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cfcfcf)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../images/icons/extrasmall/editdelete.gif") 10px 50% no-repeat, linear-gradient(#fafafa, #cfcfcf); /*CSS3*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") #cfcfcf 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #fafafa, #cfcfcf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cfcfcf)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") 10px 50% no-repeat, linear-gradient(#fafafa, #cfcfcf); /*CSS3*/
 }
 
 .z-buttons input.z-bt-delete:active {
-    background: url("../images/icons/extrasmall/editdelete.gif") #fafafa 10px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../images/icons/extrasmall/editdelete.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #cfcfcf, #fafafa) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../images/icons/extrasmall/editdelete.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), to(#fafafa)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../images/icons/extrasmall/editdelete.gif") 10px 50% no-repeat, linear-gradient(#cfcfcf, #fafafa); /*CSS3*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") #fafafa 10px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") 10px 50% no-repeat, -moz-linear-gradient(top,  #cfcfcf, #fafafa) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") 10px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#cfcfcf), to(#fafafa)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../images/icons/extrasmall/trashcan_empty.gif") 10px 50% no-repeat, linear-gradient(#cfcfcf, #fafafa); /*CSS3*/
 }
 
 .z-buttons input.z-bt-filter {

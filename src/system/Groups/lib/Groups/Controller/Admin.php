@@ -96,14 +96,14 @@ class Groups_Controller_Admin extends Zikula_Controller
                     $membersurl = ModUtil::url('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid']));
                     $options[] = array('url' => ModUtil::url('Groups', 'admin', 'modify', array('gid'     => $item['gid'])),
                             'title'   => $this->__('Edit'),
-                            'imgfile' => 'edit.gif');
+                            'imgfile' => 'xedit.gif');
                     if ((SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_DELETE))
                             && ($item['gid'] != $defaultgroup) && ($item['gid'] != $primaryadmingroup))
                     {
                         $deleteurl  = ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid']));
                         $options[] = array('url' => ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid'])),
                                 'title'   => $this->__('Delete'),
-                                'imgfile' => 'editdelete.gif');
+                                'imgfile' => 'trashcan_empty.gif');
                     }
                     $options[] = array('url' => ModUtil::url('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid'])),
                             'title'   => $this->__('Group membership'),

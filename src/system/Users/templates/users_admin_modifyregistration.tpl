@@ -4,7 +4,7 @@
 {include file='users_admin_menu.tpl'}
 <a id="users_formtop"></a>
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=edit.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
     <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>

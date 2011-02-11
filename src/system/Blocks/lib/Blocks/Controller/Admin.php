@@ -122,11 +122,11 @@ class Blocks_Controller_Admin extends Zikula_Controller
             }
 
             $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $block['bid'])),
-                    'image' => 'edit.gif',
+                    'image' => 'xedit.gif',
                     'title' => $this->__f('Edit \'%s\'', $block['title']),
                     'noscript' => false);
             $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'delete', array('bid' => $block['bid'])),
-                    'image' => 'editdelete.gif',
+                    'image' => 'trashcan_empty.gif',
                     'title' => $this->__f('Delete \'%s\'', $block['title']),
                     'noscript' => false);
 
@@ -143,11 +143,11 @@ class Blocks_Controller_Admin extends Zikula_Controller
                 $options = array();
                 if (SecurityUtil::checkPermission('Blocks::', "$item[name]::$", ACCESS_EDIT)) {
                     $options[] = array('url' => ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $item['pid'])),
-                            'image' => 'edit.gif',
+                            'image' => 'xedit.gif',
                             'title' => $this->__f('Edit blockposition \'%s\'', $item['name']));
                     if (SecurityUtil::checkPermission('Blocks::', "$item[name]::", ACCESS_DELETE)) {
                         $options[] = array('url' => ModUtil::url('Blocks', 'admin', 'deleteposition', array('pid' => $item['pid'])),
-                                'image' => 'editdelete.gif',
+                                'image' => 'trashcan_empty.gif',
                                 'title' => $this->__f('Delete blockposition \'%s\'', $item['name']));
                     }
                 }

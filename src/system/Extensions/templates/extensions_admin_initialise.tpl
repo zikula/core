@@ -1,6 +1,6 @@
 {include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=editdelete.gif set=icons/large __alt="Install"}</div>
+    <div class="z-adminpageicon">{img modname=core src=agt_update_misc.gif set=icons/large __alt="Install"}</div>
     <h2>{gt text="Install"} - {modgetinfo modid=$id info=displayname}</h2>
     <form class="z-form" action="{modurl modname="Extensions" type="admin" func="initialise"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

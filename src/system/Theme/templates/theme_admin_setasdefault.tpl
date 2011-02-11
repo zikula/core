@@ -1,7 +1,7 @@
 {*  $Id$  *}
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=edit.gif set=icons/large __alt="Set default theme"}</div>
+    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large __alt="Set default theme"}</div>
     <h2>{gt text="Theme confirmation prompt"}</h2>
     <p class="z-warningmsg">{gt text="Do you really want to set '%s' as the active theme for all site users?" tag1=$themename}</p>
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="setasdefault"}" method="post" enctype="application/x-www-form-urlencoded">

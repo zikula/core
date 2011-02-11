@@ -286,7 +286,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                     'authid' => $authid,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'editdelete.gif',
+                                    'image' => 'trashcan_empty.gif',
                                     'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
                         case ModUtil::STATE_MISSING:
@@ -297,7 +297,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                     'authid' => $authid,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'editdelete.gif',
+                                    'image' => 'trashcan_empty.gif',
                                     'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
                         case ModUtil::STATE_UPGRADED:
@@ -322,7 +322,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                 'authid' => $authid,
                                 'letter' => $letter,
                                 'state' => $state)),
-                            'image' => 'editdelete.gif',
+                            'image' => 'trashcan_empty.gif',
                             'title' => $this->__('Remove module')); */
                             break;
                         case ModUtil::STATE_NOTALLOWED:
@@ -333,7 +333,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                     'authid' => $authid,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'editdelete.gif',
+                                    'image' => 'trashcan_empty.gif',
                                     'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
                         case ModUtil::STATE_UNINITIALISED:
@@ -356,7 +356,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
 //                                            'authid' => $authid,
 //                                            'letter' => $letter,
 //                                            'state' => $state)),
-//                                            'image' => 'editdelete.gif',
+//                                            'image' => 'trashcan_empty.gif',
 //                                            'title' => $this->__('Remove module'));
 //                                }
                             } else {
@@ -367,7 +367,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                         'authid' => $authid,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'info.gif',
+                                        'image' => 'documentinfo.gif',
                                         'title' => $this->__f('Incompatible version: \'%s\'', $mod['name']));
                             }
                             break;
@@ -377,7 +377,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                         $actions[] = array(
                                 'url' => ModUtil::url('Extensions', 'admin', 'modify', array(
                                 'id' => $mod['id'])),
-                                'image' => 'edit.gif',
+                                'image' => 'xedit.gif',
                                 'title' => $this->__f('Edit \'%s\'', $mod['name']));
                 }
 
@@ -1192,7 +1192,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                           'systemplugins' => $systemplugins,
                                                           'authid' => $authid)
                                                 ),
-                                       'image' => 'editdelete.gif',
+                                       'image' => 'trashcan_empty.gif',
                                        'title' => $this->__('Remove plugin'));
 
                     break;
@@ -1219,7 +1219,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                            'systemplugins' => $systemplugins,
                                                            'authid' => $authid)
                                                 ),
-                                       'image' => 'editdelete.gif',
+                                       'image' => 'trashcan_empty.gif',
                                        'title' => $this->__('Remove plugin'));
 
                     break;
@@ -1252,7 +1252,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                        'systemplugins' => $systemplugins,
                                                        'authid' => $authid)
                                             ),
-                                       'image' => 'editdelete.gif',
+                                       'image' => 'trashcan_empty.gif',
                                        'title' => $this->__('Remove plugin'));
             }
 

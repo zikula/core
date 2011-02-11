@@ -1,7 +1,7 @@
 {include file="sysinfo_admin_menu.tpl"}
 {gt text="Zikula extensions" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=info.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=documentinfo.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <p class="z-informationmsg">{gt text="Notice: This is a list of all the modules present within the file system of your site, with the versions of the modules. It includes both modules that are installed and modules that are not installed."}</p>
     <table class="z-datatable">
