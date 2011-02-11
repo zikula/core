@@ -25,7 +25,7 @@ abstract class Zikula_Controller_Ajax extends Zikula_Controller
      *
      * @return void
      */
-    public function checkCsfrToken()
+    public function checkAjaxToken()
     {
         $token = isset($_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN']) ? $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] : '';
         // we might have to account for session regeneration here - drak

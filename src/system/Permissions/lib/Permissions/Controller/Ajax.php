@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Permissions_Controller_Ajax extends Zikula_Controller
+class Permissions_Controller_Ajax extends Zikula_Controller_Ajax
 {
     public function _postSetup()
     {
@@ -32,16 +32,8 @@ class Permissions_Controller_Ajax extends Zikula_Controller
      */
     public function updatepermission()
     {
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
-
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
-
+        $this->checkAjaxToken();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
         $pid       = FormUtil::getPassedValue('pid', null, 'post');
         $gid       = FormUtil::getPassedValue('gid', null, 'post');
@@ -97,17 +89,10 @@ class Permissions_Controller_Ajax extends Zikula_Controller
      */
     public function changeorder()
     {
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->checkAjaxToken();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
-
-        $permorder = FormUtil::getPassedValue('permorder');
+        $permorder = FormUtil::getPassedValue('permorder', null, 'POST');
 
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
@@ -127,15 +112,8 @@ class Permissions_Controller_Ajax extends Zikula_Controller
      */
     public function createpermission()
     {
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
-
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
+        $this->checkAjaxToken();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
         // add a blank permission
         $dummyperm = array('realm'     => 0,
@@ -168,17 +146,10 @@ class Permissions_Controller_Ajax extends Zikula_Controller
      */
     public function deletepermission()
     {
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->checkAjaxToken();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
-
-        $pid = FormUtil::getPassedValue('pid', null, 'get');
+        $pid = FormUtil::getPassedValue('pid', null, 'POST');
 
         // check if this is the overall admin permssion and return if this shall be deleted
         $perm = DBUtil::selectObjectByID('group_perms', $pid, 'pid');
@@ -208,10 +179,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller
      */
     public function testpermission()
     {
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
         $uname = DataUtil::convertFromUTF8(FormUtil::getPassedValue('test_user', '', 'get'));
         $comp  = DataUtil::convertFromUTF8(FormUtil::getPassedValue('test_component', '.*', 'get'));
