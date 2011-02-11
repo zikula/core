@@ -26,7 +26,7 @@
             <label>{gt text="Impact"}</label>
             {selector_object_array name="filter[impact]" modname="SecurityCenter" class="intrusion" field="impact" displayField="impact" selectedValue=$filter.impact defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
             {if ($filter.uid || $filter.name || $filter.tag || $filter.value || $filter.page || $filter.ip || $filter.impact)}
-            <a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Clear filter" __title="Clear filter"}</a>
+            <a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Clear filter" __title="Clear filter"}</a>
             {/if}
         </fieldset>
     </form>
@@ -69,7 +69,7 @@
                 {/foreach}
                 </td>
                 <td>{$event.date|safetext}</td>
-                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
+                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id authid=$authkey}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
             </tr>
             {foreachelse}
             <tr class="z-datatableempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>
