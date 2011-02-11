@@ -10,7 +10,7 @@
         <fieldset>
             <label for="username">{gt text="Search"}:</label>&nbsp;<input size="25" maxlength="25" type="text" id="username" value="" />
             <a id="modifyuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="xedit.gif" __title="Edit" __alt="Edit" class='tooltips'}</a>
-            <a id="deleteuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="trashcan_empty.gif" __title="Delete" __alt="Delete" class='tooltips'}</a>
+            <a id="deleteuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.gif" __title="Delete" __alt="Delete" class='tooltips'}</a>
             {img id="ajax_indicator" style="display: none;" modname=core set="ajax" src="indicator_circle.gif" alt=""}
             <div id="username_choices" class="autocomplete_user"></div>
             <script type="text/javascript">

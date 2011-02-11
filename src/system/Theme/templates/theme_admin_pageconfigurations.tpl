@@ -19,7 +19,7 @@
                 <td>{$filesection.file|safetext}</td>
                 <td class="z-right">
                     <a href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
-                    <a href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=trashcan_empty.gif set=icons/extrasmall __alt="Delete" __title="Delete"}</a>
+                    <a href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete"}</a>
                 </td>
             </tr>
             {/foreach}

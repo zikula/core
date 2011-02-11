@@ -21,7 +21,7 @@
 
 $icons = array(
   'ok'       => 'button_ok.gif',
-  'delete'   => 'trashcan_empty.gif',
+  'delete'   => '14_layer_deletelayer.gif',
   'help'     => 'agt_support.gif',
   'cancel'   => 'button_cancel.gif',
   'edit'     => 'xedit.gif',

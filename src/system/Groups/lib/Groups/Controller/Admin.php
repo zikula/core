@@ -103,7 +103,7 @@ class Groups_Controller_Admin extends Zikula_Controller
                         $deleteurl  = ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid']));
                         $options[] = array('url' => ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid'])),
                                 'title'   => $this->__('Delete'),
-                                'imgfile' => 'trashcan_empty.gif');
+                                'imgfile' => '14_layer_deletelayer.gif');
                     }
                     $options[] = array('url' => ModUtil::url('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid'])),
                             'title'   => $this->__('Group membership'),

@@ -62,7 +62,7 @@
             <td style="text-align:center">
                 {gt text="Do you really want to delete the category '%s'?" tag1=$cat.name|safetext  assign="delPrompt"}
                 <a href="{modurl modname="Categories" type="userform" func="delete" dr=$dr cid=$cat.id}" onclick="return confirm('{$delPrompt}');" >
-                    {img modname=core src=trashcan_empty.gif set=icons/extrasmall __alt="Delete" __title="Delete"}
+                    {img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete"}
                 </a>
             </td>
         </tr>
