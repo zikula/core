@@ -143,7 +143,7 @@ class Zikula_Session
             $_SESSION['_zikula_messages'] = array();
         }
 
-        if (!$this->hasMessages($type)) {
+        if ($this->hasMessages($type)) {
             $_SESSION['_zikula_messages'][$type] = array();
         }
     }
