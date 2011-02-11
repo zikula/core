@@ -1,6 +1,6 @@
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=14_layer_deletelayer.gif set=icons/large __alt="Purge IDS Log"}</div>
+    <div class="z-adminpageicon">{img modname=core src=trashcan_empty.gif set=icons/large __alt="Purge IDS Log"}</div>
     
     <h2>{gt text="Purge IDS Log"}</h2>
 
