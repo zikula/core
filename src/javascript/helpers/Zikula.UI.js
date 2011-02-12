@@ -838,7 +838,7 @@ Zikula.UI.AlertDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.Alert
      */
     defaultButtons: function(callback) {
         return [
-            {label: Zikula.__('Ok')}
+            {label: Zikula.__('Ok'), 'class': 'z-btgreen'}
         ]
     }
 });
@@ -922,8 +922,8 @@ Zikula.UI.ConfirmDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.Con
      */
     defaultButtons: function(callback) {
         return [
-            {label: Zikula.__('Ok'),action: callback.curry(true)},
-            {label: Zikula.__('Cancel'),action: callback.curry(false)}
+            {label: Zikula.__('Ok'), action: callback.curry(true), 'class': 'z-btgreen'},
+            {label: Zikula.__('Cancel'), action: callback.curry(false), 'class': 'z-btred'}
         ]
     }
 });
@@ -1028,8 +1028,8 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.FormDi
      */
     defaultButtons: function(callback) {
         return [
-            {label: Zikula.__('Submit'), type: 'submit', name: 'submit', value: 'submit'},
-            {label: Zikula.__('Cancel'), action: callback.curry(false)}
+            {label: Zikula.__('Submit'), type: 'submit', name: 'submit', value: 'submit', 'class': 'z-btgreen'},
+            {label: Zikula.__('Cancel'), action: callback.curry(false), 'class': 'z-btred'}
         ]
     }
 });
