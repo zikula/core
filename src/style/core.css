@@ -74,9 +74,9 @@ img.z-floatright {
 
 .z-sortable { /* cursor: move; */ }
 
-/*******************************************************************************/
-/* Styles for z-menulinks
-/*******************************************************************************/
+/*******************************************************************************
+* Styles for z-menulinks
+*******************************************************************************/
 
 ul.z-menulinks {
     background: url("../images/global/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6; /*non-CSS3 browsers*/
@@ -112,9 +112,9 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     text-decoration:line-through !important;
 }
 
-/*******************************************************************************/
-/* Styles for the old module menus based on the SPAN tag
-/*******************************************************************************/
+/*******************************************************************************
+* Styles for the old module menus based on the SPAN tag
+*******************************************************************************/
 
 .z-menu {
     color: #aaa;
@@ -1238,9 +1238,9 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     float: left;
 }
 
-/*******************************************************************************/
-/* Zikula.UI styles
-/*******************************************************************************/
+/*******************************************************************************
+* Zikula.UI - Tooltips
+*******************************************************************************/
 
 .z-tooltip {
     background: #ffffcc; /*non-CSS3 browsers*/
@@ -1260,6 +1260,10 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     font-weight: normal;
     max-width: 40em;
 }
+
+/******************************************************************************
+* Zikula.UI - Windows and Dialogs
+*******************************************************************************/
 
 .z-window {
     background-color: transparent;
@@ -1497,18 +1501,31 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background-color: #000;
 }
 
+/******************************************************************************
+* Zikula.UI - SelectMultiple
+*******************************************************************************/
+
 .z-select-multiple.z-form {
     padding: 0;
     margin: 0;
 }
 
-.z-select-multiple.z-form z-formrow {
+.z-select-multiple.z-form .z-formrow {
+    margin: 2px 0;
     padding: 0;
 }
 
 .z-select-multiple.z-form .z-formrow.selected {
     background: #DCDCDC;
 }
+
+.z-select-multiple.z-form div.z-formrow label {
+    width: 49%;
+}
+
+/******************************************************************************
+* Zikula.UI - Tabs
+*******************************************************************************/
 
 .z-tabs {
     background: url("../images/ui/tab_bottom.gif") repeat-x scroll center bottom transparent;
@@ -1554,6 +1571,10 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-tabs li.active a:hover {
     border-right: 1px solid transparent;
 }
+
+/******************************************************************************
+* Accordion
+*******************************************************************************/
 
 .z-accordion .z-acc-header {
     -webkit-border-radius: 3px;
@@ -1626,7 +1647,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 
 /******************************************************************************
 * Toggle styles
-* TODO: Do we still need this? (herr.vorragend)
 *******************************************************************************/
 
 .z-toggle {
