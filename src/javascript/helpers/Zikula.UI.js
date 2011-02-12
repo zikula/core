@@ -949,6 +949,7 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.FormDi
      * @param {Boolean} [options.ajaxRequest=false] Whether ajax request should be made after form submit, if set to true form action attribute will be used
      * @param {Boolean} [options.resizable=true]
      * @param {Function} [options.callback=callback]
+     * @param {Array} [options.buttons] Array of button objects to use instead of default submit and cancel buttons
      *
      * @return {Zikula.UI.Dialog} New window object
      */
@@ -961,7 +962,7 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.FormDi
             callback: callback
         }, options || { });
         options.afterClose = this.notifyCallback.curry(false);
-        $super(container, this.defaultButtons(this.notifyCallback.bind(this)), options);
+        $super(container, options.buttons || this.defaultButtons(this.notifyCallback.bind(this)), options);
     },
     /**
      * Sets focus on first form element in dialog window
