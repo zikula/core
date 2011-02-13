@@ -80,19 +80,19 @@ class Zikula_Token_Validate
         // Check if the token has been tampered with.
         $duplicateToken = $this->tokenGenerator->generate($decoded['id'], $decoded['timestamp'])->getToken();
         if ($stored['token'] !== $duplicateToken) {
-            $this->storage->delete($stored['id']);
+            $this->storage->delete($decoded['id']);
             return false;
         }
 
         // Check if token has expired.
-        $timeDiff = ((int)$stored['timestamp'] + $this->maxlifetime) - time();
+        $timeDiff = ((int)$decoded['timestamp'] + $this->maxlifetime) - time();
         if ($timeDiff < 0) {
-            $this->storage->delete($stored['id']);
+            $this->storage->delete($decoded['id']);
             return false;
         }
 
         // All checked out, delete the token and return true.
-        $this->storage->delete($stored['id']);
+        $this->storage->delete($decoded['id']);
         return true;
     }
 }
