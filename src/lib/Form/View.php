@@ -1103,7 +1103,7 @@ class Form_View extends Zikula_View
         $eventArgument = FormUtil::getPassedValue('FormEventArgument', null, 'POST');
 
         if ($eventTarget != '') {
-            $targetPlugin = & $this->getPluginById($eventTarget);
+            $targetPlugin = $this->getPluginById($eventTarget);
             if ($targetPlugin != null) {
                 $targetPlugin->raisePostBackEvent($this, $eventArgument);
             }
