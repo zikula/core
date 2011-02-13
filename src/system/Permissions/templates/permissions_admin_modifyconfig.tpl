@@ -6,7 +6,7 @@
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname="Permissions" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Permissions"}" />
+            <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
             <fieldset>
                 <legend>{$templatetitle}</legend>
                 <div class="z-formrow">
