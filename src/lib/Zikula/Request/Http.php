@@ -108,7 +108,12 @@ class Zikula_Request_Http extends Zikula_Request_Request
         return $this->files->get($key, $default);
     }
 
-    public function getSession($key, $default = null)
+    /**
+     * Get session.
+     *
+     * @return Zikula_Session
+     */
+    public function getSession()
     {
         return $this->session;
     }
