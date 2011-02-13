@@ -25,11 +25,19 @@ class Zikula_Token_Storage_Session implements Zikula_Token_Storage
      */
     protected $session;
 
+    /**
+     * Constructor.
+     *
+     * @param Zikula_Session $session
+     */
     public function __construct(Zikula_Session $session)
     {
         $this->session = $session;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function get($id)
     {
         $tokens = $this->session->get('_tokens', array());
@@ -40,6 +48,9 @@ class Zikula_Token_Storage_Session implements Zikula_Token_Storage
         return $tokens[$id];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function save($id, $token, $timestamp)
     {
         $tokens = $this->session->get('_tokens', array());
@@ -47,6 +58,9 @@ class Zikula_Token_Storage_Session implements Zikula_Token_Storage
         $this->session->set('_tokens', $tokens);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function delete($id)
     {
         $tokens = $this->session->get('_tokens', array());
