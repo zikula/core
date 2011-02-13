@@ -124,16 +124,17 @@ class Form_View extends Zikula_View
      *
      * Use FormUtil::newForm() instead of instantiating Form_View directly.
      *
-     * @param string  $module  Module name.
-     * @param boolean $caching Caching flag (not used - just for e_strict).
+     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param string                $module         Module name.
+     * @param boolean               $caching        Caching flag (not used - just for e_strict).
      */
-    public function __construct($module, $caching=null)
+    public function __construct(Zikula_ServiceManager $serviceManager, $module, $caching=null)
     {
         // override behaviour of anonymous sessions
         SessionUtil::requireSession();
 
         // Construct and make normal Smarty use possible
-        parent::__construct($module, false);
+        parent::__construct($serviceManager, $module, false);
         $this->addPluginDir('lib/Form/viewplugins');
 
         // Setup
@@ -176,10 +177,10 @@ class Form_View extends Zikula_View
         $this->eventHandler->preInitialize();
 
         if ($this->isPostBack()) {
-            if (!SecurityUtil::confirmAuthKey()) {
+            if (!SecurityUtil::validateCsfrToken($_POST['csrftoken'], $this->serviceManager)) {
                 return LogUtil::registerAuthidError();
             }
-
+            
             $this->decodeIncludes();
             $this->decodeState();
 
@@ -832,17 +833,17 @@ class Form_View extends Zikula_View
         }
     }
 
-    // --- Authentication key ---
+    // --- Add nonce ---
 
     /**
-     * Get the auth key input field.
+     * CSRF protection
      *
      * @return string HTML input field.
      */
-    public function getAuthKeyHTML()
+    public function getCsrfTokenHtml()
     {
-        $key = SecurityUtil::generateAuthKey();
-        $html = "<input type=\"hidden\" name=\"authid\" value=\"{$key}\" id=\"FormAuthid\" />";
+        $key = SecurityUtil::generateCsfrToken($this->serviceManager);
+        $html = "<input type=\"hidden\" name=\"csrftoken\" value=\"{$key}\" id=\"FormCsrfToken\" />";
         return $html;
     }
 
