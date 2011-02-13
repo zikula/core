@@ -115,7 +115,7 @@ class Zikula_Token_Generator
         $this->id = $id;
         $this->timestamp = $timestamp;
         $this->hash = md5($this->id . $this->secret . $this->timestamp);
-        $this->token = base64_encode("{$this->id}:{$this->hash}:{$this->timestamp}");
+        $this->token = "{$this->id}:{$this->hash}:{$this->timestamp}";
         return $this;
     }
 
@@ -128,7 +128,7 @@ class Zikula_Token_Generator
      */
     public function decode($token)
     {
-        return explode(':', base64_decode($token));
+        return explode(':', $token);
     }
 
     /**
