@@ -27,13 +27,14 @@ class Zikula_View_Plugin extends Zikula_View
     /**
      * Constructor.
      *
-     * @param string       $module     Module name ("zikula" for system plugins).
-     * @param string       $pluginName Plugin name.
-     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
+     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param string                $module         Module name ("zikula" for system plugins).
+     * @param string                $pluginName     Plugin name.
+     * @param boolean|null          $caching        Whether or not to cache (boolean) or use config variable (null).
      */
-    public function __construct($module = 'zikula', $pluginName, $caching = null)
+    public function __construct(Zikula_ServiceManager $serviceManager, $module = 'zikula', $pluginName, $caching = null)
     {
-        parent::__construct($module, $caching);
+        parent::__construct($serviceManager, $module, $caching);
         $this->pluginName = $pluginName;
         $modinfo = $this->module[$module];
         if ($modinfo['type'] == ModUtil::TYPE_CORE) {
@@ -69,14 +70,14 @@ class Zikula_View_Plugin extends Zikula_View
      */
     public static function getInstance($moduleName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
-        $sm = ServiceUtil::getManager();
+        $serviceManager = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.renderplugin.%s.%s', $moduleName, $pluginName));
 
-        if (!$sm->hasService($serviceId)) {
-            $view = new self($moduleName, $pluginName, $caching);
-            $sm->attachService($serviceId, $view);
+        if (!$serviceManager->hasService($serviceId)) {
+            $view = new self($serviceManager, $moduleName, $pluginName, $caching);
+            $serviceManager->attachService($serviceId, $view);
         } else {
-            return $sm->getService($serviceId);
+            return $serviceManager->getService($serviceId);
         }
 
         if (!is_null($caching)) {

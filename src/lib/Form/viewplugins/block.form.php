@@ -39,7 +39,8 @@ function smarty_block_form($params, $content, $view)
         $out .= $content;
         $out .= "\n<div>\n" . $view->getStateHTML() . "\n"; // Add <div> for XHTML validation
         $out .= $view->getIncludesHTML() . "\n";
-        $out .= $view->getAuthKeyHTML() . "
+        $out .= $this->getCsrfTokenHtml() . "\n";
+        $out .= "
 <input type=\"hidden\" name=\"FormEventTarget\" id=\"FormEventTarget\" value=\"\" />
 <input type=\"hidden\" name=\"FormEventArgument\" id=\"FormEventArgument\" value=\"\" />
 <script type=\"text/javascript\">

@@ -223,10 +223,11 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Constructor.
      *
-     * @param string  $theme      Theme name.
-     * @param boolean $usefilters Whether or not to use output filters.
+     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param string                $theme          Theme name.
+     * @param boolean               $usefilters     Whether or not to use output filters.
      */
-    public function __construct($theme, $usefilters = true)
+    public function __construct($serviceManager, $theme, $usefilters = true)
     {
         // store our theme directory
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
@@ -234,7 +235,7 @@ class Zikula_View_Theme extends Zikula_View
             $this->$key = $value;
         }
 
-        parent::__construct();
+        parent::__construct($serviceManager);
 
         if ($themeinfo['i18n']) {
             ZLanguage::bindThemeDomain($this->name);
@@ -615,13 +616,13 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $serviceId = 'zikula.theme';
-        $sm = ServiceUtil::getManager();
+        $serviceManager = ServiceUtil::getManager();
 
-        if (!$sm->hasService($serviceId)) {
-            $themeInstance = new self($theme, $usefilters);
-            $sm->attachService($serviceId, $themeInstance);
+        if (!$serviceManager->hasService($serviceId)) {
+            $themeInstance = new self($serviceManager, $theme, $usefilters);
+            $serviceManager->attachService($serviceId, $themeInstance);
         } else {
-            $themeInstance = $sm->getService($serviceId);
+            $themeInstance = $serviceManager->getService($serviceId);
         }
 
         return $themeInstance;

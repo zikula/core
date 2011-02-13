@@ -123,6 +123,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     protected $eventManager;
 
     /**
+     * Request object.
+     *
+     * @var Zikula_Request_Http
+     */
+    protected $request;
+
+    /**
      * Templates.
      *
      * @var array
@@ -132,13 +139,15 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     /**
      * Constructor.
      *
-     * @param string       $module  Module name ("zikula" for system plugins).
-     * @param boolean|null $caching Whether or not to cache (boolean) or use config variable (null).
+     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param string                $module         Module name ("zikula" for system plugins).
+     * @param boolean|null          $caching        Whether or not to cache (boolean) or use config variable (null).
      */
-    public function __construct($module = '', $caching = null)
+    public function __construct(Zikula_ServiceManager $serviceManager, $module = '', $caching = null)
     {
-        $this->serviceManager = ServiceUtil::getManager();
-        $this->eventManager = EventUtil::getManager();
+        $this->serviceManager = $serviceManager;
+        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        $this->request = $this->serviceManager->getService('request');
 
         // set the error reporting level
         $this->error_reporting = isset($GLOBALS['ZConfig']['Debug']['error_reporting']) ? $GLOBALS['ZConfig']['Debug']['error_reporting'] : E_ALL;
@@ -301,6 +310,16 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public function getModule()
     {
         return $this->module;
+    }
+
+    /**
+     * Get the request.
+     * 
+     * @return Zikula_Request_Http
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     /**
@@ -528,13 +547,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             $module = ModUtil::getName();
         }
 
-        $sm = ServiceUtil::getManager();
-        $serviceId = strtolower(sprintf('zikula.render.%s', $module));
-        if (!$sm->hasService($serviceId)) {
-            $view = new self($module, $caching);
-            $sm->attachService($serviceId, $view);
+        $serviceManager = ServiceUtil::getManager();
+        $serviceId = strtolower(sprintf('zikula.view.%s', $module));
+        if (!$serviceManager->hasService($serviceId)) {
+            $view = new self($serviceManager, $module, $caching);
+            $serviceManager->attachService($serviceId, $view);
         } else {
-            $view = $sm->getService($serviceId);
+            $view = $serviceManager->getService($serviceId);
         }
 
         if (!is_null($caching)) {
