@@ -120,6 +120,24 @@ class Form_View extends Zikula_View
     public $redirected;
 
     /**
+     * Unique form ID.
+     * 
+     * @var string
+     */
+    protected $formId;
+
+    public function getFormId()
+    {
+        return $this->formId;
+    }
+
+    public function setFormId($formId)
+    {
+        $this->formId = $formId;
+    }
+
+    
+    /**
      * Constructor.
      *
      * Use FormUtil::newForm() instead of instantiating Form_View directly.
@@ -180,7 +198,11 @@ class Form_View extends Zikula_View
             if (!SecurityUtil::validateCsfrToken($_POST['csrftoken'], $this->serviceManager)) {
                 return LogUtil::registerAuthidError();
             }
-            
+
+            // retrieve form id
+            $formId = $_POST['__formid'];
+            $this->setFormId($formId);
+
             $this->decodeIncludes();
             $this->decodeState();
 
@@ -195,6 +217,7 @@ class Form_View extends Zikula_View
             $this->decodePlugins(); // decode event
             $this->decodePostBackEvent(); // Execute optional postback after plugins have read their values
         } else {
+            $this->setFormId(uniqid());
             if ($eventHandler->initialize($this) === false) {
                 return $this->getErrorMsg();
             }
@@ -785,11 +808,7 @@ class Form_View extends Zikula_View
      */
     public function getIncludesText()
     {
-        $bytes = serialize($this->includes);
-        $bytes = SecurityUtil::signData($bytes);
-        $base64 = base64_encode($bytes);
-
-        return $base64;
+        return $this->includes;
     }
 
     /**
@@ -799,11 +818,7 @@ class Form_View extends Zikula_View
      */
     public function getIncludesHTML()
     {
-        $base64 = $this->getIncludesText();
-
-        // TODO - this is a quick hack to move __FormINCLUDES into a session variable.
-        // A better way needs to be found rather than relying on a call to getIncludesHTML.
-        SessionUtil::setVar('__FormINCLUDES', $base64);
+        $_SESSION['__forms'][$this->formId]['includes'] = $this->getIncludesText();
         return '';
     }
 
@@ -814,15 +829,10 @@ class Form_View extends Zikula_View
      */
     public function decodeIncludes()
     {
-        // TODO - See getIncludesHTML()
-        $base64 = SessionUtil::getVar('__FormINCLUDES');
-        $bytes = base64_decode($base64);
-        $bytes = SecurityUtil::checkSignedData($bytes);
-        if (!$bytes) {
-            return; // error handler required - drak
+        if (!isset($_SESSION['__forms'][$this->formId]['includes'])) {
+            throw new Exception('Failed to decode form includes - this should not have happened');
         }
-
-        $this->includes = unserialize($bytes);
+        $this->includes = $_SESSION['__forms'][$this->formId]['includes'];
 
         // Load the third party plugins only
         foreach ($this->includes as $includeFilename => $dummy) {
@@ -869,11 +879,7 @@ class Form_View extends Zikula_View
         $pluginState = $this->getPluginState();
         $this->setState('Form_View', 'plugins', $pluginState);
 
-        $bytes = serialize($this->state);
-        $bytes = SecurityUtil::signData($bytes);
-        $base64 = base64_encode($bytes);
-
-        return $base64;
+        return $this->state;
     }
 
     /**
@@ -930,12 +936,8 @@ class Form_View extends Zikula_View
      */
     public function getStateHTML()
     {
-        $base64 = $this->getStateText();
+        $_SESSION['__forms'][$this->formId]['state'] = $this->getStateText();
 
-        // TODO - this is a quick hack to move __FormSTATE into a session variable.
-        // This is meant to solve issue #2013
-        // A better way needs to be found rather than relying on a call to getStateHTML.
-        SessionUtil::setVar('__FormSTATE', $base64);
         // TODO - __FormSTATE still needs to be on the form, to ensure that isPostBack() returns properly
         return '<input type="hidden" name="__FormSTATE" value="true" />';
     }
@@ -947,15 +949,11 @@ class Form_View extends Zikula_View
      */
     public function decodeState()
     {
-        // TODO - see getStateHTML()
-        $base64 = SessionUtil::getVar('__FormSTATE');
-        $bytes = base64_decode($base64);
-        $bytes = SecurityUtil::checkSignedData($bytes);
-        if (!$bytes) {
-            return; // FIXME: error handler required - drak
+        if (!isset($_SESSION['__forms'][$this->formId]['state'])) {
+            throw new Exception('Failed to decode form state - this should not have happened.');
         }
 
-        $this->state = unserialize($bytes);
+        $this->state = $_SESSION['__forms'][$this->formId]['state'];
         $this->plugins = & $this->decodePluginState();
 
         //$this->dumpPlugins("Decoded state", $this->plugins);
@@ -1058,7 +1056,6 @@ class Form_View extends Zikula_View
     public function decodePlugins()
     {
         $this->decodePlugins_rec($this->plugins);
-
         return true;
     }
 
