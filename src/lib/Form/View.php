@@ -126,17 +126,6 @@ class Form_View extends Zikula_View
      */
     protected $formId;
 
-    public function getFormId()
-    {
-        return $this->formId;
-    }
-
-    public function setFormId($formId)
-    {
-        $this->formId = $formId;
-    }
-
-    
     /**
      * Constructor.
      *
@@ -168,6 +157,28 @@ class Form_View extends Zikula_View
 
         $this->initializeState();
         $this->initializeIncludes();
+    }
+
+    /**
+     * Get form id.
+     *
+     * @return string
+     */
+    public function getFormId()
+    {
+        return $this->formId;
+    }
+
+    /**
+     * Set the form Id.
+     *
+     * @param string $formId
+     *
+     * @return void
+     */
+    public function setFormId($formId)
+    {
+        $this->formId = $formId;
     }
 
     /**
@@ -210,6 +221,9 @@ class Form_View extends Zikula_View
                 return $this->getErrorMsg();
             }
 
+            // if we get this far, the form processed correctly and we can GC the session
+            unset($_SESSION['__formid'][$this->formId]);
+
             $this->eventHandler->postInitialize();
 
             // (no create event)
@@ -225,6 +239,7 @@ class Form_View extends Zikula_View
         }
 
         // render event (calls registerPlugin)
+        $this->assign('__formid', $this->formId);
         $output = $this->fetch($template);
 
         if ($this->hasError()) {
@@ -954,6 +969,9 @@ class Form_View extends Zikula_View
         }
 
         $this->state = $_SESSION['__forms'][$this->formId]['state'];
+
+        // I don't know why, but the formid array doesnt GC unless this is here - drak
+        unset($_SESSION['__forms'][$this->formId]);
         $this->plugins = & $this->decodePluginState();
 
         //$this->dumpPlugins("Decoded state", $this->plugins);
