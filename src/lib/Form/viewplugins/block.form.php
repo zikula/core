@@ -36,7 +36,7 @@ function smarty_block_form($params, $content, $view)
         $view->postRender();
 
         $formId = $view->getFormId();
-        $out  =  "<form id=\"FormId-{$formId}\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>";
+        $out  =  "<form id=\"{$formId}\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>";
         $out .= $content;
         $out .= "\n<div>\n" . $view->getStateHTML() . "\n"; // Add <div> for XHTML validation
         $out .= $view->getIncludesHTML() . "\n";
@@ -49,7 +49,7 @@ function smarty_block_form($params, $content, $view)
 <!--
 function FormDoPostBack(eventTarget, eventArgument)
 {
-  var f = document.getElementById('FormId-{$formId}');
+  var f = document.getElementById('{$formId}');
   if (!f.onsubmit || f.onsubmit())
   {
     f.FormEventTarget.value = eventTarget;
