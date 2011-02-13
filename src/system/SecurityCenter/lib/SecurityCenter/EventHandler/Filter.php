@@ -352,14 +352,13 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
         } else {
 
             // save renderer delimiters
-            $dummy = new Zikula_View('SecurityCenter');
-            $event->data = str_replace($dummy->left_delimiter,  '%VIEW_LEFT_DELIMITER%',  $event->data);
-            $event->data = str_replace($dummy->right_delimiter, '%VIEW_RIGHT_DELIMITER%', $event->data);
+            $event->data = str_replace('{',  '%VIEW_LEFT_DELIMITER%',  $event->data);
+            $event->data = str_replace('{', '%VIEW_RIGHT_DELIMITER%', $event->data);
             $event->data = $purifier->purify($event->data);
 
             // restore renderer delimiters
-            $event->data = str_replace('%VIEW_LEFT_DELIMITER%',  $dummy->left_delimiter,  $event->data);
-            $event->data = str_replace('%VIEW_RIGHT_DELIMITER%', $dummy->right_delimiter, $event->data);
+            $event->data = str_replace('%VIEW_LEFT_DELIMITER%',  '{',  $event->data);
+            $event->data = str_replace('%VIEW_RIGHT_DELIMITER%', '}', $event->data);
 
             // cache the value
             $safecache[$md5] = $event->data;
