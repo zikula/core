@@ -726,10 +726,11 @@ abstract class Zikula_Base implements Zikula_Translatable
      *
      * @return void
      */
-    public function checkCsfrToken($token)
+    public function checkCsfrToken($token, $url)
     {
         $tokenValidator = $this->serviceManager->getService('token.validator');
         if (!$tokenValidator->validate($token)) {
+            LogUtil::registerAuthidError($url);
             throw new Zikula_Exception_Forbidden(__('Security token validation failed'));
         }
     }
