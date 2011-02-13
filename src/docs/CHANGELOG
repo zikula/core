@@ -62,7 +62,7 @@ Added ability to administrate adminpanel with ajax, move modules to different ca
 Blocks module admin section now has filtering options for block-position, module, language and active-status. The allows remove of the old showall/showinactive link in the admin section. (Issue #2012 & Issue #2020)
 Blocks module now has sorting options for the main columns in the admin view (Issue #2012).
 Added various events through out the core execution cycle.
-Fixed Form_Render::registerPlugin() in environments where the installation is not in the server document root.
+Fixed Zikula_Form_View::registerPlugin() in environments where the installation is not in the server document root.
 Added adapter to support the illegal use of DBUtil::executeSQL() processing the ADODB object manually (without the use of DBUtil::marshallObjects().
 Fixed theme list not sorted correctly on Theme view (Issue #1974).
 Fixed pager plugin images always in english (Issue #1883).
