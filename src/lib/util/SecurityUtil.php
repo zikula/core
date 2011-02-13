@@ -61,6 +61,42 @@ class SecurityUtil
     }
 
     /**
+     * Generate a security token.
+     *
+     * @param Zikula_ServiceManager $serviceManager ServiceManager (default = null).
+     *
+     * @return string
+     */
+    public static function generateCsfrToken(Zikula_ServiceManager $serviceManager = null)
+    {
+        if (!$serviceManager) {
+            $serviceManager = ServiceUtil::getManager();
+        }
+        $tokenGenerator = $serviceManager->getService('token.generator');
+        $tokenGenerator->generate($tokenGenerator->uniqueId(), time());
+        $tokenGenerator->save();
+
+        return $tokenGenerator->getToken();
+    }
+
+    /**
+     * Validate a given security token.
+     * 
+     * @param string                $token          Token to be validated.
+     * @param Zikula_ServiceManager $serviceManager ServiceManager default = null.
+     *
+     * @return boolean
+     */
+    public static function validateCsfrToken($token, Zikula_ServiceManager $serviceManager = null)
+    {
+        if (!$serviceManager) {
+            $serviceManager = ServiceUtil::getManager();
+        }
+        $tokenValidator = $serviceManager->getService('token.validator');
+        return $tokenValidator->validate($token);
+    }
+
+    /**
      * Check permissions
      *
      * @param string   $component Component.
