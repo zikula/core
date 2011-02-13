@@ -50,10 +50,11 @@ class Zikula_Tree
      *
      * @param array $config Config array.
      */
-    public function __construct(array $config=array())
+    public function __construct(array $config = array())
     {
         $this->config = array(
             'sortable'      => false,
+            'withWraper'    => true,
             'cssFile'       => 'javascript/helpers/Tree/Tree.css',
             'imagesDir'     => 'javascript/helpers/Tree/',
             'plus'          => 'plus.gif',
@@ -86,7 +87,7 @@ class Zikula_Tree
      *
      * @return void
      */
-    public function setOption($key,$value)
+    public function setOption($key, $value)
     {
         $this->config[$key] = $value;
     }
@@ -162,9 +163,13 @@ class Zikula_Tree
             });
         </script>";
         PageUtil::addVar('rawtext', $initScript);
-        $wraperClass = !empty($this->config['wraperClass']) ? 'class="'.$this->config['wraperClass'].'"' : '';
-        $tree = $this->_toHTML($this->tree,$this->config['id']);
-        $this->html = "<div {$wraperClass}>{$tree}</div>";
+        $tree = $this->_toHTML($this->tree,$this->config['id'],true);
+        if ($this->config['withWraper']) {
+            $wraperClass = !empty($this->config['wraperClass']) ? 'class="'.$this->config['wraperClass'].'"' : '';
+            $this->html = "<div {$wraperClass}>{$tree}</div>";
+        } else {
+            $this->html = $tree;
+        }
         return $this->html;
     }
 
@@ -175,7 +180,7 @@ class Zikula_Tree
      *
      * @return string|array
      */
-    public function getConfigForScript($encode=true)
+    public function getConfigForScript($encode = true)
     {
         $jsConfig = $this->config;
         $imagesKeys = array('plus','minus','parent','parentOpen','item');
@@ -258,12 +263,13 @@ class Zikula_Tree
     /**
      * Convert tree data to HTML.
      *
-     * @param array  $tree   Tree data.
-     * @param string $treeId Tree Id.
+     * @param array   $tree   Tree data.
+     * @param string  $treeId Tree Id.
+     * @param boolean $root   Is this root level.
      *
      * @return string HTML output.
      */
-    protected function _toHTML($tree,$treeId=null)
+    protected function _toHTML($tree, $treeId = null, $root = false)
     {
         $liHtml = array();
         $size = count($tree);
@@ -274,11 +280,14 @@ class Zikula_Tree
             $i++;
         }
 
-        $ulID = !empty($treeId) ? ' id="'.$treeId.'"' : '';
-        $ulClass = !empty($this->config['treeClass']) ? ' class="'.$this->config['treeClass'].'"' : '';
         $liHtml = implode('',$liHtml);
-        $html = "<ul {$ulID} {$ulClass}>{$liHtml}</ul>";
-
+        if ($root && !$this->config['withWraper']) {
+            $html = $liHtml;
+        } else {
+            $ulID = !empty($treeId) ? ' id="'.$treeId.'"' : '';
+            $ulClass = !empty($this->config['treeClass']) ? ' class="'.$this->config['treeClass'].'"' : '';
+            $html = "<ul {$ulID} {$ulClass}>{$liHtml}</ul>";
+        }
         return $html;
     }
 
@@ -294,7 +303,7 @@ class Zikula_Tree
      *
      * @return string Node HTML code
      */
-    protected function _nodeToHTML($id,$tab, $size, $i,$nodeSub=null)
+    protected function _nodeToHTML($id, $tab, $size, $i, $nodeSub = null)
     {
         $links = array();
         $item = $tab['item'];
