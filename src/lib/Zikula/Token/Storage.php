@@ -6,8 +6,8 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package XXXX
- * @subpackage XXXX
+ * @package Token
+ * @subpackage Storage
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,7 +18,32 @@
  */
 interface Zikula_Token_Storage
 {
+    /**
+     * Get token by ID.
+     *
+     * @param string $id Id.
+     *
+     * @return string
+     */
     public function get($id);
+
+    /**
+     * Save token.
+     *
+     * @param string $id        Id.
+     * @param string $token     Token to be saved.
+     * @param string $timestamp Timestamp of token.
+     *
+     * @return void
+     */
     public function save($id, $token, $timestamp);
+
+    /**
+     * Delete token by ID.
+     *
+     * @param string $id Id.
+     *
+     * @return void
+     */
     public function delete($id);
 }
