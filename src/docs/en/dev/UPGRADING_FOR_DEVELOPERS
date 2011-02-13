@@ -610,6 +610,16 @@ FORMS
 =====
 There have been some very important and powerful changes to the forms framework.
 
+New features/fixes
+------------------
+It is now possible to have more than one instance of a form at once.  Nonce
+checking has also been improved (automatically).
+
+All forms now are assigned their own ID.  This is available to the form template
+with `{$__formid}` and in the Form_View with the getter $view->getFormId()
+It may be necessary to update any javascripts to observe forms with the new
+form ID.
+
 Form Handler
 ------------
 Firstly the Form_Handler interface is now enforced, so handlers must extend
