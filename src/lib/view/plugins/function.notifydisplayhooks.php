@@ -54,7 +54,7 @@ function smarty_function_notifydisplayhooks($params, $view)
 
     $params['id'] = isset($params['id']) ? $params['id'] : null;
     $params['returnurl'] = isset($params['returnurl']) ? $params['returnurl'] : System::getCurrentUrl();
-    $params['caller'] = isset($params['caller']) ? $params['caller'] : $view->get_tpl_var('controller')->getName();
+    $params['caller'] = isset($params['caller']) ? $params['caller'] : $view->getController()->getName();
 
     $subject = isset($params['subject']) ? $params['subject'] : null;
     $assign  = isset($params['assign']) ? $params['assign'] : false;
