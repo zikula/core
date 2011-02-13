@@ -520,19 +520,19 @@ class PNCategoryRegistryArray extends Categories_DBObject_Registry
 
 
 /**
- * Alias to the Form_View class for backward compatibility to Zikula 1.2.x.
+ * Alias to the Zikula_Form_View class for backward compatibility to Zikula 1.2.x.
  *
  * @deprecated
- * @see Form_View::
+ * @see Zikula_Form_View::
  */
-class pnFormRender extends Form_View
+class pnFormRender extends Zikula_Form_View
 {
     /**
-     * Alias to Form_View::State for backward compatibility to Zikula 1.2.x.
+     * Alias to Zikula_Form_View::State for backward compatibility to Zikula 1.2.x.
      *
      * @internal
      * @deprecated
-     * @see Form_View::State
+     * @see Zikula_Form_View::State
      */
     public $pnFormState;
 
@@ -541,7 +541,7 @@ class pnFormRender extends Form_View
      *
      * @internal
      * @deprecated
-     * @see Form_View::Includes
+     * @see Zikula_Form_View::Includes
      */
     public $pnFormIncludes;
 
@@ -550,7 +550,7 @@ class pnFormRender extends Form_View
      *
      * @internal
      * @deprecated
-     * @see Form_View::Plugins
+     * @see Zikula_Form_View::Plugins
      */
     public $pnFormPlugins;
 
@@ -559,7 +559,7 @@ class pnFormRender extends Form_View
      *
      * @internal
      * @deprecated
-     * @see Form_View::BlockStack
+     * @see Zikula_Form_View::BlockStack
      */
     public $pnFormBlockStack;
 
@@ -568,7 +568,7 @@ class pnFormRender extends Form_View
      *
      * @internal
      * @deprecated
-     * @see Form_View::Validators
+     * @see Zikula_Form_View::Validators
      */
     public $pnFormValidators;
 
@@ -577,7 +577,7 @@ class pnFormRender extends Form_View
      *
      * @internal
      * @deprecated
-     * @see Form_View::ValidationChecked
+     * @see Zikula_Form_View::ValidationChecked
      */
     public $pnFormValidationChecked;
 
@@ -586,7 +586,7 @@ class pnFormRender extends Form_View
      *
      * @internal
      * @deprecated
-     * @see Form_View::_IsValid
+     * @see Zikula_Form_View::_IsValid
      */
     public $_pnFormIsValid;
 
@@ -595,7 +595,7 @@ class pnFormRender extends Form_View
      *
      * @internal
      * @deprecated
-     * @see Form_View::IdCount
+     * @see Zikula_Form_View::IdCount
      */
     public $pnFormIdCount;
 
@@ -604,7 +604,7 @@ class pnFormRender extends Form_View
      *
      * @internal
      * @deprecated
-     * @see Form_View::EventHandler
+     * @see Zikula_Form_View::EventHandler
      */
     public $pnFormEventHandler;
 
@@ -613,7 +613,7 @@ class pnFormRender extends Form_View
      *
      * @internal
      * @deprecated
-     * @see Form_View::ErrorMsgSet
+     * @see Zikula_Form_View::ErrorMsgSet
      */
     public $pnFormErrorMsgSet;
 
@@ -622,7 +622,7 @@ class pnFormRender extends Form_View
      *
      * @internal
      * @deprecated
-     * @see Form_View::Redirected
+     * @see Zikula_Form_View::Redirected
      */
     public $pnFormRedirected;
 
@@ -630,14 +630,14 @@ class pnFormRender extends Form_View
      * Constructs a new instance of pnFormRender.
      *
      * @deprecated
-     * @see Form_View::__construct()
+     * @see Zikula_Form_View::__construct()
      */
     public function __construct($module)
     {
         $serviceManager = ServiceUtil::getManager();
         parent::__construct($serviceManager, $module);
 
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Form_View')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Zikula_Form_View')), E_USER_DEPRECATED);
 
         $this->pnFormState = &$this->state;
         $this->pnFormIncludes = &$this->includes;
@@ -653,10 +653,10 @@ class pnFormRender extends Form_View
     }
 
     /**
-     * Alias to Form_View::execute for backward compatibility.
+     * Alias to Zikula_Form_View::execute for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::execute
+     * @see Zikula_Form_View::execute
      *
      * @param boolean       $template     Name of template file.
      * @param pnFormHandler $eventHandler Instance of object that inherits from pnFormHandler.
@@ -665,15 +665,15 @@ class pnFormRender extends Form_View
      */
     public function pnFormExecute($template, &$eventHandler)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::execute')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::execute')), E_USER_DEPRECATED);
         return $this->execute($template, $eventHandler);
     }
 
     /**
-     * Alias to Form_View::execute for backward compatibility.
+     * Alias to Zikula_Form_View::execute for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::execute
+     * @see Zikula_Form_View::execute
      *
      * @param boolean       $template     Name of template file.
      * @param pnFormHandler $eventHandler Instance of object that inherits from pnFormHandler.
@@ -690,10 +690,10 @@ class pnFormRender extends Form_View
     }
 
     /**
-     * Alias to Form_View::registerPlugin for backward compatibility.
+     * Alias to Zikula_Form_View::registerPlugin for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::registerPlugin
+     * @see Zikula_Form_View::registerPlugin
      *
      * @param string  $pluginName Full class name of the plugin to register.
      * @param array   &$params    Parameters passed from the Smarty plugin function.
@@ -703,15 +703,15 @@ class pnFormRender extends Form_View
      */
     public function pnFormRegisterPlugin($pluginName, &$params, $isBlock = false)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::registerPlugin')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::registerPlugin')), E_USER_DEPRECATED);
         return $this->registerPlugin($pluginName, $params, $isBlock = false);
     }
 
     /**
-     * Alias to Form_View::registerBlock for backward compatibility.
+     * Alias to Zikula_Form_View::registerBlock for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::registerBlock
+     * @see Zikula_Form_View::registerBlock
      *
      * @param string $pluginName Full class name of the plugin to register.
      * @param array  &$params    Parameters passed from the Smarty block function.
@@ -719,32 +719,32 @@ class pnFormRender extends Form_View
      */
     public function pnFormRegisterBlock($pluginName, &$params, &$content)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::registerBlock')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::registerBlock')), E_USER_DEPRECATED);
         return $this->registerBlock($pluginName, $params, $content);
     }
 
     /**
-     * Alias to Form_View::registerBlockBegin for backward compatibility.
+     * Alias to Zikula_Form_View::registerBlockBegin for backward compatibility.
      *
      * @internal
      * @deprecated
-     * @see Form_View::registerBlockBegin
+     * @see Zikula_Form_View::registerBlockBegin
      *
      * @param string $pluginName Full class name of the plugin to register.
      * @param array  &$params    Parameters passed from the Smarty block function.
      */
     public function pnFormRegisterBlockBegin($pluginName, &$params)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::registerBlockBegin')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::registerBlockBegin')), E_USER_DEPRECATED);
         $this->registerBlockBegin($pluginName, $params);
     }
 
     /**
-     * Alias to Form_View::registerBlockEnd for backward compatibility.
+     * Alias to Zikula_Form_View::registerBlockEnd for backward compatibility.
      *
      * @internal
      * @deprecated
-     * @see Form_View::registerBlockEnd
+     * @see Zikula_Form_View::registerBlockEnd
      *
      * @param string $pluginName Full class name of the plugin to register.
      * @param array  &$params    Parameters passed from the Smarty block function.
@@ -754,16 +754,16 @@ class pnFormRender extends Form_View
      */
     public function pnFormRegisterBlockEnd($pluginName, &$params, $content)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::registerBlockEnd')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::registerBlockEnd')), E_USER_DEPRECATED);
         return $this->registerBlockEnd($pluginName, $params, $content);
     }
 
     /**
-     * Alias to Form_View::getPluginId for backward compatibility.
+     * Alias to Zikula_Form_View::getPluginId for backward compatibility.
      *
      * @internal
      * @deprecated
-     * @see Form_View::getPluginId
+     * @see Zikula_Form_View::getPluginId
      *
      * @param array  &$params    Parameters passed from the Smarty block function.
      *
@@ -771,43 +771,43 @@ class pnFormRender extends Form_View
      */
     public function pnFormGetPluginId(&$params)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getPluginId')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getPluginId')), E_USER_DEPRECATED);
         return $this->getPluginId($params);
     }
 
     /**
-     * Alias to Form_View::isPostBack for backward compatibility.
+     * Alias to Zikula_Form_View::isPostBack for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::isPostBack
+     * @see Zikula_Form_View::isPostBack
      *
      * @return bool True if $_POST['__pnFormSTATE'] is set; otherwise false.
      */
     public function pnFormIsPostBack()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::isPostBack')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::isPostBack')), E_USER_DEPRECATED);
         return $this->isPostBack();
     }
 
     /**
-     * Alias to Form_View::formDie for backward compatibility.
+     * Alias to Zikula_Form_View::formDie for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::formDie
+     * @see Zikula_Form_View::formDie
      *
      * @param string $msg The message to display.
      */
     public function pnFormDie($msg)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::formDie')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::formDie')), E_USER_DEPRECATED);
         $this->formDie($msg);
     }
 
     /**
-     * Alias to Form_View::translateForDisplay for backward compatibility.
+     * Alias to Zikula_Form_View::translateForDisplay for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::translateForDisplay
+     * @see Zikula_Form_View::translateForDisplay
      *
      * @param string  $txt      Text to translate for display.
      * @param boolean $doEncode True to formatForDisplay.
@@ -816,307 +816,307 @@ class pnFormRender extends Form_View
      */
     public function pnFormTranslateForDisplay($txt, $doEncode = true)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::translateForDisplay')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::translateForDisplay')), E_USER_DEPRECATED);
         return $this->translateForDisplay($txt, $doEncode = true);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::addValidator
+     * @see Zikula_Form_View::addValidator
      *
      * @param validator $validator Validator to add.
      */
     public function pnFormAddValidator(&$validator)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::addValidator')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::addValidator')), E_USER_DEPRECATED);
         $this->addValidator($validator);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::isValid
+     * @see Zikula_Form_View::isValid
      *
      * @return boolean True if all validators are valid.
      */
     public function pnFormIsValid()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::isValid')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::isValid')), E_USER_DEPRECATED);
         return $this->isValid();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::validate
+     * @see Zikula_Form_View::validate
      */
     public function pnFormValidate()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::validate')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::validate')), E_USER_DEPRECATED);
         $this->validate();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::clearValidation
+     * @see Zikula_Form_View::clearValidation
      */
     public function pnFormClearValidation()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::clearValidation')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::clearValidation')), E_USER_DEPRECATED);
         $this->clearValidation();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::setState
+     * @see Zikula_Form_View::setState
      */
     public function pnFormSetState($region, $varName, &$varValue)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::setState')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::setState')), E_USER_DEPRECATED);
         $this->setState($region, $varName, $varValue);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::setErrorMsg
+     * @see Zikula_Form_View::setErrorMsg
      */
     public function pnFormSetErrorMsg($msg)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::setErrorMsg')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::setErrorMsg')), E_USER_DEPRECATED);
         return $this->setErrorMsg($msg);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getErrorMsg
+     * @see Zikula_Form_View::getErrorMsg
      */
     public function pnFormGetErrorMsg()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getErrorMsg')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getErrorMsg')), E_USER_DEPRECATED);
         return $this->getErrorMsg();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::hasError
+     * @see Zikula_Form_View::hasError
      */
     public function pnFormHasError()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::hasError')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::hasError')), E_USER_DEPRECATED);
         return $this->hasError();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::registerError
+     * @see Zikula_Form_View::registerError
      */
     public function pnFormRegisterError($dummy)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::registerError')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::registerError')), E_USER_DEPRECATED);
         return $this->registerError($dummy);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::redirect
+     * @see Zikula_Form_View::redirect
      */
     public function pnFormRedirect($url)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::redirect')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::redirect')), E_USER_DEPRECATED);
         $this->redirect($url);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getPostBackEventReference
+     * @see Zikula_Form_View::getPostBackEventReference
      */
     public function pnFormGetPostBackEventReference($plugin, $commandName)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getPostBackEventReference')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getPostBackEventReference')), E_USER_DEPRECATED);
         return $this->getPostBackEventReference($plugin, $commandName);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::raiseEvent
+     * @see Zikula_Form_View::raiseEvent
      */
     public function pnFormRaiseEvent($eventHandlerName, $args)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::raiseEvent')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::raiseEvent')), E_USER_DEPRECATED);
         return $this->raiseEvent($eventHandlerName, $args);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::initializeIncludes
+     * @see Zikula_Form_View::initializeIncludes
      */
     public function pnFormInitializeIncludes()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::initializeIncludes')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::initializeIncludes')), E_USER_DEPRECATED);
         $this->initializeIncludes();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getIncludesText
+     * @see Zikula_Form_View::getIncludesText
      */
     public function pnFormGetIncludesText()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getIncludesText')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getIncludesText')), E_USER_DEPRECATED);
         return $this->getIncludesText();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getIncludesHTML
+     * @see Zikula_Form_View::getIncludesHTML
      */
     public function pnFormGetIncludesHTML()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getIncludesHTML')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getIncludesHTML')), E_USER_DEPRECATED);
         return $this->getIncludesHTML();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::decodeIncludes
+     * @see Zikula_Form_View::decodeIncludes
      */
     public function pnFormDecodeIncludes()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodeIncludes')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::decodeIncludes')), E_USER_DEPRECATED);
         return $this->decodeIncludes();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getAuthKeyHTML
+     * @see Zikula_Form_View::getAuthKeyHTML
      */
     public function pnFormGetAuthKeyHTML()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getAuthKeyHTML')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getAuthKeyHTML')), E_USER_DEPRECATED);
         return $this->getAuthKeyHTML();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::initializeState
+     * @see Zikula_Form_View::initializeState
      */
     public function pnFormInitializeState()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::initializeState')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::initializeState')), E_USER_DEPRECATED);
         $this->initializeState();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getStateText
+     * @see Zikula_Form_View::getStateText
      */
     public function pnFormGetStateText()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getStateText')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getStateText')), E_USER_DEPRECATED);
         $this->getStateText();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getPluginState
+     * @see Zikula_Form_View::getPluginState
      */
     public function pnFormGetPluginState()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getPluginState')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getPluginState')), E_USER_DEPRECATED);
         return $this->getPluginState();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getPluginById
+     * @see Zikula_Form_View::getPluginById
      */
     function &pnFormGetPluginById($id)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getPluginById')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getPluginById')), E_USER_DEPRECATED);
         return $this->getPluginById($id);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getPluginState_rec
+     * @see Zikula_Form_View::getPluginState_rec
      */
     public function pnFormGetPluginState_rec($plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getPluginState_rec')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getPluginState_rec')), E_USER_DEPRECATED);
         return $this->getPluginState_rec($plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getStateHTML
+     * @see Zikula_Form_View::getStateHTML
      */
     public function pnFormGetStateHTML()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getStateHTML')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getStateHTML')), E_USER_DEPRECATED);
         return $this->getStateHTML();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::decodeState
+     * @see Zikula_Form_View::decodeState
      */
     public function pnFormDecodeState()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodeState')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::decodeState')), E_USER_DEPRECATED);
         $this->decodeState();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::decodeEventHandler
+     * @see Zikula_Form_View::decodeEventHandler
      */
     public function pnFormDecodeEventHandler()
     {
@@ -1124,851 +1124,851 @@ class pnFormRender extends Form_View
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::initializePlugins
+     * @see Zikula_Form_View::initializePlugins
      */
     public function pnFormInitializePlugins()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::initializePlugins')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::initializePlugins')), E_USER_DEPRECATED);
         return $this->initializePlugins();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::initializePlugins_rec
+     * @see Zikula_Form_View::initializePlugins_rec
      */
     public function pnFormInitializePlugins_rec($plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::initializePlugins_rec')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::initializePlugins_rec')), E_USER_DEPRECATED);
         $this->initializePlugins_rec($plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::decodePlugins
+     * @see Zikula_Form_View::decodePlugins
      */
     public function pnFormDecodePlugins()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodePlugins')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::decodePlugins')), E_USER_DEPRECATED);
         return $this->decodePlugins();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::decodePlugins_rec
+     * @see Zikula_Form_View::decodePlugins_rec
      */
     public function pnFormDecodePlugins_rec($plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodePlugins_rec')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::decodePlugins_rec')), E_USER_DEPRECATED);
         $this->decodePlugins_rec($plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::decodePostBackEvent
+     * @see Zikula_Form_View::decodePostBackEvent
      */
     public function pnFormDecodePostBackEvent()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodePostBackEvent')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::decodePostBackEvent')), E_USER_DEPRECATED);
         $this->decodePostBackEvent();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::decodePostBackEvent_rec
+     * @see Zikula_Form_View::decodePostBackEvent_rec
      */
     public function pnFormDecodePostBackEvent_rec($plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodePostBackEvent_rec')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::decodePostBackEvent_rec')), E_USER_DEPRECATED);
         return $this->decodePostBackEvent_rec($plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::postRender
+     * @see Zikula_Form_View::postRender
      */
     public function pnFormPostRender()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::postRender')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::postRender')), E_USER_DEPRECATED);
         return $this->postRender();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::postRender_rec
+     * @see Zikula_Form_View::postRender_rec
      */
     public function pnFormPostRender_rec($plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::postRender_rec')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::postRender_rec')), E_USER_DEPRECATED);
         $this->postRender_rec($plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getValues
+     * @see Zikula_Form_View::getValues
      */
     public function pnFormGetValues()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getValues')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getValues')), E_USER_DEPRECATED);
         return $this->getValues();
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::getValues_rec
+     * @see Zikula_Form_View::getValues_rec
      */
     public function pnFormGetValues_rec($plugins, &$result)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getValues_rec')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getValues_rec')), E_USER_DEPRECATED);
         $this->getValues_rec($plugins, $result);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::setValues
+     * @see Zikula_Form_View::setValues
      */
     public function pnFormSetValues(&$values, $group = null)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::setValues')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::setValues')), E_USER_DEPRECATED);
         return $this->setValues($values, $group);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::setValues2
+     * @see Zikula_Form_View::setValues2
      */
     public function pnFormSetValues2(&$values, $group = null, $plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::setValues2')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::setValues2')), E_USER_DEPRECATED);
         return $this->setValues2($values, $group, $plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_View for backward compatibility.
+     * Alias to equivalent function in Zikula_Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_View::setValues_rec
+     * @see Zikula_Form_View::setValues_rec
      */
     public function pnFormSetValues_rec(&$values, $group, $plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::setValues_rec')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::setValues_rec')), E_USER_DEPRECATED);
         $this->setValues_rec($values, $group, $plugins);
     }
 }
 
 /**
- * Alias to the Form_Plugin class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin::
+ * @see Zikula_Form_Plugin::
  */
-class pnFormPlugin extends Form_Plugin
+class pnFormPlugin extends Zikula_Form_Plugin
 {
     /**
-     * Alias to Form_Plugin constructor.
+     * Alias to Zikula_Form_Plugin constructor.
      *
      * @deprecated
-     * @see Form_Plugin::__construct()
+     * @see Zikula_Form_Plugin::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_StyledPlugin class for backward compatibility.
+ * Alias to the Zikula_Form_StyledPlugin class for backward compatibility.
  *
  * @deprecated
- * @see Form_StyledPlugin::
+ * @see Zikula_Form_StyledPlugin::
  */
-class pnFormStyledPlugin extends Form_StyledPlugin
+class pnFormStyledPlugin extends Zikula_Form_StyledPlugin
 {
     /**
-     * Alias to Form_StyledPlugin constructor.
+     * Alias to Zikula_Form_StyledPlugin constructor.
      *
      * @deprecated
-     * @see Form_StyledPlugin::__construct()
+     * @see Zikula_Form_StyledPlugin::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_StyledPlugin')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_StyledPlugin')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Handler class for backward compatibility.
+ * Alias to the Zikula_Form_Handler class for backward compatibility.
  *
  * @deprecated
- * @see Form_Handler::
+ * @see Zikula_Form_Handler::
  */
-class pnFormHandler extends Form_Handler
+class pnFormHandler extends Zikula_Form_Handler
 {
     /**
-     * Alias to Form_Handler constructor.
+     * Alias to Zikula_Form_Handler constructor.
      *
      * @deprecated
-     * @see Form_Handler::__construct()
+     * @see Zikula_Form_Handler::__construct()
      */
     public function __construct()
     {
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Handler')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Handler')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_BaseListSelector class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_BaseListSelector class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_BaseListSelector::
+ * @see Zikula_Form_Plugin_BaseListSelector::
  */
-class pnFormBaseListSelector extends Form_Plugin_BaseListSelector
+class pnFormBaseListSelector extends Zikula_Form_Plugin_BaseListSelector
 {
     /**
-     * Alias to Form_Plugin_BaseListSelector constructor.
+     * Alias to Zikula_Form_Plugin_BaseListSelector constructor.
      *
      * @deprecated
-     * @see Form_Plugin_BaseListSelector::__construct()
+     * @see Zikula_Form_Plugin_BaseListSelector::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_BaseListSelector')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_BaseListSelector')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_Button class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_Button class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_Button::
+ * @see Zikula_Form_Plugin_Button::
  */
-class pnFormButton extends Form_Plugin_Button
+class pnFormButton extends Zikula_Form_Plugin_Button
 {
     /**
-     * Alias to Form_Plugin_Button constructor.
+     * Alias to Zikula_Form_Plugin_Button constructor.
      *
      * @deprecated
-     * @see Form_Plugin_Button::__construct()
+     * @see Zikula_Form_Plugin_Button::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_Button')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_Button')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_CategoryCheckboxList class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_CategoryCheckboxList class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_CategoryCheckboxList::
+ * @see Zikula_Form_Plugin_CategoryCheckboxList::
  */
-class pnFormCategoryCheckboxList extends Form_Plugin_CategoryCheckboxList
+class pnFormCategoryCheckboxList extends Zikula_Form_Plugin_CategoryCheckboxList
 {
     /**
-     * Alias to Form_Plugin_CategoryCheckboxList constructor.
+     * Alias to Zikula_Form_Plugin_CategoryCheckboxList constructor.
      *
      * @deprecated
-     * @see Form_Plugin_CategoryCheckboxList::__construct()
+     * @see Zikula_Form_Plugin_CategoryCheckboxList::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_CategoryCheckboxList')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_CategoryCheckboxList')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_CategorySelector class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_CategorySelector class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_CategorySelector::
+ * @see Zikula_Form_Plugin_CategorySelector::
  */
-class pnFormCategorySelector extends Form_Plugin_CategorySelector
+class pnFormCategorySelector extends Zikula_Form_Plugin_CategorySelector
 {
     /**
-     * Alias to Form_Plugin_CategorySelector constructor.
+     * Alias to Zikula_Form_Plugin_CategorySelector constructor.
      *
      * @deprecated
-     * @see Form_Plugin_CategorySelector::__construct()
+     * @see Zikula_Form_Plugin_CategorySelector::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_CategorySelector')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_CategorySelector')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_Checkbox class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_Checkbox class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_Checkbox::
+ * @see Zikula_Form_Plugin_Checkbox::
  */
-class pnFormCheckbox extends Form_Plugin_Checkbox
+class pnFormCheckbox extends Zikula_Form_Plugin_Checkbox
 {
     /**
-     * Alias to Form_Plugin_Checkbox constructor.
+     * Alias to Zikula_Form_Plugin_Checkbox constructor.
      *
      * @deprecated
-     * @see Form_Plugin_Checkbox::__construct()
+     * @see Zikula_Form_Plugin_Checkbox::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_Checkbox')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_Checkbox')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_CheckboxList class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_CheckboxList class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_CheckboxList::
+ * @see Zikula_Form_Plugin_CheckboxList::
  */
-class pnFormCheckboxList extends Form_Plugin_CheckboxList
+class pnFormCheckboxList extends Zikula_Form_Plugin_CheckboxList
 {
     /**
-     * Alias to Form_Plugin_CheckboxList constructor.
+     * Alias to Zikula_Form_Plugin_CheckboxList constructor.
      *
      * @deprecated
-     * @see Form_Plugin_CheckboxList::__construct()
+     * @see Zikula_Form_Plugin_CheckboxList::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_CheckboxList')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_CheckboxList')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Block_ContextMenu class for backward compatibility.
+ * Alias to the Zikula_Form_Block_ContextMenu class for backward compatibility.
  *
  * @deprecated
- * @see Form_Block_ContextMenu::
+ * @see Zikula_Form_Block_ContextMenu::
  */
-class pnFormContextMenu extends Form_Block_ContextMenu
+class pnFormContextMenu extends Zikula_Form_Block_ContextMenu
 {
     /**
-     * Alias to Form_Block_ContextMenu constructor.
+     * Alias to Zikula_Form_Block_ContextMenu constructor.
      *
      * @deprecated
-     * @see Form_Block_ContextMenu::__construct()
+     * @see Zikula_Form_Block_ContextMenu::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Block_ContextMenu')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Block_ContextMenu')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_ContextMenu_Item class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_ContextMenu_Item class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_ContextMenu_Item::
+ * @see Zikula_Form_Plugin_ContextMenu_Item::
  */
-class pnFormContextMenuItem extends Form_Plugin_ContextMenu_Item
+class pnFormContextMenuItem extends Zikula_Form_Plugin_ContextMenu_Item
 {
     /**
-     * Alias to Form_Plugin_ContextMenu_Item constructor.
+     * Alias to Zikula_Form_Plugin_ContextMenu_Item constructor.
      *
      * @deprecated
-     * @see Form_Plugin_ContextMenu_Item::__construct()
+     * @see Zikula_Form_Plugin_ContextMenu_Item::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ContextMenu_Item')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_ContextMenu_Item')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_ContextMenu_Reference class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_ContextMenu_Reference class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_ContextMenu_Reference::
+ * @see Zikula_Form_Plugin_ContextMenu_Reference::
  */
-class pnFormContextMenuReference extends Form_Plugin_ContextMenu_Reference
+class pnFormContextMenuReference extends Zikula_Form_Plugin_ContextMenu_Reference
 {
     /**
-     * Alias to Form_Plugin_ContextMenu_Reference constructor.
+     * Alias to Zikula_Form_Plugin_ContextMenu_Reference constructor.
      *
      * @deprecated
-     * @see Form_Plugin_ContextMenu_Reference::__construct()
+     * @see Zikula_Form_Plugin_ContextMenu_Reference::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ContextMenu_Reference')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_ContextMenu_Reference')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_ContextMenu_Separator class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_ContextMenu_Separator class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_ContextMenu_Separator::
+ * @see Zikula_Form_Plugin_ContextMenu_Separator::
  */
-class pnFormContextMenuSeparator extends Form_Plugin_ContextMenu_Separator
+class pnFormContextMenuSeparator extends Zikula_Form_Plugin_ContextMenu_Separator
 {
     /**
-     * Alias to Form_Plugin_ContextMenu_Separator constructor.
+     * Alias to Zikula_Form_Plugin_ContextMenu_Separator constructor.
      *
      * @deprecated
-     * @see Form_Plugin_ContextMenu_Separator::__construct()
+     * @see Zikula_Form_Plugin_ContextMenu_Separator::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ContextMenu_Separator')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_ContextMenu_Separator')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_DateInput class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_DateInput class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_DateInput::
+ * @see Zikula_Form_Plugin_DateInput::
  */
-class pnFormDateInput extends Form_Plugin_DateInput
+class pnFormDateInput extends Zikula_Form_Plugin_DateInput
 {
     /**
-     * Alias to Form_Plugin_DateInput constructor.
+     * Alias to Zikula_Form_Plugin_DateInput constructor.
      *
      * @deprecated
-     * @see Form_Plugin_DateInput::__construct()
+     * @see Zikula_Form_Plugin_DateInput::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_DateInput')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_DateInput')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_DropdownRelationList class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_DropdownRelationList class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_DropdownRelationList::
+ * @see Zikula_Form_Plugin_DropdownRelationList::
  */
-class pnFormDropDownRelationlist extends Form_Plugin_DropdownRelationList
+class pnFormDropDownRelationlist extends Zikula_Form_Plugin_DropdownRelationList
 {
     /**
-     * Alias to Form_Plugin_DropdownRelationList constructor.
+     * Alias to Zikula_Form_Plugin_DropdownRelationList constructor.
      *
      * @deprecated
-     * @see Form_Plugin_DropdownRelationList::__construct()
+     * @see Zikula_Form_Plugin_DropdownRelationList::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_DropdownRelationList')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_DropdownRelationList')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_DropdownList class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_DropdownList class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_DropdownList::
+ * @see Zikula_Form_Plugin_DropdownList::
  */
-class pnFormDropdownList extends Form_Plugin_DropdownList
+class pnFormDropdownList extends Zikula_Form_Plugin_DropdownList
 {
     /**
-     * Alias to Form_Plugin_DropdownList constructor.
+     * Alias to Zikula_Form_Plugin_DropdownList constructor.
      *
      * @deprecated
-     * @see Form_Plugin_DropdownList::__construct()
+     * @see Zikula_Form_Plugin_DropdownList::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_DropdownList')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_DropdownList')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_EmailInput class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_EmailInput class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_EmailInput::
+ * @see Zikula_Form_Plugin_EmailInput::
  */
-class pnFormEMailInput extends Form_Plugin_EmailInput
+class pnFormEMailInput extends Zikula_Form_Plugin_EmailInput
 {
     /**
-     * Alias to Form_Plugin_EmailInput constructor.
+     * Alias to Zikula_Form_Plugin_EmailInput constructor.
      *
      * @deprecated
-     * @see Form_Plugin_EmailInput::__construct()
+     * @see Zikula_Form_Plugin_EmailInput::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_EmailInput')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_EmailInput')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_ErrorMessage class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_ErrorMessage class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_ErrorMessage::
+ * @see Zikula_Form_Plugin_ErrorMessage::
  */
-class pnFormErrorMessage extends Form_Plugin_ErrorMessage
+class pnFormErrorMessage extends Zikula_Form_Plugin_ErrorMessage
 {
     /**
-     * Alias to Form_Plugin constructor.
+     * Alias to Zikula_Form_Plugin constructor.
      *
      * @deprecated
-     * @see Form_Plugin_ErrorMessage::__construct()
+     * @see Zikula_Form_Plugin_ErrorMessage::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ErrorMessage')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_ErrorMessage')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_FloatInput class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_FloatInput class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_FloatInput::
+ * @see Zikula_Form_Plugin_FloatInput::
  */
-class pnFormFloatInput extends Form_Plugin_FloatInput
+class pnFormFloatInput extends Zikula_Form_Plugin_FloatInput
 {
     /**
-     * Alias to Form_Plugin_FloatInput constructor.
+     * Alias to Zikula_Form_Plugin_FloatInput constructor.
      *
      * @deprecated
-     * @see Form_Plugin_FloatInput::__construct()
+     * @see Zikula_Form_Plugin_FloatInput::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_FloatInput')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_FloatInput')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_ImageButton class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_ImageButton class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_ImageButton::
+ * @see Zikula_Form_Plugin_ImageButton::
  */
-class pnFormImageButton extends Form_Plugin_ImageButton
+class pnFormImageButton extends Zikula_Form_Plugin_ImageButton
 {
     /**
-     * Alias to Form_Plugin_ImageButton constructor.
+     * Alias to Zikula_Form_Plugin_ImageButton constructor.
      *
      * @deprecated
-     * @see Form_Plugin_ImageButton::__construct()
+     * @see Zikula_Form_Plugin_ImageButton::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ImageButton')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_ImageButton')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_IntInput class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_IntInput class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_IntInput::
+ * @see Zikula_Form_Plugin_IntInput::
  */
-class pnFormIntInput extends Form_Plugin_IntInput
+class pnFormIntInput extends Zikula_Form_Plugin_IntInput
 {
     /**
-     * Alias to Form_Plugin_IntInput constructor.
+     * Alias to Zikula_Form_Plugin_IntInput constructor.
      *
      * @deprecated
-     * @see Form_Plugin_IntInput::__construct()
+     * @see Zikula_Form_Plugin_IntInput::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_IntInput')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_IntInput')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_Label class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_Label class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_Label::
+ * @see Zikula_Form_Plugin_Label::
  */
-class pnFormLabel extends Form_Plugin_Label
+class pnFormLabel extends Zikula_Form_Plugin_Label
 {
     /**
-     * Alias to Form_Plugin_Label constructor.
+     * Alias to Zikula_Form_Plugin_Label constructor.
      *
      * @deprecated
-     * @see Form_Plugin_Label::__construct()
+     * @see Zikula_Form_Plugin_Label::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_Label')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_Label')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_LanguageSelector class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_LanguageSelector class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_LanguageSelector::
+ * @see Zikula_Form_Plugin_LanguageSelector::
  */
-class pnFormLanguageSelector extends Form_Plugin_LanguageSelector
+class pnFormLanguageSelector extends Zikula_Form_Plugin_LanguageSelector
 {
     /**
-     * Alias to Form_Plugin_LanguageSelector constructor.
+     * Alias to Zikula_Form_Plugin_LanguageSelector constructor.
      *
      * @deprecated
-     * @see Form_Plugin_LanguageSelector::__construct()
+     * @see Zikula_Form_Plugin_LanguageSelector::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_LanguageSelector')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_LanguageSelector')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_LinkButton class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_LinkButton class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_LinkButton::
+ * @see Zikula_Form_Plugin_LinkButton::
  */
-class pnFormLinkButton extends Form_Plugin_LinkButton
+class pnFormLinkButton extends Zikula_Form_Plugin_LinkButton
 {
     /**
-     * Alias to Form_Plugin_LinkButton constructor.
+     * Alias to Zikula_Form_Plugin_LinkButton constructor.
      *
      * @deprecated
-     * @see Form_Plugin_LinkButton::__construct()
+     * @see Zikula_Form_Plugin_LinkButton::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_LinkButton')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_LinkButton')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_PostbackFunction class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_PostbackFunction class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_PostbackFunction::
+ * @see Zikula_Form_Plugin_PostbackFunction::
  */
-class pnFormPostBackFunction extends Form_Plugin_PostbackFunction
+class pnFormPostBackFunction extends Zikula_Form_Plugin_PostbackFunction
 {
     /**
-     * Alias to Form_Plugin_PostbackFunction constructor.
+     * Alias to Zikula_Form_Plugin_PostbackFunction constructor.
      *
      * @deprecated
-     * @see Form_Plugin_PostbackFunction::__construct()
+     * @see Zikula_Form_Plugin_PostbackFunction::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_PostbackFunction')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_PostbackFunction')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_RadioButton class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_RadioButton class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_RadioButton::
+ * @see Zikula_Form_Plugin_RadioButton::
  */
-class pnFormRadioButton extends Form_Plugin_RadioButton
+class pnFormRadioButton extends Zikula_Form_Plugin_RadioButton
 {
     /**
-     * Alias to Form_Plugin_RadioButton constructor.
+     * Alias to Zikula_Form_Plugin_RadioButton constructor.
      *
      * @deprecated
-     * @see Form_Plugin_RadioButton::__construct()
+     * @see Zikula_Form_Plugin_RadioButton::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_RadioButton')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_RadioButton')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Block_TabbedPanel class for backward compatibility.
+ * Alias to the Zikula_Form_Block_TabbedPanel class for backward compatibility.
  *
  * @deprecated
- * @see Form_Block_TabbedPanel::
+ * @see Zikula_Form_Block_TabbedPanel::
  */
-class pnFormTabbedPanel extends Form_Block_TabbedPanel
+class pnFormTabbedPanel extends Zikula_Form_Block_TabbedPanel
 {
     /**
-     * Alias to Form_Block_TabbedPanel constructor.
+     * Alias to Zikula_Form_Block_TabbedPanel constructor.
      *
      * @deprecated
-     * @see Form_Block_TabbedPanel::__construct()
+     * @see Zikula_Form_Block_TabbedPanel::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Block_TabbedPanel')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Block_TabbedPanel')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Block_TabbedPanelSet class for backward compatibility.
+ * Alias to the Zikula_Form_Block_TabbedPanelSet class for backward compatibility.
  *
  * @deprecated
- * @see Form_Block_TabbedPanelSet::
+ * @see Zikula_Form_Block_TabbedPanelSet::
  */
-class pnFormTabbedPanelSet extends Form_Block_TabbedPanelSet
+class pnFormTabbedPanelSet extends Zikula_Form_Block_TabbedPanelSet
 {
     /**
-     * Alias to Form_Block_TabbedPanelSet constructor.
+     * Alias to Zikula_Form_Block_TabbedPanelSet constructor.
      *
      * @deprecated
-     * @see Form_Block_TabbedPanelSet::__construct()
+     * @see Zikula_Form_Block_TabbedPanelSet::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Block_TabbedPanelSet')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Block_TabbedPanelSet')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_TextInput class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_TextInput class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_TextInput::
+ * @see Zikula_Form_Plugin_TextInput::
  */
-class pnFormTextInput extends Form_Plugin_TextInput
+class pnFormTextInput extends Zikula_Form_Plugin_TextInput
 {
     /**
-     * Alias to Form_Plugin_TextInput constructor.
+     * Alias to Zikula_Form_Plugin_TextInput constructor.
      *
      * @deprecated
-     * @see Form_Plugin_TextInput::__construct()
+     * @see Zikula_Form_Plugin_TextInput::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_TextInput')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_TextInput')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_UrlInput class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_UrlInput class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_UrlInput::
+ * @see Zikula_Form_Plugin_UrlInput::
  */
-class pnFormURLInput extends Form_Plugin_UrlInput
+class pnFormURLInput extends Zikula_Form_Plugin_UrlInput
 {
     /**
-     * Alias to Form_Plugin_UrlInput constructor.
+     * Alias to Zikula_Form_Plugin_UrlInput constructor.
      *
      * @deprecated
-     * @see Form_Plugin_UrlInput::__construct()
+     * @see Zikula_Form_Plugin_UrlInput::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_UrlInput')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_UrlInput')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_UploadInput class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_UploadInput class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_UploadInput::
+ * @see Zikula_Form_Plugin_UploadInput::
  */
-class pnFormUploadInput extends Form_Plugin_UploadInput
+class pnFormUploadInput extends Zikula_Form_Plugin_UploadInput
 {
     /**
-     * Alias to Form_Plugin_UploadInput constructor.
+     * Alias to Zikula_Form_Plugin_UploadInput constructor.
      *
      * @deprecated
-     * @see Form_Plugin_UploadInput::__construct()
+     * @see Zikula_Form_Plugin_UploadInput::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_UploadInput')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_UploadInput')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Plugin_ValidationSummary class for backward compatibility.
+ * Alias to the Zikula_Form_Plugin_ValidationSummary class for backward compatibility.
  *
  * @deprecated
- * @see Form_Plugin_ValidationSummary::
+ * @see Zikula_Form_Plugin_ValidationSummary::
  */
-class pnFormValidationSummary extends Form_Plugin_ValidationSummary
+class pnFormValidationSummary extends Zikula_Form_Plugin_ValidationSummary
 {
     /**
-     * Alias to Form_Plugin_ValidationSummary constructor.
+     * Alias to Zikula_Form_Plugin_ValidationSummary constructor.
      *
      * @deprecated
-     * @see Form_Plugin_ValidationSummary::__construct()
+     * @see Zikula_Form_Plugin_ValidationSummary::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ValidationSummary')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin_ValidationSummary')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Form_Block_Volatile class for backward compatibility.
+ * Alias to the Zikula_Form_Block_Volatile class for backward compatibility.
  *
  * @deprecated
- * @see Form_Block_Volatile::
+ * @see Zikula_Form_Block_Volatile::
  */
-class pnFormVolatile extends Form_Block_Volatile
+class pnFormVolatile extends Zikula_Form_Block_Volatile
 {
     /**
-     * Alias to Form_Block_Volatile constructor.
+     * Alias to Zikula_Form_Block_Volatile constructor.
      *
      * @deprecated
-     * @see Form_Block_Volatile::__construct()
+     * @see Zikula_Form_Block_Volatile::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Block_Volatile')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Block_Volatile')), E_USER_DEPRECATED);
     }
 }
 

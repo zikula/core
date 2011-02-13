@@ -14,7 +14,7 @@
 /**
  * Form handler for create and edit.
  */
-class ExampleDoctrine_Handler_Edit extends Form_Handler
+class ExampleDoctrine_Handler_Edit extends Zikula_Form_Handler
 {
     /**
      * User id.
@@ -28,11 +28,11 @@ class ExampleDoctrine_Handler_Edit extends Form_Handler
     /**
      * Setup form.
      *
-     * @param Form_View $view Current Form_View instance.
+     * @param Zikula_Form_View $view Current Zikula_Form_View instance.
      *
      * @return boolean
      */
-    public function initialize(Form_View $view)
+    public function initialize(Zikula_Form_View $view)
     {
         // load and assign registred categories
         $registryCategories  = CategoryRegistryUtil::getRegisteredModuleCategories('ExampleDoctrine', 'exampledoctrine_users');
@@ -64,12 +64,12 @@ class ExampleDoctrine_Handler_Edit extends Form_Handler
     /**
      * Handle form submission.
      *
-     * @param Form_View $view  Current Form_View instance.
+     * @param Zikula_Form_View $view  Current Zikula_Form_View instance.
      * @param array     &$args Args.
      *
      * @return boolean
      */
-    public function handleCommand(Form_View $view, &$args)
+    public function handleCommand(Zikula_Form_View $view, &$args)
     {
         // check for valid form
         if (!$view->isValid()) {

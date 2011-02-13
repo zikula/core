@@ -356,7 +356,7 @@ class FormUtil
     public static function newForm($name, Zikula_Controller $controller = null)
     {
         $serviceManager = ServiceUtil::getManager();
-        $form = new Form_View($serviceManager, $name);
+        $form = new Zikula_Form_View($serviceManager, $name);
         if ($controller) {
             $form->setController($controller);
             $form->assign('controller', $controller);
