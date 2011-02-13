@@ -35,11 +35,13 @@ function smarty_block_form($params, $content, $view)
 
         $view->postRender();
 
+        $formId = $view->getFormId();
         $out  =  "<form id=\"FormForm\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>";
         $out .= $content;
         $out .= "\n<div>\n" . $view->getStateHTML() . "\n"; // Add <div> for XHTML validation
         $out .= $view->getIncludesHTML() . "\n";
-        $out .= $this->getCsrfTokenHtml() . "\n";
+        $out .= $view->getCsrfTokenHtml() . "\n";
+        $out .= "<input type=\"hidden\" name=\"__formid\" id=\"__formid\" value=\"{$formId}\" />\n";
         $out .= "
 <input type=\"hidden\" name=\"FormEventTarget\" id=\"FormEventTarget\" value=\"\" />
 <input type=\"hidden\" name=\"FormEventArgument\" id=\"FormEventArgument\" value=\"\" />
