@@ -660,9 +660,9 @@ is handled by autoloading.
 
 Example layout:
 
-lib/Foo/Form/Handler/Admin/Config.php      Foo_Zikula_Form_Handler_Admin_Config
-lib/Foo/Form/Handler/User/View.php         Foo_Zikula_Form_Handler_User_Config
-lib/Foo/Form/Plugin/Youtube.php            Foo_Zikula_Form_Plugin_Youtube
+lib/Foo/Form/Handler/Admin/Config.php      Foo_Form_Handler_Admin_Config
+lib/Foo/Form/Handler/User/View.php         Foo_Form_Handler_User_Config
+lib/Foo/Form/Plugin/Youtube.php            Foo_Form_Plugin_Youtube
 templates/plugins/function.formyoutube.php The actual template plugin.
 
 A 'zparameters' parameter was added as a direct way to assign the values of
