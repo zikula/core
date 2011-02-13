@@ -355,8 +355,10 @@ class FormUtil
      */
     public static function newForm($name, Zikula_Controller $controller = null)
     {
-        $form = new Form_View($name);
+        $serviceManager = ServiceUtil::getManager();
+        $form = new Form_View($serviceManager, $name);
         if ($controller) {
+            $form->setController($controller);
             $form->assign('controller', $controller);
         } else {
             LogUtil::log(__('FormUtil::newForm should also include the Zikula_Controller as the second argument to enable hooks to work.'), Zikula_ErrorHandler::NOTICE);
