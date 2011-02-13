@@ -634,7 +634,8 @@ class pnFormRender extends Form_View
      */
     public function __construct($module)
     {
-        parent::__construct($module);
+        $serviceManager = ServiceUtil::getManager();
+        parent::__construct($serviceManager, $module);
 
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Form_View')), E_USER_DEPRECATED);
 

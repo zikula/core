@@ -36,6 +36,7 @@ abstract class Zikula_Controller extends Zikula_Base
     {
         // Create renderer object
         $this->setView();
+        $this->view->setController($this);
         $this->view->assign('controller', $this);
     }
 

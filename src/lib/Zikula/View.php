@@ -130,6 +130,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     protected $request;
 
     /**
+     * Zikula controller.
+     *
+     * @var Zikula_Controller
+     */
+    protected $controller;
+
+    /**
      * Templates.
      *
      * @var array
@@ -321,6 +328,27 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     {
         return $this->request;
     }
+
+    /**
+     * Get the Zikula controller.
+     * 
+     * @return Zikula_Controller
+     */
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    /**
+     * Set the controller property.
+     * 
+     * @param Zikula_Controller $controller
+     */
+    public function setController($controller)
+    {
+        $this->controller = $controller;
+    }
+
 
     /**
      * Retrieve module name.
