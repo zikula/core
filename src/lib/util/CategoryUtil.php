@@ -852,58 +852,22 @@ class CategoryUtil
      * @param array   $cats             The categories array to represent in the tree.
      * @param boolean $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
      * @param boolean $sortable         Sets the zikula tree option sortable (optional) (default=false).
+     * @param array   $options          Options array for Zikula_Tree
+
      *
      * @return generated tree JS text.
      */
-    public static function getCategoryTreeJS($cats, $doReplaceRootCat = true, $sortable = false)
+    public static function getCategoryTreeJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = array())
     {
-        $lang = ZLanguage::getLanguageCode();
-        $params = array();
-        $params['mode'] = 'edit';
-
         $leafNodes = array();
         foreach ($cats as $i => $c) {
-            $params['cid'] = $c['id'];
-            $url = ModUtil::url('Categories', 'admin', 'edit', $params);
-
-            if (FormUtil::getPassedValue('type') == 'admin') {
-                $url .= '#top';
-            }
             if ($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
                 $c['name'] = __('Root category');
             }
-
-            if (isset($c['display_name'][$lang]) && !empty($c['display_name'][$lang])) {
-                $name = DataUtil::formatForDisplay($c['display_name'][$lang]);
-                $displayName = $name;
-            } else {
-                $name = DataUtil::formatForDisplay($c['name']);
-                $displayName = '';
-            }
-
-            $cats[$i]['active'] = $c['status'] == 'A' ? true : false;
-            $cats[$i]['href'] = $url;
-            $cats[$i]['name'] = $name;
-
-            $cats[$i]['title'] = array();
-            $cats[$i]['title'][] = "ID: " . $c['id'];
-            $cats[$i]['title'][] = "Name: " . DataUtil::formatForDisplay($c['name']);
-            $cats[$i]['title'][] = "Display name: " . $displayName;
-            $cats[$i]['title'][] = "Description: " . (isset($c['display_desc'][$lang]) ? DataUtil::formatForDisplay($c['display_desc'][$lang]) : '');
-            $cats[$i]['title'][] = "Active: " . ($c['status'] == 'A' ? 'Yes' : 'No');
-            $cats[$i]['title'][] = "Leaf: " . ($c['is_leaf'] ? 'Yes' : 'No');
-            $cats[$i]['title'][] = "Locked: " . ($c['is_locked'] ? 'Yes' : 'No');
-            $cats[$i]['title'] = implode('&lt;br /&gt;',$cats[$i]['title']);
-
-            $cats[$i]['class'] = array();
-            if($c['is_locked']) {
-                $cats[$i]['class'][] = 'locked';
-            }
+            $cats[$i] = self::getCategoryTreeJSNode($c);
             if($c['is_leaf']) {
-                $cats[$i]['class'][] = 'leaf';
                 $leafNodes[] = $c['id'];
             }
-            $cats[$i]['class'] = implode(' ',$cats[$i]['class']);
         }
 
         $tree = new Zikula_Tree();
@@ -912,10 +876,65 @@ class CategoryUtil
         // disable drag and drop for root category
         $tree->setOption('disabled', array(1));
         $tree->setOption('disabledForDrop', $leafNodes);
+        if(!empty($options)) {
+            $tree->setOptionArray($options);
+        }
         $tree->loadArrayData($cats);
         return $tree->getHTML();
     }
 
+    /**
+     * Prepare category for the tree menu.
+     *
+     * @param array   $category  Category data.
+     *
+     * @return Prepared category data.
+     */
+    public static function getCategoryTreeJSNode($category)
+    {
+        $lang = ZLanguage::getLanguageCode();
+        $params = array();
+        $params['mode'] = 'edit';
+        $params['cid'] = $category['id'];
+        $url = ModUtil::url('Categories', 'admin', 'edit', $params);
+
+        if (FormUtil::getPassedValue('type') == 'admin') {
+            $url .= '#top';
+        }
+
+        if (isset($category['display_name'][$lang]) && !empty($category['display_name'][$lang])) {
+            $name = DataUtil::formatForDisplay($category['display_name'][$lang]);
+            $displayName = $name;
+        } else {
+            $name = DataUtil::formatForDisplay($category['name']);
+            $displayName = '';
+        }
+
+        $category['active'] = $category['status'] == 'A' ? true : false;
+        $category['href'] = $url;
+        $category['name'] = $name;
+
+        $category['title'] = array();
+        $category['title'][] = "ID: " . $category['id'];
+        $category['title'][] = "Name: " . DataUtil::formatForDisplay($category['name']);
+        $category['title'][] = "Display name: " . $displayName;
+        $category['title'][] = "Description: " . (isset($category['display_desc'][$lang]) ? DataUtil::formatForDisplay($category['display_desc'][$lang]) : '');
+        $category['title'][] = "Active: " . ($category['status'] == 'A' ? 'Yes' : 'No');
+        $category['title'][] = "Leaf: " . ($category['is_leaf'] ? 'Yes' : 'No');
+        $category['title'][] = "Locked: " . ($category['is_locked'] ? 'Yes' : 'No');
+        $category['title'] = implode('&lt;br /&gt;',$category['title']);
+
+        $category['class'] = array();
+        if($category['is_locked']) {
+            $category['class'][] = 'locked';
+        }
+        if($category['is_leaf']) {
+            $category['class'][] = 'leaf';
+        }
+        $category['class'] = implode(' ',$category['class']);
+
+        return $category;
+    }
     /**
      * insert one leaf in a category tree (path as keys) recursively.
      *
