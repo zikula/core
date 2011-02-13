@@ -55,10 +55,7 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
                 this.config.images[item] = Zikula.Config.baseURL + this.config.imagesDir + this.config.images[item];
             }
         }
-        // bind toggle action
-        this.tree.select('.'+this.config.toggler).invoke('observe','click',this.toggleNode.bindAsEventListener(this));
-        // bind also empty spans
-        this.tree.select('li.z-tree-parent > span').invoke('observe','click',this.toggleNode.bindAsEventListener(this));
+        this.tree.select('li').each(this.initNode.bind(this));
         // initialy hide childnodes
         this.getStatus();
         this.tree.select('ul').each(function(u) {
@@ -66,6 +63,26 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
                 this.hideNode(u);
             }
         }.bind(this));
+
+    },
+    /**
+     * Prepares nodes for draggin and dropping
+     * @private
+     * @param {HTMLElement} node Node to prepare
+     * @return void
+     */
+    initNode: function(node) {
+        var toogler = node.down('.'+this.config.toggler),
+            span = node.down('li.z-tree-parent > span');
+        // bind toggle action
+        if (toogler) {
+            toogler.observe('click',this.toggleNode.bindAsEventListener(this));
+        }
+        // bind also empty spans
+        if (span) {
+            span.observe('click',this.toggleNode.bindAsEventListener(this));
+        }
+
     },
     /**
      * Event hanlder for toggling nodes
@@ -286,7 +303,7 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
         }, config || { });
         $super(element,config);
         this.tree.addClassName('z-tree-sortable');
-        this.tree.select('li').each(this.initNode.bind(this));
+//        this.tree.select('li').each(this.initNode.bind(this));
     },
     /**
      * Prepares nodes for draggin and dropping
@@ -294,7 +311,8 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
      * @param {HTMLElement} node Node to prepare
      * @return void
      */
-    initNode: function(node) {
+    initNode: function($super,node) {
+        $super(node);
         if(this.config.disabled.include(this.getNodeId(node))) {
             return;
         }
