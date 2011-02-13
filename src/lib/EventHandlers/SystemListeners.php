@@ -45,6 +45,7 @@ class SystemListeners extends Zikula_EventHandler
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
         $this->addHandlerDefinition('core.init', 'initDB');
+        $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
     }
 
     /**
@@ -108,6 +109,28 @@ class SystemListeners extends Zikula_EventHandler
         $this->serviceManager->registerService($storageService);
         $session = new Zikula_ServiceManager_Definition('Zikula_Session', array($storageService));
         $this->serviceManager->registerService(new Zikula_ServiceManager_Service('session', $session));
+    }
+
+    /**
+     * Listen on 'core.init' module.
+     *
+     * @param Zikula_Event $event
+     */
+    public function setupCsfrProtection(Zikula_Event $event)
+    {
+        if ($event['stage'] & Zikula_Core::STAGE_MODS) {
+            $tokenStorageDef = new Zikula_ServiceManager_Definition('Zikula_Token_Storage_Session',
+                            array(new Zikula_ServiceManager_Service('session')));
+            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('token.storage', $tokenStorageDef));
+
+            $tokenGeneratorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Generator',
+                            array(new Zikula_ServiceManager_Service('token.storage'), System::getVar('signingkey')));
+            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('token.generator', $tokenGeneratorDef));
+
+            $tokenValidatorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Validate',
+                            array(new Zikula_ServiceManager_Service('token.generator')));
+            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('token.validator', $tokenValidatorDef));
+        }
     }
 
     /**
@@ -454,7 +477,7 @@ class SystemListeners extends Zikula_EventHandler
     public function debugToolbarRendering(Zikula_Event $event)
     {
         if (!$event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
-            if($event->getName() == 'theme.prefooter') {
+            if ($event->getName() == 'theme.prefooter') {
                 // force object construction (debug toolbar constructor registers javascript and css files via PageUtil)
                 $this->serviceManager->getService('debug.toolbar');
             } else {
@@ -610,7 +633,7 @@ class SystemListeners extends Zikula_EventHandler
         if (is_readable('config/multisites_config.php')) {
             include 'config/multisites_config.php';
         }
-        
+
         foreach ($GLOBALS['ZConfig'] as $config) {
             $event->getSubject()->getServiceManager()->loadArguments($config);
         }
@@ -631,7 +654,7 @@ class SystemListeners extends Zikula_EventHandler
     {
         $die = false;
 
-        if (get_magic_quotes_runtime()) {
+        if (get_magic_quotes_runtime ()) {
             echo __('Error! Zikula does not support PHP magic_quotes_runtime - please disable this feature in php.ini.');
             $die = true;
         }
