@@ -720,6 +720,21 @@ abstract class Zikula_Base implements Zikula_Translatable
     }
 
     /**
+     * Check Csfr token.
+     * 
+     * @param string $token Nonce.
+     *
+     * @return void
+     */
+    public function checkCsfrToken($token)
+    {
+        $tokenValidator = $this->serviceManager->getService('token.validator');
+        if (!$tokenValidator->validate($token)) {
+            throw new Zikula_Exception_Forbidden(__('Security token validation failed'));
+        }
+    }
+
+    /**
      * Return the requested key from input in a safe way.
      *
      * This function is safe to use for recursive arrays and either
@@ -740,6 +755,8 @@ abstract class Zikula_Base implements Zikula_Translatable
     {
         return FormUtil::getPassedValue($key, $args, $source, $filter, $args, $objectType);
     }
+
+
 
 
 }
