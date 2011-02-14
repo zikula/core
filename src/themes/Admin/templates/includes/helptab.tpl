@@ -1,26 +1,26 @@
-<div class="dashboard-content-head" style="margin-left:15px;margin-right:15px;float:center;">
-<h2 class="left">Help</h2>
-</div>   
-<div class="z-form" style="padding-top:10px;">
+<div class="dashboard-content-head" style="margin-top:12px;">
+<h2 class="left">{gt text='Get Help'}</h2>
+</div>                          
+<div class="z-form" style="margin-top:8px;">
     <fieldset>
         <legend>{gt text='International'}</legend>
             <ul>
-                <li><a href="http://community.zikula.org">Zikula Community Forums</a></li>
-				<li><a href="http://community.zikula.org/module-Wiki.htm">Community Wiki</a></li>				
+                <li><a href="http://community.zikula.org">{gt text='Zikula Community Forums'}</a></li>
+				<li><a href="http://community.zikula.org/module-Wiki.htm">{gt text='Community Wiki'}</a></li>				
             </ul>				
     </fieldset>
     <fieldset>
         <legend>{gt text='Local'}</legend>
             <ul>
-			    <li><a href="http://www.zikula.dk">Denmark</a></li>
-				<li><a href="http://www.zikula.fr">France</a></li>
-                <li><a href="http://support.zikula.de">Germany</a></li>
-				<li><a href="http://www.zikula.hu">Hungary</a></li>	
-				<li><a href="http://www.zikula.it">Italy</a></li>
-				<li><a href="http://www.zikula.nl">Netherlands</a></li>
-                <li><a href="http://www.zikula.pl">Poland</a></li>		
-                <li><a href="http://www.zikula.ru">Russia</a></li>			
-				<li><a href="http://www.zikula.es">Spain</a></li>		
+			    <li><a href="http://www.zikula.dk">{gt text='Denmark'}</a></li>
+				<li><a href="http://www.zikula.fr">{gt text='France'}</a></li>
+                <li><a href="http://support.zikula.de">{gt text='Germany'}</a></li>
+				<li><a href="http://www.zikula.hu">{gt text='Hungary'}</a></li>	
+				<li><a href="http://www.zikula.it">{gt text='Italy'}</a></li>
+				<li><a href="http://www.zikula.nl">{gt text='Netherlands'}</a></li>
+                <li><a href="http://www.zikula.pl">{gt text='Poland'}</a></li>		
+                <li><a href="http://www.zikula.ru">{gt text='Russia'}</a></li>			
+				<li><a href="http://www.zikula.es">{gt text='Spain'}</a></li>		
             </ul>				
     </fieldset>
     <fieldset>
@@ -38,4 +38,5 @@
 				<li><a href="http://community.zikula.org/module-Extensions-view-comptype-4.htm">{gt text='Plugins'}</a>
             </ul>               
     </fieldset>
+</div>
 </div>

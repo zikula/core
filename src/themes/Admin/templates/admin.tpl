@@ -7,9 +7,9 @@
     <meta name="keywords" content="{$metatags.keywords}" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
 
-    <link rel="icon" type="image/png" href="{$themepath}/themes/Admin/images/favicon.png" />
-    <link rel="icon" type="image/x-icon" href="{$themepath}/imags/favicon.ico" />
-    <link rel="shortcut icon" type="image/ico" href="{$themepath}/themes/Admin/images/favicon.ico" />
+    <link rel="icon" type="image/png" href="{$themepath}/images/favicon.png" />
+    <link rel="icon" type="image/x-icon" href="{$themepath}/images/favicon.ico" />
+    <link rel="shortcut icon" type="image/ico" href="{$themepath}/images/favicon.ico" />
     <link rel="alternate" href="{modurl modname='News' type='user' func='view' theme='rss'}" type="application/rss+xml" title="{sitename} {gt text='Main Feed'}" />
     {pageaddvar name="stylesheet" value="$stylepath/style.css"}
 </head>
@@ -23,11 +23,11 @@
         <!-- z-tabs -->
         <div class="navigation">
             <ul id="aui-tabs_eq">
-                <li><a href="#eqone" class="active"><span>{gt text='Administration'}</span></a></li>
+                <li><a href="#eqone"><span>{gt text='Administration'}</span></a></li>
                 {checkpermissionblock component='.*' instance='.*' level=ACCESS_ADMIN}
                 <li><a href="#eqthree"><span>{gt text='Routines'}</span></a></li>
                 <li><a href="#eqfour"><span>{gt text='Help'}</span></a></li>
-                <li><a href="{modurl modname="sysinfo" type="admin"}"><span>{gt text='Info'}</span></a></li>
+                 
                 <li><a href="#eqsix"><span>{gt text='News'}</span></a></li>
                 {/checkpermissionblock}
             </ul>
@@ -52,7 +52,6 @@
                         <a href="{modurl modname="blocks" type="admin" func="view"}">{gt text='Blocks'}</a>
                         <a href="{modurl modname="themes" type="admin" func="view"}">{gt text='Themes'}</a>
                         <a href="{modurl modname="permissions" type="admin"}">{gt text='Permissions'}</a>
-                        <a href="{modurl modname="securitycenter" type="admin"}">{gt text='Security'}</a>
                         <a href="{modurl modname="settings" type="admin"}">{gt text='Settings'}</a>
                         <a href="{modurl modname="users" type="admin"}">{gt text='Users'}</a>
                     </div>
@@ -69,8 +68,12 @@
                     </div>
                 </div>
                 <br />
-                <div class="dashboard-footer">
-                    <a href="#top"> &uarr; {gt text='Top'}</a>
+                <div class="dashboard-footer" style="margin-top:-26px;">
+                <div class="wrapper" style="height:20px;">
+        <span class="left" style="color:#000;">{gt text='Powered by'} <a href="http://community.zikula.org" target="_blank">Zikula</a> Version {version}</span>
+        <span class="right"><a href="#top"> &uarr; {gt text='Top'}</a></span>
+    </div>
+                    
                 </div>
             </div>
             <!-- End dashboard-content -->
@@ -78,16 +81,8 @@
         <!-- End Content -->
         <div class="spacer">&nbsp;</div>
     </div>
-</div>
 <!-- End Container -->
-<!-- Footer -->
-<div class="footer">
-    <div class="wrapper">
-        <span class="left">&copy; {datetime format='%b %d - %I:%M'} - {$modvars.ZConfig.sitename}</span>
-        <span class="right">{gt text='Powered by'} <a href="http://community.zikula.org" target="_blank">Zikula</a> Version {version}</span>
-    </div>
-</div>
-<!-- End Footer -->
+
 <!-- UI Stuff -->
 <script type="text/javascript" src="themes/Admin/js/cookie.js"></script>
 <script type="text/javascript" src="themes/Admin/js/z-styleswitcher.js"></script>
@@ -99,7 +94,7 @@
 </script>
 <script type="text/javascript" src="javascript/helpers/Zikula.UI.js"></script>
 <script type="text/javascript">
-    var eqtabs = new Zikula.UI.Tabs('aui-tabs_eq',{equal: true});
+    var eqtabs = new Zikula.UI.Tabs('aui-tabs_eq');
 </script>
 <script type="text/javascript">
     var defwindowmodal = new Zikula.UI.Window($('defwindowmodal-0'),{modal:true,minmax:true,resizable: true});

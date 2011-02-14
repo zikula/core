@@ -1,8 +1,7 @@
-﻿<div class="dashboard-content-head" style="margin-left:15px;margin-right:15px;float:center;">
-<h2 class="left">Routines</h2>
+﻿<div class="dashboard-content-head">
+<h2 class="left">{gt text='Routines'}</h2>
 </div>                          
-<div style="padding:8px;">
-<div class="z-form">
+<div class="z-form" style="margin-top:8px;">
     <fieldset>
         <legend>{gt text='Compilation'}</legend>
             <ul>
@@ -30,5 +29,4 @@
 		        <li><a href="index.php?module=sysinfo&amp;type=admin&amp;func=filesystem">{gt text='Check Folders'}</a></li>			
 		    </ul>
     </fieldset>
-</div>
 </div>

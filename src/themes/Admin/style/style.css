@@ -132,11 +132,6 @@ ul#admintabs li#addcat #addcatlink {border-radius: .4em .4em 0 0 ;-webkit-border
 ul#admintabs li#addcat a#addcatlink:hover {border-radius: .4em .4em 0 0 ;-webkit-border-radius: .4em .4em 0 0 ;-moz-border-radius: .4em .4em 0 0 ;}
 ul#admintabs li > .z-admindrop:hover {border-radius: 0 .4em 0 0 ;-webkit-border-radius: 0 .4em 0 0 ;-moz-border-radius: 0 .4em 0 0 ;}
 
-/* RSS Styling */
-.rss-item h2 {background: url(../images/main/category.png) left no-repeat;
-	padding-left: 20px;
-	margin-left: 30px;
-	height: 22px;}
 
 .z-admindashboard {
     margin-top:4px;
@@ -238,3 +233,5 @@ ul#style-options { float:left; display:inline; margin:0 0 0 10px; padding:0; lis
 #zikulaswitcher li#red { background:#E3212F; }
 #zikulaswitcher li#gray { background:#a5a9ac; }
 body.green #zikulaswitcher li#green, body.gray #zikulaswitcher li#gray, body.red #zikulaswitcher li#red, #zikulaswitcher li:hover { border:2px solid #FFCC00; }
+
+
