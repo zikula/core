@@ -722,7 +722,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-configure {
-    background: url("../images/icons/extrasmall/configure_shortcuts.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/servicemanager.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-home {
@@ -838,7 +838,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-log {
-    background: url("../images/icons/extrasmall/enumList.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/lists.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-rss {
