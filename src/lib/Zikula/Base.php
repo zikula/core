@@ -720,16 +720,16 @@ abstract class Zikula_Base implements Zikula_Translatable
     }
 
     /**
-     * Check Csfr token.
+     * Check Csrf token.
      *
      * @param string $key     Where to find the nonce in POST.
      * @param string $failUrl The URL to redirect on fail, null means no redirect.
      *
      * @return void
      */
-    public function checkCsfrToken($key='csrftoken', $failUrl=null)
+    public function checkCsrfToken($key='csrftoken', $failUrl=null)
     {
-        $token = $this->request->post[$key];
+        $token = $this->request->getPost($key, false);
         $tokenValidator = $this->serviceManager->getService('token.validator');
 
         if (System::getVar('sessioncsrftokenonetime')) {
@@ -737,6 +737,7 @@ abstract class Zikula_Base implements Zikula_Translatable
             if ($result) {
                 return;
             }
+            LogUtil::registerError(__('Something unexpected happened regarding token checking and you have been logged out for safety.'));
             SessionUtil::expire(); // something went wrong so expire the session.
         }
 
