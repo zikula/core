@@ -674,7 +674,7 @@ class Permissions_Controller_Admin extends Zikula_Controller
         }
 
         // Confirm authorisation code
-        $this->checkCsfrToken($_POST['csrftoken'], ModUtil::url('Permissions', 'admin', 'modifyconfig'));
+        $this->checkCsfrToken('csrftoken', ModUtil::url('Permissions', 'admin', 'modifyconfig'));
 
         $error = false;
         $filter = (bool)FormUtil::getPassedValue('filter', false, 'POST');
