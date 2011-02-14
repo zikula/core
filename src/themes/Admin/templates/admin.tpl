@@ -46,7 +46,7 @@
             <!-- dashboard-content -->
             <div class="dashboard-content">
                 <div class="dashboard-content-head">
-                    <h2 class="left">{gt text='Dashboard'}</h2>
+                    <h2 class="left">{gt text='Zikula Dashboard'}</h2>
                     <div class="right link">
                         <strong>{gt text='Quick Navigation'}: </strong>
                         <a href="{modurl modname="blocks" type="admin" func="view"}">{gt text='Blocks'}</a>
