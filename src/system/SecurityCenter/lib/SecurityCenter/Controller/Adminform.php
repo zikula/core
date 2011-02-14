@@ -26,14 +26,12 @@ class SecurityCenter_Controller_Adminform extends Zikula_Controller
         }
 
         // verify auth-key
-        if (!SecurityUtil::confirmAuthKey('SecurityCenter')) {
-            return LogUtil::registerAuthidError();
-        }
+        $this->checkCsrfToken(ModUtil::url('SecurityCenter', 'admin', 'viewidslog'));
 
         // get paramters
         $id = (int)FormUtil::getPassedValue('id', 0, 'GETPOST');
 
-        // sanity checkc
+        // sanity check
         if (!is_numeric($id)) {
             return LogUtil::registerError($this->__f("Error! Received a non-numeric object ID '%s'.", $id));
         }

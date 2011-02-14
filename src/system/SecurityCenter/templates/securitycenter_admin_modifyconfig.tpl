@@ -7,7 +7,7 @@
     <h2>{gt text="Settings"}</h2>
     <form class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="SecurityCenter"}" />
+            <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
             <fieldset>
                 <legend>{gt text="Automatic update settings"}</legend>
                 <div class="z-formrow">

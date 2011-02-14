@@ -16,7 +16,7 @@
 
     <form class="z-form htmlpure" action="{modurl modname='SecurityCenter' type='admin' func='updatepurifierconfig'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="SecurityCenter"}" />
+            <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
             {foreach from=$purifierAllowed key='directiveNamespace' item='directives' name='directives'}
             <fieldset>
                 {assign var='namespaceFrag' value=$directiveNamespace|urlencode}
