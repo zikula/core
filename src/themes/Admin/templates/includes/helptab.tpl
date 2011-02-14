@@ -8,21 +8,7 @@
                 <li><a href="http://community.zikula.org">{gt text='Zikula Community Forums'}</a></li>
 				<li><a href="http://community.zikula.org/module-Wiki.htm">{gt text='Community Wiki'}</a></li>				
             </ul>				
-    </fieldset>
-    <fieldset>
-        <legend>{gt text='Local'}</legend>
-            <ul>
-			    <li><a href="http://www.zikula.dk">{gt text='Denmark'}</a></li>
-				<li><a href="http://www.zikula.fr">{gt text='France'}</a></li>
-                <li><a href="http://support.zikula.de">{gt text='Germany'}</a></li>
-				<li><a href="http://www.zikula.hu">{gt text='Hungary'}</a></li>	
-				<li><a href="http://www.zikula.it">{gt text='Italy'}</a></li>
-				<li><a href="http://www.zikula.nl">{gt text='Netherlands'}</a></li>
-                <li><a href="http://www.zikula.pl">{gt text='Poland'}</a></li>		
-                <li><a href="http://www.zikula.ru">{gt text='Russia'}</a></li>			
-				<li><a href="http://www.zikula.es">{gt text='Spain'}</a></li>		
-            </ul>				
-    </fieldset>
+    </fieldset> 
     <fieldset>
         <legend>{gt text='Internal Modules'}</legend>
             <ul>
