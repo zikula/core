@@ -42,13 +42,13 @@
 
 #navi ul.menutree_horizontal li.parent > a,
 #navi ul.menutree_horizontal li.parent > span {
-    background: url("/images/global/arrow_down_white.gif") no-repeat scroll 95% 50% transparent;
+    background: url("/images/global/arrow_down_white.png") no-repeat scroll 95% 50% transparent;
     padding-right: 18px;
 }
 
 #navi ul.menutree_horizontal li.parent > a:hover,
 #navi ul.menutree_horizontal li.parent > span:hover {
-    background: url("/images/global/arrow_down_black.gif") no-repeat scroll 95% 50% transparent;
+    background: url("/images/global/arrow_down_black.png") no-repeat scroll 95% 50% transparent;
 }
 
 #navi ul.menutree_horizontal li ul {
@@ -76,13 +76,13 @@
 
 #navi ul.menutree_horizontal li li.parent > a,
 #navi ul.menutree_horizontal li li.parent > span {
-    background: url("/images/global/arrow_right_white.gif") no-repeat scroll 95% 50% transparent;
+    background: url("/images/global/arrow_right_white.png") no-repeat scroll 95% 50% transparent;
     padding-right: 18px;
 }
 
 #navi ul.menutree_horizontal li li.parent > a:hover,
 #navi ul.menutree_horizontal li li.parent > span:hover {
-    background: url("/images/global/arrow_right_black.gif") no-repeat scroll 95% 50% transparent;
+    background: url("/images/global/arrow_right_black.png") no-repeat scroll 95% 50% transparent;
 }
 
 #navi ul.menutree_horizontal li ul ul {
