@@ -722,12 +722,12 @@ abstract class Zikula_Base implements Zikula_Translatable
     /**
      * Check Csrf token.
      *
-     * @param string $key     Where to find the nonce in POST.
      * @param string $failUrl The URL to redirect on fail, null means no redirect.
+     * @param string $key     Where to find the nonce in POST.
      *
      * @return void
      */
-    public function checkCsrfToken($key='csrftoken', $failUrl=null)
+    public function checkCsrfToken($failUrl=null, $key='csrftoken')
     {
         $token = $this->request->getPost($key, false);
         $tokenValidator = $this->serviceManager->getService('token.validator');
