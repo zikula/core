@@ -116,6 +116,18 @@
                         <em>{gt text="/10000"}</em>
                     </div>
                 </div>
+
+                <div class="z-formrow">
+                    <label for="securitycenter_sessioncsrftokenonetime">{gt text="CSRF Token"}</label>
+                    <div id="securitycenter_sessioncsrftokenonetime">
+                        <input id="securitycenter_sessioncsrftokenonetime_persession" type="radio" name="sessioncsrftokenonetime" value="1"{if $modvars.ZConfig.sessioncsrftokenonetime eq 1} checked="checked"{/if} />
+                        <label for="securitycenter_sessioncsrftokenonetime_persession">{gt text="Per session"}</label>
+                        <input id="securitycenter_sessioncsrftokenonetime_onetime" type="radio" name="sessioncsrftokenonetime" value="0"{if $modvars.ZConfig.sessioncsrftokenonetime ne 1} checked="checked"{/if} />
+                        <label for="securitycenter_sessioncsrftokenonetime_onetime">{gt text="One time use"}</label>
+                    </div>
+                    <p id="securitycenter_sessioncsrftokenonetime_container" class="z-formnote z-informationmsg">{gt text="One time CSRF protection may affect the browser back button but it more secure."}</p>
+                </div>
+
                 <div class="z-formrow">
                     <label for="securitycenter_anonymoussessions">{gt text="Use sessions for anonymous guests"}</label>
                     <div id="securitycenter_anonymoussessions">

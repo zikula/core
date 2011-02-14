@@ -21,7 +21,10 @@ function securitycenter_modifyconfig_init()
     $('securitycenter_signcookies_yes').observe('click', securitycenter_signcookies_onchange);
     $('securitycenter_signcookies_no').observe('click', securitycenter_signcookies_onchange);
     $('securitycenter_sessionname').observe('click', securitycenter_sessionname_onchange);
+    $('securitycenter_sessioncsrftokenonetime_onetime').observe('click', securitycenter_sessioncsrftokenonetime_onchange);
+    $('securitycenter_sessioncsrftokenonetime_persession').observe('click', securitycenter_sessioncsrftokenonetime_onchange);
 
+    securitycenter_sessioncsrftokenonetime_onchange();
     securitycenter_sessionname_onchange();    
     securitycenter_wheretosavesessions_onchange();
     securitycenter_secure_domain_onchange();
@@ -50,6 +53,15 @@ function securitycenter_sessionsavepath_onchange()
     $('securitycenter_sessionfilessavepathwarning_container').hide();
 }
 
+function securitycenter_sessioncsrftokenonetime_onchange()
+{
+    if ($('securitycenter_sessioncsrftokenonetime_onetime').checked == true) {
+        $('securitycenter_sessioncsrftokenonetime_container').show();
+    } else {
+        $('securitycenter_sessioncsrftokenonetime_container').hide();
+    }
+}
+
 function securitycenter_seclevel_onchange()
 {
     if ($('securitycenter_seclevel').value == 'Medium') {
@@ -66,7 +78,7 @@ function securitycenter_seclevel_onchange()
 
 function securitycenter_sessionstoretofile_onchange()
 {
-    if ($('securitycenter_sessionstoretofile_file').checked == true) {
+    if ($('securitycenter_sessioncsrftokenonetime_onetime').checked == true) {
         $('securitycenter_sessionsavepath_container').show();
     } else {
         $('securitycenter_sessionsavepath_container').hide();
