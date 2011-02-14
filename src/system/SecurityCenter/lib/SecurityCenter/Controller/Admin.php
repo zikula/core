@@ -105,10 +105,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('SecurityCenter', 'admin', 'view'));
-        }
+        $this->checkCsrfToken('csrftoken', ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
 
         $validates = true;
 
@@ -463,10 +460,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('SecurityCenter', 'admin', 'view'));
-        }
+        $this->checkCsrfToken('csrftoken', ModUtil::url('SecurityCenter', 'admin', 'purifierconfig'));
 
         // Load HTMLPurifier Classes
         $purifier = SecurityCenter_Util::getpurifier();
@@ -758,9 +752,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
         $redirect_url = ModUtil::url('SecurityCenter', 'admin', 'viewidslog');
 
         // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError($redirect_url);
-        }
+        $this->checkCsrfToken('csrftoken', $redirect_url);
 
         // delete all entries
         if (ModUtil::apiFunc('SecurityCenter', 'admin', 'purgeidslog')) {
@@ -809,10 +801,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // confirm the forms auth key
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError();
-        }
+        $this->checkCsrfToken('csrftoken', ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'));
 
         // update the allowed html settings
         $allowedhtml = array();
