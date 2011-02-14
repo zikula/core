@@ -43,7 +43,7 @@
 
     {if $pagerPluginArray.currentPage < $pagerPluginArray.countPages}
         <a href="{$pagerPluginArray.nextUrl}" class="skip">
-            {img modname=core set=icons/extrasmall src="next.png" __alt="Next page" __title="Next page"}
+            {img modname=core set=icons/extrasmall src="forward.png" __alt="Next page" __title="Next page"}
         </a>
     {else}
         <span class="skip">

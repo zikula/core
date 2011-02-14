@@ -76,7 +76,7 @@
 }
 
 #DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.config {
-    background: url("../images/icons/extrasmall/configure_shortcuts.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/servicemanager.png") no-repeat scroll 0 50% transparent;
     padding-left: 20px;
 }
 
@@ -106,7 +106,7 @@
 }
 
 #DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.logs {
-    background: url("../images/icons/extrasmall/comment.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/lists.png") no-repeat scroll 0 50% transparent;
     padding-left: 20px;
 }
 
