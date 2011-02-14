@@ -182,7 +182,7 @@
             <div class="z-center z-buttons">
                 {button id='submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Submit new user' __title='Submit registration' __text='Submit registration'}
                 {button id='checkuserajax' type='button' class='z-hide' src='help.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                {img id='ajax_indicator' style='display: none;' modname=core set='ajax' src='indicator_circle.png' alt=''}
+                {img id='ajax_indicator' style='display: none;' modname=core set='ajax' src='indicator_circle.gif' alt=''}
             </div>
         </fieldset>
     </div>
