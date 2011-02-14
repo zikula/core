@@ -1,12 +1,10 @@
 {modulejavascript modname='SecurityCenter' script='securitycenter_admin_purifierconfig.js' modonly=true assign='configFormJS'}
 {pageaddvar name='javascript' value=$configFormJS.scriptfile}
 
-{gt text='HTMLPurifier Settings' assign='templatetitle'}
-
 {include file='securitycenter_admin_menu.tpl'}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='configure.png' set='icons/large' alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="config" size="large"}</div>
+    <h2>{gt text='HTMLPurifier Settings'}</h2>
     <p>{gt text='HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
     <div class="z-warningmsg">
         <h3>{gt text="Warning"}</h3>

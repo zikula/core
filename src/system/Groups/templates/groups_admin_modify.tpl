@@ -1,9 +1,8 @@
-{gt text="Edit group" assign=templatetitle}
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=xedit.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <h2>{gt text="Edit group"}</h2>
     <form class="z-form" action="{modurl modname="Groups" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Groups"}" />

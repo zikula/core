@@ -1,6 +1,6 @@
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=trashcan_empty.png set=icons/large __alt="Purge IDS Log"}</div>
+    <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
     
     <h2>{gt text="Purge IDS Log"}</h2>
 

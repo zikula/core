@@ -3,14 +3,12 @@
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer" id="top">
     {if $mode == "edit"}
-    {gt text="Edit category" assign=templatetitle}
-    <div class="z-adminpageicon">{img modname=core src=xedit.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <h2>{gt text="Edit category"}</h2>
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
         {else}
-        {gt text="Create new category" assign=templatetitle}
-        <div class="z-adminpageicon">{img modname=core src=filenew.png set=icons/large alt=$templatetitle}</div>
-        <h2>{$templatetitle}</h2>
+        <div class="z-adminpageicon">{icon type="new" size="large"}</div>
+        <h2>{gt text="Create new category"}</h2>
         <form class="z-form" action="{modurl modname="Categories" type="adminform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">
             {/if}
             <fieldset>

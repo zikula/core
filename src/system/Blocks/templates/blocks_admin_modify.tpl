@@ -1,9 +1,8 @@
 {include file="blocks_admin_menu.tpl"}
 {ajaxheader modname=Blocks filename=blocks_admin_modify.js}
-{gt text="Edit block" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=xedit.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <h2>{gt text="Edit block"}</h2>
     <form id="blockupdateform" class="z-form" action="{modurl modname="Blocks" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Blocks"}" />

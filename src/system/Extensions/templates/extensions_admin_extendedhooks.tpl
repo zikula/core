@@ -1,7 +1,7 @@
 {include file="extensions_admin_menu.tpl"}
 {ajaxheader modname="Extensions" filename="extendedhooks.js"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=package.png set=icons/large alt=""}</div>
+    <div class="z-adminpageicon">{icon type="hook" size="large"}</div>
     <h2>{gt text="Extended legacy hook settings for"} {modgetinfo modid=$id info=displayname}</h2>
     <p class="z-warningmsg">{gt text="Please note that only legacy module types appear in this list."}</p>
     <ul class="z-menulinks">

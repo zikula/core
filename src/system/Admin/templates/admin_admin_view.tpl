@@ -1,10 +1,9 @@
 {ajaxheader ui=true}
-{gt text="Module categories list" assign=templatetitle}
 {include file="admin_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windowlist.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="view" size="large"}</div>
+    <h2>{gt text="Module categories list"}</h2>
     <table class="z-datatable">
         <thead>
             <tr>

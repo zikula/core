@@ -1,11 +1,8 @@
-{gt text='Delete user account' assign=templatetitle}
 {include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='trashcan_empty.png' set='icons/large' alt=$templatetitle}</div>
-
-    <h2>{$templatetitle}</h2>
-
+    <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
+    <h2>{gt text='Delete user account'}</h2>
     <p class="z-warningmsg">{gt text='Do you really want to delete this user account?'}</p>
 
     <form class="z-form" action="{modurl modname='Users' type='admin' func='remove'}" method="post" enctype="application/x-www-form-urlencoded">

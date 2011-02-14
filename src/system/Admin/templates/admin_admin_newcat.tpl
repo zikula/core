@@ -1,9 +1,8 @@
-{gt text="Create new module category" assign=templatetitle}
 {include file="admin_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=filenew.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="new" size="large"}</div>
+    <h2>{gt text="Create new module category"}</h2>
     <form class="z-form" action="{modurl modname="Admin" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Admin"}" />

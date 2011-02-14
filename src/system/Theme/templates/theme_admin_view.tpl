@@ -3,7 +3,7 @@
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"http://community.zikula.org/module-Extensions.htm\">`$extdbtitle`</a></strong>" var=extdblink}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windowlist.png set=icons/large __alt="Available themes"}</div>
+    <div class="z-adminpageicon">{icon type="view" size="large"}</div>
     <h2>{gt text="Themes list"}</h2>
     <p class="z-informationmsg">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
     <div id="themes-alphafilter" style="padding:1em 0;"><strong>[{pagerabc posvar="startlet" forwardvars=''}]</strong></div>

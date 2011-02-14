@@ -1,4 +1,3 @@
-{gt text='Edit user account of %s' tag1=$userinfo._UREALNAME|default:$userinfo.uname assign='templatetitle'}
 {include file='users_admin_menu.tpl'}
 
 {if $legal}
@@ -14,9 +13,8 @@
 {/if}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='xedit.png' set='icons/large' alt=$templatetitle}</div>
-
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <h2>{gt text='Edit user account of %s' tag1=$userinfo._UREALNAME|default:$userinfo.uname}</h2>
 
     {if ($userinfo.uid == $coredata.user.uid)}
     <div class="z-informationmsg">{gt text='You are editing your own record, therefore you are not permitted to change your membership in certain system groups, and you are not permitted to change your activated state. These fields are disabled below.'}</div>

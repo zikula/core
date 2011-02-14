@@ -1,8 +1,7 @@
-{gt text="Delete category" assign=templatetitle}
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=trashcan_empty.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
+    <h2>{gt text="Delete category"}</h2>
 
     <p class="z-warningmsg">
         {gt text="Do you really want to delete this category?"}<br />

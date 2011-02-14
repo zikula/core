@@ -3,7 +3,7 @@
 
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=configure.png set=icons/large __alt="Settings"}</div>
+    <div class="z-adminpageicon">{icon type="config" size="large"}</div>
     <h2>{gt text="Settings"}</h2>
     <form class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
