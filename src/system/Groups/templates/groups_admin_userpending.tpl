@@ -2,7 +2,7 @@
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=filenew.png set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{icon type="new" size="large"}</div>
     <h2>{$templatetitle}</h2>
     {if $action != "deny" and $action != "accept"}
     {gt text="Error! Could not load data."}

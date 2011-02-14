@@ -15,7 +15,7 @@
 /**
  * Icon set configuration file.
  * This file contains a list of actions and associated images
- * Using this file in conjunction with the pnicon plugin allows
+ * Using this file in conjunction with the icon plugin allows
  * icon packs to be seamlessly exchanged.
  */
 
@@ -35,5 +35,6 @@ $icons = array(
   'broken'   => 'redled.png',
   'unused'   => 'redled.png',
   'config'   => 'configure.png',
+  'hook'     => 'attach.png',
   'save'     => 'filesave.png',
   ''         => '');

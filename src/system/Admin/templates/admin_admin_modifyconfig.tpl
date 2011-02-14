@@ -1,10 +1,9 @@
-{gt text="Settings" assign=templatetitle}
 {include file="admin_admin_menu.tpl"}
 {ajaxheader modname=Admin filename=admin_admin_modifyconfig.js noscriptaculous=true effects=true}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=configure.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="config" size="large"}</div>
+    <h2>{gt text="Settings"}</h2>
     <form class="z-form" action="{modurl modname="Admin" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Admin"}" />

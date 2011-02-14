@@ -1,6 +1,6 @@
 {include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=xedit.png set=icons/large __alt="Edit module"}</div>
+    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
     <h2>{gt text="Edit module"} - {modgetinfo modid=$id info=displayname}</h2>
     <form class="z-form" action="{modurl modname="Extensions" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

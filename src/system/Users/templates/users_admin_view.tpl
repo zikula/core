@@ -1,10 +1,9 @@
-{gt text="Users list" assign=templatetitle}
 {include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windowlist.png set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{icon type="view" size="large"}</div>
 
-    <h2>{$templatetitle}</h2>
+    <h2>{gt text="Users list"}</h2>
 
     <div id="liveusersearch" class="z-hide z-form">
         <fieldset>

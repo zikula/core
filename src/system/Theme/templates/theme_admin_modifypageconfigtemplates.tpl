@@ -1,9 +1,8 @@
 {include file='theme_admin_menu.tpl'}
-{gt text="Edit page configuration" assign=templatetitle}
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.tpl"}
-    <div class="z-adminpageicon">{img modname=core src=xedit.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle} - {$filename|safetext}</h2>
+    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <h2>{gt text="Edit page configuration"} - {$filename|safetext}</h2>
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigtemplates"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Theme"}" />

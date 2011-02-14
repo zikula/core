@@ -2,9 +2,9 @@
 {include file="componentinstance.js"}
 <div class="z-admincontainer">
     {if $action eq "add"}
-    <div class="z-adminpageicon">{img modname=core src=filenew.png set=icons/large alt=$submit}</div>
+    <div class="z-adminpageicon">{icon type="new" size="large"}</div>
     {else}
-    <div class="z-adminpageicon">{img modname=core src=xedit.png set=icons/large alt=$submit}</div>
+    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
     {/if}
     <h2>{$title|safetext}</h2>
 

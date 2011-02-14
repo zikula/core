@@ -1,9 +1,8 @@
 {include file="groups_admin_menu.tpl"}
-{gt text="Delete" assign=templatetitle}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=trashcan_empty.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
+    <h2>{gt text="Delete"}</h2>
     <p class="z-warningmsg">{gt text="Do you really want to delete this group?"}</p>
     <form class="z-form" action="{modurl modname="Groups" type="admin" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

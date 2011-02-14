@@ -8,7 +8,7 @@
 
 <div class="z-admincontainer">
     {* TODO - large icon for hooks ? *}
-    <div class="z-adminpageicon">{img modname='core' src='configure.png' set='icons/large' __alt='Hooks'}</div>
+    <div class="z-adminpageicon">{icon type="hook" size="large"}</div>
     <h2>{gt text='Hooks'}</h2>
 
     <div class="z-form">

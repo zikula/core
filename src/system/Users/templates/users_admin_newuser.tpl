@@ -1,13 +1,11 @@
 {ajaxheader modname='Users' filename='users_newuser.js' noscriptaculous=true effects=true}
 {ajaxheader modname='Users' filename='users_admin_newuser.js' noscriptaculous=true effects=true}
-{gt text='Create new user' assign='templatetitle'}
 
 {include file='users_admin_menu.tpl'}
 <a id="users_formtop"></a>
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=filenew.png set=icons/large alt=$templatetitle}</div>
-
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="new" size="large"}</div>
+    <h2>{gt text='Create new user'}</h2>
     <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
     <div id="users_errormsgs_div" class="z-errormsg{if empty($errormsgs)} z-hide{/if}">

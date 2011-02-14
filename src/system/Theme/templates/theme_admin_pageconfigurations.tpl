@@ -1,9 +1,8 @@
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.tpl"}
-    {gt text="Page configuration assignments" assign=templatetitle}
-    <div class="z-adminpageicon">{img modname=core src=xedit.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <h2>{gt text="Page configuration assignments"}</h2>
     <table class="z-datatable">
         <thead>
             <tr>

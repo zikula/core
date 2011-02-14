@@ -1,10 +1,9 @@
 {ajaxheader modname=Groups filename=groups.js ui=true}
-{gt text="Groups list" assign=templatetitle}
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windowlist.png set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <div class="z-adminpageicon">{icon type="view" size="large"}</div>
+    <h2>{gt text="Groups list"}</h2>
 
     <a id="appendajax" onclick="groupappend();" style="margin-bottom: 1em;" class="z-floatleft z-icon-es-new z-hide" title="{gt text="Create new group"}" href="javascript:void(0);">{gt text="Create new group"}</a>
 

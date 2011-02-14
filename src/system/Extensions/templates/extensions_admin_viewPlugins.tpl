@@ -2,7 +2,7 @@
 {include file="extensions_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windowlist.png set=icons/large __alt="View plugins"}</div>
+    <div class="z-adminpageicon">{icon type="view" size="large"}</div>
     {if $systemplugins}
     <h2>{gt text="System plugins"}</h2>
     {else}
