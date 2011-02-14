@@ -1628,18 +1628,18 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 *******************************************************************************/
 
 .z-order-asc {
-    background: url("../images/global/arrow_up_grey.gif") transparent 100% 50% no-repeat;
+    background: url("../images/global/arrow_up_grey.png") transparent 100% 50% no-repeat;
     padding-right: 12px;
 }
 .z-order-asc:hover {
-    background: url("../images/global/arrow_up_black.gif") transparent 100% 50% no-repeat;
+    background: url("../images/global/arrow_up_black.png") transparent 100% 50% no-repeat;
 }
 .z-order-desc {
-    background: url("../images/global/arrow_down_grey.gif") transparent 100% 50% no-repeat;
+    background: url("../images/global/arrow_down_grey.png") transparent 100% 50% no-repeat;
     padding-right: 12px;
 }
 .z-order-desc:hover {
-    background: url("../images/global/arrow_down_black.gif") transparent 100% 50% no-repeat;
+    background: url("../images/global/arrow_down_black.png") transparent 100% 50% no-repeat;
 }
 .z-order-unsorted {
     padding-right: 12px;
@@ -1651,7 +1651,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 
 .z-toggle {
     display: block;
-    background-image: url("../images/global/toggle.gif");
+    background-image: url("../images/global/toggle-bl.png");
     background-repeat: no-repeat;
     background-position: 0px;
     border: 0pt none;
@@ -1670,7 +1670,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-toggle-link,
 .z-toggle-link:link,
 .z-toggle-link:visited {
-    background-image: url("../images/global/toggle.gif");
+    background-image: url("../images/global/toggle-bl.png");
     background-repeat: no-repeat;
     background-position: right top;
     padding-right: 25px;
@@ -1707,14 +1707,14 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 *******************************************************************************/
 
 .z-drop {
-    background: url("../images/global/arrow_down_grey.gif") no-repeat scroll 100% 50% transparent;
+    background: url("../images/global/arrow_down_grey.png") no-repeat scroll 100% 50% transparent;
     cursor: pointer;
     padding-left: 8px;
     position: relative;
 }
 
 .z-drop:hover {
-    background: url("../images/global/arrow_down_black.gif") no-repeat scroll 100% 50% transparent;
+    background: url("../images/global/arrow_down_black.png") no-repeat scroll 100% 50% transparent;
 }
 
 /******************************************************************************
