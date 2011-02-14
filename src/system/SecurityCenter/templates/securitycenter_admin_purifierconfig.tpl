@@ -5,7 +5,7 @@
 
 {include file='securitycenter_admin_menu.tpl'}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='configure.gif' set='icons/large' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname='core' src='configure.png' set='icons/large' alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <p>{gt text='HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
     <div class="z-warningmsg">
@@ -78,9 +78,9 @@
             {/foreach}
 
             <div class="z-buttons z-formbuttons">
-                {button src='button_ok.gif' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
-                <a href="{modurl modname='SecurityCenter' type='admin'}" title="{gt text="Cancel"}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text="Cancel"}</a>
-                <a href="{modurl modname='SecurityCenter' type='admin' func='purifierconfig' reset='default'}" title="{gt text="Reset to Default Values"}">{img modname='core' src='reload.gif' set='icons/extrasmall' __alt='Reset to Default Values' __title='Reset to Default Values'} {gt text="Reset to Default Values"}</a>
+                {button src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
+                <a href="{modurl modname='SecurityCenter' type='admin'}" title="{gt text="Cancel"}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text="Cancel"}</a>
+                <a href="{modurl modname='SecurityCenter' type='admin' func='purifierconfig' reset='default'}" title="{gt text="Reset to Default Values"}">{img modname='core' src='reload.png' set='icons/extrasmall' __alt='Reset to Default Values' __title='Reset to Default Values'} {gt text="Reset to Default Values"}</a>
             </div>
         </div>
     </form>

@@ -403,7 +403,7 @@ Ajax.Responders.register({
                 if (Zikula.callInProgress(request.transport)) {
                     request.transport.abort();
                     if($('ajax_indicator') && $('ajax_indicator').tagName == 'IMG') {
-                        $('ajax_indicator').src = Zikula.Config.baseURL + 'images/icons/extrasmall/error.gif';
+                        $('ajax_indicator').src = Zikula.Config.baseURL + 'images/icons/extrasmall/error.png';
                     }
                     Zikula.showajaxerror(Zikula.__('Ajax connection time out!'));
                     // Run the onFailure method if we set one up when creating the AJAX object

@@ -237,12 +237,12 @@ class Admin_Controller_Admin extends Zikula_Controller
 
                 if (SecurityUtil::checkPermission('Admin::', "$category[catname]::$category[cid]", ACCESS_EDIT)) {
                     $options[] = array('url' => ModUtil::url('Admin', 'admin', 'modify', array('cid' => $category['cid'])),
-                            'image' => 'xedit.gif',
+                            'image' => 'xedit.png',
                             'title' => $this->__('Edit'));
 
                     if (SecurityUtil::checkPermission('Admin::', "$category[catname]::$category[cid]", ACCESS_DELETE)) {
                         $options[] = array('url' => ModUtil::url('Admin', 'admin', 'delete', array('cid' => $category['cid'])),
-                                'image' => '14_layer_deletelayer.gif',
+                                'image' => '14_layer_deletelayer.png',
                                 'title' => $this->__('Delete'));
                     }
                 }

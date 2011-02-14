@@ -42,8 +42,8 @@
         {/if}
 
         <div class="z-formbuttons z-buttons">
-            {button src=button_ok.gif set=icons/extrasmall __alt="Search" __title="Search" __text="Search"}
-            <a href="{modurl modname=Users type=admin func=view}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+            {button src=button_ok.png set=icons/extrasmall __alt="Search" __title="Search" __text="Search"}
+            <a href="{modurl modname=Users type=admin func=view}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
         </div>
     </form>
 </div>

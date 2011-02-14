@@ -54,22 +54,22 @@
  *
  * Examples:
  *
- * Display a submit button with button_ok.gif (a green check mark) from the set of
+ * Display a submit button with button_ok.png (a green check mark) from the set of
  * small icons (/images/icons/small) with the <button ...> HTML element.
  *
- * <samp>{button src='button_ok.gif' set='small'}</samp>
+ * <samp>{button src='button_ok.png' set='small'}</samp>
  *
- * Display a cancel button with button_cancel.gif (a red 'X') from the set of
+ * Display a cancel button with button_cancel.png (a red 'X') from the set of
  * extra small icons (/images/icons/extrasmall) with the <button ...> HTML element.
  *
- * <samp>{button src='button_cancel.gif' set='extrasmall' type='cancel'}</samp>
+ * <samp>{button src='button_cancel.png' set='extrasmall' type='cancel'}</samp>
  *
- * Display a submit button with button_cancel.gif (a red 'X') from the set of
+ * Display a submit button with button_cancel.png (a red 'X') from the set of
  * medium icons (/images/icons/medium) and a value of
  * 'cancel' with the <input ...> HTML element. The id attribute of the input
  * element is set to 'cancelbutton'.
  *
- * <samp>{button src='button_cancel.gif' set='medium' mode='input' value='cancel' id='cancelbutton'}</samp>
+ * <samp>{button src='button_cancel.png' set='medium' mode='input' value='cancel' id='cancelbutton'}</samp>
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the {@link Zikula_View} object.

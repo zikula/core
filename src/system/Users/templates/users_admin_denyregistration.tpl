@@ -34,8 +34,8 @@
                 </div>
             </fieldset>
             <div class="z-formbuttons z-buttons">
-                {button id='confirm' type='submit' src='delete_user.gif' set='icons/extrasmall' __alt='Delete registration' __title='Delete registration' __text='Delete registration'}
-                <a href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+                {button id='confirm' type='submit' src='delete_user.png' set='icons/extrasmall' __alt='Delete registration' __title='Delete registration' __text='Delete registration'}
+                <a href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
             </div>
         </div>
     </form>

@@ -129,10 +129,10 @@
         {/if}
         <div class="z-buttons z-formbuttons">
             {if ($category)}
-            {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Categories type=user func=edit dr=$rootCat.id}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+            <a href="{modurl modname=Categories type=user func=edit dr=$rootCat.id}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             {else}
-            {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
             {/if}
         </div>
     </form>

@@ -2,7 +2,7 @@
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=agt_family.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=agt_family.png set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle} ({$name|safetext})</h2>
     <table class="z-datatable">
         <thead>
@@ -52,7 +52,7 @@
                 </div>
             </fieldset>
             <div class="z-buttons z-formbuttons">
-                {button src=button_ok.gif set=icons/extrasmall __alt="Add" __title="Add" __text="Add"}
+                {button src=button_ok.png set=icons/extrasmall __alt="Add" __title="Add" __text="Add"}
             </div>
         </div>
     </form>

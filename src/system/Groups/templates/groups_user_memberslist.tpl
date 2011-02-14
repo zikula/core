@@ -70,7 +70,7 @@
             <td>
                 {if $members[members]._YOURHOMEPAGE|default:'' eq ''}&nbsp;
                 {else}
-                <a href="{$members[members]._YOURHOMEPAGE|safetext}" title="{$members[members]._YOURHOMEPAGE}">{img src="agt_internet.gif" modname='core' set='icons/small' alt=$members[members]._YOURHOMEPAGE}</a>
+                <a href="{$members[members]._YOURHOMEPAGE|safetext}" title="{$members[members]._YOURHOMEPAGE}">{img src="agt_internet.png" modname='core' set='icons/small' alt=$members[members]._YOURHOMEPAGE}</a>
                 {/if}
             </td>
             {/if}

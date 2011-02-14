@@ -25,7 +25,7 @@
             </select>
         </div>
         <div class="z-buttons z-formbuttons">
-            {button src=button_ok.gif set=icons/extrasmall __alt="Search now" __title="Search now" __text="Search now"}
+            {button src=button_ok.png set=icons/extrasmall __alt="Search now" __title="Search now" __text="Search now"}
         </div>
     </fieldset>
     {if $plugin_options}

@@ -110,7 +110,7 @@
         {/if}
 
         <div class="z-formbuttons z-buttons">
-            {button src=button_ok.gif set=icons/extrasmall __alt="Log in" __title="Log in" __text="Log in"}
+            {button src=button_ok.png set=icons/extrasmall __alt="Log in" __title="Log in" __text="Log in"}
         </div>
     </div>
 </form>

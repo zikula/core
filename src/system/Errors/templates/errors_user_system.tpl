@@ -1,4 +1,4 @@
-<div style="float:right">{img modname=core set=icons/large src=error.gif}</div>
+<div style="float:right">{img modname=core set=icons/large src=error.png}</div>
 <h1>{gt text="System error"}</h1>
 <h2>{$type|errortype}</h2>
 <p>{$type|errortext}</p>

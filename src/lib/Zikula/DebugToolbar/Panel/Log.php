@@ -139,21 +139,21 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
     {
         switch ($type) {
             case Zikula_ErrorHandler::EMERG:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/exit.gif" alt="" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/exit.png" alt="" />';
             case Zikula_ErrorHandler::ALERT:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.gif" alt="" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.png" alt="" />';
             case Zikula_ErrorHandler::CRIT:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.gif" alt="" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.png" alt="" />';
             case Zikula_ErrorHandler::ERR:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.gif" alt="" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.png" alt="" />';
             case Zikula_ErrorHandler::WARN:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/redled.gif" alt="" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/redled.png" alt="" />';
             case Zikula_ErrorHandler::NOTICE:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/info.gif" alt="" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/info.png" alt="" />';
             case Zikula_ErrorHandler::INFO:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/info.gif" alt="" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/info.png" alt="" />';
             case Zikula_ErrorHandler::DEBUG:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/text_block.gif" alt="" />';
+                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/text_block.png" alt="" />';
             default:
                 return __('Unknown');
         }

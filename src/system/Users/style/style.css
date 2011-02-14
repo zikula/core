@@ -22,7 +22,7 @@
 }
 
 #liveusersearch .autocomplete_user ul li {
-    background: transparent url(../../../images/icons/extrasmall/edit_user.gif) no-repeat scroll 0 50%;
+    background: transparent url(../../../images/icons/extrasmall/edit_user.png) no-repeat scroll 0 50%;
     cursor: pointer;
     margin: 0;
     padding: 3px 0 3px 25px;
@@ -74,22 +74,22 @@ div.z-accountlink  img {
 }
 
 .z-icon-es-import {
-    background: url("../../../images/icons/extrasmall/db_comit.gif") no-repeat scroll 0 50% transparent;
+    background: url("../../../images/icons/extrasmall/db_comit.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 
 .z-icon-es-export {
-    background: url("../../../images/icons/extrasmall/db_update.gif") no-repeat scroll 0 50% transparent;
+    background: url("../../../images/icons/extrasmall/db_update.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 
 .user-icon-adduser {
-    background: transparent url("../../../images/icons/extrasmall/add_user.gif") no-repeat scroll center left;
+    background: transparent url("../../../images/icons/extrasmall/add_user.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
 
 .user-icon-lostusername {
-    background: transparent url("../../../images/icons/extrasmall/lostusername.gif") no-repeat scroll center left;
+    background: transparent url("../../../images/icons/extrasmall/lostusername.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
 
@@ -127,22 +127,22 @@ div.z-accountlink  img {
 }
 
 .user-icon-greenled {
-    background: url("../../../images/icons/extrasmall/greenled.gif") no-repeat scroll 0 50% transparent;
+    background: url("../../../images/icons/extrasmall/greenled.png") no-repeat scroll 0 50% transparent;
     padding: 0 0 0 20px;
 }
 
 .user-icon-redled {
-    background: url("../../../images/icons/extrasmall/redled.gif") no-repeat scroll 0 50% transparent;
+    background: url("../../../images/icons/extrasmall/redled.png") no-repeat scroll 0 50% transparent;
     padding: 0 0 0 20px;
 }
 
 .user-icon-mail_delete {
-    background: url("../../../images/icons/extrasmall/mail_delete.gif") no-repeat scroll 0 50% transparent;
+    background: url("../../../images/icons/extrasmall/mail_delete.png") no-repeat scroll 0 50% transparent;
     padding: 0 0 0 20px;
 }
 
 .user-icon-status_unknown {
-    background: url("../../../images/icons/extrasmall/status_unknown.gif") no-repeat scroll 0 50% transparent;
+    background: url("../../../images/icons/extrasmall/status_unknown.png") no-repeat scroll 0 50% transparent;
     padding: 0 0 0 20px;
 }
 
@@ -162,7 +162,7 @@ div.z-accountlink  img {
 }
 
 input#users_loginblock_loginwith_button_Users {
-    background: transparent url("../../../images/icons/extrasmall/user.gif") no-repeat scroll center left;
+    background: transparent url("../../../images/icons/extrasmall/user.png") no-repeat scroll center left;
 }
 
 .users_loginblock_loginwith_button {

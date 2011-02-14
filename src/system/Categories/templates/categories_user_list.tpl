@@ -35,7 +35,7 @@
             <td style="text-align:center">
                 {if ($cnt != $max)}
                 <a href="{modurl modname="Categories" type="userform" func="moveField" dr=$dr cid=$cat.id direction="down" append="#top"}">
-                    {img modname=core src=1downarrow.gif set=icons/extrasmall __alt="Down" __title="Down"}
+                    {img modname=core src=1downarrow.png set=icons/extrasmall __alt="Down" __title="Down"}
                 </a>
                 {else}
                 &nbsp;
@@ -44,7 +44,7 @@
             <td style="text-align:center">
                 {if ($cnt != 1)}
                 <a href="{modurl modname="Categories" type="userform" func="moveField" dr=$dr cid=$cat.id direction="up" append="#top"}">
-                    {img modname=core src=1uparrow.gif set=icons/extrasmall __alt="Up" __title="Up"}
+                    {img modname=core src=1uparrow.png set=icons/extrasmall __alt="Up" __title="Up"}
                 </a>
                 {else}
                 &nbsp;
@@ -52,17 +52,17 @@
             </td>
             <td style="text-align:center">
                 {if ($cat.is_locked)}
-                {img modname=core src=locked.gif set=icons/extrasmall __alt="Category is locked" __title="Category is locked"}
+                {img modname=core src=locked.png set=icons/extrasmall __alt="Category is locked" __title="Category is locked"}
                 {else}
                 <a href="{modurl modname="Categories" type="user" func="edit" dr=$dr cid=$cat.id}">
-                    {img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}
+                    {img modname=core src=xedit.png set=icons/extrasmall __alt="Edit" __title="Edit"}
                 </a>
                 {/if}
             </td>
             <td style="text-align:center">
                 {gt text="Do you really want to delete the category '%s'?" tag1=$cat.name|safetext  assign="delPrompt"}
                 <a href="{modurl modname="Categories" type="userform" func="delete" dr=$dr cid=$cat.id}" onclick="return confirm('{$delPrompt}');" >
-                    {img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete"}
+                    {img modname=core src=14_layer_deletelayer.png set=icons/extrasmall __alt="Delete" __title="Delete"}
                 </a>
             </td>
         </tr>

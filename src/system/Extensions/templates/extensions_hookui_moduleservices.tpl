@@ -5,7 +5,7 @@
 </div>
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='exec.gif' set='icons/large' __alt='Module Services'}</div>
+    <div class="z-adminpageicon">{img modname='core' src='exec.png' set='icons/large' __alt='Module Services'}</div>
     <h2>{gt text='Module Services'}</h2>
 
     <p class="z-informationmsg">{gt text='Module Services are functions provided by the core or other modules for this module.'}</p>

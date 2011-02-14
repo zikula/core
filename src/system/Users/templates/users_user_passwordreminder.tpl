@@ -15,7 +15,7 @@
         </div>
         <div class="z-formbuttons z-buttons">
             <p>{gt text="I remember my password now."}</p>
-            <a href="{modurl modname='Users' type='user' func='loginScreen'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='1rightarrow.gif' __alt='Go to log-in screen' __title='Go to log-in screen'} {gt text="Go to log-in screen"}</a>
+            <a href="{modurl modname='Users' type='user' func='loginScreen'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='1rightarrow.png' __alt='Go to log-in screen' __title='Go to log-in screen'} {gt text="Go to log-in screen"}</a>
         </div>
     </div>
 </div>
@@ -55,8 +55,8 @@
                 <div class="z-formnote z-informationmsg">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
             </div>
             <div class="z-formbuttons z-buttons">
-                {button src='button_ok.gif' set='icons/extrasmall' __alt='Submit' __title='Submit' __text='Submit'}
-                <a href="{homepage|safetext}" title="{gt text='Cancel'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='button_cancel.gif' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                {button src='button_ok.png' set='icons/extrasmall' __alt='Submit' __title='Submit' __text='Submit'}
+                <a href="{homepage|safetext}" title="{gt text='Cancel'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='button_cancel.png' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </fieldset>
     </div>

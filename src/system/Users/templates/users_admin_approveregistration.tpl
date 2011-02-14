@@ -31,8 +31,8 @@
                 {gt text='Approve' assign='actionTitle'}
                 {/if}
                 {/strip}
-                {button id='confirm' type='submit' src='button_ok.gif' set='icons/extrasmall' alt=$actionTitle title=$actionTitle text=$actionTitle}
-                <a href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+                {button id='confirm' type='submit' src='button_ok.png' set='icons/extrasmall' alt=$actionTitle title=$actionTitle text=$actionTitle}
+                <a href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
             </div>
         </div>
     </form>

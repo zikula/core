@@ -2,7 +2,7 @@
 {include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='trashcan_empty.gif' set='icons/large' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname='core' src='trashcan_empty.png' set='icons/large' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 
@@ -21,8 +21,8 @@
             </fieldset>
             {notifydisplayhooks eventname='users.hook.user.ui.delete' area='modulehook_area.users.user' subject=null id=$userid caller="Users"}
             <div class="z-formbuttons z-buttons">
-                {button class="z-btgreen" src='button_ok.gif' set='icons/extrasmall' __alt='Delete user account' __title='Delete user account' __text='Delete user account'}
-                <a class="z-btred" href="{modurl modname='Users' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                {button class="z-btgreen" src='button_ok.png' set='icons/extrasmall' __alt='Delete user account' __title='Delete user account' __text='Delete user account'}
+                <a class="z-btred" href="{modurl modname='Users' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </div>
     </form>

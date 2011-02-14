@@ -50,7 +50,7 @@
         
 
         <div class="z-formbuttons">
-            {formimagebutton id="create" commandName="create" __text="Save" imageUrl="images/icons/small/button_ok.gif"}
+            {formimagebutton id="create" commandName="create" __text="Save" imageUrl="images/icons/small/button_ok.png"}
         </div>
     </fieldset>
 {/form}

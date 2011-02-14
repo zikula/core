@@ -13,6 +13,6 @@
         </div>
     </fieldset>
     <div class="z-formbuttons z-buttons">
-        {button src='button_ok.gif' set='icons/extrasmall' __alt='Submit' __title='Submit' __text='Submit'}
+        {button src='button_ok.png' set='icons/extrasmall' __alt='Submit' __title='Submit' __text='Submit'}
     </div>
 </form>

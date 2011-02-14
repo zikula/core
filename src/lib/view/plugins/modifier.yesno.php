@@ -37,7 +37,7 @@ function smarty_modifier_yesno($string, $images = false)
 
     if ((bool)$string) {
         if ($images) {
-            $params['src'] = 'button_ok.gif';
+            $params['src'] = 'button_ok.png';
             $params['alt'] = $params['title'] = __('Yes');
             return smarty_function_img($params, $view);
         } else {
@@ -45,7 +45,7 @@ function smarty_modifier_yesno($string, $images = false)
         }
     } else {
         if ($images) {
-            $params['src'] = 'button_cancel.gif';
+            $params['src'] = 'button_cancel.png';
             $params['alt'] = $params['title'] = __('No');
             return smarty_function_img($params, $view);
         } else {

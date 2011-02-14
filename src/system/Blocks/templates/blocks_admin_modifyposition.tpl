@@ -2,7 +2,7 @@
 {include file="blocks_admin_menu.tpl"}
 {gt text="Edit block position" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=xedit.png set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname="Blocks" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
@@ -20,8 +20,8 @@
                     <textarea name="position[description]" id="blocks_positiondescription" rows="5" cols="30">{$description|safehtml}</textarea>
                 </div>
                 <div class="z-formbuttons z-buttons">
-                    {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                    <a href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                    {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+                    <a href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 </div>
             </fieldset>
 
@@ -42,13 +42,13 @@
                     <span class="z-itemcell z-w25">{$block.bkey|safetext}</span>
                     <span class="z-itemcell z-w25">
                         {if $block.active}
-                        <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to deactivate this block"}">{img src=greenled.gif modname=core set=icons/extrasmall __alt="Active" id="active_`$block.bid`"}{img src=redled.gif modname=core set=icons/extrasmall __alt="Inactive" style="display: none;" id="inactive_`$block.bid`"}</a>
-                        <noscript><div>{img src=greenled.gif modname=core set=icons/extrasmall __alt="Active"}</div></noscript>
+                        <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to deactivate this block"}">{img src=greenled.png modname=core set=icons/extrasmall __alt="Active" id="active_`$block.bid`"}{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive" style="display: none;" id="inactive_`$block.bid`"}</a>
+                        <noscript><div>{img src=greenled.png modname=core set=icons/extrasmall __alt="Active"}</div></noscript>
                         &nbsp;{gt text="Active"}
 
                         {else}
-                        <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to activate this block"}">{img src=greenled.gif modname=core set=icons/extrasmall __alt="Active" style="display: none;" id="active_`$block.bid`"}{img src=redled.gif modname=core set=icons/extrasmall __alt="Inactive" id="inactive_`$block.bid`"}</a>
-                        <noscript><div>{img src=redled.gif modname=core set=icons/extrasmall __alt="Inactive"}</div></noscript>
+                        <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to activate this block"}">{img src=greenled.png modname=core set=icons/extrasmall __alt="Active" style="display: none;" id="active_`$block.bid`"}{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive" id="inactive_`$block.bid`"}</a>
+                        <noscript><div>{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive"}</div></noscript>
                         &nbsp;{gt text="Inactive"}
                         {/if}
                     </span>
@@ -71,12 +71,12 @@
                     <span class="z-itemcell z-w25">{$block.bkey|safetext}</span>
                     <span class="z-itemcell z-w25">
                         {if $block.active}
-                        <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to deactivate this block"}">{img src=greenled.gif modname=core set=icons/extrasmall __alt="Active" id="active_`$block.bid`"}{img src=redled.gif modname=core set=icons/extrasmall __alt="Inactive" style="display: none;" id="inactive_`$block.bid`"}</a>
-                        <noscript><div>{img src=greenled.gif modname=core set=icons/extrasmall __alt="Active"}</div></noscript>
+                        <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to deactivate this block"}">{img src=greenled.png modname=core set=icons/extrasmall __alt="Active" id="active_`$block.bid`"}{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive" style="display: none;" id="inactive_`$block.bid`"}</a>
+                        <noscript><div>{img src=greenled.png modname=core set=icons/extrasmall __alt="Active"}</div></noscript>
                         &nbsp;{gt text="Active"}
                         {else}
-                        <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to activate this block"}">{img src=greenled.gif modname=core set=icons/extrasmall __alt="Active" style="display: none;" id="active_`$block.bid`"}{img src=redled.gif modname=core set=icons/extrasmall __alt="Inactive" id="inactive_`$block.bid`"}</a>
-                        <noscript><div>{img src=redled.gif modname=core set=icons/extrasmall __alt="Inactive"}</div></noscript>
+                        <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to activate this block"}">{img src=greenled.png modname=core set=icons/extrasmall __alt="Active" style="display: none;" id="active_`$block.bid`"}{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive" id="inactive_`$block.bid`"}</a>
+                        <noscript><div>{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive"}</div></noscript>
                         &nbsp;{gt text="Inactive"}
                         {/if}
                     </span>

@@ -25,22 +25,22 @@
                 <td>{if !empty($reginfo.email)}<a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>{else}---{/if}</td>
                 <td class="z-center">
                     {if $reginfo.isapproved}
-                    {img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Approved' __alt='Approved' class='tooltips'}
+                    {img modname='core' set='icons/extrasmall' src='greenled.png' __title='Approved' __alt='Approved' class='tooltips'}
                     {else}
-                    {img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending approval' __alt='Pending approval' class='tooltips'}
+                    {img modname='core' set='icons/extrasmall' src='redled.png' __title='Pending approval' __alt='Pending approval' class='tooltips'}
                     {/if}
                 </td>
                 <td class="z-center">
                     {if $reginfo.isverified}
-                    {img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified' class='tooltips'}
+                    {img modname='core' set='icons/extrasmall' src='greenled.png' __title='Verified' __alt='Verified' class='tooltips'}
                     {elseif !$reginfo.verificationsent}
                     {if ($modvars.Users.moderation_order != 'UserUtil::APPROVAL_BEFORE'|const) || (($modvars.Users.moderation_order == 'UserUtil::APPROVAL_BEFORE'|const) && ($reginfo.isapproved))}
-                    {img modname='core' set='icons/extrasmall' src='status_unknown.gif' __title='E-mail verification not sent; must be resent' __alt='E-mail verification not sent; must be resent' class='tooltips'}
+                    {img modname='core' set='icons/extrasmall' src='status_unknown.png' __title='E-mail verification not sent; must be resent' __alt='E-mail verification not sent; must be resent' class='tooltips'}
                     {else}
-                    {img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='E-mail verification not sent' __alt='E-mail verification not sent' class='tooltips'}
+                    {img modname='core' set='icons/extrasmall' src='mail_delete.png' __title='E-mail verification not sent' __alt='E-mail verification not sent' class='tooltips'}
                     {/if}
                     {else}
-                    {img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address' class='tooltips'}
+                    {img modname='core' set='icons/extrasmall' src='redled.png' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address' class='tooltips'}
                     {/if}
                 </td>
                 {assign var="regactions" value=$actions.list[$reginfo.uid]}
@@ -50,19 +50,19 @@
                 {if isset($regactions.display)}
                 <td class="z-center">
                     {if $regactions.display}
-                    <a href="{$regactions.display|safetext}">{img src='documentinfo.gif' modname='core' set='icons/extrasmall' __title='Display registration details' __alt='Display registration details' class='tooltips'}</a>
+                    <a href="{$regactions.display|safetext}">{img src='documentinfo.png' modname='core' set='icons/extrasmall' __title='Display registration details' __alt='Display registration details' class='tooltips'}</a>
                     {else}
                     {* For each option, invisible image to take up as much space as a normal image to maintain alignment. Must be visibility: hidden, not display: none. *}
-                    {img style='visibility: hidden;' src='agt_stop.gif' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
+                    {img style='visibility: hidden;' src='agt_stop.png' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
                     {/if}
                 </td>
                 {/if}
                 {if isset($regactions.modify)}
                 <td class="z-center">
                     {if $regactions.modify}
-                    <a href="{$regactions.modify|safetext}">{img src='xedit.gif' modname='core' set='icons/extrasmall' __title='Modify registration details' __alt='Modify registration details' class='tooltips'}</a>
+                    <a href="{$regactions.modify|safetext}">{img src='xedit.png' modname='core' set='icons/extrasmall' __title='Modify registration details' __alt='Modify registration details' class='tooltips'}</a>
                     {else}
-                    {img style='visibility: hidden;' src='agt_stop.gif' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
+                    {img style='visibility: hidden;' src='agt_stop.png' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
                     {/if}
                 </td>
                 {/if}
@@ -70,23 +70,23 @@
                 <td class="z-center">
                     {if $regactions.approve && !$reginfo.isverified}
                     {if isset($modvars.Users.moderation_order) && ($modvars.Users.moderation_order == 'UserUtil::APPROVAL_AFTER'|const)}
-                    <a href="{$regactions.approve|safetext}">{img src='button_ok.gif' modname='core' set='icons/extrasmall' __title='Pre-approve (verification still required)' __alt='Pre-approve (verification still required)' class='tooltips'}</a>
+                    <a href="{$regactions.approve|safetext}">{img src='button_ok.png' modname='core' set='icons/extrasmall' __title='Pre-approve (verification still required)' __alt='Pre-approve (verification still required)' class='tooltips'}</a>
                     {else}
-                    <a href="{$regactions.approve|safetext}">{img src='button_ok.gif' modname='core' set='icons/extrasmall' __title='Approve' __alt='Approve' class='tooltips'}</a>
+                    <a href="{$regactions.approve|safetext}">{img src='button_ok.png' modname='core' set='icons/extrasmall' __title='Approve' __alt='Approve' class='tooltips'}</a>
                     {/if}
                     {elseif $regactions.approve && $reginfo.isverified}
-                    <a href="{$regactions.approve|safetext}">{img src='add_user.gif' modname='core' set='icons/extrasmall' __title='Approve (creates a new user account)' __alt='Approve (creates a new user account)' class='tooltips'}</a>
+                    <a href="{$regactions.approve|safetext}">{img src='add_user.png' modname='core' set='icons/extrasmall' __title='Approve (creates a new user account)' __alt='Approve (creates a new user account)' class='tooltips'}</a>
                     {else}
-                    {img style='visibility: hidden;' src='agt_stop.gif' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
+                    {img style='visibility: hidden;' src='agt_stop.png' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
                     {/if}
                 </td>
                 {/if}
                 {if isset($regactions.deny)}
                 <td class="z-center">
                     {if $regactions.deny}
-                    <a href="{$regactions.deny|safetext}">{img src='delete_user.gif' modname='core' set='icons/extrasmall' __title='Deny (deletes registration)' __alt='Deny (deletes registration)' class='tooltips'}</a>
+                    <a href="{$regactions.deny|safetext}">{img src='delete_user.png' modname='core' set='icons/extrasmall' __title='Deny (deletes registration)' __alt='Deny (deletes registration)' class='tooltips'}</a>
                     {else}
-                    {img style='visibility: hidden;' src='agt_stop.gif' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
+                    {img style='visibility: hidden;' src='agt_stop.png' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
                     {/if}
                 </td>
                 {/if}
@@ -98,18 +98,18 @@
                     {else}
                     {assign var='optionTitle' value=$titleIfNotSent}
                     {/if}
-                    <a href="{$regactions.verify|safetext}">{img src='mail_send.gif' modname='core' set='icons/extrasmall' title=$optionTitle alt=$optionTitle class='tooltips'}</a>
+                    <a href="{$regactions.verify|safetext}">{img src='mail_send.png' modname='core' set='icons/extrasmall' title=$optionTitle alt=$optionTitle class='tooltips'}</a>
                     {else}
-                    {img style='visibility: hidden;' src='agt_stop.gif' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
+                    {img style='visibility: hidden;' src='agt_stop.png' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
                     {/if}
                 </td>
                 {/if}
                 {if isset($regactions.approveForce)}
                 <td class="z-center">
                     {if $regactions.approveForce && !$reginfo.isverified}
-                    <a href="{$regactions.approveForce|safetext}">{img src='db_update.gif' modname='core' set='icons/extrasmall' __title='Skip verification (approves, and creates a new user account)' __alt='Skip verification (approves, and creates a new user account)' class='tooltips'}</a>
+                    <a href="{$regactions.approveForce|safetext}">{img src='db_update.png' modname='core' set='icons/extrasmall' __title='Skip verification (approves, and creates a new user account)' __alt='Skip verification (approves, and creates a new user account)' class='tooltips'}</a>
                     {else}
-                    {img style='visibility: hidden;' src='agt_stop.gif' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
+                    {img style='visibility: hidden;' src='agt_stop.png' modname='core' set='icons/extrasmall' __title='Not available' __alt='Not available' class='tooltips'}
                     {/if}
                 </td>
                 {/if}

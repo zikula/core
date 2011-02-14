@@ -2,7 +2,7 @@
 {include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=configure.gif set=icons/large __alt='Settings'}</div>
+    <div class="z-adminpageicon">{img modname=core src=configure.png set=icons/large __alt='Settings'}</div>
 
     <h2>{gt text="Settings"}</h2>
 
@@ -34,7 +34,7 @@
             </div>
             <div class="z-formrow">
                 <label for="users_gravatarimage">{gt text="Default gravatar image"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
-                <input id="users_gravatarimage"{if isset($errorFields.users_anonymous)} class="z-form-error"{/if} type="text" name="config[gravatarimage]" value="{$config.gravatarimage|default:'gravatar.gif'|safetext}" size="50" maxlength="255" />
+                <input id="users_gravatarimage"{if isset($errorFields.users_anonymous)} class="z-form-error"{/if} type="text" name="config[gravatarimage]" value="{$config.gravatarimage|default:'gravatar.png'|safetext}" size="50" maxlength="255" />
             </div>
         </fieldset>
 
@@ -353,8 +353,8 @@
         </fieldset>
 
         <div class="z-formbuttons z-buttons">
-            {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Users type=admin func=view}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+            <a href="{modurl modname=Users type=admin func=view}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
         </div>
     </form>
 </div>

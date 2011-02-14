@@ -51,7 +51,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_Plugin
      * contains the command argument of the formcontextmenureference plugin. In this way your script
      * can work with the menu item data you clicked. Example:
      * <code>
-     * <!--[formcontextmenuitem title=Preview imageURL="preview.gif" commandScript="popupPreview(commandArgument)"]-->
+     * <!--[formcontextmenuitem title=Preview imageURL="preview.png" commandScript="popupPreview(commandArgument)"]-->
      *
      * <script type="text/javascript">
      * function popupPreview(commandArgument)

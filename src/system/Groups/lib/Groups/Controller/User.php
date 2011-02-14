@@ -280,10 +280,10 @@ class Groups_Controller_User extends Zikula_Controller
                 }
 
                 if ($isonline) {
-                    $userinfo['isonline']    = 'greenled.gif';
+                    $userinfo['isonline']    = 'greenled.png';
                     $userinfo['isonlinelbl'] = $this->__('on-line');
                 } else {
-                    $userinfo['isonline']     = 'redled.gif';
+                    $userinfo['isonline']     = 'redled.png';
                     $userinfo['isonlinelbl'] = $this->__('off-line');
                 }
 

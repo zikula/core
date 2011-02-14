@@ -1,7 +1,7 @@
 {include file='theme_admin_menu.tpl'}
 {gt text="Delete theme" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=trashcan_empty.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=trashcan_empty.png set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle} {$name|safetext}</h2>
     <p class="z-warningmsg">{gt text="Do you really want to delete this theme?"}</p>
     <form class="z-form" action="{modurl modname=Theme type=admin func=delete}" method="post" enctype="application/x-www-form-urlencoded">
@@ -18,8 +18,8 @@
                 <div class="z-informationmsg">{gt text="Please delete the Theme folder before pressing OK or the Theme will not be deleted."}</div>
             </fieldset>
             <div class="z-buttons z-formbuttons">
-                {button class="z-btgreen" src=button_ok.gif set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
-                <a class="z-btred" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                {button class="z-btgreen" src=button_ok.png set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
+                <a class="z-btred" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </div>
     </form>
