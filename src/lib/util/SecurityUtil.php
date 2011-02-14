@@ -72,7 +72,21 @@ class SecurityUtil
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();
         }
+
         $tokenGenerator = $serviceManager->getService('token.generator');
+        if (System::getVar('sessioncsrftokenonetime')) {
+            $storage = $tokenGenerator->getStorage();
+            $tokenId = SessionUtil::getVar('sessioncsrftokenid');
+            $data = $storage->get($tokenId);
+            if (!$data) {
+                $tokenGenerator->generate($tokenGenerator->uniqueId(), time());
+                $tokenGenerator->save();
+                SessionUtil::setVar('sessioncsrftokenid', $tokenGenerator->getId());
+                return $tokenGenerator->getToken();
+            }
+            return $data['token'];
+        }
+
         $tokenGenerator->generate($tokenGenerator->uniqueId(), time());
         $tokenGenerator->save();
 
@@ -92,7 +106,16 @@ class SecurityUtil
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();
         }
+
         $tokenValidator = $serviceManager->getService('token.validator');
+        if (System::getVar('sessioncsrftokenonetime')) {
+            $result = $tokenValidator->validate($token, false, false);
+            if ($result) {
+                return true;
+            }
+            SessionUtil::expire(); // something went wrong so expire the session.
+        }
+
         return $tokenValidator->validate($token);
     }
 

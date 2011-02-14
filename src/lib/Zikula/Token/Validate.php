@@ -66,12 +66,13 @@ class Zikula_Token_Validate
      * with a unique ID each time.  If the are per-session, then they should be
      * generated with the same unique ID and not deleted when validated here.
      *
-     * @param string  $token  Token to validate.
-     * @param boolean $delete Whether to delete the token if valid.
+     * @param string  $token        Token to validate.
+     * @param boolean $delete       Whether to delete the token if valid.
+     * @param boolean $$checkExpire Whether to check for token expiry.
      *
      * @return boolean
      */
-    public function validate($token, $delete=true)
+    public function validate($token, $delete=true, $checkExpire=true)
     {
         list($id, $hash, $timestamp) = $this->tokenGenerator->decode($token);
         $decoded = array('id' => $id, 'timestamp' => $timestamp);
@@ -90,10 +91,12 @@ class Zikula_Token_Validate
         }
 
         // Check if token has expired.
-        $timeDiff = ((int)$decoded['timestamp'] + $this->maxlifetime) - time();
-        if ($timeDiff < 0) {
-            $this->storage->delete($decoded['id']);
-            return false;
+        if ($checkExpire) {
+            $timeDiff = ((int)$decoded['timestamp'] + $this->maxlifetime) - time();
+            if ($timeDiff < 0) {
+                $this->storage->delete($decoded['id']);
+                return false;
+            }
         }
 
         // All checked out, delete the token and return true.

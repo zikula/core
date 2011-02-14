@@ -51,7 +51,8 @@ class SecurityCenter_Installer extends Zikula_Installer
         System::setVar('sessionregenerate', true);
         System::setVar('sessionregeneratefreq', 10);
         System::setVar('sessionipcheck', 0);
-        System::setVar('sessionname', 'ZSID');
+        System::setVar('sessionname', '_zsid');
+        System::setVar('sessioncsrftokenonetime', 0);  // 1 means use same token for entire session
 
         System::setVar('filtergetvars', 1);
         System::setVar('filterpostvars', 1);
@@ -298,7 +299,10 @@ class SecurityCenter_Installer extends Zikula_Installer
                 }
             // fall through
 
-            case '1.6':
+            case '1.4.3':
+                System::setVar('sessioncsrftokenonetime', 0);
+                
+            case '1.4.4':
             // future upgrade routines
         }
 

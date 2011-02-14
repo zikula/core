@@ -219,6 +219,9 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             $sessionname = 'ZSID';
         }
 
+        $sessioncsrftokenonetime = (int)FormUtil::getPassedValue('sessioncsrftokenonetime', 0, 'POST');
+        System::setVar('sessioncsrftokenonetime', $sessioncsrftokenonetime);
+
         // cause logout if we changed session name
         if ($sessionname != System::getVar('sessionname')) {
             $cause_logout = true;
