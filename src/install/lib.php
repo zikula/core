@@ -459,9 +459,7 @@ function installmodules($lang = 'en')
             array('module' => 'Theme',
                     'category' => __('Layout')),
             array('module' => 'Search',
-                    'category' => __('Content')),
-            array('module' => 'SysInfo',
-                    'category' => __('Security')));
+                    'category' => __('Content')));
 
     foreach ($modules as $module) {
         // sanity check - check if module is already installed
