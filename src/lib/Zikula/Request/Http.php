@@ -187,6 +187,13 @@ class Zikula_Request_Http extends Zikula_Request_Request
         return $this->session;
     }
 
+    /**
+     * Set session.
+     *
+     * @param Zikula_Session $session
+     *
+     * @return void
+     */
     public function setSession(Zikula_Session $session)
     {
         $this->session = $session;
