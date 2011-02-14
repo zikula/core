@@ -723,13 +723,16 @@ abstract class Zikula_Base implements Zikula_Translatable
      * Check Csrf token.
      *
      * @param string $failUrl The URL to redirect on fail, null means no redirect.
-     * @param string $key     Where to find the nonce in POST.
+     * @param string $token   The token, if not set, will pull from $_POST['csrftoken'].
      *
      * @return void
      */
-    public function checkCsrfToken($failUrl=null, $key='csrftoken')
+    public function checkCsrfToken($failUrl=null, $token=null)
     {
-        $token = $this->request->getPost($key, false);
+        if (is_null($token)) {
+            $token = $this->request->getPost('csrftoken', false);
+        }
+        
         $tokenValidator = $this->serviceManager->getService('token.validator');
 
         if (System::getVar('sessioncsrftokenonetime')) {
