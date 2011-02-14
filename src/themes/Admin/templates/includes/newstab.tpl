@@ -1,9 +1,9 @@
-﻿<div class="dashboard-content">
+﻿<div style="z-index:9999;">
 <div class="dashboard-content-head" style="margin-left:15px;margin-right:15px;float:center;">
 <h2 class="left">{gt text='News'}</h2>
 </div>   
-<div class="z-form" style="z-index:9999;margin-top:12px;">
-<div style="float:left;padding-left:10%;">
+<div class="z-form" style="margin-top:12px">
+<div style="float:left;padding-left:10%;margin-bottom:-200px;">
 <div class="rss-item">
 <fieldset>
         <legend> &raquo; {gt text='Extensions'}</legend>
@@ -43,8 +43,8 @@
 
 					
 </div>
-<div style="float:right;padding-right:10%;">
-<div class="rss-item">
+<div style="float:right;padding-right:10%;margin-bottom:-200px;">
+
 <fieldset>
         <legend> &raquo; {gt text='Blog'}</legend>
         <p>{gt text='Latest Blog articles'}</p><br />
@@ -61,7 +61,7 @@
 	                                    include 'themes/Admin/templates/rss/feed2php.inc';
                                     {/php}
 	 </fieldset>								
-</div>
+
 <div class="rss-item">
 <fieldset>
         <legend> &raquo; {gt text='Wiki'}</legend>
