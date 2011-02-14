@@ -22,11 +22,4 @@
 		        <li><a href="index.php?module=theme&amp;type=admin&amp;func=clear_cssjscombinecache&amp;authid={insert name="generateauthkey" module="Theme"}">{gt text='Delete combination cache'}</a></li>	
 		    </ul>
     </fieldset>
-    <fieldset>
-        <legend>{gt text='Check Folders'}</legend>
-            <ul>
-		        <li><a href="index.php?module=sysinfo&amp;type=admin&amp;func=ztemp">{gt text='Check Z-Temp'}</a></li>
-		        <li><a href="index.php?module=sysinfo&amp;type=admin&amp;func=filesystem">{gt text='Check Folders'}</a></li>			
-		    </ul>
-    </fieldset>
 </div>

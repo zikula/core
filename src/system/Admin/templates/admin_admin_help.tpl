@@ -1,6 +1,5 @@
 {ajaxheader ui=true}
 {include file="admin_admin_menu.tpl"}
-{modurl modname="SysInfo" type="admin" assign="system_summary_link"}
 <div class="z-admincontainer z-form">
     <h2>{gt text="Help"}</h2>
     <div id="adminhelp">

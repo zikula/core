@@ -12,9 +12,9 @@
  */
 
 /**
- * Add a method to the SysInfo module using Method not found Event Handler class.
+ * Add a method to the Users module using Method not found Event Handler class.
  */
-class SysInfo_EventHandlers_Extensions extends Zikula_EventHandler
+class Users_EventHandlers_Extensions extends Zikula_EventHandler
 {
     /**
      * Setup handler definitions.
@@ -37,20 +37,20 @@ class SysInfo_EventHandlers_Extensions extends Zikula_EventHandler
     {
         // check if this is for this handler
         $subject = $event->getSubject();
-        if (!($event['method'] == 'extensions' && $subject instanceof SysInfo_Controller_Admin)) {
+        if (!($event['method'] == 'extensions' && $subject instanceof Users_Controller_Admin)) {
             return;
         }
 
-        if (!SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
         // Zikula Modules and Themes versions
-        $view = Zikula_View::getInstance('SysInfo');
+        $view = Zikula_View::getInstance('Users');
         $view->assign('mods', ModuleUtil::getModules());
         $view->assign('themes', ThemeUtil::getAllThemes());
 
-        $event->setData($view->fetch('sysinfo_admin_extensions.tpl'));
+        $event->setData($view->fetch('users_admin_extensions.tpl'));
         $event->setNotified();
     }
 }

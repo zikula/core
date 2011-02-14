@@ -14,7 +14,7 @@
 /**
  * Plugin definition class.
  */
-class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikula_Plugin_Configurable
+class ModulePlugin_Users_Example_Plugin extends Zikula_Plugin implements Zikula_Plugin_Configurable
 {
     /**
      * Gettext enabled flag.
@@ -41,7 +41,7 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikul
      */
     protected function getMeta()
     {
-        return array('displayname' => $this->__('Example SysInfo Plugin'),
+        return array('displayname' => $this->__('Example Users Plugin'),
                      'description' => $this->__('Adds link to administration menu.'),
                      'version'     => '1.0.0'
                     );
@@ -57,12 +57,12 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikul
     public function addLinks(Zikula_Event $event)
     {
         // check if this is for this handler
-        if (!($event->getSubject() instanceof SysInfo_Api_Admin && $event['modfunc'][1] == 'getlinks')) {
+        if (!($event->getSubject() instanceof Users_Api_Admin && $event['modfunc'][1] == 'getlinks')) {
             return;
         }
 
-        if (SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
-            $event->data[] = array('url' => ModUtil::url('SysInfo', 'admin', 'anotherfunction'), 'text' => $this->__('Here is another link'));
+        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+            $event->data[] = array('url' => ModUtil::url('Users', 'admin', 'anotherfunction'), 'text' => $this->__('Here is another link'));
         }
     }
 
@@ -77,11 +77,11 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikul
     {
         // check if this is for this handler
         $subject = $event->getSubject();
-        if (!($event['method'] == 'anotherfunction' && $subject instanceof SysInfo_Controller_Admin)) {
+        if (!($event['method'] == 'anotherfunction' && $subject instanceof Users_Controller_Admin)) {
             return;
         }
 
-        if (!SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -94,10 +94,10 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikul
     /**
      * Controller configuration getter.
      *
-     * @return ModulePlugin_SysInfo_Example_Controller
+     * @return ModulePlugin_Users_Example_Controller
      */
     public function getConfigurationController()
     {
-        return new ModulePlugin_SysInfo_Example_Controller($this->serviceManager, array('plugin' => $this));
+        return new ModulePlugin_Users_Example_Controller($this->serviceManager, array('plugin' => $this));
     }
 }
