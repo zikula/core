@@ -721,16 +721,18 @@ abstract class Zikula_Base implements Zikula_Translatable
 
     /**
      * Check Csfr token.
-     * 
-     * @param string $token Nonce.
+     *
+     * @param string $key     Where to find the nonce in POST.
+     * @param string $failUrl The URL to redirect on fail, null means no redirect.
      *
      * @return void
      */
-    public function checkCsfrToken($token, $url)
+    public function checkCsfrToken($key='csrftoken', $failUrl=null)
     {
+        $token = $this->request->post[$key];
         $tokenValidator = $this->serviceManager->getService('token.validator');
         if (!$tokenValidator->validate($token)) {
-            LogUtil::registerAuthidError($url);
+            LogUtil::registerAuthidError($failUrl);
             throw new Zikula_Exception_Forbidden(__('Security token validation failed'));
         }
     }
