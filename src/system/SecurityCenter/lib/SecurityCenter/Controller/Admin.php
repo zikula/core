@@ -105,7 +105,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->checkCsrfToken('csrftoken', ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
+        $this->checkCsrfToken(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
 
         $validates = true;
 
@@ -460,7 +460,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->checkCsrfToken('csrftoken', ModUtil::url('SecurityCenter', 'admin', 'purifierconfig'));
+        $this->checkCsrfToken(ModUtil::url('SecurityCenter', 'admin', 'purifierconfig'));
 
         // Load HTMLPurifier Classes
         $purifier = SecurityCenter_Util::getpurifier();
@@ -752,7 +752,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
         $redirect_url = ModUtil::url('SecurityCenter', 'admin', 'viewidslog');
 
         // Confirm authorisation code
-        $this->checkCsrfToken('csrftoken', $redirect_url);
+        $this->checkCsrfToken($redirect_url);
 
         // delete all entries
         if (ModUtil::apiFunc('SecurityCenter', 'admin', 'purgeidslog')) {
@@ -801,7 +801,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->checkCsrfToken('csrftoken', ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'));
+        $this->checkCsrfToken(ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'));
 
         // update the allowed html settings
         $allowedhtml = array();
