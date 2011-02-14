@@ -25,6 +25,8 @@ h2 { font-size:15px; font-weight: normal; }
 h3 { font-size:12px; line-height:14px; font-weight: normal;padding-bottom:2px;padding-top:4px;font-weight:bold;}
 h3 a{ text-decoration: none; }
 
+.rss-item{padding-left:12px;list-style:none;}
+
 .header { height:89px; background:url(../images/main/header.gif); white-space:nowrap; }
 .header h1{ float:left; display:inline; padding-top:12px; }
 .top-right-navi { float:right; white-space:nowrap; color:#fff; padding-top:15px; }
