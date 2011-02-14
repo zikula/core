@@ -69,7 +69,7 @@
                 {/foreach}
                 </td>
                 <td>{$event.date|safetext}</td>
-                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id authid=$authkey}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
+                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id}">{img src=button_cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
             </tr>
             {foreachelse}
             <tr class="z-datatableempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>
