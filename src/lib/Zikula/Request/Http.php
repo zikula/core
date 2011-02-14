@@ -19,44 +19,60 @@
 class Zikula_Request_Http extends Zikula_Request_Request
 {
     /**
+     * Container for GET.
+     *
      * @var Zikula_Request_Collection
      */
-    protected $get;
+    public $get;
 
     /**
+     * Container for POST.
+     *
      * @var Zikula_Request_Collection
      */
-    protected $post;
+    public $post;
 
     /**
+     * Container for FILES.
+     *
      * @var Zikula_Request_Collection
      */
-    protected $files;
+    public $files;
 
     /**
+     * Container for COOKIES.
+     * 
      * @var Zikula_Request_Collection
      */
-    protected $cookie;
+    public $cookie;
 
     /**
+     * Session object.
+     *
      * @var Zikula_Session
      */
     protected $session;
 
     /**
+     * Container for SERVER.
+     *
      * @var Zikula_Request_Collection
      */
-    protected $server;
+    public $server;
 
     /**
+     * Container for ENV.
+     *
      * @var Zikula_Request_Collection
      */
-    protected $env;
+    public $env;
 
     /**
+     * Container for arguments.
+     *
      * @var Zikula_Request_Collection
      */
-    protected $args;
+    public $args;
     
     /**
      * Initialize request object.
@@ -73,36 +89,89 @@ class Zikula_Request_Http extends Zikula_Request_Request
         $this->env = isset($options['env']) ? new Zikula_Request_Collection($options['env']) : new Zikula_Request_Collection(isset($_ENV) ? $_ENV : array());
     }
 
+    /**
+     * Return the request method.
+     * 
+     * @return string
+     */
     public function getMethod()
     {
         return $this->getServer('REQUEST_METHOD');
     }
 
+    /**
+     * Getter for GET.
+     *
+     * @param string $key     Key to get.
+     * @param string $default Default if not found.
+     *
+     * @return mixed
+     */
     public function getGet($key, $default = null)
     {
         return $this->get->get($key, $default);
     }
 
+    /**
+     * Getter for POST.
+     *
+     * @param string $key     Key to get.
+     * @param string $default Default if not found.
+     *
+     * @return mixed
+     */
     public function getPost($key, $default = null)
     {
         return $this->post->get($key, $default);
     }
 
+    /**
+     * Getter for COOKIE.
+     *
+     * @param string $key     Key to get.
+     * @param string $default Default if not found.
+     *
+     * @return mixed
+     */
     public function getCookie($key, $default = null)
     {
         return $this->cookie->get($key, $default);
     }
 
+    /**
+     * Getter for SERVER.
+     *
+     * @param string $key     Key to get.
+     * @param string $default Default if not found.
+     *
+     * @return mixed
+     */
     public function getServer($key, $default = null)
     {
         return $this->server->get($key, $default);
     }
 
+    /**
+     * Getter for ENV.
+     *
+     * @param string $key     Key to get.
+     * @param string $default Default if not found.
+     *
+     * @return mixed
+     */
     public function getEnv($key, $default = null)
     {
         return $this->env->get($key, $default);
     }
 
+    /**
+     * Getter for FILES.
+     *
+     * @param string $key     Key to get.
+     * @param string $default Default if not found.
+     *
+     * @return mixed
+     */
     public function getFiles($key, $default = null)
     {
         return $this->files->get($key, $default);
@@ -123,31 +192,61 @@ class Zikula_Request_Http extends Zikula_Request_Request
         $this->session = $session;
     }
 
+    /**
+     * Is this method a GET.
+     *
+     * @return boolean
+     */
     public function isGet()
     {
         return ($this->getMethod() == 'GET') ? true : false;
     }
 
+    /**
+     * Is this method a POST.
+     *
+     * @return boolean
+     */
     public function isPost()
     {
         return ($this->getMethod() == 'POST') ? true : false;
     }
 
+    /**
+     * Is this method a PUT.
+     *
+     * @return boolean
+     */
     public function isPut()
     {
         return ($this->getMethod() == 'PUT') ? true : false;
     }
 
+    /**
+     * Is this method a DELETE.
+     *
+     * @return boolean
+     */
     public function isDelete()
     {
         return ($this->getMethod() == 'DELETE') ? true : false;
     }
 
+    /**
+     * Is this method a HEAD.
+     *
+     * @return boolean
+     */
     public function isHead()
     {
         return ($this->getMethod() == 'HEAD') ? true : false;
     }
 
+    /**
+     * Is this method a OPTIONS.
+     *
+     * @return boolean
+     */
     public function isOptions()
     {
         return ($this->getMethod() == 'OPTIONS') ? true : false;
