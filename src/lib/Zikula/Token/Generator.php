@@ -104,6 +104,11 @@ class Zikula_Token_Generator
 
     /**
      * Generate token based on ID.
+     *
+     * If tokens are intended to be one-time tokens then use a unique ID each
+     * time.  They are validated with delete=true.  If the are per-session, then
+     * they should be generated with the same unique ID and validated with
+     * delete = false leaving storage expire/GC to remove the token.
      * 
      * @param string  $id        Token ID.
      * @param integer $timestamp Create with this timestamp.

@@ -62,11 +62,16 @@ class Zikula_Token_Validate
     /**
      * Validate a token.
      *
-     * @param string $token Token to validate.
+     * Tokens should be deleted if they are generated as one-time tokens
+     * with a unique ID each time.  If the are per-session, then they should be
+     * generated with the same unique ID and not deleted when validated here.
+     *
+     * @param string  $token  Token to validate.
+     * @param boolean $delete Whether to delete the token if valid.
      *
      * @return boolean
      */
-    public function validate($token)
+    public function validate($token, $delete=true)
     {
         list($id, $hash, $timestamp) = $this->tokenGenerator->decode($token);
         $decoded = array('id' => $id, 'timestamp' => $timestamp);
@@ -92,7 +97,9 @@ class Zikula_Token_Validate
         }
 
         // All checked out, delete the token and return true.
-        $this->storage->delete($decoded['id']);
+        if ($delete) {
+            $this->storage->delete($decoded['id']);
+        }
         return true;
     }
 }
