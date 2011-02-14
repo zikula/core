@@ -6,11 +6,11 @@
 <div class="{$pagerPluginArray.class}">
     {if $pagerPluginArray.currentPage > 1}
         <a href="{$pagerPluginArray.prevUrl}" class="skip">
-            {img modname=core set=icons/extrasmall src="previous.gif" __alt="Previous page" __title="Previous page"}
+            {img modname=core set=icons/extrasmall src="previous.png" __alt="Previous page" __title="Previous page"}
         </a>
     {else}
         <span class="skip">
-            {img modname=core set=icons/extrasmall src="1leftarrow_inactive.gif" __alt="No previous pages" __title="No previous pages"}
+            {img modname=core set=icons/extrasmall src="1leftarrow_inactive.png" __alt="No previous pages" __title="No previous pages"}
         </span>
     {/if}
     <span>{$separator}</span>
@@ -43,11 +43,11 @@
 
     {if $pagerPluginArray.currentPage < $pagerPluginArray.countPages}
         <a href="{$pagerPluginArray.nextUrl}" class="skip">
-            {img modname=core set=icons/extrasmall src="next.gif" __alt="Next page" __title="Next page"}
+            {img modname=core set=icons/extrasmall src="next.png" __alt="Next page" __title="Next page"}
         </a>
     {else}
         <span class="skip">
-            {img modname=core set=icons/extrasmall src="1rightarrow_inactive.gif" __alt="No further pages" __title="No further pages"}
+            {img modname=core set=icons/extrasmall src="1rightarrow_inactive.png" __alt="No further pages" __title="No further pages"}
         </span>
     {/if}
 </div>

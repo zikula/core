@@ -1,6 +1,6 @@
 {include file="search_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=configure.gif set=icons/large __alt="Settings"}</div>
+    <div class="z-adminpageicon">{img modname=core src=configure.png set=icons/large __alt="Settings"}</div>
     <h2>{gt text="Settings"}</h2>
     <form class="z-form" action="{modurl modname="Search" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
@@ -30,8 +30,8 @@
             </fieldset>
 
             <div class="z-buttons z-formbuttons">
-                {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a href="{modurl modname=Admin type=admin func=adminpanel}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+                <a href="{modurl modname=Admin type=admin func=adminpanel}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </div>
     </form>

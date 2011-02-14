@@ -318,26 +318,26 @@ class Users_Controller_Admin extends Zikula_Controller
                 // Options for the item.
                 if ($useProfileModule) {
                     $options[] = array('url'   => ModUtil::url($profileModule, 'user', 'view', array('uid' => $item['uid'])),
-                                       'image' => 'personal.gif',
+                                       'image' => 'personal.png',
                                        'title' => $this->__f('View the profile of \'%s\'', $item['uname']));
                 }
                 if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_MODERATE)) {
                     $options[] = array('url'   => ModUtil::url('Users', 'admin', 'lostUsername', array('uid' => $item['uid'], 'authid' => $authId)),
-                                       'image' => 'lostusername.gif',
+                                       'image' => 'lostusername.png',
                                        'title' => $this->__f('Send user name to \'%s\'', $item['uname']));
 
                     $options[] = array('url'   => ModUtil::url('Users', 'admin', 'lostPassword', array('uid' => $item['uid'], 'authid' => $authId)),
-                                       'image' => 'lostpassword.gif',
+                                       'image' => 'lostpassword.png',
                                        'title' => $this->__f('Send password recovery code to \'%s\'', $item['uname']));
 
                     if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_EDIT)) {
                         $options[] = array('url'   => ModUtil::url('Users', 'admin', 'modify', array('userid' => $item['uid'])),
-                                           'image' => 'xedit.gif',
+                                           'image' => 'xedit.png',
                                            'title' => $this->__f('Edit \'%s\'', $item['uname']));
 
                         if (($currentUid != $item['uid']) && SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_DELETE)) {
                             $options[] = array('url'   => ModUtil::url('Users', 'admin', 'deleteUsers', array('userid' => $item['uid'])),
-                                               'image' => '14_layer_deletelayer.gif',
+                                               'image' => '14_layer_deletelayer.png',
                                                'title' => $this->__f('Delete \'%s\'', $item['uname']));
                         }
                     }
@@ -383,25 +383,25 @@ class Users_Controller_Admin extends Zikula_Controller
             }
             // show user's activation state
             if ($items[$key]['activated'] == UserUtil::ACTIVATED_ACTIVE) {
-                $activationImg = 'greenled.gif';
+                $activationImg = 'greenled.png';
                 $activationTitle = $this->__('Active');
             } elseif ($items[$key]['activated'] == UserUtil::ACTIVATED_INACTIVE_TOUPP) {
-                $activationImg = 'yellowled.gif';
+                $activationImg = 'yellowled.png';
                 $activationTitle = $this->__('Inactive until Legal terms accepted');
             } elseif ($items[$key]['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD) {
-                $activationImg = 'yellowled.gif';
+                $activationImg = 'yellowled.png';
                 $activationTitle = $this->__('Inactive until changing password');
             } elseif ($items[$key]['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP) {
-                $activationImg = 'yellowled.gif';
+                $activationImg = 'yellowled.png';
                 $activationTitle = $this->__('Inactive until change password and accept legal terms');
             } elseif ($items[$key]['activated'] == UserUtil::ACTIVATED_PENDING_DELETE) {
-                $activationImg = '14_layer_deletelayer.gif';
+                $activationImg = '14_layer_deletelayer.png';
                 $activationTitle = $this->__('Inactive, pending deletion');
             } elseif ($items[$key]['activated'] == UserUtil::ACTIVATED_INACTIVE) {
-                $activationImg = 'yellowled.gif';
+                $activationImg = 'yellowled.png';
                 $activationTitle = $this->__('Inactive');
             } else {
-                $activationImg = 'status_unknown.gif';
+                $activationImg = 'status_unknown.png';
                 $activationTitle = $this->__('Status unknown');
             }
             $items[$key]['activation'] = array('image' => $activationImg,

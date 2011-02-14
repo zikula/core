@@ -76,14 +76,14 @@
     z-index: 1002;
 }
 #ImageViewerPrev {
-    background: url("../../../images/global/blank.gif") left center no-repeat;
+    background: url("../../../images/global/blank.png") left center no-repeat;
     left: 1%;
 }
 #ImageViewerPrev:hover {
     background: url("zprev.png") left center no-repeat;
 }
 #ImageViewerNext {
-    background: url("../../../images/global/blank.gif") left center no-repeat;
+    background: url("../../../images/global/blank.png") left center no-repeat;
     right: 1%;
 }
 #ImageViewerNext:hover {

@@ -3,7 +3,7 @@
 
 <div id="pageLockOverlayForm" style="position: absolute; width: 300px; height: 200px; z-index: 100;">
   <img src="images/ajax/icon_animated_busy2.gif" alt=""/>
-  <!--<cbm:Image runat="server" ImageUrl="indicator_wheel4.gif" ImageAlign="Right"/>-->
+  <!--<cbm:Image runat="server" ImageUrl="indicator_circle.gif" ImageAlign="Right"/>-->
   <h2>{gt text="This page is locked"}</h2>
   <p>{gt text="This page is locked because another user is working on it. Please wait: the page will be unlocked automatically when the other user has finished, and you will be informed."}</p>
   <p>{gt text="Locked by %s." tag1=$lockedBy}.</p>

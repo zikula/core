@@ -1,6 +1,6 @@
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=db_update.gif set=icons/large __alt="Export IDS Log"}</div>
+    <div class="z-adminpageicon">{img modname=core src=db_update.png set=icons/large __alt="Export IDS Log"}</div>
     
     <h2>{gt text="Export IDS Log"}</h2>
 
@@ -33,8 +33,8 @@
                 </div>
             </fieldset>
             <div class="z-formbuttons z-buttons">
-                {button src='button_ok.gif' set='icons/extrasmall' __alt='Export' __title='Export' __text='Export'}
-                <a href="{modurl modname='SecurityCenter' type='admin' func='viewidslog'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                {button src='button_ok.png' set='icons/extrasmall' __alt='Export' __title='Export' __text='Export'}
+                <a href="{modurl modname='SecurityCenter' type='admin' func='viewidslog'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </div>
     </form>

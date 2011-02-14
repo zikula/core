@@ -3,7 +3,7 @@
 {include file="admin_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=windowlist.png set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <table class="z-datatable">
         <thead>
@@ -29,7 +29,7 @@
         </tbody>
     </table>
     <div class="z-adminviewbuttons">
-        <a href="{modurl modname=Admin type=admin func=help fragment=view fqurl=true}">{img modname=core src=agt_support.gif set=icons/small __alt="Help" __title="Help"}</a>
+        <a href="{modurl modname=Admin type=admin func=help fragment=view fqurl=true}">{img modname=core src=agt_support.png set=icons/small __alt="Help" __title="Help"}</a>
     </div>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>

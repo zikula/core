@@ -1,7 +1,7 @@
 {include file="extensions_admin_menu.tpl"}
 {ajaxheader modname="Extensions" filename="hooks.js"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=package.gif set=icons/large __alt="Legacy hooks to enable for this module"}</div>
+    <div class="z-adminpageicon">{img modname=core src=package.png set=icons/large __alt="Legacy hooks to enable for this module"}</div>
     <h2>{gt text="Basic legacy hook settings for"} {modgetinfo modid=$id info=displayname}</h2>
     <p class="z-warningmsg">{gt text="Please note that only legacy module types appear in this list."}</p>
     <ul id="extendedhookslinks" class="z-hide z-menulinks">
@@ -27,8 +27,8 @@
                 {/section}
             </fieldset>
             <div class="z-buttons z-formbuttons">
-                {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+                <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </div>
     </form>

@@ -133,7 +133,7 @@
                         <input type="text" name="menutree[linkclasses][{$id}][title]" value="{$class.title|safehtml}" size="40" maxlength="255" />
                     </span>
                     <span class="z-itemcell z-w20">
-                        <a href="#" class="menutree_linkclass_del">{img src='delete_table_row.gif' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Delete class"}</a>
+                        <a href="#" class="menutree_linkclass_del">{img src='delete_table_row.png' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Delete class"}</a>
                     </span>
                 </li>
                 {/foreach}
@@ -145,12 +145,12 @@
                         <input type="text" name="menutree[linkclasses][{$classescount}][title]" size="40" maxlength="255" />
                     </span>
                     <span class="z-itemcell z-w20">
-                        <a href="#" class="menutree_linkclass_del">{img src='delete_table_row.gif' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Delete class"}</a>
+                        <a href="#" class="menutree_linkclass_del">{img src='delete_table_row.png' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Delete class"}</a>
                     </span>
                 </li>
             </ul>
             {gt text="Add" assign="alt"}
-            <a href="#" id="menutree_linkclass_add">{img src='insert_table_row.gif' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Add class"}</a>
+            <a href="#" id="menutree_linkclass_add">{img src='insert_table_row.png' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Add class"}</a>
         </fieldset>
     </fieldset>
     {/if}

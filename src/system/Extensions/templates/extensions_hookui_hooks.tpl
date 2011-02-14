@@ -8,7 +8,7 @@
 
 <div class="z-admincontainer">
     {* TODO - large icon for hooks ? *}
-    <div class="z-adminpageicon">{img modname='core' src='configure.gif' set='icons/large' __alt='Hooks'}</div>
+    <div class="z-adminpageicon">{img modname='core' src='configure.png' set='icons/large' __alt='Hooks'}</div>
     <h2>{gt text='Hooks'}</h2>
 
     <div class="z-form">
@@ -72,7 +72,7 @@
                                 </div>
 
                                 <div class="z-floatleft z-w10 z-center">
-                                    {img src="attach.gif" modname="core" set="icons/extrasmall"}
+                                    {img src="attach.png" modname="core" set="icons/extrasmall"}
                                 </div>
 
                                 <div class="z-floatleft z-w45">

@@ -1,6 +1,6 @@
 {include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=agt_update_misc.gif set=icons/large __alt="Install"}</div>
+    <div class="z-adminpageicon">{img modname=core src=agt_update_misc.png set=icons/large __alt="Install"}</div>
     <h2>{gt text="Install"} - {modgetinfo modid=$id info=displayname}</h2>
     <form class="z-form" action="{modurl modname="Extensions" type="admin" func="initialise"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
@@ -57,9 +57,9 @@
             
             <div class="z-buttons z-formbuttons">
                 {if !$fataldependency}
-                {button src=button_ok.gif set=icons/extrasmall __alt="Accept" __title="Accept" __text="Accept"}
+                {button src=button_ok.png set=icons/extrasmall __alt="Accept" __title="Accept" __text="Accept"}
                 {/if}
-                <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </div>
     </form>

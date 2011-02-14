@@ -63,7 +63,7 @@ Category.Attributes.Add = function(inputElement)
     var newTd3 = newRow.insertCell(2);
     var newInput3 = document.createElement("input");
     newInput3.type = 'image';
-    newInput3.src = 'images/icons/extrasmall/edit_remove.gif';
+    newInput3.src = 'images/icons/extrasmall/edit_remove.png';
     newInput3.onclick = function() { return Category.Attributes.Remove(newInput3); }
     newTd3.appendChild(newInput3);
 

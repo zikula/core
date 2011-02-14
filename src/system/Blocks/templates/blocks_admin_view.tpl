@@ -4,7 +4,7 @@
 {gt text="Click to deactivate this block" assign=deactivate}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View" }</div>
+    <div class="z-adminpageicon">{img modname=core src=windowlist.png set=icons/large __alt="View" }</div>
     <h2>{gt text="Blocks list"}</h2>
     <p class="z-informationmsg">{gt text="This is the list of blocks present in your system, you can use the filter to display only certain blocks. The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}</p>
     <form class="z-form" action="{modurl modname="Blocks" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
@@ -79,12 +79,12 @@
                 <td>{$block.language|safetext}</td>
                 <td>
                     {if $block.active}
-                    <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.gif" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate id="active_`$block.bid`"}{img src="redled.gif" modname="core" set="icons/extrasmall" class="tooltips" title=$activate alt=$activate style="display: none;" id="inactive_`$block.bid`"}</a>
-                    <noscript><div>{img src=greenled.gif modname=core set=icons/extrasmall __title="Active" __alt="Active" }</div></noscript>
+                    <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate id="active_`$block.bid`"}{img src="redled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$activate alt=$activate style="display: none;" id="inactive_`$block.bid`"}</a>
+                    <noscript><div>{img src=greenled.png modname=core set=icons/extrasmall __title="Active" __alt="Active" }</div></noscript>
                     &nbsp;<span id="activity_{$block.bid}">{gt text="Active"}</span>
                     {else}
-                    <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.gif" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate style="display: none;" id="active_`$block.bid`"}{img src="redled.gif" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate id="inactive_`$block.bid`"}</a>
-                    <noscript><div>{img src=redled.gif modname=core set=icons/extrasmall __title="Inactive" __alt="Inactive" }</div></noscript>
+                    <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate style="display: none;" id="active_`$block.bid`"}{img src="redled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate id="inactive_`$block.bid`"}</a>
+                    <noscript><div>{img src=redled.png modname=core set=icons/extrasmall __title="Inactive" __alt="Inactive" }</div></noscript>
                     &nbsp;<span id="activity_{$block.bid}">{gt text="Inactive"}</span>
                     {/if}
                 </td>

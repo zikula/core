@@ -14,7 +14,7 @@
 {/if}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='core' src='xedit.gif' set='icons/large' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname='core' src='xedit.png' set='icons/large' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 
@@ -103,11 +103,11 @@
             {notifydisplayhooks eventname='users.hook.user.ui.edit' area='modulehook_area.users.user' subject=$userinfo id=$userinfo.uid caller="Users"}
 
             <div class="z-center z-buttons">
-                {button src='button_ok.gif' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
-                <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
-                {if $userinfo.uid != $coredata.user.uid}<a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userinfo.uid}">{img modname='core' set='icons/extrasmall' src="delete_user.gif" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}
-                <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$userinfo.uid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostusername.gif" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
-                <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$userinfo.uid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostpassword.gif" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
+                {button src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
+                <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                {if $userinfo.uid != $coredata.user.uid}<a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userinfo.uid}">{img modname='core' set='icons/extrasmall' src="delete_user.png" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}
+                <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$userinfo.uid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
+                <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$userinfo.uid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
             </div>
         </div>
     </form>

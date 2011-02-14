@@ -190,15 +190,15 @@ ul.systemrequirements li {
 }
 
 ul.systemrequirements li.passed {
-    background-image: url(../../images/icons/extrasmall/button_ok.gif);
+    background-image: url(../../images/icons/extrasmall/button_ok.png);
 }
 
 ul.systemrequirements li.failed {
-    background-image: url(../../images/icons/extrasmall/button_cancel.gif);
+    background-image: url(../../images/icons/extrasmall/button_cancel.png);
 }
 
 ul.systemrequirements li.warning {
-    background-image: url(../../images/icons/extrasmall/info.gif);
+    background-image: url(../../images/icons/extrasmall/info.png);
 }
 
 .validationfailed {

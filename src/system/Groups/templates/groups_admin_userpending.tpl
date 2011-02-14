@@ -2,7 +2,7 @@
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=filenew.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=filenew.png set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     {if $action != "deny" and $action != "accept"}
     {gt text="Error! Could not load data."}
@@ -40,9 +40,9 @@
 
             <div class="z-buttons z-formbuttons">
                 {if $action == "deny"}
-                <button type="submit">{img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Deny" __title="Deny"} {gt text="Deny"}</button>
+                <button type="submit">{img modname=core src=14_layer_deletelayer.png set=icons/extrasmall __alt="Deny" __title="Deny"} {gt text="Deny"}</button>
                 {else}
-                <button type="submit">{img modname=core src=button_ok.gif set=icons/extrasmall __alt="Accept" __title="Accept"} {gt text="Accept"}</button>
+                <button type="submit">{img modname=core src=button_ok.png set=icons/extrasmall __alt="Accept" __title="Accept"} {gt text="Accept"}</button>
                 {/if}
             </div>
         </div>

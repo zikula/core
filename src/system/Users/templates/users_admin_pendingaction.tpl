@@ -27,7 +27,7 @@
                 </div>
             </fieldset>
             <div class="z-formbuttons z-buttons">
-                {button src='button_ok.gif' set='icons/extrasmall' __alt='Accept' __title='Accept' __text='Accept'}
+                {button src='button_ok.png' set='icons/extrasmall' __alt='Accept' __title='Accept' __text='Accept'}
             </div>
         </div>
     </form>

@@ -1,7 +1,7 @@
 {gt text="Move category" assign=templatetitle}
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=editcut.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=editcut.png set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="move"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
@@ -23,8 +23,8 @@
                 </div>
             </fieldset>
             <div class="z-buttons z-formbuttons">
-                {button src=button_ok.gif set=icons/extrasmall __alt="Move" __title="Move" __text="Move"}
-                <a href="{modurl modname=Categories type=admin}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                {button src=button_ok.png set=icons/extrasmall __alt="Move" __title="Move" __text="Move"}
+                <a href="{modurl modname=Categories type=admin}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </div>
     </form>

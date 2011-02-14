@@ -2,7 +2,7 @@
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.tpl"}
     {gt text="Page configuration assignments" assign=templatetitle}
-    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=xedit.png set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
     <table class="z-datatable">
         <thead>
@@ -18,8 +18,8 @@
                 <td>{$name|safetext}</td>
                 <td>{$filesection.file|safetext}</td>
                 <td class="z-right">
-                    <a href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
-                    <a href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete"}</a>
+                    <a href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=xedit.png set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
+                    <a href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=14_layer_deletelayer.png set=icons/extrasmall __alt="Delete" __title="Delete"}</a>
                 </td>
             </tr>
             {/foreach}
@@ -39,7 +39,7 @@
             <tr class="{cycle name=pageconfigs values=z-odd,z-even}">
                 <td>{$filename|safetext}</td>
                 <td>{$fileexists|yesno}</td>
-                <td class="z-right"><a href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}</a></td>
+                <td class="z-right"><a href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}">{img modname=core src=xedit.png set=icons/extrasmall __alt="Edit" __title="Edit"}</a></td>
             </tr>
             {/foreach}
         </tbody>
@@ -79,8 +79,8 @@
                     <input id="theme_filename" type="text" name="filename" size="30" />
                 </div>
                 <div class="z-buttons z-formbuttons">
-                    {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                    <a href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                    {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+                    <a href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 </div>
             </fieldset>
         </div>

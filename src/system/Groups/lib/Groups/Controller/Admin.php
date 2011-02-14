@@ -96,18 +96,18 @@ class Groups_Controller_Admin extends Zikula_Controller
                     $membersurl = ModUtil::url('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid']));
                     $options[] = array('url' => ModUtil::url('Groups', 'admin', 'modify', array('gid'     => $item['gid'])),
                             'title'   => $this->__('Edit'),
-                            'imgfile' => 'xedit.gif');
+                            'imgfile' => 'xedit.png');
                     if ((SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_DELETE))
                             && ($item['gid'] != $defaultgroup) && ($item['gid'] != $primaryadmingroup))
                     {
                         $deleteurl  = ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid']));
                         $options[] = array('url' => ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid'])),
                                 'title'   => $this->__('Delete'),
-                                'imgfile' => '14_layer_deletelayer.gif');
+                                'imgfile' => '14_layer_deletelayer.png');
                     }
                     $options[] = array('url' => ModUtil::url('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid'])),
                             'title'   => $this->__('Group membership'),
-                            'imgfile' => 'agt_family.gif');
+                            'imgfile' => 'agt_family.png');
                     $nbuser = ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $item['gid']));
                     $groups[] = array('name'        => $item['name'],
                             'gid'         => $item['gid'],
@@ -485,7 +485,7 @@ class Groups_Controller_Admin extends Zikula_Controller
                         'url'     => ModUtil::url('Groups', 'admin', 'removeuser', array('gid'    => $item['gid'],
                         'uid'     => $user['uid'],
                         'authid'  => SecurityUtil::generateAuthKey())),
-                        'imgfile' => 'edit_remove.gif',
+                        'imgfile' => 'edit_remove.png',
                         'title'   => $this->__('Remove user from group')
                     );
                 }

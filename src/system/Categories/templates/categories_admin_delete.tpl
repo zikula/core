@@ -1,7 +1,7 @@
 {gt text="Delete category" assign=templatetitle}
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=trashcan_empty.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=trashcan_empty.png set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>
 
     <p class="z-warningmsg">
@@ -35,8 +35,8 @@
                 <input type="hidden" name="subcat_action" id="subcat_action" value="delete" />
                 {/if}
                 <div class="z-buttons z-formbuttons">
-                    {button class="z-btgreen" src=button_ok.gif set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
-                    <a class="z-btred" href="{modurl modname=Categories type=admin}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                    {button class="z-btgreen" src=button_ok.png set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
+                    <a class="z-btred" href="{modurl modname=Categories type=admin}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 </div>
             </fieldset>
         </div>

@@ -3,12 +3,12 @@
     {if $pagerPluginArray.currentPage > 1}
         {gt text="First Page" assign="firstpage"}
         <a href="{$pagerPluginArray.firstUrl}" title="{$firstpage}">
-            {img modname=core set=icons/extrasmall src="2leftarrow.gif" title=$firstpage alt=$firstpage}
+            {img modname=core set=icons/extrasmall src="2leftarrow.png" title=$firstpage alt=$firstpage}
         </a>
         {$separator}
         {gt text="Previous Page" assign="previouspage"}
         <a href="{$pagerPluginArray.prevUrl}" title="{$previouspage}">
-            {img modname=core set=icons/extrasmall src="1leftarrow.gif" title=$previouspage alt=$previouspage}
+            {img modname=core set=icons/extrasmall src="1leftarrow.png" title=$previouspage alt=$previouspage}
         </a> {$separator}
     {/if}
 
@@ -20,12 +20,12 @@
         {$separator}
         {gt text="Next Page" assign="nextpage"}
         <a href="{$pagerPluginArray.nextUrl}" title="{$nextpage}">
-            {img modname=core set=icons/extrasmall src="1rightarrow.gif" title=$nextpage alt=$nextpage}
+            {img modname=core set=icons/extrasmall src="1rightarrow.png" title=$nextpage alt=$nextpage}
         </a>
         {$separator}
         {gt text="Last Page" assign="lastpage"}
         <a href="{$pagerPluginArray.lastUrl}" title="{$lastpage}">
-            {img modname=core set=icons/extrasmall src="2rightarrow.gif" title=$lastpage alt=$lastpage}
+            {img modname=core set=icons/extrasmall src="2rightarrow.png" title=$lastpage alt=$lastpage}
         </a>
     {/if}
 </div>
