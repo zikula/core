@@ -27,7 +27,7 @@ class Categories_Api_Admin extends Zikula_Api
         $links = array();
 
         if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('Categories', 'admin', 'view'), 'text' => $this->__('Categories list'), 'class' => 'z-icon-es-list');
+            $links[] = array('url' => ModUtil::url('Categories', 'admin', 'view'), 'text' => $this->__('Categories list'), 'class' => 'z-icon-es-view');
         }
         if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
             $links[] = array('url' => ModUtil::url('Categories', 'admin', 'newcat'), 'text' => $this->__('Create new category'), 'class' => 'z-icon-es-new');

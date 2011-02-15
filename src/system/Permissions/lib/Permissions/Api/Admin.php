@@ -499,7 +499,7 @@ class Permissions_Api_Admin extends Zikula_Api
         $links = array();
 
         if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'view', array()), 'text' => $this->__('Permission rules list'), 'id' => 'permissions_view', 'class' => 'z-icon-es-list');
+            $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'view', array()), 'text' => $this->__('Permission rules list'), 'id' => 'permissions_view', 'class' => 'z-icon-es-view');
         }
         if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADD)) {
             $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'listedit', array('action' => 'add')), 'text' => $this->__('Create new permission rule'), 'id' => 'permissions_new', 'class' => 'z-icon-es-new');

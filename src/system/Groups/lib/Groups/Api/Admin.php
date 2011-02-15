@@ -494,7 +494,7 @@ class Groups_Api_Admin extends Zikula_Api
         $links = array();
 
         if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('Groups', 'admin', 'view'), 'text' => $this->__('Groups list'), 'id' => 'groups_view', 'class' => 'z-icon-es-list');
+            $links[] = array('url' => ModUtil::url('Groups', 'admin', 'view'), 'text' => $this->__('Groups list'), 'id' => 'groups_view', 'class' => 'z-icon-es-view');
         }
         if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD)) {
             $links[] = array('url' => ModUtil::url('Groups', 'admin', 'newgroup'), 'text' => $this->__('Create new group'), 'id' => 'groups_new', 'class' => 'z-icon-es-new');

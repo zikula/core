@@ -91,7 +91,7 @@
 }
 
 #DebugToolbarContainer #DebugToolbar ul#DebugToolbarLinks li.sql {
-    background: url("../images/icons/extrasmall/database.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/db.png") no-repeat scroll 0 50% transparent;
     padding-left: 20px;
 }
 

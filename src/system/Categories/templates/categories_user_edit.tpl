@@ -12,7 +12,7 @@
 
 <ul class="z-menulinks">
     {if ($referer)}
-    <li><a class="z-icon-es-list" href="{modurl modname="Categories" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
+    <li><a class="z-icon-es-view" href="{modurl modname="Categories" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
     {/if}
     <li><a class="z-icon-es-regenerate" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
 </ul>

@@ -84,7 +84,7 @@
                         <button class="z-imagebutton z-hide tooltips" id="modifyajax_{$group.gid}" title="{gt text="Edit group: `$group.name`"}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
                         <a id="modify_{$group.gid}"  href="{$group.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit group: `$group.name`" __alt="Edit" class='tooltips'}</a>
                         <a id="delete_{$group.gid}"     href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.png modname=core set=icons/extrasmall __title="Delete group: `$group.name`" __alt="Delete" class='tooltips'}</a>
-                        <a id="members_{$group.gid}"  href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=edit_group.png modname=core set=icons/extrasmall __title="Membership of group: `$group.name`" __alt="Group membership" class='tooltips'}</a>
+                        <a id="members_{$group.gid}"  href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=group.png modname=core set=icons/extrasmall __title="Membership of group: `$group.name`" __alt="Group membership" class='tooltips'}</a>
                         <script type="text/javascript">
                             //$('insert_{{$group.gid}}').addClassName('z-hide');
                             $('modify_{{$group.gid}}').addClassName('z-hide');

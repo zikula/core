@@ -437,12 +437,12 @@ class Users_Api_Admin extends Zikula_Api
         $submenulinks = array();
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'view'), 'text' => $this->__('Users list'), 'class' => 'z-icon-es-list');
+            $links[] = array('url' => ModUtil::url('Users', 'admin', 'view'), 'text' => $this->__('Users list'), 'class' => 'z-icon-es-view');
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $pending = ModUtil::apiFunc('Users', 'registration', 'countAll');
             if ($pending) {
-                $links[] = array('url' => ModUtil::url('Users', 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'class' => 'z-icon-es-adduser');
+                $links[] = array('url' => ModUtil::url('Users', 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'class' => 'user-icon-adduser');
             }
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
