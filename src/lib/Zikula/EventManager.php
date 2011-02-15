@@ -67,7 +67,12 @@ class Zikula_EventManager
 
         $weight = (integer)$weight;
         if (!$handler instanceof Zikula_ServiceHandler && !is_callable($handler)) {
-            throw new InvalidArgumentException('Handler given is not a valid PHP callback or ServiceHandler instance');
+            if (is_array($handler)) {
+                $callableText = is_object($handler[0]) ? get_class($handler[0]) . "->$handler[1]()" : "$handler[0]::$handler[1]()";
+            } else {
+                $callableText = "$handler()";
+            }
+            throw new InvalidArgumentException(sprintf('Handler %s given is not a valid PHP callback or ServiceHandler instance', $callableText));
         }
 
         if (!isset($this->handlers[$name][$weight])) {
