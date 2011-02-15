@@ -474,6 +474,10 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      */
     public function isEnabled()
     {
+        if ($this instanceof Zikula_Plugin_AlwaysOn) {
+            return true;
+        }
+        
         $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
         return ($plugin['state'] === PluginUtil::ENABLED) ? true : false;
     }
@@ -485,6 +489,10 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      */
     public function isInstalled()
     {
+        if ($this instanceof Zikula_Plugin_AlwaysOn) {
+            return true;
+        }
+
         $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
         return ($plugin['state'] === PluginUtil::NOTINSTALLED) ? false : true;
     }

@@ -1128,6 +1128,11 @@ class Extensions_Controller_Admin extends Zikula_Controller
         foreach ($pluginClasses as $className) {
             $instance = PluginUtil::loadPlugin($className);
             $pluginstate = PluginUtil::getState($instance->getServiceId(), PluginUtil::getDefaultState());
+            var_dump($pluginstate);
+            if ($instance instanceof Zikula_Plugin_AlwaysOn) {
+                $pluginstate['state'] = PluginUtil::ENABLED;
+                $pluginstate['version'] = $instance->getMetaVersion();
+            }
 
             // state filer
             if ($state >= 0 && $pluginstate['state'] != $state) {
@@ -1173,6 +1178,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                            'title' => $this->__('Configure plugin'));
                     }
 
+                    if (!$instance instanceof Zikula_Plugin_AlwaysOn) {
                     $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'deactivatePlugin',
                                                     array('plugin' => $className,
                                                           'state'  => $state,
@@ -1194,7 +1200,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                 ),
                                        'image' => '14_layer_deletelayer.png',
                                        'title' => $this->__('Remove plugin'));
-
+                    }
                     break;
                 case PluginUtil::DISABLED:
                     $status = $this->__('Inactive');
