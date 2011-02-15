@@ -116,8 +116,11 @@ function smarty_function_icon($params, $view)
 
     // unset all parameters which are no html argument from $params
     unset($params['type']);
-    $assign = $params['assign'];
-    unset($params['assign']);
+    $assign = null;
+    if (isset($params['assign'])) {
+        $assign = $params['assign'];
+        unset($params['assign']);
+    }
     if (isset($params['altml'])) {
         // legacy
         unset($params['altml']);
