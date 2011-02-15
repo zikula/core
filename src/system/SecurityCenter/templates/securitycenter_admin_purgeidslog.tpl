@@ -1,14 +1,13 @@
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
-    
     <h2>{gt text="Purge IDS Log"}</h2>
 
     <ul class="z-menulinks">
         <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="z-icon-es-export">{gt text="Export IDS Log"}</a></li>
         <li><span class="z-icon-es-delete">{gt text="Purge IDS Log"}</span></li>
     </ul>
-    
+
     <p class="z-warningmsg">{gt text="Do you really want to delete the entire IDS log?"}</p>
 
     <form class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="purgeidslog"}" method="post" enctype="application/x-www-form-urlencoded">
@@ -24,5 +23,4 @@
             </fieldset>
         </div>
     </form>
-    
 </div>

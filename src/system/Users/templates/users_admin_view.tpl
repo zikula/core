@@ -2,7 +2,6 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="view" size="large"}</div>
-
     <h2>{gt text="Users list"}</h2>
 
     <div id="liveusersearch" class="z-hide z-form">

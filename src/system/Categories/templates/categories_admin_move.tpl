@@ -1,7 +1,7 @@
 {gt text="Move category" assign=templatetitle}
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=editcut.png set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{icon type="cut" size="large"}</div>
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="move"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

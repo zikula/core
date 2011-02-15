@@ -2,14 +2,15 @@
 {include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=db_comit.png set=icons/large alt=$templatetitle}</div>
-
+    <div class="z-adminpageicon">{icon type="import" size="large"}</div>
     <h2>{$templatetitle}</h2>
+
     {if $importResults neq ''}
     <div class="z-errormsg">
         {$importResults}
     </div>
     {/if}
+
     <form class="z-form" action="{modurl modname='Users' type='admin' func='import'}" method="post" enctype="multipart/form-data">
         <div>
             <input type="hidden" name="confirmed" value="1" />

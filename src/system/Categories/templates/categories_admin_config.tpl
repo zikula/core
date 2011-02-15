@@ -1,7 +1,7 @@
 {gt text="Rebuild paths" assign=templatetitle}
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=agt_update-product.png set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{icon type="regenerate" size="large"}</div>
     <h2>{$templatetitle}</h2>
     <p class="z-warningmsg">{gt text="Are you sure you want to rebuild all the internal paths for categories?"}&nbsp;{gt text="Warning! If you have a large number of categories then this action may time out, or may exceed the memory limit configured within your PHP installation."}</p>
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="rebuild_paths"}" method="post" enctype="application/x-www-form-urlencoded">

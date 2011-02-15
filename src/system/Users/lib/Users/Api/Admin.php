@@ -454,7 +454,7 @@ class Users_Api_Admin extends Zikula_Api
             $links[] = array('url' => ModUtil::url('Users', 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new', 'links' => $submenulinks);
         }
         if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'search'), 'text' => $this->__('Find and e-mail users'), 'class' => 'z-icon-es-mail');
+            $links[] = array('url' => ModUtil::url('Users', 'admin', 'search'), 'text' => $this->__('Find and e-mail users'), 'class' => 'z-icon-es-search');
         } else if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url('Users', 'admin', 'search'), 'text' => $this->__('Find users'), 'class' => 'z-icon-es-search');
         }

@@ -3,9 +3,7 @@
 {include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-
-    <div class="z-adminpageicon">{img modname='Users' src='admin.png' alt=$templatetitle}</div>
-
+    <div class="z-adminpageicon">{icon type="view" size="large"}</div>
     <h2>{$templatetitle}</h2>
 
     <form id="userlist" class="z-form" method="post" action="{modurl modname="Users" type="admin" func="processusers"}">

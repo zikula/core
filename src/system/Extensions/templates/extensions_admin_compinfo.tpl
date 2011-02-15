@@ -1,6 +1,6 @@
 {include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=documentinfo.png set=icons/large __alt="Remove module"}</div>
+    <div class="z-adminpageicon">{icon type="info" size="large"}</div>
     <h2>{gt text="Incompatible version with the core"} - {modgetinfo modid=$id info=displayname}</h2>
     <div>{gt text="The version of this module is incompatible with the version of the core."}</div>
     {if $moduleInfo.core_min neq ''}
