@@ -22,7 +22,7 @@
 }
 
 #liveusersearch .autocomplete_user ul li {
-    background: transparent url(../../../images/icons/extrasmall/edit_user.png) no-repeat scroll 0 50%;
+    background: transparent url(../../../images/icons/extrasmall/user.png) no-repeat scroll 0 50%;
     cursor: pointer;
     margin: 0;
     padding: 3px 0 3px 25px;
@@ -73,23 +73,16 @@ div.z-accountlink  img {
     float: left;
 }
 
-.z-icon-es-import {
-    background: url("../../../images/icons/extrasmall/db_comit.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-
-.z-icon-es-export {
-    background: url("../../../images/icons/extrasmall/db_update.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-
 .user-icon-adduser {
     background: transparent url("../../../images/icons/extrasmall/add_user.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
-
 .user-icon-lostusername {
     background: transparent url("../../../images/icons/extrasmall/lostusername.png") no-repeat scroll center left;
+    padding: 2px 0 2px 20px;
+}
+.user-icon-password {
+    background: transparent url("../../../images/icons/extrasmall/password.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
 

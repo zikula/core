@@ -760,11 +760,11 @@ class Users_Api_User extends Zikula_Api
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url('Users', 'user', 'loginScreen'), 'text' => $this->__('Log in'), 'class' => 'z-icon-es-user');
-            $links[] = array('url' => ModUtil::url('Users', 'user', 'lostPwdUname'), 'text' => $this->__('Lost user name or password'), 'class' => 'z-icon-es-password');
+            $links[] = array('url' => ModUtil::url('Users', 'user', 'lostPwdUname'), 'text' => $this->__('Lost user name or password'), 'class' => 'user-icon-password');
         }
 
         if ($allowregistration) {
-            $links[] = array('url' => ModUtil::url('Users', 'user', 'register'), 'text' => $this->__('New account'), 'class' => 'z-icon-es-adduser');
+            $links[] = array('url' => ModUtil::url('Users', 'user', 'register'), 'text' => $this->__('New account'), 'class' => 'user-icon-adduser');
         }
 
         return $links;

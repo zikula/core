@@ -432,7 +432,7 @@ class Blocks_Api_Admin extends Zikula_Api
         if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
             $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'view'),
                     'text' => $this->__('Blocks list'),
-                    'class' => 'z-icon-es-list',
+                    'class' => 'z-icon-es-view',
                     'links' => $submenulinks);
         }
 

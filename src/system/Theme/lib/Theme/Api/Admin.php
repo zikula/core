@@ -36,7 +36,7 @@ class Theme_Api_Admin extends Zikula_Api
         $links = array();
 
         if (SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('Theme', 'admin', 'view'), 'text' => __('Themes list'), 'class' => 'z-icon-es-list');
+            $links[] = array('url' => ModUtil::url('Theme', 'admin', 'view'), 'text' => __('Themes list'), 'class' => 'z-icon-es-view');
         }
         if (SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('Theme', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
