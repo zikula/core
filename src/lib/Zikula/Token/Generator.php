@@ -99,7 +99,7 @@ class Zikula_Token_Generator
      */
     public function uniqueId()
     {
-        return uniqid(true);
+        return uniqid('', true);
     }
 
     /**
