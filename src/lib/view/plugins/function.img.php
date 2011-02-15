@@ -69,7 +69,7 @@ function smarty_function_img($params, $view)
     $nostoponerror = (isset($params['nostoponerror'])) ? true : false;
 
     if (!isset($params['src'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnimg', 'src')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('img', 'src')));
         if ($nostoponerror == true) {
             return;
         } else {
@@ -83,7 +83,7 @@ function smarty_function_img($params, $view)
     // if the module name is 'core' then we require an image set
     if ($modname == 'core') {
         if (!isset($params['set'])) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnimg', 'set')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('img', 'set')));
             if ($nostoponerror == true) {
                 return;
             } else {
