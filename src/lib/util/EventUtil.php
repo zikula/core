@@ -20,7 +20,7 @@ class EventUtil
     /**
      * Singleton instance of EventManager.
      *
-     * @var object
+     * @var Zikula_EventManager
      */
     public static $eventManager;
 
