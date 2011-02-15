@@ -1204,7 +1204,7 @@ class Extensions_Api_Admin extends Zikula_Api
 
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins'),
                              'text' => $this->__('Plugins list'),
-                             'class' => 'z-icon-es-cubes',
+                             'class' => 'z-icon-es-gears',
                              'links' => array(
                                              array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins'),
                                                    'text' => $this->__('All')),
@@ -1218,7 +1218,7 @@ class Extensions_Api_Admin extends Zikula_Api
 
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true)),
                              'text' => $this->__('System Plugins'),
-                             'class' => 'z-icon-es-cubes',
+                             'class' => 'z-icon-es-gears',
                              'links' => array(
                                              array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true)),
                                                    'text' => $this->__('All')),
@@ -1232,7 +1232,7 @@ class Extensions_Api_Admin extends Zikula_Api
 
             $legacyHooks = DBUtil::selectObjectArray('hooks');
             if (System::isLegacyMode() && $legacyHooks) {
-                $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'legacyhooks', array('id' => 0)), 'text' => $this->__('Legacy hooks'), 'class' => 'z-icon-es-cubes');
+                $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'legacyhooks', array('id' => 0)), 'text' => $this->__('Legacy hooks'), 'class' => 'z-icon-es-hook');
             }
 
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');

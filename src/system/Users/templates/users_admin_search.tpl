@@ -2,7 +2,7 @@
 {include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname='Users' src='admin.png' alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{icon type="search" size="large"}</div>
 
     <h2>{$templatetitle}</h2>
 

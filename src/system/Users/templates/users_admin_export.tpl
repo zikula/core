@@ -2,7 +2,7 @@
 {include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=db_update.png set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{icon type="export" size="large"}</div>
 
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname='Users' type='admin' func='exporter'}" method="post" enctype="multipart/form-data">

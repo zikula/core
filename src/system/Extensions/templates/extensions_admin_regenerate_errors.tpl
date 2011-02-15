@@ -1,6 +1,6 @@
 {include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=error.png set=icons/large __alt="View"}</div>
+    <div class="z-adminpageicon">{icon type="error" size="large"}</div>
     <h2>{gt text="Error! Could not regenerate the modules list."}</h2>
 
     <p class="z-errormsg">{gt text="Error! The modules list could not be regenerated because there are one or more problems in the Zikula file system. You need to correct them before you can proceed. Please read this explanation:"}</p>

@@ -1,7 +1,7 @@
 {include file='settings_admin_menu.tpl'}
 {ajaxheader modname=Settings filename=settings_admin_multilingual.js noscriptaculous=true effects=true}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname="core" src="voice-support.png" set="icons/large" __alt="Settings"}</div>
+    <div class="z-adminpageicon">{icon type="locale" size="large"}</div>
     <h2>{gt text="Localisation settings"}</h2>
     <form class="z-form" action="{modurl modname="Settings" type="admin" func="updatemultilingual"}" method="post">
         <div>

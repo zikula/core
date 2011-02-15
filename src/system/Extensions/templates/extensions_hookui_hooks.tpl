@@ -7,7 +7,6 @@
 </div>
 
 <div class="z-admincontainer">
-    {* TODO - large icon for hooks ? *}
     <div class="z-adminpageicon">{icon type="hook" size="large"}</div>
     <h2>{gt text='Hooks'}</h2>
 

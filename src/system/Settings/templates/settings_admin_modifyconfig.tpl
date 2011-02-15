@@ -2,7 +2,7 @@
 {ajaxheader modname=Settings filename=settings_admin_modifyconfig.js noscriptaculous=true effects=true}
 {pageaddvar name="javascript" value="javascript/texpand.js"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="config" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="options" size="large"}</div>
     <h2>{gt text="Main settings"}</h2>
     <form class="z-form" action="{modurl modname="Settings" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

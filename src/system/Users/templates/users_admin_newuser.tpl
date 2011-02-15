@@ -114,7 +114,7 @@
                 <p id="users_validmessage" class="z-hide z-sub">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
                 <div class="z-formbuttons z-buttons">
                     {button id='submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
-                    {button id='checkuserajax' type='button' class='z-hide' src='help.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
+                    {button id='checkuserajax' type='button' class='z-hide' src='quick_restart.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
                     <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
                     {img id='ajax_indicator' style='display: none;' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
                 </div>

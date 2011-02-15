@@ -1,7 +1,7 @@
 {include file="securitycenter_admin_menu.tpl"}
 {ajaxheader ui=true}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=easymoblog.png set=icons/large __alt="View IDS Log"}</div>
+    <div class="z-adminpageicon">{icon type="log" size="large"}</div>
     {gt text="All" assign=lblAll}
     <h2>{gt text="View IDS Log"}</h2>
     <ul class="z-menulinks">

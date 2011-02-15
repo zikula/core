@@ -1,6 +1,6 @@
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="view" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="info" size="large"}</div>
     <h2>{gt text="Theme credits"}</h2>
     {if $themeinfo.system neq 1}
     <div style="text-align:center;">{previewimage size='large' name=$themeinfo.name id=theme_credits_preview}</div>

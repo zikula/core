@@ -2,7 +2,7 @@
 {gt text="Category registry" assign=templatetitle}
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer" id="top">
-    <div class="z-adminpageicon">{img modname=core src=kcmdf.png set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{icon type="cubes" size="large"}</div>
     <h2>{$templatetitle}</h2>
     {gt text="Choose category" assign=chooseCategory}
     {gt text="Choose module" assign=chooseModule}

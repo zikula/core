@@ -710,11 +710,11 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-delete {
-    background: url("../images/icons/extrasmall/trashcan_empty.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-display {
-    background: url("../images/icons/extrasmall/display.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/kview.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-edit {
@@ -730,7 +730,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-gears {
-    background: url("../images/icons/extrasmall/exec.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/run.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-filter {
@@ -790,7 +790,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-preview {
-    background: url("../images/icons/extrasmall/14_layer_novisible.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/demo.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-print {
@@ -802,7 +802,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-regenerate {
-    background: url("../images/icons/extrasmall/quick_restart.png") no-repeat scroll 0 50% transparent;
+    background: url("../images/icons/extrasmall/agt_update-product.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-remove {

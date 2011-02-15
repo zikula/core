@@ -1,7 +1,6 @@
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=db_update.png set=icons/large __alt="Export IDS Log"}</div>
-    
+    <div class="z-adminpageicon">{icon type="export" size="large"}</div>
     <h2>{gt text="Export IDS Log"}</h2>
 
     <ul class="z-menulinks">

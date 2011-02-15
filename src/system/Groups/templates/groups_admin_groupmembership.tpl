@@ -2,7 +2,7 @@
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=agt_family.png set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{icon type="group" size="large"}</div>
     <h2>{$templatetitle} ({$name|safetext})</h2>
     <table class="z-datatable">
         <thead>

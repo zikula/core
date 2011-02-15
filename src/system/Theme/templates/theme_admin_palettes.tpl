@@ -1,5 +1,6 @@
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
+    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
     {include file="theme_admin_modifymenu.tpl"}
     <h2>{gt text="Colour palettes"}</h2>
     {pageaddvar name="javascript" value="javascript/picky_color/picky_color.js"}
