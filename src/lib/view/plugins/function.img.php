@@ -184,11 +184,14 @@ function smarty_function_img($params, $view)
     $basepath = (isset($params['fqurl']) && $params['fqurl']) ? System::getBaseUrl() : System::getBaseUri();
     $params['src'] = $basepath . '/' . $imgsrc;
 
-    $assign = isset($params['assign']) ? $params['assign'] : null;
     $retval = isset($params['retval']) ? $params['retval'] : null;
 
     unset($params['modname']);
-    unset($params['assign']);
+    $assign = null;
+    if (isset($params['assign'])) {
+        $assign = $params['assign'];
+        unset($params['assign']);
+    }
     unset($params['retval']);
     if (isset($params['altml'])) {
         // legacy
