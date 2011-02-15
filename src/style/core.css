@@ -682,173 +682,162 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-w02 { width: 2%; }
 
 /******************************************************************************
-* Icon styles (es=extrasmall). Used in menulinks navigation bar
+* Icon styles (es=extrasmall) - Equivalent with /images/icons/config.php
 *******************************************************************************/
 
-.z-icon-es-ok {
-    background: url("../images/icons/extrasmall/button_ok.png") no-repeat scroll 0 50% transparent;
+.z-icon-es-add {
+    background: url("../images/icons/extrasmall/edit_add.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-cancel {
     background: url("../images/icons/extrasmall/button_cancel.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
-.z-icon-es-help {
-    background: url("../images/icons/extrasmall/agt_support.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-info {
-    background: url("../images/icons/extrasmall/info.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-documentinfo {
-    background: url("../images/icons/extrasmall/documentinfo.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-locked {
-    background: url("../images/icons/extrasmall/locked.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-warning {
-    background: url("../images/icons/extrasmall/bell.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-error {
-    background: url("../images/icons/extrasmall/error.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
 .z-icon-es-config {
     background: url("../images/icons/extrasmall/configure.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-configure {
-    background: url("../images/icons/extrasmall/servicemanager.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-home {
-    background: url("../images/icons/extrasmall/home.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-archive {
-    background: url("../images/icons/extrasmall/folder.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-list {
-    background: url("../images/icons/extrasmall/windowlist.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-view {
-    background: url("../images/icons/extrasmall/demo.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-preview {
-    background: url("../images/icons/extrasmall/14_layer_novisible.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-new {
-    background: url("../images/icons/extrasmall/filenew.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-edit {
-    background: url("../images/icons/extrasmall/edit.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-save {
-    background: url("../images/icons/extrasmall/filesave.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-delete {
-    background: url("../images/icons/extrasmall/14_layer_deletelayer.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-flag {
-    background: url("../images/icons/extrasmall/flag.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-favorite {
-    background: url("../images/icons/extrasmall/favorites.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-profile {
-    background: url("../images/icons/extrasmall/personal.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-password {
-    background: url("../images/icons/extrasmall/password.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-user {
-    background: url("../images/icons/extrasmall/edit_user.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-adduser {
-    background: url("../images/icons/extrasmall/add_user.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-group {
-    background: url("../images/icons/extrasmall/edit_group.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-refresh {
-    background: url("../images/icons/extrasmall/recur.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-regenerate {
-    background: url("../images/icons/extrasmall/agt_update-product.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-exec {
-    background: url("../images/icons/extrasmall/exec.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-export {
-    background: url("../images/icons/extrasmall/db_update.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-import {
-    background: url("../images/icons/extrasmall/db_comit.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-attach {
-    background: url("../images/icons/extrasmall/attach.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-mail {
-    background: url("../images/icons/extrasmall/mail_generic.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-search {
-    background: url("../images/icons/extrasmall/search.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-package {
-    background: url("../images/icons/extrasmall/package.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-world {
-    background: url("../images/icons/extrasmall/agt_internet.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-locale {
-    background: url("../images/icons/extrasmall/locale.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-cubes {
-    background: url("../images/icons/extrasmall/kcmdf.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-log {
-    background: url("../images/icons/extrasmall/lists.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-.z-icon-es-rss {
-    background: url("../images/feeds/feed-icon-16x16.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-copy {
     background: url("../images/icons/extrasmall/editcopy.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
+.z-icon-es-cubes {
+    background: url("../images/icons/extrasmall/kcmdf.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-cut {
+    background: url("../images/icons/extrasmall/editcut.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-delete {
+    background: url("../images/icons/extrasmall/trashcan_empty.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-display {
+    background: url("../images/icons/extrasmall/display.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-edit {
+    background: url("../images/icons/extrasmall/xedit.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-error {
+    background: url("../images/icons/extrasmall/error.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-export {
+    background: url("../images/icons/extrasmall/fileexport.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-gears {
+    background: url("../images/icons/extrasmall/exec.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-filter {
+    background: url("../images/icons/extrasmall/filter.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-group {
+    background: url("../images/icons/extrasmall/group.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-help {
+    background: url("../images/icons/extrasmall/help.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-home {
+    background: url("../images/icons/extrasmall/folder_home.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-hook {
+    background: url("../images/icons/extrasmall/attach.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-import {
+    background: url("../images/icons/extrasmall/fileimport.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-info {
+    background: url("../images/icons/extrasmall/documentinfo.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-locale {
+    background: url("../images/icons/extrasmall/locale.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-locked {
+    background: url("../images/icons/extrasmall/encrypted.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-log {
+    background: url("../images/icons/extrasmall/lists.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-mail {
+    background: url("../images/icons/extrasmall/mail_generic.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-new {
+    background: url("../images/icons/extrasmall/filenew.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-ok {
+    background: url("../images/icons/extrasmall/button_ok.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-options {
+    background: url("../images/icons/extrasmall/servicemanager.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-preview {
+    background: url("../images/icons/extrasmall/14_layer_novisible.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-print {
+    background: url("../images/icons/extrasmall/printer.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-profile {
+    background: url("../images/icons/extrasmall/personal.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-regenerate {
+    background: url("../images/icons/extrasmall/quick_restart.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-remove {
+    background: url("../images/icons/extrasmall/edit_remove.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-save {
+    background: url("../images/icons/extrasmall/filesave.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-saveas {
+    background: url("../images/icons/extrasmall/filesaveas.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-search {
+    background: url("../images/icons/extrasmall/search.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-user {
+    background: url("../images/icons/extrasmall/user.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-view {
+    background: url("../images/icons/extrasmall/windowlist.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-warning {
+    background: url("../images/icons/extrasmall/bell.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-rss {
+    background: url("../images/feeds/feed-icon-16x16.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+
 
 /******************************************************************************
 * Buttons styles
