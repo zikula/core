@@ -76,12 +76,11 @@ function smarty_function_icon($params, $view)
     $iconpath = 'images/icons/';
 
     // Include icon config file
-    if (file_exists($iconpath . 'config.php') && !isset($icons)) {
-        include($iconpath . 'config.php');
+    if (file_exists("$iconpath/config.php") && !isset($icons)) {
+        include_once "$iconpath/config.php";
     }
 
     $size = DataUtil::formatForOS($size);
-    $filename = DataUtil::formatForOS($icons[$params['type']]);
 
     $imgsrc = '';
     if (isset($icons[$params['type']])) {
@@ -97,7 +96,7 @@ function smarty_function_icon($params, $view)
 
     if ($imgsrc == '') {
         if (!isset($optional)) {
-            $view->trigger_error(__f("%s: Image '%s' not found", array('pnicon', DataUtil::formatForDisplay($params['type']))));
+            $view->trigger_error(__f("%s: Image '%s' not found", array('icon', DataUtil::formatForDisplay($params['type']))));
         }
         return;
     }
@@ -107,7 +106,7 @@ function smarty_function_icon($params, $view)
     // This way it is easy to scale the image to a certain dimension.
     if (!isset($params['width']) && !isset($params['height'])) {
         if (!($_image_data = @getimagesize($imgsrc))) {
-            $view->trigger_error(__f("%s: Image '%s' is not a valid image file", array('pnicon', DataUtil::formatForDisplay($params['type']))));
+            $view->trigger_error(__f("%s: Image '%s' is not a valid image file", array('icon', DataUtil::formatForDisplay($params['type']))));
             return false;
         }
         $params['width']  = $_image_data[0];
