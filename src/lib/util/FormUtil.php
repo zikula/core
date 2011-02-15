@@ -350,13 +350,22 @@ class FormUtil
      *
      * @param string            $name       Module name.
      * @param Zikula_Controller $controller Controller.
+     * @param string            $classname  Optionally instanciate a child of Zikula_Form_View.
      *
      * @return Form_View The newly created Form_View instance.
      */
-    public static function newForm($name, Zikula_Controller $controller = null)
+    public static function newForm($name, Zikula_Controller $controller = null, $className=null)
     {
         $serviceManager = ServiceUtil::getManager();
-        $form = new Zikula_Form_View($serviceManager, $name);
+        if ($className && !class_exists($className)) {
+            throw new RuntimeException(__f('%s does not exist', $className));
+        }
+        
+        $form = $className ? new $className($serviceManager, $name) : new Zikula_Form_View($serviceManager, $name);
+        if ($className && !$form instanceof Zikula_Form_View) {
+            throw new RuntimeException(__f('%s is not an instance of Zikula_Form_View', $className));
+        }
+
         if ($controller) {
             $form->setController($controller);
             $form->assign('controller', $controller);
