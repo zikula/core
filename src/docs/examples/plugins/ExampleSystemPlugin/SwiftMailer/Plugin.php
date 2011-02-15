@@ -14,7 +14,7 @@
 /**
  * SwiftMailer plugin definition.
  */
-class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Plugin_Configurable
+class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Plugin_Configurable, Zikula_Plugin_AlwaysOn
 {
     /**
      * Get plugin meta data.
@@ -54,5 +54,4 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Pl
     {
         return new SystemPlugin_SwiftMailer_Controller($this->serviceManager, array('plugin' => $this));
     }
-
 }
