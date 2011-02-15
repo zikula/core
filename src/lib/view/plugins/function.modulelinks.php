@@ -95,7 +95,7 @@ function smarty_function_modulelinks($params, $view)
             $html .= '<span'.$attr.'>'.$menuitem['text'].'</span>';
         }
         if (isset($menuitem['links'])) {
-            $html .= addsubmenu($i, $menuitem['links']);
+            $html .= _smarty_function_modulelinks($i, $menuitem['links']);
         }
         $html .= '</li>';
 
@@ -111,7 +111,7 @@ function smarty_function_modulelinks($params, $view)
 
 }
 
-function addsubmenu($id, $links) {
+function _smarty_function_modulelinks($id, $links) {
 
     PageUtil::addVar('javascript', 'zikula.ui');
 

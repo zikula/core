@@ -40,7 +40,7 @@
 function smarty_function_manuallink($params, $view)
 {
     $userlang= ZLanguage::transformFS(ZLanguage::getLanguageCode());
-    $stdlang = System::getVar( 'language' );
+    $stdlang = System::getVar('language_i18n');
 
     $title   = (isset($params['title']))   ? $params['title']               : 'Manual';
     $manual  = (isset($params['manual']))  ? $params['manual']              : 'manual.html';
@@ -50,12 +50,12 @@ function smarty_function_manuallink($params, $view)
     $height  = (isset($params['height']))  ? $params['height']              : 400;
     $modname = ModUtil::getName();
 
-    $possibleplaces = array( "modules/$modname/pndocs/lang/$userlang/manual/$manual",
-                             "modules/$modname/pndocs/lang/$stdlang/manual/$manual",
-                             "modules/$modname/pndocs/lang/en/manual/$manual",
-                             "modules/$modname/pndocs/lang/$userlang/$manual",
-                             "modules/$modname/pndocs/lang/$stdlang/$manual",
-                             "modules/$modname/pndocs/lang/en/$manual" );
+    $possibleplaces = array( "modules/$modname/docs/$userlang/manual/$manual",
+                             "modules/$modname/docs/$stdlang/manual/$manual",
+                             "modules/$modname/docs/en/manual/$manual",
+                             "modules/$modname/docs/$userlang/$manual",
+                             "modules/$modname/docs/$stdlang/$manual",
+                             "modules/$modname/docs/lang/en/$manual" );
     foreach ($possibleplaces as $possibleplace) {
         if (file_exists($possibleplace)) {
             $url = $possibleplace.$chapter;
@@ -75,5 +75,4 @@ function smarty_function_manuallink($params, $view)
     } else {
         return $link;
     }
-
 }
