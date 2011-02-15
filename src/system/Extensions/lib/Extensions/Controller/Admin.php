@@ -1128,7 +1128,8 @@ class Extensions_Controller_Admin extends Zikula_Controller
         foreach ($pluginClasses as $className) {
             $instance = PluginUtil::loadPlugin($className);
             $pluginstate = PluginUtil::getState($instance->getServiceId(), PluginUtil::getDefaultState());
-            var_dump($pluginstate);
+
+            // Tweak UI if the plugin is AlwaysOn
             if ($instance instanceof Zikula_Plugin_AlwaysOn) {
                 $pluginstate['state'] = PluginUtil::ENABLED;
                 $pluginstate['version'] = $instance->getMetaVersion();
@@ -1178,8 +1179,9 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                            'title' => $this->__('Configure plugin'));
                     }
 
+                    // Dont allow to disable/uninstall plugins that are AlwaysOn
                     if (!$instance instanceof Zikula_Plugin_AlwaysOn) {
-                    $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'deactivatePlugin',
+                        $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'deactivatePlugin',
                                                     array('plugin' => $className,
                                                           'state'  => $state,
                                                           'bymodule' => $module,
@@ -1190,7 +1192,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                        'image' => 'db_remove.png',
                                        'title' => $this->__('Deactivate'));
 
-                    $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'removePlugin',
+                        $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'removePlugin',
                                                     array('plugin' => $className,
                                                           'state'  => $state,
                                                           'bymodule' => $module,
