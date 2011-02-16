@@ -705,7 +705,7 @@ class Zikula_Form_View extends Zikula_View
      *
      * Example:
      * <code>
-     * function initialize($view)
+     * function initialize(Zikula_Form_View $view)
      * {
      *   if (... not has access ...)
      *     return $view->registerError(LogUtil::registerPermissionError());
@@ -746,11 +746,11 @@ class Zikula_Form_View extends Zikula_View
      *
      * Call this method to get a piece of code that will generate a postback event. The returned JavaScript code can
      * be called at any time to generate the postback. The plugin that receives the postback must implement
-     * a function "raisePostBackEvent($view, $eventArgument)" that will handle the event.
+     * a function "raisePostBackEvent(Zikula_Form_View $view, $eventArgument)" that will handle the event.
      *
      * Example (taken from the {@link Zikula_Form_Plugin_ContextMenu_Item} plugin):
      * <code>
-     * function render($view)
+     * function render(Zikula_Form_View $view)
      * {
      *   $click = $view->getPostBackEventReference($this, $this->commandName);
      *   $url = 'javascript:' . $click;
@@ -760,7 +760,7 @@ class Zikula_Form_View extends Zikula_View
      *   return $html;
      * }
      *
-     * function raisePostBackEvent($view, $eventArgument)
+     * function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
      * {
      *   $args = array('commandName' => $eventArgument, 'commandArgument' => null);
      *   $view->raiseEvent($this->onCommand == null ? 'handleCommand' : $this->onCommand, $args);
