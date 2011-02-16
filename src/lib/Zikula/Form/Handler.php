@@ -161,7 +161,7 @@ abstract class Zikula_Form_Handler implements Zikula_Translatable
      * framework assumes that {@link Zikula_Form_View::setErrorMsg()} has been called with a suitable
      * error message.
      */
-    public function initialize($view)
+    public function initialize(Zikula_Form_View $view)
     {
         return true;
     }
@@ -194,12 +194,12 @@ abstract class Zikula_Form_Handler implements Zikula_Translatable
      * that initiated the command.
      *
      * @param Zikula_Form_View $view  Reference to Form render object.
-     * @param array     &$args Arguments of the command.
+     * @param array            &$args Arguments of the command.
      *
      * @see    Zikula_Form_Plugin_Button, Zikula_Form_Plugin_ImageButton
      * @return void
      */
-    public function handleCommand($view, &$args)
+    public function handleCommand(Zikula_Form_View $view, &$args)
     {
     }
 

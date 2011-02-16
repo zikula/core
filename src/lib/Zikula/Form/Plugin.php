@@ -65,7 +65,7 @@
  *   This is also the place where validators should be added to the list of validators.
  *   Example:
  *   <code>
- *   function load($view, &$params)
+ *   function load(Zikula_Form_View $view, &$params)
  *   {
  *     $this->loadValue($view, $view->get_template_vars());
  *     $view->addValidator($this);
@@ -164,7 +164,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * If you need to notify the form event handler when the plugin has been loaded then
      * specify the name of this handler here. The prototype of the function must be:
-     * function MyOnLoadHandler($view, $plugin, $params) where $view is the form render,
+     * function MyOnLoadHandler(Zikula_Form_View $view, $plugin, $params) where $view is the form render,
      * $plugin is this plugin, and $params are the Smarty parameters passed to the plugin.
      *
      * The data bound handler is called both on postback and first page render.
@@ -181,7 +181,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * class MyFormHandler extends Zikula_Form_Handler
      * {
-     *   function MyLoadHandler($view, $plugin, $params)
+     *   function MyLoadHandler(Zikula_Form_View $view, $plugin, $params)
      *   {
      *     // Do stuff here
      *   }
@@ -231,9 +231,9 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      * Constructor.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      */
-    public function __construct($view, &$params)
+    public function __construct(Zikula_Form_View $view, &$params)
     {
         $this->view = $view;
     }
@@ -370,11 +370,11 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      * You can override this for special situations.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function readParameters($view, &$params)
+    public function readParameters(Zikula_Form_View $view, &$params)
     {
         $varInfo = get_class_vars(get_class($this));
 
@@ -405,11 +405,11 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      * @see Zikula_Form_View::registerPlugin()
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function create($view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
     }
 
@@ -421,11 +421,11 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      * @see Zikula_Form_View::registerPlugin()
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array           &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function load($view, &$params)
+    public function load(Zikula_Form_View $view, &$params)
     {
     }
 
@@ -438,7 +438,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * @return void
      */
-    public function initialize($view)
+    public function initialize(Zikula_Form_View $view)
     {
     }
 
@@ -473,7 +473,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * @return void
      */
-    public function decode($view)
+    public function decode(Zikula_Form_View $view)
     {
     }
 
@@ -487,7 +487,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * @return void
      */
-    public function decodePostBackEvent($view)
+    public function decodePostBackEvent(Zikula_Form_View $view)
     {
     }
 
@@ -497,11 +497,11 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      * Default action is to call onDataBound handler in form event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function dataBound($view, &$params)
+    public function dataBound(Zikula_Form_View $view, &$params)
     {
         if ($this->onDataBound != null) {
             $dataBoundHandlerName = $this->onDataBound;
@@ -518,7 +518,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * @return string The rendered output.
      */
-    public function renderAttributes($view)
+    public function renderAttributes(Zikula_Form_View $view)
     {
         $attr = '';
         foreach ($this->attributes as $name => $value) {
@@ -537,7 +537,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * @return string The rendered output.
      */
-    public function render($view)
+    public function render(Zikula_Form_View $view)
     {
         return '';
     }
@@ -551,7 +551,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * @return string The rendered output.
      */
-    public function renderBegin($view)
+    public function renderBegin(Zikula_Form_View $view)
     {
         return '';
     }
@@ -566,7 +566,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * @return string The (optionally) modified content.
      */
-    public function renderContent($view, $content)
+    public function renderContent(Zikula_Form_View $view, $content)
     {
         return $content;
     }
@@ -580,7 +580,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * @return string The rendered output.
      */
-    public function renderEnd($view)
+    public function renderEnd(Zikula_Form_View $view)
     {
         return '';
     }
@@ -594,7 +594,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * @return void
      */
-    public function postRender($view)
+    public function postRender(Zikula_Form_View $view)
     {
     }
 
@@ -608,7 +608,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
      *
      * @return void
      */
-    public function registerPlugin($view, $plugin)
+    public function registerPlugin(Zikula_Form_View $view, $plugin)
     {
         $plugin->setDomain($this->domain);
 
