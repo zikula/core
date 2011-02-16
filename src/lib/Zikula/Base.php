@@ -732,21 +732,18 @@ abstract class Zikula_Base implements Zikula_Translatable
         if (is_null($token)) {
             $token = $this->request->getPost('csrftoken', false);
         }
-        
+
         $tokenValidator = $this->serviceManager->getService('token.validator');
 
-        if (System::getVar('sessioncsrftokenonetime')) {
-            $result = $tokenValidator->validate($token, false, false);
-            if ($result) {
-                return;
-            }
-            LogUtil::registerError(__('Something unexpected happened regarding token checking and you have been logged out for safety.'));
-            SessionUtil::expire(); // something went wrong so expire the session.
+        if (System::getVar('sessioncsrftokenonetime') && $tokenValidator->validate($token, false, false)) {
+            return;
         }
 
-        if (!$tokenValidator->validate($token)) {
-            LogUtil::registerAuthidError($failUrl);
-            throw new Zikula_Exception_Forbidden(__('Security token validation failed'));
+        if ($tokenValidator->validate($token)) {
+            return;
         }
+
+        LogUtil::registerAuthidError($failUrl);
+        throw new Zikula_Exception_Forbidden(__('Security token validation failed'));
     }
 }
