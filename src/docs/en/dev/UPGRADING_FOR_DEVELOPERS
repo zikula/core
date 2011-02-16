@@ -76,6 +76,9 @@ TEMPLATES
   just alter with `$this->serviceManager['zikula_view.metatags][$foo] = $bar;` no special
   API is required.
 
+- The core icon set has been recoded to PNG format.  Refactor your templates to use .png
+  the images.
+
 THEMES
 ======
 - While it's not compulsory, it is more efficient to update the block configuration
