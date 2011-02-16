@@ -769,7 +769,7 @@ abstract class Zikula_Base implements Zikula_Translatable
      */
     public function getInput($key, $default = null, $source = null, $filter = FILTER_SANITIZE_STRING, array $args = array(), $objectType=null)
     {
-        return FormUtil::getPassedValue($key, $args, $source, $filter, $args, $objectType);
+        return FormUtil::getPassedValue($key, $default, $source, $filter, $args, $objectType);
     }
 
 
