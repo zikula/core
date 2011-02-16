@@ -579,6 +579,11 @@ class SystemListeners extends Zikula_EventHandler
             return;
         }
 
+        // return if module not subscriber capable
+        if (!HookUtil::isSubscriberCapable($event['modname'])) {
+            return;
+        }
+
         $event->data[] = array(
                 'url' => ModUtil::url($event['modname'], 'admin', 'hooks'),
                 'text' => __('Hooks'),
