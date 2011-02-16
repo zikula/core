@@ -91,7 +91,7 @@ function smarty_function_img($params, $view)
             }
         }
         $osset = DataUtil::formatForOS($params['set']);
-        if (System::isLegacyMode() && strpos($params['src'], '.gif')) {
+        if (System::isLegacyMode() && (strpos($osset, 'icons/') !== false || strpos($osset, 'global/') !== false) && strpos($params['src'], '.gif')) {
             LogUtil::log(__f('Core image %s does not exist, please use the png format (called from %s).', array($params['src'], $view->getTemplatePath())), E_DEPRECATED);
             $params['src'] = str_replace('.gif', '.png', $params['src']);
         }
