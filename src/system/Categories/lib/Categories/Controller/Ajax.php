@@ -39,7 +39,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $result = array(
             'response' => true
         );
-        return new Zikula_Response_Ajax($output);
+        return new Zikula_Response_Ajax($result);
     }
 
     public function edit() {
