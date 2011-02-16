@@ -81,6 +81,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public $baseuri;
 
     /**
+     * Template path (populated by fetch).
+     * 
+     * @var string
+     */
+    protected $templatePath;
+
+    /**
      * Cache Id.
      *
      * @var string
@@ -792,6 +799,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             $compile_id = $this->compile_id;
         }
 
+        $this->template = $this->template_dir . '/' . $template;
         $output = parent::fetch($template, $cache_id, $compile_id, $display);
 
         if ($this->expose_template == true) {
@@ -1093,7 +1101,30 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     {
         // default directory for templates
         $this->template_dir = $this->get_template_path($template);
+        $this->templatePath = $this->template_dir . '/' . $template;
         $this->config_dir = $this->template_dir . '/config';
+    }
+
+    /**
+     * Get template path.
+     *
+     * This is calculated by _setup_template() invoked during fetch().
+     *
+     * @return string
+     */
+    public function getTemplatePath()
+    {
+        return $this->templatePath;
+    }
+
+    /**
+     * Get template paths.
+     *
+     * @return array
+     */
+    public function getTemplatePaths()
+    {
+        return $this->templatePaths;
     }
 
     /**

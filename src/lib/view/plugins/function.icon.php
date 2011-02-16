@@ -42,15 +42,14 @@
  * set to the complete image tag.
  *
  * Example:
- * {icon src="heading.gif" assign="myvar"}
+ * {icon src="heading.png" assign="myvar"}
  * {$myvar.src}
  * {$myvar.width}
  * {$myvar.imgtag}
  *
  * Output:
- * modules/Example/images/eng/heading.gif
- * 261
- * <img src="modules/Example/images/eng/heading.gif" alt="" width="261" height="69"  />
+ * modules/Example/images/eng/heading.png
+ * <img src="modules/Example/images/eng/heading.png" alt="" width="261" height="69"  />
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -69,9 +68,9 @@ function smarty_function_icon($params, $view)
 
     // always provide an alt attribute.
     // if none is set, assign an empty one.
-    $params['alt']    = isset($params['alt'])     ? $params['alt']     : '';
-    $params['title']  = isset($params['title'])   ? $params['title']   : $params['alt'];
-    $size   = isset($params['size'])    ? $params['size']    : 'extrasmall';
+    $params['alt'] = isset($params['alt']) ? $params['alt'] : '';
+    $params['title'] = isset($params['title']) ? $params['title'] : $params['alt'];
+    $size = isset($params['size']) ? $params['size'] : 'extrasmall';
 
     $iconpath = 'images/icons/';
 
@@ -84,7 +83,7 @@ function smarty_function_icon($params, $view)
 
     $imgsrc = '';
     if (isset($icons[$params['type']])) {
-        $imgpath = $iconpath.$size.'/'.$icons[$params['type']];
+        $imgpath = $iconpath . $size . '/' . $icons[$params['type']];
         if (is_readable($imgpath)) {
             $imgsrc = $imgpath;
         }
@@ -109,7 +108,7 @@ function smarty_function_icon($params, $view)
             $view->trigger_error(__f("%s: Image '%s' is not a valid image file", array('icon', DataUtil::formatForDisplay($params['type']))));
             return false;
         }
-        $params['width']  = $_image_data[0];
+        $params['width'] = $_image_data[0];
         $params['height'] = $_image_data[1];
     }
 
@@ -132,9 +131,9 @@ function smarty_function_icon($params, $view)
     unset($params['default']);
     unset($params['size']);
 
-    $imgtag = '<img src="'.System::getBaseUri().'/'.$imgsrc.'" ';
+    $imgtag = '<img src="' . System::getBaseUri() . '/' . $imgsrc . '" ';
     foreach ($params as $key => $value) {
-        $imgtag .= $key . '="' .$value  . '" ';
+        $imgtag .= $key . '="' . $value . '" ';
     }
     $imgtag .= ' />';
 
