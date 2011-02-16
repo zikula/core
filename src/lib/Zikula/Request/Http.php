@@ -85,7 +85,7 @@ class Zikula_Request_Http extends Zikula_Request_Request
         $this->post = isset($options['post']) ? new Zikula_Request_Collection($options['post']) : new Zikula_Request_Collection(isset($_POST) ? $_POST : array());
         $this->files = isset($options['files']) ? new Zikula_Request_Collection($options['files']) : new Zikula_Request_Collection(isset($_FILES) ? $_FILES : array());
         $this->cookie = isset($options['cookies']) ? new Zikula_Request_Collection($options['cookies']) : new Zikula_Request_Collection(isset($_COOKIE) ? $_COOKIE : array());
-        $this->server = isset($options['server']) ? new Zikula_Request_Collection($options['server']) : new Zikula_Request_Collection($_SERVER);
+        $this->server = isset($options['server']) ? new Zikula_Request_Collection($options['server']) : new Zikula_Request_Collection(isset($_SERVER) ? $_SERVER : array());
         $this->env = isset($options['env']) ? new Zikula_Request_Collection($options['env']) : new Zikula_Request_Collection(isset($_ENV) ? $_ENV : array());
     }
 
