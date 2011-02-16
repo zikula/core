@@ -74,8 +74,9 @@ function smarty_function_icon($params, $view)
 
     $iconpath = 'images/icons/';
 
+    static $icons;
     // Include icon config file
-    if (file_exists("$iconpath/config.php") && !isset($icons)) {
+    if (!isset($icons) && file_exists("$iconpath/config.php")) {
         include_once "$iconpath/config.php";
     }
 
