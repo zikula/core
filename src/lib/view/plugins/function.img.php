@@ -35,11 +35,11 @@
  *   - fqurl          If set the image path is absolute, if not relative
  *   - all remaining parameters are passed to the image tag
  *
- * Example: {img src="heading.gif" }
- * Output:  <img src="modules/Example/images/eng/heading.gif" alt="" width="261" height="69"  />
+ * Example: {img src="heading.png" }
+ * Output:  <img src="modules/Example/images/eng/heading.png" alt="" width="261" height="69"  />
  *
- * Example: {img src="heading.gif" width="100" border="1" alt="foobar" }
- * Output:  <img src="modules/Example/images/eng/heading.gif" width="100" border="1" alt="foobar"  />
+ * Example: {img src="heading.png" width="100" border="1" alt="foobar" }
+ * Output:  <img src="modules/Example/images/eng/heading.png" width="100" border="1" alt="foobar"  />
  *
  * Example {img src=xhtml11.png modname=core set=powered}
  * <img src="/Theme/images/powered/xhtml11.png" alt="" width="88" height="31"  />
@@ -49,7 +49,7 @@
  * set to the complete image tag.
  *
  * Example:
- * {img src="heading.gif" assign="myvar"}
+ * {img src="heading.png" assign="myvar"}
  * {$myvar.src}
  * {$myvar.width}
  * {$myvar.imgtag}
@@ -91,6 +91,10 @@ function smarty_function_img($params, $view)
             }
         }
         $osset = DataUtil::formatForOS($params['set']);
+        if (System::isLegacyMode() && strpos($params['src'], '.gif')) {
+            LogUtil::log(__f('Core image %s does not exist, please use the png format (called from %s).', array($params['src'], $view->getTemplatePath())), E_DEPRECATED);
+            $params['src'] = str_replace('.gif', '.png', $params['src']);
+        }
     }
 
     // default for the optional flag
