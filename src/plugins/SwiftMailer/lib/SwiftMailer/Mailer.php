@@ -61,7 +61,7 @@ class SystemPlugins_SwiftMailer_Mailer
      *
      * @return integet
      */
-    function send(array $from, array $to, $subject, $body, $contentType = 'plain/text', array $cc=null, array $bcc=null, array $replyTo=null, $altBody = null, $altBodyContentType = 'text/html', &$failedRecipients = array(), $charset=null, array $attachments=array())
+    function send(array $from, array $to, $subject, $body, $contentType = 'text/plain', array $cc=null, array $bcc=null, array $replyTo=null, $altBody = null, $altBodyContentType = 'text/html', &$failedRecipients = array(), $charset=null, array $attachments=array())
     {
         $message = new Swift_Message($subject, $body, $contentType);
         $message->setTo($to);
