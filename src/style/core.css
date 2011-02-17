@@ -689,6 +689,10 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: url("../images/icons/extrasmall/edit_add.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
+.z-icon-es-back {
+    background: url("../images/icons/extrasmall/agt_back.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
 .z-icon-es-cancel {
     background: url("../images/icons/extrasmall/button_cancel.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
@@ -819,6 +823,10 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 }
 .z-icon-es-search {
     background: url("../images/icons/extrasmall/search.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-url {
+    background: url("../images/icons/extrasmall/web.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
 }
 .z-icon-es-user {
