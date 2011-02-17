@@ -15,7 +15,7 @@
 /**
  * Controller class.
  */
-class SystemPlugin_Configurable_Controller extends Zikula_Plugin_Controller
+class SystemPlugin_Configurable_Controller extends Zikula_Controller_Plugin
 {
     /**
      * Fetch and render the configuration template.

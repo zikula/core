@@ -13,9 +13,9 @@
  */
 
 /**
- * Zikula_Plugin_Controller class.
+ * Zikula_Controller_Plugin class.
  */
-class Zikula_Plugin_Controller extends Zikula_Controller
+class Zikula_Controller_Plugin extends Zikula_Controller
 {
     /**
      * Plugin name.
@@ -79,7 +79,7 @@ class Zikula_Plugin_Controller extends Zikula_Controller
      *
      * @param Zikula_View_Plugin $view Default null means new Render instance for this module name.
      *
-     * @return Zikula_Plugin_Controller
+     * @return Zikula_Controller_Plugin
      */
     protected function setView(Zikula_View_Plugin $view = null)
     {
