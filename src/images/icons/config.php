@@ -21,6 +21,7 @@
 
 $icons = array(
     'add'        => 'edit_add.png',
+    'back'       => 'agt_back.png',
     'cancel'     => 'button_cancel.png',
     'config'     => 'configure.png',
     'copy'       => 'editcopy.png',
@@ -54,6 +55,7 @@ $icons = array(
     'save'       => 'filesave.png',
     'saveas'     => 'filesaveas.png',
     'search'     => 'search.png',
+    'url'        => 'web.png',
     'user'       => 'user.png',
     'view'       => 'windowlist.png',
     'warning'    => 'bell.png',
