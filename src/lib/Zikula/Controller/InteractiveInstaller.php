@@ -16,14 +16,14 @@
 /**
  * Abstract controller for module installer.
  */
-abstract class Zikula_InteractiveInstaller extends Zikula_Controller
+abstract class Zikula_Controller_InteractiveInstaller extends Zikula_Controller
 {
     /**
      * Post Setup hook.
      *
      * @return void
      */
-    protected function _postSetup()
+    protected function configureView()
     {
         // Create renderer object
         $this->setView();
@@ -54,7 +54,7 @@ abstract class Zikula_InteractiveInstaller extends Zikula_Controller
      *
      * @return void
      */
-    public function preInvokeMethod()
+    public function preDispatch()
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->getName() . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
         $check = (bool)(SessionUtil::getVar('interactive_init') || SessionUtil::getVar('interactive_upgrade') || SessionUtil::getVar('interactive_remove'));
