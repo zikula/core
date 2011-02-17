@@ -43,9 +43,9 @@ class Extensions_Controller_AdminPlugin extends Zikula_Controller
         }
 
         // Get input.
-        $moduleName = $this->getInput('_module', null, 'GET', FILTER_SANITIZE_STRING);
-        $pluginName = $this->getInput('_plugin', null, 'GET', FILTER_SANITIZE_STRING);
-        $action = $this->getInput('_action', null, 'GET', FILTER_SANITIZE_STRING);
+        $moduleName = filter_var($this->request->get['_module'], FILTER_SANITIZE_STRING);
+        $pluginName = filter_var($this->request->get['_plugin'], FILTER_SANITIZE_STRING);
+        $action = filter_var($this->request->get['_action'], FILTER_SANITIZE_STRING);
 
         // Load plugins.
         if (!$moduleName) {
