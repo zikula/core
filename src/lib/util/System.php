@@ -438,8 +438,18 @@ class System
         $mailer = ServiceUtil::getManager()->getService('mailer.simple');
         $altBodyContentType = ($html && $altbody) ? 'text/html' : 'plain/text';
         $failedRecipients = array();
+        if ($headers) {
+            $lines = explode("\n", $headers);
+            $headers = array();
+            foreach ($lines as $line) {
+                $pairs = explode(':', $line);
+                $headers[$pairs[0]] = $pairs[1];
+            }
+        } else {
+            $headers = array(); // change to empty array
+        }
 
-        return $mailer->send((array)$from, (array)$to, $subject, $body, 'text/plain', null, null, (array)$from, $altbody, $altBodyContentType, $failedRecipients);
+        return $mailer->send((array)$from, (array)$to, $subject, $body, 'text/plain', null, null, (array)$from, $altbody, $headers, $altBodyContentType, $failedRecipients);
     }
 
     /**
