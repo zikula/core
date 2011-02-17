@@ -129,7 +129,7 @@ abstract class Zikula_Base implements Zikula_Translatable
     }
 
     /**
-     * Setup base properties.
+     * Setup base properties, invoked from the constructor.
      *
      * @return void
      */
@@ -145,7 +145,7 @@ abstract class Zikula_Base implements Zikula_Translatable
     }
 
     /**
-     * Post _setup() in constructor.
+     * Called from within the in constructor.
      *
      * Intended for base classes.
      *

@@ -111,7 +111,7 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Pl
     /**
      * Return controller instance.
      *
-     * @return Zikula_Plugin_Controller
+     * @return Zikula_Controller_Plugin
      */
     public function getConfigurationController()
     {

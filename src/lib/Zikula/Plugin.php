@@ -133,7 +133,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     /**
      * Plugin controller class.
      *
-     * @var Zikula_Plugin_Controller
+     * @var Zikula_Controller_Plugin
      */
     protected $controllerClass;
 
