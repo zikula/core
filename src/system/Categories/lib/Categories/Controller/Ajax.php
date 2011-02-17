@@ -13,16 +13,10 @@
  */
 
 
-class Categories_Controller_Ajax extends Zikula_Controller
+class Categories_Controller_Ajax extends Zikula_Controller_Ajax
 {
-    public function _postSetup()
-    {
-        // no need for a Zikula_View so override it.
-    }
-
     /**
      * Resequence categories
-     *
      */
     public function resequence() {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {

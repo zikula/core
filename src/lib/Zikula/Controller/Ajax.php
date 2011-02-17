@@ -19,6 +19,14 @@
 abstract class Zikula_Controller_Ajax extends Zikula_Controller
 {
     /**
+     * {@inheritdoc}
+     */
+    protected function configureView()
+    {
+        // View is generally not required so override this.
+    }
+    
+    /**
      * Check the CSFR token.
      *
      * @throws Zikula_Response_Ajax_Forbidden If the CSFR token fails.

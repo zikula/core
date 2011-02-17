@@ -107,33 +107,19 @@ abstract class Zikula_Base implements Zikula_Translatable
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
         $this->options = $options;
         Zikula_ClassProperties::load($this, $options);
-        $this->_setup();
+
         $this->request = $this->serviceManager->getService('request');
-        $this->_postSetup();
-
-        $this->_setupLanguageDomain();
-
+        $this->_configureBase();
+        $this->initialize();
         $this->postInitialize();
     }
 
     /**
-     * Calculate the translation domain.
+     * Configure base properties, invoked from the constructor.
      *
      * @return void
      */
-    protected function _setupLanguageDomain()
-    {
-        if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
-            $this->domain = ZLanguage::getModuleDomain($this->name);
-        }
-    }
-
-    /**
-     * Setup base properties, invoked from the constructor.
-     *
-     * @return void
-     */
-    protected function _setup()
+    protected function _configureBase()
     {
         $parts = explode('_', get_class($this));
         $this->name = $parts[0];
@@ -142,30 +128,31 @@ abstract class Zikula_Base implements Zikula_Translatable
         $this->systemBaseDir = realpath("$modbase/..");
         $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/" . $this->modinfo['directory']);
         $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
+        if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
+            $this->domain = ZLanguage::getModuleDomain($this->name);
+        }
     }
 
     /**
-     * Called from within the in constructor.
+     * Initialize: called from constructor.
      *
-     * Intended for base classes.
+     * Intended for initialising base classes.
      *
      * @return void
      */
-    protected function _postSetup()
+    protected function initialize()
     {
 
     }
 
     /**
-     * Initialize.
+     * Post initialise: called from constructor.
      *
-     * Post constructor hook.
-     *
-     * Intended for base classes.
+     * Intended for child classes.
      *
      * @return void
      */
-    protected function initialize()
+    protected function postInitialize()
     {
 
     }
@@ -326,18 +313,6 @@ abstract class Zikula_Base implements Zikula_Translatable
     public function _fn($sin, $plu, $n, $params)
     {
         return _fn($sin, $plu, $n, $params, $this->domain);
-    }
-
-    /**
-     * Post initialise.
-     *
-     * Run after construction.  Intended as a post construct hook for child classes.
-     *
-     * @return void
-     */
-    protected function postInitialize()
-    {
-
     }
 
     /**

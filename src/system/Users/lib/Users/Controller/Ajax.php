@@ -15,18 +15,8 @@
 /**
  * Access to actions initiated through AJAX for the Users module.
  */
-class Users_Controller_Ajax extends Zikula_Controller
+class Users_Controller_Ajax extends Zikula_Controller_Ajax
 {
-    /**
-     * Post setup.
-     *
-     * @return void
-     */
-    public function _postSetup()
-    {
-        // no need for a Zikula_View so override it.
-    }
-    
     /**
      * Performs a user search based on the user name fragment entered so far.
      *
