@@ -12,13 +12,8 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Controller_Ajax extends Zikula_Controller
+class Admin_Controller_Ajax extends Zikula_Controller_Ajax
 {
-    public function _postSetup()
-    {
-        // no need for a Zikula_View so override it.
-    }
-
     /**
      * Change the category a module belongs to by ajax.
      *

@@ -26,15 +26,20 @@ abstract class Zikula_Controller extends Zikula_Base
     protected $view;
 
     /**
-     * Post Setup hook.
-     *
-     * If you want to add to this configuration generally use the postInitialize() hook instead.
+     * {@inheritdoc}
+     */
+    protected function initialize()
+    {
+        $this->configureView();
+    }
+
+    /**
+     * Create and configure the view for controllers.
      *
      * @return void
      */
-    protected function _postSetup()
+    protected function configureView()
     {
-        // Create renderer object
         $this->setView();
         $this->view->setController($this);
         $this->view->assign('controller', $this);
@@ -122,11 +127,20 @@ abstract class Zikula_Controller extends Zikula_Base
     }
 
     /**
-     * This is a hook to execute before ModUtil::exec() executes any controller method.
+     * Predispatch hook, invoked just before requested controller method is dispatched.
      *
      * @return void
      */
-    public function preInvokeMethod()
+    public function preDispatch()
+    {
+    }
+
+    /**
+     * Postdispatch hook, invoked just after requested controller method dispatch returns.
+     *
+     * @return void
+     */
+    public function postDispatch()
     {
     }
 }

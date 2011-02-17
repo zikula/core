@@ -39,23 +39,11 @@ class Zikula_Controller_Plugin extends Zikula_Controller
     protected $plugin;
 
     /**
-     * (non-PHPdoc)
-     * 
-     * @see    Zikula_Base::_setupLanguageDomain()
-     *
-     * @return void
-     */
-    protected function _setupLanguageDomain()
-    {
-        $this->domain = $this->plugin->getDomain();
-    }
-
-    /**
      * Setup base properties.
      *
      * @return void
      */
-    protected function _setup()
+    protected function _configureBase()
     {
         $parts = explode('_', get_class($this));
         $this->name = $parts[0];
@@ -72,6 +60,8 @@ class Zikula_Controller_Plugin extends Zikula_Controller
             $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/{$this->moduleName}/plugins/{$this->pluginName}");
             $this->libBaseDir = realpath("{$this->baseDir}/lib/{$this->pluginName}");
         }
+
+        $this->domain = $this->plugin->getDomain();
     }
 
     /**

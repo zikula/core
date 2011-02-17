@@ -12,13 +12,8 @@
  * information regarding copyright and licensing.
  */
 
-class Extensions_Controller_Ajax extends Zikula_Controller
+class Extensions_Controller_Ajax extends Zikula_Controller_Ajax
 {
-    public function _postSetup()
-    {
-        // no need for a Zikula_View so override it.
-    }
-    
     /**
      * togglesubscriberareastatus
      * This function attaches/detaches a subscriber area to a provider area

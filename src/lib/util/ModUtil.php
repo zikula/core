@@ -1039,10 +1039,13 @@ class ModUtil
                             // Don't allow front controller to access any public methods inside the controller's parents
                             throw new Zikula_Exception_NotFound();
                         }
-                        $modfunc[0]->preInvokeMethod();
+                        $modfunc[0]->preDispatch();
                     }
 
                     $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                    if ($modfunc[0] instanceof Zikula_Controller) {
+                        $modfunc[0]->postDispatch();
+                    }
                 } else {
                     $postExecuteEvent->setData($modfunc($args));
                 }

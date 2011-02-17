@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Controller_Ajax extends Zikula_Controller
+class Theme_Controller_Ajax extends Zikula_Controller_Ajax
 {
     public function dispatch()
     {
