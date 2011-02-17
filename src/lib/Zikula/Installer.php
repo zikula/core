@@ -30,10 +30,9 @@ abstract class Zikula_Installer extends Zikula_Base
      *
      * @return void
      */
-    protected function _setup()
+    protected function _configureBase()
     {
-        $this->reflection = new ReflectionObject($this);
-        $parts = explode('_', $this->reflection->getName());
+        $parts = explode('_', $this->getReflection()->getName());
         $this->name = $parts[0];
         $this->baseDir = dirname(realpath($this->reflection->getFileName()));
         $this->modinfo = array();
@@ -44,6 +43,9 @@ abstract class Zikula_Installer extends Zikula_Base
         $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
         $versionClass = "{$this->name}_Version";
         $this->version = new $versionClass;
+        if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
+            $this->domain = ZLanguage::getModuleDomain($this->name);
+        }
     }
 
     /**
