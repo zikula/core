@@ -157,14 +157,3 @@ div.z-accountlink  img {
 input#users_loginblock_loginwith_button_Users {
     background: transparent url("../../../images/icons/extrasmall/user.png") no-repeat scroll center left;
 }
-
-.users_loginblock_loginwith_button {
-    border: none;
-    cursor: pointer;
-    padding: 0 0 0 20px;
-    height: 16px;
-    font-size: 100%;
-    color: #467aa7;
-    font-weight: bold;
-    text-decoration: none;
-}
