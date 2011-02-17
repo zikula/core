@@ -303,6 +303,17 @@ MODULES
     $this->redirectIf()
     $this->redirectUnless()
 
+CSRF PROTECTION
+===============
+Templates should now use
+
+    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+
+And to check in the controller, use
+
+    $this->checkCsrfToken($redirectUrlOnFail);
+
+
 HOOKS
 =====
 Hooks in Zikula 1.3.0 are not compatible with Zikula legacy hooks system.  In general,
@@ -438,7 +449,7 @@ WORKFLOW CHANGES
 
 
 AJAX WORKFLOW CHANGES
-==================
+=====================
 
 The Zikula 1.3. ajax workflow has been changed from both the PHP and JavaScript
 side.
