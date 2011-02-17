@@ -52,10 +52,10 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Pl
         $preferences = Swift_Preferences::getInstance();
         $this->serviceManager['swiftmailer.preferences.charset'] = $config['charset'];
         $this->serviceManager['swiftmailer.preferences.cachetype'] = $config['cachetype'];
-        $this->serviceManager['swiftmailer.preferences.temdir'] = $config['temdir'];
+        $this->serviceManager['swiftmailer.preferences.tempdir'] = $config['tempdir'];
         $preferences->setCharset($config['charset']);
         $preferences->setCacheType($config['cachetype']);
-        $preferences->setTempDir($config['temdir']);
+        $preferences->setTempDir($config['tempdir']);
 
         // determine the correct transport
         $type = $config['transport']['type'];
@@ -101,7 +101,7 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Pl
 
         // define and register mailer using transport service
         $definition = new Zikula_ServiceManager_Definition('Swift_Mailer', array(new Zikula_ServiceManager_Service('swiftmailer.transport')));
-        $this->serviceManager->registerService(new Zikula_ServiceManager_Service('mailer', $definition));
+        $this->serviceManager->registerService(new Zikula_ServiceManager_Service('mailer', $definition, false));
 
         // register simple mailer service
         $definition = new Zikula_ServiceManager_Definition('SystemPlugins_SwiftMailer_Mailer', array(new Zikula_ServiceManager_Service('zikula.servicemanager')));

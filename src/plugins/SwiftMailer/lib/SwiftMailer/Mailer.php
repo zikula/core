@@ -50,18 +50,19 @@ class SystemPlugins_SwiftMailer_Mailer
      * @param string $subject            Subject.
      * @param string $body               Content body.
      * @param array  $contentType        Content type for body, default 'text/plain'.
-     * @param array  $cc                 CC to, array('receiver@domain.org', 'other@domain.org' => 'A name')).
-     * @param array  $bcc                BCC to, array('receiver@domain.org', 'other@domain.org' => 'A name')).
-     * @param array  $replyTo            Reply to, array('receiver@domain.org', 'other@domain.org' => 'A name')).
+     * @param array  $cc                 CC to, array('receiver@domain.org', 'other@domain.org' => 'A name').
+     * @param array  $bcc                BCC to, array('receiver@domain.org', 'other@domain.org' => 'A name').
+     * @param array  $replyTo            Reply to, array('receiver@domain.org', 'other@domain.org' => 'A name').
      * @param mixed  $altBody            Alternate body.
      * @param string $altBodyContentType Alternate content type default 'text/html'.
+     * @param array  $header             Associative array of headers array('header1' => 'value1', 'header2' => 'value2').
      * @param array  &$failedRecipients  Array.
      * @param string $charset            Null means leave at default.
      * @param array  $attachments        Array of files.
      *
      * @return integet
      */
-    function send(array $from, array $to, $subject, $body, $contentType = 'text/plain', array $cc=null, array $bcc=null, array $replyTo=null, $altBody = null, $altBodyContentType = 'text/html', &$failedRecipients = array(), $charset=null, array $attachments=array())
+    function send(array $from, array $to, $subject, $body, $contentType = 'text/plain', array $cc=null, array $bcc=null, array $replyTo=null, $altBody = null, $altBodyContentType = 'text/html', array $header = array(), &$failedRecipients = array(), $charset=null, array $attachments=array())
     {
         $message = new Swift_Message($subject, $body, $contentType);
         $message->setTo($to);
@@ -90,6 +91,13 @@ class SystemPlugins_SwiftMailer_Mailer
 
         if ($altBody) {
             $message->addPart($altBody, $altBodyContentType);
+        }
+
+        if ($headers) {
+            $headers = $message->getHeaders();
+            foreach ($headers as $key => $value) {
+                $headers->addTextHeader($key, $value);
+            }
         }
 
         if ($this->serviceManager['swiftmailer.preferences.sendmethod'] == 'normal') {
