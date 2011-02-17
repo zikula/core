@@ -629,12 +629,14 @@ class SystemListeners extends Zikula_EventHandler
      */
     public function getConfigFile(Zikula_Event $event)
     {
-        if (is_readable('config/personal_config.php')) {
-            include 'config/personal_config.php';
-        } else {
+        if (is_readable('config/config.php')) {
             include 'config/config.php';
         }
 
+        if (is_readable('config/personal_config.php')) {
+            include 'config/personal_config.php';
+        }
+        
         if (is_readable('config/multisites_config.php')) {
             include 'config/multisites_config.php';
         }
