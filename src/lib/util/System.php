@@ -435,22 +435,11 @@ class System
             return false;
         }
 
-        // set initial return value until we know we have a valid return
-        $return = false;
+        $mailer = ServiceUtil::getManager()->getService('mailer.simple');
+        $altBodyContentType = ($html && $altbody) ? 'text/html' : 'plain/text';
+        $failedRecipients = array();
 
-        // check if the mailer module is availble and if so call the API
-        if ((ModUtil::available('Mailer'))) {
-            $return = ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array(
-                            'toaddress' => $to,
-                            'subject' => $subject,
-                            'headers' => $headers,
-                            'body' => $message,
-                            'altbody' => $altbody,
-                            'headers' => $headers,
-                            'html' => $html));
-        }
-
-        return $return;
+        return $mailer->send((array)$from, (array)$to, $subject, $body, 'text/plain', null, null, (array)$from, $altbody, $altBodyContentType, $failedRecipients);
     }
 
     /**
