@@ -322,6 +322,12 @@ class PluginUtil
     public static function install($className)
     {
         $plugin = self::loadPlugin($className);
+        if ($plugin instanceof Zikula_Plugin_AlwaysOn) {
+            // as it stands, these plugins cannot be installed since they are always on
+            // and cannot be disabled (required only for really base thing).
+            return true;
+        }
+
         if ($plugin->isInstalled()) {
             throw new LogicException(__f('Plugin %s is already installed', $className));
         }
