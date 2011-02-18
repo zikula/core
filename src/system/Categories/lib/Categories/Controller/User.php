@@ -179,7 +179,6 @@ class Categories_Controller_User extends Zikula_Controller
                 return LogUtil::registerError($this->__("Error! The user root category node for this user does not exist, and the automatic creation flag (autocreate) has not been set."));
             }
 
-            require_once ('system/Categories/Installer.php'); // need this for Categories_makeDisplayName() && Categories_makeDisplayDesc()
             $installer = new Categories_Installer(ServiceUtil::getManager());
             $cat = array('id'               => '',
                     'parent_id'        => $userRootCat['id'],
