@@ -37,7 +37,7 @@ class Zikula_Response_Ajax_Json extends Zikula_Response_Ajax_Base
     {
         header($this->createHttpResponseHeader());
         header('Content-type: application/json');
-        return json_encode($this->data);
+        return json_encode($this->payload);
     }
 
 }
