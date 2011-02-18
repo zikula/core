@@ -23,28 +23,28 @@ class Zikula_Request_Http extends Zikula_Request_Request
      *
      * @var Zikula_Request_Collection
      */
-    public $get;
+    protected $get;
 
     /**
      * Container for POST.
      *
      * @var Zikula_Request_Collection
      */
-    public $post;
+    protected $post;
 
     /**
      * Container for FILES.
      *
      * @var Zikula_Request_Collection
      */
-    public $files;
+    protected $files;
 
     /**
      * Container for COOKIES.
      * 
      * @var Zikula_Request_Collection
      */
-    public $cookie;
+    protected $cookie;
 
     /**
      * Session object.
@@ -58,21 +58,21 @@ class Zikula_Request_Http extends Zikula_Request_Request
      *
      * @var Zikula_Request_Collection
      */
-    public $server;
+    protected $server;
 
     /**
      * Container for ENV.
      *
      * @var Zikula_Request_Collection
      */
-    public $env;
+    protected $env;
 
     /**
      * Container for arguments.
      *
      * @var Zikula_Request_Collection
      */
-    public $args;
+    protected $args;
     
     /**
      * Initialize request object.
@@ -81,12 +81,13 @@ class Zikula_Request_Http extends Zikula_Request_Request
      */
     protected function initialize(array $options = array())
     {
-        $this->get = isset($options['get']) ? new Zikula_Request_Collection($options['get']) : new Zikula_Request_Collection(isset($_GET) ? $_GET : array());
-        $this->post = isset($options['post']) ? new Zikula_Request_Collection($options['post']) : new Zikula_Request_Collection(isset($_POST) ? $_POST : array());
-        $this->files = isset($options['files']) ? new Zikula_Request_Collection($options['files']) : new Zikula_Request_Collection(isset($_FILES) ? $_FILES : array());
-        $this->cookie = isset($options['cookies']) ? new Zikula_Request_Collection($options['cookies']) : new Zikula_Request_Collection(isset($_COOKIE) ? $_COOKIE : array());
-        $this->server = isset($options['server']) ? new Zikula_Request_Collection($options['server']) : new Zikula_Request_Collection(isset($_SERVER) ? $_SERVER : array());
-        $this->env = isset($options['env']) ? new Zikula_Request_Collection($options['env']) : new Zikula_Request_Collection(isset($_ENV) ? $_ENV : array());
+        $this->get = new Zikula_Request_Collection(isset($options['get']) ? $options['get'] : $_GET);
+        $this->post = new Zikula_Request_Collection(isset($options['post']) ? $options['post'] : $_POST);
+        $this->request = new Zikula_Request_Collection(isset($options['request']) ? $options['request'] : $_POST);
+        $this->files = new Zikula_Request_Collection(isset($options['files']) ? $options['files'] : $_FILES);
+        $this->cookie = new Zikula_Request_Collection(isset($options['cookie']) ? $options['cookie'] : $_COOKIE);
+        $this->server = new Zikula_Request_Collection(isset($options['server']) ? $options['server'] : $_SERVER);
+        $this->env = new Zikula_Request_Collection(isset($options['env']) ? $options['env'] : $_ENV);
     }
 
     /**
@@ -102,79 +103,71 @@ class Zikula_Request_Http extends Zikula_Request_Request
     /**
      * Getter for GET.
      *
-     * @param string $key     Key to get.
-     * @param string $default Default if not found.
-     *
-     * @return mixed
+     * @return Zikula_Request_Collection
      */
-    public function getGet($key, $default = null)
+    public function getGet()
     {
-        return $this->get->get($key, $default);
+        return $this->get;
     }
 
     /**
      * Getter for POST.
      *
-     * @param string $key     Key to get.
-     * @param string $default Default if not found.
-     *
-     * @return mixed
+     * @return Zikula_Request_Collection
      */
-    public function getPost($key, $default = null)
+    public function getPost()
     {
-        return $this->post->get($key, $default);
+        return $this->post;
     }
 
     /**
      * Getter for COOKIE.
      *
-     * @param string $key     Key to get.
-     * @param string $default Default if not found.
-     *
-     * @return mixed
+     * @return Zikula_Request_Collection
      */
-    public function getCookie($key, $default = null)
+    public function getCookie()
     {
-        return $this->cookie->get($key, $default);
+        return $this->cookie;
     }
 
     /**
      * Getter for SERVER.
      *
-     * @param string $key     Key to get.
-     * @param string $default Default if not found.
-     *
-     * @return mixed
+     * @return Zikula_Request_Collection
      */
-    public function getServer($key, $default = null)
+    public function getServer()
     {
-        return $this->server->get($key, $default);
+        return $this->server;
     }
 
     /**
      * Getter for ENV.
      *
-     * @param string $key     Key to get.
-     * @param string $default Default if not found.
-     *
-     * @return mixed
+     * @return Zikula_Request_Collection
      */
-    public function getEnv($key, $default = null)
+    public function getEnv()
     {
-        return $this->env->get($key, $default);
+        return $this->env;
+    }
+
+    /**
+     * Getter for args.
+     *
+     * @return Zikula_Request_Collection
+     */
+    public function getArgs()
+    {
+        return $this->args;
     }
 
     /**
      * Getter for FILES.
      *
-     * @param string $key     Key to get.
-     * @param string $default Default if not found.
-     *
-     * @return mixed
+     * @return Zikula_Request_Collection
      */
-    public function getFiles($key, $default = null)
+    public function getFiles()
     {
-        return $this->files->get($key, $default);
+        return $this->files;
     }
 
     /**
