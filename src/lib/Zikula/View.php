@@ -884,8 +884,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             $path .= $this->modinfo['directory'] . '/';
         }
 
-        //echo '<p>'.$path.'</p>';
-
         if (!file_exists($path)) {
             mkdir($path, $this->serviceManager['system.chmod_dir'], true);
         }
@@ -897,13 +895,14 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $hash = md5(serialize($this->serviceManager['databases'] . '+' . $auto_source));
         $filebase = FileUtil::getFilebase($auto_source);
         $filebase_hashed = $filebase . '-' . $hash;
-        $auto_source = str_replace($filebase, $filebase_hashed, $auto_source);
-
+        
+        // include auto_id in the filename 
         if (isset($auto_id) && !empty($auto_id)) {
-            $file = $auto_id . '-' . $auto_source;
-        } else {
-            $file = $auto_source;
+            $filebase_hashed = $auto_id . '-' . $filebase_hashed;
         }
+        
+        // replace the original filebase with the hashed one
+        $file = str_replace($filebase, $filebase_hashed, $auto_source);
 
         return $path.$file;
     }
