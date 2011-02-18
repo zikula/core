@@ -39,6 +39,29 @@ class Zikula_Request_Collection implements ArrayAccess
     }
 
     /**
+     * Get collection.
+     *
+     * @return array
+     */
+    public function getCollection()
+    {
+        return $this->collection;
+    }
+
+    /**
+     * Set collection.
+     *
+     * @param array $collection
+     *
+     * @return void
+     */
+    public function setCollection(array $collection)
+    {
+        $this->collection = $collection;
+    }
+
+
+    /**
      * Get.
      * 
      * @param string $key     Key.
@@ -48,7 +71,7 @@ class Zikula_Request_Collection implements ArrayAccess
      */
     public function get($key, $default = null)
     {
-        return (isset($this->collection[$key])) ? $this->collection[$key] : $default;
+        return ($this->has($key)) ? $this->collection[$key] : $default;
     }
 
     /**
@@ -73,7 +96,25 @@ class Zikula_Request_Collection implements ArrayAccess
      */
     public function has($key)
     {
-        return isset($this->collection[$key]);
+        return array_key_exists($key, $this->collection);
+    }
+
+    /**
+     * Filter key.
+     * 
+     * @param string  $key     Key.
+     * @param mixed   $default Default = null.
+     * @param integer $filter  FILTER_* constant.
+     * @param array   $options Fitler options.
+     */
+    public function filter($key, $default=null, $filter=FILTER_DEFAULT, array $options=array())
+    {
+        $value = $this->get($key, $default);
+        if (is_array($value)) {
+            $options['flags'] = FILTER_REQUIRE_ARRAY;
+        }
+
+        return filter_var($value, $filter, $options);
     }
 
     /**
