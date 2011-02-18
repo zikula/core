@@ -76,7 +76,7 @@ class Zikula_Token_Validate
     {
         list($id, $hash, $timestamp) = $this->tokenGenerator->decode($token);
         $decoded = array('id' => $id, 'timestamp' => $timestamp);
-        
+
         // Check if token ID exists first.
         $stored = $this->storage->get($decoded['id']);
         if (!$stored) {
@@ -103,6 +103,7 @@ class Zikula_Token_Validate
         if ($delete) {
             $this->storage->delete($decoded['id']);
         }
+
         return true;
     }
 }

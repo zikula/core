@@ -407,5 +407,4 @@ class Zikula_Session_Storage_Legacy implements Zikula_Session_Storage
             return (bool)$res;
         }
     }
-
 }

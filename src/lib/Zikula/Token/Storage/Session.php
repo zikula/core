@@ -43,8 +43,9 @@ class Zikula_Token_Storage_Session implements Zikula_Token_Storage
         if (empty($id)) {
             return false;
         }
-        
+
         $tokens = $this->session->get('_tokens', array());
+
         if (!array_key_exists($id, $tokens)) {
             return false;
         }
@@ -73,5 +74,4 @@ class Zikula_Token_Storage_Session implements Zikula_Token_Storage
         }
         $this->session->set('_tokens', $tokens);
     }
-
 }

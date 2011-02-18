@@ -291,5 +291,4 @@ class SessionUtil
         $hostNameDotCount = substr_count(System::getHost(), '.');
         return System::getVar('sessionname') . $hostNameDotCount;
     }
-
 }
