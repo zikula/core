@@ -697,12 +697,11 @@ abstract class Zikula_Base implements Zikula_Translatable
     /**
      * Check Csrf token.
      *
-     * @param string $failUrl The URL to redirect on fail, null means no redirect.
-     * @param string $token   The token, if not set, will pull from $_POST['csrftoken'].
+     * @param string $token The token, if not set, will pull from $_POST['csrftoken'].
      *
      * @return void
      */
-    public function checkCsrfToken($failUrl=null, $token=null)
+    public function checkCsrfToken($token=null)
     {
         if (is_null($token)) {
             $token = $this->request->getPost('csrftoken', false);
@@ -718,7 +717,7 @@ abstract class Zikula_Base implements Zikula_Translatable
             return;
         }
 
-        LogUtil::registerAuthidError($failUrl);
+        // Should we expire the session also? drak.
         throw new Zikula_Exception_Forbidden(__('Security token validation failed'));
     }
 }
