@@ -98,6 +98,7 @@ ul.z-menulinks li {
     background: none !important;
     border-right:1px solid #aaa;
     display:inline;
+    line-height: 23px !important;
     padding:0 10px !important;
     margin:0 !important;
 }
@@ -480,6 +481,11 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     width: 68.6%;
     display: block;
     position: relative;
+}
+
+.z-form div.z-formrow .htmlarea select {
+    padding: 1px;
+    /* exception for selectors inside Scribite */
 }
 
 .z-form div.z-formlist input {
