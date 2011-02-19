@@ -481,7 +481,7 @@ class Zikula_Core
                 UserUtil::logout();
                 LogUtil::registerStatus(__('You have been logged out.'));
                 $params = ($userstatus == 2) ? array('confirmtou' => 1) : array();
-                self::redirect(ModUtil::url('Users', 'user', 'loginscreen', $params));
+                System::redirect(ModUtil::url('Users', 'user', 'loginscreen', $params));
             }
         }
 
