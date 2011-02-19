@@ -1764,7 +1764,7 @@ class DBUtil
      *
      * @return mixed The resulting string or array.
      */
-    public static function _generateCategoryFilter($table, $categoryFilter, $returnArray = false)
+    function _generateCategoryFilter($tablename, $categoryFilter, $returnArray = false)
     {
         if (!$categoryFilter) {
             return '';
@@ -1775,47 +1775,70 @@ class DBUtil
         }
 
         // check the meta data
-        $modname = '';
         if (isset($categoryFilter['__META__']['module'])) {
             $modname = $categoryFilter['__META__']['module'];
-            unset($categoryFilter['__META__']);
         } else {
             $modname = ModUtil::getName();
         }
 
+        // check operator to use
+        // when it's AND, the where contains subqueries
+        if (isset($categoryFilter['__META__']['operator']) && in_array(strtolower($categoryFilter['__META__']['operator']), array('and', 'or'))) {
+            $op = strtoupper($categoryFilter['__META__']['operator']);
+        } else {
+            $op = 'OR';
+        }
+
+        unset($categoryFilter['__META__']);
+
         // get the properties IDs in the category register
-        $propids = CategoryRegistryUtil::getRegisteredModuleCategoriesIds($modname, $table);
+        Loader::loadClass('CategoryRegistryUtil');
+        $propids = CategoryRegistryUtil::getRegisteredModuleCategoriesIds($modname, $tablename);
 
         // build the where clause
+        $n = 1; // subquery counter
+        $catmapobjtbl = DBUtil::getLimitedTablename('categories_mapobj');
+
         $where = array();
-        foreach ($categoryFilter as $property => $category) {
+        foreach ($categoryFilter as $property => $category)
+        {
+            $prefix = '';
+            if ($op == 'AND') {
+                $prefix = "table$n.";
+                $n++;
+            }
+
+            // this allows to have an array of categories IDs
             if (is_array($category)) {
-                // we have an array of categories IDs
                 $wherecat = array();
                 foreach ($category as $cat) {
-                    $wherecat[] = 'cmo_category_id = \'' . DataUtil::formatForStore($cat) . '\'';
+                    $wherecat[] = "{$prefix}cmo_category_id='" . DataUtil::formatForStore($cat) . "'";
                 }
                 $wherecat = '(' . implode(' OR ', $wherecat) . ')';
-            } else {
-                // there is only one category ID
-                $wherecat = 'cmo_category_id = \'' . DataUtil::formatForStore($category) . '\'';
-            }
-            $where[] = '(cmo_reg_id = \'' . DataUtil::formatForStore($propids[$property]) . '\' AND ' . $wherecat . ')';
-        }
 
-        $where = 'cmo_table = \'' . DataUtil::formatForStore($table) . '\' AND (' . implode(' OR ', $where) . ')';
+            // if there's only one category ID
+            } else {
+                $wherecat = "{$prefix}cmo_category_id='" . DataUtil::formatForStore($category) . "'";
+            }
+
+            // process the where depending of the operator
+            if ($op == 'AND') {
+                $where[] = "cmo_obj_id IN (SELECT {$prefix}cmo_obj_id FROM $catmapobjtbl table$n WHERE {$prefix}cmo_reg_id = '".DataUtil::formatForStore($propids[$property])."' AND $wherecat)";
+            } else {
+                $where[] = "(cmo_reg_id='" . DataUtil::formatForStore($propids[$property]) . "' AND $wherecat)";
+            }
+        }
+        $where = "cmo_table='" . DataUtil::formatForStore($tablename) . "' AND (" . implode(" $op ", $where) . ')';
 
         // perform the query
-        $objIds = self::selectFieldArray('categories_mapobj', 'obj_id', $where);
+        $objIds = DBUtil::selectFieldArray('categories_mapobj', 'obj_id', $where);
 
         // this ensures that we return an empty set if no objects are mapped to the requested categories
-        if (!$objIds) {
+        if (!$objIds)
             $objIds[] = -1;
-        }
 
-        if ($returnArray) {
+        if ($returnArray)
             return $objIds;
-        }
 
         return implode(',', $objIds);
     }
