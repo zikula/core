@@ -97,7 +97,7 @@ class Zikula_Request_Http extends Zikula_Request_Request
      */
     public function getMethod()
     {
-        return $this->getServer()->get('REQUEST_METHOD');
+        return $this->server->get('REQUEST_METHOD');
     }
 
     /**
