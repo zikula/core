@@ -26,7 +26,7 @@ class SecurityCenter_Controller_Adminform extends Zikula_Controller
         }
 
         // verify auth-key
-        $this->checkCsrfToken(ModUtil::url('SecurityCenter', 'admin', 'viewidslog'));
+        $this->checkCsrfToken();
 
         // get paramters
         $id = (int)FormUtil::getPassedValue('id', 0, 'GETPOST');
