@@ -16,6 +16,11 @@
 class Categories_Controller_Ajax extends Zikula_Controller_Ajax
 {
 
+    protected function configureView()
+    {
+        Zikula_Controller::configureView();
+    }
+
     /**
      * Resequence categories
      */
