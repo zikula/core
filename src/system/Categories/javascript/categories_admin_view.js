@@ -12,6 +12,7 @@ Event.observe(window, 'load', function() {
         e.preventDefault();
         Zikula.TreeSortable.trees.categoriesTree.collapseAll();
     });
+    Zikula.UI.Tooltips($$('.tree a'));
     Zikula.Categories.AttachMenu();
 });
 
@@ -26,56 +27,56 @@ Zikula.Categories.AttachMenu = function () {
         }
     });
     Zikula.Categories.ContextMenu.addItem({
-        label: 'Edit',
+        label: Zikula.__('Edit'),
         callback: function(node){
-            Zikula.Categories.MenuAction(node,'edit');
+            Zikula.Categories.MenuAction(node, 'edit');
         }
     });
     Zikula.Categories.ContextMenu.addItem({
-        label: 'Delete',
+        label: Zikula.__('Delete'),
         callback: function(node){
-            Zikula.UI.Confirm('Do you really want to delete this category?','Confirmation prompt',function(res){
+            Zikula.UI.Confirm(Zikula.__('Do you really want to delete this category?'), Zikula.__('Confirmation prompt'), function(res){
                 if(res) {
-                    Zikula.Categories.MenuAction(node,'delete');
+                    Zikula.Categories.MenuAction(node, 'delete');
                 }
             });
         }
     });
     Zikula.Categories.ContextMenu.addItem({
-        label: 'Copy',
+        label: Zikula.__('Copy'),
         callback: function(node){
-            Zikula.Categories.MenuAction(node,'copy');
+            Zikula.Categories.MenuAction(node, 'copy');
         }
     });
     Zikula.Categories.ContextMenu.addItem({
-        label: 'Activate',
+        label: Zikula.__('Activate'),
         condition: function() {
             return Zikula.Categories.ContextMenu.lastClick.findElement('a').hasClassName(Zikula.TreeSortable.trees.categoriesTree.config.nodeUnactive);
         },
         callback: function(node){
-            Zikula.Categories.MenuAction(node,'activate');
+            Zikula.Categories.MenuAction(node, 'activate');
         }
     });
     Zikula.Categories.ContextMenu.addItem({
-        label: 'Deactivate',
+        label: Zikula.__('Deactivate'),
         condition: function() {
             return !Zikula.Categories.ContextMenu.lastClick.findElement('a').hasClassName(Zikula.TreeSortable.trees.categoriesTree.config.nodeUnactive);
         },
         callback: function(node){
-            Zikula.Categories.MenuAction(node,'deactivate');
+            Zikula.Categories.MenuAction(node, 'deactivate');
         }
     });
     Zikula.Categories.ContextMenu.addItem({
-        label: 'Add',
+        label: Zikula.__('Add'),
         callback: function(node){
-            Zikula.Categories.MenuAction(node,'add');
+            Zikula.Categories.MenuAction(node, 'add');
         }
     });
-}
+};
 
 Zikula.Categories.Indicator = function() {
     return $('ajax_indicator') ? $('ajax_indicator') : new Element('img',{id: 'ajax_indicator', src: 'images/ajax/indicator_circle.gif'});
-}
+};
 
 Zikula.Categories.MenuAction = function(node, action){
     if (!['edit', 'delete', 'copy', 'activate', 'deactivate', 'add'].include(action)) {
@@ -96,7 +97,7 @@ Zikula.Categories.MenuAction = function(node, action){
         case 'add':
             pars.mode = 'new';
             pars.parent = Zikula.TreeSortable.trees.categoriesTree.getNodeId(node.up('li').up('li'));
-            action = 'edit'
+            action = 'edit';
             break;
     }
     url = url + action;
@@ -109,11 +110,11 @@ Zikula.Categories.MenuAction = function(node, action){
             onComplete: Zikula.Categories.MenuActionCallback
         });
     return true;
-}
+};
 
 Zikula.Categories.MenuActionCallback = function(req) {
     if (!req.isSuccess()) {
-    	Zikula.showajaxerror(req.getMessage());
+        Zikula.showajaxerror(req.getMessage());
         return false;
     }
     var data = req.getData(),
@@ -125,7 +126,7 @@ Zikula.Categories.MenuActionCallback = function(req) {
                 Droppables.remove(subnode);
             });
             Effect.SwitchOff(node,{
-                afterFinish:function(){node.remove()}
+                afterFinish: function() {node.remove();}
             });
             Zikula.TreeSortable.trees.categoriesTree.drawNodes();
             break;
@@ -144,54 +145,70 @@ Zikula.Categories.MenuActionCallback = function(req) {
             break;
         case 'edit':
             $(document.body).insert(data.result);
-            Zikula.Categories.Form = new Zikula.UI.FormDialog($('categories_ajax_form_container'),function(res){
-                if(!res) {
-                    return false;
-                }
-                var pars = $('categories_ajax_form').serialize(true);
-                pars.mode = 'edit';
-                new Zikula.Ajax.Request('ajax.php?module=Categories&func=save',{
-                    method: 'post',
-                    parameters: pars,
-                    authid: 'categoriesauthid',
-                    onComplete: function(req){
-                        var data = req.getData(),
-                            node = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.cid);
-                            node.replace(data.node);
-                        Zikula.Categories.ReinitTreeNode(node);
-                        Zikula.Categories.Form.destroy();
-                    }
-                })
-            },{title: $('categories_ajax_form_container').title, width: 700});
+            Zikula.Categories.Form = new Zikula.UI.FormDialog($('categories_ajax_form_container'), Zikula.Categories.EditNode, {title: $('categories_ajax_form_container').title, width: 700});
             Zikula.Categories.Form.open();
             break;
         case 'add':
             $(document.body).insert(data.result);
-            Zikula.Categories.Form = new Zikula.UI.FormDialog($('categories_ajax_form_container'),function(res){
-                if(!res) {
-                    return false;
-                }
-                var pars = $('categories_ajax_form').serialize(true);
-                pars.mode = 'new';
-                new Zikula.Ajax.Request('ajax.php?module=Categories&func=save',{
-                    method: 'post',
-                    parameters: pars,
-                    authid: 'categoriesauthid',
-                    onComplete: function(req){
-                        var data = req.getData(),
-                            newParent = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.parent).down('ul');
-                        newParent.insert(data.node);
-                        var node = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.cid);
-                        Zikula.Categories.ReinitTreeNode(node);
-                        Zikula.Categories.Form.destroy();
-                    }
-                })
-            },{title: $('categories_ajax_form_container').title, width: 700});
+            Zikula.Categories.Form = new Zikula.UI.FormDialog($('categories_ajax_form_container'), Zikula.Categories.AddNode, {title: $('categories_ajax_form_container').title, width: 700});
             Zikula.Categories.Form.open();
             break;
     }
     return true;
-}
+};
+
+Zikula.Categories.EditNode = function(res) {
+    if (!res) {
+        Zikula.Categories.Form.destroy();
+        return false;
+    }
+    var pars = $('categories_ajax_form').serialize(true);
+    pars.mode = 'edit';
+    new Zikula.Ajax.Request('ajax.php?module=Categories&func=save', {
+        method: 'post',
+        parameters: pars,
+        authid: 'categoriesauthid',
+        onComplete: function(req) {
+            if (!req.isSuccess()) {
+                Zikula.showajaxerror(req.getMessage());
+            } else {
+                var data = req.getData(),
+                    nodeId = Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.cid;
+                $(nodeId).replace(data.node);
+                Zikula.Categories.ReinitTreeNode($(nodeId));
+            }
+            Zikula.Categories.Form.destroy();
+        }
+    });
+    return true;
+};
+
+Zikula.Categories.AddNode = function(res) {
+    if (!res) {
+        Zikula.Categories.Form.destroy();
+        return false;
+    }
+    var pars = $('categories_ajax_form').serialize(true);
+    pars.mode = 'new';
+    new Zikula.Ajax.Request('ajax.php?module=Categories&func=save', {
+        method: 'post',
+        parameters: pars,
+        authid: 'categoriesauthid',
+        onComplete: function(req) {
+            if (!req.isSuccess()) {
+                Zikula.showajaxerror(req.getMessage());
+            } else {
+                var data = req.getData(),
+                    newParent = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.parent).down('ul');
+                newParent.insert(data.node);
+                var node = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.cid);
+                Zikula.Categories.ReinitTreeNode(node);
+            }
+            Zikula.Categories.Form.destroy();
+        }
+    });
+    return true;
+};
 
 Zikula.Categories.ReinitTreeNode = function(node) {
     Zikula.TreeSortable.trees.categoriesTree.initNode(node);
@@ -202,11 +219,11 @@ Zikula.Categories.ReinitTreeNode = function(node) {
     Zikula.TreeSortable.trees.categoriesTree.expandAll(node);
     Zikula.TreeSortable.trees.categoriesTree.drawNodes();
     Zikula.UI.Tooltips(node.select('a'));
-}
+};
 
-Zikula.Categories.Resequence = function(node,params,data) {
+Zikula.Categories.Resequence = function(node, params, data) {
     // do not allow inserts on root level
-    if (node.up('li') == undefined) {
+    if (node.up('li') === undefined) {
         return false;
     }
     var pars = {
@@ -223,35 +240,13 @@ Zikula.Categories.Resequence = function(node,params,data) {
             onComplete: Zikula.Categories.ResequenceCallback
         });
     return request.success();
-}
+};
 
 Zikula.Categories.ResequenceCallback = function(req)
 {
     if (!req.isSuccess()) {
-    	Zikula.showajaxerror(req.getMessage());
+        Zikula.showajaxerror(req.getMessage());
         return Zikula.TreeSortable.categoriesTree.revertInsertion();
     }
     return true;
-}
-
-
-function categories_meta_init()
-{
-    $('categories_meta_collapse').observe('click', categories_meta_click);
-    $('categories_meta_collapse').addClassName('z-toggle-link');
-    if ($('categories_meta_details').style.display != "none") {
-        $('categories_meta_collapse').removeClassName('z-toggle-link-open');
-        $('categories_meta_details').hide();
-    }
-}
-
-function categories_meta_click(event)
-{
-    event.preventDefault();
-    if ($('categories_meta_details').style.display != "none") {
-        Element.removeClassName.delay(0.9, $('categories_meta_collapse'), 'z-toggle-link-open');
-    } else {
-        $('categories_meta_collapse').addClassName('z-toggle-link-open');
-    }
-    switchdisplaystate('categories_meta_details');
-}
+};
