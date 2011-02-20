@@ -110,9 +110,9 @@ function smarty_function_selectmodobjectarray($params, $view)
 
         if (isset($params['where']) && !empty($params['where'])) {
             if (is_array($params['where'])) {
-                $q->where($params['where'][0], $params['where'][1]);
+                $query->where($params['where'][0], $params['where'][1]);
             } else {
-                $q->where($params['where']);
+                $query->where($params['where']);
             }
         }
 
