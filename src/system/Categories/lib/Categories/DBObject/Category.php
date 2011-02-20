@@ -23,27 +23,27 @@ class Categories_DBObject_Category extends DBObject
     public function __construct($init=null, $key=0)
     {
         parent::__construct();
-        $this->_objType       = 'categories_category';
-        $this->_objPath       = 'category';
+        $this->_objType = 'categories_category';
+        $this->_objPath = 'category';
 
-        $this->_objPermissionFilter[] = array('component_left'   => 'Categories',
-                                              'component_middle' => '',
-                                              'component_right'  => '',
-                                              'instance_left'    => 'id',
-                                              'instance_middle'  => 'ipath',
-                                              'instance_right'   => 'path',
-                                              'level'            => ACCESS_READ);
+        $this->_objPermissionFilter[] = array('component_left' => 'Categories',
+                'component_middle' => '',
+                'component_right' => '',
+                'instance_left' => 'id',
+                'instance_middle' => 'ipath',
+                'instance_right' => 'path',
+                'level' => ACCESS_READ);
 
-        $this->_objValidation['name']  = array ('name', true, 'noop', '', __('Error! You did not enter a name.'), '');
+        $this->_objValidation['name'] = array('name', true, 'noop', '', __('Error! You did not enter a name.'), '');
 
         $this->_init($init, $key);
     }
 
     // checkbox has to be explicitly processed
-    public function getDataFromInputPostProcess ($data=null)
+    public function getDataFromInputPostProcess($data=null)
     {
         if (!$data) {
-            $data =& $this->_objData;
+            $data = & $this->_objData;
         }
         if (!$data) {
             return $data;
@@ -75,10 +75,10 @@ class Categories_DBObject_Category extends DBObject
     }
 
     // the only reason we need all this stuff beflow is the because of the serialization
-    public function selectPostProcess ($data=null)
+    public function selectPostProcess($data=null)
     {
         if (!$data) {
-            $data =& $this->_objData;
+            $data = & $this->_objData;
         }
         if (!$data) {
             return $data;
@@ -91,10 +91,10 @@ class Categories_DBObject_Category extends DBObject
         return $data;
     }
 
-    public function insertPreProcess ($data=null)
+    public function insertPreProcess($data=null)
     {
         if (!$data) {
-            $data =& $this->_objData;
+            $data = & $this->_objData;
         }
 
         if (!$data) {
@@ -103,11 +103,11 @@ class Categories_DBObject_Category extends DBObject
 
         $data['display_name_org'] = $data['display_name'];
         $data['display_desc_org'] = $data['display_desc'];
-        $data['display_name']     = serialize($data['display_name']);
-        $data['display_desc']     = serialize($data['display_desc']);
+        $data['display_name'] = serialize($data['display_name']);
+        $data['display_desc'] = serialize($data['display_desc']);
 
         // encode slash
-        $data['name'] = str_replace ('/', '&#47;', $data['name']);
+        $data['name'] = str_replace('/', '&#47;', $data['name']);
 
         $this->_objData = $data;
         return $data;
@@ -116,7 +116,7 @@ class Categories_DBObject_Category extends DBObject
     public function insertPostProcess($data=null)
     {
         if (!$data) {
-            $data =& $this->_objData;
+            $data = & $this->_objData;
         }
 
         if (!$data) {
@@ -125,8 +125,8 @@ class Categories_DBObject_Category extends DBObject
 
         $data['display_name'] = $data['display_name_org'];
         $data['display_desc'] = $data['display_desc_org'];
-        unset ($data['display_name_org']);
-        unset ($data['display_desc_org']);
+        unset($data['display_name_org']);
+        unset($data['display_desc_org']);
         if (isset($_SESSION['Cache'])) {
             unset($_SESSION['Cache']);
         }
@@ -135,35 +135,35 @@ class Categories_DBObject_Category extends DBObject
         return $data;
     }
 
-    public function updatePreProcess ($data=null)
+    public function updatePreProcess($data=null)
     {
         if (!$data) {
-            $data =& $this->_objData;
+            $data = & $this->_objData;
         }
 
         if (!$data) {
             return $data;
         }
 
-        $pid    = (int)$data['parent_id'];
-        $parent = CategoryUtil::getCategoryByID ($pid);
+        $pid = (int)$data['parent_id'];
+        $parent = CategoryUtil::getCategoryByID($pid);
 
-        $this->insertPreProcess ();
+        $this->insertPreProcess();
         $data = $this->_objData;
-        $data['path']  = "$parent[path]/$data[name]";
+        $data['path'] = "$parent[path]/$data[name]";
         $data['ipath'] = "$parent[ipath]/$data[id]";
 
         // encode slash
-        $data['name'] = str_replace ('/', '&#47;', $data['name']);
+        $data['name'] = str_replace('/', '&#47;', $data['name']);
 
         $this->_objData = $data;
         return $data;
     }
 
-    public function updatePostProcess ($data=null)
+    public function updatePostProcess($data=null)
     {
         if (!$data) {
-            $data =& $this->_objData;
+            $data = & $this->_objData;
         }
 
         if (!$data) {
@@ -172,8 +172,8 @@ class Categories_DBObject_Category extends DBObject
 
         $data['display_name'] = $data['display_name_org'];
         $data['display_desc'] = $data['display_desc_org'];
-        unset ($data['display_name_org']);
-        unset ($data['display_desc_org']);
+        unset($data['display_name_org']);
+        unset($data['display_desc_org']);
         if (isset($_SESSION['Cache'])) {
             unset($_SESSION['Cache']);
         }
@@ -182,7 +182,7 @@ class Categories_DBObject_Category extends DBObject
         return $data;
     }
 
-    public function validatePostProcess ($data=null)
+    public function validatePostProcess($data=null)
     {
         if (!$data) {
             $data = $this->_objData;
@@ -194,7 +194,7 @@ class Categories_DBObject_Category extends DBObject
 
         // ensure that the name we want to use doesn't exist already on this level
         $name = $data['name'];
-        $cats = CategoryUtil::getCategoriesByParentID ($data['parent_id'], '', false, '', '', '', 'name');
+        $cats = CategoryUtil::getCategoriesByParentID($data['parent_id'], '', false, '', '', '', 'name');
 
         if (isset($cats[$name]) && $cats[$name] && $cats[$name]['id'] != $data['id']) {
             $_SESSION['validationErrors'][$this->_objPath]['name'] = "Category $name must be unique under parent";
@@ -205,12 +205,12 @@ class Categories_DBObject_Category extends DBObject
         return true;
     }
 
-    public function deleteMoveSubcategories ($newParentID)
+    public function deleteMoveSubcategories($newParentID)
     {
-        return $this->delete (false, $newParentID);
+        return $this->delete(false, $newParentID);
     }
 
-    public function delete ($deleteSubcats=false, $newParentID=0)
+    public function delete($deleteSubcats=false, $newParentID=0)
     {
         $data = $this->_objData;
 
@@ -219,18 +219,16 @@ class Categories_DBObject_Category extends DBObject
         }
 
         if ($deleteSubcats) {
-            CategoryUtil::deleteCategoriesByPath ($data['ipath']);
-        }
-        elseif ($newParentID) {
-            CategoryUtil::moveSubCategoriesByPath ($data['ipath'], $newParentID);
-            CategoryUtil::deleteCategoryByID ($data['id']);
-        }
-        else {
-            exit ('Can not delete category while preserving subcategories without specifying a new parent ID');
+            CategoryUtil::deleteCategoriesByPath($data['ipath']);
+        } elseif ($newParentID) {
+            CategoryUtil::moveSubCategoriesByPath($data['ipath'], $newParentID);
+            CategoryUtil::deleteCategoryByID($data['id']);
+        } else {
+            exit('Can not delete category while preserving subcategories without specifying a new parent ID');
         }
     }
 
-    public function move ($newParentID)
+    public function move($newParentID)
     {
         $data = $this->_objData;
 
@@ -238,10 +236,10 @@ class Categories_DBObject_Category extends DBObject
             return $data;
         }
 
-        CategoryUtil::moveCategoriesByPath ($data['ipath'], $newParentID);
+        CategoryUtil::moveCategoriesByPath($data['ipath'], $newParentID);
     }
 
-    public function copy ($newParentID)
+    public function copy($newParentID)
     {
         $data = $this->_objData;
 
@@ -249,6 +247,7 @@ class Categories_DBObject_Category extends DBObject
             return $data;
         }
 
-        CategoryUtil::copyCategoriesByPath ($data['ipath'], $newParentID);
+        CategoryUtil::copyCategoriesByPath($data['ipath'], $newParentID);
     }
+
 }

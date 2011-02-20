@@ -24,10 +24,11 @@ class Categories_DBObject_RegistryArray extends DBObjectArray
     {
         parent::__construct();
 
-        $this->_objType       = 'categories_registry';
-        $this->_objField      = 'id';
-        $this->_objPath       = 'categories_registry_array';
+        $this->_objType = 'categories_registry';
+        $this->_objField = 'id';
+        $this->_objPath = 'categories_registry_array';
 
         $this->_init($init, $where);
     }
+
 }
