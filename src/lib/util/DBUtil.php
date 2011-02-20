@@ -1764,7 +1764,7 @@ class DBUtil
      *
      * @return mixed The resulting string or array.
      */
-    function _generateCategoryFilter($tablename, $categoryFilter, $returnArray = false)
+    private static function _generateCategoryFilter($tablename, $categoryFilter, $returnArray = false)
     {
         if (!$categoryFilter) {
             return '';
@@ -1792,7 +1792,6 @@ class DBUtil
         unset($categoryFilter['__META__']);
 
         // get the properties IDs in the category register
-        Loader::loadClass('CategoryRegistryUtil');
         $propids = CategoryRegistryUtil::getRegisteredModuleCategoriesIds($modname, $tablename);
 
         // build the where clause
