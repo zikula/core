@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
  * CategoryArray
  *
@@ -25,30 +24,30 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
     {
         parent::__construct();
 
-        $this->_objType  = 'categories_category';
+        $this->_objType = 'categories_category';
         $this->_objField = 'id';
-        $this->_objPath  = 'categories_category_array';
-        $this->_objPermissionFilter[] = array('component_left'   => 'Categories',
-                                              'component_middle' => '',
-                                              'component_right'  => '',
-                                              'instance_left'    => 'id',
-                                              'instance_middle'  => 'ipath',
-                                              'instance_right'   => 'path',
-                                              'level'            => ACCESS_READ);
+        $this->_objPath = 'categories_category_array';
+        $this->_objPermissionFilter[] = array('component_left' => 'Categories',
+                'component_middle' => '',
+                'component_right' => '',
+                'instance_left' => 'id',
+                'instance_middle' => 'ipath',
+                'instance_right' => 'path',
+                'level' => ACCESS_READ);
 
         $this->_init($init, $where);
     }
 
-    public function buildRelativePaths ($rootCategory, $includeRoot=false)
+    public function buildRelativePaths($rootCategory, $includeRoot=false)
     {
-        CategoryUtil::buildRelativePaths ($rootCategory, $this->_objData, $includeRoot);
+        CategoryUtil::buildRelativePaths($rootCategory, $this->_objData, $includeRoot);
     }
 
     // checkbox has to be explicitly processed
-    public function getDataFromInputPostProcess ($objArray=null)
+    public function getDataFromInputPostProcess($objArray=null)
     {
         if (!$objArray) {
-            $objArray =& $this->_objData;
+            $objArray = & $this->_objData;
         }
 
         if (!$objArray) {
@@ -67,18 +66,17 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
     }
 
     // the only reason we need al this stuff beflow is the because of the serialization
-    public function selectPostProcess ($objArray=null)
+    public function selectPostProcess($objArray=null)
     {
         if (!$objArray) {
-            $objArray =& $this->_objData;
+            $objArray = & $this->_objData;
         }
 
         if (!$objArray) {
             return $objArray;
         }
 
-        foreach ($objArray as $k => $obj)
-        {
+        foreach ($objArray as $k => $obj) {
             $objArray[$k]['display_name'] = DataUtil::formatForDisplayHTML(unserialize($obj['display_name']));
             $objArray[$k]['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($obj['display_desc']));
         }
@@ -86,22 +84,21 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         return $objArray;
     }
 
-    public function insertPreProcess ($objArray=null)
+    public function insertPreProcess($objArray=null)
     {
         if (!$objArray) {
-            $objArray =& $this->_objData;
+            $objArray = & $this->_objData;
         }
 
         if (!$objArray) {
             return $objArray;
         }
 
-        foreach ($objArray as $k => $obj)
-        {
+        foreach ($objArray as $k => $obj) {
             $objArray[$k]['display_name_org'] = $obj['display_name'];
             $objArray[$k]['display_desc_org'] = $obj['display_desc'];
-            $objArray[$k]['display_name']     = serialize($obj['display_name']);
-            $objArray[$k]['display_desc']     = serialize($obj['display_desc']);
+            $objArray[$k]['display_name'] = serialize($obj['display_name']);
+            $objArray[$k]['display_desc'] = serialize($obj['display_desc']);
         }
 
         return $objArray;
@@ -110,7 +107,7 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
     public function insertPostProcess($objArray=null)
     {
         if (!$objArray) {
-            $objArray =& $this->_objData;
+            $objArray = & $this->_objData;
         }
 
         if (!$objArray) {
@@ -120,17 +117,17 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         foreach ($objArray as $k => $obj) {
             $objArray[$k]['display_name'] = $obj['display_name_org'];
             $objArray[$k]['display_desc'] = $obj['display_desc_org'];
-            unset ($objArray[$k]['display_name_org']);
-            unset ($objArray[$k]['display_desc_org']);
+            unset($objArray[$k]['display_name_org']);
+            unset($objArray[$k]['display_desc_org']);
         }
 
         return $objArray;
     }
 
-    public function updatePreProcess ($objArray=null)
+    public function updatePreProcess($objArray=null)
     {
         if (!$objArray) {
-            $objArray =& $this->_objData;
+            $objArray = & $this->_objData;
         }
 
         if (!$objArray) {
@@ -138,27 +135,27 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         }
 
         foreach ($objArray as $k => $obj) {
-            $pid    =  $obj['parent_id'];
-            $parent =  CategoryUtil::getCategoryByID ((int)$pid);
+            $pid = $obj['parent_id'];
+            $parent = CategoryUtil::getCategoryByID((int)$pid);
 
-            $this->insertPreProcess ();
-            $objArray[$k]['path']         = "$parent[path]/$obj[name]";
-            $objArray[$k]['ipath']        = "$parent[ipath]/$obj[id]";
+            $this->insertPreProcess();
+            $objArray[$k]['path'] = "$parent[path]/$obj[name]";
+            $objArray[$k]['ipath'] = "$parent[ipath]/$obj[id]";
         }
 
         return $objArray;
     }
 
-    public function updatePostProcess ($objArray=null)
+    public function updatePostProcess($objArray=null)
     {
         if ($objArray) {
-            return $this->insertPostProcess ($objArray);
+            return $this->insertPostProcess($objArray);
         }
 
-        return $this->insertPostProcess ();
+        return $this->insertPostProcess();
     }
 
-    public function delete ($deleteSubcats=false, $newParentID=0)
+    public function delete($deleteSubcats=false, $newParentID=0)
     {
         $objArray = $this->_objData;
 
@@ -168,13 +165,14 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
 
         foreach ($objArray as $k => $obj) {
             if ($deleteSubcats) {
-                CategoryUtil::deleteCategoriesByPath ($obj['ipath']);
+                CategoryUtil::deleteCategoriesByPath($obj['ipath']);
             } elseif ($newParentID) {
-                CategoryUtil::moveSubCategoriesByPath ($obj['ipath'], $newParentID);
-                CategoryUtil::deleteCategoryByID ($obj['id']);
+                CategoryUtil::moveSubCategoriesByPath($obj['ipath'], $newParentID);
+                CategoryUtil::deleteCategoryByID($obj['id']);
             } else {
-                exit ('Can not delete category while preserving subcategories without specifying a new parent ID');
+                exit('Can not delete category while preserving subcategories without specifying a new parent ID');
             }
         }
     }
+
 }
