@@ -33,6 +33,13 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_StyledPlugin
     public $readOnly;
 
     /**
+     * CSS class to use.
+     *
+     * @var string
+     */
+    public $cssClass;
+
+    /**
      * Field name in data array.
      *
      * @var string
@@ -160,9 +167,11 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_StyledPlugin
         if (!$this->isValid) {
             $class .= ' z-form-error';
         }
-
         if ($this->readOnly) {
             $class .= ' z-form-readonly';
+        }
+        if ($this->cssClass != null) {
+            $class .= ' ' . $this->cssClass;
         }
 
         $titleHtml = ($this->errorMessage != null ? " title=\"{$this->errorMessage}\"" : '');

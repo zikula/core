@@ -37,6 +37,13 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_StyledPlugin
     public $readOnly;
 
     /**
+     * CSS class to use.
+     *
+     * @var string
+     */
+    public $cssClass;
+
+    /**
      * Data field name for looking up initial data.
      *
      * The name stored here is used to lookup initial data for the plugin in the render's variables.
@@ -174,9 +181,14 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_StyledPlugin
         $readOnlyHtml = ($this->readOnly ? " disabled=\"disabled\"" : '');
         $checkedHtml = ($this->checked ? " checked=\"checked\"" : '');
 
+        $class = 'z-form-checkbox';
+        if ($this->cssClass != null) {
+            $class .= ' ' . $this->cssClass;
+        }
+
         $attributes = $this->renderAttributes($view);
 
-        $result = "<input{$idHtml}{$nameHtml} type=\"checkbox\" value=\"1\" class=\"z-form-checkbox\"{$readOnlyHtml}{$checkedHtml}{$attributes} />";
+        $result = "<input{$idHtml}{$nameHtml} type=\"checkbox\" value=\"1\" class=\"{$class}\"{$readOnlyHtml}{$checkedHtml}{$attributes} />";
 
         return $result;
     }
