@@ -52,9 +52,8 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
 
         $cid = FormUtil::getPassedValue('cid', 0);
-        $root_id = FormUtil::getPassedValue('dr', 1);
         $mode = FormUtil::getPassedValue('mode', 'new');
-        $parent = FormUtil::getPassedValue('parent', null, 'post');
+        $parent = FormUtil::getPassedValue('parent', 1, 'post');
         $editCat  = '';
 
         $languages = ZLanguage::getInstalledLanguages();
@@ -62,41 +61,22 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         // indicates that we're editing
         if ($mode == 'edit')
         {
-            if (!SecurityUtil::checkPermission('Categories::category', "::", ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError();
-            }
-
             if (!$cid) {
-                return LogUtil::registerError($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
+                return new Zikula_Response_Ajax_BadData($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
             }
 
             $category = new Categories_DBObject_Category();
             $editCat = $category->select($cid);
-            if ($editCat == false) {
-                return LogUtil::registerError($this->__('Sorry! No such item found.'), 404);
-            }
-        }
-        else
-        {
+            $this->throwNotFoundUnless($editCat, $this->__('Sorry! No such item found.'));
+        } else {
             // new category creation
-            if (!SecurityUtil::checkPermission('Categories::category', '::', ACCESS_ADD)) {
-                return LogUtil::registerPermissionError();
-            }
+            $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD));
 
-            // since we inherit the domain settings from the parent, we get
-            // the inherited (and merged) object from session
-            if (isset($_SESSION['newCategory']) && $_SESSION['newCategory']) {
-                $editCat = $_SESSION['newCategory'];
-                unset ($_SESSION['newCategory']);
-                $category = new Categories_DBObject_Category(); // need this for validation info
-            }
-            // if we're back from validation get the object from input
-            elseif (FormUtil::getValidationErrors()) {
+            if (FormUtil::getValidationErrors()) {
                 $category = new Categories_DBObject_Category('V'); // need this for validation info
                 $editCat  = $category->get();
-            }
-            // someone just pressen 'new' -> populate defaults
-            else {
+            } else {
+                // someone just pressen 'new' -> populate defaults
                 $category = new Categories_DBObject_Category(); // need this for validation info
                 $editCat['sort_value'] = '0';
                 $editCat['parent_id'] = $parent;
@@ -113,11 +93,6 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
                    ->assign('languages', $languages)
                    ->assign('validation', $category->_objValidation);
 
-        if ($mode == 'edit') {
-            $this->view->assign('haveSubcategories', CategoryUtil::haveDirectSubcategories ($cid))
-                       ->assign('haveLeafSubcategories', CategoryUtil::haveDirectSubcategories ($cid, false, true));
-        }
-
         $result = array(
             'action' => $mode == 'new' ? 'add' : 'edit',
             'result' => $this->view->fetch('categories_adminajax_edit.tpl')
@@ -133,6 +108,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $parent = FormUtil::getPassedValue('parent', null, 'post');
 
         $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
+        // TODO - make sure new categories path will be unique - see ticket: 2847
         $cat->copy($parent);
 
         // need to find id of new category
@@ -217,20 +193,18 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
     public function save()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
-
         $mode = FormUtil::getPassedValue('mode', 'new');
+        $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', $accessLevel));
 
-        $args = array();
         $result = array();
 
         $cat = new Categories_DBObject_Category();
         $cat->getDataFromInput ();
 
-        if (!$cat->validate('admin')) {
-            // add validation info
-            $result['validation'] = 'error';
-            return new Zikula_Response_Ajax($result);
+        if (!$cat->validate()) {
+            // TODO - need to handle validation errors - see ticket: 2847
+            return new Zikula_Response_Ajax_BadData('validation failed');
         }
 
         $attributes = array();
@@ -269,13 +243,6 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         );
         $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
 
-        if ($mode == 'edit') {
-            $msg = __f('Done! Saved the %s category.', $oldCat->getDataField('name'));
-        } else {
-            $msg = __f('Done! Inserted the %s category.', $cat->getDataField('name'));
-        }
-        LogUtil::registerStatus($msg);
-
         $result = array(
             'action' => $mode == 'edit' ? 'edit' : 'add',
             'cid' => $cat->getDataField('id'),
@@ -285,5 +252,4 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         );
         return new Zikula_Response_Ajax($result);
     }
-
 }
