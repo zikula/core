@@ -341,7 +341,7 @@ class Zikula_Session_Storage_Legacy implements Zikula_Session_Storage
                         $name = $file['name'];
                         $lastused = $file['lastused'];
                         $session = unserialize(file_get_contents($name));
-                        if ($lastused < $inactive && !isset($session['ZSVrememberme'])) {
+                        if ($lastused < $inactive && !isset($session['rememberme'])) {
                             unlink($name);
                         }
                     }
@@ -354,7 +354,7 @@ class Zikula_Session_Storage_Legacy implements Zikula_Session_Storage
                         $name = $file['name'];
                         $lastused = $file['lastused'];
                         $session = unserialize(file_get_contents($name));
-                        if ($lastused < $inactive && !isset($session['ZSVrememberme'])) {
+                        if ($lastused < $inactive && !isset($session['rememberme'])) {
                             unlink($name);
                         } else if (($lastused < $daysold)) {
                             unlink($name);
