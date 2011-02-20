@@ -142,7 +142,7 @@ class Zikula_Form_View extends Zikula_View
 
         // Construct and make normal Smarty use possible
         parent::__construct($serviceManager, $module, false);
-        $this->addPluginDir('lib/Zikula/Form/viewplugins');
+        $this->addPluginDir('lib/Zikula/Form/plugins');
 
         // Setup
         $this->idCount = 1;
