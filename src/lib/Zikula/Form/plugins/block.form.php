@@ -36,31 +36,33 @@ function smarty_block_form($params, $content, $view)
         $view->postRender();
 
         $formId = $view->getFormId();
-        $out  =  "<form id=\"{$formId}\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>";
-        $out .= $content;
-        $out .= "\n<div>\n" . $view->getStateHTML() . "\n"; // Add <div> for XHTML validation
-        $out .= $view->getIncludesHTML() . "\n";
-        $out .= $view->getCsrfTokenHtml() . "\n";
-        $out .= "<input type=\"hidden\" name=\"__formid\" id=\"__formid\" value=\"{$formId}\" />\n";
-        $out .= "
-<input type=\"hidden\" name=\"FormEventTarget\" id=\"FormEventTarget\" value=\"\" />
-<input type=\"hidden\" name=\"FormEventArgument\" id=\"FormEventArgument\" value=\"\" />
-<script type=\"text/javascript\">
-<!--
-function FormDoPostBack(eventTarget, eventArgument)
-{
-  var f = document.getElementById('{$formId}');
-  if (!f.onsubmit || f.onsubmit())
-  {
-    f.FormEventTarget.value = eventTarget;
-    f.FormEventArgument.value = eventArgument;
-    f.submit();
-  }
-}
-// -->
-</script>
-</div>\n";
-        $out .= "</form>\n";
+        $out = "
+<form id=\"{$formId}\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>
+    $content
+    <div>
+        {$view->getStateHTML()}
+        {$view->getIncludesHTML()}
+        {$view->getCsrfTokenHtml()}
+        <input type=\"hidden\" name=\"__formid\" id=\"__formid\" value=\"{$formId}\" />
+        <input type=\"hidden\" name=\"FormEventTarget\" id=\"FormEventTarget\" value=\"\" />
+        <input type=\"hidden\" name=\"FormEventArgument\" id=\"FormEventArgument\" value=\"\" />
+        <script type=\"text/javascript\">
+        <!--
+            function FormDoPostBack(eventTarget, eventArgument)
+            {
+                var f = document.getElementById('{$formId}');
+                if (!f.onsubmit || f.onsubmit())
+                {
+                    f.FormEventTarget.value = eventTarget;
+                    f.FormEventArgument.value = eventArgument;
+                    f.submit();
+                }
+            }
+        // -->
+        </script>
+    </div>
+</form>
+";
         return $out;
     }
 }
