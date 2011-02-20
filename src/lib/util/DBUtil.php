@@ -1804,7 +1804,6 @@ class DBUtil
             $prefix = '';
             if ($op == 'AND') {
                 $prefix = "table$n.";
-                $n++;
             }
 
             // this allows to have an array of categories IDs
@@ -1826,6 +1825,7 @@ class DBUtil
             } else {
                 $where[] = "(cmo_reg_id='" . DataUtil::formatForStore($propids[$property]) . "' AND $wherecat)";
             }
+            $n++;
         }
         $where = "cmo_table='" . DataUtil::formatForStore($tablename) . "' AND (" . implode(" $op ", $where) . ')';
 
