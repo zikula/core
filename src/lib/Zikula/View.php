@@ -213,7 +213,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
             $this->addPluginDir('lib/legacy/plugins'); // Core legacy plugins
         }
-        $this->addPluginDir('lib/view/plugins'); // Core plugins
+        $this->addPluginDir('lib/Zikula/View/plugins'); // Core plugins
 
         // check if the recent 'type' parameter in the URL is admin and if yes,
         // include system/Admin/templates/plugins to the plugins_dir array
