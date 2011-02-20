@@ -257,9 +257,11 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
      */
     bringToFront: function($super) {
         $super();
-        $$('.z-window.active').invoke('removeClassName','active');
-        this.container.addClassName('active');
-        this.focusWindow();
+        if (!this.container.hasClassName('active')) {
+            $$('.z-window.active').invoke('removeClassName','active');
+            this.container.addClassName('active');
+            this.focusWindow();
+        }
     },
     /**
      * Sets window max size depending on browser viewport dimensions
