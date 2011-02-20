@@ -1833,11 +1833,13 @@ class DBUtil
         $objIds = DBUtil::selectFieldArray('categories_mapobj', 'obj_id', $where);
 
         // this ensures that we return an empty set if no objects are mapped to the requested categories
-        if (!$objIds)
+        if (!$objIds) {
             $objIds[] = -1;
+        }
 
-        if ($returnArray)
+        if ($returnArray) {
             return $objIds;
+        }
 
         return implode(',', $objIds);
     }
