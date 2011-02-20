@@ -573,14 +573,8 @@ class SystemListeners extends Zikula_EventHandler
             return;
         }
 
-        // return if we don't have any hook providers
-        $hookproviders = HookUtil::getHookProviders();
-        if (empty($hookproviders)) {
-            return;
-        }
-
-        // return if module not subscriber capable
-        if (!HookUtil::isSubscriberCapable($event['modname'])) {
+        // return if module is not subscriber or provider capable
+        if (!HookUtil::isSubscriberCapable($event['modname']) && !HookUtil::isProviderCapable($event['modname'])) {
             return;
         }
 
