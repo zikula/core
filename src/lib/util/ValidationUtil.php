@@ -106,7 +106,7 @@ class ValidationUtil
         }
 
         if ($rc === false) {
-            $t = SessionUtil::getVar($field, null, "//validationErrors/$objectType", false, false);
+            $t = SessionUtil::getVar($field, null, "/validationErrors/$objectType", false, false);
             if ($t === null) {
                 SessionUtil::setVar($field, $err_msg, "/validationErrors/$objectType");
             }
@@ -177,7 +177,7 @@ class ValidationUtil
         }
 
         if (!$rc) {
-            SessionUtil::setVar($objectType, $objet, "/validationFailedObjects");
+            SessionUtil::setVar($objectType, $object, "/validationFailedObjects");
         }
 
         return $rc;
