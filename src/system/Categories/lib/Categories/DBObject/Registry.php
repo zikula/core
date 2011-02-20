@@ -14,9 +14,6 @@
 
 /**
  * CategoryRegistry
- *
- * @package Zikula_System_Modules
- * @subpackage Categories
  */
 class Categories_DBObject_Registry extends DBObject
 {
