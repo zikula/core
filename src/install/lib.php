@@ -46,7 +46,7 @@ function install(Zikula_Core $core)
     $smarty->plugins_dir = array(
             'plugins',
             'install/templates/plugins',
-            'lib/view/plugins');
+            'lib/Zikula/View/plugins');
     $smarty->clear_compiled_tpl();
     
     $lang = FormUtil::getPassedValue('lang', '', 'GETPOST');
