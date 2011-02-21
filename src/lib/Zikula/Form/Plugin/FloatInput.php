@@ -22,13 +22,6 @@
 class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
 {
     /**
-     * CSS class to use.
-     *
-     * @var string
-     */
-    public $cssClass;
-
-    /**
      * Minimum value for validation.
      *
      * @var float
