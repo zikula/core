@@ -86,7 +86,7 @@
             </fieldset>
             {if $mode == "edit"}
             <fieldset>
-                <legend><a id="categories_meta_collapse" href="javascript:void(0);">{gt text='Meta data'}</a></legend>
+                <legend><a id="categories_meta_collapse" href="#">{gt text='Meta data'}</a></legend>
                 <div id="categories_meta_details">
                     <div class="z-formrow">
                         <label for="category_meta_id">{gt text="Internal ID"}</label>
