@@ -1,7 +1,7 @@
 {if $mode == "edit"}
-    {gt text="Edit category" assign=windowtitle}
+    {gt text="Edit category" assign="windowtitle"}
 {else}
-    {gt text="Create new category" assign=windowtitle}
+    {gt text="Create new category" assign="windowtitle"}
 {/if}
 <div id="categories_ajax_form_container" style="display: none;" title="{$windowtitle}">
     <form id="categories_ajax_form" class="z-form" action="#" method="post" enctype="application/x-www-form-urlencoded">
@@ -102,12 +102,3 @@
         {/if}
     </form>
 </div>
-
-<script type="text/javascript">
-//    if ($('categories_meta_collapse')) {
-//        Zikula.Categories.Meta.Init();
-//    }
-//    if ($('category_attributes_add')) {
-//        Zikula.Categories.Attributes.Init();
-//    }
-</script>
