@@ -22,6 +22,13 @@
 class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
 {
     /**
+     * CSS class to use.
+     *
+     * @var string
+     */
+    public $cssClass;
+
+    /**
      * Minimum value for validation.
      *
      * @var integer
@@ -57,13 +64,24 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
     function create($view, &$params)
     {
         $this->maxLength = 20;
-        $this->cssClass = 'z-form-int';
         $params['width'] = '6em';
 
         parent::create($view, $params);
 
         $this->regexValidationPattern = '/^\\s*[+-]?\\s*?[0-9]+\\s*$/';
         $this->regexValidationMessage = __('Error! Invalid integer.');
+    }
+
+    /**
+     * Helper method to determine css class.
+     * @see Zikula_Form_Plugin_TextInput
+     *
+     * @return string the list of css classes to apply
+     */
+    protected function getStyleClass()
+    {
+        $class = parent::getStyleClass();
+        return str_replace('z-form-text', 'z-form-int', $class);
     }
 
     /**

@@ -298,20 +298,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
         $sizeHtml = ($this->size > 0 ? " size=\"{$this->size}\"" : '');
         $maxLengthHtml = ($this->maxLength > 0 ? " maxlength=\"{$this->maxLength}\"" : '');
         $text = DataUtil::formatForDisplay($this->text);
-        $class = 'z-form-text';
-
-        if (!$this->isValid) {
-            $class .= ' z-form-error';
-        }
-        if ($this->mandatory && $this->mandatorysym) {
-            $class .= ' z-form-mandatory';
-        }
-        if ($this->readOnly) {
-            $class .= ' z-form-readonly';
-        }
-        if ($this->cssClass != null) {
-            $class .= ' ' . $this->cssClass;
-        }
+        $class = $this->getStyleClass();
 
         $attributes = $this->renderAttributes($view);
 
@@ -355,6 +342,32 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
         }
 
         return $result;
+    }
+
+    /**
+     * Helper method to determine css class.
+     * Can be overridden by subclasses like Zikula_Form_Plugin_IntInput and Zikula_Form_Plugin_FloatInput.
+     *
+     * @return string the list of css classes to apply
+     */
+    protected function getStyleClass()
+    {
+        $class = 'z-form-text';
+
+        if (!$this->isValid) {
+            $class .= ' z-form-error';
+        }
+        if ($this->mandatory && $this->mandatorysym) {
+            $class .= ' z-form-mandatory';
+        }
+        if ($this->readOnly) {
+            $class .= ' z-form-readonly';
+        }
+        if ($this->cssClass != null) {
+            $class .= ' ' . $this->cssClass;
+        }
+
+        return $class;
     }
 
     /**
