@@ -1,13 +1,16 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-$(document).observe('dom:loaded', function() {
+Zikula.define('Categories');
+
+Zikula.Categories.InitEditView = function() {
     if ($('categories_meta_collapse')) {
         Zikula.Categories.Meta.Init();
     }
     if ($('category_attributes_add')) {
         Zikula.Categories.Attributes.Init();
     }
-});
+};
+$(document).observe('dom:loaded', Zikula.Categories.InitEditView);
 
 Zikula.define('Categories.Meta');
 

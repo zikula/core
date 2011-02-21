@@ -6,12 +6,12 @@
 <div id="categories_ajax_form_container" style="display: none;" title="{$windowtitle}">
     <form id="categories_ajax_form" class="z-form" action="#" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset>
+            <legend>{gt text="General settings"}</legend>
             <input type="hidden" id="category_parent_id" name="category[parent_id]" value="{$category.parent_id}" />
             {array_field_isset assign="catID" array=$category field="id" returnValue="1"}
             {if ($catID)}
             <input type="hidden" id="category_id" name="category[id]" value="{$category.id}" />
             {/if}
-            <legend>{gt text="General settings"}</legend>
             <div class="z-formrow">
                 <label for="category_name">{gt text="Name"}{formutil_getfieldmarker objectType="category" field="name" validation=$validation}</label>
                 {array_field_isset assign="catName" array=$category field="name" returnValue=1}
@@ -19,7 +19,7 @@
                 {formutil_getvalidationerror objectType="category" field="name"}
             </div>
             <div class="z-formrow">
-                <label>{gt text="Parent"}</label>
+                <span class="z-label">{gt text="Parent"}</span>
                 <span><strong>{category_path id=$category.parent_id field='name'}</strong></span>
             </div>
             <div class="z-formrow">
@@ -78,15 +78,15 @@
             <legend><a id="categories_meta_collapse" href="#">{gt text='Meta data'}</a></legend>
             <div id="categories_meta_details">
                 <div class="z-formrow">
-                    <label for="category_meta_id">{gt text="Internal ID"}</label>
+                    <span class="z-label">{gt text="Internal ID"}</span>
                     <span id="category_meta_id">{$category.id|safetext}</span>
                 </div>
                 <div class="z-formrow">
-                    <label for="category_path">{gt text="Path"}</label>
+                    <span class="z-label">{gt text="Path"}</span>
                     <span id="category_path">{$category.path|safetext}</span>
                 </div>
                 <div class="z-formrow">
-                    <label for="category_ipath">{gt text="I-path"}</label>
+                    <span class="z-label">{gt text="I-path"}</span>
                     <span id="category_ipath">{$category.ipath|safetext}</span>
                 </div>
                 {usergetvar name='uname' uid=$category.cr_uid assign='crusername'}
@@ -102,3 +102,12 @@
         {/if}
     </form>
 </div>
+
+<script type="text/javascript">
+//    if ($('categories_meta_collapse')) {
+//        Zikula.Categories.Meta.Init();
+//    }
+//    if ($('category_attributes_add')) {
+//        Zikula.Categories.Attributes.Init();
+//    }
+</script>
