@@ -22,6 +22,13 @@
 class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
 {
     /**
+     * CSS class to use.
+     *
+     * @var string
+     */
+    public $cssClass;
+
+    /**
      * Minimum value for validation.
      *
      * @var float
@@ -73,10 +80,21 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
         }
 
         $this->maxLength = 30;
-        $this->cssClass = 'z-form-float';
         $params['width'] = '6em';
 
         parent::create($view, $params);
+    }
+
+    /**
+     * Helper method to determine css class.
+     * @see Zikula_Form_Plugin_TextInput
+     *
+     * @return string the list of css classes to apply
+     */
+    protected function getStyleClass()
+    {
+        $class = parent::getStyleClass();
+        return str_replace('z-form-text', 'z-form-float', $class);
     }
 
     /**
