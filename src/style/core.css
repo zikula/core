@@ -483,11 +483,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     position: relative;
 }
 
-.z-form div.z-formrow .htmlarea select {
-    padding: 1px;
-    /* exception for selectors inside Scribite */
-}
-
 .z-form div.z-formlist input {
     width: auto;
 }
