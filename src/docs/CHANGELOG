@@ -150,3 +150,17 @@ Added doctrine support to selectmodobject(Array) view plugins (issue #2542)
 Included generic url routing classes (issue #2557)
 Added a new attribute, precision, to the formfloatinput Form plugin, which controls the number of digits after the decimal. (issue #2616)
 The userprofilelink Smarty modifier now accepts a wider range of user names, including user names with '@' (issue #2404).
+Horizontal and vertical drop down menu examples for menutree (issue #2313).
+Fix bad icon transparency. Now using PNG icon files (issue #2831).
+Fix inconsistency with styles vs style (issue #2805).
+Cleanup RSS icons (issue #2830).
+Appropriate style for number fields (issue #2757).
+The localized category name is mandatory, while the form says otherwise (issue #2749)
+new Categories are by default not active, which is confusing IMO (issue #2748)
+Smoother animation with Zikula.UI.Accordion (issue #2715)
+Switchdisplaystate Rendering Bug in IE7 and Chrome (issue #2714, #2707)
+CSS issues in IE and Chrome (issue #2685, #2702)
+Smilies removed (issue #2640)
+New color picker solution (issue #2634)
+create easy drop-menu for module (admin) links (issue #2646)
+Dropdown menus (issue #2649)
