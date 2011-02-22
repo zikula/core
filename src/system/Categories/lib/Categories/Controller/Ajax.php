@@ -129,12 +129,24 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         );
         $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
 
+        $leafStatus = array(
+            'leaf' => array(),
+            'noleaf' => array()
+        );
+        foreach($categories as $c) {
+            if($c['is_leaf']) {
+                $leafStatus['leaf'][] = $c['id'];
+            } else {
+                $leafStatus['noleaf'][] = $c['id'];
+            }
+        }
         $result = array(
             'action' => 'copy',
             'cid' => $cid,
             'copycid' => $newRoot,
             'parent' => $parent,
             'node' => $node,
+            'leafstatus' => $leafStatus,
             'result' => true
         );
         return new Zikula_Response_Ajax($result);
@@ -243,11 +255,24 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         );
         $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
 
+        $leafStatus = array(
+            'leaf' => array(),
+            'noleaf' => array()
+        );
+        foreach($categories as $c) {
+            if($c['is_leaf']) {
+                $leafStatus['leaf'][] = $c['id'];
+            } else {
+                $leafStatus['noleaf'][] = $c['id'];
+            }
+        }
+
         $result = array(
             'action' => $mode == 'edit' ? 'edit' : 'add',
             'cid' => $cat->getDataField('id'),
             'parent' => $cat->getDataField('parent_id'),
             'node' => $node,
+            'leafstatus' => $leafStatus,
             'result' => true
         );
         return new Zikula_Response_Ajax($result);
