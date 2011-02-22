@@ -34,7 +34,7 @@
             h1 {
                 background: url("/images/logo_with_title.gif") no-repeat scroll 50% 50% transparent;
                 font-size: 24px;
-                line-height: 90px;
+                line-height: 100px;
                 text-indent: -9000px;
             }
             h2 {
