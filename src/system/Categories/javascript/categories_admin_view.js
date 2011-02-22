@@ -145,17 +145,23 @@ Zikula.Categories.MenuActionCallback = function(req) {
             break;
         case 'edit':
             $(document.body).insert(data.result);
-            Zikula.Categories.Form = new Zikula.UI.FormDialog($('categories_ajax_form_container'), Zikula.Categories.EditNode, {title: $('categories_ajax_form_container').title, width: 700, afterOpen: Zikula.Categories.InitEditView});
-            Zikula.Categories.Form.open();
+            Zikula.Categories.OpenForm(data, Zikula.Categories.EditNode);
             break;
         case 'add':
             $(document.body).insert(data.result);
-            Zikula.Categories.Form = new Zikula.UI.FormDialog($('categories_ajax_form_container'), Zikula.Categories.AddNode, {title: $('categories_ajax_form_container').title, width: 700, afterOpen: Zikula.Categories.InitEditView});
-            Zikula.Categories.Form.open();
+            Zikula.Categories.OpenForm(data, Zikula.Categories.AddNode);
             break;
     }
     return true;
 };
+
+Zikula.Categories.OpenForm = function(data, callback) {
+    if (!Object.isUndefined(Zikula.Categories.Form) && Zikula.Categories.Form.isOpen) {
+        Zikula.Categories.Form.destroy();
+    }
+    Zikula.Categories.Form = new Zikula.UI.FormDialog($('categories_ajax_form_container'),callback, {title: $('categories_ajax_form_container').title, width: 700, afterOpen: Zikula.Categories.InitEditView});
+    return Zikula.Categories.Form.open();
+}
 
 Zikula.Categories.EditNode = function(res) {
     if (!res) {
