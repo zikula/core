@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
         <meta name="author" content="Zikula Development Team" />
         <meta name="generator" content="Zikula Installer -- http://www.zikula.org" />
-        <link rel="stylesheet" href="install/style/install.css" type="text/css" />
+        <link rel="stylesheet" href="install/style/installer.css" type="text/css" />
         <link rel="stylesheet" href="style/core.css" type="text/css" />
         {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" />{/browserhack}
         <script type="text/javascript" src="javascript/ajax/proto_scriptaculous.combined.min.js"></script>
