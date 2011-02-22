@@ -113,6 +113,8 @@ function _upg_header()
     echo '<link rel="stylesheet" href="install/style/installer.css" type="text/css" />' . "\n";
     echo '<link rel="stylesheet" href="style/core.css" type="text/css" />' . "\n";
     echo '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->' . "\n";
+    echo '<script src="javascript/ajax/proto_scriptaculous.combined.min.js" type="text/javascript"></script>' . "\n";
+    echo '<script src="install/javascript/install.js" type="text/javascript"></script>' . "\n";
     echo '</head>' . "\n";
     echo '<body>' . "\n";
     echo '<div id="container"><div id="content">' . "\n";
