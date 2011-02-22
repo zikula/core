@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{gt text="Zikula is not installed!"}</title>
-        <link rel="stylesheet" href="install/style/style.css" type="text/css" />
+        <link rel="stylesheet" href="install/style/systemdialogs.css" type="text/css" />
     </head>
     <body>
         <div id="container">
