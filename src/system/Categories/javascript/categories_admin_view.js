@@ -141,7 +141,7 @@ Zikula.Categories.MenuActionCallback = function(req) {
                 newNode = Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.copycid;
             newParent.insert(data.node);
             newNode = $(newNode);
-            Zikula.Categories.ReinitTreeNode(newNode);
+            Zikula.Categories.ReinitTreeNode(newNode, data);
             break;
         case 'edit':
             $(document.body).insert(data.result);
@@ -181,7 +181,7 @@ Zikula.Categories.EditNode = function(res) {
                 var data = req.getData(),
                     nodeId = Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.cid;
                 $(nodeId).replace(data.node);
-                Zikula.Categories.ReinitTreeNode($(nodeId));
+                Zikula.Categories.ReinitTreeNode($(nodeId), data);
             }
             Zikula.Categories.Form.destroy();
         }
@@ -208,7 +208,7 @@ Zikula.Categories.AddNode = function(res) {
                     newParent = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.parent).down('ul');
                 newParent.insert(data.node);
                 var node = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.cid);
-                Zikula.Categories.ReinitTreeNode(node);
+                Zikula.Categories.ReinitTreeNode(node, data);
             }
             Zikula.Categories.Form.destroy();
         }
@@ -216,7 +216,7 @@ Zikula.Categories.AddNode = function(res) {
     return true;
 };
 
-Zikula.Categories.ReinitTreeNode = function(node) {
+Zikula.Categories.ReinitTreeNode = function(node, data) {
     Zikula.TreeSortable.trees.categoriesTree.initNode(node);
     var subNodes = node.select('li');
     if (subNodes) {
@@ -224,6 +224,15 @@ Zikula.Categories.ReinitTreeNode = function(node) {
     }
     Zikula.TreeSortable.trees.categoriesTree.expandAll(node);
     Zikula.TreeSortable.trees.categoriesTree.drawNodes();
+
+    if (data.leafstatus) {
+        if (data.leafstatus.leaf) {
+            Zikula.TreeSortable.trees.categoriesTree.config.disabledForDrop = Zikula.TreeSortable.trees.categoriesTree.config.disabledForDrop.concat(data.leafstatus.leaf);
+        }
+        if (data.leafstatus.noleaf) {
+            Zikula.TreeSortable.trees.categoriesTree.config.disabledForDrop = [].without.apply(Zikula.TreeSortable.trees.categoriesTree.config.disabledForDrop, data.leafstatus.noleaf);
+        }
+    }
     Zikula.UI.Tooltips(node.select('a'));
 };
 
