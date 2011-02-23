@@ -66,7 +66,7 @@ class Zikula_Tree
             'wraperClass'   => 'treewraper',
             'treeClass'     => 'tree',
             'nodePrefix'    => 'node_',
-            'nullParent'    => 0,
+            'nullParent'    => 0, // what value is used for root level nodes? for example 0, null, '' (empty string)
             'toggler'       => 'z-tree-toggle',
             'icon'          => 'z-tree-icon',
             'nodeUnactive'  => 'z-tree-unactive',
@@ -242,7 +242,7 @@ class Zikula_Tree
                 continue;
             }
             $node = array('item' => $item, 'nodes' => array());
-            if ((int)$item['parent_id'] === $this->config['nullParent']) {
+            if ((string)$item['parent_id'] == (string)$this->config['nullParent']) {
                 $this->tree[$item['id']] = $node;
                 $path = null;
             } else {
