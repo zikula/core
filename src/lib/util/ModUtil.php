@@ -55,7 +55,7 @@ class ModUtil
      *
      * @var array
      */
-    protected static $modvars = array();
+    protected static $modvars;
 
     /**
      * Internal module cache.
@@ -67,7 +67,7 @@ class ModUtil
     /**
      * Module variables getter.
      *
-     * @return array
+     * @return ArrayObject
      */
     public static function getModvars()
     {
