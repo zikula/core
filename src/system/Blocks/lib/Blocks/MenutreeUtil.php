@@ -126,7 +126,7 @@ class Blocks_MenutreeUtil
         return self::normalize($stylesheets);
     }
 
-    protected function normalize($array)
+    protected static function normalize($array)
     {
         $normalizedArray = array();
         foreach ($array as $k => $v) {
