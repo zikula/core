@@ -55,7 +55,7 @@ class ModUtil
      *
      * @var array
      */
-    protected static $modvars;
+    protected static $modvars = array();
 
     /**
      * Internal module cache.
