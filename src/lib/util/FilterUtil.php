@@ -83,6 +83,9 @@ class FilterUtil extends FilterUtil_Common
         if (isset($args['plugins'])) {
             $this->_plugin->loadPlugins($args['plugins']);
         }
+        if (isset($args['restrictions'])) {
+            $this->_plugin->loadRestrictions($args['restrictions']);
+        }
         if (isset($args['varname'])) {
             $this->setVarName($args['varname']);
         }

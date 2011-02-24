@@ -46,6 +46,13 @@ class FilterUtil_Plugin extends FilterUtil_Common
     private $_replaces;
 
     /**
+     * Specified restrictions.
+     *
+     * @var array
+     */
+    private $_restrictions;
+
+    /**
      * Constructor.
      *
      * @param FilterUtil_Config $config FilterUtil Configuration object.
@@ -80,6 +87,28 @@ class FilterUtil_Plugin extends FilterUtil_Common
         }
 
         return $error;
+    }
+
+    /**
+     * Loads restrictions.
+     *
+     * @param array $rest Array of allowed operators per field in the form "field's name => operator array".
+     *
+     * @return void
+     */
+    public function loadRestrictions($rest)
+    {
+        if (empty($rest) || !is_array($rest)) {
+            return;
+        }
+
+        foreach ($rest as $field => $ops) {
+            // accept registered operators only
+            $ops = array_filter(array_intersect((array)$ops, array_keys($this->_ops)));
+            if (!empty($ops)) {
+                $this->_restrictions[$field] = $ops;
+            }
+        }
     }
 
     /**
@@ -326,6 +355,8 @@ class FilterUtil_Plugin extends FilterUtil_Common
     public function getDql($field, $op, $value)
     {
         if (!isset($this->_ops[$op]) || !is_array($this->_ops[$op])) {
+            return '';
+        } elseif (isset($this->_restrictions[$field]) && !in_array($op, $this->_restrictions[$field])) {
             return '';
         } elseif (isset($this->_ops[$op][$field])) {
             return $this->_plg[$this->_ops[$op][$field]]->getDql($field, $op, $value);
