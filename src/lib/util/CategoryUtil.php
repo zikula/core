@@ -915,13 +915,14 @@ class CategoryUtil
         $category['name'] = $name;
 
         $category['title'] = array();
-        $category['title'][] = "ID: " . $category['id'];
-        $category['title'][] = "Name: " . DataUtil::formatForDisplay($category['name']);
-        $category['title'][] = "Display name: " . $displayName;
-        $category['title'][] = "Description: " . (isset($category['display_desc'][$lang]) ? DataUtil::formatForDisplay($category['display_desc'][$lang]) : '');
-        $category['title'][] = "Active: " . ($category['status'] == 'A' ? 'Yes' : 'No');
-        $category['title'][] = "Leaf: " . ($category['is_leaf'] ? 'Yes' : 'No');
-        $category['title'][] = "Locked: " . ($category['is_locked'] ? 'Yes' : 'No');
+        $category['title'][] = __('ID') . ": " . $category['id'];
+        $category['title'][] = __('Name') . ": " . DataUtil::formatForDisplay($category['name']);
+        $category['title'][] = __('Display name') . ": " . $displayName;
+        $category['title'][] = __('Description') . ": " . (isset($category['display_desc'][$lang]) ? DataUtil::formatForDisplay($category['display_desc'][$lang]) : '');
+        $category['title'][] = __('Value') . ": " . $category['value'];
+        $category['title'][] = __('Active') . ": " . ($category['status'] == 'A' ? 'Yes' : 'No');
+        $category['title'][] = __('Leaf') . ": " . ($category['is_leaf'] ? 'Yes' : 'No');
+        $category['title'][] = __('Locked') . ": " . ($category['is_locked'] ? 'Yes' : 'No');
         $category['title'] = implode('&lt;br /&gt;',$category['title']);
 
         $category['class'] = array();
