@@ -218,6 +218,9 @@ class DoctrineListener extends Zikula_EventHandler
 
             $object->registerHydrator(DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY, 'Zikula_Doctrine_Hydrator_SingleScalarArray');
 
+            // tell doctrine our extended Doctrine_Query class (Doctrine_Query::create() returns a Zikula_Doctrine_Query instance)
+            $object->setAttribute(Doctrine_Core::ATTR_QUERY_CLASS, 'Zikula_Doctrine_Query');
+
             return;
         }
         if ($object instanceof Doctrine_Connection) {
