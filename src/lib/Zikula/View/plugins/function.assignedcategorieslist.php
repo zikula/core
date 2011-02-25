@@ -42,9 +42,20 @@ function smarty_function_assignedcategorieslist($params, $view)
 
     $lang = ZLanguage::getLanguageCode();
 
+    if (isset($params['item']['Categories']) && !empty($params['item']['Categories'])) {
+        $categories = $params['item']['Categories'];
+    } elseif (isset($params['item']['__CATEGORIES__']) && !empty($params['item']['__CATEGORIES__'])) {
+        $categories = $params['item']['__CATEGORIES__'];
+    } else {
+        $categories = array();
+    }
+
     $result = "<ul>\n";
-    if (!empty($params['item']['__CATEGORIES__'])) {
-        foreach ($params['item']['__CATEGORIES__'] as $category) {
+    if (!empty($categories)) {
+        foreach ($categories as $property => $category) {
+            if (isset($category['Category'])) {
+                $category = $category['Category'];
+            }
             $result .= "<li>\n";
             if (isset($category['display_name'][$lang])) {
                 $result .= $category['display_name'][$lang];
