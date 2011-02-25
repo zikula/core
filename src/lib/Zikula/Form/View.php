@@ -206,12 +206,12 @@ class Zikula_Form_View extends Zikula_View
         $this->eventHandler->preInitialize();
 
         if ($this->isPostBack()) {
-            if (!SecurityUtil::validateCsfrToken($_POST['csrftoken'], $this->serviceManager)) {
+            if (!SecurityUtil::validateCsfrToken($this->request->getPost()->filter('csrftoken', '', FILTER_SANITIZE_STRING), $this->serviceManager)) {
                 return LogUtil::registerAuthidError();
             }
 
             // retrieve form id
-            $formId = $_POST['__formid'];
+            $formId = $this->request->getPost()->filter("__formid", '', FILTER_SANITIZE_STRING);
             $this->setFormId($formId);
 
             $this->decodeIncludes();
@@ -868,7 +868,7 @@ class Zikula_Form_View extends Zikula_View
     public function getCsrfTokenHtml()
     {
         $key = SecurityUtil::generateCsfrToken($this->serviceManager);
-        $html = "<input type=\"hidden\" name=\"csrftoken\" value=\"{$key}\" id=\"FormCsrfToken\" />";
+        $html = "<input type=\"hidden\" name=\"csrftoken\" value=\"{$key}\" id=\"FormCsrfToken_{$this->formId}\" />";
         return $html;
     }
 
