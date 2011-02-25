@@ -16,7 +16,7 @@
 /**
  * Abstract controller for module installer.
  */
-abstract class Zikula_Installer extends Zikula_Base
+abstract class Zikula_Installer extends Zikula_Base 
 {
     /**
      * Version instance of the module.
@@ -53,11 +53,8 @@ abstract class Zikula_Installer extends Zikula_Base
      *
      * @return boolean
      */
-    public function install()
-    {
-        return true;
-    }
-
+    abstract public function install();
+    
     /**
      * Upgrade interface.
      *
@@ -65,18 +62,12 @@ abstract class Zikula_Installer extends Zikula_Base
      *
      * @return boolean|string $args True, false or last successful version number upgrade.
      */
-    public function upgrade($oldversion)
-    {
-        return true;
-    }
-
+    abstract public function upgrade($oldversion);
+    
     /**
      * Uninstall interface.
      *
      * @return boolean
      */
-    public function uninstall()
-    {
-        return true;
-    }
+    abstract public function uninstall();
 }
