@@ -115,7 +115,10 @@ class SessionUtil
     public static function delVar($name, $default = false, $path = '/')
     {
         $session = ServiceUtil::getManager()->getService('session');
-        return $session->del($name);
+        $value = $session->get($name, $default, $path);
+        $session->del($name, $path);
+
+        return $value;
     }
 
     /**
