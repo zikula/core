@@ -16,7 +16,7 @@
 /**
  * Retrieve an HTML unordered list of the categories assigned to a specified item.
  *
- * The assigned categories are retrieved from $item['__CATEGORIES__'].
+ * The assigned categories are retrieved from $item['__CATEGORIES__'] (DBUtil) or  $item['Categories'] (Doctrine).
  *
  * Available attributes:
  *  - item  (array) The item from which to retrieve the assigned categories.
