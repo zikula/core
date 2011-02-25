@@ -37,6 +37,9 @@ formcategoryselector form plugin example:
 
 $registryCid is the category id set in the category registry.
 
+Doctrine_Query::create() or Doctrine_Core::getTable('MyModule_Model_MyTable')->createQuery() provide an new function:
+addWhereCategories(). Documentation available in the phpdoc of the method in the class Zikula_Doctrine_Query (file location: /lib/Zikula/Doctrine/Query.php)
+
 
 Attributable:
 -------------
