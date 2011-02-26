@@ -39,6 +39,19 @@ class Zikula_Controller_Plugin extends Zikula_Controller
     protected $plugin;
 
     /**
+     * Constructor.
+     *
+     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param Zikula_Plugin         $plugin         Plugin.
+     * @param array                 $options        Options.
+     */
+    public function  __construct(Zikula_ServiceManager $serviceManager, Zikula_Plugin $plugin, array $options = array())
+    {
+        $this->plugin = $plugin;
+        parent::__construct($serviceManager, $options);
+    }
+
+    /**
      * Setup base properties.
      *
      * @return void
