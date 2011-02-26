@@ -154,7 +154,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         }
 
         // Load any handlers if they exist
-        if ($this->reflection->hasMethod('setupHandlerDefinitions')) {
+        if ($this->getReflection()->hasMethod('setupHandlerDefinitions')) {
             $this->setupHandlerDefinitions();
         }
     }
@@ -203,9 +203,12 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         $this->serviceId = PluginUtil::getServiceId($this->className);
         $this->baseDir = dirname($this->getReflection()->getFileName());
 
+        // Split class name into parts - commented in if statement below.
         $p = explode('_', $this->className);
 
         if (strpos($this->serviceId, 'moduleplugin') === 0) {
+            // ModulePlugin_{ModuleName}_{PluginName}_Plugin
+            // $p[1] = ModuleName, $p[2] = PluginName
             $this->moduleName = $p[1];
             $this->pluginName = $p[2];
             $this->pluginType = self::TYPE_MODULE;
@@ -214,6 +217,8 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
                 ZLanguage::bindModulePluginDomain($this->moduleName, $this->pluginName);
             }
         } elseif (strpos($this->serviceId, 'systemplugin') === 0) {
+            // SystemPlugin_{PluginName}_Plugin
+            // $p[1] = ModuleName
             $this->moduleName = 'zikula';
             $this->pluginName = $p[1];
             $this->pluginType = self::TYPE_SYSTEM;
@@ -222,7 +227,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
                 ZLanguage::bindSystemPluginDomain($this->pluginName);
             }
         } else {
-            throw new LogicException(sprintf('This class %s does not appear to be named correctly', $this->className));
+            throw new LogicException(sprintf('This class %s does not appear to be named correctly.  System plugins should be named {SystemPlugin}_{Name}_Plugin, module plugins should be named {ModulePlugin}_{ModuleName}_{PluginName}_Plugin.', $this->className));
         }
 
         $this->meta = $this->getMeta();
