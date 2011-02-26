@@ -483,19 +483,26 @@
                             <option value="cheetahs">Cheetahs</option>
                         </select>
                         <script type="text/javascript">
-                            var select_multiple = new Zikula.UI.SelectMultiple('select_multiple');
+                            var select_multiple = new Zikula.UI.SelectMultiple('select_multiple',{
+                                title:'Custom link name',
+                                windowTitle:'Custom window title'
+                            });
                         </script>
                     </div><!-- /code --><pre>
                         &lt;select id=&quot;select_multiple&quot; name=&quot;select_name&quot;&gt;
-                        &lt;option value=&quot;tigers&quot;&gt;Tigers&lt;/option&gt;
-                        &lt;option value=&quot;lions&quot;&gt;Lions&lt;/option&gt;
-                        &lt;option value=&quot;kitties&quot;&gt;Kitties&lt;/option&gt;
-                        &lt;option value=&quot;lygers&quot;&gt;Lygers&lt;/option&gt;
-                        &lt;option value=&quot;pumas&quot;&gt;Pumas&lt;/option&gt;
-                        &lt;option value=&quot;cheetahs&quot;&gt;Cheetahs&lt;/option&gt;
+                            &lt;option value=&quot;tigers&quot;&gt;Tigers&lt;/option&gt;
+                            &lt;option value=&quot;lions&quot;&gt;Lions&lt;/option&gt;
+                            &lt;option value=&quot;kitties&quot;&gt;Kitties&lt;/option&gt;
+                            &lt;option value=&quot;lygers&quot;&gt;Lygers&lt;/option&gt;
+                            &lt;option value=&quot;pumas&quot;&gt;Pumas&lt;/option&gt;
+                            &lt;option value=&quot;cheetahs&quot;&gt;Cheetahs&lt;/option&gt;
                         &lt;/select&gt;
                         &lt;script type=&quot;text/javascript&quot;&gt;
-                        var select_multiple = new Zikula.UI.SelectMultiple('select_multiple');
+                            var select_multiple = new Zikula.UI.SelectMultiple('select_multiple',{
+                                title:'Custom link name',
+                                windowTitle:'Custom window title',
+                                okLabel:'Custom ok label'
+                            });
                         &lt;/script&gt;
                     </pre>
                     <script type="text/javascript">
