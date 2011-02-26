@@ -299,6 +299,9 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
      * @return {Number}
      */
     getWindowHeight: function() {
+        if (this.calculated) {
+            return this.container.getHeight();
+        }
         var height = this.container.getHeight(),
             header = this.getTopOffset(),
             body = this.window.body.getHeight(),
@@ -308,6 +311,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
         } else if(height < header + body + footer) {
             height = height + header + footer;
         }
+        this.calculated = true;
         return height;
     },
     /**
