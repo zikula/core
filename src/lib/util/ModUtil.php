@@ -1807,4 +1807,26 @@ class ModUtil
         }
     }
 
+    /**
+     * Determine the module base directory (system or modules).
+     *
+     * The purpose of this API is to decouple this calculation from the database,
+     * since we ship core with fixed system modules, there is no need to calculate
+     * this from the database over and over.
+     *
+     * @param string $moduleName Module name.
+     *
+     * @return string Returns 'system' if system module, and 'modules' if not.
+     */
+    public static function getModuleBaseDir($moduleName)
+    {
+        if (in_array(strtolower($moduleName), array('admin', 'blocks', 'categories', 'errors', 'extensions', 'groups', 'mailer', 'pagelock', 'permissions', 'search', 'securitycenter', 'settings', 'themes', 'users'))) {
+            $directory = 'system';
+        } else {
+            $directory = 'modules';
+        }
+
+        return $directory;
+    }
+
 }
