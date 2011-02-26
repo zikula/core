@@ -543,7 +543,7 @@ class FileUtil
      *
      * @return string The path to the data directory.
      */
-    public function getDataDirectory()
+    public static function getDataDirectory()
     {
         return DataUtil::formatForOS(System::getVar('datadir'));
     }
