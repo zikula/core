@@ -186,6 +186,8 @@ Zikula.getcheckboxvalue = function(id)
 /**
  * Updates all hidden authid fields with a new authid obtained with an ajax call.
  *
+ * @deprecated
+ * 
  * @param {String} authid The new authid.
  * 
  * @return void
