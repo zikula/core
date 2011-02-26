@@ -1059,6 +1059,9 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple,/** @lends Zikula
      * @param {String} [options.valueSeparator=','] Separator used for multiple values. When user will choose two or more select values - they will be joined by this separator
      * @param {Array} [options.excludeValues=[]] Allows to exclude from multiple select options with given values (such as "Select something form this list" with value="null")
      * @param {Number} [options.opener=null] Element, which will open dialog with multiple options, when null - opener is build automatically
+     * @param {String} [options.title='Select multiple'] Name for automatically build opener
+     * @param {String} [options.windowTitle=null] Title for multiple select dialog window when opener is build automatically. If null - option.title is used
+     * @param {String} [options.okLabel='Ok'] Custom label for button inside multiple select dialog window 
      *
      * @return {Zikula.UI.SelectMultiple} New Zikula.UI.SelectMultiple instance
      */
@@ -1071,6 +1074,9 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple,/** @lends Zikula
             valueSeparator: ',',
             excludeValues: [],
             opener: null,
+            title: Zikula.__('Select multiple'),
+            windowTitle: null,
+            okLabel: Zikula.__('Ok'),
             afterChange: this.afterChange.bind(this)
         }, options || { });
         select = $(select);
@@ -1101,8 +1107,8 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple,/** @lends Zikula
             opener = new Element('a',{
                 id:openerId,
                 href:'#'+containerId,
-                title:Zikula.__('Select multiple')
-            }).update(Zikula.__('Select multiple'));
+                title: options.windowTitle || options.title
+            }).update(options.title);
             select.insert({after:opener});
         } else {
             opener = $(opener);
@@ -1122,7 +1128,7 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple,/** @lends Zikula
                 )
             }
         });
-        this.dialog = new Zikula.UI.Dialog(opener,[{label: Zikula.__('Ok')}],{position:'relative'});
+        this.dialog = new Zikula.UI.Dialog(opener,[{label: options.okLabel}],{position:'relative'});
         return container;
     },
     /**
