@@ -404,7 +404,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
                 width:this.initialWidth.toUnits()
             });
         }
-        $super(event);
+        $super.defer(event);
         if(this.options.destroyOnClose) {
             this.destroy();
         }
