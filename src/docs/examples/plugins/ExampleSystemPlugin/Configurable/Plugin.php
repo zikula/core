@@ -47,6 +47,6 @@ class SystemPlugin_Configurable_Plugin extends Zikula_Plugin implements Zikula_P
      */
     public function getConfigurationController()
     {
-        return new SystemPlugin_Configurable_Controller($this->serviceManager, array('plugin' => $this));
+        return new SystemPlugin_Configurable_Controller($this->serviceManager, $this);
     }
 }

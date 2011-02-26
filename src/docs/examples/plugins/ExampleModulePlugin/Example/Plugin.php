@@ -98,6 +98,6 @@ class ModulePlugin_Users_Example_Plugin extends Zikula_Plugin implements Zikula_
      */
     public function getConfigurationController()
     {
-        return new ModulePlugin_Users_Example_Controller($this->serviceManager, array('plugin' => $this));
+        return new ModulePlugin_Users_Example_Controller($this->serviceManager, $this);
     }
 }
