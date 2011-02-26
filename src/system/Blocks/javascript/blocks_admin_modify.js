@@ -12,5 +12,5 @@ function blocks_modify_init()
 
 function blocks_advanced_placement_onclick()
 {
-    switchdisplaystate('block_placement_advanced');
+    Zikula.switchdisplaystate('block_placement_advanced');
 }

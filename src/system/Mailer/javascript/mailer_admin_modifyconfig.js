@@ -28,5 +28,5 @@ function mailer_transport_onchange()
 
 function mailer_smtpauth_onchange()
 {
-    checkboxswitchdisplaystate('mailer_smtpauth', 'mailer_smtp_authentication', true);
+    Zikula.checkboxswitchdisplaystate('mailer_smtpauth', 'mailer_smtp_authentication', true);
 }

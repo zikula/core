@@ -14,6 +14,6 @@ function settings_multilingual_init()
 
 function mlsettings_language_detect_onchange()
 {
-    radioswitchdisplaystate('mlsettings_language_detect', 'mlsettings_language_detect_warning', true);
+    Zikula.radioswitchdisplaystate('mlsettings_language_detect', 'mlsettings_language_detect_warning', true);
 }
 

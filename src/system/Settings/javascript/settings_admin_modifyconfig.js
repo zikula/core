@@ -23,10 +23,10 @@ function settings_modifyconfig_init()
 
 function settings_disablesite_onchange()
 {
-    radioswitchdisplaystate('settings_siteoff', 'settings_siteoff_container', true);
+    Zikula.radioswitchdisplaystate('settings_siteoff', 'settings_siteoff_container', true);
 }
 
 function settings_shorturls_onchange()
 {
-    radioswitchdisplaystate('settings_shorturls', 'settings_shorturls_container', true);
+    Zikula.radioswitchdisplaystate('settings_shorturls', 'settings_shorturls_container', true);
 }

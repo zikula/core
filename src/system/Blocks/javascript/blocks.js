@@ -79,8 +79,8 @@ function blockorderchanged_response(req)
         return;
     }
 
-    pnrecolor('assignedblocklist', 'assignedblocklistheader');
-    pnrecolor('unassignedblocklist', 'unassignedblocklistheader');
+    Zikula.recolor('assignedblocklist', 'assignedblocklistheader');
+    Zikula.recolor('unassignedblocklist', 'unassignedblocklistheader');
     
 }
 

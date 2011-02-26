@@ -25,20 +25,20 @@ function theme_modifyconfig_init()
 
 function theme_enablecache_onchange()
 {
-    checkboxswitchdisplaystate('enablecache', 'theme_caching', true);
+    Zikula.checkboxswitchdisplaystate('enablecache', 'theme_caching', true);
 }
 
 function combinecssjs_onchange()
 {
-    checkboxswitchdisplaystate('cssjscombine', 'theme_cssjscombine', true);
+    Zikula.checkboxswitchdisplaystate('cssjscombine', 'theme_cssjscombine', true);
 }
 
 function minifycssjs_onchange()
 {
-    checkboxswitchdisplaystate('cssjsminify', 'theme_cssjsminify', true);
+    Zikula.checkboxswitchdisplaystate('cssjsminify', 'theme_cssjsminify', true);
 }
 
 function render_lifetime_onchange()
 {
-    checkboxswitchdisplaystate('render_cache', 'render_lifetime_container', true);
+    Zikula.checkboxswitchdisplaystate('render_cache', 'render_lifetime_container', true);
 }

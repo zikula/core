@@ -143,7 +143,7 @@ Zikula.showajaxerror = function(errortext)
  */
 Zikula.ajaxResponseError = function(transport, supresserror)
 {
-	var json = pndejsonize(transport.responseText);
+	var json = Zikula.dejsonize(transport.responseText);
 	if ("authid" in json) {
 		if (json.authid != '') {
 		    Zikula.updateauthids(json.authid);
@@ -210,7 +210,7 @@ Zikula.updateauthids = function(authid)
  */
 Zikula.recolor = function(listclass, headerclass)
 {
-    var pnodd = true;
+    var odd = true;
 
     $A($(listclass).childNodes).each(
         function(node)
@@ -220,12 +220,12 @@ Zikula.recolor = function(listclass, headerclass)
                 Element.removeClassName(node, 'z-odd');
                 Element.removeClassName(node, 'z-even');
 
-                if (pnodd == true) {
+                if (odd == true) {
                     Element.addClassName(node, 'z-odd');
                 } else {
                     Element.addClassName(node, 'z-even');
                 }
-                pnodd = !pnodd;
+                odd = !odd;
             }
         }
         );
@@ -240,19 +240,19 @@ Zikula.recolor = function(listclass, headerclass)
  */
 Zikula.switchdisplaystate = function(id)
 {
-    var pntmpobj = $(id);
+    var tmpobj = $(id);
 
-    if (pntmpobj.getStyle('display') == 'none') {
+    if (tmpobj.getStyle('display') == 'none') {
         if (typeof(Effect) != "undefined") {
-            Effect.BlindDown(pntmpobj);
+            Effect.BlindDown(tmpobj);
         } else {
-            pntmpobj.show();
+            tmpobj.show();
         }
     } else {
         if (typeof(Effect) != "undefined") {
-            Effect.BlindUp(pntmpobj);
+            Effect.BlindUp(tmpobj);
         } else {
-            pntmpobj.hide();
+            tmpobj.hide();
         }
     }
 }
