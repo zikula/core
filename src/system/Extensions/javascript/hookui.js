@@ -113,5 +113,5 @@ function changeproviderareaorder_response(req)
 
     var data = req.getData();
 
-    pnrecolor(data.ol_id, $(data.ol_id).down(0).id);
+    Zikula.recolor(data.ol_id, $(data.ol_id).down(0).id);
 }

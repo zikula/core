@@ -153,8 +153,8 @@ function permappend_response(req)
     $('sequence_' + data.pid).value = data.sequence;
     $('component_' + data.pid).value = data.component;
     $('instance_' + data.pid).value = data.instance;
-    pnsetselectoption('group_' + data.pid, data.gid);
-    pnsetselectoption('level_' + data.pid, data.level);
+    Zikula.setselectoption('group_' + data.pid, data.gid);
+    Zikula.setselectoption('level_' + data.pid, data.level);
 
     // hide cancel icon for new permissions
     $('permeditcancel_' + data.pid).addClassName('z-hide');
@@ -218,7 +218,7 @@ function permtestinit(permid)
     $('test_user').value = '';
     $('test_component').value = $('permcomp_' + permid).innerHTML;
     $('test_instance').value  = $('perminst_' + permid).innerHTML;
-    pnsetselectoption('test_level', $F('levelid_' + permid));
+    Zikula.setselectoption('test_level', $F('levelid_' + permid));
     $('permissiontestinfo').update('&nbsp;');
     $('testpermform').scrollTo();
 }
@@ -263,7 +263,7 @@ function sortorderchanged_response(req)
         Zikula.showajaxerror(req.getMessage());
         return;
     }
-    pnrecolor('permissionlist', 'permlistheader');
+    Zikula.recolor('permissionlist', 'permlistheader');
 }
    
 /**
@@ -275,8 +275,8 @@ function sortorderchanged_response(req)
 function permmodifyinit(permid)
 {
     if (getmodifystatus(permid) == 0) {
-        pnsetselectoption('group_' + permid, $F('groupid_' + permid));
-        pnsetselectoption('level_' + permid, $F('levelid_' + permid));
+        Zikula.setselectoption('group_' + permid, $F('groupid_' + permid));
+        Zikula.setselectoption('level_' + permid, $F('levelid_' + permid));
 
         enableeditfields(permid);
     }

@@ -13,5 +13,5 @@ function admin_modifyconfig_init()
 
 function admin_ignoreinstallercheck_onchange()
 {
-    checkboxswitchdisplaystate('admin_ignoreinstallercheck', 'admin_ignoreinstallercheck_warning', true);
+    Zikula.checkboxswitchdisplaystate('admin_ignoreinstallercheck', 'admin_ignoreinstallercheck_warning', true);
 }
