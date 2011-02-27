@@ -1,5 +1,7 @@
 {include file="blocks_admin_menu.tpl"}
-{ajaxheader modname=Blocks filename=blocks_admin_modify.js}
+{ajaxheader modname='Blocks' filename='blocks_admin_modify.js'}
+{pageaddvar name='javascript' value='javascript/helpers/Zikula.itemlist.js'}
+
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
     <h2>{gt text="Edit block"}</h2>
@@ -40,30 +42,82 @@
                 </div>
 
                 <div id="block_placement_advanced">
-                    <p class="z-formnote z-informationmsg">{gt text="To restrict the block's visibility to certain modules and module functions, put a checkmark beside the module (or modules) in which you want the block to be visible. If you want to further restrict visibility within a module, then enter the function type (or multiple types separated by a space), the function name, and (optionally) custom arguments."}</p>
-                    <div class="z-formrow z-clearfix">
-                        <label for="blocks_modules">{gt text="Modules"}</label>
-                        <ul id="blocks_modules" class="blocks-modulefilter-splitlist">
-                            {foreach name=modlist from=$mods item=mod}
-                            {assign var=modname value=$mod.name}
-                            <li><input type="checkbox" name="filter[modules][]" value="{$mod.name}"{if isset($filter.modules.$modname)} checked="checked"{/if} /> {$mod.displayname}</li>
-                            {/foreach}
-                        </ul>
+
+                    <p class="z-formnote z-informationmsg">{gt text="To restrict the block's visibility to certain modules and module functions, you can create filter(s) and select the module, function type, function name and function arguments that you want to apply to the filter. All fields are optional. If you omit a field, it will act as an *. "}</p>
+
+                    <p class="z-formnote"><a id="appendfilter" class="z-icon-es-new" href="javascript:void(0);">{gt text="Create new filter"}</a></p>
+
+                    <div class="z-formlist">
+                    <ol id="placementfilterslist" class="z-itemlist">
+                        <li class="z-itemheader z-clearfix">
+                            <span class="z-itemcell z-w25">{gt text="Module"}</span>
+                            <span class="z-itemcell z-w15">{gt text="Function type"}</span>
+                            <span class="z-itemcell z-w25">{gt text="Function name"}</span>
+                            <span class="z-itemcell z-w25">{gt text="Function arguments"}</span>
+                            <span class="z-itemcell z-w10">{gt text="Delete"}</span>
+                        </li>
+
+                        {foreach from=$filter item='placementfilter' name='loop_filters'}
+                        {assign var='loop_index' value=$smarty.foreach.loop_filters.iteration-1}
+                        <li id="li_placementfilterslist_{$loop_index}" class="{cycle values='z-odd,z-even'} z-clearfix">
+                            <span class="z-itemcell z-w25">
+                                <select id="filters_{$loop_index}_module" name="filters[{$loop_index}][module]">
+                                {foreach from=$mods item='mod' name='modlist'}
+                                    <option value="{$mod.name}" {if $placementfilter.module eq $mod.name}selected{/if}>{$mod.displayname}</option>
+                                {/foreach}
+                                </select>
+                            </span>
+                            <span class="z-itemcell z-w15"><input type="text" id="filters_{$loop_index}_ftype" name="filters[{$loop_index}][ftype]" size="10" maxlength="255" value="{$placementfilter.ftype|safetext}" /></span>
+                            <span class="z-itemcell z-w25"><input type="text" id="filters_{$loop_index}_fname" name="filters[{$loop_index}][fname]" size="30" maxlength="255" value="{$placementfilter.fname|safetext}" /></span>
+                            <span class="z-itemcell z-w25"><input type="text" id="filters_{$loop_index}_fargs" name="filters[{$loop_index}][fargs]" size="30" maxlength="255" value="{$placementfilter.fargs|safetext}" /></span>
+                            <span class="z-itemcell z-w10">
+                                <button type="button" class="imagebutton-nofloat buttondelete" id="buttondelete_placementfilterslist_{$loop_index}">{img src='14_layer_deletelayer.png' modname='core' set='icons/extrasmall' __alt='Delete' __title='Delete' }</button>
+                                (<span class="itemid">{$loop_index}</span>)
+                            </span>
+                        </li>
+                        {foreachelse}
+                        {* tfotis - i don't know why this is needed, but if it isn't here, item is not appended *}
+                        <span class="itemid z-hide">-1</span>
+                        {/foreach}
+                    </ol>
                     </div>
-                    <div class="z-formrow">
-                        <label for="blocks_type">{gt text="Function type(s)"}</label>
-                        <input id="blocks_type" name="filter[type]" type="text" size="40" maxlength="255" value="{$filter.type|safetext}" />
-                    </div>
-                    <div class="z-formrow">
-                        <label for="blocks_functions">{gt text="Function name"}</label>
-                        <input id="blocks_functions" name="filter[functions]" type="text" size="40" maxlength="255" value="{$filter.functions|safetext}" />
-                    </div>
-                    <div class="z-formrow">
-                        <label for="blocks_customargs">{gt text="Function arguments"}</label>
-                        <input id="blocks_customargs" name="filter[customargs]" type="text" size="40" maxlength="255" value="{$filter.customargs|safetext}" />
-                    </div>
+
+                    <ul style="display:none;">
+                        <li id="placementfilterslist_emptyitem" class="z-clearfix">
+                            <span class="z-itemcell z-w25">
+                                <select class="listinput" id="filters_X_module" name="filtersdummy[]">
+                                {foreach from=$mods item='mod' name='modlist'}
+                                    <option value="{$mod.name}">{$mod.displayname}</option>
+                                {/foreach}
+                                </select>
+                            </span>
+                            <span class="z-itemcell z-w15"><input type="text" class="listinput" id="filters_X_ftype" name="filtersdummy[]" size="10" maxlength="255" value="" /></span>
+                            <span class="z-itemcell z-w25"><input type="text" class="listinput" id="filters_X_fname" name="filtersdummy[]" size="30" maxlength="255" value="" /></span>
+                            <span class="z-itemcell z-w25"><input type="text" class="listinput" id="filters_X_fargs" name="filtersdummy[]" size="30" maxlength="255" value="" /></span>
+                            <span class="z-itemcell z-w10">
+                                <button type="button" class="imagebutton-nofloat buttondelete" id="buttondelete_placementfilterslist_X">{img src='14_layer_deletelayer.png' modname='core' set='icons/extrasmall' __alt='Delete' __title='Delete' }</button>
+                                (<span class="itemid"></span>)
+                            </span>
+                        </li>
+                    </ul>
+
+                    <script type="text/javascript">
+                    /* <![CDATA[ */
+                    var total_existing_filters = {{$filter|@count}};
+                    var list_placementfilterslist = null;
+                    document.observe("dom:loaded",function(){
+                        list_placementfilterslist = new Zikula.itemlist('placementfilterslist', {headerpresent: true, firstidiszero: true, sortable: false});
+                    });
+                    $('appendfilter').observe('click',function(event){
+                        list_placementfilterslist.appenditem();
+                        event.stop();
+                    })
+                    /* ]]> */
+                    </script>
+
                 </div>
             </fieldset>
+
             {if $modvars.Blocks.collapseable eq 1}
             <fieldset>
                 <legend>{gt text="Collapsibility"}</legend>

@@ -34,6 +34,7 @@ class BlockUtil
         static $currentlang;
         static $func;
         static $type;
+        static $customargs;
 
         if (!isset($side)) {
             return null;
@@ -65,11 +66,22 @@ class BlockUtil
             $type = FormUtil::getPassedValue('type', 'user', 'GETPOST');
         }
 
-        // loop around the blocks display only the ones we need
+        if (!isset($customargs)) {
+            $customargs = array();
+            $filtervars = array('module', 'name', 'type', 'func', 'theme', 'authid');
+            foreach ($_GET as $var => $value) {
+                if (!in_array($var, $filtervars)) {
+                    $customargs[] = DataUtil::formatForOS(strip_tags($var)) . '=' . DataUtil::formatForOS(strip_tags($value));
+                }
+            }
+        }
+        
+        // current language
         if (!isset($currentlang)) {
             $currentlang = ZLanguage::getLanguageCode();
         }
 
+        // loop around the blocks and display only the ones we need
         $blockoutput = array();
         foreach ($blockplacements as $blockplacement) {
             // don't display a block if it's not in this block position
@@ -78,49 +90,46 @@ class BlockUtil
             }
             // get the full block info
             $blockinfo = self::getBlockInfo($blockplacement['bid']);
-            // block filtering
-            if (!empty($blockinfo['filter']['modules']) || !empty($blockinfo['filter']['type']) || !empty($blockinfo['filter']['func']) || !empty($blockinfo['filter']['customargs'])) {
-                // check the module name
-                if (!empty($blockinfo['filter']['modules']) && !in_array($modname, $blockinfo['filter']['modules'])) {
-                    continue;
-                }
-                // check the function type
-                if (!empty($blockinfo['filter']['type'])) {
-                    $blockinfo['filter']['type'] = explode(',', $blockinfo['filter']['type']);
-                    if (!in_array($type, $blockinfo['filter']['type'])) {
-                        continue;
-                    }
-                }
-                // check the function name
-                if (!empty($blockinfo['filter']['functions'])) {
-                    $blockinfo['filter']['functions'] = explode(',', $blockinfo['filter']['functions']);
-                    if (!in_array($func, $blockinfo['filter']['functions'])) {
-                        continue;
-                    }
-                }
-                if (!empty($blockinfo['filter']['customargs'])) {
-                    $blockinfo['filter']['customargs'] = explode(',', $blockinfo['filter']['customargs']);
-                    $customargs = array();
-                    static $filtervars = array('module', 'name', 'type', 'func', 'theme', 'authid');
-                    foreach ($_GET as $var => $value) {
-                        if (!in_array($var, $filtervars)) {
-                            $customargs[] = DataUtil::formatForOS(strip_tags($var)) . '=' . DataUtil::formatForOS(strip_tags($value));
-                        }
-                    }
-                    if (!array_intersect($customargs, $blockinfo['filter']['customargs'])) {
-                        continue;
-                    }
-                }
-            }
 
             // dont display the block if it's not active or not in matching langauge
             if (!$blockinfo['active'] || (!empty($blockinfo['language']) && $blockinfo['language'] != $currentlang)) {
                 continue;
             }
+            
+            // block filtering
+            if (!empty($blockinfo['filter'])) {
+
+                $showblock = false;
+                
+                // loop for each filter
+                foreach($blockinfo['filter'] as $filter) {
+
+                    // filter must be an array of values
+                    if (!is_array($filter)) {
+                        continue;
+                    }
+
+                    $rule1 = $filter['module'] == $modname;
+                    $rule2 = empty($filter['ftype']) ? true : ($filter['ftype'] == $type);
+                    $rule3 = empty($filter['fname']) ? true : ($filter['fname'] == $func);
+                    $rule4 = empty($filter['fargs']) ? true : array_search($filter['fargs'], $customargs);
+
+                    if ($rule1 == true && $rule2 == true && $rule3 == true && $rule4 !== false) {
+                        $showblock = true;
+                        break;
+                    }
+                }
+
+                if (!$showblock) {
+                    continue;
+                }
+            }
 
             $blockinfo['position'] = $positions[$side]['name'];
+
             // get the module info and display the block
             $modinfo = ModUtil::getInfo($blockinfo['mid']);
+
             if ($echo) {
                 echo self::show($modinfo['name'], $blockinfo['bkey'], $blockinfo);
             } else {

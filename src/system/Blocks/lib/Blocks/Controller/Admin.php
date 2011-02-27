@@ -275,19 +275,6 @@ class Blocks_Controller_Admin extends Zikula_Controller
         // Add hidden block id to form
         $this->view->assign('bid', $bid);
 
-        // check for a valid set of filtering rules
-        if (!isset($blockinfo['filter']) || empty($blockinfo['filter'])) {
-            $blockinfo['filter']['modules'] = array();
-            $blockinfo['filter']['type'] = '';
-            $blockinfo['filter']['functions'] = '';
-            $blockinfo['filter']['customargs'] = '';
-        }
-
-        // invert the filter array so that the output is in a useful form for the template
-        if (isset($blockinfo['filter']['modules']) && is_array($blockinfo['filter']['modules'])) {
-            $blockinfo['filter']['modules'] = array_flip($blockinfo['filter']['modules']);
-        }
-
         // assign the block
         $this->view->assign($blockinfo);
 
@@ -371,7 +358,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
      * @return bool true if succesful, false otherwise
      */
     public function update()
-    {
+    {   
         // Get parameters
         $bid = FormUtil::getPassedValue('bid');
         $title = FormUtil::getPassedValue('title');
@@ -382,7 +369,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         $content = FormUtil::getPassedValue('content');
         $refresh = FormUtil::getPassedValue('refresh');
         $positions = FormUtil::getPassedValue('positions');
-        $filter = FormUtil::getPassedValue('filter', array());
+        $filter = FormUtil::getPassedValue('filters', array());
         $returntoblock = FormUtil::getPassedValue('returntoblock');
 
         // not stored in a block
