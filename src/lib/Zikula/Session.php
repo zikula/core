@@ -186,7 +186,7 @@ class Zikula_Session
     public function get($key, $default = null, $namespace = '/')
     {
         if ($namespace == '_zikula_messages') {
-            throw new InvalidArgumentException('You cannot access _zikulaAttributes directly');
+            throw new InvalidArgumentException('You cannot access _zikula_messages directly');
         }
         return $this->has($key, $namespace) ? $_SESSION[$namespace][$key] : $default;
     }
@@ -203,7 +203,7 @@ class Zikula_Session
     public function set($key, $value, $namespace = '/')
     {
         if ($namespace == '_zikula_messages') {
-            throw new InvalidArgumentException('You cannot access _zikulaAttributes directly');
+            throw new InvalidArgumentException('You cannot access _zikula_messages directly');
         }
         $_SESSION[$namespace][$key] = $value;
     }
@@ -217,7 +217,7 @@ class Zikula_Session
     public function del($key, $namespace = '/')
     {
         if ($namespace == '_zikula_messages') {
-            throw new InvalidArgumentException('You cannot access _zikulaAttributes directly');
+            throw new InvalidArgumentException('You cannot access _zikula_messages directly');
         }
         if ($this->has($key, $namespace)) {
             unset($_SESSION[$namespace][$key]);
@@ -235,7 +235,7 @@ class Zikula_Session
     public function has($key, $namespace = '/')
     {
         if ($namespace == '_zikula_messages') {
-            throw new InvalidArgumentException('You cannot access _zikulaAttributes directly');
+            throw new InvalidArgumentException('You cannot access _zikula_messages directly');
         }
 
         if (isset($_SESSION[$namespace])) {
@@ -243,5 +243,25 @@ class Zikula_Session
         }
 
         return false;
+    }
+
+    /**
+     * Clear an entire namespace.
+     *
+     * Use with caution, and only if you know that no other code makes use of the namespace.
+     *
+     * @param string $namespace Namespace.
+     */
+    public function clearNamespace($namespace)
+    {
+        if (!isset($namespace)) {
+            throw new InvalidArgumentException('You must specify the namspace to clear.');
+        } elseif (!is_string($namespace)) {
+            throw new InvalidArgumentException('An invalid namespace was received.');
+        } elseif ($namespace == '_zikula_messages') {
+            throw new InvalidArgumentException('You cannot access _zikula_messages directly.');
+        }
+
+        $_SESSION[$namespace] = array();
     }
 }
