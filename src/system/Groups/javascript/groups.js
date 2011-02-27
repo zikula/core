@@ -55,7 +55,7 @@ function groupappend()
             "ajax.php?module=Groups&func=creategroup",
             {
                 method: 'post',
-                authid: 'groupsauthid',
+                csrftoken: 'csrftoken',
                 onComplete: groupappend_response
             });
     }
@@ -272,7 +272,7 @@ function groupmodify(groupid)
             {
                 method: 'post',
                 parameters: pars,
-                authid: 'groupsauthid',
+                csrftoken: 'csrftoken',
                 onComplete: groupmodify_response,
                 onFailure: function(){groupfailure_response(groupid);}
             });
@@ -359,7 +359,7 @@ function groupdelete(groupid)
             {
                 method: 'get',
                 parameters: pars,
-                authid: 'groupsauthid',
+                csrftoken: 'csrftoken',
                 onComplete: groupdelete_response,
                 onFailure: function(){groupfailure_response(groupid);}
             });

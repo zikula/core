@@ -31,10 +31,7 @@ class Groups_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function updategroup($args)
     {
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
+        $this->checkAjaxToken();
 
         $gid = FormUtil::getPassedValue('gid', null, 'post');
         $gtype = FormUtil::getPassedValue('gtype', 9999, 'post');
@@ -43,10 +40,7 @@ class Groups_Controller_Ajax extends Zikula_Controller_Ajax
         $name = DataUtil::convertFromUTF8(FormUtil::getPassedValue('name', null, 'post'));
         $description = DataUtil::convertFromUTF8(FormUtil::getPassedValue('description', null, 'post'));
 
-        if (!SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT)) {
-            LogUtil::registerPermissionError(null, true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
 
         if (empty($name)) {
             return new Zikula_Response_Ajax(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $this->__('Error! The group name is missing.')));
@@ -103,15 +97,9 @@ class Groups_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function creategroup()
     {
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD)) {
-            LogUtil::registerPermissionError(null, true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD));
 
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
+        $this->checkAjaxToken();
 
         $groupsCommon = new Groups_Helper_Common();
         $typelabel = $groupsCommon->gtypeLabels();
@@ -159,18 +147,12 @@ class Groups_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function deletegroup()
     {
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
+        $this->checkAjaxToken();
 
         $gid = FormUtil::getPassedValue('gid', null, 'get');
         $group = DBUtil::selectObjectByID('groups', $gid, 'gid');
 
-        if (!SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_DELETE)) {
-            LogUtil::registerPermissionError(null, true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_DELETE));
 
         // Check if it is the default group...
         $defaultgroup = $this->getVar('defaultgroup');
