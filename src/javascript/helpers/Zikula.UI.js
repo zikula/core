@@ -89,7 +89,7 @@ Zikula.UI.Tooltip = Class.create(Control.ToolTip,/** @lends Zikula.UI.Tooltip.pr
     initialize: function($super, container, tooltip, options) {
         options = Object.extend({
             className: 'z-tooltip',
-            offsetTop: 0,
+            offsetTop: 20,
             offsetLeft: 15,
             iframeshim: Zikula.Browser.IE
         }, options || { });
