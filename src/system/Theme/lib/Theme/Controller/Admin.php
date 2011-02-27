@@ -517,14 +517,6 @@ class Theme_Controller_Admin extends Zikula_Controller
             $pageconfiguration['block'] = null;
         }
 
-        // wrapper defaults
-        if (!isset($pageconfiguration['modulewrapper'])) {
-            $pageconfiguration['modulewrapper'] = true;
-        }
-        if (!isset($pageconfiguration['blockwrapper'])) {
-            $pageconfiguration['blockwrapper'] = true;
-        }
-
         // filter defaults
         if (!isset($pageconfiguration['filters'])) {
             $pageconfiguration['filters'] = array(
@@ -555,8 +547,6 @@ class Theme_Controller_Admin extends Zikula_Controller
         $blockpositiontemplates = FormUtil::getPassedValue('blockpositiontemplates', isset($args['blockpositiontemplates']) ? $args['blockpositiontemplates'] : null, 'POST');
         $blocktypetemplates = FormUtil::getPassedValue('blocktypetemplates', isset($args['blocktypetemplates']) ? $args['blocktypetemplates'] : null, 'POST');
         $blockinstancetemplates = FormUtil::getPassedValue('blockinstancetemplates', isset($args['blockinstancetemplates']) ? $args['blockinstancetemplates'] : null, 'POST');
-        $modulewrapper = (int)FormUtil::getPassedValue('modulewrapper', isset($args['modulewrapper']) ? $args['modulewrapper'] : 0, 'POST');
-        $blockwrapper = (int)FormUtil::getPassedValue('blockwrapper', isset($args['blockwrapper']) ? $args['blockwrapper'] : 0, 'POST');
         $filters = FormUtil::getPassedValue('filters', isset($args['filters']) ? $args['filters'] : null, 'POST');
 
         // check our input
@@ -582,8 +572,6 @@ class Theme_Controller_Admin extends Zikula_Controller
         // form the new page configuration
         $pageconfiguration['page'] = $pagetemplate;
         $pageconfiguration['palette'] = $pagepalette;
-        $pageconfiguration['modulewrapper'] = $modulewrapper;
-        $pageconfiguration['blockwrapper'] = $blockwrapper;
         $pageconfiguration['blocktypes'] = $blocktypetemplates;
         $pageconfiguration['blockpositions'] = $blockpositiontemplates;
         $pageconfiguration['blockinstances'] = $blockinstancetemplates;
