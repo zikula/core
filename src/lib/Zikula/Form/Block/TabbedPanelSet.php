@@ -159,6 +159,6 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_Plugin
      */
     function decode($view)
     {
-        $this->selectedIndex = (int)FormUtil::getPassedValue("{$this->id}SelectedIndex", 1);
+        $this->selectedIndex = (int)$this->request->getPost()->get("{$this->id}SelectedIndex", 1);
     }
 }

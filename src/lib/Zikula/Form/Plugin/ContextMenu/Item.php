@@ -191,7 +191,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_Plugin
         $contextMenu = $this->getParentContextMenu();
 
         $hiddenName = "contentMenuArgument" . $contextMenu->id;
-        $commandArgument = FormUtil::getPassedValue($hiddenName, null, 'POST');
+        $commandArgument = $this->request->getPost()->get($hiddenName, null);
 
         $args = array('commandName' => $eventArgument, 'commandArgument' => $commandArgument);
 

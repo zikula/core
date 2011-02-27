@@ -1099,8 +1099,8 @@ class Zikula_Form_View extends Zikula_View
      */
     public function decodePostBackEvent()
     {
-        $eventTarget = FormUtil::getPassedValue('FormEventTarget', null, 'POST');
-        $eventArgument = FormUtil::getPassedValue('FormEventArgument', null, 'POST');
+        $eventTarget = $this->request->getPost()->get('FormEventTarget', 1);
+        $eventArgument = $this->request->getPost()->get('FormEventArgument', 1);
 
         if ($eventTarget != '') {
             $targetPlugin = $this->getPluginById($eventTarget);
