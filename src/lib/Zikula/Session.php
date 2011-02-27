@@ -20,7 +20,7 @@ class Zikula_Session
 {
     /**
      * The message type for status messages, to use with, for example, {@link hasMessages()}.
-     * 
+     *
      * @var string
      */
     const MESSAGE_STATUS = 'status';
@@ -34,7 +34,7 @@ class Zikula_Session
 
     /**
      * Storage engine.
-     * 
+     *
      * @var Zikula_Session_Storage
      */
     protected $storage;
@@ -59,6 +59,8 @@ class Zikula_Session
 
     /**
      * Start session.
+     *
+     * @throws RuntimeException If illegal namespace received.
      *
      * @return boolean
      */
@@ -90,7 +92,7 @@ class Zikula_Session
 
     /**
      * Expire session.
-     * 
+     *
      * Changes session ID and lose all data associated with a session.
      *
      * @return void
@@ -132,7 +134,7 @@ class Zikula_Session
      * Get special attributes by type.
      *
      * @param string $type Type.
-     * 
+     *
      * @return mixed
      */
     public function getMessages($type, $default = array())
@@ -181,6 +183,8 @@ class Zikula_Session
      * @param mixed  $default   Default = null.
      * @param string $namespace Namespace.
      *
+     * @throws InvalidArgumentException If illegal namespace received.
+     *
      * @return mixed
      */
     public function get($key, $default = null, $namespace = '/')
@@ -198,6 +202,8 @@ class Zikula_Session
      * @param mixed  $value     Value.
      * @param string $namespace Namespace.
      *
+     * @throws InvalidArgumentException If illegal namespace received.
+     *
      * @return void
      */
     public function set($key, $value, $namespace = '/')
@@ -210,9 +216,13 @@ class Zikula_Session
 
     /**
      * Delete session variable by key.
-     * 
+     *
      * @param string $key       Key.
      * @param string $namespace Namespace.
+     *
+     * @throws InvalidArgumentException If illegal namespace received.
+     *
+     * @return void
      */
     public function del($key, $namespace = '/')
     {
@@ -229,6 +239,8 @@ class Zikula_Session
      *
      * @param string $key       Key.
      * @param string $namespace Namespace.
+     *
+     * @throws InvalidArgumentException If illegal namespace received.
      *
      * @return boolean
      */
@@ -251,14 +263,14 @@ class Zikula_Session
      * Use with caution, and only if you know that no other code makes use of the namespace.
      *
      * @param string $namespace Namespace.
+     *
+     * @throws InvalidArgumentException If illegal namespace received.
+     *
+     * @return void
      */
     public function clearNamespace($namespace)
     {
-        if (!isset($namespace)) {
-            throw new InvalidArgumentException('You must specify the namspace to clear.');
-        } elseif (!is_string($namespace)) {
-            throw new InvalidArgumentException('An invalid namespace was received.');
-        } elseif ($namespace == '_zikula_messages') {
+        if ($namespace == '_zikula_messages') {
             throw new InvalidArgumentException('You cannot access _zikula_messages directly.');
         }
 
