@@ -17,13 +17,6 @@
 class ModulePlugin_Users_Example_Plugin extends Zikula_Plugin implements Zikula_Plugin_Configurable
 {
     /**
-     * Gettext enabled flag.
-     *
-     * @var boolean
-     */
-    protected $gettextEnabled = true;
-
-    /**
      * Setup handler definitions.
      *
      * @return void
