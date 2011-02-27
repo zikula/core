@@ -19,6 +19,20 @@
 class Zikula_Session
 {
     /**
+     * The message type for status messages, to use with, for example, {@link hasMessages()}.
+     * 
+     * @var string
+     */
+    const MESSAGE_STATUS = 'status';
+
+    /**
+     * The message type for error messages, to use with, for example, {@link hasMessages()}.
+     *
+     * @var string
+     */
+    const MESSAGE_ERROR = 'error';
+
+    /**
      * Storage engine.
      * 
      * @var Zikula_Session_Storage

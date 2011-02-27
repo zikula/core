@@ -29,17 +29,17 @@ class LogUtil
     public static function getStatusMessages($delete = true, $override = true, $reverse = true)
     {
         $session = ServiceUtil::getManager()->getService('session');
-        $msgs = $session->getMessages('status');
-        $errs = $session->getMessages('error');
+        $msgs = $session->getMessages(Zikula_Session::MESSAGE_STATUS);
+        $errs = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
 
         if (!empty($errs) && $override) {
             $msgs = $errs;
         }
 
         if ($delete) {
-            $session->clearMessages('status');
+            $session->clearMessages(Zikula_Session::MESSAGE_STATUS);
             SessionUtil::delVar('_ZErrorMsgType');
-            $session->clearMessages('error');
+            $session->clearMessages(Zikula_Session::MESSAGE_ERROR);
             SessionUtil::delVar('_ZStatusMsgType');
         }
 
@@ -76,10 +76,10 @@ class LogUtil
     public static function getErrorMessages($delete = true, $reverse = true)
     {
         $session = ServiceUtil::getManager()->getService('session');
-        $msgs = $session->getMessages('error');
+        $msgs = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
 
         if ($delete) {
-            $session->clearMessages('error');
+            $session->clearMessages(Zikula_Session::MESSAGE_ERROR);
             SessionUtil::delVar('_ZErrorMsgType');
         }
 
@@ -193,9 +193,9 @@ class LogUtil
         $session = ServiceUtil::getManager()->getService('session');
 
         if ($type === Zikula_ErrorHandler::INFO) {
-            return $session->addMessage('status', DataUtil::formatForDisplayHTML($message));
+            return $session->addMessage(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
         } elseif ($type === E_USER_ERROR) {
-            return $session->addMessage('error', DataUtil::formatForDisplayHTML($message));
+            return $session->addMessage(Zikula_Session::MESSAGE_ERROR, DataUtil::formatForDisplayHTML($message));
         } else {
             throw new InvalidArgumentException(__f('Invalid type %s for LogUtil::_addPopup', $type));
         }
