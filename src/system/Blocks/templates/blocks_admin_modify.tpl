@@ -1,5 +1,5 @@
 {include file="blocks_admin_menu.tpl"}
-{ajaxheader modname='Blocks' filename='blocks_admin_modify.js'}
+{ajaxheader ui=true}
 {pageaddvar name='javascript' value='javascript/helpers/Zikula.itemlist.js'}
 
 <div class="z-admincontainer">
@@ -38,10 +38,10 @@
                             {html_options options=$block_positions selected=$placements}
                         </select>
                     </span>
-                    <a href="javascript:void(0);" id="blocks_advanced_placement_onclick" class="z-formnote z-hide">{gt text="Show/hide advanced placement options"}</a>
+                    <a href="#block_placement_advanced" id="blocks_advanced_placement_onclick" title="{gt text="Advanced placement options"}" class="z-formnote">{gt text="Show/hide advanced placement options"}</a>
                 </div>
 
-                <div id="block_placement_advanced">
+                <div id="block_placement_advanced" style="display:none;">
                     <p class="z-informationmsg">{gt text="To restrict the block's visibility to certain modules and module functions, you can create filter(s) and select the module, function type, function name and function arguments that you want to apply to the filter. All fields are optional. If you omit a field, it will act as an *. "}</p>
                     <p><a id="appendfilter" class="z-icon-es-new" href="javascript:void(0);">{gt text="Create new filter"}</a></p>
                     <div>
@@ -74,7 +74,7 @@
                             </li>
                             {foreachelse}
                             {* tfotis - i don't know why this is needed, but if it isn't here, item is not appended *}
-                            <span class="itemid z-hide">-1</span>
+                            <li class="z-hide"><span class="itemid">-1</span></li>
                             {/foreach}
                         </ol>
                     </div>
@@ -180,3 +180,9 @@
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var defwindow = new Zikula.UI.Window($('blocks_advanced_placement_onclick'),{minmax:true, width: 760, resizable: true});
+    /* ]]> */
+</script>
