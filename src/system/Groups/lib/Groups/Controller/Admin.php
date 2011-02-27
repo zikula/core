@@ -168,10 +168,7 @@ class Groups_Controller_Admin extends Zikula_Controller
     public function newgroup()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
-        }
-
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD));
         $this->view->setCaching(false);
 
         // Setting various defines
@@ -203,11 +200,8 @@ class Groups_Controller_Admin extends Zikula_Controller
         $nbumax = FormUtil::getPassedValue('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null, 'POST');
         $description = FormUtil::getPassedValue('description', isset($args['description']) ? $args['description'] : null, 'POST');
 
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
-        }
-
+        $this->checkCsrfToken();
+        
         // The API function is called.
         $check = ModUtil::apiFunc('Groups', 'admin', 'getgidbyname',
                 array('name' => $name));
@@ -265,10 +259,7 @@ class Groups_Controller_Admin extends Zikula_Controller
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
-
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT));
         $this->view->setCaching(false);
 
         // Add a hidden variable for the item id.
@@ -315,10 +306,7 @@ class Groups_Controller_Admin extends Zikula_Controller
             $gid = $objectid;
         }
 
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         // The API function is called.
         if (ModUtil::apiFunc('Groups', 'admin', 'update',
@@ -376,9 +364,7 @@ class Groups_Controller_Admin extends Zikula_Controller
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenIf(SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_DELETE));
 
         // get the user default group - we do not allow its deletion
         $defaultgroup = $this->getVar('defaultgroup');
@@ -404,10 +390,7 @@ class Groups_Controller_Admin extends Zikula_Controller
 
         // If we get here it means that the user has confirmed the action
 
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         // The API function is called.
         if (ModUtil::apiFunc('Groups', 'admin', 'delete',
@@ -450,10 +433,7 @@ class Groups_Controller_Admin extends Zikula_Controller
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
-
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT));
         $this->view->setCaching(false);
 
         // assign the group to the template
@@ -485,6 +465,7 @@ class Groups_Controller_Admin extends Zikula_Controller
                         'url'     => ModUtil::url('Groups', 'admin', 'removeuser', array('gid'    => $item['gid'],
                         'uid'     => $user['uid'],
                         'authid'  => SecurityUtil::generateAuthKey())),
+                        'csrftoken' => SecurityUtil::generateCsfrToken($this->serviceManager),
                         'imgfile' => 'edit_remove.png',
                         'title'   => $this->__('Remove user from group')
                     );
@@ -578,10 +559,7 @@ class Groups_Controller_Admin extends Zikula_Controller
         $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'POST');
         $uid = FormUtil::getPassedValue('uid', isset($args['uid']) ? $args['uid'] : null, 'POST');
 
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         // The API function is called.
         if (is_array($uid)) {
@@ -620,10 +598,7 @@ class Groups_Controller_Admin extends Zikula_Controller
         $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'GET');
         $uid = (int)FormUtil::getPassedValue('uid', isset($args['uid']) ? $args['uid'] : null, 'GET');
 
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         // The API function is called.
         if (ModUtil::apiFunc('Groups', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
@@ -693,9 +668,7 @@ class Groups_Controller_Admin extends Zikula_Controller
             return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'main'));
         }
 
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'main'));
-        }
+        $this->checkCsrfToken();
 
         $tag = FormUtil::getPassedValue('tag', null, 'POST');
         $sendtag = FormUtil::getPassedValue('sendtag', null, 'POST');
@@ -763,9 +736,7 @@ class Groups_Controller_Admin extends Zikula_Controller
     public function modifyconfig()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN));
 
         $this->view->setCaching(false);
 
@@ -800,14 +771,8 @@ class Groups_Controller_Admin extends Zikula_Controller
     public function updateconfig()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN));
+        $this->checkCsrfToken();
 
         // Update module variables.
         $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 25, 'POST');

@@ -7,8 +7,7 @@
 
     <a id="appendajax" onclick="groupappend();" style="margin-bottom: 1em;" class="z-floatleft z-icon-es-new z-hide" title="{gt text="Create new group"}" href="javascript:void(0);">{gt text="Create new group"}</a>
 
-    {* general use authid *}
-    <input type="hidden" id="groupsauthid" name="authid" value="{insert name="generateauthkey" module="Groups"}" />
+    <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
 
     <div class="groupbox z-clearer">
         <ol id="grouplist" class="z-itemlist">
