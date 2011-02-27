@@ -2,10 +2,8 @@
 /**
  * Zikula Application Framework
  *
- * @copyright (c) 2002, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package      Zikula_System_Modules
  * @subpackage   Zikula_Admin
  */
@@ -16,7 +14,7 @@
  * navtabs.css to the page vars array for stylesheets.
  *
  * Admin
- * <!--[admincategorymenu]-->
+ * {admincategorymenu}
  *
  * @see          function.admincategorymenu.php::smarty_function_admincategoreymenu()
  * @param        array       $params      All attributes passed to this function from the template
