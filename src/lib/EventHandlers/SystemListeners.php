@@ -417,7 +417,7 @@ class SystemListeners extends Zikula_EventHandler
             // create definitions
             $toolbar = new Zikula_ServiceManager_Definition(
                             'Zikula_DebugToolbar',
-                            array(),
+                            array(new Zikula_ServiceManager_Service('zikula.eventmanager')),
                             array('addPanels' => array(0 => array(new Zikula_ServiceManager_Service('debug.toolbar.panel.version'),
                                                     new Zikula_ServiceManager_Service('debug.toolbar.panel.config'),
                                                     new Zikula_ServiceManager_Service('debug.toolbar.panel.memory'),
