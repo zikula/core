@@ -644,7 +644,7 @@ class Zikula_View_Theme extends Zikula_View
         $maincontent = $this->eventManager->notify($event)->getData();
 
         // add the module wrapper
-        if (!$this->system && (!isset($this->themeconfig['modulewrapper']) || $this->themeconfig['modulewrapper'])) {
+        if (!$this->system) {
             $maincontent = '<div id="z-maincontent" class="z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
         }
 
@@ -714,9 +714,7 @@ class Zikula_View_Theme extends Zikula_View
         // HACK: Save/restore cache settings
         $this->caching = $caching;
 
-        if (!isset($this->themeconfig['blockwrapper']) || $this->themeconfig['blockwrapper']) {
-            $return = '<div class="z-block z-blockposition-' . DataUtil::formatForDisplay($block['position']) . ' z-bkey-' . DataUtil::formatForDisplay(strtolower($block['bkey'])) . ' z-bid-' . DataUtil::formatForDisplay($block['bid']) . '">' . "\n" . $return . "</div>\n";
-        }
+        $return = '<div class="z-block z-blockposition-' . DataUtil::formatForDisplay($block['position']) . ' z-bkey-' . DataUtil::formatForDisplay(strtolower($block['bkey'])) . ' z-bid-' . DataUtil::formatForDisplay($block['bid']) . '">' . "\n" . $return . "</div>\n";
 
         return $return;
     }

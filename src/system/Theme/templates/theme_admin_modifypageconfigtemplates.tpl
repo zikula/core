@@ -31,14 +31,6 @@
                         {html_options values=$palettes output=$palettes selected=$pageconfiguration.palette}
                     </select>
                 </div>
-                <div class="z-formrow">
-                    <label for="theme_modulewrapper">{gt text="Display module wrapper divisions"}</label>
-                    <input id="theme_modulewrapper" type="checkbox" name="modulewrapper" value="1" {if $pageconfiguration.modulewrapper} checked="checked"{/if} />
-                </div>
-                <div class="z-formrow">
-                    <label for="theme_blockwrapper">{gt text="Display block wrapper divisions"}</label>
-                    <input id="theme_blockwrapper" type="checkbox" name="blockwrapper" value="1" {if $pageconfiguration.blockwrapper} checked="checked"{/if} />
-                </div>
             </fieldset>
             <fieldset>
                 <legend>{gt text="Filter settings"}</legend>
