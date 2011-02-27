@@ -9,7 +9,7 @@
     {else}
     <form class="z-form" action="{modurl modname="Groups" type="admin" func="userupdate"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Groups"}" />
+            <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
             <input type="hidden" name="gid" value="{$gid|safetext}" />
             <input type="hidden" name="action" value="{$action|safetext}" />
             <input type="hidden" name="userid" value="{$userid|safetext}" />

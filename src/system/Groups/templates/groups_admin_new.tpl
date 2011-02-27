@@ -5,7 +5,7 @@
     <h2>{gt text="Create new group"}</h2>
     <form class="z-form" action="{modurl modname="Groups" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Groups"}" />
+            <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
             <fieldset>
                 <legend>{gt text="New group"}</legend>
                 <div class="z-formrow">

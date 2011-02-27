@@ -38,10 +38,7 @@ class Groups_Controller_User extends Zikula_Controller
      */
     public function view()
     {
-        // Security check
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_OVERVIEW)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_OVERVIEW));
 
         // Get parameters from whatever input we need.
         $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
@@ -119,9 +116,7 @@ class Groups_Controller_User extends Zikula_Controller
      */
     public function membership()
     {
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_OVERVIEW)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_OVERVIEW));
 
         $gid = (int)FormUtil::getPassedValue('gid', null, 'GET');
         $action = FormUtil::getPassedValue('action', null, 'GET');
@@ -234,9 +229,7 @@ class Groups_Controller_User extends Zikula_Controller
 
         $itemsperpage = $this->getVar('itemsperpage');
 
-        if (!SecurityUtil::checkPermission('Groups::memberslist', '::', ACCESS_OVERVIEW)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::memberslist', '::', ACCESS_OVERVIEW));
 
         $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid'      => $gid,
                 'numitems' => $itemsperpage,
