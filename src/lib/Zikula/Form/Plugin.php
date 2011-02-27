@@ -228,6 +228,13 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
     protected $domain;
 
     /**
+     * Request object.
+     *
+     * @var Zikula_Request_Http
+     */
+    protected $request;
+
+    /**
      * Constructor.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
@@ -236,6 +243,7 @@ abstract class Zikula_Form_Plugin implements Zikula_Translatable
     public function __construct(Zikula_Form_View $view, &$params)
     {
         $this->view = $view;
+        $this->request = $view->getRequest();
     }
 
     /**

@@ -344,7 +344,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
-            $this->checked = (FormUtil::getPassedValue($this->groupName, null, 'POST') === $this->value ? true : false);
+            $this->checked = ($this->request->getPost()->get($this->groupName, null) === $this->value ? true : false);
         }
     }
 
