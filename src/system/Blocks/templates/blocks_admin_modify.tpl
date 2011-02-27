@@ -42,53 +42,50 @@
                 </div>
 
                 <div id="block_placement_advanced">
+                    <p class="z-informationmsg">{gt text="To restrict the block's visibility to certain modules and module functions, you can create filter(s) and select the module, function type, function name and function arguments that you want to apply to the filter. All fields are optional. If you omit a field, it will act as an *. "}</p>
+                    <p><a id="appendfilter" class="z-icon-es-new" href="javascript:void(0);">{gt text="Create new filter"}</a></p>
+                    <div>
+                        <ol id="placementfilterslist" class="z-itemlist">
+                            <li class="z-itemheader z-clearfix">
+                                <span class="z-itemcell z-w25">{gt text="Module"}</span>
+                                <span class="z-itemcell z-w15">{gt text="Function type"}</span>
+                                <span class="z-itemcell z-w25">{gt text="Function name"}</span>
+                                <span class="z-itemcell z-w25">{gt text="Function arguments"}</span>
+                                <span class="z-itemcell z-w10">{gt text="Delete"}</span>
+                            </li>
 
-                    <p class="z-formnote z-informationmsg">{gt text="To restrict the block's visibility to certain modules and module functions, you can create filter(s) and select the module, function type, function name and function arguments that you want to apply to the filter. All fields are optional. If you omit a field, it will act as an *. "}</p>
-
-                    <p class="z-formnote"><a id="appendfilter" class="z-icon-es-new" href="javascript:void(0);">{gt text="Create new filter"}</a></p>
-
-                    <div class="z-formlist">
-                    <ol id="placementfilterslist" class="z-itemlist">
-                        <li class="z-itemheader z-clearfix">
-                            <span class="z-itemcell z-w25">{gt text="Module"}</span>
-                            <span class="z-itemcell z-w15">{gt text="Function type"}</span>
-                            <span class="z-itemcell z-w25">{gt text="Function name"}</span>
-                            <span class="z-itemcell z-w25">{gt text="Function arguments"}</span>
-                            <span class="z-itemcell z-w10">{gt text="Delete"}</span>
-                        </li>
-
-                        {foreach from=$filter item='placementfilter' name='loop_filters'}
-                        {assign var='loop_index' value=$smarty.foreach.loop_filters.iteration-1}
-                        <li id="li_placementfilterslist_{$loop_index}" class="{cycle values='z-odd,z-even'} z-clearfix">
-                            <span class="z-itemcell z-w25">
-                                <select id="filters_{$loop_index}_module" name="filters[{$loop_index}][module]">
-                                {foreach from=$mods item='mod' name='modlist'}
-                                    <option value="{$mod.name}" {if $placementfilter.module eq $mod.name}selected{/if}>{$mod.displayname}</option>
-                                {/foreach}
-                                </select>
-                            </span>
-                            <span class="z-itemcell z-w15"><input type="text" id="filters_{$loop_index}_ftype" name="filters[{$loop_index}][ftype]" size="10" maxlength="255" value="{$placementfilter.ftype|safetext}" /></span>
-                            <span class="z-itemcell z-w25"><input type="text" id="filters_{$loop_index}_fname" name="filters[{$loop_index}][fname]" size="30" maxlength="255" value="{$placementfilter.fname|safetext}" /></span>
-                            <span class="z-itemcell z-w25"><input type="text" id="filters_{$loop_index}_fargs" name="filters[{$loop_index}][fargs]" size="30" maxlength="255" value="{$placementfilter.fargs|safetext}" /></span>
-                            <span class="z-itemcell z-w10">
-                                <button type="button" class="imagebutton-nofloat buttondelete" id="buttondelete_placementfilterslist_{$loop_index}">{img src='14_layer_deletelayer.png' modname='core' set='icons/extrasmall' __alt='Delete' __title='Delete' }</button>
-                                (<span class="itemid">{$loop_index}</span>)
-                            </span>
-                        </li>
-                        {foreachelse}
-                        {* tfotis - i don't know why this is needed, but if it isn't here, item is not appended *}
-                        <span class="itemid z-hide">-1</span>
-                        {/foreach}
-                    </ol>
+                            {foreach from=$filter item='placementfilter' name='loop_filters'}
+                            {assign var='loop_index' value=$smarty.foreach.loop_filters.iteration-1}
+                            <li id="li_placementfilterslist_{$loop_index}" class="{cycle values='z-odd,z-even'} z-clearfix">
+                                <span class="z-itemcell z-w25">
+                                    <select id="filters_{$loop_index}_module" name="filters[{$loop_index}][module]">
+                                        {foreach from=$mods item='mod' name='modlist'}
+                                        <option value="{$mod.name}" {if $placementfilter.module eq $mod.name}selected{/if}>{$mod.displayname}</option>
+                                        {/foreach}
+                                    </select>
+                                </span>
+                                <span class="z-itemcell z-w15"><input type="text" id="filters_{$loop_index}_ftype" name="filters[{$loop_index}][ftype]" size="10" maxlength="255" value="{$placementfilter.ftype|safetext}" /></span>
+                                <span class="z-itemcell z-w25"><input type="text" id="filters_{$loop_index}_fname" name="filters[{$loop_index}][fname]" size="30" maxlength="255" value="{$placementfilter.fname|safetext}" /></span>
+                                <span class="z-itemcell z-w25"><input type="text" id="filters_{$loop_index}_fargs" name="filters[{$loop_index}][fargs]" size="30" maxlength="255" value="{$placementfilter.fargs|safetext}" /></span>
+                                <span class="z-itemcell z-w10">
+                                    <button type="button" class="imagebutton-nofloat buttondelete" id="buttondelete_placementfilterslist_{$loop_index}">{img src='14_layer_deletelayer.png' modname='core' set='icons/extrasmall' __alt='Delete' __title='Delete' }</button>
+                                    (<span class="itemid">{$loop_index}</span>)
+                                </span>
+                            </li>
+                            {foreachelse}
+                            {* tfotis - i don't know why this is needed, but if it isn't here, item is not appended *}
+                            <span class="itemid z-hide">-1</span>
+                            {/foreach}
+                        </ol>
                     </div>
 
                     <ul style="display:none;">
                         <li id="placementfilterslist_emptyitem" class="z-clearfix">
                             <span class="z-itemcell z-w25">
                                 <select class="listinput" id="filters_X_module" name="filtersdummy[]">
-                                {foreach from=$mods item='mod' name='modlist'}
+                                    {foreach from=$mods item='mod' name='modlist'}
                                     <option value="{$mod.name}">{$mod.displayname}</option>
-                                {/foreach}
+                                    {/foreach}
                                 </select>
                             </span>
                             <span class="z-itemcell z-w15"><input type="text" class="listinput" id="filters_X_ftype" name="filtersdummy[]" size="10" maxlength="255" value="" /></span>
@@ -102,17 +99,17 @@
                     </ul>
 
                     <script type="text/javascript">
-                    /* <![CDATA[ */
-                    var total_existing_filters = {{$filter|@count}};
-                    var list_placementfilterslist = null;
-                    document.observe("dom:loaded",function(){
-                        list_placementfilterslist = new Zikula.itemlist('placementfilterslist', {headerpresent: true, firstidiszero: true, sortable: false});
-                    });
-                    $('appendfilter').observe('click',function(event){
-                        list_placementfilterslist.appenditem();
-                        event.stop();
-                    })
-                    /* ]]> */
+                        /* <![CDATA[ */
+                        var total_existing_filters = {{$filter|@count}};
+                        var list_placementfilterslist = null;
+                        document.observe("dom:loaded",function(){
+                            list_placementfilterslist = new Zikula.itemlist('placementfilterslist', {headerpresent: true, firstidiszero: true, sortable: false});
+                        });
+                        $('appendfilter').observe('click',function(event){
+                            list_placementfilterslist.appenditem();
+                            event.stop();
+                        })
+                        /* ]]> */
                     </script>
 
                 </div>
@@ -171,9 +168,9 @@
             </fieldset>
 
             {if isset($redirect) && $redirect neq ''}
-                {assign var="cancelurl" value=$redirect|urldecode}
+            {assign var="cancelurl" value=$redirect|urldecode}
             {else}
-                {modurl modname="Blocks" type="admin" func="view" assign="cancelurl"}
+            {modurl modname="Blocks" type="admin" func="view" assign="cancelurl"}
             {/if}
 
             <div class="z-buttons z-formbuttons">
