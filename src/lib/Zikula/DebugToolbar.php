@@ -56,17 +56,25 @@ class Zikula_DebugToolbar
     private $_panels = array();
 
     /**
+     * Event Manager instance.
+     *
+     * @var Zikula_EventManager
+     */
+    protected $eventManager;
+
+    /**
      * Sends an event via the EventManager to allow other code to extend the toolbar.
      */
-    public function __construct()
+    public function __construct(Zikula_EventManager $eventManager)
     {
+        $this->eventManager = $eventManager;
         PageUtil::addVar("javascript", "prototype");
         PageUtil::addVar("javascript", "javascript/debugtoolbar/main.js");
         PageUtil::addVar('stylesheet', 'style/debugtoolbar.css');
 
         // allow modules and plugins to extend the toolbar
         $event = new Zikula_Event('debugtoolbar.init', $this);
-        EventUtil::notify($event);
+        $this->eventManager->notify($event);
     }
 
     /**
