@@ -51,7 +51,7 @@ class Users_Installer extends Zikula_Installer
              ->setVar('changeemail', 1)
              ->setVar('reg_allowreg', 1)
              ->setVar('reg_verifyemail', UserUtil::VERIFY_USERPWD)
-             ->setVar('reg_Illegalusername', 'root adm linux webmaster admin god administrator administrador nobody anonymous anonimo')
+             ->setVar('reg_Illegalusername', __(/* illegal username list */'root webmaster admin administrator nobody anonymous username'))
              ->setVar('reg_Illegaldomains', '')
              ->setVar('reg_Illegaluseragents', '')
              ->setVar('reg_noregreasons', __('Sorry! New user registration is currently disabled.'))
