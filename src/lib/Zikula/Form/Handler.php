@@ -144,7 +144,7 @@ abstract class Zikula_Form_Handler implements Zikula_Translatable
      *        return $view->setErrorMsg('No access');
      *     }
      *
-     *     $id = FormUtil::getPassedValue('id');
+     *     $id = $this->request->getPost()->get('id');
      *     $data = ModUtil::apiFunc('MyModule', 'user', 'get', array('id' => $id));
      *     if (count($data) == 0) {
      *         return $view->setErrorMsg('Unknown data');
@@ -249,6 +249,19 @@ abstract class Zikula_Form_Handler implements Zikula_Translatable
     }
 
     /**
+     * Convenience Module SetVars.
+     *
+     * @param array $vars Array of key => value.
+     *
+     * @return object This.
+     */
+    public function setVars(array $vars)
+    {
+        ModUtil::setVars($this->name, $vars);
+        return $this;
+    }
+
+    /**
      * Convenience Module GetVar.
      *
      * @param string  $key     Key.
@@ -262,6 +275,16 @@ abstract class Zikula_Form_Handler implements Zikula_Translatable
     }
 
     /**
+     * Convenience Module GetVars for all keys in this module.
+     *
+     * @return mixed
+     */
+    public function getVars()
+    {
+        return ModUtil::getVar($this->name);
+    }
+
+    /**
      * Convenience Module DelVar.
      *
      * @param string $key Key.
@@ -271,6 +294,17 @@ abstract class Zikula_Form_Handler implements Zikula_Translatable
     public function delVar($key)
     {
         ModUtil::delVar($this->name, $key);
+        return $this;
+    }
+
+    /**
+     * Convenience Module DelVar for all keys for this module.
+     *
+     * @return object This.
+     */
+    public function delVars()
+    {
+        ModUtil::delVar($this->name);
         return $this;
     }
 
