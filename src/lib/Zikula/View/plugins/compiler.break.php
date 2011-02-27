@@ -21,7 +21,7 @@
  *
  * @return string 'break;'
  */
-function smarty_compiler_break($content, $view)
+function smarty_compiler_break($content, Zikula_View $view)
 {
     return 'break;';
 }

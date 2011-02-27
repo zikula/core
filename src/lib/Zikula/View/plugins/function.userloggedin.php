@@ -26,7 +26,7 @@
  *
  * @return   bool   the logged in status
  */
-function smarty_function_userloggedin($params, $view)
+function smarty_function_userloggedin($params, Zikula_View $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 

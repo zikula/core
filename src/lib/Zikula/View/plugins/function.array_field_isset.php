@@ -55,7 +55,7 @@
  *                       then returns the value of the array element if it is set,
  *                       otherwise false.
  */
-function smarty_function_array_field_isset($params, $view)
+function smarty_function_array_field_isset($params, Zikula_View $view)
 {
     $array       = isset($params['array'])       ? $params['array']        : null;
     $field       = isset($params['field'])       ? $params['field']        : null;

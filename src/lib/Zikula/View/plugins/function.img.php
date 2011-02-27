@@ -36,10 +36,10 @@
  *   - all remaining parameters are passed to the image tag
  *
  * Example: {img src="heading.png" }
- * Output:  <img src="modules/Example/images/eng/heading.png" alt="" width="261" height="69"  />
+ * Output:  <img src="modules/Example/images/en/heading.png" alt="" width="261" height="69"  />
  *
  * Example: {img src="heading.png" width="100" border="1" alt="foobar" }
- * Output:  <img src="modules/Example/images/eng/heading.png" width="100" border="1" alt="foobar"  />
+ * Output:  <img src="modules/Example/images/en/heading.png" width="100" border="1" alt="foobar"  />
  *
  * Example {img src=xhtml11.png modname=core set=powered}
  * <img src="/Theme/images/powered/xhtml11.png" alt="" width="88" height="31"  />
@@ -55,7 +55,7 @@
  * {$myvar.imgtag}
  *
  * Output:
- * modules/Example/images/eng/heading.gif
+ * modules/Example/images/en/heading.gif
  * 261
  * <img src="modules/Example/images/en/heading.gif" alt="" width="261" height="69"  />
  *
@@ -64,7 +64,7 @@
  *
  * @return string|void The img tag, null if $params['nostoponerror'] true and there is an error.
  */
-function smarty_function_img($params, $view)
+function smarty_function_img($params, Zikula_View $view)
 {
     $nostoponerror = (isset($params['nostoponerror'])) ? true : false;
 

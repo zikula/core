@@ -56,7 +56,7 @@
  *
  * @return string The img tag.
  */
-function smarty_function_icon($params, $view)
+function smarty_function_icon($params, Zikula_View $view)
 {
     if (!isset($params['type'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_icon', 'type')));

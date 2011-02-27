@@ -29,7 +29,7 @@
  *
  * @return string The value of the charset.
  */
-function smarty_function_charset($params, $view)
+function smarty_function_charset($params, Zikula_View $view)
 {
     $return = ZLanguage::getEncoding();
 

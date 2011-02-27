@@ -21,7 +21,7 @@
  *
  * @return string 'continue;'
  */
-function smarty_compiler_continue($content, $view)
+function smarty_compiler_continue($content, Zikula_View $view)
 {
     return 'continue;';
 }

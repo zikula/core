@@ -35,7 +35,7 @@
  *
  * @return string The module variable.
  */
-function smarty_function_servergetvar($params, $view)
+function smarty_function_servergetvar($params, Zikula_View $view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $default = isset($params['default']) ? $params['default'] : null;

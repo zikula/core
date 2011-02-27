@@ -36,29 +36,28 @@
  *
  * @return string|void
  */
-
-function smarty_function_manuallink($params, $view)
+function smarty_function_manuallink($params, Zikula_View $view)
 {
-    $userlang= ZLanguage::transformFS(ZLanguage::getLanguageCode());
+    $userlang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
     $stdlang = System::getVar('language_i18n');
 
-    $title   = (isset($params['title']))   ? $params['title']               : 'Manual';
-    $manual  = (isset($params['manual']))  ? $params['manual']              : 'manual.html';
-    $chapter = (isset($params['chapter'])) ? '#'.$params['chapter']         : '';
-    $class   = (isset($params['class']))   ? 'class="'.$params['class'].'"' : '';
-    $width   = (isset($params['width']))   ? $params['width']               : 600;
-    $height  = (isset($params['height']))  ? $params['height']              : 400;
+    $title = (isset($params['title'])) ? $params['title'] : 'Manual';
+    $manual = (isset($params['manual'])) ? $params['manual'] : 'manual.txt';
+    $chapter = (isset($params['chapter'])) ? '#' . $params['chapter'] : '';
+    $class = (isset($params['class'])) ? 'class="' . $params['class'] . '"' : '';
+    $width = (isset($params['width'])) ? $params['width'] : 600;
+    $height = (isset($params['height'])) ? $params['height'] : 400;
     $modname = ModUtil::getName();
 
-    $possibleplaces = array( "modules/$modname/docs/$userlang/manual/$manual",
-                             "modules/$modname/docs/$stdlang/manual/$manual",
-                             "modules/$modname/docs/en/manual/$manual",
-                             "modules/$modname/docs/$userlang/$manual",
-                             "modules/$modname/docs/$stdlang/$manual",
-                             "modules/$modname/docs/lang/en/$manual" );
+    $possibleplaces = array("modules/$modname/docs/$userlang/manual/$manual",
+            "modules/$modname/docs/$stdlang/manual/$manual",
+            "modules/$modname/docs/en/manual/$manual",
+            "modules/$modname/docs/$userlang/$manual",
+            "modules/$modname/docs/$stdlang/$manual",
+            "modules/$modname/docs/lang/en/$manual");
     foreach ($possibleplaces as $possibleplace) {
         if (file_exists($possibleplace)) {
-            $url = $possibleplace.$chapter;
+            $url = $possibleplace . $chapter;
             break;
         }
     }
@@ -69,8 +68,8 @@ function smarty_function_manuallink($params, $view)
     }
 
     if (isset($params['assign'])) {
-        $ret = array( 'url' => $url, 'link' => $link );
-        $view->assign( $params['assign'], $ret );
+        $ret = array('url' => $url, 'link' => $link);
+        $view->assign($params['assign'], $ret);
         return;
     } else {
         return $link;

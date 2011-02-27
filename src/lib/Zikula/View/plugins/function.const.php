@@ -29,10 +29,10 @@
  *
  * @return string The language constant.
  */
-function smarty_function_const($params, $view)
+function smarty_function_const($params, Zikula_View $view)
 {
-    $assign          = isset($params['assign'])          ? $params['assign']          : null;
-    $name            = isset($params['name'])            ? $params['name']            : null;
+    $assign = isset($params['assign']) ? $params['assign'] : null;
+    $name = isset($params['name']) ? $params['name'] : null;
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('const', 'name')));

@@ -51,7 +51,7 @@
  *
  * @return string
  */
-function smarty_function_pager($params, $view)
+function smarty_function_pager($params, Zikula_View $view)
 {
     if (!isset($params['rowcount'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pager', 'rowcount')));

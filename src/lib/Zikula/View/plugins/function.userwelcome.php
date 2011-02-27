@@ -26,7 +26,7 @@
  *
  * @return string The welcome message.
  */
-function smarty_function_userwelcome($params, $view)
+function smarty_function_userwelcome($params, Zikula_View $view)
 {
     if (UserUtil::isLoggedIn()) {
         $username = UserUtil::getVar('uname');

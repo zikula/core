@@ -24,9 +24,9 @@
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
  *
- * @return boolean Authorized?
+ * @return boolean
  */
-function smarty_function_checkpermission($params, $view)
+function smarty_function_checkpermission($params, Zikula_View $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $level  = isset($params['level'])  ? $params['level']  : null;

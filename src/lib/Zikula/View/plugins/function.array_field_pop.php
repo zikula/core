@@ -45,7 +45,7 @@
  *              in the specified template variable if it is set,
  *              otherwise the template variable is set to false; no output to the template.
  */
-function smarty_function_array_field_pop($params, $view)
+function smarty_function_array_field_pop($params, Zikula_View $view)
 {
     $array       = isset($view->_tpl_vars[$params['array']]);
     $field       = isset($params['field'])   ? $params['field']   : null;

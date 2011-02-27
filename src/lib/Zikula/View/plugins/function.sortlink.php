@@ -40,7 +40,7 @@
  *
  * @return string The link output.
  */
-function smarty_function_sortlink($params, $view)
+function smarty_function_sortlink($params, Zikula_View $view)
 {
     if (!isset($params['currentsort'])) {
         trigger_error(__f('Error! "%1$s" must be set in %2$s', array('currentsort', 'sortlink')));

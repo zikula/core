@@ -21,7 +21,7 @@
  *
  * @return string
  */
-function smarty_function_selector_category ($params, $view)
+function smarty_function_selector_category($params, Zikula_View $view)
 {
     $categoryRegistryModule   = isset($params['categoryRegistryModule'])   ? $params['categoryRegistryModule']   : '';
     $categoryRegistryTable    = isset($params['categoryRegistryTable'])    ? $params['categoryRegistryTable']    : '';

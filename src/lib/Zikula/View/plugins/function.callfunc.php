@@ -38,7 +38,7 @@
  *
  * @return mixed The results of the callable.
  */
-function smarty_function_callfunc($params, $view)
+function smarty_function_callfunc($params, Zikula_View $view)
 {
     $assign = (isset($params['x_assign']) && !empty($params['x_assign'])) ? $params['x_assign'] : '';
     

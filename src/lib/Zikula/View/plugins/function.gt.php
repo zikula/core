@@ -44,7 +44,7 @@
  *
  * @return string Translation if it was available.
  */
-function smarty_function_gt($params, $view)
+function smarty_function_gt($params, Zikula_View $view)
 {
     // the check order here is important because:
     // if we are calling from a theme both $view->themeDomain and $view->renderDomain are set.

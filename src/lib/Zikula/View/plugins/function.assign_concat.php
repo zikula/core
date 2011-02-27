@@ -41,7 +41,7 @@
  *
  * @return Void
  */
-function smarty_function_assign_concat($params, $view)
+function smarty_function_assign_concat($params, Zikula_View $view)
 {
     if (!$params['name']) {
         $view->trigger_error(__f('Invalid %1$s passed to %2$s.', array('name', 'assign_concat')));

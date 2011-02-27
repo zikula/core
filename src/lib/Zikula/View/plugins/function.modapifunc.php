@@ -42,7 +42,7 @@
  *
  * @return string The results of the module API function.
  */
-function smarty_function_modapifunc($params, $view)
+function smarty_function_modapifunc($params, Zikula_View $view)
 {
     //889$saveDomain = $view->renderDomain;
     $assign  = isset($params['assign'])                  ? $params['assign']  : null;

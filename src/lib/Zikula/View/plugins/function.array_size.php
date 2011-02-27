@@ -53,7 +53,7 @@
  *                 template variable is not an array; returns null if the
  *                 assign parameter is specified.
  */
-function smarty_function_array_size($params, $view)
+function smarty_function_array_size($params, Zikula_View $view)
 {
     $val = 0;
     if (is_array($params['array'])) {

@@ -47,7 +47,7 @@
  * 
  * @return string
  */
-function smarty_function_datetime($params, $view)
+function smarty_function_datetime($params, Zikula_View $view)
 {
     // set some defaults
     $format = isset($params['format']) ? $params['format'] : __('%b %d, %Y - %I:%M %p');

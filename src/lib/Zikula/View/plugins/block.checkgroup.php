@@ -35,7 +35,7 @@
  *                             then the content contained in the block, otherwise null,
  *                             false on error.
  */
-function smarty_block_checkgroup($params, $content, $view)
+function smarty_block_checkgroup($params, $content, Zikula_View $view)
 {
     // check if there is something between the tags
     if (is_null($content)) {

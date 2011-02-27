@@ -55,7 +55,7 @@
  *
  * @return string The tag.
  */
-function smarty_function_modulejavascript($params, $view)
+function smarty_function_modulejavascript($params, Zikula_View $view)
 {
     // check if script is set (mandatory)
     if (!isset($params['script'])) {

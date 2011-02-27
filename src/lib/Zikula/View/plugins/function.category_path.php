@@ -57,7 +57,7 @@
  *
  * @return string|void The value of the specified category field.
  */
-function smarty_function_category_path($params, $view)
+function smarty_function_category_path($params, Zikula_View $view)
 {
     $assign    = isset($params['assign'])   ? $params['assign']   : null;
     $id        = isset($params['id'])       ? $params['id']       : 0;

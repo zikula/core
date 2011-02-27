@@ -23,7 +23,7 @@
  *
  * @return string Translation if it was available.
  */
-function smarty_function_iscapable($params, $view)
+function smarty_function_iscapable($params, Zikula_View $view)
 {
     if (!isset($params['module'])) {
         $view->trigger_error(__('Error! "module" parameter must be specified.'));

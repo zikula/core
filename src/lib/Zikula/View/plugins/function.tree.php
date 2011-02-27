@@ -24,7 +24,7 @@
  *
  * @return string The results of the module function
  */
-function smarty_function_tree ($params, $view)
+function smarty_function_tree ($params, Zikula_View $view)
 {
     $menuString = isset($params['menustring']) ? $params['menustring'] : null;
     $menuArray  = isset($params['menuarray'])  ? $params['menuarray']  : null;

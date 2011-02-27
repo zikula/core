@@ -34,7 +34,7 @@
  *
  * @return string The welcome message.
  */
-function smarty_function_userlogin($params, $view)
+function smarty_function_userlogin($params, Zikula_View $view)
 {
     if (!UserUtil::isLoggedIn()) {
         // set some defaults

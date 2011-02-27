@@ -47,7 +47,7 @@
  *
  * @return string|void The value of the last status message posted, or void if no status message exists.
  */
-function smarty_function_getstatusmsg($params, $view)
+function smarty_function_getstatusmsg($params, Zikula_View $view)
 {
     $assign = isset($params['assign'])  ? $params['assign']  : null;
     $class  = isset($params['class'])   ? $params['class']   : null;

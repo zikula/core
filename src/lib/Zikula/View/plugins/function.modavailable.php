@@ -37,13 +37,13 @@
  *
  * @return boolean True if the module is available; false otherwise.
  */
-function smarty_function_modavailable ($params, $view)
+function smarty_function_modavailable($params, Zikula_View $view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $mod     = isset($params['mod'])     ? $params['mod']     : null;
     $modname = isset($params['modname']) ? $params['modname'] : null;
 
-    // minor backwards compatability fix
+    // minor backwards compatability
     if ($mod) {
         $modname = $mod;
     }

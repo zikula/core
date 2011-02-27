@@ -36,7 +36,7 @@
  * @return mixed the value of the block variable specified by the name attribute,
  *               or an array containing the full block information.
  */
-function smarty_function_blockgetinfo($params, $view)
+function smarty_function_blockgetinfo($params, Zikula_View $view)
 {
     $bid    = isset($params['bid'])    ? (int)$params['bid'] : 0;
     $name   = isset($params['name'])   ? $params['name']     : null;

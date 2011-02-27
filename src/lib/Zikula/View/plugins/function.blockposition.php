@@ -34,7 +34,7 @@
  *
  * @return string The rendered ouput of all of the blocks assigned to this position.
  */
-function smarty_function_blockposition($params, $view)
+function smarty_function_blockposition($params, Zikula_View $view)
 {
     // fix the core positions for a better name
     if ($params['name'] == 'l') $params['name'] = 'left';

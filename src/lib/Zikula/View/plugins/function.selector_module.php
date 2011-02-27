@@ -29,7 +29,7 @@
  *
  * @return string
  */
-function smarty_function_selector_module ($params, $view)
+function smarty_function_selector_module ($params, Zikula_View $view)
 {
     $name          = isset($params['name'])          ? $params['name']          : 'defaultselectorname';
     $field         = isset($params['field'])         ? $params['field']         : 'name';

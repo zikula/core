@@ -25,7 +25,7 @@
  * @return string A formatted string containing the avatar image.
  */
 
-function smarty_function_useravatar($params, $view)
+function smarty_function_useravatar($params, Zikula_View $view)
 {
     if (!isset($params['uid'])) {
         $view->trigger_error("Error! Missing 'uid' attribute for useravatar.");

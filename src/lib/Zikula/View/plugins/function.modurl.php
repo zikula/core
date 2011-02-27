@@ -46,7 +46,7 @@
  *
  * @return string The URL.
  */
-function smarty_function_modurl($params, $view)
+function smarty_function_modurl($params, Zikula_View $view)
 {
     $assign       = isset($params['assign'])                  ? $params['assign']    : null;
     $append       = isset($params['append'])                  ? $params['append']    : '';

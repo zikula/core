@@ -21,7 +21,7 @@
  *
  * @return string HTML code with the available workflow actions for the current item state.
  */
-function smarty_function_workflow_getactionsbystate($params, $view)
+function smarty_function_workflow_getactionsbystate($params, Zikula_View $view)
 {
     if (!isset($params['schema'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnworkflow_getactionsbystate', 'schema')));

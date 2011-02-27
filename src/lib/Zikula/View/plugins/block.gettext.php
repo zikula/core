@@ -39,7 +39,7 @@
  *
  * @return string Translation if it was available.
  */
-function smarty_block_gettext($params, $content, $view)
+function smarty_block_gettext($params, $content, Zikula_View $view)
 {
     if ($content) {
         if (isset($params['domain'])) {

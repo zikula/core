@@ -27,7 +27,7 @@
  *
  * @return string The user ID.
  */
-function smarty_function_usergetidfromname($params, $view)
+function smarty_function_usergetidfromname($params, Zikula_View $view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $uname   = isset($params['uname'])   ? $params['uname']    : null;

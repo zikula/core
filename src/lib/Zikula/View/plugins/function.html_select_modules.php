@@ -40,7 +40,7 @@
  * @see    function.html_select_modules.php::smarty_function_html_select_modules()
  * @return string A drop down containing a list of modules.
  */
-function smarty_function_html_select_modules($params, $view)
+function smarty_function_html_select_modules($params, Zikula_View $view)
 {
     // we'll make use of the html_options plugin to simplfiy this plugin
     require_once $view->_get_plugin_filepath('function', 'html_options');

@@ -31,7 +31,7 @@
  *
  * @return string The page render time in seconds.
  */
-function smarty_function_pagerendertime($params, $view)
+function smarty_function_pagerendertime($params, Zikula_View $view)
 {
     // show time to render
     if ($view->getServiceManager()->getArgument('debug.display_pagerendertime')) {

@@ -42,16 +42,16 @@
  *
  * @return void
  */
-function smarty_function_ajaxheader($params, $view)
+function smarty_function_ajaxheader($params, Zikula_View $view)
 {
     // use supplied modname or top level module
-    $modname       = (isset($params['modname']))         ? $params['modname']  : ModUtil::getName();
+    $modname = (isset($params['modname'])) ? $params['modname'] : ModUtil::getName();
     // define the default filename
-    $filename      = (isset($params['filename']))        ? $params['filename'] : 'Zikula.js';
-    $validation    = (isset($params['validation']))      ? true      : false;
-    $lightbox      = (isset($params['lightbox']))        ? true      : false;
-    $ui            = (isset($params['ui']))              ? true      : false;
-    $imageviewer   = (isset($params['imageviewer']))     ? true      : false;
+    $filename = (isset($params['filename'])) ? $params['filename'] : 'Zikula.js';
+    $validation = (isset($params['validation'])) ? true : false;
+    $lightbox = (isset($params['lightbox'])) ? true : false;
+    $ui = (isset($params['ui'])) ? true : false;
+    $imageviewer = (isset($params['imageviewer'])) ? true : false;
 
     // create an empty return
     $return = '';
@@ -90,7 +90,7 @@ function smarty_function_ajaxheader($params, $view)
     $modinfo = ModUtil::getInfoFromName($modname);
     if ($modinfo !== false) {
         $osdirectory = DataUtil::formatForOS($modinfo['directory']);
-        $osfilename  = DataUtil::formatForOS($filename);
+        $osfilename = DataUtil::formatForOS($filename);
 
         $base = $modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules';
         if (file_exists($file = "$base/$osdirectory/javascript/$osfilename") || file_exists($file = "$base/$osdirectory/pnjavascript/$osfilename")) {

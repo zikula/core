@@ -26,7 +26,7 @@
  * 
  * @return string The username.
  */
-function smarty_function_user($params, $view)
+function smarty_function_user($params, Zikula_View $view)
 {
     if (UserUtil::isLoggedIn()) {
         $username = UserUtil::getVar('uname');

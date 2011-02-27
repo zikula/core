@@ -21,7 +21,7 @@
  *
  * @return string
  */
-function smarty_function_selector_user ($params, $view)
+function smarty_function_selector_user ($params, Zikula_View $view)
 {
     $field            = isset($params['field'])            ? $params['field']            : 'uid';
     $selectedValue    = isset($params['selectedValue'])    ? $params['selectedValue']    : 0;

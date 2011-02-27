@@ -29,7 +29,7 @@
  *
  * @return string The current url of the page.
  */
-function smarty_function_getcurrenturl($params, $view)
+function smarty_function_getcurrenturl($params, Zikula_View $view)
 {
     $assign = null;
     if (isset($params['assign'])) {

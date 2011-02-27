@@ -38,7 +38,7 @@
  * 
  * @return void The results must be assigned to variable in assigned.
  */
-function smarty_function_notifydisplayhooks($params, $view)
+function smarty_function_notifydisplayhooks($params, Zikula_View $view)
 {
     $eventManager = $view->getEventManager();
 

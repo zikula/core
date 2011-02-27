@@ -27,7 +27,7 @@
  *
  * @return string
  */
-function smarty_function_selector_countries($params, $view)
+function smarty_function_selector_countries($params, Zikula_View $view)
 {
     $allValue         = isset($params['allValue'])         ? $params['allValue']         : 0;
     $allText          = isset($params['allText'])          ? $params['allText']          : '';
