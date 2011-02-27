@@ -15,7 +15,7 @@
  * Smarty function to displaya modules online manual
  *
  * Admin
- * <!--[adminonlinemanual]-->
+ * {adminonlinemanual}
  *
  * @see          function.admincategorymenu.php::smarty_function_admincategoreymenu()
  * @param        array       $params      All attributes passed to this function from the template

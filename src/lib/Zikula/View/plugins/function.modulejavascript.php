@@ -24,13 +24,13 @@
  *  - onload      function to be called with onLoad handler in body tag, makes sense with assign set only, see example #2
  *  - assign      if set, the tag and the script filename are returned
  *
- * Example: {modulejavascript modname=foobar script=openwindow.js modonly=1 }
- * Output:  <script type="text/javascript" src="modules/foobar/javascript/openwindow.js">
+ * Example: {modulejavascript modname=foobar script=module_admin_config.js modonly=1 }
+ * Output:  <script type="text/javascript" src="modules/foobar/javascript/module_admin_config.js">
  *
- * Example: {modulejavascript modname=foobar script=openwindow.js modonly=1 onload="dosomething()" assign=myjs }
+ * Example: {modulejavascript modname=foobar script=module_admin_config.js modonly=1 onload="dosomething()" assign=myjs }
  * Output: nothing, but assigns a variable containing several values:
- *      $myjs.scriptfile = "modules/foobar/javascript/openwindow.js"
- *      $myjs.tag = "<script type=\"text/javascript\" src=\"modules/foobar/javascript/openwindow.js\"></script>"
+ *      $myjs.scriptfile = "modules/foobar/javascript/module_admin_config.js"
+ *      $myjs.tag = "<script type=\"text/javascript\" src=\"modules/foobar/javascript/module_admin_config.js\"></script>"
  *      $myjs.onload = "onLoad=\"dosomething()\"";
  *      Possible code in master.tpl would be:
  *
@@ -43,7 +43,7 @@
  *      which results in
  *
  *      ...
- *      <script type="text/javascript" src="modules/foobar/javascript/openwindow.js"></script>
+ *      <script type="text/javascript" src="modules/foobar/javascript/module_admin_config.js"></script>
  *      </head>
  *      <body onLoad="dosomething()" >
  *      ...
