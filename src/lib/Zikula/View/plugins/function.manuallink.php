@@ -42,7 +42,7 @@ function smarty_function_manuallink($params, Zikula_View $view)
     $stdlang = System::getVar('language_i18n');
 
     $title = (isset($params['title'])) ? $params['title'] : 'Manual';
-    $manual = (isset($params['manual'])) ? $params['manual'] : 'manual.txt';
+    $manual = (isset($params['manual'])) ? $params['manual'] : 'manual.html';
     $chapter = (isset($params['chapter'])) ? '#' . $params['chapter'] : '';
     $class = (isset($params['class'])) ? 'class="' . $params['class'] . '"' : '';
     $width = (isset($params['width'])) ? $params['width'] : 600;
