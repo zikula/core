@@ -16,7 +16,7 @@
 /**
  * Zikula_Plugin abstract class.
  */
-abstract class Zikula_Plugin extends Zikula_EventHandler
+abstract class Zikula_Plugin extends Zikula_EventHandler implements Zikula_Translatable
 {
     /**
      * Module plugin identifier.
@@ -103,13 +103,6 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     protected $pluginName;
 
     /**
-     * Gettext capable.
-     *
-     * @var boolean
-     */
-    protected $gettextEnabled = true;
-
-    /**
      * Base dir.
      *
      * @var string
@@ -142,17 +135,19 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
      *
-     * @throws LogicException If no metadata is defined.
+     * @throws InvalidArgumentException If getMeta() is not implemented correctly.
      */
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
         $this->_setup();
-        if (!$this->getMetaDisplayName() || !$this->getMetaDescription() || !$this->getMetaVersion()) {
-            throw new LogicException(sprintf("setMeta() must be defined in %s must and return array('displayname' => 'displayname', 'description' => 'description', 'version' => 'a.b.c')", get_class($this)));
-        }
 
+        $meta = $this->getMeta();
+        if (!isset($meta['displayname']) && !isset($meta['description']) && !isset($meta['version'])) {
+            throw new InvalidArgumentException(sprintf('%s->getMeta() must be implemented according to the abstract.  See docblock in Zikula_Plugin for details', get_class($this)));
+        }
+        
         // Load any handlers if they exist
         if ($this->getReflection()->hasMethod('setupHandlerDefinitions')) {
             $this->setupHandlerDefinitions();
@@ -212,20 +207,16 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
             $this->moduleName = $p[1];
             $this->pluginName = $p[2];
             $this->pluginType = self::TYPE_MODULE;
-            if ($this->gettextEnabled) {
-                $this->domain = ZLanguage::getModulePluginDomain($this->moduleName, $this->pluginName);
-                ZLanguage::bindModulePluginDomain($this->moduleName, $this->pluginName);
-            }
+            $this->domain = ZLanguage::getModulePluginDomain($this->moduleName, $this->pluginName);
+            ZLanguage::bindModulePluginDomain($this->moduleName, $this->pluginName);
         } elseif (strpos($this->serviceId, 'systemplugin') === 0) {
             // SystemPlugin_{PluginName}_Plugin
             // $p[1] = ModuleName
             $this->moduleName = 'zikula';
             $this->pluginName = $p[1];
             $this->pluginType = self::TYPE_SYSTEM;
-            if ($this->gettextEnabled) {
-                $this->domain = ZLanguage::getSystemPluginDomain($this->moduleName, $this->pluginName);
-                ZLanguage::bindSystemPluginDomain($this->pluginName);
-            }
+            $this->domain = ZLanguage::getSystemPluginDomain($this->moduleName, $this->pluginName);
+            ZLanguage::bindSystemPluginDomain($this->pluginName);
         } else {
             throw new LogicException(sprintf('This class %s does not appear to be named correctly.  System plugins should be named {SystemPlugin}_{Name}_Plugin, module plugins should be named {ModulePlugin}_{ModuleName}_{PluginName}_Plugin.', $this->className));
         }
@@ -236,17 +227,19 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     /**
      * Get plugin meta data.
      *
+     * Should return an array like this:
+     * <sample>
+     * $meta = array('displayname' => $this->__('Display name'),
+     *               'description' => $this->__('Description goes here'),
+     *               'version' => '1.0.0'
+     *         );
+     *
+     * return $meta;
+     * </sample>
+     *
      * @return array
      */
-    protected function getMeta()
-    {
-        $meta = array('displayname' => '', // implement as $this->__('Display name'),
-                      'description' => '', // implement as $this->__('Description goes here'),
-                      'version' => ''      // implement as 'a.b.c'
-                );
-
-        return $meta;
-    }
+    abstract protected function getMeta();
 
     /**
      * Get meta display name.
@@ -333,7 +326,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      *
      * @return string
      */
-    protected function __f($msgid, $params)
+    public function __f($msgid, $params)
     {
         return __f($msgid, $params, $this->domain);
     }
@@ -347,7 +340,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      *
      * @return string Translated string.
      */
-    protected function _n($singular, $plural, $count)
+    public function _n($singular, $plural, $count)
     {
         return _n($singular, $plural, $count, $this->domain);
     }
@@ -362,7 +355,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      *
      * @return string
      */
-    protected function _fn($sin, $plu, $n, $params)
+    public function _fn($sin, $plu, $n, $params)
     {
         return _fn($sin, $plu, $n, $params, $this->domain);
     }

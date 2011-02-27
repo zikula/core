@@ -123,12 +123,11 @@ abstract class Zikula_Base implements Zikula_Translatable
     {
         $parts = explode('_', get_class($this));
         $this->name = $parts[0];
-        $this->modinfo = ModUtil::getInfoFromName($this->name);
-        $modbase = ($this->modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
-        $this->systemBaseDir = realpath("$modbase/..");
-        $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/" . $this->modinfo['directory']);
-        $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
-        if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
+        $baseDir = ModUtil::getModuleBaseDir($this->name);
+        $this->systemBaseDir = realpath("$baseDir/..");
+        $this->baseDir = realpath("{$this->systemBaseDir}/$baseDir/" . $this->name);
+        $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
+        if ($baseDir == 'modules') {
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
     }
@@ -228,6 +227,9 @@ abstract class Zikula_Base implements Zikula_Translatable
      */
     public function getModInfo()
     {
+        if (!$this->modinfo) {
+            $this->modinfo = ModUtil::getInfoFromName($this->name);
+        }
         return $this->modinfo;
     }
 
