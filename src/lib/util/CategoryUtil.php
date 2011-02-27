@@ -507,7 +507,7 @@ class CategoryUtil
         if ($sortField) {
             global $_catSortField;
             $_catSortField = $sortField;
-            $cats = self::sortCategories($cats, $sortField);
+            $cats = self::sortCategories($cats, $sortField, $assocKey);
         }
 
         return $cats;
@@ -1006,7 +1006,7 @@ class CategoryUtil
      *
      * @return array list of categories, sorted on each level.
      */
-    public static function sortCategories($cats, $sortField = '')
+    public static function sortCategories($cats, $sortField = '', $assocKey = '')
     {
         if (!$cats) return $cats;
 
@@ -1023,6 +1023,17 @@ class CategoryUtil
         }
         $new_cats = array();
         self::_tree_sort($tree[1], $new_cats);
+
+        if ($assocKey) {
+            $new_cats_assoc = array();
+            foreach ($new_cats as $c) {
+                if (isset($c[$assocKey])) {
+                    $new_cats_assoc[$c[$assocKey]] = $c;
+                }
+            }
+            $new_cats = $new_cats_assoc;
+        }
+
         return $new_cats;
     }
 
