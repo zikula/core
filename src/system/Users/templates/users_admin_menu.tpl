@@ -2,6 +2,7 @@
 
 {admincategorymenu}
 <div class="z-adminbox">
+    {img modname='Users' src='admin.png'}
     <h1>{gt text='Users manager'}</h1>
     {modulelinks modname='Users' type='admin'}
     {if !empty($modvars.ZConfig.profilemodule)}

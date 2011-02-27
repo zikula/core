@@ -78,7 +78,7 @@ img.z-floatright {
 * Styles for z-menulinks
 *******************************************************************************/
 
-ul.z-menulinks {
+#z-maincontent ul.z-menulinks {
     background: url("../images/global/menubg_grey.png") repeat-x scroll 0 0 #E6E6E6; /*non-CSS3 browsers*/
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#E6E6E6'); /*IE*/
     background: -webkit-gradient(linear,left top, left bottom,from(#fefefe), to(#E6E6E6)); /*webkit*/
@@ -86,31 +86,31 @@ ul.z-menulinks {
     background: linear-gradient(#fefefe, #E6E6E6); /*CSS3*/
     border: 1px solid #ccc;
     color: #aaa;
-    height: auto !important;
-    line-height: 23px !important;
+    height: auto;
+    line-height: 23px;
     list-style: none outside none;
-    margin: 1em 0 !important;
-    min-height: 23px !important;
-    padding:0 5px !important;
+    margin: 1em 0;
+    min-height: 23px;
+    padding:0 5px;
 }
 
-ul.z-menulinks li {
-    background: none !important;
+#z-maincontent ul.z-menulinks li {
+    background: none;
     border-right:1px solid #aaa;
     display:inline;
-    line-height: 23px !important;
-    padding:0 10px !important;
-    margin:0 !important;
+    line-height: 23px;
+    padding:0 10px;
+    margin:0;
 }
 
-ul.z-menulinks li:first-child {
+#z-maincontent ul.z-menulinks li:first-child {
     border-left:1px solid #aaa;
     margin-left:5px;
 }
 
-ul.z-menulinks li.z-ml-disabled a,
-ul.z-menulinks li.z-ml-disabled a:hover {
-    text-decoration:line-through !important;
+#z-maincontent ul.z-menulinks li.z-ml-disabled a,
+#z-maincontent ul.z-menulinks li.z-ml-disabled a:hover {
+    text-decoration:line-through;
 }
 
 /*******************************************************************************

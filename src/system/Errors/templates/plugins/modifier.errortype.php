@@ -15,7 +15,7 @@
  *
  * Example
  *
- *   <!--[$var|errortype]-->
+ *   {$var|errortype}
  *
  * @see          modifier.errortype.php::smarty_modifier_errortype()
  * @param        array    $string     the contents to transform
