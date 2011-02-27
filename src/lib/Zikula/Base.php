@@ -701,6 +701,8 @@ abstract class Zikula_Base implements Zikula_Translatable
      *
      * @param string $token The token, if not set, will pull from $_POST['csrftoken'].
      *
+     * @throws Zikula_Exception_Forbidden If check fails.
+     *
      * @return void
      */
     public function checkCsrfToken($token=null)

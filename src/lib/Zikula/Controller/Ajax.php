@@ -29,16 +29,27 @@ abstract class Zikula_Controller_Ajax extends Zikula_Controller
     /**
      * Check the CSFR token.
      *
-     * @throws Zikula_Response_Ajax_Forbidden If the CSFR token fails.
+     * Checks will fall back to $token check if automatic checking fails.
+     *
+     * @params string $token Token, default null.
+     *
+     * @throws Zikula_Exception_Forbidden If the CSFR token fails.
      *
      * @return void
      */
-    public function checkAjaxToken()
+    public function checkAjaxToken($token=null)
     {
-        $token = isset($_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN']) ? $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] : '';
-        // we might have to account for session regeneration here - drak
-        if (!$token == session_id()) {
-            throw new Zikula_Exception_Forbidden(__('Ajax security checks failed.'));
+        $headerToken = isset($_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN']) ? $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] : null;
+
+        if ($headerToken == session_id()) {
+            return;
         }
+
+        try {
+            $this->checkCsrfToken($token);
+        } catch (Zikula_Exception_Forbidden $e) {
+        }
+
+        throw new Zikula_Exception_Forbidden(__('Ajax security checks failed.'));
     }
 }
