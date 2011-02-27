@@ -29,7 +29,7 @@ function smarty_function_adminonlinemanual($params, $smarty)
     $modinfo = ModUtil::getInfoFromName(ModUtil::getName());
     $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
     $file = DataUtil::formatForOS("$modpath/$modinfo[directory]/lang/$lang/manual.html");
-    fdump($file,is_readable($file));
+    
     $man_link = '';
     if (is_readable($file)) {
         PageUtil::addVar('javascript', 'zikula.ui');
