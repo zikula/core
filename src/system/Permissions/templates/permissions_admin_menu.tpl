@@ -1,6 +1,7 @@
 {ajaxheader modname=Permissions filename=permissions.js ui=true}
 {admincategorymenu}
 <div class="z-adminbox">
+    {img modname='Permissions' src='admin.png'}
     <h1>{gt text="Permission rules manager"}</h1>
     {modulelinks modname='Permissions' type='admin'}
 </div>

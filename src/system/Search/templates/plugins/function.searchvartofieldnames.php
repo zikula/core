@@ -23,7 +23,7 @@
  * allowed)
  *
  * Example
- *   <!--[searchvartofieldnames assign='fnames']-->
+ *   {searchvartofieldnames assign='fnames'}
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      $smarty     Reference to the Smarty object

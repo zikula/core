@@ -39,7 +39,7 @@
  *   - assign:      if set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *   <!--[menutree data=$menutree_content id='listid' class='menutree']-->
+ *   {menutree data=$menutree_content id='listid' class='menutree'}
  *
  * will generate unordered list with id "listid" and class "menutree"
  *

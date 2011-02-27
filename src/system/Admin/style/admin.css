@@ -28,11 +28,11 @@ div.z-adminbox {
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     border-bottom: 0px solid #ccc;
-    padding: 5px 1% 5px 1%;
+    padding: 10px 1% 5px 1%;
 }
 
-div.z-adminbox .z-menulinks,
-div.z-adminbox .z-menu {
+#z-maincontent div.z-adminbox .z-menulinks,
+#z-maincontent div.z-adminbox .z-menu {
     margin-bottom: 0;
 }
 
@@ -55,16 +55,32 @@ div.z-admincategorydescription {
     margin-bottom: 10px;
 }
 
-/* style for Immediate template under the admin menu */
-div.z-adminbox h1 {
-    background: none !important;
-    color: #333 !important;
+/* Style for module title and module's admin icon */
+#z-maincontent div.z-adminbox h1 {
+    background: none;
+    color: #333333;
+    line-height: 48px;
+    margin: 0;
+    padding: 0;
     text-align: left;
 }
 
-div.z-admincontainer h2 {
-    background: none !important;
-    color: #333 !important;
+#z-maincontent div.z-adminbox img {
+    float: left;
+    margin-right: 1em;
+}
+
+#z-maincontent div.z-adminbox h1:after { /* clearfix */
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#z-maincontent div.z-admincontainer h2 {
+    background: none;
+    color: #333;
     text-align: left;
     border-bottom: 1px solid #cccccc;
     margin-top: 0px;
@@ -72,18 +88,18 @@ div.z-admincontainer h2 {
 }
 
 /* styling for a page icon */
-div.z-adminpageicon {
+#z-maincontent div.z-adminpageicon {
     padding: 0;
 }
 
-div.z-adminpageicon img {
+#z-maincontent div.z-adminpageicon img {
     float: right;
     padding-top: 5px;
 }
 
-div.z-adminpageicon+h2 {
-    margin-bottom: 20px !important;
-    padding-top: 20px !important;
+#z-maincontent div.z-adminpageicon+h2 {
+    margin-bottom: 20px;
+    padding-top: 20px;
 }
 
 /* disabled admin function links */
@@ -171,14 +187,14 @@ div.property_selector_noscript {
 /* Styling for status security analyzer, update checker and more
 /*****************************************************************************/
 
-div#z-securityanalyzer {
+#z-maincontent div#z-securityanalyzer {
     background: url("../../../images/icons/large/bell.png") #FFF6BF 15px 50% no-repeat; /*non-CSS3 browsers*/
     background: url("../../../images/icons/large/bell.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/large/bell.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/large/bell.png") 15px 50% no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
-    padding: 1em 20px 1em 90px !important;
+    padding: 1em 20px 1em 90px;
     border: 2px solid #ffd324;
     min-height: 2.5em;
     margin: 1em auto 2em auto;
@@ -193,14 +209,14 @@ div#z-securityanalyzer {
 }
 
 /* styling for status update checker */
-div#z-updatechecker {
+#z-maincontent div#z-updatechecker {
     background: url("../../../images/icons/large/agt_update-product.png") #C4E6BD 15px 50% no-repeat; /*non-CSS3 browsers*/
     background: url("../../../images/icons/large/agt_update-product.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/large/agt_update-product.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/large/agt_update-product.png") 15px 50% no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
-    padding: 1em 20px 1em 90px !important;
+    padding: 1em 20px 1em 90px;
     border: 2px solid #3E9533;
     min-height: 1em;
     margin: 1em auto 2em auto;
@@ -215,14 +231,14 @@ div#z-updatechecker {
 }
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
-div#z-adminwarning {
+#z-maincontent div#z-adminwarning {
     background: url("../../../images/icons/large/error.png") #FFCBCA 15px 50% no-repeat; /*non-CSS3 browsers*/
     background: url("../../../images/icons/large/error.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/large/error.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/large/error.png") 15px 50% no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
-    padding: 1em 20px 1em 90px !important;
+    padding: 1em 20px 1em 90px;
     border: 2px solid #990000;
     min-height: 1em;
     margin: 1em auto 2em auto;
@@ -236,14 +252,14 @@ div#z-adminwarning {
     color: #444;
 }
 
-div#z-developernotices {
+#z-maincontent div#z-developernotices {
     background: url("../../../images/icons/large/run.png") #C5E8F1 15px 50% no-repeat; /*non-CSS3 browsers*/
     background: url("../../../images/icons/large/run.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/large/run.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/large/run.png") 15px 50% no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
-    padding: 1em 20px 1em 90px !important;
+    padding: 1em 20px 1em 90px;
     border: 2px solid #95C9EF;
     min-height: 1em;
     margin: 1em auto 2em auto;
