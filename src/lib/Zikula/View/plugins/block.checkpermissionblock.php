@@ -38,7 +38,7 @@
  *               access level for the component and instance;
  *               otherwise null; false on an error.
  */
-function smarty_block_checkpermissionblock($params, $content, $view)
+function smarty_block_checkpermissionblock($params, $content, Zikula_View $view)
 {
     if (is_null($content)) {
         return;

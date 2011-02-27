@@ -55,7 +55,7 @@
  * @todo the attribute 'name' is not used.
  *
  */
-function smarty_function_block($params, $view)
+function smarty_function_block($params, Zikula_View $view)
 {
     $bid      = isset($params['bid'])      ? (int)$params['bid'] : 0;
     $name     = isset($params['name'])     ? $params['name']     : null;

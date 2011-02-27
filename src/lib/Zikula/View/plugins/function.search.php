@@ -51,7 +51,7 @@
  *
  * @return string The search box.
  */
-function smarty_function_search($params, $view)
+function smarty_function_search($params, Zikula_View $view)
 {
     // set some defaults
     $class            = (!isset($params['class']) || empty($params['class'])) ? '' : 'class="' . DataUtil::formatForDisplay($params['class']) .'"';

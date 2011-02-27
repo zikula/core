@@ -24,7 +24,7 @@
  *
  * @return   string   the language direction
  */
-function smarty_function_langdirection($params, $view)
+function smarty_function_langdirection($params, Zikula_View $view)
 {
     return ZLanguage::getDirection();
 }

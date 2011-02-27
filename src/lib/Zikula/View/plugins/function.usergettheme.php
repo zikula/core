@@ -24,7 +24,7 @@
  *
  * @return string The variables content.
  */
-function smarty_function_usergettheme($params, $view)
+function smarty_function_usergettheme($params, Zikula_View $view)
 {
     $assign = isset($params['assign'])  ? $params['assign']  : null;
 

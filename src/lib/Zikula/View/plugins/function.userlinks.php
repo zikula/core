@@ -31,7 +31,7 @@
  *
  * @return string User links.
  */
-function smarty_function_userlinks($params, $view)
+function smarty_function_userlinks($params, Zikula_View $view)
 {
     $start     = isset($params['start'])     ? $params['start']    : '[';
     $end       = isset($params['end'])       ? $params['end']      : ']';

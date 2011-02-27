@@ -33,7 +33,7 @@
  *                item, then the list will contain a single list-item (<li>)
  *                with a message to that effect.
  */
-function smarty_function_assignedcategorieslist($params, $view)
+function smarty_function_assignedcategorieslist($params, Zikula_View $view)
 {
     if (!isset($params['item'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'item')));

@@ -29,7 +29,7 @@
  * @return string HTML code of the selector.
  */
 
-function smarty_function_selector_user_category($params, $view)
+function smarty_function_selector_user_category($params, Zikula_View $view)
 {
     $field            = isset($params['field'])            ? $params['field']            : 'id';
     $selectedValue    = isset($params['selectedValue'])    ? $params['selectedValue']    : 0;

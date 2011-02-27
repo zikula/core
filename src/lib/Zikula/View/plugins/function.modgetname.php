@@ -32,7 +32,7 @@
  *
  * @return string The module variable.
  */
-function smarty_function_modgetname($params, $view)
+function smarty_function_modgetname($params, Zikula_View $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 

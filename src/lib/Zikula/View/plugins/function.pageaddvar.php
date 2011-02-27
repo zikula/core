@@ -42,7 +42,7 @@
  *
  * @return string
  */
-function smarty_function_pageaddvar($params, $view)
+function smarty_function_pageaddvar($params, Zikula_View $view)
 {
     $name  = isset($params['name'])  ? $params['name']  : null;
     $value = isset($params['value']) ? $params['value'] : null;

@@ -29,7 +29,7 @@
  *
  * @return string The rendered output of the specified block.
  */
-function smarty_function_blockshow($params, $view)
+function smarty_function_blockshow($params, Zikula_View $view)
 {
     $module    = isset($params['module'])    ? $params['module']    : null;
     $blockname = isset($params['blockname']) ? $params['blockname'] : null;

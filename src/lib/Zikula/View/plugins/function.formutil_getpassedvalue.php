@@ -31,27 +31,27 @@
  * @return string
  *
  */
-function smarty_function_formutil_getpassedvalue ($params, $view)
+function smarty_function_formutil_getpassedvalue($params, Zikula_View $view)
 {
     if ((!isset($params['key']) || !$params['key']) &&
-        (!isset($params['name']) || !$params['name'])) {
+            (!isset($params['name']) || !$params['name'])) {
         // use name as an alias for key for programmer convenience
         $view->trigger_error('formutil_getpassedvalue: attribute key (or name) required');
         return false;
     }
 
-    $assign    = isset($params['assign'])    ? $params['assign']    : null;
-    $key       = isset($params['key'])       ? $params['key']       : null;
-    $default   = isset($params['default'])   ? $params['default']   : null;
-    $html      = isset($params['html'])      ? $params['html']      : null;
-    $source    = isset($params['source'])    ? $params['source']    : null;
+    $assign = isset($params['assign']) ? $params['assign'] : null;
+    $key = isset($params['key']) ? $params['key'] : null;
+    $default = isset($params['default']) ? $params['default'] : null;
+    $html = isset($params['html']) ? $params['html'] : null;
+    $source = isset($params['source']) ? $params['source'] : null;
     $noprocess = isset($params['noprocess']) ? $params['noprocess'] : null;
 
     if (!$key) {
         $key = isset($params['name']) ? $params['name'] : null;
     }
 
-    $val = FormUtil::getPassedValue ($key, $default, $source);
+    $val = FormUtil::getPassedValue($key, $default, $source);
 
     if ($noprocess) {
         $val = $val;
@@ -62,7 +62,7 @@ function smarty_function_formutil_getpassedvalue ($params, $view)
     }
 
     if ($assign) {
-        $view->assign ($assign, $val);
+        $view->assign($assign, $val);
     } else {
         return $val;
     }

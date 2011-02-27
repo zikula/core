@@ -43,10 +43,10 @@
  *
  * @return void
  */
-function smarty_function_assign_arrayval ($params, $view)
+function smarty_function_assign_arrayval($params, Zikula_View $view)
 {
-    $array  = isset($params['array'])  ? $params['array']  : array();
-    $key    = isset($params['key'])    ? $params['key']    : '';
+    $array = isset($params['array']) ? $params['array'] : array();
+    $key = isset($params['key']) ? $params['key'] : '';
     $assign = isset($params['assign']) ? $params['assign'] : $key;
 
     $val = isset($array[$key]) ? $array[$key] : null;

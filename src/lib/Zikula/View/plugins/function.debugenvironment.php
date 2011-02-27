@@ -27,7 +27,7 @@
  *
  * @return void
  */
-function smarty_function_debugenvironment($params, $view)
+function smarty_function_debugenvironment($params, Zikula_View $view)
 {
     $view->assign('_ZSession_keys', array_keys($_SESSION) );
     $view->assign('_ZSession_vals', array_values($_SESSION) );

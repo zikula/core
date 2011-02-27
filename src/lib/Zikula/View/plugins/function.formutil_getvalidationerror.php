@@ -26,7 +26,7 @@
  *
  * @return string
  */
-function smarty_function_formutil_getvalidationerror($params, $view)
+function smarty_function_formutil_getvalidationerror($params, Zikula_View $view)
 {
     $error = FormUtil::getValidationError($params['objectType'], $params['field']);
 

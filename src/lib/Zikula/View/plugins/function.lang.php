@@ -27,7 +27,7 @@
  *
  * @return string|void The language, null if params['assign'] is true.
  */
-function smarty_function_lang($params, $view)
+function smarty_function_lang($params, Zikula_View $view)
 {
     $assign = isset($params['assign']) ? $params['assign']  : null;
     $fs     = isset($params['fs']) ? $params['fs'] : false;

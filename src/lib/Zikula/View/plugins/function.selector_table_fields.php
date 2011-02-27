@@ -29,7 +29,7 @@
  *
  * @return string
  */
-function smarty_function_selector_table_fields ($params, $view)
+function smarty_function_selector_table_fields ($params, Zikula_View $view)
 {
     $modname        = (isset($params['modname'])        ? $params['modname']        : '');
     $tablename      = (isset($params['tablename'])      ? $params['tablename']      : '');

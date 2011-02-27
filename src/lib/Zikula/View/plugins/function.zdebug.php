@@ -40,7 +40,7 @@
  *
  * @return string Debug output.
  */
-function smarty_function_zdebug($params, $view)
+function smarty_function_zdebug($params, Zikula_View $view)
 {
     global $ZConfig;
     $out = '';

@@ -23,21 +23,21 @@
  * @param array       $params  Array with keys 'condition' whatever goes in the browserhack,
  *                                 and 'assign' to assign rather than display.
  * @param string      $content Content of the block.
- * @param Zikula_View &$render Instance of Zikula_View object.
+ * @param Zikula_View $view Instance of Zikula_View object.
  *
  * @return string|void
  */
-function smarty_block_browserhack($params, $content, &$render)
+function smarty_block_browserhack($params, $content, Zikula_View $view)
 {
     if ($content) {
         if (!isset($params['condition'])) {
-            $render->trigger_error(__('browserhack block: condition param is required, non specified.'));
+            $view->trigger_error(__('browserhack block: condition param is required, non specified.'));
         }
 
         $condition = $params['condition'];
         $output = "<!--[$condition]>$content<![endif]-->";
         if (isset($params['assign'])) {
-            $render->assign($params['assign'], $output);
+            $view->assign($params['assign'], $output);
         } else {
             return $output;
         }

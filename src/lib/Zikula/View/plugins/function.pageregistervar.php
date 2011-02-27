@@ -42,7 +42,7 @@
  *
  * @return string The module variable.
  */
-function smarty_function_pageregistervar($params, $view)
+function smarty_function_pageregistervar($params, Zikula_View $view)
 {
     $name = isset($params['name']) ? $params['name'] : null;
 

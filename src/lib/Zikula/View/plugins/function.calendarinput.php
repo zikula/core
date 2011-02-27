@@ -41,7 +41,7 @@
  *
  * @return string The HTML and Javascript code to display a calendar control.
  */
-function smarty_function_calendarinput($params, $view)
+function smarty_function_calendarinput($params, Zikula_View $view)
 {
     if (!isset($params['objectname'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'objectname')));

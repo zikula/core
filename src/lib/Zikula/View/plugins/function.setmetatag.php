@@ -29,7 +29,7 @@
  *
  * @return void
  */
-function smarty_function_setmetatag($params, $view)
+function smarty_function_setmetatag($params, Zikula_View $view)
 {
     $name = isset($params['name']) ? $params['name'] : null;
     $value = isset($params['value']) ? $params['value'] : null;

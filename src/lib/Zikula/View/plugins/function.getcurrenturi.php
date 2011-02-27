@@ -33,7 +33,7 @@
  *
  * @return string The current URI.
  */
-function smarty_function_getcurrenturi($params, $view)
+function smarty_function_getcurrenturi($params, Zikula_View $view)
 {
     $assign = null;
     if (isset($params['assign'])) {

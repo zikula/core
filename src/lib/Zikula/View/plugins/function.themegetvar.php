@@ -31,7 +31,7 @@
  *
  * @return string The colour definition.
  */
-function smarty_function_themegetvar($params, $view)
+function smarty_function_themegetvar($params, Zikula_View $view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $default = isset($params['default']) ? $params['default'] : null;

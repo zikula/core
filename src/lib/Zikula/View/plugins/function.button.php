@@ -77,7 +77,7 @@
  * @return string The rendered <button ...><img ...></button> or <input ...>
  *                element for the form button.
  */
-function smarty_function_button($params, $view)
+function smarty_function_button($params, Zikula_View $view)
 {
     // we're going to make use of pnimg for path searching
     require_once $view->_get_plugin_filepath('function', 'img');

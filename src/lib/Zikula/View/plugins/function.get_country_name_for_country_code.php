@@ -28,7 +28,7 @@
  *
  * @return      string      the value of the last status message posted, or void if no status message exists
  */
-function smarty_function_get_country_name_for_country_code ($params, $view)
+function smarty_function_get_country_name_for_country_code($params, Zikula_View $view)
 {
     $code   = strtolower(isset($params['code']) ? $params['code'] : 'ZZ');
     $assign = isset($params['assign']) ? $params['assign'] : null;

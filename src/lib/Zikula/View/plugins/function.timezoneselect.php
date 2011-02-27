@@ -24,7 +24,7 @@
  *
  * @return string The results of the module function.
  */
-function smarty_function_timezoneselect($params, $view)
+function smarty_function_timezoneselect($params, Zikula_View $view)
 {
     require_once $view->_get_plugin_filepath('function', 'html_options');
 

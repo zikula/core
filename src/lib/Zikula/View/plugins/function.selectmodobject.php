@@ -34,7 +34,7 @@
  *
  * @return void
  */
-function smarty_function_selectmodobject($params, $view)
+function smarty_function_selectmodobject($params, Zikula_View $view)
 {
     if (isset($params['recordClass']) && !empty($params['recordClass'])) {
         $doctrineMode = true;

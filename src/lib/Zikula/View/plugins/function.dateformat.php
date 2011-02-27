@@ -26,7 +26,7 @@
  *
  * @return string
  */
-function smarty_function_dateformat($params, $view)
+function smarty_function_dateformat($params, Zikula_View $view)
 {
     if (!isset($params['datetime'])) {
         $params['datetime'] = null;

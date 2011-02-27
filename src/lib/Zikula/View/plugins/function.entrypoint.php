@@ -26,7 +26,7 @@
  *
  * @return string The value of the config var entrypoint.
  */
-function smarty_function_entrypoint($params, $view)
+function smarty_function_entrypoint($params, Zikula_View $view)
 {
     return System::getVar('entrypoint', 'index.php');
 }

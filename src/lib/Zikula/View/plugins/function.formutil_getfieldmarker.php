@@ -26,7 +26,7 @@
  *
  * @return string
  */
-function smarty_function_formutil_getfieldmarker($params, $view)
+function smarty_function_formutil_getfieldmarker($params, Zikula_View $view)
 {
     // allow empty validation info -> return nothing
     if (!isset($params['validation'])) {

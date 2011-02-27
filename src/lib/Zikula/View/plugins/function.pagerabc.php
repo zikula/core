@@ -56,7 +56,7 @@
  *
  * @return string
  */
-function smarty_function_pagerabc($params, $view)
+function smarty_function_pagerabc($params, Zikula_View $view)
 {
     if (!isset($params['posvar'])) {
         $params['posvar'] = 'letter';

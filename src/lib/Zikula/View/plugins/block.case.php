@@ -44,7 +44,7 @@
  *
  * @return void|string The content of the matching case.
  */
-function smarty_block_case($params, $content, $view, &$repeat)
+function smarty_block_case($params, $content, Zikula_View $view, &$repeat)
 {
     if (is_null($content)) {
         // handle block open tag

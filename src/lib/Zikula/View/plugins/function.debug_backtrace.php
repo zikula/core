@@ -25,7 +25,7 @@
  *
  * @return string The URL.
  */
-function smarty_function_debug_backtrace($params, $view)
+function smarty_function_debug_backtrace($params, Zikula_View $view)
 {
     if (!isset($params['fulltrace'])) {
         return prayer(array_slice(debug_backtrace(), 8));

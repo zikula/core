@@ -33,7 +33,7 @@
  *
  * @return string
  */
-function smarty_function_selector_module_tables ($params, $view)
+function smarty_function_selector_module_tables ($params, Zikula_View $view)
 {
     $modname       = isset($params['modname'])       ? $params['modname']        : null;
     $name          = isset($params['name'])          ? $params['name']           : null;

@@ -39,7 +39,7 @@
  *
  * @return string The value of the last status message posted, or void if no status message exists.
  */
-function smarty_function_html_select_themes($params, $view)
+function smarty_function_html_select_themes($params, Zikula_View $view)
 {
     if (!isset($params['filter']) || !defined($params['filter'])) {
         $filter = ThemeUtil::FILTER_ALL;

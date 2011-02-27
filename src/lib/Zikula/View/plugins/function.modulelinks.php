@@ -37,7 +37,7 @@
  * @return string A formatted string containing navigation for the module admin panel.
  */
 
-function smarty_function_modulelinks($params, $view)
+function smarty_function_modulelinks($params, Zikula_View $view)
 {
     $menuLinks          = isset($params['links'])       ? $params['links'] : '';
     $menuId             = isset($params['menuid'])      ? $params['menuid'] : '';
