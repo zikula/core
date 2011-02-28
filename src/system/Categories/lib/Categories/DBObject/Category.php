@@ -194,7 +194,7 @@ class Categories_DBObject_Category extends DBObject
         $cats = CategoryUtil::getCategoriesByParentID($data['parent_id'], '', false, '', 'name');
 
         if (isset($cats[$name]) && $cats[$name] && $cats[$name]['id'] != $data['id']) {
-            $_SESSION['validationErrors'][$this->_objPath]['name'] = "Category $name must be unique under parent";
+            $_SESSION['validationErrors'][$this->_objPath]['name'] = __f(/*!%s is category name*/'Category %s must be unique under parent', $name);
             $_SESSION['validationFailedObjects'][$this->_objPath] = $data;
             return false;
         }
@@ -221,7 +221,7 @@ class Categories_DBObject_Category extends DBObject
             CategoryUtil::moveSubCategoriesByPath($data['ipath'], $newParentID);
             CategoryUtil::deleteCategoryByID($data['id']);
         } else {
-            exit('Can not delete category while preserving subcategories without specifying a new parent ID');
+            exit(__('Can not delete category while preserving subcategories without specifying a new parent ID'));
         }
     }
 
