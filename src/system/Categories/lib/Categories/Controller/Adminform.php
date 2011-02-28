@@ -12,14 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * Controller.
+ */
 class Categories_Controller_Adminform extends Zikula_Controller
 {
-
     /**
      * update category
      */
-    public function edit ()
+    public function edit()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -28,19 +29,19 @@ class Categories_Controller_Adminform extends Zikula_Controller
         $args = array();
 
         if (FormUtil::getPassedValue('category_copy', null, 'POST')) {
-            $args['op']  = 'copy';
+            $args['op'] = 'copy';
             $args['cid'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
         if (FormUtil::getPassedValue('category_move', null, 'POST')) {
-            $args['op']  = 'move';
+            $args['op'] = 'move';
             $args['cid'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
         if (FormUtil::getPassedValue('category_delete', null, 'POST')) {
-            $args['op']  = 'delete';
+            $args['op'] = 'delete';
             $args['cid'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
@@ -52,10 +53,10 @@ class Categories_Controller_Adminform extends Zikula_Controller
         }
 
         $cat = new Categories_DBObject_Category ();
-        $data = $cat->getDataFromInput ();
+        $data = $cat->getDataFromInput();
 
         if (!$cat->validate('admin')) {
-            $category = FormUtil::getPassedValue ('category', null, 'POST');
+            $category = FormUtil::getPassedValue('category', null, 'POST');
             $args['cid'] = $category['id'];
             $args['mode'] = 'edit';
             return System::redirect(ModUtil::url('Categories', 'admin', 'edit', $args));
@@ -63,25 +64,23 @@ class Categories_Controller_Adminform extends Zikula_Controller
 
         $attributes = array();
         $values = FormUtil::getPassedValue('attribute_value', 'POST');
-        foreach (FormUtil::getPassedValue('attribute_name', 'POST') as $index => $name)
-        {
-            if (!empty($name))
-                $attributes[$name] = $values[$index];
+        foreach (FormUtil::getPassedValue('attribute_name', 'POST') as $index => $name) {
+            if (!empty($name)) $attributes[$name] = $values[$index];
         }
 
         $cat->setDataField('__ATTRIBUTES__', $attributes);
 
         // retrieve old category from DB
-        $category = FormUtil::getPassedValue ('category', null, 'POST');
+        $category = FormUtil::getPassedValue('category', null, 'POST');
         $oldCat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $category['id']);
 
         // update new category data
-        $cat->update ();
+        $cat->update();
 
         // since a name change will change the object path, we must rebuild it here
         if ($oldCat->_objData['name'] != $cat->_objData['name']) {
             $obj = $cat->_objData;
-            CategoryUtil::rebuildPaths ('path', 'name', $obj['id']);
+            CategoryUtil::rebuildPaths('path', 'name', $obj['id']);
         }
 
         $msg = __f('Done! Saved the %s category.', $oldCat->_objData['name']);
@@ -92,20 +91,20 @@ class Categories_Controller_Adminform extends Zikula_Controller
     /**
      * create category
      */
-    public function newcat ()
+    public function newcat()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
         $cat = new Categories_DBObject_Category ();
-        $cat->getDataFromInput ();
+        $cat->getDataFromInput();
 
         // submit button wasn't pressed -> category was chosen from dropdown
         // we now get the parent (security) category domains so we can inherit them
         if (!FormUtil::getPassedValue('category_submit', null, 'POST')) {
             $newCat = $_POST['category'];
-            $pcID   = $newCat['parent_id'];
+            $pcID = $newCat['parent_id'];
 
             $pCat = new Categories_DBObject_Category ();
             $parentCat = $pCat->get($pcID);
@@ -127,8 +126,7 @@ class Categories_Controller_Adminform extends Zikula_Controller
 
         $attributes = array();
         $values = FormUtil::getPassedValue('attribute_value', array(), 'POST');
-        foreach (FormUtil::getPassedValue('attribute_name', array(), 'POST') as $index => $name)
-        {
+        foreach (FormUtil::getPassedValue('attribute_name', array(), 'POST') as $index => $name) {
             if (!empty($name)) {
                 $attributes[$name] = $values[$index];
             }
@@ -138,10 +136,10 @@ class Categories_Controller_Adminform extends Zikula_Controller
             $cat->setDataField('__ATTRIBUTES__', $attributes);
         }
 
-        $cat->insert ();
+        $cat->insert();
         // since the original insert can't construct the ipath (since
         // the insert id is not known yet) we update the object here.
-        $cat->update ();
+        $cat->update();
 
         $msg = __f('Done! Inserted the %s category.', $cat->_objData['name']);
         LogUtil::registerStatus($msg);
@@ -151,7 +149,7 @@ class Categories_Controller_Adminform extends Zikula_Controller
     /**
      * delete category
      */
-    public function delete ()
+    public function delete()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
@@ -167,10 +165,10 @@ class Categories_Controller_Adminform extends Zikula_Controller
 
         // delete subdirectories
         if ($_POST['subcat_action'] == 'delete') {
-            $cat->delete (true);
+            $cat->delete(true);
         } elseif ($_POST['subcat_action'] == 'move') {
             // move subdirectories
-            $cat->deleteMoveSubcategories ($_POST['category']['parent_id']);
+            $cat->deleteMoveSubcategories($_POST['category']['parent_id']);
         }
 
         $msg = __f('Done! Deleted the %s category.', $cat->_objData['name']);
@@ -181,7 +179,7 @@ class Categories_Controller_Adminform extends Zikula_Controller
     /**
      * copy category
      */
-    public function copy ()
+    public function copy()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
@@ -195,7 +193,7 @@ class Categories_Controller_Adminform extends Zikula_Controller
         $cat = new Categories_DBObject_Category ();
         $cat->get($cid);
 
-        $cat->copy ($_POST['category']['parent_id']);
+        $cat->copy($_POST['category']['parent_id']);
 
         $msg = __f('Done! Copied the %s category.', $cat->_objData['name']);
         LogUtil::registerStatus($msg);
@@ -205,7 +203,7 @@ class Categories_Controller_Adminform extends Zikula_Controller
     /**
      * move category
      */
-    public function move ()
+    public function move()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
@@ -218,7 +216,7 @@ class Categories_Controller_Adminform extends Zikula_Controller
         $cid = FormUtil::getPassedValue('cid', null, 'POST');
         $cat = new Categories_DBObject_Category ();
         $cat->get($cid);
-        $cat->move ($_POST['category']['parent_id']);
+        $cat->move($_POST['category']['parent_id']);
 
         $msg = __f('Done! Moved the %s category.', $cat->_objData['name']);
         LogUtil::registerStatus($msg);
@@ -228,20 +226,20 @@ class Categories_Controller_Adminform extends Zikula_Controller
     /**
      * rebuild path structure
      */
-    public function rebuild_paths ()
+    public function rebuild_paths()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
-        CategoryUtil::rebuildPaths ('path', 'name');
-        CategoryUtil::rebuildPaths ('ipath', 'id');
+        CategoryUtil::rebuildPaths('path', 'name');
+        CategoryUtil::rebuildPaths('ipath', 'id');
 
         LogUtil::registerStatus(__('Done! Rebuilt the category paths.'));
         return System::redirect(ModUtil::url('Categories', 'admin', 'main'));
     }
 
-    public function editregistry ()
+    public function editregistry()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -253,24 +251,23 @@ class Categories_Controller_Adminform extends Zikula_Controller
 
         if (FormUtil::getPassedValue('mode', null, 'GET') == 'delete') {
             $obj = new $class();
-            $obj->get ($id);
-            $obj->delete ($id);
+            $obj->get($id);
+            $obj->delete($id);
 
             LogUtil::registerStatus(__('Done! Deleted the category registry entry.'));
             return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
         }
 
         $args = array();
-        if (!FormUtil::getPassedValue('category_submit', null, 'POST')) // got here through selector auto-submit
-        {
-            $obj  = new $class();
-            $data = $obj->getDataFromInput ($id);
+        if (!FormUtil::getPassedValue('category_submit', null, 'POST')) { // got here through selector auto-submit
+            $obj = new $class();
+            $data = $obj->getDataFromInput($id);
             $args['category_registry'] = $data;
             return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
         }
 
         $obj = new $class();
-        $obj->getDataFromInput ();
+        $obj->getDataFromInput();
 
         if (!$obj->validate('admin')) {
             return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
@@ -281,33 +278,34 @@ class Categories_Controller_Adminform extends Zikula_Controller
         return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
     }
 
-    public function preferences ()
+    public function preferences()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
-        $userrootcat = FormUtil::getPassedValue ('userrootcat', null);
+        $userrootcat = FormUtil::getPassedValue('userrootcat', null);
         if ($userrootcat) {
             $this->setVar('userrootcat', $userrootcat);
         }
 
-        $autocreateusercat = (int)FormUtil::getPassedValue ('autocreateusercat', 0);
+        $autocreateusercat = (int)FormUtil::getPassedValue('autocreateusercat', 0);
         $this->setVar('autocreateusercat', $autocreateusercat);
 
-        $allowusercatedit = (int)FormUtil::getPassedValue ('allowusercatedit', 0);
+        $allowusercatedit = (int)FormUtil::getPassedValue('allowusercatedit', 0);
         $this->setVar('allowusercatedit', $allowusercatedit);
 
-        $autocreateuserdefaultcat = FormUtil::getPassedValue ('autocreateuserdefaultcat', 0);
+        $autocreateuserdefaultcat = FormUtil::getPassedValue('autocreateuserdefaultcat', 0);
         $this->setVar('autocreateuserdefaultcat', $autocreateuserdefaultcat);
 
-        $userdefaultcatname = FormUtil::getPassedValue ('userdefaultcatname', 'Default');
+        $userdefaultcatname = FormUtil::getPassedValue('userdefaultcatname', 'Default');
         $this->setVar('userdefaultcatname', $userdefaultcatname);
 
-        $permissionsall = (int)FormUtil::getPassedValue ('permissionsall', 0);
+        $permissionsall = (int)FormUtil::getPassedValue('permissionsall', 0);
         $this->setVar('permissionsall', $permissionsall);
 
         LogUtil::registerStatus(__('Done! Saved module configuration.'));
         return System::redirect(ModUtil::url('Categories', 'admin', 'preferences'));
     }
+
 }
