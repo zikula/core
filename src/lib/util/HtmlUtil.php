@@ -298,9 +298,6 @@ class HtmlUtil
             $lang = ZLanguage::getLanguageCode();
         }
 
-        //if ($_SESSION['pnCache']['categoryselectorbypath'][$categoryPath] && !$force)
-        //return $_SESSION['pnCache']['categoryselectorbypath'][$categoryPath];
-
         $cats = CategoryUtil::getSubCategoriesByPath($categoryPath, 'path', false, true, false, true, false, '', 'value');
 
         foreach ($cats as $k => $v) {
