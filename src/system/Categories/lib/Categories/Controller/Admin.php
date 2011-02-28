@@ -13,7 +13,6 @@
  */
 class Categories_Controller_Admin extends Zikula_Controller
 {
-
     /**
      * main admin function
      */
@@ -38,8 +37,8 @@ class Categories_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $cats = CategoryUtil::getSubCategories ($root_id, true, true, true, true, true);
-        $menuTxt = CategoryUtil::getCategoryTreeJS ($cats, true, true);
+        $cats = CategoryUtil::getSubCategories($root_id, true, true, true, true, true);
+        $menuTxt = CategoryUtil::getCategoryTreeJS($cats, true, true);
 
         $this->view->setCaching(false);
 
