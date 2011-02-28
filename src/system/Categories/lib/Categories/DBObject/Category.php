@@ -191,7 +191,7 @@ class Categories_DBObject_Category extends DBObject
 
         // ensure that the name we want to use doesn't exist already on this level
         $name = $data['name'];
-        $cats = CategoryUtil::getCategoriesByParentID($data['parent_id'], '', false, '', '', '', 'name');
+        $cats = CategoryUtil::getCategoriesByParentID($data['parent_id'], '', false, '', 'name');
 
         if (isset($cats[$name]) && $cats[$name] && $cats[$name]['id'] != $data['id']) {
             $_SESSION['validationErrors'][$this->_objPath]['name'] = "Category $name must be unique under parent";
