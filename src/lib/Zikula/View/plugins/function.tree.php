@@ -14,7 +14,7 @@
  */
 
 /**
- * Zikula_View function to include the relevant files for the phpLayersMenu and pass a previously generated menu string to phpLayersMenu
+ * Zikula_View function to load Zikula_tree.
  *
  * Example:
  * {tree $menuArray=$your_content imagesDir='yout/path/to/images/'}
@@ -24,7 +24,7 @@
  *
  * @return string The results of the module function
  */
-function smarty_function_tree ($params, Zikula_View $view)
+function smarty_function_tree($params, Zikula_View $view)
 {
     $menuString = isset($params['menustring']) ? $params['menustring'] : null;
     $menuArray  = isset($params['menuarray'])  ? $params['menuarray']  : null;
