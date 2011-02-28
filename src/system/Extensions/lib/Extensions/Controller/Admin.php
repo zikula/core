@@ -346,7 +346,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                         'authid' => $authid,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'db_comit.png',
+                                        'image' => 'agt_update_misc.png',
                                         'title' => $this->__f('Install \'%s\'', $mod['name']));
 //                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
 //                                    $actions[] = array(
@@ -1160,7 +1160,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                           'systemplugins' => $systemplugins,
                                                           'authid' => $authid)
                                                 ),
-                                       'image' => 'db_comit.png',
+                                       'image' => 'agt_update_misc.png',
                                        'title' => $this->__('Install'));
                     break;
                 case PluginUtil::ENABLED:
