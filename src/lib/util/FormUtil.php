@@ -173,9 +173,13 @@ class FormUtil
     public static function clearValidationErrors($objectType = null)
     {
         if ($objectType) {
-            SessionUtil::delVar($objectType, null, '/validationErrors');
+           if (isset($_SESSION['validationErrors'][$objectType])) {
+                unset($_SESSION['validationErrors'][$objectType]);
+            }
         } else {
-            SessionUtil::delVar('validationErrors');
+            if (isset($_SESSION['validationErrors'])) {
+                unset($_SESSION['validationErrors']);
+            }
         }
     }
 
@@ -189,9 +193,13 @@ class FormUtil
     public static function clearValidationFailedObjects($objectType = null)
     {
         if ($objectType) {
-            SessionUtil::delVar($objectType, null, '/validationFailedObjects');
+            if (isset($_SESSION['validationFailedObjects'][$objectType])) {
+                unset($_SESSION['validationFailedObjects'][$objectType]);
+            }
         } else {
-            SessionUtil::delVar('validationFailedObjects');
+            if (isset($_SESSION['validationFailedObjects'])) {
+                unset($_SESSION['validationFailedObjects']);
+            }
         }
     }
 
@@ -204,10 +212,9 @@ class FormUtil
     {
         static $ve = null;
         if (!$ve) {
-            $t = SessionUtil::getVar('validationErrors', null, '/', false, false);
-            if ($t != null && is_array($t)) {
-                $ve = $t;
-                SessionUtil::delVar('validationErrors');
+            if (isset($_SESSION['validationErrors']) && is_array($_SESSION['validationErrors'])) {
+                $ve = $_SESSION['validationErrors'];
+                unset($_SESSION['validationErrors']);
             }
         }
 
@@ -225,14 +232,13 @@ class FormUtil
     {
         static $objects = array();
         if (!isset($objects[$objectType])) {
-            $t = SessionUtil::getVar('validationFailedObjects', null, '/', false, false);
-            if ($t != null && is_array($t)) {
-                if ($objectType && isset($t[$objectType])) {
-                    $objects[$objectType] = $t[$objectType];
-                    SessionUtil::delVar($objectType, null, '/validationFailedObjects');
+            if (isset($_SESSION['validationFailedObjects']) && is_array($_SESSION['validationFailedObjects'])) {
+                if ($objectType && isset($_SESSION['validationFailedObjects'][$objectType])) {
+                    $objects[$objectType] = $_SESSION['validationFailedObjects'][$objectType];
+                    unset($_SESSION['validationFailedObjects'][$objectType]);
                 } else {
-                    $objects = $t;
-                    SessionUtil::delVar('validationFailedObjects');
+                    $objects = $_SESSION['validationFailedObjects'];
+                    unset($_SESSION['validationFailedObjects']);
                 }
             }
         }

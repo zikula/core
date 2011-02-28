@@ -104,7 +104,7 @@ class Categories_Controller_Admin extends Zikula_Controller
             }
             // if we're back from validation get the object from input
             elseif (FormUtil::getValidationErrors()) {
-                $category = new Categories_DBObject_Category('V'); // need this for validation info
+                $category = new Categories_DBObject_Category(DBObject::GET_FROM_VALIDATION_FAILED); // need this for validation info
                 $editCat = $category->get();
             }
             // someone just pressen 'new' -> populate defaults

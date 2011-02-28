@@ -73,7 +73,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
             $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD));
 
             if (FormUtil::getValidationErrors()) {
-                $category = new Categories_DBObject_Category('V'); // need this for validation info
+                $category = new Categories_DBObject_Category(DBObject::GET_FROM_VALIDATION_FAILED); // need this for validation info
                 $editCat  = $category->get();
             } else {
                 // someone just pressen 'new' -> populate defaults
