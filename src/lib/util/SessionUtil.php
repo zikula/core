@@ -107,10 +107,10 @@ class SessionUtil
      * Delete a session variable.
      *
      * @param string $name    Name of the session variable to delete.
-     * @param string $default The default value to return if the requested session variable is not set.
+     * @param mixed  $default The default value to return if the requested session variable is not set.
      * @param string $path    Path to traverse to reach the element we wish to return (optional) (default='/').
      *
-     * @return boolean true
+     * @return mixed The value of the session variable being deleted, or the value provided in $default if the variable is not set.
      */
     public static function delVar($name, $default = false, $path = '/')
     {
