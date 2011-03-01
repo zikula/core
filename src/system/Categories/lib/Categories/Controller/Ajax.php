@@ -108,25 +108,18 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $parent = FormUtil::getPassedValue('parent', null, 'post');
 
         $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
-        // TODO - make sure new categories path will be unique - see ticket: 2847
         $cat->copy($parent);
+        $copyParent = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cat->getDataField('parent_id'));
 
-        // need to find id of new category
-        // co get categories with path like source category
-        $cats = CategoryUtil::getCategoriesByPath($cat->getDataField('path'), 'id', 'path');
-
-        // find the one with path equal soruce cat and highest id - it will be new root cat
-        foreach($cats as $c) {
-            if ($c['path'] == $cat->getDataField('path')) {
-                $newRoot = $c['id'];
-            }
-        }
-
-        $categories = CategoryUtil::getSubCategories($newRoot, true, true, true, true, true);
+        $categories = CategoryUtil::getSubCategories($copyParent->getDataField('id'), true, true, true, true, true);
+        // find better way to hack static category cache
+        $subCategories = CategoryUtil::getSubCategories($copyParent->getDataField('id'), true, true, false, true, true);
+        $categories = array_merge($categories,$subCategories);
         $options = array(
-            'nullParent' => $cat->getDataField('parent_id'),
+            'nullParent' => $copyParent->getDataField('parent_id'),
             'withWraper' => false,
         );
+
         $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
 
         $leafStatus = array(
@@ -143,8 +136,8 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $result = array(
             'action' => 'copy',
             'cid' => $cid,
-            'copycid' => $newRoot,
-            'parent' => $parent,
+            'copycid' => $copyParent->getDataField('id'),
+            'parent' => $copyParent->getDataField('parent_id'),
             'node' => $node,
             'leafstatus' => $leafStatus,
             'result' => true

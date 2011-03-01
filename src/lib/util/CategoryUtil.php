@@ -701,15 +701,62 @@ class CategoryUtil
      */
     public static function copyCategoriesByPath($apath, $newparent_id, $field = 'ipath', $includeRoot = true)
     {
-        if (!$apath) {
+        if (!$apath || !$newparent_id) {
             return false;
         }
 
         $cats = self::getSubCategoriesByPath($apath, 'ipath', $field, true, true);
-        $newParent = self::getCategoryByID($newparent_id);
+        $newParentCats = self::getSubCategories($newparent_id, true, true, true, true, true);
+        $newParent = $newParentCats[0];
 
         if (!$newParent || !$cats) {
             return false;
+        }
+
+        $currentPaths = array();
+        foreach ($newParentCats as $p) {
+            $currentPaths[] = $p['path_relative'];
+        }
+
+        // need to make sure that after copying categories will have unique paths
+        foreach ($cats as $k => $cat) {
+            if ($includeRoot) {
+                // root node is included - just check path uniqueness for root
+                // subnodes will inherit it's name in paths
+                $catBasePath = $newParent['path_relative'] . '/';
+                if ($k === 0 && in_array($catBasePath.$cats[0]['name'],$currentPaths)) {
+                    // path is not unique - add arbitrary " Copy" sufix to category name
+                    $cats[0]['name'] .= ' ' . __('Copy');
+                    if (in_array($catBasePath.$cats[0]['name'],$currentPaths)) {
+                        // if there is already such name
+                        // find first free name by adding number at the end
+                        $i = 1;
+                        $name = $cats[0]['name'];
+                        while (in_array($catBasePath.$name,$currentPaths)) {
+                            $name = $cats[0]['name'] . ' ' . $i++;
+                        }
+                        $cats[0]['name'] = $name;
+                    }
+                }
+            } elseif ($k !== 0) {
+                // root node is excluded - need to check each subnode if it's path will be unique
+                // follow the same routin that for the root node
+                $catPath = explode('/',$cat['path_relative']);
+                array_shift($catPath);
+                array_pop($catPath);
+                $catBasePath = $newParent['path_relative'] . '/' . implode('/',$catPath);
+                if (in_array($catBasePath.$cats[$k]['name'],$currentPaths)) {
+                    $cats[$k]['name'] .= ' ' . __('Copy');
+                    if (in_array($catBasePath.$cats[$k]['name'],$currentPaths)) {
+                        $i = 1;
+                        $name = $cats[$k]['name'];
+                        while (in_array($catBasePath.$name,$currentPaths)) {
+                            $name = $cats[$k]['name'] . ' ' . $i++;
+                        }
+                        $cats[$k]['name'] = $name;
+                    }
+                }
+            }
         }
 
         $oldToNewID = array();
@@ -717,6 +764,7 @@ class CategoryUtil
 
         // since array_shift() resets numeric array indexes, we remove the leading element like this
         if (!$includeRoot) {
+            reset($cats);
             list ($k, $v) = each($cats);
             unset($cats[$k]);
         }
@@ -727,16 +775,17 @@ class CategoryUtil
 
             $oldID = $cat['id'];
             $cat['id'] = '';
-            $cat['parent_id'] = $oldToNewID[$cat['parent_id']];
-            $cat['path'] = $newParent['path'] . '/' . $cat['path_relative'];
-
-            $pnCat = new Categories_DBObject_Category($cat);
-            $pnCat->insert();
-            $oldToNewID[$oldID] = $pnCat->_objData['id'];
+            $cat['parent_id'] = isset($oldToNewID[$cat['parent_id']]) ? $oldToNewID[$cat['parent_id']] : $newParent['id'];
+            $catObj = new Categories_DBObject_Category($cat);
+            $catObj->insert();
+            $oldToNewID[$oldID] = $catObj->_objData['id'];
         }
 
         // rebuild iPath since now we have all new PathIDs
         self::rebuildPaths('ipath', 'id');
+        // rebuild also Pahts since names could be changed
+        self::rebuildPaths();
+
         return true;
     }
 
@@ -912,7 +961,6 @@ class CategoryUtil
 
         $category['active'] = $category['status'] == 'A' ? true : false;
         $category['href'] = $url;
-        $category['name'] = $name;
 
         $category['title'] = array();
         $category['title'][] = __('ID') . ": " . $category['id'];
@@ -924,6 +972,8 @@ class CategoryUtil
         $category['title'][] = __('Leaf') . ": " . ($category['is_leaf'] ? 'Yes' : 'No');
         $category['title'][] = __('Locked') . ": " . ($category['is_locked'] ? 'Yes' : 'No');
         $category['title'] = implode('&lt;br /&gt;',$category['title']);
+
+        $category['name'] = $name;
 
         $category['class'] = array();
         if($category['is_locked']) {
