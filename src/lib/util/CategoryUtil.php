@@ -91,13 +91,6 @@ class CategoryUtil
             return false;
         }
 
-        ModUtil::dbInfoLoad('Categories');
-
-        static $cache = array();
-        if (isset($cache[$cid])) {
-            return $cache[$cid];
-        }
-
         $permFilter = array();
         $permFilter[] = array(
                 'realm' => 0,
@@ -109,14 +102,14 @@ class CategoryUtil
                 'instance_right' => 'ipath',
                 'level' => ACCESS_OVERVIEW);
 
-        $cache[$cid] = DBUtil::selectObjectByID('categories_category', (int)$cid, 'id', null, $permFilter);
+        $result = DBUtil::selectObjectByID('categories_category', (int)$cid, 'id', null, $permFilter);
 
-        if ($cache[$cid]) {
-            $cache[$cid]['display_name'] = DataUtil::formatForDisplayHTML(unserialize($cache[$cid]['display_name']));
-            $cache[$cid]['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($cache[$cid]['display_desc']));
+        if ($result) {
+            $result['display_name'] = DataUtil::formatForDisplayHTML(unserialize($result['display_name']));
+            $result['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($result['display_desc']));
         }
 
-        return $cache[$cid];
+        return $result;
     }
 
     /**
@@ -398,19 +391,12 @@ class CategoryUtil
             return false;
         }
 
-        static $catPathCache = array();
-        $cacheKey = $cid . '_' . (int)$recurse . '_' . (int)$relative . '_' . (int)$includeRoot . '_' . (int)$includeLeaf . '_' . (int)$all . '_' . $excludeCid . '_' . $assocKey . '_' . $sortField;
-        if (isset($catPathCache[$cacheKey])) {
-            return $catPathCache[$cacheKey];
-        }
-
         $exclCat = '';
         if ($excludeCid) {
             $exclCat = self::getCategoryByID($excludeCid);
         }
 
         $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes, $sortField, $columnArray);
-        $catPathCache[$cacheKey] = $cats;
         return $cats;
     }
 
@@ -442,19 +428,12 @@ class CategoryUtil
             return false;
         }
 
-        static $catPathCache = array();
-        $cacheKey = $apath . '_' . $field . '_' . (int)$recurse . '_' . (int)$relative . '_' . (int)$includeRoot . '_' . (int)$includeLeaf . '_' . (int)$all . '_' . $excludeCid . '_' . $assocKey . '_' . $sortField;
-        if (isset($catPathCache[$cacheKey])) {
-            return $catPathCache[$cacheKey];
-        }
-
         $exclCat = '';
         if ($excludeCid) {
             $exclCat = self::getCategoryByID($excludeCid);
         }
 
         $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes, $sortField);
-        $catPathCache[$cacheKey] = $cats;
         return $cats;
     }
 
