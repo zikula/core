@@ -684,7 +684,7 @@ class Extensions_Api_Admin extends Zikula_Api
                 $minok = version_compare($coreVersion, $filemodules[$name]['core_min']);
             }
             if (!empty($filemodules[$name]['core_max'])) {
-                $minok = version_compare($filemodules[$name]['core_max'], $coreVersion);
+                $maxok = version_compare($filemodules[$name]['core_max'], $coreVersion);
             }
 
             if ($minok == -1 || $maxok == -1) {
