@@ -103,7 +103,7 @@ class DBUtil
             $databases = ServiceUtil::getManager()->getArgument('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
             $prefix = md5(serialize($databases[$connName]));
-            $cachDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
+            $cacheDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
             $cacheDriver->deleteByPrefix($prefix . $table);
         }
     }
