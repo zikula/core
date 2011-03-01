@@ -137,11 +137,9 @@ Zikula.Categories.MenuActionCallback = function(req) {
             node.down('a').addClassName(Zikula.TreeSortable.trees.categoriesTree.config.nodeUnactive);
             break;
         case 'copy':
-            var newParent = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.parent).down('ul'),
-                newNode = Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.copycid;
-            newParent.insert(data.node);
-            newNode = $(newNode);
-            Zikula.Categories.ReinitTreeNode(newNode, data);
+            var newNode = Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.copycid;
+            $(newNode).replace(data.node);
+            Zikula.Categories.ReinitTreeNode($(newNode), data);
             break;
         case 'edit':
             $(document.body).insert(data.result);
@@ -222,7 +220,6 @@ Zikula.Categories.ReinitTreeNode = function(node, data) {
     if (subNodes) {
         subNodes.each(Zikula.TreeSortable.trees.categoriesTree.initNode.bind(Zikula.TreeSortable.trees.categoriesTree));
     }
-    Zikula.TreeSortable.trees.categoriesTree.expandAll(node);
     Zikula.TreeSortable.trees.categoriesTree.drawNodes();
 
     if (data.leafstatus) {
