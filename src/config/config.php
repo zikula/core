@@ -93,8 +93,8 @@ $ZConfig['System']['Z_CONFIG_USE_TRANSACTIONS'] = 0;           // run request as
 // ----------------------------------------------------------------------
 // Database cache settings
 // ----------------------------------------------------------------------
-$ZConfig['System']['dbcache.enable'] = 0;             // 0 to disable, 1 to enable
-$ZConfig['System']['dbcache.type'] = 'Apc';           // Memcache, Apc, Array, Db, Xcache (todo: Memcached, File)
+$ZConfig['System']['dbcache.enable'] = 1;             // 0 to disable, 1 to enable
+$ZConfig['System']['dbcache.type'] = 'Array';         // Memcache, Apc, Array, Db, Xcache (todo: Memcached, File)
 
 // CACHE_SERVERS valid for Memcache/d only.
 // array of arrays: params according to the addServer methods at e.g.
