@@ -34,6 +34,8 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Pl
      * Initialise.
      *
      * Runs ar plugin init time.
+     * 
+     * @throws InvalidArgumentException If invalid configuration given.
      *
      * @return void
      */

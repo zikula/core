@@ -114,7 +114,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      * plugins to do validation on (to be implemented).
      *
      * @var string
-     * @see   Zikula_Form_View::getValues(), Zikula_Form_View::isValid()
+     * @see Zikula_Form_View::getValues(), Zikula_Form_View::isValid()
      */
     public $group;
 
@@ -232,7 +232,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      * Create event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_Plugin
      * @return void
@@ -258,7 +258,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      * Load event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -346,6 +346,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
 
     /**
      * Helper method to determine css class.
+     *
      * Can be overridden by subclasses like Zikula_Form_Plugin_IntInput and Zikula_Form_Plugin_FloatInput.
      *
      * @return string the list of css classes to apply
@@ -449,7 +450,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      * Uses the group parameter to decide where to store data.
      *
      * @param Zikula_Form_View $view  Reference to Zikula_Form_View object.
-     * @param array     &$data Data object.
+     * @param array            &$data Data object.
      *
      * @return void
      */
@@ -475,7 +476,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      * Override this function in inherited plugins if other format is needed.
      *
      * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param string    $text Text.
+     * @param string           $text Text.
      *
      * @return string Parsed Text.
      */
@@ -491,7 +492,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      * Can also by called when some one is calling the render object's Zikula_Form_ViewetValues.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$values Values to load.
+     * @param array            &$values Values to load.
      *
      * @return void
      */
@@ -522,7 +523,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      * Override this function in inherited plugins if other format is needed.
      *
      * @param Zikula_Form_View $view  Reference to Zikula_Form_View object.
-     * @param string    $value The value to format.
+     * @param string           $value The value to format.
      *
      * @return string Formatted value.
      */

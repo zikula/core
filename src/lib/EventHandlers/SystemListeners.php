@@ -83,7 +83,9 @@ class SystemListeners extends Zikula_EventHandler
     /**
      * Listens for 'bootstrap.getconfig' event.
      *
-     * @param Zikula_Event $event
+     * @param Zikula_Event $event Event.
+     *
+     * @return void
      */
     public function initialHandlerScan(Zikula_Event $event)
     {
@@ -114,7 +116,9 @@ class SystemListeners extends Zikula_EventHandler
     /**
      * Listen on 'core.init' module.
      *
-     * @param Zikula_Event $event
+     * @param Zikula_Event $event Event
+     *
+     * @return void
      */
     public function setupCsfrProtection(Zikula_Event $event)
     {
@@ -317,9 +321,9 @@ class SystemListeners extends Zikula_EventHandler
      *
      * @param Zikula_Event $event The log event to log.
      *
-     * @return void
-     *
      * @throws Zikula_Exception_Fatal Thrown if the handler for the event is an instance of Zikula_ErrorHandler_Ajax.
+     *
+     * @return void
      */
     public function errorLog(Zikula_Event $event)
     {
@@ -619,7 +623,9 @@ class SystemListeners extends Zikula_EventHandler
     /**
      * Listens for 'bootstrap.getconfig'
      * 
-     * @param Event $event
+     * @param Event $event Event
+     *
+     * @return void
      */
     public function getConfigFile(Zikula_Event $event)
     {
