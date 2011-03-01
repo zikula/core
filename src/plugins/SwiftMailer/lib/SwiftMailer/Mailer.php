@@ -34,7 +34,7 @@ class SystemPlugins_SwiftMailer_Mailer
     /**
      * Constructor.
      *
-     * @param Zikula_Service $serviceManager ServiceManager.
+     * @param Zikula_ServiceManager $serviceManager ServiceManager.
      */
     public function __construct(Zikula_ServiceManager $serviceManager)
     {

@@ -98,7 +98,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      * plugins to do validation on (to be implemented).
      *
      * @var string
-     * @see   Zikula_Form_View::getValues(), Zikula_Form_View::isValid()
+     * @see Zikula_Form_View::getValues(), Zikula_Form_View::isValid()
      */
     public $group;
 
@@ -197,9 +197,9 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      * Create event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
-     * @see    Zikula_Form_Plugin
+     * @see Zikula_Form_Plugin
      *
      * @return void
      */
@@ -220,7 +220,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      * Load event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -233,7 +233,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      * Load values.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$values Values to load.
+     * @param array            &$values Values to load.
      *
      * @return void
      */
@@ -318,7 +318,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      * Called by Zikula_Form_View framework due to the use of Zikula_Form_View::getPostBackEventReference() above.
      *
      * @param Zikula_Form_View $view          Reference to Zikula_Form_View object.
-     * @param string    $eventArgument The event argument.
+     * @param string           $eventArgument The event argument.
      *
      * @return void
      */
@@ -449,7 +449,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      * Saves value in data object.
      *
      * @param Zikula_Form_View $view  Reference to Zikula_Form_View object.
-     * @param array     &$data Data object.
+     * @param array            &$data Data object.
      *
      * @return void
      */

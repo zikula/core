@@ -41,37 +41,37 @@ class Zikula_Doctrine_Query extends Doctrine_Query
      *
      * The queried doctrine model must have the Zikula_Doctrine_Template_Categorisable behavoir.
      *
-     * @param array $categories array of category ids or an associative array of property name => category id(s)
-     * @param boolean $joinWithAnd true to join properties with AND instead with OR
+     * @param array   $categories  Array of category ids or an associative array of property name => category id(s).
+     * @param boolean $joinWithAnd True to join properties with AND instead with OR.
      *
-     * @return Zikula_Doctrine_Query $this
+     * @return Zikula_Doctrine_Query
      */
     public function addWhereCategories($categories, $joinWithAnd=false)
     {
         // getRootAlias() triggers from parsing => getRoot() works now
         $rootAlias = $this->getRootAlias();
-        
-        if(!$this->getRoot()->hasTemplate('Zikula_Doctrine_Template_Categorisable')) {
+
+        if (!$this->getRoot()->hasTemplate('Zikula_Doctrine_Template_Categorisable')) {
             throw new LogicException('The doctrine module ' . $this->getRoot()->getClassnameToReturn()
-                                     . ' does not have the Zikula_Doctrine_Template_Categorisable behavoir');
+                    . ' does not have the Zikula_Doctrine_Template_Categorisable behavoir');
         }
 
         // array of category ids
-        if(isset($categories[0])) {
+        if (isset($categories[0])) {
             $inDQL = array_fill(0, count($categories), '?');
             $this->addWhere($rootAlias . '.Categories.category_id in (' . implode(',', $inDQL) . ')', $categories);
 
-        // property => category ids array
+            // property => category ids array
         } else {
-            if($joinWithAnd) {
+            if ($joinWithAnd) {
                 $idField = $this->getRoot()->getIdentifierColumnNames();
                 $idField = $idField[0];
                 $dqlId = $rootAlias . '.' . $idField;
                 $tableId = 1;
                 $mapObjTableName = 'GeneratedDoctrineModel_' . $this->getRoot()->getClassnameToReturn() . '_EntityCategory';
 
-                foreach($categories as $property => $categories) {
-                    $categories = (array) $categories;
+                foreach ($categories as $property => $categories) {
+                    $categories = (array)$categories;
 
                     $params = array($property);
                     $params = array_merge($params, $categories);
@@ -87,17 +87,15 @@ class Zikula_Doctrine_Query extends Doctrine_Query
             } else {
                 $where = array();
                 $params = array();
-                foreach($categories as $property => $categories) {
-                    $categories = (array) $categories;
+                foreach ($categories as $property => $categories) {
+                    $categories = (array)$categories;
 
                     $params[] = $property;
                     $params = array_merge($params, $categories);
-                    
+
                     $inDQL = array_fill(0, count($categories), '?');
                     $where[] = '(' . $rootAlias . '.Categories.reg_property = ?
-                                    AND '.$rootAlias . '.Categories.category_id IN (' . implode(',', $inDQL) . '))';
-                    
-                    
+                                    AND ' . $rootAlias . '.Categories.category_id IN (' . implode(',', $inDQL) . '))';
                 }
 
                 $this->addWhere(implode(' OR ', $where), $params);
@@ -106,4 +104,5 @@ class Zikula_Doctrine_Query extends Doctrine_Query
 
         return $this;
     }
+
 }
