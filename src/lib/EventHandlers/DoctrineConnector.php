@@ -145,6 +145,7 @@ class DoctrineListener extends Zikula_EventHandler
             $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, $this->serviceManager['dbcache.cache_result_ttl']);
 
             // Support for multisites to prevent clashes
+            $name = 'default'; // todo - drak
             $cacheDriver->setOption('prefix', md5(serialize($this->serviceManager['databases'][$name])));
         }
     }
