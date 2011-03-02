@@ -1051,7 +1051,7 @@ class CategoryUtil
         if ($a === $b) {
             return 0;
         }
-        if (is_string($a) || is_string($b)) {
+        if (!is_numeric($a) || !is_numeric($b)) {
             return strcmp($a,$b);
         }
         return ($a < $b) ? -1 : 1;
