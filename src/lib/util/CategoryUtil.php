@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 /**
  * CategoryUtil.
  */
@@ -93,14 +92,14 @@ class CategoryUtil
 
         $permFilter = array();
         $permFilter[] = array(
-                'realm' => 0,
-                'component_left' => 'Categories',
-                'component_middle' => '',
-                'component_right' => 'Category',
-                'instance_left' => 'id',
-                'instance_middle' => 'path',
-                'instance_right' => 'ipath',
-                'level' => ACCESS_OVERVIEW);
+            'realm' => 0,
+            'component_left' => 'Categories',
+            'component_middle' => '',
+            'component_right' => 'Category',
+            'instance_left' => 'id',
+            'instance_middle' => 'path',
+            'instance_right' => 'ipath',
+            'level' => ACCESS_OVERVIEW);
 
         $result = DBUtil::selectObjectByID('categories_category', (int)$cid, 'id', null, $permFilter);
 
@@ -135,14 +134,14 @@ class CategoryUtil
         $permFilter = array();
         if ($enablePermissionFilter) {
             $permFilter[] = array(
-                    'realm' => 0,
-                    'component_left' => 'Categories',
-                    'component_middle' => '',
-                    'component_right' => 'Category',
-                    'instance_left' => 'id',
-                    'instance_middle' => 'path',
-                    'instance_right' => 'ipath',
-                    'level' => ACCESS_OVERVIEW);
+                'realm' => 0,
+                'component_left' => 'Categories',
+                'component_middle' => '',
+                'component_right' => 'Category',
+                'instance_left' => 'id',
+                'instance_middle' => 'path',
+                'instance_right' => 'ipath',
+                'level' => ACCESS_OVERVIEW);
         }
 
         $cats = DBUtil::selectObjectArray('categories_category', $where, $sort, -1, -1, $assocKey, $permFilter, null, $columnArray);
@@ -709,15 +708,15 @@ class CategoryUtil
                 // root node is included - just check path uniqueness for root
                 // subnodes will inherit it's name in paths
                 $catBasePath = $newParent['path_relative'] . '/';
-                if ($k === 0 && in_array($catBasePath.$cats[0]['name'],$currentPaths)) {
+                if ($k === 0 && in_array($catBasePath . $cats[0]['name'], $currentPaths)) {
                     // path is not unique - add arbitrary " Copy" sufix to category name
                     $cats[0]['name'] .= ' ' . __('Copy');
-                    if (in_array($catBasePath.$cats[0]['name'],$currentPaths)) {
+                    if (in_array($catBasePath . $cats[0]['name'], $currentPaths)) {
                         // if there is already such name
                         // find first free name by adding number at the end
                         $i = 1;
                         $name = $cats[0]['name'];
-                        while (in_array($catBasePath.$name,$currentPaths)) {
+                        while (in_array($catBasePath . $name, $currentPaths)) {
                             $name = $cats[0]['name'] . ' ' . $i++;
                         }
                         $cats[0]['name'] = $name;
@@ -726,16 +725,16 @@ class CategoryUtil
             } elseif ($k !== 0) {
                 // root node is excluded - need to check each subnode if it's path will be unique
                 // follow the same routin that for the root node
-                $catPath = explode('/',$cat['path_relative']);
+                $catPath = explode('/', $cat['path_relative']);
                 array_shift($catPath);
                 array_pop($catPath);
-                $catBasePath = $newParent['path_relative'] . '/' . implode('/',$catPath);
-                if (in_array($catBasePath.$cats[$k]['name'],$currentPaths)) {
+                $catBasePath = $newParent['path_relative'] . '/' . implode('/', $catPath);
+                if (in_array($catBasePath . $cats[$k]['name'], $currentPaths)) {
                     $cats[$k]['name'] .= ' ' . __('Copy');
-                    if (in_array($catBasePath.$cats[$k]['name'],$currentPaths)) {
+                    if (in_array($catBasePath . $cats[$k]['name'], $currentPaths)) {
                         $i = 1;
                         $name = $cats[$k]['name'];
-                        while (in_array($catBasePath.$name,$currentPaths)) {
+                        while (in_array($catBasePath . $name, $currentPaths)) {
                             $name = $cats[$k]['name'] . ' ' . $i++;
                         }
                         $cats[$k]['name'] = $name;
@@ -901,7 +900,7 @@ class CategoryUtil
                 $c['name'] = __('Root category');
             }
             $cats[$i] = self::getCategoryTreeJSNode($c);
-            if($c['is_leaf']) {
+            if ($c['is_leaf']) {
                 $leafNodes[] = $c['id'];
             }
         }
@@ -912,7 +911,7 @@ class CategoryUtil
         // disable drag and drop for root category
         $tree->setOption('disabled', array(1));
         $tree->setOption('disabledForDrop', $leafNodes);
-        if(!empty($options)) {
+        if (!empty($options)) {
             $tree->setOptionArray($options);
         }
         $tree->loadArrayData($cats);
@@ -958,21 +957,22 @@ class CategoryUtil
         $category['title'][] = __('Active') . ": " . ($category['status'] == 'A' ? 'Yes' : 'No');
         $category['title'][] = __('Leaf') . ": " . ($category['is_leaf'] ? 'Yes' : 'No');
         $category['title'][] = __('Locked') . ": " . ($category['is_locked'] ? 'Yes' : 'No');
-        $category['title'] = implode('&lt;br /&gt;',$category['title']);
+        $category['title'] = implode('&lt;br /&gt;', $category['title']);
 
         $category['name'] = $name;
 
         $category['class'] = array();
-        if($category['is_locked']) {
+        if ($category['is_locked']) {
             $category['class'][] = 'locked';
         }
-        if($category['is_leaf']) {
+        if ($category['is_leaf']) {
             $category['class'][] = 'leaf';
         }
-        $category['class'] = implode(' ',$category['class']);
+        $category['class'] = implode(' ', $category['class']);
 
         return $category;
     }
+
     /**
      * insert one leaf in a category tree (path as keys) recursively.
      *
@@ -1023,7 +1023,7 @@ class CategoryUtil
                 $cats[] = $v;
             } else {
                 if (isset($v['_/_'][$_catSortField])) {
-                    if ($v['_/_'][$_catSortField] > 0 && $v['_/_'][$_catSortField] < 2147483647 ) {
+                    if ($v['_/_'][$_catSortField] > 0 && $v['_/_'][$_catSortField] < 2147483647) {
                         $sorted[$k] = $v['_/_'][$_catSortField];
                     } else {
                         $sorted[$k] = $v['_/_']['name'];
@@ -1034,7 +1034,7 @@ class CategoryUtil
             }
         }
 
-        uasort($sorted, array('self','_tree_sort_cmp'));
+        uasort($sorted, array('self', '_tree_sort_cmp'));
 
         foreach ($sorted as $k => $v) {
             self::_tree_sort($tree[$k], $cats);
@@ -1047,15 +1047,17 @@ class CategoryUtil
      * so integers will be before strings (unlike SORT_REGULAR flag for array sort functions)
      *
      */
-    private static function _tree_sort_cmp($a, $b) {
+    private static function _tree_sort_cmp($a, $b)
+    {
         if ($a === $b) {
             return 0;
         }
         if (!is_numeric($a) || !is_numeric($b)) {
-            return strcmp($a,$b);
+            return strcmp($a, $b);
         }
         return ($a < $b) ? -1 : 1;
     }
+
     /**
      * Take a raw list of category data, return it sorted on each level.
      *
@@ -1172,7 +1174,7 @@ class CategoryUtil
         }
         if (!is_array($selectedValue)) {
             $selectedValue = array(
-                    (string)$selectedValue);
+                (string)$selectedValue);
         }
 
         $id = strtr($name, '[]', '__');
