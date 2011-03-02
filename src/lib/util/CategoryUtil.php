@@ -461,8 +461,8 @@ class CategoryUtil
         }
 
         $cats = array();
+        $ipath = $category['ipath'];
         if ($recurse) {
-            $ipath = $category['ipath'];
             $ipathExcl = ($excludeCat ? $excludeCat['ipath'] : '');
             $cats = self::getCategoriesByPath($ipath, '', 'ipath', $includeLeaf, $all, $ipathExcl, $assocKey, $attributes, $columnArray);
         } else {
@@ -472,8 +472,11 @@ class CategoryUtil
 
         // since array_shift() resets numeric array indexes, we remove the leading element like this
         if (!$includeRoot) {
-            list ($k, $v) = each($cats);
-            unset($cats[$k]);
+            foreach ($cats as $k => $v) {
+                if (isset($v['ipath']) && $v['ipath'] == $ipath) {
+                    unset($cats[$k]);
+                }
+            }
         }
 
         if ($cats && $relative) {
@@ -602,8 +605,11 @@ class CategoryUtil
 
         // since array_shift() resets numeric array indexes, we remove the leading element like this
         if (!$includeRoot) {
-            list ($k, $v) = each($cats);
-            unset($cats[$k]);
+            foreach ($cats as $k => $v) {
+                if (isset($v['ipath']) && $v['ipath'] == $apath) {
+                    unset($cats[$k]);
+                }
+            }
         }
 
         $newParentIPath = $newParent['ipath'] . '/';
@@ -743,9 +749,11 @@ class CategoryUtil
 
         // since array_shift() resets numeric array indexes, we remove the leading element like this
         if (!$includeRoot) {
-            reset($cats);
-            list ($k, $v) = each($cats);
-            unset($cats[$k]);
+            foreach ($cats as $k => $v) {
+                if (isset($v['ipath']) && $v['ipath'] == $apath) {
+                    unset($cats[$k]);
+                }
+            }
         }
 
         $ak = array_keys($cats);
