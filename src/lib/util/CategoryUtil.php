@@ -129,7 +129,7 @@ class CategoryUtil
         if (!$sort) {
             $dbtables = DBUtil::getTables();
             $category_column = $dbtables['categories_category_column'];
-            $sort = "ORDER BY $category_column[sort_value], $category_column[name]";
+            $sort = "ORDER BY $category_column[sort_value], $category_column[path]";
         }
 
         $permFilter = array();
