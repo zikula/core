@@ -1023,18 +1023,39 @@ class CategoryUtil
                 $cats[] = $v;
             } else {
                 if (isset($v['_/_'][$_catSortField])) {
-                    $sorted[$k] = $v['_/_'][$_catSortField];
+                    if ($v['_/_'][$_catSortField] > 0 && $v['_/_'][$_catSortField] < 2147483647 ) {
+                        $sorted[$k] = $v['_/_'][$_catSortField];
+                    } else {
+                        $sorted[$k] = $v['_/_']['name'];
+                    }
                 } else {
                     $sorted[$k] = null;
                 }
             }
         }
-        asort($sorted);
+
+        uasort($sorted, array('self','_tree_sort_cmp'));
+
         foreach ($sorted as $k => $v) {
             self::_tree_sort($tree[$k], $cats);
         }
     }
 
+    /**
+     * Internal callback function for int/string comparation
+     * It is supposed to compate integer items numerically and string items as strings,
+     * so integers will be before strings (unlike SORT_REGULAR flag for array sort functions)
+     *
+     */
+    private static function _tree_sort_cmp($a, $b) {
+        if ($a === $b) {
+            return 0;
+        }
+        if (is_string($a) || is_string($b)) {
+            return strcmp($a,$b);
+        }
+        return ($a < $b) ? -1 : 1;
+    }
     /**
      * Take a raw list of category data, return it sorted on each level.
      *
