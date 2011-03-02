@@ -111,9 +111,6 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $copyParent = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cat->getDataField('parent_id'));
 
         $categories = CategoryUtil::getSubCategories($copyParent->getDataField('id'), true, true, true, true, true);
-        // find better way to hack static category cache
-        $subCategories = CategoryUtil::getSubCategories($copyParent->getDataField('id'), true, true, false, true, true);
-        $categories = array_merge($categories, $subCategories);
         $options = array(
                 'nullParent' => $copyParent->getDataField('parent_id'),
                 'withWraper' => false,
