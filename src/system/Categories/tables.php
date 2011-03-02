@@ -58,7 +58,7 @@ function Categories_tables()
                       'is_leaf'         => 'I1 NOTNULL DEFAULT 0',
                       'name'            => "C(255) NOTNULL DEFAULT ''",
                       'value'           => "C(255) NOTNULL DEFAULT ''",
-                      'sort_value'      => 'I4 NOTNULL DEFAULT 0',
+                      'sort_value'      => 'I4 NOTNULL DEFAULT 2147483647',
                       'display_name'    => "X NOTNULL DEFAULT ''",
                       'display_desc'    => "X NOTNULL DEFAULT ''",
                       'path'            => "$pathType NOTNULL DEFAULT ''",
