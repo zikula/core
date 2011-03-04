@@ -159,7 +159,7 @@ Zikula.Categories.OpenForm = function(data, callback) {
     }
     Zikula.Categories.Form = new Zikula.UI.FormDialog($('categories_ajax_form_container'),callback, {title: $('categories_ajax_form_container').title, width: 700, afterOpen: Zikula.Categories.InitEditView});
     return Zikula.Categories.Form.open();
-}
+};
 
 Zikula.Categories.EditNode = function(res) {
     if (!res) {
