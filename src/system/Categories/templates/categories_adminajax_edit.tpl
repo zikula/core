@@ -70,13 +70,15 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend>{gt text="Attributes"}</legend>
-            {include file=categories_include_editattributes.tpl}
+            <legend><a class="categories_collapse_control" href="#">{gt text="Attributes"}</a></legend>
+            <div class="categories_collapse_details">
+                {include file=categories_include_editattributes.tpl}
+            </div>
         </fieldset>
         {if $mode == "edit"}
         <fieldset>
-            <legend><a id="categories_meta_collapse" href="#">{gt text='Meta data'}</a></legend>
-            <div id="categories_meta_details">
+            <legend><a class="categories_collapse_control" href="#">{gt text='Meta data'}</a></legend>
+            <div class="categories_collapse_details">
                 <div class="z-formrow">
                     <span class="z-label">{gt text="Internal ID"}</span>
                     <span id="category_meta_id">{$category.id|safetext}</span>

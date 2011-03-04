@@ -3,35 +3,37 @@
 Zikula.define('Categories');
 
 Zikula.Categories.InitEditView = function() {
-    if ($('categories_meta_collapse')) {
-        Zikula.Categories.Meta.Init();
-    }
     if ($('category_attributes_add')) {
         Zikula.Categories.Attributes.Init();
     }
+    Zikula.Categories.Collapse.Init();
 };
 $(document).observe('dom:loaded', Zikula.Categories.InitEditView);
 
-Zikula.define('Categories.Meta');
+Zikula.define('Categories.Collapse');
 
-Zikula.Categories.Meta.Init = function() {
-    $('categories_meta_collapse').observe('click', Zikula.Categories.Meta.Click);
-    $('categories_meta_collapse').addClassName('z-toggle-link');
-    if ($('categories_meta_details').visible()) {
-        $('categories_meta_collapse').removeClassName('z-toggle-link-open');
-        $('categories_meta_details').hide();
-    }
+Zikula.Categories.Collapse.Init = function() {
+    $$('.categories_collapse_control')
+        .invoke('observe','click', Zikula.Categories.Collapse.Click)
+        .invoke('addClassName','z-toggle-link')
+        .each(function(collapse) {
+            var details = collapse.up('legend').next('.categories_collapse_details');
+            if (details && details.visible()) {
+                details.removeClassName('z-toggle-link-open').hide();
+            }
+        });
 };
 
-Zikula.Categories.Meta.Click = function(event)
-{
+Zikula.Categories.Collapse.Click = function(event) {
     event.preventDefault();
-    if ($('categories_meta_details').visible()) {
-        Element.removeClassName.delay(0.9, $('categories_meta_collapse'), 'z-toggle-link-open');
+    var collapse = event.findElement('.categories_collapse_control'),
+        details = collapse.up('legend').next('.categories_collapse_details');
+    if (details.visible()) {
+        Element.removeClassName.delay(0.9, details, 'z-toggle-link-open');
     } else {
-        $('categories_meta_collapse').addClassName('z-toggle-link-open');
+        details.addClassName('z-toggle-link-open');
     }
-    Zikula.switchdisplaystate('categories_meta_details');
+    Zikula.switchdisplaystate(details);
 };
 
 Zikula.define('Categories.Attributes');
