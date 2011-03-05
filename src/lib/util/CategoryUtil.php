@@ -11,6 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 /**
  * CategoryUtil.
  */
@@ -887,8 +888,7 @@ class CategoryUtil
      * @param array   $cats             The categories array to represent in the tree.
      * @param boolean $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
      * @param boolean $sortable         Sets the zikula tree option sortable (optional) (default=false).
-     * @param array   $options          Options array for Zikula_Tree
-
+     * @param array   $options          Options array for Zikula_Tree.
      *
      * @return generated tree JS text.
      */
@@ -921,7 +921,7 @@ class CategoryUtil
     /**
      * Prepare category for the tree menu.
      *
-     * @param array   $category  Category data.
+     * @param array $category Category data.
      *
      * @return Prepared category data.
      */
@@ -1042,10 +1042,15 @@ class CategoryUtil
     }
 
     /**
-     * Internal callback function for int/string comparation
+     * Internal callback function for int/string comparation.
+     * 
      * It is supposed to compate integer items numerically and string items as strings,
-     * so integers will be before strings (unlike SORT_REGULAR flag for array sort functions)
-     *
+     * so integers will be before strings (unlike SORT_REGULAR flag for array sort functions).
+     * 
+     * @param string $a The first value.
+     * @param string $b The second value.
+     * 
+     * @return int 0 if $a and $b are equal, 1 ir $a is greater then $b, -1 if $a is less than $b
      */
     private static function _tree_sort_cmp($a, $b)
     {
@@ -1062,7 +1067,8 @@ class CategoryUtil
      * Take a raw list of category data, return it sorted on each level.
      *
      * @param array  $cats      List of categories (arrays).
-     * @param string $sortField Key of category arrays (optional).
+     * @param string $sortField The sort field (optional).
+     * @param string $assocKey  Key of category arrays (optional).
      *
      * @return array list of categories, sorted on each level.
      */
