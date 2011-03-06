@@ -507,7 +507,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                         }
 
                         if (!empty($dependency['maxversion'])) {
-                            $minok = version_compare($dependency['maxversion'], $modversion['version']);
+                            $maxok = version_compare($dependency['maxversion'], $modversion['version']);
                         }
 
                         if ($minok == -1 || $maxok == -1) {
