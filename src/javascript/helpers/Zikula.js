@@ -894,13 +894,6 @@ Zikula.CookieUtil = Class.create(/** @lends Zikula.CookieUtil */{
         }, options || { });
     },
     /**
-     * Template for cookie
-     * 
-     * @private
-     * @type String
-     */
-    cookie: '#{name}=#{value};expires=#{expires};path=#{path};domain=#{domain};#{secure}',
-    /**
      * Create or update cookie.
      *
      * @param {String}       name     Cookie name.
@@ -912,14 +905,16 @@ Zikula.CookieUtil = Class.create(/** @lends Zikula.CookieUtil */{
      */
     set: function(name, value, expires, path){
         try {
-            var cookieStr = this.cookie.interpolate({
-                name: name,
-                value: this.options.json ? this.encode(value) : value,
+            value = this.options.json ? this.encode(value) : value;
+            var cookieStr = {
                 expires: expires instanceof Date ? expires.toGMTString() : this.secondsFromNow(expires),
                 path: path ? path : this.options.path,
                 domain: this.options.domain,
                 secure: this.options.secure ? 'secure' : ''
-            });
+            };
+            cookieStr = Object.keys(cookieStr).inject(name+'='+value, function(str, key){
+                return cookieStr[key] ? str + ';' + key + '=' + cookieStr[key] : str;
+            })
             document.cookie = cookieStr;
         } catch (e) {
             return false;
@@ -959,6 +954,9 @@ Zikula.CookieUtil = Class.create(/** @lends Zikula.CookieUtil */{
      * @return {String} Date as GMT string
      */
     secondsFromNow: function(seconds) {
+        if (!seconds) {
+            return null;
+        }
         var d = new Date();
         d.setTime(d.getTime() + (seconds * 1000));
         return d.toGMTString();
