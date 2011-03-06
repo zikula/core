@@ -285,8 +285,11 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
     initialize: function($super, element, config) {
         config = this.decodeConfig(config);
         config = Object.extend({
-            nodeLeaf:           'z-tree-leaf',
+            nodeSingle:         'z-tree-single',
+            nodeFirst:          'z-tree-first',
             nodeLast:           'z-tree-last',
+            nodeParent:         'z-tree-last',
+            nodeLeaf:           'z-tree-leaf',
             disabled:           [],
             disabledForDrag:    [],
             disabledForDrop:    [],
@@ -542,10 +545,20 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
      * @return void
      */
     drawNode: function (node) {
+        [
+            this.config.nodeSingle,
+            this.config.nodeFirst,
+            this.config.nodeLast,
+            this.config.nodeParent,
+            this.config.nodeLeaf
+        ].each(function(cn){
+            $(node).removeClassName(cn)
+        });
         if (node.next() == undefined) {
             node.addClassName(this.config.nodeLast);
-        } else {
-            node.removeClassName(this.config.nodeLast);
+        }
+        if (node.up('ul').select('li').size() == 1) {
+            node.addClassName(this.config.nodeSingle);
         }
         if (node.down('li') == undefined) {
             node.addClassName(this.config.nodeLeaf);
@@ -554,7 +567,7 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
                 node.down('ul').remove();
             }
         } else {
-            node.removeClassName(this.config.nodeLeaf);
+            node.addClassName(this.config.nodeParent);
             if(node.down('ul').visible()) {
                 node.down('.'+this.config.toggler).writeAttribute({src: this.config.images.minus});
                 node.down('.'+this.config.icon).writeAttribute('src',this.config.images.parentOpen);
