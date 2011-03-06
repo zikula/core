@@ -128,6 +128,8 @@ Zikula.showajaxerror = function(errortext)
         }
     } else if (Object.isArray(errortext)) {
         errortext = errortext.join("\n")
+    } else if (typeof(errortext) == 'object') {
+        errortext = Object.values(errortext).join("\n")
     }
     alert(errortext);
     return;
