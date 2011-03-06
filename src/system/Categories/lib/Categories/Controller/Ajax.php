@@ -39,39 +39,39 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         }
 
         $result = array(
-                'response' => true
+            'response' => true
         );
         return new Zikula_Response_Ajax($result);
     }
 
-    public function edit()
+    public function edit($args = array())
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
 
-        $cid = FormUtil::getPassedValue('cid', 0);
         $mode = FormUtil::getPassedValue('mode', 'new');
-        $parent = FormUtil::getPassedValue('parent', 1, 'post');
+        $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', $accessLevel));
+
+        $cid = isset($args['cid']) ? $args['cid'] : FormUtil::getPassedValue('cid', 0);
+        $parent = isset($args['parent']) ? $args['parent'] : FormUtil::getPassedValue('parent', 1, 'post');
+        $validationErrors = FormUtil::getValidationErrors();
         $editCat = '';
 
         $languages = ZLanguage::getInstalledLanguages();
 
-        // indicates that we're editing
-        if ($mode == 'edit') {
-            if (!$cid) {
-                return new Zikula_Response_Ajax_BadData($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
-            }
-
-            $category = new Categories_DBObject_Category();
-            $editCat = $category->select($cid);
-            $this->throwNotFoundUnless($editCat, $this->__('Sorry! No such item found.'));
+        if ($validationErrors) {
+            $category = new Categories_DBObject_Category(DBObject::GET_FROM_VALIDATION_FAILED); // need this for validation info
+            $editCat = $category->get();
+            $validationErrors = $validationErrors['category'];
         } else {
-            // new category creation
-            $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD));
-
-            if (FormUtil::getValidationErrors()) {
-                $category = new Categories_DBObject_Category(DBObject::GET_FROM_VALIDATION_FAILED); // need this for validation info
-                $editCat = $category->get();
+            // indicates that we're editing
+            if ($mode == 'edit') {
+                if (!$cid) {
+                    return new Zikula_Response_Ajax_BadData($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
+                }
+                $category = new Categories_DBObject_Category();
+                $editCat = $category->select($cid);
+                $this->throwNotFoundUnless($editCat, $this->__('Sorry! No such item found.'));
             } else {
                 // someone just pressen 'new' -> populate defaults
                 $category = new Categories_DBObject_Category(); // need this for validation info
@@ -86,15 +86,19 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $this->view->setCaching(false);
 
         $this->view->assign('mode', $mode)
-                ->assign('category', $editCat)
-                ->assign('attributes', $attributes)
-                ->assign('languages', $languages)
-                ->assign('validation', $category->_objValidation);
+            ->assign('category', $editCat)
+            ->assign('attributes', $attributes)
+            ->assign('languages', $languages)
+            ->assign('validation', $category->_objValidation);
 
         $result = array(
-                'action' => $mode == 'new' ? 'add' : 'edit',
-                'result' => $this->view->fetch('categories_adminajax_edit.tpl')
+            'action' => $mode == 'new' ? 'add' : 'edit',
+            'result' => $this->view->fetch('categories_adminajax_edit.tpl'),
+            'validationErrors' => $validationErrors
         );
+        if ($validationErrors) {
+            return new Zikula_Response_Ajax_BadData($validationErrors, $result);
+        }
         return new Zikula_Response_Ajax($result);
     }
 
@@ -112,15 +116,15 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
 
         $categories = CategoryUtil::getSubCategories($copyParent->getDataField('id'), true, true, true, true, true);
         $options = array(
-                'nullParent' => $copyParent->getDataField('parent_id'),
-                'withWraper' => false,
+            'nullParent' => $copyParent->getDataField('parent_id'),
+            'withWraper' => false,
         );
 
         $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
 
         $leafStatus = array(
-                'leaf' => array(),
-                'noleaf' => array()
+            'leaf' => array(),
+            'noleaf' => array()
         );
         foreach ($categories as $c) {
             if ($c['is_leaf']) {
@@ -130,13 +134,13 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
             }
         }
         $result = array(
-                'action' => 'copy',
-                'cid' => $cid,
-                'copycid' => $copyParent->getDataField('id'),
-                'parent' => $copyParent->getDataField('parent_id'),
-                'node' => $node,
-                'leafstatus' => $leafStatus,
-                'result' => true
+            'action' => 'copy',
+            'cid' => $cid,
+            'copycid' => $copyParent->getDataField('id'),
+            'parent' => $copyParent->getDataField('parent_id'),
+            'node' => $node,
+            'leafstatus' => $leafStatus,
+            'result' => true
         );
         return new Zikula_Response_Ajax($result);
     }
@@ -151,9 +155,9 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $cat->delete(true);
 
         $result = array(
-                'action' => 'delete',
-                'cid' => $cid,
-                'result' => true
+            'action' => 'delete',
+            'cid' => $cid,
+            'result' => true
         );
         return new Zikula_Response_Ajax($result);
     }
@@ -169,9 +173,9 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $cat->update();
 
         $result = array(
-                'action' => 'activate',
-                'cid' => $cid,
-                'result' => true
+            'action' => 'activate',
+            'cid' => $cid,
+            'result' => true
         );
         return new Zikula_Response_Ajax($result);
     }
@@ -187,9 +191,9 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $cat->update();
 
         $result = array(
-                'action' => 'deactivate',
-                'cid' => $cid,
-                'result' => true
+            'action' => 'deactivate',
+            'cid' => $cid,
+            'result' => true
         );
         return new Zikula_Response_Ajax($result);
     }
@@ -207,8 +211,12 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $cat->getDataFromInput();
 
         if (!$cat->validate()) {
-            // TODO - need to handle validation errors - see ticket: 2847
-            return new Zikula_Response_Ajax_BadData('validation failed');
+            $args = array(
+                'cid' => $cat->getDataField('id'),
+                'parent' => $cat->getDataField('parent_id'),
+                'mode' => $mode
+            );
+            return $this->edit($args);
         }
 
         $attributes = array();
@@ -241,14 +249,14 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
 
         $categories = CategoryUtil::getSubCategories($cat->getDataField('id'), true, true, true, true, true);
         $options = array(
-                'nullParent' => $cat->getDataField('parent_id'),
-                'withWraper' => false,
+            'nullParent' => $cat->getDataField('parent_id'),
+            'withWraper' => false,
         );
         $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
 
         $leafStatus = array(
-                'leaf' => array(),
-                'noleaf' => array()
+            'leaf' => array(),
+            'noleaf' => array()
         );
         foreach ($categories as $c) {
             if ($c['is_leaf']) {
@@ -259,12 +267,12 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         }
 
         $result = array(
-                'action' => $mode == 'edit' ? 'edit' : 'add',
-                'cid' => $cat->getDataField('id'),
-                'parent' => $cat->getDataField('parent_id'),
-                'node' => $node,
-                'leafstatus' => $leafStatus,
-                'result' => true
+            'action' => $mode == 'edit' ? 'edit' : 'add',
+            'cid' => $cat->getDataField('id'),
+            'parent' => $cat->getDataField('parent_id'),
+            'node' => $node,
+            'leafstatus' => $leafStatus,
+            'result' => true
         );
         return new Zikula_Response_Ajax($result);
     }
