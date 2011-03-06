@@ -154,61 +154,90 @@ Zikula.Categories.MenuActionCallback = function(req) {
 };
 
 Zikula.Categories.OpenForm = function(data, callback) {
-    if (!Object.isUndefined(Zikula.Categories.Form) && Zikula.Categories.Form.isOpen) {
+    if (Zikula.Categories.Form) {
         Zikula.Categories.Form.destroy();
     }
-    Zikula.Categories.Form = new Zikula.UI.FormDialog($('categories_ajax_form_container'),callback, {title: $('categories_ajax_form_container').title, width: 700, afterOpen: Zikula.Categories.InitEditView});
+    Zikula.Categories.Form = new Zikula.UI.FormDialog($('categories_ajax_form_container'),callback, {
+        title: $('categories_ajax_form_container').title, 
+        width: 700, 
+        afterOpen: Zikula.Categories.InitEditView,
+        buttons: [
+            {label: Zikula.__('Submit'), type: 'submit', name: 'submit', value: 'submit', 'class': 'z-btgreen', close: false},
+            {label: Zikula.__('Cancel'), type: 'submit', name: 'cancel', value: false, 'class': 'z-btred', close: true}
+        ]
+    });
     return Zikula.Categories.Form.open();
 };
 
+Zikula.Categories.CloseForm = function() {
+    Zikula.Categories.Form.destroy();
+    Zikula.Categories.Form = null;
+};
+
+Zikula.Categories.UpdateForm = function(data) {
+    $('categories_ajax_form_container').replace(data);
+    $('categories_ajax_form_container').show();
+    Zikula.Categories.InitEditView();
+};
+
 Zikula.Categories.EditNode = function(res) {
-    if (!res) {
-        Zikula.Categories.Form.destroy();
+    if (!res || (res.hasOwnProperty('cancel') && res.cancel === false)) {
+        Zikula.Categories.CloseForm();
         return false;
     }
-    var pars = $('categories_ajax_form').serialize(true);
+    var pars = Zikula.Categories.Form.serialize(true);
     pars.mode = 'edit';
     new Zikula.Ajax.Request('ajax.php?module=Categories&func=save', {
         method: 'post',
         parameters: pars,
         authid: 'categoriesauthid',
         onComplete: function(req) {
-            if (!req.isSuccess()) {
+            var data = req.getData();
+            if (!req.isSuccess() || data.validationErrors) {
                 Zikula.showajaxerror(req.getMessage());
+                if (data && data.validationErrors) {
+                    Zikula.Categories.UpdateForm(data.result);
+                } else {
+                    Zikula.Categories.CloseForm();
+                }
             } else {
-                var data = req.getData(),
-                    nodeId = Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.cid;
+                var nodeId = Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.cid;
                 $(nodeId).replace(data.node);
                 Zikula.Categories.ReinitTreeNode($(nodeId), data);
+                Zikula.Categories.CloseForm();
             }
-            Zikula.Categories.Form.destroy();
         }
     });
     return true;
 };
 
 Zikula.Categories.AddNode = function(res) {
-    if (!res) {
-        Zikula.Categories.Form.destroy();
+    if (!res || (res.hasOwnProperty('cancel') && res.cancel === false)) {
+        Zikula.Categories.CloseForm();
         return false;
     }
-    var pars = $('categories_ajax_form').serialize(true);
+    var pars = Zikula.Categories.Form.serialize(true);
     pars.mode = 'new';
     new Zikula.Ajax.Request('ajax.php?module=Categories&func=save', {
         method: 'post',
         parameters: pars,
         authid: 'categoriesauthid',
         onComplete: function(req) {
-            if (!req.isSuccess()) {
+            var data = req.getData();
+            if (!req.isSuccess() || data.validationErrors) {
                 Zikula.showajaxerror(req.getMessage());
+                if (data && data.validationErrors) {
+                    Zikula.Categories.UpdateForm(data.result);
+                } else {
+                    Zikula.Categories.CloseForm();
+                }
             } else {
-                var data = req.getData(),
-                    newParent = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.parent).down('ul');
+                var newParent = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.parent).down('ul');
                 newParent.insert(data.node);
                 var node = $(Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.cid);
                 Zikula.Categories.ReinitTreeNode(node, data);
+                Zikula.Categories.CloseForm();
             }
-            Zikula.Categories.Form.destroy();
         }
     });
     return true;
