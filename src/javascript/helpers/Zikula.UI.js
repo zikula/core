@@ -980,6 +980,19 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.FormDi
         } catch(e) {}
     },
     /**
+     * Serialize dialog form using prototypes Form.serialize method
+     * 
+     * @param {Boolean} [object] If true method returns object, otherwise string
+     * @return {mixed} Object or string with form values
+     */
+    serialize: function(object) {
+        try {
+            return this.container.down('form').serialize(object);
+        } catch(e) {
+            return object ? {} : '';
+        }
+    },
+    /**
      * Calls callback function after button click.
      * If form has define action attribute and options.ajaxRequest is set to true
      *  - form is exectuded via ajax request and callback function is called on requests complete.
