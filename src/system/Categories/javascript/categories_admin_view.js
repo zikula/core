@@ -176,6 +176,7 @@ Zikula.Categories.CloseForm = function() {
 
 Zikula.Categories.UpdateForm = function(data) {
     $('categories_ajax_form_container').replace(data);
+    Zikula.Categories.Form.window.indicator.fade({duration: 0.2})
     $('categories_ajax_form_container').show();
     Zikula.Categories.InitEditView();
 };
@@ -185,6 +186,7 @@ Zikula.Categories.EditNode = function(res) {
         Zikula.Categories.CloseForm();
         return false;
     }
+    Zikula.Categories.Form.window.indicator.appear({to: 0.7, duration: 0.2});
     var pars = Zikula.Categories.Form.serialize(true);
     pars.mode = 'edit';
     new Zikula.Ajax.Request('ajax.php?module=Categories&func=save', {
