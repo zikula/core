@@ -402,7 +402,7 @@ class HookUtil
         // Get correct order of event responses.
         $orderBy = self::getDisplaySortsByArea($subscriberArea);
         if (!$orderBy) {
-            return $orderBy;
+            return $results;
         }
 
         // Perform the sort now.
@@ -413,7 +413,7 @@ class HookUtil
             }
         }
 
-        return $results;
+        return $sortedResults;
     }
 
     /**
