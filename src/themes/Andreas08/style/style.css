@@ -130,7 +130,7 @@ dd {
 
 #theme_navigation_bar {
     background: #578BB8;
-    height: 26px;
+    min-height: 26px;
     line-height: 26px;
     margin: 0 1px;
 }
@@ -152,6 +152,7 @@ dd {
     display: block;
     padding: 0 10px;
     font-size: 0.8em;
+    min-height: 26px;
     font-weight: normal;
     text-transform: uppercase;
     text-decoration: none;
@@ -173,6 +174,7 @@ dd {
     margin: 0;
     padding: 0;
     border-left: 1px solid #fff;
+    min-height: 26px;
 }
 
 .z-blockposition-search #theme_search .theme_search_input {
