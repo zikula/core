@@ -146,6 +146,13 @@ switch (true)
         // prevent rendering of the theme.
         System::shutDown();
         break;
+    case ($httpCode == 403):
+        if (!UserUtil::isLoggedIn()) {
+            $url = ModUtil::url('Users', 'user', 'loginscreen', array('returnpage' => urlencode(System::getCurrentUri())));
+            LogUtil::registerError(LogUtil::getErrorMsgPermission(), $httpCode, $url);
+            System::shutDown();
+        }
+        // there is no break here deliberately.
     case ($return === false):
         if (!LogUtil::hasErrors()) {
             LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'. %3$s', array($modinfo['url'], $func, $message)), $httpCode, null);
