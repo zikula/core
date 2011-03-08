@@ -155,7 +155,7 @@ class Zikula_Session
      */
     public function hasMessages($type)
     {
-        return array_key_exists($type, $_SESSION['_zikula_messages']);
+        return array_key_exists($type, $_SESSION['_zikula_messages']) && !empty($_SESSION['_zikula_messages'][$type]);
     }
 
     /**
