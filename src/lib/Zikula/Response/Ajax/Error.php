@@ -30,7 +30,8 @@ abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_MediatorB
         $this->messages = (array)$message;
         $this->payload = $payload;
         if ($this->newCsrfToken) {
-            $this->csrfToken = SecurityUtil::generateAuthKey(ModUtil::getName());
+            $this->authid = SecurityUtil::generateAuthKey(ModUtil::getName());
+            $this->csrfToken = SecurityUtil::generateCsfrToken($this->serviceManager);
         }
     }
 
