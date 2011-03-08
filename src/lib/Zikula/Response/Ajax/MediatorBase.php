@@ -26,6 +26,13 @@ abstract class Zikula_Response_Ajax_MediatorBase extends Zikula_Response_Ajax_Ba
     protected $csrfToken;
 
     /**
+     * Authid Token.
+     * 
+     * @var string
+     */
+    protected $authid;
+
+    /**
      * Flag to create a new nonce.
      * 
      * @var boolean
@@ -88,7 +95,8 @@ abstract class Zikula_Response_Ajax_MediatorBase extends Zikula_Response_Ajax_Ba
         }
 
         if ($this->csrfToken) {
-            $core['authid'] = $this->csrfToken;
+            $core['authid'] = $this->authid;
+            $core['token'] = $this->csrfToken;
         }
         $logUtilMessages = (array)LogUtil::getStatusMessages();
         $core['statusmsg'] = array_merge($this->messages,$logUtilMessages);
