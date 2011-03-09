@@ -14,7 +14,7 @@ if (typeof(Zikula) == 'undefined') {
      * @borrows Zikula.Gettext#getPluralMessage as #_n
      * @borrows Zikula.Gettext#getPluralMessageFormatted as #_fn
      */
-    Zikula = {};
+    var Zikula = {};
 }
 
 /**
@@ -42,21 +42,21 @@ if (typeof(Zikula) == 'undefined') {
  */
 Zikula.define = function(path) {
     return path.split('.').inject(Zikula, function(object, prop) {
-        return object[prop] = object[prop] || { };
-    })
-}
+        object[prop] = object[prop] || { };
+        return object[prop];
+    });
+};
 
 /**
  * Load what's needed on dom loaded.
  *
  * @return void
  */
-Zikula.init = function()
-{
-    if(Zikula.Browser.IE) {
+Zikula.init = function() {
+    if (Zikula.Browser.IE) {
         Zikula.fixbuttons();
     }
-}
+};
 document.observe('dom:loaded',Zikula.init);
 
 /**
@@ -70,20 +70,25 @@ document.observe('dom:loaded',Zikula.init);
  *
  * @return {Object} Object with browsers info
  */
-Zikula.Browser = (function(){
-    var IES = {IE6:false,IE7:false,IE8:false,IE8e7:false};
-    if(Prototype.Browser.IE) {
+Zikula.Browser = (function() {
+    var IES = {
+        IE6: false,
+        IE7: false,
+        IE8: false,
+        IE8e7: false
+    };
+    if (Prototype.Browser.IE) {
         if (document.documentMode != 'undefined' && document.documentMode == 8) {
             IES.IE8 = true;
-        } else if (typeof document.documentElement.style.maxHeight != 'undefined'){
+        } else if (typeof(document.documentElement.style.maxHeight) != 'undefined'){
             IES.IE7 = true;
-            IES.IE8e7 = (typeof document.documentMode != 'undefined'); //IE8 in IE7 mode
+            IES.IE8e7 = (typeof(document.documentMode) != 'undefined'); //IE8 in IE7 mode
         } else {
             IES.IE6 = true;
         }
     }
-    return Object.extend(IES,Prototype.Browser);
-  })()
+    return Object.extend(IES, Prototype.Browser);
+  })();
 
 /**
  * Decodes json data to original format
@@ -92,16 +97,15 @@ Zikula.Browser = (function(){
  *
  * @return {mixed} Decoded data
  */
-Zikula.dejsonize = function(jsondata)
-{
+Zikula.dejsonize = function(jsondata) {
     var result;
     try {
         result = jsondata.evalJSON(true);
     } catch(error) {
-        alert(Zikula.__f('illegal JSON response: \n%1$s in\n%2$s',[error, jsondata]));
+        alert(Zikula.__f('illegal JSON response: \n%1$s in\n%2$s', [error, jsondata]));
     }
     return result;
-}
+};
 
 /**
  * Shows an error message with alert().
@@ -112,28 +116,27 @@ Zikula.dejsonize = function(jsondata)
  *
  * @return void
  */
-Zikula.showajaxerror = function(errortext)
-{
-    if(Object.isString(errortext) && errortext.isJSON()) {
+Zikula.showajaxerror = function(errortext) {
+    if (Object.isString(errortext) && errortext.isJSON()) {
         var decoded = errortext.evalJSON(true);
-        if(decoded.core && decoded.core.statusmsg) {
-            if(typeof(decoded.core.statusmsg) == 'object') {
-                if(!Object.isArray(decoded.core.statusmsg)) {
+        if (decoded.core && decoded.core.statusmsg) {
+            if (typeof(decoded.core.statusmsg) == 'object') {
+                if (!Object.isArray(decoded.core.statusmsg)) {
                     decoded.core.statusmsg = Object.values(decoded.core.statusmsg);
                 }
-                errortext = decoded.core.statusmsg.join("\n")
+                errortext = decoded.core.statusmsg.join("\n");
             } else {
                 errortext = decoded.core.statusmsg;
             }
         }
     } else if (Object.isArray(errortext)) {
-        errortext = errortext.join("\n")
+        errortext = errortext.join("\n");
     } else if (typeof(errortext) == 'object') {
-        errortext = Object.values(errortext).join("\n")
+        errortext = Object.values(errortext).join("\n");
     }
     alert(errortext);
     return;
-}
+};
 
 /**
  * Manage ajax error responses returned by AjaxUtil.
@@ -143,8 +146,7 @@ Zikula.showajaxerror = function(errortext)
  *
  * @return {mixed} Decoded transport data or void
  */
-Zikula.ajaxResponseError = function(transport, supresserror)
-{
+Zikula.ajaxResponseError = function(transport, supresserror) {
 	var json = Zikula.dejsonize(transport.responseText);
 	if ("authid" in json) {
 		if (json.authid != '') {
@@ -155,7 +157,7 @@ Zikula.ajaxResponseError = function(transport, supresserror)
 		Zikula.showajaxerror(json.errormessage);
 	}
 	return json;
-}
+};
 
 /**
  * Sets a select to a given value.
@@ -165,10 +167,9 @@ Zikula.ajaxResponseError = function(transport, supresserror)
  *
  * @return void
  */
-Zikula.setselectoption = function(id, sel)
-{
+Zikula.setselectoption = function(id, sel) {
     $A($(id).options).each(function(opt){opt.selected = (opt.value == sel);});
-}
+};
 
 /**
  * Zikula.getcheckboxvalue
@@ -180,10 +181,9 @@ Zikula.setselectoption = function(id, sel)
  *
  * @return {String} Checkbox value
  */
-Zikula.getcheckboxvalue = function(id)
-{
+Zikula.getcheckboxvalue = function(id) {
     return $F(id) || '';
-}
+};
 
 /**
  * Updates all hidden authid fields with a new authid obtained with an ajax call.
@@ -194,13 +194,12 @@ Zikula.getcheckboxvalue = function(id)
  * 
  * @return void
  */
-Zikula.updateauthids = function(authid)
-{
-    if(authid.length != 0) {
+Zikula.updateauthids = function(authid) {
+    if (authid.length != 0) {
         $$('form input[name=authid]').invoke('writeAttribute','value',authid);
     }
     return;
-}
+};
 
 /**
  * Set z-odd / z-even on each li after append, move and delete.
@@ -210,15 +209,12 @@ Zikula.updateauthids = function(authid)
  * 
  * @return  void
  */
-Zikula.recolor = function(listclass, headerclass)
-{
+Zikula.recolor = function(listclass, headerclass) {
     var odd = true;
 
     $A($(listclass).childNodes).each(
-        function(node)
-        {
-            if (Element.hasClassName(node, headerclass)) {
-            } else {
+        function(node) {
+            if (!Element.hasClassName(node, headerclass)) {
                 Element.removeClassName(node, 'z-odd');
                 Element.removeClassName(node, 'z-even');
 
@@ -230,8 +226,8 @@ Zikula.recolor = function(listclass, headerclass)
                 odd = !odd;
             }
         }
-        );
-}
+    );
+};
 
 /**
  * Change the display attribute of an specific object.
@@ -240,8 +236,7 @@ Zikula.recolor = function(listclass, headerclass)
  * 
  * @return  void
  */
-Zikula.switchdisplaystate = function(id)
-{
+Zikula.switchdisplaystate = function(id) {
     var tmpobj = $(id);
 
     if (tmpobj.getStyle('display') == 'none') {
@@ -257,7 +252,7 @@ Zikula.switchdisplaystate = function(id)
             tmpobj.hide();
         }
     }
-}
+};
 
 /**
  * Change the display attribute of an specific container depending of a radio input.
@@ -268,8 +263,7 @@ Zikula.switchdisplaystate = function(id)
  *
  * @return void
  */
-Zikula.radioswitchdisplaystate = function(idgroup, idcontainer, state)
-{
+Zikula.radioswitchdisplaystate = function(idgroup, idcontainer, state) {
     var objgroup = $(idgroup);
     var objcont = $(idcontainer);
 
@@ -292,7 +286,7 @@ Zikula.radioswitchdisplaystate = function(idgroup, idcontainer, state)
             }
         }
     }
-}
+};
 
 /**
  * Change the display attribute of an specific container depending of a checkbox input.
@@ -303,11 +297,9 @@ Zikula.radioswitchdisplaystate = function(idgroup, idcontainer, state)
  *
  * @return void
  */
-Zikula.checkboxswitchdisplaystate = function(idcheckbox, idcontainer, state)
-{
-    var objcont = $(idcontainer);
-
-    check_state = !!$F(idcheckbox);
+Zikula.checkboxswitchdisplaystate = function(idcheckbox, idcontainer, state) {
+    var objcont = $(idcontainer),
+        check_state = !!$F(idcheckbox);
 
     if (check_state == state) {
         if (objcont.getStyle('display') == 'none') {
@@ -326,7 +318,7 @@ Zikula.checkboxswitchdisplaystate = function(idcheckbox, idcontainer, state)
             }
         }
     }
-}
+};
 
 /**
  * Allows to check, uncheck or toggle given checkbox or radio inputs.
@@ -340,38 +332,37 @@ Zikula.checkboxswitchdisplaystate = function(idcheckbox, idcontainer, state)
  * @return void
  */
 Zikula.toggleInput = function(selector, value) {
-    var setValue = value == null ? function(v) {return !v} : function(v){return value},
+    var setValue = value == null ? function(v) {return !v;} : function(v) {return value;},
         elements = $(selector) ? $(selector).select('input[type=radio],input[type=checkbox]') : $$(selector);
-    if(elements) {
-        elements.each(function(e){e.checked = setValue(e.checked)});
+    if (elements) {
+        elements.each(function(e) {e.checked = setValue(e.checked);});
     }
-}
+};
 
 /**
  * Workaround for wrong buttons values in IE and multiple submit buttons in IE6/7.
  *
  * @return void
  */
-Zikula.fixbuttons = function()
-{
-    $$('button').invoke('observe','click',function(e){
+Zikula.fixbuttons = function() {
+    $$('button').invoke('observe', 'click', function(e) {
         var form = e.element().up('form');
-        if(form) {
-            form.store('buttonClicked',e.element().identify());
+        if (form) {
+            form.store('buttonClicked', e.element().identify());
         }
     });
 
-    $$('form').invoke('observe','submit',function(e){
+    $$('form').invoke('observe', 'submit', function(e) {
         var form = e.element(),
-            buttonClicked = form.retrieve('buttonClicked',null);
-        form.select('button').each(function(b){
+            buttonClicked = form.retrieve('buttonClicked', null);
+        form.select('button').each(function(b) {
             b.disabled = true;
-            if(b.identify() == buttonClicked) {
-                form.insert(new Element('input',{type:'hidden',name:b.name,value:b.attributes.getNamedItem('value').nodeValue}));
+            if (b.identify() == buttonClicked) {
+                form.insert(new Element('input',{type:'hidden', name:b.name, value:b.attributes.getNamedItem('value').nodeValue}));
             }
         });
     });
-}
+};
 
 /**
  * Ajax timeout detection. We set the time out to 5 seconds
@@ -393,26 +384,26 @@ Zikula.callInProgress = function(xmlhttp) {
             return false;
             break;
     }
-}
+};
 
 // Register global responders that will occur on all AJAX requests
 Ajax.Responders.register({
     onCreate: function(request) {
-        if($('ajax_indicator')) {
+        if ($('ajax_indicator')) {
             Element.show('ajax_indicator');
         }
-        request['timeoutId'] = window.setTimeout(
+        request.timeoutId = window.setTimeout(
             function() {
                 // If we have hit the timeout and the AJAX request is active, abort it and let the user know
                 if (Zikula.callInProgress(request.transport)) {
                     request.transport.abort();
-                    if($('ajax_indicator') && $('ajax_indicator').tagName == 'IMG') {
+                    if ($('ajax_indicator') && $('ajax_indicator').tagName == 'IMG') {
                         $('ajax_indicator').src = Zikula.Config.baseURL + 'images/icons/extrasmall/error.png';
                     }
                     Zikula.showajaxerror(Zikula.__('Ajax connection time out!'));
                     // Run the onFailure method if we set one up when creating the AJAX object
-                    if (request.options['onFailure']) {
-                        request.options['onFailure'](request.transport, request.json);
+                    if (request.options.onFailure) {
+                        request.options.onFailure(request.transport, request.json);
                     }
                 }
             },
@@ -420,11 +411,11 @@ Ajax.Responders.register({
         );
     },
     onComplete: function(request) {
-        if($('ajax_indicator')) {
+        if ($('ajax_indicator')) {
             Element.hide('ajax_indicator');
         }
         // Clear the timeout, the request completed ok
-        window.clearTimeout(request['timeoutId']);
+        window.clearTimeout(request.timeoutId);
     }
 });
 
@@ -434,7 +425,7 @@ Ajax.Responders.register({
  */
 function pndejsonize(jsondata)
 {
-    return Zikula.dejsonize(jsondata)
+    return Zikula.dejsonize(jsondata);
 }
 
 /**
@@ -520,9 +511,9 @@ function checkboxswitchdisplaystate(idcheckbox, idcontainer, state)
  * @link http://www.diveintojavascript.com/projects/sprintf-for-javascript
  */
 Zikula.str_repeat = function(i, m) {
-    for (var o = []; m > 0; o[--m] = i);
+    for (var o = []; m > 0; o[--m] = i){}
     return o.join('');
-}
+};
 
 /**
  * Javascript implementation of PHP sprintf function.
@@ -534,7 +525,7 @@ Zikula.str_repeat = function(i, m) {
  * @author Alexandru Marasteanu <alexaholic [at) gmail (dot] com>
  * @link http://www.diveintojavascript.com/projects/sprintf-for-javascript
  */
-Zikula.sprintf = function () {
+Zikula.sprintf = function() {
     var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
     while (f) {
         if (m = /^[^\x25]+/.exec(f)) {
@@ -551,16 +542,36 @@ Zikula.sprintf = function () {
                 throw('Expecting number but found ' + typeof(a));
             }
             switch (m[7]) {
-                case 'b':a = a.toString(2);break;
-                case 'c':a = String.fromCharCode(a);break;
-                case 'd':a = parseInt(a);break;
-                case 'e':a = m[6] ? a.toExponential(m[6]) : a.toExponential();break;
-                case 'f':a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a);break;
-                case 'o':a = a.toString(8);break;
-                case 's':a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a);break;
-                case 'u':a = Math.abs(a);break;
-                case 'x':a = a.toString(16);break;
-                case 'X':a = a.toString(16).toUpperCase();break;
+                case 'b':
+                    a = a.toString(2);
+                    break;
+                case 'c':
+                    a = String.fromCharCode(a);
+                    break;
+                case 'd':
+                    a = parseInt(a);
+                    break;
+                case 'e':
+                    a = m[6] ? a.toExponential(m[6]) : a.toExponential();
+                    break;
+                case 'f':
+                    a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a);
+                    break;
+                case 'o':
+                    a = a.toString(8);
+                    break;
+                case 's':
+                    a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a)
+                    ;break;
+                case 'u':
+                    a = Math.abs(a);
+                    break;
+                case 'x':
+                    a = a.toString(16);
+                    break;
+                case 'X':
+                    a = a.toString(16).toUpperCase();
+                    break;
             }
             a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+'+ a : a);
             c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
@@ -574,7 +585,7 @@ Zikula.sprintf = function () {
         f = f.substring(m[0].length);
     }
     return o.join('');
-}
+};
 
 /**
  * Javascript implementation of PHP vsprintf function.
@@ -586,7 +597,7 @@ Zikula.sprintf = function () {
  */
 Zikula.vsprintf = function(format, args) {
     return Zikula.sprintf.apply(this,[format].concat(args));
-}
+};
 
 /**
  * Merge two objects recursively.
@@ -599,12 +610,11 @@ Zikula.vsprintf = function(format, args) {
  *
  * @return {Object} Extended object
  */
-Zikula.mergeObjects = function(destination,source)
-{
+Zikula.mergeObjects = function(destination, source) {
     destination = destination || {};
     for (var prop in source) {
         try {
-            if (source[prop].constructor==Object ) {
+            if (source[prop].constructor == Object ) {
                 destination[prop] = Zikula.mergeObjects(destination[prop], source[prop]);
             } else {
                 destination[prop] = source[prop];
@@ -614,7 +624,7 @@ Zikula.mergeObjects = function(destination,source)
         }
     }
     return destination;
-}
+};
 
 /**
  * Encode json data to url safe format.
@@ -623,15 +633,14 @@ Zikula.mergeObjects = function(destination,source)
  *
  * @return {String} Encoded data
  */
-Zikula.urlsafeJsonEncode = function(data, json)
-{
+Zikula.urlsafeJsonEncode = function(data, json) {
     json = Object.isUndefined(json) ? true : json;
-    if(json) {
+    if (json) {
         data = Object.toJSON(data);
     }
     data = data.replace(/\+/g, '%20');
     return encodeURIComponent(data);
-}
+};
 
 /**
  * Decode json data from url safe format.
@@ -640,16 +649,15 @@ Zikula.urlsafeJsonEncode = function(data, json)
  *
  * @return {mixed} Decoded data
  */
-Zikula.urlsafeJsonDecode = function(data, json)
-{
+Zikula.urlsafeJsonDecode = function(data, json) {
     json = Object.isUndefined(json) ? true : json;
     data = data.replace(/\+/g, '%20');
     data = decodeURIComponent(data);
-    if(json) {
+    if (json) {
         data = data.evalJSON(true);
     }
     return data;
-}
+};
 
 
 Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
@@ -688,7 +696,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      *
      * @return {Zikula.Gettext} New Zikula.Gettext instance
      */
-    initialize: function(lang,data) {
+    initialize: function(lang, data) {
         this.defaults = {
             lang: 'en',
             domain: 'zikula',
@@ -696,7 +704,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
         };
 
         this.data = {};
-        this.setup(lang,data);
+        this.setup(lang, data);
 
         this.__ = this.getMessage.bind(this);
         this.__f = this.getMessageFormatted.bind(this);
@@ -712,10 +720,10 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      *
      * @return void
      */
-    setup: function(lang,data,domain) {
+    setup: function(lang, data, domain) {
         this.setLang(lang);
         this.setDomain(domain);
-        this.addTranslations(data || {})
+        this.addTranslations(data || {});
     },
     /**
      * Adds translations to gettext instance
@@ -725,7 +733,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * @return void
      */
     addTranslations: function(obj) {
-        Zikula.mergeObjects(this.data,obj)
+        Zikula.mergeObjects(this.data, obj);
     },
     /**
      * Setup current gettext language
@@ -756,9 +764,9 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      *
      * @return {mixed} Given data key value or empty object
      */
-    getData: function(domain,key) {
+    getData: function(domain, key) {
         domain = domain || this.domain;
-        if(this.data[this.lang] && this.data[this.lang][domain] && this.data[this.lang][domain][key]) {
+        if (this.data[this.lang] && this.data[this.lang][domain] && this.data[this.lang][domain][key]) {
             return this.data[this.lang][domain][key];
         }
         return {};
@@ -775,7 +783,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
      * @return {String} Translated message
      */
     getMessage: function(msgid, domain) {
-        return this.getData(domain,'translations')[msgid] || msgid;
+        return this.getData(domain, 'translations')[msgid] || msgid;
     },
     /**
      * Gettext: translates and format message using sprintf formatting rules.
@@ -809,7 +817,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
         var offset = this.getPluralOffset(count, domain),
             key = singular + this.nullChar + plural,
             messages = this.getMessage(key, domain);
-        if(messages) {
+        if (messages) {
             return messages.split(this.nullChar)[offset];
         } else {
             return key.split(this.nullChar)[offset];
@@ -859,7 +867,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
         return plural;
     }
 });
-Zikula.GettextInstance = new Zikula.Gettext(Zikula.Config.lang,Zikula._translations);
+Zikula.GettextInstance = new Zikula.Gettext(Zikula.Config.lang, Zikula._translations);
 // Export shortcuts to Zikula global object.
 Object.extend(Zikula,{
     __: Zikula.GettextInstance.__,
@@ -914,7 +922,7 @@ Zikula.CookieUtil = Class.create(/** @lends Zikula.CookieUtil */{
             };
             cookieStr = Object.keys(cookieStr).inject(name+'='+value, function(str, key){
                 return cookieStr[key] ? str + ';' + key + '=' + cookieStr[key] : str;
-            })
+            });
             document.cookie = cookieStr;
         } catch (e) {
             return false;
@@ -933,7 +941,7 @@ Zikula.CookieUtil = Class.create(/** @lends Zikula.CookieUtil */{
     get: function(name, json){
         json = Object.isUndefined(json) ? this.options.json : json;
         var cookie = document.cookie.match(name + '=(.*?)(;|$)');
-        return cookie ? (json ? this.decode(cookie[1]) : cookie[1]) : null
+        return cookie ? (json ? this.decode(cookie[1]) : cookie[1]) : null;
     },
     /**
      * Delete cookie
@@ -1221,11 +1229,11 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
             authid: null,
             csrfToken: null
         }, options || { });
-        if(options.authid || options.csrfToken) {
+        if (options.authid || options.csrfToken) {
             this.token = {
                 name: options.csrfToken ? 'csrftoken' : 'authid',
                 source: options.csrfToken ? options.csrfToken : options.authid
-            }
+            };
             if (Object.isFunction($(this.token.source).getValue)) {
                 this.token.element = $(this.token.source);
             } else {
@@ -1234,10 +1242,10 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
         } else {
             this.token = false;
         }
-        if(this.token) {
+        if (this.token) {
             var pars = options.parameters || {};
             this.token.value = $F(this.token.element);
-            if(Object.isString(pars)) {
+            if (Object.isString(pars)) {
                 options.parameters = pars + '&'+this.token.name+'=' + this.token.value;
             } else {
                 pars[this.token.name] = this.token.value;
@@ -1262,7 +1270,7 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
         this.observers = {};
         // ugly hack to find all callbacks in options as properties which names starts with "on"
         for (var prop in options) {
-            if(prop.startsWith('on') && Object.isFunction(options[prop])) {
+            if (prop.startsWith('on') && Object.isFunction(options[prop])) {
                 this.observers[prop] = options[prop];
                 options[prop] = this.responseHandler.curry(prop).bind(this);
             }
@@ -1280,10 +1288,10 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
      *
      * @return void
      */
-    responseHandler: function(event,response,headerJSON) {
-        if(this.observers[event]) {
-            response = Object.extend(response,Zikula.Ajax.Response);
-            this.observers[event](response,headerJSON);
+    responseHandler: function(event, response, headerJSON) {
+        if (this.observers[event]) {
+            response = Object.extend(response, Zikula.Ajax.Response);
+            this.observers[event](response, headerJSON);
         }
     },
     /**
@@ -1296,13 +1304,13 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
      *
      * @return void
      */
-    responseComplete: function(response,headerJSON) {
-        response = Object.extend(response,Zikula.Ajax.Response)
-        if(this.token) {
+    responseComplete: function(response, headerJSON) {
+        response = Object.extend(response, Zikula.Ajax.Response);
+        if (this.token) {
             $(this.token.element).setValue(response.getToken(this.token.name));
         }
-        if(this.observers['onComplete']) {
-            this.observers['onComplete'](response,headerJSON);
+        if (this.observers.onComplete) {
+            this.observers.onComplete(response,headerJSON);
         }
     }
 });
@@ -1367,7 +1375,7 @@ Zikula.Ajax.Response = /** @lends Zikula.Ajax.Response */{
      * @return {String|null} Csrf token value
      */
     getToken: function(tokenName) {
-        this.tokenName = tokenName || 'token'
+        this.tokenName = tokenName || 'token';
         return this.decodeResponse().core ? this.decodeResponse().core[this.tokenName] : null;
     },
     /**
@@ -1415,19 +1423,19 @@ Zikula.Ajax.Response = /** @lends Zikula.Ajax.Response */{
      * @return {Object} Decoded response text
      */
     decodeResponse: function() {
-        if(!this.ZikulaResponse) {
+        if (!this.ZikulaResponse) {
             try {
                 this.ZikulaResponse = this.responseText.evalJSON(true);
             } catch(e) {
                 this.ZikulaResponse = {
                     data: this.responseText,
                     core: null
-                }
+                };
             }
         }
         return this.ZikulaResponse;
     }
-}
+};
 
 Object.extend(Zikula.Ajax.Response,/** @lends Zikula.Ajax.Response.prototype */{
     /**
@@ -1526,8 +1534,9 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
      * @return void
      */
     add: function(url, options, execute) {
-        if (Object.isUndefined(execute) && typeof options != 'object') {
-            execute = options, options = {}
+        if (Object.isUndefined(execute) && typeof(options) != 'object') {
+            execute = options;
+            options = {};
         }
         if (Object.isArray(url)) {
             Array.prototype.push.apply(this.queue, url);
@@ -1553,7 +1562,7 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
      * @return void
      */
     start: function() {
-        if(this.inProgress) {
+        if (this.inProgress) {
             return;
         }
         this.inProgress = true;
@@ -1579,7 +1588,7 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
     send: function() {
         if (this.queue.size() == 0 || this.stopped) {
             this.inProgress = false;
-            if(Object.isFunction(this.options.onFinish)) {
+            if (Object.isFunction(this.options.onFinish)) {
                 this.options.onFinish(!this.stopped);
             }
             this.stopped = false;
@@ -1599,12 +1608,12 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
         var params = this.queue.shift(),
             url = Object.isArray(params) ? params[0] : params,
             options = Object.extend(Object.isArray(params) ? params[1] || {} : {}, this.options.requestOptions || {});
-        if (!Object.isUndefined(options['onComplete'])) {
-            this.notify = options['onComplete'];
+        if (!Object.isUndefined(options.onComplete)) {
+            this.notify = options.onComplete;
         } else {
             this.notify = null;
         }
-        options['onComplete'] = this.onComplete.bind(this);
+        options.onComplete = this.onComplete.bind(this);
         return [url, options];
     },
     /**

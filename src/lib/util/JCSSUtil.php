@@ -42,7 +42,7 @@ class JCSSUtil
             $return .= 'document.location.pnbaseURL="' . $config['baseURL'] . '"; ';
             $return .= 'document.location.ajaxtimeout=' . $config['ajaxtimeout'] . ";\n";
         }
-        $return .= "if (typeof(Zikula) == 'undefined') {Zikula = {};}\n";
+        $return .= "if (typeof(Zikula) == 'undefined') {var Zikula = {};}\n";
         $return .= "Zikula.Config = " . json_encode($config) . "\n";
         $return .= ' /* ]]> */</script>' . "\n";
 
