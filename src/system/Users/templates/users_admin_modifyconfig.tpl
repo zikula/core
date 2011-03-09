@@ -261,7 +261,7 @@
             </div>
             <div class="z-formrow">
                 <label for="users_reg_answer">{gt text="Spam protection answer"}<span id="users_reg_answer_mandatory" class="z-form-mandatory-flag z-hide">{gt text="*"}</span></label>
-                <input id="users_reg_answer"{if $errorFields.users_reg_answer} class="z-form-error"{/if} name="config[reg_answer]" value="{if !empty($config.reg_question)}{$config.reg_answer|safehtml}{/if}" size="50" maxlength="255" />
+                <input id="users_reg_answer"{if isset($errorFields.users_reg_answer)} class="z-form-error"{/if} name="config[reg_answer]" value="{if !empty($config.reg_question)}{$config.reg_answer|safehtml}{/if}" size="50" maxlength="255" />
                 <em class="z-formnote z-sub">{gt text="Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided."}</em>
             </div>
             <div class="z-formrow">
