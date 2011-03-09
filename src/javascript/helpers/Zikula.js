@@ -1026,7 +1026,7 @@ Zikula.Cookie = new Zikula.CookieUtil();
 Element.Methods.getContentWidth = function(element) {
     return ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth']
         .inject(Element.getWidth(element), function(total, prop) {
-            return total - parseInt(Element.getStyle(element, prop), 10);
+            return total - (parseInt(Element.getStyle(element, prop), 10) || 0);
         });
 };
 
@@ -1043,7 +1043,7 @@ Element.Methods.getContentWidth = function(element) {
 Element.Methods.getContentHeight = function(element) {
     return ['paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth']
         .inject(Element.getHeight(element), function(total, prop) {
-            return total - parseInt(Element.getStyle(element, prop), 10);
+            return total - (parseInt(Element.getStyle(element, prop), 10) || 0);
         });
 };
 
@@ -1116,7 +1116,7 @@ Element.Methods.getOutlineSize = function(element, type) {
     }
     return props
         .inject(0, function(total, prop) {
-            return total + parseInt(Element.getStyle(element, prop), 10);
+            return total + (parseInt(Element.getStyle(element, prop), 10) || 0);
         });
 };
 /**
