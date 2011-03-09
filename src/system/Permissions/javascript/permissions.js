@@ -595,8 +595,8 @@ function performpermissiontest()
             method: 'get', 
             parameters: pars, 
             onComplete: performpermissiontest_response
-        }); 
-    
+        }
+    );
 }
 
 /**

@@ -30,12 +30,12 @@ class Permissions_Controller_Ajax extends Zikula_Controller_Ajax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        $pid       = FormUtil::getPassedValue('pid', null, 'post');
-        $gid       = FormUtil::getPassedValue('gid', null, 'post');
-        $seq       = FormUtil::getPassedValue('seq', 9999, 'post');
-        $component = DataUtil::convertFromUTF8(FormUtil::getPassedValue('comp', '.*', 'post'));
-        $instance  = DataUtil::convertFromUTF8(FormUtil::getPassedValue('inst', '.*', 'post'));
-        $level     = FormUtil::getPassedValue('level', 0, 'post');
+        $pid       = (int)$this->request->getPost()->get('pid');
+        $gid       = (int)$this->request->getPost()->get('gid');
+        $seq       = (int)$this->request->getPost()->get('seq', 9999);
+        $component = $this->request->getPost()->get('comp', '.*');
+        $instance  = $this->request->getPost()->get('inst', '.*');
+        $level     = (int)$this->request->getPost()->get('level', 0);
 
         if (preg_match("/[\n\r\t\x0B]/", $component)) {
             $component = trim(preg_replace("/[\n\r\t\x0B]/", "", $component));
@@ -87,7 +87,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller_Ajax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        $permorder = FormUtil::getPassedValue('permorder', null, 'POST');
+        $permorder = $this->request->getPost()->get('permorder');
 
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
@@ -144,12 +144,12 @@ class Permissions_Controller_Ajax extends Zikula_Controller_Ajax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        $pid = FormUtil::getPassedValue('pid', null, 'POST');
+        $pid = (int)$this->request->getPost()->get('pid');
 
         // check if this is the overall admin permssion and return if this shall be deleted
         $perm = DBUtil::selectObjectByID('group_perms', $pid, 'pid');
         if ($perm['pid'] == 1 && $perm['level'] == ACCESS_ADMIN && $perm['component'] == '.*' && $perm['instance'] == '.*') {
-            AjaxUtil::error($this->__('Notice: You cannot delete the main administration permission rule.'));
+            throw new Zikula_Exception_Fatal($this->__('Notice: You cannot delete the main administration permission rule.'));
         }
 
         if (ModUtil::apiFunc('Permissions', 'admin', 'delete', array('pid' => $pid)) == true) {
@@ -176,10 +176,10 @@ class Permissions_Controller_Ajax extends Zikula_Controller_Ajax
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        $uname = DataUtil::convertFromUTF8(FormUtil::getPassedValue('test_user', '', 'get'));
-        $comp  = DataUtil::convertFromUTF8(FormUtil::getPassedValue('test_component', '.*', 'get'));
-        $inst  = DataUtil::convertFromUTF8(FormUtil::getPassedValue('test_instance', '.*', 'get'));
-        $level = DataUtil::convertFromUTF8(FormUtil::getPassedValue('test_level', ACCESS_READ, 'get'));
+        $uname = $this->request->getGet()->get('test_user', '');
+        $comp  = $this->request->getGet()->get('test_component', '.*');
+        $inst  = $this->request->getGet()->get('test_instance', '.*');
+        $level = $this->request->getGet()->get('test_level', ACCESS_READ);
 
         $result = $this->__('Permission check result:') . ' ';
         $uid = UserUtil::getIdFromName($uname);
