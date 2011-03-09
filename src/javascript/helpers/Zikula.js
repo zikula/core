@@ -1313,12 +1313,15 @@ Object.extend(Zikula.Ajax.Request,/** @lends Zikula.Ajax.Request.prototype */{
      * @return {Object} Options object extended with default values
      */
     defaultOptions: function(options){
-        options = options || {};
-        options.method = 'POST';
+        options = Object.extend({
+            method: 'POST'
+        }, options || { });
         if (Zikula.Config.sessionName) {
-            var cookieName = Zikula.Cookie.get(Zikula.Config.sessionName, false);
-            if (cookieName) {
-                options.requestHeaders = {'X-ZIKULA-AJAX-TOKEN': cookieName};
+            var sessionId = Zikula.Cookie.get(Zikula.Config.sessionName, false);
+            if (sessionId) {
+                options.requestHeaders = Object.extend({
+                    'X-ZIKULA-AJAX-TOKEN': sessionId
+                }, options.requestHeaders || { });
             }
         }
         return options;
