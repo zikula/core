@@ -1181,9 +1181,14 @@ Zikula.define('Ajax');
 Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.prototype */{
     /**
      * Custom extension for Prototype Ajax.Request
-     * Inherit all of the methods, options and events from
+     * Inherits all of the methods, options and events from
      * <a href="http://api.prototypejs.org/ajax/ajax/request/">Prototype Ajax.Request</a>.
-     * This extension adds new options 'authid' and 'csrfToken' and extend response object with {@link Zikula.Ajax.Response}.
+     * First of all this extensions adds form request http header containing csrf token,
+     * so there's no need to add it maunaly.
+     * However, if for some reason it is necessary to send a csrf token - this extension
+     * adds new options 'authid' and 'csrfToken'.
+     * This extension also extend response object with {@link Zikula.Ajax.Response}, which adds
+     * new methods to read data retruned by php controlers.
      * When 'authid' or 'csrfToken' param is added then it's value will be automatically added to request
      * and if new one will come with response - it will be also updated.
      * This is recommended way for handling authids or csrfTokens.
@@ -1205,8 +1210,8 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
      * @param {Ajax.Request} $super Reference to super class, this is private param, do not use it.
      * @param {String} url Url for request
      * @param {Object} [options] Config object
-     * @param {String} [options.authid=null] ID for authid element
-     * @param {String} [options.csrfToken=null] ID for csrfToken element
+     * @param {String} [options.authid=null] ID for authid - it may point to authid input or it's parent (eg form id)
+     * @param {String} [options.csrfToken=null] ID for csrfToken - it may point to csrfToken input or it's parent (eg form)
      *
      * @return {Zikula.Ajax.Request} New Zikula.Ajax.Request instance
      */
@@ -1221,12 +1226,17 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
                 name: options.csrfToken ? 'csrftoken' : 'authid',
                 source: options.csrfToken ? options.csrfToken : options.authid
             }
+            if (Object.isFunction($(this.token.source).getValue)) {
+                this.token.element = $(this.token.source);
+            } else {
+                this.token.element = $(this.token.source).down('input[name='+this.token.name+']').identify();
+            }
         } else {
             this.token = false;
         }
         if(this.token) {
             var pars = options.parameters || {};
-            this.token.value = $F(this.token.source);
+            this.token.value = $F(this.token.element);
             if(Object.isString(pars)) {
                 options.parameters = pars + '&'+this.token.name+'=' + this.token.value;
             } else {
@@ -1289,7 +1299,7 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
     responseComplete: function(response,headerJSON) {
         response = Object.extend(response,Zikula.Ajax.Response)
         if(this.token) {
-            $(this.token.source).setValue(response.getToken(this.token.name));
+            $(this.token.element).setValue(response.getToken(this.token.name));
         }
         if(this.observers['onComplete']) {
             this.observers['onComplete'](response,headerJSON);
