@@ -26,7 +26,7 @@ class Users_Version extends Zikula_Version
     public function getMetaData()
     {
         $meta = array();
-        $meta['displayname'] = $this->__('Users manager');
+        $meta['displayname'] = $this->__('Users');
         $meta['description'] = $this->__('Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.');
         //! module name that appears in URL
         $meta['url']  = $this->__('users');

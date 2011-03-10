@@ -17,9 +17,8 @@ class Categories_Version extends Zikula_Version
     public function getMetaData()
     {
         $meta = array();
-        $meta['name']           = 'Categories';
-        $meta['displayname']    = $this->__('Categories manager');
-        $meta['description']    = $this->__('Provides support for categorisation of content in other modules, and an interface for adding, removing and administering categories.');
+        $meta['displayname']    = $this->__('Categories');
+        $meta['description']    = $this->__('Category administration.');
         //! module name that appears in URL
         $meta['url']            = $this->__('categories');
         $meta['version']        = '1.2.1';

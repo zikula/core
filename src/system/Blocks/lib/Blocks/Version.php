@@ -17,8 +17,8 @@ class Blocks_Version extends Zikula_Version
     public function getMetaData()
     {
         $meta = array();
-        $meta['displayname']    = $this->__('Blocks manager');
-        $meta['description']    = $this->__("Provides an interface for adding, removing and administering the site's side and center blocks.");
+        $meta['displayname']    = $this->__('Blocks');
+        $meta['description']    = $this->__('Block administration module.');
         //! module name that appears in URL
         $meta['url']            = $this->__('blocks');
         $meta['version']        = '3.8.0';

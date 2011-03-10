@@ -5,8 +5,8 @@ class Permissions_Version extends Zikula_Version
     public function getMetaData()
     {
         $meta = array();
-        $meta['displayname']    = $this->__('Permission manager');
-        $meta['description']    = $this->__("Provides an interface for fine-grained management of accessibility of the site's functionality and content through permission rules.");
+        $meta['displayname']    = $this->__('Permissions');
+        $meta['description']    = $this->__('User permissions manager.');
         //! module name that appears in URL
         $meta['url']            = $this->__('permissions');
         $meta['version']        = '1.1.1';

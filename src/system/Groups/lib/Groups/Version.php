@@ -18,7 +18,7 @@ class Groups_Version extends Zikula_Version
     {
         $meta = array();
         $meta['displayname']    = $this->__('Groups manager');
-        $meta['description']    = $this->__('Provides support for user groups, and incorporates an interface for adding, removing and administering them.');
+        $meta['description']    = $this->__('User group administration module.');
         //! module name that appears in URL
         $meta['url']            = $this->__('groups');
         $meta['version']        = '2.3.2';
