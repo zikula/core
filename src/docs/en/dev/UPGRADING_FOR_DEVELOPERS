@@ -28,6 +28,12 @@ TEMPLATES
 
 - Output filtering is now done with safetext, and safehtml modifiers.
 
+- In future versions of Zikula we will require more strict compliance with templating
+  syntax.  {foo name=bar} is not acceptable, single or double quotes must be used.
+  We recommend to use single quotes unless you need double quotes for a reason.
+  The above example should be written as {foo name='bar'}
+  Quote are not required for integers however, e.g. {sum count=1}
+
 - All use of pnML() and {ml} are both completely deprecated and will not work
   any more because Zikula no longer supports define based language packs.
   Upgrade themes and modules to use Gettext.
