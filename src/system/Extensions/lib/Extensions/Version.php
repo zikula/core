@@ -17,10 +17,9 @@ class Extensions_Version extends Zikula_Version
     public function getMetaData()
     {
         $meta = array();
-        $meta['name'] = 'Extensions';
         // need to keep these two notice suppressions for the benefit of the installer
         // @ is only relevent for this module, please do not replicate elsewhere, refs #980- drak
-        @$meta['displayname'] = $this->__('Extensions manager');
+        @$meta['displayname'] = $this->__('Extensions');
         @$meta['description'] = $this->__('Manage your modules and plugins.');
         //! module name that appears in URL
         $meta['url']  = $this->__('extensions');

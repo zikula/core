@@ -19,7 +19,7 @@ class Settings_Version extends Zikula_Version
         $meta = array();
         $meta['name']           = 'Settings';
         $meta['displayname']    = $this->__('General settings');
-        $meta['description']    = $this->__("Provides an interface for managing the site's general settings, i.e. site start page settings, multi-lingual settings, error reporting options and various other features that are not administered within other modules.");
+        $meta['description']    = $this->__('General site configuration interface.');
         //! module name that appears in URL
         $meta['url']            = $this->__('settings');
         $meta['version']        = '2.9.6';
