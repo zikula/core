@@ -17,7 +17,7 @@ class Groups_Version extends Zikula_Version
     public function getMetaData()
     {
         $meta = array();
-        $meta['displayname']    = $this->__('Groups manager');
+        $meta['displayname']    = $this->__('Groups');
         $meta['description']    = $this->__('User group administration module.');
         //! module name that appears in URL
         $meta['url']            = $this->__('groups');
