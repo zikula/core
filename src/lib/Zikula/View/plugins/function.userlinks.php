@@ -42,6 +42,8 @@ function smarty_function_userlinks($params, Zikula_View $view)
         $profileModule = System::getVar('profilemodule', '');
         if (!empty($profileModule) && ModUtil::available($profileModule)) {
             $links .= "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url($profileModule)) . '">' . __('Your Account') . "</a> $seperator ";
+        } else {
+            $links .= "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url('Users', 'user', 'main')) . '">' . __('Your Account') . "</a> $seperator ";
         }
         $links .= "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url('Users', 'user', 'logout')) . '">'  . __('Log out') . "</a> $end";
 
