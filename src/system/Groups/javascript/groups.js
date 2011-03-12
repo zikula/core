@@ -54,8 +54,6 @@ function groupappend()
         new Zikula.Ajax.Request(
             "ajax.php?module=Groups&func=creategroup",
             {
-                method: 'post',
-                csrftoken: 'csrftoken',
                 onComplete: groupappend_response
             });
     }
@@ -260,19 +258,19 @@ function groupmodify(groupid)
         showinfo(groupid, updatinggroup);
 
         // store via ajax
-        var pars = "gid="            + groupid
-                   + "&name="        + encodeURIComponent($F('name_' + groupid))
-                   + "&gtype="       + $F('gtype_' + groupid)
-                   + "&description=" + encodeURIComponent($F('description_' + groupid))
-                   + "&state="       + $F('state_' + groupid)
-                   + "&nbumax="      + $F('nbumax_' + groupid);
+       var pars = {
+           gid: groupid,
+           name: $F('name_' + groupid),
+           gtype: $F('gtype_' + groupid),
+           description: $F('description_' + groupid),
+           state: $F('state_' + groupid),
+           nbumax: $F('nbumax_' + groupid)
+       };
 
         new Zikula.Ajax.Request(
             "ajax.php?module=Groups&func=updategroup",
             {
-                method: 'post',
                 parameters: pars,
-                csrftoken: 'csrftoken',
                 onComplete: groupmodify_response,
                 onFailure: function(){groupfailure_response(groupid);}
             });
@@ -352,14 +350,14 @@ function groupdelete(groupid)
         setmodifystatus(groupid, 1);
 
         // delete via ajax
-        var pars = "gid=" + groupid;
+        var pars = {
+            gid: groupid
+        };
 
         new Zikula.Ajax.Request(
             "ajax.php?module=Groups&func=deletegroup",
             {
-                method: 'get',
                 parameters: pars,
-                csrftoken: 'csrftoken',
                 onComplete: groupdelete_response,
                 onFailure: function(){groupfailure_response(groupid);}
             });

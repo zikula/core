@@ -33,12 +33,12 @@ class Groups_Controller_Ajax extends Zikula_Controller_Ajax
     {
         $this->checkAjaxToken();
 
-        $gid = FormUtil::getPassedValue('gid', null, 'post');
-        $gtype = FormUtil::getPassedValue('gtype', 9999, 'post');
-        $state = FormUtil::getPassedValue('state', null, 'post');
-        $nbumax = FormUtil::getPassedValue('nbumax', 9999, 'post');
-        $name = DataUtil::convertFromUTF8(FormUtil::getPassedValue('name', null, 'post'));
-        $description = DataUtil::convertFromUTF8(FormUtil::getPassedValue('description', null, 'post'));
+        $gid = $this->request->getPost()->get('gid');
+        $gtype = $this->request->getPost()->get('gtype', 9999);
+        $state = $this->request->getPost()->get('state');
+        $nbumax = $this->request->getPost()->get('nbumax', 9999);
+        $name = DataUtil::convertFromUTF8($this->request->getPost()->get('name'));
+        $description = DataUtil::convertFromUTF8($this->request->getPost()->get('description'));
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
 
@@ -97,9 +97,9 @@ class Groups_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function creategroup()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD));
-
         $this->checkAjaxToken();
+
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD));
 
         $groupsCommon = new Groups_Helper_Common();
         $typelabel = $groupsCommon->gtypeLabels();
@@ -149,7 +149,7 @@ class Groups_Controller_Ajax extends Zikula_Controller_Ajax
     {
         $this->checkAjaxToken();
 
-        $gid = FormUtil::getPassedValue('gid', null, 'get');
+        $gid = $this->request->getPost()->get('gid');
         $group = DBUtil::selectObjectByID('groups', $gid, 'gid');
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_DELETE));
