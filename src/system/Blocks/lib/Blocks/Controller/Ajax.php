@@ -27,18 +27,11 @@ class Blocks_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function changeblockorder()
     {
-        if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null, true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->checkAjaxToken();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN));
 
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
-
-        $blockorder = FormUtil::getPassedValue('blockorder');
-        $position = FormUtil::getPassedValue('position');
+        $blockorder = $this->request->getPost()->get('blockorder');
+        $position = $this->request->getPost()->get('position');
 
         // empty block positions for this block zone
         $res = DBUtil::deleteObjectByID('block_placements', $position, 'pid');
@@ -73,12 +66,11 @@ class Blocks_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function toggleblock()
     {
-        if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null, true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->checkAjaxToken();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN));
 
-        $bid = FormUtil::getPassedValue('bid', -1, 'GET');
+        $bid = $this->request->getPost()->get('bid', -1);
+
         if ($bid == -1) {
             throw new Zikula_Exception_Fatal($this->__('No block ID passed.'));
         }

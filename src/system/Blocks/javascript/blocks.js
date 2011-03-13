@@ -59,9 +59,7 @@ function blockorderchanged()
     new Zikula.Ajax.Request(
         "ajax.php?module=Blocks&func=changeblockorder",
         {
-            method: 'get',
             parameters: pars,
-            authid: 'blocksauthid',
             onComplete: blockorderchanged_response
         });
 }
@@ -97,7 +95,6 @@ function toggleblock(bid)
     new Zikula.Ajax.Request(
         "ajax.php?module=Blocks&func=toggleblock",
         {
-            method: 'get',
             parameters: pars,
             onComplete: toggleblock_response
         });
