@@ -21,7 +21,8 @@ class PageLock_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function refreshpagelock($args)
     {
-        $lockName = FormUtil::getPassedValue('lockname', null, 'post');
+        $this->checkAjaxToken();
+        $lockName = $this->request->getPost()->get('lockname');
 
         $uname = UserUtil::getVar('uname');
 
@@ -46,7 +47,8 @@ class PageLock_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function checkpagelock($args)
     {
-        $lockName = FormUtil::getPassedValue('lockname', null, 'post');
+        $this->checkAjaxToken();
+        $lockName = $this->request->getPost()->get('lockname');
 
         $uname = UserUtil::getVar('uname');
 
