@@ -37,8 +37,8 @@ class Groups_Controller_Ajax extends Zikula_Controller_Ajax
         $gtype = $this->request->getPost()->get('gtype', 9999);
         $state = $this->request->getPost()->get('state');
         $nbumax = $this->request->getPost()->get('nbumax', 9999);
-        $name = DataUtil::convertFromUTF8($this->request->getPost()->get('name'));
-        $description = DataUtil::convertFromUTF8($this->request->getPost()->get('description'));
+        $name = $this->request->getPost()->get('name');
+        $description = $this->request->getPost()->get('description');
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
 
