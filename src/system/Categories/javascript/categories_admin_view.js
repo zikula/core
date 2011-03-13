@@ -120,7 +120,6 @@ Zikula.Categories.MenuAction = function(node, action){
         url, {
             method: 'post',
             parameters: pars,
-            authid: 'categoriesauthid',
             onComplete: Zikula.Categories.MenuActionCallback
         });
     return true;
@@ -206,7 +205,6 @@ Zikula.Categories.EditNode = function(res) {
     new Zikula.Ajax.Request('ajax.php?module=Categories&func=save', {
         method: 'post',
         parameters: pars,
-        authid: 'categoriesauthid',
         onComplete: function(req) {
             var data = req.getData();
             if (!req.isSuccess() || data.validationErrors) {
@@ -232,12 +230,12 @@ Zikula.Categories.AddNode = function(res) {
         Zikula.Categories.CloseForm();
         return false;
     }
+    Zikula.Categories.Form.window.indicator.appear({to: 0.7, duration: 0.2});
     var pars = Zikula.Categories.Form.serialize(true);
     pars.mode = 'new';
     new Zikula.Ajax.Request('ajax.php?module=Categories&func=save', {
         method: 'post',
         parameters: pars,
-        authid: 'categoriesauthid',
         onComplete: function(req) {
             var data = req.getData();
             if (!req.isSuccess() || data.validationErrors) {
@@ -298,7 +296,6 @@ Zikula.Categories.Resequence = function(node, params, data) {
         {
             method: 'post',
             parameters: pars,
-            authid: 'categoriesauthid',
             onComplete: Zikula.Categories.ResequenceCallback
         });
     return request.success();
