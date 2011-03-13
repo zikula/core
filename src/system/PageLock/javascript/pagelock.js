@@ -46,12 +46,13 @@ PageLock.Cancel = function()
 // Ajax method for refreshing existing lock
 PageLock.RefreshLock = function()
 {
-    var pars = "lockname=" + PageLock.LockName;
+    var pars = {
+        lockname: PageLock.LockName
+    }
     
     new Zikula.Ajax.Request(
       Zikula.Config.baseURL + "ajax.php?module=PageLock&func=refreshpagelock",
       {
-          method: 'post', 
           parameters: pars,
           onComplete: PageLock.RefreshLockComplete
       });
@@ -82,12 +83,13 @@ PageLock.CheckLock = function()
 {
     new Effect.Highlight('pageLockOverlayLED', { startcolor: "#FF3030", endcolor: "#B0001D" });
 
-    var pars = "lockname=" + PageLock.LockName;
+    var pars = {
+        lockname: PageLock.LockName
+    }
     
     new Zikula.Ajax.Request(
       Zikula.Config.baseURL + "ajax.php?module=PageLock&func=checkpagelock",
       {
-          method: 'post', 
           parameters: pars,
           onComplete: PageLock.CheckLockComplete
       });
