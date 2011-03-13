@@ -709,6 +709,7 @@ Zikula.UI.Dialog = Class.create(Zikula.UI.Window,/** @lends Zikula.UI.Dialog.pro
             className: 'z-window z-dialog',
             callback: Prototype.emptyFunction
         }, options || { });
+        options.afterClose = this.notifyCallback.curry(false);
         $super(container, options);
         this.window.footer.addClassName('z-buttons');
         this.buttons = {};
@@ -916,7 +917,6 @@ Zikula.UI.ConfirmDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.Con
             className: 'z-window z-dialog z-confirm',
             minmax: false
         }, options || { });
-        options.afterClose = this.notifyCallback.curry(false);
         $super(container, this.defaultButtons(this.notifyCallback.bind(this)), options);
     },
     /**
@@ -967,7 +967,6 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.FormDi
             resizable: true,
             callback: callback
         }, options || { });
-        options.afterClose = this.notifyCallback.curry(false);
         $super(container, options.buttons || this.defaultButtons(this.notifyCallback.bind(this)), options);
     },
     /**
