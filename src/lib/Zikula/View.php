@@ -879,11 +879,11 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         if ($this instanceof Zikula_View_Theme) {
             $path .= $this->themeinfo['directory'] . '/';
         } elseif ($this instanceof Zikula_View_Plugin) {
-            $path .= $this->modinfo['directory'] . '/' . $this->pluginName . '/';
+            $path .= $this->themeinfo['directory'] . '/' . $this->modinfo['directory'] . '/' . $this->pluginName . '/';
         } else {
-            $path .= $this->modinfo['directory'] . '/';
+            $path .= $this->themeinfo['directory'] . '/' . $this->modinfo['directory'] . '/';
         }
-
+        
         if (!file_exists($path)) {
             mkdir($path, $this->serviceManager['system.chmod_dir'], true);
         }
