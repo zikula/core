@@ -193,7 +193,7 @@ class Categories_DBObject_Category extends DBObject
         $name = $data['name'];
         $cats = CategoryUtil::getCategoriesByParentID($data['parent_id'], '', false, '', 'name');
 
-        if (isset($cats[$name]) && $cats[$name] && $cats[$name]['id'] != $data['id']) {
+        if (isset($cats[$name]) && $cats[$name] && $cats[$name]['id'] != (isset($data['id']) ? $data['id'] : null)) {
             $_SESSION['validationErrors'][$this->_objPath]['name'] = __f(/*!%s is category name*/'Category %s must be unique under parent', $name);
             $_SESSION['validationFailedObjects'][$this->_objPath] = $data;
             return false;
