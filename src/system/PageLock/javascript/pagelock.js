@@ -9,27 +9,29 @@ PageLock.UnlockedPage = function()
 {
     clearTimeout(PageLock.Timer);
     PageLock.Timer = setTimeout(PageLock.RefreshLock, PageLock.PingTime*1000);
-}
+};
 
 
 // Called on window load for locked page
 PageLock.LockedPage = function()
 {
     PageLock.ShowOverlay();
-    $('pageLockCancelButton').focus();
     clearTimeout(PageLock.Timer);
     PageLock.Timer = setTimeout(PageLock.CheckLock, PageLock.PingTime*1000);
-}
+};
 
 
 // Button event handler for "break lock"
 PageLock.BreakLock = function()
 {
-    if (!confirm(PageLock.BreakLockWarning))
-        return false;
-    PageLock.StopLocking(false);
-    return true;
-}
+    Zikula.UI.Confirm(Zikula.__('Are you sure you want to break this lock?'),Zikula.__('Confirm action'),function(res){
+        if (res) {
+            PageLock.StopLocking(false);
+            PageLock.LockBroken = true;
+            PageLock.HideOverlay();
+        }
+    });
+};
 
 
 // Button event handler for "back"
@@ -38,7 +40,7 @@ PageLock.Cancel = function()
     PageLock.HideOverlay();
     window.location = PageLock.ReturnUrl;
     return true;
-}
+};
 
 
 // Ajax method for refreshing existing lock
@@ -53,7 +55,7 @@ PageLock.RefreshLock = function()
           parameters: pars,
           onComplete: PageLock.RefreshLockComplete
       });
-}
+};
 
 
 PageLock.RefreshLockComplete = function(req)
@@ -72,7 +74,7 @@ PageLock.RefreshLockComplete = function(req)
 
     clearTimeout(PageLock.Timer);
     PageLock.Timer = setTimeout(PageLock.RefreshLock, PageLock.PingTime*1000);
-}
+};
 
 
 // Ajax method for trying to fetch lock (waiting for a lock)
@@ -89,7 +91,7 @@ PageLock.CheckLock = function()
           parameters: pars,
           onComplete: PageLock.CheckLockComplete
       });
-}
+};
 
 
 PageLock.CheckLockComplete = function(req)
@@ -112,7 +114,7 @@ PageLock.CheckLockComplete = function(req)
       clearTimeout(PageLock.Timer);
       PageLock.Timer = setTimeout(PageLock.CheckLock, PageLock.PingTime*1000);
     }
-}
+};
 
 
 // Function to stop showing locked window overlay and form
@@ -127,94 +129,42 @@ PageLock.StopLocking = function(doReload)
     {
         PageLock.HideOverlay();
     }
-}
-
+};
 
 // Display locked window overlay and form
 PageLock.ShowOverlay = function()
 {
-    var body = document.getElementsByTagName('body')[0];
-    new Insertion.Top(body, PageLock.LockedHTML);
+    PageLock.Dialog = new Zikula.UI.Dialog(
+        PageLock.LockedHTML,
+        [
+            {name: 'Cancel', value: 'Cancel', label: Zikula.__('Back')},//, action: PageLock.Cancel
+            {name: 'CheckLock', value: 'CheckLock', label: Zikula.__('Check again'), close: false},
+            {name: 'BreakLock', value: 'BreakLock', label: Zikula.__('Ignore Lock'), close: false},
+        ],
+        {modal: true, callback: PageLock.DialogCallback}
+    );
+    PageLock.Dialog.open();
+};
 
-    var overlay = $('pageLockOverlay');
-    var form = $('pageLockOverlayForm');
-    
-    var pageSize = PageLock.getPageSize();
-    
-    overlay.style.height = pageSize.pageHeight+"px";
-    overlay.style.width = pageSize.pageWidth+"px";
-    overlay.style.display = 'block';
-
-    form.style.left = (pageSize.windowWidth/2 - 150) + "px";
-    form.style.top = "100px"; //(pageSize.windowHeight/2 - 100) + "px";
-}
-
+PageLock.DialogCallback = function(res) {
+    switch (res.value) {
+        case 'BreakLock':
+            PageLock.BreakLock();
+            break;
+        case 'CheckLock':
+            PageLock.CheckLock();
+            break;
+        case 'Cancel':
+        default:
+            if (!PageLock.LockBroken) {
+                PageLock.Cancel();
+            }
+            break;
+    }
+};
 
 PageLock.HideOverlay = function()
 {
-    var overlay = $('pageLockOverlay');
-    var form = $('pageLockOverlayForm');
-    
-    overlay.style.display = 'none';
-    form.style.display = 'none';
-}
-
-
-
-
-
-// getPageSize()
-// Returns array with page width, height and window width, height
-// Core code from - quirksmode.org
-// Edit for Firefox by pHaez
-//
-PageLock.getPageSize = function()
-{
-	var xScroll, yScroll;
-	
-	if (window.innerHeight && window.scrollMaxY) {	
-		xScroll = document.body.scrollWidth;
-		yScroll = window.innerHeight + window.scrollMaxY;
-	} else if (document.body.scrollHeight > document.body.offsetHeight){ // all but Explorer Mac
-		xScroll = document.body.scrollWidth;
-		yScroll = document.body.scrollHeight;
-	} else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari
-		xScroll = document.body.offsetWidth;
-		yScroll = document.body.offsetHeight;
-	}
-	
-	var windowWidth, windowHeight;
-	if (self.innerHeight) {	// all except Explorer
-		windowWidth = self.innerWidth;
-		windowHeight = self.innerHeight;
-	} else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
-		windowWidth = document.documentElement.clientWidth;
-		windowHeight = document.documentElement.clientHeight;
-	} else if (document.body) { // other Explorers
-		windowWidth = document.body.clientWidth;
-		windowHeight = document.body.clientHeight;
-	}	
-	
-	// for small pages with total height less then height of the viewport
-	if(yScroll < windowHeight){
-		pageHeight = windowHeight;
-	} else { 
-		pageHeight = yScroll;
-	}
-
-	// for small pages with total width less then width of the viewport
-	if(xScroll < windowWidth){	
-		pageWidth = windowWidth;
-	} else {
-		pageWidth = xScroll;
-	}
-
-	arrayPageSize = 
-	{
-	  pageWidth: pageWidth,
-	  pageHeight: pageHeight,
-	  windowWidth: windowWidth,
-	  windowHeight: windowHeight
-	}; 
-	return arrayPageSize;
-}
+    PageLock.Dialog.close();
+    return;
+};

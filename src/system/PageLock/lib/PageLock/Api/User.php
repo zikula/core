@@ -30,9 +30,7 @@ class PageLock_Api_User extends Zikula_Api
         $lockedHtml = '';
 
         if (!empty($lockName) || !$ignoreEmptyLock) {
-            PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
-            PageUtil::AddVar('javascript', 'javascript/ajax/scriptaculous.js');
-            PageUtil::AddVar('javascript', 'javascript/helpers/Zikula.js');
+            PageUtil::AddVar('javascript', 'zikula.ui');
             PageUtil::AddVar('javascript', 'system/PageLock/javascript/pagelock.js');
             PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('pagelock'));
 
@@ -72,7 +70,6 @@ class PageLock_Api_User extends Zikula_Api
 
         $html .= "
 PageLock.LockName = '$lockName';
-PageLock.BreakLockWarning = '" . __('Are you sure you want to break this lock?')  . "';
 PageLock.ReturnUrl = '$returnUrl';
 PageLock.PingTime = " . (PageLockLifetime*2/3) . ";
 PageLock.LockedHTML = '" . $lockedHtml . "';
