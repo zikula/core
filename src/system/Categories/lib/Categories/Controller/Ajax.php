@@ -25,7 +25,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
 
-        $data = json_decode(FormUtil::getPassedValue('data', null, 'post'), true);
+        $data  = json_decode($this->request->getPost()->get('data'), true);
         $cats = CategoryUtil::getSubCategories(1, true, true, true, true, true, '', 'id');
 
         foreach ($cats as $k => $cat) {
@@ -48,12 +48,12 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
     {
         $this->checkAjaxToken();
 
-        $mode = FormUtil::getPassedValue('mode', 'new');
+        $mode = $this->request->getPost()->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', $accessLevel));
 
-        $cid = isset($args['cid']) ? $args['cid'] : FormUtil::getPassedValue('cid', 0);
-        $parent = isset($args['parent']) ? $args['parent'] : FormUtil::getPassedValue('parent', 1, 'post');
+        $cid = isset($args['cid']) ? $args['cid'] : $this->request->getPost()->get('cid', 0);
+        $parent = isset($args['parent']) ? $args['parent'] : $this->request->getPost()->get('parent', 1);
         $validationErrors = FormUtil::getValidationErrors();
         $editCat = '';
 
@@ -107,8 +107,8 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD));
 
-        $cid = FormUtil::getPassedValue('cid', null, 'post');
-        $parent = FormUtil::getPassedValue('parent', null, 'post');
+        $cid = $this->request->getPost()->get('cid');
+        $parent = $this->request->getPost()->get('parent');
 
         $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
         $cat->copy($parent);
@@ -150,7 +150,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
 
-        $cid = FormUtil::getPassedValue('cid', null, 'post');
+        $cid = $this->request->getPost()->get('cid');
         $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
         $cat->delete(true);
 
@@ -167,7 +167,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
 
-        $cid = FormUtil::getPassedValue('cid', null, 'post');
+        $cid = $this->request->getPost()->get('cid');
         $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
         $cat->setDataField('status', 'A');
         $cat->update();
@@ -185,7 +185,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
 
-        $cid = FormUtil::getPassedValue('cid', null, 'post');
+        $cid = $this->request->getPost()->get('cid');
         $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
         $cat->setDataField('status', 'I');
         $cat->update();
@@ -201,7 +201,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
     public function save()
     {
         $this->checkAjaxToken();
-        $mode = FormUtil::getPassedValue('mode', 'new');
+        $mode = $this->request->getPost()->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', $accessLevel));
 
@@ -220,8 +220,8 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         }
 
         $attributes = array();
-        $values = FormUtil::getPassedValue('attribute_value', 'POST');
-        foreach (FormUtil::getPassedValue('attribute_name', 'POST') as $index => $name) {
+        $values = $this->request->getPost()->get('attribute_value');
+        foreach ($this->request->getPost()->get('attribute_name') as $index => $name) {
             if (!empty($name)) {
                 $attributes[$name] = $values[$index];
             }
@@ -231,7 +231,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
 
         if ($mode == 'edit') {
             // retrieve old category from DB
-            $category = FormUtil::getPassedValue('category', null, 'POST');
+            $category = $this->request->getPost()->get('category');
             $oldCat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $category['id']);
 
             // update new category data
