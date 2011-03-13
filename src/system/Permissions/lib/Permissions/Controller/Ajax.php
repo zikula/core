@@ -174,12 +174,13 @@ class Permissions_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function testpermission()
     {
+        $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        $uname = $this->request->getGet()->get('test_user', '');
-        $comp  = $this->request->getGet()->get('test_component', '.*');
-        $inst  = $this->request->getGet()->get('test_instance', '.*');
-        $level = $this->request->getGet()->get('test_level', ACCESS_READ);
+        $uname = $this->request->getPost()->get('test_user', '');
+        $comp  = $this->request->getPost()->get('test_component', '.*');
+        $inst  = $this->request->getPost()->get('test_instance', '.*');
+        $level = $this->request->getPost()->get('test_level', ACCESS_READ);
 
         $result = $this->__('Permission check result:') . ' ';
         $uid = UserUtil::getIdFromName($uname);
