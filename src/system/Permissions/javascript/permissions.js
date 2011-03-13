@@ -103,8 +103,6 @@ function permappend()
         new Zikula.Ajax.Request(
             "ajax.php?module=Permissions&func=createpermission",
             {
-                method: 'post', 
-                authid: 'permissionsauthid',
                 onComplete: permappend_response
             });
     }
@@ -244,9 +242,7 @@ function sortorderchanged()
     new Zikula.Ajax.Request(
         "ajax.php?module=Permissions&func=changeorder",
         {
-            method: 'post',
             parameters: pars,
-            authid: 'permissionsauthid',
             onComplete: sortorderchanged_response
         });
 }
@@ -320,8 +316,6 @@ function permmodify(permid)
         new Zikula.Ajax.Request(
             "ajax.php?module=Permissions&func=updatepermission",
             {
-                method: 'post',
-                authid: 'permissionsauthid',
                 parameters: pars, 
                 onComplete: permmodify_response
             });
@@ -385,9 +379,7 @@ function permdelete(permid)
         new Zikula.Ajax.Request(
             "ajax.php?module=Permissions&func=deletepermission",
             {
-                method: 'post',
                 parameters: pars,
-                authid: 'permissionsauthid',
                 onComplete: permdelete_response
             }); 
     }
@@ -592,7 +584,6 @@ function performpermissiontest()
     new Zikula.Ajax.Request(
         "ajax.php?module=Permissions&func=testpermission",
         {
-            method: 'get', 
             parameters: pars, 
             onComplete: performpermissiontest_response
         }
