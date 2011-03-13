@@ -763,6 +763,7 @@ class CategoryUtil
             $oldID = $cat['id'];
             $cat['id'] = '';
             $cat['parent_id'] = isset($oldToNewID[$cat['parent_id']]) ? $oldToNewID[$cat['parent_id']] : $newParent['id'];
+            $cat['sort_value'] = null;
             $catObj = new Categories_DBObject_Category($cat);
             $catObj->insert();
             $oldToNewID[$oldID] = $catObj->_objData['id'];
