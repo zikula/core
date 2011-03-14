@@ -62,7 +62,7 @@
     <fieldset>
         <legend>{gt text="Block display settings"}</legend>
         {if $somethemes}
-        <p class="z-formnote z-informationmsg">{gt text='<strong>Note</strong>: some templates and/or stylesheets are found only in certain themes. These templates and stylesheets have been included in the "Only in some themes" group. Choosing a template or a stylesheet from this group you must take into account the fact that it might not be available in certain theme - in such situation default template and style ("menutree_block_menutree.htm") is used.'}</p>
+        <p class="z-formnote z-informationmsg">{gt text='<strong>Note</strong>: some templates and/or stylesheets are found only in certain themes. These templates and stylesheets have been included in the "Only in some themes" group. Choosing a template or a stylesheet from this group you must take into account the fact that it might not be available in certain theme - in such situation default template and style ("blocks_block_menutree_default.tpl") is used.'}</p>
         {/if}
         <div class="z-formrow">
             <label for="menutree_tpl">{gt text="Template"}</label>
