@@ -30,20 +30,16 @@ Event.observe(window, 'load', function() {
                     });
                     Event.stopObserving(element.id, 'mousemove');
                 });
-                pars = Sortable.serialize("admintabs");
+                var pars = Sortable.serialize("admintabs");
                 //send the new sort order to the ajax controller
                 new Zikula.Ajax.Request(
                     "ajax.php?module=Admin&type=ajax&func=sortCategories", {
-                        method: 'get',
                         parameters: pars,
-                        authid: 'admintabsauthid',
                         onComplete: function (req) {
                             if (!req.isSuccess()) {
                                 Zikula.showajaxerror(req.getMessage());
                                 return;
                             }
-                            //nothing needs to be updated, just authids
-                            var data = req.getData();
                             return;
                         }
                     }
@@ -64,19 +60,15 @@ Event.observe(window, 'load', function() {
             only: Array("z-adminiconcontainer"),
             handle: 'z-dragicon',
             onUpdate: function(element){
-                pars = Sortable.serialize("modules");
+                var pars = Sortable.serialize("modules");
                 //send the new order to the ajax controller
                 new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=sortModules", {
-                    method: 'get',
                     parameters: pars,
-                    authid: 'admintabsauthid',
                     onComplete: function (req) {
                         if (!req.isSuccess()) {
                             Zikula.showajaxerror(req.getMessage());
                             return;
                         }
-                        //nothing needs to be updated, just authids
-                        var data = req.getData();
                         return;
                     }
                 });
@@ -193,6 +185,7 @@ var nelement = $(nid);
         submitOnBlur: true,
         okControl: false,
         cancelControl: false,
+        ajaxOptions: Zikula.Ajax.Request.defaultOptions(),
         // in webkit browsers , when submitOnBlur is true
         // enter press causes form submission twice so catch this event, stop it and call blur on input
         onFormCustomization: function(obj, form) {
@@ -204,13 +197,14 @@ var nelement = $(nid);
             });
         },
         callback: function(form, value) {
-            var authid = $('admintabsauthid').value;
             var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
-            return 'catname='+encodeURIComponent(value)+'&cid='+cid+'&authid='+authid;
+            return {
+                catname: value,
+                cid: cid
+            };
         },
         onComplete: function(transport, element) {
             transport = Zikula.Ajax.Response.extend(transport);
-            $('admintabsauthid').setValue(transport.getAuthid());
             if (!transport.isSuccess()) {
                 this.element.innerHTML = Admin.Editor.getOrig(element.id);
                 Zikula.showajaxerror(transport.getMessage());
@@ -262,11 +256,11 @@ Admin.Editor.getOrig = function(nid)
  */
 Admin.Tab.Delete = function(id)
 {
-    var pars = "cid=" + id;
+    var pars = {
+        cid: id
+    }
     new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=deleteCategory", {
-        method : 'get',
         parameters: pars,
-        authid: 'admintabsauthid',
         onComplete : Admin.Tab.DeleteResponse
     });
 }
@@ -298,11 +292,11 @@ Admin.Tab.DeleteResponse = function(req)
  */
 Admin.Tab.setDefault = function(id)
 {
-    var pars = "cid=" + id;
+    var pars = {
+        cid: id
+    }
     new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=defaultCategory", {
-        method : 'get',
         parameters: pars,
-        authid: 'admintabsauthid',
         onComplete : Admin.Tab.setDefaultResponse
     });
 }
@@ -319,7 +313,6 @@ Admin.Tab.setDefaultResponse = function(req)
     	Zikula.showajaxerror(req.getMessage());
         return;
     }
-    var data = req.getData();
     return;
 }
 
@@ -334,11 +327,12 @@ Admin.Module.Move = function(id,cid)
 {
     var id = id.substr(7);
     var cid = cid.substr(1);
-    var pars = "modid=" + id + "&cat=" + cid;
+    var pars = {
+        modid:  id,
+        cat: cid
+    }
     new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=changeModuleCategory", {
-        method : 'get',
         parameters: pars,
-        authid: 'admintabsauthid',
         onComplete : Admin.Module.moveResponse
     });
 }
@@ -405,11 +399,11 @@ Admin.Category.Add = function(cat)
         Admin.Category.Cancel(oldcat);
         return false;
     }
-    var pars = "catname=" + catname;
+    var pars = {
+        catname: catname
+    }
     new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=addCategory", {
-        method : 'get',
         parameters: pars,
-        authid: 'admintabsauthid',
         onComplete : Admin.Category.addResponse
     });
     return false;
