@@ -16,12 +16,12 @@
 /**
  * Zikula_View function provide {continue} in templates.
  *
- * @param string      $content The content.
- * @param Zikula_View $view    Reference to the Zikula_View object.
+ * @param string          $content  The content.
+ * @param Smarty_Compiler $compiler Compiler object.
  *
  * @return string 'continue;'
  */
-function smarty_compiler_continue($content, Zikula_View $view)
+function smarty_compiler_continue($content, Smarty_Compiler $compiler)
 {
     return 'continue;';
 }

@@ -16,12 +16,12 @@
 /**
  * Zikula_View function provide {break} in templates.
  *
- * @param string      $content The content.
- * @param Zikula_View $view    Reference to the Zikula_View object.
+ * @param string          $content  The content.
+ * @param Smarty_Compiler $compiler Compiler object.
  *
  * @return string 'break;'
  */
-function smarty_compiler_break($content, Zikula_View $view)
+function smarty_compiler_break($content, Smarty_Compiler $compiler)
 {
     return 'break;';
 }
