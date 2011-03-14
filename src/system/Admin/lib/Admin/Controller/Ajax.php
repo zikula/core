@@ -20,21 +20,13 @@ class Admin_Controller_Ajax extends Zikula_Controller_Ajax
      * @return AjaxUtil::output Output to the calling ajax request is returned.
      *                          response is a string moduleid on sucess.
      */
-    public function changeModuleCategory() {
+    public function changeModuleCategory()
+    {
+        $this->checkAjaxToken();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
 
-        //security checks
-        if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
-
-        //get passed information
-        $moduleID = FormUtil::getPassedValue("modid");
-        $newParentCat = FormUtil::getPassedValue("cat");
+        $moduleID = $this->request->getPost()->get('modid');
+        $newParentCat = $this->request->getPost()->get('cat');
 
         //get info on the module
         $module = ModUtil::getInfo($moduleID);
@@ -52,6 +44,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_Ajax
         if(!$result) {
             throw new Zikula_Exception_Fatal($this->__('Error! Could not add module to module category.'));
         }
+        $output = array();
         $output['response'] = $moduleID;
         $output['newParentCat'] = $newParentCat;
         $output['oldcid'] = $oldcid;
@@ -67,19 +60,14 @@ class Admin_Controller_Ajax extends Zikula_Controller_Ajax
      *                          response is a string the new cid on sucess.
      *                          url is a formatted url to the new category on success.
      */
-    public function addCategory() {
-        //security checks
-        if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
+    public function addCategory()
+    {
+        $this->checkAjaxToken();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
 
         //get form information
-        $catName = trim(FormUtil::getPassedValue('catname'));
+        $catName = trim($this->request->getPost()->get('catname'));
+
         //TODO make sure catName is set.
 
         //check if there exists a cat with this name.
@@ -95,6 +83,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_Ajax
         if (!$result) {
             throw new Zikula_Exception_Fatal($this->__('The category could not be created.'));
         }
+        $output = array();
         $output['response'] = $result;
         $url = ModUtil::url('Admin', 'admin', 'adminpanel', array('acid' => $result));
         $output['url'] = $url;
@@ -107,25 +96,22 @@ class Admin_Controller_Ajax extends Zikula_Controller_Ajax
      * @return AjaxUtil::output Output to the calling ajax request is returned.
      *                          response is a string cid on success.
      */
-    public function deleteCategory() {
-        //security checks
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
+    public function deleteCategory()
+    {
+        $this->checkAjaxToken();
+
         //get passed cid to delete
-        $cid = trim(FormUtil::getPassedValue('cid'));
+        $cid = trim($this->request->getPost()->get('cid'));
         //check user has permission to delete this
-        if (!SecurityUtil::checkPermission('Admin::Category', "::$cid", ACCESS_DELETE)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "::$cid", ACCESS_DELETE));
+
         //find the category corresponding to the cid.
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if ($category == false) {
             throw new Zikula_Exception_Fatal($this->__('Error! No such category found.'));
         }
 
+        $output = array();
         //delete the category
         if (ModUtil::apiFunc('Admin', 'admin', 'delete', array('cid' => $cid))) {
             // Success
@@ -141,26 +127,22 @@ class Admin_Controller_Ajax extends Zikula_Controller_Ajax
      *
      * @return AjaxUtil::output Output to the calling ajax request is returned.
      */
-    public function editCategory() {
+    public function editCategory()
+    {
+        $this->checkAjaxToken();
         //get form values
-        $cid = trim(FormUtil::getPassedValue('cid'));
-        $cat = trim(FormUtil::getPassedValue('catname'));
+        $cid = trim($this->request->getPost()->get('cid'));
+        $cat = trim($this->request->getPost()->get('catname'));
 
         //security checks
-        if (!SecurityUtil::checkPermission('Admin::Category', "$cat[catname]::$cid", ACCESS_EDIT)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "$cat[catname]::$cid", ACCESS_EDIT));
 
         //make sure cid and category name (cat) are both set
         if (!isset($cid) || $cid == '' || !isset($cat) || $cat == '') {
             throw new Zikula_Exception_BadData($this->__('No category name or id set.'));
         }
 
+        $output = array();
         //check if category with same name exists
         $cats = ModUtil::apiFunc('Admin', 'admin', 'getall');
         foreach ($cats as $catName) {
@@ -196,25 +178,21 @@ class Admin_Controller_Ajax extends Zikula_Controller_Ajax
      * @return AjaxUtil::output Output to the calling ajax request is returned.
      *                          response is a string message on success.
      */
-    public function defaultCategory() {
-        //security checks
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
-        //get passed cid
-        $cid = trim(FormUtil::getPassedValue('cid'));
+    public function defaultCategory()
+    {
+        $this->checkAjaxToken();
         //check user has permission to change the initially selected category
-        if (!SecurityUtil::checkPermission('Admin::', "::", ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
+
+        //get passed cid
+        $cid = trim($this->request->getPost()->get('cid'));
         //find the category corresponding to the cid.
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if ($category == false) {
             return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')),array(), true);
         }
 
+        $output = array();
         //make category the initially selected one
         if (ModUtil::setVar('Admin', 'startcategory', $cid)) {
             // Success
@@ -225,17 +203,14 @@ class Admin_Controller_Ajax extends Zikula_Controller_Ajax
         throw new Zikula_Exception_Fatal($this->__('Error! Could not make this category default.'));
     }
     
-    public function sortCategories() {
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
-        
-        if (!SecurityUtil::checkPermission('Admin::', "::", ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
-        $data = FormUtil::getPassedValue('admintabs');
+    public function sortCategories()
+    {
+        $this->checkAjaxToken();
+
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
+
+        $data = $this->request->getPost()->get('admintabs');
+
         $objects = array();
         foreach ($data as $order => $id) {
             array_push($objects, array("cid" => $id, "order" => $order));
@@ -245,17 +220,14 @@ class Admin_Controller_Ajax extends Zikula_Controller_Ajax
     }
     
     
-     public function sortModules() {
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            throw new Zikula_Exception_Fatal();
-        }
-        
-        if (!SecurityUtil::checkPermission('Admin::', "::", ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null,true);
-            throw new Zikula_Exception_Forbidden();
-        }
-        $data = FormUtil::getPassedValue('modules');
+     public function sortModules()
+    {
+        $this->checkAjaxToken();
+
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
+
+        $data = $this->request->getPost()->get('modules');
+
         $objects = array();
         foreach ($data as $order => $id) {
             array_push($objects, array("mid" => $id, "order" => $order));

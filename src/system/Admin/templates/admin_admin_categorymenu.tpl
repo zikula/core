@@ -53,6 +53,4 @@
     {include file='admin_admin_ajaxAddCategory.tpl'}
 </div>
 
-<div class="z-hide" id="admintabs-none">
-    <input type="hidden" name="authid" id="admintabsauthid" value="{insert name="generateauthkey" module="Admin"}" />
-</div>
+<div class="z-hide" id="admintabs-none"></div>
