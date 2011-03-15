@@ -24,8 +24,10 @@ class Extensions_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function togglesubscriberareastatus()
     {
-        // get subscriberarea from GET
-        $subscriberarea = FormUtil::getPassedValue('subscriberarea', '', 'GET');
+        $this->checkAjaxToken();
+
+        // get subscriberarea from POST
+        $subscriberarea = $this->request->getPost()->get('subscriberarea','');
         if (empty($subscriberarea)) {
             throw new Zikula_Exception_Fatal($this->__('No subscriber area passed.'));
         }
@@ -38,13 +40,11 @@ class Extensions_Controller_Ajax extends Zikula_Controller_Ajax
         if (!ModUtil::available($subscriber)) {
             throw new Zikula_Exception_Fatal($this->__f('Subscriber module "%s" is not available.', $subscriber));
         }
-        if (!SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null, true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN));
 
-        // get providerarea from GET
-        $providerarea = FormUtil::getPassedValue('providerarea', '', 'GET');
+        // get providerarea from POST
+        $providerarea = $this->request->getPost()->get('providerarea','');
+
         if (empty($providerarea)) {
             throw new Zikula_Exception_Fatal($this->__('No provider area passed.'));
         }
@@ -57,10 +57,7 @@ class Extensions_Controller_Ajax extends Zikula_Controller_Ajax
         if (!ModUtil::available($provider)) {
             throw new Zikula_Exception_Fatal($this->__f('Provider module "%s" is not available.', $provider));
         }
-        if (!SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null, true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN));
 
         // check if binding between areas exists
         $binding = HookUtil::bindingBetweenAreas($subscriberarea, $providerarea);
@@ -84,8 +81,10 @@ class Extensions_Controller_Ajax extends Zikula_Controller_Ajax
      */
     public function changeproviderareaorder()
     {
-        // get subscriberarea from GET
-        $subscriberarea = FormUtil::getPassedValue('subscriberarea', '', 'GET');
+        $this->checkAjaxToken();
+
+        // get subscriberarea from POST
+        $subscriberarea = $this->request->getPost()->get('subscriberarea','');
         if (empty($subscriberarea)) {
             throw new Zikula_Exception_Fatal($this->__('No subscriber area passed.'));
         }
@@ -98,13 +97,10 @@ class Extensions_Controller_Ajax extends Zikula_Controller_Ajax
         if (!ModUtil::available($subscriber)) {
             throw new Zikula_Exception_Fatal($this->__f('Subscriber module "%s" is not available.', $subscriber));
         }
-        if (!SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
-            LogUtil::registerPermissionError(null, true);
-            throw new Zikula_Exception_Forbidden();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN));
 
-        // get providers' areas from GET
-        $providerarea = FormUtil::getPassedValue('providerarea');
+        // get providers' areas from POST
+        $providerarea = $this->request->getPost()->get('providerarea','');
         if (!(is_array($providerarea) && count($providerarea) > 0)) {
             throw new Zikula_Exception_Fatal($this->__('Providers\' areas order is not an array.'));
         }
@@ -112,8 +108,8 @@ class Extensions_Controller_Ajax extends Zikula_Controller_Ajax
         // set sorting
         HookUtil::setDisplaySortsByArea($subscriberarea, $providerarea);
 
-        $ol_id = FormUtil::getPassedValue('ol_id', '', 'GET');
-       
+        $ol_id = $this->request->getPost()->get('ol_id','');
+
         return new Zikula_Response_Ajax(array('result' => true, 'ol_id' => $ol_id));
     }
 }
