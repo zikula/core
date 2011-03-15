@@ -14,11 +14,9 @@
 
 /**
  * Zikula_FileSystem_Local is the standard driver for Local/Direct connections.
- *
- * This class extends Zikula_FileSystem_AbstractDriver.
  */
-class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver {
-
+class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
+{
     /**
      * Resource handle.
      *

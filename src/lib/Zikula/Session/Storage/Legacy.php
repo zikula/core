@@ -19,9 +19,8 @@
  * This Storage driver couples directly to the old SessionUtil methodology.
  * This will eventually be phased out.
  */
-class Zikula_Session_Storage_Legacy implements Zikula_Session_Storage
+class Zikula_Session_Storage_Legacy implements Zikula_Session_StorageInterface
 {
-
     /**
      * {@inheritdoc}
      */

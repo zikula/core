@@ -12,7 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-interface Zikula_Plugin_Configurable
+/**
+ * Zikula_Plugin_ConfigurableInterface.
+ */
+interface Zikula_Plugin_ConfigurableInterface
 {
     /**
      * Return an instance of the configuration controller.

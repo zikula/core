@@ -14,7 +14,7 @@
 /**
  * SwiftMailer plugin definition.
  */
-class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Plugin_Configurable, Zikula_Plugin_AlwaysOn
+class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_ConfigurableInterface, Zikula_Plugin_AlwaysOnInterface
 {
     /**
      * Get plugin meta data.

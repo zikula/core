@@ -281,13 +281,13 @@ class Zikula_Core
     }
 
     /**
-     * Load and attach handlers for Zikula_EventHandler listeners.
+     * Load and attach handlers for Zikula_AbstractEventHandler listeners.
      *
-     * Loads event handlers that extend Zikula_EventHandler
+     * Loads event handlers that extend Zikula_AbstractEventHandler
      *
      * @param string $className The name of the class.
      *
-     * @throws LogicException If class is not instance of Zikula_EventHandler.
+     * @throws LogicException If class is not instance of Zikula_AbstractEventHandler.
      *
      * @return void
      */
@@ -296,8 +296,8 @@ class Zikula_Core
         $r = new ReflectionClass($className);
         $handler = $r->newInstance($this->serviceManager);
 
-        if (!$handler instanceof Zikula_EventHandler) {
-            throw new LogicException(sprintf('Class %s must be an instance of Zikula_EventHandler', $className));
+        if (!$handler instanceof Zikula_AbstractEventHandler) {
+            throw new LogicException(sprintf('Class %s must be an instance of Zikula_AbstractEventHandler', $className));
         }
 
         $handler->setup();

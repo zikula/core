@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Extensions_Controller_Ajax extends Zikula_Controller_Ajax
+class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
     /**
      * togglesubscriberareastatus

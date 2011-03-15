@@ -21,7 +21,7 @@
  * The only purpose to this class is to provide a configuration object to be used by the
  * Local driver.
  */
-class Zikula_FileSystem_Configuration_Local implements Zikula_FileSystem_Configuration
+class Zikula_FileSystem_Configuration_Local implements Zikula_FileSystem_ConfigurationInterface
 {
     /**
      * Start directory.

@@ -16,7 +16,7 @@
 /**
  * Storage interface.
  */
-interface Zikula_Session_Storage
+interface Zikula_Session_StorageInterface
 {
     /**
      * Start session.

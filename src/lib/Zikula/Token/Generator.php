@@ -63,10 +63,10 @@ class Zikula_Token_Generator
     /**
      * Constructor.
      * 
-     * @param Zikula_Token_Storage $storage Storage driver.
-     * @param string               $secret  Secret to sign tokens with.
+     * @param Zikula_Token_StorageInterface $storage Storage driver.
+     * @param string                        $secret  Secret to sign tokens with.
      */
-    public function __construct(Zikula_Token_Storage $storage, $secret)
+    public function __construct(Zikula_Token_StorageInterface $storage, $secret)
     {
         $this->storage = $storage;
         $this->secret = $secret;

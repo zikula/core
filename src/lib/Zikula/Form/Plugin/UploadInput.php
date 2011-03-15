@@ -16,7 +16,7 @@
 /**
  * Zikula_Form_Plugin_UploadInput
  */
-class Zikula_Form_Plugin_UploadInput extends Zikula_Form_StyledPlugin
+class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
 {
     /**
      * Input field name.

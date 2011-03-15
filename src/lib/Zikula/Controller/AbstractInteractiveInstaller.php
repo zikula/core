@@ -16,7 +16,7 @@
 /**
  * Abstract controller for module installer.
  */
-abstract class Zikula_Controller_InteractiveInstaller extends Zikula_Controller
+abstract class Zikula_Controller_AbstractInteractiveInstaller extends Zikula_AbstractController
 {
     /**
      * Post Setup hook.

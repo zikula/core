@@ -34,7 +34,7 @@
  * - <b>handleCommand</b>: this event is fired by various plugins on the page. Typically it is done by the
  *   Zikula_Form_Plugin_Button plugin to signal that the user activated a button.
  */
-abstract class Zikula_Form_Handler implements Zikula_Translatable
+abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterface
 {
     /**
      * Translation domain.
@@ -223,7 +223,7 @@ abstract class Zikula_Form_Handler implements Zikula_Translatable
             $args['controller'] = $this->view->get_tpl_var('controller');
         }
 
-        if (!$args['controller'] instanceof Zikula_Controller) {
+        if (!$args['controller'] instanceof Zikula_ControllerAbstract) {
             throw new InvalidArgumentException(__f('%s is not an instance of Zikula_Controller, the $args[\'controller\'] argument must be the controller who is notifying these hooks', get_class($this)));
         }
 

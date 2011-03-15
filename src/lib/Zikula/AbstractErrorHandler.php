@@ -16,7 +16,7 @@
 /**
  * Zikula ErrorHandler base class.
  */
-abstract class Zikula_ErrorHandler
+abstract class Zikula_AbstractErrorHandler
 {
     const EMERG = 0; // Emergency: system is unusable
     const ALERT = -1; // Alert: action must be taken immediately
@@ -91,14 +91,14 @@ abstract class Zikula_ErrorHandler
      *
      * Values:
      * <ul>
-     *   <li>Zikula_ErrorHandler::EMERG</li>
-     *   <li>Zikula_ErrorHandler::ALERT</li>
-     *   <li>Zikula_ErrorHandler::CRIT</li>
-     *   <li>Zikula_ErrorHandler::ERR</li>
-     *   <li>Zikula_ErrorHandler::WARN</li>
-     *   <li>Zikula_ErrorHandler::NOTICE</li>
-     *   <li>Zikula_ErrorHandler::INFO</li>
-     *   <li>Zikula_ErrorHandler::DEBUG</li>
+     *   <li>Zikula_AbstractErrorHandler::EMERG</li>
+     *   <li>Zikula_AbstractErrorHandler::ALERT</li>
+     *   <li>Zikula_AbstractErrorHandler::CRIT</li>
+     *   <li>Zikula_AbstractErrorHandler::ERR</li>
+     *   <li>Zikula_AbstractErrorHandler::WARN</li>
+     *   <li>Zikula_AbstractErrorHandler::NOTICE</li>
+     *   <li>Zikula_AbstractErrorHandler::INFO</li>
+     *   <li>Zikula_AbstractErrorHandler::DEBUG</li>
      * </ul>
      *
      * @var integer

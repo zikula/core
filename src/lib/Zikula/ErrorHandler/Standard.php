@@ -16,7 +16,7 @@
 /**
  * Standard class.
  */
-class Zikula_ErrorHandler_Standard extends Zikula_ErrorHandler
+class Zikula_ErrorHandler_Standard extends Zikula_AbstractErrorHandler
 {
     /**
      * Handles an error.

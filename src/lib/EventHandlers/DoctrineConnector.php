@@ -15,7 +15,7 @@
 /**
  * Doctrine listeners.
  */
-class DoctrineListener extends Zikula_EventHandler
+class DoctrineListener extends Zikula_AbstractEventHandler
 {
     /**
      * The Doctrine Manager instance.

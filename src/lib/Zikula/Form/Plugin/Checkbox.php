@@ -18,7 +18,7 @@
  *
  * Plugin to generate a checkbox for true/false selection.
  */
-class Zikula_Form_Plugin_Checkbox extends Zikula_Form_StyledPlugin
+class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
 {
     /**
      * Checked value.

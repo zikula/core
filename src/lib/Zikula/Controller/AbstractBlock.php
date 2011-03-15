@@ -16,7 +16,7 @@
 /**
  * Abstract controller for blocks.
  */
-abstract class Zikula_Controller_Block extends Zikula_Controller
+abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
 {
     /**
      * Initialise interface.

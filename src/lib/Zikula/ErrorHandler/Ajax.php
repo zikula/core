@@ -16,7 +16,7 @@
 /**
  * Ajax class.
  */
-class Zikula_ErrorHandler_Ajax extends Zikula_ErrorHandler
+class Zikula_ErrorHandler_Ajax extends Zikula_AbstractErrorHandler
 {
     /**
      * ErrorHandler for ajax front controller.

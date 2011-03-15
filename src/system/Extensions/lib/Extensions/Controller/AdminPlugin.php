@@ -15,12 +15,12 @@
 /**
  * Extensions_Plugin controller.
  */
-class Extensions_Controller_AdminPlugin extends Zikula_Controller
+class Extensions_Controller_AdminPlugin extends Zikula_AbstractController
 {
     /**
      * Plugin instance.
      *
-     * @var Zikula_Plugin
+     * @var Zikula_AbstractPlugin
      */
     protected $plugin;
 
@@ -68,7 +68,7 @@ class Extensions_Controller_AdminPlugin extends Zikula_Controller
 
         // Sanity checks.
         $this->throwNotFoundUnless($this->plugin->isInstalled(), __f('Plugin "%s" is not installed', $this->plugin->getMetaDisplayName()));
-        $this->throwForbiddenUnless($this->plugin instanceof Zikula_Plugin_Configurable, __f('Plugin "%s" is not configurable', $this->plugin->getMetaDisplayName()));
+        $this->throwForbiddenUnless($this->plugin instanceof Zikula_Plugin_ConfigurableInterface, __f('Plugin "%s" is not configurable', $this->plugin->getMetaDisplayName()));
 
         $this->pluginController = $this->plugin->getConfigurationController();
         $this->throwNotFoundUnless($this->pluginController->getReflection()->hasMethod($action));

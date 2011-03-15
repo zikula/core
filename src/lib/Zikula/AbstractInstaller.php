@@ -16,7 +16,7 @@
 /**
  * Abstract controller for module installer.
  */
-abstract class Zikula_Installer extends Zikula_Base 
+abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
 {
     /**
      * Version instance of the module.

@@ -15,6 +15,6 @@
 /**
  * Abstract class for configuration classes.
  */
-interface Zikula_FileSystem_Configuration
+interface Zikula_FileSystem_ConfigurationInterface
 {
 }

@@ -361,7 +361,7 @@ class HookUtil
             try {
                 $eventManager->attach($handler['eventname'], $callable, $handler['weight']);
             } catch (InvalidArgumentException $e) {
-                LogUtil::log(sprintf("Hook event handler could not be attached because %s", $e->getMessage()), Zikula_ErrorHandler::ERR);
+                LogUtil::log(sprintf("Hook event handler could not be attached because %s", $e->getMessage()), Zikula_AbstractErrorHandler::ERR);
             }
         }
     }

@@ -16,7 +16,7 @@
 /**
  * AbstractBase class for module abstract controllers and apis.
  */
-abstract class Zikula_Base implements Zikula_Translatable
+abstract class Zikula_AbstractBase implements Zikula_Translatable
 {
     /**
      * Name.

@@ -16,7 +16,7 @@
 /**
  * Base implementation for checkbox and dropdown list
  */
-class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_StyledPlugin
+class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlugin
 {
     /**
      * Enable or disable read only mode.

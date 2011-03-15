@@ -31,7 +31,7 @@
  * $this->styleAttributes['border-right'] = '1px solid green';
  * </code>
  */
-abstract class Zikula_Form_StyledPlugin extends Zikula_Form_Plugin
+abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlugin
 {
     /**
      * Styles added programatically.

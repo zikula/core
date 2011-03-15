@@ -14,9 +14,9 @@
  */
 
 /**
- * Zikula_Plugin abstract class.
+ * Zikula_AbstractPlugin abstract class.
  */
-abstract class Zikula_Plugin extends Zikula_EventHandler implements Zikula_Translatable
+abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler implements Zikula_TranslatableInterface
 {
     /**
      * Module plugin identifier.
@@ -145,7 +145,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler implements Zikula_Trans
 
         $meta = $this->getMeta();
         if (!isset($meta['displayname']) && !isset($meta['description']) && !isset($meta['version'])) {
-            throw new InvalidArgumentException(sprintf('%s->getMeta() must be implemented according to the abstract.  See docblock in Zikula_Plugin for details', get_class($this)));
+            throw new InvalidArgumentException(sprintf('%s->getMeta() must be implemented according to the abstract.  See docblock in Zikula_AbstractPlugin for details', get_class($this)));
         }
         
         // Load any handlers if they exist
@@ -157,7 +157,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler implements Zikula_Trans
     /**
      * Optional setup of handler definitions.
      *
-     * Overriding the Zikula_EventHandler interface which required this.
+     * Overriding the Zikula_AbstractEventHandler interface which required this.
      *
      * <samp>
      *    $this->addHandlerDefinition('some.event', 'handler', 10);
@@ -472,7 +472,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler implements Zikula_Trans
      */
     public function isEnabled()
     {
-        if ($this instanceof Zikula_Plugin_AlwaysOn) {
+        if ($this instanceof Zikula_Plugin_AlwaysOnInterface) {
             return true;
         }
         
@@ -487,7 +487,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler implements Zikula_Trans
      */
     public function isInstalled()
     {
-        if ($this instanceof Zikula_Plugin_AlwaysOn) {
+        if ($this instanceof Zikula_Plugin_AlwaysOnInterface) {
             return true;
         }
 

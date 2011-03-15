@@ -1286,7 +1286,7 @@ class pnFormRender extends Zikula_Form_View
  * @deprecated
  * @see Zikula_Form_Plugin::
  */
-class pnFormPlugin extends Zikula_Form_Plugin
+class pnFormPlugin extends Zikula_Form_AbstractPlugin
 {
     /**
      * Alias to Zikula_Form_Plugin constructor.
@@ -1307,7 +1307,7 @@ class pnFormPlugin extends Zikula_Form_Plugin
  * @deprecated
  * @see Zikula_Form_StyledPlugin::
  */
-class pnFormStyledPlugin extends Zikula_Form_StyledPlugin
+class pnFormStyledPlugin extends Zikula_Form_AbstractStyledPlugin
 {
     /**
      * Alias to Zikula_Form_StyledPlugin constructor.
@@ -1328,7 +1328,7 @@ class pnFormStyledPlugin extends Zikula_Form_StyledPlugin
  * @deprecated
  * @see Zikula_Form_Handler::
  */
-class pnFormHandler extends Zikula_Form_Handler
+class pnFormHandler extends Zikula_Form_AbstractHandler
 {
     /**
      * Alias to Zikula_Form_Handler constructor.

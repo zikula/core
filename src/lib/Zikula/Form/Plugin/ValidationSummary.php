@@ -16,7 +16,7 @@
 /**
  * Validation summary
  */
-class Zikula_Form_Plugin_ValidationSummary extends Zikula_Form_Plugin
+class Zikula_Form_Plugin_ValidationSummary extends Zikula_Form_AbstractPlugin
 {
     /**
      * CSS class of the summary.

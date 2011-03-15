@@ -122,8 +122,8 @@ class PluginUtil
      *
      * @param string $className Class name.
      *
-     * @throws LogicException If Plugin class is not a Zikula_plugin.
-     * @return Zikula_Plugin Plugin class.
+     * @throws LogicException If Plugin class is not a Zikula_AbstractPlugin.
+     * @return Zikula_AbstractPlugin Plugin class.
      */
     public static function loadPlugin($className)
     {
@@ -136,8 +136,8 @@ class PluginUtil
         $r = new ReflectionClass($className);
         $plugin = $r->newInstanceArgs(array($sm, $sm->getService('zikula.eventmanager')));
 
-        if (!$plugin instanceof Zikula_Plugin) {
-            throw new LogicException(sprintf('Class %s must be an instance of Zikula_Plugin', $className));
+        if (!$plugin instanceof Zikula_AbstractPlugin) {
+            throw new LogicException(sprintf('Class %s must be an instance of Zikula_AbstractPlugin', $className));
         }
 
         if (!$plugin->hasBooted() && $plugin->isInstalled() && $plugin->isEnabled()) {
@@ -159,7 +159,7 @@ class PluginUtil
      *
      * @param string $className Class name.
      *
-     * @return Zikula_Plugin
+     * @return Zikula_AbstractPlugin
      */
     public static function getPlugin($className)
     {
@@ -322,7 +322,7 @@ class PluginUtil
     public static function install($className)
     {
         $plugin = self::loadPlugin($className);
-        if ($plugin instanceof Zikula_Plugin_AlwaysOn) {
+        if ($plugin instanceof Zikula_Plugin_AlwaysOnInterface) {
             // as it stands, these plugins cannot be installed since they are always on
             // and cannot be disabled (required only for really base thing).
             return true;

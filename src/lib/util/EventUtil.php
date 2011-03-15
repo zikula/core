@@ -118,9 +118,9 @@ class EventUtil
     }
 
     /**
-     * Load and attach handlers for Zikula_EventHandler listeners.
+     * Load and attach handlers for Zikula_AbstractEventHandler listeners.
      *
-     * Loads event handlers that extend Zikula_EventHandler
+     * Loads event handlers that extend Zikula_AbstractEventHandler
      *
      * @param string $className      The name of the class.
      *
@@ -189,12 +189,12 @@ class EventUtil
     }
 
     /**
-     * Register a Zikula_EventHandler as a persistent handler.
+     * Register a Zikula_AbstractEventHandler as a persistent handler.
      *
      * @param string  $moduleName Module name.
-     * @param string  $className  Class name (subclass of Zikula_EventHandler).
+     * @param string  $className  Class name (subclass of Zikula_AbstractEventHandler).
      *
-     * @throws InvalidArgumentException If class is not available or not a subclass of Zikula_EventHandler.
+     * @throws InvalidArgumentException If class is not available or not a subclass of Zikula_AbstractEventHandler.
      *
      * @return void
      */
@@ -205,8 +205,8 @@ class EventUtil
         }
 
         $reflection = new ReflectionClass($className);
-        if (!$reflection->isSubclassOf('Zikula_EventHandler')) {
-            throw new InvalidArgumentException(sprintf('%s is not a subclass of Zikula_EventHandler', $className));
+        if (!$reflection->isSubclassOf('Zikula_AbstractEventHandler')) {
+            throw new InvalidArgumentException(sprintf('%s is not a subclass of Zikula_AbstractEventHandler', $className));
         }
 
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
@@ -215,10 +215,10 @@ class EventUtil
     }
 
     /**
-     * Unregister a Zikula_EventHandler event handler.
+     * Unregister a Zikula_AbstractEventHandler event handler.
      *
      * @param string $moduleName Module name.
-     * @param string $className  Class name (subclass of Zikula_EventHandler).
+     * @param string $className  Class name (subclass of Zikula_AbstractEventHandler).
      *
      * @return void
      */
@@ -279,7 +279,7 @@ class EventUtil
                             self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
                         }
                     } catch (InvalidArgumentException $e) {
-                        LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), Zikula_ErrorHandler::ERR);
+                        LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), Zikula_AbstractErrorHandler::ERR);
                     }
                 }
             }

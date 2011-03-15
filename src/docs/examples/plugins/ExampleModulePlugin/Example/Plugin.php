@@ -14,7 +14,7 @@
 /**
  * Plugin definition class.
  */
-class ModulePlugin_Users_Example_Plugin extends Zikula_Plugin implements Zikula_Plugin_Configurable
+class ModulePlugin_Users_Example_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_ConfigurableInterface
 {
     /**
      * Setup handler definitions.

@@ -16,7 +16,7 @@
 /**
  * Generic Collection.
  */
-class Zikula_Collection_Container implements Zikula_Collection_Interface
+class Zikula_Collection_Container implements Zikula_CollectionInterface
 {
     /**
      * The name of the collection.

@@ -15,7 +15,7 @@
 /**
  * Extensions_Controller_Admin class.
  */
-class Extensions_Controller_Admin extends Zikula_Controller
+class Extensions_Controller_Admin extends Zikula_AbstractController
 {
     public function postInitialize()
     {
@@ -1109,7 +1109,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
             $pluginstate = PluginUtil::getState($instance->getServiceId(), PluginUtil::getDefaultState());
 
             // Tweak UI if the plugin is AlwaysOn
-            if ($instance instanceof Zikula_Plugin_AlwaysOn) {
+            if ($instance instanceof Zikula_Plugin_AlwaysOnInterface) {
                 $pluginstate['state'] = PluginUtil::ENABLED;
                 $pluginstate['version'] = $instance->getMetaVersion();
             }
@@ -1152,14 +1152,14 @@ class Extensions_Controller_Admin extends Zikula_Controller
                     $pluginLink['_plugin'] = $instance->getPluginName();
                     $pluginLink['_action'] = 'configure';
 
-                    if ($instance instanceof Zikula_Plugin_Configurable) {
+                    if ($instance instanceof Zikula_Plugin_ConfigurableInterface) {
                         $actions[] = array('url' => ModUtil::url('Extensions', 'adminplugin', 'dispatch', $pluginLink),
                                            'image' => 'configure.png',
                                            'title' => $this->__('Configure plugin'));
                     }
 
                     // Dont allow to disable/uninstall plugins that are AlwaysOn
-                    if (!$instance instanceof Zikula_Plugin_AlwaysOn) {
+                    if (!$instance instanceof Zikula_Plugin_AlwaysOnInterface) {
                         $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'deactivatePlugin',
                                                     array('plugin' => $className,
                                                           'state'  => $state,

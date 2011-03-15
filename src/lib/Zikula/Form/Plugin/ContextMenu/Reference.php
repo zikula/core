@@ -18,7 +18,7 @@
  *
  * This plugin adds a menu reference (could also be called a "placeholder").
  */
-class Zikula_Form_Plugin_ContextMenu_Reference extends Zikula_Form_Plugin
+class Zikula_Form_Plugin_ContextMenu_Reference extends Zikula_Form_AbstractPlugin
 {
     /**
      * URL to the item image.

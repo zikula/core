@@ -19,7 +19,7 @@
  * This plugin represents a menu item.
  * See Zikula_Form_Plugin_ContextMenu.
  */
-class Zikula_Form_Plugin_ContextMenu_Separator extends Zikula_Form_Plugin
+class Zikula_Form_Plugin_ContextMenu_Separator extends Zikula_Form_AbstractPlugin
 {
     /**
      * Get filename of this file.

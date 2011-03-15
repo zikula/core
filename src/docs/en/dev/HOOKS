@@ -146,7 +146,7 @@ triggered by subscriber modules.
 
 A module may register either static class callable methods, like `Foo::Bar($event)` or
 services (which are instantiated class objects).  If using services, they must be
-instances of Zikula_EventHandler.  We use one API to register this.
+instances of Zikula_AbstractEventHandler.  We use one API to register this.
 
 Leaving `$serviceId = null`, will tell Zikula the callable is a static class method.
 If you give a `$serviceId`, then this class will be instantiated and used.  This means
