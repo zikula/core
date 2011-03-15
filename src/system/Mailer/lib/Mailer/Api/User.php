@@ -50,7 +50,6 @@ class Mailer_Api_User extends Zikula_Api
     function sendmessage($args)
     {
         // Check for installed advanced Mailer module
-        $processed = (isset($args['processed']) ? (int) $args['processed'] : 0);
         $event = new Zikula_Event('module.mailer.api.sendmessage', $this, $args);
         $this->eventManager->notifyUntil($event);
         if ($event->hasNotified()) {
@@ -111,19 +110,19 @@ class Mailer_Api_User extends Zikula_Api
         if (is_array($args['toaddress'])) {
             $i = 0;
             foreach ($args['toaddress'] as $toadd) {
-                isset($args['toname'][$i]) ? $tona = $args['toname'][$i] : $tona = $toadd;
-                $mail->AddAddress($toadd, $tona);
+                isset($args['toname'][$i]) ? $toname = $args['toname'][$i] : $toname = $toadd;
+                $mail->AddAddress($toadd, $toname);
                 $i++;
             }
         } else {
             // $toaddress is not an array -> old logic
-            $tona = '';
+            $toname = '';
             if (isset($args['toname'])) {
-                $tona = $args['toname'];
+                $toname = $args['toname'];
             }
             // process multiple names entered in a single field separated by commas (#262)
             foreach (explode(',', $args['toaddress']) as $toadd) {
-                $mail->AddAddress($toadd, ($tona == '') ? $toadd : $tona);
+                $mail->AddAddress($toadd, ($toname == '') ? $toadd : $toname);
             }
         }
 

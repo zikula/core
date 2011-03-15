@@ -38,14 +38,11 @@ class Mailer_Controller_Admin extends Zikula_Controller
     public function modifyconfig()
     {
         // security check
-        if (!SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
-
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
         $this->view->setCaching(false);
 
         // assign the module mail agent types
-        $this->view->assign('mailertypes', array(1 => DataUtil::formatForDisplay($this->__("PHP 'mail()' function")),
+        $this->view->assign('mailertypes', array(1 => DataUtil::formatForDisplay($this->__("Internal PHP `mail()` function")),
                                                  2 => DataUtil::formatForDisplay($this->__('Sendmail message transfer agent')),
                                                  3 => DataUtil::formatForDisplay($this->__('QMail message transfer agent')),
                                                  4 => DataUtil::formatForDisplay($this->__('SMTP mail transfer protocol'))));
@@ -78,53 +75,47 @@ class Mailer_Controller_Admin extends Zikula_Controller
     public function updateconfig()
     {
         // security check
-        if (!SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // confirm our forms authorisation key
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Mailer','admin','main'));
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
+        $this->checkCsrfToken();
 
         // set our new module variable values
-        $mailertype = (int)FormUtil::getPassedValue('mailertype', 1, 'POST');
+        $mailertype = (int)$this->request->getPost()->get('mailertype', 1);
         $this->setVar('mailertype', $mailertype);
 
-        $charset = (string)FormUtil::getPassedValue('charset', ZLanguage::getEncoding(), 'POST');
+        $charset = (string)$this->request->getPost()->get('charset', ZLanguage::getEncoding());
         $this->setVar('charset', $charset);
 
-        $encoding = (string)FormUtil::getPassedValue('encoding', '8bit', 'POST');
+        $encoding = (string)$this->request->getPost()->get('encoding', '8bit');
         $this->setVar('encoding', $encoding);
 
-        $html = (bool)FormUtil::getPassedValue('html', false, 'POST');
+        $html = (bool)$this->request->getPost()->get('html', false);
         $this->setVar('html', $html);
 
-        $wordwrap = (int)FormUtil::getPassedValue('wordwrap', 50, 'POST');
+        $wordwrap = (int)$this->request->getPost()->get('wordwrap', 50);
         $this->setVar('wordwrap', $wordwrap);
 
-        $msmailheaders = (bool)FormUtil::getPassedValue('msmailheaders', false, 'POST');
+        $msmailheaders = (bool)$this->request->getPost()->get('msmailheaders', false);
         $this->setVar('msmailheaders', $msmailheaders);
 
-        $sendmailpath = (string)FormUtil::getPassedValue('sendmailpath', '/usr/sbin/sendmail', 'POST');
+        $sendmailpath = (string)$this->request->getPost()->get('sendmailpath', '/usr/sbin/sendmail');
         $this->setVar('sendmailpath', $sendmailpath);
 
-        $smtpauth = (bool)FormUtil::getPassedValue('smtpauth', false, 'POST');
+        $smtpauth = (bool)$this->request->getPost()->get('smtpauth', false);
         $this->setVar('smtpauth', $smtpauth);
 
-        $smtpserver = (string)FormUtil::getPassedValue('smtpserver', 'localhost', 'POST');
+        $smtpserver = (string)$this->request->getPost()->get('smtpserver', 'localhost');
         $this->setVar('smtpserver', $smtpserver);
 
-        $smtpport = (int)FormUtil::getPassedValue('smtpport', 25, 'POST');
+        $smtpport = (int)$this->request->getPost()->get('smtpport', 25);
         $this->setVar('smtpport', $smtpport);
 
-        $smtptimeout = (int)FormUtil::getPassedValue('smtptimeout', 10, 'POST');
+        $smtptimeout = (int)$this->request->getPost()->get('smtptimeout', 10);
         $this->setVar('smtptimeout', $smtptimeout);
 
-        $smtpusername = (string)FormUtil::getPassedValue('smtpusername', '', 'POST');
+        $smtpusername = (string)$this->request->getPost()->get('smtpusername', '');
         $this->setVar('smtpusername', $smtpusername);
 
-        $smtppassword = (string)FormUtil::getPassedValue('smtppassword', '', 'POST');
+        $smtppassword = (string)$this->request->getPost()->get('smtppassword', '');
         $this->setVar('smtppassword', $smtppassword);
 
         // the module configuration has been updated successfuly
@@ -164,36 +155,24 @@ class Mailer_Controller_Admin extends Zikula_Controller
     public function sendmessage($args)
     {
         // security check
-        if (!SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
+        $this->checkCsrfToken();
 
-        $toname = (string)FormUtil::getPassedValue('toname', isset($args['toname']) ? $args['toname'] : null, 'POST');
-        $toaddress = (string)FormUtil::getPassedValue('toaddress', isset($args['toaddress']) ? $args['toaddress'] : null, 'POST');
-        $subject = (string)FormUtil::getPassedValue('subject', isset($args['subject']) ? $args['subject'] : null, 'POST');
-        $body = (string)FormUtil::getPassedValue('body', isset($args['body']) ? $args['body'] : null, 'POST');
-        $altBody = (string)FormUtil::getPassedValue('altbody', isset($args['altbody']) ? $args['altbody'] : null, 'POST');
-        $pnmail = (bool)FormUtil::getPassedValue('pnmail', isset($args['pnmail']) ? $args['pnmail'] : false, 'POST');
-        $html = (bool)FormUtil::getPassedValue('html', isset($args['html']) ? $args['html'] : false, 'POST');
-
-        // confirm our forms authorisation key
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Mailer','admin','main'));
-        }
+        $toname = (string)$this->request->getPost()->get('toname');
+        $toaddress = (string)$this->request->getPost()->get('toaddress');
+        $subject = (string)$this->request->getPost()->get('subject');
+        $body = (string)$this->request->getPost()->get('body');
+        $altBody = (string)$this->request->getPost()->get('altbody', false);
+        $html = (bool)$this->request->getPost()->get('html', false);
 
         // set the email
-        if ($pnmail) {
-            $from = System::getVar('adminmail');
-            $result = System::mail($toaddress, $subject, $body, "From: $from\nX-Mailer: PHP/" . phpversion(), $html, $altBody);
-        } else {
-            $result = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+        $result = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                     array('toname' => $toname,
                     'toaddress' => $toaddress,
                     'subject' => $subject,
                     'body' => $body,
                     'altbody' => $altBody,
                     'html' => $html));
-        }
 
         // check our result and return the correct error code
         if ($result === true) {
@@ -209,6 +188,6 @@ class Mailer_Controller_Admin extends Zikula_Controller
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return System::redirect(ModUtil::url('Mailer', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Mailer', 'admin', 'testconfig'));
     }
 }
