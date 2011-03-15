@@ -67,7 +67,7 @@ function smarty_function_helplink($params, Zikula_View $view)
     }
 
     if (!$found) {
-        $view->trigger_error(__f('Helpfile %s not found', $fileName));
+        //$view->trigger_error(__f('Helpfile %s not found', $fileName));
         return;
     }
 
