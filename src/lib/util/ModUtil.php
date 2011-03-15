@@ -53,7 +53,7 @@ class ModUtil
     /**
      * Module vars.
      *
-     * @var array
+     * @var ArrayObject
      */
     protected static $modvars;
 
@@ -285,6 +285,9 @@ class ModUtil
         }
 
         $val = null;
+        if (!isset(self::$modvars[$modname])) {
+            return $val;
+        }
         if (empty($name)) {
             if (array_key_exists($modname, self::$modvars)) {
                 unset(self::$modvars[$modname]);
@@ -292,7 +295,11 @@ class ModUtil
         } else {
             if (array_key_exists($name, self::$modvars[$modname])) {
                 $val = self::$modvars[$modname][$name];
-                unset(self::$modvars[$modname][$name]);
+
+                // we're dealing with an ArrayObject, so we cannot unset() deep keys.
+                $array = self::$modvars[$modname];
+                unset($array[$name]);
+                self::$modvars[$modname] = $array;
             }
         }
 
