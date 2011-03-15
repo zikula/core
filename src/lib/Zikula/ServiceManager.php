@@ -252,6 +252,9 @@ class Zikula_ServiceManager implements ArrayAccess
                 case ($arg instanceof Zikula_ServiceManager_Argument):
                     $compiledArgs[] = $this->getArgument($arg->getId());
                     break;
+                case ($arg instanceof Zikula_ServiceManager_Reference):
+                    $compiledArgs[] = $this->getService($arg->getId());
+                    break;
                 default:
                     throw new InvalidArgumentException(sprintf('Invalid argument object %s', get_class($arg)));
                     break;
