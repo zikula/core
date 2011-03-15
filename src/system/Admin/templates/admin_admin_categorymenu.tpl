@@ -49,7 +49,8 @@
             <a id="addcatlink" href="{modurl modname=Admin type=admin func=new}" title="{gt text='New module category'}" onclick='return Admin.Category.New(this);'>&nbsp;</a>
         </li>
     </ul>
-    {adminonlinemanual}
+    
+    {helplink}
     {include file='admin_admin_ajaxAddCategory.tpl'}
 </div>
 
