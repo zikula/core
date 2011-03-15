@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Controller_Ajax extends Zikula_Controller_Ajax
+class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
     /**
      * Change the category a module belongs to by ajax.

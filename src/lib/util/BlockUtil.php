@@ -162,7 +162,7 @@ class BlockUtil
         global $blocks_modules;
 
         $blockInstance = self::load($modname, $block);
-        if ($blockInstance instanceof Zikula_Controller_Block) {
+        if ($blockInstance instanceof Zikula_Controller_AbstractBlock) {
             $displayfunc = array($blockInstance, 'display');
         } else {
             $displayfunc = "{$modname}_{$block}block_display";
@@ -256,7 +256,7 @@ class BlockUtil
      * @param string $modname Module name.
      * @param string $block   Name of the block.
      *
-     * @throws LogicException Uf OO-Block is not a Zikula_Controller_Block object.
+     * @throws LogicException Uf OO-Block is not a Zikula_Controller_AbstractBlock object.
      * @return bool True on successful load, false otherwise.
      */
     public static function load($modname, $block)
@@ -297,8 +297,8 @@ class BlockUtil
             $r = new ReflectionClass($className);
             $blockInstance = $r->newInstanceArgs(array($sm));
             try {
-                if (!$blockInstance instanceof Zikula_Controller_Block) {
-                    throw new LogicException(sprintf('Block %s must inherit from Zikula_Controller_Block', $className));
+                if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
+                    throw new LogicException(sprintf('Block %s must inherit from Zikula_Controller_AbstractBlock', $className));
                 }
             } catch (LogicException $e) {
                 if (System::isDevelopmentMode()) {

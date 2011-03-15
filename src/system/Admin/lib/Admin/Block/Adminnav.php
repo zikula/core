@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Block_Adminnav extends Zikula_Controller_Block
+class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block

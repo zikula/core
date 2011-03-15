@@ -15,7 +15,7 @@
 /**
  * Blocks_Controller_Ajax class.
  */
-class Blocks_Controller_Ajax extends Zikula_Controller_Ajax
+class Blocks_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
     /**
      * Changeblockorder.

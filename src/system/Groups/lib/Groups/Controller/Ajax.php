@@ -15,7 +15,7 @@
 /**
  * Groups_Controller_Ajax class.
  */
-class Groups_Controller_Ajax extends Zikula_Controller_Ajax
+class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
     /**
      * Updates a group in the database

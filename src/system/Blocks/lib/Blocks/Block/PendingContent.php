@@ -15,7 +15,7 @@
 /**
  * Pending Content block
  */
-class Blocks_Block_PendingContent extends Zikula_Controller_Block
+class Blocks_Block_PendingContent extends Zikula_Controller_AbstractBlock
 {
     /**
      * Initialise block.

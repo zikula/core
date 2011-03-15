@@ -184,9 +184,9 @@ MODULES
     blocks/foo.php => lib/MyModule/Block/Foo.php
 
   Refactor the Blocks, encapulating all functions inside 
-  class $modname_block_$type extends Zikula_Controller_Block
+  class $modname_block_$type extends Zikula_Controller_AbstractBlock
   e.g.
-    class MyModule_Block_Foo extends Zikula_Controller_Block
+    class MyModule_Block_Foo extends Zikula_Controller_AbstractBlock
 
   Make all functions public which should be accessible from outside the class.
   Internal methods which should not be accessible outside the class should be made

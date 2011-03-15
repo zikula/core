@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_Menu extends Zikula_Controller_Block
+class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block

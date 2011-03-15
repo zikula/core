@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Permissions_Controller_Ajax extends Zikula_Controller_Ajax
+class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
     /**
      * Updates a permission rule in the database

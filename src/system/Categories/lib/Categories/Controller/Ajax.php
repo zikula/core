@@ -15,7 +15,7 @@
 /**
  * Categories_Controller_Ajax.
  */
-class Categories_Controller_Ajax extends Zikula_Controller_Ajax
+class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
     /**
      * Resequence categories
