@@ -15,7 +15,7 @@
 /**
  * Zikula_View class.
  */
-class Zikula_View extends Smarty implements Zikula_Translatable
+class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 {
     /**
      * Module info array, indexed by module name.

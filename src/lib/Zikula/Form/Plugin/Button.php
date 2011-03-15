@@ -40,7 +40,7 @@
  * The command arguments ($args) passed to the handler contains 'commandName' and
  * 'commandArgument' with the values you passed to the button in the template.
  */
-class Zikula_Form_Plugin_Button extends Zikula_Form_StyledPlugin
+class Zikula_Form_Plugin_Button extends Zikula_Form_AbstractStyledPlugin
 {
     /**
      * Displayed text on the button.

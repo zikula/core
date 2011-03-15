@@ -912,7 +912,7 @@ class ModUtil
      *
      * @param string $className Class name.
      *
-     * @throws LogicException If $className is neither a Zikula_API nor a Zikula_Controller.
+     * @throws LogicException If $className is neither a Zikula_AbstractApi nor a Zikula_AbstractController.
      * @return object Module object.
      */
     public static function getObject($className)
@@ -933,8 +933,8 @@ class ModUtil
             try {
                 if (strrpos($className, 'Api') && !$object instanceof Zikula_Api) {
                     throw new LogicException(sprintf('Api %s must inherit from Zikula_Api', $className));
-                } elseif (!strrpos($className, 'Api') && !$object instanceof Zikula_Controller) {
-                    throw new LogicException(sprintf('Controller %s must inherit from Zikula_Controller', $className));
+                } elseif (!strrpos($className, 'Api') && !$object instanceof Zikula_AbstractController) {
+                    throw new LogicException(sprintf('Controller %s must inherit from Zikula_AbstractController', $className));
                 }
             } catch (LogicException $e) {
                 if (System::isDevelopmentMode()) {
@@ -1039,7 +1039,7 @@ class ModUtil
 
                 // Check $modfunc is an object instance (OO) or a function (old)
                 if (is_array($modfunc)) {
-                    if ($modfunc[0] instanceof Zikula_Controller) {
+                    if ($modfunc[0] instanceof Zikula_AbstractController) {
                         $reflection = call_user_func(array($modfunc[0], 'getReflection'));
                         $subclassOfReflection = new ReflectionClass($reflection->getParentClass());
                         if ($subclassOfReflection->hasMethod($modfunc[1])) {
@@ -1050,7 +1050,7 @@ class ModUtil
                     }
 
                     $postExecuteEvent->setData(call_user_func($modfunc, $args));
-                    if ($modfunc[0] instanceof Zikula_Controller) {
+                    if ($modfunc[0] instanceof Zikula_AbstractController) {
                         $modfunc[0]->postDispatch();
                     }
                 } else {
@@ -1415,7 +1415,7 @@ class ModUtil
     public static function registerHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
     {
         if (!System::isLegacyMode()) {
-            LogUtil::log(__f('%1$s::%2$s is not available in without legacy mode', array('ModUtil', 'registerHook')), Zikula_ErrorHandler::ERR);
+            LogUtil::log(__f('%1$s::%2$s is not available in without legacy mode', array('ModUtil', 'registerHook')), Zikula_AbstractErrorHandler::ERR);
             return false;
         }
 
@@ -1428,7 +1428,7 @@ class ModUtil
         }
 
         if (self::isOO($hookmodule)) {
-            LogUtil::log(__('OO module types may not make use of this legacy API'), Zikula_ErrorHandler::ERR);
+            LogUtil::log(__('OO module types may not make use of this legacy API'), Zikula_AbstractErrorHandler::ERR);
             return false;
         }
 
@@ -1511,7 +1511,7 @@ class ModUtil
         }
 
         if (self::isOO($modname)) {
-            LogUtil::log(__('OO module types may not make use of this legacy API'), Zikula_ErrorHandler::ERR);
+            LogUtil::log(__('OO module types may not make use of this legacy API'), Zikula_AbstractErrorHandler::ERR);
             return null;
         }
 

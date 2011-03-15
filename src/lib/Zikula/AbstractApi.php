@@ -16,7 +16,7 @@
 /**
  * Abstract API for modules.
  */
-abstract class Zikula_Api extends Zikula_Base
+abstract class Zikula_AbstractApi extends Zikula_AbstractBase
 {
     /**
      * Magic method for method_not_found events.

@@ -16,7 +16,7 @@
 /**
  * Abstract AJAX controller.
  */
-abstract class Zikula_Controller_Ajax extends Zikula_Controller
+abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
 {
     /**
      * {@inheritdoc}

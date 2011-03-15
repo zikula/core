@@ -159,7 +159,7 @@ class LogUtil
     public static function addStatusPopup($message)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
-        self::_addPopup($message, Zikula_ErrorHandler::INFO);
+        self::_addPopup($message, Zikula_AbstractErrorHandler::INFO);
     }
 
     /**
@@ -189,10 +189,10 @@ class LogUtil
      */
     private static function _addPopup($message, $type = E_USER_NOTICE)
     {
-        self::log($message, Zikula_ErrorHandler::DEBUG);
+        self::log($message, Zikula_AbstractErrorHandler::DEBUG);
         $session = ServiceUtil::getManager()->getService('session');
 
-        if ($type === Zikula_ErrorHandler::INFO) {
+        if ($type === Zikula_AbstractErrorHandler::INFO) {
             return $session->addMessage(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
         } elseif ($type === E_USER_ERROR) {
             return $session->addMessage(Zikula_Session::MESSAGE_ERROR, DataUtil::formatForDisplayHTML($message));
@@ -320,7 +320,7 @@ class LogUtil
      *
      * @return void
      */
-    public static function log($msg, $level = Zikula_ErrorHandler::DEBUG)
+    public static function log($msg, $level = Zikula_AbstractErrorHandler::DEBUG)
     {
         if (System::isInstalling()) {
             return;

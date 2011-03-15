@@ -49,9 +49,9 @@ class Zikula_Session
     /**
      * Constructor.
      *
-     * @param Zikula_Session_Storage $storage Storage engine.
+     * @param Zikula_Session_StorageInterface $storage Storage engine.
      */
-    public function __construct(Zikula_Session_Storage $storage)
+    public function __construct(Zikula_Session_StorageInterface $storage)
     {
         $this->storage = $storage;
         $this->started = false;

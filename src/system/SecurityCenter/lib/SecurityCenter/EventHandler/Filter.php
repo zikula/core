@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
+class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
 {
     /**
      * Setup this handler.

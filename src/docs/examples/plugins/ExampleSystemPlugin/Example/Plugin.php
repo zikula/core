@@ -14,7 +14,7 @@
 /**
  * SystemPlugin_Example_Plugin class.
  */
-class SystemPlugin_Example_Plugin extends Zikula_Plugin
+class SystemPlugin_Example_Plugin extends Zikula_AbstractPlugin
 {
     /**
      * Setup handler definitions.

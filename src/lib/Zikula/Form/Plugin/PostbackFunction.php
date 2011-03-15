@@ -27,7 +27,7 @@
  * When called it will generate a postback and fire an event to be handled by the $onCommand
  * method in the form event handler.
  */
-class Zikula_Form_Plugin_PostBackFunction extends Zikula_Form_Plugin
+class Zikula_Form_Plugin_PostBackFunction extends Zikula_Form_AbstractPlugin
 {
     /**
      * Command name.

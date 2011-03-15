@@ -37,7 +37,7 @@
  * templates directory or change the cssClass attribute to something different than the default
  * class name.
  */
-class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_Plugin
+class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
 {
     /**
      * CSS class name for styling.

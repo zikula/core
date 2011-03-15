@@ -16,7 +16,7 @@
 /**
  * Request class.
  */
-abstract class Zikula_Request_Request
+abstract class Zikula_Request_AbstractRequest
 {
     /**
      * Requests array (ArrayIterator).

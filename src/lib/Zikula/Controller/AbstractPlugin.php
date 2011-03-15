@@ -13,9 +13,9 @@
  */
 
 /**
- * Zikula_Controller_Plugin class.
+ * Zikula_Controller_AbstractPlugin class.
  */
-class Zikula_Controller_Plugin extends Zikula_Controller
+abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractController
 {
     /**
      * Plugin name.
@@ -34,7 +34,7 @@ class Zikula_Controller_Plugin extends Zikula_Controller
     /**
      * Parent plugin instance.
      *
-     * @var Zikula_Plugin
+     * @var Zikula_AbstractPlugin
      */
     protected $plugin;
 
@@ -42,10 +42,10 @@ class Zikula_Controller_Plugin extends Zikula_Controller
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param Zikula_Plugin         $plugin         Plugin.
+     * @param Zikula_AbstractPlugin $plugin         Plugin.
      * @param array                 $options        Options.
      */
-    public function  __construct(Zikula_ServiceManager $serviceManager, Zikula_Plugin $plugin, array $options = array())
+    public function  __construct(Zikula_ServiceManager $serviceManager, Zikula_AbstractPlugin $plugin, array $options = array())
     {
         $this->plugin = $plugin;
         parent::__construct($serviceManager, $options);
@@ -64,11 +64,11 @@ class Zikula_Controller_Plugin extends Zikula_Controller
         $this->pluginName = $this->plugin->getPluginName();
         $this->moduleName = $this->plugin->getModuleName();
         $this->modinfo = $this->plugin->getModInfo();
-        if ($this->plugin->getPluginType() == Zikula_Plugin::TYPE_SYSTEM) {
+        if ($this->plugin->getPluginType() == Zikula_AbstractPlugin::TYPE_SYSTEM) {
             $this->systemBaseDir = realpath("{$this->baseDir}/../..");
             $this->libBaseDir = realpath("{$this->baseDir}/plugins/{$this->pluginName}/lib/{$this->pluginName}");
         } else {
-            $modbase = ($this->modinfo['type'] == Zikula_Plugin::TYPE_MODULE) ? 'modules' : 'system';
+            $modbase = ($this->modinfo['type'] == Zikula_AbstractPlugin::TYPE_MODULE) ? 'modules' : 'system';
             $this->systemBaseDir = realpath("{$this->baseDir}/$modbase/..");
             $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/{$this->moduleName}/plugins/{$this->pluginName}");
             $this->libBaseDir = realpath("{$this->baseDir}/lib/{$this->pluginName}");
@@ -87,7 +87,7 @@ class Zikula_Controller_Plugin extends Zikula_Controller
     protected function setView(Zikula_View_Plugin $view = null)
     {
         if (is_null($view)) {
-            if ($this->plugin->getPluginType() == Zikula_Plugin::TYPE_MODULE) {
+            if ($this->plugin->getPluginType() == Zikula_AbstractPlugin::TYPE_MODULE) {
                 $view = Zikula_View_Plugin::getModulePluginInstance($this->moduleName, $this->pluginName);
             } else {
                 $view = Zikula_View_Plugin::getSystemPluginInstance($this->pluginName);
@@ -102,11 +102,11 @@ class Zikula_Controller_Plugin extends Zikula_Controller
     /**
      * Set plugin for this controller.
      *
-     * @param Zikula_Plugin $plugin Plugin instance.
+     * @param Zikula_AbstractPlugin $plugin Plugin instance.
      *
      * @return void
      */
-    public function setPlugin(Zikula_Plugin $plugin)
+    public function setPlugin(Zikula_AbstractPlugin $plugin)
     {
         $this->plugin = $plugin;
     }

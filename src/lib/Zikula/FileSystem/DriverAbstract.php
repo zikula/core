@@ -14,10 +14,6 @@
 
 /**
  * Driver Abstract.
- *
- * This abstract class contains the basic construct for every driver, which
- * simply gets the Zikula_FileSystem_Configuration and saves it. all drivers which
- * extend this class must implement Zikula_FileSystem_Interface.
  */
 abstract class Zikula_FileSystem_AbstractDriver
 {
@@ -45,11 +41,11 @@ abstract class Zikula_FileSystem_AbstractDriver
     /**
      * Construct the driver with the configuration.
      *
-     * @param Zikula_FileSystem_Configuration $configuration The configuration to be used.
+     * @param Zikula_FileSystem_ConfigurationInterface $configuration The configuration to be used.
      *
      * @throws InvalidArgumentException If wrong configuration class received.
      */
-    public function __construct(Zikula_FileSystem_Configuration $configuration)
+    public function __construct(Zikula_FileSystem_ConfigurationInterface $configuration)
     {
         // validate we get correct configuration class type.
         $type = str_ireplace('Zikula_FileSystem_', '', get_class($this));

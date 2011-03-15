@@ -14,7 +14,7 @@ There are two kinds of plugins:
     These are located in plugins/
     Classes are named SystemPlugin_$PluginName_Plugin
     e.g. plugins/Example/Plugin.php (contains
-    class SystemPlugin_Example_Plugin extends Zikula_Plugin
+    class SystemPlugin_Example_Plugin extends Zikula_AbstractPlugin
 
     System plugins are invoked post System::init() before system hooks are
     initialised.
@@ -26,7 +26,7 @@ There are two kinds of plugins:
     These can be located in system/$modname/plugins or modules/$modame/plugins
     Classes are named ModulePlugin_$Modname_$PluginName_Plugin
     e.g. modules/News/plugins/Example/Plugin.php (contains
-    class ModulePlugin_News_Example_Plugin extends Zikula_Plugin
+    class ModulePlugin_News_Example_Plugin extends Zikula_AbstractPlugin
 
     Module plugins are only loaded when the ModUtil::loadGeneric is invoked for 
     that module.
@@ -38,17 +38,17 @@ There are two kinds of plugins:
     whole Zikula system because they are only initialised when the module, or
     module api is invoked.
 
-Plugin classes are just like event handlers, but inherit from Zikula_Plugin,
-although ultimately they inherit from the same Zikula_EventHandler abstract.
+Plugin classes are just like event handlers, but inherit from Zikula_AbstractPlugin,
+although ultimately they inherit from the same Zikula_AbstractEventHandler abstract.
 However the difference is the plugin is a discrete file heirachy where you may
 store related files and libraries.
 
-Plugins differ from pure event handlers (instances of Zikula_EventHandler) in
-because Zikula_EventHandlers cannot be enabled or disabled and consist of just on
+Plugins differ from pure event handlers (instances of Zikula_AbstractEventHandler) in
+because Zikula_AbstractEventHandlers cannot be enabled or disabled and consist of just on
 file, they are always on and are more low level.
 
-Zikula_Plugin instances can change state and have a discrete folder space.  The
-Zikula_Plugin abstract class provides many useful conveniences like translation,
+Zikula_AbstractPlugin instances can change state and have a discrete folder space.  The
+Zikula_AbstractPlugin abstract class provides many useful conveniences like translation,
 automatic domain binding etc.
 
 Uses for plugins
@@ -157,7 +157,7 @@ will be available when clicking the settings icon in the list of plugins availab
 Admin -> Modules -> Module Plugins/System Plugins.
 
 Firstly, in order to make your plugin configurable, you must implement the
-Zikula_Plugin_Configurable interface which will requires one method called
+Zikula_Plugin_ConfigurableInterface interface which will requires one method called
 getConfigurationController() which should return an instance of the controller
 there is an example in the DocBlock of the interface.
 

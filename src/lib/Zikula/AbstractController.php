@@ -16,7 +16,7 @@
 /**
  * Abstract controller for modules.
  */
-abstract class Zikula_Controller extends Zikula_Base
+abstract class Zikula_AbstractController extends Zikula_AbstractBase
 {
     /**
      * Instance of Zikula_View.

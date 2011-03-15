@@ -16,7 +16,7 @@
 /**
  * Http Request class.
  */
-class Zikula_Request_Http extends Zikula_Request_Request
+class Zikula_Request_Http extends Zikula_Request_AbstractRequest
 {
     /**
      * Container for GET.

@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-interface Zikula_Collection_Interface extends ArrayAccess, Countable, IteratorAggregate
+interface Zikula_CollectionInterface extends ArrayAccess, Countable, IteratorAggregate
 {
     /**
      * Add an item to the collection without a key.

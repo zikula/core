@@ -26,7 +26,7 @@
  *
  * public function handler(Event $event)
  */
-abstract class Zikula_EventHandler
+abstract class Zikula_AbstractEventHandler
 {
     /**
      * Event names.

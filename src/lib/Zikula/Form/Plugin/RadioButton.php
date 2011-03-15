@@ -44,7 +44,7 @@
  * </code>
  *
  */
-class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
+class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
 {
     /**
      * The value returned in Zikula_Form_View::getValues() when this radio button is checked.

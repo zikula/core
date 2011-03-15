@@ -14,7 +14,7 @@
 /**
  * Add a method to the Users module using Method not found Event Handler class.
  */
-class Users_EventHandlers_Extensions extends Zikula_EventHandler
+class Users_EventHandlers_Extensions extends Zikula_AbstractEventHandler
 {
     /**
      * Setup handler definitions.

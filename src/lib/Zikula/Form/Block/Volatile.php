@@ -48,7 +48,7 @@
  * You don't need the volatile block if you can guarantee that the number of elements will
  * be the same always.
  */
-class Zikula_Form_Block_Volatile extends Zikula_Form_Plugin
+class Zikula_Form_Block_Volatile extends Zikula_Form_AbstractPlugin
 {
     /**
      * Says that this content is volatile.

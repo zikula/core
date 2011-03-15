@@ -14,7 +14,7 @@
 /**
  * ZFeed plugin definition.
  */
-class SystemPlugin_SimplePie_Plugin extends Zikula_Plugin
+class SystemPlugin_SimplePie_Plugin extends Zikula_AbstractPlugin
 {
     /**
      * Get plugin meta data.

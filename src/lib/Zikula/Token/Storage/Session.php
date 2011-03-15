@@ -16,7 +16,7 @@
 /**
  * Zikula_Token_Storage_Session class.
  */
-class Zikula_Token_Storage_Session implements Zikula_Token_Storage
+class Zikula_Token_Storage_Session implements Zikula_Token_StorageInterface
 {
     /**
      * Session.

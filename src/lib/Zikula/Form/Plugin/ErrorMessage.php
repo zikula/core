@@ -43,7 +43,7 @@
  * </code>
  * Beware that {@link Zikula_Form_View::getPluginById()} only works on postback.
  */
-class Zikula_Form_Plugin_ErrorMessage extends Zikula_Form_Plugin
+class Zikula_Form_Plugin_ErrorMessage extends Zikula_Form_AbstractPlugin
 {
     /**
      * Displayed error message.

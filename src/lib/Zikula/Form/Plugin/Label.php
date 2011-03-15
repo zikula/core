@@ -26,7 +26,7 @@
  * "myLabel" on the "pointed-to" plugin to the supplied label text. This enables
  * the validation summary to display the label text.
  */
-class Zikula_Form_Plugin_Label extends Zikula_Form_StyledPlugin
+class Zikula_Form_Plugin_Label extends Zikula_Form_AbstractStyledPlugin
 {
     /**
      * Text to show as label.

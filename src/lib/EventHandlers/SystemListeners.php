@@ -15,7 +15,7 @@
 /**
  * Event handler to override templates.
  */
-class SystemListeners extends Zikula_EventHandler
+class SystemListeners extends Zikula_AbstractEventHandler
 {
 
     /**
@@ -339,7 +339,7 @@ class SystemListeners extends Zikula_EventHandler
         $message = $event['errstr'];
         if (is_string($event['errstr'])) {
             if ($event['errline'] == 0) {
-                $message = __f('PHP issued an error at line 0, so reporting entire trace to be more helpful: %1$s: %2$s', array(Zikula_ErrorHandler::translateErrorCode($event['errno']), $event['errstr']));
+                $message = __f('PHP issued an error at line 0, so reporting entire trace to be more helpful: %1$s: %2$s', array(Zikula_AbstractErrorHandler::translateErrorCode($event['errno']), $event['errstr']));
                 $fullTrace = $event['trace'];
                 array_shift($fullTrace); // shift is performed on copy so as not to disturn the event args
                 foreach ($fullTrace as $trace) {
@@ -351,7 +351,7 @@ class SystemListeners extends Zikula_EventHandler
                     }
                 }
             } else {
-                $message = __f('%1$s: %2$s in %3$s line %4$s', array(Zikula_ErrorHandler::translateErrorCode($event['errno']), $event['errstr'], $event['errfile'], $event['errline']));
+                $message = __f('%1$s: %2$s in %3$s line %4$s', array(Zikula_AbstractErrorHandler::translateErrorCode($event['errno']), $event['errstr'], $event['errfile'], $event['errline']));
             }
         }
 

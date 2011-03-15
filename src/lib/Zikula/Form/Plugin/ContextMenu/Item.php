@@ -19,7 +19,7 @@
  * This plugin represents a menu item.
  * See also Zikula_Form_Block_ContextMenu.
  */
-class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_Plugin
+class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
 {
     /**
      * Menu title.

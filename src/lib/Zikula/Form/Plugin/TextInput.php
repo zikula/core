@@ -27,7 +27,7 @@
  * The Zikula_Form_Plugin_TextInput plugin supports basic CSS styling through attributes like "width", "color" and "font_weight". See
  * {@link Zikula_Form_StyledPlugin} for more info.
  */
-class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
+class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
 {
     /**
      * Displayed text in the text input.

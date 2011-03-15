@@ -113,7 +113,7 @@
  * - A::postRender
  * - B::postRender
  */
-abstract class Zikula_Form_Plugin implements Zikula_Translatable
+abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterface
 {
     /**
      * Plugin identifier.

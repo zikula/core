@@ -14,7 +14,7 @@
 /**
  * MultiHook Event Handler class.
  */
-class MultiHookHandler extends Zikula_EventHandler
+class MultiHookHandler extends Zikula_AbstractEventHandler
 {
     /**
      * Setup handler definitions.

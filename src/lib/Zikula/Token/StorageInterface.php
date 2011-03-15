@@ -16,7 +16,7 @@
 /**
  * Zikula_Token_Storage class.
  */
-interface Zikula_Token_Storage
+interface Zikula_Token_StorageInterface
 {
     /**
      * Get token by ID.

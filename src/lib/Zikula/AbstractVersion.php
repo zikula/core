@@ -15,7 +15,7 @@
 /**
  * Zikula Version base class.
  */
-class Zikula_Version implements ArrayAccess
+abstract class Zikula_AbstractVersion implements ArrayAccess
 {
     /**
      * The module name, computed from the implementing class name.

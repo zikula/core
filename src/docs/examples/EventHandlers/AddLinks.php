@@ -14,7 +14,7 @@
 /**
  * Add a link to Users administration links Event Handler class.
  */
-class Users_EventHandlers_AddLinks extends Zikula_EventHandler
+class Users_EventHandlers_AddLinks extends Zikula_AbstractEventHandler
 {
     /**
      * Setup handler definitions.

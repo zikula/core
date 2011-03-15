@@ -18,7 +18,7 @@
  *
  * Use this with the {@link Zikula_Form_Plugin_TabbedPanel}.
  */
-class Zikula_Form_Block_TabbedPanel extends Zikula_Form_Plugin
+class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
 {
     /**
      * Panel title.
