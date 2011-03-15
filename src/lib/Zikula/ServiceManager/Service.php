@@ -31,7 +31,7 @@ class Zikula_ServiceManager_Service
     /**
      * Instance of Definition class.
      *
-     * @var object
+     * @var Zikula_ServiceManager_Definition
      */
     protected $definition;
 
