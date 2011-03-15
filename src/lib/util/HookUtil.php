@@ -73,7 +73,7 @@ class HookUtil
                 'classname' => $className,
                 'method' => $method,
                 'serviceid' => $serviceId,
-                'weight' => 10,
+                'weight' => $weight,
         ));
         $provider->save();
     }
