@@ -16,7 +16,7 @@
 /**
  * Ajax class.
  */
-abstract class Zikula_Response_Ajax_MediatorBase extends Zikula_Response_Ajax_Base
+abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response_Ajax_AbstractBase
 {
     /**
      * CSRF Token.

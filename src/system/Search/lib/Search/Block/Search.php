@@ -15,7 +15,7 @@
 /**
  * Search_Block_Search class.
  */
-class Search_Block_Search extends Zikula_Controller_Block
+class Search_Block_Search extends Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block

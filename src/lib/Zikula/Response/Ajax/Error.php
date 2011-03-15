@@ -16,7 +16,7 @@
 /**
  * Ajax class.
  */
-abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_MediatorBase
+abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_AbstractMediatorBase
 {
     /**
      * Constructor.

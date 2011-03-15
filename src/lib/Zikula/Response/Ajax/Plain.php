@@ -16,7 +16,7 @@
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_Plain extends Zikula_Response_Ajax_Base
+class Zikula_Response_Ajax_Plain extends Zikula_Response_Ajax_AbstractBase
 {
     /**
      * Constructor.

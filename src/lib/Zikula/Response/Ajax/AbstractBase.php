@@ -16,7 +16,7 @@
 /**
  * Ajax base class.
  */
-abstract class Zikula_Response_Ajax_Base
+abstract class Zikula_Response_Ajax_AbstractBase
 {
     /**
      * Response code.

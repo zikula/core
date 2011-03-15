@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class PageLock_Controller_Ajax extends Zikula_Controller_Ajax
+class PageLock_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
     /**
      * refresh a page lock
