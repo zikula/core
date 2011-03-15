@@ -142,7 +142,7 @@ class Zikula_Form_View extends Zikula_View
 
         // Construct and make normal Smarty use possible
         parent::__construct($serviceManager, $module, false);
-        $this->addPluginDir('lib/Zikula/Form/plugins');
+        $this->addPluginDir('lib/viewplugins/formplugins');
 
         // Setup
         $this->idCount = 1;
@@ -682,7 +682,7 @@ class Zikula_Form_View extends Zikula_View
     public function getErrorMsg()
     {
         if ($this->errorMsgSet) {
-            include_once ('lib/Zikula/View/plugins/function.getstatusmsg.php');
+            include_once ('lib/viewplugins/function.getstatusmsg.php');
             $args = array();
             return smarty_function_getstatusmsg($args, $this);
         } else {
