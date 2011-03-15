@@ -5,7 +5,7 @@
     <h2>{gt text="Test current settings"}</h2>
     <form class="z-form" action="{modurl modname="Mailer" type="admin" func="sendmessage"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Mailer"}" />
+            <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
             <input id="mailer_html" type="hidden" name="html" value="0" />
             <fieldset>
                 <legend>{gt text="Settings test"}</legend>
@@ -39,10 +39,6 @@
                         <input id="mailer_msgtype_multipart" type="radio" name="msgtype" value="multipart" />
                         <label for="mailer_msgtype_multipart">{gt text="Multi-part message"}</label>
                     </div>
-                </div>
-                <div class="z-formrow">
-                    <label for="mailer_pnmail">{gt text="Send message via Mailer API"}</label>
-                    <input id="mailer_pnmail" type="checkbox" name="pnmail" value="1" />
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_body"><span id="mailer_body_html" style="display: none;">{gt text="HTML"} </span>{gt text="Message"}</label>
