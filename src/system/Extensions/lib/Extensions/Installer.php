@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Extensions_Installer extends Zikula_Installer
+class Extensions_Installer extends Zikula_AbstractInstaller
 {
     /**
      * Install the Extensions module.

@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Settings_Version extends Zikula_Version
+class Settings_Version extends Zikula_AbstractVersion
 {
     public function getMetaData()
     {

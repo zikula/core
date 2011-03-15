@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class PageLock_Installer extends Zikula_Installer
+class PageLock_Installer extends Zikula_AbstractInstaller
 {
     /**
      * initialize the module

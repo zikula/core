@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Search_Installer extends Zikula_Installer
+class Search_Installer extends Zikula_AbstractInstaller
 {
     /**
      * initialise the Search module

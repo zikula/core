@@ -15,7 +15,7 @@
 /**
  * Mailer_Installer class.
  */
-class Mailer_Installer extends Zikula_Installer
+class Mailer_Installer extends Zikula_AbstractInstaller
 {
 
     /**

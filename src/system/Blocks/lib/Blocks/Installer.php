@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Installer extends Zikula_Installer
+class Blocks_Installer extends Zikula_AbstractInstaller
 {
     /**
      * initialise the blocks module

@@ -1,6 +1,6 @@
 <?php
 
-class Permissions_Version extends Zikula_Version
+class Permissions_Version extends Zikula_AbstractVersion
 {
     public function getMetaData()
     {
