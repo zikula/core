@@ -19,7 +19,7 @@
  * we cannot use $this->get/set/delVar() because the keys will be incorrectly
  * generated (System instead of ZConfig).
  */
-class Settings_Installer extends Zikula_Installer
+class Settings_Installer extends Zikula_AbstractInstaller
 {
     /**
      * Initialise the settings module.

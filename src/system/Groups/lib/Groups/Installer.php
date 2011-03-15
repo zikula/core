@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Groups_Installer extends Zikula_Installer
+class Groups_Installer extends Zikula_AbstractInstaller
 {
     /**
      * initialise the groups module

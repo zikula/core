@@ -333,16 +333,16 @@ class Extensions_Api_Admin extends Zikula_Api
             if ($oomod) {
                 $className = ucwords($modinfo['name']) . '_Installer';
                 $reflectionInstaller = new ReflectionClass($className);
-                if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+                if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
                 }
                 $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
-                $interactiveClass = ucwords($modinfo['name']) . '_Interactiveinstaller';
+                $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
                 $interactiveController = null;
                 if (class_exists($interactiveClass)) {
                     $reflectionInteractive = new ReflectionClass($interactiveClass);
-                    if (!$reflectionInteractive->isSubclassOf('Zikula_InteractiveInstaller')) {
-                        LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+                    if (!$reflectionInteractive->isSubclassOf('Zikula_AbstractInteractiveInstaller')) {
+                        LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInteractiveInstaller", $className));
                     }
                     $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
                 }
@@ -475,7 +475,7 @@ class Extensions_Api_Admin extends Zikula_Api
                     $name = $dir;
 
                     // Get the module version
-                    if (!$modversion instanceof Zikula_Version) {
+                    if (!$modversion instanceof Zikula_AbstractVersion) {
                         if (isset($modversion['profile']) && $modversion['profile']) {
                             $modversion['capabilities']['profile'] = '1.0';
                         }
@@ -845,16 +845,16 @@ class Extensions_Api_Admin extends Zikula_Api
         if ($oomod) {
             $className = ucwords($modinfo['name']) . '_Installer';
             $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
             $installer = $reflectionInstaller->newInstance($sm);
             $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
             $interactiveController = null;
             if (class_exists($interactiveClass)) {
                 $reflectionInteractive = new ReflectionClass($interactiveClass);
-                if (!$reflectionInteractive->isSubclassOf('Zikula_InteractiveInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+                if (!$reflectionInteractive->isSubclassOf('Zikula_AbstractInteractiveInstaller')) {
+                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInteractiveInstaller", $className));
                 }
                 $interactiveController = $reflectionInteractive->newInstance($sm);
             }
@@ -978,16 +978,16 @@ class Extensions_Api_Admin extends Zikula_Api
         if ($oomod) {
             $className = ucwords($modinfo['name']) . '_Installer';
             $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
             $installer = $reflectionInstaller->newInstanceArgs(array($sm));
             $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
             $interactiveController = null;
             if (class_exists($interactiveClass)) {
                 $reflectionInteractive = new ReflectionClass($interactiveClass);
-                if (!$reflectionInteractive->isSubclassOf('Zikula_InteractiveInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+                if (!$reflectionInteractive->isSubclassOf('Zikula_AbstractInteractiveInstaller')) {
+                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInteractiveInstaller", $className));
                 }
                 $interactiveController = $reflectionInteractive->newInstance($sm);
             }

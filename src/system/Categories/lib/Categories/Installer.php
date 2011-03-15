@@ -11,7 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Categories_Installer extends Zikula_Installer
+class Categories_Installer extends Zikula_AbstractInstaller
 {
     /**
      * initialise module

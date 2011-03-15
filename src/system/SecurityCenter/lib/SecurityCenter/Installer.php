@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class SecurityCenter_Installer extends Zikula_Installer
+class SecurityCenter_Installer extends Zikula_AbstractInstaller
 {
     /**
      * initialise the SecurityCenter module

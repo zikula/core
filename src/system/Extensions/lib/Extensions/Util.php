@@ -20,7 +20,7 @@ class Extensions_Util
      * @param string $moduleName Module Name.
      * @param string $rootdir    Root directory of the module (default: modules).
      *
-     * @return Zikula_Version|array
+     * @return Zikula_AbstractVersion|array
      */
     public static function getVersionMeta($moduleName, $rootdir = 'modules')
     {
@@ -34,8 +34,8 @@ class Extensions_Util
                 LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), Zikula_AbstractErrorHandler::CRIT);
                 throw new InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), 0, $e);
             }
-            if (!$modversion instanceof Zikula_Version) {
-                LogUtil::registerError(__f('%s is not an instance of Zikula_Version', get_class($modversion)));
+            if (!$modversion instanceof Zikula_AbstractVersion) {
+                LogUtil::registerError(__f('%s is not an instance of Zikula_AbstractVersion', get_class($modversion)));
             }
         } elseif (is_dir("$rootdir/$moduleName/lib")) {
             LogUtil::registerError(__f('Could not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));

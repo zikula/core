@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Installer extends Zikula_Installer
+class Admin_Installer extends Zikula_AbstractInstaller
 {
     /**
      * Initialise the Admin module.
