@@ -359,7 +359,7 @@ Zikula.Categories.Resequence = function(node, params, data) {
         };
     node.insert({bottom: Zikula.Categories.Indicator()});
 
-    new Zikula.Ajax.Request(
+    var request = new Zikula.Ajax.Request(
         "ajax.php?module=Categories&func=resequence",
         {
             parameters: pars,
