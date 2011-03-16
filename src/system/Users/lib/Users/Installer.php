@@ -257,12 +257,10 @@ class Users_Installer extends Zikula_Installer
     public function upgrade117Xto210($oldversion)
     {
         // Get the dbinfo for the new version
-        $funcExists = function_exists('Users_tables');
-        if (!$funcExists) {
-            require_once 'system/Users/tables.php';
-        }
+        ModUtil::dbInfoLoad('Users', 'Users');
 
-        $dbinfoSystem = DBUtil::getTables();
+        $serviceManager = ServiceUtil::getManager();
+        $dbinfoSystem = $serviceManager['dbtables'];
         $dbinfo117X = Users_tables('1.17');
         $dbinfo210 = Users_tables('2.1.0');
         $usersOldFields = array('user_theme', 'user_viewemail', 'storynum', 'counter', 'hash_method', 'validfrom', 'validuntil');
@@ -275,12 +273,13 @@ class Users_Installer extends Zikula_Installer
         // Update the users table with new and altered fields. No fields are removed at this point, and no fields
         // are getting a new data type that is incompatible, so no need to save anything off first.
         // Also, create the users_verifychg tables at this point.
-        // Hack the global dbtables with the new field information.
-        $GLOBALS['dbtables']['users_column'] = $dbinfo210['users_column'];
-        $GLOBALS['dbtables']['users_column_def'] = $dbinfo210['users_column_def'];
-        $GLOBALS['dbtables']['users_verifychg'] = $dbinfo210['users_verifychg'];
-        $GLOBALS['dbtables']['users_verifychg_column'] = $dbinfo210['users_verifychg_column'];
-        $GLOBALS['dbtables']['users_verifychg_column_def'] = $dbinfo210['users_verifychg_column_def'];
+        // Merge the global dbtables with the new field information.
+        $tables['users_column'] = $dbinfo210['users_column'];
+        $tables['users_column_def'] = $dbinfo210['users_column_def'];
+        $tables['users_verifychg'] = $dbinfo210['users_verifychg'];
+        $tables['users_verifychg_column'] = $dbinfo210['users_verifychg_column'];
+        $tables['users_verifychg_column_def'] = $dbinfo210['users_verifychg_column_def'];
+        $serviceManager['dbtables'] = array_merge($dbinfoSystem, $tables);
 
         // Now change the tables
         if (!DBUtil::changeTable('users')) {
@@ -361,7 +360,8 @@ class Users_Installer extends Zikula_Installer
         // Next, users table conversion
         // We need to convert some information over from the old users table fields, so merge the old field list into
         // the new one. The order of array_merge parameters is important here!
-        $GLOBALS['dbtables']['users_column'] = array_merge($dbinfo117X['users_column'], $dbinfo210['users_column']);
+        $tables = array('users_column' => array_merge($dbinfo117X['users_column'], $dbinfo210['users_column']));
+        $serviceManager['dbtables'] = array_merge($dbinfoSystem, $tables);
         // Do the conversion in PHP we use mb_strtolower, and even if MySQL had an equivalent, there is
         // no guarantee that another supported DB platform would.
         $limitNumRows = 100;
@@ -487,14 +487,16 @@ class Users_Installer extends Zikula_Installer
         DBUtil::dropColumn('users', $usersOldFieldsDB);
         DBUtil::dropTable('users_temp');
 
-        // Reset $GLOBALS['dbtables'] to the new table definitons, so the rest of the
+        // Reset the system tables to the new table definitons, so the rest of the
         // system upgrade goes smoothly.
+        $dbinfoSystem = $serviceManager['dbtables'];
         foreach ($dbinfo117X as $key => $value) {
-            unset($GLOBALS['dbtables'][$key]);
+            unset($dbinfoSystem[$key]);
         }
         foreach ($dbinfo210 as $key => $value) {
-            $GLOBALS['dbtables'][$key] = $value;
+            $dbinfoSystem[$key] = $value;
         }
+        $serviceManager['dbtables'] = $dbinfoSystem;
 
         // done with db changes. Now handle some final stuff.
         $this->delVar('authmodules');
