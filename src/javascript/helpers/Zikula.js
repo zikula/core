@@ -212,7 +212,7 @@ Zikula.updateauthids = function(authid) {
 Zikula.recolor = function(listclass, headerclass) {
     var odd = true;
 
-    $A($(listclass).childNodes).each(
+    $A($(listclass).childElements()).each(
         function(node) {
             if (!Element.hasClassName(node, headerclass)) {
                 Element.removeClassName(node, 'z-odd');
