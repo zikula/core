@@ -187,5 +187,8 @@
         [{label: Zikula.__('Ok'), 'class': 'z-btgreen'}],
         {minmax:true, width: 760, resizable: true}
     );
+    $('blockupdateform').observe('submit',function(){
+        $('blockupdateform').insert($('block_placement_advanced').hide());
+    })
     /* ]]> */
 </script>
