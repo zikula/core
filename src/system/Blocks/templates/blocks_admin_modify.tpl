@@ -183,6 +183,9 @@
 
 <script type="text/javascript">
     /* <![CDATA[ */
-    var defwindow = new Zikula.UI.Window($('blocks_advanced_placement_onclick'),{minmax:true, width: 760, resizable: true});
+    var defwindow = new Zikula.UI.Dialog($('blocks_advanced_placement_onclick'),
+        [{label: Zikula.__('Ok'), 'class': 'z-btgreen'}],
+        {minmax:true, width: 760, resizable: true}
+    );
     /* ]]> */
 </script>
