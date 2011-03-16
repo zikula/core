@@ -60,7 +60,7 @@
                                 <span class="z-itemcell z-w25">
                                     <select id="filters_{$loop_index}_module" name="filters[{$loop_index}][module]">
                                         {foreach from=$mods item='mod' name='modlist'}
-                                        <option value="{$mod.name}" {if $placementfilter.module eq $mod.name}selected{/if}>{$mod.displayname}</option>
+                                        <option value="{$mod.name}" {if $placementfilter.module eq $mod.name}selected="selected"{/if}>{$mod.displayname}</option>
                                         {/foreach}
                                     </select>
                                 </span>
