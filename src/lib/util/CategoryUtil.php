@@ -603,15 +603,6 @@ class CategoryUtil
             return $false;
         }
 
-        // since array_shift() resets numeric array indexes, we remove the leading element like this
-        if (!$includeRoot) {
-            foreach ($cats as $k => $v) {
-                if (isset($v['ipath']) && $v['ipath'] == $apath) {
-                    unset($cats[$k]);
-                }
-            }
-        }
-
         $newParentIPath = $newParent['ipath'] . '/';
         $newParentPath = $newParent['path'] . '/';
 
@@ -635,7 +626,11 @@ class CategoryUtil
         DBUtil::executeSQL($sql);
 
         $pid = $cats[0]['id'];
-        $sql = "UPDATE $category_table SET $category_column[parent_id] = '" . DataUtil::formatForStore($newparent_id) . "' WHERE $category_column[id] = '" . DataUtil::formatForStore($pid) . "'";
+        if ($includeRoot) {
+            $sql = "UPDATE $category_table SET $category_column[parent_id] = '" . DataUtil::formatForStore($newparent_id) . "' WHERE $category_column[id] = '" . DataUtil::formatForStore($pid) . "'";
+        } else {
+            $sql = "UPDATE $category_table SET $category_column[parent_id] = '" . DataUtil::formatForStore($newparent_id) . "' WHERE $category_column[parent_id] = '" . DataUtil::formatForStore($pid) . "'";
+        }
         DBUtil::executeSQL($sql);
 
         return true;
