@@ -162,6 +162,67 @@ class Categories_Controller_Ajax extends Zikula_Controller_Ajax
         return new Zikula_Response_Ajax($result);
     }
 
+    public function deleteandmovesubs()
+    {
+        $this->checkAjaxToken();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
+
+        $cid = $this->request->getPost()->get('cid');
+        $parent = $this->request->getPost()->get('parent');
+        $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
+        $cat->deleteMoveSubcategories($parent);
+        // need to re-render new parents node
+
+        $newParent = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $parent);
+        $categories = CategoryUtil::getSubCategories($newParent->getDataField('id'), true, true, true, true, true);
+        $options = array(
+            'nullParent' => $newParent->getDataField('parent_id'),
+            'withWraper' => false,
+        );
+        $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
+
+        $leafStatus = array(
+            'leaf' => array(),
+            'noleaf' => array()
+        );
+        foreach ($categories as $c) {
+            if ($c['is_leaf']) {
+                $leafStatus['leaf'][] = $c['id'];
+            } else {
+                $leafStatus['noleaf'][] = $c['id'];
+            }
+        }
+
+        $result = array(
+            'action' => 'deleteandmovesubs',
+            'cid' => $cid,
+            'parent' => $newParent->getDataField('id'),
+            'node' => $node,
+            'leafstatus' => $leafStatus,
+            'result' => true
+        );
+        return new Zikula_Response_Ajax($result);
+    }
+
+    public function deletedialog()
+    {
+        $this->checkAjaxToken();
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
+
+        $cid = $this->request->getPost()->get('cid');
+        $allCats = CategoryUtil::getSubCategories(1, true, true, true, false, true, $cid);
+        $selector = CategoryUtil::getSelector_Categories($allCats);
+
+        Zikula_Controller::configureView();
+        $this->view->setCaching(false);
+
+        $this->view->assign('categorySelector', $selector);
+        $result = array(
+            'result' => $this->view->fetch('categories_adminajax_delete.tpl'),
+        );
+        return new Zikula_Response_Ajax($result);
+    }
+
     public function activate()
     {
         $this->checkAjaxToken();
