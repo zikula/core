@@ -57,6 +57,8 @@ function smarty_function_pageaddvar($params, Zikula_View $view)
         return false;
     }
 
-    $value = explode(',', $value);
+    if ($name != 'rawtext') {
+        $value = explode(',', $value);
+    }
     PageUtil::addVar($name, $value);
 }
