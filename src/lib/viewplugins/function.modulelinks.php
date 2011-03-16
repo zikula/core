@@ -63,45 +63,48 @@ function smarty_function_modulelinks($params, Zikula_View $view)
         $menuLinks = ModUtil::apiFunc($params['modname'], $params['type'], 'getlinks', $params);
     }
 
-    $html = '<ul';
-    $html .= !empty($menuId) ? ' id="'.$menuId.'"' : '';
-    $html .= !empty($menuClass) ? ' class="'.$menuClass.'"' : '';
-    $html .= '>';
-
     $size = count($menuLinks);
-    $i = 1;
-    foreach ($menuLinks as $menuitem) {
-        $class = array();
-        $class[] = $size == 1 ? 'z-ml-single' : '';
-        $class[] = ($i == 1 && $size > 1) ? $menuItemFirst : '';
-        $class[] = ($i == $size && $size > 1) ? $menuItemLast : '';
-        $class[] = !empty($menuItemClass) ? $menuItemClass : '';
-        $class[] = (isset($menuitem['disabled']) && $menuitem['disabled'] == true) ? 'z-ml-disabled' : '';
-        $class = trim(implode(' ', $class));
-        $i++;
+    $html = '';
 
-        $html .= '<li';
-        $html .= !empty($menuitem['id']) ? ' id="'.$menuitem['id'].'"' : '';
-        $html .= !empty($class) ? ' class="'.$class.'"' : '';
+    if ($size > 0) {
+        $html = '<ul';
+        $html .= !empty($menuId) ? ' id="'.$menuId.'"' : '';
+        $html .= !empty($menuClass) ? ' class="'.$menuClass.'"' : '';
         $html .= '>';
-        $attr  = !empty($menuitem['title']) ? ' title="'.$menuitem['title'].'"' : '';
-        $attr .= !empty($menuitem['class']) ? ' class="'.$menuitem['class'].'"' : '';
 
-        if (isset($menuitem['disabled']) && $menuitem['disabled'] == true) {
-            $html .= '<a '.$attr.'>'.$menuitem['text'].'</a>';
-        } elseif (!empty($menuitem['url'])) {
-            $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr.'>'.$menuitem['text'].'</a>';
-        } else {
-            $html .= '<span'.$attr.'>'.$menuitem['text'].'</span>';
-        }
-        if (isset($menuitem['links'])) {
-            $html .= _smarty_function_modulelinks($i, $menuitem['links']);
-        }
-        $html .= '</li>';
+        $i = 1;
+        foreach ($menuLinks as $menuitem) {
+            $class = array();
+            $class[] = $size == 1 ? 'z-ml-single' : '';
+            $class[] = ($i == 1 && $size > 1) ? $menuItemFirst : '';
+            $class[] = ($i == $size && $size > 1) ? $menuItemLast : '';
+            $class[] = !empty($menuItemClass) ? $menuItemClass : '';
+            $class[] = (isset($menuitem['disabled']) && $menuitem['disabled'] == true) ? 'z-ml-disabled' : '';
+            $class = trim(implode(' ', $class));
+            $i++;
 
+            $html .= '<li';
+            $html .= !empty($menuitem['id']) ? ' id="'.$menuitem['id'].'"' : '';
+            $html .= !empty($class) ? ' class="'.$class.'"' : '';
+            $html .= '>';
+            $attr  = !empty($menuitem['title']) ? ' title="'.$menuitem['title'].'"' : '';
+            $attr .= !empty($menuitem['class']) ? ' class="'.$menuitem['class'].'"' : '';
+
+            if (isset($menuitem['disabled']) && $menuitem['disabled'] == true) {
+                $html .= '<a '.$attr.'>'.$menuitem['text'].'</a>';
+            } elseif (!empty($menuitem['url'])) {
+                $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr.'>'.$menuitem['text'].'</a>';
+            } else {
+                $html .= '<span'.$attr.'>'.$menuitem['text'].'</span>';
+            }
+            if (isset($menuitem['links'])) {
+                $html .= _smarty_function_modulelinks($i, $menuitem['links']);
+            }
+            $html .= '</li>';
+        }
+
+        $html .= '</ul>';
     }
-
-    $html .= '</ul>';
 
     if (isset($params['assign'])) {
         $view->assign($params['assign'], $html);
