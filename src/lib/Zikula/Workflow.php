@@ -177,9 +177,9 @@ class Zikula_Workflow
         foreach ($action['operations'] as $operation) {
             // execute the operation
             $result[$operation['name']] = $this->executeOperation($operation, $obj, $nextState);
-            if (!$result[$operation['name']]) {
+            if ($result[$operation['name']] === false) {
                 // if an operation fails here, do not process further and return false
-                return $result;
+                return false;
             }
         }
 
