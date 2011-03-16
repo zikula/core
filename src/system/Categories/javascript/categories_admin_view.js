@@ -35,11 +35,7 @@ Zikula.Categories.AttachMenu = function () {
     Zikula.Categories.ContextMenu.addItem({
         label: Zikula.__('Delete'),
         callback: function(node){
-            Zikula.UI.Confirm(Zikula.__('Do you really want to delete this category?'), Zikula.__('Confirmation prompt'), function(res){
-                if(res) {
-                    Zikula.Categories.MenuAction(node, 'delete');
-                }
-            });
+            Zikula.Categories.DeleteMenuAction(node);
         }
     });
     Zikula.Categories.ContextMenu.addItem({
@@ -87,8 +83,68 @@ Zikula.Categories.Indicator = function() {
     return $('ajax_indicator') ? $('ajax_indicator') : new Element('img',{id: 'ajax_indicator', src: 'images/ajax/indicator_circle.gif'});
 };
 
-Zikula.Categories.MenuAction = function(node, action){
-    if (!['edit', 'delete', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'].include(action)) {
+Zikula.Categories.DeleteMenuAction = function(node){
+    var subCats = Zikula.Categories.ContextMenu.lastClick.findElement('a').up('li').down('ul'),
+        msg = new Element('div',{id:'dialogContent'}).insert(
+            new Element('p').update(Zikula.__('Do you really want to delete this category?'))
+        ),
+        buttons = [
+            {name: 'Delete', value: 'Delete', label: Zikula.__('Delete'), 'class': 'z-btgreen'},
+            {name: 'Cancel', value: 'Cancel', label: Zikula.__('Cancel'), 'class': 'z-btred'},
+        ];
+    subCats = subCats ? subCats.childElements().size() : 0;
+    if (subCats > 0) {
+        var info = Zikula.__f('It contains %s direct sub-categories.', subCats)
+            + ' '
+            + Zikula.__("Please also choose what to do with this category's sub-categories.");
+        msg.insert(new Element('p',{'class':'z-informationmsg'}).update(info));
+        buttons = [
+            {name: 'Delete', value: 'Delete', label: Zikula.__('Delete all sub-categories'), 'class': 'z-btgreen'},
+            {name: 'Delete', value: 'DeleteAndMoveSubs', label: Zikula.__('Move all sub-categories'), 'class': 'z-btgreen', close: false},
+            {name: 'Cancel', value: 'Cancel', label: Zikula.__('Cancel'), 'class': 'z-btred'},
+        ];
+    }
+    Zikula.Categories.DeleteDialog = new Zikula.UI.Dialog(
+        msg,
+        buttons,
+        {title: Zikula.__('Confirmation prompt'), width: 500, callback: function(res){
+             switch (res.value) {
+                 case 'Delete':
+                    Zikula.Categories.MenuAction(node, 'delete');
+                    Zikula.Categories.DeleteDialog.destroy();
+                    break;
+                 case 'DeleteAndMoveSubs':
+                    if (!$('subcat_move')) {
+                        $('dialogContent').addClassName('z-form');
+                        Zikula.Categories.DeleteDialog.window.indicator.appear({to: 0.7, duration: 0.2});
+                        new Zikula.Ajax.Request('ajax.php?module=Categories&func=deletedialog', {
+                            parameters: {cid: Zikula.TreeSortable.trees.categoriesTree.getNodeId(node.up('li'))},
+                            onComplete: function(req) {
+                                var subcat_move = req.getData().result;
+                                $('dialogContent').insert(subcat_move);
+                                Zikula.Categories.DeleteDialog.container.morph('height:250px');
+                                Zikula.Categories.DeleteDialog.window.indicator.fade({duration: 0.2});
+                            }
+                        });
+                    } else {
+                        var parent = $F('category_parent_id_');
+                        if (parent) {
+                            Zikula.Categories.MenuAction(node, 'deleteandmovesubs', parent);
+                            Zikula.Categories.DeleteDialog.destroy();
+                        }
+                    }
+                    break;
+                default:
+                    Zikula.Categories.DeleteDialog.destroy();
+             }
+        }}
+    );
+    Zikula.Categories.DeleteDialog.open()
+    Zikula.Categories.DeleteDialog.container.down('button[name=Cancel]').focus();
+};
+
+Zikula.Categories.MenuAction = function(node, action, extrainfo){
+    if (!['edit', 'delete', 'deleteandmovesubs', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'].include(action)) {
         return false;
     }
     node.insert({after: Zikula.Categories.Indicator()});
@@ -99,6 +155,9 @@ Zikula.Categories.MenuAction = function(node, action){
     switch(action) {
         case 'edit':
             pars.mode = 'edit';
+            break;
+        case 'deleteandmovesubs':
+            pars.parent = extrainfo;
             break;
         case 'copy':
             pars.parent = Zikula.TreeSortable.trees.categoriesTree.getNodeId(node.up('li').up('li'));
@@ -116,9 +175,8 @@ Zikula.Categories.MenuAction = function(node, action){
     }
     url = url + action;
 
-    var request = new Zikula.Ajax.Request(
+    new Zikula.Ajax.Request(
         url, {
-            method: 'post',
             parameters: pars,
             onComplete: Zikula.Categories.MenuActionCallback
         });
@@ -142,6 +200,18 @@ Zikula.Categories.MenuActionCallback = function(req) {
                 afterFinish: function() {node.remove();}
             });
             Zikula.TreeSortable.trees.categoriesTree.drawNodes();
+            break;
+        case 'deleteandmovesubs':
+            Droppables.remove(node);
+            node.select('li').each(function(subnode) {
+                Droppables.remove(subnode);
+            });
+            Effect.SwitchOff(node,{
+                afterFinish: function() {node.remove();}
+            });
+            var parent = Zikula.TreeSortable.trees.categoriesTree.config.nodePrefix + data.parent;
+            $(parent).replace(data.node);
+            Zikula.Categories.ReinitTreeNode($(parent), data);
             break;
         case 'activate':
             node.down('a').removeClassName(Zikula.TreeSortable.trees.categoriesTree.config.nodeUnactive);
@@ -203,7 +273,6 @@ Zikula.Categories.EditNode = function(res) {
     var pars = Zikula.Categories.Form.serialize(true);
     pars.mode = 'edit';
     new Zikula.Ajax.Request('ajax.php?module=Categories&func=save', {
-        method: 'post',
         parameters: pars,
         onComplete: function(req) {
             var data = req.getData();
@@ -234,7 +303,6 @@ Zikula.Categories.AddNode = function(res) {
     var pars = Zikula.Categories.Form.serialize(true);
     pars.mode = 'new';
     new Zikula.Ajax.Request('ajax.php?module=Categories&func=save', {
-        method: 'post',
         parameters: pars,
         onComplete: function(req) {
             var data = req.getData();
@@ -291,10 +359,9 @@ Zikula.Categories.Resequence = function(node, params, data) {
         };
     node.insert({bottom: Zikula.Categories.Indicator()});
 
-    var request = new Zikula.Ajax.Request(
+    new Zikula.Ajax.Request(
         "ajax.php?module=Categories&func=resequence",
         {
-            method: 'post',
             parameters: pars,
             onComplete: Zikula.Categories.ResequenceCallback
         });
