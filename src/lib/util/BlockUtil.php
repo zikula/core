@@ -75,7 +75,7 @@ class BlockUtil
                 }
             }
         }
-        
+
         // current language
         if (!isset($currentlang)) {
             $currentlang = ZLanguage::getLanguageCode();
@@ -95,15 +95,15 @@ class BlockUtil
             if (!$blockinfo['active'] || (!empty($blockinfo['language']) && $blockinfo['language'] != $currentlang)) {
                 continue;
             }
-            
+
             // block filtering
             if (!empty($blockinfo['filter'])) {
 
                 $showblock = false;
-                
-                // loop for each filter
-                foreach($blockinfo['filter'] as $filter) {
 
+                // loop for each filter
+                foreach ($blockinfo['filter'] as $filter)
+                {
                     // filter must be an array of values
                     if (!is_array($filter)) {
                         continue;
@@ -383,7 +383,6 @@ class BlockUtil
             }
         }
 
-
         // Return information gathered
         return $GLOBALS['blocks_modules'];
     }
@@ -447,6 +446,7 @@ class BlockUtil
         if (!isset($row['bid'])) {
             $row['bid'] = '';
         }
+
         if (UserUtil::isLoggedIn()) {
             $uid = UserUtil::getVar('uid');
             $dbtable = DBUtil::getTables();
@@ -504,7 +504,7 @@ class BlockUtil
             $ak = array_keys($blocks);
             foreach ($ak as $k) {
                 $key = $blocks[$k][$assocKey];
-                $blocks[$k]['filter'] = strlen($blocks[$k]['filter']) > 0 ? (array)unserialize($blocks[$k]['filter']) : array();
+                $blocks[$k]['filter'] = strlen($blocks[$k]['filter']) > 0 ? array_filter((array)unserialize($blocks[$k]['filter'])) : array();
                 $blockinfo[$assocKey][$key] = $blocks[$k];
             }
         }
