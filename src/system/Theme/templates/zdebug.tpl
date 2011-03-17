@@ -1,5 +1,5 @@
 {* zdebug.tpl, based on debug.tpl, last updated version 2.0.1 *}
-
+{pageaddvar name='javascript' value='javascript/helpers/Zikula.zdebug.js'}
 {assign_debug_info}
 {debugenvironment}
 {capture name='debugoutput' assign='debugoutput'}
@@ -122,6 +122,7 @@
 {if isset($_smarty_debug_output) and $_smarty_debug_output eq "html"}
     {$debugoutput}
 {else}
+{*
 <script type="text/javascript">
     if( self.name == '' ) {
        var title = 'Zikula Console';
@@ -132,5 +133,10 @@
     _dbg_console.document.write('<html><head><title>'+title+'</title></head><body><div id="debugcontent"></div></body class="donotremovemeorthepopupwillbreak"></html>');
     _dbg_console.document.close();
     _dbg_console.document.getElementById('debugcontent').innerHTML = '{{$debugoutput|escape:javascript}}';
+</script>
+*}
+<script type="text/javascript">
+    var _zdebug_console = new Zikula.zdebug(self.name, '{{$debugoutput|escape:javascript}}');
+    _zdebug_console.showConsole();
 </script>
 {/if}
