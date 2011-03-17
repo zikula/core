@@ -58,8 +58,8 @@ class SystemListeners extends Zikula_EventHandler
     public function request(Zikula_Event $event)
     {
         $requestDef = new Zikula_ServiceManager_Definition('Zikula_Request_Http');
-        $requestDef->addMethod('setSession', array(new Zikula_ServiceManager_Service('session')));
-        $this->serviceManager->registerService(new Zikula_ServiceManager_Service('request', $requestDef));
+        $requestDef->addMethod('setSession', array(new Zikula_ServiceManager_Reference('session')));
+        $this->serviceManager->registerDefinition('request', $requestDef);
     }
 
     /**
@@ -106,11 +106,11 @@ class SystemListeners extends Zikula_EventHandler
      */
     public function setupSessions(Zikula_Event $event)
     {
-        $storage = new Zikula_ServiceManager_Definition('Zikula_Session_Storage_Legacy');
-        $storageService = new Zikula_ServiceManager_Service('session.storage', $storage);
-        $this->serviceManager->registerService($storageService);
-        $session = new Zikula_ServiceManager_Definition('Zikula_Session', array($storageService));
-        $this->serviceManager->registerService(new Zikula_ServiceManager_Service('session', $session));
+        $storageDef = new Zikula_ServiceManager_Definition('Zikula_Session_Storage_Legacy');
+        $this->serviceManager->registerDefinition('session.storage', $storageDef);
+        $storageReference = new Zikula_ServiceManager_Reference('session.storage');
+        $session = new Zikula_ServiceManager_Definition('Zikula_Session', array($storageReference));
+        $this->serviceManager->registerDefinition('session', $session);
     }
 
     /**
@@ -124,16 +124,16 @@ class SystemListeners extends Zikula_EventHandler
     {
         if ($event['stage'] & Zikula_Core::STAGE_MODS) {
             $tokenStorageDef = new Zikula_ServiceManager_Definition('Zikula_Token_Storage_Session',
-                            array(new Zikula_ServiceManager_Service('session')));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('token.storage', $tokenStorageDef));
+                            array(new Zikula_ServiceManager_Reference('session')));
+            $this->serviceManager->registerDefinition('token.storage', $tokenStorageDef);
 
             $tokenGeneratorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Generator',
-                            array(new Zikula_ServiceManager_Service('token.storage'), System::getVar('signingkey')));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('token.generator', $tokenGeneratorDef));
+                            array(new Zikula_ServiceManager_Reference('token.storage'), System::getVar('signingkey')));
+            $this->serviceManager->registerDefinition('token.generator', $tokenGeneratorDef);
 
             $tokenValidatorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Validate',
-                            array(new Zikula_ServiceManager_Service('token.generator')));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('token.validator', $tokenValidatorDef));
+                            array(new Zikula_ServiceManager_Reference('token.generator')));
+            $this->serviceManager->registerDefinition('token.validator', $tokenValidatorDef);
         }
     }
 
@@ -421,15 +421,16 @@ class SystemListeners extends Zikula_EventHandler
             // create definitions
             $toolbar = new Zikula_ServiceManager_Definition(
                             'Zikula_DebugToolbar',
-                            array(new Zikula_ServiceManager_Service('zikula.eventmanager')),
-                            array('addPanels' => array(0 => array(new Zikula_ServiceManager_Service('debug.toolbar.panel.version'),
-                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.config'),
-                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.memory'),
-                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.rendertime'),
-                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.sql'),
-                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.view'),
-                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.exec'),
-                                                    new Zikula_ServiceManager_Service('debug.toolbar.panel.logs'))))
+                            array(new Zikula_ServiceManager_Reference('zikula.eventmanager')),
+                            array('addPanels' => array(0 => array(
+                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.version'),
+                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.config'),
+                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.memory'),
+                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.rendertime'),
+                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.sql'),
+                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.view'),
+                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.exec'),
+                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.logs'))))
             );
 
             $versionPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Version');
@@ -445,15 +446,15 @@ class SystemListeners extends Zikula_EventHandler
             $this->serviceManager->setArgument('debug.toolbar.panel.rendertime.start', microtime(true));
 
             // register services
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.version', $versionPanel, true));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.config', $configPanel, true));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.memory', $momoryPanel, true));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.rendertime', $rendertimePanel, true));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.sql', $sqlPanel, true));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.view', $viewPanel, true));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.exec', $execPanel, true));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.logs', $logsPanel, true));
-            $this->serviceManager->registerService(new Zikula_ServiceManager_Service('debug.toolbar', $toolbar, true));
+            $this->serviceManager->registerDefinition('debug.toolbar.panel.version', $versionPanel, true);
+            $this->serviceManager->registerDefinition('debug.toolbar.panel.config', $configPanel, true);
+            $this->serviceManager->registerDefinition('debug.toolbar.panel.memory', $momoryPanel, true);
+            $this->serviceManager->registerDefinition('debug.toolbar.panel.rendertime', $rendertimePanel, true);
+            $this->serviceManager->registerDefinition('debug.toolbar.panel.sql', $sqlPanel, true);
+            $this->serviceManager->registerDefinition('debug.toolbar.panel.view', $viewPanel, true);
+            $this->serviceManager->registerDefinition('debug.toolbar.panel.exec', $execPanel, true);
+            $this->serviceManager->registerDefinition('debug.toolbar.panel.logs', $logsPanel, true);
+            $this->serviceManager->registerDefinition('debug.toolbar', $toolbar, true);
 
             // setup rendering event listeners
             $this->eventManager->attach('theme.prefooter', array($this, 'debugToolbarRendering'));
