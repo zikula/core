@@ -100,15 +100,15 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Pl
         }
 
         // register transport
-        $this->serviceManager->registerService(new Zikula_ServiceManager_Service('swiftmailer.transport', $definition));
+        $this->serviceManager->registerDefinition('swiftmailer.transport', $definition);
 
         // define and register mailer using transport service
-        $definition = new Zikula_ServiceManager_Definition('Swift_Mailer', array(new Zikula_ServiceManager_Service('swiftmailer.transport')));
-        $this->serviceManager->registerService(new Zikula_ServiceManager_Service('mailer', $definition, false));
+        $definition = new Zikula_ServiceManager_Definition('Swift_Mailer', array(new Zikula_ServiceManager_Reference('swiftmailer.transport')));
+        $this->serviceManager->registerDefinition('mailer', $definition, false);
 
         // register simple mailer service
-        $definition = new Zikula_ServiceManager_Definition('SystemPlugins_SwiftMailer_Mailer', array(new Zikula_ServiceManager_Service('zikula.servicemanager')));
-        $this->serviceManager->registerService(new Zikula_ServiceManager_Service('mailer.simple', $definition));
+        $definition = new Zikula_ServiceManager_Definition('SystemPlugins_SwiftMailer_Mailer', array(new Zikula_ServiceManager_Reference('zikula.servicemanager')));
+        $this->serviceManager->registerDefinition('mailer.simple', $definition);
     }
 
     /**
