@@ -16,8 +16,8 @@
 /**
  * Zikula_ServiceManager_Service definition configuration.
  *
- * This is used in advanced definition configuration to specify that a parameter
- * is a service managed by the ServiceManager.
+ * This is a service container which describes the service.
+ * INTERNAL USE ONLY.
  */
 class Zikula_ServiceManager_Service
 {
