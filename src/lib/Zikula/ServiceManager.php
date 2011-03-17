@@ -59,6 +59,7 @@ class Zikula_ServiceManager implements ArrayAccess
         if ($this->hasService($id)) {
             throw new Exception(sprintf('Service %s is already attached', $id));
         }
+        
         $this->services[$id] = new Zikula_ServiceManager_Service($id, null, $shared);
         $this->services[$id]->setService($service);
         return $service;
@@ -81,28 +82,25 @@ class Zikula_ServiceManager implements ArrayAccess
     }
 
     /**
-     * Register a Service instance container.
+     * Register a service definition.
      *
-     * This will register the definition contained by the Service.
+     * This will register the definition as a service.
      *
-     * @param Zikula_ServiceManager_Service $service Instance of Service with attached definition.
+     * @param string                           $id         Service Id.
+     * @param Zikula_ServiceManager_Definition $definition Service definition.
+     * @param boolean                          $shared     Shared type.
      *
-     * @throws InvalidArgumentException If service is already attach, definition already exists
-     *                                  or the definition is missing from the Service instance.
+     * @throws InvalidArgumentException If service ID is already registered.
      *
      * @return void
      */
-    public function registerService(Zikula_ServiceManager_Service $service)
+    public function registerDefinition($id, Zikula_ServiceManager_Definition $definition, $shared = true)
     {
-        if ($this->hasService($service->getId())) {
-            throw new InvalidArgumentException(sprintf('Service %s is already registered', $service->getId()));
+        if ($this->hasService($id)) {
+            throw new InvalidArgumentException(sprintf('Service %s is already registered', $id));
         }
 
-        if (is_null($service->getDefinition())) {
-            throw new InvalidArgumentException(sprintf('This Service container for %s has no definition', $service->getId()));
-        }
-
-        $this->services[$service->getId()] = $service;
+        $this->services[$id] = new Zikula_ServiceManager_Service($id, $definition, $shared);
     }
 
     /**
@@ -153,6 +151,7 @@ class Zikula_ServiceManager implements ArrayAccess
             if ($service->hasDefinition()) {
                 return $this->createService($service->getDefinition());
             } else {
+                // no definition means an instanciated object.
                 return clone $service->getService();
             }
         }
@@ -203,7 +202,7 @@ class Zikula_ServiceManager implements ArrayAccess
         $reflection = new ReflectionClass($definition->getClassName());
 
         if (($reflection->hasMethod('__construct') || $reflection->hasMethod($definition->getClassName()) && $definition->hasConstructorArgs())) {
-            $service = $reflection->newInstanceArgs($this->compileArgs($definition->getConstructorArgs()));
+            $service = $reflection->newInstanceArgs($this->compileArguments($definition->getConstructorArgs()));
         } else {
             $service = $reflection->newInstance();
         }
@@ -213,7 +212,7 @@ class Zikula_ServiceManager implements ArrayAccess
                 foreach ($arguments as $args) {
                     $reflectionMethod = new ReflectionMethod($definition->getClassName(), $method);
                     if (count($args) > 0) {
-                        $reflectionMethod->invokeArgs($service, $this->compileArgs($args));
+                        $reflectionMethod->invokeArgs($service, $this->compileArguments($args));
                     } else {
                         // no args
                         $reflectionMethod->invoke($service);
@@ -228,40 +227,37 @@ class Zikula_ServiceManager implements ArrayAccess
     /**
      * Compile any parameters that are Definitions, Services or Argument definitions.
      *
-     * @param array $args Non associative array of arguments.
+     * @param array $arguments Non associative array of arguments.
      *
      * @throws InvalidArgumentException If unrecognised object type.
      *
      * @return array Compiled arguments.
      */
-    protected function compileArgs($args)
+    protected function compileArguments($arguments)
     {
-        $compiledArgs = array();
-        foreach ($args as $arg) {
+        $compiledArguments = array();
+        foreach ($arguments as $argument) {
             switch (true)
             {
-                case (!is_object($arg)):
-                    $compiledArgs[] = $arg;
+                case (!is_object($argument)):
+                    $compiledArguments[] = $argument;
                     break;
-                case ($arg instanceof Zikula_ServiceManager_Definition):
-                    $compiledArgs[] = $this->createService($arg);
+                case ($argument instanceof Zikula_ServiceManager_Argument):
+                    $compiledArguments[] = $this->getArgument($argument->getId());
                     break;
-                case ($arg instanceof Zikula_ServiceManager_Service):
-                    $compiledArgs[] = $this->getService($arg->getId());
+                case ($argument instanceof Zikula_ServiceManager_Reference):
+                    $compiledArguments[] = $this->getService($argument->getId());
                     break;
-                case ($arg instanceof Zikula_ServiceManager_Argument):
-                    $compiledArgs[] = $this->getArgument($arg->getId());
-                    break;
-                case ($arg instanceof Zikula_ServiceManager_Reference):
-                    $compiledArgs[] = $this->getService($arg->getId());
+                case ($argument instanceof Zikula_ServiceManager_Definition):
+                    $compiledArguments[] = $this->createService($argument);
                     break;
                 default:
-                    throw new InvalidArgumentException(sprintf('Invalid argument object %s', get_class($arg)));
+                    throw new InvalidArgumentException(sprintf('Invalid argument object %s', get_class($argument)));
                     break;
              }
          }
 
-        return $compiledArgs;
+        return $compiledArguments;
     }
 
     /**
