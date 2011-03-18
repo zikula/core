@@ -58,6 +58,11 @@ class Blocks_Block_Menu extends Zikula_Controller_Block
         // Break out options from our content field
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
+        // add the stylesheet to the header
+        if (isset($vars['stylesheet'])) {
+            PageUtil::addVar('stylesheet', ThemeUtil::getModuleStyleSheet('Blocks', $vars['stylesheet']));
+        }
+
         // check out if the contents are cached.
         if ($this->view->is_cached('blocks_block_menu.tpl')) {
             // Populate block info and pass to theme
@@ -110,11 +115,6 @@ class Blocks_Block_Menu extends Zikula_Controller_Block
 
         // get the block content
         $blockinfo['content'] = $this->view->fetch('blocks_block_menu.tpl');
-
-        // add the stylesheet to the header
-        if (isset($vars['stylesheet'])) {
-            PageUtil::addVar('stylesheet', ThemeUtil::getModuleStyleSheet('Blocks', $vars['stylesheet']));
-        }
 
         // pass the block array back to the theme for display
         return BlockUtil::themeBlock($blockinfo);
