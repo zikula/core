@@ -36,7 +36,7 @@
  */
 function smarty_function_secgenauthkey($params, $smarty)
 {
-    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('secgenauthkey', 'generateauthkey')), E_USER_DEPRECATED);
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('secgenauthkey', 'insert name="csrftoken"')), E_USER_DEPRECATED);
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $module = isset($params['module']) ? $params['module'] : null;
 
