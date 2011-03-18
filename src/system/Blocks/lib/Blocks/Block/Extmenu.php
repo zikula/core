@@ -67,6 +67,9 @@ class Blocks_Block_Extmenu extends Zikula_Controller_Block
             $vars['stylesheet'] = 'extmenu.css';
         }
 
+        // add the stylesheet to the header
+        PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Blocks', $vars['stylesheet']));
+
         // check out if the contents are cached.
         if ($this->view->is_cached($vars['template'])) {
             // Populate block info and pass to theme
@@ -182,9 +185,6 @@ class Blocks_Block_Extmenu extends Zikula_Controller_Block
 
         // get the block content
         $blockinfo['content'] = $this->view->fetch($vars['template']);
-
-        // add the stylesheet to the header
-        PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Blocks', $vars['stylesheet']));
 
         // pass the block array back to the theme for display
         return BlockUtil::themeBlock($blockinfo);
