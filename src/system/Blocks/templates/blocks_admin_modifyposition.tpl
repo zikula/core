@@ -5,7 +5,7 @@
     <h2>{gt text="Edit block position"}</h2>
     <form class="z-form" action="{modurl modname="Blocks" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" id="blocksauthid" name="authid" value="{insert name="generateauthkey" module="Blocks"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" id="position" name="position[pid]" value="{$pid|safetext}" />
             <fieldset>
                 <legend>{gt text="Block position"}</legend>

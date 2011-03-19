@@ -7,7 +7,7 @@
     <h2>{gt text="Edit block"}</h2>
     <form id="blockupdateform" class="z-form" action="{modurl modname="Blocks" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Blocks"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="bid" value="{$bid|safetext}" />
             {if $requirement neq ''}
             <p class="z-warningmsg">

@@ -37,13 +37,6 @@ class Blocks_Controller_User extends Zikula_Controller
      */
     public function changestatus()
     {
-        /* Throwing an error under come conditions - commented out temporarily.
-          if (!SecurityUtil::confirmAuthKey()) {
-          echo $this->__("Sorry! Invalid authorization key ('authkey'). This is probably either because you pressed the \'Back\' button to return to a page which does not allow that, or else because the page\'s authorization key expired due to prolonged inactivity. Please try again.");
-          Zikula_View_Theme::getInstance()->themefooter();
-          System::shutdown();
-          }
-         */
         $bid = FormUtil::getPassedValue('bid');
         $uid = UserUtil::getVar('uid');
 
