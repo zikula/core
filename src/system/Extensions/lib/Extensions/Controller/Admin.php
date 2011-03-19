@@ -358,7 +358,6 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                         'url' => ModUtil::url('Extensions', 'admin', 'compinfo', array(
                                         'id' => $mod['id'],
                                         'startnum' => $startnum,
-                                        'csfrtoken' => $csfrtoken,
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'documentinfo.png',
@@ -462,7 +461,8 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function initialise()
     {
-        $this->checkCsrfToken();
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         // Get parameters from whatever input we need
         $id = (int) FormUtil::getPassedValue('id', 0);
@@ -619,7 +619,8 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function activate()
     {
-        $this->checkCsrfToken();
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         $id = (int) FormUtil::getPassedValue('id', null, 'GET');
         $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
@@ -659,7 +660,8 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function upgrade()
     {
-        $this->checkCsrfToken();
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         $interactive_upgrade = SessionUtil::getVar('interactive_upgrade');
         $interactive_upgrade = (empty($interactive_upgrade)) ? false : true;
@@ -736,7 +738,8 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function deactivate()
     {
-        $this->checkCsrfToken();
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         $id = (int) FormUtil::getPassedValue('id', null, 'GET');
         $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
@@ -846,7 +849,8 @@ class Extensions_Controller_Admin extends Zikula_Controller
 
         // If we get here it means that the user has confirmed the action
 
-        $this->checkCsrfToken();
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         // remove dependent modules
         foreach ($dependents as $dependent) {
@@ -1293,7 +1297,8 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function initialisePlugin()
     {
-        $this->checkCsrfToken();
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
@@ -1328,7 +1333,8 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function deactivatePlugin()
     {
-        $this->checkCsrfToken();
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
@@ -1398,7 +1404,8 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function removePlugin()
     {
-        $this->checkCsrfToken();
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
@@ -1433,7 +1440,8 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function upgradePlugin()
     {
-        $this->checkCsrfToken();
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
