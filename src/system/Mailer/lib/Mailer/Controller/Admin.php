@@ -74,9 +74,10 @@ class Mailer_Controller_Admin extends Zikula_Controller
      */
     public function updateconfig()
     {
+        $this->checkCsrfToken();
+
         // security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
-        $this->checkCsrfToken();
 
         // set our new module variable values
         $mailertype = (int)$this->request->getPost()->get('mailertype', 1);
@@ -154,9 +155,10 @@ class Mailer_Controller_Admin extends Zikula_Controller
      */
     public function sendmessage($args)
     {
+        $this->checkCsrfToken();
+
         // security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
-        $this->checkCsrfToken();
 
         $toname = (string)$this->request->getPost()->get('toname');
         $toaddress = (string)$this->request->getPost()->get('toaddress');
