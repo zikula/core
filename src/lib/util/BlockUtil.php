@@ -68,7 +68,7 @@ class BlockUtil
 
         if (!isset($customargs)) {
             $customargs = array();
-            $filtervars = array('module', 'name', 'type', 'func', 'theme', 'authid');
+            $filtervars = array('module', 'name', 'type', 'func', 'theme', 'authid', 'csrftoken');
             foreach ($_GET as $var => $value) {
                 if (!in_array($var, $filtervars)) {
                     $customargs[] = DataUtil::formatForOS(strip_tags($var)) . '=' . DataUtil::formatForOS(strip_tags($value));
@@ -234,12 +234,12 @@ class BlockUtil
         if (UserUtil::isLoggedIn() && ModUtil::getVar('Blocks', 'collapseable') == 1 && isset($row['collapsable']) && ($row['collapsable'] == '1')) {
             if (self::checkUserBlock($row) == '1') {
                 if (!empty($row['title'])) {
-                    $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => SecurityUtil::generateAuthKey()))) . '">' . $upb . '</a>';
+                    $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid']))) . '">' . $upb . '</a>';
                 }
             } else {
                 $row['content'] = '';
                 if (!empty($row['title'])) {
-                    $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => SecurityUtil::generateAuthKey()))) . '">' . $downb . '</a>';
+                    $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid']))) . '">' . $downb . '</a>';
                 }
             }
         } else {
