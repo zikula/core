@@ -67,7 +67,7 @@ class SecurityUtil
      *
      * @return string
      */
-    public static function generateCsfrToken(Zikula_ServiceManager $serviceManager = null)
+    public static function generateCsrfToken(Zikula_ServiceManager $serviceManager = null)
     {
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();

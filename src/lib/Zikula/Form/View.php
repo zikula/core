@@ -867,7 +867,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function getCsrfTokenHtml()
     {
-        $key = SecurityUtil::generateCsfrToken($this->serviceManager);
+        $key = SecurityUtil::generateCsrfToken($this->serviceManager);
         $html = "<input type=\"hidden\" name=\"csrftoken\" value=\"{$key}\" id=\"FormCsrfToken_{$this->formId}\" />";
         return $html;
     }
