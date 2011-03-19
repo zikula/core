@@ -68,11 +68,9 @@ class Admin_Controller_Admin extends Zikula_Controller
      */
     public function create($args)
     {
-        $category = FormUtil::getPassedValue('category', isset($args['category']) ? $args['category'] : null, 'POST');
+        $this->checkCsrfToken();
 
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Admin', 'admin', 'view'));
-        }
+        $category = FormUtil::getPassedValue('category', isset($args['category']) ? $args['category'] : null, 'POST');
 
         $cid = ModUtil::apiFunc('Admin', 'admin', 'create',
                 array('catname' => $category['catname'],
@@ -131,13 +129,11 @@ class Admin_Controller_Admin extends Zikula_Controller
      */
     public function update($args)
     {
+        $this->checkCsrfToken();
+
         $category = FormUtil::getPassedValue('category', isset($args['category']) ? $args['category'] : null, 'POST');
         if (!empty($category['objectid'])) {
             $category['cid'] = $category['objectid'];
-        }
-
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Admin', 'admin', 'view'));
         }
 
         if (ModUtil::apiFunc('Admin', 'admin', 'update',
@@ -196,9 +192,7 @@ class Admin_Controller_Admin extends Zikula_Controller
             return $this->view->fetch('admin_admin_delete.tpl');
         }
 
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Admin', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         if (ModUtil::apiFunc('Admin', 'admin', 'delete', array('cid' => $cid))) {
             // Success
@@ -445,12 +439,10 @@ class Admin_Controller_Admin extends Zikula_Controller
      */
     public function updateconfig()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Admin', 'admin', 'view'));
         }
 
         // get module vars

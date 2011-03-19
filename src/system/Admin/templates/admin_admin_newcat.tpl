@@ -5,7 +5,7 @@
     <h2>{gt text="Create new module category"}</h2>
     <form class="z-form" action="{modurl modname="Admin" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Admin"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="New module category"}</legend>
                 <div class="z-formrow">

@@ -5,7 +5,7 @@
     <h2>{gt text="Edit module category"}</h2>
     <form class="z-form" action="{modurl modname="Admin" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Admin"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="category[cid]" value="{$category.cid|safetext}" />
             <fieldset>
                 <legend>{gt text="Module category"}</legend>
