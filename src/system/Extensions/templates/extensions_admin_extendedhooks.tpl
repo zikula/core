@@ -14,7 +14,7 @@
         <fieldset>
             <legend>{gt text="Legacy '%s' hook modules" tag1=$hookaction}</legend>
             <div id="{$hookaction}" class="hookcontainer">
-                <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Extensions"}" />
+                <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
                 <input type="hidden" name="id" value="{$id|safetext}" />
                 {foreach item=hook from=$hookgroup}
                 <div id="hook_{$hookaction}_{$hook.tmodule|safetext}" class="z-formrow z-sortable {cycle values="z-odd,z-even"}" style="background-image:url(../../../images/icons/extrasmall/move.png); background-position:5px 50%; background-repeat:no-repeat; border:1px dotted #999999; padding-left: 30px; line-height:2em; margin:0.5em; padding:0.2em; cursor:move; ">

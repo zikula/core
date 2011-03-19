@@ -4,8 +4,8 @@
     <h2>{gt text="Settings"}</h2>
     <form class="z-form" action="{modurl modname="Extensions" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            {insert name="generateauthkey" module="Extensions" assign="authid"}
-            <input type="hidden" name="authid" value="{$authid}" />
+            {insert name='csrftoken' assign='csrftoken'}
+            <input type="hidden" name="csrftoken" value="{$csrftoken}" />
             <fieldset>
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">
@@ -14,7 +14,7 @@
                 </div>
                 <div class="z-formrow">
                     <label>{gt text="Module defaults"}</label>
-                    <span><a href="{modurl modname="Extensions" type="admin" func="view" defaults=true authid=$authid}">{gt text="Hard module regenerate to reset displayname, url and description to defaults"}</a></span>
+                    <span><a href="{modurl modname="Extensions" type="admin" func="view" defaults=true csrftoken=$csrftoken}">{gt text="Hard module regenerate to reset displayname, url and description to defaults"}</a></span>
                 </div>
             </fieldset>
 

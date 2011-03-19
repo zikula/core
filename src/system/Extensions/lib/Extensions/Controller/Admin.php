@@ -89,15 +89,13 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function update()
     {
+        $this->checkCsrfToken();
+
         // Get parameters
         $id = (int) FormUtil::getPassedValue('id', null, 'POST');
         $newdisplayname = FormUtil::getPassedValue('newdisplayname', null, 'POST');
         $newdescription = FormUtil::getPassedValue('newdescription', null, 'POST');
         $newurl = FormUtil::getPassedValue('newurl', null, 'POST');
-
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'view'));
-        }
 
         // Pass to API
         if (ModUtil::apiFunc('Extensions', 'admin', 'update', array(
@@ -122,12 +120,10 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function updatehooks()
     {
+        $this->checkCsrfToken();
+
         // Get parameters
         $id = (int) FormUtil::getPassedValue('id', null, 'REQUEST');
-
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'view'));
-        }
 
         // Pass to API
         if (ModUtil::apiFunc('Extensions', 'admin', 'updatehooks', array(
@@ -147,12 +143,10 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function extendedupdatehooks()
     {
+        $this->checkCsrfToken();
+
         // Get parameters
         $id = (int) FormUtil::getPassedValue('id', null, 'REQUEST');
-
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'view'));
-        }
 
         // Pass to API
         if (ModUtil::apiFunc('Extensions', 'admin', 'extendedupdatehooks', array(
@@ -229,7 +223,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                        'sort' => $sort));
 
         // generate an auth key to use in urls
-        $authid = SecurityUtil::generateAuthKey();
+        $csfrtoken = SecurityUtil::generateCsfrToken();
 
         $moduleinfo = array();
         if (!empty($mods)) {
@@ -246,7 +240,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                         'url' => ModUtil::url('Extensions', 'admin', 'deactivate', array(
                                         'id' => $mod['id'],
                                         'startnum' => $startnum,
-                                        'authid' => $authid,
+                                        '$csfrtoken' => $csfrtoken,
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'db_remove.png',
@@ -274,7 +268,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                     'url' => ModUtil::url('Extensions', 'admin', 'activate', array(
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
-                                    'authid' => $authid,
+                                    'csfrtoken' => $csfrtoken,
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => 'db_add.png',
@@ -283,7 +277,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                     'url' => ModUtil::url('Extensions', 'admin', 'remove', array(
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
-                                    'authid' => $authid,
+                                    'csfrtoken' => $csfrtoken,
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => '14_layer_deletelayer.png',
@@ -294,7 +288,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                     'url' => ModUtil::url('Extensions', 'admin', 'remove', array(
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
-                                    'authid' => $authid,
+                                    'csfrtoken' => $csfrtoken,
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => '14_layer_deletelayer.png',
@@ -305,7 +299,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                     'url' => ModUtil::url('Extensions', 'admin', 'upgrade', array(
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
-                                    'authid' => $authid,
+                                    'csfrtoken' => $csfrtoken,
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => 'db_update.png',
@@ -330,7 +324,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                     'url' => ModUtil::url('Extensions', 'admin', 'remove', array(
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
-                                    'authid' => $authid,
+                                    'csfrtoken' => $csfrtoken,
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => '14_layer_deletelayer.png',
@@ -343,7 +337,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                         'url' => ModUtil::url('Extensions', 'admin', 'initialise', array(
                                         'id' => $mod['id'],
                                         'startnum' => $startnum,
-                                        'authid' => $authid,
+                                        'csfrtoken' => $csfrtoken,
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'agt_update_misc.png',
@@ -364,7 +358,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                         'url' => ModUtil::url('Extensions', 'admin', 'compinfo', array(
                                         'id' => $mod['id'],
                                         'startnum' => $startnum,
-                                        'authid' => $authid,
+                                        'csfrtoken' => $csfrtoken,
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'documentinfo.png',
@@ -468,10 +462,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function initialise()
     {
-        // Security and sanity checks
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         // Get parameters from whatever input we need
         $id = (int) FormUtil::getPassedValue('id', 0);
@@ -628,10 +619,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function activate()
     {
-        // Security and sanity checks
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         $id = (int) FormUtil::getPassedValue('id', null, 'GET');
         $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
@@ -671,10 +659,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function upgrade()
     {
-        // Security and sanity checks
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         $interactive_upgrade = SessionUtil::getVar('interactive_upgrade');
         $interactive_upgrade = (empty($interactive_upgrade)) ? false : true;
@@ -751,10 +736,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function deactivate()
     {
-        // Security and sanity checks
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         $id = (int) FormUtil::getPassedValue('id', null, 'GET');
         $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
@@ -864,11 +846,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
 
         // If we get here it means that the user has confirmed the action
 
-
-        // Security and sanity checks
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         // remove dependent modules
         foreach ($dependents as $dependent) {
@@ -1029,14 +1007,11 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function updateconfig()
     {
+        $this->checkCsrfToken();
+
         // Security check
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'view'));
         }
 
         // Update module variables.
@@ -1121,7 +1096,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
         $this->view->assign('state', $state);
 
         // generate an auth key to use in urls
-        $authid = SecurityUtil::generateAuthKey();
+        $csfrToken = SecurityUtil::generateCsfrToken();
         $plugins = array();
         $pluginClasses = ($systemplugins) ? PluginUtil::loadAllSystemPlugins() : PluginUtil::loadAllModulePlugins();
 
@@ -1158,7 +1133,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
                                                           'systemplugins' => $systemplugins,
-                                                          'authid' => $authid)
+                                                          'csfrToken' => $csfrToken)
                                                 ),
                                        'image' => 'agt_update_misc.png',
                                        'title' => $this->__('Install'));
@@ -1187,7 +1162,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
                                                           'systemplugins' => $systemplugins,
-                                                          'authid' => $authid)
+                                                          'csfrToken' => $csfrToken)
                                                 ),
                                        'image' => 'db_remove.png',
                                        'title' => $this->__('Deactivate'));
@@ -1198,7 +1173,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
                                                           'systemplugins' => $systemplugins,
-                                                          'authid' => $authid)
+                                                          'csfrToken' => $csfrToken)
                                                 ),
                                        'image' => '14_layer_deletelayer.png',
                                        'title' => $this->__('Remove plugin'));
@@ -1214,7 +1189,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
                                                           'systemplugins' => $systemplugins,
-                                                          'authid' => $authid)
+                                                          'csfrToken' => $csfrToken)
                                                 ),
                                        'image' => 'db_add.png',
                                        'title' => $this->__('Activate'));
@@ -1225,7 +1200,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                            'bymodule' => $module,
                                                            'sort'   => $sort,
                                                            'systemplugins' => $systemplugins,
-                                                           'authid' => $authid)
+                                                           'csfrToken' => $csfrToken)
                                                 ),
                                        'image' => '14_layer_deletelayer.png',
                                        'title' => $this->__('Remove plugin'));
@@ -1247,7 +1222,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                       'bymodule' => $module,
                                                       'sort'   => $sort,
                                                       'systemplugins' => $systemplugins,
-                                                      'authid' => $authid)
+                                                      'csfrToken' => $csfrToken)
                                             ),
                                        'image' => 'db_update.png',
                                        'title' => $this->__('Upgrade'));
@@ -1258,7 +1233,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                                        'bymodule' => $module,
                                                        'sort'   => $sort,
                                                        'systemplugins' => $systemplugins,
-                                                       'authid' => $authid)
+                                                       'csfrToken' => $csfrToken)
                                             ),
                                        'image' => '14_layer_deletelayer.png',
                                        'title' => $this->__('Remove plugin'));
@@ -1318,12 +1293,11 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function initialisePlugin()
     {
+        $this->checkCsrfToken();
+
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'viewPlugin'));
         }
 
         // Get parameters from whatever input we need
@@ -1354,12 +1328,11 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function deactivatePlugin()
     {
+        $this->checkCsrfToken();
+
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'viewPlugin'));
         }
 
         // Get parameters from whatever input we need
@@ -1390,12 +1363,11 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function activatePlugin()
     {
+        $this->checkCsrfToken();
+
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'viewPlugin'));
         }
 
         // Get parameters from whatever input we need
@@ -1426,12 +1398,11 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function removePlugin()
     {
+        $this->checkCsrfToken();
+
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'viewPlugin'));
         }
 
         // Get parameters from whatever input we need
@@ -1462,12 +1433,11 @@ class Extensions_Controller_Admin extends Zikula_Controller
      */
     public function upgradePlugin()
     {
+        $this->checkCsrfToken();
+
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Extensions', 'admin', 'viewPlugin'));
         }
 
         // Get parameters from whatever input we need
