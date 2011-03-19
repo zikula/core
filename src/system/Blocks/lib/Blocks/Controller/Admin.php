@@ -60,7 +60,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
                 $filter['sortdir'] = 'ASC';
 
         // generate an authorisation key for the links
-        $authid = SecurityUtil::generateAuthKey();
+        $token = SecurityUtil::generateCsfrToken();
 
         // set some default variables
         $rownum = 1;
@@ -109,13 +109,13 @@ class Blocks_Controller_Admin extends Zikula_Controller
             $block['options'] = array();
             if ($block['active']) {
                 $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'deactivate',
-                                array('bid' => $block['bid'], 'authid' => $authid)),
+                                array('bid' => $block['bid'], 'csrftoken' => $token)),
                         'image' => 'folder_grey.png',
                         'title' => $this->__f('Deactivate \'%s\'', $block['title']),
                         'noscript' => true);
             } else {
                 $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'activate',
-                                array('bid' => $block['bid'], 'authid' => $authid)),
+                                array('bid' => $block['bid'], 'csrftoken' => $token)),
                         'image' => 'folder_green.png',
                         'title' => $this->__f('Activate \'%s\'', $block['title']),
                         'noscript' => true);
@@ -179,11 +179,8 @@ class Blocks_Controller_Admin extends Zikula_Controller
     {
         // Get parameters
         $bid = FormUtil::getPassedValue('bid');
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
-        }
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         // Pass to API
         if (ModUtil::apiFunc('Blocks', 'admin', 'deactivate', array('bid' => $bid))) {
@@ -206,11 +203,8 @@ class Blocks_Controller_Admin extends Zikula_Controller
     {
         // Get parameters
         $bid = FormUtil::getPassedValue('bid');
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
-        }
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         // Pass to API
         if (ModUtil::apiFunc('Blocks', 'admin', 'activate', array('bid' => $bid))) {
@@ -358,7 +352,8 @@ class Blocks_Controller_Admin extends Zikula_Controller
      * @return bool true if succesful, false otherwise
      */
     public function update()
-    {   
+    {
+        $this->checkCsrfToken();
         // Get parameters
         $bid = FormUtil::getPassedValue('bid');
         $title = FormUtil::getPassedValue('title');
@@ -387,11 +382,6 @@ class Blocks_Controller_Admin extends Zikula_Controller
         // Fix for null language
         if (!isset($language)) {
             $language = '';
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         // Get and update block info
@@ -506,6 +496,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
      */
     public function create()
     {
+        $this->checkCsrfToken();
         // Get parameters
         $title = FormUtil::getPassedValue('title');
         $description = FormUtil::getPassedValue('description');
@@ -520,11 +511,6 @@ class Blocks_Controller_Admin extends Zikula_Controller
         // Fix for null language
         if (!isset($language)) {
             $language = '';
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         $blockinfo = array(
@@ -595,10 +581,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
             return $this->view->fetch('blocks_admin_delete.tpl');
         }
 
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         // Pass to API
         if (ModUtil::apiFunc('Blocks', 'admin', 'delete',
@@ -635,6 +618,8 @@ class Blocks_Controller_Admin extends Zikula_Controller
      */
     public function createposition()
     {
+        $this->checkCsrfToken();
+
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::position', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -646,11 +631,6 @@ class Blocks_Controller_Admin extends Zikula_Controller
         // check our vars
         if (!isset($position['name']) || !preg_match('/^[a-z0-9_-]*$/i', $position['name']) || !isset($position['description'])) {
             return LogUtil::registerArgsError(ModUtil::url('Blocks', 'admin', 'view'));
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         // add the new block position
@@ -726,17 +706,14 @@ class Blocks_Controller_Admin extends Zikula_Controller
      */
     public function updateposition()
     {
+        $this->checkCsrfToken();
+
         // Get parameters
         $position = FormUtil::getPassedValue('position');
 
         // check our vars
         if (!isset($position['pid']) || !isset($position['name']) || !isset($position['description'])) {
             return LogUtil::registerArgsError(ModUtil::url('Blocks', 'admin', 'view'));
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
         // update the position
@@ -787,9 +764,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
             return $this->view->fetch('blocks_admin_deleteposition.tpl');
         }
 
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'view'));
-        }
+        $this->checkCsrfToken();
 
         if (ModUtil::apiFunc('Blocks', 'admin', 'deleteposition', array('pid' => $pid))) {
             // Success
@@ -827,16 +802,14 @@ class Blocks_Controller_Admin extends Zikula_Controller
      */
     public function updateconfig()
     {
+        $this->checkCsrfToken();
+
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
         $collapseable = FormUtil::getPassedValue('collapseable');
-
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Blocks', 'admin', 'main'));
-        }
 
         if (!isset($collapseable) || !is_numeric($collapseable)) {
             $collapseable = 0;

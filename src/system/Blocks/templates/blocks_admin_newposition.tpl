@@ -4,7 +4,7 @@
     <h2>{gt text="Create new block position"}</h2>
     <form class="z-form" action="{modurl modname="Blocks" type="admin" func="createposition"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Blocks"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="New block position"}</legend>
                 <div class="z-formrow">
