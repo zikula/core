@@ -6,7 +6,7 @@
     <p class="z-warningmsg">{gt text="Do you really want to delete this permission rule?"}</p>
     <form class="z-form" action="{modurl modname="Permissions" type="admin" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Permissions"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="confirmation" value="1" />
             <input type="hidden" name="pid" value="{$pid|safetext}" />
             <input type="hidden" name="permgrp" value="{$permgrp|safetext}" />

@@ -131,7 +131,7 @@ class Permissions_Controller_Admin extends Zikula_Controller
         $permissions = array();
         $components = array(-1 => $this->__('All components'));
         if ($numrows > 0) {
-            $authid = SecurityUtil::generateAuthKey('Permissions');
+            $csrftoken = SecurityUtil::generateCsfrToken($this->serviceManager);
             $rownum = 1;
             $ak = array_keys($objArray);
             foreach ($ak as $v) {
@@ -140,12 +140,12 @@ class Permissions_Controller_Admin extends Zikula_Controller
                 $up = array('url' => ModUtil::url('Permissions', 'admin', 'inc',
                                 array('pid' => $obj['pid'],
                                         'permgrp' => $permgrp,
-                                        'authid' => $authid)),
+                                        'csrftoken' => $csrftoken)),
                         'title' => $this->__('Up'));
                 $down = array('url' => ModUtil::url('Permissions', 'admin', 'dec',
                                 array('pid' => $obj['pid'],
                                         'permgrp' => $permgrp,
-                                        'authid' => $authid)),
+                                        'csrftoken' => $csrftoken)),
                         'title' => $this->__('Down'));
                 switch ($rownum) {
                     case 1:
@@ -224,15 +224,12 @@ class Permissions_Controller_Admin extends Zikula_Controller
      */
     public function inc()
     {
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
+
         // MMaes,2003-06-23: Added sec.check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        // MMaes,2003-06-23: Redirect to base if the AuthKey doesn't compute.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Permissions', 'admin', 'main'));
         }
 
         // Get parameters
@@ -268,14 +265,12 @@ class Permissions_Controller_Admin extends Zikula_Controller
      */
     public function dec()
     {
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
+
         // MMaes,2003-06-23: Added sec.check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-        // Confirm authorisation code
-        // MMaes,2003-06-23: Redirect to base if the AuthKey doesn't compute.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Permissions', 'admin', 'main'));
         }
 
         // Get parameters
@@ -419,13 +414,10 @@ class Permissions_Controller_Admin extends Zikula_Controller
      */
     public function update()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Permissions', 'admin', 'main'));
         }
 
         // Get parameters
@@ -485,13 +477,10 @@ class Permissions_Controller_Admin extends Zikula_Controller
      */
     public function create()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Permissions', 'admin', 'main'));
         }
 
         // Get parameters
@@ -571,11 +560,7 @@ class Permissions_Controller_Admin extends Zikula_Controller
         }
 
         // If we get here it means that the user has confirmed the action
-        // Confirm authorisation code
-        // MMaes,2003-06-23: Redirect to base if the AuthKey doesn't compute.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Permissions', 'admin', 'main'));
-        }
+        $this->checkCsrfToken();
 
         // Pass to API
         if (ModUtil::apiFunc('Permissions', 'admin', 'delete',
@@ -668,13 +653,12 @@ class Permissions_Controller_Admin extends Zikula_Controller
      */
     public function updateconfig()
     {
+        $this->checkCsrfToken();
+
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-
-        // Confirm authorisation code
-        $this->checkCsrfToken();
 
         $error = false;
         $filter = (bool)FormUtil::getPassedValue('filter', false, 'POST');

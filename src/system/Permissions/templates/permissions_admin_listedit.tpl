@@ -11,7 +11,7 @@
     {if $action eq "insert" or $action eq "modify" or $action eq "add"}
     <form class="z-form" action="{$formurl|safetext}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Permissions"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="insseq" value="{$insseq|safetext}" />
             <input type="hidden" name="realm" value="0" />
             {/if}
