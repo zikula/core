@@ -48,7 +48,9 @@ class Settings_Controller_Admin extends Zikula_Controller
      *
      * @return mixed true if successful, false if unsuccessful, error string otherwise
      */
-    public function updateconfig() {
+    public function updateconfig()
+    {
+        $this->checkCsrfToken();
 
         // security check
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
@@ -61,11 +63,6 @@ class Settings_Controller_Admin extends Zikula_Controller
         // if this form wasnt posted to redirect back
         if ($settings === null) {
             return System::redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
-        }
-
-        // confirm the forms auth key
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError();
         }
 
         // validate the entry point
@@ -152,18 +149,14 @@ class Settings_Controller_Admin extends Zikula_Controller
      */
     public function updatemultilingual()
     {
+        $this->checkCsrfToken();
+
         // security check
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
         $url = ModUtil::url('Settings', 'admin', 'multilingual');
-
-        // confirm the forms auth key
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError();
-            return System::redirect($url);
-        }
 
         $settings = array('mlsettings_language_i18n'   => 'language_i18n',
                 'mlsettings_timezone_offset' => 'timezone_offset',
