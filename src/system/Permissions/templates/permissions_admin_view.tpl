@@ -20,8 +20,6 @@
 
     <div class="permbox">
 
-        {* general use authid *}
-        <input type="hidden" id="permissionsauthid" name="authid" value="{insert name="generateauthkey" module="Permissions"}" />
         <ol id="permissionlist" class="z-itemlist">
             <li class="z-itemheader z-itemsortheader z-clearfix">
                 <span class="z-itemcell z-w05">&nbsp;</span>
@@ -180,7 +178,7 @@
     {if $enablefilter eq true}
     <form class="z-form" id="permgroupfilterform" action="{modurl modname=Permissions type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Permissions}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="Filter permission rules list"}</legend>
                 <div class="z-formrow">
