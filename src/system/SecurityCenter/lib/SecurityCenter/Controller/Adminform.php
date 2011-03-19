@@ -20,13 +20,13 @@ class SecurityCenter_Controller_Adminform extends Zikula_Controller
      */
     public function deleteidsentry()
     {
+        // verify auth-key
+        $this->checkCsrfToken();
+
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
-
-        // verify auth-key
-        $this->checkCsrfToken();
 
         // get paramters
         $id = (int)FormUtil::getPassedValue('id', 0, 'GETPOST');
