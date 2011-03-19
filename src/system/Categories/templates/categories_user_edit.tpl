@@ -29,7 +29,7 @@
         {/if}
         <fieldset>
             <legend>{gt text="Category"}</legend>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Categories"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="dr" value="{$rootCat.id|safetext}" />
             <input type="hidden" name="category[parent_id]" value="{$rootCat.id|safetext}" />
             <input type="hidden" name="category[is_locked]" value="0" />
@@ -68,7 +68,7 @@
             <div class="z-formrow">
                 <label for="category_status">{gt text="Active"}</label>
                 {array_field_isset assign="catStatus" array=$category field="status" returnValue=1}
-                {if $mode != "edit"} {assign var="catStatus" value="A"}{/if}
+
                 <input id="category_status" name="category[status]" value="A" type="checkbox"{if ($catStatus=='A')} checked="checked"{/if} />
             </div>
         </fieldset>

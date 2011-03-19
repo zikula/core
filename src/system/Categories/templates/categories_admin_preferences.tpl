@@ -4,7 +4,7 @@
     <h2>{gt text="Settings"}</h2>
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="preferences"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Categories"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">

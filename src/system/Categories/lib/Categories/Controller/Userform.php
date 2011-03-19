@@ -57,6 +57,8 @@ class Categories_Controller_Userform extends Zikula_Controller
      */
     public function edit()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
@@ -158,6 +160,8 @@ class Categories_Controller_Userform extends Zikula_Controller
      */
     public function newcat()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
