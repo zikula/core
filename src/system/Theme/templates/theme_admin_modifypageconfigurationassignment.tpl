@@ -5,7 +5,7 @@
     <h2>{gt text="Edit page configuration assignment"}</h2>
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Theme}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="themename" value="{$themename|safetext}" />
             <fieldset>
                 <div class="z-formrow">

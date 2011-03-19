@@ -5,7 +5,7 @@
     <h2>{gt text="Settings"}</h2>
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Theme"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">
@@ -26,7 +26,7 @@
                 <div class="z-formrow">
                     <label for="theme_force_compile">{gt text="Force re-compilation of theme templates"}</label>
                     <input id="theme_force_compile" name="force_compile" type="checkbox" value="1" {if $force_compile eq 1}checked="checked"{/if} />
-                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_compiled authid=$authid}">{gt text="Delete compiled theme templates"}</a>
+                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_compiled csrftoken=$csrftoken}">{gt text="Delete compiled theme templates"}</a>
                 </div>
                 <div class="z-formrow">
                     <label for="render_compile_dir">{gt text="Compiled render templates directory"}</label>
@@ -39,7 +39,7 @@
                 <div class="z-formrow">
                     <label for="render_force_compile">{gt text="Force re-compilation of render templates"}</label>
                     <input id="render_force_compile" type="checkbox" name="render_force_compile" value="1"{if $render_force_compile}checked="checked"{/if} />
-                    <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_compiled"}&amp;authid={insert name="generateauthkey" module="Theme"}">{gt text="Delete compiled render templates"}</a>
+                    <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_compiled" csrftoken=$csrftoken}">{gt text="Delete compiled render templates"}</a>
                 </div>
             </fieldset>
             <fieldset>
@@ -47,7 +47,7 @@
                 <div class="z-formrow">
                     <label for="enablecache">{gt text="Enable theme caching"}</label>
                     <input id="enablecache" name="enablecache" type="checkbox" value="1" {if $enablecache eq 1}checked="checked"{/if} />
-                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache authid=$authid}">{gt text="Delete cached theme pages"}</a>
+                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache csrftoken=$csrftoken}">{gt text="Delete cached theme pages"}</a>
                 </div>
                 <div id="theme_caching">
                     <div class="z-formrow">
@@ -77,7 +77,7 @@
                 <div class="z-formrow">
                     <label for="render_cache">{gt text="Enable render caching"}</label>
                     <input id="render_cache" type="checkbox" name="render_cache" value="1"{if $render_cache}checked="checked"{/if} />
-                    <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_cache"}&amp;authid={insert name="generateauthkey" module="Theme"}">{gt text="Delete cached render pages"}</a>
+                    <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_cache"  csrftoken=$csrftoken}">{gt text="Delete cached render pages"}</a>
                 </div>
                 <div id="render_lifetime_container">
                     <div class="z-formrow">
@@ -96,7 +96,7 @@
                 <div class="z-formrow">
                     <label for="cssjscombine">{gt text="Enable CSS/JS combination"}</label>
                     <input id="cssjscombine" name="cssjscombine" type="checkbox" value="1" {if $cssjscombine eq 1}checked="checked"{ /if } />
-                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cssjscombinecache authid=$authid}">{gt text="Delete combination cache"}</a>
+                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cssjscombinecache csrftoken=$csrftoken}">{gt text="Delete combination cache"}</a>
                 </div>
                 <div id="theme_cssjscombine">
                     <div class="z-formrow">

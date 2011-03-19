@@ -136,6 +136,8 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function updatesettings($args)
     {
+        $this->checkCsrfToken();
+
         // get our input
         $themeinfo = FormUtil::getPassedValue('themeinfo', isset($args['themeinfo']) ? $args['themeinfo'] : null, 'POST');
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
@@ -149,11 +151,6 @@ class Theme_Controller_Admin extends Zikula_Controller
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::settings", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
         // get the existing theme info
@@ -219,6 +216,8 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function updatevariables($args)
     {
+        $this->checkCsrfToken();
+
         // get our input
         $variablesnames = FormUtil::getPassedValue('variablesnames', isset($args['variablesnames']) ? $args['variablesnames'] : null, 'POST');
         $variablesvalues = FormUtil::getPassedValue('variablesvalues', isset($args['variablesvalues']) ? $args['variablesvalues'] : null, 'POST');
@@ -239,11 +238,6 @@ class Theme_Controller_Admin extends Zikula_Controller
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::variables", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
         // get the original file source
@@ -311,6 +305,8 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function updatepalettes($args)
     {
+        $this->checkCsrfToken();
+
         // get our input
         $palettes = FormUtil::getPassedValue('palettes', isset($args['palettes']) ? $args['palettes'] : null, 'POST');
         $palettename = FormUtil::getPassedValue('palettename', isset($args['palettename']) ? $args['palettename'] : null, 'POST');
@@ -338,11 +334,6 @@ class Theme_Controller_Admin extends Zikula_Controller
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::palettes", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
         // check if we've got a new palette being created
@@ -539,6 +530,8 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function updatepageconfigtemplates($args)
     {
+        $this->checkCsrfToken();
+
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
         $filename = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'POST');
@@ -562,11 +555,6 @@ class Theme_Controller_Admin extends Zikula_Controller
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::pageconfigurations", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
         // form the new page configuration
@@ -697,6 +685,8 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function updatepageconfigurationassignment($args)
     {
+        $this->checkCsrfToken();
+
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
         $pcname = FormUtil::getPassedValue('pcname', isset($args['pcname']) ? $args['pcname'] : null, 'POST');
@@ -719,11 +709,6 @@ class Theme_Controller_Admin extends Zikula_Controller
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::pageconfigurations", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
         // read the list of existing page config assignments
@@ -805,11 +790,7 @@ class Theme_Controller_Admin extends Zikula_Controller
         }
 
         // If we get here it means that the user has confirmed the action
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            LogUtil::registerAuthidError(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
-        }
+        $this->checkCsrfToken();
 
         // Delete the admin message
         // The return value of the function is checked
@@ -887,11 +868,7 @@ class Theme_Controller_Admin extends Zikula_Controller
         }
 
         // If we get here it means that the user has confirmed the action
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
-        }
+        $this->checkCsrfToken();
 
         // Set the default theme
         if (ModUtil::apiFunc('Theme', 'admin', 'setasdefault', array('themename' => $themename, 'resetuserselected' => $resetuserselected))) {
@@ -942,11 +919,8 @@ class Theme_Controller_Admin extends Zikula_Controller
         }
 
         // If we get here it means that the user has confirmed the action
+        $this->checkCsrfToken();
 
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
-        }
         $deletefiles = FormUtil::getPassedValue('deletefiles', 0, 'POST');
 
         // Delete the admin message
@@ -978,7 +952,7 @@ class Theme_Controller_Admin extends Zikula_Controller
         $this->view->assign($this->getVars());
 
         // assign an authid for the clear cache/compile links
-        $this->view->assign('authid', SecurityUtil::generateAuthKey('Theme'));
+        $this->view->assign('csrftoken', SecurityUtil::generateCsfrToken($this->serviceManager));
 
         // assign the core config var
         $this->view->assign('theme_change', System::getVar('theme_change'));
@@ -1014,14 +988,11 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function updateconfig($args)
     {
+        $this->checkCsrfToken();
+
         // security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
         // set our module variables
@@ -1102,14 +1073,12 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function clear_compiled()
     {
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
+
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
         $theme = Zikula_View_Theme::getInstance('Theme');
@@ -1132,14 +1101,12 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function clear_cache()
     {
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
+
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','main'));
         }
 
         $theme = Zikula_View_Theme::getInstance('Theme');
@@ -1162,14 +1129,12 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function clear_cssjscombinecache()
     {
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
+
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
         $theme = Zikula_View_Theme::getInstance('Theme');
@@ -1187,14 +1152,12 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function render_clear_compiled()
     {
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
+
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
         $res = $this->view->clear_compiled();
@@ -1216,14 +1179,12 @@ class Theme_Controller_Admin extends Zikula_Controller
      */
     public function render_clear_cache()
     {
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
+
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
         $res = $this->view->clear_all_cache();

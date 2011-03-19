@@ -7,7 +7,7 @@
     {pageaddvar name="stylesheet" value="javascript/picky_color/picky_color.css"}
     <form class="z-form" id="theme_modify_palette" action="{modurl modname="Theme" type="admin" func="updatepalettes"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Theme}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="themename" value="{$themename|safetext}" />
 
             {if $palettes}
