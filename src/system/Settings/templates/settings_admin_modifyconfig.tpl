@@ -6,7 +6,7 @@
     <h2>{gt text="Main settings"}</h2>
     <form class="z-form" action="{modurl modname="Settings" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Settings"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="Main info"}</legend>
                 <div class="z-formrow">

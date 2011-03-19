@@ -5,7 +5,7 @@
     <h2>{gt text="Localisation settings"}</h2>
     <form class="z-form" action="{modurl modname="Settings" type="admin" func="updatemultilingual"}" method="post">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Settings'}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input id="mlsettings_timezone_server" type="hidden" name="mlsettings_timezone_server" value="{$timezone_server}" />
             <fieldset>
                 <legend>{gt text="Language system"}</legend>
