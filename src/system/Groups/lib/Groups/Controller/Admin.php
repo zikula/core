@@ -598,7 +598,8 @@ class Groups_Controller_Admin extends Zikula_Controller
      */
     public function removeuser($args)
     {
-        $this->checkCsrfToken();
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         // Get parameters from whatever input we need.
         $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'GET');
