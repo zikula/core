@@ -223,7 +223,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                        'sort' => $sort));
 
         // generate an auth key to use in urls
-        $csfrtoken = SecurityUtil::generateCsfrToken();
+        $csfrtoken = SecurityUtil::generateCsfrToken($this->serviceManager);
 
         $moduleinfo = array();
         if (!empty($mods)) {
@@ -1096,7 +1096,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
         $this->view->assign('state', $state);
 
         // generate an auth key to use in urls
-        $csfrToken = SecurityUtil::generateCsfrToken();
+        $csfrToken = SecurityUtil::generateCsfrToken($this->serviceManager);
         $plugins = array();
         $pluginClasses = ($systemplugins) ? PluginUtil::loadAllSystemPlugins() : PluginUtil::loadAllModulePlugins();
 
