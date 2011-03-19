@@ -6,7 +6,7 @@
     <p class="z-warningmsg">{gt text="Are you sure you want to rebuild all the internal paths for categories?"}&nbsp;{gt text="Warning! If you have a large number of categories then this action may time out, or may exceed the memory limit configured within your PHP installation."}</p>
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="rebuild_paths"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" id="authid" value="{insert name="generateauthkey" module="Categories"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-buttons z-formbuttons">

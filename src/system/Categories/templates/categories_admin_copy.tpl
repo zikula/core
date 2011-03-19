@@ -6,7 +6,7 @@
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="copy"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="cid" value="{$category.id}" />
-            <input type="hidden" name="authid" id="authid" value="{insert name="generateauthkey" module="Categories"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <fieldset>
                 <legend>{gt text="Category"}</legend>
                 <div class="z-formrow">

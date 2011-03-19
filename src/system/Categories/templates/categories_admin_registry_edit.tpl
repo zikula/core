@@ -9,6 +9,7 @@
     {gt text="Choose table" assign=chooseTable}
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="editregistry"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <table class="z-datatable">
                 <thead>
                     <tr>

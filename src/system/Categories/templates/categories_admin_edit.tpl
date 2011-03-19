@@ -12,7 +12,7 @@
         <form class="z-form" action="{modurl modname="Categories" type="adminform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">
             {/if}
             <fieldset>
-                <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Categories"}" />
+                <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
                 {array_field_isset assign="catID" array=$category field="id" returnValue="1"}
                 {if ($catID)}
                 <input type="hidden" id="category_id" name="category[id]" value="{$category.id}" />

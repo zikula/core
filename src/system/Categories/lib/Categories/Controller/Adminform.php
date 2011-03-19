@@ -22,6 +22,8 @@ class Categories_Controller_Adminform extends Zikula_Controller
      */
     public function edit()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
@@ -93,6 +95,8 @@ class Categories_Controller_Adminform extends Zikula_Controller
      */
     public function newcat()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
@@ -151,6 +155,8 @@ class Categories_Controller_Adminform extends Zikula_Controller
      */
     public function delete()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
@@ -181,6 +187,8 @@ class Categories_Controller_Adminform extends Zikula_Controller
      */
     public function copy()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
@@ -205,6 +213,8 @@ class Categories_Controller_Adminform extends Zikula_Controller
      */
     public function move()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
@@ -241,6 +251,8 @@ class Categories_Controller_Adminform extends Zikula_Controller
 
     public function editregistry()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
@@ -280,6 +292,8 @@ class Categories_Controller_Adminform extends Zikula_Controller
 
     public function preferences()
     {
+        $this->checkCsrfToken();
+
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
