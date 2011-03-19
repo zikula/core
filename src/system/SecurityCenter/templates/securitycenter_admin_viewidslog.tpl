@@ -48,7 +48,7 @@
             </tr>
         </thead>
         <tbody>
-            {secgenauthkey module="SecurityCenter" assign="authkey"}
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             {foreach from=$objectArray item=event}
             <tr class="{cycle values="z-odd,z-even"}">
                 <td>{$event.name|safetext}</td>
