@@ -129,7 +129,7 @@ class Search_Block_Search extends Zikula_Controller_Block
     function update($blockinfo)
     {
         // list of vars that don't need to be saved
-        $search_reserved_vars = array('authid', 'bid', 'title', 'positions', 'language', 'submit',
+        $search_reserved_vars = array('authid', 'csrftoken', 'bid', 'title', 'positions', 'language', 'submit',
                                       'refresh', 'filter', 'type', 'functions', 'customargs');
 
         // Get current content

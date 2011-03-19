@@ -88,14 +88,11 @@ class Search_Controller_Admin extends Zikula_Controller
      */
     public function updateconfig()
     {
+        $this->checkCsrfToken();
+
         // Security check
         if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
-        }
-
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Search', 'admin', 'main'));
         }
 
         // Update module variables.
