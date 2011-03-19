@@ -179,6 +179,8 @@ class Groups_Controller_User extends Zikula_Controller
     */
     public function userupdate()
     {
+        $this->checkCsrfToken();
+
         $gid = (int)FormUtil::getPassedValue('gid', null, 'POST');
         $action = FormUtil::getPassedValue('action', null, 'POST');
         $gtype = FormUtil::getPassedValue('gtype', null, 'POST');
@@ -186,10 +188,6 @@ class Groups_Controller_User extends Zikula_Controller
 
         if (empty($gid) || !is_numeric($gid) || empty($action)) {
             return LogUtil::registerArgsError();
-        }
-
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('Groups', 'user', 'main'));
         }
 
         if (empty($tag)) return DataUtil::formatForDisplay($this->__('Error! You must click on the checkbox to confirm your action.'));

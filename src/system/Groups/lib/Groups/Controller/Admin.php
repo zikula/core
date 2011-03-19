@@ -193,6 +193,8 @@ class Groups_Controller_Admin extends Zikula_Controller
      */
     public function create($args)
     {
+        $this->checkCsrfToken();
+
         // Get parameters from whatever input we need.
         $name = FormUtil::getPassedValue('name', isset($args['name']) ? $args['name'] : null, 'POST');
         $gtype = FormUtil::getPassedValue('gtype', isset($args['gtype']) ? $args['gtype'] : null, 'POST');
@@ -200,7 +202,6 @@ class Groups_Controller_Admin extends Zikula_Controller
         $nbumax = FormUtil::getPassedValue('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null, 'POST');
         $description = FormUtil::getPassedValue('description', isset($args['description']) ? $args['description'] : null, 'POST');
 
-        $this->checkCsrfToken();
         
         // The API function is called.
         $check = ModUtil::apiFunc('Groups', 'admin', 'getgidbyname',
@@ -292,6 +293,8 @@ class Groups_Controller_Admin extends Zikula_Controller
      */
     public function update($args)
     {
+        $this->checkCsrfToken();
+
         // Get parameters from whatever input we need.
         $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'POST');
         $objectid = (int)FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'POST');
@@ -306,7 +309,6 @@ class Groups_Controller_Admin extends Zikula_Controller
             $gid = $objectid;
         }
 
-        $this->checkCsrfToken();
 
         // The API function is called.
         if (ModUtil::apiFunc('Groups', 'admin', 'update',
@@ -462,10 +464,11 @@ class Groups_Controller_Admin extends Zikula_Controller
                     $options[] = array();
                 } else {
                     $options[] = array(
-                        'url'     => ModUtil::url('Groups', 'admin', 'removeuser', array('gid'    => $item['gid'],
-                        'uid'     => $user['uid'],
-                        'authid'  => SecurityUtil::generateAuthKey())),
-                        'csrftoken' => SecurityUtil::generateCsfrToken($this->serviceManager),
+                        'url'     => ModUtil::url('Groups', 'admin', 'removeuser', array(
+                            'gid'    => $item['gid'],
+                            'uid'     => $user['uid'],
+                            'csrftoken' => SecurityUtil::generateCsfrToken($this->serviceManager)
+                        )),
                         'imgfile' => 'edit_remove.png',
                         'title'   => $this->__('Remove user from group')
                     );
@@ -555,11 +558,12 @@ class Groups_Controller_Admin extends Zikula_Controller
      */
     public function adduser($args)
     {
+        $this->checkCsrfToken();
+
         // Get parameters from whatever input we need.
         $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'POST');
         $uid = FormUtil::getPassedValue('uid', isset($args['uid']) ? $args['uid'] : null, 'POST');
 
-        $this->checkCsrfToken();
 
         // The API function is called.
         if (is_array($uid)) {
@@ -594,11 +598,11 @@ class Groups_Controller_Admin extends Zikula_Controller
      */
     public function removeuser($args)
     {
+        $this->checkCsrfToken();
+
         // Get parameters from whatever input we need.
         $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'GET');
         $uid = (int)FormUtil::getPassedValue('uid', isset($args['uid']) ? $args['uid'] : null, 'GET');
-
-        $this->checkCsrfToken();
 
         // The API function is called.
         if (ModUtil::apiFunc('Groups', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
@@ -662,13 +666,13 @@ class Groups_Controller_Admin extends Zikula_Controller
      */
     public function userupdate()
     {
+        $this->checkCsrfToken();
+
         $action = FormUtil::getPassedValue('action', null, 'POST');
 
         if ($action != 'deny' && $action != 'accept') {
             return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'main'));
         }
-
-        $this->checkCsrfToken();
 
         $tag = FormUtil::getPassedValue('tag', null, 'POST');
         $sendtag = FormUtil::getPassedValue('sendtag', null, 'POST');
@@ -770,9 +774,10 @@ class Groups_Controller_Admin extends Zikula_Controller
      */
     public function updateconfig()
     {
+        $this->checkCsrfToken();
+
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN));
-        $this->checkCsrfToken();
 
         // Update module variables.
         $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 25, 'POST');
