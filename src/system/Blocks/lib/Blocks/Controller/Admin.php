@@ -56,8 +56,13 @@ class Blocks_Controller_Admin extends Zikula_Controller
         $sortdir = (isset($filter['sortdir']) && !empty($filter['sortdir'])) ? strtoupper($filter['sortdir']) : 'ASC';
         $filter['sort'] = FormUtil::getPassedValue('sort', $sort, 'GET');
         $filter['sortdir'] = FormUtil::getPassedValue('sortdir', $sortdir, 'GET');
-        if ($filter['sortdir'] != 'ASC' && $filter['sortdir'] != 'DESC')
+        if ($filter['sortdir'] != 'ASC' && $filter['sortdir'] != 'DESC') {
                 $filter['sortdir'] = 'ASC';
+        }
+        $filter['blockposition_id'] = isset($filter['blockposition_id']) ? $filter['blockposition_id'] : 0;
+        $filter['modid'] = isset($filter['modid']) ? $filter['modid'] : 0;
+        $filter['language'] = isset($filter['language']) ? $filter['language'] : '';
+        $filter['active_status'] = isset($filter['active_status']) ? $filter['active_status'] : 0;
 
         // generate an authorisation key for the links
         $token = SecurityUtil::generateCsfrToken();
