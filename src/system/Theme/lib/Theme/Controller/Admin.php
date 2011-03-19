@@ -951,7 +951,7 @@ class Theme_Controller_Admin extends Zikula_Controller
         // assign all module vars
         $this->view->assign($this->getVars());
 
-        // assign an authid for the clear cache/compile links
+        // assign an csrftoken for the clear cache/compile links
         $this->view->assign('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager));
 
         // assign the core config var

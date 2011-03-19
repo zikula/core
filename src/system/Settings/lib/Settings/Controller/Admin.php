@@ -57,7 +57,7 @@ class Settings_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // get settings from form - do before authid check
+        // get settings from form
         $settings = FormUtil::getPassedValue('settings', null, 'POST');
 
         // if this form wasnt posted to redirect back

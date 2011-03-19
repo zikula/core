@@ -902,7 +902,7 @@ class Zikula_View_Theme extends Zikula_View
             $queryparts = explode('&', $this->qstring);
             $customargs = '';
             foreach ($queryparts as $querypart) {
-                if (!stristr($querypart, 'module=') && !stristr($querypart, 'type=') && !stristr($querypart, 'func=') && !stristr($querypart, 'theme=') && !stristr($querypart, 'authid=')) {
+                if (!stristr($querypart, 'module=') && !stristr($querypart, 'type=') && !stristr($querypart, 'func=') && !stristr($querypart, 'theme=') && !stristr($querypart, 'authid=') && !stristr($querypart, 'csrftoken=')) {
                     $customargs .= '/' . $querypart;
                 }
             }
