@@ -5,7 +5,7 @@
     <h2>{gt text="Edit page configuration"} - {$filename|safetext}</h2>
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigtemplates"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Theme"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="themename" value="{$themename|safetext}" />
             <input type="hidden" name="filename" value="{$filename|safetext}" />
             <fieldset>
