@@ -6,7 +6,7 @@
 
     <form class="z-form" action="{modurl modname="Extensions" type="admin" func="remove"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Extensions"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="confirmation" value="1" />
             <input type="hidden" name="id" value="{$id|safetext}" />
             <input type="hidden" name="startnum" value="{$startnum}" />

@@ -4,7 +4,7 @@
     <h2>{gt text="Edit module"} - {modgetinfo modid=$id info=displayname}</h2>
     <form class="z-form" action="{modurl modname="Extensions" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
-            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Extensions"}" />
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="id" value="{$id|safetext}" />
             <fieldset>
                 <legend>{gt text="Module"}</legend>
