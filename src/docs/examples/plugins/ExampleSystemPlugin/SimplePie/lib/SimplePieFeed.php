@@ -32,3 +32,4 @@ class SimplePieFeed extends SimplePie
 
 if (System::isLegacyMode()) {
     class ZFeeds extends SimplePieFeed {}
+}
