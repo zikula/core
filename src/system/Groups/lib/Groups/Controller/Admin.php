@@ -467,7 +467,7 @@ class Groups_Controller_Admin extends Zikula_Controller
                         'url'     => ModUtil::url('Groups', 'admin', 'removeuser', array(
                             'gid'    => $item['gid'],
                             'uid'     => $user['uid'],
-                            'csrftoken' => SecurityUtil::generateCsfrToken($this->serviceManager)
+                            'csrftoken' => SecurityUtil::generateCsrfToken($this->serviceManager)
                         )),
                         'imgfile' => 'edit_remove.png',
                         'title'   => $this->__('Remove user from group')

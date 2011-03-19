@@ -32,7 +32,7 @@ class Zikula_Response_Ajax extends Zikula_Response_Ajax_MediatorBase
         $this->options = $options;
         if ($this->newCsrfToken) {
             $this->authid = SecurityUtil::generateAuthKey(ModUtil::getName());
-            $this->csrfToken = SecurityUtil::generateCsfrToken();
+            $this->csrfToken = SecurityUtil::generateCsrfToken();
         }
     }
 }
