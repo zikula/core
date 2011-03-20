@@ -104,7 +104,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      * @param Zikula_Form_View $view    Reference to Form render object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
-     * @see    Zikula_Form_Plugin
+     * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
     function create(Zikula_Form_View $view, &$params)

@@ -73,7 +73,7 @@ class Zikula_Form_Block_Volatile extends Zikula_Form_AbstractPlugin
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Zikula_View plugin function.
      *
-     * @see    Zikula_Form_Plugin
+     * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
     function create(Zikula_Form_View $view, &$params)
