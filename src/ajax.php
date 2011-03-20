@@ -83,7 +83,9 @@ if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
 if (!$response instanceof Zikula_Response_Ajax_Base) {
     $response = !is_array($response) ? array('data' => $response) : $response;
     $response['statusmsg'] = LogUtil::getStatusMessages();
-    $response['authid'] = SecurityUtil::generateAuthKey(ModUtil::getName());
+    if (System::isLegacyMode()) {
+        $response['authid'] = SecurityUtil::generateAuthKey(ModUtil::getName());
+    }
     $response = json_encode($response);
     header("HTTP/1.1 200 OK");
     header('Content-type: application/json');
