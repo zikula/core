@@ -67,7 +67,7 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_Plugin
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         $this->selected = false;
     }
@@ -79,7 +79,7 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_Plugin
      *
      * @return string The rendered output.
      */
-    function renderBegin($view)
+    function renderBegin(Zikula_Form_View $view)
     {
         // Locate parent panelset and register with it
         $panelSet = $this->parentPlugin;
@@ -104,7 +104,7 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_Plugin
      *
      * @return string The rendered output.
      */
-    function renderEnd($view)
+    function renderEnd(Zikula_Form_View $view)
     {
         $html = "</div>\n";
         return $html;

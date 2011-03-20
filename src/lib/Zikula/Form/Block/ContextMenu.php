@@ -41,7 +41,7 @@
  * In your event handler (which defaults to "handleCommand") you should check for both commandName and
  * commandArgument:
  * <code>
- * function handleCommand($view, &$args)
+ * function handleCommand(Zikula_Form_View $view, &$args)
  * {
  * echo "Command: $args[commandName], $args[commandArgument]. ";
  * }
@@ -93,12 +93,12 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_StyledPlugin
      * Create event handler.
      *
      * @param Zikula_Form_View $view   Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Zikula_View plugin function.
+     * @param array            &$params Parameters passed from the Zikula_View plugin function.
      *
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         $this->styleAttributes['display'] = 'none';
         $this->styleAttributes['z-index'] = ($this->zIndex === null ? 10 : $this->zIndex);
@@ -112,7 +112,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_StyledPlugin
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function dataBound($view)
+    function dataBound(Zikula_Form_View $view)
     {
         PageUtil::AddVar('javascript', 'system/Theme/javascript/form/form.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
@@ -125,7 +125,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_StyledPlugin
      *
      * @return string The rendered output
      */
-    function renderBegin($view)
+    function renderBegin(Zikula_Form_View $view)
     {
         if ($this->firstTime(false)) {
             $cssClass = ($this->cssClass == null ? "contextMenu" : $this->cssClass);
@@ -145,7 +145,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_StyledPlugin
      *
      * @return string The rendered output
      */
-    function renderEnd($view)
+    function renderEnd(Zikula_Form_View $view)
     {
         if ($this->firstTime(true)) {
             $html = '</ul></div>';

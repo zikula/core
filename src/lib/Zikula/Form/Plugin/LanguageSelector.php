@@ -57,7 +57,7 @@ class Zikula_Form_Plugin_LanguageSelector extends Zikula_Form_Plugin_DropdownLis
      *
      * @return void
      */
-    function load($view, &$params)
+    function load(Zikula_Form_View $view, &$params)
     {
         if ($this->mandatory) {
             $this->addItem('---', null);

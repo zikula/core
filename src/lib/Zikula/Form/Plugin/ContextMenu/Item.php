@@ -107,7 +107,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_Plugin
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
     }
 
@@ -118,7 +118,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_Plugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $contextMenu = $this->getParentContextMenu();
 
@@ -168,7 +168,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_Plugin
      *
      * @return string The rendered output.
      */
-    function renderConfirm($view, $script)
+    function renderConfirm(Zikula_Form_View $view, $script)
     {
         if (!empty($this->confirmMessage)) {
             $msg = $view->translateForDisplay($this->confirmMessage) . '?';
@@ -186,7 +186,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_Plugin
      *
      * @return void
      */
-    function raisePostBackEvent($view, $eventArgument)
+    function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
         $contextMenu = $this->getParentContextMenu();
 

@@ -38,7 +38,7 @@ class Zikula_Form_Plugin_ContextMenu_Separator extends Zikula_Form_Plugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $contextMenu = $this->getParentContextMenu();
 

@@ -21,7 +21,7 @@
  * will be sent to the form event handlers handleCommand function.
  * Example:
  * <code>
- * function handleCommand($view, &$args)
+ * function handleCommand(Zikula_Form_View $view, &$args)
  * {
  * if ($args['commandName'] == 'update')
  * {
@@ -112,7 +112,7 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_StyledPlugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -142,7 +142,7 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_StyledPlugin
      *
      * @return boolean
      */
-    function decodePostBackEvent($view)
+    function decodePostBackEvent(Zikula_Form_View $view)
     {
         $fullName = $this->id . '_' . $this->commandName;
 

@@ -97,7 +97,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         $this->includeTime = (array_key_exists('includeTime', $params) ? $params['includeTime'] : 0);
         $this->daFormat = (array_key_exists('daFormat', $params) ? $params['daFormat'] : ($this->includeTime ? __('%A, %B %d, %Y - %I:%M %p') : __('%A, %B %d, %Y')));
@@ -119,7 +119,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         static $firstTime = true;
 
@@ -273,7 +273,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string Parsed Text.
      */
-    function parseValue($view, $text)
+    function parseValue(Zikula_Form_View $view, $text)
     {
         if (empty($text)) {
             return null;
@@ -289,7 +289,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      *
      * @return void
      */
-    function validate($view)
+    function validate(Zikula_Form_View $view)
     {
         parent::validate($view);
 
@@ -321,7 +321,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string Formatted value.
      */
-    function formatValue($view, $value)
+    function formatValue(Zikula_Form_View $view, $value)
     {
         return DateUtil::formatDatetime($value, ($this->includeTime ? __('%Y-%m-%d %H:%M') : __('%Y-%m-%d')), false);
     }

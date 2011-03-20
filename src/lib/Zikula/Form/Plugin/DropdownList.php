@@ -32,7 +32,7 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize($view)
+ * function initialize(Zikula_Form_View $view)
  * {
  * $items = array( array('text' => 'A', 'value' => '1'),
  * array('text' => 'B', 'value' => '2'),
@@ -51,7 +51,7 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize($view)
+ * function initialize(Zikula_Form_View $view)
  * {
  * $items = array( array('text' => 'A', 'value' => '1'),
  * array('text' => 'B', 'value' => '2'),
@@ -72,7 +72,7 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize($view)
+ * function initialize(Zikula_Form_View $view)
  * {
  * $items = array( array('text' => 'A', 'value' => '1', 'optgroup' => 'AAA'),
  * array('text' => 'B', 'value' => '2', 'optgroup' => 'BBB'),
@@ -201,7 +201,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         parent::create($view, $params);
 
@@ -216,7 +216,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function load($view, &$params)
+    function load(Zikula_Form_View $view, &$params)
     {
         parent::load($view, $params);
 
@@ -238,7 +238,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -326,7 +326,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function raisePostBackEvent($view, $eventArgument)
+    function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
         $args = array(
             'commandName' => null,
@@ -344,7 +344,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function decode($view)
+    function decode(Zikula_Form_View $view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -375,7 +375,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function validate($view)
+    function validate(Zikula_Form_View $view)
     {
         $this->clearValidation($view);
 

@@ -196,14 +196,14 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view    Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see Zikula_Form_Plugin
      *
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         // Load all special and non-string parameters
         // - the rest are fetched automatically
@@ -224,7 +224,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function load($view, &$params)
+    function load(Zikula_Form_View $view, &$params)
     {
         $this->loadValue($view, $view->get_template_vars());
     }
@@ -237,7 +237,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function loadValue($view, &$values)
+    function loadValue(Zikula_Form_View $view, &$values)
     {
         if ($this->dataBased) {
             $value = null;
@@ -267,7 +267,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function initialize($view)
+    function initialize(Zikula_Form_View $view)
     {
         $this->validationChecked = false;
         $view->addValidator($this);
@@ -280,7 +280,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -322,7 +322,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function raisePostBackEvent($view, $eventArgument)
+    function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
         $args = array(
             'commandName' => null,
@@ -340,7 +340,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function decode($view)
+    function decode(Zikula_Form_View $view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -355,7 +355,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function validate($view)
+    function validate(Zikula_Form_View $view)
     {
         $this->clearValidation($view);
 
@@ -375,7 +375,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      *
      * @return boolean
      */
-    function findCheckedRadioButton($view, $firstRadioButton)
+    function findCheckedRadioButton(Zikula_Form_View $view, $firstRadioButton)
     {
         $lim = count($view->plugins);
 
@@ -439,7 +439,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function clearValidation($view)
+    function clearValidation(Zikula_Form_View $view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -453,7 +453,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function saveValue($view, &$data)
+    function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {

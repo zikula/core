@@ -25,7 +25,7 @@
  * will be sent to the form event handlers handleCommand function.
  * Example:
  * <code>
- * function handleCommand($view, &$args)
+ * function handleCommand(Zikula_Form_View $view, &$args)
  * {
  * if ($args['commandName'] == 'update')
  * {
@@ -116,7 +116,7 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_StyledPlugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -172,7 +172,7 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function raisePostBackEvent($view, $eventArgument)
+    function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
         $carg = unserialize($eventArgument);
         $args = array(

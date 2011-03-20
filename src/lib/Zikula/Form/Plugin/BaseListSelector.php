@@ -143,7 +143,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_StyledPlugin
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         $this->inputName = $this->id;
 
@@ -164,7 +164,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function initialize($view)
+    function initialize(Zikula_Form_View $view)
     {
         $view->addValidator($this);
     }
@@ -177,7 +177,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function load($view, &$params)
+    function load(Zikula_Form_View $view, &$params)
     {
         // The load function expects the plugin to read values from the render.
         // This can be done with the loadValue function (which can be called in other situations than
@@ -205,7 +205,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function clearValidation($view)
+    function clearValidation(Zikula_Form_View $view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -222,7 +222,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function saveValue($view, &$data)
+    function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {
@@ -247,7 +247,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function loadValue($view, &$values)
+    function loadValue(Zikula_Form_View $view, &$values)
     {
         if ($this->dataBased) {
             $items = null;

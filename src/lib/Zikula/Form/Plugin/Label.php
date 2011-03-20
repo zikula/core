@@ -82,7 +82,7 @@ class Zikula_Form_Plugin_Label extends Zikula_Form_StyledPlugin
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
     }
 
@@ -93,7 +93,7 @@ class Zikula_Form_Plugin_Label extends Zikula_Form_StyledPlugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -125,7 +125,7 @@ class Zikula_Form_Plugin_Label extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function postRender($view)
+    function postRender(Zikula_Form_View $view)
     {
         $plugin = $view->getPluginById($this->for);
 

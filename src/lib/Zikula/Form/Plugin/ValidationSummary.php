@@ -42,7 +42,7 @@ class Zikula_Form_Plugin_ValidationSummary extends Zikula_Form_Plugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $validators = & $view->validators;
 
