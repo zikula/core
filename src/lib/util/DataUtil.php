@@ -465,14 +465,14 @@ class DataUtil
      */
     public static function formatPermalink($var)
     {
-        $var = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($var)); 
-
         // replace all chars $permasearch with the one in $permareplace
         $permasearch = explode(',', System::getVar('permasearch'));
         $permareplace = explode(',', System::getVar('permareplace'));
         foreach ($permasearch as $key => $value) {
             $var = mb_ereg_replace("[$value]", $permareplace[$key], $var);
         }
+
+        $var = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($var)); 
 
         // final clean
         $permalinksseparator = System::getVar('shorturlsseparator');
