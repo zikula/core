@@ -240,7 +240,7 @@ class Extensions_Controller_Admin extends Zikula_Controller
                                         'url' => ModUtil::url('Extensions', 'admin', 'deactivate', array(
                                         'id' => $mod['id'],
                                         'startnum' => $startnum,
-                                        '$csrftoken' => $csrftoken,
+                                        'csrftoken' => $csrftoken,
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'db_remove.png',
