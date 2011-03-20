@@ -95,7 +95,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractPlugin
      * @param Zikula_Form_View $view   Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Zikula_View plugin function.
      *
-     * @see    Zikula_Form_Plugin
+     * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
     function create(Zikula_Form_View $view, &$params)
@@ -109,10 +109,10 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractPlugin
      *
      * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      *
-     * @see    Zikula_Form_Plugin
+     * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function dataBound(Zikula_Form_View $view)
+    function dataBound(Zikula_Form_View $view, &$params)
     {
         PageUtil::AddVar('javascript', 'system/Theme/javascript/form/form.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');

@@ -7,7 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula_Form
- * @subpackage Zikula_Form_Plugin
+ * @subpackage Zikula_Form_AbstractPlugin
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -39,7 +39,7 @@ class Zikula_Form_Plugin_EMailInput extends Zikula_Form_Plugin_TextInput
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
-     * @see    Zikula_Form_Plugin
+     * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
     function create(Zikula_Form_View $view, &$params)

@@ -98,7 +98,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Reference to the main user code event handler.
      *
-     * @var Zikula_Form_Handler
+     * @var Zikula_Form_AbstractHandler
      * @internal
      */
     public $eventHandler;
@@ -187,14 +187,14 @@ class Zikula_Form_View extends Zikula_View
      * This is the function to call instead of the normal $view->fetch(...).
      *
      * @param boolean      $template     Name of template file.
-     * @param Zikula_Form_Handler $eventHandler Instance of object that inherits from Zikula_Form_Handler.
+     * @param Zikula_Form_AbstractHandler $eventHandler Instance of object that inherits from Zikula_Form_AbstractHandler.
      *
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
      */
-    public function execute($template, Zikula_Form_Handler $eventHandler)
+    public function execute($template, Zikula_Form_AbstractHandler $eventHandler)
     {
-        if (!$eventHandler instanceof Zikula_Form_Handler) {
-            throw new Zikula_Exception_Fatal('Form handlers must inherit from Zikula_Form_Handler.');
+        if (!$eventHandler instanceof Zikula_Form_AbstractHandler) {
+            throw new Zikula_Exception_Fatal('Form handlers must inherit from Zikula_Form_AbstractHandler.');
         }
 
         // Save handler for later use
@@ -266,7 +266,7 @@ class Zikula_Form_View extends Zikula_View
      * // In file "function.myplugin.php"
      *
      * // Form plugin class
-     * class MyPlugin extends Zikula_Form_Plugin
+     * class MyPlugin extends Zikula_Form_AbstractPlugin
      * { ... }
      *
      * // Smarty plugin function
@@ -289,7 +289,7 @@ class Zikula_Form_View extends Zikula_View
      *
      * @return string Returns what the render() method of the plugin returns.
      *
-     * @throws InvalidArgumentException Thrown if the plugin is not an instance of Zikula_Form_Plugin.
+     * @throws InvalidArgumentException Thrown if the plugin is not an instance of Zikula_Form_AbstractPlugin.
      */
     public function registerPlugin($pluginName, &$params, $isBlock = false)
     {
@@ -304,8 +304,8 @@ class Zikula_Form_View extends Zikula_View
 
         if (!$this->isPostBack() || $stackCount > 0 && $this->blockStack[$stackCount - 1]->volatile) {
             $plugin = new $pluginName($this, $params);
-            if (!$plugin instanceof Zikula_Form_Plugin) {
-                throw new InvalidArgumentException(__f('Plugin %s must be an instance of Zikula_Form_Plugin', $pluginName));
+            if (!$plugin instanceof Zikula_Form_AbstractPlugin) {
+                throw new InvalidArgumentException(__f('Plugin %s must be an instance of Zikula_Form_AbstractPlugin', $pluginName));
             }
             $plugin->setDomain($this->getDomain());
             $plugin->setup();
@@ -370,7 +370,7 @@ class Zikula_Form_View extends Zikula_View
      * // In file "block.myblock.php"
      *
      * // Form plugin class (also used for blocks)
-     * class MyBlock extends Zikula_Form_Plugin
+     * class MyBlock extends Zikula_Form_AbstractPlugin
      * { ... }
      *
      * // Smarty block function
@@ -459,7 +459,7 @@ class Zikula_Form_View extends Zikula_View
      *
      * @param intiger $id Plugin ID.
      *
-     * @return Zikula_Form_Plugin|null
+     * @return Zikula_Form_AbstractPlugin|null
      */
     public function getPluginById($id)
     {
@@ -482,7 +482,7 @@ class Zikula_Form_View extends Zikula_View
      * @param object  $plugin Plugin.
      * @param intiger $id      Plugin ID.
      *
-     * @return Zikula_Form_Plugin|null
+     * @return Zikula_Form_AbstractPlugin|null
      */
     public function getPluginById_rec($plugin, $id)
     {

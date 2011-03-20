@@ -7,7 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula_Form
- * @subpackage Zikula_Form_Plugin
+ * @subpackage Zikula_Form_AbstractPlugin
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
