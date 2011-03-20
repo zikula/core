@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Groups_Controller_Admin extends Zikula_Controller
+class Groups_Controller_Admin extends Zikula_AbstractController
 {
     /**
      * Groups Module main administration function

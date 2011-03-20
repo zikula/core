@@ -13,7 +13,7 @@
  */
 
 
-class Settings_Controller_Admin extends Zikula_Controller
+class Settings_Controller_Admin extends Zikula_AbstractController
 {
     /**
      * entry point for the module

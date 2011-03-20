@@ -14,7 +14,7 @@
 /**
  * This is the User controller class providing navigation and interaction functionality.
  */
-class ExampleDoctrine_Controller_User extends Zikula_Controller
+class ExampleDoctrine_Controller_User extends Zikula_AbstractController
 {
     /**
      * This method is the default function.

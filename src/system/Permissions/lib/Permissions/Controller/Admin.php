@@ -15,7 +15,7 @@
 /**
  * Permissions_Controller_Admin class.
  */
-class Permissions_Controller_Admin extends Zikula_Controller
+class Permissions_Controller_Admin extends Zikula_AbstractController
 {
     /**
      * Main administration function.

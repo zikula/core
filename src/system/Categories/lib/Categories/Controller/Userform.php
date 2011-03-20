@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Categories_Controller_Userform extends Zikula_Controller
+class Categories_Controller_Userform extends Zikula_AbstractController
 {
     /**
      * delete category

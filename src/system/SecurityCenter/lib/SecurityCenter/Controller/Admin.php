@@ -15,7 +15,7 @@
 /**
  * SecurityCenter_Controller_Admin class.
  */
-class SecurityCenter_Controller_Admin extends Zikula_Controller
+class SecurityCenter_Controller_Admin extends Zikula_AbstractController
 {
 
     /**

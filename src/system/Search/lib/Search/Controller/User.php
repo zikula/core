@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Search_Controller_User extends Zikula_Controller
+class Search_Controller_User extends Zikula_AbstractController
 {
 
     /**

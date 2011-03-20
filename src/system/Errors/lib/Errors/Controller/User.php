@@ -12,7 +12,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Errors_Controller_User extends Zikula_Controller
+class Errors_Controller_User extends Zikula_AbstractController
 {
 
     /**

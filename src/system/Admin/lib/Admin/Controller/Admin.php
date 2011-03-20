@@ -11,7 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Admin_Controller_Admin extends Zikula_Controller
+class Admin_Controller_Admin extends Zikula_AbstractController
 {
     /**
      * Post initialise.

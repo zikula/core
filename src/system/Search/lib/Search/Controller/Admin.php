@@ -15,7 +15,7 @@
 /**
  * Search_Controller_Admin class.
  */
-class Search_Controller_Admin extends Zikula_Controller
+class Search_Controller_Admin extends Zikula_AbstractController
 {
 
     /**
