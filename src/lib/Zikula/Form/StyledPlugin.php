@@ -58,7 +58,7 @@ abstract class Zikula_Form_StyledPlugin extends Zikula_Form_Plugin
      *
      * @return string
      */
-    public function renderAttributes($view)
+    public function renderAttributes(Zikula_Form_View $view)
     {
         static $styleElements = array('width', 'height', 'color', 'background_color', 'border', 'padding', 'margin', 'float', 'display', 'position', 'visibility', 'overflow', 'clip', 'font', 'font_family', 'font_style', 'font_weight', 'font_size');
 
