@@ -71,12 +71,12 @@ class Zikula_Form_Block_Volatile extends Zikula_Form_Plugin
      * Create event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Zikula_View plugin function.
+     * @param array            &$params Parameters passed from the Zikula_View plugin function.
      *
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
     }
 }

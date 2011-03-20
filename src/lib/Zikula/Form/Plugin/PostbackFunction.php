@@ -76,7 +76,7 @@ class Zikula_Form_Plugin_PostBackFunction extends Zikula_Form_Plugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $html = '';
 
@@ -95,7 +95,7 @@ class Zikula_Form_Plugin_PostBackFunction extends Zikula_Form_Plugin
      *
      * @return void
      */
-    function raisePostBackEvent($view, $eventArgument)
+    function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
         $args = array(
             'commandName' => $eventArgument,

@@ -54,7 +54,7 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         $this->maxLength = 20;
         $params['width'] = '6em';
@@ -84,7 +84,7 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
      *
      * @return void
      */
-    function validate($view)
+    function validate(Zikula_Form_View $view)
     {
         parent::validate($view);
 
@@ -115,7 +115,7 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string Parsed Text.
      */
-    function parseValue($view, $text)
+    function parseValue(Zikula_Form_View $view, $text)
     {
         if ($text === '') {
             return null;

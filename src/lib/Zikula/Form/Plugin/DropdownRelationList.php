@@ -133,7 +133,7 @@ class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_Dropdow
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         $hasModule = isset($params['module']) && !empty($params['module']);
         $hasObjecttype = isset($params['objecttype']) && !empty($params['objecttype']);
@@ -237,7 +237,7 @@ class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_Dropdow
      *
      * @return void
      */
-    function load($view, &$params)
+    function load(Zikula_Form_View $view, &$params)
     {
         if ($this->showEmptyValue != 0) {
             $this->addItem('- - -', 0);

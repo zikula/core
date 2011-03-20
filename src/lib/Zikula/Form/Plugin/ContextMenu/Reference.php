@@ -58,7 +58,7 @@ class Zikula_Form_Plugin_ContextMenu_Reference extends Zikula_Form_Plugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $imageURL = ($this->imageURL == null ? 'images/icons/extrasmall/tab_right.png' : $this->imageURL);
 

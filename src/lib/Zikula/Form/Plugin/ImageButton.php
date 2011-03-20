@@ -54,7 +54,7 @@ class Zikula_Form_Plugin_ImageButton extends Zikula_Form_Plugin_Button
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -83,7 +83,7 @@ class Zikula_Form_Plugin_ImageButton extends Zikula_Form_Plugin_Button
      *
      * @return boolean
      */
-    function decodePostBackEvent($view)
+    function decodePostBackEvent(Zikula_Form_View $view)
     {
         $fullNameX = $this->id . '_' . $this->commandName . '_x';
         $fullNameY = $this->id . '_' . $this->commandName . '_y';

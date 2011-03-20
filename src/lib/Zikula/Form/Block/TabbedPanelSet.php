@@ -82,11 +82,11 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_Plugin
      * RenderContent event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param string    $content The content to handle.
+     * @param string           $content The content to handle.
      *
      * @return string The (optionally) modified content.
      */
-    function renderContent($view, $content)
+    function renderContent(Zikula_Form_View $view, $content)
     {
         // Beware - working on 1-based offset!
 
@@ -138,7 +138,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_Plugin
      *
      * @return void
      */
-    function registerTabbedPanel($view, &$panel, $title)
+    function registerTabbedPanel(Zikula_Form_View $view, &$panel, $title)
     {
         $panel->panelSetId = $this->id;
 
@@ -157,7 +157,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_Plugin
      *
      * @return void
      */
-    function decode($view)
+    function decode(Zikula_Form_View $view)
     {
         $this->selectedIndex = (int)$this->request->getPost()->get("{$this->id}SelectedIndex", 1);
     }

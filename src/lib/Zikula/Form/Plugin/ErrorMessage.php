@@ -20,7 +20,7 @@
  * you want the error message to be displayed. Then, on postback, you can do as shown here to set the
  * error message:
  * <code>
- * function handleCommand($view, &$args)
+ * function handleCommand(Zikula_Form_View $view, &$args)
  * {
  * if ($args['commandName'] == 'update')
  * {
@@ -76,7 +76,7 @@ class Zikula_Form_Plugin_ErrorMessage extends Zikula_Form_Plugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         if ($this->message != '') {
             $cssClass = ($this->cssClass == null ? 'z-errormsg' : $this->cssClass);

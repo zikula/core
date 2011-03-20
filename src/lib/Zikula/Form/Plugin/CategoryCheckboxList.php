@@ -54,7 +54,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
      *
      * @return void
      */
-    function load($view, &$params)
+    function load(Zikula_Form_View $view, &$params)
     {
         Zikula_Form_Plugin_CategorySelector::loadParameters($this, false, $params);
 
@@ -68,7 +68,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $result = parent::render($view);
 

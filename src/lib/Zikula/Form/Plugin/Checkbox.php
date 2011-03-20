@@ -100,7 +100,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_StyledPlugin
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         // Load all special and non-string parameters
         // - the rest are fetched automatically
@@ -121,7 +121,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function load($view, &$params)
+    function load(Zikula_Form_View $view, &$params)
     {
         $this->loadValue($view, $view->get_template_vars());
     }
@@ -137,7 +137,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function loadValue($view, &$values)
+    function loadValue(Zikula_Form_View $view, &$values)
     {
         if ($this->dataBased) {
             $value = null;
@@ -173,7 +173,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_StyledPlugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -200,7 +200,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function decode($view)
+    function decode(Zikula_Form_View $view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -219,7 +219,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function saveValue($view, &$data)
+    function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {

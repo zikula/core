@@ -27,7 +27,7 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize($view)
+ * function initialize(Zikula_Form_View $view)
  * {
  * $items = array( array('text' => 'A', 'value' => '1'),
  * array('text' => 'B', 'value' => '2'),
@@ -46,7 +46,7 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize($view)
+ * function initialize(Zikula_Form_View $view)
  * {
  * $items = array( array('text' => 'A', 'value' => '1'),
  * array('text' => 'B', 'value' => '2'),
@@ -136,7 +136,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         parent::create($view, $params);
     }
@@ -149,7 +149,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function load($view, &$params)
+    function load(Zikula_Form_View $view, &$params)
     {
         parent::load($view, $params);
 
@@ -165,7 +165,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $readOnlyHtml = ($this->readOnly ? " disabled=\"disabled\"" : '');
 
@@ -257,7 +257,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function decode($view)
+    function decode(Zikula_Form_View $view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         // Besides that, a disabled checkbox returns nothing at all, so old values are good to keep
@@ -281,7 +281,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function validate($view)
+    function validate(Zikula_Form_View $view)
     {
         $this->clearValidation($view);
 
@@ -310,7 +310,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function clearValidation($view)
+    function clearValidation(Zikula_Form_View $view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -327,7 +327,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function saveValue($view, &$data)
+    function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {
@@ -352,7 +352,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function loadValue($view, &$values)
+    function loadValue(Zikula_Form_View $view, &$values)
     {
         if ($this->dataBased) {
             $items = null;

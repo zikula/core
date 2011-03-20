@@ -124,7 +124,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_StyledPlugin
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         $this->inputName = (array_key_exists('inputName', $params) ? $params['inputName'] : $this->id);
         $this->readOnly = (array_key_exists('readOnly', $params) ? $params['readOnly'] : false);
@@ -145,7 +145,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function initialize($view)
+    function initialize(Zikula_Form_View $view)
     {
         $view->addValidator($this);
     }
@@ -157,7 +157,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_StyledPlugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
         $nameHtml = " name=\"{$this->inputName}\"";
@@ -188,7 +188,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function decode($view)
+    function decode(Zikula_Form_View $view)
     {
         if (isset($_FILES[$this->inputName])) {
             $this->result = $_FILES[$this->inputName];
@@ -202,7 +202,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function validate($view)
+    function validate(Zikula_Form_View $view)
     {
         $this->clearValidation($view);
 
@@ -236,7 +236,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function clearValidation($view)
+    function clearValidation(Zikula_Form_View $view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -253,7 +253,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function saveValue($view, &$data)
+    function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {

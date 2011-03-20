@@ -61,7 +61,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         // Check if precision is provided, is a number, is an integer (even if its data type is a string), and is non-negative.
         if (isset($params['precision']) && is_numeric($params['precision']) && ((int)$params['precision'] == $params['precision'])
@@ -97,7 +97,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
      *
      * @return void
      */
-    function validate($view)
+    function validate(Zikula_Form_View $view)
     {
         parent::validate($view);
 
@@ -133,7 +133,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string Parsed Text.
      */
-    function parseValue($view, $text)
+    function parseValue(Zikula_Form_View $view, $text)
     {
         if ($text === '') {
             return null;
@@ -153,7 +153,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string Formatted value.
      */
-    function formatValue($view, $value)
+    function formatValue(Zikula_Form_View $view, $value)
     {
         return DataUtil::formatNumber($value, $this->precision);
     }

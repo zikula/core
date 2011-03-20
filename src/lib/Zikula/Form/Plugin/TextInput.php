@@ -237,7 +237,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         // All member variables are fetched automatically before create (as strings)
         // Here we afterwards load all special and non-string parameters
@@ -262,7 +262,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function load($view, &$params)
+    function load(Zikula_Form_View $view, &$params)
     {
         // The load function expects the plugin to read values from the render.
         // This can be done with the loadValue function (which can be called in other situations than
@@ -277,7 +277,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function initialize($view)
+    function initialize(Zikula_Form_View $view)
     {
         $view->addValidator($this);
     }
@@ -289,7 +289,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
         $nameHtml = " name=\"{$this->inputName}\"";
@@ -374,11 +374,11 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
     /**
      * Decode event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Zikula_Form_View object.
      *
      * @return void
      */
-    function decode($view)
+    function decode(Zikula_Form_View $view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -398,11 +398,11 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
     /**
      * Validates the input.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Zikula_Form_View object.
      *
      * @return void
      */
-    function validate($view)
+    function validate(Zikula_Form_View $view)
     {
         $this->clearValidation($view);
 
@@ -432,11 +432,11 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
     /**
      * Clears the validation data.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Zikula_Form_View object.
      *
      * @return void
      */
-    function clearValidation($view)
+    function clearValidation(Zikula_Form_View $view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -449,12 +449,12 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      * Called by the render when doing $view->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Zikula_Form_View $view  Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view  Zikula_Form_View object.
      * @param array            &$data Data object.
      *
      * @return void
      */
-    function saveValue($view, &$data)
+    function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             $value = $this->parseValue($view, $this->text);
@@ -480,7 +480,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      *
      * @return string Parsed Text.
      */
-    function parseValue($view, $text)
+    function parseValue(Zikula_Form_View $view, $text)
     {
         return $text;
     }
@@ -496,7 +496,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      *
      * @return void
      */
-    function loadValue($view, &$values)
+    function loadValue(Zikula_Form_View $view, &$values)
     {
         if ($this->dataBased) {
             $value = null;
@@ -527,7 +527,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_StyledPlugin
      *
      * @return string Formatted value.
      */
-    function formatValue($view, $value)
+    function formatValue(Zikula_Form_View $view, $value)
     {
         return $value;
     }

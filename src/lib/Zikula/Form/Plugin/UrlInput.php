@@ -49,7 +49,7 @@ class Zikula_Form_Plugin_URLInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string The rendered output
      */
-    function render($view)
+    function render(Zikula_Form_View $view)
     {
         if (!empty($this->defaultText) && ($this->text == null || empty($this->text))) {
             $this->text = $this->defaultText;
@@ -67,7 +67,7 @@ class Zikula_Form_Plugin_URLInput extends Zikula_Form_Plugin_TextInput
      * @see    Zikula_Form_Plugin
      * @return void
      */
-    function create($view, &$params)
+    function create(Zikula_Form_View $view, &$params)
     {
         $this->maxLength = 2000;
 
@@ -83,7 +83,7 @@ class Zikula_Form_Plugin_URLInput extends Zikula_Form_Plugin_TextInput
      *
      * @return void
      */
-    function decodePostBackEvent($view)
+    function decodePostBackEvent(Zikula_Form_View $view)
     {
         if (!empty($this->defaultText) && $this->text == $this->defaultText) {
             $this->text = null;
@@ -97,7 +97,7 @@ class Zikula_Form_Plugin_URLInput extends Zikula_Form_Plugin_TextInput
      *
      * @return void
      */
-    function validate($view)
+    function validate(Zikula_Form_View $view)
     {
         parent::validate($view);
 
