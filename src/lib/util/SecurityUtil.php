@@ -64,17 +64,18 @@ class SecurityUtil
      * Generate a security token.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager (default = null).
+     * @param boolean               $forceUnique    Force a unique token regardless of system settings.
      *
      * @return string
      */
-    public static function generateCsrfToken(Zikula_ServiceManager $serviceManager = null)
+    public static function generateCsrfToken(Zikula_ServiceManager $serviceManager = null, $forceUnique = false)
     {
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();
         }
 
         $tokenGenerator = $serviceManager->getService('token.generator');
-        if (System::getVar('sessioncsrftokenonetime')) {
+        if (!$forceUnique && System::getVar('sessioncsrftokenonetime')) {
             $storage = $tokenGenerator->getStorage();
             $tokenId = SessionUtil::getVar('sessioncsrftokenid');
             $data = $storage->get($tokenId);
@@ -95,7 +96,7 @@ class SecurityUtil
 
     /**
      * Validate a given security token.
-     * 
+     *
      * @param string                $token          Token to be validated.
      * @param Zikula_ServiceManager $serviceManager ServiceManager default = null.
      *
