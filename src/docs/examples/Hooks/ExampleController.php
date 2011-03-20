@@ -18,7 +18,7 @@
  * how this should be implemented.  It's not intended to be a copy and paste
  * example.
  */
-class Example_Controller_User extends Zikula_Controller
+class Example_Controller_User extends Zikula_AbstractController
 {
 
     public function view()

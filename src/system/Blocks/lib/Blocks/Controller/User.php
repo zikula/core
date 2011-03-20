@@ -15,7 +15,7 @@
 /**
  * Blocks_Controller_User class.
  */
-class Blocks_Controller_User extends Zikula_Controller
+class Blocks_Controller_User extends Zikula_AbstractController
 {
 
     /**

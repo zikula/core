@@ -15,7 +15,7 @@
 /**
  * Controller.
  */
-class Categories_Controller_Adminform extends Zikula_Controller
+class Categories_Controller_Adminform extends Zikula_AbstractController
 {
     /**
      * update category

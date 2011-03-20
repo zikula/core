@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Controller_User extends Zikula_Controller
+class Theme_Controller_User extends Zikula_AbstractController
 {
     /**
      * display theme changing user interface

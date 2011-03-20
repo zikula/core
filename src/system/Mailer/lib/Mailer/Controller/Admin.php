@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Mailer_Controller_Admin extends Zikula_Controller
+class Mailer_Controller_Admin extends Zikula_AbstractController
 {
     /**
      * the main administration function

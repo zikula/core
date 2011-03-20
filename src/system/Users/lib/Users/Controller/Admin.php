@@ -16,7 +16,7 @@
 /**
  * Administrator-initiated actions for the Users module.
  */
-class Users_Controller_Admin extends Zikula_Controller
+class Users_Controller_Admin extends Zikula_AbstractController
 {
     /**
      * Post initialise.

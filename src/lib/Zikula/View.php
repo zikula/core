@@ -139,7 +139,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Zikula controller.
      *
-     * @var Zikula_Controller
+     * @var Zikula_AbstractController
      */
     protected $controller;
 

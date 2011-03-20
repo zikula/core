@@ -13,7 +13,7 @@
  */
 
 
-class SecurityCenter_Controller_Adminform extends Zikula_Controller
+class SecurityCenter_Controller_Adminform extends Zikula_AbstractController
 {
     /**
      * Function to delete an ids log entry

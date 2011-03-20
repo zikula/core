@@ -157,13 +157,13 @@ MODULES
     pnuser.php => lib/MyModule/Controller/User.php
 
   Refactor the controllers, encapulating all functions inside 
-  class $modname_Controller_$type extends Zikula_Controller
+  class $modname_Controller_$type extends Zikula_AbstractController
   e.g.
-    class MyModule_Controller_User extends Zikula_Controller
+    class MyModule_Controller_User extends Zikula_AbstractController
 
   Make all functions public which should be accessible from the browser.
   Internal methods which should not be accessible outside the class should be made
-  protected or private.  If you subclass Zikula_Controller, inherited methods
+  protected or private.  If you subclass Zikula_AbstractController, inherited methods
   will not be accessible even if they are public.
 
 - Move module APIs (pnuserapi.php, pnadminapi.php etc) to lib/$modname/Api/$type

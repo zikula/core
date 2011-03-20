@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Categories_Controller_User extends Zikula_Controller
+class Categories_Controller_User extends Zikula_AbstractController
 {
     /**
      * main user function
