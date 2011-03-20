@@ -101,7 +101,7 @@ class SecurityUtil
      *
      * @return boolean
      */
-    public static function validateCsfrToken($token, Zikula_ServiceManager $serviceManager = null)
+    public static function validateCsrfToken($token, Zikula_ServiceManager $serviceManager = null)
     {
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();
@@ -177,10 +177,16 @@ class SecurityUtil
      * @param string $modname Module name.
      * @param string $varname Variable name.
      *
+     * @deprecated since 1.3.0
+     *
      * @return boolean
      */
     public static function confirmAuthKey($modname = '', $varname = 'authid')
     {
+        LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', array(
+        'SecurityUtil::confirmAuthKey()',
+        'SecurityUtil::validateCsrfToken()')), E_USER_DEPRECATED);
+
         if (!$varname) {
             $varname = 'authid';
         }
@@ -245,10 +251,16 @@ class SecurityUtil
      *
      * @param string $modname Module name.
      *
+     * @deprecated since 1.3.0
+     *
      * @return string An encrypted key for use in authorisation of operations.
      */
     public static function generateAuthKey($modname = '')
     {
+        LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', array(
+        'SecurityUtil::generateAuthKey()',
+        'SecurityUtil::generateCsrfToken()')), E_USER_DEPRECATED);
+
         // since we need sessions for authorisation keys we should check
         // if a session exists and if not create one
         SessionUtil::requireSession();

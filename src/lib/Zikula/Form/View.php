@@ -206,7 +206,7 @@ class Zikula_Form_View extends Zikula_View
         $this->eventHandler->preInitialize();
 
         if ($this->isPostBack()) {
-            if (!SecurityUtil::validateCsfrToken($this->request->getPost()->filter('csrftoken', '', FILTER_SANITIZE_STRING), $this->serviceManager)) {
+            if (!SecurityUtil::validateCsrfToken($this->request->getPost()->filter('csrftoken', '', FILTER_SANITIZE_STRING), $this->serviceManager)) {
                 return LogUtil::registerAuthidError();
             }
 
