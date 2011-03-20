@@ -339,7 +339,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get the Zikula controller.
      * 
-     * @return Zikula_Controller
+     * @return Zikula_AbstractController
      */
     public function getController()
     {
@@ -349,9 +349,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the controller property.
      * 
-     * @param Zikula_Controller $controller
+     * @param Zikula_AbstractController $controller
      */
-    public function setController($controller)
+    public function setController(Zikula_AbstractController $controller)
     {
         $this->controller = $controller;
     }
