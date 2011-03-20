@@ -223,8 +223,8 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
             $args['controller'] = $this->view->get_tpl_var('controller');
         }
 
-        if (!$args['controller'] instanceof Zikula_ControllerAbstract) {
-            throw new InvalidArgumentException(__f('%s is not an instance of Zikula_Controller, the $args[\'controller\'] argument must be the controller who is notifying these hooks', get_class($this)));
+        if (!$args['controller'] instanceof Zikula_AbstractController) {
+            throw new InvalidArgumentException(__f('%s is not an instance of Zikula_AbstractController, the $args[\'controller\'] argument must be the controller who is notifying these hooks', get_class($this)));
         }
 
         // set caller's name
