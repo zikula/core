@@ -42,7 +42,6 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('startdate', date('m/Y', time()));
         System::setVar('adminmail', 'example@example.com');
         System::setVar('Default_Theme', 'Andreas08');
-        System::setVar('anonymous', $this->__('Guest'));
         System::setVar('timezone_offset', '0');
         System::setVar('timezone_server', '0');
         System::setVar('funtext', '1');

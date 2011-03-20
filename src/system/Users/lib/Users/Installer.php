@@ -64,7 +64,7 @@ class Users_Installer extends Zikula_Installer
              ->setVar('gravatarimage', 'gravatar.gif')
              ->setVar('minage', 13)
              ->setVar('minpass', 5)
-             ->setVar('anonymous', 'Guest')
+             ->setVar('anonymous', $this->__('Guest'))
              ->setVar('loginviaoption', 0)
              ->setVar('moderation', 0)
              ->setVar('hash_method', 'sha256')
