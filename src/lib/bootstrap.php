@@ -22,6 +22,7 @@ abstract class Zikula_Controller extends Zikula_AbstractController{}
 abstract class Zikula_Api extends Zikula_AbstractApi{}
 abstract class Zikula_Controller_Block extends Zikula_Controller_AbstractBlock{}
 abstract class Zikula_Controller_Ajax extends Zikula_Controller_AbstractAjax{}
+abstract class Zikula_Helper extends Zikula_AbstractHelper{}
 abstract class Zikula_InteractiveInstaller extends Zikula_Controller_AbstractInteractiveInstaller{}
 abstract class Zikula_Installer extends Zikula_AbstractInstaller{}
 abstract class Zikula_Controller_Plugin extends Zikula_Controller_AbstractPlugin{}

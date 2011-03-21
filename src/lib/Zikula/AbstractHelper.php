@@ -16,7 +16,7 @@
 /**
  * Helper class.
  */
-abstract class Zikula_Helper implements Zikula_Translatable
+abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
 {
     /**
      * ServiceManager.
@@ -59,7 +59,7 @@ abstract class Zikula_Helper implements Zikula_Translatable
      * @param Zikula_Base $base    Zikula base object.
      * @param array       $options Options (universal constructor).
      */
-    public function __construct(Zikula_Base $base, array $options = array())
+    public function __construct(Zikula_AbstractBase $base, array $options = array())
     {
         $this->base = $base;
         $this->serviceManager = $base->getServiceManager();
