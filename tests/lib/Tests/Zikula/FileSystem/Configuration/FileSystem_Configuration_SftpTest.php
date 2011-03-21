@@ -61,7 +61,6 @@ class Zikula_FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCas
     public function test__construct()
     {
 	    $this->assertInstanceOf('Zikula_FileSystem_ConfigurationInterface', $this->Zikula_FileSystem_Configuration_Sftp);
-	    $this->assertInternalType('Zikula_FileSystem_Configuration_Sftp', $this->Zikula_FileSystem_Configuration_Sftp);
     }
 
     /**
