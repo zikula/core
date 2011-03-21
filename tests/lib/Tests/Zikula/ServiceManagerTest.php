@@ -224,7 +224,7 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
             array('assertEquals', new Zikula_ServiceManager_Definition('Store', array('ok'), array('setData' => array(new Zikula_ServiceManager_Definition('\ArrayObject')))), new Store(new ArrayObject())),
 
             // nasty recursive test on definitions with Definition as method param.
-            array('assertEquals', new Zikula_ServiceManager_Definition('Store', array(new Zikula_ServiceManager_Definition('Zikula\Tests\Common\ServiceManager\Store', array(new Zikula_ServiceManager_Definition('Store', array(new Zikula_ServiceManager_Definition('StdClass')), array('setFoo' => array(new Zikula_ServiceManager_Definition('ArrayObject')))))))), new Store(new Store($inner))),
+            array('assertEquals', new Zikula_ServiceManager_Definition('Store', array(new Zikula_ServiceManager_Definition('Store', array(new Zikula_ServiceManager_Definition('Store', array(new Zikula_ServiceManager_Definition('StdClass')), array('setFoo' => array(new Zikula_ServiceManager_Definition('ArrayObject')))))))), new Store(new Store($inner))),
             );
     }
 
