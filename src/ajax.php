@@ -79,8 +79,8 @@ if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
 }
 
 // Process final response.
-// If response is not instanceof Zikula_Response_Ajax_Base provide compat solution
-if (!$response instanceof Zikula_Response_Ajax_Base) {
+// If response is not instanceof Zikula_Response_Ajax_AbstractBase provide compat solution
+if (!$response instanceof Zikula_Response_Ajax_AbstractBase) {
     $response = !is_array($response) ? array('data' => $response) : $response;
     $response['statusmsg'] = LogUtil::getStatusMessages();
     if (System::isLegacyMode()) {
