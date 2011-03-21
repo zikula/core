@@ -39,15 +39,15 @@ class Zikula_FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
      */
     public function testErrorGetLast()
     {
-        $this->assertType('array', $this->Zikula_FileSystem_Ftp->getErrorHandler()->getLast());
+        $this->assertInternalType('array', $this->Zikula_FileSystem_Ftp->getErrorHandler()->getLast());
         $config = new Zikula_FileSystem_Configuration_Ftp();
         $fs = new Zikula_FileSystem_Ftp($config);
         $this->assertEquals(false, $fs->getErrorHandler()->getLast());
         $fs = new Zikula_FileSystem_Ftp($config);
         $fs->getErrorHandler()->register('Error', 1);
         $fs->getErrorHandler()->register('Error2', 2);
-        $this->assertType('array', $fs->getErrorHandler()->getLast(true));
-        $this->assertType('array', $fs->getErrorHandler()->getLast(true));
+        $this->assertInternalType('array', $fs->getErrorHandler()->getLast(true));
+        $this->assertInternalType('array', $fs->getErrorHandler()->getLast(true));
         $this->assertEquals(false, $fs->getErrorHandler()->getLast(true));
     }
 
@@ -68,7 +68,7 @@ class Zikula_FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
         $fs = new Zikula_FileSystem_Ftp($config);
         $fs->getErrorHandler()->register('Error', 1);
         $fs->getErrorHandler()->register('Error2', 2);
-        $this->assertType('array', $fs->getErrorHandler()->getAll(true));
+        $this->assertInternalType('array', $fs->getErrorHandler()->getAll(true));
         $this->assertEquals(array(), $fs->getErrorHandler()->getAll(true));
     }
 
@@ -93,7 +93,7 @@ class Zikula_FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
         $config = new Zikula_FileSystem_Configuration_Ftp();
         $fs = new Zikula_FileSystem_Ftp($config);
         $fs->getErrorHandler()->handler(0, 'Error', '1', '2');
-        $this->assertType('array', $fs->getErrorHandler()->getAll(false));
+        $this->assertInternalType('array', $fs->getErrorHandler()->getAll(false));
         $this->assertEquals(1, $fs->getErrorHandler()->count(true));
     }
 

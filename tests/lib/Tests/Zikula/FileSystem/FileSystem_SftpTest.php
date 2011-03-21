@@ -234,7 +234,7 @@ class Zikula_FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->method('sftpFopen')
              ->will($this->returnValue($handle));
         $this->Zikula_FileSystem_Sftp->setDriver($stub);
-        $this->assertType('resource',$this->Zikula_FileSystem_Sftp->fget(1,2));
+        $this->assertInternalType('resource',$this->Zikula_FileSystem_Sftp->fget(1,2));
 
         $stub = $this->getMock('Zikula_FileSystem_Facade_Sftp');
         $stub->expects($this->any())
@@ -416,7 +416,7 @@ class Zikula_FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->method('sftpReadDir')
              ->will($this->onConsecutiveCalls(true,false,false,false));
         $this->Zikula_FileSystem_Sftp->setDriver($stub);
-        $this->assertType('array',$this->Zikula_FileSystem_Sftp->ls());
+        $this->assertInternalType('array',$this->Zikula_FileSystem_Sftp->ls());
 
         $stub = $this->getMock('Zikula_FileSystem_Facade_Sftp');
         $stub->expects($this->any())

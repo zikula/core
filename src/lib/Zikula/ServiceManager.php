@@ -94,7 +94,7 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @return void
      */
-    public function registerDefinition($id, Zikula_ServiceManager_Definition $definition, $shared = true)
+    public function registerService($id, Zikula_ServiceManager_Definition $definition, $shared = true)
     {
         if ($this->hasService($id)) {
             throw new InvalidArgumentException(sprintf('Service %s is already registered', $id));

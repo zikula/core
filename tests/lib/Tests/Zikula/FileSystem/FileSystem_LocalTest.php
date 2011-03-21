@@ -147,7 +147,7 @@ class Zikula_FileSystem_LocalTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue($handle));
 
         $this->Zikula_FileSystem_Local->setDriver($stub);
-        $this->assertType('resource', $this->Zikula_FileSystem_Local->fget(1,2));
+        $this->assertInternalType('resource', $this->Zikula_FileSystem_Local->fget(1,2));
 
         // Configure the stub.
         $stub = $this->getMock('Zikula_FileSystem_Facade_Local');
@@ -199,7 +199,7 @@ class Zikula_FileSystem_LocalTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue($array));
 
         $this->Zikula_FileSystem_Local->setDriver($stub);
-        $this->assertType('array', $this->Zikula_FileSystem_Local->ls(1,2));
+        $this->assertInternalType('array', $this->Zikula_FileSystem_Local->ls(1,2));
 
         // Configure the stub.
         $stub = $this->getMock('Zikula_FileSystem_Facade_Local');
