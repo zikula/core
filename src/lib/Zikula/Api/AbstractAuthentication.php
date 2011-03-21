@@ -16,7 +16,7 @@
 /**
  * Abstract Authentication API for Auth modules.
  */
-abstract class Zikula_AuthApi extends Zikula_Api
+abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
 {
     /**
      * Informs the calling function whether this authmodule is reentrant or not.
