@@ -24,9 +24,9 @@ Smarty 2.6.26
     Location in Zikula: lib/vendor/Smarty
     Patch details: none
 
-Doctrine 1.2.3
+Doctrine 1.2.4
     Vendor website: http://www.doctrine-project.org/
-    Downloaded from: http://svn.doctrine-project.org/tags/1.2.3/
+    Downloaded from: http://www.doctrine-project.org/projects/orm/download/
     License: LGPL
     Location in Zikula: lib/vendor/Doctrine
 
