@@ -16,7 +16,7 @@
 /**
  * This panel displays all module & moduleapi executions.
  */
-class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_Panel
+class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterface
 {
     /**
      * Contains all executed module functions.

@@ -16,7 +16,7 @@
 /**
  * This panel displays the assigned variables of all renderd templates.
  */
-class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_Panel
+class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterface
 {
     /**
      * Contains all rendert templates with its assigned template variables.

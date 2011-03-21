@@ -16,7 +16,7 @@
 /**
  * Interface for debug toolbar panels.
  */
-interface Zikula_DebugToolbar_Panel
+interface Zikula_DebugToolbar_PanelInterface
 {
     /**
      * Returns the id of this panel.

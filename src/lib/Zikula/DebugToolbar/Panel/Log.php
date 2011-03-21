@@ -16,7 +16,7 @@
 /**
  * This panel displays an log console.
  */
-class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_Panel
+class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_PanelInterface
 {
     /**
      * Contains the log entries to display.

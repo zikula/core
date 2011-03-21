@@ -16,7 +16,7 @@
 /**
  * This panel displays the zikula version.
  */
-class Zikula_DebugToolbar_Panel_Version implements Zikula_DebugToolbar_Panel
+class Zikula_DebugToolbar_Panel_Version implements Zikula_DebugToolbar_PanelInterface
 {
     /**
      * Returns the id of this panel.
