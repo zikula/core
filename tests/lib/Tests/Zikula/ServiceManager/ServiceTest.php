@@ -8,9 +8,9 @@ class ZTests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Service
+     * @var Zikula_ServiceManager_Service
      */
-    private $Service;
+    private $service;
 
     /**
      * Prepares the environment before running a test.
@@ -19,7 +19,7 @@ class ZTests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $definition = new Zikula_ServiceManager_Definition('StdClass');
-        $this->Service = new Zikula_ServiceManager_Service('test.service', $definition, true);
+        $this->service = new Zikula_ServiceManager_Service('test.service', $definition, true);
     }
 
     /**
@@ -27,7 +27,7 @@ class ZTests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        $this->Service = null;
+        $this->service = null;
         parent::tearDown();
     }
 
@@ -36,16 +36,16 @@ class ZTests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
      */
     public function test__construct()
     {
-        $this->assertAttributeEquals('test.service', 'id', $this->Service);
-        $this->assertAttributeEquals(new Zikula_ServiceManager_Definition('StdClass'), 'definition', $this->Service);
-        $this->assertAttributeSame(true, 'shared', $this->Service);
-        $this->assertAttributeSame(null, 'service', $this->Service);
+        $this->assertAttributeEquals('test.service', 'id', $this->service);
+        $this->assertAttributeEquals(new Zikula_ServiceManager_Definition('StdClass'), 'definition', $this->service);
+        $this->assertAttributeSame(true, 'shared', $this->service);
+        $this->assertAttributeSame(null, 'service', $this->service);
 
         $definition = new Zikula_ServiceManager_Definition('\ArrayObject');
-        $this->Service = new Zikula_ServiceManager_Service('test.service2', $definition, false);
-        $this->assertAttributeEquals('test.service2', 'id', $this->Service);
-        $this->assertAttributeEquals(new Zikula_ServiceManager_Definition('\ArrayObject'), 'definition', $this->Service);
-        $this->assertAttributeSame(false, 'shared', $this->Service);
+        $this->service = new Zikula_ServiceManager_Service('test.service2', $definition, false);
+        $this->assertAttributeEquals('test.service2', 'id', $this->service);
+        $this->assertAttributeEquals(new Zikula_ServiceManager_Definition('\ArrayObject'), 'definition', $this->service);
+        $this->assertAttributeSame(false, 'shared', $this->service);
     }
 
     /**
@@ -53,7 +53,7 @@ class ZTests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
      */
     public function testGetId()
     {
-        $this->assertEquals('test.service', $this->Service->getId());
+        $this->assertEquals('test.service', $this->service->getId());
     }
 
     /**
@@ -61,35 +61,35 @@ class ZTests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
      */
     public function testGetDefinition()
     {
-        $this->assertEquals(new Zikula_ServiceManager_Definition('StdClass'), $this->Service->getDefinition());
+        $this->assertEquals(new Zikula_ServiceManager_Definition('StdClass'), $this->service->getDefinition());
     }
 
     public function testIsShared()
     {
-        $this->assertTrue($this->Service->isShared());
+        $this->assertTrue($this->service->isShared());
     }
 
     public function testHasDefinition()
     {
-        $this->assertTrue($this->Service->hasDefinition());
+        $this->assertTrue($this->service->hasDefinition());
     }
 
     public function testGetService()
     {
-        $this->assertSame(null, $this->Service->getService());
+        $this->assertSame(null, $this->service->getService());
     }
 
     public function testSetService()
     {
         $arrayObj = new ArrayObject();
-        $this->Service->setService($arrayObj);
-        $this->assertAttributeSame($arrayObj, 'service', $this->Service);
-        $this->assertAttributeEquals(null, 'definition', $this->Service);
+        $this->service->setService($arrayObj);
+        $this->assertAttributeSame($arrayObj, 'service', $this->service);
+        $this->assertAttributeEquals(null, 'definition', $this->service);
     }
 
     public function testHasService()
     {
-        $this->assertFalse($this->Service->hasService());
+        $this->assertFalse($this->service->hasService());
     }
 
 }

@@ -235,7 +235,7 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
 
         $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertType('resource', $this->Zikula_FileSystem_Ftp->fget(1));
+        $this->assertInternalType('resource', $this->Zikula_FileSystem_Ftp->fget(1));
 
         // Configure the stub.
         $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
@@ -285,7 +285,7 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue($array));
 
         $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertType('array', $this->Zikula_FileSystem_Ftp->ls(1,2));
+        $this->assertInternalType('array', $this->Zikula_FileSystem_Ftp->ls(1,2));
 
         // Configure the stub.
         $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');

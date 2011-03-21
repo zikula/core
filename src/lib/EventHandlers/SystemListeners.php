@@ -59,7 +59,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         $requestDef = new Zikula_ServiceManager_Definition('Zikula_Request_Http');
         $requestDef->addMethod('setSession', array(new Zikula_ServiceManager_Reference('session')));
-        $this->serviceManager->registerDefinition('request', $requestDef);
+        $this->serviceManager->registerService('request', $requestDef);
     }
 
     /**
@@ -107,10 +107,10 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupSessions(Zikula_Event $event)
     {
         $storageDef = new Zikula_ServiceManager_Definition('Zikula_Session_Storage_Legacy');
-        $this->serviceManager->registerDefinition('session.storage', $storageDef);
+        $this->serviceManager->registerService('session.storage', $storageDef);
         $storageReference = new Zikula_ServiceManager_Reference('session.storage');
         $session = new Zikula_ServiceManager_Definition('Zikula_Session', array($storageReference));
-        $this->serviceManager->registerDefinition('session', $session);
+        $this->serviceManager->registerService('session', $session);
     }
 
     /**
@@ -125,15 +125,15 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if ($event['stage'] & Zikula_Core::STAGE_MODS) {
             $tokenStorageDef = new Zikula_ServiceManager_Definition('Zikula_Token_Storage_Session',
                             array(new Zikula_ServiceManager_Reference('session')));
-            $this->serviceManager->registerDefinition('token.storage', $tokenStorageDef);
+            $this->serviceManager->registerService('token.storage', $tokenStorageDef);
 
             $tokenGeneratorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Generator',
                             array(new Zikula_ServiceManager_Reference('token.storage'), System::getVar('signingkey')));
-            $this->serviceManager->registerDefinition('token.generator', $tokenGeneratorDef);
+            $this->serviceManager->registerService('token.generator', $tokenGeneratorDef);
 
             $tokenValidatorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Validate',
                             array(new Zikula_ServiceManager_Reference('token.generator')));
-            $this->serviceManager->registerDefinition('token.validator', $tokenValidatorDef);
+            $this->serviceManager->registerService('token.validator', $tokenValidatorDef);
         }
     }
 
@@ -446,15 +446,15 @@ class SystemListeners extends Zikula_AbstractEventHandler
             $this->serviceManager->setArgument('debug.toolbar.panel.rendertime.start', microtime(true));
 
             // register services
-            $this->serviceManager->registerDefinition('debug.toolbar.panel.version', $versionPanel, true);
-            $this->serviceManager->registerDefinition('debug.toolbar.panel.config', $configPanel, true);
-            $this->serviceManager->registerDefinition('debug.toolbar.panel.memory', $momoryPanel, true);
-            $this->serviceManager->registerDefinition('debug.toolbar.panel.rendertime', $rendertimePanel, true);
-            $this->serviceManager->registerDefinition('debug.toolbar.panel.sql', $sqlPanel, true);
-            $this->serviceManager->registerDefinition('debug.toolbar.panel.view', $viewPanel, true);
-            $this->serviceManager->registerDefinition('debug.toolbar.panel.exec', $execPanel, true);
-            $this->serviceManager->registerDefinition('debug.toolbar.panel.logs', $logsPanel, true);
-            $this->serviceManager->registerDefinition('debug.toolbar', $toolbar, true);
+            $this->serviceManager->registerService('debug.toolbar.panel.version', $versionPanel, true);
+            $this->serviceManager->registerService('debug.toolbar.panel.config', $configPanel, true);
+            $this->serviceManager->registerService('debug.toolbar.panel.memory', $momoryPanel, true);
+            $this->serviceManager->registerService('debug.toolbar.panel.rendertime', $rendertimePanel, true);
+            $this->serviceManager->registerService('debug.toolbar.panel.sql', $sqlPanel, true);
+            $this->serviceManager->registerService('debug.toolbar.panel.view', $viewPanel, true);
+            $this->serviceManager->registerService('debug.toolbar.panel.exec', $execPanel, true);
+            $this->serviceManager->registerService('debug.toolbar.panel.logs', $logsPanel, true);
+            $this->serviceManager->registerService('debug.toolbar', $toolbar, true);
 
             // setup rendering event listeners
             $this->eventManager->attach('theme.prefooter', array($this, 'debugToolbarRendering'));
