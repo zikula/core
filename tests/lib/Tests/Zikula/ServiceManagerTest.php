@@ -144,7 +144,7 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($class2, $this->serviceManager->getService('test.stdclass2'));
 
         $stdDefSingle = new Zikula_ServiceManager_Definition('StdClass');
-        $this->serviceManager->registerService(new Zikula_ServiceManager_Service('test.singleinstance', $stdDefSingle));
+        $this->serviceManager->registerService('test.singleinstance', $stdDefSingle);
         $service0 = $this->serviceManager->getService('test.singleinstance');
         $this->assertSame($service0, $this->serviceManager->getService('test.singleinstance'));
         $this->assertTrue($service0 instanceof StdClass);

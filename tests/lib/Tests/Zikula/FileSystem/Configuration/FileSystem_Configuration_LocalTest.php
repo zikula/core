@@ -54,9 +54,9 @@ class Zikula_FileSystem_Configuration_LocalTest extends PHPUnit_Framework_TestCa
      */
     public function test__construct()
     {
-        $this->assertInternalType('Zikula_FileSystem_Configuration',$this->Zikula_FileSystem_Configuration_Local);
-	    $this->assertInternalType('Zikula_FileSystem_Configuration_Local',$this->Zikula_FileSystem_Configuration_Local);
-
+        $this->assertInstanceOf('Zikula_FileSystem_ConfigurationInterface', $this->Zikula_FileSystem_Configuration_Local);
+        $this->assertAttributeEquals('dir', 'dir', $this->Zikula_FileSystem_Configuration_Local);
+	    $this->assertAttributeEquals('', 'dir', $this->Zikula_FileSystem_Configuration_Local2);
     }
 
     /**
