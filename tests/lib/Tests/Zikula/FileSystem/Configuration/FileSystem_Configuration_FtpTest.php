@@ -54,8 +54,7 @@ class Zikula_FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function test__construct()
     {
-        $this->assertInternalType('Zikula_FileSystem_Configuration', $this->Zikula_FileSystem_Configuration_Ftp);
-        $this->assertInternalType('Zikula_FileSystem_Configuration_Ftp', $this->Zikula_FileSystem_Configuration_Ftp);
+        $this->assertInstanceOf('Zikula_FileSystem_ConfigurationInterface', $this->Zikula_FileSystem_Configuration_Ftp);
     }
 
     /**
