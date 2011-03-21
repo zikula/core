@@ -40,9 +40,9 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
     protected $options;
 
     /**
-     * Some class of Zikula_Base
+     * Some class of Zikula_AbstractBase
      *
-     * @var Zikula_Base
+     * @var Zikula_AbstractBase
      */
     protected $base;
 
