@@ -15,7 +15,7 @@
 /**
  * FilterUtil build interface
  */
-interface FilterUtil_Build
+interface FilterUtil_BuildInterface
 {
     /**
      * Adds fields to list in common way.

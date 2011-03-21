@@ -16,7 +16,7 @@
 /**
  * Simple field name replacement.
  */
-class FilterUtil_Filter_ReplaceName extends FilterUtil_PluginCommon implements FilterUtil_Replace
+class FilterUtil_Filter_ReplaceName extends FilterUtil_AbstractPlugin implements FilterUtil_ReplaceInterface
 {
     /**
      * Replace pairs.

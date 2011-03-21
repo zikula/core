@@ -15,7 +15,7 @@
 /**
  * This is the base class for all FilterUtil classes.
  */
-class FilterUtil_Common
+abstract class FilterUtil_AbstractBase
 {
 
     /**

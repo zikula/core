@@ -18,7 +18,7 @@
  *
  * Operator "sub" can filter for a category and all its subcategories.
  */
-class FilterUtil_Filter_Pmlist extends FilterUtil_PluginCommon implements FilterUtil_Build
+class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements FilterUtil_BuildInterface
 {
     /**
      * Enabled operators.

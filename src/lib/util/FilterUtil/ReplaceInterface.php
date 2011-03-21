@@ -15,7 +15,7 @@
 /**
  * FilterUtil replace interface
  */
-interface FilterUtil_Replace
+interface FilterUtil_ReplaceInterface
 {
     /**
      * Replace whatever the plugin has to replace.

@@ -16,7 +16,7 @@
 /**
  * Provide a set of default filter operations.
  */
-class FilterUtil_Filter_Default extends FilterUtil_PluginCommon implements FilterUtil_Build
+class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements FilterUtil_BuildInterface
 {
     /**
      * Enabled operators.
