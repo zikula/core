@@ -15,7 +15,7 @@
 /**
  * The user authentication services for the log-in process through the core Users table.
  */
-class Users_Api_Auth extends Zikula_AuthApi
+class Users_Api_Auth extends Zikula_Api_AbstractAuthentication
 {
      /**
       * Informs the calling function whether this authmodule is reentrant or not.

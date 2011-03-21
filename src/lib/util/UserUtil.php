@@ -639,7 +639,7 @@ class UserUtil
         if (!ModUtil::available($authModuleName)) {
             return LogUtil::registerArgsError();
         }
-        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi') && (!isset($reentrantURL) || empty($reentrantURL))) {
+        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_Api_AbstractAuthentication') && (!isset($reentrantURL) || empty($reentrantURL))) {
             return LogUtil::registerArgsError();
         }
 
@@ -649,7 +649,7 @@ class UserUtil
                 'authinfo' => $authinfo,
                 'reentrant_url' => $reentrantURL,
         );
-        return ModUtil::apiFunc($authModuleName, 'auth', 'checkPassword', $checkPasswordArgs, 'Zikula_AuthApi');
+        return ModUtil::apiFunc($authModuleName, 'auth', 'checkPassword', $checkPasswordArgs, 'Zikula_Api_AbstractAuthentication');
     }
 
     /**
@@ -688,7 +688,7 @@ class UserUtil
         if (!ModUtil::available($authModuleName)) {
             return LogUtil::registerArgsError();
         }
-        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi') && (!isset($reentrantURL) || empty($reentrantURL))) {
+        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_Api_AbstractAuthentication') && (!isset($reentrantURL) || empty($reentrantURL))) {
             return LogUtil::registerArgsError();
         }
 
@@ -696,7 +696,7 @@ class UserUtil
                 'authinfo' => $authinfo,
                 'reentrant_url' => $reentrantURL,
         );
-        return ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', $authenticateUserArgs, 'Zikula_AuthApi');
+        return ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', $authenticateUserArgs, 'Zikula_Api_AbstractAuthentication');
     }
 
     /**
@@ -742,7 +742,7 @@ class UserUtil
         if (!ModUtil::available($authModuleName)) {
             return LogUtil::registerArgsError();
         }
-        if ($checkPassword && ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi') && (!isset($reentrantURL) || empty($reentrantURL))) {
+        if ($checkPassword && ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_Api_AbstractAuthentication') && (!isset($reentrantURL) || empty($reentrantURL))) {
             return LogUtil::registerArgsError();
         }
 
@@ -753,9 +753,9 @@ class UserUtil
                     'authinfo' => $authinfo,
                     'reentrant_url' => isset($args['reentrant_url']) ? $args['reentrant_url'] : null,
             );
-            $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', $authArgs, 'Zikula_AuthApi');
+            $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', $authArgs, 'Zikula_Api_AbstractAuthentication');
         } elseif (!$preauthenicatedUid) {
-            $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'getUidForAuthinfo', array('authinfo' => $authinfo), 'Zikula_AuthApi');
+            $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'getUidForAuthinfo', array('authinfo' => $authinfo), 'Zikula_Api_AbstractAuthentication');
         } else {
             $authenticatedUid = $preauthenicatedUid;
         }
