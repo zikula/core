@@ -4065,3 +4065,10 @@ class AjaxUtil
         System::shutdown();
     }
 }
+
+interface FilterUtil_Replace extends FilterUtil_ReplaceInterface{}
+interface FilterUtil_Build extends FilterUtil_BuildInterface{}
+abstract class FilterUtil_Common extends FilterUtil_AbstractBase{}
+abstract class FilterUtil_PluginCommon extends FilterUtil_AbstractFilter{}
+
+

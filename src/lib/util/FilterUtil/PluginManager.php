@@ -15,7 +15,7 @@
 /**
  * Plugin manager class.
  */
-class FilterUtil_Plugin extends FilterUtil_Common
+class FilterUtil_PluginManager extends FilterUtil_AbstractBase
 {
     /**
      * Loaded plugins.
@@ -255,7 +255,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
             }
         }
 
-        if ($obj instanceof FilterUtil_Replace) {
+        if ($obj instanceof FilterUtil_ReplaceInterface) {
             $this->_replaces[] = $k;
         }
     }

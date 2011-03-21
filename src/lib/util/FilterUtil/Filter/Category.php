@@ -16,7 +16,7 @@
 /**
  * FilterUtil category filter plugin
  */
-class FilterUtil_Filter_Category extends FilterUtil_PluginCommon implements FilterUtil_Build
+class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements FilterUtil_BuildInterface
 {
     /**
      * Enabled operators.

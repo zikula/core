@@ -15,7 +15,7 @@
 /**
  * Adds a Pagesetter like filter.
  */
-class FilterUtil extends FilterUtil_Common
+class FilterUtil extends FilterUtil_AbstractBase
 {
     /**
      * The Input variable name.
@@ -78,7 +78,7 @@ class FilterUtil extends FilterUtil_Common
         $args['table'] = $table;
         parent::__construct(new FilterUtil_Config($args));
 
-        $this->_plugin = new FilterUtil_Plugin($this->getConfig(), array('default' => array()));
+        $this->_plugin = new FilterUtil_PluginManager($this->getConfig(), array('default' => array()));
 
         if (isset($args['plugins'])) {
             $this->_plugin->loadPlugins($args['plugins']);
@@ -124,7 +124,7 @@ class FilterUtil extends FilterUtil_Common
     /**
      * Get plugin manager class.
      *
-     * @return FilterUtil_Plugin
+     * @return FilterUtil_PluginManager
      */
     public function getPlugin()
     {

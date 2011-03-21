@@ -15,7 +15,7 @@
 /**
  * Base class of all FilterUtil plugins.
  */
-class FilterUtil_PluginCommon extends FilterUtil_Common
+class FilterUtil_AbstractPlugin extends FilterUtil_AbstractBase
 {
     /**
      * Default handler.
