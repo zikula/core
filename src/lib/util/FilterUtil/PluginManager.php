@@ -237,7 +237,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     {
         $obj = & $this->_plg[$k];
 
-        if ($obj instanceof FilterUtil_Build) {
+        if ($obj instanceof FilterUtil_BuildInterface) {
             $ops = $obj->getOperators();
 
             if (isset($ops) && is_array($ops)) {
