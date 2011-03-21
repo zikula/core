@@ -34,7 +34,7 @@ abstract class Zikula_Form_Plugin extends Zikula_Form_AbstractPlugin{}
 abstract class Zikula_Form_Handler extends Zikula_Form_AbstractHandler{}
 abstract class Zikula_Form_StyledPlugin extends Zikula_Form_AbstractStyledPlugin{}
 abstract class Zikula_HookHandler extends Zikula_Hook_AbstractHandler{}
-abstract class Zikula_Hook_ValidationProviders extends Zikula_Collection_HookValidationProviders {}
+abstract class Zikula_Collection_HookValidationProviders extends Zikula_Hook_ValidationProviders{}
 
 $core = new Zikula_Core();
 $core->boot();
