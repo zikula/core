@@ -16,7 +16,7 @@
 /**
  * This panel displays all executed SQL queries.
  */
-class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_Panel
+class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_PanelInterface
 {
     /**
      * SQL queries.

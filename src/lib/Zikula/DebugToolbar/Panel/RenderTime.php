@@ -16,7 +16,7 @@
 /**
  * This panel displays the page render time.
  */
-class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_Panel
+class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_PanelInterface
 {
     /**
      * Returns the id of this panel.

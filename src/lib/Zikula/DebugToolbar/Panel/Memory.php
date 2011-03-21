@@ -16,7 +16,7 @@
 /**
  * This panel displays the current memory usage.
  */
-class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_Panel
+class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_PanelInterface
 {
     /**
      * Returns the id of this panel.

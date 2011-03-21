@@ -22,7 +22,7 @@
  *
  * Example:
  * <code>
- * class MyPanel extends Zikula_DebugToolBar_Panel
+ * class MyPanel implements Zikula_DebugToolbar_PanelInterface
  * {
  *     public function getId()
  *     {
@@ -87,7 +87,7 @@ class Zikula_DebugToolbar
      * @return void
      * @throws InvalidArgumentException When $panel is null.
      */
-    public function addPanel(Zikula_DebugToolbar_Panel $panel)
+    public function addPanel(Zikula_DebugToolbar_PanelInterface $panel)
     {
         if ($panel == null) {
             throw new InvalidArgumentException('$panel was null!');

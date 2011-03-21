@@ -16,7 +16,7 @@
 /**
  * This panel displays the configuration of the current top level module and the zikula configuration.
  */
-class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_Panel
+class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInterface
 {
     /**
      * Returns the id of this panel.
