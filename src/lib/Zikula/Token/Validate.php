@@ -74,6 +74,10 @@ class Zikula_Token_Validate
      */
     public function validate($token, $delete=true, $checkExpire=true)
     {
+        if (!$token) {
+            return false;
+        }
+        
         list($id, $hash, $timestamp) = $this->tokenGenerator->decode($token);
         $decoded = array('id' => $id, 'timestamp' => $timestamp);
 
