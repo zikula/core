@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Api_Account extends Zikula_Api
+class Admin_Api_Account extends Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the your account panel.

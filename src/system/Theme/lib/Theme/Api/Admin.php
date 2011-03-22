@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Api_Admin extends Zikula_Api
+class Theme_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * Regenerate themes list.

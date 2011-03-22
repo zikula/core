@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Mailer_Api_User extends Zikula_Api
+class Mailer_Api_User extends Zikula_AbstractApi
 {
     /**
      * API function to send e-mail message

@@ -932,7 +932,7 @@ class ModUtil
             $object = $r->newInstanceArgs(array($sm));
             try {
                 if (strrpos($className, 'Api') && !$object instanceof Zikula_AbstractApi) {
-                    throw new LogicException(sprintf('Api %s must inherit from Zikula_Api', $className));
+                    throw new LogicException(sprintf('Api %s must inherit from Zikula_AbstractApi', $className));
                 } elseif (!strrpos($className, 'Api') && !$object instanceof Zikula_AbstractController) {
                     throw new LogicException(sprintf('Controller %s must inherit from Zikula_AbstractController', $className));
                 }

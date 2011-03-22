@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Api_User extends Zikula_Api
+class Theme_Api_User extends Zikula_AbstractApi
 {
     /**
      * Get all settings for a theme

@@ -135,7 +135,7 @@ If you get a render instance, the plugin path will be automatically added as
 templates/plugins inside the plugin directory.
 
 Please note you can also use a Controller.php instance to get the view.  Controllers
-(explained below) has access to all the nice Zikula_Controller conveniences.  The
+(explained below) has access to all the nice Zikula_AbstractController conveniences.  The
 controller method would return the renderer output which you can pass back.
 
 instead of:
@@ -148,7 +148,7 @@ One could do:
     $event->setNotified();
 
 This is nice because all renderer domains etc are preconfigured and you have access
-to the same Zikula_Controller conveniences like $this->__().
+to the same Zikula_AbstractController conveniences like $this->__().
 
 PLUGIN ADMINISTRATIVE CONFIGURATION
 -----------------------------------

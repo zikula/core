@@ -15,7 +15,7 @@
 /**
  * Mailer_Api_Admin class.
  */
-class Mailer_Api_Admin extends Zikula_Api
+class Mailer_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * Get available admin panel links.

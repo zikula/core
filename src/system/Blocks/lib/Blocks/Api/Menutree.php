@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Api_Menutree extends Zikula_Api
+class Blocks_Api_Menutree extends Zikula_AbstractApi
 {
     /**
      * Return list of admin modules

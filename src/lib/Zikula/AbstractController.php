@@ -50,7 +50,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      * @param Zikula_View $view Default null means new Render instance for this module name.
      *
-     * @return Zikula_Controller
+     * @return Zikula_AbstractController
      */
     protected function setView(Zikula_View $view = null)
     {
@@ -81,7 +81,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      * @param array  $args    Extra meta data.
      * @param mixes  $data    Any data to filter.
      *
-     * @throws InvalidArgumentException If args['controller'] is not a Zikula_Controller instance.
+     * @throws InvalidArgumentException If args['controller'] is not a Zikula_AbstractController instance.
      *
      * @return Zikula_Event
      */

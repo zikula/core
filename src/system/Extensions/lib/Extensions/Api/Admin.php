@@ -15,7 +15,7 @@
 /**
  * Administrative API functions for the Extensions module.
  */
-class Extensions_Api_Admin extends Zikula_Api
+class Extensions_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * Update module information.
@@ -360,7 +360,7 @@ class Extensions_Api_Admin extends Zikula_Api
             if ((isset($args['interactive_remove']) && $args['interactive_remove'] == false) && is_callable($interactive_func)) {
                 if (is_array($interactive_func)) {
                     // This must be an OO controller since callable is an array.
-                    // Because interactive installers extend the Zikula_Controller, is_callable will always return true because of the __call()
+                    // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
                     // so we must check if the method actually exists by reflection - drak
                     if ($reflectionInteractive->hasMethod('upgrade')) {
                         SessionUtil::setVar('interactive_remove', true);
@@ -873,7 +873,7 @@ class Extensions_Api_Admin extends Zikula_Api
         if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false) && is_callable($interactive_func)) {
             if (is_array($interactive_func)) {
                 // This must be an OO controller since callable is an array.
-                // Because interactive installers extend the Zikula_Controller, is_callable will always return true because of the __call()
+                // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
                 // so we must check if the method actually exists by reflection - drak
                 if ($reflectionInteractive->hasMethod('install')) {
                     SessionUtil::setVar('interactive_init', true);
@@ -1005,7 +1005,7 @@ class Extensions_Api_Admin extends Zikula_Api
         if (isset($args['interactive_upgrade']) && $args['interactive_upgrade'] == false && is_callable($interactive_func)) {
             if (is_array($interactive_func)) {
                 // This must be an OO controller since callable is an array.
-                // Because interactive installers extend the Zikula_Controller, is_callable will always return true because of the __call()
+                // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
                 // so we must check if the method actually exists by reflection - drak
                 if ($reflectionInteractive->hasMethod('upgrade')) {
                     SessionUtil::setVar('interactive_upgrade', true);
