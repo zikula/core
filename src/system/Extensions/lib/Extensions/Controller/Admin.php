@@ -1100,7 +1100,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         $this->view->assign('state', $state);
 
         // generate an auth key to use in urls
-        $csfrToken = SecurityUtil::generateCsrfToken($this->serviceManager);
+        $csrfToken = SecurityUtil::generateCsrfToken($this->serviceManager);
         $plugins = array();
         $pluginClasses = ($systemplugins) ? PluginUtil::loadAllSystemPlugins() : PluginUtil::loadAllModulePlugins();
 
@@ -1137,7 +1137,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
                                                           'systemplugins' => $systemplugins,
-                                                          'csfrToken' => $csfrToken)
+                                                          'csrftoken' => $csrfToken)
                                                 ),
                                        'image' => 'agt_update_misc.png',
                                        'title' => $this->__('Install'));
@@ -1166,7 +1166,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
                                                           'systemplugins' => $systemplugins,
-                                                          'csfrToken' => $csfrToken)
+                                                          'csrftoken' => $csrfToken)
                                                 ),
                                        'image' => 'db_remove.png',
                                        'title' => $this->__('Deactivate'));
@@ -1177,7 +1177,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
                                                           'systemplugins' => $systemplugins,
-                                                          'csfrToken' => $csfrToken)
+                                                          'csrftoken' => $csrfToken)
                                                 ),
                                        'image' => '14_layer_deletelayer.png',
                                        'title' => $this->__('Remove plugin'));
@@ -1193,7 +1193,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
                                                           'systemplugins' => $systemplugins,
-                                                          'csfrToken' => $csfrToken)
+                                                          'csrftoken' => $csrfToken)
                                                 ),
                                        'image' => 'db_add.png',
                                        'title' => $this->__('Activate'));
@@ -1204,7 +1204,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                            'bymodule' => $module,
                                                            'sort'   => $sort,
                                                            'systemplugins' => $systemplugins,
-                                                           'csfrToken' => $csfrToken)
+                                                           'csrftoken' => $csrfToken)
                                                 ),
                                        'image' => '14_layer_deletelayer.png',
                                        'title' => $this->__('Remove plugin'));
@@ -1226,7 +1226,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                       'bymodule' => $module,
                                                       'sort'   => $sort,
                                                       'systemplugins' => $systemplugins,
-                                                      'csfrToken' => $csfrToken)
+                                                      'csrftoken' => $csrfToken)
                                             ),
                                        'image' => 'db_update.png',
                                        'title' => $this->__('Upgrade'));
@@ -1237,7 +1237,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                        'bymodule' => $module,
                                                        'sort'   => $sort,
                                                        'systemplugins' => $systemplugins,
-                                                       'csfrToken' => $csfrToken)
+                                                       'csrftoken' => $csrfToken)
                                             ),
                                        'image' => '14_layer_deletelayer.png',
                                        'title' => $this->__('Remove plugin'));
@@ -1333,7 +1333,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function deactivatePlugin()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->getGet()->get('csrftoken', false);
         $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks
