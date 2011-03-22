@@ -258,6 +258,30 @@ class Zikula_Session
     }
 
     /**
+     * Get the contents of an entire namespace as an array.
+     *
+     * @param string $namespace Namespace name; optional; default is '/'.
+     *
+     * @throws InvalidArgumentException If illegal namespace received.
+     *
+     * @return array The contents of the namespace as an array indexed by session variable keys; empty if the namespace is empty or does not exist.
+     */
+    public function getNamespaceContents($namespace = '/')
+    {
+        if ($namespace == '_zikula_messages') {
+            throw new InvalidArgumentException('You cannot access _zikula_messages directly.');
+        }
+        
+        $contents = array();
+
+        if (isset($_SESSION[$namespace]) && !empty($_SESSION[$namespace]) && is_array($_SESSION[$namespace])) {
+            $contents = $_SESSION[$namespace];
+        }
+        
+        return $contents;
+    }
+
+    /**
      * Clear an entire namespace.
      *
      * Use with caution, and only if you know that no other code makes use of the namespace.
