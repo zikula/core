@@ -20,8 +20,10 @@ Form.contextMenu.showMenu = function(evt, menuId, commandArgument)
 {
   Form.contextMenu.hideMenu();
 
-  var contextMenu = $(menuId);
-  var cursorPos = { x: Event.pointerX(evt), y: Event.pointerY(evt) };
+  var contextMenu = $(menuId),
+      element = Event.element(evt),
+      cursorPos = element.cumulativeOffset();
+  cursorPos.left += element.getWidth() + 10;
 
   $("contentMenuArgument"+menuId).value = commandArgument;
   Form.contextMenu.commandArgument = commandArgument;
@@ -39,8 +41,8 @@ Form.contextMenu.showMenu = function(evt, menuId, commandArgument)
 
   contextMenu.style.display = 'block';
   contextMenu.style.position = 'absolute';
-  contextMenu.style.left = (cursorPos.x - offset.left) + 'px';
-  contextMenu.style.top = (cursorPos.y - offset.top) + 'px';
+  contextMenu.style.left = (cursorPos.left - offset.left) + 'px';
+  contextMenu.style.top = (cursorPos.top - offset.top) + 'px';
   Event.stop(evt);
 }
 
