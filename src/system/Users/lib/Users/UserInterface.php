@@ -16,7 +16,7 @@
 /**
  * Users module constants.
  */
-interface Users
+interface Users_UserInterface
 {
     /**
      * The name of the module.
@@ -310,7 +310,7 @@ interface Users
     /**
      *
      */
-    const DEFAULT_LOGIN_METHOD = Users::LOGIN_METHOD_UNAME;
+    const DEFAULT_LOGIN_METHOD = Users_UserInterface::LOGIN_METHOD_UNAME;
 
     /**
      *
@@ -385,7 +385,7 @@ interface Users
     /**
      *
      */
-    const DEFAULT_REGISTRATION_APPROVAL_SEQUENCE = Users::APPROVAL_BEFORE;
+    const DEFAULT_REGISTRATION_APPROVAL_SEQUENCE = Users_UserInterface::APPROVAL_BEFORE;
 
     /**
      *
@@ -435,7 +435,7 @@ interface Users
     /**
      *
      */
-    const DEFAULT_REGISTRATION_VERIFICATION_MODE = Users::VERIFY_USERPWD;
+    const DEFAULT_REGISTRATION_VERIFICATION_MODE = Users_UserInterface::VERIFY_USERPWD;
 
     /**
      *

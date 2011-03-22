@@ -519,11 +519,11 @@ class HookUtil
     /**
      * Register Provider Hook handlers with persistence layer.
      * 
-     * @param Zikula_Version $version Module's version object.
+     * @param Zikula_AbstractVersion $version Module's version object.
      *
      * @return void
      */
-    public static function registerHookProviderBundles(Zikula_Version $version)
+    public static function registerHookProviderBundles(Zikula_AbstractVersion $version)
     {
         $bundles = $version->getHookProviderBundles();
         $owner = $version->getName();
@@ -539,11 +539,11 @@ class HookUtil
      *
      * This cascades to remove all bindings by any subscribers to the providers in these bundles.
      * 
-     * @param Zikula_Version $version Module's version object.
+     * @param Zikula_AbstractVersion $version Module's version object.
      *
      * @return void
      */
-    public static function unregisterHookProviderBundles(Zikula_Version $version)
+    public static function unregisterHookProviderBundles(Zikula_AbstractVersion $version)
     {
         $bundles = $version->getHookProviderBundles();
         $providerName = $version->getName();
@@ -567,11 +567,11 @@ class HookUtil
     /**
      * Register Subscribers with persistence layer.
      *
-     * @param Zikula_Version $version Module's version object.
+     * @param Zikula_AbstractVersion $version Module's version object.
      *
      * @return void
      */
-    public static function registerHookSubscriberBundles(Zikula_Version $version)
+    public static function registerHookSubscriberBundles(Zikula_AbstractVersion $version)
     {
         $bundles = $version->getHookSubscriberBundles();
         $owner = $version->getName();
@@ -588,11 +588,11 @@ class HookUtil
      * Adds any new area bundles, or types within a bundle.
      * Removes any removed areas.  Does not remove single types within an area.
      * 
-     * @param Zikula_Version $version Zikula version instance.
+     * @param Zikula_AbstractVersion $version Zikula version instance.
      *
      * @return void
      */
-    public static function upgradeHookSubscriberBundles(Zikula_Version $version)
+    public static function upgradeHookSubscriberBundles(Zikula_AbstractVersion $version)
     {
         $bundles = $version->getHookSubscriberBundles();
         $owner = $version->getName();
@@ -637,11 +637,11 @@ class HookUtil
      * Adds any new area bundles, or types within a bundle.
      * Removes any removed areas.  Does not remove single types within an area.
      *
-     * @param Zikula_Version $version Zikula version instance.
+     * @param Zikula_AbstractVersion $version Zikula version instance.
      *
      * @return void
      */
-    public static function upgradeHookProviderBundles(Zikula_Version $version)
+    public static function upgradeHookProviderBundles(Zikula_AbstractVersion $version)
     {
         $bundles = $version->getHookProviderBundles();
         $owner = $version->getName();
@@ -689,11 +689,11 @@ class HookUtil
      * 
      * This cascades to remove all event handlers, sorting data and update bindings table.
      *
-     * @param Zikula_Version $version Module's version object.
+     * @param Zikula_AbstractVersion $version Module's version object.
      *
      * @return void
      */
-    public static function unregisterHookSubscriberBundles(Zikula_Version $version)
+    public static function unregisterHookSubscriberBundles(Zikula_AbstractVersion $version)
     {
         $bundles = $version->getHookSubscriberBundles();
         $subscriberName = $version->getName();

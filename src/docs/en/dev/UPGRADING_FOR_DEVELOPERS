@@ -121,7 +121,7 @@ MODULES
 - Rename pnversion.php to lib/MyModule/Version.php
   Edit the contents like so:
 
-    class MyModule_Version extends Zikula_Version
+    class MyModule_Version extends Zikula_AbstractVersion
     {
         public function getMetaData()
         {

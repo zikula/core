@@ -39,7 +39,7 @@ class Users_Version extends Zikula_AbstractVersion
 
             // Advertised capabilities
             'capabilities'  => array(
-                Users::CAPABILITY_AUTHENTICATION => array('version' => '1.0'),
+                Users_UserInterface::CAPABILITY_AUTHENTICATION => array('version' => '1.0'),
                 HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true),
                 HookUtil::PROVIDER_CAPABLE => array('enabled' => true),
             ),
@@ -49,8 +49,8 @@ class Users_Version extends Zikula_AbstractVersion
 
             // Security Schema
             'securityschema'=> array(
-                'Users::'           => 'Uname::User ID',
-                'Users::MailUsers'  => '::',
+                'Users_UserInterface::'           => 'Uname::User ID',
+                'Users_UserInterface::MailUsers'  => '::',
             ),
         );
     }
