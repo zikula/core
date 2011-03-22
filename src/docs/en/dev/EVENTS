@@ -33,7 +33,7 @@ CORE
 ----
 
 #### `api.method_not_found`
-Called in instances of Zikula_Api from __call()
+Called in instances of Zikula_AbstractApi from __call()
 Receives arguments from __call($method, argument) as $args
 $event['method'] is the method which didn't exist in the main class.
 $event['args'] is the arguments that were passed.
@@ -52,7 +52,7 @@ To check if the handler should execute, do `if($event['stage'] & Zikula_Core::ST
 Occurs just before System::init() exits from normal execution.
 
 #### `controller.method_not_found`
-Called in instances of `Zikula_Controller` from `__call()`
+Called in instances of `Zikula_AbstractController` from `__call()`
 Receives arguments from `__call($method, argument)` as `$args`
 `$event['method']` is the method which didn't exist in the main class.
 `$event['args']` is the arguments that were passed.

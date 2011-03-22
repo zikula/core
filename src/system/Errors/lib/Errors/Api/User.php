@@ -15,7 +15,7 @@
 /**
  * Errors_Api_User class.
  */
-class Errors_Api_User extends Zikula_Api
+class Errors_Api_User extends Zikula_AbstractApi
 {
     /**
      * This function e-mails the site administrator with an error.

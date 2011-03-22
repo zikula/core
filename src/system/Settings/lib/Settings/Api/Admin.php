@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Settings_Api_Admin extends Zikula_Api
+class Settings_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * Get available admin panel links.

@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Api_Admin extends Zikula_Api
+class Admin_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * create a admin category

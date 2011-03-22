@@ -354,13 +354,13 @@ class FormUtil
     /**
      * Return a newly created pormRender instance with the given name.
      *
-     * @param string            $name       Module name.
-     * @param Zikula_Controller $controller Controller.
-     * @param string            $classname  Optionally instanciate a child of Zikula_Form_View.
+     * @param string                    $name       Module name.
+     * @param Zikula_AbstractController $controller Controller.
+     * @param string                    $classname  Optionally instanciate a child of Zikula_Form_View.
      *
      * @return Form_View The newly created Form_View instance.
      */
-    public static function newForm($name, Zikula_Controller $controller = null, $className=null)
+    public static function newForm($name, Zikula_AbstractController $controller = null, $className=null)
     {
         $serviceManager = ServiceUtil::getManager();
         if ($className && !class_exists($className)) {
@@ -376,7 +376,7 @@ class FormUtil
             $form->setController($controller);
             $form->assign('controller', $controller);
         } else {
-            LogUtil::log(__('FormUtil::newForm should also include the Zikula_Controller as the second argument to enable hooks to work.'), Zikula_AbstractErrorHandler::NOTICE);
+            LogUtil::log(__('FormUtil::newForm should also include the Zikula_AbstractController as the second argument to enable hooks to work.'), Zikula_AbstractErrorHandler::NOTICE);
         }
         
         return $form;

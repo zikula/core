@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPv2.1 (or at your option any later version).
+ * @license GNU/LGPv3 (or at your option any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -557,7 +557,7 @@ class UserUtil
      * @param string $reentrantURL              If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
      *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
      *                                          state must have already been saved by the function calling checkPasswordUsing(), and the URL must
-     *                                          point to a Zikula_Controller function that is equipped to detect reentry, restore the
+     *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
      *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
      *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
      *                                          reentrant (e.g., Users is guaranteed to not be reentrant).
@@ -603,7 +603,7 @@ class UserUtil
      * @param string $reentrantURL              If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
      *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
      *                                          state must have already been saved by the function calling authenticateUserUsing(), and the URL must
-     *                                          point to a Zikula_Controller function that is equipped to detect reentry, restore the
+     *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
      *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
      *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
      *                                          reentrant (e.g., Users is guaranteed to not be reentrant).
@@ -725,7 +725,7 @@ class UserUtil
      * @param string $reentrantURL              If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
      *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
      *                                          state must have already been saved by the function calling authenticateUserUsing(), and the URL must
-     *                                          point to a Zikula_Controller function that is equipped to detect reentry, restore the
+     *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
      *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
      *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
      *                                          reentrant (e.g., Users is guaranteed to not be reentrant).
@@ -772,7 +772,7 @@ class UserUtil
      * @param string  $reentrantURL       If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
      *                                      this is the URL to return to in order to re-enter the log-in process. The pertinent user
      *                                      state must have already been saved by the function calling loginUsing(), and the URL must
-     *                                      point to a Zikula_Controller function that is equipped to detect reentry, restore the
+     *                                      point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
      *                                      saved user state, and get the user back to the point where loginUsing is re-executed. This
      *                                      is only optional if the authentication module identified by $authenticationMethod reports that it is not
      *                                      reentrant (e.g., Users is guaranteed to not be reentrant), or if $checkPassword is false.

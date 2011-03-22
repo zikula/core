@@ -15,7 +15,7 @@
 /**
  * Permissions_Api_Admin class.
  */
-class Permissions_Api_Admin extends Zikula_Api
+class Permissions_Api_Admin extends Zikula_AbstractApi
 {
 
     /**

@@ -171,9 +171,9 @@ MODULES
     pnuserapi.php => lib/MyModule/Api/User.php
 
   Refactor the APIs, encapulating all functions inside 
-  class $modname_Api_$type extends Zikula_Api
+  class $modname_Api_$type extends Zikula_AbstractApi
   e.g.
-    class MyModule_Api_User extends Zikula_Api
+    class MyModule_Api_User extends Zikula_AbstractApi
 
   Make all functions public which should be accessible from ModUtil::apiFunc().
   Internal methods which should not be accessible outside the class should be made

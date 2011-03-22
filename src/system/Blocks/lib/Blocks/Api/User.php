@@ -15,7 +15,7 @@
 /**
  * Blocks_Api_User class.
  */
-class Blocks_Api_User extends Zikula_Api
+class Blocks_Api_User extends Zikula_AbstractApi
 {
 
     /**

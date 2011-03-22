@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Categories_Api_User extends Zikula_Api
+class Categories_Api_User extends Zikula_AbstractApi
 {
     /**
      * get the roor category for a user

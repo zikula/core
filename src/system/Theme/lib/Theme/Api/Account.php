@@ -11,7 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Theme_Api_Account extends Zikula_Api
+class Theme_Api_Account extends Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the your account panel.

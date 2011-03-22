@@ -15,7 +15,7 @@
 /**
  * Groups_Api_User class.
  */
-class Groups_Api_User extends Zikula_Api
+class Groups_Api_User extends Zikula_AbstractApi
 {
 
     /**

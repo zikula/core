@@ -13,7 +13,7 @@
  */
 
 
-class SecurityCenter_Api_Admin extends Zikula_Api
+class SecurityCenter_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * Purge IDS Log.

@@ -15,7 +15,7 @@
 /**
  * Search_Api_User class.
  */
-class Search_Api_User extends Zikula_Api
+class Search_Api_User extends Zikula_AbstractApi
 {
 
     /**
