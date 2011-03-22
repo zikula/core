@@ -15,7 +15,7 @@
 
 /**
  * Example:
- * {securityutil_checkpermission component='Users_UserInterface::' instance='.*' level='ACCESS_ADMIN' assign='auth'}
+ * {securityutil_checkpermission component='Users::' instance='.*' level='ACCESS_ADMIN' assign='auth'}
  *
  * true/false will be returned.
  *

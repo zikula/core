@@ -49,8 +49,8 @@ class Users_Version extends Zikula_AbstractVersion
 
             // Security Schema
             'securityschema'=> array(
-                'Users_UserInterface::'           => 'Uname::User ID',
-                'Users_UserInterface::MailUsers'  => '::',
+                'Users::'           => 'Uname::User ID',
+                'Users::MailUsers'  => '::',
             ),
         );
     }

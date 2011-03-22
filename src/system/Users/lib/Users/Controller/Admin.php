@@ -39,7 +39,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     private function currentUserIsAdmin()
     {
-        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADMIN);
+        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN);
     }
 
     /**
@@ -50,7 +50,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     private function currentUserIsAdminOrSubAdmin()
     {
-        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADD);
+        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD);
     }
 
     /**
@@ -79,7 +79,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     public function view()
     {
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -498,7 +498,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
     public function modify()
     {
         // security check for generic edit access
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', 'ANY', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
             throw new Zikula_Exception_Forbidden();
         }
         
@@ -516,7 +516,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $dynadata = isdset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
             
             // security check for this record
-            if (!SecurityUtil::checkPermission('Users_UserInterface::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
+            if (!SecurityUtil::checkPermission('Users::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
                 throw new Zikula_Exception_Forbidden();
             }
             
@@ -600,7 +600,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         if ($proceedToForm) {
             // security check for this record
-            if (!SecurityUtil::checkPermission('Users_UserInterface::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
+            if (!SecurityUtil::checkPermission('Users::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
                 throw new Zikula_Exception_Forbidden();
             }
 
@@ -674,7 +674,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     ->redirect(ModUtil::url($this->name, 'admin', 'view'));
         }
 
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
+        if (!SecurityUtil::checkPermission('Users::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -720,7 +720,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             return false;
         }
 
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
+        if (!SecurityUtil::checkPermission('Users::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -751,7 +751,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
     public function deleteUsers()
     {
         // check permissions
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', 'ANY', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_DELETE)) {
             throw Zikula_Exception_Forbidden();
         }
         
@@ -872,7 +872,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             // Make certain that the following goes from most restricted to least (ADMIN...NONE order).  Having the
             // security check as the outer if statement, and similar foreach loops within each saves on repeated checking
             // of permissions, speeding things up a bit.
-            if (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADMIN)) {
+            if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
                 $actions['count'] = 6;
                 foreach ($reglist as $key => $reginfo) {
                     $enableVerify = !$reginfo['isverified'];
@@ -887,7 +887,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                         'approveForce'  => $enableForced ?  ModUtil::url($this->name, 'admin', 'approveRegistration',   array('uid' => $reginfo['uid'], 'force' => true)) : false,
                     );
                 }
-            } elseif (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_DELETE)) {
+            } elseif (SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
                 $actions['count'] = 5;
                 foreach ($reglist as $key => $reginfo) {
                     $enableVerify = !$reginfo['isverified'] && (($approvalOrder != Users_UserInterface::APPROVAL_BEFORE) || $reginfo['isapproved']);
@@ -900,7 +900,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                         'deny'          =>                  ModUtil::url($this->name, 'admin', 'denyRegistration',      array('uid' => $reginfo['uid'])),
                     );
                 }
-            } elseif (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADD)) {
+            } elseif (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
                 $actions['count'] = 4;
                 foreach ($reglist as $key => $reginfo) {
                     $actionUrlArgs['uid'] = $reginfo['uid'];
@@ -913,7 +913,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                         'approve'       => $enableApprove ? ModUtil::url($this->name, 'admin', 'approveRegistration',   array('uid' => $reginfo['uid'])) : false,
                     );
                 }
-            } elseif (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_EDIT)) {
+            } elseif (SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
                 $actions['count'] = 3;
                 foreach ($reglist as $key => $reginfo) {
                     $actionUrlArgs['uid'] = $reginfo['uid'];
@@ -924,7 +924,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                         'verify'        => $enableVerify ?  ModUtil::url($this->name, 'admin', 'verifyRegistration',    array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)) : false,
                     );
                 }
-            } elseif (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE)) {
+            } elseif (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
                 $actions['count'] = 2;
                 foreach ($reglist as $key => $reginfo) {
                     $actionUrlArgs['uid'] = $reginfo['uid'];
@@ -953,7 +953,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
     public function viewRegistrations()
     {
         // security check
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1059,7 +1059,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     public function displayRegistration()
     {
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             throw Zikula_Exception_Forbidden();
         }
 
@@ -1115,7 +1115,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     public function modifyRegistration()
     {
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', 'ANY', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
             throw new Zikula_Exception_Forbidden();
         }
         
@@ -1137,7 +1137,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $dynadata = isset($originalRegistration['__ATTRIBUTES__']) ? $originalRegistration['__ATTRIBUTES__'] : array();
             
             // security check for this record
-            if (!SecurityUtil::checkPermission('Users_UserInterface::', "{$originalRegistration['uname']}::{$originalRegistration['uid']}", ACCESS_EDIT)) {
+            if (!SecurityUtil::checkPermission('Users::', "{$originalRegistration['uname']}::{$originalRegistration['uid']}", ACCESS_EDIT)) {
                 throw new Zikula_Exception_Forbidden();
             }
             
@@ -1217,7 +1217,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         if ($proceedToForm) {
             // security check for this record
-            if (!SecurityUtil::checkPermission('Users_UserInterface::', "{$registration['uname']}::{$registration['uid']}", ACCESS_EDIT)) {
+            if (!SecurityUtil::checkPermission('Users::', "{$registration['uname']}::{$registration['uid']}", ACCESS_EDIT)) {
                 throw new Zikula_Exception_Forbidden();
             }
             
@@ -1253,7 +1253,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     public function verifyRegistration()
     {
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1348,7 +1348,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     public function approveRegistration()
     {
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1388,7 +1388,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $this->registerError($this->__f('Warning! Nothing to do! The registration record with uid \'%1$s\' is already approved.', $reginfo['uid']));
             $this->redirect($cancelUrl);
         } elseif (!$forceVerification && ($approvalOrder == Users_UserInterface::APPROVAL_AFTER) && !$reginfo['isapproved']
-                && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADMIN)) {
+                && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' cannot be approved. The registration\'s e-mail address must first be verified.', $reginfo['uid']));
             $this->redirect($cancelUrl);
         } elseif ($forceVerification && (!isset($reginfo['pass']) || empty($reginfo['pass']))) {
@@ -1453,7 +1453,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     public function denyRegistration()
     {
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1618,7 +1618,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
     public function import($args)
     {
         // security check
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1687,7 +1687,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
     public function exporter($args)
     {
         // security check
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1874,7 +1874,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
     public function uploadImport($args)
     {
         // security check
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1888,7 +1888,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         }
 
         // get needed values
-        $is_admin = (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADMIN)) ? true : false;
+        $is_admin = (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) ? true : false;
         $minpass = $this->getVar('minpass');
         $defaultGroup = ModUtil::getVar('Groups', 'defaultgroup'); // Create output object;
         // calcs $pregcondition needed to verify illegal usernames
@@ -2123,7 +2123,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
             }
 
-            if (!SecurityUtil::checkPermission('Users_UserInterface::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
+            if (!SecurityUtil::checkPermission('Users::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
                 throw new Zikula_Exception_Forbidden();
             }
 
@@ -2142,7 +2142,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
             }
 
-            if (!SecurityUtil::checkPermission('Users_UserInterface::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
+            if (!SecurityUtil::checkPermission('Users::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
                 throw new Zikula_Exception_Forbidden();
             }
 

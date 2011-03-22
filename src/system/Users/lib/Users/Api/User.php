@@ -35,7 +35,7 @@ class Users_Api_User extends Zikula_AbstractApi
     public function getAll($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -104,7 +104,7 @@ class Users_Api_User extends Zikula_AbstractApi
 
         $permFilter = array();
         // corresponding filter permission to filter anonymous in admin view:
-        // Administrators | Users_UserInterface:: | Anonymous:: | None
+        // Administrators | Users:: | Anonymous:: | None
         $permFilter[] = array(
             'realm'             => 0,
             'component_left'    => $this->name,
@@ -225,7 +225,7 @@ class Users_Api_User extends Zikula_AbstractApi
     {
         $items = array();
 
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
             return $items;
         }
 
@@ -600,7 +600,7 @@ class Users_Api_User extends Zikula_AbstractApi
                 if ($items) {
                     foreach ($items as $k => $item) {
                         // check every retured link for permissions
-                        if (SecurityUtil::checkPermission('Users_UserInterface::', "$mod[name]::$item[title]", ACCESS_READ)) {
+                        if (SecurityUtil::checkPermission('Users::', "$mod[name]::$item[title]", ACCESS_READ)) {
                             if (!isset($item['module'])) {
                                 $item['module']  = $mod['name'];
                             }
@@ -790,7 +790,7 @@ class Users_Api_User extends Zikula_AbstractApi
 
         $links = array();
 
-        if (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
             $links[] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'login'),
                 'text'  => $this->__('Log in'),
