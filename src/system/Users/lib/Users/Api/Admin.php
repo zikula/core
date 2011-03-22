@@ -46,7 +46,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
     public function findUsers($args)
     {
         // Need read access to call this function
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
             return false;
         }
 
@@ -139,7 +139,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
     public function updateUser($args)
     {
         // check permission to edit any generic user
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', 'ANY', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -165,7 +165,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
         if (!$originalUser) {
             $this->registerError($this->__('Error! Could not find the user record in order to update it.'));
             return false;
-        } elseif (!SecurityUtil::checkPermission('Users_UserInterface::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
+        } elseif (!SecurityUtil::checkPermission('Users::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
             // above elseif checks permission to edit the specific user
             throw new Zikula_Exception_Forbidden();
         }
@@ -262,7 +262,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
      */
     public function deleteUser($args)
     {
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', 'ANY', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_DELETE)) {
             return false;
         }
 
@@ -291,7 +291,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
             $userObj = UserUtil::getVars($uid);
             if (!$userObj) {
                 return false;
-            } elseif (!SecurityUtil::checkPermission('Users_UserInterface::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE)) {
+            } elseif (!SecurityUtil::checkPermission('Users::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE)) {
                 return false;
             }
 
@@ -335,7 +335,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
      */
     public function sendmail($args)
     {
-        if (!SecurityUtil::checkPermission('Users_UserInterface::MailUsers', '::', ACCESS_COMMENT)) {
+        if (!SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -448,30 +448,30 @@ class Users_Api_Admin extends Zikula_AbstractApi
         $links = array();
         $submenulinks = array();
 
-        if (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE)) {
+        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view'), 'text' => $this->__('Users list'), 'class' => 'z-icon-es-view');
         }
-        if (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE)) {
+        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $pending = ModUtil::apiFunc($this->name, 'registration', 'countAll');
             if ($pending) {
                 $links[] = array('url' => ModUtil::url($this->name, 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'class' => 'user-icon-adduser');
             }
         }
-        if (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADD)) {
+        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
             $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'));
             $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'import'), 'text' => $this->__('Import users'));
-            if (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADMIN)) {
+            if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
                  $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'exporter'), 'text' => $this->__('Export users'));
             }
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new', 'links' => $submenulinks);
         }
-        if (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE)) {
+        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'search'), 'text' => $this->__('Find users'), 'class' => 'z-icon-es-search');
         }
-        if (SecurityUtil::checkPermission('Users_UserInterface::MailUsers', '::', ACCESS_MODERATE)) {
+        if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'mailUsers'), 'text' => $this->__('E-mail users'), 'class' => 'z-icon-es-mail');
         }
-        if (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'config'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }
 
@@ -491,7 +491,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
     public function checkMultipleExistence($args)
     {
         // Need read access to call this function
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
             return false;
         }
 
@@ -522,7 +522,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
     public function createImport($args)
     {
         // Need add access to call this function
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
             return false;
         }
 

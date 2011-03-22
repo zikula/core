@@ -41,7 +41,7 @@ class Users_EventHandlers_Extensions extends Zikula_AbstractEventHandler
             return;
         }
 
-        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
