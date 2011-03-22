@@ -240,7 +240,7 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
      * 
      * @throws Zikula_Exception_Fatal Thrown if the name is not valid.
      */
-    private function __get($name)
+    public function __get($name)
     {
         switch($name) {
             case 'modname':
@@ -287,7 +287,7 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
      * 
      * @throws Zikula_Exception_Fatal Thrown if the name is not valid.
      */
-    private function __isset($name)
+    public function __isset($name)
     {
         switch($name) {
             case 'enabledForAuthentication':
@@ -327,7 +327,7 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
      * 
      * @throws Zikula_Exception_Fatal Thrown if the name is not valid, the property does not have a defined setter, or the property is not granted property setter access.
      */
-    private function __set($name, $value)
+    public function __set($name, $value)
     {
         switch($name) {
             case 'enabledForAuthentication':
@@ -380,7 +380,7 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
      * 
      * @throws Zikula_Exception_Fatal Thrown if the name is not valid, the property does not have a defined setter, or the property is not granted property setter access.
      */
-    private function __unset($name)
+    public function __unset($name)
     {
         $trace = debug_backtrace();
         switch($name) {
