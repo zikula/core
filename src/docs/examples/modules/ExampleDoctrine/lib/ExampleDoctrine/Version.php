@@ -14,7 +14,7 @@
 /**
  * Version.
  */
-class ExampleDoctrine_Version extends Zikula_Version
+class ExampleDoctrine_Version extends Zikula_AbstractVersion
 {
     /**
      * Module meta data.

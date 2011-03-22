@@ -3531,7 +3531,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
     $authenticationMethod = array(
         'modname'   => 'Users',
     );
-    if (ModUtil::getVar(Users::MODNAME, Users::MODVAR_LOGIN_METHOD, Users::LOGIN_METHOD_UNAME) == Users::LOGIN_METHOD_EMAIL) {
+    if (ModUtil::getVar(Users_UserInterface::MODNAME, Users_UserInterface::MODVAR_LOGIN_METHOD, Users_UserInterface::LOGIN_METHOD_UNAME) == Users_UserInterface::LOGIN_METHOD_EMAIL) {
         $authenticationMethod['method'] = 'email';
     } else {
         $authenticationMethod['method'] = 'uname';

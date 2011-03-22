@@ -107,13 +107,13 @@ class Users_Controller_User extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
         
-        if (!$this->getVar(Users::MODVAR_REGISTRATION_ENABLED, Users::DEFAULT_REGISTRATION_ENABLED)) {
+        if (!$this->getVar(Users_UserInterface::MODVAR_REGISTRATION_ENABLED, Users_UserInterface::DEFAULT_REGISTRATION_ENABLED)) {
             return $this->view->fetch('users_user_registration_disabled.tpl');
         }
         
         // Check for illegal user agents trying to register.
         $userAgent = $this->request->getServer()->get('HTTP_USER_AGENT', '');
-        $illegalUserAgents = $this->getVar(Users::MODVAR_REGISTRATION_ILLEGAL_AGENTS, '');
+        $illegalUserAgents = $this->getVar(Users_UserInterface::MODVAR_REGISTRATION_ILLEGAL_AGENTS, '');
         // Convert the comma-separated list into a regexp pattern.
         $pattern = array('/^(\s*,\s*)+/D', '/\b(\s*,\s*)+\b/D', '/(\s*,\s*)+$/D');
         $replace = array('', '|', '');
@@ -172,30 +172,30 @@ class Users_Controller_User extends Zikula_AbstractController
                         $this->view->assign('regErrors', $registeredObj['regErrors']);
                     }
 
-                    if ($registeredObj['activated'] == Users::ACTIVATED_PENDING_REG) {
-                        $moderation = $this->getVar(Users::MODVAR_REGISTRATION_APPROVAL_REQUIRED, Users::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
-                        $moderationOrder = $this->getVar(Users::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, Users::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
-                        $verifyEmail = $this->getVar(Users::MODVAR_REGISTRATION_VERIFICATION_MODE, Users::DEFAULT_REGISTRATION_VERIFICATION_MODE);
+                    if ($registeredObj['activated'] == Users_UserInterface::ACTIVATED_PENDING_REG) {
+                        $moderation = $this->getVar(Users_UserInterface::MODVAR_REGISTRATION_APPROVAL_REQUIRED, Users_UserInterface::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
+                        $moderationOrder = $this->getVar(Users_UserInterface::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, Users_UserInterface::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
+                        $verifyEmail = $this->getVar(Users_UserInterface::MODVAR_REGISTRATION_VERIFICATION_MODE, Users_UserInterface::DEFAULT_REGISTRATION_VERIFICATION_MODE);
 
                         if (!empty($registeredObj['regErrors'])) {
                             $this->registerError($this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
-                        } elseif ($moderation && ($verifyEmail != Users::VERIFY_NO)) {
-                            if ($moderationOrder == Users::APPROVAL_AFTER) {
+                        } elseif ($moderation && ($verifyEmail != Users_UserInterface::VERIFY_NO)) {
+                            if ($moderationOrder == Users_UserInterface::APPROVAL_AFTER) {
                                 $this->registerStatus($this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message. Your account will not be approved until after the verification process is completed.'));
-                            } elseif ($moderationOrder == Users::APPROVAL_BEFORE) {
+                            } elseif ($moderationOrder == Users_UserInterface::APPROVAL_BEFORE) {
                                 $this->registerStatus($this->__('Done! Your registration request has been saved. Remember that your request must be approved and your e-mail address must be verified before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
                             } else {
                                 $this->registerStatus($this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
                             }
                         } elseif ($moderation) {
                             $this->registerStatus($this->__('Done! Your registration request has been saved. Remember that your request must be approved before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
-                        } elseif ($verifyEmail != Users::VERIFY_NO) {
+                        } elseif ($verifyEmail != Users_UserInterface::VERIFY_NO) {
                             $this->registerStatus($this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
                         } else {
                             // Some unknown state! Should never get here, but just in case...
                             $this->registerError($this->__('Your registration request has been saved, however your current registration status could not be determined. Please contact the site administrator regarding the status of your request.'));
                         }
-                    } elseif ($registeredObj['activated'] == Users::ACTIVATED_ACTIVE) {
+                    } elseif ($registeredObj['activated'] == Users_UserInterface::ACTIVATED_ACTIVE) {
                         // The user has a status that allows him to log in
                         if (!empty($registeredObj['regErrors'])) {
                             $this->registerError($this->__('Your account has been created and you may now log in, however the problems listed below were detected during the registration process. Please contact the site administrator for more information.'));
@@ -931,7 +931,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                 }
 
                                 switch ($verified['activated']) {
-                                    case Users::ACTIVATED_PENDING_REG:
+                                    case Users_UserInterface::ACTIVATED_PENDING_REG:
                                         if (empty($verified['approved_by'])) {
                                             $message = $this->__('Done! Your account has been verified, and is awaiting administrator approval.');
                                         } else {
@@ -943,7 +943,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                         }
                                         return $this->view->fetch('users_user_displaystatusmsg.tpl');
                                         break;
-                                    case Users::ACTIVATED_ACTIVE:
+                                    case Users_UserInterface::ACTIVATED_ACTIVE:
                                         $this->registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             $this->registerStatus($regErrorsMessage);
@@ -1512,7 +1512,7 @@ class Users_Controller_User extends Zikula_AbstractController
         // the preemail record is deleted
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid'       => $preemail['uid'],
-            'changetype'=> Users::VERIFYCHGTYPE_EMAIL,
+            'changetype'=> Users_UserInterface::VERIFYCHGTYPE_EMAIL,
         ));
 
         $this->registerStatus($this->__('Done! Changed your e-mail address.'))

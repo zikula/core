@@ -518,7 +518,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         $allusers = array();
         foreach ($users as $user) {
             if ($user['uid'] == 0 || strtolower($user['uname']) == 'anonymous' || strtolower($user['uname']) == 'guest'  
-                    || $user['uname'] == $this->getVar(Users::MODVAR_ANONYMOUS_DISPLAY_NAME)
+                    || $user['uname'] == $this->getVar(Users_UserInterface::MODVAR_ANONYMOUS_DISPLAY_NAME)
                     ) {
                 continue;
             }

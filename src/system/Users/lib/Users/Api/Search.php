@@ -45,7 +45,7 @@ class Users_Api_Search extends Zikula_AbstractApi
     {
         $options = '';
 
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ)) {
             // Create output object - this object will store all of our output so that
             // we can return it easily when required
             $renderer = Zikula_View::getInstance($this->name);
@@ -68,7 +68,7 @@ class Users_Api_Search extends Zikula_AbstractApi
     public function search($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ)) {
             return false;
         }
 
@@ -89,7 +89,7 @@ class Users_Api_Search extends Zikula_AbstractApi
 
         // build the where clause
         $where   = array();
-        $where[] = "({$userscolumn['activated']} != " . Users::ACTIVATED_PENDING_REG . ')';
+        $where[] = "({$userscolumn['activated']} != " . Users_UserInterface::ACTIVATED_PENDING_REG . ')';
 
         $unameClause = Search_Api_User::construct_where($args, array($userscolumn['uname']));
 
@@ -121,7 +121,7 @@ class Users_Api_Search extends Zikula_AbstractApi
         $sessionId = session_id();
 
         foreach ($users as $user) {
-            if ($user['uid'] != 1 && SecurityUtil::checkPermission('Users::', "$user[uname]::$user[uid]", ACCESS_READ)) {
+            if ($user['uid'] != 1 && SecurityUtil::checkPermission('Users_UserInterface::', "$user[uname]::$user[uid]", ACCESS_READ)) {
                 if ($useProfileMod) {
                      $qtext = $this->__("Click the user's name to view his/her complete profile.");
                 } else {

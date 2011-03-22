@@ -35,7 +35,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
     protected function  postInitialize() {
         parent::postInitialize();
 
-        $loginViaOption = $this->getVar(Users::MODVAR_LOGIN_METHOD, Users::LOGIN_METHOD_UNAME);
+        $loginViaOption = $this->getVar(Users_UserInterface::MODVAR_LOGIN_METHOD, Users_UserInterface::LOGIN_METHOD_UNAME);
 
         // Register the uname authentication method
         $authenticationMethod = new Users_Helper_AuthenticationMethod(
@@ -44,7 +44,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                 $this->__('User name'),
                 $this->__('User name and password')
         );
-        if (($loginViaOption == Users::LOGIN_METHOD_UNAME) || ($loginViaOption == Users::LOGIN_METHOD_ANY)) {
+        if (($loginViaOption == Users_UserInterface::LOGIN_METHOD_UNAME) || ($loginViaOption == Users_UserInterface::LOGIN_METHOD_ANY)) {
             $authenticationMethod->enableForAuthentication();
         } else {
             $authenticationMethod->disableForAuthentication();
@@ -57,7 +57,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                 'email',
                 $this->__('E-mail address'),
                 $this->__('E-mail address and password'));
-        if (($loginViaOption == Users::LOGIN_METHOD_EMAIL) || ($loginViaOption == Users::LOGIN_METHOD_ANY)) {
+        if (($loginViaOption == Users_UserInterface::LOGIN_METHOD_EMAIL) || ($loginViaOption == Users_UserInterface::LOGIN_METHOD_ANY)) {
             $authenticationMethod->enableForAuthentication();
         } else {
             $authenticationMethod->disableForAuthentication();
@@ -276,13 +276,13 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
             // upon verifying his email address). The special marker indicating that the account does not authenticate
             // with the Users module is used when a user registers a new account with the system using an authentication
             // method other than uname/pass or email/pass. In both cases, authentication automatically fails.
-            if (!empty($userObj['pass']) && ($userObj['pass'] != Users::PWD_NO_USERS_AUTHENTICATION)) {
+            if (!empty($userObj['pass']) && ($userObj['pass'] != Users_UserInterface::PWD_NO_USERS_AUTHENTICATION)) {
                 // The following check for non-salted passwords and the old 'hash_method' field is to allow the admin to log in
                 // during an upgrade from 1.2.
                 // *** IMPORTANT ***
                 // This needs to be kept for any version that allows an upgrade from Zikula 1.2.X.
-                $methodSaltDelimPosition = strpos($userObj['pass'], Users::SALT_DELIM);
-                $saltPassDelimPosition = ($methodSaltDelimPosition === false) ? false : strpos($userObj['pass'], Users::SALT_DELIM, ($methodSaltDelimPosition + 1));
+                $methodSaltDelimPosition = strpos($userObj['pass'], Users_UserInterface::SALT_DELIM);
+                $saltPassDelimPosition = ($methodSaltDelimPosition === false) ? false : strpos($userObj['pass'], Users_UserInterface::SALT_DELIM, ($methodSaltDelimPosition + 1));
                 if ($saltPassDelimPosition === false) {
                     // Old style unsalted password with hash_method in separate field
                     // If this release version of Zikula Users Module allows upgrade from 1.2.X, then this part must be
@@ -316,7 +316,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                         // Check stored hash matches the current system type, if not convert it--but only if the module version is sufficient.
                         // Note: this is purely specific to the Users module authentication. A custom module might do something similar if it
                         // changed the way it stored some piece of data between versions, but in general this would be uncommon.
-                        list($currentPasswordHashCode, $currentPasswordSaltStr, $currentPasswordHashStr) = explode(Users::SALT_DELIM, $currentPasswordHashed);
+                        list($currentPasswordHashCode, $currentPasswordSaltStr, $currentPasswordHashStr) = explode(Users_UserInterface::SALT_DELIM, $currentPasswordHashed);
                         $systemHashMethodCode = UserUtil::getPasswordHashMethodCode($this->getVar('hash_method', 'sha256'));
                         if (($systemHashMethodCode != $currentPasswordHashCode) || empty($currentPasswordSaltStr)) {
                             if (!UserUtil::setPassword($authenticationInfo['pass'], $uid)) {

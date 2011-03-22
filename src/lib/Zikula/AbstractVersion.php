@@ -659,7 +659,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *
      * @param Zikula_Version_HookBundle $bundle HookBundle.
      *
-     * @return Zikula_Version
+     * @return Zikula_AbstractVersion
      */
     public function registerHookSubscriberBundle(Zikula_Version_HookSubscriberBundle $bundle)
     {
@@ -677,7 +677,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *
      * @param Zikula_Version_HookProviderBundle $bundle HookProviderBundle.
      *
-     * @return Zikula_Version
+     * @return Zikula_AbstractVersion
      */
     public function registerHookProviderBundle(Zikula_Version_HookProviderBundle $bundle)
     {

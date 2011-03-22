@@ -30,7 +30,7 @@ $func   = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING
 
 // Check for site closed
 if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula_Core::VERSION_NUM != System::getVar('Version_Num'))) {
-    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
+    if (SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
         UserUtil::logout();
     }
     header('HTTP/1.1 503 Service Unavailable');

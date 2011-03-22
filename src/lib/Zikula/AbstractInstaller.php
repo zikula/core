@@ -21,7 +21,7 @@ abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
     /**
      * Version instance of the module.
      * 
-     * @var Zikula_Version
+     * @var Zikula_AbstractVersion
      */
     protected $version;
 

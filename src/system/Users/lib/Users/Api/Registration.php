@@ -26,7 +26,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
      */
     private function currentUserIsAdmin()
     {
-        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN);
+        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADMIN);
     }
 
     /**
@@ -37,7 +37,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
      */
     private function currentUserIsAdminOrSubAdmin()
     {
-        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT);
+        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_EDIT);
     }
 
     /**
@@ -165,7 +165,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             }
 
 
-            if ($tempValid && $this->getVar(Users::MODVAR_REQUIRE_UNIQUE_EMAIL, false)) {
+            if ($tempValid && $this->getVar(Users_UserInterface::MODVAR_REQUIRE_UNIQUE_EMAIL, false)) {
                 if ($checkMode == 'modify') {
                     $emailUsageCount = UserUtil::getEmailUsageCount($reginfo['email'], $reginfo['uid']);
                 } else {
@@ -212,7 +212,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
     {
         $registrationErrors = array();
 
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -243,12 +243,12 @@ class Users_Api_Registration extends Zikula_AbstractApi
             $registrationErrors['uname'] = $this->__('You must provide a user name.');
         } elseif (!System::varValidate($reginfo['uname'], 'uname')) {
             $registrationErrors['uname'] = $this->__('The user name you entered contains unacceptable characters. A valid user name consists of lowercase letters, numbers, underscores, periods, and/or dashes.');
-        } elseif (mb_strlen($reginfo['uname']) > Users::UNAME_VALIDATION_MAX_LENGTH) {
-            $registrationErrors['uname'] = $this->__f('The user name you entered is too long. The maximum length is %1$d characters.', array(Users::UNAME_VALIDATION_MAX_LENGTH));
+        } elseif (mb_strlen($reginfo['uname']) > Users_UserInterface::UNAME_VALIDATION_MAX_LENGTH) {
+            $registrationErrors['uname'] = $this->__f('The user name you entered is too long. The maximum length is %1$d characters.', array(Users_UserInterface::UNAME_VALIDATION_MAX_LENGTH));
         } else {
             $tempValid = true;
             if (!$isAdmin) {
-                $illegalUserNames = $this->getVar(Users::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
+                $illegalUserNames = $this->getVar(Users_UserInterface::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
                 if (!empty($illegalUserNames)) {
                     $pattern = array('/^(\s*,\s*|\s+)+/D', '/\b(\s*,\s*|\s+)+\b/D', '/(\s*,\s*|\s+)+$/D');
                     $replace = array('', '|', '');
@@ -285,8 +285,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
             $registrationErrors = array_merge($registrationErrors, $emailErrors);
         }
 
-        $verificationAndPassword = $this->getVar(Users::MODVAR_REGISTRATION_VERIFICATION_MODE, Users::VERIFY_NO);
-        if ($verificationAndPassword == Users::VERIFY_SYSTEMPWD) {
+        $verificationAndPassword = $this->getVar(Users_UserInterface::MODVAR_REGISTRATION_VERIFICATION_MODE, Users_UserInterface::VERIFY_NO);
+        if ($verificationAndPassword == Users_UserInterface::VERIFY_SYSTEMPWD) {
             throw new Zikula_Exception_Fatal($this->__('Internal Error! System-generated passwords are no longer supported!'));
         }
         if (!$isAdminOrSubAdmin || $setPassword) {
@@ -301,8 +301,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
         }
 
         if (!$isAdminOrSubAdmin && ($checkMode != 'modify')) {
-            $spamProtectionQuestion = $this->getVar(Users::MODVAR_REGISTRATION_ANTISPAM_QUESTION, '');
-            $spamProtectionCorrectAnswer = $this->getVar(Users::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '');
+            $spamProtectionQuestion = $this->getVar(Users_UserInterface::MODVAR_REGISTRATION_ANTISPAM_QUESTION, '');
+            $spamProtectionCorrectAnswer = $this->getVar(Users_UserInterface::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '');
             if (!empty($spamProtectionQuestion) && !empty($spamProtectionCorrectAnswer)) {
                 if ($spamProtectionUserAnswer != $spamProtectionCorrectAnswer) {
                     $registrationErrors['antispamanswer'] = $this->__('You gave the wrong answer to the anti-spam registration question.');
@@ -346,7 +346,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
      */
     public function registerNewUser($args)
     {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -367,7 +367,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
         $adminWantsVerification = $isAdminOrSubAdmin && ((isset($args['usermustverify']) ? (bool)$args['usermustverify'] : false)
             || !isset($reginfo['pass']) || empty($reginfo['pass']));
-        $reginfo['isverified'] = ($isAdminOrSubAdmin && !$adminWantsVerification) || (!$isAdminOrSubAdmin && ($this->getVar('reg_verifyemail') == Users::VERIFY_NO));
+        $reginfo['isverified'] = ($isAdminOrSubAdmin && !$adminWantsVerification) || (!$isAdminOrSubAdmin && ($this->getVar('reg_verifyemail') == Users_UserInterface::VERIFY_NO));
         $reginfo['isapproved'] = $isAdminOrSubAdmin || !$this->getVar('moderation', false);
         $createRegistration = !$reginfo['isapproved'] || !$reginfo['isverified'];
 
@@ -500,17 +500,17 @@ class Users_Api_Registration extends Zikula_AbstractApi
             return false;
         }
 
-        $approvalOrder = $this->getVar('moderation_order', Users::APPROVAL_BEFORE);
+        $approvalOrder = $this->getVar('moderation_order', Users_UserInterface::APPROVAL_BEFORE);
 
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-        $nowUTCStr = $nowUTC->format(Users::DATETIME_FORMAT);
+        $nowUTCStr = $nowUTC->format(Users_UserInterface::DATETIME_FORMAT);
 
         // Finally, save it.
         $userObj = $reginfo;
         unset($userObj['isapproved']);
         $userObj = $this->cleanFieldsToAttributes($userObj);
 
-        $userObj['activated'] = Users::ACTIVATED_PENDING_REG;
+        $userObj['activated'] = Users_UserInterface::ACTIVATED_PENDING_REG;
         $userObj['user_regdate'] = $nowUTCStr;
         if (!$reginfo['isapproved']) {
             $userObj['approved_by'] = 0;
@@ -552,7 +552,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
                 $rendererArgs['admincreated'] = $createdByAdminOrSubAdmin;
                 $rendererArgs['approvalorder'] = $approvalOrder;
 
-                if (!$reginfo['isverified'] && (($approvalOrder != Users::APPROVAL_BEFORE) || $reginfo['isapproved'])) {
+                if (!$reginfo['isverified'] && (($approvalOrder != Users_UserInterface::APPROVAL_BEFORE) || $reginfo['isapproved'])) {
                     $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
                         'reginfo'       => $reginfo,
                         'rendererArgs'  => $rendererArgs,
@@ -679,13 +679,13 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
             // Ensure that no user gets created without a password, and that the password is reasonable (no spaces, salted)
             // If the user is being registered with an authentication method other than one from the Users module, then the
-            // password will be the unsalted, unhashed string stored in Users::PWD_NO_USERS_AUTHENTICATION.
+            // password will be the unsalted, unhashed string stored in Users_UserInterface::PWD_NO_USERS_AUTHENTICATION.
             $hasPassword = isset($reginfo['pass']) && is_string($reginfo['pass']) && !empty($reginfo['pass']);
-            if ($reginfo['pass'] === Users::PWD_NO_USERS_AUTHENTICATION) {
+            if ($reginfo['pass'] === Users_UserInterface::PWD_NO_USERS_AUTHENTICATION) {
                 $hasSaltedPassword = false;
                 $hasNoUsersAuthenticationPassword = true;
             } else {
-                $hasSaltedPassord = $hasPassword && (strpos($reginfo['pass'], Users::SALT_DELIM) != strrpos($reginfo['pass'], Users::SALT_DELIM));
+                $hasSaltedPassord = $hasPassword && (strpos($reginfo['pass'], Users_UserInterface::SALT_DELIM) != strrpos($reginfo['pass'], Users_UserInterface::SALT_DELIM));
                 $hasNoUsersAuthenticationPassword = false;
             }
             if (!$hasPassword || (!$hasSaltedPassord && !$hasNoUsersAuthenticationPassword)) {
@@ -697,7 +697,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             $reginfo['email'] = mb_strtolower($reginfo['email']);
 
             $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-            $nowUTCStr = $nowUTC->format(Users::DATETIME_FORMAT);
+            $nowUTCStr = $nowUTC->format(Users_UserInterface::DATETIME_FORMAT);
 
             // Finally, save it.
             $userObj = $reginfo;
@@ -713,7 +713,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
             // Set activated state as pending registration for now to prevent firing of update hooks after the insert until the
             // activated state is set properly further below.
-            $userObj['activated'] = Users::ACTIVATED_PENDING_REG;
+            $userObj['activated'] = Users_UserInterface::ACTIVATED_PENDING_REG;
 
             // NOTE: See below for the firing of the item-create hook.
             $userObj = DBUtil::insertObject($userObj, 'users', 'uid');
@@ -752,8 +752,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
         if ($userObj) {
             // Set appropriate activated status
-            UserUtil::setVar('activated', Users::ACTIVATED_ACTIVE, $userObj['uid']);
-            $userObj['activated'] = Users::ACTIVATED_ACTIVE;
+            UserUtil::setVar('activated', Users_UserInterface::ACTIVATED_ACTIVE, $userObj['uid']);
+            $userObj['activated'] = Users_UserInterface::ACTIVATED_ACTIVE;
             
             // Don't do any more UserUtil::setVar() operations or other direct modifications to the user record from this point until
             // the end of the function, or an update event/hook will be fired!
@@ -780,7 +780,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $sitename  = System::getVar('sitename');
                 $siteurl   = System::getBaseUrl();
-                $approvalOrder = $this->getVar('moderation_order', Users::APPROVAL_BEFORE);
+                $approvalOrder = $this->getVar('moderation_order', Users_UserInterface::APPROVAL_BEFORE);
 
                 $rendererArgs = array();
                 $rendererArgs['sitename'] = $sitename;
@@ -866,8 +866,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
      */
     public function get($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE))) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1002,8 +1002,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
      */
     public function getAll($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE))) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1030,10 +1030,10 @@ class Users_Api_Registration extends Zikula_AbstractApi
                 $this->registerError(LogUtil::getErrorMsgArgs());
                 return false;
             }
-            $args['filter']['activated'] = Users::ACTIVATED_PENDING_REG;
+            $args['filter']['activated'] = Users_UserInterface::ACTIVATED_PENDING_REG;
             $where = $this->whereFromFilter($args['filter']);
         } else {
-            $where = $this->whereFromFilter(array('activated' => Users::ACTIVATED_PENDING_REG));
+            $where = $this->whereFromFilter(array('activated' => Users_UserInterface::ACTIVATED_PENDING_REG));
         }
         if ($where === false) {
             return false;
@@ -1091,8 +1091,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
      */
     public function countAll($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE))) {
             return false;
         }
 
@@ -1106,10 +1106,10 @@ class Users_Api_Registration extends Zikula_AbstractApi
                 $isVerifiedFilter = $args['filter']['isverified'];
                 unset($args['filter']['isverified']);
             }
-            $args['filter']['activated'] = Users::ACTIVATED_PENDING_REG;
+            $args['filter']['activated'] = Users_UserInterface::ACTIVATED_PENDING_REG;
             $where = $this->whereFromFilter($args['filter']);
         } else {
-            $where = $this->whereFromFilter(array('activated' => Users::ACTIVATED_PENDING_REG));
+            $where = $this->whereFromFilter(array('activated' => Users_UserInterface::ACTIVATED_PENDING_REG));
         }
         if ($where === false) {
             return false;
@@ -1155,8 +1155,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
      */
     public function remove($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_DELETE))) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1177,7 +1177,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid'        => $uid,
-            'changetype' => Users::VERIFYCHGTYPE_REGEMAIL,
+            'changetype' => Users_UserInterface::VERIFYCHGTYPE_REGEMAIL,
         ));
 
         // NOTE: This is a registration, not a "real" user, so no user.delete event and no item delete hook
@@ -1201,10 +1201,10 @@ class Users_Api_Registration extends Zikula_AbstractApi
             // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
             $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
             $staleRecordUTC->modify("-{$regExpireDays} days");
-            $staleRecordUTCStr = $staleRecordUTC->format(Users::DATETIME_FORMAT);
+            $staleRecordUTCStr = $staleRecordUTC->format(Users_UserInterface::DATETIME_FORMAT);
 
             // The zero date is there to guard against odd DB errors
-            $where = "WHERE ({$verifyChgColumn['changetype']} = " . Users::VERIFYCHGTYPE_REGEMAIL .") "
+            $where = "WHERE ({$verifyChgColumn['changetype']} = " . Users_UserInterface::VERIFYCHGTYPE_REGEMAIL .") "
                     . "AND ({$verifyChgColumn['created_dt']} IS NOT NULL) "
                     . "AND ({$verifyChgColumn['created_dt']} != '0000-00-00 00:00:00') "
                     . "AND ({$verifyChgColumn['created_dt']} < '{$staleRecordUTCStr}')";
@@ -1216,7 +1216,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
                     DBUtil::deleteObjectByID('users', $verifyChg['uid'], 'uid');
                     ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
                         'uid'       => $verifyChg['uid'],
-                        'changetype'=> Users::VERIFYCHGTYPE_REGEMAIL,
+                        'changetype'=> Users_UserInterface::VERIFYCHGTYPE_REGEMAIL,
                     ));
                 }
             }
@@ -1238,8 +1238,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
         // In the future, it is possible we will add a feature to allow a newly registered user to resend
         // a new verification code to himself after doing a login-like process with information from  his
         // registration record, so allow not-logged-in plus READ, as well as moderator.
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE))) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1282,13 +1282,13 @@ class Users_Api_Registration extends Zikula_AbstractApi
             $rendererArgs = array();
         }
 
-        $approvalOrder = $this->getVar('moderation_order', Users::APPROVAL_BEFORE);
+        $approvalOrder = $this->getVar('moderation_order', Users_UserInterface::APPROVAL_BEFORE);
 
         // Set the verification code
         if (isset($reginfo['isverified']) && $reginfo['isverified']) {
             $this->registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
             return false;
-        } elseif (!$forceVerification && ($approvalOrder == Users::APPROVAL_BEFORE) && isset($reginfo['approvedby']) && !empty($reginfo['approved_by'])) {
+        } elseif (!$forceVerification && ($approvalOrder == Users_UserInterface::APPROVAL_BEFORE) && isset($reginfo['approvedby']) && !empty($reginfo['approved_by'])) {
             $this->registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
             return false;
         }
@@ -1298,15 +1298,15 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid'       => $reginfo['uid'],
-            'changetype'=> Users::VERIFYCHGTYPE_REGEMAIL,
+            'changetype'=> Users_UserInterface::VERIFYCHGTYPE_REGEMAIL,
         ));
 
         $verifyChgObj = array(
-            'changetype'=> Users::VERIFYCHGTYPE_REGEMAIL,
+            'changetype'=> Users_UserInterface::VERIFYCHGTYPE_REGEMAIL,
             'uid'       => $reginfo['uid'],
             'newemail'  => $reginfo['email'],
             'verifycode'=> UserUtil::getHashedPassword($verificationCode),
-            'created_dt'=> $nowUTC->format(Users::DATETIME_FORMAT),
+            'created_dt'=> $nowUTC->format(Users_UserInterface::DATETIME_FORMAT),
         );
         $verifyChgObj = DBUtil::insertObject($verifyChgObj, 'users_verifychg');
 
@@ -1354,8 +1354,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
      */
     public function getVerificationCode($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_MODERATE))) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1367,7 +1367,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
         $dbinfo = DBUtil::getTables();
         $verifyChgColumn = $dbinfo['users_verifychg_column'];
         $where = "WHERE ({$verifyChgColumn['uid']} = {$args['uid']}) AND ({$verifyChgColumn['changetype']} = "
-            . Users::VERIFYCHGTYPE_REGEMAIL . ")";
+            . Users_UserInterface::VERIFYCHGTYPE_REGEMAIL . ")";
         $verifyChgList = DBUtil::selectObjectArray('users_verifychg', $where, '', -1, 1);
         if (($verifyChgList === false) || !is_array($verifyChgList)) {
             $verifyChg = false;
@@ -1421,7 +1421,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
         UserUtil::setVar('isverified', true, $reginfo['uid']);
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid'       => $reginfo['uid'],
-            'changetype'=> Users::VERIFYCHGTYPE_REGEMAIL,
+            'changetype'=> Users_UserInterface::VERIFYCHGTYPE_REGEMAIL,
         ));
 
         if (!empty($reginfo['approved_by'])) {
@@ -1446,7 +1446,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
      */
     public function approve($args)
     {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_ADD)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1479,7 +1479,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
         $reginfo['approved_by'] = UserUtil::getVar('uid');
         UserUtil::setVar('approved_by', $reginfo['approved_by'], $reginfo['uid']);
 
-        $reginfo['approved_date'] = $nowUTC->format(Users::DATETIME_FORMAT);
+        $reginfo['approved_date'] = $nowUTC->format(Users_UserInterface::DATETIME_FORMAT);
         UserUtil::setVar('approved_date', $reginfo['approved_date'], $reginfo['uid']);
 
 
@@ -1493,7 +1493,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
             ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
                 'uid'       => $reginfo['uid'],
-                'changetype'=> Users::VERIFYCHGTYPE_REGEMAIL,
+                'changetype'=> Users_UserInterface::VERIFYCHGTYPE_REGEMAIL,
             ));
         }
 
@@ -1520,7 +1520,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
     public function activateUser($args)
     {
         // This function is an end-user function.
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Users_UserInterface::', '::', ACCESS_READ)) {
             return false;
         }
 
@@ -1528,7 +1528,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
         $newregdate = DateUtil::getDatetime(strtotime($args['regdate'])+1);
         $obj = array(
             'uid'           => $args['uid'],
-            'activated'     => Users::ACTIVATED_ACTIVE,
+            'activated'     => Users_UserInterface::ACTIVATED_ACTIVE,
             'user_regdate'  => DataUtil::formatForStore($newregdate)
         );
 

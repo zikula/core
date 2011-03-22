@@ -14,15 +14,15 @@
     {gt text='During your visits, you are recommended to set your browser to accept cookies from this site. Various features of the site use cookies, and may not function properly or completely if cookies are disabled.'}
 </p>
 
-{if $modvars.Users.moderation && ($modvars.Users.reg_verifyemail != 'Users::VERIFY_NO'|constant)}
-    {if $modvars.Users.moderation_order == 'Users::APPROVAL_BEFORE'|constant}
+{if $modvars.Users.moderation && ($modvars.Users.reg_verifyemail != 'Users_UserInterface::VERIFY_NO'|constant)}
+    {if $modvars.Users.moderation_order == 'Users_UserInterface::APPROVAL_BEFORE'|constant}
     <p class="z-informationmsg">{gt text="Before you will be able to log in, an administrator must approve your registration request and you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after an administrator has approved your request."}</p>
     {else}
-    <p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address and an administrator must approve your registration request. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}{if $modvars.Users.moderation_order == 'Users::APPROVAL_AFTER'|constant} {gt text="You must verify your e-mail address before an administrator will approve your registration request."}{/if}</p>
+    <p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address and an administrator must approve your registration request. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}{if $modvars.Users.moderation_order == 'Users_UserInterface::APPROVAL_AFTER'|constant} {gt text="You must verify your e-mail address before an administrator will approve your registration request."}{/if}</p>
     {/if}
 {elseif $modvars.Users.moderation}
     <p class="z-informationmsg">{gt text="Before you will be able to log in, an administrator must approve your registration request. You will receive an e-mail after an administrator has reviewed the information you submit below."}</p>
-{elseif $modvars.Users.reg_verifyemail != 'Users::VERIFY_NO'|constant}
+{elseif $modvars.Users.reg_verifyemail != 'Users_UserInterface::VERIFY_NO'|constant}
     <p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}</p>
 {/if}
 

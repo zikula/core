@@ -55,7 +55,7 @@ function smarty_modifier_userprofilelink($string, $class = '', $image = '', $max
     $profileModule = System::getVar('profilemodule', '');
 
     if (isset($uid) && $uid && isset($uname) && $uname && ($uid > 1) && !empty($profileModule) && ModUtil::available($profileModule)
-            && (strtolower($uname) <> strtolower(ModUtil::getVar(Users::MODNAME, Users::MODVAR_ANONYMOUS_DISPLAY_NAME)))) {
+            && (strtolower($uname) <> strtolower(ModUtil::getVar(Users_UserInterface::MODNAME, Users_UserInterface::MODVAR_ANONYMOUS_DISPLAY_NAME)))) {
         if (!empty($class)) {
             $class = ' class="' . DataUtil::formatForDisplay($class) . '"';
         }
