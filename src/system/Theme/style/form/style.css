@@ -21,6 +21,7 @@ div.contextMenu ul li {
     background-repeat: no-repeat;
     background-position: 4px center;
     margin: 0;
+    text-align: left;
 }
 
 div.contextMenu ul li.separator {
