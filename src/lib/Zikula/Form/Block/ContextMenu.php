@@ -50,7 +50,7 @@
  * at the menu reference. The use of commandArgument makes it easy to identify which $item the menu was
  * activated for.
  */
-class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractPlugin
+class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
 {
     /**
      * CSS class name.
