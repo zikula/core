@@ -223,16 +223,19 @@
                 </div>
                 {if isset($errorFields.$fieldName)}<p class="z-formnote z-errormsg">{$errorFields.$fieldName}</p>{/if}
             </div>
-            <div class="z-formrow">
-                {assign var='fieldName' value='Users_Constant::MODVAR_EXPIRE_DAYS_REGISTRATION'|constant}
-                <label for="{$configData->getFieldId($fieldName)}">{gt text="Registrations pending verification expire in"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
-                <div>
-                    <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />
-                    <label for="{$configData->getFieldId($fieldName)}">{gt text="days"}</label>
+            {assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN'|constant}
+            <div class="z-formrow" id="{$configData->getFieldId($fieldName)}_wrap">
+                <label>{gt text="Log in new registrations automatically?"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <div class="z-formlist">
+                    <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
+                    <label for="{$configData->getFieldId($fieldName)}_yes">{gt text="Newly registered users are logged in automatically."}</label>
                 </div>
-                <em class="z-sub z-formnote">{gt text="Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion)."}</em>
-                <div class="z-informationmsg z-formnote">{gt text="If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval."}</div>
-                <div class="z-warningmsg z-formnote">{gt text="Changing this setting will affect all registrations currently pending e-mail address verification."}</div>
+                <em class="z-sub z-formnote">{gt text="Newly registered users are logged in automatically only if there is no approval, verification, or other requirement that must be met to complete the registration process."}</em>
+                <div class="z-formlist">
+                    <input id="{$configData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0" {if !$configData->getFieldData($fieldName)} checked="checked"{/if} />
+                    <label for="{$configData->getFieldId($fieldName)}_no">{gt text="Newly registered users are not logged in automatically."}</label>
+                </div>
+                <em class="z-sub z-formnote">{gt text="Newly registered users are redirected to the log-in screen, if appropriate. If there are other registration requirements to be met, then they are shown this information instead."}</em>
                 {if isset($errorFields.$fieldName)}<p class="z-formnote z-errormsg">{$errorFields.$fieldName}</p>{/if}
             </div>
             {assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE'|constant}
@@ -250,6 +253,18 @@
                     <input id="{$configData->getFieldId($fieldName)}_{'Users_Constant::APPROVAL_ANY'|constant}" type="radio" name="{$fieldName}" value="{'Users_Constant::APPROVAL_ANY'|constant}" {if $configData->getFieldData($fieldName) == constant('Users_Constant::APPROVAL_ANY')} checked="checked"{/if} />
                     <label for="{$configData->getFieldId($fieldName)}_{'Users_Constant::APPROVAL_ANY'|constant}">{gt text="Application approval and e-mail address verification can occur in any order."}</label>
                 </div>
+                {if isset($errorFields.$fieldName)}<p class="z-formnote z-errormsg">{$errorFields.$fieldName}</p>{/if}
+            </div>
+            <div class="z-formrow">
+                {assign var='fieldName' value='Users_Constant::MODVAR_EXPIRE_DAYS_REGISTRATION'|constant}
+                <label for="{$configData->getFieldId($fieldName)}">{gt text="Registrations pending verification expire in"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <div>
+                    <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />
+                    <label for="{$configData->getFieldId($fieldName)}">{gt text="days"}</label>
+                </div>
+                <em class="z-sub z-formnote">{gt text="Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion)."}</em>
+                <div class="z-informationmsg z-formnote">{gt text="If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval."}</div>
+                <div class="z-warningmsg z-formnote">{gt text="Changing this setting will affect all registrations currently pending e-mail address verification."}</div>
                 {if isset($errorFields.$fieldName)}<p class="z-formnote z-errormsg">{$errorFields.$fieldName}</p>{/if}
             </div>
 
@@ -375,6 +390,9 @@
         Zikula.Users.Admin.Config.registrationModeratedId = '{{$configData->getFieldId($fieldName)}}';
         Zikula.Users.Admin.Config.registrationModeratedYesId = '{{$configData->getFieldId($fieldName)}}' + '_yes';
         Zikula.Users.Admin.Config.registrationModeratedNoId = '{{$configData->getFieldId($fieldName)}}' + '_no';
+            
+        {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN'|constant}}
+        Zikula.Users.Admin.Config.registrationAutoLoginWrapId = '{{$configData->getFieldId($fieldName)}}' + '_wrap';
             
         {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE'|constant}}
         Zikula.Users.Admin.Config.registrationApprovalOrderWrapId = '{{$configData->getFieldId($fieldName)}}' + '_wrap';

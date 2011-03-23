@@ -28,7 +28,7 @@ Zikula.Users.Admin.Config = {
         $(Zikula.Users.Admin.Config.registrationModeratedNoId).observe('click', Zikula.Users.Admin.Config.registrationModerated_onClick);
         $(Zikula.Users.Admin.Config.registrationVerificationModeUserPwdId).observe('click', Zikula.Users.Admin.Config.registrationVerificationMode_onClick);
         $(Zikula.Users.Admin.Config.registrationVerificationModeNoneId).observe('click', Zikula.Users.Admin.Config.registrationVerificationMode_onClick);
-        Zikula.Users.Admin.Config.registrationApprovalOrder_switchDisplayState();
+        Zikula.Users.Admin.Config.registrationModerationVerification_switchDisplayState();
 
         $(Zikula.Users.Admin.Config.registrationAntispamQuestionId).observe('blur', Zikula.Users.Admin.Config.registrationAntispamQuestion_onBlur);
         Zikula.Users.Admin.Config.registrationAntispamQuestion_onBlur();
@@ -52,7 +52,7 @@ Zikula.Users.Admin.Config = {
      */
     registrationModerated_onClick: function()
     {
-        Zikula.Users.Admin.Config.registrationApprovalOrder_switchDisplayState();
+        Zikula.Users.Admin.Config.registrationModerationVerification_switchDisplayState();
     },
 
     /**
@@ -60,35 +60,56 @@ Zikula.Users.Admin.Config = {
      */
     registrationVerificationMode_onClick: function()
     {
-        Zikula.Users.Admin.Config.registrationApprovalOrder_switchDisplayState();
+        Zikula.Users.Admin.Config.registrationModerationVerification_switchDisplayState();
     },
 
     /**
      * Handles state changes for moderation and verification related fields.
      */
-    registrationApprovalOrder_switchDisplayState: function()
+    registrationModerationVerification_switchDisplayState: function()
     {
         var moderationObjGroup = $(Zikula.Users.Admin.Config.registrationModeratedId);
         var verificationObjGroup = $(Zikula.Users.Admin.Config.registrationVerificationModeId);
-        var objCont = $(Zikula.Users.Admin.Config.registrationApprovalOrderWrapId);
+        var approvalOrderWrap = $(Zikula.Users.Admin.Config.registrationApprovalOrderWrapId);
+        var autoLoginWrap = $(Zikula.Users.Admin.Config.registrationAutoLoginWrapId);
 
-        check_state = moderationObjGroup.select('input[type=radio][value="1"]').pluck('checked').any();
-        check_state = (check_state && !verificationObjGroup.select('input[type=radio][value="0"]').pluck('checked').any());
+        var moderation_state = moderationObjGroup.select('input[type=radio][value="1"]').pluck('checked').any();
+        var verification_state = verificationObjGroup.select('input[type=radio][value="0"]').pluck('checked').any();
+        var approvalOrder_state = (moderation_state && !verification_state);
+        var autoLogin_state = (!moderation_state && verification_state);
 
-        if (check_state == true) {
-            if (objCont.getStyle('display') == 'none') {
+        if (approvalOrder_state == true) {
+            if (approvalOrderWrap.getStyle('display') == 'none') {
                 if (typeof(Effect) != 'undefined') {
-                    Effect.BlindDown(objCont);
+                    Effect.BlindDown(approvalOrderWrap);
                 } else {
-                    objCont.show();
+                    approvalOrderWrap.show();
                 }
             }
         } else {
-            if (objCont.getStyle('display') != 'none') {
+            if (approvalOrderWrap.getStyle('display') != 'none') {
                 if (typeof(Effect) != 'undefined') {
-                    Effect.BlindUp(objCont);
+                    Effect.BlindUp(approvalOrderWrap);
                 } else {
-                    objCont.hide();
+                    approvalOrderWrap.hide();
+                }
+            }
+        }
+
+        if (autoLogin_state == true) {
+            if (autoLoginWrap.getStyle('display') == 'none') {
+                if (typeof(Effect) != 'undefined') {
+                    Effect.BlindDown(autoLoginWrap);
+                } else {
+                    autoLoginWrap.show();
+                }
+            }
+        } else {
+            if (autoLoginWrap.getStyle('display') != 'none') {
+                if (typeof(Effect) != 'undefined') {
+                    Effect.BlindUp(autoLoginWrap);
+                } else {
+                    autoLoginWrap.hide();
                 }
             }
         }

@@ -366,8 +366,17 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
 
         $this->addField(new Users_Controller_FormData_Field(
                 $this,
-                Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON,
-                $modVars[Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON],
+                Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN,
+                $modVars[Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN],
+                Users_Constant::DEFAULT_REGISTRATION_AUTO_LOGIN,
+                $this->serviceManager))
+            ->setNullAllowed(false)
+            ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
+                $this->serviceManager,
+                $this->__('The value must be a boolean.')));
+
+        $this->addField(new Users_Controller_FormData_Field(
+                $this,
                 '',
                 $this->serviceManager))
             ->setNullAllowed(false)

@@ -391,6 +391,16 @@ class Users_Constant
      *
      */
     const DEFAULT_REGISTRATION_APPROVAL_SEQUENCE = Users_Constant::APPROVAL_BEFORE;
+    
+    /**
+     * When a new user registers, should the user be automatically logged in if admin approval (moderation) and e-mail verification are not required?
+     */
+    const MODVAR_REGISTRATION_AUTO_LOGIN = 'reg_autologin';
+    
+    /**
+     * Default value for MODVAR_REGISTRATION_AUTO_LOGIN; false == no auto log-in
+     */
+    const DEFAULT_REGISTRATION_AUTO_LOGIN = false;
 
     /**
      *
