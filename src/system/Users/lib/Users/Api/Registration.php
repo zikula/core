@@ -540,6 +540,9 @@ class Users_Api_Registration extends Zikula_AbstractApi
                 UserUtil::setVar('approved_date', $nowUTCStr, $userObj['uid']);
                 UserUtil::setVar('approved_by', $userObj['uid'], $userObj['uid']);
             }
+            
+            // Force the reload of the user in the cache.
+            $userObj = UserUtil::getVars($userObj['uid'], true, 'uid', true);
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $siteurl   = System::getBaseUrl();
@@ -767,6 +770,9 @@ class Users_Api_Registration extends Zikula_AbstractApi
             if (!$groupAdded) {
                 $this->registerError($this->__('Warning! The user account was created, but there was a problem granting access to the account.'));
             }
+            
+            // Force the reload of the user in the cache.
+            $userObj = UserUtil::getVars($userObj['uid'], true);
 
             // ATTENTION: This is the proper place for the item-create hook, not when a pending
             // registration is created. It is not a "real" record until now, so it wasn't really
