@@ -100,7 +100,7 @@ class Users_Controller_User extends Zikula_AbstractController
     public function register()
     {
         // If has logged in, header to index.php
-        $this->redirectif(UserUtil::isLoggedIn(), System::getHomepageUrl());
+        $this->redirectIf(UserUtil::isLoggedIn(), System::getHomepageUrl());
 
         // check permisisons
         if (!SecurityUtil::checkPermission($this->name .'::', '::', ACCESS_READ)) {
@@ -269,7 +269,7 @@ class Users_Controller_User extends Zikula_AbstractController
     public function lostPwdUname()
     {
         // we shouldn't get here if logged in already....
-        $this->redirectif(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
+        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
 
         return $this->view->fetch('users_user_lostpwduname.tpl');
     }
