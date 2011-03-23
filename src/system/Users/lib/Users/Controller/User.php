@@ -244,9 +244,9 @@ class Users_Controller_User extends Zikula_AbstractController
                     ->fetch('users_user_register.tpl');
         } elseif (!empty($registeredObj['regErrors']) || !$canLogIn) {
             return $this->view->fetch('users_user_displaystatusmsg.tpl');
-        } elseif ($this->getVar(Users_UserInterface::MODVAR_REGISTRATION_AUTO_LOGIN, Users_UserInterface::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
-            $loginMethod = $this->getVar(Users_UserInterface::MODVAR_LOGIN_METHOD, Users_UserInterface::DEFAULT_LOGIN_METHOD);
-            if (($loginMethod == Users_UserInterface::LOGIN_METHOD_UNAME) || ($loginMethod == Users_UserInterface::LOGIN_METHOD_ANY)) {
+        } elseif ($this->getVar(Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN, Users_Constant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
+            $loginMethod = $this->getVar(Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::DEFAULT_LOGIN_METHOD);
+            if (($loginMethod == Users_Constant::LOGIN_METHOD_UNAME) || ($loginMethod == Users_Constant::LOGIN_METHOD_ANY)) {
                 $loginArgs = array(
                     'authentication_method' => array(
                         'modname'   => $this->name,
