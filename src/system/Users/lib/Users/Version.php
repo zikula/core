@@ -39,7 +39,7 @@ class Users_Version extends Zikula_AbstractVersion
 
             // Advertised capabilities
             'capabilities'  => array(
-                Users_UserInterface::CAPABILITY_AUTHENTICATION => array('version' => '1.0'),
+                Users_Constant::CAPABILITY_AUTHENTICATION => array('version' => '1.0'),
                 HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true),
                 HookUtil::PROVIDER_CAPABLE => array('enabled' => true),
             ),

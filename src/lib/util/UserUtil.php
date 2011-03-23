@@ -490,7 +490,7 @@ class UserUtil
         $authenticationMethod = array(
             'modname'   => 'Users',
         );
-        if (ModUtil::getVar(Users_UserInterface::MODNAME, Users_UserInterface::MODVAR_LOGIN_METHOD, Users_UserInterface::DEFAULT_LOGIN_METHOD) == Users_UserInterface::LOGIN_METHOD_EMAIL) {
+        if (ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::DEFAULT_LOGIN_METHOD) == Users_Constant::LOGIN_METHOD_EMAIL) {
             $authenticationMethod['method'] = 'email';
         } else {
             $authenticationMethod['method'] = 'uname';
@@ -660,22 +660,22 @@ class UserUtil
 
             if (!isset($userObj['activated'])) {
                 // Provide a sane value.
-                $userObj['activated'] = Users_UserInterface::ACTIVATED_INACTIVE;
+                $userObj['activated'] = Users_Constant::ACTIVATED_INACTIVE;
             }
 
-            if ($userObj['activated'] != Users_UserInterface::ACTIVATED_ACTIVE) {
+            if ($userObj['activated'] != Users_Constant::ACTIVATED_ACTIVE) {
                 if ($reportErrors) {
-                    $displayVerifyPending = ModUtil::getVar(Users_UserInterface::MODNAME, Users_UserInterface::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, Users_UserInterface::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
-                    $displayApprovalPending = ModUtil::getVar(Users_UserInterface::MODNAME, Users_UserInterface::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, Users_UserInterface::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
-                    if (($userObj['activated'] == Users_UserInterface::ACTIVATED_PENDING_REG) && ($displayApprovalPending || $displayVerifyPending)) {
-                        $moderationOrder = ModUtil::getVar(Users_UserInterface::MODNAME, Users_UserInterface::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, Users_UserInterface::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
+                    $displayVerifyPending = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
+                    $displayApprovalPending = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
+                    if (($userObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) && ($displayApprovalPending || $displayVerifyPending)) {
+                        $moderationOrder = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, Users_Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
                         if (!$userObj['isverified']
-                                && (($moderationOrder == Users_UserInterface::APPROVAL_AFTER) || ($moderationOrder == Users_UserInterface::APPROVAL_ANY))
+                                && (($moderationOrder == Users_Constant::APPROVAL_AFTER) || ($moderationOrder == Users_Constant::APPROVAL_ANY))
                                 && $displayVerifyPending
                                 ) {
                             $message = $this->__('Your request to register with this site is still waiting for verification of your e-mail address. Please check your inbox for a message from us.');
                         } elseif (empty($userObj['approved_by'])
-                                && (($moderationOrder == Users_UserInterface::APPROVAL_BEFORE) || ($moderationOrder == Users_UserInterface::APPROVAL_ANY))
+                                && (($moderationOrder == Users_Constant::APPROVAL_BEFORE) || ($moderationOrder == Users_Constant::APPROVAL_ANY))
                                 && $displayApprovalPending
                                 ) {
                             $message = __('Your request to register with this site is still waiting for approval from a site administrator.');
@@ -686,9 +686,9 @@ class UserUtil
                         }
                         // It is a pending registration but the site admin elected to not display this to the user.
                         // No exception here because the answer is simply "no." This will fall through to return false.
-                    } elseif (($userObj['activated'] == Users_UserInterface::ACTIVATED_INACTIVE) && ModUtil::getVar(Users_UserInterface::MODNAME, Users_UserInterface::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, Users_UserInterface::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS)) {
+                    } elseif (($userObj['activated'] == Users_Constant::ACTIVATED_INACTIVE) && ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS)) {
                         $message = __('Your account has been disabled. Please contact a site administrator for more information.');
-                    } elseif (($userObj['activated'] == Users_UserInterface::ACTIVATED_PENDING_DELETE) && ModUtil::getVar(Users_UserInterface::MODNAME, Users_UserInterface::MODVAR_LOGIN_DISPLAY_DELETE_STATUS, Users_UserInterface::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS)) {
+                    } elseif (($userObj['activated'] == Users_Constant::ACTIVATED_PENDING_DELETE) && ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS)) {
                         $message = __('Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.');
                     } else {
                         $message = __('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account.');
@@ -981,7 +981,7 @@ class UserUtil
 
         $verifyChgColumn = $dbinfo['users_verifychg_column'];
         $where = "({$verifyChgColumn['newemail']} = '{$emailAddress}') AND ({$verifyChgColumn['changetype']} = "
-                . Users_UserInterface::VERIFYCHGTYPE_EMAIL . ")";
+                . Users_Constant::VERIFYCHGTYPE_EMAIL . ")";
         if ($excludeUid > 1) {
             $where .= " AND ({$verifyChgColumn['uid']} != {$excludeUid})";
         }
@@ -1004,7 +1004,7 @@ class UserUtil
      */
     public static function postProcessGetRegistration(&$userObj)
     {
-        if ($userObj['activated'] == Users_UserInterface::ACTIVATED_PENDING_REG) {
+        if ($userObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) {
             // Get isverified from the attributes.
             if (isset($userObj['__ATTRIBUTES__']['isverified'])) {
                 $userObj['isverified'] = $userObj['__ATTRIBUTES__']['isverified'];
@@ -1016,7 +1016,7 @@ class UserUtil
             // Get verificationsent from the users_verifychg table
             $dbinfo = DBUtil::getTables();
             $verifyChgColumn = $dbinfo['users_verifychg_column'];
-            $where = "WHERE ({$verifyChgColumn['uid']} = {$userObj['uid']}) AND ({$verifyChgColumn['changetype']} = " . Users_UserInterface::VERIFYCHGTYPE_REGEMAIL . ")";
+            $where = "WHERE ({$verifyChgColumn['uid']} = {$userObj['uid']}) AND ({$verifyChgColumn['changetype']} = " . Users_Constant::VERIFYCHGTYPE_REGEMAIL . ")";
             $verifyChgList = DBUtil::selectObjectArray('users_verifychg', $where, '', -1, 1);
             if ($verifyChgList && is_array($verifyChgList) && !empty($verifyChgList) && is_array($verifyChgList[0]) && !empty($verifyChgList[0])) {
                 $userObj['verificationsent'] = $verifyChgList[0]['created_dt'];
@@ -1148,8 +1148,8 @@ class UserUtil
                 // This check should come at the very end, here, so that if $force is true the vars get
                 // reloaded into cache no matter what $getRegistration is set to. If not, and this is
                 // called from setVar(), and setVar() changed the 'activated' value, then we'd have trouble.
-                if (($getRegistration && ($user['activated'] != Users_UserInterface::ACTIVATED_PENDING_REG))
-                        || (!$getRegistration && ($user['activated'] == Users_UserInterface::ACTIVATED_PENDING_REG))) {
+                if (($getRegistration && ($user['activated'] != Users_Constant::ACTIVATED_PENDING_REG))
+                        || (!$getRegistration && ($user['activated'] == Users_Constant::ACTIVATED_PENDING_REG))) {
                     return false;
                 }
 
@@ -1159,8 +1159,8 @@ class UserUtil
                 $unames[$user['uname']] = $user['uid'];
                 $emails[$user['email']] = $user['uid'];
             }
-        } elseif (($getRegistration && ($user['activated'] != Users_UserInterface::ACTIVATED_PENDING_REG))
-                || (!$getRegistration && ($user['activated'] == Users_UserInterface::ACTIVATED_PENDING_REG))) {
+        } elseif (($getRegistration && ($user['activated'] != Users_Constant::ACTIVATED_PENDING_REG))
+                || (!$getRegistration && ($user['activated'] == Users_Constant::ACTIVATED_PENDING_REG))) {
 
             return false;
         }
@@ -1491,7 +1491,7 @@ class UserUtil
      */
     public static function validatePassword($unhashedPassword)
     {
-        $minLength = ModUtil::getVar(Users_UserInterface::MODNAME, Users_UserInterface::MODVAR_PASSWORD_MINIMUM_LENGTH, Users_UserInterface::DEFAULT_PASSWORD_MINIMUM_LENGTH);
+        $minLength = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH, Users_Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
         return isset($unhashedPassword)
                 && is_string($unhashedPassword)
                 && (strlen($unhashedPassword) >= $minLength);
@@ -1533,7 +1533,7 @@ class UserUtil
             }
         }
 
-        return SecurityUtil::getSaltedHash($unhashedPassword, $hashAlgorithmName, self::getPasswordHashMethods(false), 5, Users_UserInterface::SALT_DELIM);
+        return SecurityUtil::getSaltedHash($unhashedPassword, $hashAlgorithmName, self::getPasswordHashMethods(false), 5, Users_Constant::SALT_DELIM);
 
         return array(
                 'hashMethodCode' => $hashMethodCode,
@@ -1606,11 +1606,11 @@ class UserUtil
             return LogUtil::registerArgsError();
         }
 
-        if (!isset($hashedPassword) || !is_string($hashedPassword) || empty($hashedPassword) || (strpos($hashedPassword, Users_UserInterface::SALT_DELIM) === false)) {
+        if (!isset($hashedPassword) || !is_string($hashedPassword) || empty($hashedPassword) || (strpos($hashedPassword, Users_Constant::SALT_DELIM) === false)) {
             return LogUtil::registerArgsError();
         }
 
-        $passwordsMatch = SecurityUtil::checkSaltedHash($unhashedPassword, $hashedPassword, self::getPasswordHashMethods(true), Users_UserInterface::SALT_DELIM);
+        $passwordsMatch = SecurityUtil::checkSaltedHash($unhashedPassword, $hashedPassword, self::getPasswordHashMethods(true), Users_Constant::SALT_DELIM);
 
         return $passwordsMatch;
     }

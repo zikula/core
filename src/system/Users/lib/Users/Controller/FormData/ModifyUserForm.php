@@ -61,7 +61,7 @@ class Users_Controller_FormData_ModifyUserForm extends Users_Controller_FormData
                 $this->__('A user name is required, and cannot be left blank.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
                 $this->serviceManager,
-                '/^'. Users_UserInterface::UNAME_VALIDATION_PATTERN .'$/uD',
+                '/^'. Users_Constant::UNAME_VALIDATION_PATTERN .'$/uD',
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringLowercase(
                 $this->serviceManager,
@@ -83,7 +83,7 @@ class Users_Controller_FormData_ModifyUserForm extends Users_Controller_FormData
                 $this->__('An e-mail address is required, and cannot be left blank.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
                 $this->serviceManager,
-                '/^'. Users_UserInterface::EMAIL_VALIDATION_PATTERN .'$/Di',
+                '/^'. Users_Constant::EMAIL_VALIDATION_PATTERN .'$/Di',
                 $this->__('The value entered does not appear to be a valid e-mail address.')));
         
         $this->addField(new Users_Controller_FormData_Field(
@@ -109,7 +109,7 @@ class Users_Controller_FormData_ModifyUserForm extends Users_Controller_FormData
                 $this->__('The value must be an integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericInSet(
                 $this->serviceManager,
-                array(Users_UserInterface::ACTIVATED_INACTIVE, Users_UserInterface::ACTIVATED_ACTIVE, Users_UserInterface::ACTIVATED_PENDING_DELETE),
+                array(Users_Constant::ACTIVATED_INACTIVE, Users_Constant::ACTIVATED_ACTIVE, Users_Constant::ACTIVATED_PENDING_DELETE),
                 $this->__('The value must be an integer.')));
         
         $this->addField(new Users_Controller_FormData_Field(
@@ -156,7 +156,7 @@ class Users_Controller_FormData_ModifyUserForm extends Users_Controller_FormData
                 $this->serviceManager,
                 $this->__('The value must be a string.')));
         
-        $passwordMinimumLength = (int)$this->getVar(Users_UserInterface::MODVAR_PASSWORD_MINIMUM_LENGTH, Users_UserInterface::DEFAULT_PASSWORD_MINIMUM_LENGTH);
+        $passwordMinimumLength = (int)$this->getVar(Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH, Users_Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
         $this->passwordLengthValidator = new Users_Controller_FormData_Validator_StringMinimumLength($this->serviceManager, $passwordMinimumLength, 
                 $this->__f('Passwords must be at least %1$d characters in length.', array($passwordMinimumLength)));
         

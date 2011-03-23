@@ -32,7 +32,7 @@ class Users_Api_Account extends Zikula_AbstractApi
         // Show change password action only if the account record contains a password, and the password is not the
         // special marker for an account created without a Users module authentication password.
         $pass = UserUtil::getVar('pass');
-        if (!empty($pass) && ($pass != Users_UserInterface::PWD_NO_USERS_AUTHENTICATION)) {
+        if (!empty($pass) && ($pass != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
             // show edit password link
             $items['1'] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'changePassword'),
