@@ -38,7 +38,7 @@ if (!is_readable($f)) {
 $signingKey = md5(serialize($ZConfig['DBInfo']['databases']['default']));
 
 $contents = file_get_contents($f);
-if (!is_serialized($contents)) {
+if (!DataUtil::is_serialized($contents, false)) {
     header('HTTP/1.0 500 Internal error');
     die('ERROR: Corrupted file.');
 }
@@ -66,20 +66,6 @@ header('Cache-Control: must-revalidate');
 header('Expires: ' . gmdate("D, d M Y H:i:s", time() + $dataArray['lifetime']) . ' GMT');
 echo $dataArray['contents'];
 exit;
-
-/**
- * Check if a string is serialized.
- *
- * This function check if a string is serialized.
- *
- * @param string $string String to check.
- *
- * @return boolean True if it's serialized, false if it's not.
- */
-function is_serialized($string)
-{
-    return ($string == 'b:0;' ? true : (bool)@unserialize($string));
-}
 
 /**
  * Class SecurityUtil fake.
