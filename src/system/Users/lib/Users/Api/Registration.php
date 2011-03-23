@@ -90,7 +90,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
                 $testPass = mb_strtolower(trim($reginfo['pass']));
                 $testPassreminder = mb_strtolower(trim($reginfo['passreminder']));
 
-                if ((strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
+                if (!empty($testPass) && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
                     $passwordErrors['passreminder'] = $this->__('You cannot include your password in your password reminder.');
                 } else {
                     // See if they included their password with extra character in the middle--only tests if they included non alpha-numerics in the middle.
