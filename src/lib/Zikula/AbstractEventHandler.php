@@ -24,7 +24,7 @@
  *
  * The handler methods must be implemented as followes:
  *
- * public function handler(Event $event)
+ * public function handler(Zikula_Event $event)
  */
 abstract class Zikula_AbstractEventHandler
 {
@@ -59,12 +59,12 @@ abstract class Zikula_AbstractEventHandler
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param Zikula_EventManager $eventManager EventManager.
      */
-    public function __construct(Zikula_ServiceManager $serviceManager)
+    public function __construct(Zikula_EventManager $eventManager)
     {
-        $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        $this->eventManager = $eventManager;
+        $this->serviceManager = $this->eventManager->getServiceManager();
         $this->setupHandlerDefinitions();
     }
 
