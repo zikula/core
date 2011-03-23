@@ -1642,9 +1642,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             // get other import values
             $importFile = FormUtil::getPassedValue('importFile', (isset($args['importFile']) ? $args['importFile'] : null), 'FILES');
             $delimiter = $this->request->getPost()->get('delimiter', (isset($args['delimiter']) ? $args['delimiter'] : null));
-            $importResults = ModUtil::func($this->name, 'admin', 'uploadImport',
-                                       array('importFile' => $importFile,
-                                             'delimiter' => $delimiter));
+            $importResults = $this->uploadImport($importFile, $delimiter);
             if ($importResults == '') {
                 // the users have been imported successfully
                 $this->registerStatus($this->__('Done! Users imported successfully.'));
@@ -1859,34 +1857,19 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *                        See http://php.net/manual/en/features.file-upload.post-method.php .
      * - delimiter  (int)   A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
      *
-     * @param array $args All arguments passed to the function.
-     *                    $args['importFile'] (array) Information about the file to import. Used as the default
-     *                      if $_FILES['importFile'] is not set. Allows this function to be called internally,
-     *                      rather than as a result of a form post.
-     *                    $args['delimiter'] (int) A code indicating the delimiter used in the file. Used as the
-     *                      default if $_POST['delimiter'] is not set. Allows this function to be called internally,
-     *                      rather than as a result of a form post.
+     * @param array   $importFile Information about the file to import. Used as the default
+     *                            if $_FILES['importFile'] is not set. Allows this function to be called internally,
+     *                            rather than as a result of a form post.
+     * @param integer $delimiter  A code indicating the delimiter used in the file. Used as the
+     *                            default if $_POST['delimiter'] is not set. Allows this function to be called internally,
+     *                            rather than as a result of a form post.
      *
      * @return a empty message if success or an error message otherwise
      * 
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access.
      */
-    public function uploadImport($args)
+    protected function uploadImport(array $importFile, $delimiter)
     {
-        // security check
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-            throw new Zikula_Exception_Forbidden();
-        }
-
-        // get import values
-        if (isset($args) && is_array($args) && !empty($args)) {
-            $importFile = isset($args['importFile']) ? $args['importFile'] : null;
-            $delimiter = isset($args['delimiter']) ? $args['delimiter'] : null;
-        } else {
-            $importFile = $this->request->getFiles()->get('importFile', null);
-            $delimiter = $this->request->getPost()->get('delimiter', null);
-        }
-
         // get needed values
         $is_admin = (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) ? true : false;
         $minpass = $this->getVar('minpass');
@@ -1908,7 +1891,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         }
 
         // get available groups
-        $allGroups = ModUtil::apiFunc('Groups','user','getall');
+        $allGroups = ModUtil::apiFunc('Groups', 'user', 'getall');
 
         // create an array with the groups identities where the user can add other users
         $allGroupsArray = array();

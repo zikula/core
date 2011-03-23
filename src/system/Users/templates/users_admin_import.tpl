@@ -55,7 +55,7 @@
         </dl>
         <dl>
             <dt>{gt text="An example of a valid CSV file"}</dt>
-            <dd>uname,pass,email,activated,sendMail</dd>
+            <dd>uname,pass,email,activated,sendmail,groups</dd>
             <dd>{gt text="albert,12secure09,albert@example.org,1,1,2"}</dd>
             <dd>{gt text="george,lesssecure,george@example.org,1,0,1|5"}</dd>
             <dd>{gt text="robert,hispassword,robert@example.org,,,"}</dd>
