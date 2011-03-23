@@ -257,11 +257,11 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
             // any "log in" into the Zikula site is not done here. This is simply verification that the authenticationInfo,
             // including the password, is valid as a unit.
 
-            $userObj = UserUtil::getVars($uid);
+            $userObj = UserUtil::getVars($uid, true);
             if (!$userObj) {
                 // Must be a registration. Acting as an authenticationModule, we should not care at this point about the user's
                 // account status. We will deal with the account status in a moment.
-                $userObj = UserUtil::getVars($uid, false, '', true);
+                $userObj = UserUtil::getVars($uid, true, '', true);
 
                 if (!$userObj) {
                     // Neither an account nor a pending registration request. This should really not happen since we have a uid.

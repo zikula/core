@@ -206,7 +206,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     } else {
                         // Shouldn't really get here out of the registration process, but cover all the bases.
                         $this->registerError($this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
-                        $registeredObj['regErrors'][] = $this->__('Your account status will not permit you to log in at this time. Please contact the site administrator for more information.');
+                        $registeredObj['regErrors'] = $this->__('Your account status will not permit you to log in at this time. Please contact the site administrator for more information.');
                     }
 
                     $proceedToForm = false;
