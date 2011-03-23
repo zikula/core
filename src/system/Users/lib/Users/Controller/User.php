@@ -244,6 +244,36 @@ class Users_Controller_User extends Zikula_AbstractController
                     ->fetch('users_user_register.tpl');
         } elseif (!empty($registeredObj['regErrors']) || !$canLogIn) {
             return $this->view->fetch('users_user_displaystatusmsg.tpl');
+        } elseif ($this->getVar(Users_UserInterface::MODVAR_REGISTRATION_AUTO_LOGIN, Users_UserInterface::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
+            $loginMethod = $this->getVar(Users_UserInterface::MODVAR_LOGIN_METHOD, Users_UserInterface::DEFAULT_LOGIN_METHOD);
+            if (($loginMethod == Users_UserInterface::LOGIN_METHOD_UNAME) || ($loginMethod == Users_UserInterface::LOGIN_METHOD_ANY)) {
+                $loginArgs = array(
+                    'authentication_method' => array(
+                        'modname'   => $this->name,
+                        'method'    => 'uname',
+                    ),
+                    'authentication_info'   => array(
+                        'login_id'  => $registeredObj['uname'],
+                        'pass'      => $reginfo['pass'],
+                    ),
+                    'rememberme'            => false,
+                    'returnurl'             => System::getHomepageUrl(),
+                );
+            } else {
+                $loginArgs = array(
+                    'authentication_method' => array(
+                        'modname'   => $this->name,
+                        'method'    => 'email',
+                    ),
+                    'authentication_info'   => array(
+                        'login_id'  => $registeredObj['email'],
+                        'pass'      => $reginfo['pass'],
+                    ),
+                    'rememberme'            => false,
+                    'returnurl'             => System::getHomepageUrl(),
+                );
+            }
+            return ModUtil::func($this->name, 'user', 'login', $loginArgs);
         } else {
             $this->redirect(ModUtil::url($this->name, 'user', 'login'));
         }
