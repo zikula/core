@@ -135,7 +135,7 @@ class Zikula_EventManager
      *
      * @param Zikula_Event $event Event.
      *
-     * @return object Zikula_Event $event.
+     * @return Zikula_Event $event.
      */
     public function notify(Zikula_Event $event)
     {
@@ -154,7 +154,7 @@ class Zikula_EventManager
      *
      * @param Zikula_Event $event Event.
      *
-     * @return object Zikula_Event $event.
+     * @return Zikula_Event $event.
      */
     public function notifyUntil(Zikula_Event $event)
     {
@@ -239,7 +239,7 @@ class Zikula_EventManager
      *
      * @throws LogicException If no ServiceManager exists.
      *
-     * @return object ServiceManager instance.
+     * @return Zikula_ServiceManager instance.
      */
     public function getServiceManager()
     {
@@ -247,6 +247,16 @@ class Zikula_EventManager
             throw new LogicException('No ServiceManager was registered with this EventManager instance at construction.');
         }
         return $this->serviceManager;
+    }
+
+    /**
+     * Has this got a ServiceManager.
+     *
+     * @return boolean
+     */
+    public function hasServiceManager()
+    {
+        return ($this->serviceManager instanceof Zikula_ServiceManager);
     }
 }
 

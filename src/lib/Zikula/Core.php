@@ -294,7 +294,7 @@ class Zikula_Core
     public function attachEventHandler($className)
     {
         $r = new ReflectionClass($className);
-        $handler = $r->newInstance($this->serviceManager);
+        $handler = $r->newInstance($this->eventManager);
 
         if (!$handler instanceof Zikula_AbstractEventHandler) {
             throw new LogicException(sprintf('Class %s must be an instance of Zikula_AbstractEventHandler', $className));
