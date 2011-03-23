@@ -42,7 +42,7 @@ function smarty_function_userlogin($params, Zikula_View $view)
         $maxlength     = isset($params['maxlength'])     ? $params['maxlength']    : 25;
         $maxlengthpass = isset($params['maxlenthpass'])  ? $params['maxlenthpass'] : 20;
         $class         = isset($params['class'])         ? ' class="'.$params['class'].'"' : '';
-        if (ModUtil::getVar(Users_UserInterface::MODNAME, Users_UserInterface::MODVAR_LOGIN_METHOD, Users_UserInterface::LOGIN_METHOD_UNAME) == Users_UserInterface::LOGIN_METHOD_UNAME) {
+        if (ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::LOGIN_METHOD_UNAME) == Users_Constant::LOGIN_METHOD_UNAME) {
             $value = isset($params['value']) ? DataUtil::formatForDisplay($params['value']) : __('User name');
             $userNameLabel = __('User name');
             $inputName = 'uname';

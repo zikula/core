@@ -45,7 +45,7 @@ class Users_Listener_ForcedPasswordChange extends Zikula_AbstractBase
 
         $userMustChangePassword = UserUtil::getVar('_Users_mustChangePassword', $userObj['uid'], false);
 
-        if ($userMustChangePassword && ($userObj['pass'] != Users_UserInterface::PWD_NO_USERS_AUTHENTICATION)) {
+        if ($userMustChangePassword && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
             $event->setNotified();
             $event->setData(array(
                 'redirectFunc'  => array(

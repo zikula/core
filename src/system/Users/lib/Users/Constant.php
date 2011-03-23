@@ -14,9 +14,14 @@
  */
 
 /**
- * Users module constants.
+ * Users module-wide constants.
+ * 
+ * Add only constants here. No variables, functions, or other elements.
+ * 
+ * Constants used for specific classes can be defined in those classes. The constants in this class are module-wide
+ * constants.
  */
-interface Users_UserInterface
+class Users_Constant
 {
     /**
      * The name of the module.
@@ -310,7 +315,7 @@ interface Users_UserInterface
     /**
      *
      */
-    const DEFAULT_LOGIN_METHOD = Users_UserInterface::LOGIN_METHOD_UNAME;
+    const DEFAULT_LOGIN_METHOD = Users_Constant::LOGIN_METHOD_UNAME;
 
     /**
      *
@@ -385,7 +390,7 @@ interface Users_UserInterface
     /**
      *
      */
-    const DEFAULT_REGISTRATION_APPROVAL_SEQUENCE = Users_UserInterface::APPROVAL_BEFORE;
+    const DEFAULT_REGISTRATION_APPROVAL_SEQUENCE = Users_Constant::APPROVAL_BEFORE;
 
     /**
      *
@@ -435,7 +440,7 @@ interface Users_UserInterface
     /**
      *
      */
-    const DEFAULT_REGISTRATION_VERIFICATION_MODE = Users_UserInterface::VERIFY_USERPWD;
+    const DEFAULT_REGISTRATION_VERIFICATION_MODE = Users_Constant::VERIFY_USERPWD;
 
     /**
      *

@@ -102,7 +102,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
             }
         }
         // TODO - Should this exclude pending delete too?
-        $where[] = "({$userscolumn['activated']} != " . Users_UserInterface::ACTIVATED_PENDING_REG . ")";
+        $where[] = "({$userscolumn['activated']} != " . Users_Constant::ACTIVATED_PENDING_REG . ")";
         $where = 'WHERE ' . implode(' AND ', $where);
 
         $permFilter = array();
@@ -235,7 +235,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know we have updated an item
-        if ($originalUser['activated'] == Users_UserInterface::ACTIVATED_PENDING_REG) {
+        if ($originalUser['activated'] == Users_Constant::ACTIVATED_PENDING_REG) {
             $updateEvent = new Zikula_Event('registration.update', $updatedUser);
         } else {
             $updateEvent = new Zikula_Event('user.update', $updatedUser);
@@ -301,7 +301,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
 
         foreach ($userList as $userObj) {
             if ($markOnly) {
-                UserUtil::setVar('activated', Users_UserInterface::ACTIVATED_PENDING_DELETE, $userObj['uid']);
+                UserUtil::setVar('activated', Users_Constant::ACTIVATED_PENDING_DELETE, $userObj['uid']);
             } else {
                 // TODO - This should be in the Groups module, and happen as a result of an event.
                 if (!DBUtil::deleteObjectByID('group_membership', $userObj['uid'], 'uid')) {
@@ -593,11 +593,11 @@ class Users_Api_Admin extends Zikula_AbstractApi
             $renderer->assign('siteurl', $siteurl);
 
             foreach ($importValues as $value) {
-                if ($value['activated'] != Users_UserInterface::ACTIVATED_PENDING_REG) {
+                if ($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) {
                     $createEvent = new Zikula_Event('user.create', $value);
                     $this->eventManager->notify($createEvent);
                 }
-                if (($value['activated'] != Users_UserInterface::ACTIVATED_PENDING_REG) && ($value['activated'] != Users_UserInterface::ACTIVATED_INACTIVE)
+                if (($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) && ($value['activated'] != Users_Constant::ACTIVATED_INACTIVE)
                         && ($value['sendMail'] == 1)) {
 
                     $renderer->assign('email', $value['email']);

@@ -34,7 +34,7 @@ class Users_Installer extends Zikula_AbstractInstaller
     public function  __construct(Zikula_ServiceManager $serviceManager, array $options = array()) {
         parent::__construct($serviceManager, $options);
 
-        $this->name = Users_UserInterface::MODNAME;
+        $this->name = Users_Constant::MODNAME;
     }
 
     /**
@@ -107,7 +107,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                 $this->upgrade_migrateSerialisedUserTemp();
             case '1.12':
                 // upgrade 1.12 to 1.13
-                $this->setVar(Users_UserInterface::MODVAR_AVATAR_IMAGE_PATH, Users_UserInterface::MODVAR_AVATAR_IMAGE_PATH);
+                $this->setVar(Users_Constant::MODVAR_AVATAR_IMAGE_PATH, Users_Constant::MODVAR_AVATAR_IMAGE_PATH);
                 // lowercaseuname Removed in 2.0.0
                 //$this->setVar('lowercaseuname', 1);
                 // **************************************************************
@@ -118,21 +118,21 @@ class Users_Installer extends Zikula_AbstractInstaller
             case '1.13':
                 // upgrade 1.13 to 2.2.0
                 // Check if the hash method is md5. If so, it is not used any more. Change it to the new default.
-                if ($this->getVar(Users_UserInterface::MODVAR_HASH_METHOD, false) == 'md5') {
-                    $this->setVar(Users_UserInterface::MODVAR_HASH_METHOD, Users_UserInterface::DEFAULT_HASH_METHOD);
+                if ($this->getVar(Users_Constant::MODVAR_HASH_METHOD, false) == 'md5') {
+                    $this->setVar(Users_Constant::MODVAR_HASH_METHOD, Users_Constant::DEFAULT_HASH_METHOD);
                 }
                 
                 // Convert the banned user names to a comma separated list.
-                $bannedUnames = $this->getVar(Users_UserInterface::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
+                $bannedUnames = $this->getVar(Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
                 $bannedUnames = preg_split('/\s+/', $bannedUnames);
                 $bannedUnames = implode(', ', $bannedUnames);
-                $this->setVar(Users_UserInterface::MODVAR_REGISTRATION_ILLEGAL_UNAMES, $bannedUnames);
+                $this->setVar(Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, $bannedUnames);
                 
                 // System-generated passwords are deprecated since 1.3.0. Change it to
                 // User-generated passwords.
-                $regVerifyEmail = $this->getVar(Users_UserInterface::MODVAR_REGISTRATION_VERIFICATION_MODE, Users_UserInterface::VERIFY_NO);
-                if ($regVerifyEmail == Users_UserInterface::VERIFY_SYSTEMPWD) {
-                    $this->setVar(Users_UserInterface::MODVAR_REGISTRATION_VERIFICATION_MODE, Users_UserInterface::VERIFY_USERPWD);
+                $regVerifyEmail = $this->getVar(Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE, Users_Constant::VERIFY_NO);
+                if ($regVerifyEmail == Users_Constant::VERIFY_SYSTEMPWD) {
+                    $this->setVar(Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE, Users_Constant::VERIFY_USERPWD);
                 }
 
                 // IDN domains setting moving to system settings.
@@ -208,40 +208,40 @@ class Users_Installer extends Zikula_AbstractInstaller
     private function getDefaultModvars()
     {
         return array(
-            Users_UserInterface::MODVAR_ACCOUNT_DISPLAY_GRAPHICS              => Users_UserInterface::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS,
-            Users_UserInterface::MODVAR_ACCOUNT_ITEMS_PER_PAGE                => Users_UserInterface::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
-            Users_UserInterface::MODVAR_ACCOUNT_ITEMS_PER_ROW                 => Users_UserInterface::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
-            Users_UserInterface::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => Users_UserInterface::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
-            Users_UserInterface::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->__(/* Anonymous (guest) account display name */'Guest'),
-            Users_UserInterface::MODVAR_AVATAR_IMAGE_PATH                     => Users_UserInterface::DEFAULT_AVATAR_IMAGE_PATH,
-            Users_UserInterface::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL              => Users_UserInterface::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
-            Users_UserInterface::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD           => Users_UserInterface::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
-            Users_UserInterface::MODVAR_GRAVATARS_ENABLED                     => Users_UserInterface::DEFAULT_GRAVATARS_ENABLED,
-            Users_UserInterface::MODVAR_GRAVATAR_IMAGE                        => Users_UserInterface::DEFAULT_GRAVATAR_IMAGE,
-            Users_UserInterface::MODVAR_HASH_METHOD                           => Users_UserInterface::DEFAULT_HASH_METHOD,
-            Users_UserInterface::MODVAR_ITEMS_PER_PAGE                        => Users_UserInterface::DEFAULT_ITEMS_PER_PAGE,
-            Users_UserInterface::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS         => Users_UserInterface::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
-            Users_UserInterface::MODVAR_LOGIN_DISPLAY_DELETE_STATUS           => Users_UserInterface::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS,
-            Users_UserInterface::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS         => Users_UserInterface::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
-            Users_UserInterface::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS           => Users_UserInterface::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
-            Users_UserInterface::MODVAR_LOGIN_METHOD                          => Users_UserInterface::DEFAULT_LOGIN_METHOD,
-            Users_UserInterface::MODVAR_LOGIN_WCAG_COMPLIANT                  => Users_UserInterface::DEFAULT_LOGIN_WCAG_COMPLIANT,
-            Users_UserInterface::MODVAR_MANAGE_EMAIL_ADDRESS                  => Users_UserInterface::DEFAULT_MANAGE_EMAIL_ADDRESS,
-            Users_UserInterface::MODVAR_PASSWORD_MINIMUM_LENGTH               => Users_UserInterface::DEFAULT_PASSWORD_MINIMUM_LENGTH,
-            Users_UserInterface::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => Users_UserInterface::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
-            Users_UserInterface::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
-            Users_UserInterface::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',
-            Users_UserInterface::MODVAR_REGISTRATION_ANTISPAM_ANSWER          => '',
-            Users_UserInterface::MODVAR_REGISTRATION_APPROVAL_REQUIRED        => Users_UserInterface::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
-            Users_UserInterface::MODVAR_REGISTRATION_APPROVAL_SEQUENCE        => Users_UserInterface::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE,
-            Users_UserInterface::MODVAR_REGISTRATION_DISABLED_REASON          => __(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
-            Users_UserInterface::MODVAR_REGISTRATION_ENABLED                  => Users_UserInterface::DEFAULT_REGISTRATION_ENABLED,
-            Users_UserInterface::MODVAR_EXPIRE_DAYS_REGISTRATION              => Users_UserInterface::DEFAULT_EXPIRE_DAYS_REGISTRATION,
-            Users_UserInterface::MODVAR_REGISTRATION_ILLEGAL_AGENTS           => '',
-            Users_UserInterface::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
-            Users_UserInterface::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => __(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
-            Users_UserInterface::MODVAR_REGISTRATION_VERIFICATION_MODE        => Users_UserInterface::DEFAULT_REGISTRATION_VERIFICATION_MODE,
-            Users_UserInterface::MODVAR_REQUIRE_UNIQUE_EMAIL                  => Users_UserInterface::DEFAULT_REQUIRE_UNIQUE_EMAIL,
+            Users_Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS              => Users_Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS,
+            Users_Constant::MODVAR_ACCOUNT_ITEMS_PER_PAGE                => Users_Constant::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
+            Users_Constant::MODVAR_ACCOUNT_ITEMS_PER_ROW                 => Users_Constant::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
+            Users_Constant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => Users_Constant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
+            Users_Constant::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->__(/* Anonymous (guest) account display name */'Guest'),
+            Users_Constant::MODVAR_AVATAR_IMAGE_PATH                     => Users_Constant::DEFAULT_AVATAR_IMAGE_PATH,
+            Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL              => Users_Constant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
+            Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD           => Users_Constant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
+            Users_Constant::MODVAR_GRAVATARS_ENABLED                     => Users_Constant::DEFAULT_GRAVATARS_ENABLED,
+            Users_Constant::MODVAR_GRAVATAR_IMAGE                        => Users_Constant::DEFAULT_GRAVATAR_IMAGE,
+            Users_Constant::MODVAR_HASH_METHOD                           => Users_Constant::DEFAULT_HASH_METHOD,
+            Users_Constant::MODVAR_ITEMS_PER_PAGE                        => Users_Constant::DEFAULT_ITEMS_PER_PAGE,
+            Users_Constant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS         => Users_Constant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
+            Users_Constant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS           => Users_Constant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS,
+            Users_Constant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS         => Users_Constant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
+            Users_Constant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS           => Users_Constant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
+            Users_Constant::MODVAR_LOGIN_METHOD                          => Users_Constant::DEFAULT_LOGIN_METHOD,
+            Users_Constant::MODVAR_LOGIN_WCAG_COMPLIANT                  => Users_Constant::DEFAULT_LOGIN_WCAG_COMPLIANT,
+            Users_Constant::MODVAR_MANAGE_EMAIL_ADDRESS                  => Users_Constant::DEFAULT_MANAGE_EMAIL_ADDRESS,
+            Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH               => Users_Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
+            Users_Constant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => Users_Constant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
+            Users_Constant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
+            Users_Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',
+            Users_Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER          => '',
+            Users_Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED        => Users_Constant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
+            Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE        => Users_Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE,
+            Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON          => __(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
+            Users_Constant::MODVAR_REGISTRATION_ENABLED                  => Users_Constant::DEFAULT_REGISTRATION_ENABLED,
+            Users_Constant::MODVAR_EXPIRE_DAYS_REGISTRATION              => Users_Constant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
+            Users_Constant::MODVAR_REGISTRATION_ILLEGAL_AGENTS           => '',
+            Users_Constant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
+            Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => __(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
+            Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE        => Users_Constant::DEFAULT_REGISTRATION_VERIFICATION_MODE,
+            Users_Constant::MODVAR_REQUIRE_UNIQUE_EMAIL                  => Users_Constant::DEFAULT_REQUIRE_UNIQUE_EMAIL,
         );
     }
 
@@ -256,7 +256,7 @@ class Users_Installer extends Zikula_AbstractInstaller
     private function defaultdata()
     {
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-        $nowUTCStr = $nowUTC->format(Users_UserInterface::DATETIME_FORMAT);
+        $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
 
         // Anonymous
         $record = array(
@@ -265,7 +265,7 @@ class Users_Installer extends Zikula_AbstractInstaller
             'email'         => '',
             'pass'          => '',
             'passreminder'  => '',
-            'activated'     => Users_UserInterface::ACTIVATED_ACTIVE,
+            'activated'     => Users_Constant::ACTIVATED_ACTIVE,
             'approved_date' => $nowUTCStr,
             'approved_by'   => 2,
             'user_regdate'  => $nowUTCStr,
@@ -282,7 +282,7 @@ class Users_Installer extends Zikula_AbstractInstaller
             'email'         => '',
             'pass'          => '1$$dc647eb65e6711e155375218212b3964',
             'passreminder'  => '',
-            'activated'     => Users_UserInterface::ACTIVATED_ACTIVE,
+            'activated'     => Users_Constant::ACTIVATED_ACTIVE,
             'approved_date' => $nowUTCStr,
             'approved_by'   => 2,
             'user_regdate'  => $nowUTCStr,
@@ -396,7 +396,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                                 && is_numeric($userArray[$key]['dynamics'])) {
                             // Convert the date to a date/time format instead of a UNIX timestamp
                             $theDate = new DateTime("@{$userArray[$key]['dynamics']}", $tzUTC);
-                            $userArray[$key]['dynamics'] = $theDate->format(Users_UserInterface::DATETIME_FORMAT);
+                            $userArray[$key]['dynamics'] = $theDate->format(Users_Constant::DATETIME_FORMAT);
                         }
                         if (isset($userArray[$key]['comment']) && !empty($userArray[$key]['comment']) 
                                 && is_string($userArray[$key]['comment'])) {
@@ -421,7 +421,7 @@ class Users_Installer extends Zikula_AbstractInstaller
         $sql = "INSERT INTO {$dbinfo210['users_verifychg']}
                     ({$verifyColumn['changetype']}, {$verifyColumn['uid']}, {$verifyColumn['newemail']},
                      {$verifyColumn['verifycode']}, {$verifyColumn['created_dt']})
-                SELECT " . Users_UserInterface::VERIFYCHGTYPE_EMAIL . " AS {$verifyColumn['changetype']},
+                SELECT " . Users_Constant::VERIFYCHGTYPE_EMAIL . " AS {$verifyColumn['changetype']},
                     users.{$usersColumn['uid']} AS {$verifyColumn['uid']},
                     ut.{$tempColumn['email']} AS {$verifyColumn['newemail']},
                     ut.{$tempColumn['comment']} AS {$verifyColumn['verifycode']},
@@ -497,7 +497,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                 SELECT {$tempColumn['uname']} AS {$usersColumn['uname']},
                     {$tempColumn['email']} AS {$usersColumn['email']},
                     {$tempColumn['pass']} AS {$usersColumn['pass']},
-                    ".Users_UserInterface::ACTIVATED_PENDING_REG." AS {$usersColumn['activated']},
+                    ".Users_Constant::ACTIVATED_PENDING_REG." AS {$usersColumn['activated']},
                     0 AS {$usersColumn['approved_by']}
                 FROM {$dbinfo117X['users_temp']}
                 WHERE {$dbinfo117X['users_temp']}.{$tempColumn['type']} = 1";
@@ -518,7 +518,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                 LEFT JOIN {$dbinfo210['users']} AS users
                     ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
                 WHERE (ut.{$tempColumn['type']} = 1)
-                    AND (users.{$usersColumn['activated']} = ".Users_UserInterface::ACTIVATED_PENDING_REG.")";
+                    AND (users.{$usersColumn['activated']} = ".Users_Constant::ACTIVATED_PENDING_REG.")";
         $updated = DBUtil::executeSQL($sql);
         if (!$updated) {
             return false;
@@ -536,7 +536,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                 LEFT JOIN {$dbinfo210['users']} AS users
                     ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
                 WHERE (ut.{$tempColumn['type']} = 1)
-                    AND (users.{$usersColumn['activated']} = ".Users_UserInterface::ACTIVATED_PENDING_REG.")";
+                    AND (users.{$usersColumn['activated']} = ".Users_Constant::ACTIVATED_PENDING_REG.")";
         $updated = DBUtil::executeSQL($sql);
         if (!$updated) {
             return false;
@@ -554,7 +554,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                 LEFT JOIN {$dbinfo210['users']} AS users
                     ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
                 WHERE (ut.{$tempColumn['type']} = 1)
-                    AND (users.{$usersColumn['activated']} = ".Users_UserInterface::ACTIVATED_PENDING_REG.")";
+                    AND (users.{$usersColumn['activated']} = ".Users_Constant::ACTIVATED_PENDING_REG.")";
         $updated = DBUtil::executeSQL($sql);
         if (!$updated) {
             return false;

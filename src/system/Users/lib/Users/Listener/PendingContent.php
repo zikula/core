@@ -54,8 +54,8 @@ class Users_Listener_PendingContent extends Zikula_AbstractBase
     public static function pendingContentListener(Zikula_Event $event)
     {
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            $approvalOrder = ModUtil::getVar(self::$modname, 'moderation_order', Users_UserInterface::APPROVAL_ANY);
-            if ($approvalOrder == Users_UserInterface::APPROVAL_AFTER) {
+            $approvalOrder = ModUtil::getVar(self::$modname, 'moderation_order', Users_Constant::APPROVAL_ANY);
+            if ($approvalOrder == Users_Constant::APPROVAL_AFTER) {
                 $numPendingApproval = ModUtil::apiFunc(self::$modname, 'registration', 'countAll', array('filter' => array('approved_by' => 0, 'isverified' => true)));
             } else {
                 $numPendingApproval = ModUtil::apiFunc(self::$modname, 'registration', 'countAll', array('filter' => array('approved_by' => 0)));

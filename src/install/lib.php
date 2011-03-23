@@ -344,7 +344,7 @@ function createuser($username, $password, $email)
     $email = mb_strtolower(DataUtil::formatForStore($email));
 
     $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-    $nowUTCStr = $nowUTC->format(Users_UserInterface::DATETIME_FORMAT);
+    $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
 
     // create the admin user
     $sql = "UPDATE {$dbtables['users']}
