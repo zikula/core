@@ -825,7 +825,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $this->redirect(System::getHomepageUrl());
             } else {
                 // meta refresh
-                $this->printRedirectPage($this->__('Done! You have been logged out.'));
+                $this->printRedirectPage($this->__('Done! You have been logged out.'), System::getHomepageUrl());
             }
         } else {
             $this->registerError($this->__('Error! You have not been logged out.'))
