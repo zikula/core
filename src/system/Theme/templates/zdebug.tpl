@@ -1,4 +1,5 @@
 {* zdebug.tpl, based on debug.tpl, last updated version 2.0.1 *}
+{ajaxheader noscriptaculous=true}
 {pageaddvar name='javascript' value='javascript/helpers/Zikula.zdebug.js'}
 {assign_debug_info}
 {debugenvironment}
