@@ -228,6 +228,7 @@ class Users_Controller_User extends Zikula_AbstractController
             // Notify that we are beginning a registration session.
             $event = new Zikula_Event('user.registration.started');
             EventUtil::notify($event);
+            $registeredObj = array();
         } else {
             throw new Zikula_Exception_Forbidden();
         }
