@@ -1942,7 +1942,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 // check the fields defined in the first row
                 $firstLineArray = explode($delimiterChar, $line);
                 foreach ($firstLineArray as $field) {
-                    if (!in_array(trim($field), $expectedFields)) {
+                    if (!in_array(trim(strtolower($field)), $expectedFields)) {
                         return $this->__f("Error! The import file does not have the expected field %s in the first row. Please check your import file.", array($field));
                     }
                 }
