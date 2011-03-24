@@ -157,10 +157,8 @@ class Users_Api_Admin extends Zikula_AbstractApi
             return false;
         }
 
-        $originalUser = UserUtil::getVars($updatedUser['uid']);
-        if (!$originalUser) {
-            $originalUser = UserUtil::getVars($updatedUser['uid'], false, 'uid', true);
-        }
+        $isRegistration = UserUtil::isRegistration($updatedUser['uid']);
+        $originalUser = UserUtil::getVars($updatedUser['uid'], true, 'uid', $isRegistration);
         
         if (!$originalUser) {
             $this->registerError($this->__('Error! Could not find the user record in order to update it.'));
@@ -235,7 +233,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know we have updated an item
-        if ($originalUser['activated'] == Users_Constant::ACTIVATED_PENDING_REG) {
+        if ($isRegistration) {
             $updateEvent = new Zikula_Event('registration.update', $updatedUser);
         } else {
             $updateEvent = new Zikula_Event('user.update', $updatedUser);
@@ -595,6 +593,9 @@ class Users_Api_Admin extends Zikula_AbstractApi
             foreach ($importValues as $value) {
                 if ($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) {
                     $createEvent = new Zikula_Event('user.create', $value);
+                    $this->eventManager->notify($createEvent);
+                } else {
+                    $createEvent = new Zikula_Event('registration.create', $value);
                     $this->eventManager->notify($createEvent);
                 }
                 if (($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) && ($value['activated'] != Users_Constant::ACTIVATED_INACTIVE)

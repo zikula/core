@@ -543,6 +543,9 @@ class Users_Api_Registration extends Zikula_AbstractApi
             
             // Force the reload of the user in the cache.
             $userObj = UserUtil::getVars($userObj['uid'], true, 'uid', true);
+            
+            $createEvent = new Zikula_Event('registration.create', $userObj);
+            $this->eventManager->notify($createEvent);
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $siteurl   = System::getBaseUrl();
@@ -1180,16 +1183,25 @@ class Users_Api_Registration extends Zikula_AbstractApi
         } else {
             $uid = $args['reginfo']['uid'];
         }
+        
+        $deleted = false;
+        $registration = UserUtil::getVars($uid, true, 'uid', true);
 
-        ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
-            'uid'        => $uid,
-            'changetype' => Users_Constant::VERIFYCHGTYPE_REGEMAIL,
-        ));
+        if (isset($registration) && $registration) {
+            $deleted = DBUtil::deleteObjectByID('users', $uid, 'uid');
 
-        // NOTE: This is a registration, not a "real" user, so no user.delete event and no item delete hook
-        // TODO - Shoud we fire a special registration.delete event?
+            if ($deleted) {
+                ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
+                    'uid'        => $uid,
+                    'changetype' => Users_Constant::VERIFYCHGTYPE_REGEMAIL,
+                ));
 
-        return DBUtil::deleteObjectByID('users', $uid, 'uid');
+                $deleteEvent = new Zikula_Event('registration.delete', $registration);
+                $this->eventManager->notify($deleteEvent);
+            }
+        }
+        
+        return $deleted;
     }
 
     /**
@@ -1219,11 +1231,16 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
             if (is_array($staleVerifyChgRecs) && !empty($staleVerifyChgRecs)) {
                 foreach ($staleVerifyChgRecs as $verifyChg) {
+                    $registration = UserUtil::getVars($verifyChg['uid'], true, 'uid', true);
+                    
                     DBUtil::deleteObjectByID('users', $verifyChg['uid'], 'uid');
                     ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
                         'uid'       => $verifyChg['uid'],
                         'changetype'=> Users_Constant::VERIFYCHGTYPE_REGEMAIL,
                     ));
+                    
+                    $deleteEvent = new Zikula_Event('registration.delete', $registration);
+                    $this->eventManager->notify($deleteEvent);
                 }
             }
         }

@@ -815,10 +815,11 @@ class UserUtil
                 // Made it through all the checks. We can actually log in now.
 
                 // Give any interested module one last chance to prevent the login from happening.
-                $event = new Zikula_Event('user.login.veto', $userObj, array(
+                $eventArgs = array(
                     'authentication_method' => $authenticationMethod,
                     'uid'                   => $userObj['uid'],
-                ));
+                );
+                $event = new Zikula_Event('user.login.veto', $userObj, $eventArgs);
                 EventUtil::notifyUntil($event);
 
                 if ($event->hasNotified()) {
@@ -882,12 +883,6 @@ class UserUtil
 
                     // now that we've logged in the permissions previously calculated (if any) are invalid
                     $GLOBALS['authinfogathered'][$userObj['uid']] = 0;
-
-                    $event = new Zikula_Event('user.login.succeeded', $userObj, array(
-                        'authentication_method' => $authenticationMethod,
-                        'uid'                   => $userObj['uid'],
-                    ));
-                    EventUtil::notify($event);
                 }
             }
         }
@@ -905,11 +900,6 @@ class UserUtil
         if (self::isLoggedIn()) {
             $userObj = self::getVars(self::getVar('uid'));
             $authenticationMethod = SessionUtil::delVar('authentication_method', array('modname' => '', 'method' => ''), 'Zikula_Users');
-            $event = new Zikula_Event('user.logout.succeeded', $userObj, array(
-                'authentication_method' => $authenticationMethod,
-                'uid'                   => $userObj['uid'],
-            ));
-            EventUtil::notify($event);
 
             session_destroy();
         }

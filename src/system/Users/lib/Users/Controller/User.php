@@ -128,6 +128,7 @@ class Users_Controller_User extends Zikula_AbstractController
         $formData = new Users_Controller_FormData_RegistrationForm('users_register', $this->serviceManager);
         $errorFields = array();
         $errorMessages = array();
+        $redirectUrl = '';
 
         if ($this->request->isPost()) {
             $this->checkCsrfToken();
@@ -212,8 +213,12 @@ class Users_Controller_User extends Zikula_AbstractController
                     $proceedToForm = false;
                     
                     // Notify that we are completing a registration session.
-                    $event = new Zikula_Event('user.registration.succeeded');
-                    EventUtil::notify($event);
+                    $eventArgs = array(
+                        'redirecturl'   => $redirectUrl,
+                    );
+                    $event = new Zikula_Event('user.registration.succeeded', $registeredObj, $eventArgs);
+                    $event = $this->eventManager->notify($event);
+                    $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
                 } else {
                     $this->registerError($this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
 
@@ -233,7 +238,7 @@ class Users_Controller_User extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        if ($proceedToForm || !$registeredObj) {
+        if ($proceedToForm) {
             $rendererArgs = array(
                 'errorFields'   => isset($errorFields) ? $errorFields : array(),
                 'errorMessages' => isset($errorMessages) ? $errorMessages : array(),
@@ -242,7 +247,11 @@ class Users_Controller_User extends Zikula_AbstractController
             return $this->view->assign_by_ref('formData', $formData)
                     ->assign($rendererArgs)
                     ->fetch('users_user_register.tpl');
-        } elseif (!empty($registeredObj['regErrors']) || !$canLogIn) {
+        } elseif (!$registeredObj || !empty($registeredObj['regErrors'])) {
+            return $this->view->fetch('users_user_displaystatusmsg.tpl');
+        } elseif (!empty($redirectUrl)) {
+            $this->redirect($redirectUrl);
+        } elseif (!$canLogIn) {
             return $this->view->fetch('users_user_displaystatusmsg.tpl');
         } elseif ($this->getVar(Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN, Users_Constant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
             $loginMethod = $this->getVar(Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::DEFAULT_LOGIN_METHOD);
@@ -712,6 +721,10 @@ class Users_Controller_User extends Zikula_AbstractController
                 $selectedAuthenticationMethod = array();
                 $rememberMe             = false;
                 $returnUrl              = $this->request->getGet()->get('returnurl', '');
+                
+                $event = new Zikula_Event('user.login.started');
+                EventUtil::notify($event);
+                $registeredObj = array();
             }
         } else {
             throw new Zikula_Exception_Forbidden();
@@ -773,16 +786,6 @@ class Users_Controller_User extends Zikula_AbstractController
                         // Because we are passing a $user and setting checkPassword false, this call back into the authentication
                         // chain should not trigger an external re-authentication, so it should not need preparation for reentry.
                         $loggedIn = UserUtil::loginUsing($selectedAuthenticationMethod, $authenticationInfo, $rememberMe, $reentrantURL, false, $user);
-
-                        // A successful login.
-                        if ($this->getVar('login_redirect', 1) == 1) {
-                            // WCAG compliant login
-                            $this->redirect($returnUrl);
-                        } else {
-                            // meta refresh
-                            $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $returnUrl);
-                        }
-
                     } elseif (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
                         $this->registerError($this->__('Your log-in request was not completed.'));
                     }
@@ -829,8 +832,28 @@ class Users_Controller_User extends Zikula_AbstractController
                     ))
                     ->fetch('users_user_login.tpl');
         } else {
-            // We only get here if the user logged in and the site is configured for meta refresh.
-            return true;
+            $eventArgs = array(
+                'authentication_method' => $authenticationMethod,
+                'redirecturl'           => $returnUrl,
+            );
+            $event = new Zikula_Event('user.login.succeeded', $userObj, $eventArgs);
+            $event = $this->eventManager->notify($event);
+            
+            $returnUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $returnUrl;
+            
+            if (empty($returnUrl)) {
+                $returnUrl = System::getHomepageUrl();
+            }
+
+            // A successful login.
+            if ($this->getVar(Users_Constant::MODVAR_LOGIN_WCAG_COMPLIANT, 1) == 1) {
+                // WCAG compliant login
+                $this->redirect($returnUrl);
+            } else {
+                // meta refresh
+                $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $returnUrl);
+                return true;
+            }
         }
     }
 
@@ -849,6 +872,11 @@ class Users_Controller_User extends Zikula_AbstractController
         // start logout event
         $uid = UserUtil::getVar('uid');
         if (UserUtil::logout()) {
+            $event = new Zikula_Event('user.logout.succeeded', $userObj, array(
+                'authentication_method' => $authenticationMethod,
+                'uid'                   => $userObj['uid'],
+            ));
+            EventUtil::notify($event);
             
             if ($login_redirect == 1) {
                 // WCAG compliant logout - we redirect to index.php because
@@ -1376,6 +1404,8 @@ class Users_Controller_User extends Zikula_AbstractController
 
         if (empty($passwordErrors)) {
             if (UserUtil::setPassword($newPassword, $uid)) {
+                // no user.update event for password chagnes.
+                
                 $passwordChanged = true;
 
                 // Clear the forced change of password flag, if it exists.
@@ -1539,6 +1569,9 @@ class Users_Controller_User extends Zikula_AbstractController
 
         // user and confirmation code are correct. set the new email
         UserUtil::setVar('email', $preemail['newemail']);
+        
+        $updateEvent = new Zikula_Event('user.update', UserUtil::getVars(UserUtil::getVar('uid'), true));
+        $this->eventManager->notify($updateEvent);
 
         // the preemail record is deleted
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
