@@ -232,7 +232,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     $eventArgs = array(
                         'redirecturl'   => $redirectUrl,
                     );
-                    $event = new Zikula_Event('user.registration.succeeded', $registeredObj, $eventArgs);
+                    $event = new Zikula_Event('registration.succeeded', $registeredObj, $eventArgs);
                     $event = $this->eventManager->notify($event);
                     $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
                 } else {
@@ -241,13 +241,13 @@ class Users_Controller_User extends Zikula_AbstractController
                     $proceedToForm = false;
 
                     // Notify that we are completing a registration session.
-                    $event = new Zikula_Event('user.registration.failed');
+                    $event = new Zikula_Event('registration.failed');
                     $this->eventManager->notify($event);
                 }
             }
         } elseif ($this->request->isGet()) {
             // Notify that we are beginning a registration session.
-            $event = new Zikula_Event('user.registration.started');
+            $event = new Zikula_Event('registration.started');
             $this->eventManager->notify($event);
             $registeredObj = array();
         } else {
