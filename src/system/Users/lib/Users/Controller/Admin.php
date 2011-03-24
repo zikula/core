@@ -2020,11 +2020,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $activated = trim($importValues[$counter - 1]['activated']);
             // check activation value and set 1 as default if it is not defined or it is incorrect
             if (!$activated || (($activated != Users_Constant::ACTIVATED_INACTIVE) && ($activated != Users_Constant::ACTIVATED_ACTIVE))) {
-                    $importValues[$counter - 1]['activated'] = Users_Constant::ACTIVATED_ACTIVE;
+                $importValues[$counter - 1]['activated'] = Users_Constant::ACTIVATED_ACTIVE;
             }
 
             // check send mail and set 0 as default if it is not defined
-            $importValues[$counter - 1]['sendMail'] = ($importValues[$counter - 1]['sendMail'] != 0 || $importValues[$counter - 1]['sendMail'] == '') ? 1 : 0;
+            $importValues[$counter - 1]['sendmail'] = ($importValues[$counter - 1]['sendmail'] != 0 || $importValues[$counter - 1]['sendmail'] == '') ? 1 : 0;
 
             // check groups and set defaultGroup as default if there are not groups defined
             $groups = trim($importValues[$counter - 1]['groups']);
