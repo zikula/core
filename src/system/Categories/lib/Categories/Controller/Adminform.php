@@ -261,7 +261,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
 
         $class = 'Categories_DBObject_Registry';
 
-        if (FormUtil::getPassedValue('mode', null, 'GET') == 'delete') {
+        if (FormUtil::getPassedValue('mode', null, 'POST') == 'delete') {
             $obj = new $class();
             $obj->get($id);
             $obj->delete($id);

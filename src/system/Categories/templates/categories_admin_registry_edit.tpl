@@ -37,8 +37,8 @@
                         <td>{$obj.property}</td>
                         <td>{category_path id=$obj.category_id html=true}</td>
                         <td class="z-right">
-                            <a href="{modurl modname="Categories" type="admin" func="editregistry" id=$obj.id}">{img modname=core set=icons/extrasmall src="xedit.png" __title="Edit" __alt="Edit" class="tooltips"}</a>
-                            <a href="{modurl modname="Categories" type="adminform" func="editregistry" mode="delete" id=$obj.id}" onclick="return confirm('{gt text="Do you really want to delete this registry entry?"}');" onkeypress="return confirm('{gt text="Do you really want to delete this registry entry?"}');">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.png" __title="Delete" __alt="Delete" class="tooltips"}</a>
+                            <a href="{modurl modname='Categories' type='admin' func='editregistry' id=$obj.id}">{img modname=core set=icons/extrasmall src="xedit.png" __title="Edit" __alt="Edit" class="tooltips"}</a>
+                            <a href="{modurl modname='Categories' type='admin' func='deleteregistry' id=$obj.id}">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.png" __title="Delete" __alt="Delete" class="tooltips"}</a>
                         </td>
                         {/if}
                     </tr>
