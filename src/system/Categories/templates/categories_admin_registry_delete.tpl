@@ -10,7 +10,7 @@
         {gt text='Property name'}: <strong>{$data.property}</strong>
     </p>
 
-    <form class="z-form" action="{modurl modname='Categories' type='adminform' func='editregistry' mode='delete' id=$obj.id}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname='Categories' type='adminform' func='editregistry' mode='delete'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="id" value="{$data.id}" />
             <input type="hidden" name="mode" value="delete" />
