@@ -1865,8 +1865,6 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *                            rather than as a result of a form post.
      *
      * @return a empty message if success or an error message otherwise
-     * 
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access.
      */
     protected function uploadImport(array $importFile, $delimiter)
     {
@@ -2050,7 +2048,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         // check if users exists in database
         $usersInDB = ModUtil::apiFunc($this->name, 'admin', 'checkMultipleExistence',
-                                      array('valuesArray' => $usersArray,
+                                      array('valuesarray' => $usersArray,
                                             'key' => 'uname'));
         if ($usersInDB === false) {
             return $this->__("Error! Trying to read the existing user names in database.");
@@ -2063,7 +2061,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         // check if emails exists in data base in case the email have to be unique
         if ($reg_uniemail == 1) {
             $emailsInDB = ModUtil::apiFunc($this->name, 'admin', 'checkMultipleExistence',
-                                          array('valuesArray' => $emailsArray,
+                                          array('valuesarray' => $emailsArray,
                                                 'key' => 'email'));
             if ($emailsInDB === false) {
                 return $this->__("Error! Trying to read the existing users' email addressess in database.");
@@ -2075,7 +2073,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         }
 
         // seems that the values in import file are ready. Procceed creating users
-        if (!ModUtil::apiFunc($this->name, 'admin', 'createImport', array('importValues' => $importValues))) {
+        if (!ModUtil::apiFunc($this->name, 'admin', 'createImport', array('importvalues' => $importValues))) {
             return $this->__("Error! The creation of users has failed.");
         }
 
