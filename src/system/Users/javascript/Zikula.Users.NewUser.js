@@ -158,11 +158,10 @@ Zikula.Users.NewUser = {
     {
         Zikula.Users.NewUser.showAjaxInProgress();
         
-        var pars = Form.serialize(Zikula.Users.NewUser.formId);
+        var pars = $(Zikula.Users.NewUser.formId).serialize(true);
         new Zikula.Ajax.Request(
             Zikula.Config.baseURL + "ajax.php?module=Users&func=getRegistrationErrors",
             {
-                method: 'post',
                 parameters: pars,
                 onComplete: Zikula.Users.NewUser.getRegistrationErrorsResponse
             });

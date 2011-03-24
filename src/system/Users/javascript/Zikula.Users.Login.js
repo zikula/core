@@ -112,13 +112,12 @@ Zikula.Users.Login =
     {
         Zikula.Users.Login.showAjaxInProgress();
 
-        var parameterObj = $(formId).serialize({hash: true, submit: false});
+        var parameterObj = $(formId).serialize(true);
         parameterObj.formType = 'page';
 
         var r = new Zikula.Ajax.Request(
             Zikula.Config.baseURL + 'ajax.php?module=Users&func=getLoginFormFields',
             {
-                method: 'post',
                 parameters: parameterObj,
                 onSuccess: Zikula.Users.Login.getSelectAuthenticationMethodResponse,
                 onFailure: Zikula.Users.Login.selectAuthenticationMethodResponseFailure
