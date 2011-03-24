@@ -187,6 +187,28 @@ class Categories_Controller_Admin extends Zikula_AbstractController
         return $this->view->fetch('categories_admin_registry_edit.tpl');
     }
 
+    public function deleteregistry()
+    {
+        if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $id = FormUtil::getPassedValue('id', 0);
+        $ot = FormUtil::getPassedValue('ot', 'registry');
+
+        $class = "Categories_DBObject_" . ucwords($ot);
+
+        $obj = new $class ();
+        $data = $obj->get($id);
+
+        $this->view->setCaching(false);
+
+        $this->view->assign('data', $data)
+                ->assign('id', $id);
+
+        return $this->view->fetch('categories_admin_registry_delete.tpl');
+    }
+
     /**
      * display new category form
      */
