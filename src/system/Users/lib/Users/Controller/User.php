@@ -241,8 +241,12 @@ class Users_Controller_User extends Zikula_AbstractController
                     $proceedToForm = false;
 
                     // Notify that we are completing a registration session.
-                    $event = new Zikula_Event('registration.failed');
-                    $this->eventManager->notify($event);
+                    $eventArgs = array(
+                        'redirecturl'   => $redirectUrl,
+                    );
+                    $event = new Zikula_Event('registration.failed', null, $eventArgs);
+                    $event = $this->eventManager->notify($event);
+                    $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
                 }
             }
         } elseif ($this->request->isGet()) {
@@ -263,10 +267,10 @@ class Users_Controller_User extends Zikula_AbstractController
             return $this->view->assign_by_ref('formData', $formData)
                     ->assign($rendererArgs)
                     ->fetch('users_user_register.tpl');
-        } elseif (!$registeredObj || !empty($registeredObj['regErrors'])) {
-            return $this->view->fetch('users_user_displaystatusmsg.tpl');
         } elseif (!empty($redirectUrl)) {
             $this->redirect($redirectUrl);
+        } elseif (!$registeredObj || !empty($registeredObj['regErrors'])) {
+            return $this->view->fetch('users_user_displaystatusmsg.tpl');
         } elseif (!$canLogIn) {
             return $this->view->fetch('users_user_displaystatusmsg.tpl');
         } elseif ($this->getVar(Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN, Users_Constant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
@@ -919,14 +923,76 @@ class Users_Controller_User extends Zikula_AbstractController
                         // Because we are passing a $user and setting checkPassword false, this call back into the authentication
                         // chain should not trigger an external re-authentication, so it should not need preparation for reentry.
                         $loggedIn = UserUtil::loginUsing($selectedAuthenticationMethod, $authenticationInfo, $rememberMe, $reentrantURL, false, $user);
-                    } elseif (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
-                        $this->registerError($this->__('Your log-in request was not completed.'));
+                        
+                        if (!$loggedIn) {
+                            // Because the user was preauthentication, this should never happen, but just in case...
+                            
+                            if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                                $this->registerError($this->__('Your log-in request was not completed.'));
+                            }  
+                            
+                            $eventArgs = array(
+                                'authentication_method' => $selectedAuthenticationMethod,
+                                'authentication_info'   => $authenticationInfo,
+                                'redirecturl'           => '',
+                            );
+                            $failedEvent = new Zikula_Event('user.login.failed', $user, $eventArgs);
+                            $failedEvent = $this->eventManager->notify($failedEvent);
+                            
+                            $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
+                            if (!empty($redirectUrl)) {
+                                $this->redirect($redirectUrl);
+                            }
+                        }
+                    } else {
+                        if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                            $this->registerError($this->__('Your log-in request was not completed.'));
+                        }
+                            
+                        $eventArgs = array(
+                            'authentication_method' => $selectedAuthenticationMethod,
+                            'authentication_info'   => $authenticationInfo,
+                            'redirecturl'           => '',
+                        );
+                        $failedEvent = new Zikula_Event('user.login.failed', $user, $eventArgs);
+                        $failedEvent = $this->eventManager->notify($failedEvent);
+
+                        $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
+                        if (!empty($redirectUrl)) {
+                            $this->redirect($redirectUrl);
+                        }
                     }
                 } else {
                     $this->registerError($this->__('There is no user account matching that information, or the password you gave does not match the password on file for that account.'));
+
+                    $eventArgs = array(
+                        'authentication_method' => $selectedAuthenticationMethod,
+                        'authentication_info'   => $authenticationInfo,
+                        'redirecturl'           => '',
+                    );
+                    $failedEvent = new Zikula_Event('user.login.failed', null, $eventArgs);
+                    $failedEvent = $this->eventManager->notify($failedEvent);
+
+                    $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
+                    if (!empty($redirectUrl)) {
+                        $this->redirect($redirectUrl);
+                    }
                 }
             } elseif (isset($authenticationInfo) && (!is_array($authenticationInfo))) {
                 $this->registerError($this->__('Error! Invalid authentication information received.'));
+
+                $eventArgs = array(
+                    'authentication_method' => $selectedAuthenticationMethod,
+                    'authentication_info'   => $authenticationInfo,
+                    'redirecturl'           => '',
+                );
+                $failedEvent = new Zikula_Event('user.login.failed', null, $eventArgs);
+                $failedEvent = $this->eventManager->notify($failedEvent);
+
+                $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
+                if (!empty($redirectUrl)) {
+                    $this->redirect($redirectUrl);
+                }
             }
         }
 
@@ -956,13 +1022,14 @@ class Users_Controller_User extends Zikula_AbstractController
                 }
             }
 
-            return $this->view->assign(array (
-                        'returnurl'                             => isset($returnUrl) ? $returnUrl : '',
-                        'authentication_info'                   => isset($authenticationInfo) ? $authenticationInfo : array(),
-                        'selected_authentication_method'        => $selectedAuthenticationMethod,
-                        'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
-                        'user_obj'                              => isset($user) ? $user : array(),
-                    ))
+            $templateArgs = array(
+                'returnurl'                             => isset($returnUrl) ? $returnUrl : '',
+                'authentication_info'                   => isset($authenticationInfo) ? $authenticationInfo : array(),
+                'selected_authentication_method'        => $selectedAuthenticationMethod,
+                'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
+                'user_obj'                              => isset($user) ? $user : array(),
+            );
+            return $this->view->assign($templateArgs)
                     ->fetch('users_user_login.tpl');
         } else {
             $eventArgs = array(
