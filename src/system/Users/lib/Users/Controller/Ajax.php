@@ -28,6 +28,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function getUsers()
     {
+        $this->checkAjaxToken();
         $view = Zikula_View::getInstance($this->name);
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
