@@ -93,7 +93,9 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
     private function setModule($modname)
     {
         $modname = trim($modname);
-        if (!empty($modname) && is_string($modname) && ModUtil::available($modname) && ModUtil::isCapable($modname, 'authentication')) {
+        if (System::isInstalling() && ($modname == 'Users')) {
+            $this->modname = $modname;
+        } elseif (!empty($modname) && is_string($modname) && ModUtil::available($modname, true) && ModUtil::isCapable($modname, 'authentication')) {
             $this->modname = $modname;
         } else {
             throw new Zikula_Exception_Fatal($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
