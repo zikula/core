@@ -20,26 +20,29 @@ class Users_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * Find users.
+     * 
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * string $args['uname']         A fragment of a user name on which to search using an SQL
+     *                                      LIKE clause. The user name will be surrounded by wildcards.
+     * int    $args['ugroup']        A group id in which to search (only users who are members of
+     *                                      the specified group are returned).
+     * string $args['email']         A fragment of an e-mail address on which to search using an
+     *                                      SQL LIKE clause. The e-mail address will be surrounded by
+     *                                      wildcards.
+     * string $args['regdateafter']  An SQL date-time (in the form '1970-01-01 00:00:00'); only
+     *                                      user accounts with a registration date after the date
+     *                                      specified will be returned.
+     * string $args['regdatebefore'] An SQL date-time (in the form '1970-01-01 00:00:00'); only
+     *                                      user accounts with a registration date before the date
+     *                                      specified will be returned.
+     * array  $args['dynadata']      An array of search values to be passed to the designated
+     *                                      profile module. Only those user records also satisfying the
+     *                                      profile module's search of its data are returned.
+     * string $args['condition']     An SQL condition for finding users; overrides all other
+     *                                      parameters.
      *
      * @param array $args All parameters passed to this function.
-     *                      string $args['uname']         A fragment of a user name on which to search using an SQL
-     *                                                      LIKE clause. The user name will be surrounded by wildcards.
-     *                      int    $args['ugroup']        A group id in which to search (only users who are members of
-     *                                                      the specified group are returned).
-     *                      string $args['email']         A fragment of an e-mail address on which to search using an
-     *                                                      SQL LIKE clause. The e-mail address will be surrounded by
-     *                                                      wildcards.
-     *                      string $args['regdateafter']  An SQL date-time (in the form '1970-01-01 00:00:00'); only
-     *                                                      user accounts with a registration date after the date
-     *                                                      specified will be returned.
-     *                      string $args['regdatebefore'] An SQL date-time (in the form '1970-01-01 00:00:00'); only
-     *                                                      user accounts with a registration date before the date
-     *                                                      specified will be returned.
-     *                      array  $args['dynadata']      An array of search values to be passed to the designated
-     *                                                      profile module. Only those user records also satisfying the
-     *                                                      profile module's search of its data are returned.
-     *                      string $args['condition']     An SQL condition for finding users; overrides all other
-     *                                                      parameters.
      *
      * @return mixed array of items if succcessful, false otherwise
      */
@@ -124,13 +127,16 @@ class Users_Api_Admin extends Zikula_AbstractApi
     /**
      * Save an updated user record.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * array  $args['userinfo']           The updated user information.
+     * string $args['emailagain']         A verification of the new e-mail address to store on the
+     *                                          user record, required.
+     * string $args['passagain']          A verification of the new password to store on the user
+     *                                          record, required if $args['userinfo']['pass'] is set.
+     * array  $args['access_permissions'] An array of group ids to which the user should belong.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    array  $args['userinfo']          The updated user information.
-     *                    string $args['emailagain']        A verification of the new e-mail address to store on the
-     *                                                          user record, required.
-     *                    string $args['passagain']         A verification of the new password to store on the user
-     *                                                          record, required if $args['userinfo']['pass'] is set.
-     *                    array $args['access_permissions'] An array of group ids to which the user should belong.
      *
      * @return bool true if successful, false otherwise.
      * 
@@ -251,10 +257,13 @@ class Users_Api_Admin extends Zikula_AbstractApi
      * regular users list. The delete hook and delete events are not triggered if the records are only marked for
      * deletion.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * numeric|array $args['uid']  A single (numeric integer) user id, or an array of user ids to delete.
+     * boolean       $args['mark'] If true, then mark for deletion, but do not actually delete.
+     *                                  defaults to false.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['uid']  numeric|array A single (int) user id, or an array of user ids to delete.
-     *                    $args['mark'] bool          If true, then mark for deletion, but do not actually delete.
-     *                                                  defaults to false.
      *
      * @return bool True if successful, false otherwise.
      */
@@ -324,12 +333,23 @@ class Users_Api_Admin extends Zikula_AbstractApi
 
     /**
      * Send an e-mail message to one or more users.
+     * 
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * numeric|array $args['uid']                         A single (numeric integer) uid or an array of uids to which the e-mail should be sent.
+     * array         $args['sendmail']                    An array containing the information necessary to send an e-mail.
+     * string        $args['sendmail']['from']            The name of the e-mail message's sender.
+     * string        $args['sendmail']['rpemail']         The e-mail address of the e-mail message's sender.
+     * string        $args['sendmail']['subject']         The e-mail message's subject.
+     * string        $args['sendmail']['message']         The e-mail message's body (the message itself).
+     * array         $args['sendmail']['recipientsname']  An array indexed by uid of each recipient's name.
+     * array         $args['sendmail']['recipientsemail'] An array indexed by uid of each recipient's e-mail address.
      *
      * @param array $args All arguments passed to this function.
      *
      * @return bool True on success; otherwise false
      * 
-     * @throws Zikula_Exception_Forbidden if the current user does not have sufficient access to send mail.
+     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have sufficient access to send mail.
      */
     public function sendmail($args)
     {
@@ -344,7 +364,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
                 $recipientUidList = array($args['uid']);
             }
         } else {
-            $this->registerError(__('Error! No users selected for removal, or invalid uid list.'));
+            $this->registerError(__('Error! No users selected to receive e-mail, or invalid uid list.'));
             return false;
         }
 
@@ -479,9 +499,12 @@ class Users_Api_Admin extends Zikula_AbstractApi
     /**
      * Retrieve a list of users whose field specified by the key match one of the values specified in the keyValue.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * string $args['key']         The field to be searched, typically 'uname' or 'email'.
+     * array  $args['valuesarray'] An array containing the values to be matched.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['key']      (string) The field to be searched, typically 'uname' or 'email'.
-     *                    $args['keyValue'] (array)  An array containing the values to be matched.
      *
      * @return array|bool An array of user records indexed by user name, each whose key field matches one value in the
      *                      valueArray; false on error.
@@ -512,8 +535,13 @@ class Users_Api_Admin extends Zikula_AbstractApi
     /**
      * Add new user accounts from the import process.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * array $args['importvalues'] An array of information used to create new user records. Each element of the
+     *                                  array should represent the minimum information to create a user record, including
+     *                                  'uname', 'email', 'pass', etc.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['importvalues'] (array) An array of information used to create new user records.
      *
      * @return bool True on success; false otherwise.
      */

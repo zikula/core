@@ -36,8 +36,12 @@ class Users_Api_Search extends Zikula_AbstractApi
     /**
      * Render the search form component for Users.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * ? $args['active'] ?.
+     * 
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['active'] (?) ?.
      *
      * @return string The rendered template for the Users search component.
      */
@@ -59,9 +63,12 @@ class Users_Api_Search extends Zikula_AbstractApi
     /**
      * Perform a search.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * ? $args['q'] ?.
+     * ? $args[?]   ?.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['q'] (?) ?.
-     *                    $args[?] (?) ?.
      *
      * @return bool True on success or null result, false on error.
      */
@@ -149,6 +156,10 @@ class Users_Api_Search extends Zikula_AbstractApi
      * Access checking is ignored since access check has
      * already been done. But we do add a URL to the found user.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * array $args['datarow'] ?.
+     * 
      * @param array $args The search results.
      *
      * @return bool True.

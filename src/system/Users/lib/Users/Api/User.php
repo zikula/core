@@ -20,11 +20,14 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Get all users (for which the current user has permission to read).
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * string  $args['letter']   The first letter of the set of user names to return.
+     * integer $args['starnum']  First item to return (optional).
+     * integer $args['numitems'] Number if items to return (optional).
+     * array   $args['sort']     The field(s) on which to sort the result (optional).
+     * 
      * @param array $args All parameters passed to this function.
-     *                      string  $args['letter']   The first letter of the set of user names to return.
-     *                      integer $args['starnum']  First item to return (optional).
-     *                      integer $args['numitems'] Number if items to return (optional).
-     *                      array   $args['sort']     The field(s) on which to sort the result (optional).
      *
      * @return array An array of users, or false on failure.
      * 
@@ -137,9 +140,12 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Get a specific user record.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * numeric $args['uid']   The id of user to get (required, unless uname specified).
+     * string  $args['uname'] The user name of user to get (ignored if uid is specified, otherwise required).
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['uid']   (numeric) The id of user to get (required, unless uname specified).
-     *                    $args['uname'] (string)  The user name of user to get (ignored if uid is specified, otherwise required).
      *
      * @return array The user record as an array, or false on failure.
      */
@@ -177,12 +183,15 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Count and return the number of users.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * string $args['letter'] If specified, then only those user records whose user name begins with the specified letter are counted.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['letter'] (string) If specified, then only those user records whose user name begins with the specified letter are counted.
-     *
-     * @todo Shouldn't there be some sort of limit on the select/loop??
      *
      * @return int Number of users.
+     *
+     * @todo Shouldn't there be some sort of limit on the select/loop??
      */
     public function countItems($args)
     {
@@ -216,8 +225,11 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Get user properties.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * string $args['proplabel'] If specified only the value of the specified property (label) is returned.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['proplabel'] (string) If specified only the value of the specified property (label) is returned.
      *
      * @return array An array of user properties, or false on failure.
      */
@@ -271,13 +283,15 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Sends a notification e-mail of a specified type to a user or registrant.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * string $args['toAddress']        The destination e-mail address.
+     * string $args['notificationType'] The type of notification, converted to the name of a template
+     *                                          in the form users_userapi_{type}mail.tpl and/or .txt.
+     * array  $args['templateArgs']     One or more arguments to pass to the renderer for use in the template.
+     * string $args['subject']          The e-mail subject, overriding the template's subject.
+     * 
      * @param array $args All parameters passed to this function.
-     *                      string  toAddress           The destination e-mail address.
-     *                      string  notificationType    The type of notification, converted to the name of a template
-     *                                                      in the form users_userapi_{type}mail.tpl and/or .txt
-     *                      array   templateArgs        One or more arguments to pass to the renderer for use in the
-     *                                                      template.
-     *                      string  subject             The e-mail subject, overriding the template's subject.
      *
      * @return <type>
      */
@@ -356,9 +370,12 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Send the user a lost user name code.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * string $args['idfield'] The value 'email'.
+     * string $args['id']      The user's e-mail address.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['idfield'] (string) The value 'email'.
-     *                    $args['id'] (string) The user's e-mail address.
      *
      * @return bool True if user name sent; otherwise false.
      */
@@ -417,8 +434,11 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Send the user a lost password confirmation code.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * string $args['email'] The user's e-mail address.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['email'] (string) The user's e-mail address.
      *
      * @return bool True if confirmation code sent; otherwise false.
      */
@@ -510,10 +530,13 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Check a lost password confirmation code.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * string $args['idfield'] Either 'uname' or 'email'.
+     * string $args['id']      The user's user name or e-mail address, depending on the value of idfield.
+     * string $args['code']    The confirmation code.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['idfield'] (string) Either 'uname' or 'email'.
-     *                    $args['id'] (string) The user's user name or e-mail address, depending on the value of idfield.
-     *                    $args['code']  (string) The confirmation code.
      *
      * @return bool True if the new password was sent; otherwise false.
      */
@@ -620,8 +643,11 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Save the preliminary user e-mail until user's confirmation.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * string $args['newemail'] The new e-mail address to store pending confirmation.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['newemail'] (string) The new e-mail address to store pending confirmation.
      *
      * @return bool True if success and false otherwise.
      * 
@@ -730,12 +756,15 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Removes a record from the users_verifychg table for a specified uid and changetype.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * integer       $args['uid']        The uid of the verifychg record to remove. Required.
+     * integer|array $args['changetype'] The changetype(s) of the verifychg record to remove. If more
+     *                                          than one type is to be removed, use an array. Optional. If
+     *                                          not specifed, all verifychg records for the user will be
+     *                                          removed. Note: specifying an empty array will remove none.
+     * 
      * @param array $args All parameters passed to this function.
-     *                      int       $args['uid']        The uid of the verifychg record to remove. Required.
-     *                      int|array $args['changetype'] The changetype(s) of the verifychg record to remove. If more
-     *                                                      than one type is to be removed, use an array. Optional. If
-     *                                                      not specifed, all verifychg records for the user will be
-     *                                                      removed. Note: specifying an empty array will remove none.
      *
      * @return void|bool Null on success, false on error.
      */
@@ -817,10 +846,11 @@ class Users_Api_User extends Zikula_AbstractApi
     /**
      * Convenience function for several functions; converts registration errors into easily displayable sets of data.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * array   $args['registrationErrors'] The array of registration errors from getRegistrationErrors or one of its related functions.
+     * 
      * @param array $args All parameters passed to the function.
-     *                      array   $args['registrationErrors'] The array of registration errors from
-     *                                                              getRegistrationErrors or one of its related
-     *                                                              functions.
      *
      * @return array Modified error information.
      */
