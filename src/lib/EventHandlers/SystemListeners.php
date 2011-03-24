@@ -150,7 +150,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if ($event['stage'] & Zikula_Core::STAGE_SESSIONS) {
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
-            if (isset($GLOBALS['ZConfig']['Log']['log.apache_uname']) && UserUtil::isLoggedIn()) {
+            if (isset($GLOBALS['ZConfig']['Log']['log.apache_uname']) && ($GLOBALS['ZConfig']['Log']['log.apache_uname']) && UserUtil::isLoggedIn()) {
                 if (function_exists('apache_setenv')) {
                     apache_setenv('Zikula-Username', UserUtil::getVar('uname'));
                 }
