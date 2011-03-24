@@ -572,7 +572,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $accessPermissions = $this->request->getPost()->get('access_permissions', null);
             $user = $formData->toUserArray(true);
             $originalUser = UserUtil::getVars($user['uid']);
-            $dynadata = isdset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
+            $dynadata = isset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
             
             // security check for this record
             if (!SecurityUtil::checkPermission('Users::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
