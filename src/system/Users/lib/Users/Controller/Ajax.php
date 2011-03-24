@@ -20,8 +20,9 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
     /**
      * Performs a user search based on the user name fragment entered so far.
      *
-     * Available Request Parameters:
-     * - fragment (string) A partial user name entered by the user.
+     * Parameters passed via POST:
+     * ---------------------------
+     * string fragment A partial user name entered by the user.
      *
      * @return string Zikula_Response_Ajax_Plain with list of users matching the criteria.
      */
@@ -51,14 +52,17 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
     /**
      * Validate new user information entered by the user.
      *
-     * Available Post Parameters:
-     * - uname        (string) The proposed user name for the new user record.
-     * - email        (string) The proposed e-mail address for the new user record.
-     * - vemail       (string) A verification of the proposed e-mail address for the new user record.
-     * - agreetoterms (int)    A flag indicating that the user has agreed to the site's terms and policies; 0 indicates no, otherwise yes.
-     * - pass         (string) The proposed password for the new user record.
-     * - vpass        (string) A verification of the proposed password for the new user record.
-     * - reg_answer   (string) The user-entered answer to the registration question.
+     * Parameters passed via POST:
+     * ---------------------------
+     * string  uname          The proposed user name for the user record.
+     * string  email          The proposed e-mail address for the user record.
+     * string  emailagain     A verification of the proposed e-mail address for the user record.
+     * boolean setpass        True if the password is to be set or changed; otherwise false.
+     * string  pass           The proposed password for the new user record.
+     * string  passreminder   The proposed password reminder for the user record.
+     * string  passagain      A verification of the proposed password for the user record.
+     * string  antispamanswer The user-entered answer to the registration question.
+     * string  checkmode      Either 'new' or 'modify', depending on whether the record is a new user or an existing user or registration.
      *
      * @return array A Zikula_Response_Ajax containing error messages and message counts.
      * 
@@ -143,6 +147,11 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
     /**
      * Retrieve the form fields for the login form that are appropriate for the selected authentication method.
      *
+     * Parameters passed via POST:
+     * ---------------------------
+     * string formType              Either 'page' if for the full log-in page, or 'block' if for the log-in block.
+     * array  authentication_method An array containing the authentication module name ('modname') and authentication method name ('method').
+     * 
      * @return Zikula_Response_Ajax An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
      * 
      * @throws Zikula_Exception_Fatal Thrown if the authentication module name or method name are not valid.

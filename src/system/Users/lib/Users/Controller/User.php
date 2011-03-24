@@ -95,6 +95,22 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Display the registration form.
      *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * See the definition of {@link Users_Controller_FormData_RegistrationForm}.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
+     * Parameters passed via SERVER:
+     * ------------------------------
+     * string HTTP_USER_AGENT The browser user agent string, for comparison with illegal user agent strings.
+     * 
      * @return string The rendered template.
      */
     public function register()
@@ -304,6 +320,21 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Display the lost user name form.
      *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * None.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * Namespace: Zikula_Users
+     * Variable:  Users_Controller_User_mailUname
+     * Type:      array
+     * Contents:  An array containing the element 'email', the e-mail address of the user who lost his user name.
+     * 
      * @return string The rendered template.
      */
     public function lostUname()
@@ -323,10 +354,21 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Send the user a lost uname.
      *
-     * Available Post Parameters:
-     * - email (string) The user's e-mail address.
-     * - code  (string) The confirmation code.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * string email The e-mail address of the user who lost his user name.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * None.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * Namespace: Zikula_Users
+     * Variable:  Users_Controller_User_mailUname
+     * Type:      array
+     * Contents:  An array containing the element 'email', the e-mail address of the user who lost his user name.
+     * 
      * @return bool True if successful request or expected error, false if unexpected error.
      */
     public function mailUname()
@@ -368,6 +410,22 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Display the lost password form.
      *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * None.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * Namespace: Zikula_Users
+     * Variable:  Users_Conroller_User_mailConfirmationCode
+     * Type:      array
+     * Contents:  An array containing one of two elements: 'email', the e-mail address of the user who lost his password, or
+     *                  'uname', the user name of the user who lost his password.
+     * 
      * @return string The rendered template.
      */
     public function lostPassword()
@@ -389,11 +447,23 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Send the user a confirmation code in order to reset a lost password.
      *
-     * Available Post Parameters:
-     * - uname (string) The user's user name.
-     * - email (string) The user's e-mail address.
-     * - code  (string) The confirmation code.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string email The e-mail address of the user who lost his password.
+     * string uname The user name of the user who lost his password.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * Namespace: Zikula_Users
+     * Variable:  Users_Conroller_User_mailConfirmationCode
+     * Type:      array
+     * Contents:  An array containing one of two elements: 'email', the e-mail address of the user who lost his password, or
+     *                  'uname', the user name of the user who lost his password.
+     * 
      * @return bool True if successful request or expected error, false if unexpected error.
      */
     public function mailConfirmationCode()
@@ -450,6 +520,25 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Display the lost password confirmation code entry form.
      *
+     * Parameters passed via GET:
+     * --------------------------
+     * string email The e-mail address of the user who lost his password.
+     * string uname The user name of the user who lost his password.
+     * string code  The confirmation code used to enable the user to reset his password.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * None.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * Namespace: Zikula_Users
+     * Variable:  Users_Controller_User_passwordReminder
+     * Type:      array
+     * Contents:  An array containing one of two elements: 'email', the e-mail address of the user who lost his password, or
+     *                  'uname', the user name of the user who lost his password, plus an additional element 'code' containing
+     *                  the confirmation code used to enable the user to reset his password.
+     * 
      * @return string The rendered template.
      */
     public function lostPasswordCode()
@@ -473,11 +562,25 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Show the user his password reminder.
      *
-     * Available Post Parameters:
-     * - uname (string) The user's user name.
-     * - email (string) The user's e-mail address.
-     * - code  (string) The confirmation code.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string email The e-mail address of the user who lost his password.
+     * string uname The user name of the user who lost his password.
+     * string code  The confirmation code used to enable the user to reset his password.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * Namespace: Zikula_Users
+     * Variable:  Users_Controller_User_passwordReminder
+     * Type:      array
+     * Contents:  An array containing one of two elements: 'email', the e-mail address of the user who lost his password, or
+     *                  'uname', the user name of the user who lost his password, plus an additional element 'code' containing
+     *                  the confirmation code used to enable the user to reset his password.
+     * 
      * @return bool True if successful request or expected error, false if unexpected error.
      */
     public function passwordReminder()
@@ -560,6 +663,21 @@ class Users_Controller_User extends Zikula_AbstractController
      * to the user his user name and password reminder, and give him the opportunity to reset his
      * password.
      *
+     * Parameters passed via GET:
+     * --------------------------
+     * string lostpassword_uname The user name of the user whose password should be reset.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string uname           The user name of the user who lost his password.
+     * string newpass         The new password.
+     * string newpassagain    The new password, repeated for verification.
+     * string newpassreminder The new password reminder.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @return string|bool The rendered template; true on redirect; false on error.
      */
     public function resetPassword()
@@ -656,12 +774,39 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * If the user is already logged in, then he is redirected the main Users module page.
      *
-     * @throws Zikula_Exception_Redirect If the user is already logged in, or upon successful login with the redirect
-     *                                   option set to send the user to the appropriate page, or...
-     *
-     *
+     * Parameters passed via the $args array:
+     * --------------------------------------
+     * array   authentication_info   An array containing the authentication information entered by the user.
+     * array   authentication_method An array containing two elements: 'modname', the authentication module name, and 'method', the
+     *                                      selected authentication method as defined by the module.
+     * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
+     * string  returnurl             The URL of the page to return to if the log-in attempt is successful.
+     * 
+     * Parameters passed via GET:
+     * --------------------------
+     * string returnurl The URL of the page to return to if the log-in attempt is successful.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * array   authentication_info   An array containing the authentication information entered by the user.
+     * array   authentication_method An array containing two elements: 'modname', the authentication module name, and 'method', the
+     *                                      selected authentication method as defined by the module.
+     * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
+     * string  returnurl             The URL of the page to return to if the log-in attempt is successful.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * Namespace: Zikula_Users
+     * Variable:  Users_Controller_User_login
+     * Type:      array
+     * Contents:  An array containing the information passed in via the $args array or the GET or POST variables, and additionaly, the
+     *                  element 'user_obj'if the user record has been loaded.
+     * 
      * @return boolean|string True on successful authentication and login, the rendered output of the appropriate
      *                        template to display the log-in form.
+     *
+     * @throws Zikula_Exception_Redirect If the user is already logged in, or upon successful login with the redirect
+     *                                   option set to send the user to the appropriate page, or...
      */
     public function login($args)
     {
@@ -893,6 +1038,24 @@ class Users_Controller_User extends Zikula_AbstractController
      * (if provided) and if the registration record is also approved (or does not require it)
      * then a new user account is created.
      *
+     * Parameters passed via GET:
+     * --------------------------
+     * string uname      The user name of the user who is verifying his e-mail address for registration.
+     * string verifycode The code sent to the user in order to verify his e-mail address.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string uname           The user name of the user who is verifying his e-mail address for registration.
+     * string verifycode      The code sent to the user in order to verify his e-mail address.
+     * string newpass         If the user needs to set his password (the admin created the account record and did not create a password
+     *                              at that time), then this contains the user's new password.
+     * string newpassagain    The new password repeated for verification.
+     * string newpassreminder The new password reminder.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @return string|bool The rendered template; true on redirect; false on error.
      */
     public function verifyRegistration()
@@ -1059,11 +1222,19 @@ class Users_Controller_User extends Zikula_AbstractController
      * We must keep this function, because there is no way to know whether an inactive account
      * is inactive because it needs activation, or for some other reason set manually by the site admin.
      *
-     * Available Get/Post Parameters;
-     * - code (string) Confirmation/Activation code.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * string code Confirmation/Activation code.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string code Confirmation/Activation code.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['code'] (string) Used as a default if the get/post parameter 'code' is not set.
      *
      * @return bool True on success, otherwise false.
      */
@@ -1112,8 +1283,6 @@ class Users_Controller_User extends Zikula_AbstractController
      * @param string $message The message to display on the redirect page.
      * @param string $url     The URL of the page to redirect to after this redirect page has been displayed.
      *
-     * @access private
-     *
      * @return bool True.
      */
     private function printRedirectPage($message, $url)
@@ -1147,11 +1316,20 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * Allows the administrator to access the site during maintenance.
      *
-     * Available Post Parameters:
-     * - user       (string) The user name of the user attempting to log in.
-     * - pass       (string) The password of the user attempting to log in.
-     * - rememberme (int)    Whether the login session should persist.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string  user       The user name of the user attempting to log in.
+     * string  pass       The password of the user attempting to log in.
+     * boolean rememberme Whether the login session should persist.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @return bool True.
      */
     public function siteOffLogin()
@@ -1213,10 +1391,19 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Update the custom users block.
      *
-     * Available Post Parameters:
-     * - ublockon (int)   Whether the block is displayed or not.
-     * - ublock   (mixed) ?.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * boolean ublockon Whether the block is displayed or not.
+     * mixed   ublock   ?.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @return bool True on success, otherwise false.
      */
     public function updateUsersBlock()
@@ -1258,6 +1445,29 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Display the change password form.
      *
+     * Parameters passed via the $args array:
+     * --------------------------------------
+     * boolean login True if in the middle of a log-in attempt and changing the password via a forced password change.
+     *
+     * Parameters passed via GET:
+     * --------------------------
+     * boolean login True if in the middle of a log-in attempt and changing the password via a forced password change.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * boolean login True if in the middle of a log-in attempt and changing the password via a forced password change.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * Namespace: Zikula_Users
+     * Variable:  Users_Controller_User_changePassword
+     * Type:      array
+     * Contents:  An array containing the information saved from the log-in attempt in order to re-enter it, including:
+     *              'authentication_method', an array containing the selected authentication module name and method name, 
+     *              'authentication_info', an array containing the authentication information entered by the user,
+     *              'user_obj', a user record containing the user information found during the log-in attempt,
+     *              'password_errors', errors that have occurred during a previous pass through this function.
+     * 
      * @return string The rendered template.
      */
     public function changePassword($args)
@@ -1335,11 +1545,27 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Update the user's password.
      *
-     * Available Post Parameters:
-     * - oldpassword        (string) The original password.
-     * - newpassword        (string) The new password to be stored for the user.
-     * - newpasswordconfirm (string) Verification of the new password to be stored for the user.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string oldpassword        The original password.
+     * string newpassword        The new password to be stored for the user.
+     * string newpasswordconfirm Verification of the new password to be stored for the user.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * Namespace: Zikula_Users
+     * Variable:  Users_Controller_User_updatePassword
+     * Type:      array
+     * Contents:  An array containing the information saved from the log-in attempt in order to re-enter it, including:
+     *              'authentication_method', an array containing the selected authentication module name and method name, 
+     *              'authentication_info', an array containing the authentication information entered by the user,
+     *              'user_obj', a user record containing the user information found during the log-in attempt,
+     *              'password_errors', errors that have occurred during a previous pass through this function.
+     * 
      * @return bool True on success, otherwise false.
      */
     public function updatePassword()
@@ -1459,9 +1685,19 @@ class Users_Controller_User extends Zikula_AbstractController
     /**
      * Update the email address.
      *
-     * Available Post Parameters:
-     * - newemail (string) The new e-mail address to store for the user.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string newemail      The new e-mail address to store for the user.
+     * string newemailagain The new e-mail address repeated for verification.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @return bool True on success, otherwise false.
      */
     public function updateEmail()
@@ -1531,8 +1767,23 @@ class Users_Controller_User extends Zikula_AbstractController
      * Available Get Parameters:
      * - confirmcode (string) The confirmation code.
      *
+     * Parameters passed via the $args array:
+     * --------------------------------------
+     * string $args['confirmcode'] Default value for the 'confirmcode' get parameter. Allows this function to be called internally.
+     *
+     * Parameters passed via GET:
+     * --------------------------
+     * string confirmcode The confirmation code for verifying the change of e-mail address.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * None.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @param array $args All parameters passed to this function.
-     *                    $args['confirmcode'] (string) Default value for the 'confirmcode' get parameter. Allows this function to be called internally.
      *
      * @return bool True on success, otherwise false.
      */

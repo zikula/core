@@ -67,11 +67,20 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Shows all items and lists the administration options.
      *
-     * Available Get Parameters:
-     * - integer startnum The ordinal number at which to start displaying user records.
-     * - string  letter   The first letter of the user names to display.
-     * - string  sort     The field on which to sort the data.
-     * - string  sortdir  Either 'ASC' for an ascending sort (a to z) or 'DESC' for a descending sort (z to a).
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric startnum The ordinal number at which to start displaying user records.
+     * string  letter   The first letter of the user names to display.
+     * string  sort     The field on which to sort the data.
+     * string  sortdir  Either 'ASC' for an ascending sort (a to z) or 'DESC' for a descending sort (z to a).
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * None.
+     *
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @return string HTML string containing the rendered template.
      * 
@@ -211,9 +220,17 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Add a new user to the system.
      *
-     * Available Request Parameters:
-     * - userinfo (array) An associative array of initial values for the form fields. The elements of the array correspond to the
-     *      post parameters expected by $this->createUser().
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * See the definition of {@link Users_Controller_FormData_NewUserForm}.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @return string HTML string containing the rendered template.
      * 
@@ -333,6 +350,28 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Gathers the user input from a rendered search form, and also makes the appropriate hook calls.
      * 
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string  uname         A fragment of a user name on which to search using an SQL LIKE clause. The user name will be
+     *                              surrounded by wildcards.
+     * integer ugroup        A group id in which to search (only users who are members of the specified group are returned).
+     * string  email         A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address 
+     *                              will be surrounded by wildcards.
+     * string  regdateafter  An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date 
+     *                              after the date specified will be returned.
+     * string  regdatebefore An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date 
+     *                              before the date specified will be returned.
+     * array   dynadata      An array of search values to be passed to the designated profile module. Only those user records 
+     *                              also satisfying the profile module's search of its dataare returned.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @param string $callbackFunc Either 'search' or 'mailUsers', indicating which operation is calling this function.
      * 
      * @return array|boolean An array of search results, which may be empty; false if the search was unsuccessful.
@@ -362,15 +401,18 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Displays a user account search form, or the search results from a post.
      *
-     * Available Post Parameters:
-     * - uname         (string) A fragment of a user name on which to search using an SQL LIKE clause. The user name will be surrounded by wildcards.
-     * - ugroup        (int)    A group id in which to search (only users who are members of the specified group are returned).
-     * - email         (string) A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address will be surrounded by wildcards.
-     * - regdateafter  (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date after the date specified will be returned.
-     * - regdatebefore (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date before the date specified will be returned.
-     * - dynadata      (array)  An array of search values to be passed to the designated profile module. Only those user records also satisfying the profile module's search of its data
-     *                          are returned.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * See the definition of {@link getSearchResults()}.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @return string HTML string containing the rendered template.
      * 
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
@@ -425,18 +467,24 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Search for users and then compose an email to them.
      *
-     * Available Post Parameters:
-     * - uname         (string) A fragment of a user name on which to search using an SQL LIKE clause. The user name will be surrounded by wildcards.
-     * - ugroup        (int)    A group id in which to search (only users who are members of the specified group are returned).
-     * - email         (string) A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address will be surrounded by wildcards.
-     * - regdateafter  (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date after the date specified will be returned.
-     * - regdatebefore (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date before the date specified will be returned.
-     * - dynadata      (array)  An array of search values to be passed to the designated profile module. Only those user records also satisfying the profile module's search of its data
-     *                          are returned.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string formid The form id posting to this function. Used to determine the workflow.
+     * 
+     * See also the definition of {@link getSearchResults()}.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @return string HTML string containing the rendered template.
      * 
      * @throws Zikula_Exception_Fatal     Thrown if the function enters an unknown state.
+     * 
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have comment access, or if the method of accessing this function is improper.
      */
     public function mailUsers()
@@ -487,10 +535,21 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Display a form to edit one user account, and process that edit request.
      *
-     * Available Get Parameters:
-     * - userid (numeric) The user id of the user to be modified.
-     * - uname  (string)  The user name of the user to be modified.
-     *
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric userid The user id of the user to be modified.
+     * string  uname  The user name of the user to be modified.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * array access_permissions See {@link Users_Controller_Admin::updateUser()}.
+     * 
+     * See also the definition of {@link Users_Controller_FormData_ModifyUserForm}.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     * 
      * @return string HTML string containing the rendered template.
      * 
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
@@ -646,12 +705,25 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Allows an administrator to send a user his user name via email.
      * 
-     * @todo The link on the view page should be a mini form, and should post.
-     * @todo This should have a confirmation page.
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric userid The user id of the user to be modified.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * numeric userid The user id of the user to be modified.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      * 
      * @return void
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
+     * 
+     * @todo The link on the view page should be a mini form, and should post.
+     * 
+     * @todo This should have a confirmation page.
      */
     public function lostUsername()
     {
@@ -696,12 +768,25 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Allows an administrator to send a user a password recovery verification code.
      * 
-     * @todo The link on the view page should be a mini form, and should post.
-     * @todo This should have a confirmation page.
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric userid The user id of the user to be modified.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * None.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @return bool True on success and redirect; otherwise false.
      * 
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
+     * 
+     * @todo The link on the view page should be a mini form, and should post.
+     * 
+     * @todo This should have a confirmation page.
      */
     public function lostPassword()
     {
@@ -740,9 +825,18 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Display a form to confirm the deletion of one user, and then process the deletion.
      *
-     * Available Get Parameters:
-     * - userid (numeric) The user id of the user to be deleted.
-     * - uname  (string)  The user name of the user to be deleted.
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric userid The user id of the user to be deleted.
+     * string  uname  The user name of the user to be deleted.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * numeric userid The user id of the user to be deleted.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @return string HTML string containing the rendered template.
      * 
@@ -943,8 +1037,23 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Shows all the registration requests (applications), and the options available to the current user.
      *
-     * Available Request Parameters:
-     * - startnum (int) The ordinal number of the first record to display, especially if using itemsperpage to limit the number of records on a single page.
+     * Parameters passed via GET:
+     * --------------------------
+     * string  restorview If returning from an action, and the previous view should be restored, then the value should be 'view'; 
+     *                          otherwise not present.
+     * integer startnum   The ordinal number of the first record to display, especially if using itemsperpage to limit 
+     *                          the number of records on a single page.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * numeric userid The user id of the user to be deleted.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * Namespace: Zikula_Users
+     * Variable:  Users_Controller_Admin_viewRegistrations
+     * Type:      array
+     * Contents:  An array containing the parameters to restore the view configuration prior to executing an action.
      *
      * @return string HTML string containing the rendered template.
      * 
@@ -1050,8 +1159,17 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Displays the information on a single registration request.
      *
-     * Available Get Parameters:
-     * - userid (numeric) The id of the registration request (id) to retrieve and display.
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric uid The id of the registration request (id) to retrieve and display.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * None.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @return string HTML string containing the rendered template.
      * 
@@ -1108,6 +1226,23 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
     /**
      * Display a form to edit one tegistration account.
+     *
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric uid        The id of the registration request (id) to retrieve and display.
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     *                          otherwise not present.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * string restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     *                          otherwise not present.
+     * 
+     * See also the definition of {@link Users_Controller_FormData_ModifyRegistrationForm}.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @return string|bool The rendered template; false on error.
      * 
@@ -1247,6 +1382,25 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Renders and processes a form confirming an administrators desire to skip verification for
      * a registration record, approve it and add it to the users table.
      *
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric uid        The id of the registration request (id) to verify.
+     * boolean force      True to force the registration to be verified.
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     *                          otherwise not present.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * numeric uid        The id of the registration request (uid) to verify.
+     * boolean force      True to force the registration to be verified.
+     * boolean confirmed  True to execute this function's action.
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     *                          otherwise not present.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     *
      * @return string|bool The rendered template; true on success; otherwise false.
      * 
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
@@ -1341,6 +1495,24 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * If the registration record is also verified (or verification is not needed) a users table
      * record is created.
+     *
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric uid        The id of the registration request (id) to approve.
+     * boolean force      True to force the registration to be approved.
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     *                          otherwise not present.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * numeric uid        The id of the registration request (uid) to approve.
+     * boolean force      True to force the registration to be approved.
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     *                          otherwise not present.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @return string|bool The rendered template; true on success; otherwise false.
      * 
@@ -1447,6 +1619,25 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * If the denial is confirmed, the registration is deleted from the database.
      *
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric uid        The id of the registration request (id) to deny.
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     *                          otherwise not present.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * numeric uid        The id of the registration request (uid) to deny.
+     * boolean confirmed  True to execute this function's action.
+     * boolean usernorify True to notify the user that his registration request was denied; otherwise false.
+     * string  reason     The reason the registration request was denied, included in the notification.
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     *                          otherwise not present.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     *
      * @return string|bool The rendered template; true on success; otherwise false.
      * 
      * @throws Zikula_Exception_Forbidden Thrown if the user does not have delete access, or if the method used to access this function is improper.
@@ -1547,6 +1738,18 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Edit and update module configuration settings.
      *
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * See the definition of {@link Users_Controller_FormData_ConfigForm}.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
+     *
      * @return string The rendered configuration settings template.
      * 
      * @throws Zikula_Exception_Fatal     Thrown if the function is accessed improperly.
@@ -1593,22 +1796,31 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Show the form to choose a CSV file and import several users from this file.
      *
-     * Available Post Parameters:
-     * - confirmed  (int|bool) True if the user has confirmed the upload/import.
-     * - importFile (array)    Structured information about the file to import, from <input type="file" name="fileFieldName" ... /> and stored in $_FILES['fileFieldName'].
-     *                         See http://php.net/manual/en/features.file-upload.post-method.php .
-     * - delimiter  (int)      A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
+     * Parameters passed via the $args array:
+     * --------------------------------------
+     * boolean $args['confirmed']  True if the user has confirmed the upload/import. Used as the default if $_POST['confirmed']
+     *                                  is not set. Allows this function to be called internally, rather than as a result of a form post.
+     * array   $args['importFile'] Information about the file to import. Used as the default if $_FILES['importFile'] is not set.
+     *                                  Allows this function to be called internally, rather than as a result of a form post.
+     * integer $args['delimiter']  A code indicating the delimiter used in the file. Used as the default if $_POST['delimiter'] 
+     *                                  is not set. Allows this function to be called internally, rather than as a result of a form post.
+     * 
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * boolean confirmed  True if the user has confirmed the upload/import.
+     * array   importFile Structured information about the file to import, from <input type="file" name="fileFieldName" ... /> and stored 
+     *                          in $_FILES['fileFieldName']. See http://php.net/manual/en/features.file-upload.post-method.php .
+     * integer delimiter  A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @param array $args All arguments passed to the function.
-     *                    $args['confirmed'] (int|bool) True if the user has confirmed the upload/import. Used
-     *                      as the default if $_POST['confirmed'] is not set. Allows this function to be called
-     *                      internally, rather than as a result of a form post.
-     *                    $args['importFile'] (array) Information about the file to import. Used as the default
-     *                      if $_FILES['importFile'] is not set. Allows this function to be called internally,
-     *                      rather than as a result of a form post.
-     *                    $args['delimiter'] (int) A code indicating the delimiter used in the file. Used as the
-     *                      default if $_POST['delimiter'] is not set. Allows this function to be called internally,
-     *                      rather than as a result of a form post.
      *
      * @return redirect user to admin main page if success and show again the forn otherwise
      * 
@@ -1666,14 +1878,35 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Show the form to export a CSV file of users.
      *
-     * Available Post Parameters:
-     * - confirmed       (int|bool) True if the user has confirmed the export.
-     * - exportFile      (array)    Filename of the file to export (optional) (default=users.csv)
-     * - delimiter       (int)      A code indicating the type of delimiter found in the export file. 1 = comma, 2 = semicolon, 3 = colon, 4 = tab.
-     * - exportEmail     (int)      Flag to export email addresses, 1 for yes.
-     * - exportTitles    (int)      Flag to export a title row, 1 for yes.
-     * - exportLastLogin (int)      Flag to export the last login date/time, 1 for yes.
-     * - exportRegDate   (int)      Flag to export the registration date/time, 1 for yes.
+     * Parameters passed via the $args array:
+     * --------------------------------------
+     * boolean $args['confirmed']       True if the user has confirmed the export.
+     * string  $args['exportFile']      Filename of the file to export (optional) (default=users.csv)
+     * integer $args['delimiter']       A code indicating the type of delimiter found in the export file. 1 = comma, 2 = semicolon, 3 = colon, 4 = tab.
+     * integer $args['exportEmail']     Flag to export email addresses, 1 for yes.
+     * integer $args['exportTitles']    Flag to export a title row, 1 for yes.
+     * integer $args['exportLastLogin'] Flag to export the last login date/time, 1 for yes.
+     * integer $args['exportRegDate']   Flag to export the registration date/time, 1 for yes.
+     * integer $args['exportGroups']    Flag to export the group membership, 1 for yes.
+     * 
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * boolean confirmed       True if the user has confirmed the export.
+     * string  exportFile      Filename of the file to export (optional) (default=users.csv)
+     * integer delimiter       A code indicating the type of delimiter found in the export file. 1 = comma, 2 = semicolon, 3 = colon, 4 = tab.
+     * integer exportEmail     Flag to export email addresses, 1 for yes.
+     * integer exportTitles    Flag to export a title row, 1 for yes.
+     * integer exportLastLogin Flag to export the last login date/time, 1 for yes.
+     * integer exportRegDate   Flag to export the registration date/time, 1 for yes.
+     * integer exportGroups    Flag to export the group membership, 1 for yes.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @param array $args All arguments passed to the function.
      *
@@ -1852,10 +2085,17 @@ class Users_Controller_Admin extends Zikula_AbstractController
     /**
      * Import several users from a CSV file. Checks needed values and format.
      *
-     * Available Parameters:
-     * - importFile (array) Structured information about the file to import, from <input type="file" name="fileFieldName" ... /> and stored in $_FILES['fileFieldName'].
-     *                        See http://php.net/manual/en/features.file-upload.post-method.php .
-     * - delimiter  (int)   A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
+     * Parameters passed via GET:
+     * --------------------------
+     * None.
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * None.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @param array   $importFile Information about the file to import. Used as the default
      *                            if $_FILES['importFile'] is not set. Allows this function to be called internally,
@@ -2027,7 +2267,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             // validate sendmail
             $importValues[$counter - 1]['sendmail'] = isset($importValues[$counter - 1]['sendmail']) ? (int)$importValues[$counter - 1]['sendmail'] : 0;
             if ($importValues[$counter - 1]['sendmail'] < 0 || $importValues[$counter - 1]['sendmail'] > 1) {
-               return $this->__f('Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.');
+                return $this->__f('Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.');
             }
 
             // check groups and set defaultGroup as default if there are not groups defined
@@ -2087,6 +2327,19 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
     /**
      * Sets or resets a user's need to changed his password on his next attempt at logging ing.
+     *
+     * Parameters passed via GET:
+     * --------------------------
+     * numeric userid The uid of the user for whom a change of password should be forced (or canceled).
+     * 
+     * Parameters passed via POST:
+     * ---------------------------
+     * numeric userid                    The uid of the user for whom a change of password should be forced (or canceled).
+     * boolean user_must_change_password True to force the user to change his password at his next log-in attempt, otherwise false.
+     * 
+     * Parameters passed via SESSION:
+     * ------------------------------
+     * None.
      *
      * @return string The rendered output from either the template for confirmation.
      * 
