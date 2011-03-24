@@ -536,11 +536,15 @@ class Users_Api_Admin extends Zikula_AbstractApi
             if (!$value['activated']) {
                 $importValues[$key]['activated'] = Users_Constant::ACTIVATED_PENDING_REG;
             }
-            $importValues[$key]['pass'] = UserUtil::getHashedPassword($importValues[$key]['pass']);
+        }
+
+        $importValuesDB = $importValues;
+        foreach ($importValuesDB as $value) {
+            $importValuesDB[$key]['pass'] = UserUtil::getHashedPassword($importValuesDB[$key]['pass']);
         }
 
         // execute sql to create users
-        $result = DBUtil::insertObjectArray($importValues, 'users', 'uid');
+        $result = DBUtil::insertObjectArray($importValuesDB, 'users', 'uid');
         if (!$result) {
             return false;
         }
