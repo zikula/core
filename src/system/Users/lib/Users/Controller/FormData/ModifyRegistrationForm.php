@@ -15,7 +15,7 @@
 /**
  * Contains and validates the data found on the Users module's modify registration form.
  */
-class Users_Controller_FormData_ModifyRegistrationForm extends Users_Controller_FormData_Validator_AbstractValidator
+class Users_Controller_FormData_ModifyRegistrationForm extends Users_Controller_FormData_AbstractFormData
 {
     /**
      * A validator to conditionally check the length of the password field.
