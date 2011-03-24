@@ -888,7 +888,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 // The authentication method selected might be reentrant (it might send the user out to an external web site
                 // for authentication, and then send us back to finish the job). We need to tell the external system to where
                 // we would like to return.
-                $reentrantURL = System::getBaseUrl() . ModUtil::url($this->name, 'user', 'login', array('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager)));
+                $reentrantURL = System::getBaseUrl() . ModUtil::url($this->name, 'user', 'login', array('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager, true)));
 
                 // There may be hook providers that need to be validated, so we cannot yet log in. The hook providers will
                 // need a user object to make sure they know who they're dealing with. Authenticate (so we are sure that

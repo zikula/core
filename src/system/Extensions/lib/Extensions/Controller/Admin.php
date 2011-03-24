@@ -223,7 +223,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                        'sort' => $sort));
 
         // generate an auth key to use in urls
-        $csrftoken = SecurityUtil::generateCsrfToken($this->serviceManager);
+        $csrftoken = SecurityUtil::generateCsrfToken($this->serviceManager, true);
 
         $moduleinfo = array();
         if (!empty($mods)) {
@@ -1100,7 +1100,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         $this->view->assign('state', $state);
 
         // generate an auth key to use in urls
-        $csrfToken = SecurityUtil::generateCsrfToken($this->serviceManager);
+        $csrfToken = SecurityUtil::generateCsrfToken($this->serviceManager, true);
         $plugins = array();
         $pluginClasses = ($systemplugins) ? PluginUtil::loadAllSystemPlugins() : PluginUtil::loadAllModulePlugins();
 

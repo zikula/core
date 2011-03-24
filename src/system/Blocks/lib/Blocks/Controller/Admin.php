@@ -65,7 +65,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         $filter['active_status'] = isset($filter['active_status']) ? $filter['active_status'] : 0;
 
         // generate an authorisation key for the links
-        $token = SecurityUtil::generateCsrfToken($this->serviceManager);
+        $token = SecurityUtil::generateCsrfToken($this->serviceManager, true);
 
         // set some default variables
         $rownum = 1;

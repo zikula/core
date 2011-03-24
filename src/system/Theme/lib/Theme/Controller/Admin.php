@@ -952,7 +952,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->view->assign($this->getVars());
 
         // assign an csrftoken for the clear cache/compile links
-        $this->view->assign('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager));
+        $this->view->assign('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager, true));
 
         // assign the core config var
         $this->view->assign('theme_change', System::getVar('theme_change'));
