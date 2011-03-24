@@ -85,7 +85,7 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 $this,
                 Users_Constant::MODVAR_ANONYMOUS_DISPLAY_NAME,
                 $modVars[Users_Constant::MODVAR_ANONYMOUS_DISPLAY_NAME],
-                Users_Constant::DEFAULT_ANONYMOUS_DISPLAY_NAME,
+                '',
                 $this->serviceManager))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
