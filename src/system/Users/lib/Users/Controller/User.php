@@ -226,13 +226,13 @@ class Users_Controller_User extends Zikula_AbstractController
 
                     // Notify that we are completing a registration session.
                     $event = new Zikula_Event('user.registration.failed');
-                    EventUtil::notify($event);
+                    $this->eventManager->notify($event);
                 }
             }
         } elseif ($this->request->isGet()) {
             // Notify that we are beginning a registration session.
             $event = new Zikula_Event('user.registration.started');
-            EventUtil::notify($event);
+            $this->eventManager->notify($event);
             $registeredObj = array();
         } else {
             throw new Zikula_Exception_Forbidden();
@@ -711,7 +711,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $returnUrl              = $this->request->getGet()->get('returnurl', '');
                 
                 $event = new Zikula_Event('user.login.started');
-                EventUtil::notify($event);
+                $this->eventManager->notify($event);
                 $registeredObj = array();
             }
         } else {
@@ -864,7 +864,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 'authentication_method' => $authenticationMethod,
                 'uid'                   => $userObj['uid'],
             ));
-            EventUtil::notify($event);
+            $this->eventManager->notify($event);
             
             if ($login_redirect == 1) {
                 // WCAG compliant logout - we redirect to index.php because

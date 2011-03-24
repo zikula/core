@@ -1573,7 +1573,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $this->setVars($modVars);
                 $this->registerStatus($this->__('Done! Users module settings have been saved.'));
                 $event = new Zikula_Event('users.config.updated', null, array(), $modVars);
-                EventUtil::notify($event);
+                $this->eventManager->notify($event);
             } else {
                 $errorFields = $configData->getErrorMessages();
                 $errorCount = count($errorFields);
