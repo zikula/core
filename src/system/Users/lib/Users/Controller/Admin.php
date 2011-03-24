@@ -2016,18 +2016,23 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 }
                 $emailsArray[] = $email;
             }
-
-            $activated = trim($importValues[$counter - 1]['activated']);
-            // check activation value and set 1 as default if it is not defined or it is incorrect
-            if (!$activated || (($activated != Users_Constant::ACTIVATED_INACTIVE) && ($activated != Users_Constant::ACTIVATED_ACTIVE))) {
-                $importValues[$counter - 1]['activated'] = Users_Constant::ACTIVATED_ACTIVE;
+            
+            // validate activation value
+            $importValues[$counter - 1]['activated'] = isset($importValues[$counter - 1]['activated']) ? (int)$importValues[$counter - 1]['activated'] : Users_Constant::ACTIVATED_ACTIVE;
+            $activated = $importValues[$counter - 1]['activated'];
+            if (($activated != Users_Constant::ACTIVATED_INACTIVE) && ($activated != Users_Constant::ACTIVATED_ACTIVE)) {
+                return $this->__f('Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.');
             }
 
-            // check send mail and set 0 as default if it is not defined
-            $importValues[$counter - 1]['sendmail'] = ($importValues[$counter - 1]['sendmail'] != 0 || $importValues[$counter - 1]['sendmail'] == '') ? 1 : 0;
+            // validate sendmail
+            $importValues[$counter - 1]['sendmail'] = isset($importValues[$counter - 1]['sendmail']) ? (int)$importValues[$counter - 1]['sendmail'] : 0;
+            if ($importValues[$counter - 1]['sendmail'] < 0 || $importValues[$counter - 1]['sendmail'] > 1) {
+               return $this->__f('Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.');
+            }
 
             // check groups and set defaultGroup as default if there are not groups defined
-            $groups = trim($importValues[$counter - 1]['groups']);
+            $importValues[$counter - 1]['groups'] = isset($importValues[$counter - 1]['groups']) ? (int)$importValues[$counter - 1]['groups'] : '';
+            $groups = $importValues[$counter - 1]['groups'];
             if ($groups == '') {
                 $importValues[$counter - 1]['groups'] = $defaultGroup;
             } else {
