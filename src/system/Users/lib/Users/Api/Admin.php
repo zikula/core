@@ -599,7 +599,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
                     $this->eventManager->notify($createEvent);
                 }
                 if (($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) && ($value['activated'] != Users_Constant::ACTIVATED_INACTIVE)
-                        && ($value['sendMail'] == 1)) {
+                        && ($value['sendmail'] == 1)) {
 
                     $renderer->assign('email', $value['email']);
                     $renderer->assign('uname', $value['uname']);
