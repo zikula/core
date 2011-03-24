@@ -496,7 +496,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
         $dbtable = DBUtil::getTables();
         $userscolumn = $dbtable['users_column'];
 
-        $valuesArray = $args['valuesArray'];
+        $valuesArray = $args['valuesarray'];
         $key = $args['key'];
 
         $where = "WHERE ({$userscolumn[$key]} IN ('" . implode("', '", $valuesArray) . "'))";
@@ -524,7 +524,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
             return false;
         }
 
-        $importValues = $args['importValues'];
+        $importValues = $args['importvalues'];
 
         if (empty($importValues)) {
             return false;
@@ -544,7 +544,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
 
         // get users. We need the users identities set them into their groups
         $usersInDB = ModUtil::apiFunc($this->name, 'admin', 'checkMultipleExistence',
-                                      array('valuesArray' => $usersArray,
+                                      array('valuesarray' => $usersArray,
                                             'key' => 'uname'));
         if (!$usersInDB) {
             $this->registerError($this->__(
