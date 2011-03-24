@@ -52,7 +52,6 @@ Zikula.Users.AdminModifyRegistration = {
         new Zikula.Ajax.Request(
             Zikula.Config.baseURL + "ajax.php?module=Users&func=getRegistrationErrors",
             {
-                method: 'post',
                 parameters: pars,
                 onComplete: Zikula.Users.AdminModifyRegistration.responseGetRegistrationErrors
             });

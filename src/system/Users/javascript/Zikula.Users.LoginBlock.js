@@ -112,13 +112,12 @@ Zikula.Users.LoginBlock =
     {
         Zikula.Users.LoginBlock.showAjaxInProgress();
 
-        var parameterObj = $(formId).serialize({hash: true, submit: false});
+        var parameterObj = $(formId).serialize(true);
         parameterObj.formType = 'block';
 
         var r = new Zikula.Ajax.Request(
             Zikula.Config.baseURL + 'ajax.php?module=Users&type=Ajax&func=getLoginFormFields',
             {
-                method: 'post',
                 parameters: parameterObj,
                 onSuccess: Zikula.Users.LoginBlock.getSelectAuthenticationMethodResponse,
                 onFailure: Zikula.Users.LoginBlock.selectAuthenticationMethodResponseFailure

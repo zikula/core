@@ -70,6 +70,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function getRegistrationErrors()
     {
+        $this->checkAjaxToken();
         $userOrRegistration = array(
             'uid'           => $this->request->getPost()->get('uid', null),
             'uname'         => $this->request->getPost()->get('uname', null),
@@ -158,6 +159,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
      */
     public function getLoginFormFields()
     {
+        $this->checkAjaxToken();
         $formType = $this->request->getPost()->get('formType', false);
         $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
         $modname = (isset($selectedAuthenticationMethod['modname']) && !empty($selectedAuthenticationMethod['modname']) ? $selectedAuthenticationMethod['modname'] : false);
