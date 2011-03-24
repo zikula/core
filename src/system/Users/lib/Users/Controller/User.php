@@ -1240,7 +1240,14 @@ class Users_Controller_User extends Zikula_AbstractController
      */
     public function activation($args)
     {
-        $code = base64_decode(FormUtil::getPassedValue('code', (isset($args['code']) ? $args['code'] : null), 'GETPOST'));
+        if ($this->request->getGet()->has('code')) {
+            $code = $this->request->getGet()->get('code');
+        } elseif ($this->request->getPost()->has('code')) {
+            $code = $this->request->getPost()->get('code');
+        } else {
+            $code = isset($args['code']) ? $args['code'] : null;
+        }
+        $code = base64_decode($code);
         $code = explode('#', $code);
 
         if (!isset($code[0]) || !isset($code[1])) {
@@ -1713,8 +1720,8 @@ class Users_Controller_User extends Zikula_AbstractController
             $this->redirect($this->name, 'user', 'main');
         }
 
-        $newemail = FormUtil::getPassedValue('newemail', '', 'POST');
-        $newemailagain = FormUtil::getPassedValue('newemailagain', '', 'POST');
+        $newemail = $this->request->getPost()->get('newemail', '');
+        $newemailagain = $this->request->getPost()->get('newemailagain', '');
 
         $emailErrors = ModUtil::apiFunc($this->name, 'registration', 'getEmailErrors', array(
             'uid'           => $uservars['uid'],
@@ -1789,7 +1796,7 @@ class Users_Controller_User extends Zikula_AbstractController
      */
     public function confirmChEmail($args)
     {
-        $confirmcode = FormUtil::getPassedValue('confirmcode', isset($args['confirmcode']) ? $args['confirmcode'] : null, 'GET');
+        $confirmcode = $this->request->getGet()->get('confirmcode', isset($args['confirmcode']) ? $args['confirmcode'] : null);
 
         if (!UserUtil::isLoggedIn()) {
             $this->registerError($this->__('Please log into your account in order to confirm your change of e-mail address.'))

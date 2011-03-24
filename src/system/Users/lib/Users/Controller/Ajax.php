@@ -31,7 +31,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $view = Zikula_View::getInstance($this->name);
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            $fragment = FormUtil::getPassedValue('fragment');
+            $fragment = $this->request->getGet()->get('fragment', $this->request->getPost()->get('fragment'));
 
             ModUtil::dbInfoLoad($this->name);
             $tables = DBUtil::getTables();

@@ -1097,7 +1097,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         } else {
             $reset = false;
 
-            $startNum = FormUtil::getPassedValue('startnum', 1);
+            $startNum = $this->request->getGet()->get('startnum', 1);
             if (!is_numeric($startNum) || empty($startNum)  || ((int)$startNum != $startNum) || ($startNum < 1)) {
                 $limitOffset = -1;
                 $reset = true;
@@ -1569,7 +1569,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
         }
 
 
-        if (!FormUtil::getPassedValue('confirmed', false, 'GETPOST')) {
+        $confirmed = $this->request->getGet()->get('confirmed', $this->request->getPost()->get('confirmed', false));
+        if (!$confirmed) {
             // Bad or no auth key, or bad or no confirmation, so display confirmation.
 
             // So expiration can be displayed
@@ -1852,8 +1853,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         if ($confirmed) {
             // get other import values
-            $importFile = FormUtil::getPassedValue('importFile', (isset($args['importFile']) ? $args['importFile'] : null), 'FILES');
-            $delimiter = $this->request->getPost()->get('delimiter', (isset($args['delimiter']) ? $args['delimiter'] : null));
+            $importFile = $this->request->getFiles()->get('importFile', isset($args['importFile']) ? $args['importFile'] : null);
+            $delimiter = $this->request->getPost()->get('delimiter', isset($args['delimiter']) ? $args['delimiter'] : null);
             $importResults = $this->uploadImport($importFile, $delimiter);
             if ($importResults == '') {
                 // the users have been imported successfully
