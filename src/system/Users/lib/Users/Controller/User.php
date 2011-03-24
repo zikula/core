@@ -289,18 +289,6 @@ class Users_Controller_User extends Zikula_AbstractController
     }
 
     /**
-     * Create a new user.
-     *
-     * Available Post Parameters:
-     *
-     * @return bool True if successful, false otherwise.
-     */
-    public function registerNewUser()
-    {
-
-    }
-
-    /**
      * Display the lost user name / password choices.
      *
      * @return string The rendered template.
