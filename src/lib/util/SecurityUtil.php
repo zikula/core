@@ -258,9 +258,15 @@ class SecurityUtil
      */
     public static function generateAuthKey($modname = '')
     {
-        LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', array(
-        'SecurityUtil::generateAuthKey()',
-        'SecurityUtil::generateCsrfToken()')), E_USER_DEPRECATED);
+        // Ugly hack for Zikula_Reponse_Ajax which for BC reasons needs to add authid to response
+        // So when this method is called by Zikula_Response_Ajax  or Zikula_Response_Ajax_Error class
+        // do not mark it as deprecated.
+        $trace = debug_backtrace(false);
+        if (!in_array($trace[1]['class'], array('Zikula_Response_Ajax', 'Zikula_Response_Ajax_Error'))) {
+            LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', array(
+            'SecurityUtil::generateAuthKey()',
+            'SecurityUtil::generateCsrfToken()')), E_USER_DEPRECATED);
+        }
 
         // since we need sessions for authorisation keys we should check
         // if a session exists and if not create one
