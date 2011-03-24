@@ -513,7 +513,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
      * Add new user accounts from the import process.
      *
      * @param array $args All parameters passed to this function.
-     *                    $args['importValues'] (array) An array of information used to create new user records.
+     *                    $args['importvalues'] (array) An array of information used to create new user records.
      *
      * @return bool True on success; false otherwise.
      */
@@ -533,6 +533,9 @@ class Users_Api_Admin extends Zikula_AbstractApi
         // Prepare arrays.
         foreach ($importValues as $key => $value) {
             $usersArray[] = $value['uname'];
+            if (!$value['activated']) {
+                $importValues[$key]['activated'] = Users_Constant::ACTIVATED_PENDING_REG;
+            }
             $importValues[$key]['pass'] = UserUtil::getHashedPassword($importValues[$key]['pass']);
         }
 
