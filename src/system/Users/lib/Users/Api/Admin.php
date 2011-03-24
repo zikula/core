@@ -46,7 +46,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
     public function findUsers($args)
     {
         // Need read access to call this function
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_READ)) {
             return false;
         }
 
@@ -139,7 +139,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
     public function updateUser($args)
     {
         // check permission to edit any generic user
-        if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission("{$this->name}::", 'ANY', ACCESS_EDIT)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -163,7 +163,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
         if (!$originalUser) {
             $this->registerError($this->__('Error! Could not find the user record in order to update it.'));
             return false;
-        } elseif (!SecurityUtil::checkPermission('Users::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
+        } elseif (!SecurityUtil::checkPermission("{$this->name}::", "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
             // above elseif checks permission to edit the specific user
             throw new Zikula_Exception_Forbidden();
         }
@@ -260,7 +260,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
      */
     public function deleteUser($args)
     {
-        if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission("{$this->name}::", 'ANY', ACCESS_DELETE)) {
             return false;
         }
 
@@ -289,7 +289,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
             $userObj = UserUtil::getVars($uid);
             if (!$userObj) {
                 return false;
-            } elseif (!SecurityUtil::checkPermission('Users::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE)) {
+            } elseif (!SecurityUtil::checkPermission("{$this->name}::", "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE)) {
                 return false;
             }
 
@@ -333,7 +333,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
      */
     public function sendmail($args)
     {
-        if (!SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT)) {
+        if (!SecurityUtil::checkPermission("{$this->name}::MailUsers", '::', ACCESS_COMMENT)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -446,30 +446,30 @@ class Users_Api_Admin extends Zikula_AbstractApi
         $links = array();
         $submenulinks = array();
 
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+        if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view'), 'text' => $this->__('Users list'), 'class' => 'z-icon-es-view');
         }
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+        if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
             $pending = ModUtil::apiFunc($this->name, 'registration', 'countAll');
             if ($pending) {
                 $links[] = array('url' => ModUtil::url($this->name, 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'class' => 'user-icon-adduser');
             }
         }
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
+        if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADD)) {
             $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'));
             $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'import'), 'text' => $this->__('Import users'));
-            if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+            if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADMIN)) {
                  $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'exporter'), 'text' => $this->__('Export users'));
             }
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new', 'links' => $submenulinks);
         }
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+        if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'search'), 'text' => $this->__('Find users'), 'class' => 'z-icon-es-search');
         }
         if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'mailUsers'), 'text' => $this->__('E-mail users'), 'class' => 'z-icon-es-mail');
         }
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'config'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }
 
@@ -489,7 +489,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
     public function checkMultipleExistence($args)
     {
         // Need read access to call this function
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_READ)) {
             return false;
         }
 
@@ -520,7 +520,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
     public function createImport($args)
     {
         // Need add access to call this function
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADD)) {
             return false;
         }
 
@@ -586,25 +586,23 @@ class Users_Api_Admin extends Zikula_AbstractApi
             $sitename  = System::getVar('sitename');
             $siteurl   = System::getBaseUrl();
 
-            $renderer = Zikula_View::getInstance($this->name, false);
-            $renderer->assign('sitename', $sitename);
-            $renderer->assign('siteurl', $siteurl);
+            $view = Zikula_View::getInstance($this->name, false);
+            $view->assign('sitename', $sitename);
+            $view->assign('siteurl', $siteurl);
 
             foreach ($importValues as $value) {
-                if ($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) {
+                if ($value['activated']) {
                     $createEvent = new Zikula_Event('user.create', $value);
                     $this->eventManager->notify($createEvent);
                 } else {
                     $createEvent = new Zikula_Event('registration.create', $value);
                     $this->eventManager->notify($createEvent);
                 }
-                if (($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) && ($value['activated'] != Users_Constant::ACTIVATED_INACTIVE)
-                        && ($value['sendmail'] == 1)) {
-
-                    $renderer->assign('email', $value['email']);
-                    $renderer->assign('uname', $value['uname']);
-                    $renderer->assign('pass', $value['pass']);
-                    $message = $renderer->fetch('users_email_importnotify_html.tpl');
+                if ($value['activated'] && $value['sendmail']) {
+                    $view->assign('email', $value['email']);
+                    $view->assign('uname', $value['uname']);
+                    $view->assign('pass', $value['pass']);
+                    $message = $view->fetch('users_email_importnotify_html.tpl');
                     $subject = $this->__f('Password for %1$s from %2$s', array($value['uname'], $sitename));
                     $sendMessageArgs = array(
                         'toaddress' => $value['email'],
