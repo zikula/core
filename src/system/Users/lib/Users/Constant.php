@@ -193,11 +193,6 @@ class Users_Constant
     const MODVAR_ANONYMOUS_DISPLAY_NAME = 'anonymous';
 
     /**
-     * Default value for the guest account (anonymous account) display name.
-     */
-    const DEFAULT_ANONYMOUS_DISPLAY_NAME = 'Guest';
-
-    /**
      * Module variable key for the avatar image path.
      */
     const MODVAR_AVATAR_IMAGE_PATH = 'avatarpath';
