@@ -16,7 +16,7 @@
 /**
  * Persistent event listener for pending content queries.
  */
-class Users_Listener_PendingContent extends Zikula_AbstractBase
+class Users_Listener_PendingContent
 {
     /**
      * The module name.

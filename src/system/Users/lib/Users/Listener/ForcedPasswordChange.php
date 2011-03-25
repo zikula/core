@@ -16,7 +16,7 @@
 /**
  * Persistent event listener for user.login.veto events that forces the change of a user's password.
  */
-class Users_Listener_ForcedPasswordChange extends Zikula_AbstractBase
+class Users_Listener_ForcedPasswordChange
 {
     /**
      * The module name.
@@ -62,7 +62,7 @@ class Users_Listener_ForcedPasswordChange extends Zikula_AbstractBase
                 ),
             ));
 
-            LogUtil::registerError(__('Your log-in request was not completed. You must change your web site account\'s password first.'));
+            LogUtil::registerError(__("Your log-in request was not completed. You must change your web site account's password first."));
         }
     }
 }
