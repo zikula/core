@@ -27,7 +27,7 @@
 function Users_tables($forVersion = null)
 {
     if (!isset($forVersion)) {
-        if (isset($_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x']) && $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x']) {
+        if (isset($GLOBALS['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x']) && $GLOBALS['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x']) {
             // This check comes before System::isInstalling().
             return Users_tables_for_117();
         }
