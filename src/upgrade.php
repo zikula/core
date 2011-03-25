@@ -19,6 +19,8 @@ ini_set('memory_limit', '64M');
 ini_set('max_execution_time', 86400);
 
 include 'lib/bootstrap.php';
+ZLoader::addAutoloader('Users', 'system/Users/lib', '_');
+
 $eventManager = $core->getEventManager();
 $eventManager->attach('core.init', 'upgrade_suppressErrors');
 
@@ -403,6 +405,10 @@ function _upg_sanity_check($username, $password)
 
     if ($validupgrade) {
         $defaultTheme = System::getVar('Default_Theme');
+        if ($defaultTheme == 'andreas08') {
+            System::setVar('Default_Theme', 'Andreas08');
+            $defaultTheme = System::getVar('Default_Theme');
+        }
         $dir = is_dir("themes/$defaultTheme");
         $casing = preg_match('/\p{Lu}/u', substr($defaultTheme, 0, 1)); // first letter is uppercase.
         $underscore = preg_match('/_/', $defaultTheme); // has underscore
