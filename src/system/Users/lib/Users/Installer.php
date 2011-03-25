@@ -146,7 +146,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                     return '1.13';
                 }
 
-                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users_Listeners', 'pendingContentListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users_Listener_PendingContent', 'pendingContentListener'));
 
                 // Update users table for data type change of activated field.
                 if (!DBUtil::changeTable('users')) {
