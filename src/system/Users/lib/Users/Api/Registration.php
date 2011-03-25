@@ -735,7 +735,6 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
             // Finally, save it.
             $userObj = $reginfo;
-            unset($userObj['agreetoterms']);
             unset($userObj['isapproved']);
             unset($userObj['isverified']);
             $userObj = $this->cleanFieldsToAttributes($userObj);
@@ -778,7 +777,6 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
             $reginfo['isapproved'] = isset($reginfo['approved_by']) && !empty($reginfo['approved_by']);
 
-            UserUtil::delVar('agreetoterms', $userObj['uid']);
             UserUtil::delVar('isverified', $userObj['uid']);
 
             // NOTE: See below for the firing of the item-create hook.
