@@ -317,7 +317,7 @@ Templates should now use
 
 And to check in the controller, use
 
-    $this->checkCsrfToken($redirectUrlOnFail);
+    $this->checkCsrfToken();
 
 
 HOOKS
