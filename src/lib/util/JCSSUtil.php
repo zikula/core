@@ -534,6 +534,10 @@ class JCSSUtil
      */
     private static function readfile(&$contents, $file, $ext)
     {
+        if (!file_exists($file)) {
+            return;
+        }
+        
         $source = fopen($file, 'r');
         if ($source) {
             $filepath = explode('/', dirname($file));
