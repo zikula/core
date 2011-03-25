@@ -16,7 +16,7 @@
 /**
  * Persistent event listener used to clean up the Users module session variables related to logging in.
  */
-class Users_Listener_ClearUsersNamespace extends Zikula_AbstractBase
+class Users_Listener_ClearUsersNamespace
 {
     /**
      * The module name.
