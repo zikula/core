@@ -29,12 +29,12 @@ function Users_tables($forVersion = null)
     if (!isset($forVersion)) {
         if (isset($GLOBALS['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x']) && $GLOBALS['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x']) {
             // This check comes before System::isInstalling().
-            return Users_tables_for_117();
+            return Users_tables_for_113();
         }
 
         if (System::isInstalling()) {
             // new installs
-            return Users_tables_for_210();
+            return Users_tables_for_220();
         }
 
         // Remaining cases - this should be deleted.
@@ -42,10 +42,10 @@ function Users_tables($forVersion = null)
         $forVersion = $usersModInfo['version'];
     }
 
-    if (version_compare($forVersion, '2.1.0') >= 0) {
-        return Users_tables_for_210();
+    if (version_compare($forVersion, '2.2.0') >= 0) {
+        return Users_tables_for_220();
     } else {
-        return Users_tables_for_117();
+        return Users_tables_for_113();
     }
 }
 
@@ -58,13 +58,13 @@ function Users_tables($forVersion = null)
  *
  * @return array The table information.
  */
-function Users_tables_for_210()
+function Users_tables_for_220()
 {
     // Initialise table array
     $dbinfo = array();
 
     // Main Users table
-    // Version 2.1.0 through current(inclusive)
+    // Version 2.2.0 through current(inclusive)
     // Stores core information about each user account.
     // DO NOT USE A FIELD FOR A PURPOSE OTHER THAN ITS DOCUMENTED INTENT!
     //
@@ -169,7 +169,7 @@ function Users_tables_for_210()
     $dbinfo['users_primary_key_column'] = 'uid';
 
     // Account-change verification table
-    // Version 2.1.0 through current(inclusive)
+    // Version 2.2.0 through current(inclusive)
     // Holds a one-time use, expirable verification code used when a user needs to changs his email address,
     // reset his password and has not answered any security questions, or when a new user is registering with
     // the site for the first time.
@@ -256,13 +256,13 @@ function Users_tables_for_210()
  *
  * @return array The table information.
  */
-function Users_tables_for_117()
+function Users_tables_for_113()
 {
     // Initialise table array
     $dbinfo = array();
 
     // Main Users table
-    // Version 1.11 through 1.17 (inclusive)
+    // Version 1.11 through 1.13 (inclusive)
     // Stores core information about each user account.
     // DO NOT USE A FIELD FOR A PURPOSE OTHER THAN ITS DOCUMENTED INTENT!
     //
@@ -389,7 +389,7 @@ function Users_tables_for_117()
     // tag              - NOT USED
     // hash_method      - NOT USED
 
-    // Version 1.11 through 1.17 (inclusive)
+    // Version 1.11 through 1.13 (inclusive)
     $dbinfo['users_temp'] = DBUtil::getLimitedTablename('users_temp');
     $dbinfo['users_temp_column'] = array(
         'tid'          => 'z_tid',

@@ -107,9 +107,12 @@ class Users_Installer extends Zikula_AbstractInstaller
                 $this->upgrade_migrateSerialisedUserTemp();
             case '1.12':
                 // upgrade 1.12 to 1.13
+
+                // Do modvar renames and moves here, but new modvars and modvar removals are done below for all versions
                 $this->setVar(Users_Constant::MODVAR_AVATAR_IMAGE_PATH, Users_Constant::MODVAR_AVATAR_IMAGE_PATH);
                 // lowercaseuname Removed in 2.0.0
                 //$this->setVar('lowercaseuname', 1);
+
                 // **************************************************************
                 // 1.12->1.13 is the last known upgrade of Users for Zikula 1.2.x
                 // Users module 1.13 is the last known 1.2.x version released.
@@ -117,6 +120,9 @@ class Users_Installer extends Zikula_AbstractInstaller
                 // **************************************************************
             case '1.13':
                 // upgrade 1.13 to 2.2.0
+
+                // Do modvar renames and moves here, but new modvars and modvar removals are done below for all versions
+
                 // Check if the hash method is md5. If so, it is not used any more. Change it to the new default.
                 if ($this->getVar(Users_Constant::MODVAR_HASH_METHOD, false) == 'md5') {
                     $this->setVar(Users_Constant::MODVAR_HASH_METHOD, Users_Constant::DEFAULT_HASH_METHOD);
@@ -137,19 +143,11 @@ class Users_Installer extends Zikula_AbstractInstaller
 
                 // IDN domains setting moving to system settings.
                 System::setVar('idnnames', (bool)$this->getVar('idnnames', true));
+                
+                // Minimum age is moving to Legal
+                ModUtil::setVar('Legal', 'minimumAge', $this->getVar('minage', 0));
 
-                if (!DBUtil::changeTable('users_temp')) {
-                    return '1.13';
-                }
-
-                if (!$this->upgrade117Xto210($oldVersion)) {
-                    return '1.13';
-                }
-
-                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users_Listener_PendingContent', 'pendingContentListener'));
-
-                // Update users table for data type change of activated field.
-                if (!DBUtil::changeTable('users')) {
+                if (!$this->upgrade113XTablesTo220Tables($oldVersion)) {
                     return '1.13';
                 }
 
@@ -234,12 +232,12 @@ class Users_Installer extends Zikula_AbstractInstaller
             Users_Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER          => '',
             Users_Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED        => Users_Constant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
             Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE        => Users_Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE,
-            Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON          => __(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
+            Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON          => $this->__(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
             Users_Constant::MODVAR_REGISTRATION_ENABLED                  => Users_Constant::DEFAULT_REGISTRATION_ENABLED,
             Users_Constant::MODVAR_EXPIRE_DAYS_REGISTRATION              => Users_Constant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
             Users_Constant::MODVAR_REGISTRATION_ILLEGAL_AGENTS           => '',
             Users_Constant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
-            Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => __(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
+            Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => $this->__(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
             Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE        => Users_Constant::DEFAULT_REGISTRATION_VERIFICATION_MODE,
             Users_Constant::MODVAR_REQUIRE_UNIQUE_EMAIL                  => Users_Constant::DEFAULT_REQUIRE_UNIQUE_EMAIL,
         );
@@ -266,9 +264,10 @@ class Users_Installer extends Zikula_AbstractInstaller
             'pass'          => '',
             'passreminder'  => '',
             'activated'     => Users_Constant::ACTIVATED_ACTIVE,
-            'approved_date' => $nowUTCStr,
-            'approved_by'   => 2,
-            'user_regdate'  => $nowUTCStr,
+            'approved_date' => '1970-01-01 00:00:00',
+            'approved_by'   => 0,
+            'user_regdate'  => '1970-01-01 00:00:00',
+            'lastlogin'     => '1970-01-01 00:00:00',
             'theme'         => '',
             'ublockon'      => 0,
             'ublock'        => '',
@@ -286,6 +285,7 @@ class Users_Installer extends Zikula_AbstractInstaller
             'approved_date' => $nowUTCStr,
             'approved_by'   => 2,
             'user_regdate'  => $nowUTCStr,
+            'lastlogin'     => '1970-01-01 00:00:00',
             'theme'         => '',
             'ublockon'      => 0,
             'ublock'        => '',
@@ -310,21 +310,28 @@ class Users_Installer extends Zikula_AbstractInstaller
     }
 
     /**
-     * Migrate from version 1.17 to 2.1.0
+     * Migrate from version 1.13 to 2.2.0
      *
      * @param string $oldversion The old version from which this upgrade is being processed.
      *
      * @return bool True on success; otherwise false.
      */
-    public function upgrade117Xto210($oldversion)
+    public function upgrade113XTablesTo220Tables($oldversion)
     {
+        if (!DBUtil::changeTable('users_temp')) {
+            return false;
+        }
+                
         // Get the dbinfo for the new version
         ModUtil::dbInfoLoad('Users', 'Users');
 
+        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+        $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
+        
         $serviceManager = ServiceUtil::getManager();
         $dbinfoSystem = $serviceManager['dbtables'];
-        $dbinfo117X = Users_tables('1.17');
-        $dbinfo210 = Users_tables('2.1.0');
+        $dbinfo113X = Users_tables('1.13');
+        $dbinfo220 = Users_tables('2.2.0');
         $usersOldFields = array(
             'user_theme',
             'user_viewemail',
@@ -335,13 +342,13 @@ class Users_Installer extends Zikula_AbstractInstaller
             'validuntil',
         );
         $usersOldFieldsDB = array(
-            $dbinfo117X['users_column']['user_theme'],
-            $dbinfo117X['users_column']['user_viewemail'],
-            $dbinfo117X['users_column']['storynum'],
-            $dbinfo117X['users_column']['counter'],
-            $dbinfo117X['users_column']['hash_method'],
-            $dbinfo117X['users_column']['validfrom'],
-            $dbinfo117X['users_column']['validuntil']
+            $dbinfo113X['users_column']['user_theme'],
+            $dbinfo113X['users_column']['user_viewemail'],
+            $dbinfo113X['users_column']['storynum'],
+            $dbinfo113X['users_column']['counter'],
+            $dbinfo113X['users_column']['hash_method'],
+            $dbinfo113X['users_column']['validfrom'],
+            $dbinfo113X['users_column']['validuntil']
         );
 
         // Upgrade the tables
@@ -350,11 +357,11 @@ class Users_Installer extends Zikula_AbstractInstaller
         // are getting a new data type that is incompatible, so no need to save anything off first.
         // Also, create the users_verifychg tables at this point.
         // Merge the global dbtables with the new field information.
-        $tables['users_column'] = $dbinfo210['users_column'];
-        $tables['users_column_def'] = $dbinfo210['users_column_def'];
-        $tables['users_verifychg'] = $dbinfo210['users_verifychg'];
-        $tables['users_verifychg_column'] = $dbinfo210['users_verifychg_column'];
-        $tables['users_verifychg_column_def'] = $dbinfo210['users_verifychg_column_def'];
+        $tables['users_column'] = $dbinfo220['users_column'];
+        $tables['users_column_def'] = $dbinfo220['users_column_def'];
+        $tables['users_verifychg'] = $dbinfo220['users_verifychg'];
+        $tables['users_verifychg_column'] = $dbinfo220['users_verifychg_column'];
+        $tables['users_verifychg_column_def'] = $dbinfo220['users_verifychg_column_def'];
         $serviceManager['dbtables'] = array_merge($dbinfoSystem, $tables);
 
         // Now change the tables
@@ -366,9 +373,9 @@ class Users_Installer extends Zikula_AbstractInstaller
         }
 
         // First users_temp pending email verification records to users_verifychg.
-        $tempColumn = $dbinfo117X['users_temp_column'];
-        $verifyColumn = $dbinfo210['users_verifychg_column'];
-        $usersColumn = $dbinfo210['users_column'];
+        $tempColumn = $dbinfo113X['users_temp_column'];
+        $verifyColumn = $dbinfo220['users_verifychg_column'];
+        $usersColumn = $dbinfo220['users_column'];
 
         $limitNumRows = 100;
         $limitOffset = 0;
@@ -418,7 +425,7 @@ class Users_Installer extends Zikula_AbstractInstaller
         }
         // After converting, now use SQL to transfer the data for pending e-mail change requests into the
         // users_verifychg table
-        $sql = "INSERT INTO {$dbinfo210['users_verifychg']}
+        $sql = "INSERT INTO {$dbinfo220['users_verifychg']}
                     ({$verifyColumn['changetype']}, {$verifyColumn['uid']}, {$verifyColumn['newemail']},
                      {$verifyColumn['verifycode']}, {$verifyColumn['created_dt']})
                 SELECT " . Users_Constant::VERIFYCHGTYPE_EMAIL . " AS {$verifyColumn['changetype']},
@@ -426,8 +433,8 @@ class Users_Installer extends Zikula_AbstractInstaller
                     ut.{$tempColumn['email']} AS {$verifyColumn['newemail']},
                     ut.{$tempColumn['comment']} AS {$verifyColumn['verifycode']},
                     ut.{$tempColumn['dynamics']} AS {$verifyColumn['created_dt']}
-                FROM {$dbinfo117X['users_temp']} AS ut
-                    INNER JOIN {$dbinfo210['users']} AS users ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
+                FROM {$dbinfo113X['users_temp']} AS ut
+                    INNER JOIN {$dbinfo220['users']} AS users ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
                 WHERE ut.{$tempColumn['type']} = 2";
         $updated = DBUtil::executeSQL($sql);
         if (!$updated) {
@@ -437,7 +444,7 @@ class Users_Installer extends Zikula_AbstractInstaller
         // Next, users table conversion
         // We need to convert some information over from the old users table fields, so merge the old field list into
         // the new one. The order of array_merge parameters is important here!
-        $tables = array('users_column' => array_merge($dbinfo117X['users_column'], $dbinfo210['users_column']));
+        $tables = array('users_column' => array_merge($dbinfo113X['users_column'], $dbinfo220['users_column']));
         $serviceManager['dbtables'] = array_merge($dbinfoSystem, $tables);
         // Do the conversion in PHP we use mb_strtolower, and even if MySQL had an equivalent, there is
         // no guarantee that another supported DB platform would.
@@ -447,12 +454,22 @@ class Users_Installer extends Zikula_AbstractInstaller
         $userCount = DBUtil::selectObjectCount('users');
         while ($limitOffset < $userCount) {
             $userArray = DBUtil::selectObjectArray('users', "{$usersColumn['uid']} != 1", '', $limitOffset, $limitNumRows,
-                '', null, null, array('uid', 'uname', 'email', 'pass', 'hash_method', 'user_regdate', 'lastlogin'));
+                '', null, null, array('uid', 'uname', 'email', 'pass', 'hash_method', 'user_regdate', 'lastlogin', 'approved_by', 'approved_date'));
             if (!empty($userArray) && is_array($userArray)) {
                 foreach ($userArray as $key => $userObj) {
                     // force user names and emails to lower case
                     $userArray[$key]['uname'] = mb_strtolower($userArray[$key]['uname']);
                     $userArray[$key]['email'] = mb_strtolower($userArray[$key]['email']);
+                    
+                    if ($userArray[$key]['user_regdate'] == '1970-01-01 00:00:00') {
+                        $userArray[$key]['user_regdate'] = $nowUTCStr;
+                        $userArray[$key]['approved_date'] = $nowUTCStr;
+                    } else {
+                        $userArray[$key]['approved_date'] = $userArray[$key]['user_regdate'];
+                    }
+                    $userArray[$key]['approved_by'] = 2;
+                    
+                    
 
                     // merge hash method for salted passwords, leave salt blank
                     if (!empty($userArray[$key]['pass']) && (strpos($userArray[$key]['pass'], '$$') === false)) {
@@ -487,6 +504,7 @@ class Users_Installer extends Zikula_AbstractInstaller
         }
 
         $obaColumn = $dbinfoSystem['objectdata_attributes_column'];
+        
 
         // Next, users_temp conversion to users. This needs to be done in a few steps, since we have to set some object
         // attributes too. Step 1, from the users_temp table to the main user table, pending registrations that are
@@ -499,8 +517,8 @@ class Users_Installer extends Zikula_AbstractInstaller
                     {$tempColumn['pass']} AS {$usersColumn['pass']},
                     ".Users_Constant::ACTIVATED_PENDING_REG." AS {$usersColumn['activated']},
                     0 AS {$usersColumn['approved_by']}
-                FROM {$dbinfo117X['users_temp']}
-                WHERE {$dbinfo117X['users_temp']}.{$tempColumn['type']} = 1";
+                FROM {$dbinfo113X['users_temp']}
+                WHERE {$dbinfo113X['users_temp']}.{$tempColumn['type']} = 1";
         $updated = DBUtil::executeSQL($sql);
         if (!$updated) {
             return false;
@@ -509,13 +527,15 @@ class Users_Installer extends Zikula_AbstractInstaller
         // Next we need to get the dynadata into the objectdata_attributes table
         $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
                     ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
-                     {$obaColumn['value']})
+                     {$obaColumn['value']}, oba_cr_date, oba_lu_date)
                 SELECT 'dynadata' AS {$obaColumn['attribute_name']},
                     users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
                     'users' AS {$obaColumn['object_type']},
-                    ut.{$tempColumn['dynamics']} AS {$obaColumn['value']}
-                FROM {$dbinfo117X['users_temp']} AS ut
-                LEFT JOIN {$dbinfo210['users']} AS users
+                    ut.{$tempColumn['dynamics']} AS {$obaColumn['value']},
+                    NOW() as oba_cr_date,
+                    NOW() as oba_lu_date
+                FROM {$dbinfo113X['users_temp']} AS ut
+                LEFT JOIN {$dbinfo220['users']} AS users
                     ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
                 WHERE (ut.{$tempColumn['type']} = 1)
                     AND (users.{$usersColumn['activated']} = ".Users_Constant::ACTIVATED_PENDING_REG.")";
@@ -527,13 +547,15 @@ class Users_Installer extends Zikula_AbstractInstaller
         // Next we need to get the isverified field into the objectdata_attributes table
         $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
                     ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
-                     {$obaColumn['value']})
+                     {$obaColumn['value']}, oba_cr_date, oba_lu_date)
                 SELECT 'isverified' AS {$obaColumn['attribute_name']},
                     users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
                     'users' AS {$obaColumn['object_type']},
-                    0 AS {$obaColumn['value']}
-                FROM {$dbinfo117X['users_temp']} AS ut
-                LEFT JOIN {$dbinfo210['users']} AS users
+                    0 AS {$obaColumn['value']},
+                    NOW() as oba_cr_date,
+                    NOW() as oba_lu_date
+                FROM {$dbinfo113X['users_temp']} AS ut
+                LEFT JOIN {$dbinfo220['users']} AS users
                     ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
                 WHERE (ut.{$tempColumn['type']} = 1)
                     AND (users.{$usersColumn['activated']} = ".Users_Constant::ACTIVATED_PENDING_REG.")";
@@ -542,22 +564,65 @@ class Users_Installer extends Zikula_AbstractInstaller
             return false;
         }
 
-        // Finally, we need to get the agreetoterms field into the objectdata_attributes table
-        $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
-                    ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
-                     {$obaColumn['value']})
-                SELECT 'agreetoterms' AS {$obaColumn['attribute_name']},
-                    users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
-                    'users' AS {$obaColumn['object_type']},
-                    1 AS {$obaColumn['value']}
-                FROM {$dbinfo117X['users_temp']} AS ut
-                LEFT JOIN {$dbinfo210['users']} AS users
-                    ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
-                WHERE (ut.{$tempColumn['type']} = 1)
-                    AND (users.{$usersColumn['activated']} = ".Users_Constant::ACTIVATED_PENDING_REG.")";
-        $updated = DBUtil::executeSQL($sql);
-        if (!$updated) {
-            return false;
+        // Finally, we need to get the Legal module flags set
+        $legalModInfo = ModUtil::getInfoFromName('Legal');
+        if (($legalModInfo['state'] == ModUtil::STATE_ACTIVE) || ($legalModInfo['state'] == ModUtil::STATE_UPGRADED)) {
+            $termsOfUseActive = ModUtil::getVar('Legal', 'termsofuse', false);
+            if ($termsOfUseActive) {
+                $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
+                            ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
+                             {$obaColumn['value']}, oba_cr_date, oba_lu_date)
+                        SELECT '_Legal_termsOfUseAccepted' AS {$obaColumn['attribute_name']},
+                            users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
+                            'users' AS {$obaColumn['object_type']},
+                            DATE_FORMAT(IF(users.{$usersColumn['user_regdate']} != '1970-01-01 00:00:00', users.{$usersColumn['user_regdate']}, NOW()), '%Y-%m-%dT%H:%i:%s+00:00') AS {$obaColumn['value']},
+                            NOW() as oba_cr_date,
+                            NOW() as oba_lu_date
+                        FROM {$dbinfo220['users']} AS users
+                        WHERE users.{$usersColumn['uid']} > 2";
+                $updated = DBUtil::executeSQL($sql);
+                if (!$updated) {
+                    return false;
+                }
+            }
+            
+            $privacyPolicyActive = ModUtil::getVar('Legal', 'privacypolicy', false);
+            if ($privacyPolicyActive) {
+                $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
+                            ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
+                             {$obaColumn['value']}, oba_cr_date, oba_lu_date)
+                        SELECT '_Legal_privacyPolicyAccepted' AS {$obaColumn['attribute_name']},
+                            users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
+                            'users' AS {$obaColumn['object_type']},
+                            DATE_FORMAT(IF(users.{$usersColumn['user_regdate']} != '1970-01-01 00:00:00', users.{$usersColumn['user_regdate']}, NOW()), '%Y-%m-%dT%H:%i:%s+00:00') AS {$obaColumn['value']},
+                            NOW() as oba_cr_date,
+                            NOW() as oba_lu_date
+                        FROM {$dbinfo220['users']} AS users
+                        WHERE users.{$usersColumn['uid']} > 2";
+                $updated = DBUtil::executeSQL($sql);
+                if (!$updated) {
+                    return false;
+                }
+            }
+            
+            $agePolicyActive = ($this->getVar('minage', 0) > 0);
+            if ($agePolicyActive) {
+                $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
+                            ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
+                             {$obaColumn['value']}, oba_cr_date, oba_lu_date)
+                        SELECT '_Legal_agePolicyConfirmed' AS {$obaColumn['attribute_name']},
+                            users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
+                            'users' AS {$obaColumn['object_type']},
+                            DATE_FORMAT(IF(users.{$usersColumn['user_regdate']} != '1970-01-01 00:00:00', users.{$usersColumn['user_regdate']}, NOW()), '%Y-%m-%dT%H:%i:%s+00:00') AS {$obaColumn['value']},
+                            NOW() as oba_cr_date,
+                            NOW() as oba_lu_date
+                        FROM {$dbinfo220['users']} AS users
+                        WHERE users.{$usersColumn['uid']} > 2";
+                $updated = DBUtil::executeSQL($sql);
+                if (!$updated) {
+                    return false;
+                }
+            }
         }
 
         // Done upgrading. Let's lose some old fields and tables we no longer need.
@@ -567,13 +632,18 @@ class Users_Installer extends Zikula_AbstractInstaller
         // Reset the system tables to the new table definitons, so the rest of the
         // system upgrade goes smoothly.
         $dbinfoSystem = $serviceManager['dbtables'];
-        foreach ($dbinfo117X as $key => $value) {
+        foreach ($dbinfo113X as $key => $value) {
             unset($dbinfoSystem[$key]);
         }
-        foreach ($dbinfo210 as $key => $value) {
+        foreach ($dbinfo220 as $key => $value) {
             $dbinfoSystem[$key] = $value;
         }
         $serviceManager['dbtables'] = $dbinfoSystem;
+        
+        // Update users table for data type change of activated field.
+        if (!DBUtil::changeTable('users')) {
+            return false;
+        }
 
         return true;
     }
