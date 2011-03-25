@@ -1017,14 +1017,6 @@ class UserUtil
             // Calculate isapproved from approved_by
             $userObj['isapproved'] = isset($userObj['approved_by']) && !empty($userObj['approved_by']);
 
-            // Get agreetoterms from the attributes
-            if (isset($userObj['__ATTRIBUTES__']['agreetoterms'])) {
-                $userObj['agreetoterms'] = $userObj['__ATTRIBUTES__']['agreetoterms'];
-                unset($userObj['__ATTRIBUTES__']['agreetoterms']);
-            } else {
-                $userObj['agreetoterms'] = false;
-            }
-
             // unserialize dynadata
             if (isset($userObj['__ATTRIBUTES__']['dynadata'])) {
                 $userObj['dynadata'] = unserialize($userObj['__ATTRIBUTES__']['dynadata']);
