@@ -52,11 +52,11 @@ if (!isset($columns['capabilities'])) {
     DBUtil::changeTable('blocks');
 }
 
-$_SESSION['_ZikulaUpgrader'] = array();
+$GLOBALS['_ZikulaUpgrader'] = array();
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
 if (version_compare($installedVersion, '1.3.0-dev') === -1) {
-    $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = true;
+    $GLOBALS['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = true;
 }
 
 $core->init(Zikula_Core::STAGE_ALL);
@@ -274,7 +274,7 @@ function _upg_upgrademodules($username, $password)
     echo '<ul id="upgradelist" class="check">' . "\n";
 
     // reset for User module
-    //$_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = false;
+    //$GLOBALS['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = false;
 
     $results = ModUtil::apiFunc('Extensions', 'admin', 'upgradeall');
     if ($results) {
