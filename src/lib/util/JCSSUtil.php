@@ -101,7 +101,11 @@ class JCSSUtil
                 'stylesheets' => $stylesheets,
                 'javascripts' => $javascripts
         );
-
+        // some core js libs require js gettext - ensure that it will be loaded
+        $jsgettext = self::getJSGettext();
+        if (!empty($jsgettext)) {
+            array_unshift($jcss['javascripts'], $jsgettext);
+        }
         return $jcss;
     }
 
@@ -165,11 +169,7 @@ class JCSSUtil
         if (!empty($styles)) {
             PageUtil::addVar('stylesheet', $styles);
         }
-        // some core js libs require js gettext - ensure that it will be loaded
-        $jsgettext = self::getJSGettext();
-        if (!empty($jsgettext)) {
-            array_unshift($javascripts, $jsgettext);
-        }
+
         return $javascripts;
     }
 
@@ -537,7 +537,7 @@ class JCSSUtil
         if (!file_exists($file)) {
             return;
         }
-        
+
         $source = fopen($file, 'r');
         if ($source) {
             $filepath = explode('/', dirname($file));
