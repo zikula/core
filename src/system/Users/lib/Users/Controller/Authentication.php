@@ -67,14 +67,10 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
 
         if ($this->authenticationMethodIsEnabled($args['method'])) {
             $templateName = mb_strtolower("users_auth_loginformfields_{$args['formType']}.tpl");
-            if (!$this->view->template_exists($templateName)) {
-                throw new Zikula_Exception_Fatal($this->__('A form fields template was not found for formType \'%1$s\'.', array($args['formType'])));
+            if ($this->view->template_exists($templateName)) {
+                return $this->view->assign('authentication_method', $args['method'])
+                        ->fetch($templateName);
             }
-            
-            return $this->view->assign('authentication_method', $args['method'])
-                    ->fetch($templateName);
-        } else {
-            return;
         }
     }
 
@@ -119,15 +115,11 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
             );
             
             $templateName = mb_strtolower("users_auth_authenticationmethodselector_{$args['formType']}.tpl");
-            if (!$this->view->template_exists($templateName)) {
-                throw new Zikula_Exception_Fatal($this->__('An authentication method selector template was not found for formType \'%1$s\'.', array($args['formType'])));
+            if ($this->view->template_exists($templateName)) {
+                return $this->view->assign('authentication_method', $authenticationMethod)
+                        ->assign('is_selected', isset($args['is_selected']) && $args['is_selected'])
+                        ->fetch($templateName);
             }
-
-            return $this->view->assign('authentication_method', $authenticationMethod)
-                    ->assign('is_selected', isset($args['is_selected']) && $args['is_selected'])
-                    ->fetch($templateName);
-        } else {
-            return;
         }
     }
 }
