@@ -1,4 +1,4 @@
-{strip}{gt text='Edit user account of %s' tag1=$dynadata.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
+{strip}{gt text='Edit user account of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
 {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
 {ajaxheader modname=$modinfo.name filename='Zikula.Users.Admin.NewUser.js' noscriptaculous=true effects=true}
 {if $modvars.Users.use_password_strength_meter == 1}
@@ -176,7 +176,7 @@
     </form>
     
     <div class="z-adminpageicon">{icon type="utilities" size="large"}</div>
-    <h2>{gt text='Other actions for %s' tag1=$dynadata.realname|default:$formData->getFieldData('uname')}</h2>
+    <h2>{gt text='Other actions for %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname')}</h2>
     <div class="z-center z-buttons">
         {if !$editingSelf}<a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$formData->getFieldData('uid')}">{img modname='core' set='icons/extrasmall' src="delete_user.png" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}
         <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{img modname='core' set='icons/extrasmall' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>

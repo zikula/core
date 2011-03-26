@@ -572,7 +572,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $accessPermissions = $this->request->getPost()->get('access_permissions', null);
             $user = $formData->toUserArray(true);
             $originalUser = UserUtil::getVars($user['uid']);
-            $dynadata = isset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
+            $userAttributes = isset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
             
             // security check for this record
             if (!SecurityUtil::checkPermission('Users::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
@@ -645,7 +645,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $this->registerError($this->__('Sorry! No such user found.'));
                 $proceedToForm = false;
             }
-            $dynadata = isset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
+            $userAttributes = isset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
             
             $formData->setFromArray($originalUser);
             $formData->getField('emailagain')->setData($originalUser['email']);
@@ -691,7 +691,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             }
 
             return $this->view->assign_by_ref('formData', $formData)
-                ->assign('dynadata', $dynadata)
+                ->assign('user_attributes', $userAttributes)
                 ->assign('defaultGroupId', ModUtil::getVar('Groups', 'defaultgroup', 1))
                 ->assign('primaryAdminGroupId', ModUtil::getVar('Groups', 'primaryadmingroup', 2))
                 ->assign('accessPermissions', $accessPermissions)
@@ -1269,7 +1269,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
             $registration = $formData->toUserArray(true);
             $originalRegistration = UserUtil::getVars($registration['uid'], false, 'uid', true);
-            $dynadata = isset($originalRegistration['__ATTRIBUTES__']) ? $originalRegistration['__ATTRIBUTES__'] : array();
+            $userAttributes = isset($originalRegistration['__ATTRIBUTES__']) ? $originalRegistration['__ATTRIBUTES__'] : array();
             
             // security check for this record
             if (!SecurityUtil::checkPermission('Users::', "{$originalRegistration['uname']}::{$originalRegistration['uid']}", ACCESS_EDIT)) {
@@ -1340,7 +1340,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $this->registerError($this->__('Error! Unable to load registration record.'));
                 $this->redirect(ModUtil::url($this->name, 'admin', 'viewRegistrations', array('restoreview' => true)));
             }
-            $dynadata = isset($registration['__ATTRIBUTES__']) ? $registration['__ATTRIBUTES__'] : array();
+            $userAttributes = isset($registration['__ATTRIBUTES__']) ? $registration['__ATTRIBUTES__'] : array();
 
             $formData->setFromArray($registration);
             $formData->getField('emailagain')->setData($registration['email']);
@@ -1357,7 +1357,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             }
             
             $rendererArgs = array(
-                'dynadata'              => $dynadata,
+                'user_attributes'       => $userAttributes,
                 'errorMessages'         => $errorMessages,
                 'errorFields'           => $errorFields,
                 'restoreview'           => $restoreView,

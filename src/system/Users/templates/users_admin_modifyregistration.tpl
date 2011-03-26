@@ -1,4 +1,4 @@
-{strip}{gt text='Edit registration of %s' tag1=$dynadata.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
+{strip}{gt text='Edit registration of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
 {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
 {if $modvars.Users.use_password_strength_meter == 1}
     {* TODO - Using ajaheader here causes an error when the PassMeter is initialized. *}
