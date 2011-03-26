@@ -86,7 +86,7 @@
         <exec escape="false" command="cd ${exportdir}; zip -D -r ${archivedir}/${package}.zip ." />
 
         <!-- phing tar stopped working so do this the manual way -->
-        <exec escape="false" command="cd ${exportdir}; tar cp ${package} > ${archivedir}/${package}.tar.gz; gzip ${archivedir}/${package}.tar.gz" />
+        <exec escape="false" command="cd ${exportdir}; tar cp ${job_name} > ${archivedir}/${package}.tar.gz; gzip ${archivedir}/${package}.tar.gz" />
 
         <echo msg="Files copied and compressed in build directory OK!" />
 
