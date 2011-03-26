@@ -92,7 +92,7 @@ class JCSSUtil
         // update stylesheets as there might be some additions for js
         $stylesheets = array_merge((array)$stylesheets, (array)PageUtil::getVar('stylesheet'));
         $stylesheets = self::prepareStylesheets($stylesheets, $combine);
-//dump($javascripts);
+
         if ($combine) {
             $javascripts = (array)self::save($javascripts, 'js', $cache_dir);
             $stylesheets = (array)self::save($stylesheets, 'css', $cache_dir);
