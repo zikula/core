@@ -60,15 +60,14 @@ class Zikula_View_Plugin extends Zikula_View
     /**
      * Setup the current instance of the Zikula_View class and return it back to the module.
      *
-     * @param string       $moduleName    Module name.
-     * @param string       $pluginName    Plugin name.
-     * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
-     * @param string       $cache_id      Cache Id.
-     * @param boolean      $add_core_data Add core data to render data.
+     * @param string       $moduleName Module name.
+     * @param string       $pluginName Plugin name.
+     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id   Cache Id.
      *
      * @return Zikula_View_Plugin instance.
      */
-    public static function getInstance($moduleName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
+    public static function getPluginInstance($moduleName, $pluginName, $caching = null, $cache_id = null)
     {
         $serviceManager = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.renderplugin.%s.%s', $moduleName, $pluginName));
@@ -95,11 +94,7 @@ class Zikula_View_Plugin extends Zikula_View
         if (!array_key_exists($moduleName, $view->module)) {
             $view->module[$moduleName] = ModUtil::getInfoFromName($moduleName);
             //$instance->modinfo = ModUtil::getInfoFromName($module);
-            $view->_add_plugins_dir($moduleName);
-        }
-
-        if ($add_core_data) {
-            $view->add_core_data();
+            $view->_addPluginsDir($moduleName);
         }
 
         // for {gt} template plugin to detect gettext domain
@@ -113,18 +108,14 @@ class Zikula_View_Plugin extends Zikula_View
     }
 
     /**
-     * Add a plugins dir to _plugin_dir array.
-     *
-     * This function takes  module name and adds two path two the plugins_dir array
-     * when existing.
+     * Add a plugins dir to _plugin_dir property array.
      *
      * @param string $module Module name.
      * @param string $plugin Plugin name.
      *
-     * @access private
      * @return void
      */
-    private function _add_plugins_dir($module, $plugin)
+    private function _addPluginsDir($module, $plugin)
     {
         if (empty($module)) {
             return;
@@ -138,17 +129,17 @@ class Zikula_View_Plugin extends Zikula_View
         switch ($modinfo['type'])
         {
             case ModUtil::TYPE_SYSTEM:
-                $mod_plugs = "system/$modinfo[directory]/plugins/$plugin/templates/plugins";
+                $pluginsDir = "system/$modinfo[directory]/plugins/$plugin/templates/plugins";
                 break;
             case ModUtil::TYPE_MODULE:
-                $mod_plugs = "modules/$modinfo[directory]/plugins/$plugin/templates/plugins";
+                $pluginsDir = "modules/$modinfo[directory]/plugins/$plugin/templates/plugins";
                 break;
             case ModUtil::TYPE_CORE:
-                $mod_plugs = "plugins/$plugin/templates/plugins";
+                $pluginsDir = "plugins/$plugin/templates/plugins";
                 break;
         }
 
-        $this->addPluginDir($mod_plugs);
+        $this->addPluginDir($pluginsDir);
     }
 
     /**

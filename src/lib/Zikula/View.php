@@ -569,14 +569,13 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Setup the current instance of the Zikula_View class and return it back to the module.
      *
-     * @param string       $module        Module name.
-     * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
-     * @param string       $cache_id      Cache Id.
-     * @param boolean      $add_core_data Add core data to render data.
+     * @param string       $module   Module name.
+     * @param boolean|null $caching  Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id Cache Id.
      *
      * @return Zikula_View This instance.
      */
-    public static function getInstance($module = null, $caching = null, $cache_id = null, $add_core_data = false)
+    public static function getInstance($module = null, $caching = null, $cache_id = null)
     {
         if (is_null($module)) {
             $module = ModUtil::getName();
@@ -607,10 +606,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $view->module[$module] = ModUtil::getInfoFromName($module);
             //$instance->modinfo = ModUtil::getInfoFromName($module);
             $view->_add_plugins_dir($module);
-        }
-
-        if ($add_core_data) {
-            $view->add_core_data();
         }
 
         // for {gt} template plugin to detect gettext domain
@@ -650,13 +645,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * @param string       $pluginName    Plugin name.
      * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
      * @param string       $cache_id      Cache Id.
-     * @param boolean      $add_core_data Add core data to render data.
      *
      * @return Zikula_View_Plugin The plugin instance.
      */
-    public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
+    public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null)
     {
-        return Zikula_View_Plugin::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
+        return Zikula_View_Plugin::getInstance($modName, $pluginName, $caching, $cache_id);
     }
 
     /**
@@ -665,14 +659,13 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * @param string       $pluginName    Plugin name.
      * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
      * @param string       $cache_id      Cache Id.
-     * @param boolean      $add_core_data Add core data to render data.
      *
      * @return Zikula_View_Plugin The plugin instance.
      */
-    public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null, $add_core_data = false)
+    public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null)
     {
         $modName = 'zikula';
-        return Zikula_View_Plugin::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
+        return Zikula_View_Plugin::getPluginInstance($modName, $pluginName, $caching, $cache_id);
     }
 
     /**
@@ -2665,4 +2658,3 @@ function z_prefilter_notifyfilters($tpl_source, $view)
 {
     return preg_replace('#((?:(?<!\{)\{(?!\{)(?:\s*)|\G)(?:.*?))(\|notifyfilters(?:([\'"])(?:\\\\?+.)*?\3|[^\s|}])*)#', '$1$2:\$zikula_view', $tpl_source);
 }
-
