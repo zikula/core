@@ -377,6 +377,8 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
 
         $this->addField(new Users_Controller_FormData_Field(
                 $this,
+                Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON,
+                $modVars[Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON],
                 '',
                 $this->serviceManager))
             ->setNullAllowed(false)
