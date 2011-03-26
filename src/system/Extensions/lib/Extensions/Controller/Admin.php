@@ -470,7 +470,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         $confirmation = (bool) FormUtil::getPassedValue('confirmation', false);
         $startnum = (int) FormUtil::getPassedValue('startnum');
         $letter = FormUtil::getPassedValue('letter');
-        $state = FormUtil::getPassedValue('state');
+        $state = (int)FormUtil::getPassedValue('state');
         if ($objectid) {
             $id = $objectid;
         }
@@ -483,7 +483,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             $dependencies = ModUtil::apiFunc('Extensions', 'admin', 'getdependencies', array('modid' => $id));
 
             $modulenotfound = false;
-            if (empty($confirmation) && $dependencies) {
+            if (!$confirmation && $dependencies) {
                 foreach ($dependencies as $key => $dependency) {
                     $dependencies[$key]['insystem'] = true;
                     $modinfo = ModUtil::getInfoFromName($dependency['modname']);
@@ -509,6 +509,10 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                             }
                         } else {
                             $dependencies[$key] = array_merge($dependencies[$key], $modinfo);
+                            // if this module is already installed, don't display it in the list of dependencies.
+                            if (isset($dependencies[$key]['state']) && ($dependencies[$key]['state'] > ModUtil::STATE_UNINITIALISED && $dependencies[$key]['state'] < ModUtil::STATE_NOTALLOWED)) {
+                                unset($dependencies[$key]);
+                            }
                         }
                     } elseif (!empty($modinfo)) {
                         $dependencies[$key] = array_merge($dependencies[$key], $modinfo);
@@ -531,7 +535,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                       ->fetch('extensions_admin_initialise.tpl');
                 }
             } else {
-                $dependencies = (array) FormUtil::getPassedValue('dependencies', array(), 'POST');
+                $dependencies = (array)$this->request->getPost()->get('dependencies', array());
             }
         }
 
@@ -888,7 +892,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             SessionUtil::delVar('modules_letter');
             SessionUtil::delVar('modules_state');
             SessionUtil::delVar('interactive_remove');
-            LogUtil::registerStatus($this->__('Done! De-installed module.'));
+            LogUtil::registerStatus($this->__('Done! Uninstalled module.'));
             return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
