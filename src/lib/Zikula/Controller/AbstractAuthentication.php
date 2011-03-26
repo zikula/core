@@ -19,18 +19,6 @@
 abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractController
 {
     /**
-     * Determines whether the type of login form passed in is valid or not.
-     *
-     * @param string $formType Either 'block' or 'page' for valid values.
-     * 
-     * @return boolean True if the form type is either 'block' or 'page'; otherwise false.
-     */
-    protected function formTypeIsValid($formType)
-    {
-        return ($formType == 'block') || ($formType == 'page');
-    }
-
-    /**
      * Indicates whether the authentication method is supported by this authentication module or not.
      *
      * Convenience access to the api function of the same name from within the controller.
