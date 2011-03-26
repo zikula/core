@@ -376,38 +376,15 @@ class Users_Installer extends Zikula_AbstractInstaller
         $tempColumn = $dbinfo113X['users_temp_column'];
         $verifyColumn = $dbinfo220['users_verifychg_column'];
         $usersColumn = $dbinfo220['users_column'];
-
-        $limitNumRows = 100;
-        $limitOffset = 0;
-        $updated = true;
-        $userCount = DBUtil::selectObjectCount('users_temp');
-        // Pass through the users_temp table in chunks of 100
-        //  * ensure unames and email addresses are lower case,
-        //  * convert pending email change request data in preparation for converstion to users_verifychg
-        while ($limitOffset < $userCount) {
-            $userArray = DBUtil::selectObjectArray('users_temp', '', '', $limitOffset, $limitNumRows, '', null, null,
-                array('tid', 'type', 'uname', 'email', 'pass', 'hash_method', 'dynamics', 'comment'));
-            if (!empty($userArray) && is_array($userArray)) {
-                foreach ($userArray as $key => $userObj) {
-                    // Ensure uname and email are lower case
-                    $userArray[$key]['uname'] = mb_strtolower($userArray[$key]['uname']);
-                    $userArray[$key]['email'] = mb_strtolower($userArray[$key]['email']);
-
-                    if ($userArray[$key]['type'] == 1) {
-                        // type == 1: User registration pending approval (moderation)
-                        // Convert pass to salted pass with embedded hash method, leave salt blank
-                        $userArray[$key]['pass'] = $userArray[$key]['hash_method'] . '$$' . $userArray[$key]['pass'];
-                    }
-                }
-            }
-            if (!DBUtil::updateObjectArray($userArray, 'users_temp', 'tid', false)) {
-                $updated = false;
-                break;
-            }
-            $limitOffset += $limitNumRows;
-        }
-        if (!$updated) {
-            return false;
+        
+        $legalModInfo = ModUtil::getInfoFromName('Legal');
+        if (($legalModInfo['state'] == ModUtil::STATE_ACTIVE) || ($legalModInfo['state'] == ModUtil::STATE_UPGRADED)) {
+            $legalModuleActive = true;
+            $termsOfUseActive = ModUtil::getVar('Legal', 'termsofuse', false);
+            $privacyPolicyActive = ModUtil::getVar('Legal', 'privacypolicy', false);
+            $agePolicyActive = ($this->getVar('minage', 0) > 0);
+        } else {
+            $legalModuleActive = false;
         }
 
         // Next, users table conversion
@@ -438,8 +415,6 @@ class Users_Installer extends Zikula_AbstractInstaller
                     }
                     $userArray[$key]['approved_by'] = 2;
                     
-                    
-
                     // merge hash method for salted passwords, leave salt blank
                     if (!empty($userArray[$key]['pass']) && (strpos($userArray[$key]['pass'], '$$') === false)) {
                         $userArray[$key]['pass'] =
@@ -460,6 +435,21 @@ class Users_Installer extends Zikula_AbstractInstaller
                             $userArray[$key]['__ATTRIBUTES__'][$fieldName] = $userArray[$key][$fieldName];
                         }
                     }
+                    
+                    if ($legalModuleActive && ($userArray[$key]['uid'] > 2)) {
+                        $userRegDateTime = new DateTime($userArray[$key]['user_regdate'], new DateTimeZone('UTC'));
+                        $policyDateTimeStr = $userRegDateTime->format(DATE_ISO8601);
+                        
+                        if ($termsOfUseActive) {
+                            $userArray[$key]['__ATTRIBUTES__']['_Legal_termsOfUseAccepted'] = $policyDateTimeStr;
+                        }
+                        if ($privacyPolicyActive) {
+                            $userArray[$key]['__ATTRIBUTES__']['_Legal_privacyPolicyAccepted'] = $policyDateTimeStr;
+                        }
+                        if ($agePolicyActive) {
+                            $userArray[$key]['__ATTRIBUTES__']['_Legal_agePolicyConfirmed'] = $policyDateTimeStr;
+                        }
+                    }
                 }
             }
             if (!DBUtil::updateObjectArray($userArray, 'users', 'uid', false)) {
@@ -474,123 +464,69 @@ class Users_Installer extends Zikula_AbstractInstaller
 
         $obaColumn = $dbinfoSystem['objectdata_attributes_column'];
 
-        // Next, users_temp conversion to users. This needs to be done in a few steps, since we have to set some object
-        // attributes too. Step 1, from the users_temp table to the main user table, pending registrations that are
-        // awaiting approval.
-        $sql = "INSERT INTO {$dbinfoSystem['users']}
-                    ({$usersColumn['uname']}, {$usersColumn['email']}, {$usersColumn['pass']}, {$usersColumn['activated']},
-                     {$usersColumn['approved_by']})
-                SELECT {$tempColumn['uname']} AS {$usersColumn['uname']},
-                    {$tempColumn['email']} AS {$usersColumn['email']},
-                    {$tempColumn['pass']} AS {$usersColumn['pass']},
-                    ".Users_Constant::ACTIVATED_PENDING_REG." AS {$usersColumn['activated']},
-                    0 AS {$usersColumn['approved_by']}
-                FROM {$dbinfo113X['users_temp']}
-                WHERE {$dbinfo113X['users_temp']}.{$tempColumn['type']} = 1";
-        $updated = DBUtil::executeSQL($sql);
-        if (!$updated) {
-            return false;
-        }
+        $limitNumRows = 100;
+        $limitOffset = 0;
+        $updated = true;
+        $userCount = DBUtil::selectObjectCount('users_temp');
+        // Pass through the users_temp table in chunks of 100
+        //  * ensure unames and email addresses are lower case,
+        while ($limitOffset < $userCount) {
+            $userTempArray = DBUtil::selectObjectArray('users_temp', '', '', $limitOffset, $limitNumRows, '', null, null,
+                array('tid', 'type', 'uname', 'email', 'pass', 'hash_method', 'dynamics', 'comment'));
+            $userArray = array();
+            if (!empty($userTempArray) && is_array($userTempArray)) {
+                foreach ($userTempArray as $key => $userTempOpj) {
+                    // type == 1: User registration pending approval (moderation)
+                    if ($userTempArray[$key]['type'] == 1) {
+                        $userObj = array();
+                    
+                        // Ensure uname and email are lower case
+                        $userObj['uname'] = mb_strtolower($userTempArray[$key]['uname']);
+                        $userObj['email'] = mb_strtolower($userTempArray[$key]['email']);
 
-        // Next we need to get the dynadata into the objectdata_attributes table
-        $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
-                    ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
-                     {$obaColumn['value']}, oba_cr_date, oba_lu_date)
-                SELECT 'dynadata' AS {$obaColumn['attribute_name']},
-                    users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
-                    'users' AS {$obaColumn['object_type']},
-                    ut.{$tempColumn['dynamics']} AS {$obaColumn['value']},
-                    NOW() as oba_cr_date,
-                    NOW() as oba_lu_date
-                FROM {$dbinfo113X['users_temp']} AS ut
-                LEFT JOIN {$dbinfo220['users']} AS users
-                    ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
-                WHERE (ut.{$tempColumn['type']} = 1)
-                    AND (users.{$usersColumn['activated']} = ".Users_Constant::ACTIVATED_PENDING_REG.")";
-        $updated = DBUtil::executeSQL($sql);
-        if (!$updated) {
-            return false;
-        }
+                        // Convert pass to salted pass with embedded hash method, leave salt blank
+                        $userObj['pass'] = $userTempArray[$key]['hash_method'] . '$$' . $userTempArray[$key]['pass'];
 
-        // Next we need to get the isverified field into the objectdata_attributes table
-        $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
-                    ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
-                     {$obaColumn['value']}, oba_cr_date, oba_lu_date)
-                SELECT 'isverified' AS {$obaColumn['attribute_name']},
-                    users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
-                    'users' AS {$obaColumn['object_type']},
-                    0 AS {$obaColumn['value']},
-                    NOW() as oba_cr_date,
-                    NOW() as oba_lu_date
-                FROM {$dbinfo113X['users_temp']} AS ut
-                LEFT JOIN {$dbinfo220['users']} AS users
-                    ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
-                WHERE (ut.{$tempColumn['type']} = 1)
-                    AND (users.{$usersColumn['activated']} = ".Users_Constant::ACTIVATED_PENDING_REG.")";
-        $updated = DBUtil::executeSQL($sql);
-        if (!$updated) {
-            return false;
-        }
+                        $userObj['approved_by'] = 0;
+                        $userObj['activated'] = Users_Constant::ACTIVATED_PENDING_REG;
+                        
+                        if (!empty($userTempArray[$key]['dynamics'])) {
+                            $userObj['__ATTRIBUTES__'] = unserialize($userTempArray[$key]['dynamics']);
+                        } else {
+                            $userObj['__ATTRIBUTES__'] = array();
+                        }
+                        
+                        $userObj['__ATTRIBUTES__']['isverified'] = 0;
+                    
+                        if ($legalModuleActive) {
+                            $userRegDateTime = new DateTime($userArray[$key]['user_regdate'], new DateTimeZone('UTC'));
+                            $policyDateTimeStr = $userRegDateTime->format(DATE_ISO8601);
 
-        // Finally, we need to get the Legal module flags set
-        $legalModInfo = ModUtil::getInfoFromName('Legal');
-        if (($legalModInfo['state'] == ModUtil::STATE_ACTIVE) || ($legalModInfo['state'] == ModUtil::STATE_UPGRADED)) {
-            $termsOfUseActive = ModUtil::getVar('Legal', 'termsofuse', false);
-            if ($termsOfUseActive) {
-                $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
-                            ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
-                             {$obaColumn['value']}, oba_cr_date, oba_lu_date)
-                        SELECT '_Legal_termsOfUseAccepted' AS {$obaColumn['attribute_name']},
-                            users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
-                            'users' AS {$obaColumn['object_type']},
-                            DATE_FORMAT(IF(users.{$usersColumn['user_regdate']} != '1970-01-01 00:00:00', users.{$usersColumn['user_regdate']}, NOW()), '%Y-%m-%dT%H:%i:%s+00:00') AS {$obaColumn['value']},
-                            NOW() as oba_cr_date,
-                            NOW() as oba_lu_date
-                        FROM {$dbinfo220['users']} AS users
-                        WHERE users.{$usersColumn['uid']} > 2";
-                $updated = DBUtil::executeSQL($sql);
-                if (!$updated) {
-                    return false;
+                            if ($termsOfUseActive) {
+                                $userObj['__ATTRIBUTES__']['_Legal_termsOfUseAccepted'] = $policyDateTimeStr;
+                            }
+                            if ($privacyPolicyActive) {
+                                $userObj['__ATTRIBUTES__']['_Legal_privacyPolicyAccepted'] = $policyDateTimeStr;
+                            }
+                            if ($agePolicyActive) {
+                                $userObj['__ATTRIBUTES__']['_Legal_agePolicyConfirmed'] = $policyDateTimeStr;
+                            }
+                        }
+                        
+                        $userArray[] = $userObj;
+                    } else {
+                        throw new Zikula_Exception_Fatal($this->__f('Unknown users_temp record type: %1$s', array($userTempArray[$key]['type'])));
+                    }
                 }
             }
-            
-            $privacyPolicyActive = ModUtil::getVar('Legal', 'privacypolicy', false);
-            if ($privacyPolicyActive) {
-                $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
-                            ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
-                             {$obaColumn['value']}, oba_cr_date, oba_lu_date)
-                        SELECT '_Legal_privacyPolicyAccepted' AS {$obaColumn['attribute_name']},
-                            users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
-                            'users' AS {$obaColumn['object_type']},
-                            DATE_FORMAT(IF(users.{$usersColumn['user_regdate']} != '1970-01-01 00:00:00', users.{$usersColumn['user_regdate']}, NOW()), '%Y-%m-%dT%H:%i:%s+00:00') AS {$obaColumn['value']},
-                            NOW() as oba_cr_date,
-                            NOW() as oba_lu_date
-                        FROM {$dbinfo220['users']} AS users
-                        WHERE users.{$usersColumn['uid']} > 2";
-                $updated = DBUtil::executeSQL($sql);
-                if (!$updated) {
-                    return false;
-                }
+            if (!DBUtil::insertObjectArray($userArray, 'users', 'uid', false)) {
+                $updated = false;
+                break;
             }
-            
-            $agePolicyActive = ($this->getVar('minage', 0) > 0);
-            if ($agePolicyActive) {
-                $sql = "INSERT INTO {$dbinfoSystem['objectdata_attributes']}
-                            ({$obaColumn['attribute_name']}, {$obaColumn['object_id']}, {$obaColumn['object_type']},
-                             {$obaColumn['value']}, oba_cr_date, oba_lu_date)
-                        SELECT '_Legal_agePolicyConfirmed' AS {$obaColumn['attribute_name']},
-                            users.{$usersColumn['uid']} AS {$obaColumn['object_id']},
-                            'users' AS {$obaColumn['object_type']},
-                            DATE_FORMAT(IF(users.{$usersColumn['user_regdate']} != '1970-01-01 00:00:00', users.{$usersColumn['user_regdate']}, NOW()), '%Y-%m-%dT%H:%i:%s+00:00') AS {$obaColumn['value']},
-                            NOW() as oba_cr_date,
-                            NOW() as oba_lu_date
-                        FROM {$dbinfo220['users']} AS users
-                        WHERE users.{$usersColumn['uid']} > 2";
-                $updated = DBUtil::executeSQL($sql);
-                if (!$updated) {
-                    return false;
-                }
-            }
+            $limitOffset += $limitNumRows;
+        }
+        if (!$updated) {
+            return false;
         }
 
         // Done upgrading. Let's lose some old fields and tables we no longer need.
