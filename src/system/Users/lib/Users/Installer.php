@@ -397,20 +397,6 @@ class Users_Installer extends Zikula_AbstractInstaller
                         // type == 1: User registration pending approval (moderation)
                         // Convert pass to salted pass with embedded hash method, leave salt blank
                         $userArray[$key]['pass'] = $userArray[$key]['hash_method'] . '$$' . $userArray[$key]['pass'];
-                    } elseif ($userArray[$key]['type'] == 2) {
-                        // type == 2: E-mail change request pending verification
-                        if (isset($userArray[$key]['dynamics']) && !empty($userArray[$key]['dynamics']) 
-                                && is_numeric($userArray[$key]['dynamics'])) {
-                            // Convert the date to a date/time format instead of a UNIX timestamp
-                            $theDate = new DateTime("@{$userArray[$key]['dynamics']}", $tzUTC);
-                            $userArray[$key]['dynamics'] = $theDate->format(Users_Constant::DATETIME_FORMAT);
-                        }
-                        if (isset($userArray[$key]['comment']) && !empty($userArray[$key]['comment']) 
-                                && is_string($userArray[$key]['comment'])) {
-                            // Convert the verification code into a salted hash with blank salt, and specify the
-                            // hash method used in 1.2
-                            $userArray[$key]['comment'] = '1$$' . $userArray[$key]['comment'];
-                        }
                     }
                 }
             }
@@ -420,23 +406,6 @@ class Users_Installer extends Zikula_AbstractInstaller
             }
             $limitOffset += $limitNumRows;
         }
-        if (!$updated) {
-            return false;
-        }
-        // After converting, now use SQL to transfer the data for pending e-mail change requests into the
-        // users_verifychg table
-        $sql = "INSERT INTO {$dbinfo220['users_verifychg']}
-                    ({$verifyColumn['changetype']}, {$verifyColumn['uid']}, {$verifyColumn['newemail']},
-                     {$verifyColumn['verifycode']}, {$verifyColumn['created_dt']})
-                SELECT " . Users_Constant::VERIFYCHGTYPE_EMAIL . " AS {$verifyColumn['changetype']},
-                    users.{$usersColumn['uid']} AS {$verifyColumn['uid']},
-                    ut.{$tempColumn['email']} AS {$verifyColumn['newemail']},
-                    ut.{$tempColumn['comment']} AS {$verifyColumn['verifycode']},
-                    ut.{$tempColumn['dynamics']} AS {$verifyColumn['created_dt']}
-                FROM {$dbinfo113X['users_temp']} AS ut
-                    INNER JOIN {$dbinfo220['users']} AS users ON ut.{$tempColumn['uname']} = users.{$usersColumn['uname']}
-                WHERE ut.{$tempColumn['type']} = 2";
-        $updated = DBUtil::executeSQL($sql);
         if (!$updated) {
             return false;
         }
@@ -504,7 +473,6 @@ class Users_Installer extends Zikula_AbstractInstaller
         }
 
         $obaColumn = $dbinfoSystem['objectdata_attributes_column'];
-        
 
         // Next, users_temp conversion to users. This needs to be done in a few steps, since we have to set some object
         // attributes too. Step 1, from the users_temp table to the main user table, pending registrations that are
