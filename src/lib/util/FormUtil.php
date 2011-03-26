@@ -32,6 +32,8 @@ class FormUtil
      * @param array  $args       The filter processing args to apply.
      * @param string $objectType The object access path we're getting; used to assign validation errors .
      *
+     * @deprecated since 1.3.0, use request object instead.
+     *
      * @return mixed The requested input key or the specified default.
      */
     public static function getPassedValue($key, $default = null, $source = null, $filter = null, array $args = array(), $objectType=null)
