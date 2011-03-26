@@ -85,11 +85,9 @@
         <!-- zip's don't play nicely in Phing - using direct command -->
         <exec escape="false" command="cd ${exportdir}; zip -D -r ${archivedir}/${package}.zip ." />
 
-        <tar destfile="${archivedir}/${package}.tar.gz" compression="gzip">
-            <fileset dir="${exportdir}">
-                <include name="${job_name}" />
-            </fileset>
-        </tar>
+        <!-- phing tar stopped working so do this the manual way -->
+        <exec escape="false" command="cd ${exportdir}; tar cp ${archivedir} > ${package}.tar.gz; gzip ${package}.tar.gz" />
+
         <echo msg="Files copied and compressed in build directory OK!" />
 
         <!-- ATTN phingcall target="build_patch" / -->
