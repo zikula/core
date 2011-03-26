@@ -765,6 +765,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         // loop round dependences adding the module id - we do this now rather than
         // earlier since we won't have the id's for new modules at that stage
         $dependencies = array();
+        ModUtil::flushCache();
         foreach ($moddependencies as $modname => $moddependency) {
             $modid = ModUtil::getIdFromName($modname);
             // each module may have multiple dependencies
