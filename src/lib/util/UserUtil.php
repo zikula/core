@@ -1016,14 +1016,6 @@ class UserUtil
 
             // Calculate isapproved from approved_by
             $userObj['isapproved'] = isset($userObj['approved_by']) && !empty($userObj['approved_by']);
-
-            // unserialize dynadata
-            if (isset($userObj['__ATTRIBUTES__']['dynadata'])) {
-                $userObj['dynadata'] = unserialize($userObj['__ATTRIBUTES__']['dynadata']);
-                unset($userObj['__ATTRIBUTES__']['dynadata']);
-            } else {
-                $userObj['dynadata'] = array();
-            }
         }
         return $userObj;
     }

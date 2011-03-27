@@ -497,6 +497,17 @@ class Users_Installer extends Zikula_AbstractInstaller
                             $userObj['__ATTRIBUTES__'] = array();
                         }
                         
+                        if (isset($userObj['dynamics']) && !empty($userObj['dynamics'])) {
+                            if (DataUtil::is_serialized($userObj['dynamics'])) {
+                                $dynamics = @unserialize($userObj['dynamics']);
+                                if (!empty($dynamics) && is_array($dynamics)) {
+                                    foreach ($dynamics as $key => $value) {
+                                        $userObj['__ATTRIBUTES__'][$key] = $value;
+                                    }
+                                }
+                            }
+                        }
+                        
                         $userObj['__ATTRIBUTES__']['_Users_isVerified'] = 0;
                     
                         if ($legalModuleActive) {
