@@ -46,6 +46,7 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
                                                  2 => DataUtil::formatForDisplay($this->__('Sendmail message transfer agent')),
                                                  3 => DataUtil::formatForDisplay($this->__('QMail message transfer agent')),
                                                  4 => DataUtil::formatForDisplay($this->__('SMTP mail transfer protocol'))));
+        $this->view->assign('smtpsecuremethod', $this->getVar('securemethod'));
 
         // assign all module vars
         $this->view->assign($this->getVars());
@@ -118,6 +119,9 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
 
         $smtppassword = (string)$this->request->getPost()->get('smtppassword', '');
         $this->setVar('smtppassword', $smtppassword);
+
+        $smtpsecuremethod = (string)$this->request->getPost()->get('smtpsecuremethod', '');
+        $this->setVar('smtpsecuremethod', $smtpsecuremethod);
 
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));

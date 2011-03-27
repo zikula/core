@@ -62,6 +62,14 @@
                     <input id="mailer_smtpport" name="smtpport" type="text" size="5" maxlength="5" value="{$smtpport|safetext}" />
                 </div>
                 <div class="z-formrow">
+                    <label for="mailer_smtpsecuremethod">{gt text="SMTP Security Method"}</label>
+                    <select id="mailer_smtpsecuremethod" name="smtpsecuremethod">
+                        <option value=""{if $smtpsecuremethod eq ''} selected="selected"{/if}>None</option>
+                        <option value="ssl"{if $smtpsecuremethod eq 'ssl'} selected="selected"{/if}>SSL</option>
+                        <option value="tls"{if $smtpsecuremethod eq 'tls'} selected="selected"{/if}>TLS</option>
+                    </select>
+                </div>
+                <div class="z-formrow">
                     <label for="mailer_smtptimeout">{gt text="SMTP time-out (default: 10 seconds)"}</label>
                     <input id="mailer_smtptimeout" name="smtptimeout" type="text" size="5" maxlength="5" value="{$smtptimeout|safetext}" />
                 </div>

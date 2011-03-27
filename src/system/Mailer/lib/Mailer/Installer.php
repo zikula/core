@@ -39,6 +39,7 @@ class Mailer_Installer extends Zikula_AbstractInstaller
         $this->setVar('smtptimeout', 10);
         $this->setVar('smtpusername', '');
         $this->setVar('smtppassword', '');
+        $this->setVar('smtpsecuremethod', 'ssl');
 
         // Initialisation successful
         return true;
@@ -58,8 +59,10 @@ class Mailer_Installer extends Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
-            case '1.3':
-            // future upgrade routines
+            case '1.3.1':
+                $this->setVar('smtpsecuremethod', 'ssl');
+            case '1.3.2':
+                // future upgrade routines
         }
 
         // Update successful

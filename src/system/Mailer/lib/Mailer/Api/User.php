@@ -91,6 +91,7 @@ class Mailer_Api_User extends Zikula_AbstractApi
         // set authentication paramters if required
         if ($this->getVar('smtpauth') == 1) {
             $mail->SMTPAuth = true; // turn on SMTP authentication
+            $mail->SMTPSecure =  $this->getVar('smtpsecuremethod'); // SSL or TLS
             $mail->Username = $this->getVar('smtpusername');  // SMTP username
             $mail->Password = $this->getVar('smtppassword');  // SMTP password
         }
