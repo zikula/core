@@ -165,26 +165,34 @@ class ModUtil
             $modname = self::getName();
         }
 
+        // start
+
+        // This entire code block is unnecessary except for an edge case in the upgrade
+        // the condition if (!self::$modvars) is for that edge case - drak
+
         // if we haven't got vars for this module yet then lets get them
-//        if (!array_key_exists($modname, self::$modvars)) {
-//            $tables = DBUtil::getTables();
-//            $col = $tables['module_vars_column'];
-//            $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
-//            $sort = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
-//
-//            $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
-//
-//            foreach ($results as $k => $v) {
-//                // ref #2045 vars are being stored with 0/1 unserialised.
-//                if (array_key_exists($k, $GLOBALS['ZConfig']['System'])) {
-//                    self::$modvars[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
-//                } else if ($v == '0' || $v == '1') {
-//                    self::$modvars[$modname][$k] = $v;
-//                } else {
-//                    self::$modvars[$modname][$k] = unserialize($v);
-//                }
-//            }
-//        }
+        //if (!array_key_exists($modname, self::$modvars)) {
+        if (!self::$modvars) {
+            $tables = DBUtil::getTables();
+            $col = $tables['module_vars_column'];
+            $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
+            $sort = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
+
+            $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
+
+            foreach ($results as $k => $v) {
+                // ref #2045 vars are being stored with 0/1 unserialised.
+                if (array_key_exists($k, $GLOBALS['ZConfig']['System'])) {
+                    self::$modvars[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
+                } else if ($v == '0' || $v == '1') {
+                    self::$modvars[$modname][$k] = $v;
+                } else {
+                    self::$modvars[$modname][$k] = unserialize($v);
+                }
+            }
+        }
+
+        // end
 
         // if they didn't pass a variable name then return every variable
         // for the specified module as an associative array.
