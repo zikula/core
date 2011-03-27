@@ -996,9 +996,9 @@ class UserUtil
     {
         if ($userObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) {
             // Get isverified from the attributes.
-            if (isset($userObj['__ATTRIBUTES__']['isverified'])) {
-                $userObj['isverified'] = $userObj['__ATTRIBUTES__']['isverified'];
-                unset($userObj['__ATTRIBUTES__']['isverified']);
+            if (isset($userObj['__ATTRIBUTES__']['_Users_isVerified'])) {
+                $userObj['isverified'] = $userObj['__ATTRIBUTES__']['_Users_isVerified'];
+                unset($userObj['__ATTRIBUTES__']['_Users_isVerified']);
             } else {
                 $userObj['isverified'] = false;
             }
