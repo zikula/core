@@ -1,6 +1,7 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
 var adding = Array();
+
  /**
  * Inits the ajax stuff: show ajax buttons, remove non ajax buttons etc.
  *
@@ -434,3 +435,40 @@ function showinfo(groupid, infotext)
         });
     }
 }
+
+function groupremoveuser(event) {
+    event.preventDefault();
+    var link = event.findElement('a'),
+        rel = link.readAttribute('rel').split(':'),
+        pars = {
+            gid: rel[0],
+            uid: rel[1]
+        }
+    new Zikula.Ajax.Request('ajax.php?module=Groups&func=removeuser', {
+            parameters: pars,
+            onComplete: groupremoveuser_response
+    });
+}
+
+function groupremoveuser_response (req) {
+    if (!req.isSuccess()) {
+        Zikula.showajaxerror(req.getMessage());
+        return;
+    }
+
+    var uid = req.getData().uid,
+        link = $('user-'+uid);
+    if (link) {
+        var tr = link.up('tr');
+        Effect.SwitchOff(tr,{
+            afterFinish: function() {tr.remove();}
+        });
+    }
+}
+
+$(document).observe('dom:loaded', function() {
+    var links = $$('a.group-membership-removeuser');
+    if (links) {
+        links.invoke('observe','click', groupremoveuser);
+    }
+});
