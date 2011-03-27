@@ -18,6 +18,15 @@
  */
 class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterface
 {
+    const RECURSIVE_LIMIT = 10;
+    
+    /**
+     * These objects won't be displayed by this panel because they are to big.
+     * @var array
+     */
+    private static $OBJECTS_TO_SKIPP = array('Zikula_ServiceManager', 'Zikula_View', 
+                                             'Zikula_EventManager', 'Doctrine_Table');
+    
     /**
      * Contains all executed module functions.
      *
@@ -26,7 +35,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
     private $_executions = array();
 
     /**
-     * Stack of nexted module func executions.
+     * Stack of nested module func executions.
      *
      * @var array
      */
@@ -75,20 +84,19 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             $id = 'DebugToolbarExecPanel' . $index;
             $index++;
 
-            $args = print_r($exec['args'], true);
-
-            if (strlen($args) > 100) {
-                $shortargs = substr($args, 0, 100);
-                $shortargs .= '...';
+            $argsShort = $this->buildArgumentsPreview($exec['args']);
+            
+            if(strlen($argsShort) >= 100) {
                 $idArgs = $id . 'args';
-                $args = '<a href="" title="'.__('Click to show the full parameter list').'" onclick="$(\''.$idArgs.'\').toggle();return false;">' . $shortargs . '</a><span style="display:none" id="'.$idArgs.'">'.substr($args, 100).'</span>';
+                $args = '<a href="" title="'.__('Click to show the full parameter list').'" onclick="$(\''.$idArgs.'\').toggle();return false;">' . $argsShort . '</a><span style="display:none" id="'.$idArgs.'">' . $this->formatVar('', $exec['args'], false) . '</span>';
+            } else {
+                $args = $argsShort;
             }
-
+            
             if (!is_string($exec['data'])) {
-                ob_start();
-                var_dump($exec['data']);
-                $exec['data'] = ob_get_contents();
-                ob_end_clean();
+                $exec['data'] = $this->formatVar('', $exec['data'], false);
+            } else {
+                $exec['data'] = DataUtil::formatForDisplay($exec['data']);
             }
 
             $rows[] = '<tr>
@@ -96,7 +104,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
                            <td>'.round($exec['time'], 3).'</td>
                        </tr>
                        <tr id="'.$id.'" style="display: none;">
-                           <td><pre>'.DataUtil::formatForDisplay($exec['data']).'</pre></td>
+                           <td><pre>' . $exec['data'] . '</pre></td>
                        </tr>';
         }
 
@@ -125,6 +133,113 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
         }
 
         return $html;
+    }
+    
+    /**
+     * Builds an preview of an value.
+     * 
+     * The preview won't contain any array/object contents.
+     * 
+     * @param mixed  $args Value to build an preview from
+     * 
+     * @return string
+     */
+    protected function buildArgumentsPreview($args) {
+        $preview = '';
+        $inArray = false;
+        
+        if(is_array($args)) {
+            $preview = 'array(';
+            $inArray = true;
+        }
+        
+        $args = (array)$args;
+        $isFirstIteration = true;
+        foreach($args as $key => $value) {
+            $valuePrefix = ($inArray && is_string($key)? $key . ' => ' : '' );
+            
+            if(!$isFirstIteration) {
+                $preview .= ', ';
+            }
+            $isFirstIteration = false;
+            
+            if(is_numeric($value) || is_bool($value)) {
+                $preview .= $valuePrefix . $value;
+            } else if(is_string($value)) {
+                $preview .= $valuePrefix . '"' . DataUtil::formatForDisplay($value) . '"';
+            } else if(is_array($value)) {
+                $preview .= $valuePrefix . 'array(...)';
+            } else if(is_object($value)) {
+                $preview .= $valuePrefix . get_class($value) . '{...}';
+            } else if(is_null($value)) {
+                $preview .= $valuePrefix . 'NULL';
+            } else if(is_nan($value)) {
+                $preview .= $valuePrefix . 'NAN';
+            } else {
+                $preview .= $valuePrefix . '?';
+            }
+        }
+        
+        if($inArray) {
+            $preview .= ')';
+        }
+        
+        return $preview;
+    }
+    
+    /**
+     * Creates an ul/li list a value (recursive safe).
+     *
+     * @param mixed $key Name of the variable.
+     * @param mixed $var Value of the variable.
+     *
+     * @return string HTML-Code
+     */
+    protected function formatVar($key, $var, $level=1)
+    {
+        if($level > self::RECURSIVE_LIMIT) {
+            return '<li>...</li>';
+        } else if (is_object($var)) {
+            $html =  "<li><strong>" . $key . '</strong>  <span style="color:#666666;font-style:italic;">('.
+                       get_class($var).')</span>: <ul>';
+
+            if(!in_array(get_class($var), self::$OBJECTS_TO_SKIPP)) {
+                $cls = new ReflectionClass($var);
+                // workaround to access private/protected properties of an object
+                // because reflection in php 5.2 does not support private/protected properties
+                $clsData = (array)$var;
+                foreach ($cls->getProperties() as $prop) {
+                   $html .= $this->formatVar($prop->name, $clsData["\0*\0".$prop->name], $level++);
+                }
+            }
+
+            $html .= '</ul></li>';
+            return $html;
+        } else if (is_array($var)) {
+            if (!$isFirstLevel) {
+                $html =  '<li><code>' . $key . '</code> <span style="color:#666666;font-style:italic;">(array)</span>: <ul>';
+            } else {
+                $html =  '<ul>';
+            }
+
+            if (!empty($var) && (count($var) > 0)) {
+                foreach ($var as $akey => $avar) {
+                    $html .= $this->formatVar($akey, $avar, $level++);
+                }
+            } else {
+                $html .= '<li><em>'.__('(empty)').'</em></li>';
+            }
+
+            if (!$isFirstLevel) {
+                $html .= '</ul></li>';
+            } else {
+                $html .= '</ul>';
+            }
+            return $html;
+        } else {
+            return '<li><code>' . $key . '</code> <span style="color:#666666;font-style:italic;">('.
+                     gettype($var).')</span>: <pre class="DebugToolbarVarDump">' . DataUtil::formatForDisplay($var) . '</pre></li>';
+        } 
     }
 
     /**
