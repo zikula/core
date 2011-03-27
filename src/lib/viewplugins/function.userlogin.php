@@ -36,20 +36,22 @@
  */
 function smarty_function_userlogin($params, Zikula_View $view)
 {
+    $assign = isset($params['assign']) ? $params['assign'] : false;
     if (!UserUtil::isLoggedIn()) {
         // set some defaults
         $size          = isset($params['size'])          ? $params['size']         : 14;
         $maxlength     = isset($params['maxlength'])     ? $params['maxlength']    : 25;
         $maxlengthpass = isset($params['maxlenthpass'])  ? $params['maxlenthpass'] : 20;
         $class         = isset($params['class'])         ? ' class="'.$params['class'].'"' : '';
-        if (ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::LOGIN_METHOD_UNAME) == Users_Constant::LOGIN_METHOD_UNAME) {
+
+        if (ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::LOGIN_METHOD_UNAME) == Users_Constant::LOGIN_METHOD_EMAIL) {
+            $value = isset($params['value']) ? DataUtil::formatForDisplay($params['value']) : __('E-mail address');
+            $userNameLabel = __('E-mail address');
+            $methodName = 'email';
+        } else {
             $value = isset($params['value']) ? DataUtil::formatForDisplay($params['value']) : __('User name');
             $userNameLabel = __('User name');
-            $inputName = 'uname';
-        } else {
-            $value = '';
-            $userNameLabel = __('E-mail address');
-            $inputName = 'email';
+            $methodName = 'uname';
         }
         if (!isset($params['js']) || $params['js']) {
             $js = ' onblur="if (this.value==\'\')this.value=\''.$value.'\';" onfocus="if (this.value==\''.$value.'\')this.value=\'\';"';
@@ -60,27 +62,32 @@ function smarty_function_userlogin($params, Zikula_View $view)
         // determine the current url so we can return the user to the correct place after login
         $returnurl = System::getCurrentUri();
 
-        // b.plagge 20070821 - authkey is required
-        $authkey = SecurityUtil::generateAuthKey('Users');
+        $csrftoken = SecurityUtil::generateCsrfToken();
 
         $loginbox = '<form'.$class.' style="display:inline" action="'.DataUtil::formatForDisplay(ModUtil::url('Users', 'user', 'login')).'" method="post"><div>'."\n"
-                   .'<input type="hidden" name="authid" value="' . DataUtil::formatForDisplay($authkey) .'" />'."\n"
+                   .'<input type="hidden" name="csrftoken" value="' . $csrftoken .'" />'."\n"
+                   .'<input type="hidden" name="authentication_method[modname]" value="Users" />'."\n"
+                   .'<input type="hidden" name="authentication_method[method]" value="'. $methodName .'" />'."\n"
                    .'<label for="userlogin_plugin_uname">' . $userNameLabel . '</label>&nbsp;'."\n"
-                   .'<input type="text" name="' . $inputName . '" id="userlogin_plugin_uname" size="'.$size.'" maxlength="'.$maxlength.'" value="'.$value.'"'.$js.' />'."\n"
+                   .'<input type="text" name="authentication_info[login_id]" id="userlogin_plugin_uname" size="'.$size.'" maxlength="'.$maxlength.'" value="'.$value.'"'.$js.' />'."\n"
                    .'<label for="userlogin_plugin_pass">' . __('Password') . '</label>&nbsp;'."\n"
-                   .'<input type="password" name="pass" id="userlogin_plugin_pass" size="'.$size.'" maxlength="'.$maxlengthpass.'" />'."\n";
+                   .'<input type="password" name="authentication_info[pass]" id="userlogin_plugin_pass" size="'.$size.'" maxlength="'.$maxlengthpass.'" />'."\n";
 
         if (System::getVar('seclevel') <> 'high') {
             $loginbox .= '<input type="checkbox" value="1" name="rememberme" id="userlogin_plugin_rememberme" />'."\n"
                         .'<label for="userlogin_plugin_rememberme">' . __('Remember me') . '</label>&nbsp;'."\n";
         }
 
-        $loginbox .= '<input type="hidden" name="url" value="' . DataUtil::formatForDisplay($returnurl) .'" />'."\n"
+        $loginbox .= '<input type="hidden" name="returnurl" value="' . DataUtil::formatForDisplay($returnurl) .'" />'."\n"
                     .'<input type="submit" value="' . __('Log in') . '" />'."\n"
                     .'</div></form>'."\n";
     } else {
         $loginbox = '';
     }
 
-    return $loginbox;
+    if ($assign) {
+        $view->assign($assign, $loginbox);
+    } else {
+        return $loginbox;
+    }
 }
