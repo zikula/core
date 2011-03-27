@@ -497,7 +497,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                             $userObj['__ATTRIBUTES__'] = array();
                         }
                         
-                        $userObj['__ATTRIBUTES__']['isverified'] = 0;
+                        $userObj['__ATTRIBUTES__']['_Users_isVerified'] = 0;
                     
                         if ($legalModuleActive) {
                             $userRegDateTime = new DateTime($userArray[$key]['user_regdate'], new DateTimeZone('UTC'));

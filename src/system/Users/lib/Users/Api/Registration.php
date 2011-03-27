@@ -454,6 +454,14 @@ class Users_Api_Registration extends Zikula_AbstractApi
         if (!isset($obj['__ATTRIBUTES__'])) {
             $obj['__ATTRIBUTES__'] = array();
         }
+        
+        if (isset($obj['isverified'])) {
+            $obj['__ATTRIBUTES__']['_Users_isVerified'] = $obj['isverified'];
+            unset($obj['isverified']);
+        } else {
+            $obj['__ATTRIBUTES__']['_Users_isVerified'] = 0;
+        }
+        
         foreach ($obj as $field => $value) {
             if (substr($field, 0, 2) == '__') {
                 continue;
@@ -534,18 +542,29 @@ class Users_Api_Registration extends Zikula_AbstractApi
         $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
 
         // Finally, save it.
+        // Note that we have two objects operating here, $userObj for storage, and $reginfo with original information
         $userObj = $reginfo;
-        unset($userObj['isapproved']);
-        $userObj = $this->cleanFieldsToAttributes($userObj);
-
+        
         $userObj['activated'] = Users_Constant::ACTIVATED_PENDING_REG;
         $userObj['user_regdate'] = $nowUTCStr;
-        if (!$reginfo['isapproved']) {
+        if (!isset($reginfo['isapproved']) || !$reginfo['isapproved']) {
+            // Not yet approved
             $userObj['approved_by'] = 0;
         } elseif ($createdByAdminOrSubAdmin && $reginfo['isapproved']) {
+            // Approved by admin
+            // If self approved (moderation is off), then see below.
             $userObj['approved_date'] = $nowUTCStr;
             $userObj['approved_by'] = UserUtil::getVar('uid');
         }
+
+        // remove pseudo-properties.
+        if (isset($userObj['isapproved'])) {
+            unset($userObj['isapproved']);
+        }
+        if (isset($userObj['verificationsent'])) {
+            unset($userObj['verificationsent']);
+        }
+        $userObj = $this->cleanFieldsToAttributes($userObj);
 
         // ATTENTION: Do NOT issue an item-create hook at this point! The record is a pending
         // registration, not a user, so a user account record has really not yet been "created".
@@ -564,9 +583,15 @@ class Users_Api_Registration extends Zikula_AbstractApi
             $regErrors = array();
 
             if (!$createdByAdminOrSubAdmin && $reginfo['isapproved']) {
-                // moderation is off, so the user "self-approved"
-                UserUtil::setVar('approved_date', $nowUTCStr, $userObj['uid']);
-                UserUtil::setVar('approved_by', $userObj['uid'], $userObj['uid']);
+                // moderation is off, so the user "self-approved".
+                // We could not set it earlier because we didn't know the uid.
+                // Use DBUtil here so we don't get an update event. (The create hasn't happened yet.)
+                $userUpdateObj = array(
+                    'uid'           => $userObj['uid'],
+                    'approved_by'   => $userObj['uid'],
+                    'approved_date' => $nowUTCStr,
+                );
+                DBUtil::updateObject($userUpdateObj, 'users', '', 'uid');
             }
             
             // Force the reload of the user in the cache.
@@ -733,14 +758,31 @@ class Users_Api_Registration extends Zikula_AbstractApi
             $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
             $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
 
-            // Finally, save it.
+            // Finally, save it, but first get rid of some pseudo-properties
             $userObj = $reginfo;
-            unset($userObj['isapproved']);
-            unset($userObj['isverified']);
+            
+            // Remove some pseudo-properties
+            if (isset($userObj['isapproved'])) {
+                unset($userObj['isapproved']);
+            }
+            if (isset($userObj['isverified'])) {
+                unset($userObj['isverified']);
+            }
+            if (isset($userObj['__ATTRIBUTES__']['_Users_isVerified'])) {
+                unset($userObj['__ATTRIBUTES__']['_Users_isVerified']);
+            }
+            if (isset($userObj['verificationsent'])) {
+                unset($userObj['verificationsent']);
+            }
             $userObj = $this->cleanFieldsToAttributes($userObj);
 
             $userObj['user_regdate'] = $nowUTCStr;
 
+            if ($createdByAdminOrSubAdmin) {
+                // Current user is admin, so admin is creating this registration.
+                // See below if moderation is off and user is self-approved
+                $userObj['approved_by'] = UserUtil::getVar('uid');
+            }
             // Approved date is set no matter what approved_by will become.
             $userObj['approved_date'] = $nowUTCStr;
 
@@ -752,14 +794,16 @@ class Users_Api_Registration extends Zikula_AbstractApi
             $userObj = DBUtil::insertObject($userObj, 'users', 'uid');
 
             if ($userObj) {
-                if ($createdByAdminOrSubAdmin) {
-                    // Current user is admin, so admin is creating this registration.
-                    $approvedByUid = UserUtil::getVar('uid');
-                } else {
+                if (!$createdByAdminOrSubAdmin) {
                     // Current user is not admin, so moderation is off and user "self-approved" through the registration process
-                    $approvedByUid = $userObj['uid'];
+                    // We couldn't do this above because we didn't know the uid.
+                    $userUpdateObj = array(
+                        'uid'           => $userObj['uid'],
+                        'approved_by'   => $userObj['uid'],
+                    );
+                    // Use DBUtil so we don't get an update event. The create hasn't happened yet.
+                    DBUtil::updateObject($userUpdateObj, 'users', '', 'uid');
                 }
-                UserUtil::setVar('approved_by', $approvedByUid, $userObj['uid']);
 
                 $reginfo['uid'] = $userObj['uid'];
             }
@@ -775,29 +819,33 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
             $userObj = $reginfo;
 
-            $reginfo['isapproved'] = isset($reginfo['approved_by']) && !empty($reginfo['approved_by']);
+            $reginfo['isapproved'] = true;
 
-            UserUtil::delVar('isverified', $userObj['uid']);
+            // Use ObjectUtil so we don't get an update event. (Create hasn't happened yet.);
+            ObjectUtil::deleteObjectSingleAttribute($reginfo['uid'], 'users', '_Users_isVerified');
 
             // NOTE: See below for the firing of the item-create hook.
         }
 
         if ($userObj) {
-            // Set appropriate activated status
-            UserUtil::setVar('activated', Users_Constant::ACTIVATED_ACTIVE, $userObj['uid']);
+            // Set appropriate activated status. Again, use DBUtil so we don't get an update event. (Create hasn't happened yet.)
+            // Need to do this here so that it happens for both the case where $reginfo is coming in new, and the case where 
+            // $reginfo was already in the database.
+            $userUpdateObj = array(
+                'uid'       => $userObj['uid'],
+                'activated' => Users_Constant::ACTIVATED_ACTIVE,
+            );
+            DBUtil::updateObject($userUpdateObj, 'users', '', 'uid');
             $userObj['activated'] = Users_Constant::ACTIVATED_ACTIVE;
             
-            // Don't do any more UserUtil::setVar() operations or other direct modifications to the user record from this point until
-            // the end of the function, or an update event/hook will be fired!
-
             // Add user to default group
             $defaultGroup = ModUtil::getVar('Groups', 'defaultgroup', false);
             if (!$defaultGroup) {
-                $this->registerError($this->__('Warning! The user account was created, but there was a problem granting access to the account.'));
+                $this->registerError($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
             $groupAdded = ModUtil::apiFunc('Groups', 'user', 'adduser', array('gid' => $defaultGroup, 'uid' => $userObj['uid']));
             if (!$groupAdded) {
-                $this->registerError($this->__('Warning! The user account was created, but there was a problem granting access to the account.'));
+                $this->registerError($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
             
             // Force the reload of the user in the cache.
@@ -1176,7 +1224,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             $count = 0;
             if ($users) {
                 foreach ($users as $userRec) {
-                    if ($userRec['__ATTRIBUTES__']['isverified'] == $isVerifiedValue) {
+                    if ($userRec['__ATTRIBUTES__']['_Users_isVerified'] == $isVerifiedValue) {
                         $count++;
                     }
                 }
@@ -1496,11 +1544,13 @@ class Users_Api_Registration extends Zikula_AbstractApi
             }
         }
 
-        UserUtil::setVar('isverified', true, $reginfo['uid']);
+        UserUtil::setVar('_Users_isVerified', true, $reginfo['uid']);
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid'       => $reginfo['uid'],
             'changetype'=> Users_Constant::VERIFYCHGTYPE_REGEMAIL,
         ));
+        
+        $reginfo = UserUtil::getVars($reginfo['uid'], true, 'uid', true);
 
         if (!empty($reginfo['approved_by'])) {
             // The registration is now both verified and approved, time to make an honest user out of him.
@@ -1562,13 +1612,13 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
 
-        $reginfo['isapproved'] = true;
         $reginfo['approved_by'] = UserUtil::getVar('uid');
         UserUtil::setVar('approved_by', $reginfo['approved_by'], $reginfo['uid']);
 
         $reginfo['approved_date'] = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
         UserUtil::setVar('approved_date', $reginfo['approved_date'], $reginfo['uid']);
-
+        
+        $reginfo = UserUtil::getVars($reginfo['uid'], true, 'uid', true);
 
         if (isset($args['force']) && $args['force']) {
             if (!isset($reginfo['email']) || empty($reginfo['email'])) {
