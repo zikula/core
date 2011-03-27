@@ -1,3 +1,4 @@
+{ajaxheader modname=Groups filename=groups.js ui=true}
 {gt text="Group membership" assign=templatetitle}
 {include file="groups_admin_menu.tpl"}
 
@@ -21,7 +22,7 @@
                     {assign var="options" value=$groupmembers[groupmembers].options}
                     {section name=options loop=$options}
                     {if !empty($options[options])}
-                    <a href="{$options[options].url|safetext}">{img src=$options[options].imgfile modname=core set=icons/extrasmall title=$options[options].title alt=$options[options].title}</a>
+                    <a href="{$options[options].url|safetext}" id="user-{$options[options].uid}" class="group-membership-removeuser" rel="{$gid}:{$options[options].uid}">{img src=$options[options].imgfile modname=core set=icons/extrasmall title=$options[options].title alt=$options[options].title}</a>
                     {/if}
                     {/section}
                 </td>

@@ -168,4 +168,23 @@ class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
         throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete the \'%s\' group.', $gid));
     }
 
+    public function removeuser()
+    {
+        $this->checkAjaxToken();
+
+        $gid = (int)$this->request->getPost()->get('gid');
+        $uid = (int)$this->request->getPost()->get('uid');
+
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
+
+        if (!ModUtil::apiFunc('Groups', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
+            throw new Zikula_Exception_Fatal($this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
+        }
+
+        $result = array(
+            'gid' => $gid,
+            'uid' => $uid
+        );
+        return new Zikula_Response_Ajax($result);
+    }
 }
