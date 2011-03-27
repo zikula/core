@@ -169,10 +169,11 @@ class ModUtil
 
         // This entire code block is unnecessary except for an edge case in the upgrade
         // the condition if (!self::$modvars) is for that edge case - drak
+        // Unfortunately, that breaks the upgrade for other modules - rb
 
         // if we haven't got vars for this module yet then lets get them
-        //if (!array_key_exists($modname, self::$modvars)) {
-        if (!self::$modvars) {
+        if (!array_key_exists($modname, self::$modvars)) {
+        //if (!self::$modvars) {
             $tables = DBUtil::getTables();
             $col = $tables['module_vars_column'];
             $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
