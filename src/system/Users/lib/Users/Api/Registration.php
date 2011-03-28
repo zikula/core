@@ -597,7 +597,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             // Force the reload of the user in the cache.
             $userObj = UserUtil::getVars($userObj['uid'], true, 'uid', true);
             
-            $createEvent = new Zikula_Event('registration.create', $userObj);
+            $createEvent = new Zikula_Event('user.registration.create', $userObj);
             $this->eventManager->notify($createEvent);
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
@@ -855,7 +855,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             // registration is created. It is not a "real" record until now, so it wasn't really
             // "created" until now. It is way down here so that the activated state can be properly 
             // saved before the hook is fired.
-            $createEvent = new Zikula_Event('user.create', $userObj);
+            $createEvent = new Zikula_Event('user.account.create', $userObj);
             $this->eventManager->notify($createEvent);
 
             $regErrors = array();
@@ -1286,7 +1286,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
                     'changetype' => Users_Constant::VERIFYCHGTYPE_REGEMAIL,
                 ));
 
-                $deleteEvent = new Zikula_Event('registration.delete', $registration);
+                $deleteEvent = new Zikula_Event('user.registration.delete', $registration);
                 $this->eventManager->notify($deleteEvent);
             }
         }
@@ -1329,7 +1329,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
                         'changetype'=> Users_Constant::VERIFYCHGTYPE_REGEMAIL,
                     ));
                     
-                    $deleteEvent = new Zikula_Event('registration.delete', $registration);
+                    $deleteEvent = new Zikula_Event('user.registration.delete', $registration);
                     $this->eventManager->notify($deleteEvent);
                 }
             }
@@ -1666,26 +1666,10 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
         // Preventing reactivation from same link !
         $newregdate = DateUtil::getDatetime(strtotime($args['regdate'])+1);
-        $obj = array(
-            'uid'           => $args['uid'],
-            'activated'     => Users_Constant::ACTIVATED_ACTIVE,
-            'user_regdate'  => DataUtil::formatForStore($newregdate)
-        );
+        UserUtil::setVar('activated', Users_Constant::ACTIVATED_ACTIVE, $args['uid']);
+        UserUtil::setVar('user_regdate', DataUtil::formatForStore($newregdate), $args['uid']);
 
-        $res = DBUtil::updateObject($obj, 'users', '', 'uid');
-
-        if ($res) {
-            // NOTE: This is not an item-create because this is a legacy activation, and the
-            // user account record was already in a state where it was a "real" record.
-            // See createRegistration() and createUser() above.
-            // ... and call event too.
-            $updateEvent = new Zikula_Event('user.update', $res);
-            $this->eventManager->notify($updateEvent);
-
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
 }

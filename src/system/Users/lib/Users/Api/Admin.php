@@ -125,131 +125,6 @@ class Users_Api_Admin extends Zikula_AbstractApi
     }
 
     /**
-     * Save an updated user record.
-     *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * array  $args['userinfo']           The updated user information.
-     * string $args['emailagain']         A verification of the new e-mail address to store on the
-     *                                          user record, required.
-     * string $args['passagain']          A verification of the new password to store on the user
-     *                                          record, required if $args['userinfo']['pass'] is set.
-     * array  $args['access_permissions'] An array of group ids to which the user should belong.
-     * 
-     * @param array $args All parameters passed to this function.
-     *
-     * @return bool true if successful, false otherwise.
-     * 
-     * @throws Zikula_Exception_Forbidden If the user does not have edit access to any user account records.
-     */
-    public function updateUser($args)
-    {
-        // check permission to edit any generic user
-        if (!SecurityUtil::checkPermission("{$this->name}::", 'ANY', ACCESS_EDIT)) {
-            throw new Zikula_Exception_Forbidden();
-        }
-
-        // Checking for necessary basics
-        if (!isset($args['userinfo']) || !is_array($args['userinfo']) || empty($args['userinfo'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-            return false;
-        }
-
-        $updatedUser = $args['userinfo'];
-        if (!isset($updatedUser['uid']) || empty($updatedUser['uid']) || !isset($updatedUser['uname'])
-                || empty($updatedUser['uname']) || !isset($updatedUser['email'])  || empty($updatedUser['email'])) {
-
-            $this->registerError(LogUtil::getErrorMsgArgs());
-            return false;
-        }
-
-        $isRegistration = UserUtil::isRegistration($updatedUser['uid']);
-        $originalUser = UserUtil::getVars($updatedUser['uid'], true, 'uid', $isRegistration);
-        
-        if (!$originalUser) {
-            $this->registerError($this->__('Error! Could not find the user record in order to update it.'));
-            return false;
-        } elseif (!SecurityUtil::checkPermission("{$this->name}::", "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
-            // above elseif checks permission to edit the specific user
-            throw new Zikula_Exception_Forbidden();
-        }
-
-        if (isset($updatedUser['pass']) && !empty($updatedUser['pass'])) {
-            $setpass = true;
-        } else {
-            $setpass = false;
-        }
-
-        $registrationErrors = ModUtil::apiFunc($this->name, 'registration', 'getRegistrationErrors', array(
-            'checkmode'  => 'modify',
-            'setpass'    => $setpass,
-            'reginfo'    => $updatedUser,
-            'passagain'  => isset($args['passagain']) ? $args['passagain'] : '',
-            'emailagain' => $args['emailagain'],
-        ));
-        if ($registrationErrors) {
-            foreach ($registrationErrors as $message) {
-                $this->registerError($message);
-            }
-            return false;
-        }
-
-        if ($setpass) {
-            $updatedUser['pass'] = UserUtil::getHashedPassword($updatedUser['pass']);
-        } else {
-            unset($updatedUser['pass']);
-        }
-
-        DBUtil::updateObject($updatedUser, 'users', '', 'uid');
-
-        if ($args['access_permissions'] !== false) {
-            // Fixing a high numitems to be sure to get all groups
-            $groups = ModUtil::apiFunc('Groups', 'user', 'getAll', array('numitems' => 10000));
-            $curUserGroupMembership = ModUtil::apiFunc('Groups', 'user', 'getUserGroups', array('uid' => $updatedUser['uid']));
-
-            foreach ($groups as $group) {
-                if (in_array($group['gid'], $args['access_permissions'])) {
-                    // Check if the user is already in the group
-                    $userIsMember = false;
-                    if ($curUserGroupMembership) {
-                        foreach ($curUserGroupMembership as $alreadyMemberOf) {
-                            if ($group['gid'] == $alreadyMemberOf['gid']) {
-                                $userIsMember = true;
-                                break;
-                            }
-                        }
-                    }
-                    if ($userIsMember == false) {
-                        // User is not in this group
-                        ModUtil::apiFunc('Groups', 'admin', 'addUser', array(
-                            'gid' => $group['gid'],
-                            'uid' => $updatedUser['uid']
-                        ));
-                        $curUserGroupMembership[] = $group;
-                    }
-                } else {
-                    // We don't need to do a complex check, if the user is not in the group, the SQL will not return
-                    // an error anyway.
-                    ModUtil::apiFunc('Groups', 'admin', 'removeUser', array(
-                        'gid' => $group['gid'],
-                        'uid' => $updatedUser['uid']
-                    ));
-                }
-            }
-        }
-
-        // Let other modules know we have updated an item
-        if ($isRegistration) {
-            $updateEvent = new Zikula_Event('registration.update', $updatedUser);
-        } else {
-            $updateEvent = new Zikula_Event('user.update', $updatedUser);
-        }
-        $this->eventManager->notify($updateEvent);
-
-        return true;
-    }
-
-    /**
      * Delete one or more user account records, or mark one or more account records for deletion.
      *
      * If records are marked for deletion, they remain in the system and accessible by the system, but are given an
@@ -323,7 +198,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
                 }
 
                 // Let other modules know we have deleted an item
-                $deleteEvent = new Zikula_Event('user.delete', $userObj);
+                $deleteEvent = new Zikula_Event('user.account.delete', $userObj);
                 $this->eventManager->notify($deleteEvent);
             }
         }
@@ -626,11 +501,11 @@ class Users_Api_Admin extends Zikula_AbstractApi
             $view->assign('siteurl', $siteurl);
 
             foreach ($importValues as $value) {
-                if ($value['activated']) {
-                    $createEvent = new Zikula_Event('user.create', $value);
+                if ($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) {
+                    $createEvent = new Zikula_Event('user.account.create', $value);
                     $this->eventManager->notify($createEvent);
                 } else {
-                    $createEvent = new Zikula_Event('registration.create', $value);
+                    $createEvent = new Zikula_Event('user.registration.create', $value);
                     $this->eventManager->notify($createEvent);
                 }
                 if ($value['activated'] && $value['sendmail']) {

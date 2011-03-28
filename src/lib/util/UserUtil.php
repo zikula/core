@@ -820,7 +820,7 @@ class UserUtil
                     'uid'                   => $userObj['uid'],
                 );
                 $event = new Zikula_Event('user.login.veto', $userObj, $eventArgs);
-                EventUtil::notifyUntil($event);
+                $event = EventUtil::notifyUntil($event);
 
                 if ($event->hasNotified()) {
                     // The login attempt has been vetoed by one or more modules.
@@ -833,7 +833,7 @@ class UserUtil
                     } elseif (isset($eventData['redirectFunc'])) {
                         if (isset($eventData['redirectFunc']['session'])) {
                             $sessionVarName = $eventData['redirectFunc']['session']['var'];
-                            $sessionNamespace = $eventData['redirectFunc']['session']['namespace'];
+                            $sessionNamespace = isset($eventData['redirectFunc']['session']['namespace']) ? $eventData['redirectFunc']['session']['namespace'] : '/';
                         }
                         $redirectURL = ModUtil::url($eventData['redirectFunc']['modname'], $eventData['redirectFunc']['type'], $eventData['redirectFunc']['func'], $eventData['redirectFunc']['args']);
                     }
@@ -1344,7 +1344,7 @@ class UserUtil
             // the password being updated, and the system is not currently being installed.
             if ($varIsSet && ($name != 'pass') && !System::isInstalling()) {
                 // Fire the event
-                $eventName = $isRegistration ? 'registration.update' : 'user.update';
+                $eventName = $isRegistration ? 'user.registration.update' : 'user.account.update';
                 $eventArgs = array(
                     'action'    => 'setVar',
                     'field'     => isset($attributeName) ? null : $name,
@@ -1686,9 +1686,9 @@ class UserUtil
                     'old_value' => $oldValue,
                 );
                 if ($isRegistration) {
-                    $updateEvent = new Zikula_Event('registration.update', $updatedUserObj, $eventArgs, $eventData);
+                    $updateEvent = new Zikula_Event('user.registration.update', $updatedUserObj, $eventArgs, $eventData);
                 } else {
-                    $updateEvent = new Zikula_Event('user.update', $updatedUserObj, array(), $eventData);
+                    $updateEvent = new Zikula_Event('user.account.update', $updatedUserObj, $eventArgs, $eventData);
                 }
                 EventUtil::notify($updateEvent);
             }

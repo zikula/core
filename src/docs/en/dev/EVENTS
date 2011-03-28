@@ -186,26 +186,29 @@ Filter of result of a fetch.  Receives `Zikula_View` instance as subject, args a
 `array('template' => $template), $data was the result of the fetch to be filtered.`
 
 
-USER
-----
+USER ACCOUNTS, REGISTRATIONS, AND LOG-INS
+-----------------------------------------
 
-#### `user.login.started`
+#### `module.users.ui.login.started`
 Occurs at the beginning of the log-in process, before the registration form is displayed to the user.
 
-NOTE: This event will not fire if the log-in process is entered through the registration process, or through
-any other method other than visiting the log-in screen. If the user registers for a new account, 
-the result of the registration process is a full user record, and automatic log-in after registration is enabled, 
-then the `user.login.started` event will not fire. Likewise, if the Log-in Block is used on the site, and the user
-initiates his log-in from that block instead of visiting the full log-in screen, then this event will not fire.
+NOTE: This event will not fire if the log-in process is entered through any other method other than visiting the 
+log-in screen directly. For example, if automatic log-in is enabled following registration, then this event
+will not fire when the system passes control from the registration process to the log-in process. 
 
-This event will fire, however, if invalid information is provided to the Log-in block, resulting in the user being
-redirected to the full log-in screen.
+Likewise, this event will not fire if a user begins the log-in process from the log-in block or a log-in
+plugin if the user provides valid authentication information. This event will fire, however, if invalid 
+information is provided to the log-in block or log-in plugin, resulting in the user being
+redirected to the full log-in screen for corrections.
+
+This event does not have any subject, arguments, or data.
 
 #### `user.login.veto`
-Occurs immediately prior to a login that is expected to succeed. (All prerequisites for a
+Occurs immediately prior to a log-in that is expected to succeed. (All prerequisites for a
 successful login have been checked and are satisfied.) This event allows a module to
-intercept the login process and prevent a successful login from taking place. This
-event uses `notifyUntil()`, so handlers are called until either one vetoes the login attempt,
+intercept the login process and prevent a successful login from taking place. 
+
+This event uses `notifyUntil()`, so handlers are called until either one vetoes the login attempt,
 or there are no more handlers for the event. A handler that needs to veto a login attempt
 should call `setNotify()`. This will prevent other handlers from receiving the event, will
 return to the login process, and will prevent the login from taking place. A handler that
@@ -214,7 +217,7 @@ feedback to the user attempting to log in that might be appropriate. If a handle
 need to veto the login attempt, then it should simply return null (`return;` with no
 return value).
 
-Note: the user __will not__ be logged in when the event handler is
+Note: the user __will not__ be logged in at the point where the event handler is
 executing. Any attempt to check a user's permissions, his logged-in status, or any
 operation will return a value equivalent to what an anonymous (guest) user would see. Care
 should be taken to ensure that sensitive operations done within a handler for this event
@@ -222,11 +225,100 @@ do not introduce breaches of security.
 
  * The subject of the event will contain the user's account record, equivalent to
    `UserUtil::getVars($uid)`.
- * `$event['authentication_module']` will contain the name of the module that authenticated the user.
- * `$event['uid']` will contain the user's uid.
+ * The arguments of the event are:
+    * `'authentication_method'` will contain the name of the module and the name of the method that was used to authenticated the user.
+    * `'uid'` will contain the user's uid.
 
-#### `user.login.succeeded`
-Occurs right after a successful attempt to log in. All handlers are notified.
+An event handler can prevent (veto) the log-in attempt by calling `setNotified()` on the event. This is 
+enough to ensure that the log-in attempt is stopped, however this will result in a `Zikula_Exception_Forbidden`
+exception being thrown. 
+
+To, instead, redirect the user back to the log-in screen (after possibly setting an error message that will
+be displayed), then set the event data to contain an array with a single element, `retry`, having a value
+of true (e.g., `$event->setData(array('retry' => true));`).  This will signal the log-in process to go back 
+to the log-in screen for another attempt. The expectation is that the notifying event handler has set an 
+error message, and that the user will be able to log-in if the instructions in that message are followed, 
+or the conditions in that message can be met. 
+
+The Legal module uses this method when vetoing an attempt, if the Legal module has established a hook with the
+log-in screen. The user is redirected back to the log-in screen and now that the user is known, the
+Legal module is able to display a form fragment directly on the log-in screen which allows the user
+to accept the policies that remain unaccepted. Assuming that the user accepts the policies, his 
+next attempt at logging in will be successful because the condition in the Legal module that caused the
+veto no longer exists.
+
+Another alternative is to "break into" the log-in process to redirect the user to a form (or something 
+similar) that allows him to correct whatever situation is causing his log-in attempt to be vetoed. The
+expectation is that the notifying event handler will direct the user to a form to correct the situation,
+and then __redirect the user back into the log-in process to re-attempt logging in__. To accomplish this,
+instead of setting the `'retry'` event data, the notifying handler should set the `'redirectFunc'` 
+event data structure. This is an array which defines the information necessary to direct the 
+user to a controller function somewhere in the Zikula system (likely, within the same module as that
+which is vetoing the attempt). This array contains the following:
+
+ * `'modname'` The name of the module where the controller function is defined.
+ * `'type'` The library type that defines the function.
+ * `'func'` The name of the function itself.
+ * `'args'` An array of function argument key-value pairs to pass to the function when calling it. Since the function
+            will be called through a redirect, any parameters will be converted to GET parameters on the URL, so
+            the developer should consider the minimum set to include--preferably none. Session variables are an
+            alternative to passing function arguments.
+
+In addition, if information from the log-in attempt is needed within the function, it can be made available in 
+session variables. To do this, add an array called `'session'` to the `'redirectFunc'` array structure. The contents
+of the `'session'` array must be:
+
+ * `'namespace'` The session name space in which to store the variable.
+ * `'var'` The name of the session variable.
+
+An array will be stored in that variable, containing information from the log-in process. The elements of this array will
+be:
+
+ * `'returnurl'` The URL where the user should be redirected upon successfully logging in.
+ * `'authentication_info'` An array containing the authentication information entered by the user. The contents
+                           of this array depends entirely on the authentication method.
+ * `'authentication_method'` An array containing the `'modname'` (module name) of the authentication module, and
+                             the `'method'` name of the authentication method being used by the user who is logging in.
+ * `'rememberme'` A flag indicating whether the user checked the box to remain logged in.
+ * `'user_obj'` The user object array (same as received when calling `UserUtil::getVars($uid);`) of the user who is
+                logging in.
+
+This information is also passed back to the log-in process when the user is redirected back there.
+
+The Users module uses this method to handle users who have been forced by the administrator to change their password 
+prior to logging in. The code used for the notification might look like the following example:
+
+    $event->setNotified();
+    $event->setData(array(
+        'redirectFunc'  => array(
+            'modname'   => 'Users',
+            'type'      => 'user',
+            'func'      => 'changePassword',
+            'args'      => array(
+                'login'     => true,
+            ),
+            'session'   => array(
+                'var'       => 'Users_Controller_User_changePassword',
+                'namespace' => 'Zikula_Users',
+            )
+        ),
+    ));
+
+    LogUtil::registerError(__("Your log-in request was not completed. You must change your web site account's password first."));
+
+In this example, the user will be redirected to the URL pointing to the `changePassword` function. This URL is constructed by calling 
+`ModUtil::url()` with the modname, type, func, and args specified in the above array. The `changePassword` function also needs access
+to the information from the log-in attempt, which will be stored in the session variable and namespace specified. This is accomplished
+by calling `SessionUtil::setVar()` prior to the redirect, as follows:
+
+    SessionUtil::setVar('Users_Controller_User_changePassword', $sessionVars, 'Zikula_Users' true, true);
+
+where `$sessionVars` contains the information discussed previously.
+
+#### `module.users.ui.login.succeeded`
+Occurs right after a successful attempt to log in, and just prior to redirecting the user to the desired page. 
+All handlers are notified.
+
  * The event subject contains the user's user record (from `UserUtil::getVars($event['uid'])`)
  * The arguments of the event are as follows:
     * `'authentication_module'` an array containing the authenticating module name (`'modname'`) and method (`'method'`) 
@@ -243,14 +335,18 @@ and then meta refresh is used to redirect the user to the returnurl.
 
 If a `'redirecturl'` is specified by any entity intercepting and processing the `user.login.succeeded` event, then
 the URL provided replaces the one provided by the returnurl parameter to the login process. If it is set to an empty
-string, then the user is redirected to the site's home page.
+string, then the user is redirected to the site's home page. An event handler should carefully consider whether 
+changing the `'redirecturl'` argument is appropriate. First, the user may be expecting to return to the page where
+he was when he initiated the log-in process. Being redirected to a different page might be disorienting to the user.
+Second, all event handlers are being notified of this event. This is not a `notifyUntil()` event. An event handler
+that was notified prior to the current handler may already have changed the `'redirecturl'`.
 
 Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
-programmatically by directly calling `UserUtil::loginUsing()` will not see this event fired. Instead, the
-`Users_Controller_User#login()` function can be called with the appropriate parameters, if the event is desired.
+programmatically by directly calling the core functions will not see this event fired.
 
-#### `user.login.failed`
+#### `module.users.ui.login.failed`
 Occurs right after a successful attempt to log in. All handlers are notified.
+
  * The event subject contains the user's user record (from `UserUtil::getVars($event['uid'])`) if it has been found, otherwise null
  * The arguments of the event are as follows:
     * `'authentication_module'` an array containing the authenticating module name (`'modname'`) and method (`'method'`) 
@@ -263,53 +359,53 @@ Initially, it will be an empty string, indicating that the user should continue 
 with the log-in form.
 
 If a `'redirecturl'` is specified by any entity intercepting and processing the `user.login.failed` event, then
-the user will be redirected to the URL provided, instead of being presented with the log-in form.
+the user will be redirected to the URL provided, instead of being presented with the log-in form.  An event handler 
+should carefully consider whether changing the `'redirecturl'` argument is appropriate. First, the user may be expecting 
+to return to the log-in screen . Being redirected to a different page might be disorienting to the user.
+Second, all event handlers are being notified of this event. This is not a `notifyUntil()` event. An event handler
+that was notified prior to the current handler may already have changed the `'redirecturl'`.
 
 Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
-programmatically by directly calling `UserUtil::loginUsing()` will not see this event fired. Instead, the
-`Users_Controller_User#login()` function can be called with the appropriate parameters, if the event is desired.
+programmatically by directly calling core functions will not see this event fired.
 
-#### `user.logout.succeeded`
+#### `module.users.ui.logout.succeeded`
 Occurs right after a successful logout. All handlers are notified.
+
  * The event's subject contains the user's user record
- * `$event['uid']` is the UID of the user who logged out.
 
 #### `user.gettheme`
 Called during UserUtil::getTheme() and is used to filter the results.  Receives arg['type']
 with the type of result to be filtered and the $themeName in the $event->data which can
 be modified.  Must $event->setNotified() if handler performs filter.
 
-#### `user.create`
-Occurs after a user is created. All handlers are notified. It does not apply to creation of a pending
+#### `user.account.create`
+Occurs after a user account is created. All handlers are notified. It does not apply to creation of a pending
 registration. The full user record created is available as the subject. This is a storage-level event, 
 not a UI event. It should not be used for UI-level actions such as redirects.
 
  * The subject of the event is set to the user record that was created.
 
-#### `user.update`
+#### `user.account.update`
 Occurs after a user is updated. All handlers are notified. The full updated user record is available
 as the subject. This is a storage-level event, not a UI event. It should not be used for UI-level 
 actions such as redirects.
 
  * The subject of the event is set to the user record, with the updated values.
 
-#### `user.delete`
+#### `user.account.delete`
 Occurs after a user is deleted from the system. All handlers are notified. The full user record
 deleted is available as the subject. This is a storage-level event, not a UI event. It should not be 
 used for UI-level actions such as redirects.
 
  * The subject of the event is set to the user record that is being deleted.
 
-REGISTRATION
-------------
-
-#### `registration.started`
+#### `module.users.ui.registration.started`
 Occurs at the beginning of the registration process, before the registration form is displayed to the user.
 
-#### `registration.succeeded`
+#### `module.users.ui.registration.succeeded`
 Occurs after a user has successfully registered a new account in the system. It will follow either a `registration.create`
 event, or a `user.create` event, depending on the result of the registration process, the information provided by the user,
- and several configuration options set in the Users module. The resultant record might
+and several configuration options set in the Users module. The resultant record might
 be a fully activated user record, or it might be a registration record pending approval, e-mail verification,
 or both.
 
@@ -344,9 +440,12 @@ If a `'redirecturl'` is specified by any entity intercepting and processing the 
 __all of the above default actions are overridden__. The user will _not_ be directed to a status display screen if the result
 of the registration process is a registration request. The user will _not_ be directed to the log-in screen, _nor_ will he
 be automatically logged in. Instead, the user __will be directed to the URL specified in the `'redirecturl'` argument__ passed
-back by the entity that processed the event.
+back by the entity that processed the event. An event handler should carefully consider whether changing the `'redirecturl'` 
+argument is appropriate. First, the user may be expecting to return to the log-in screen . Being redirected to a different 
+page might be disorienting to the user. Second, all event handlers are being notified of this event. This is not a 
+`notifyUntil()` event. An event handler that was notified prior to the current handler may already have changed the `'redirecturl'`.
 
-#### `registration.failed`
+#### `module.users.ui.registration.failed`
 Occurs after a user attempts to submit a registration request, but the request is not saved successfully.
 The next step for the user is a page that displays the status, including any possible error messages.
  * The event subject contains null
@@ -358,31 +457,36 @@ Initially, it will be an empty string, indicating that the user will be redirect
 
 If a `'redirecturl'` is specified by any entity intercepting and processing the `user.login.failed` event, then
 the user will be redirected to the URL provided, instead of being redirected to the status/error display page.
+An event handler should carefully consider whether changing the `'redirecturl'` argument is appropriate. First, the 
+user may be expecting to be directed to a page containing information on why the registration failed. Being redirected to a different 
+page might be disorienting to the user. Second, all event handlers are being notified of this event. This is not a 
+`notifyUntil()` event. An event handler that was notified prior to the current handler may already have changed the `'redirecturl'`.
 
-#### `registration.create`
+#### `user.registration.create`
 Occurs after a registration record is created, either through the normal user registration process, or through the 
 administration panel for the Users module. This event will not fire if the result of the registration process is a
-full user record. Instead, a user.create event will fire.
+full user record. Instead, a user.account.create event will fire.
 This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
 
  * The subject of the event is set to the registration record that was created.
 
-#### `registration.update`
+#### `user.registration.update`
 Occurs after a registration record is updated (likely through the admin panel, but not guaranteed).
 This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
 
  * The subject of the event is set to the registration record, with the updated values.
 
-#### `registration.delete`
+#### `user.registration.delete`
 Occurs after a registration record is deleted. This could occur as a result of the administrator deleting the record 
-through the approval/denial process, or it could happen because the registration request expired.
-This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
+through the approval/denial process, or it could happen because the registration request expired. This event
+will not fire if a registration record is converted to a full user account record. Instead, a `user.account.create`
+event will fire. This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
 
  * The subject of the event is set to the registration record begin deleted.
 
 USERS MODULE
 ------------
-#### `users.config.updated
+#### `module.users.config.updated
 Occurs after the Users module configuration has been updated via the administration interface.
 
 GROUPS
