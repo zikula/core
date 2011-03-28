@@ -542,7 +542,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * 
      * Parameters passed via POST:
      * ---------------------------
-     * array access_permissions See {@link Users_Controller_Admin::updateUser()}.
+     * array access_permissions An array used to modify a user's group memebership.
      * 
      * See also the definition of {@link Users_Controller_FormData_ModifyUserForm}.
      * 
@@ -598,25 +598,82 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $validators = $this->notifyHooks('users.hook.user.validate.edit', $user, $user['uid'], array(), new Zikula_Hook_ValidationProviders())->getData();
 
             if (!$errorFields && !$validators->hasErrors()) {
-                $return = ModUtil::apiFunc($this->name, 'admin', 'updateUser', array(
-                    'userinfo'           => $user,
-                    'emailagain'         => $formData->getFieldData('emailagain'),
-                    'passagain'          => $formData->getFieldData('setpass') ? $formData->getFieldData('passagain') : '',
-                    'access_permissions' => $accessPermissions,
-                ));
+                if ($originalUser['uname'] != $user['uname']) {
+                    // UserUtil::setVar does not allow uname to be changed.
+                    // UserUtil::setVar('uname', $user['uname'], $originalUser['uid']);
+                    $updatedUserObj = array(
+                        'uid'   => $originalUser['uid'],
+                        'uname' => $user['uname'],
+                    );
+                    DBUtil::updateObject($updatedUserObj, 'users', '', 'uid');
+                    $eventArgs = array(
+                        'action'    => 'setVar',
+                        'field'     => 'uname',
+                        'attribute' => null,
+                    );
+                    $eventData = array(
+                        'old_value' => $originalUser['uname'],
+                    );
+                    $updateEvent = new Zikula_Event('user.account.update', $updatedUserObj, $eventArgs, $eventData);
+                    EventUtil::notify($updateEvent);
+                }
+                if ($originalUser['email'] != $user['email']) {
+                    UserUtil::setVar('email', $user['email'], $originalUser['uid']);
+                }
+                if ($originalUser['activated'] != $user['activated']) {
+                    UserUtil::setVar('activated', $user['activated'], $originalUser['uid']);
+                }
+                if ($originalUser['theme'] != $user['theme']) {
+                    UserUtil::setVar('theme', $user['theme'], $originalUser['uid']);
+                }
+                if ($formData->getField('setpass')->getData()) {
+                    UserUtil::setPassword($user['pass'], $originalUser['uid']);
+                    UserUtil::setVar('passreminder', $user['passreminder'], $originalUser['uid']);
+                }
+                
+                $user = UserUtil::getVars($user['uid'], true);
 
-                if ($return) {
-                    $user = UserUtil::getVars($user['uid'], true);
-                    
-                    $this->notifyHooks('users.hook.user.process.edit', $user, $user['uid']);
-                    $this->registerStatus($this->__("Done! Saved user's account information."));
-                    
-                    $proceedToForm = false;
-                } else {
-                    if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
-                        $this->registerError($this->__f('An unspecified error occurred while trying to save user %1$d.', array($originalUser['uid'])));
+                // TODO - This all needs to move to a Groups module hook.
+                if (isset($accessPermissions)) {
+                    // Fixing a high numitems to be sure to get all groups
+                    $groups = ModUtil::apiFunc('Groups', 'user', 'getAll', array('numitems' => 10000));
+                    $curUserGroupMembership = ModUtil::apiFunc('Groups', 'user', 'getUserGroups', array('uid' => $user['uid']));
+
+                    foreach ($groups as $group) {
+                        if (in_array($group['gid'], $accessPermissions)) {
+                            // Check if the user is already in the group
+                            $userIsMember = false;
+                            if ($curUserGroupMembership) {
+                                foreach ($curUserGroupMembership as $alreadyMemberOf) {
+                                    if ($group['gid'] == $alreadyMemberOf['gid']) {
+                                        $userIsMember = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if ($userIsMember == false) {
+                                // User is not in this group
+                                ModUtil::apiFunc('Groups', 'admin', 'addUser', array(
+                                    'gid' => $group['gid'],
+                                    'uid' => $user['uid']
+                                ));
+                                $curUserGroupMembership[] = $group;
+                            }
+                        } else {
+                            // We don't need to do a complex check, if the user is not in the group, the SQL will not return
+                            // an error anyway.
+                            ModUtil::apiFunc('Groups', 'admin', 'removeUser', array(
+                                'gid' => $group['gid'],
+                                'uid' => $user['uid']
+                            ));
+                        }
                     }
                 }
+                
+                $this->notifyHooks('users.hook.user.process.edit', $user, $user['uid']);
+                $this->registerStatus($this->__("Done! Saved user's account information."));
+
+                $proceedToForm = false;
             }
         } elseif ($this->request->isGet()) {
             $uid    = $this->request->getGet()->get('userid', null);
@@ -1293,35 +1350,50 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $validators = $this->notifyHooks('users.hook.user.validate.edit', $registration, $registration['uid'], array(), new Zikula_Hook_ValidationProviders())->getData();
 
             if (!$errorFields && !$validators->hasErrors()) {
-                $return = ModUtil::apiFunc($this->name, 'admin', 'updateUser', array(
-                    'userinfo'           => $registration,
-                    'emailagain'         => $formData->getFieldData('emailagain'),
-                    'passagain'          => '',
-                    'access_permissions' => false,
-                ));
+                $emailUpdated = false;
+                if ($originalRegistration['uname'] != $registration['uname']) {
+                    // UserUtil::setVar does not allow uname to be changed.
+                    // UserUtil::setVar('uname', $registration['uname'], $originalRegistration['uid']);
+                    $updatedRegistrationObj = array(
+                        'uid'   => $originalRegistration['uid'],
+                        'uname' => $registration['uname'],
+                    );
+                    DBUtil::updateObject($updatedRegistrationObj, 'users', '', 'uid');
+                    $eventArgs = array(
+                        'action'    => 'setVar',
+                        'field'     => 'uname',
+                        'attribute' => null,
+                    );
+                    $eventData = array(
+                        'old_value' => $originalRegistration['uname'],
+                    );
+                    $updateEvent = new Zikula_Event('user.registration.update', $updatedRegistrationObj, $eventArgs, $eventData);
+                    EventUtil::notify($updateEvent);
+                }
+                if ($originalRegistration['theme'] != $registration['theme']) {
+                    UserUtil::setVar('theme', $registration['theme'], $originalRegistration['uid']);
+                }
+                if ($originalRegistration['email'] != $registration['email']) {
+                    UserUtil::setVar('email', $registration['email'], $originalRegistration['uid']);
+                    $emailUpdated = true;
+                }
+                
+                $registration = UserUtil::getVars($registration['uid'], true, 'uid', true);
 
-                if ($return) {
-                    $registration = UserUtil::getVars($registration['uid'], true, 'uid', true);
-                    
-                    if ($registration['email'] != $originalRegistration['email']) {
-                        $approvalOrder = $this->getVar('moderation_order', Users_Constant::APPROVAL_BEFORE);
-                        if (!$originalRegistration['isverified'] && (($approvalOrder != Users_Constant::APPROVAL_BEFORE) || $originalRegistration['isapproved'])) {
-                            $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
-                                'reginfo'   => $registration,
-                                'force'     => true,
-                            ));
-                        }
-                    }
-                    
-                    $this->notifyHooks('users.hook.user.process.edit', $registration, $registration['uid']);
-                    $this->registerStatus($this->__("Done! Saved user's account information."));
-                    
-                    $proceedToForm = false;
-                } else {
-                    if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
-                        $this->registerError($this->__f('An unspecified error occurred while trying to save user %1$d.', array($originalRegistration['uid'])));
+                if ($emailUpdated) {
+                    $approvalOrder = $this->getVar('moderation_order', Users_Constant::APPROVAL_BEFORE);
+                    if (!$originalRegistration['isverified'] && (($approvalOrder != Users_Constant::APPROVAL_BEFORE) || $originalRegistration['isapproved'])) {
+                        $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
+                            'reginfo'   => $registration,
+                            'force'     => true,
+                        ));
                     }
                 }
+
+                $this->notifyHooks('users.hook.user.process.edit', $registration, $registration['uid']);
+                $this->registerStatus($this->__("Done! Saved user's account information."));
+
+                $proceedToForm = false;
             }
 
         } elseif ($this->request->isGet()) {
@@ -1776,7 +1848,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $modVars = $configData->toArray();
                 $this->setVars($modVars);
                 $this->registerStatus($this->__('Done! Users module settings have been saved.'));
-                $event = new Zikula_Event('users.config.updated', null, array(), $modVars);
+                $event = new Zikula_Event('module.users.config.updated', null, array(), $modVars);
                 $this->eventManager->notify($event);
             } else {
                 $errorFields = $configData->getErrorMessages();
@@ -2233,7 +2305,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 return $this->__f('Sorry! You did not provide a password in line %s. Please check your import file.', $counter);
             }
 
-            // check password lenght
+            // check password length
             if (strlen($pass) <  $minpass) {
                 return $this->__f('Sorry! The password must be at least %1$s characters long in line %2$s. Please check your import file.', array($minpass, $counter));
             }
