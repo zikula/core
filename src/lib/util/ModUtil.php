@@ -98,7 +98,13 @@ class ModUtil
             return;
         }
 
-        self::$modvars = new ArrayObject(array(EventUtil::HANDLERS => array(), 'Settings' => array())); // These empty arrays are required for E_ALL - drak
+        // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
+        self::$modvars = new ArrayObject(array(
+            EventUtil::HANDLERS => array(),
+            'Settings'          => array(),
+        ));
+        
+        // This loads all module variables into the modvars static class variable.
         $modvars = DBUtil::selectObjectArray('module_vars');
         foreach ($modvars as $var) {
             if (!array_key_exists($var['modname'], self::$modvars)) {
@@ -111,6 +117,16 @@ class ModUtil
             } else {
                 self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
             }
+         }
+         
+         // Pre-load the module variables array with empty arrays for known modules that
+         // do not define any module variables to prevent unnecessary SQL queries to
+         // the module_vars table.
+         $knownModules = self::getAllMods();
+         foreach ($knownModules as $key => $mod) {
+             if (!array_key_exists($mod['name'], self::$modvars)) {
+                 self::$modvars[$mod['name']] = array();
+             }
          }
     }
 
@@ -133,10 +149,16 @@ class ModUtil
             return false;
         }
 
-        // get all module vars for this module
-        $modvars = self::getVar($modname);
-
-        return array_key_exists($name, (array)$modvars);
+        // The cast to (array) is for the odd instance where self::$modvars[$modname] is set to null--not sure if this is really needed.
+        $varExists = isset(self::$modvars[$modname]) && array_key_exists($name, (array)self::$modvars[$modname]);
+        
+        if (!$varExists && System::isInstalling()) {
+            // Handle the upgrade edge case--the call to getVar() ensures vars for the module are loaded if newly available.
+            $modvars = self::getVar($modname);
+            $varExists = array_key_exists($name, (array)$modvars);
+        }
+        
+        return $varExists;
     }
 
     /**
@@ -147,7 +169,7 @@ class ModUtil
      * if the name parameter is ommitted then method returns a multi
      * dimentional array of the keys and values for the module vars.
      *
-     * @param string  $modname The name of the module.
+     * @param string  $modname The name of the module or pseudo-module (e.g., 'Users', 'ZConfig', '/EventHandlers').
      * @param string  $name    The name of the variable.
      * @param boolean $default The value to return if the requested modvar is not set.
      *
@@ -165,35 +187,38 @@ class ModUtil
             $modname = self::getName();
         }
 
-        // start
-
-        // This entire code block is unnecessary except for an edge case in the upgrade
-        // the condition if (!self::$modvars) is for that edge case - drak
-        // Unfortunately, that breaks the upgrade for other modules - rb
-
-        // if we haven't got vars for this module yet then lets get them
+        // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
-        //if (!self::$modvars) {
-            $tables = DBUtil::getTables();
-            $col = $tables['module_vars_column'];
-            $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
-            $sort = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
+            // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
+            if (System::isInstalling()) {
+                $tables = DBUtil::getTables();
+                $col = $tables['module_vars_column'];
+                $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
+                // The following line is not a mistake. A sort string containing one space is used to disable the default sort for DBUtil::selectFieldArray().
+                $sort = ' ';
 
-            $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
+                $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
 
-            foreach ($results as $k => $v) {
-                // ref #2045 vars are being stored with 0/1 unserialised.
-                if (array_key_exists($k, $GLOBALS['ZConfig']['System'])) {
-                    self::$modvars[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
-                } else if ($v == '0' || $v == '1') {
-                    self::$modvars[$modname][$k] = $v;
-                } else {
-                    self::$modvars[$modname][$k] = unserialize($v);
+                if (is_array($results)) {
+                    if (!empty($results)) {
+                        foreach ($results as $k => $v) {
+                            // ref #2045 vars are being stored with 0/1 unserialised.
+                            if (array_key_exists($k, $GLOBALS['ZConfig']['System'])) {
+                                self::$modvars[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
+                            } else if ($v == '0' || $v == '1') {
+                                self::$modvars[$modname][$k] = $v;
+                            } else {
+                                self::$modvars[$modname][$k] = unserialize($v);
+                            }
+                        }
+                    }
                 }
+                // TODO - There should probably be an exception thrown here if $results === false
+            } else {
+                // Prevent a re-query for the same module in the future, where the module does not define any module variables.
+                self::$modvars[$modname] = array();
             }
         }
-
-        // end
 
         // if they didn't pass a variable name then return every variable
         // for the specified module as an associative array.
