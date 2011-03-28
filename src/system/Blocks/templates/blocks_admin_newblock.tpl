@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </fieldset>
-            {if $coredata.Blocks.collapseable eq 1}
+            {if $modvars.Blocks.collapseable eq 1}
             <fieldset>
                 <legend>{gt text="Collapsibility"}</legend>
                 <div class="z-formrow">
@@ -59,7 +59,7 @@
 
             <div class="z-buttons z-formbuttons">
                 {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a href="{modurl modname='Blocks' type='admin' func='view'}" title="{gt text="Cancel"}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text="Cancel"}</a>
             </div>
         </div>
     </form>
