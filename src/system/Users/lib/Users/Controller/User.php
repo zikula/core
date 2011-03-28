@@ -82,17 +82,6 @@ class Users_Controller_User extends Zikula_AbstractController
     }
 
     /**
-     * Set an underage error message and route the user back to the first user page.
-     *
-     * @return bool True, and the user is redirected to the view function.
-     */
-    public function underAge()
-    {
-        $this->registerError($this->__f('Sorry! You must be %s or over to register for a user account here.', $this->getVar('minage')))
-            ->redirect(ModUtil::url($this->name, 'user', 'view'));
-    }
-
-    /**
      * Display the registration form.
      *
      * Parameters passed via GET:
