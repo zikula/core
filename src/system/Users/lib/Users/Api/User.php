@@ -223,64 +223,6 @@ class Users_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * Get user properties.
-     *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string $args['proplabel'] If specified only the value of the specified property (label) is returned.
-     * 
-     * @param array $args All parameters passed to this function.
-     *
-     * @return array An array of user properties, or false on failure.
-     */
-    public function optionalItems($args)
-    {
-        $items = array();
-
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-            return $items;
-        }
-
-        if (!ModUtil::available('Profile') || !ModUtil::dbInfoLoad('Profile')) {
-            return false;
-        }
-
-        $dbtable = DBUtil::getTables();
-        $propertycolumn = $dbtable['user_property_column'];
-
-        $extrawhere = '';
-        if (isset($args['proplabel']) && !empty($args['proplabel'])) {
-            $extrawhere = "AND $propertycolumn[prop_label] = '".DataUtil::formatForStore($args['proplabel'])."'";
-        }
-
-        $where = "WHERE  $propertycolumn[prop_weight] != 0
-                  AND    $propertycolumn[prop_dtype] != '-1' $extrawhere";
-
-        $orderby = "ORDER BY $propertycolumn[prop_weight]";
-
-        $objArray = DBUtil::selectObjectArray('user_property', $where, $orderby);
-
-        if ($objArray === false) {
-            $this->registerError($this->__('Error! Could not load data.'));
-            return $objArray;
-        }
-
-        $ak = array_keys($objArray);
-        foreach ($ak as $v) {
-            $prop_validation = @unserialize($objArray[$v]['prop_validation']);
-            $prop_array = array('prop_viewby'      => $prop_validation['viewby'],
-                    'prop_displaytype' => $prop_validation['displaytype'],
-                    'prop_listoptions' => $prop_validation['listoptions'],
-                    'prop_note'        => $prop_validation['note'],
-                    'prop_validation'  => $prop_validation['validation']);
-
-            array_push($objArray[$v], $prop_array);
-        }
-
-        return $objArray;
-    }
-
-    /**
      * Sends a notification e-mail of a specified type to a user or registrant.
      *
      * Parameters passed in the $args array:
