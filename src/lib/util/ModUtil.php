@@ -133,7 +133,10 @@ class ModUtil
             return false;
         }
 
-        return array_key_exists($name, (array)self::$modvars);
+        // get all module vars for this module
+        $modvars = self::getVar($modname);
+
+        return array_key_exists($name, (array)$modvars);
     }
 
     /**
@@ -162,14 +165,15 @@ class ModUtil
             $modname = self::getName();
         }
 
-        // start block
+        // start
 
         // This entire code block is unnecessary except for an edge case in the upgrade
-        // the condition is for that edge case - drak
-        //if (!array_key_exists($modname, self::$modvars)) { // this creates unnecssary SQL for requests that don't exist - drak
-        //if (!self::$modvars) { // this breaks the upgrader - drak
-        //if (System::isInstalling() || (!System::isInstalling() && !self::$modvars)) {
-        if (System::isInstalling()) {
+        // the condition if (!self::$modvars) is for that edge case - drak
+        // Unfortunately, that breaks the upgrade for other modules - rb
+
+        // if we haven't got vars for this module yet then lets get them
+        if (!array_key_exists($modname, self::$modvars)) {
+        //if (!self::$modvars) {
             $tables = DBUtil::getTables();
             $col = $tables['module_vars_column'];
             $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
@@ -189,7 +193,7 @@ class ModUtil
             }
         }
 
-        // end block
+        // end
 
         // if they didn't pass a variable name then return every variable
         // for the specified module as an associative array.
