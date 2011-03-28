@@ -216,7 +216,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             $html .= '</ul></li>';
             return $html;
         } else if (is_array($var)) {
-            if (!$level) {
+            if (!$level==1) {
                 $html =  '<li><code>' . $key . '</code> <span style="color:#666666;font-style:italic;">(array)</span>: <ul>';
             } else {
                 $html =  '<ul>';
@@ -230,7 +230,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
                 $html .= '<li><em>'.__('(empty)').'</em></li>';
             }
 
-            if (!$level) {
+            if (!$level==1) {
                 $html .= '</ul></li>';
             } else {
                 $html .= '</ul>';
