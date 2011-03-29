@@ -50,8 +50,8 @@
  * at the menu reference. The use of commandArgument makes it easy to identify which $item the menu was
  * activated for.
  *
- * @param array     $params  Parameters passed in the block tag.
- * @param string    $content Content of the block.
+ * @param array            $params  Parameters passed in the block tag.
+ * @param string           $content Content of the block.
  * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
  *
  * @return string The rendered output.

@@ -20,7 +20,7 @@
  * The selected value of the base dropdown list will be set to the 3-letter language code of
  * the selected language.
  *
- * @param array     $params Parameters passed in the block tag.
+ * @param array            $params Parameters passed in the block tag.
  * @param Zikula_Form_View $view   Reference to Form render object.
  *
  * @return string The rendered output.

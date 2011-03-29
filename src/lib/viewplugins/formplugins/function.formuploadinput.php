@@ -18,7 +18,7 @@
  *
  * This plugin creates a field for file uploads.
  *
- * @param array     $params Parameters passed in the block tag.
+ * @param array            $params Parameters passed in the block tag.
  * @param Zikula_Form_View $view   Reference to Form render object.
  *
  * @return string The rendered output.

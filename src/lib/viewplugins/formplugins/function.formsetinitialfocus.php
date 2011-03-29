@@ -22,7 +22,7 @@
  * </code>
  * The "PluginId" refers to the plugin that should have focus initially.
  *
- * @param array     $params All attributes passed to this function from the template.
+ * @param array            $params All attributes passed to this function from the template.
  * @param Zikula_Form_View $view   Reference to Form render object.
  *
  * @return string HTML to set the initial focus for a form.

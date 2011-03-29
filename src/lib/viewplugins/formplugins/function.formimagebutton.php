@@ -27,7 +27,7 @@
  * - posX: X position of click
  * - posY: Y position of click.
  *
- * @param array     $params Parameters passed in the block tag.
+ * @param array            $params Parameters passed in the block tag.
  * @param Zikula_Form_View $view   Reference to Zikula_Form_View object.
  *
  * @return string The rendered output.

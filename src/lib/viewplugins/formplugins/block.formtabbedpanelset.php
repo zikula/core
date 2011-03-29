@@ -37,8 +37,8 @@
  * templates directory or change the cssClass attribute to something different than the default
  * class name.
  *
- * @param array     $params  Parameters passed in the block tag.
- * @param string    $content Content of the block.
+ * @param array            $params  Parameters passed in the block tag.
+ * @param string           $content Content of the block.
  * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
  *
  * @return string The rendered output.

@@ -56,13 +56,13 @@ function smarty_function_selectmodobjectarray($params, Zikula_View $view)
 
         $doctrineMode = false;
     }
-    
+
     if (!isset($params['assign'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'assign')));
     }
 
      // load object depending on mode: doctrine or dbobject
-    if(!$doctrineMode) {
+    if (!$doctrineMode) {
         if (!ModUtil::available($params['module'])) {
             $view->trigger_error(__f('Invalid %1$s passed to %2$s.', array('module', 'selectmodobjectarray')));
         }
@@ -105,6 +105,7 @@ function smarty_function_selectmodobjectarray($params, Zikula_View $view)
         // get() with parameters always performs a new select
         // while the result will be saved in the object, we assign in to a local variable for convenience.
         $objectData = $objectArray->get($where, $sort, $pos-1, $num);
+
     } else {
         $query = Doctrine_Core::getTable($params['recordClass'])->createQuery();
 

@@ -84,7 +84,7 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
      *
      * @return Zikula_Controller_Plugin
      */
-    protected function setView(Zikula_View_Plugin $view = null)
+    protected function setView(Zikula_View $view = null)
     {
         // please note the docblock param signature is deliberately different to the method signature - drak
         if (is_null($view)) {
