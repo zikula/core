@@ -35,6 +35,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.init', 'sessionLogging');
         $this->addHandlerDefinition('session.require', 'requireSession');
         $this->addHandlerDefinition('core.init', 'systemPlugins');
+        $this->addHandlerDefinition('core.init', 'setupRequest');
         $this->addHandlerDefinition('core.preinit', 'request');
         $this->addHandlerDefinition('core.postinit', 'systemHooks');
         $this->addHandlerDefinition('core.init', 'setupDebugToolbar');
