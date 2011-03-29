@@ -36,7 +36,6 @@
  *
  * @return string A formatted string containing navigation for the module admin panel.
  */
-
 function smarty_function_modulelinks($params, Zikula_View $view)
 {
     $menuLinks          = isset($params['links'])       ? $params['links'] : '';
@@ -114,8 +113,16 @@ function smarty_function_modulelinks($params, Zikula_View $view)
 
 }
 
-function _smarty_function_modulelinks($id, $links) {
-
+/**
+ * Internal function to render a set of links.
+ *
+ * @param string $id    ID of the context.
+ * @param array  $links Array of links to be rendered.
+ *
+ * @return string HTML output.
+ */
+function _smarty_function_modulelinks($id, $links)
+{
     PageUtil::addVar('javascript', 'zikula.ui');
 
     $html = '';
@@ -135,5 +142,6 @@ function _smarty_function_modulelinks($id, $links) {
     }
     $html .= "/* ]]> */
             </script>";
+
     return $html;
 }

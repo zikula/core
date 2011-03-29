@@ -18,7 +18,7 @@
  *
  * This plugin creates a seperator in a context menu.
  *
- * @param array     $params Parameters passed in the block tag.
+ * @param array            $params Parameters passed in the block tag.
  * @param Zikula_Form_View $view   Reference to Form render object.
  *
  * @return string The rendered output.

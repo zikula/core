@@ -34,7 +34,7 @@
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
  *
- * @see smarty_function_notifydisplayhooks()
+ * @see    smarty_function_notifydisplayhooks()
  * 
  * @return void The results must be assigned to variable in assigned.
  */

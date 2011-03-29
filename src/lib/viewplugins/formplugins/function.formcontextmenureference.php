@@ -18,7 +18,7 @@
  *
  * This plugin creates a context menu reference.
  *
- * @param array     $params Parameters passed in the block tag.
+ * @param array            $params Parameters passed in the block tag.
  * @param Zikula_Form_View $view   Reference to Form render object.
  *
  * @return string The rendered output.

@@ -16,7 +16,7 @@
 /**
  * Wrapper for ModUtil::isCapable().
  *
- * param takes 'modules' and 'capability' keys.
+ * Param takes 'modules' and 'capability' keys.
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.

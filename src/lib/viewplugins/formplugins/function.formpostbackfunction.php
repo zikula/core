@@ -27,7 +27,7 @@
  * When called it will generate a postback and fire an event to be handled by the $onCommand
  * method in the form event handler.
  *
- * @param array     $params Parameters passed in the block tag.
+ * @param array            $params Parameters passed in the block tag.
  * @param Zikula_Form_View $view   Reference to Zikula_Form_View object.
  *
  * @return string The rendered output.
