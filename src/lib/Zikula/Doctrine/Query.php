@@ -104,5 +104,4 @@ class Zikula_Doctrine_Query extends Doctrine_Query
 
         return $this;
     }
-
 }

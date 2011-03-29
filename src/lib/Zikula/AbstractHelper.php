@@ -56,8 +56,8 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
     /**
      * Constructor.
      *
-     * @param Zikula_Base $base    Zikula base object.
-     * @param array       $options Options (universal constructor).
+     * @param Zikula_AbstractBase $base    Zikula base object.
+     * @param array               $options Options (universal constructor).
      */
     public function __construct(Zikula_AbstractBase $base, array $options = array())
     {

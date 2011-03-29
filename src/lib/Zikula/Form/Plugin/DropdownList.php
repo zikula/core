@@ -196,7 +196,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      * Create event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -212,7 +212,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      * Load event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -322,7 +322,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      * Called by Zikula_Form_View framework due to the use of getPostBackEventReference() above.
      *
      * @param Zikula_Form_View $view          Reference to Zikula_Form_View object.
-     * @param string    $eventArgument The event argument.
+     * @param string           $eventArgument The event argument.
      *
      * @return void
      */

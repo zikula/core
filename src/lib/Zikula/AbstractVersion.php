@@ -657,7 +657,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param Zikula_Version_HookBundle $bundle HookBundle.
+     * @param Zikula_Version_HookSubscriberBundle $bundle HookBundle.
      *
      * @return Zikula_AbstractVersion
      */

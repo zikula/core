@@ -98,7 +98,8 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
      * plugins to do validation on (to be implemented).
      *
      * @var string
-     * @see Zikula_Form_View::getValues(), Zikula_Form_View::isValid()
+     *
+     * @see    Zikula_Form_View::getValues(), Zikula_Form_View::isValid()
      */
     public $group;
 
@@ -199,7 +200,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
      * @param Zikula_Form_View $view    Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
-     * @see Zikula_Form_AbstractPlugin
+     * @see    Zikula_Form_AbstractPlugin
      *
      * @return void
      */
@@ -263,7 +264,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
     /**
      * Initialize event handler.
      *
-     * @param FormRender $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      *
      * @return void
      */
@@ -370,7 +371,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
     /**
      * Find the checked radio button in group.
      *
-     * @param Zikula_Form_View               $view              Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View               $view             Reference to Zikula_Form_View object.
      * @param Zikula_Form_Plugin_RadioButton $firstRadioButton The first found radio button.
      *
      * @return boolean
@@ -392,7 +393,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
      * Recursive helper method for self::findCheckedRadioButton().
      *
      * @param Zikula_Form_Plugin_RadioButton $firstRadioButton The first found radio button.
-     * @param Zikula_Form_Plugin             $plugin            A Form plugin.
+     * @param Zikula_Form_Plugin             $plugin           A Form plugin.
      *
      * @return boolean
      */

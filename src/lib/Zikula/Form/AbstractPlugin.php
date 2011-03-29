@@ -410,10 +410,10 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * This fires once, immediately <i>after</i> member variables have been populated from Smarty parameters
      * (in {@link readParameters()}). Default action is to do nothing.
      *
-     * @see Zikula_Form_View::registerPlugin()
-     *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
+     *
+     * @see    Zikula_Form_View::registerPlugin()
      *
      * @return void
      */
@@ -426,10 +426,10 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * This fires once, immediately <i>after</i> the create event. Default action is to do nothing.
      *
-     * @see Zikula_Form_View::registerPlugin()
-     *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array           &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
+     *
+     * @see    Zikula_Form_View::registerPlugin()
      *
      * @return void
      */
@@ -570,7 +570,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * Default action is to return the content unmodified.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param string    $content The content to handle.
+     * @param string           $content The content to handle.
      *
      * @return string The (optionally) modified content.
      */

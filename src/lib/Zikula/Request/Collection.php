@@ -51,7 +51,7 @@ class Zikula_Request_Collection implements ArrayAccess
     /**
      * Set collection.
      *
-     * @param array $collection
+     * @param array $collection Collection to set.
      *
      * @return void
      */
@@ -77,8 +77,8 @@ class Zikula_Request_Collection implements ArrayAccess
     /**
      * Set.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param string $key   Key.
+     * @param mixed  $value Value to set.
      *
      * @return void
      */
@@ -90,7 +90,7 @@ class Zikula_Request_Collection implements ArrayAccess
     /**
      * Has.
      *
-     * @param string $key
+     * @param string $key Key.
      *
      * @return boolean
      */
@@ -106,6 +106,8 @@ class Zikula_Request_Collection implements ArrayAccess
      * @param mixed   $default Default = null.
      * @param integer $filter  FILTER_* constant.
      * @param array   $options Fitler options.
+     *
+     * @return mixed
      */
     public function filter($key, $default=null, $filter=FILTER_DEFAULT, array $options=array())
     {
@@ -120,7 +122,7 @@ class Zikula_Request_Collection implements ArrayAccess
     /**
      * ArrayAccess implementation for get().
      *
-     * @param string $key
+     * @param string $key Key.
      *
      * @return mixed
      */
@@ -132,8 +134,8 @@ class Zikula_Request_Collection implements ArrayAccess
     /**
      * ArrayAccess implementation for set().
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param string $key   Key.
+     * @param mixed  $value Value to set.
      *
      * @return void
      */
@@ -145,7 +147,7 @@ class Zikula_Request_Collection implements ArrayAccess
     /**
      * ArrayAccess implementation for has().
      *
-     * @param string $key
+     * @param string $key Key.
      *
      * @return mixed
      */
@@ -157,7 +159,7 @@ class Zikula_Request_Collection implements ArrayAccess
     /**
      * ArrayAccess implementation for unset($collection).
      *
-     * @param string $key
+     * @param string $key Key.
      *
      * @return void
      */

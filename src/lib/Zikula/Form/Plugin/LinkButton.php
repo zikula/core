@@ -168,7 +168,7 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
      * Called by Zikula_Form_View framework due to the use of getPostBackEventReference() above.
      *
      * @param Zikula_Form_View $view          Reference to Zikula_Form_View object.
-     * @param string    $eventArgument The event argument.
+     * @param string           $eventArgument The event argument.
      *
      * @return void
      */

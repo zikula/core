@@ -134,7 +134,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
      *
      * @param Zikula_Form_View               $view   Reference to Zikula_Form_View object.
      * @param Zikula_Form_Plugin_TabbedPanel &$panel Panel object.
-     * @param string                  $title  Panel title.
+     * @param string                         $title  Panel title.
      *
      * @return void
      */

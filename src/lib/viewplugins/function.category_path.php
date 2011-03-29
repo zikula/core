@@ -55,7 +55,7 @@
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
- * @return string|void The value of the specified category field.
+ * @return void|string The value of the specified category field.
  */
 function smarty_function_category_path($params, Zikula_View $view)
 {

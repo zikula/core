@@ -102,7 +102,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      * Create event handler.
      *
      * @param Zikula_Form_View $view    Reference to Form render object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -164,7 +164,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      * Renders the confirmation action.
      *
      * @param Zikula_Form_View $view   Reference to Form render object.
-     * @param string    $script JavaScript code to run.
+     * @param string           $script JavaScript code to run.
      *
      * @return string The rendered output.
      */
@@ -182,7 +182,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      * Called by Forms framework due to the use of getPostBackEventReference() above.
      *
      * @param Zikula_Form_View $view          Reference to Form render object.
-     * @param string    $eventArgument The event argument.
+     * @param string           $eventArgument The event argument.
      *
      * @return void
      */

@@ -95,7 +95,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
      * Create event handler.
      *
      * @param Zikula_Form_View $view    Reference to Form render object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -116,8 +116,8 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view  Reference to Zikula_Form_View render object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View render object.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -133,7 +133,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
      * Can also by called when some one is calling the render object's Zikula_Form_View::setValues.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_Viewr object.
-     * @param array     &$values Values to load.
+     * @param array            &$values Values to load.
      *
      * @return void
      */
@@ -215,7 +215,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
      * Uses the group parameter to decide where to store data.
      *
      * @param Zikula_Form_View $view  Reference to Form render object.
-     * @param array     &$data Data object.
+     * @param array            &$data Data object.
      *
      * @return void
      */

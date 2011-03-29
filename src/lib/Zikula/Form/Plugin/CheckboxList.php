@@ -131,7 +131,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      * Create event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -145,7 +145,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      * Load event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -323,7 +323,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      * Uses the group parameter to decide where to store data.
      *
      * @param Zikula_Form_View $view  Reference to Zikula_Form_View object.
-     * @param array     &$data Data object.
+     * @param array            &$data Data object.
      *
      * @return void
      */
@@ -348,7 +348,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      * Can also by called when some one is calling the render object's Zikula_Form_ViewetValues.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$values Values to load.
+     * @param array            &$values Values to load.
      *
      * @return void
      */

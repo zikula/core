@@ -28,7 +28,6 @@ abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
     
     /**
      * Check the CSFR token.
-     *
      * Checks will fall back to $token check if automatic checking fails.
      *
      * @params string $token Token, default null.
