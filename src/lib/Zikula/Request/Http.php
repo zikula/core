@@ -81,7 +81,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      *
      * @return void
      */
-    protected function initialize(array $options = array())
+    // needs to be public for temporary workaround for short urls in SystemListeners::setupRequest
+    public /*protected */function initialize(array $options = array())
     {
         $this->get = new Zikula_Request_Collection(isset($options['get']) ? $options['get'] : $_GET);
         $this->post = new Zikula_Request_Collection(isset($options['post']) ? $options['post'] : $_POST);
