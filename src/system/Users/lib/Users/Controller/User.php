@@ -240,7 +240,7 @@ class Users_Controller_User extends Zikula_AbstractController
             }
         } elseif ($this->request->isGet()) {
             // Notify that we are beginning a registration session.
-            $event = new Zikula_Event('modules.users.ui.registration.started');
+            $event = new Zikula_Event('module.users.ui.registration.started');
             $this->eventManager->notify($event);
             $registeredObj = array();
         } else {
@@ -470,8 +470,10 @@ class Users_Controller_User extends Zikula_AbstractController
 
         if (empty($uname) && empty($email)) {
             $this->registerError($this->__('Error! User name and e-mail address fields are empty.'));
+            return false;
         } elseif (!empty($email) && !empty($uname)) {
             $this->registerError($this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
+            return false;
         } else {
             SessionUtil::requireSession();
             $this->request->getSession()->del('Users_Conroller_User_mailConfirmationCode', 'Zikula_Users');
@@ -850,7 +852,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 
                 $event = new Zikula_Event('module.users.ui.login.started');
                 $this->eventManager->notify($event);
-                $registeredObj = array();
+                $user = array();
             }
         } else {
             throw new Zikula_Exception_Forbidden();
@@ -1024,10 +1026,10 @@ class Users_Controller_User extends Zikula_AbstractController
                     ->fetch('users_user_login.tpl');
         } else {
             $eventArgs = array(
-                'authentication_method' => $authenticationMethod,
+                'authentication_method' => $selectedAuthenticationMethod,
                 'redirecturl'           => $returnUrl,
             );
-            $event = new Zikula_Event('module.users.ui.login.succeeded', $userObj, $eventArgs);
+            $event = new Zikula_Event('module.users.ui.login.succeeded', $user, $eventArgs);
             $event = $this->eventManager->notify($event);
             
             $returnUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $returnUrl;
