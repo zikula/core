@@ -57,6 +57,18 @@ class ServiceUtil
     }
 
     /**
+     * Convenience shortcut to get a service.
+     *
+     * @param string $id Service name.
+     *
+     * @return object
+     */
+    public static function getService($id)
+    {
+        return self::getManager()->getService($id);
+    }
+
+    /**
      * Register a persistent service handler.
      *
      * This will be loaded into ServiceManager at runtime.
