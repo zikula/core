@@ -73,11 +73,13 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupRequest(Zikula_Event $event)
     {
-        $request = $this->serviceManager->getService('request');
-        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $controller = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $action = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $request->addRequest($module, $controller, $action);
+        if ($event['stage'] & Zikula_Core::STAGE_DECODEURLS) {
+            $request = $this->serviceManager->getService('request');
+            $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+            $controller = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
+            $action = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
+            $request->addRequest($module, $controller, $action);
+        }
     }
 
     /**
