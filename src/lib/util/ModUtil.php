@@ -93,11 +93,6 @@ class ModUtil
      */
     public static function initCoreVars()
     {
-        // don't init vars during the installer
-        if (System::isInstalling()) {
-            return;
-        }
-
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
         self::$modvars = new ArrayObject(array(
                 EventUtil::HANDLERS => array(),
@@ -106,6 +101,11 @@ class ModUtil
                 'Settings'          => array(),
         ));
         
+        // don't init vars during the installer or upgrader
+        if (System::isInstalling()) {
+            return;
+        }
+
         // This loads all module variables into the modvars static class variable.
         $modvars = DBUtil::selectObjectArray('module_vars');
         foreach ($modvars as $var) {
@@ -154,7 +154,7 @@ class ModUtil
         // The cast to (array) is for the odd instance where self::$modvars[$modname] is set to null--not sure if this is really needed.
         $varExists = isset(self::$modvars[$modname]) && array_key_exists($name, (array)self::$modvars[$modname]);
         
-        if (!$varExists && System::isInstalling()) {
+        if (!$varExists && System::isUpgrading()) {
             // Handle the upgrade edge case--the call to getVar() ensures vars for the module are loaded if newly available.
             $modvars = self::getVar($modname);
             $varExists = array_key_exists($name, (array)$modvars);
@@ -192,7 +192,7 @@ class ModUtil
         // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
             // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
-            if (System::isInstalling()) {
+            if (System::isUpgrading()) {
                 $tables = DBUtil::getTables();
                 $col = $tables['module_vars_column'];
                 $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
