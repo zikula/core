@@ -11,11 +11,11 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 /**
  * Common helper functions and constants.
  */
-class Groups_Helper_Common extends Zikula_Base {
+class Groups_Helper_Common extends Zikula_AbstractHelper
+{
     /**
      * Constant value for core type groups.
      */
@@ -40,11 +40,11 @@ class Groups_Helper_Common extends Zikula_Base {
      * Constant value for groups in the Open state (accepting members).
      */
     const STATE_OPEN = 1;
-
     /**
      * Constructs an instance of this helper class.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(ServiceUtil::getManager());
     }
 
@@ -55,14 +55,15 @@ class Groups_Helper_Common extends Zikula_Base {
      *
      * @return array An associative array of group type labels indexed by group type constants.
      */
-    public function gtypeLabels() {
+    public function gtypeLabels()
+    {
         static $gtypeLabels;
 
         if (!isset($gtypeLabels)) {
             $gtypeLabels = array(
-                self::GTYPE_CORE    => $this->__('Core'),
-                self::GTYPE_PUBLIC  => $this->__('Public'),
-                self::GTYPE_PRIVATE => $this->__('Private')
+                    self::GTYPE_CORE => $this->__('Core'),
+                    self::GTYPE_PUBLIC => $this->__('Public'),
+                    self::GTYPE_PRIVATE => $this->__('Private')
             );
         }
 
@@ -76,16 +77,18 @@ class Groups_Helper_Common extends Zikula_Base {
      *
      * @return array An associative array of state labels indexed by state constants.
      */
-    public function stateLabels() {
+    public function stateLabels()
+    {
         static $stateLabels;
 
         if (!isset($stateLabels)) {
             $stateLabels = array(
-                self::STATE_CLOSED  => $this->__('Closed'),
-                self::STATE_OPEN    => $this->__('Open')
+                    self::STATE_CLOSED => $this->__('Closed'),
+                    self::STATE_OPEN => $this->__('Open')
             );
         }
 
         return $stateLabels;
     }
+
 }
