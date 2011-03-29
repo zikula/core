@@ -8,12 +8,12 @@
 <language>{lang}</language>
 {* here you can add your image if you want to *}
 {* <image>
- <title>{configgetvar name="sitename"}</title>
+ <title>{$modvars.ZConfig.sitename}</title>
  <url>{getbaseurl}images/logo.gif</url>
  <link>{getbaseurl}</link>
 </image> *}
-<managingEditor>{gt text="Administrator"} {configgetvar name="adminmail"} ({configgetvar name="sitename"})</managingEditor>
-<webMaster>{gt text="Administrator"} {configgetvar name="adminmail"} ({configgetvar name="sitename"})</webMaster>
+<managingEditor>{gt text="Administrator"} {$modvars.ZConfig.adminmail} ({$modvars.ZConfig.sitename})</managingEditor>
+<webMaster>{gt text="Administrator"} {$modvars.ZConfig.adminmail} ({$modvars.ZConfig.sitename})</webMaster>
 {$maincontent}
 </channel>
 </rss>
