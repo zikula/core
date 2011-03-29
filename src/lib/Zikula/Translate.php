@@ -16,7 +16,7 @@
 /**
  * Zikula Translate helper.
  */
-class Zikula_Translate implements Zikula_Translatable
+class Zikula_Translate implements Zikula_TranslatableInterface
 {
     /**
      * Translation domain.
