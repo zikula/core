@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 class SecurityCenter_Installer extends Zikula_AbstractInstaller
 {
     /**
@@ -85,13 +84,13 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
         System::setVar('idsimpactmode', 1);               // per request per default
         System::setVar('idshtmlfields', array('POST.__wysiwyg'));
         System::setVar('idsjsonfields', array('POST.__jsondata'));
-        System::setVar('idsexceptions', array(  'GET.__utmz',
-                'GET.__utmc',
-                'REQUEST.linksorder', 'POST.linksorder',
-                'REQUEST.fullcontent', 'POST.fullcontent',
-                'REQUEST.summarycontent', 'POST.summarycontent',
-                'REQUEST.filter.page', 'POST.filter.page',
-                'REQUEST.filter.value', 'POST.filter.value'));
+        System::setVar('idsexceptions', array('GET.__utmz',
+                        'GET.__utmc',
+                        'REQUEST.linksorder', 'POST.linksorder',
+                        'REQUEST.fullcontent', 'POST.fullcontent',
+                        'REQUEST.summarycontent', 'POST.summarycontent',
+                        'REQUEST.filter.page', 'POST.filter.page',
+                        'REQUEST.filter.value', 'POST.filter.value'));
 
         // now lets set the default mail message contents
         // file is read from includes directory
@@ -245,8 +244,7 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
      */
     public function upgrade($oldversion)
     {
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '1.3':
                 // create cache directory for HTML Purifier
                 $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
@@ -261,47 +259,36 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
 
                 // create vars for phpids usage
                 System::setVar('useids', 0);
+                System::setVar('idsmail', 0);
+                System::setVar('idsrulepath', 'config/phpids_zikula_default.xml');
+                System::setVar('idssoftblock', 1);                // do not block requests, but warn for debugging
                 System::setVar('idsfilter', 'xml');               // filter type
                 System::setVar('idsimpactthresholdone', 1);       // db logging
                 System::setVar('idsimpactthresholdtwo', 10);      // mail admin
                 System::setVar('idsimpactthresholdthree', 25);    // block request
                 System::setVar('idsimpactthresholdfour', 75);     // kick user, destroy session
                 System::setVar('idsimpactmode', 1);               // per request per default
-            // fall through
-
-            case '1.4':
-                // Location of HTML Purifier
-                System::setVar('htmlpurifierlocation', 'system/SecurityCenter/lib/vendor/htmlpurifier/');
-
-                System::setVar('idssoftblock', 0);
                 System::setVar('idshtmlfields', array('POST.__wysiwyg'));
                 System::setVar('idsjsonfields', array('POST.__jsondata'));
-                System::setVar('idsrulepath', 'config/phpids_zikula_default.xml');
-                System::setVar('idsexceptions', array(  'GET.__utmz',
-                        'GET.__utmc',
-                        'REQUEST.linksorder', 'POST.linksorder',
-                        'REQUEST.fullcontent', 'POST.fullcontent',
-                        'REQUEST.summarycontent', 'POST.summarycontent',
-                        'REQUEST.filter.page', 'POST.filter.page',
-                        'REQUEST.filter.value', 'POST.filter.value'));
-            // fall through
 
-            case '1.4.1':
+                // Location of HTML Purifier
+                System::setVar('idsrulepath', 'config/phpids_zikula_default.xml');
+                System::setVar('idsexceptions', array('GET.__utmz',
+                                'GET.__utmc',
+                                'REQUEST.linksorder', 'POST.linksorder',
+                                'REQUEST.fullcontent', 'POST.fullcontent',
+                                'REQUEST.summarycontent', 'POST.summarycontent',
+                                'REQUEST.filter.page', 'POST.filter.page',
+                                'REQUEST.filter.value', 'POST.filter.value'));
                 System::delVar('htmlpurifierConfig');
                 // HTML Purifier default settings
                 $purifierDefaultConfig = SecurityCenter_Util::getpurifierconfig(array('forcedefault' => true));
                 $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
-            // fall through
-
-            case '1.4.2':
                 if (!DBUtil::changeTable('sc_intrusion')) {
                     return false;
                 }
-            // fall through
-
-            case '1.4.3':
                 System::setVar('sessioncsrftokenonetime', 0);
-                
+
             case '1.4.4':
             // future upgrade routines
         }
@@ -321,4 +308,5 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
         // Deletion fail - we dont want users disabling this module!
         return false;
     }
+
 }
