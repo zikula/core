@@ -200,7 +200,7 @@ class Zikula_Form_View extends Zikula_View
         // Save handler for later use
         $this->eventHandler = $eventHandler;
         $this->eventHandler->setView($this);
-        $this->eventHandler->setRequest($this->getRequest());
+        $this->eventHandler->setRequest($this->request);
         $this->eventHandler->setDomain($this->domain);
         $this->eventHandler->setName($this->getModuleName());
         $this->eventHandler->setup();
