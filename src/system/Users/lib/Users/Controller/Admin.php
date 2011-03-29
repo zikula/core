@@ -542,7 +542,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * 
      * Parameters passed via POST:
      * ---------------------------
-     * array access_permissions An array used to modify a user's group memebership.
+     * array access_permissions An array used to modify a user's group membership.
      * 
      * See also the definition of {@link Users_Controller_FormData_ModifyUserForm}.
      * 

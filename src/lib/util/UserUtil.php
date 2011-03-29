@@ -832,7 +832,7 @@ class UserUtil
                     if (isset($eventData['retry']) && $eventData['retry']) {
                         $sessionVarName = 'Users_Controller_User_login';
                         $sessionNamespace = 'Zikula_Users';
-                        $redirectURL = ModUtil::url('Users', 'user', 'login', array('csrftoken' => SecurityUtil::generateCsfrToken()));
+                        $redirectURL = ModUtil::url('Users', 'user', 'login', array('csrftoken' => SecurityUtil::generateCsrfToken()));
                     } elseif (isset($eventData['redirectFunc'])) {
                         if (isset($eventData['redirectFunc']['session'])) {
                             $sessionVarName = $eventData['redirectFunc']['session']['var'];

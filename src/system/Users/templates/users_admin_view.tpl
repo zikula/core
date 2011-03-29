@@ -109,7 +109,8 @@
                         {/if}
                     <a href="{modurl modname='Users' type='admin' func='toggleForcedPasswordChange' userid=$usersitems[usersitems].uid}">{img modname='core' set='icons/extrasmall' src=$image title=$title alt=$title class='tooltips'}</a>
                     {else}
-                    {img modname='core' set='icons/extrasmall' src=$image class="z-invisible"}
+                        {assign var='image' value='password_expire.png'}
+                        {img modname='core' set='icons/extrasmall' src=$image class="z-invisible"}
                     {/if}
                 </td>
                 {/if}

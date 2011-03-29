@@ -1,7 +1,7 @@
 {strip}{gt text='New account registration' assign='templatetitle'}
 {ajaxheader modname='Users' filename='Zikula.Users.NewUser.js'}
 {if $modvars.Users.use_password_strength_meter}
-    {* TODO - Using ajaheader here causes an error when the PassMeter is initialized. *}
+    {* TODO - Using ajaxheader here causes an error when the PassMeter is initialized. *}
     {pageaddvar name='javascript' value='prototype'}
     {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
 {/if}
@@ -98,7 +98,7 @@
             <div class="z-formrow">
                 {assign var='fieldName' value='antispamanswer'}
                 <label for="{$formData->getFieldId($fieldName)}">{$modvars.Users.reg_question|safehtml}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="60" vvalue="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                 <em class="z-formnote z-sub">{gt text="Asking this question helps us prevent automated scripts from accessing private areas of the site."}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
