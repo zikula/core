@@ -51,7 +51,7 @@ class Categories_DBObject_Registry extends DBObject
         return true;
     }
 
-    public function validatePostProcess($data=null)
+    public function validatePostProcess($type='user', $data=null)
     {
         $data = $this->_objData;
         if ($data['modname'] && $data['table'] && $data['property'] && !$data['id']) {

@@ -179,7 +179,7 @@ class Categories_DBObject_Category extends DBObject
         return $data;
     }
 
-    public function validatePostProcess($data=null)
+    public function validatePostProcess($type='user', $data=null)
     {
         if (!$data) {
             $data = $this->_objData;
