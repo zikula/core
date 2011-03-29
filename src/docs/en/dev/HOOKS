@@ -250,7 +250,7 @@ hook types.  This can be done as follows:
     $event = new Zikula_Event('news.hook.articles.process.create', $subject, array('id' => $id, 'module' => $moduleName));
     $this->eventManager->notify($event);
 
-    // the short way, provided in instances of Zikula_AbstractBase (controllers, APIs etc).
+    // the short way, provided in instances of Zikula_AbstractController
     $this->notifyHooks('news.hook.articles.process.edit', $subject, $id);
 
 HOOK RESPONSES FROM PROVIDERS
@@ -259,7 +259,7 @@ A hook handler should respond to a hookable event with a `Zikula_Response_Displa
 instance in the following manner.
 
     // example of a static handler (static handlers are *not* the preferred handlers
-    // for edit/validate handlers which should be Zikula_HookHandlder instances instead)
+    // for edit/validate handlers which should be Zikula_Hook_AbstractHandler instances instead)
     public static function hookHandler(Zikula_Event $event)
     {
         $template = 'template_name.tpl'; // the name of the module's template
