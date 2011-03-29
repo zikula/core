@@ -106,24 +106,11 @@ class Zikula_Core
     protected $booted = false;
 
     /**
-     * Get base memory.
-     * 
-     * @return integer
-     */
-    public function getBaseMemory()
-    {
-        return $this->baseMemory;
-    }
-
-    /**
-     * Check booted status.
+     * Directory where handlers are located.
      *
-     * @return boolean
+     * @var string
      */
-    public function hasBooted()
-    {
-        return $this->booted;
-    }
+    protected $handlerDir;
 
     /**
      * Array of the attached handlers.
@@ -232,6 +219,26 @@ class Zikula_Core
         $this->stage = 0;
         $this->bootime = microtime(true);
         $this->attachHandlers($this->handlerDir);
+    }
+
+    /**
+     * Get base memory.
+     * 
+     * @return integer
+     */
+    public function getBaseMemory()
+    {
+        return $this->baseMemory;
+    }
+
+    /**
+     * Check booted status.
+     *
+     * @return boolean
+     */
+    public function hasBooted()
+    {
+        return $this->booted;
     }
 
     /**
