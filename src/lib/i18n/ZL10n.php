@@ -15,7 +15,7 @@
 /**
  * ZL10n class.
  */
-class ZL10n implements Zikula_Translatable
+class ZL10n implements Zikula_TranslatableInterface
 {
     /**
      * Singleton instance.

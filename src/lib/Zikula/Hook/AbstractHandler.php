@@ -16,7 +16,7 @@
 /**
  * Custom Hook Handler interface.
  */
-abstract class Zikula_Hook_AbstractHandler implements Zikula_Translatable
+abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterface
 {
     /**
      * EventManager instance.
