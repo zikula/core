@@ -250,7 +250,7 @@ hook types.  This can be done as follows:
     $event = new Zikula_Event('news.hook.articles.process.create', $subject, array('id' => $id, 'module' => $moduleName));
     $this->eventManager->notify($event);
 
-    // the short way, provided in instances of Zikula_Base (controllers, APIs etc).
+    // the short way, provided in instances of Zikula_AbstractBase (controllers, APIs etc).
     $this->notifyHooks('news.hook.articles.process.edit', $subject, $id);
 
 HOOK RESPONSES FROM PROVIDERS

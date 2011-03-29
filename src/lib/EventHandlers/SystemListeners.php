@@ -76,6 +76,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if ($event['stage'] & Zikula_Core::STAGE_DECODEURLS) {
             $request = $this->serviceManager->getService('request');
+            // temporary workaround: reinitialize request information after having decoded short urls
+            $request->initialize();
             $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
             $controller = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
             $action = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
