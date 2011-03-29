@@ -610,7 +610,7 @@ class UserUtil
      *
      * @return mixed Zikula uid if the authentication info authenticates with the authentication module; otherwise false.
      */
-    private static function internalAuthenticateUserUsing(array $authenticationMethod, array $authenticationInfo, $reentrantURL = null, $reportErrors = false)
+    private static function internalAuthenticateUserUsing(array $authenticationMethod, array $authenticationInfo, $reentrantURL = null)
     {
         $authenticatedUid = false;
 
@@ -673,7 +673,7 @@ class UserUtil
                                 && (($moderationOrder == Users_Constant::APPROVAL_AFTER) || ($moderationOrder == Users_Constant::APPROVAL_ANY))
                                 && $displayVerifyPending
                                 ) {
-                            $message = $this->__('Your request to register with this site is still waiting for verification of your e-mail address. Please check your inbox for a message from us.');
+                            $message = __('Your request to register with this site is still waiting for verification of your e-mail address. Please check your inbox for a message from us.');
                         } elseif (empty($userObj['approved_by'])
                                 && (($moderationOrder == Users_Constant::APPROVAL_BEFORE) || ($moderationOrder == Users_Constant::APPROVAL_ANY))
                                 && $displayApprovalPending
@@ -720,25 +720,28 @@ class UserUtil
      * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
      * any save user state immediately following the return of this function.
      *
-     * @param string $authenticationMethod  The name of the authentication module to use for authentication and the method name as defined by that module.
-     * @param array  $authenticationInfo        The information needed by the authentication module for authentication, typically a loginID and pass.
-     * @param string $reentrantURL              If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
+     * @param string  $authenticationMethod  The name of the authentication module to use for authentication and the method name as defined by that module.
+     * @param array   $authenticationInfo    The information needed by the authentication module for authentication, typically a loginID and pass.
+     * @param string  $reentrantURL          If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
      *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
      *                                          state must have already been saved by the function calling authenticateUserUsing(), and the URL must
      *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
      *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
      *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
      *                                          reentrant (e.g., Users is guaranteed to not be reentrant).
+     * @param boolean $reportErrors          If true, then when validation of the account's ability to log in is performed, if errors are detected then
+     *                                          they will be reported through registering errors with Zikula's logging and error reporting system. If
+     *                                          false, then error reporting is supressed, and only the return value will indicate success or failure.
      *
      * @return array|bool The user account record of the user with the given credentials, if his credentials authenticate; otherwise false
      */
-    public static function authenticateUserUsing(array $authenticationMethod, array $authenticationInfo, $reentrantURL = null)
+    public static function authenticateUserUsing(array $authenticationMethod, array $authenticationInfo, $reentrantURL = null, $reportErrors = false)
     {
         $userObj = false;
 
-        $authenticatedUid = self::internalAuthenticateUserUsing($authenticationMethod, $authenticationInfo, $reentrantURL, false);
+        $authenticatedUid = self::internalAuthenticateUserUsing($authenticationMethod, $authenticationInfo, $reentrantURL);
         if ($authenticatedUid) {
-            $userObj = self::internalUserAccountValidation($authenticatedUid, false);
+            $userObj = self::internalUserAccountValidation($authenticatedUid, $reportErrors);
         }
 
         return $userObj;
