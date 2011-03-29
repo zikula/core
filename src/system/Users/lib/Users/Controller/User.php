@@ -889,7 +889,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 //
                 // The chosen authentication method might be reentrant, and this is the point were the user might be directed
                 // outside the Zikula system for external authentication.
-                $user = UserUtil::authenticateUserUsing($selectedAuthenticationMethod, $authenticationInfo, $reentrantURL);
+                $user = UserUtil::authenticateUserUsing($selectedAuthenticationMethod, $authenticationInfo, $reentrantURL, true);
 
                 // If we have gotten to this point in the same call to login(), then the authentication method was not external
                 // and reentrant, so we should not need the session variable any more. If it is external and reentrant, and the
@@ -952,7 +952,9 @@ class Users_Controller_User extends Zikula_AbstractController
                         }
                     }
                 } else {
-                    $this->registerError($this->__('There is no user account matching that information, or the password you gave does not match the password on file for that account.'));
+                    if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                        $this->registerError($this->__('There is no user account matching that information, or the password you gave does not match the password on file for that account.'));
+                    }
 
                     $eventArgs = array(
                         'authentication_method' => $selectedAuthenticationMethod,
