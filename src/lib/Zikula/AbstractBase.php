@@ -724,4 +724,26 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
         // Should we expire the session also? drak.
         throw new Zikula_Exception_Forbidden(__('Security token validation failed'));
     }
+
+    /**
+     * Convenience to get a service.
+     *
+     * @param string $id Service Name.
+     */
+    protected function getService($id)
+    {
+        $this->serviceManager->getService($id);
+    }
+
+    /**
+     * Convenience hasService shortcut.
+     *
+     * @param string $id Service name.
+     *
+     * @return boolean
+     */
+    protected function hasService($id)
+    {
+        return $this->serviceManager->hasService($id);
+    }
 }
