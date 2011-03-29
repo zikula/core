@@ -792,6 +792,16 @@ class System
     }
 
     /**
+     * Check if upgrader is running.
+     *
+     * @return boolean True if upgrade.php is running, otherwise false.
+     */
+    public static function isUpgrading()
+    {
+        return array_key_exists('_ZikulaUpgrader', $GLOBALS);
+    }
+
+    /**
      * Legacy mode enabled check.
      *
      * @return boolean

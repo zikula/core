@@ -28,14 +28,15 @@ $eventManager->attach('core.init', 'upgrade_suppressErrors');
 define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 define('_Z_MINUPGVER', '1.2.0');
 
+// Signal that upgrade is running.
+$GLOBALS['_ZikulaUpgrader'] = array();
+
 // include config file for retrieving name of temporary directory
 $GLOBALS['ZConfig']['System']['multilingual'] = true;
 
 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
-
-
 
 // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
 $dbEvent = new Zikula_Event('doctrine.init_connection', null, array('lazy' => true));
@@ -54,7 +55,6 @@ if (!isset($columns['capabilities'])) {
     DBUtil::changeTable('blocks');
 }
 
-$GLOBALS['_ZikulaUpgrader'] = array();
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
 if (version_compare($installedVersion, '1.3.0-dev') === -1) {
