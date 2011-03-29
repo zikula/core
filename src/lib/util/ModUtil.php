@@ -100,8 +100,10 @@ class ModUtil
 
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
         self::$modvars = new ArrayObject(array(
-            EventUtil::HANDLERS => array(),
-            'Settings'          => array(),
+                EventUtil::HANDLERS => array(),
+                HookUtil::HANDLERS => array(),
+                ServiceUtil::HANDLERS => array(),
+                'Settings'          => array(),
         ));
         
         // This loads all module variables into the modvars static class variable.
