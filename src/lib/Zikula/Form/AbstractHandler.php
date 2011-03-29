@@ -51,6 +51,13 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     protected $view;
 
     /**
+     * Request object
+     *
+     * @var Zikula_Request_Http
+     */
+    protected $request;
+
+    /**
      * This name.
      *
      * @var string
@@ -132,6 +139,15 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
         $this->name = $name;
     }
 
+    /**
+     * Set the request.
+     *
+     * @param Zikula_Request_Http $request
+     */
+    public function setRequest($request)
+    {
+        $this->request = $request;
+    }
 
     /**
      * Initialize form handler.
