@@ -8,9 +8,9 @@
     <id>{id}</id>
     <updated>{updated}</updated>
     <author>
-        <name>{configgetvar name=adminmail}</name>
+        <name>{$modvars.ZConfig.adminmail}</name>
     </author>
-    <generator>{configgetvar name=Version_ID}</generator>
+    <generator>{$modvars.ZConfig.Version_ID}</generator>
     <rights>Copyright {$modvars.ZConfig.sitename}</rights>
     {$maincontent}
 </feed>

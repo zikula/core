@@ -1,4 +1,3 @@
-{configgetvar name='profilemodule' assign='profilemodule'}
 {gt text="Search results" assign=templatetitle}
 {include file="users_admin_menu.tpl"}
 
@@ -16,7 +15,7 @@
                         <th>&nbsp;</th>
                         {/if}
                         <th>{gt text="User name"}</th>
-                        {if $profilemodule}
+                        {if $modvars.ZConfig.profilemodule}
                         <th>{gt text="Internal name"}</th>
                         {/if}
                         <th>{gt text="E-mail address"}</th>
@@ -30,7 +29,7 @@
                         <td>{if ($items[item].uid != 1) && ($items[item].uid != 2)}<input type="checkbox" name="userid[]" value="{$items[item].uid}" />{/if}</td>
                         {/if}
                         <td>{$items[item].uname}</td>
-                        {if $profilemodule}
+                        {if $modvars.ZConfig.profilemodule}
                         <td>{usergetvar name='realname' uid=$items[item].uid}</td>
                         {/if}
                         <td>

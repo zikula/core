@@ -95,8 +95,7 @@
                 <input id="menutree_stripbaseurl" type="checkbox" name="menutree[stripbaseurl]" {if $menutree_stripbaseurl}checked="checked"{/if}/>
                 <em class="z-sub">{gt text="Base URL which will be removed: %s." tag1=$baseurl}</em>
             </span>
-            {configgetvar name="shorturls" assign="shorturls"}
-            {if $shorturls}
+            {if $modvars.ZConfig.shorturls}
             <p class="z-formnote z-warningmsg">
                 <strong>{gt text="Note! Short URLs are enabled. It's strongly recommended to turn on this option when using short URLs."}</strong>
             </p>

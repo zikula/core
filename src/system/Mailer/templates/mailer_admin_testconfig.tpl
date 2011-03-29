@@ -11,11 +11,11 @@
                 <legend>{gt text="Settings test"}</legend>
                 <div class="z-formrow">
                     <label for="mailer_fromname">{gt text="Sender's name"}</label>
-                    <span id="mailer_fromname">{configgetvar name=sitename}</span>
+                    <span id="mailer_fromname">{$modvars.ZConfig.sitename}</span>
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_fromname">{gt text="Sender's e-mail address"}</label>
-                    <span id="mailer_fromaddress">{configgetvar name=adminmail}</span>
+                    <span id="mailer_fromaddress">{$modvars.ZConfig.adminmail}</span>
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_toname">{gt text="Recipient's name"}</label>
