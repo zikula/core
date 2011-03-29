@@ -172,7 +172,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Set the form Id.
      *
-     * @param string $formId
+     * @param string $formId Form ID.
      *
      * @return void
      */
@@ -183,10 +183,9 @@ class Zikula_Form_View extends Zikula_View
 
     /**
      * Main event loop handler.
-     *
      * This is the function to call instead of the normal $view->fetch(...).
      *
-     * @param boolean      $template     Name of template file.
+     * @param boolean                     $template     Name of template file.
      * @param Zikula_Form_AbstractHandler $eventHandler Instance of object that inherits from Zikula_Form_AbstractHandler.
      *
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
@@ -481,7 +480,7 @@ class Zikula_Form_View extends Zikula_View
      * Get Plugin By Id_rec.
      *
      * @param object  $plugin Plugin.
-     * @param intiger $id      Plugin ID.
+     * @param intiger $id     Plugin ID.
      *
      * @return Zikula_Form_AbstractPlugin|null
      */

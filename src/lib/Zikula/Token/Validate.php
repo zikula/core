@@ -19,6 +19,7 @@
 class Zikula_Token_Validate
 {
     /**
+     * Token generator.
      *
      * @var Zikula_Token_Generator
      */
@@ -48,8 +49,8 @@ class Zikula_Token_Validate
     /**
      * Constructor.
      *
-     * @param Zikula_Token_Generator $tokenGenerator
-     * @param integer                $maxlifetime
+     * @param Zikula_Token_Generator $tokenGenerator Token generator.
+     * @param integer                $maxlifetime    Max lifetime in seconds (default = 86400).
      */
     public function __construct(Zikula_Token_Generator $tokenGenerator, $maxlifetime = 86400)
     {
@@ -66,9 +67,9 @@ class Zikula_Token_Validate
      * with a unique ID each time.  If the are per-session, then they should be
      * generated with the same unique ID and not deleted when validated here.
      *
-     * @param string  $token        Token to validate.
-     * @param boolean $delete       Whether to delete the token if valid.
-     * @param boolean $$checkExpire Whether to check for token expiry.
+     * @param string  $token       Token to validate.
+     * @param boolean $delete      Whether to delete the token if valid.
+     * @param boolean $checkExpire Whether to check for token expiry.
      *
      * @return boolean
      */

@@ -78,6 +78,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      * Initialize request object.
      *
      * @param array $options Optional overrides.
+     *
+     * @return void
      */
     protected function initialize(array $options = array())
     {
@@ -183,7 +185,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
     /**
      * Set session.
      *
-     * @param Zikula_Session $session
+     * @param Zikula_Session $session Session to set.
      *
      * @return void
      */

@@ -237,7 +237,7 @@ function z_exit($msg, $html = true)
  * PHP by default doesn't display uncaught exception stacktraces in HTML.
  * This function halts execution of PHP after is finishes.
  *
- * @param Exception $e
+ * @param Exception $e Exception to handle.
  *
  * @return void
  */
@@ -246,5 +246,4 @@ function exception_handler(Exception $e)
     echo "<pre>";
     echo 'Uncaught exception ' . $e->getMessage() . ' in ' . $e->getFile() . ' line, ' . $e->getLine() . "\n";
     echo $e->getTraceAsString() . "</pre>";
-    
 }

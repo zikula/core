@@ -22,6 +22,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
     
     /**
      * These objects won't be displayed by this panel because they are to big.
+     *
      * @var array
      */
     private static $OBJECTS_TO_SKIPP = array('Zikula_ServiceManager', 'Zikula_View', 
@@ -86,7 +87,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
 
             $argsShort = $this->buildArgumentsPreview($exec['args']);
             
-            if(strlen($argsShort) >= 100) {
+            if (strlen($argsShort) >= 100) {
                 $idArgs = $id . 'args';
                 $args = '<a href="" title="'.__('Click to show the full parameter list').'" onclick="$(\''.$idArgs.'\').toggle();return false;">' . $argsShort . '</a><span style="display:none" id="'.$idArgs.'">' . $this->formatVar('', $exec['args'], false) . '</span>';
             } else {
@@ -140,7 +141,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
      * 
      * The preview won't contain any array/object contents.
      * 
-     * @param mixed  $args Value to build an preview from
+     * @param mixed $args Value to build an preview from.
      * 
      * @return string
      */
@@ -148,7 +149,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
         $preview = '';
         $inArray = false;
         
-        if(is_array($args)) {
+        if (is_array($args)) {
             $preview = 'array(';
             $inArray = true;
         }
@@ -163,17 +164,17 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             }
             $isFirstIteration = false;
             
-            if(is_numeric($value) || is_bool($value)) {
+            if (is_numeric($value) || is_bool($value)) {
                 $preview .= $valuePrefix . $value;
-            } else if(is_string($value)) {
+            } else if (is_string($value)) {
                 $preview .= $valuePrefix . '"' . DataUtil::formatForDisplay($value) . '"';
-            } else if(is_array($value)) {
+            } else if (is_array($value)) {
                 $preview .= $valuePrefix . 'array(...)';
-            } else if(is_object($value)) {
+            } else if (is_object($value)) {
                 $preview .= $valuePrefix . get_class($value) . '{...}';
-            } else if(is_null($value)) {
+            } else if (is_null($value)) {
                 $preview .= $valuePrefix . 'NULL';
-            } else if(is_nan($value)) {
+            } else if (is_nan($value)) {
                 $preview .= $valuePrefix . 'NAN';
             } else {
                 $preview .= $valuePrefix . '?';
@@ -190,20 +191,21 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
     /**
      * Creates an ul/li list a value (recursive safe).
      *
-     * @param mixed $key Name of the variable.
-     * @param mixed $var Value of the variable.
+     * @param mixed   $key   Name of the variable.
+     * @param mixed   $var   Value of the variable.
+     * @param integer $level Deep of the formatting.
      *
      * @return string HTML-Code
      */
     protected function formatVar($key, $var, $level=1)
     {
-        if($level > self::RECURSIVE_LIMIT) {
+        if ($level > self::RECURSIVE_LIMIT) {
             return '<li>...</li>';
         } else if (is_object($var)) {
             $html =  "<li><strong>" . $key . '</strong>  <span style="color:#666666;font-style:italic;">('.
                        get_class($var).')</span>: <ul>';
 
-            if(!in_array(get_class($var), self::$OBJECTS_TO_SKIPP)) {
+            if (!in_array(get_class($var), self::$OBJECTS_TO_SKIPP)) {
                 $cls = new ReflectionClass($var);
                 // workaround to access private/protected properties of an object
                 // because reflection in php 5.2 does not support private/protected properties

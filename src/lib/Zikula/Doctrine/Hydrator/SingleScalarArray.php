@@ -49,7 +49,8 @@ class Zikula_Doctrine_Hydrator_SingleScalarArray extends Doctrine_Hydrator_Abstr
      *
      * @return array Hydration result (never null).
      */
-    public function hydrateResultSet($stmt) {
+    public function hydrateResultSet($stmt)
+    {
         // setup aliases and assoc informations.
         reset($this->_queryComponents);
         $rootAlias = key($this->_queryComponents);
@@ -62,7 +63,7 @@ class Zikula_Doctrine_Hydrator_SingleScalarArray extends Doctrine_Hydrator_Abstr
         $resultRows = $stmt->fetchAll(Doctrine::FETCH_ASSOC);
         $fieldArray = array();
 
-        if($isAssoc) {
+        if ($isAssoc) {
             $assocColumnName = $rootTablePrefix . '__' . $rootComponent['map'];
             foreach ($resultRows as $resultRow) {
                 $key = $resultRow[$assocColumnName];

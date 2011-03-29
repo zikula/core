@@ -84,6 +84,7 @@ abstract class Zikula_AbstractEventHandler
     /**
      * Required setup of handler definitions.
      *
+     * Example:
      * <Samp>
      *    $this->addHandlerDefinition('some.event', 'handler', 10);
      *    $this->addHandlerDefinition('some.event', 'handler2', 10);

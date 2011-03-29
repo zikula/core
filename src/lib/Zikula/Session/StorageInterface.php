@@ -54,7 +54,7 @@ interface Zikula_Session_StorageInterface
     /**
      * Close session.
      *
-     * @void boolean
+     * @return boolean
      */
     public function close();
 
@@ -69,6 +69,9 @@ interface Zikula_Session_StorageInterface
 
     /**
      * Commit session to storage.
+     *
+     * @param string $sessionId Session ID.
+     * @param mixed  $vars      Variables to write.
      *
      * @return boolean
      */
@@ -86,7 +89,7 @@ interface Zikula_Session_StorageInterface
     /**
      * Garbage collection for storage.
      *
-     * @params integer $lifetime Max lifetime to keep session stored.
+     * @param integer $lifetime Max lifetime to keep session stored.
      *
      * @return boolean
      */

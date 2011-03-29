@@ -119,7 +119,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      * Create event handler.
      *
      * @param Zikula_Form_View $view    Reference to Form render object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -141,7 +141,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
     /**
      * Initialize event handler.
      *
-     * @param FormRender $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      *
      * @return void
      */
@@ -249,7 +249,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      * Uses the group parameter to decide where to store data.
      *
      * @param Zikula_Form_View $view  Reference to Form render object.
-     * @param array     &$data Data object.
+     * @param array            &$data Data object.
      *
      * @return void
      */

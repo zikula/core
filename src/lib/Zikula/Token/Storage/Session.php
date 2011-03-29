@@ -28,7 +28,7 @@ class Zikula_Token_Storage_Session implements Zikula_Token_StorageInterface
     /**
      * Constructor.
      *
-     * @param Zikula_Session $session
+     * @param Zikula_Session $session Zikula_Session instance to inject.
      */
     public function __construct(Zikula_Session $session)
     {

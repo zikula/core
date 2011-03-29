@@ -92,7 +92,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view   Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Zikula_View plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
@@ -107,7 +107,8 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     /**
      * DataBound event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param array            &$params Parameters passed from the Zikula_View plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void

@@ -49,7 +49,7 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
      * Create event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array     &$params Parameters passed from the Smarty plugin function.
+     * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -67,7 +67,8 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
 
     /**
      * Helper method to determine css class.
-     * @see Zikula_Form_Plugin_TextInput
+     *
+     * @see    Zikula_Form_Plugin_TextInput
      *
      * @return string the list of css classes to apply
      */
@@ -111,7 +112,7 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
      * Parses a value.
      *
      * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param string    $text Text.
+     * @param string           $text Text.
      *
      * @return string Parsed Text.
      */

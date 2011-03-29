@@ -64,12 +64,14 @@ class Zikula_DebugToolbar
 
     /**
      * Sends an event via the EventManager to allow other code to extend the toolbar.
+     *
+     * @param Zikula_EventManager $eventManager Core event manager.
      */
     public function __construct(Zikula_EventManager $eventManager)
     {
         $this->eventManager = $eventManager;
-        PageUtil::addVar("javascript", "prototype");
-        PageUtil::addVar("javascript", "javascript/debugtoolbar/main.js");
+        PageUtil::addVar('javascript', 'prototype');
+        PageUtil::addVar('javascript', 'javascript/debugtoolbar/main.js');
         PageUtil::addVar('stylesheet', 'style/debugtoolbar.css');
 
         // allow modules and plugins to extend the toolbar
@@ -155,4 +157,3 @@ class Zikula_DebugToolbar
                 </div>';
     }
 }
-

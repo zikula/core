@@ -114,7 +114,8 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      * plugins to do validation on (to be implemented).
      *
      * @var string
-     * @see Zikula_Form_View::getValues(), Zikula_Form_View::isValid()
+     *
+     * @see    Zikula_Form_View::getValues(), Zikula_Form_View::isValid()
      */
     public $group;
 
@@ -273,7 +274,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
     /**
      * Initialize event handler.
      *
-     * @param FormRender $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      *
      * @return void
      */

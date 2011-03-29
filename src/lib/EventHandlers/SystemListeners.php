@@ -116,7 +116,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Listen on 'core.init' module.
      *
-     * @param Zikula_Event $event Event
+     * @param Zikula_Event $event Event.
      *
      * @return void
      */
@@ -624,7 +624,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Listens for 'bootstrap.getconfig'
      * 
-     * @param Event $event Event
+     * @param Zikula_Event $event Event.
      *
      * @return void
      */

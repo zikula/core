@@ -46,6 +46,8 @@ abstract class Zikula_Request_AbstractRequest
     }
 
     /**
+     * Initialization function.
+     *
      * @param array $options Array of arrays (e.g. get, post, server).
      *
      * @return void
@@ -172,6 +174,8 @@ abstract class Zikula_Request_AbstractRequest
     /**
      * Unset $key from args property.
      *
+     * @param string $key Key.
+     *
      * @return void
      */
     public function unsetArg($key)
@@ -179,4 +183,3 @@ abstract class Zikula_Request_AbstractRequest
         unset($this->args[$key]);
     }
 }
-

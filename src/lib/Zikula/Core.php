@@ -171,7 +171,7 @@ class Zikula_Core
     /**
      * Constructor.
      * 
-     * @param <type> $handlerDir
+     * @param string $handlerDir Directory where handlers are located.
      */
     public function __construct($handlerDir = 'lib/EventHandlers')
     {

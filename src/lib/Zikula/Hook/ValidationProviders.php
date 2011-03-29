@@ -35,7 +35,7 @@ class Zikula_Hook_ValidationProviders extends Zikula_Collection_Container
      * @param string                         $name     Name.
      * @param Zikula_Response_HookValidation $response Validation response.
      *
-     * @throws InvalidArgumentException If $response is not an instance of Zikula_Provider_HookValidation
+     * @throws InvalidArgumentException If $response is not an instance of Zikula_Provider_HookValidation.
      *
      * @return void
      */

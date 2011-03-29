@@ -120,6 +120,8 @@ class DoctrineListener extends Zikula_AbstractEventHandler
      * Subject is expected to be the Doctrine_Manager.
      *
      * @param Zikula_Event $event Event.
+     *
+     * @return void
      */
     public function configureCache(Zikula_Event $event)
     {

@@ -349,7 +349,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the controller property.
      * 
-     * @param Zikula_AbstractController $controller
+     * @param Zikula_AbstractController $controller Controller to set.
+     *
+     * @return void
      */
     public function setController(Zikula_AbstractController $controller)
     {
@@ -641,10 +643,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get module plugin Zikula_View_Plugin instance.
      *
-     * @param string       $modName       Module name.
-     * @param string       $pluginName    Plugin name.
-     * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
-     * @param string       $cache_id      Cache Id.
+     * @param string       $modName    Module name.
+     * @param string       $pluginName Plugin name.
+     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id   Cache Id.
      *
      * @return Zikula_View_Plugin The plugin instance.
      */
@@ -656,9 +658,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get system plugin Zikula_View_Plugin instance.
      *
-     * @param string       $pluginName    Plugin name.
-     * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
-     * @param string       $cache_id      Cache Id.
+     * @param string       $pluginName Plugin name.
+     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id   Cache Id.
      *
      * @return Zikula_View_Plugin The plugin instance.
      */
