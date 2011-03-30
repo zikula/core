@@ -109,8 +109,11 @@ img.z-floatright {
 }
 
 #z-maincontent ul.z-menulinks li:first-child {
-    border-left:1px solid #aaa;
-    margin-left:5px;
+    padding-left:5px;
+}
+
+#z-maincontent ul.z-menulinks li a.z-iconlink {
+    margin-left:-5px;
 }
 
 #z-maincontent ul.z-menulinks li.z-ml-disabled a,
