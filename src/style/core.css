@@ -602,6 +602,27 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 }
 
 /******************************************************************************
+* Form alternative styles
+*******************************************************************************/
+
+.z-form-light fieldset,
+.z-form-light .z-fieldset {
+    background: none;
+    border: none;
+    color: #333;
+    padding: 0 0 0.5em;
+}
+
+.z-form div.z-formrow .z-form-text-big {
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    font-size: 1.7em;
+    line-height: 100%;
+    outline: medium none;
+}
+
+/******************************************************************************
 * Itemlist styles
 *******************************************************************************/
 
@@ -1666,7 +1687,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-toggle-open,
 .z-toggle-open:link,
 .z-toggle-open:visited {
-    background-position: 0pt -18px;
+    background-position: 0pt -16px;
     height: 25px;
     width: 27px;
 }
@@ -1675,14 +1696,14 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-toggle-link:visited {
     background-image: url("../images/global/toggle-bl.png");
     background-repeat: no-repeat;
-    background-position: right top;
-    padding-right: 25px;
+    background-position: right 2px;
+    padding-right: 20px;
     border: 0pt none;
 }
 .z-toggle-link-open,
 .z-toggle-link-open:link,
 .z-toggle-link-open:visited {
-    background-position: right -18px;
+    background-position: right -15px;
 }
 
 /******************************************************************************
@@ -1692,6 +1713,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 
 .z-pager {
     color: #999;
+    line-height: 2.2em;
     padding: 5px 4px;
     text-align: center;
 }
