@@ -910,6 +910,12 @@ class Users_Controller_User extends Zikula_AbstractController
                         // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check
                         // the user's ability to log in. If we don't do this, then user.login.veto might trap and cancel the login attempt again.
                         $this->notifyHooks('users.hook.login.process.edit', $user, $user['uid'], array('formType' => 'page'));
+                        
+                        if (!isset($user['lastlogin']) || empty($user['lastlogin']) || ($user['lastlogin'] == '1970-01-01 00:00:00')) {
+                            $isFirstLogin = true;
+                        } else {
+                            $isFirstLogin = false;
+                        }
 
                         // Because we are passing a $user and setting checkPassword false, this call back into the authentication
                         // chain should not trigger an external re-authentication, so it should not need preparation for reentry.
@@ -1029,6 +1035,11 @@ class Users_Controller_User extends Zikula_AbstractController
                 'authentication_method' => $selectedAuthenticationMethod,
                 'redirecturl'           => $returnUrl,
             );
+            
+            if (isset($isFirstLogin)) {
+                $eventArgs['is_first_login'] = $isFirstLogin;
+            }
+            
             $event = new Zikula_Event('module.users.ui.login.succeeded', $user, $eventArgs);
             $event = $this->eventManager->notify($event);
             
