@@ -205,6 +205,8 @@ class Users_Controller_User extends Zikula_AbstractController
                         // The user has a status that allows him to log in
                         if (!empty($registeredObj['regErrors'])) {
                             $this->registerError($this->__('Your account has been created and you may now log in, however the problems listed below were detected during the registration process. Please contact the site administrator for more information.'));
+                        } elseif ($this->getVar(Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN, Users_Constant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
+                            $this->registerStatus($this->__('Done! Your account has been created.'));
                         } else {
                             $this->registerStatus($this->__('Done! Your account has been created and you may now log in.'));
                         }
