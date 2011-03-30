@@ -1623,7 +1623,7 @@ class Users_Controller_User extends Zikula_AbstractController
         }
 
         if ($this->getVar('changepassword', 1) != 1) {
-            $this->redirect($this->name, 'user', 'main');
+            $this->redirect(ModUtil::url($this->name, 'user', 'main'));
         }
 
         $passwordErrors = array();
@@ -1784,7 +1784,7 @@ class Users_Controller_User extends Zikula_AbstractController
         }
 
         if ($this->getVar('changeemail', 1) != 1) {
-            $this->redirect($this->name, 'user', 'main');
+            $this->redirect(ModUtil::url($this->name, 'user', 'main'));
         }
 
         return $this->view->add_core_data()
@@ -1819,7 +1819,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
         $uservars = $this->getVars();
         if ($uservars['changeemail'] <> 1) {
-            $this->redirect($this->name, 'user', 'main');
+            $this->redirect(ModUtil::url($this->name, 'user', 'main'));
         }
 
         $newemail = $this->request->getPost()->get('newemail', '');
