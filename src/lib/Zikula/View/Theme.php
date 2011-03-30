@@ -954,7 +954,12 @@ class Zikula_View_Theme extends Zikula_View
 
         // check if we've not got a valid theme configation
         if (!$this->themeconfig) {
-            $this->themeconfig = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => 'master.ini'));
+            $file = 'master.ini';
+            $this->themeconfig = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
+        }
+
+        if (empty($this->themeconfig['page'])) {
+            throw new Exception(__f("Empty 'page' specified in your theme page configuration on file %s.", array($file)));
         }
 
         // register any filters
