@@ -1281,64 +1281,64 @@ class pnFormRender extends Zikula_Form_View
 }
 
 /**
- * Alias to the Zikula_Form_Plugin class for backward compatibility.
+ * Alias to the Zikula_Form_AbstractPlugin class for backward compatibility.
  *
  * @deprecated
- * @see Zikula_Form_Plugin::
+ * @see Zikula_Form_AbstractPlugin::
  */
 class pnFormPlugin extends Zikula_Form_AbstractPlugin
 {
     /**
-     * Alias to Zikula_Form_Plugin constructor.
+     * Alias to Zikula_Form_AbstractPlugin constructor.
      *
      * @deprecated
-     * @see Zikula_Form_Plugin::__construct()
+     * @see Zikula_Form_AbstractPlugin::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Plugin')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_AbstractPlugin')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Zikula_Form_StyledPlugin class for backward compatibility.
+ * Alias to the Zikula_Form_AbstractStyledPlugin class for backward compatibility.
  *
  * @deprecated
- * @see Zikula_Form_StyledPlugin::
+ * @see Zikula_Form_AbstractStyledPlugin::
  */
 class pnFormStyledPlugin extends Zikula_Form_AbstractStyledPlugin
 {
     /**
-     * Alias to Zikula_Form_StyledPlugin constructor.
+     * Alias to Zikula_Form_AbstractStyledPlugin constructor.
      *
      * @deprecated
-     * @see Zikula_Form_StyledPlugin::__construct()
+     * @see Zikula_Form_AbstractStyledPlugin::__construct()
      */
     public function __construct(&$render, &$params)
     {
         parent::__construct($render, $params);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_StyledPlugin')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_AbstractStyledPlugin')), E_USER_DEPRECATED);
     }
 }
 
 /**
- * Alias to the Zikula_Form_Handler class for backward compatibility.
+ * Alias to the Zikula_Form_AbstractHandler class for backward compatibility.
  *
  * @deprecated
- * @see Zikula_Form_Handler::
+ * @see Zikula_Form_AbstractHandler::
  */
 class pnFormHandler extends Zikula_Form_AbstractHandler
 {
     /**
-     * Alias to Zikula_Form_Handler constructor.
+     * Alias to Zikula_Form_AbstractHandler constructor.
      *
      * @deprecated
-     * @see Zikula_Form_Handler::__construct()
+     * @see Zikula_Form_AbstractHandler::__construct()
      */
     public function __construct()
     {
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_Handler')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Zikula_Form_AbstractHandler')), E_USER_DEPRECATED);
     }
 }
 
@@ -4080,5 +4080,3 @@ interface FilterUtil_Replace extends FilterUtil_ReplaceInterface{}
 interface FilterUtil_Build extends FilterUtil_BuildInterface{}
 abstract class FilterUtil_Common extends FilterUtil_AbstractBase{}
 abstract class FilterUtil_PluginCommon extends FilterUtil_AbstractPlugin{}
-
-
