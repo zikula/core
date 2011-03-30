@@ -102,8 +102,7 @@ class BlockUtil
                 $showblock = false;
 
                 // loop for each filter
-                foreach ($blockinfo['filter'] as $filter)
-                {
+                foreach ($blockinfo['filter'] as $filter) {
                     // filter must be an array of values
                     if (!is_array($filter)) {
                         continue;

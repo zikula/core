@@ -108,9 +108,9 @@ class UserUtil
     /**
      * Return a group object.
      *
-     * @todo Decouple UserUtil and Groups?
-     *
      * @param integer $gid The groupID to retrieve.
+     *
+     * @todo   Decouple UserUtil and Groups?
      *
      * @return array The resulting group object.
      */
@@ -497,7 +497,17 @@ class UserUtil
         }
         return self::loginUsing($authenticationMethod, $authenticationInfo, $rememberme, null, $checkPassword);
     }
-    
+
+    /**
+     * Validation method previous authentication.
+     *
+     * @param array  $authenticationMethod Auth method.
+     * @param string $reentrantURL         Reentrant URL (optional).
+     *
+     * @throws Zikula_Exception_Fatal
+     *
+     * @return true
+     */
     private static function preAuthenticationValidation(array $authenticationMethod, $reentrantURL = null)
     {
         if (empty($authenticationMethod) || (count($authenticationMethod) != 2)) {
@@ -552,15 +562,15 @@ class UserUtil
      * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
      * any save user state immediately following the return of this function.
      *
-     * @param string $authenticationMethod  Authentication module and method name.
-     * @param array  $authenticationInfo        Auth info array.
-     * @param string $reentrantURL              If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
-     *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
-     *                                          state must have already been saved by the function calling checkPasswordUsing(), and the URL must
-     *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
-     *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
-     *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
-     *                                          reentrant (e.g., Users is guaranteed to not be reentrant).
+     * @param array  $authenticationMethod Authentication module and method name.
+     * @param array  $authenticationInfo   Auth info array.
+     * @param string $reentrantURL         If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
+     *                                         this is the URL to return to in order to re-enter the log-in process. The pertinent user
+     *                                         state must have already been saved by the function calling checkPasswordUsing(), and the URL must
+     *                                         point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
+     *                                         saved user state, and get the user back to the point where loginUsing is re-executed. This
+     *                                         is only optional if the authentication module identified by $authenticationMethod reports that it is not
+     *                                         reentrant (e.g., Users is guaranteed to not be reentrant).
      *
      * @return bool True if authentication info authenticates; otherwise false.
      */
@@ -598,15 +608,15 @@ class UserUtil
      * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
      * any save user state immediately following the return of this function.
      *
-     * @param string $authenticationMethod  The name of the authentication module to use for authentication and the method name as defined by that module.
-     * @param array  $authenticationInfo        The information needed by the authentication module for authentication, typically a loginID and pass.
-     * @param string $reentrantURL              If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
-     *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
-     *                                          state must have already been saved by the function calling authenticateUserUsing(), and the URL must
-     *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
-     *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
-     *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
-     *                                          reentrant (e.g., Users is guaranteed to not be reentrant).
+     * @param array  $authenticationMethod The name of the authentication module to use for authentication and the method name as defined by that module.
+     * @param array  $authenticationInfo   The information needed by the authentication module for authentication, typically a loginID and pass.
+     * @param string $reentrantURL         If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
+     *                                         this is the URL to return to in order to re-enter the log-in process. The pertinent user
+     *                                         state must have already been saved by the function calling authenticateUserUsing(), and the URL must
+     *                                         point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
+     *                                         saved user state, and get the user back to the point where loginUsing is re-executed. This
+     *                                         is only optional if the authentication module identified by $authenticationMethod reports that it is not
+     *                                         reentrant (e.g., Users is guaranteed to not be reentrant).
      *
      * @return mixed Zikula uid if the authentication info authenticates with the authentication module; otherwise false.
      */
@@ -720,16 +730,16 @@ class UserUtil
      * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
      * any save user state immediately following the return of this function.
      *
-     * @param string  $authenticationMethod  The name of the authentication module to use for authentication and the method name as defined by that module.
-     * @param array   $authenticationInfo    The information needed by the authentication module for authentication, typically a loginID and pass.
-     * @param string  $reentrantURL          If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
+     * @param array   $authenticationMethod The name of the authentication module to use for authentication and the method name as defined by that module.
+     * @param array   $authenticationInfo   The information needed by the authentication module for authentication, typically a loginID and pass.
+     * @param string  $reentrantURL         If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
      *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
      *                                          state must have already been saved by the function calling authenticateUserUsing(), and the URL must
      *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
      *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
      *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
      *                                          reentrant (e.g., Users is guaranteed to not be reentrant).
-     * @param boolean $reportErrors          If true, then when validation of the account's ability to log in is performed, if errors are detected then
+     * @param boolean $reportErrors         If true, then when validation of the account's ability to log in is performed, if errors are detected then
      *                                          they will be reported through registering errors with Zikula's logging and error reporting system. If
      *                                          false, then error reporting is supressed, and only the return value will indicate success or failure.
      *
@@ -769,17 +779,18 @@ class UserUtil
      * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
      * any save user state immediately following the return of this function.
      *
-     * @param string  $authenticationMethod     Auth module name.
-     * @param array   $authenticationInfo           Auth info array.
-     * @param boolean $rememberMe         Whether or not to remember login.
-     * @param string  $reentrantURL       If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
-     *                                      this is the URL to return to in order to re-enter the log-in process. The pertinent user
-     *                                      state must have already been saved by the function calling loginUsing(), and the URL must
-     *                                      point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
-     *                                      saved user state, and get the user back to the point where loginUsing is re-executed. This
-     *                                      is only optional if the authentication module identified by $authenticationMethod reports that it is not
-     *                                      reentrant (e.g., Users is guaranteed to not be reentrant), or if $checkPassword is false.
-     * @param boolean $checkPassword      Whether or not to check the password.
+     * @param array   $authenticationMethod Auth module name.
+     * @param array   $authenticationInfo   Auth info array.
+     * @param boolean $rememberMe           Whether or not to remember login.
+     * @param string  $reentrantURL         If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
+     *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
+     *                                          state must have already been saved by the function calling loginUsing(), and the URL must
+     *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
+     *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
+     *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
+     *                                          reentrant (e.g., Users is guaranteed to not be reentrant), or if $checkPassword is false.
+     * @param boolean $checkPassword        Whether or not to check the password.
+     * @param boolean $preauthenticatedUser Whether ot not is a preauthenticated user.
      *
      * @return array|bool The user account record of the user that has logged in successfully, otherwise false
      */
@@ -1201,7 +1212,7 @@ class UserUtil
     /**
      * Maps the old DUD names to new attribute names.
      *
-     * @param $name The name of the field.
+     * @param string $name The name of the field.
      *
      * @return string|bool The attribute name corresponding to the DUD name, or false if the parameter is not a DUD name.
      */

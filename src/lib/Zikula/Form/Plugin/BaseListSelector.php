@@ -217,8 +217,8 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
-     * @param array            &$data  Data object.
+     * @param Zikula_Form_View $view  Reference to Form render object.
+     * @param array            &$data Data object.
      *
      * @return void
      */

@@ -84,7 +84,7 @@ class Zikula_DebugToolbar
      *
      * An panel with an already used id will be overwritten
      *
-     * @param Zikula_DebugToolbar_Panel $panel Panel object.
+     * @param Zikula_DebugToolbar_PanelInterface $panel Panel object.
      *
      * @return void
      * @throws InvalidArgumentException When $panel is null.
@@ -92,7 +92,7 @@ class Zikula_DebugToolbar
     public function addPanel(Zikula_DebugToolbar_PanelInterface $panel)
     {
         if ($panel == null) {
-            throw new InvalidArgumentException('$panel was null!');
+            throw new InvalidArgumentException(__f('Error! in %1$s: invalid value for the %2$s parameter (%3$s).', array('Zikula_DebugToolbar::addPanel', 'panel', 'null')));
         }
 
         $this->_panels[$panel->getId()] = $panel;

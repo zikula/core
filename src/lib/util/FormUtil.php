@@ -358,7 +358,7 @@ class FormUtil
      *
      * @param string                    $name       Module name.
      * @param Zikula_AbstractController $controller Controller.
-     * @param string                    $classname  Optionally instanciate a child of Zikula_Form_View.
+     * @param string                    $className  Optionally instanciate a child of Zikula_Form_View.
      *
      * @return Form_View The newly created Form_View instance.
      */

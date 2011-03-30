@@ -115,7 +115,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @var string
      *
-     * @see    Zikula_Form_View::getValues(), Zikula_Form_View::isValid()
+     * @see   Zikula_Form_View::getValues(), Zikula_Form_View::isValid()
      */
     public $group;
 

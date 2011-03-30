@@ -845,7 +845,7 @@ class System
     /**
      * Get a system error template.
      *
-     * @param string $templateFile
+     * @param string $templateFile File name of the system error template.
      *
      * @return string Template file path.
      */
@@ -861,5 +861,4 @@ class System
             return $templatePath;
         }
     }
-
 }

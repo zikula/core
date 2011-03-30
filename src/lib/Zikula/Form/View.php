@@ -183,6 +183,7 @@ class Zikula_Form_View extends Zikula_View
 
     /**
      * Main event loop handler.
+     *
      * This is the function to call instead of the normal $view->fetch(...).
      *
      * @param boolean                     $template     Name of template file.

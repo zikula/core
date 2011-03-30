@@ -79,7 +79,7 @@ class RandomUtil
      * @param boolean $useSpace       Whether or not to also use whitespace letters (optional) (default=true).
      * @param boolean $useNumber      Whether or not to also use numeric characters (optional) (default=false).
      * @param boolean $useSpecial     Whether or not to also use special characters (optional) (default=false).
-     * @param boolean $seed           (ununsed since 1.3.0) Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
+     * @param boolean $seed           Whether or not to seed the random number generator (unused since 1.3.0) (optional) (default=false) seeding not required for PHP>4.2.0.
      * @param array   $dontuse        Array of characters not to use (optional) (default=null) eg $dontuse=array('a', 'b', 'c');.
      *
      * @return The resulting random string.
@@ -269,9 +269,9 @@ class RandomUtil
     /**
      * Return a random date between $startDate and $endDate.
      *
-     * @param string  $startDate The lower date bound.
-     * @param string  $endDate   The high date bound.
-     * @param string  $format    The date format to use.
+     * @param string $startDate The lower date bound.
+     * @param string $endDate   The high date bound.
+     * @param string $format    The date format to use.
      *
      * @return The resulting random date string.
      */
@@ -298,5 +298,4 @@ class RandomUtil
         $pos = self::getInteger(0, count($fa));
         return $fa[$pos];
     }
-
 }

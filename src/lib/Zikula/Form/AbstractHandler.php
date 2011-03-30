@@ -142,7 +142,9 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Set the request.
      *
-     * @param Zikula_Request_Http $request
+     * @param Zikula_Request_Http $request Request to set.
+     *
+     * @return void
      */
     public function setRequest($request)
     {

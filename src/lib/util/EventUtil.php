@@ -122,7 +122,7 @@ class EventUtil
      *
      * Loads event handlers that extend Zikula_AbstractEventHandler
      *
-     * @param string $className      The name of the class.
+     * @param string $className The name of the class.
      *
      * @return void
      */
@@ -191,8 +191,8 @@ class EventUtil
     /**
      * Register a Zikula_AbstractEventHandler as a persistent handler.
      *
-     * @param string  $moduleName Module name.
-     * @param string  $className  Class name (subclass of Zikula_AbstractEventHandler).
+     * @param string $moduleName Module name.
+     * @param string $className  Class name (subclass of Zikula_AbstractEventHandler).
      *
      * @throws InvalidArgumentException If class is not available or not a subclass of Zikula_AbstractEventHandler.
      *
