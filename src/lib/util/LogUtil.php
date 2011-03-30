@@ -183,9 +183,9 @@ class LogUtil
      * @param string  $message The message.
      * @param integer $type    The message type.
      *
-     * @return void
-     *
      * @throws InvalidArgumentException Thrown if the $type is invalid.
+     *
+     * @return void
      */
     private static function _addPopup($message, $type = E_USER_NOTICE)
     {
@@ -193,9 +193,9 @@ class LogUtil
         $session = ServiceUtil::getManager()->getService('session');
 
         if ($type === Zikula_AbstractErrorHandler::INFO) {
-            return $session->addMessage(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
+            $session->addMessage(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
         } elseif ($type === E_USER_ERROR) {
-            return $session->addMessage(Zikula_Session::MESSAGE_ERROR, DataUtil::formatForDisplayHTML($message));
+            $session->addMessage(Zikula_Session::MESSAGE_ERROR, DataUtil::formatForDisplayHTML($message));
         } else {
             throw new InvalidArgumentException(__f('Invalid type %s for LogUtil::_addPopup', $type));
         }
@@ -370,5 +370,4 @@ class LogUtil
 
         return $logfile;
     }
-
 }

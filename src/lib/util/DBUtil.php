@@ -1758,7 +1758,7 @@ class DBUtil
     /**
      * Build a list of objects which are mapped to the specified categories.
      *
-     * @param string  $table          Treated table reference.
+     * @param string  $tablename      Treated table reference.
      * @param string  $categoryFilter The category list to use for filtering.
      * @param boolean $returnArray    Whether or not to return an array (optional) (default=false).
      *
@@ -1799,8 +1799,7 @@ class DBUtil
         $catmapobjtbl = DBUtil::getLimitedTablename('categories_mapobj');
 
         $where = array();
-        foreach ($categoryFilter as $property => $category)
-        {
+        foreach ($categoryFilter as $property => $category) {
             $prefix = '';
             if ($op == 'AND') {
                 $prefix = "table$n.";
@@ -3537,7 +3536,7 @@ class DBUtil
      * @param string $dbDriverName The driver used for this DB (optional).
      *
      * @deprecated
-     * @see Doctrines DBAL layer.
+     * @see    Doctrines DBAL layer.
      *
      * @return boolean
      */

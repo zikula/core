@@ -207,6 +207,7 @@ class JCSSUtil
      * Method to resolve scripts dependencies basing on scripts map from JCSSUtil: scriptsMap.
      *
      * @param array $javascripts List of javascript files to verify.
+     * @param array &$resolved   List of already resolved scripts.
      *
      * @return array List of javascript files
      */

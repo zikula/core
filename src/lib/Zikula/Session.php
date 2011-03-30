@@ -134,7 +134,7 @@ class Zikula_Session
      * Get special attributes by type.
      *
      * @param string $type    Type.
-     * @param mixed  $default Default value to return (default = array());
+     * @param mixed  $default Default value to return (default = array()).
      *
      * @return mixed
      */
