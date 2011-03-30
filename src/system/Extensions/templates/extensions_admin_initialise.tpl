@@ -35,7 +35,7 @@
                             </td>
                             <td>
                                 {if $dependency.insystem neq true and ($dependency.status eq 1 or $dependency.status eq 2)}
-                                {gt text="Not present."}
+                                {gt text="Not present"}.
                                 {elseif $dependency.status eq 1}{* required *}
                                 <input type="hidden" name="dependencies[]" value="{$dependency.id}" />
                                 <input type="checkbox" name="dummy[]" value="{$dependency.id}" disabled="disabled" />
