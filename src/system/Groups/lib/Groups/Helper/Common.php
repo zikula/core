@@ -40,12 +40,12 @@ class Groups_Helper_Common extends Zikula_AbstractHelper
      * Constant value for groups in the Open state (accepting members).
      */
     const STATE_OPEN = 1;
+    
     /**
      * Constructs an instance of this helper class.
      */
     public function __construct()
     {
-        parent::__construct(ServiceUtil::getManager());
     }
 
     /**
