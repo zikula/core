@@ -35,6 +35,18 @@ class PageLock_Installer extends Zikula_AbstractInstaller
      */
     public function upgrade($oldversion)
     {
+        switch ($oldversion) {
+            case '1.0':
+            case '1.1': // shipped with Zikula 1.2.x
+            case '1.1.0':
+                // prefixes for column names may have changed
+                // easiest to just drop and recreate the table
+                DBUtil::dropTable('pagelock');
+                DBUtil::createTable('pagelock');
+            case '1.1.1':
+                //current version
+        }
+        
         return true;
     }
 
