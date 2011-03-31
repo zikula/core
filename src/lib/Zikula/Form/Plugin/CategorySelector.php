@@ -82,8 +82,8 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
     /**
      * Load the parameters.
      *
-     * Shared by other category plugins.
-     * FIXME: Should this method be static?
+     * this method is static because it is also called by the
+     * CategoryCheckboxList plugin
      *
      * @param object  &$list               The list object (here: $this).
      * @param boolean $includeEmptyElement Whether or not to include an empty null item.
@@ -91,7 +91,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
      *
      * @return void
      */
-    function loadParameters(&$list, $includeEmptyElement, $params)
+    static function loadParameters(&$list, $includeEmptyElement, $params)
     {
         $all            = isset($params['all'])         ? $params['all']         : false;
         $lang           = isset($params['lang'])        ? $params['lang']        : ZLanguage::getLanguageCode();
