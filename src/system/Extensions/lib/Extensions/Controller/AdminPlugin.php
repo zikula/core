@@ -27,7 +27,7 @@ class Extensions_Controller_AdminPlugin extends Zikula_AbstractController
     /**
      * Plugin controller instance.
      *
-     * @var Zikula_Controller_Plugin
+     * @var Zikula_Controller_AbstractPlugin
      */
     protected $pluginController;
 

@@ -126,7 +126,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     /**
      * Plugin controller class.
      *
-     * @var Zikula_Controller_Plugin
+     * @var Zikula_Controller_AbstractPlugin
      */
     protected $controllerClass;
 

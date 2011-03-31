@@ -82,7 +82,7 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
      *
      * @param Zikula_View_Plugin $view Default null means new Render instance for this module name.
      *
-     * @return Zikula_Controller_Plugin
+     * @return Zikula_Controller_AbstractPlugin
      */
     protected function setView(Zikula_View $view = null)
     {

@@ -163,15 +163,15 @@ there is an example in the DocBlock of the interface.
 
 Next create a controller an place in the plugins lib/$PluginName/Controller.php
 
-    class SystemPlugin_Example_Controller extends Zikula_Controller_Plugin
+    class SystemPlugin_Example_Controller extends Zikula_Controller_AbstractPlugin
 
 or for module plugins something like
 
-    class ModulePlugin_ExampleMod_ExamplePlugin_Controller extends Zikula_Controller_Plugin
+    class ModulePlugin_ExampleMod_ExamplePlugin_Controller extends Zikula_Controller_AbstractPlugin
 
 The method that will be is 'configure()':
 
-    class SystemPlugin_SwiftMailer_Controller extends Zikula_Controller_Plugin
+    class SystemPlugin_SwiftMailer_Controller extends Zikula_Controller_AbstractPlugin
     {
         public function configure()
         {

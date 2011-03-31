@@ -14,7 +14,7 @@
 /**
  * Controller class.
  */
-class ModulePlugin_Users_Example_Controller extends Zikula_Controller_Plugin
+class ModulePlugin_Users_Example_Controller extends Zikula_Controller_AbstractPlugin
 {
     /**
      * Configuration screen.
