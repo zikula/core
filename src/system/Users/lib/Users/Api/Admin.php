@@ -443,7 +443,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
         }
 
         $importValuesDB = $importValues;
-        foreach ($importValuesDB as $value) {
+        foreach ($importValuesDB as $key => $value) {
             $importValuesDB[$key]['pass'] = UserUtil::getHashedPassword($importValuesDB[$key]['pass']);
         }
 
