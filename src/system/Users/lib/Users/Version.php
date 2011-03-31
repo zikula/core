@@ -14,7 +14,7 @@
  */
 
 /**
- * Provides metadata for this module to the Modules module.
+ * Provides metadata for this module to the Extensions module.
  */
 class Users_Version extends Zikula_AbstractVersion
 {
