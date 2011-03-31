@@ -26,13 +26,6 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     protected $name;
 
     /**
-     * Options (universal constructor).
-     *
-     * @var array
-     */
-    protected $options;
-
-    /**
      * Base dir.
      *
      * @var string
@@ -99,14 +92,11 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
-     * @param array                 $options        Options (universal constructor).
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, array $options = array())
+    public function __construct(Zikula_ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
-        $this->options = $options;
-        Zikula_ClassProperties::load($this, $options);
 
         $this->request = $this->serviceManager->getService('request');
         $this->_configureBase();
@@ -187,16 +177,6 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Get options.
-     *
-     * @return array
-     */
-    public function getOptions()
-    {
-        return $this->options;
     }
 
     /**
