@@ -434,6 +434,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
         }
 
         // Prepare arrays.
+        $usersArray = array();
         foreach ($importValues as $key => $value) {
             $usersArray[] = $value['uname'];
             if (!$value['activated']) {
@@ -475,7 +476,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
         }
 
         $groups = array();
-        // construct a sql statement with all the inserts to avoid to much database connections
+        // construct a sql statement with all the inserts to reduce SQL queries
         foreach ($importValues as $value) {
             $groupsArray = explode('|', $value['groups']);
             foreach ($groupsArray as $group) {
