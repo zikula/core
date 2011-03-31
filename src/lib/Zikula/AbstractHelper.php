@@ -14,7 +14,7 @@
  */
 
 /**
- * Helper class.
+ * AbstractHelper class.
  */
 abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
 {
@@ -33,18 +33,11 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
     protected $eventManager;
 
     /**
-     * Options (universal constructor).
+     * Who we're helping.
      *
-     * @var array
+     * @var object
      */
-    protected $options;
-
-    /**
-     * Some class of Zikula_AbstractBase
-     *
-     * @var Zikula_AbstractBase
-     */
-    protected $base;
+    protected $object;
 
     /**
      * Translation domain.
@@ -56,18 +49,57 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
     /**
      * Constructor.
      *
-     * @param Zikula_AbstractBase $base    Zikula base object.
-     * @param array               $options Options (universal constructor).
+     * Override this as required.  If no dependency-injection is required, simply
+     * override or set the domain as required.
+     *
+     * <samp>
+     *  // for an unknown object
+     *  public function __construct($specialObject)
+     *  {
+     *      // do stuff
+     *      $this->domain = $specialObject->getDomain(); // Only if required
+     *  }
+     *
+     *  // for a known and already handled object
+     *  public function __construct($object)
+     *  {
+     *      parent::__construct($object);
+     *
+     *      // do extra required stuff
+     *  }
+     *
+     * @param object $object Object.
      */
-    public function __construct(Zikula_AbstractBase $base, array $options = array())
+    public function __construct($object)
     {
-        $this->base = $base;
-        $this->serviceManager = $base->getServiceManager();
-        $this->eventManager = $base->getEventManager();
-        $this->options = $options;
-        Zikula_ClassProperties::load($this, $options);
+        $this->_setup($object);
+    }
 
-        $this->domain = $base->getDomain();
+    /**
+     * Setup of class.
+     *
+     * Generally helpers are instaciated with new Zikula_AbstractHelper($this), but it
+     * will accept most Zikula classes, and override this method.
+     *
+     * @param object $object Zikula_AbstractBase, Zikula_ServiceManager, Zikula_EventManager, Zikula_AbstractEventHandler, Zikula_Hook_AbstractHandler, or other.
+     */
+    private function _setup($object)
+    {
+        $this->object = $object;
+        if ($object instanceof Zikula_AbstractBase || $object instanceof Zikula_AbstractEventHandler || $object instanceof Zikula_Hook_AbstractHandler || $object instanceof Zikula_AbstractPlugin) {
+            $this->serviceManager = $object->getServiceManager();
+            $this->eventManager = $this->serviceManager->getEventManager();
+        } else if ($object instanceof Zikula_ServiceManager) {
+            $this->serviceManager = $object;
+            $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        } else if ($object instanceof Zikula_EventManager) {
+            $this->eventManager = $object;
+            $this->serviceManager = $object->getServiceManager();
+        }
+
+        if ($object instanceof Zikula_AbstractBase) {
+            $this->domain($object->getDomain());
+        }
     }
 
     /**
