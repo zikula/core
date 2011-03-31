@@ -811,16 +811,20 @@ class Users_Controller_User extends Zikula_AbstractController
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
 
         $loggedIn = false;
+        $isFunctionCall = false;
+        $isReentry = false;
 
         // Need to check for $args first, since isPost() and isGet() will have been set on the original call
         if (isset($args) && is_array($args) && !empty($args)) {
-            // We are coming back (reentering) from someplace else via a direct call to this function. It is likely that
+            // We are coming in or back (reentering) from someplace else via a direct call to this function. It is likely that
             // we are coming back from a user.login.veto event handler that redirected the user to a page where he had to provide
             // more information.
             $authenticationInfo     = isset($args['authentication_info']) ? $args['authentication_info'] : array();
             $selectedAuthenticationMethod = isset($args['authentication_method']) ? $args['authentication_method'] : array();
             $rememberMe             = isset($args['rememberme']) ? $args['rememberme'] : false;
             $returnUrl              = isset($args['returnurl']) ? $args['returnurl'] : $this->request->getGet()->get('returnurl', '');
+            
+            $isFunctionCall = true;
         } elseif (isset($args) && !is_array($args)) {
             // Coming from a function call, but bad $args
             throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
@@ -835,36 +839,47 @@ class Users_Controller_User extends Zikula_AbstractController
             $rememberMe             = $this->request->getPost()->get('rememberme', false);
             $returnUrl              = $this->request->getPost()->get('returnurl', $this->request->getGet()->get('returnurl', ''));
         } elseif ($this->request->isGet()) {
-            if ($this->request->getSession()->has('Users_Controller_User_login', 'Zikula_Users')) {
+            $reentry = false;
+            $reentrantTokenReceived = $this->request->getGet()->get('reentranttoken', '');
+            
+            $sessionVars = $this->request->getSession()->get('Users_Controller_User_login', array(), 'Zikula_Users');
+            $this->request->getSession()->del('Users_Controller_User_login', 'Zikula_Users');
+
+            $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
+            
+            if (!empty($reentrantTokenReceived) && ($reentrantTokenReceived == $reentrantToken)) {
                 // We are coming back (reentering) from someplace else. It is likely that we are coming back from an external
                 // authentication process initiated by an authentication module such as OpenID.
-                $sessionVars = $this->request->getSession()->get('Users_Controller_User_login', array(), 'Zikula_Users');
-                $this->request->getSession()->del('Users_Controller_User_login', 'Zikula_Users');
-
                 $authenticationInfo     = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
                 $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
                 $rememberMe             = isset($sessionVars['rememberme']) ? $sessionVars['rememberme'] : false;
                 $returnUrl              = isset($sessionVars['returnurl']) ? $sessionVars['returnurl'] : $this->request->getGet()->get('returnurl', '');
                 $user                   = isset($sessionVars['user_obj']) ? $sessionVars['user_obj'] : null;
+                
+                $isReentry = true;
             } else {
                 $authenticationInfo     = array();
                 $selectedAuthenticationMethod = array();
                 $rememberMe             = false;
                 $returnUrl              = $this->request->getGet()->get('returnurl', '');
+                $user                   = array();
                 
                 $event = new Zikula_Event('module.users.ui.login.started');
                 $this->eventManager->notify($event);
-                $user = array();
             }
         } else {
             throw new Zikula_Exception_Forbidden();
+        }
+
+        if (!isset($reentrantToken)) {
+            $reentrantToken = substr(SecurityUtil::generateCsrfToken(), 0, 10);
         }
 
         // Any authentication information for use in this pass through login is gathered, so ensure any session variable
         // is cleared, even if we are coming in through a post or a function call that didn't gather info from the session.
         $this->request->getSession()->del('Users_Controller_User_login', 'Zikula_Users');
 
-        if ($this->request->isPost() || (isset($args) && is_array($args) && !empty($args))) {
+        if ($this->request->isPost() || $isFunctionCall || $isReentry) {
             if (isset($authenticationInfo) && is_array($authenticationInfo) && !empty($authenticationInfo)) {
                 // A form submission, or a simulated submission as a function call.
 
@@ -879,13 +894,14 @@ class Users_Controller_User extends Zikula_AbstractController
                     'authentication_info'   => $authenticationInfo,
                     'authentication_method' => $selectedAuthenticationMethod,
                     'rememberme'            => $rememberMe,
+                    'reentranttoken'        => $reentrantToken,
                 );
                 $this->request->getSession()->set('Users_Controller_User_login', $sessionVars, 'Zikula_Users');
 
                 // The authentication method selected might be reentrant (it might send the user out to an external web site
                 // for authentication, and then send us back to finish the job). We need to tell the external system to where
                 // we would like to return.
-                $reentrantURL = System::getBaseUrl() . ModUtil::url($this->name, 'user', 'login', array('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager, true)));
+                $reentrantUrl = ModUtil::url($this->name, 'user', 'login', array('reentranttoken' => $reentrantToken), null, null, true, true);
 
                 // There may be hook providers that need to be validated, so we cannot yet log in. The hook providers will
                 // need a user object to make sure they know who they're dealing with. Authenticate (so we are sure that
@@ -893,7 +909,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 //
                 // The chosen authentication method might be reentrant, and this is the point were the user might be directed
                 // outside the Zikula system for external authentication.
-                $user = UserUtil::authenticateUserUsing($selectedAuthenticationMethod, $authenticationInfo, $reentrantURL, true);
+                $user = UserUtil::authenticateUserUsing($selectedAuthenticationMethod, $authenticationInfo, $reentrantUrl, true);
 
                 // If we have gotten to this point in the same call to login(), then the authentication method was not external
                 // and reentrant, so we should not need the session variable any more. If it is external and reentrant, and the
@@ -921,7 +937,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
                         // Because we are passing a $user and setting checkPassword false, this call back into the authentication
                         // chain should not trigger an external re-authentication, so it should not need preparation for reentry.
-                        $loggedIn = UserUtil::loginUsing($selectedAuthenticationMethod, $authenticationInfo, $rememberMe, $reentrantURL, false, $user);
+                        $loggedIn = UserUtil::loginUsing($selectedAuthenticationMethod, $authenticationInfo, $rememberMe, $reentrantUrl, false, $user);
                         
                         if (!$loggedIn) {
                             // Because the user was preauthentication, this should never happen, but just in case...
