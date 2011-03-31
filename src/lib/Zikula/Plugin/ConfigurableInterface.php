@@ -25,7 +25,7 @@ interface Zikula_Plugin_ConfigurableInterface
      *     return new SystemPlugin_Example_Controller($this->serviceManager, array('plugin' => $this));
      * </samp>
      *
-     * @return Zikula_Controller_Plugin
+     * @return Zikula_Controller_AbstractPlugin
      */
     public function getConfigurationController();
 }

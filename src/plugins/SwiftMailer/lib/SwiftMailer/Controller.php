@@ -15,7 +15,7 @@
 /**
  * Controller class.
  */
-class SystemPlugin_SwiftMailer_Controller extends Zikula_Controller_Plugin
+class SystemPlugin_SwiftMailer_Controller extends Zikula_Controller_AbstractPlugin
 {
     /**
      * Fetch and render the configuration template.

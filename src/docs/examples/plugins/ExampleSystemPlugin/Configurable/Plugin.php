@@ -43,7 +43,7 @@ class SystemPlugin_Configurable_Plugin extends Zikula_AbstractPlugin implements 
     /**
      * Return controller instance.
      *
-     * @return Zikula_Controller_Plugin
+     * @return Zikula_Controller_AbstractPlugin
      */
     public function getConfigurationController()
     {
