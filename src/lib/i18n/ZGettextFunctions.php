@@ -13,7 +13,7 @@
  */
 
 if (!defined('LC_MESSAGES')) {
-    define('LC_MESSAGES', 6);
+    define('LC_MESSAGES', 5);
 }
 
 /**
