@@ -717,13 +717,13 @@ CHANGE pn_expire z_expire INT(11) NOT NULL DEFAULT  '0',
 CHANGE pn_active z_active INT(11) NOT NULL DEFAULT  '1',
 CHANGE pn_view z_view INT(11) NOT NULL DEFAULT  '1',
 CHANGE pn_language z_language VARCHAR(30) NOT NULL DEFAULT  ''";
-    $silentCommands[] = "ALTER TABLE plock_pagelock CHANGE plock_id z_plock_id INT(11) NOT NULL AUTO_INCREMENT";
-    $silentCommands[] = "ALTER TABLE plock_pagelock CHANGE plock_name z_plock_name VARCHAR(100) NOT NULL";
-    $silentCommands[] = "ALTER TABLE plock_pagelock CHANGE plock_cdate z_plock_cdate DATETIME NOT NULL";
-    $silentCommands[] = "ALTER TABLE plock_pagelock CHANGE plock_edate z_plock_edate DATETIME NOT NULL";
-    $silentCommands[] = "ALTER TABLE plock_pagelock CHANGE plock_session z_plock_session VARCHAR(50) NOT NULL";
-    $silentCommands[] = "ALTER TABLE plock_pagelock CHANGE plock_title z_plock_title VARCHAR(100) NOT NULL";
-    $silentCommands[] = "ALTER TABLE plock_pagelock CHANGE plock_ipno z_plock_ipno VARCHAR(30) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_id z_id INT(11) NOT NULL AUTO_INCREMENT";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_name z_name VARCHAR(100) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_cdate z_cdate DATETIME NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_edate z_edate DATETIME NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_session z_session VARCHAR(50) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_title z_title VARCHAR(100) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_ipno z_ipno VARCHAR(30) NOT NULL";
 
     foreach ($commands as $sql) {
         $stmt = $connection->prepare($sql);
