@@ -312,7 +312,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         // This event sends $this as the subject so you can modify as required:
         // e.g.  $event->getSubject()->register_prefilter('foo');
-        $event = new Zikula_Event('view.init', $this);
+        $args = array('module' => $module, 'modinfo' => $this->modinfo, 'themeinfo' => $this->themeinfo);
+        $event = new Zikula_Event('view.init', $this, $args);
         $this->eventManager->notify($event);
     }
 
