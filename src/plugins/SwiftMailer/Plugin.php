@@ -45,8 +45,12 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
         ZLoader::addAutoloader('Swift', dirname(__FILE__) . '/lib/vendor/SwiftMailer/classes');
 
         // initialize Swift
-        require_once realpath($this->baseDir . '/lib/vendor/SwiftMailer/swift_init.php');
-
+        //require_once realpath($this->baseDir . '/lib/vendor/SwiftMailer/swift_init.php'); // dont use this as it fails in virtual hosting environments with open_basedir restrictions
+        // Load in dependency maps
+        require_once dirname(__FILE__) . '/lib/vendor/SwiftMailer/dependency_maps/cache_deps.php';
+        require_once dirname(__FILE__) . '/lib/vendor/SwiftMailer/dependency_maps/mime_deps.php';
+        require_once dirname(__FILE__) . '/lib/vendor/SwiftMailer/dependency_maps/transport_deps.php';
+        
         // load configuration (todo: move this to persistence).
         include dirname(__FILE__) . '/configuration/config.php';
 
