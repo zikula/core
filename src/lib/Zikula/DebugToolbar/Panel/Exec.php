@@ -89,15 +89,15 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             
             if (strlen($argsShort) >= 100) {
                 $idArgs = $id . 'args';
-                $args = '<a href="" title="'.__('Click to show the full parameter list').'" onclick="$(\''.$idArgs.'\').toggle();return false;">' . $argsShort . '</a><span style="display:none" id="'.$idArgs.'">' . $this->formatVar('', $exec['args'], false) . '</span>';
+                $args = '<a href="" title="'.__('Click to show the full parameter list').'" onclick="$(\''.$idArgs.'\').toggle();return false;">' . $argsShort . '</a><div style="display:none" id="'.$idArgs.'">' . $this->formatVar('', $exec['args']) . '</div>';
             } else {
                 $args = $argsShort;
             }
             
             if (!is_string($exec['data'])) {
-                $exec['data'] = $this->formatVar('', $exec['data'], false);
+                $exec['data'] = $this->formatVar('', $exec['data']);
             } else {
-                $exec['data'] = DataUtil::formatForDisplay($exec['data']);
+                $exec['data'] = '<pre>' . DataUtil::formatForDisplay($exec['data']) . '</pre>';
             }
 
             $rows[] = '<tr>
@@ -105,7 +105,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
                            <td>'.round($exec['time'], 3).'</td>
                        </tr>
                        <tr id="'.$id.'" style="display: none;">
-                           <td><pre>' . $exec['data'] . '</pre></td>
+                           <td>' . $exec['data'] . '</td>
                        </tr>';
         }
 
@@ -199,10 +199,12 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
      */
     protected function formatVar($key, $var, $level=1)
     {
+        $html = '';
+        
         if ($level > self::RECURSIVE_LIMIT) {
-            return '<li>...</li>';
+            return '...';
         } else if (is_object($var)) {
-            $html =  "<li><strong>" . $key . '</strong>  <span style="color:#666666;font-style:italic;">('.
+            $html =  "<strong>" . $key . '</strong>  <span style="color:#666666;font-style:italic;">('.
                        get_class($var).')</span>: <ul>';
 
             if (!in_array(get_class($var), self::$OBJECTS_TO_SKIPP)) {
@@ -211,37 +213,37 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
                 // because reflection in php 5.2 does not support private/protected properties
                 $clsData = (array)$var;
                 foreach ($cls->getProperties() as $prop) {
-                   $html .= $this->formatVar($prop->name, $clsData["\0*\0".$prop->name], $level++);
+                   $html .= $this->formatVar($prop->name, $clsData["\0*\0".$prop->name], $level + 1);
                 }
             }
 
-            $html .= '</ul></li>';
-            return $html;
+            $html .= '</ul>';
         } else if (is_array($var)) {
-            if (!$level==1) {
-                $html =  '<li><code>' . $key . '</code> <span style="color:#666666;font-style:italic;">(array)</span>: <ul>';
-            } else {
-                $html =  '<ul>';
-            }
+            $html =  '<code>' . $key . '</code> <span style="color:#666666;font-style:italic;">(array)</span>: <ul>';
 
             if (!empty($var) && (count($var) > 0)) {
                 foreach ($var as $akey => $avar) {
-                    $html .= $this->formatVar($akey, $avar, $level++);
+                    $html .= $this->formatVar($akey, $avar, $level + 1);
                 }
             } else {
                 $html .= '<li><em>'.__('(empty)').'</em></li>';
             }
 
-            if (!$level==1) {
-                $html .= '</ul></li>';
-            } else {
-                $html .= '</ul>';
-            }
-            return $html;
+            $html .= '</ul>';
+            
         } else {
-            return '<li><code>' . $key . '</code> <span style="color:#666666;font-style:italic;">('.
-                     gettype($var).')</span>: <pre class="DebugToolbarVarDump">' . DataUtil::formatForDisplay($var) . '</pre></li>';
+            $html =  '<code>' . $key . '</code> <span style="color:#666666;font-style:italic;">('.
+                        gettype($var).')</span>: <pre class="DebugToolbarVarDump">' . DataUtil::formatForDisplay($var) . '</pre>';
         } 
+        
+        
+        $html = '<li>' . $html . '</li>';
+        
+        if($level == 1) {
+            $html = '<ul>' . $html . '</ul>';
+        }
+        
+        return $html;
     }
 
     /**
