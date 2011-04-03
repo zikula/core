@@ -154,10 +154,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param string                $module         Module name ("zikula" for system plugins).
+     * @param string                $moduleName     Module name ("zikula" for system plugins).
      * @param boolean|null          $caching        Whether or not to cache (boolean) or use config variable (null).
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, $module = '', $caching = null)
+    public function __construct(Zikula_ServiceManager $serviceManager, $moduleName = '', $caching = null)
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
@@ -172,10 +172,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // you need to set this property to the name of the respective module!
         $this->toplevelmodule = ModUtil::getName();
         $this->moduleName = ModUtil::getName();
-        if (!$module) {
-            $module = $this->toplevelmodule;
+        if (!$moduleName) {
+            $moduleName = $this->toplevelmodule;
         }
-        $this->module = array($module => ModUtil::getInfoFromName($module));
+        $this->module = array($moduleName => ModUtil::getInfoFromName($moduleName));
 
         // initialise environment vars
         $this->language = ZLanguage::getLanguageCode();
@@ -187,26 +187,26 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
         $this->theme = $theme = $this->themeinfo['directory'];
 
-        $this->modinfo = ModUtil::getInfoFromName($module);
+        $this->modinfo = ModUtil::getInfoFromName($moduleName);
 
-        switch ($this->module[$module]['type'])
+        switch ($this->module[$moduleName]['type'])
         {
             case ModUtil::TYPE_MODULE :
-                $mpluginPath = "modules/" . $this->module[$module]['directory'] . "/templates/plugins";
-                $mpluginPathOld = "modules/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "modules/" . $this->module[$moduleName]['directory'] . "/templates/plugins";
+                $mpluginPathOld = "modules/" . $this->module[$moduleName]['directory'] . "/pntemplates/plugins";
                 break;
             case ModUtil::TYPE_SYSTEM :
-                $mpluginPath = "system/" . $this->module[$module]['directory'] . "/templates/plugins";
-                $mpluginPathOld = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "system/" . $this->module[$moduleName]['directory'] . "/templates/plugins";
+                $mpluginPathOld = "system/" . $this->module[$moduleName]['directory'] . "/pntemplates/plugins";
                 break;
             default:
-                $mpluginPath = "system/" . $this->module[$module]['directory'] . "/templates/plugins";
-                $mpluginPathOld = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "system/" . $this->module[$moduleName]['directory'] . "/templates/plugins";
+                $mpluginPathOld = "system/" . $this->module[$moduleName]['directory'] . "/pntemplates/plugins";
         }
 
         // Add standard plugin search path
         $this->addPluginDir('config/plugins'); // Official override
-        $this->addPluginDir("themes/$theme/templates/modules/$module/plugins"); // Module override in themes
+        $this->addPluginDir("themes/$theme/templates/modules/$moduleName/plugins"); // Module override in themes
         $this->addPluginDir("themes/$theme/plugins"); // Theme plugins
         $this->addPluginDir($mpluginPath); // Plugins for current module
         if (System::isLegacyMode()) {
@@ -283,8 +283,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->assign('imagelangpath', $this->baseurl . 'themes/' . $theme . '/images/' . $this->language);
 
         // for {gt} template plugin to detect gettext domain
-        if ($this->module[$module]['type'] == ModUtil::TYPE_MODULE) {
-            $this->domain = ZLanguage::getModuleDomain($this->module[$module]['name']);
+        if ($this->module[$moduleName]['type'] == ModUtil::TYPE_MODULE) {
+            $this->domain = ZLanguage::getModuleDomain($this->module[$moduleName]['name']);
         }
 
         // make render object available to modifiers
@@ -306,14 +306,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         parent::assign('metatags', $this->serviceManager['zikula_view.metatags']);
 
         // add some useful data
-        $this->assign(array('module' => $module,
+        $this->assign(array('module' => $moduleName,
                             'modinfo' => $this->modinfo,
                             'themeinfo' => $this->themeinfo));
 
-        // This event sends $this as the subject so you can modify as required:
-        // e.g.  $event->getSubject()->register_prefilter('foo');
-        $args = array('module' => $module, 'modinfo' => $this->modinfo, 'themeinfo' => $this->themeinfo);
-        $event = new Zikula_Event('view.init', $this, $args);
+        $event = new Zikula_Event('view.init', $this);
         $this->eventManager->notify($event);
     }
 

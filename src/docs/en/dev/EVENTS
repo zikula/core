@@ -161,8 +161,8 @@ Triggered by a native ajax request from a theme.  This occurs when the following
 Handlers should be registered in the theme.
 
 #### `theme.init`
-Occurs just before `Theme#__construct()` exits.  Subject is `$this`, args are
-`array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo)`
+Occurs just before `Zikula_View_Theme#__construct()` finishes.
+The subject is the Zikula_View_Theme instance.
 
 #### `theme.load_config`
 Runs just before `Theme#_load_config()` completed.  Subject is the Theme instance.
@@ -178,8 +178,8 @@ event subject is `$this` (Theme instance) and the event data is the rendered
 output which you can modify with `$event->setData()` in the event handler.
 
 #### `view.init`
-Occurs just before `Zikula_View#__construct()` exits. Subject is `$this`, args are
-`array('module' => $module, 'modinfo' => $modinfo, 'themeinfo' => $themeinfo)`
+Occurs just before `Zikula_View#__construct()` finishes.
+The subject is the Zikula_View instance.
 
 #### `view.fetch`
 Filter of result of a fetch.  Receives `Zikula_View` instance as subject, args are
