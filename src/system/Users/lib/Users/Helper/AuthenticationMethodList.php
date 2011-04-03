@@ -61,7 +61,7 @@ class Users_Helper_AuthenticationMethodList extends Zikula_AbstractHelper implem
      * 
      * @throws Zikula_Exception_Fatal Thrown if a list of authentication modules cannot be obtained from ModUtil. 
      */
-    public function __construct(Zikula_AbstractBase $base, array $orderedListableAuthenticationMethods = array())
+    public function __construct(Zikula_AbstractBase $base, array $orderedListableAuthenticationMethods = array(), $filter = Zikula_Api_AbstractAuthentication::FILTER_NONE)
     {
         parent::__construct($base);
 
@@ -73,7 +73,10 @@ class Users_Helper_AuthenticationMethodList extends Zikula_AbstractHelper implem
         }
         
         foreach ($authenticationModules as $modinfo) {
-            $moduleAuthenticationMethods = ModUtil::apiFunc($modinfo['name'], 'Authentication', 'getAuthenticationMethods', null, 'Zikula_Api_AbstractAuthentication');
+            $getAuthenticationMethodsArgs = array(
+                'filter' => $filter,
+            );
+            $moduleAuthenticationMethods = ModUtil::apiFunc($modinfo['name'], 'Authentication', 'getAuthenticationMethods', $getAuthenticationMethodsArgs, 'Zikula_Api_AbstractAuthentication');
             if (is_array($moduleAuthenticationMethods) && !empty($moduleAuthenticationMethods)) {
                 $this->authenticationMethods = array_merge($this->authenticationMethods, array_values($moduleAuthenticationMethods));
                 $this->nameIndex[$modinfo['name']] = array();

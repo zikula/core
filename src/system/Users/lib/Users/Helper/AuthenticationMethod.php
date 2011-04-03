@@ -40,6 +40,33 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
     protected $enabledForAuthentication;
 
     /**
+     * Indicates whether this method can be enabled for use as an authentication method for registration.
+     * 
+     * This flag indicates the method's basic capability, and should not be changed through configuration.
+     * 
+     * NOTE: The two core authentication methods, user name and email address should NOT set this flag! 
+     * This is for other modules that define authentication methods that can be used in the registration
+     * process. THE TWO CORE METHODS ARE HANDLED DIFFERENTLY.
+     *
+     * @var boolean
+     */
+    protected $capableOfRegistration;
+
+    /**
+     * Indicates whether this method can be used as an authentication method for registration.
+     * 
+     * This flag is controlled by configuration. To indicate whether the method is capable of being
+     * used for registration in the first place, see $capableOfRegistration.
+     * 
+     * NOTE: The two core authentication methods, user name and email address should NOT set this flag! 
+     * This is for other modules that define authentication methods that can be used in the registration
+     * process. THE TWO CORE METHODS ARE HANDLED DIFFERENTLY.
+     *
+     * @var boolean
+     */
+    protected $enabledForRegistration;
+
+    /**
      * A brief description of the method.
      *
      * @var string
@@ -56,12 +83,13 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
     /**
      * Construct an instance of the method definition.
      *
-     * @param string $modname          The name of the authentication module that defines the method.
-     * @param string $method           The name of the method.
-     * @param string $shortDescription The brief description.
-     * @param string $longDescription  The more complete description.
+     * @param string  $modname               The name of the authentication module that defines the method.
+     * @param string  $method                The name of the method.
+     * @param string  $shortDescription      The brief description.
+     * @param string  $longDescription       The more complete description.
+     * @param boolean $capableOfRegistration True if the method is an external authentication method that can be used with the registration process; otherwise false.
      */
-    public function __construct($modname, $method, $shortDescription, $longDescription)
+    public function __construct($modname, $method, $shortDescription, $longDescription, $capableOfRegistration = false)
     {
         $this->setModule($modname);
         $this->setMethod($method);
@@ -69,6 +97,8 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
         $this->setLongDescription($longDescription);
 
         $this->enabledForAuthentication = true;
+        $this->capableOfRegistration = (bool)$capableOfRegistration;
+        $this->enabledForRegistration = $this->capableOfRegistration;
     }
 
     /**
@@ -232,6 +262,50 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
     }
 
     /**
+     * Retrieve whether the defined method is capable of being enabled for use as an external registration method.
+     *
+     * @return boolean True if the method can be enabled for use with registration; otherwise false.
+     */
+    public function isCapableOfRegistration()
+    {
+        return $this->capableOfRegistration;
+    }
+
+    /**
+     * Retrieve whether the defined method is currently enabled for use as an external registration method.
+     *
+     * @return boolean True if the method can be used for registration; otherwise false.
+     */
+    public function isEnabledForRegistration()
+    {
+        return $this->capableOfRegistration && $this->enabledForRegistration;
+    }
+
+    /**
+     * Enable this authentication method for use in the registration process as an external registration method.
+     * 
+     * @return void
+     */
+    public function enableForRegistration()
+    {
+        if ($this->capableOfRegistration) {
+            $this->enabledForRegistration = true;
+        } else {
+            throw Zikula_Exception_Fatal($this->__('The authentication method is not capable of being used for registration.'));
+        }
+    }
+
+    /**
+     * Disable this authentication method for use in the registration process as an external registration method.
+     * 
+     * @return void
+     */
+    public function disableForRegistration()
+    {
+        $this->enabledForRegistration = false;
+    }
+
+    /**
      * Provides internal attribute access for protected and private properties that have defined accessors.
      * 
      * Some aliases are also recognized for certain properties.
@@ -264,6 +338,14 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
             case 'enabled_for_authentication':
                 return $this->isEnabledForAuthentication();
                 break;
+            case 'capableOfRegistration':
+            case 'capable_of_registration':
+                return $this->isCapableOfRegistration();
+                break;
+            case 'enabledForRegistration':
+            case 'enabled_for_registration':
+                return $this->isEnabledForRegistration();
+                break;
             default:
                 $trace = debug_backtrace();
                 // NO I18N for $function!
@@ -292,6 +374,10 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
     public function __isset($name)
     {
         switch($name) {
+            case 'capableOfRegistration':
+            case 'capable_of_registration':
+            case 'enabledForRegistration':
+            case 'enabled_for_registration':
             case 'enabledForAuthentication':
             case 'enabled_for_authentication':
             case 'modname':
@@ -338,6 +424,14 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
                     $this->enableForAuthentication();
                 } else {
                     $this->disableForAuthentication();
+                }
+                break;
+            case 'enabledForRegistration':
+            case 'enabled_for_registration':
+                if ($value) {
+                    $this->enableForRegistration();
+                } else {
+                    $this->disableForRegistration();
                 }
                 break;
             case 'modname':
@@ -388,6 +482,8 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
         switch($name) {
             case 'enabledForAuthentication':
             case 'enabled_for_authentication':
+            case 'enabledForRegistration':
+            case 'enabled_for_registration':
                 // NO I18N for $function!
                 $message = $this->__f('Attempt to unset required property via %1$s: %2$s in $3$s on line %4$d.', array(
                     '__unset()',
