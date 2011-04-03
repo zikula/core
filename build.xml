@@ -59,9 +59,6 @@
         <exec command="cp -a ${workspace}/source/src ${packagepath}" />
         <delete dir="${packagepath}/themes/Admin" includeemptydirs="true" />
 
-        <exec command="svn export --force http://svn.github.com/zikula-modules/Tour.git ${builddir}/tmp/Tour" />
-        <exec command="mv ${builddir}/tmp/Legal/src/modules/Legal ${packagepath}/modules" />
-
         <exec command="svn export --force http://svn.github.com/zikula-modules/Legal.git ${builddir}/tmp/Legal" />
         <exec command="mv ${builddir}/tmp/Tour/src/modules/Tour ${packagepath}/modules" />
 
