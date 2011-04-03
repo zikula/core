@@ -224,13 +224,12 @@ class Zikula_View_Theme extends Zikula_View
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param string                $theme          Theme name.
-     * @param boolean               $usefilters     Whether or not to use output filters.
+     * @param string                $themeName      Theme name.
      */
-    public function __construct($serviceManager, $theme, $usefilters = true)
+    public function __construct($serviceManager, $themeName)
     {
         // store our theme directory
-        $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
+        $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themeName));
         foreach ($themeinfo as $key => $value) {
             $this->$key = $value;
         }
@@ -245,10 +244,10 @@ class Zikula_View_Theme extends Zikula_View
             $this->domain = null;
         }
 
-        EventUtil::attachCustomHandlers("themes/$theme/lib/$theme/EventHandlers");
-        if (is_readable("themes/$theme/templates/overrides.yml")) {
+        EventUtil::attachCustomHandlers("themes/$themeName/lib/$themeName/EventHandlers");
+        if (is_readable("themes/$themeName/templates/overrides.yml")) {
             $this->eventManager->attach('zikula_view.template_override', array($this, '_templateOverride'), 0);
-            $this->_overrideMap = Doctrine_Parser::load("themes/$theme/templates/overrides.yml", 'yml');
+            $this->_overrideMap = Doctrine_Parser::load("themes/$themeName/templates/overrides.yml", 'yml');
         }
 
         // change some base settings from our parent class
@@ -294,24 +293,20 @@ class Zikula_View_Theme extends Zikula_View
             System::shutdown();
         }
 
-        if ($usefilters) {
-            // register page vars output filter
-            $this->load_filter('output', 'pagevars');
+        // register page vars output filter
+        $this->load_filter('output', 'pagevars');
 
-            // register short urls output filter
-            if (System::getVar('shorturls')) {
-                $this->load_filter('output', 'shorturls');
-            }
-
-            // register trim whitespace output filter if requried
-            if (ModUtil::getVar('Theme', 'trimwhitespace')) {
-                $this->load_filter('output', 'trimwhitespace');
-            }
+        // register short urls output filter
+        if (System::getVar('shorturls')) {
+            $this->load_filter('output', 'shorturls');
         }
 
-        // This event sends $this as the subject so you can modify as required:
-        // e.g.  $event->getSubject()->load_filter('output', 'multihook');
-        $event = new Zikula_Event('theme.init', $this, array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo));
+        // register trim whitespace output filter if requried
+        if (ModUtil::getVar('Theme', 'trimwhitespace')) {
+            $this->load_filter('output', 'trimwhitespace');
+        }
+
+        $event = new Zikula_Event('theme.init', $this);
         $this->eventManager->notify($event);
 
         // Start the output buffering to capture module output
@@ -598,27 +593,23 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Get Theme instance.
      *
-     * @param string  $theme      Theme name.
+     * @param string  $themeName  Theme name.
      * @param boolean $usefilters Whether or not to use output filters.
      * @param string  $cache_id   Cache Id (UNUSED - E_STRICT legacy).
      *
      * @return Theme
      */
-    public static function getInstance($theme = '', $usefilters = null, $cache_id = null)
+    public static function getInstance($themeName = '', $usefilters = null)
     {
-        if (!$theme) {
-            $theme = UserUtil::getTheme();
-        }
-
-        if (is_null($usefilters)) {
-            $usefilters = true;
+        if (!$themeName) {
+            $themeName = UserUtil::getTheme();
         }
 
         $serviceId = 'zikula.theme';
         $serviceManager = ServiceUtil::getManager();
 
         if (!$serviceManager->hasService($serviceId)) {
-            $themeInstance = new self($serviceManager, $theme, $usefilters);
+            $themeInstance = new self($serviceManager, $themeName);
             $serviceManager->attachService($serviceId, $themeInstance);
         } else {
             $themeInstance = $serviceManager->getService($serviceId);
