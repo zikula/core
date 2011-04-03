@@ -27,7 +27,7 @@ class ZI18n
     /**
      * Locale.
      * 
-     * @var array
+     * @var ZLocale
      */
     public $locale;
 
@@ -62,11 +62,11 @@ class ZI18n
     /**
      * Constructor.
      * 
-     * @param string $locale Locale.
+     * @param ZLocale $locale Locale.
      */
-    public function __construct($locale)
+    public function __construct(ZLocale $locale)
     {
-        $this->locale = new ZLocale($locale);
+        $this->locale = $locale;
     }
 
     /**
@@ -82,7 +82,7 @@ class ZI18n
             $locale = ZLanguage::getLanguageCode();
         }
         if (!isset(self::$instance[$locale])) {
-            self::$instance[$locale] = new self($locale);
+            self::$instance[$locale] = new self(new ZLocale($locale));
         }
         return self::$instance[$locale];
     }
