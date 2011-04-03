@@ -36,8 +36,8 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
      *
      * Parameters passed in the $args array:
      * -------------------------------------
-     * - string $args['formType'] Either 'page' or 'block' indicating whether the selector will appear on a full page or a block.
-     * - string $args['method']   The authentication method for which a selector should be returned.
+     * - string $args['form_type'] An indicator of the type of form the form fields will appear on.
+     * - string $args['method']    The authentication method for which a selector should be returned.
      * 
      * @param array $args The parameters for this function.
      *
@@ -52,9 +52,9 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
             throw new Zikula_Exception_Fatal($this->__('An invalid \'$args\' parameter was received.'));
         }
 
-        if (!isset($args['formType']) || !is_string($args['formType'])) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid formType (\'%1$s\') was received.', array(
-                isset($args['formType']) ? $args['formType'] : 'NULL'))
+        if (!isset($args['form_type']) || !is_string($args['form_type'])) {
+            throw new Zikula_Exception_Fatal($this->__('An invalid form type (\'%1$s\') was received.', array(
+                isset($args['form_type']) ? $args['form_type'] : 'NULL'))
             );
         }
 
@@ -66,7 +66,7 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
         // End parameter extraction and error checking
 
         if ($this->authenticationMethodIsEnabled($args['method'])) {
-            $templateName = mb_strtolower("users_auth_loginformfields_{$args['formType']}.tpl");
+            $templateName = mb_strtolower("users_auth_loginformfields_{$args['form_type']}.tpl");
             if ($this->view->template_exists($templateName)) {
                 return $this->view->assign('authentication_method', $args['method'])
                         ->fetch($templateName);
@@ -79,8 +79,9 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
      * 
      * Parameters passed in the $args array:
      * -------------------------------------
-     * - string $args['formType'] Either 'page' or 'block' indicating whether the selector will appear on a full page or a block.
-     * - string $args['method']   The authentication method for which a selector should be returned.
+     * - string $args['form_type']   An indicator of the type of form on which the selector will appear.
+     * - string $args['form_action'] The URL to which the selector form should submit.
+     * - string $args['method']      The authentication method for which a selector should be returned.
      * 
      * @param array $args The parameters for this function.
      *
@@ -95,9 +96,15 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
             throw new Zikula_Exception_Fatal($this->__('An invalid \'$args\' parameter was received.'));
         }
 
-        if (!isset($args['formType']) || !is_string($args['formType'])) {
-            throw new Zikula_Exception_Fatal($this->__f('An invalid formType (\'%1$s\') was received.', array(
-                isset($args['formType']) ? $args['formType'] : 'NULL'))
+        if (!isset($args['form_type']) || !is_string($args['form_type'])) {
+            throw new Zikula_Exception_Fatal($this->__f('An invalid form type (\'%1$s\') was received.', array(
+                isset($args['form_type']) ? $args['form_type'] : 'NULL'))
+            );
+        }
+
+        if (!isset($args['form_action']) || !is_string($args['form_action'])) {
+            throw new Zikula_Exception_Fatal($this->__f('An invalid form action (\'%1$s\') was received.', array(
+                isset($args['form_action']) ? $args['form_action'] : 'NULL'))
             );
         }
 
@@ -109,17 +116,32 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
         // End parameter extraction and error checking
 
         if ($this->authenticationMethodIsEnabled($args['method'])) {
-            $authenticationMethod = array(
-                'modname'   => $this->name,
-                'method'    => $args['method'],
+            $templateVars = array(
+                'authentication_method' => array(
+                    'modname'   => $this->name,
+                    'method'    => $args['method'],
+                ),
+                'is_selected'           => isset($args['is_selected']) && $args['is_selected'],
+                'form_type'             => $args['form_type'],
+                'form_action'           => $args['form_action'],
             );
             
-            $templateName = mb_strtolower("users_auth_authenticationmethodselector_{$args['formType']}.tpl");
-            if ($this->view->template_exists($templateName)) {
-                return $this->view->assign('authentication_method', $authenticationMethod)
-                        ->assign('is_selected', isset($args['is_selected']) && $args['is_selected'])
-                        ->fetch($templateName);
+            $templateName = mb_strtolower("users_auth_authenticationmethodselector_{$args['form_type']}_{$args['method']}.tpl");
+            if (!$this->view->template_exists($templateName)) {
+                $templateName = mb_strtolower("users_auth_authenticationmethodselector_default_{$args['method']}.tpl");
+                if (!$this->view->template_exists($templateName)) {
+                    $templateName = mb_strtolower("users_auth_authenticationmethodselector_{$args['form_type']}_default.tpl");
+                    if (!$this->view->template_exists($templateName)) {
+                        $templateName = mb_strtolower("users_auth_authenticationmethodselector_default_default.tpl");
+                        if (!$this->view->template_exists($templateName)) {
+                            throw new Zikula_Exception_Fatal($this->__f('An authentication method selector template was not found for method \'%1$s\' using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
+                        }
+                    }
+                }
             }
+
+            return $this->view->assign($templateVars)
+                    ->fetch($templateName);
         }
     }
 }

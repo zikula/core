@@ -43,7 +43,7 @@ Zikula.Users.Login =
         }
 
         // Remove selected indicator from selectors
-        $$('.users_login_select_authentication_selected').invoke('removeClassName', 'users_login_select_authentication_selected');
+        $$('.authentication_select_method_selected').invoke('removeClassName', 'authentication_select_method_selected');
 
         // Unhide the waiting indicator
         $('users_login_waiting').removeClassName('z-hide');
@@ -113,7 +113,7 @@ Zikula.Users.Login =
         Zikula.Users.Login.showAjaxInProgress();
 
         var parameterObj = $(formId).serialize(true);
-        parameterObj.formType = 'page';
+        parameterObj.form_type = 'loginscreen';
 
         var r = new Zikula.Ajax.Request(
             Zikula.Config.baseURL + 'ajax.php?module=Users&func=getLoginFormFields',
@@ -140,7 +140,7 @@ Zikula.Users.Login =
 
             if (data.method !== false) {
                 // Hide the chosen authentication method in the list
-                $('users_login_select_authentication_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase() + '_submit').addClassName('users_login_select_authentication_selected');
+                $('users_login_select_authentication_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase() + '_submit').addClassName('authentication_select_method_selected');
             }
 
             Zikula.Users.Login.showAjaxComplete((data.content == false) || (data.content == ''));

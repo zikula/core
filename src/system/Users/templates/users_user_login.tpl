@@ -13,20 +13,23 @@
     <h5 id="users_login_h5_no_authentication_method"{if !empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Choose how you would like to log in by clicking on one of the following..."}</h5>
     <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Log in below, or change how you would like to log in by clicking on one of the following..."}</h5>
     <h5 id="users_login_h5" class="z-hide"></h5>
-    <div class="users_login_authentication_selectors_bigbutton">
+    <div class="authentication_select_method_bigbutton">
+    {modurl modname='Users' type='user' func='login' assign='form_action'}
     {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
         {if $smarty.foreach.authentication_method_display_order.iteration == 6}
             </div>
-            <div class="users_login_authentication_selectors_smallbutton z-clearer">
+            <div class="authentication_select_method_smallbutton z-clearer">
         {/if}
-        {authentication_method_selector formType='page' authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}
+        {authentication_method_selector form_type='loginscreen' form_action=$form_action authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}
     {/foreach}
     </div>
-    {notifydisplayhooks eventname='users.hook.authentication_method_selectors.ui.view' area='modulehook_area.users.authentication_method_selectors' formType='page'}
 </div>
 {/if}
 
-<form id="users_login_login_form" class="z-form z-gap z-clearer{if empty($selected_authentication_method)} z-hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
+{if !empty($selected_authentication_method)}
+    {login_form_fields form_type='loginscreen' authentication_method=$selected_authentication_method assign='login_form_fields'}
+{/if}
+<form id="users_login_login_form" class="z-form z-gap z-clearer{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} z-hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
     <div>
         <input id="users_login_selected_authentication_module" type="hidden" name="authentication_method[modname]" value="{$selected_authentication_method.modname|default:''}" />
         <input id="users_login_selected_authentication_method" type="hidden" name="authentication_method[method]" value="{$selected_authentication_method.method|default:''}" />
@@ -37,10 +40,7 @@
         {/if}
         <fieldset>
             <div id="users_login_fields">
-            {if !empty($selected_authentication_method)}
-                {login_form_fields formType='page' authentication_method=$selected_authentication_method assign='login_form_fields'}
                 {$login_form_fields}
-            {/if}
             </div>
             {if ($modvars.ZConfig.seclevel|lower != 'high')}
             <div class="z-formrow">
@@ -53,9 +53,9 @@
         </fieldset>
 
         {if isset($user_obj) && !empty($user_obj)}
-            {notifydisplayhooks eventname='users.hook.login.ui.edit' area='login' id=$user_obj.uid subject=$user_obj formType='page'}
+            {notifydisplayhooks eventname='users.hook.login.ui.edit' area='login' id=$user_obj.uid subject=$user_obj form_type='loginscreen'}
         {else}
-            {notifydisplayhooks eventname='users.hook.login.ui.edit' area='login' formType='page'}
+            {notifydisplayhooks eventname='users.hook.login.ui.edit' area='login' form_type='loginscreen'}
         {/if}
 
         <div class="z-formbuttons z-buttons">
@@ -79,4 +79,3 @@
         {/if}
     </p>
 </div>
-

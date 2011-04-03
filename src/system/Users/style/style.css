@@ -139,25 +139,6 @@ div.z-accountlink  img {
     padding: 0;
 }
 
-.users_loginblock_select_authentication input[type=submit] {
-    border: none;
-    cursor: pointer;
-    padding: 0 0 0 20px;
-    height: 16px;
-    font-size: 100%;
-    color: #467aa7;
-    font-weight: bold;
-    text-decoration: none;
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    background-position: center left;
-}
-
-.users_loginblock_select_authentication input[type=submit]:hover {
-    color: #2a5a8a;
-}
-
 div.authentication_module_list {
     overflow: auto;
     width: 100%;
@@ -165,90 +146,117 @@ div.authentication_module_list {
     margin-bottom: 2em;
 }
 
-form.users_login_select_authentication {
+form.authentication_select_method {
     float: left;
 }
 
-.users_login_select_authentication_button {
-    border: 1px #467aa7 solid;
+div#users_loginblock_authentication_method_selectors form.authentication_select_method {
+    float: none;
+}
+
+.authentication_select_method_button {
     cursor: pointer;
-    margin: 3px;
-    padding: 36px 5px 5px 5px;
-    width: 132px;
-    height: 72px;
-    font-size: 100%;
     color: #467aa7;
     font-weight: bold;
     text-decoration: none;
     text-align: center;
     white-space: normal;
-    background-color: #f2f2f2;
     background-repeat: no-repeat;
     background-attachment: scroll;
+}
+
+div.authentication_select_method_bigbutton .authentication_select_method_button {
+    border: 1px #467aa7 solid;
+    margin: 3px;
+    padding: 36px 5px 5px 5px;
+    width: 132px;
+    height: 72px;
+    font-size: 100%;
+    text-align: center;
+    background-color: #f2f2f2;
     background-position: 50% 15%;
 }
 
-.users_login_select_authentication_button:hover {
+div.authentication_select_method_smallbutton .authentication_select_method_button {
+    border: 1px #467aa7 solid;
+    margin: 3px;
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    font-size: 0px;
+    text-align: center;
+    line-height: 0px;
+    white-space: normal;
+    background-color: #f2f2f2;
+    background-position: center center;
+}
+
+div#users_loginblock_authentication_method_selectors .authentication_select_method_button {
+    border: none;
+    margin: 3px 0 0 0;
+    padding: 0 0 0 18px;
+    height: 16px;
+    font-size: 100%;
+    text-align: left;
+    background-color: transparent;
+    background-position: center left;
+}
+
+.authentication_select_method_button:hover {
     color: #2a5a8a;
+}
+
+div.authentication_select_method_bigbutton .authentication_select_method_button:hover {
     padding: 34px 3px 3px 3px;
     border-width: 3px;
     border-style: dotted;
     background-color: #ddd;
 }
 
-.users_login_select_authentication_selected {
-    color: #2a5a8a;
-    padding: 34px 3px 3px 3px;
-    border-width: 3px;
-    border-style: solid;
-    background-color: #f2f2f2;
-}
-
-div.users_login_authentication_selectors_smallbutton .users_login_select_authentication_button {
-    padding: 5px;
-    width: 40px;
-    height: 40px;
-    font-size: 0px;
-    line-height: 0px;
-    white-space: normal;
-    background-position: center center;
-}
-
-div.users_login_authentication_selectors_smallbutton .users_login_select_authentication_button:hover {
+div.authentication_select_method_smallbutton .authentication_select_method_button:hover {
+    padding: 3px 3px 3px 3px;
     border-width: 3px;
     border-style: dotted;
-    padding: 3px 3px 3px 3px;
+    background-color: #ddd;
 }
 
-div.users_login_select_authentication_smallbutton .users_login_select_authentication_selected {
-    padding: 3px 3px 3px 3px;
+.authentication_select_method_selected {
+    color: #2a5a8a;
     border-width: 3px;
     border-style: solid;
     background-color: #f2f2f2;
 }
 
-#users_loginblock_select_authentication_users_uname_submit {
-    background-image: url("../../../images/icons/extrasmall/user.png");
+div.authentication_select_method_bigbutton .authentication_select_method_selected {
+    padding: 34px 3px 3px 3px;
 }
 
-#users_login_select_authentication_users_uname_submit {
+div.authentication_select_method_smallbutton .authentication_select_method_selected {
+    padding: 3px 3px 3px 3px;
+}
+
+div.authentication_select_method_bigbutton #authentication_select_method_submit_users_uname {
     background-image: url("../../../images/icons/medium/user.png");
 }
 
-div.users_select_authentication_smallbutton input#users_login_select_authentication_users_uname_submit {
+div.authentication_select_method_smallbutton #authentication_select_method_submit_users_uname {
     background-image: url("../../../images/icons/small/user.png");
 }
 
-#users_loginblock_select_authentication_users_email_submit {
-    background-image: url("../../../images/icons/extrasmall/mail_generic.png");
+div#users_loginblock_authentication_method_selectors #authentication_select_method_submit_users_uname {
+    background-image: url("../../../images/icons/extrasmall/user.png");
 }
 
-#users_login_select_authentication_users_email_submit {
+div.authentication_select_method_bigbutton #authentication_select_method_submit_users_email {
     background-image: url("../../../images/icons/medium/mail_generic.png");
 }
 
-div.users_select_authentication_smallbutton input#users_login_select_authentication_users_email_submit {
+div.authentication_select_method_smallbutton #authentication_select_method_submit_users_email {
     background-image: url("../../../images/icons/small/mail_generic.png");
+}
+
+div#users_loginblock_authentication_method_selectors #authentication_select_method_submit_users_email {
+    background-image: url("../../../images/icons/extrasmall/mail_generic.png");
 }
 
 table.z-datatable td.users_activated {
