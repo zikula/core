@@ -42,7 +42,8 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                 $this->name,
                 'uname',
                 $this->__('User name'),
-                $this->__('User name and password')
+                $this->__('User name and password'),
+                false
         );
         if (($loginViaOption == Users_Constant::LOGIN_METHOD_UNAME) || ($loginViaOption == Users_Constant::LOGIN_METHOD_ANY)) {
             $authenticationMethod->enableForAuthentication();
@@ -56,7 +57,9 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                 $this->name,
                 'email',
                 $this->__('E-mail address'),
-                $this->__('E-mail address and password'));
+                $this->__('E-mail address and password'),
+                false
+        );
         if (($loginViaOption == Users_Constant::LOGIN_METHOD_EMAIL) || ($loginViaOption == Users_Constant::LOGIN_METHOD_ANY)) {
             $authenticationMethod->enableForAuthentication();
         } else {
@@ -151,8 +154,8 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
             if (is_numeric($args['filter']) && ((int)$args['filter'] == $args['filter'])) {
                 switch($args['filter']) {
                     case Zikula_Api_AbstractAuthentication::FILTER_NONE:
-                        break;
                     case Zikula_Api_AbstractAuthentication::FILTER_ENABLED:
+                    case Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED:
                         $filter = $args['filter'];
                         break;
                     default:
@@ -171,6 +174,14 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                 $authenticationMethods = array();
                 foreach ($this->authenticationMethods as $index => $authenticationMethod) {
                     if ($authenticationMethod->isEnabledForAuthentication()) {
+                        $authenticationMethods[$authenticationMethod->getMethod()] -> $authenticationMethod;
+                    }
+                }
+                break;
+            case Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED:
+                $authenticationMethods = array();
+                foreach ($this->authenticationMethods as $index => $authenticationMethod) {
+                    if ($authenticationMethod->isEnabledForRegistration()) {
                         $authenticationMethods[$authenticationMethod->getMethod()] -> $authenticationMethod;
                     }
                 }

@@ -10,8 +10,8 @@
 {include file="users_user_menu.tpl"}
 
 <p id="users_formtop">
-    {gt text='Registering for a user account is easy. Registration can give you access to content and to features of the site that are not available to anonymous guests.'}
-    {gt text='During your visits, you are recommended to set your browser to accept cookies from this site. Various features of the site use cookies, and may not function properly or completely if cookies are disabled.'}
+    {gt text='Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.'}
+    {gt text='During your visits, we recommended that you set your browser to accept cookies from this site. Various features of the site use cookies, and may not function properly (or may not function at all) if cookies are disabled.'}
 </p>
 
 {if $modvars.Users.moderation && ($modvars.Users.reg_verifyemail != 'Users_Constant::VERIFY_NO'|constant)}

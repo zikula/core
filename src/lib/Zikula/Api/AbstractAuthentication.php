@@ -20,6 +20,7 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
 {
     const FILTER_NONE = 0;
     const FILTER_ENABLED = 1;
+    const FILTER_REGISTRATION_ENABLED = 2;
 
     /**
      * Informs the calling function whether this authentication module is reentrant or not.
