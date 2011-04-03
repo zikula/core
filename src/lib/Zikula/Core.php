@@ -421,6 +421,12 @@ class Zikula_Core
             $this->eventManager->notify($coreInitEvent);
         }
 
+        if ($stage & self::STAGE_SESSIONS) {
+            SessionUtil::requireSession();
+            $coreInitEvent->setArg('stage', self::STAGE_SESSIONS);
+            $this->eventManager->notify($coreInitEvent);
+        }
+
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
         // start block
         if ($stage & self::STAGE_LANGS) {
@@ -439,12 +445,6 @@ class Zikula_Core
             $this->eventManager->notify($coreInitEvent);
         }
         // end block
-
-        if ($stage & self::STAGE_SESSIONS) {
-            SessionUtil::requireSession();
-            $coreInitEvent->setArg('stage', self::STAGE_SESSIONS);
-            $this->eventManager->notify($coreInitEvent);
-        }
 
         if ($stage & self::STAGE_MODS) {
             // Set compression on if desired
