@@ -8,7 +8,7 @@
 {/strip}<div class="users_loginblock_box">{strip}
     {assign var='show_login_form' value=false}
     {if (isset($selected_authentication_method) && $selected_authentication_method)}
-        {login_form_fields formType='block' authentication_method=$selected_authentication_method assign='login_form_fields'}
+        {login_form_fields form_type='loginblock' authentication_method=$selected_authentication_method assign='login_form_fields'}
         {if isset($login_form_fields) && $login_form_fields}
             {assign var='show_login_form' value=true}
         {/if}
@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            {notifydisplayhooks eventname='users.hook.login.ui.edit' area='modulehook_area.users.login' formType='block'}
+            {notifydisplayhooks eventname='users.hook.login.ui.edit' area='modulehook_area.users.login' form_type='loginblock'}
 
             {/if}
             <div class="z-buttons z-right">
@@ -57,15 +57,16 @@
             {/if}
         </p>
     </div>
+    <div id="users_loginblock_authentication_method_selectors">
     {if (count($authentication_method_display_order) > 1)}
         <h5 id="users_loginblock_h5_authentication_method"{if (!isset($selected_authentication_method) || !$selected_authentication_method)} class="z-hide"{/if}>{gt text="Or instead, login with your..."}</h5>
         <h5 id="users_loginblock_h5_no_authentication_method"{if (isset($selected_authentication_method) && $selected_authentication_method)} class="z-hide"{/if}>{gt text="Login with your..."}</h5>
+        {homepage assign='form_action'}
         {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
-            {authentication_method_selector formType='block' authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}
+            {authentication_method_selector form_type='loginblock' form_action=$form_action authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}
         {/foreach}
     {/if}
-
-    {notifydisplayhooks eventname='users.hook.authentication_method_selectors.ui.view' area='modulehook_area.users.authentication_method_selectors' formType='block'}
+    </div>
 
     <h5>{gt text="Do you need to..."}</h5>
     {if $modvars.Users.reg_allowreg}

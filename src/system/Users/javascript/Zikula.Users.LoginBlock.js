@@ -8,11 +8,11 @@ Zikula.Users.LoginBlock =
 {
     init: function()
     {
-        if ($('users_loginblock_select_authentication_form_users_uname') != null) {
-            $('users_loginblock_select_authentication_form_users_uname').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'users_loginblock_select_authentication_form_users_uname');});
+        if ($('authentication_select_method_form_users_uname') != null) {
+            $('authentication_select_method_form_users_uname').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'authentication_select_method_form_users_uname');});
         }
-        if ($('users_loginblock_select_authentication_form_users_email') != null) {
-            $('users_loginblock_select_authentication_form_users_email').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'users_loginblock_select_authentication_form_users_email');});
+        if ($('authentication_select_method_form_users_email') != null) {
+            $('authentication_select_method_form_users_email').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'authentication_select_method_form_users_email');});
         }
     },
 
@@ -43,7 +43,7 @@ Zikula.Users.LoginBlock =
         }
 
         // Unhide all authentication method selectors
-        $$('form.users_loginblock_select_authentication').invoke('removeClassName', 'z-hide');
+        $$('form.authentication_select_method').invoke('removeClassName', 'z-hide');
 
         // Unhide the waiting indicator
         $('users_loginblock_waiting').removeClassName('z-hide');
@@ -113,7 +113,7 @@ Zikula.Users.LoginBlock =
         Zikula.Users.LoginBlock.showAjaxInProgress();
 
         var parameterObj = $(formId).serialize(true);
-        parameterObj.formType = 'block';
+        parameterObj.form_type = 'loginblock';
 
         var r = new Zikula.Ajax.Request(
             Zikula.Config.baseURL + 'ajax.php?module=Users&type=Ajax&func=getLoginFormFields',
@@ -140,7 +140,7 @@ Zikula.Users.LoginBlock =
 
             if (data.method !== false) {
                 // Hide the chosen authentication method in the list
-                $('users_loginblock_select_authentication_form_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase()).addClassName('z-hide');
+                $('authentication_select_method_form_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase()).addClassName('z-hide');
             }
 
             Zikula.Users.LoginBlock.showAjaxComplete(false);

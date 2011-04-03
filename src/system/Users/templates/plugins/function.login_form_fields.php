@@ -37,20 +37,14 @@ function smarty_function_login_form_fields($params, $view)
         throw new Zikula_Exception_Fatal(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('authentication_method', 'login_form_fields'), 'Zikula'));
     }
 
-    if (isset($params['formType'])
-            && is_string($params['formType'])
-            && !empty($params['formType'])
+    if (isset($params['form_type'])
+            && is_string($params['form_type'])
+            && !empty($params['form_type'])
             ) {
-        $formType = $params['formType'];
+        $formType = $params['form_type'];
     } else {
-        throw new Zikula_Exception_Fatal(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('formType', 'login_form_fields'), 'Zikula'));
+        throw new Zikula_Exception_Fatal(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('form_type', 'login_form_fields'), 'Zikula'));
     }
-
-    $args = array(
-        'formType'     => $formType,
-        'method'        => $authenticationMethod['method'],
-    );
-    $content = ModUtil::func($authenticationMethod['modname'], 'Authentication', 'getLoginFormFields', $args, 'Zikula_Controller_AbstractAuthentication');
 
     if (isset($params['assign'])) {
         if (!is_string($params['assign'])
@@ -58,7 +52,15 @@ function smarty_function_login_form_fields($params, $view)
                 ) {
             throw new Zikula_Exception_Fatal(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('assign', 'login_form_fields'), 'Zikula'));
         }
+    }
+    
+    $args = array(
+        'form_type'     => $formType,
+        'method'        => $authenticationMethod['method'],
+    );
+    $content = ModUtil::func($authenticationMethod['modname'], 'Authentication', 'getLoginFormFields', $args, 'Zikula_Controller_AbstractAuthentication');
 
+    if (isset($params['assign'])) {
         $view->assign($params['assign'], $content);
     } else {
         return $content;

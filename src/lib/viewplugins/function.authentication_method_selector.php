@@ -61,21 +61,19 @@ function smarty_function_authentication_method_selector($params, $view)
         $isSelected = false;
     }
 
-    if (isset($params['formType'])
-            && is_string($params['formType'])
-            && !empty($params['formType'])
+    if (!isset($params['form_type'])
+            || !is_string($params['form_type'])
+            || empty($params['form_type'])
             ) {
-        $formType = $params['formType'];
-    } else {
-        throw new Zikula_Exception_Fatal(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('formType', 'authentication_method_selector'), 'Zikula'));
+        throw new Zikula_Exception_Fatal(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('form_type', 'authentication_method_selector')));
     }
 
-    $args = array(
-        'formType'     => $formType,
-        'method'        => $authenticationMethod['method'],
-        'is_selected'   => $isSelected,
-    );
-    $content = ModUtil::func($authenticationMethod['modname'], 'Authentication', 'getAuthenticationMethodSelector', $args, 'Zikula_Controller_AbstractAuthentication');
+    if (!isset($params['form_action'])
+            || !is_string($params['form_action'])
+            || empty($params['form_action'])
+            ) {
+        throw new Zikula_Exception_Fatal(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('form_action', 'authentication_method_selector')));
+    }
 
     if (isset($params['assign'])) {
         if (!is_string($params['assign'])
@@ -83,7 +81,17 @@ function smarty_function_authentication_method_selector($params, $view)
                 ) {
             throw new Zikula_Exception_Fatal(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('assign', 'authentication_method_selector'), 'Zikula'));
         }
+    }
+    
+    $getSelectorArgs = array(
+        'form_type'   => $params['form_type'],
+        'form_action' => $params['form_action'],
+        'method'      => $authenticationMethod['method'],
+        'is_selected' => $isSelected,
+    );
+    $content = ModUtil::func($authenticationMethod['modname'], 'Authentication', 'getAuthenticationMethodSelector', $getSelectorArgs, 'Zikula_Controller_AbstractAuthentication');
 
+    if (isset($params['assign'])) {
         $view->assign($params['assign'], $content);
     } else {
         return $content;

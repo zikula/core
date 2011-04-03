@@ -151,7 +151,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * Parameters passed via POST:
      * ---------------------------
-     * string formType              Either 'page' if for the full log-in page, or 'block' if for the log-in block.
+     * string form_type             An indicator of the type of form the fields will appear on.
      * array  authentication_method An array containing the authentication module name ('modname') and authentication method name ('method').
      * 
      * @return Zikula_Response_Ajax An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
@@ -161,7 +161,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
     public function getLoginFormFields()
     {
         $this->checkAjaxToken();
-        $formType = $this->request->getPost()->get('formType', false);
+        $formType = $this->request->getPost()->get('form_type', false);
         $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
         $modname = (isset($selectedAuthenticationMethod['modname']) && !empty($selectedAuthenticationMethod['modname']) ? $selectedAuthenticationMethod['modname'] : false);
         $method = (isset($selectedAuthenticationMethod['method']) && !empty($selectedAuthenticationMethod['method']) ? $selectedAuthenticationMethod['method'] : false);
@@ -175,7 +175,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
         }
 
         $loginFormFields = ModUtil::func($modname, 'Authentication', 'getLoginFormFields', array(
-            'formType' => $formType,
+            'form_type' => $formType,
             'method'    => $method,
         ));
         
