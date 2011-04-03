@@ -249,7 +249,7 @@ class ZLanguage
      */
     private function registerError($msg)
     {
-        $this->errors[] = array($msg);
+        $this->errors[] = $msg;
     }
 
     /**
