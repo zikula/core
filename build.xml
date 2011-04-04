@@ -60,7 +60,7 @@
         <delete dir="${packagepath}/themes/Admin" includeemptydirs="true" />
 
         <exec command="svn export --force http://svn.github.com/zikula-modules/Legal.git ${builddir}/tmp/Legal" />
-        <exec command="mv ${builddir}/tmp/Tour/src/modules/Tour ${packagepath}/modules" />
+        <exec command="mv ${builddir}/tmp/Legal/src/modules/Legal ${packagepath}/modules" />
 
         <exec command="svn export --force http://svn.github.com/zikula-modules/Profile.git ${builddir}/tmp/Profile" />
         <exec command="mv ${builddir}/tmp/Profile/src/modules/Profile ${packagepath}/modules" />
