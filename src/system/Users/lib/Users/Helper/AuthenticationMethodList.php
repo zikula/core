@@ -83,7 +83,7 @@ class Users_Helper_AuthenticationMethodList extends Zikula_AbstractHelper implem
             }
         }
 
-        if (empty($this->authenticationMethods)) {
+        if (empty($this->authenticationMethods) && (($filter == Zikula_Api_AbstractAuthentication::FILTER_NONE) || ($filter == Zikula_Api_AbstractAuthentication::FILTER_ENABLED))) {
             LogUtil::log($this->__('There were no authentication methods available. Forcing the Users module to be used for authentication.'), Zikula_AbstractErrorHandler::CRIT);
             $this->authenticationMethods[] = new Users_Helper_AuthenticationMethod($this->name, 'uname', $this->__('User name'), $this->__('User name and password'));
             $this->nameIndex[$this->name] = array();
@@ -139,6 +139,23 @@ class Users_Helper_AuthenticationMethodList extends Zikula_AbstractHelper implem
         $count = 0;
         foreach ($this->authenticationMethods as $authenticationMethod) {
             if ($authenticationMethod->isEnabledForAuthentication()) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * Determine the number of authentication methods within the collection that are enabled for use.
+     *
+     * @return integer The number of authentication methods in the collection that are enabled for use.
+     */
+    public function countEnabledForRegistration()
+    {
+        $count = 0;
+        foreach ($this->authenticationMethods as $authenticationMethod) {
+            if ($authenticationMethod->isEnabledForRegistration()) {
                 $count++;
             }
         }
