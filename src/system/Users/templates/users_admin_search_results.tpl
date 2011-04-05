@@ -6,8 +6,8 @@
     <h2>{$templatetitle}</h2>
 
     <form id="users_searchresults" class="z-form" method="post" action="{modurl modname="Users" type="admin" func="deleteUsers"}">
-        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <div>
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <table class="z-datatable">
                 <thead>
                     <tr>
