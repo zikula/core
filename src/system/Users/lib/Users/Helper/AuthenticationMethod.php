@@ -291,7 +291,7 @@ class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
         if ($this->capableOfRegistration) {
             $this->enabledForRegistration = true;
         } else {
-            throw Zikula_Exception_Fatal($this->__('The authentication method is not capable of being used for registration.'));
+            throw new Zikula_Exception_Fatal($this->__('The authentication method is not capable of being used for registration.'));
         }
     }
 

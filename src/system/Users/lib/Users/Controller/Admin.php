@@ -903,7 +903,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
     {
         // check permissions
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_DELETE)) {
-            throw Zikula_Exception_Forbidden();
+            throw new Zikula_Exception_Forbidden();
         }
         
         $proceedToForm = false;
@@ -1235,7 +1235,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
     public function displayRegistration()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            throw Zikula_Exception_Forbidden();
+            throw new Zikula_Exception_Forbidden();
         }
 
         // Get parameters from whatever input we need.
