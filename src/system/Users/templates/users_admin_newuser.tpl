@@ -2,29 +2,30 @@
 {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
 {ajaxheader modname=$modinfo.name filename='Zikula.Users.Admin.NewUser.js' noscriptaculous=true effects=true}
 {if $modvars.Users.use_password_strength_meter == 1}
-    {* TODO - Using ajaheader here causes an error when the PassMeter is initialized. *}
-    {pageaddvar name='javascript' value='prototype'}
-    {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+{* TODO - Using ajaheader here causes an error when the PassMeter is initialized. *}
+{pageaddvar name='javascript' value='prototype'}
+{pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
 {/if}
 {/strip}
 
 {include file='users_admin_menu.tpl'}
 
-<div id="{$formData->getFormId()}_errormsgs" class="z-errormsg{if empty($errorMessages)} z-hide{/if}">
-    {if isset($errorMessages)}
-    {foreach from=$errorMessages item='message' name='errorMessages'}
-        {$message|safetext}
-        {if !$smarty.foreach.errorMessages.last}<hr />{/if}
-    {/foreach}
-    {/if}
-</div>
-
 <div class="z-admincontainer">
+
     <div class="z-adminpageicon">{icon type="new" size="large"}</div>
     <h2>{gt text='Create new user'}</h2>
 
+    <div id="{$formData->getFormId()}_errormsgs" class="z-errormsg{if empty($errorMessages)} z-hide{/if}">
+        {if isset($errorMessages)}
+        {foreach from=$errorMessages item='message' name='errorMessages'}
+        {$message|safetext}
+        {if !$smarty.foreach.errorMessages.last}<hr />{/if}
+        {/foreach}
+        {/if}
+    </div>
+
     <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
-    
+
     <form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='Users' type='admin' func='newUser'}" method="post">
         <div>
             <input type="hidden" id="{$formData->getFormId()}_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -141,35 +142,35 @@
 </div>
 {* Script blocks should remain at the end of the file so that it does not block progressive rendering of the page. *}
 {if $modvars.Users.use_password_strength_meter == 1}
-    <script type="text/javascript">
-        var passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
-            username:'{{$formData->getFieldId('uname')}}',
-            minLength: '{{$modvars.Users.minpass}}',
-            messages: {
-                username: '{{gt text="Your password cannot match your user name. Please choose a different password."}}',
-                minLength: '{{gt text="Your password must be at least %s characters in length." tag1=$modvars.Users.minpass}}'
-            },
-            verdicts: [
-                '{{gt text="Weak"}}',
-                '{{gt text="Normal"}}',
-                '{{gt text="Strong"}}',
-                '{{gt text="Very Strong"}}'
-            ]
-        });
-        // Display and start the password meter
-        passmeter.start();
-    </script>
+<script type="text/javascript">
+    var passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
+        username:'{{$formData->getFieldId('uname')}}',
+        minLength: '{{$modvars.Users.minpass}}',
+        messages: {
+            username: '{{gt text="Your password cannot match your user name. Please choose a different password."}}',
+            minLength: '{{gt text="Your password must be at least %s characters in length." tag1=$modvars.Users.minpass}}'
+        },
+        verdicts: [
+        '{{gt text="Weak"}}',
+        '{{gt text="Normal"}}',
+        '{{gt text="Strong"}}',
+        '{{gt text="Very Strong"}}'
+        ]
+    });
+    // Display and start the password meter
+    passmeter.start();
+</script>
 {/if}
 <script type="text/javascript">
     Zikula.Users.NewUser.setup = function() {
         Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
-    
+
         Zikula.Users.NewUser.fieldId = {
             submit:         '{{$formData->getFormId()}}_submitnewuser',
             checkUser:      '{{$formData->getFormId()}}_checkuserajax',
             checkMessage:   '{{$formData->getFormId()}}_checkmessage',
             validMessage:   '{{$formData->getFormId()}}_validmessage',
-        
+
             userName:       '{{$formData->getFieldId('uname')}}',
             email:          '{{$formData->getFieldId('email')}}',
         };

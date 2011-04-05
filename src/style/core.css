@@ -173,8 +173,8 @@ img.z-floatright {
     background: #e6e6ff url('../images/icons/extrasmall/info.png') 13px 50% no-repeat !important;
     border: 1px solid #9bb8d9 !important;
     color: #27427D !important;
-    padding: 5px 5px 5px 36px !important;
     margin: 5px 0 10px !important;
+    padding: 5px 5px 5px 36px !important;
 }
 .z-informationmsg p,
 .z-informationmsg h1,
@@ -188,8 +188,8 @@ img.z-floatright {
     background: #DFF2BF url('../images/icons/extrasmall/button_ok.png') 13px 50% no-repeat !important;
     border: 1px solid #99CC99 !important;
     color: #264409 !important;
-    padding: 5px 5px 5px 36px !important;
     margin: 5px 0 10px !important;
+    padding: 5px 5px 5px 36px !important;
 }
 .z-statusmsg p,
 .z-statusmsg h1,
@@ -203,8 +203,8 @@ img.z-floatright {
     background: #FEEFB3 url('../images/icons/extrasmall/bell.png') 13px 50% no-repeat !important;
     border: 1px solid #EED324 !important;
     color: #514721 !important;
+    margin: 5px 0 10px !important;
     padding: 5px 5px 5px 36px !important;
-    margin: 5px 0 !important;
 }
 .z-warningmsg p,
 .z-warningmsg h1,
