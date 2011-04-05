@@ -118,15 +118,10 @@ class Tests_Zikula_KernelClassLoaderTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * @todo Implement testAutoload().
-     */
     public function testAutoload()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        // For code coverage to reach the file not found condition.
+        $this->classLoader->autoload('Foo');
     }
 
     public function providerGetClassIncludePath()

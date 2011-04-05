@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../../../bootstrap.php';
 /**
  * Service test case.
  */
-class ZTests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
+class Tests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
 {
 
     /**
