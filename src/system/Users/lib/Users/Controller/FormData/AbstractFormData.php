@@ -216,6 +216,22 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
     }
 
     /**
+     * Set the data for one field contained by this form data container.
+     * 
+     * @param string $fieldName The field name of the field to be set.
+     * @param mixed  $value     The value to set.
+     * 
+     * @return void
+     */
+    public function setField($fieldName, $value)
+    {
+        if (array_key_exists($fieldName, $this->formFields)) {
+            $this->formFields[$fieldName]->setData($value);
+        }
+        $this->clearValidation();
+    }
+
+    /**
      * Set the data for the field defintiions contained by this form data container from an array.
      * 
      * The array should be indexed by field name. Indexes that do no represent a known field definition are ignored. The validation 

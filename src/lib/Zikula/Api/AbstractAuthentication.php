@@ -39,6 +39,8 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
     abstract public function isEnabledForAuthentication(array $args);
 
     abstract public function getAuthenticationMethods(array $args = null);
+    
+    abstract public function register(array $args);
 
     /**
      * Authenticates authentication info with the authenticating source, returning a simple boolean result.
@@ -66,6 +68,48 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * @return boolean True if the authentication info authenticates with the source; otherwise false on authentication failure or error.
      */
     abstract public function checkPassword(array $args);
+
+    /**
+     * Authenticates authentication info with the authenticating source, returning simple registration information.
+     *
+     * ATTENTION: Any function that causes this function to be called MUST specify a return URL, and therefore
+     * must be reentrant. In other words, in order to call this function, there must exist a controller function
+     * (specified by the return URL) that the OpenID server can return to, and that function must restore the
+     * pertinent state for the user as if he never left this site! Session variables should be used to store all
+     * pertinent variables, and those must be re-read into the user's state when the return URL is called back
+     * by the OpenID server.
+     *
+     * Note that, despite this function's name, there is no requirement that a password be part of the authentication info.
+     * Merely that enough information be provided in the authentication info array to unequivocally authenticate the user. For
+     * most authenticating authorities this will be the equivalent of a user name and password, but--again--there
+     * is no restriction here. This is not, however, a "user exists in the system" function. It is expected that
+     * the authenticating authority validate what ever is used as a password or the equivalent thereof.
+     *
+     * This function makes no attempt to match the given authentication info with a Zikula user id (uid). It simply asks the
+     * authenticating authority to authenticate the authentication info provided. No "login" should take place as a result of
+     * this authentication.
+     *
+     * This function may be called to initially authenticate a user during the registration process, or may be called
+     * for a user already logged in to re-authenticate his password for a security-sensitive operation. This function
+     * should merely authenticate the user, and not perform any additional login-related processes.
+     *
+     * This function differs from authenticateUser() in that no attempt is made to match the authentication info with and map to a
+     * Zikula user account. It does not return a Zikula user id (uid).
+     *
+     * This function differs from login()  in that no attempt is made to match the authentication info with and map to a
+     * Zikula user account. It does not return a Zikula user id (uid). In addition this function makes no attempt to
+     * perform any login-related processes on the authenticating system.
+     *
+     * @param array $args All arguments passed to this function.
+     *                      array   authentication_info    The authentication info needed for this authmodule, including any user-entered password.
+     *
+     * @return array|boolean If the authentication info authenticates with the source, then an array is returned containing the user's 'claimed_id',
+     *                              plus requested simple registration information from the OpenID server; otherwise false on authentication failure or error.
+     */
+    public function checkPasswordForRegistration(array $args)
+    {
+        throw new Zikula_Exception_Fatal($this->__('Registration authentication is not supported by this authentication method.'));
+    }
 
     /**
      * Retrieves the Zikula User ID (uid) for the given authentication info from the mapping maintained by this authentication module.

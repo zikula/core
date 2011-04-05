@@ -66,11 +66,22 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
         // End parameter extraction and error checking
 
         if ($this->authenticationMethodIsEnabled($args['method'])) {
-            $templateName = mb_strtolower("users_auth_loginformfields_{$args['form_type']}.tpl");
-            if ($this->view->template_exists($templateName)) {
-                return $this->view->assign('authentication_method', $args['method'])
-                        ->fetch($templateName);
+            $templateName = mb_strtolower("users_auth_loginformfields_{$args['form_type']}_{$args['method']}.tpl");
+            if (!$this->view->template_exists($templateName)) {
+                $templateName = mb_strtolower("users_auth_loginformfields_default_{$args['method']}.tpl");
+                if (!$this->view->template_exists($templateName)) {
+                    $templateName = mb_strtolower("users_auth_loginformfields_{$args['form_type']}_default.tpl");
+                    if (!$this->view->template_exists($templateName)) {
+                        $templateName = mb_strtolower("users_auth_loginformfields_default_default.tpl");
+                        if (!$this->view->template_exists($templateName)) {
+                            throw new Zikula_Exception_Fatal($this->__f('A form fields template was not found for the %1$s method using form type \'%2$s\'.', array($method, $args['form_type'])));
+                        }
+                    }
+                }
             }
+            
+            return $this->view->assign('authentication_method', $args['method'])
+                    ->fetch($templateName);
         }
     }
 

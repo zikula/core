@@ -1774,7 +1774,6 @@ class Users_Controller_Admin extends Zikula_AbstractController
             return $this->view->add_core_data()
                 ->assign('reginfo', $reginfo)
                 ->assign('restoreview', $restoreView)
-                ->assign('force', $forceVerification)
                 ->assign('cancelurl', $cancelUrl)
                 ->fetch('users_admin_denyregistration.tpl');
         } else {
