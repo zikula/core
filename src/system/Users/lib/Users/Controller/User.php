@@ -258,7 +258,19 @@ class Users_Controller_User extends Zikula_AbstractController
             // Either a GET request type to initially display the login form, or a failed authentication attempt
             // which means the form should be displayed anyway.
             $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this, array(), Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
+            
+            if ($authenticationMethodList->countEnabledForRegistration() <= 0) {
+                // There are no methods available for registration, so just default to Users.
+                // Note that the method name is 'uname' here no matter what loginviaoption says. This is on purpose.
+                $selectedAuthenticationMethod = array(
+                    'modname' => 'Users',
+                    'method'  => 'uname',
+                );
+                $authenticated = true;
+            }
+        }
 
+        if (!$authenticated) {
             // TODO - The order and availability should be set by configuration
             $authenticationMethodDisplayOrder = array();
             foreach ($authenticationMethodList as $authenticationMethod) {
@@ -375,7 +387,9 @@ class Users_Controller_User extends Zikula_AbstractController
             }
             
             $authenticationInfo = isset($args['authentication_info']) ? $args['authentication_info'] : false;
-            if (!$authenticationInfo && !is_array($authenticationInfo) || empty($authenticationInfo)) {
+            if ((($authenticationMethod['modname'] != $this->name) && (!$authenticationInfo || !is_array($authenticationInfo)))
+                    || (($authenticationMethod['modname'] == $this->name) && (!is_array($authenticationInfo) || !empty($authenticationInfo)))
+                    ) {
                 throw new Zikula_Exception_Fatal($this->__('Invalid authentication information.'));
             }
             
