@@ -40,6 +40,9 @@
 <form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='Users' type='user' func='register'}" method="post">
     <div>
         <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input id="{$formData->getFormId()}_authentication_method" type="hidden" name="authentication_method_ser" value="{$authentication_method|@serialize|safetext}" />
+        <input id="{$formData->getFormId()}_authentication_info" type="hidden" name="authentication_info_ser" value="{$authentication_info|@serialize|safetext}" />
+{capture name='uname'}
         <fieldset>
             <legend>{gt text="Choose a user name"}</legend>
             <div class="z-formrow">
@@ -47,12 +50,17 @@
                 <label for="{$formData->getFieldId($fieldName)}">{gt text="User name"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
                 <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, periods and/or dashes.'}</em>
+                {if ($authentication_method.modname != 'Users') || (($authentication_method.modname == 'Users') && ($modvars.Users.loginviaoption == 'Users_Constant::LOGIN_METHOD_EMAIL'|constant))}
+                <em class="z-formnote z-sub">{gt text='Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.'}</em>
+                {/if}
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </fieldset>
-
+{/capture}
+{capture name='pass'}
+        {if $authentication_method.modname == 'Users'}
         <fieldset>
-            <legend>{gt text="Set a password and enter your e-mail address"}</legend>
+            <legend>{gt text="Set a password"}</legend>
             <div class="z-formrow">
                 {assign var='fieldName' value='pass'}
                 <label for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
@@ -76,10 +84,23 @@
                 <div class="z-formnote z-informationmsg">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
+        </fieldset>
+        {else}
+            <input id="{$formData->getFieldId('pass')}" name="pass" type="hidden" value="{'Users_Constant::PWD_NO_USERS_AUTHENTICATION'|constant}" />
+            <input id="{$formData->getFieldId('passagain')}" name="passagain" type="hidden" value="{'Users_Constant::PWD_NO_USERS_AUTHENTICATION'|constant}" />
+            <input id="{$formData->getFieldId('passreminder')}" name="passreminder" type="hidden" value="{$formData->getFieldData('passreminder')|safetext}" />
+        {/if}
+{/capture}
+{capture name='email'}
+        <fieldset>
+            <legend>{gt text="Enter your e-mail address"}</legend>
             <div class="z-formrow">
                 {assign var='fieldName' value='email'}
                 <label for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                {if (($authentication_method.modname == 'Users') && ($modvars.Users.loginviaoption == 'Users_Constant::LOGIN_METHOD_EMAIL'|constant))}
+                <em class="z-formnote z-sub">{gt text='You will use your e-mail address to identify yourself when you log in.'}</em>
+                {/if}
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
             <div class="z-formrow">
@@ -89,6 +110,18 @@
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </fieldset>
+{/capture}
+
+        {* Order the fieldsets based on whether e-mail is the exclusive log-in id or not. *}
+        {if (($authentication_method.modname == 'Users') && ($modvars.Users.loginviaoption == 'Users_Constant::LOGIN_METHOD_EMAIL'|constant))}
+            {$smarty.capture.email}
+            {$smarty.capture.pass}
+            {$smarty.capture.uname}
+        {else}
+            {$smarty.capture.uname}
+            {$smarty.capture.pass}
+            {$smarty.capture.email}
+        {/if}
 
         {notifydisplayhooks eventname='users.hook.user.ui.edit' area='modulehook_area.users.registration' subject=null id=null}
 
@@ -117,7 +150,7 @@
         </fieldset>
     </div>
 </form>
-{if $modvars.Users.use_password_strength_meter}
+{if $modvars.Users.use_password_strength_meter && ($authentication_method.modname == 'Users')}
 <script type="text/javascript">
     var passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
         username:'{{$formData->getFieldId('uname')}}',

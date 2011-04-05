@@ -9,7 +9,7 @@
 {modulelinks modname='Users' type='user'}
 {include file='users_user_menu.tpl'}
 {if (count($authentication_method_display_order) > 1)}
-<div class="users_login_authentication_method_list">
+<div>
     <h5 id="users_login_h5_no_authentication_method"{if !empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Choose how you would like to log in by clicking on one of the following..."}</h5>
     <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Log in below, or change how you would like to log in by clicking on one of the following..."}</h5>
     <h5 id="users_login_h5" class="z-hide"></h5>

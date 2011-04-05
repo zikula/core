@@ -193,6 +193,11 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
         return $authenticationMethods;
     }
+    
+    public function register(array $args)
+    {
+        throw new Zikula_Exception_Fatal($this->__f('The %1$s function is not implemented for the %1$s module. This core module handles registration of authentication information as part of the core registration process.', array('register()', 'Users')));
+    }
 
     /**
      * Authenticates authentication_info with the authenticating source, returning a simple boolean result.

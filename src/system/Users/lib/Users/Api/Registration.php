@@ -79,38 +79,40 @@ class Users_Api_Registration extends Zikula_AbstractApi
         $minPasswordLength = $this->getVar('minpass', 5);
         $passwordErrors = array();
 
-        if (!isset($reginfo['pass']) || empty($reginfo['pass'])) {
-            $passwordErrors['pass'] = $this->__('Please enter a password.');
-        } elseif (isset($reginfo['pass']) && (strlen($reginfo['pass']) < $minPasswordLength)) {
-            $passwordErrors['pass'] = $this->_fn(
-                'Your password must be at least %s character long',
-                'Your password must be at least %s characters long',
-                $minPasswordLength,
-                $minPasswordLength
-            );
-        } elseif (isset($reginfo['uname']) && !empty($reginfo['uname']) && ($reginfo['pass'] == $reginfo['uname'])) {
-            $passwordErrors['pass'] = $this->__('The password cannot be the same as the user name. Please choose a different password.');
-        } elseif (!isset($passwordAgain) || empty($passwordAgain) || ($reginfo['pass'] !== $passwordAgain)) {
-            $passwordErrors['passagain'] = $this->__('You did not enter the same password in each password field. Please enter the same password once in each password field (this is required for verification).');
-        }
+        if ($reginfo['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION) {
+            if (!isset($reginfo['pass']) || empty($reginfo['pass'])) {
+                $passwordErrors['pass'] = $this->__('Please enter a password.');
+            } elseif (isset($reginfo['pass']) && (strlen($reginfo['pass']) < $minPasswordLength)) {
+                $passwordErrors['pass'] = $this->_fn(
+                    'Your password must be at least %s character long',
+                    'Your password must be at least %s characters long',
+                    $minPasswordLength,
+                    $minPasswordLength
+                );
+            } elseif (isset($reginfo['uname']) && !empty($reginfo['uname']) && ($reginfo['pass'] == $reginfo['uname'])) {
+                $passwordErrors['pass'] = $this->__('The password cannot be the same as the user name. Please choose a different password.');
+            } elseif (!isset($passwordAgain) || empty($passwordAgain) || ($reginfo['pass'] !== $passwordAgain)) {
+                $passwordErrors['passagain'] = $this->__('You did not enter the same password in each password field. Please enter the same password once in each password field (this is required for verification).');
+            }
 
-        if (!$this->currentUserIsAdminOrSubAdmin()) {
-            if (!isset($reginfo['passreminder']) || empty($reginfo['passreminder'])) {
-                $passwordErrors['passreminder'] = $this->__('Please enter a password reminder.');
-            } else {
-                $testPass = mb_strtolower(trim($reginfo['pass']));
-                $testPassreminder = mb_strtolower(trim($reginfo['passreminder']));
-
-                if (!empty($testPass) && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
-                    $passwordErrors['passreminder'] = $this->__('You cannot include your password in your password reminder.');
+            if (!$this->currentUserIsAdminOrSubAdmin()) {
+                if (!isset($reginfo['passreminder']) || empty($reginfo['passreminder'])) {
+                    $passwordErrors['passreminder'] = $this->__('Please enter a password reminder.');
                 } else {
-                    // See if they included their password with extra character in the middle--only tests if they included non alpha-numerics in the middle.
-                    // Removes non-alphanumerics (mb-safe), and then checks to see that the strings are still of sufficient length to have a reasonable test.
-                    $testPass = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPass));
-                    $testPassreminder = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPassreminder));
-                    if (!empty($testPass) && !empty($testPassreminder) && (strlen($testPass) >= $minPasswordLength)
-                            && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
-                        $passwordErrors['passreminder'] = $this->__('Your password reminder is too similar to your password.');
+                    $testPass = mb_strtolower(trim($reginfo['pass']));
+                    $testPassreminder = mb_strtolower(trim($reginfo['passreminder']));
+
+                    if (!empty($testPass) && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
+                        $passwordErrors['passreminder'] = $this->__('You cannot include your password in your password reminder.');
+                    } else {
+                        // See if they included their password with extra character in the middle--only tests if they included non alpha-numerics in the middle.
+                        // Removes non-alphanumerics (mb-safe), and then checks to see that the strings are still of sufficient length to have a reasonable test.
+                        $testPass = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPass));
+                        $testPassreminder = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPassreminder));
+                        if (!empty($testPass) && !empty($testPassreminder) && (strlen($testPass) >= $minPasswordLength)
+                                && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
+                            $passwordErrors['passreminder'] = $this->__('Your password reminder is too similar to your password.');
+                        }
                     }
                 }
             }
@@ -413,7 +415,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             $passwordCreatedForUser = '';
         }
 
-        if (isset($reginfo['pass']) && !empty($reginfo['pass'])) {
+        if (isset($reginfo['pass']) && !empty($reginfo['pass']) && ($reginfo['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
             $reginfo['pass'] = UserUtil::getHashedPassword($reginfo['pass']);
         }
 
