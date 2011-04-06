@@ -875,33 +875,98 @@ class UserUtil
                     }
                 } else {
                     // The login has not been vetoed
-
-                    // Storing Last Login date -- store it in UTC! Do not use date() function!
-                    $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-                    if (!self::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $userObj['uid'])) {
-                        // show messages but continue
-                        LogUtil::registerError(__('Error! Could not save the log-in date.'));
-                    }
-
-                    if (!System::isInstalling()) {
-                        SessionUtil::requireSession();
-                    }
-
-                    // Set session variables -- this is what really does the Zikula login
-                    SessionUtil::setVar('uid', $userObj['uid']);
-                    SessionUtil::setVar('authentication_method', $authenticationMethod, 'Zikula_Users');
-
-                    if (!empty($rememberMe)) {
-                        SessionUtil::setVar('rememberme', 1);
-                    }
-
-                    // now that we've logged in the permissions previously calculated (if any) are invalid
-                    $GLOBALS['authinfogathered'][$userObj['uid']] = 0;
+                    // This is what really does the Zikula login
+                    self::setUserByUid($userObj['uid'], $rememberMe, $authenticationMethod);
                 }
             }
         }
 
         return $userObj;
+    }
+
+    /**
+     * Sets the currently logged in active user to the user account for the given Users module uname.
+     * 
+     * No events are fired from this function. To receive events, use {@link loginUsing()}.
+     *
+     * @param string  $uname                The user name of the user who should be logged into the system; required.
+     * @param boolean $rememberme           If the user's login should be maintained on the computer from which the user is logging in, set this to true;
+     *                                          optional, defaults to false.
+     * 
+     * @return void
+     */
+    public static function setUserByUname($uname, $rememberme = false)
+    {
+        if (!isset($uname) || !is_string($uname) || empty($uname)) {
+            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid uname.'));
+        }
+        
+        $uid = self::getIdFromName($uname);
+        
+        $authenticationMethod = array(
+            'modname' => 'Users',
+            'method'  => 'uname',
+        );
+        
+        self::setUserByUid($uid, $rememberme, $authenticationMethod);
+    }
+
+    /**
+     * Sets the currently logged in active user to the user account for the given uid.
+     * 
+     * No events are fired from this function. To receive events, use {@link loginUsing()}.
+     *
+     * @param numeric $uid                  The user id of the user who should be logged into the system; required.
+     * @param boolean $rememberme           If the user's login should be maintained on the computer from which the user is logging in, set this to true;
+     *                                          optional, defaults to false.
+     * @param array   $authenticationMethod An array containing the authentication method used to log the user in; optional,
+     *                                          defaults to the 'Users' module 'uname' method.
+     * 
+     * @return void
+     */
+    public static function setUserByUid($uid, $rememberme = false, array $authenticationMethod = null)
+    {
+        if (!isset($uid) || empty($uid) || ((string)((int)$uid) != $uid)) {
+            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid uid.'));
+        }
+        
+        $userObj = self::getVars($uid);
+        if (!isset($userObj) || !is_array($userObj) || empty($userObj)) {
+            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an unknown uid.'));
+        }
+        
+        if (!isset($authenticationMethod)) {
+            $authenticationMethod = array(
+                'modname' => 'Users',
+                'method'  => 'uname',
+            );
+        } elseif (empty($authenticationMethod) || !isset($authenticationMethod['modname']) || empty($authenticationMethod['modname'])
+                || !isset($authenticationMethod['method']) || empty($authenticationMethod['method'])
+                ) {
+            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid authentication method.'));
+        }
+        
+        // Storing Last Login date -- store it in UTC! Do not use date() function!
+        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+        if (!self::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $userObj['uid'])) {
+            // show messages but continue
+            LogUtil::registerError(__('Error! Could not save the log-in date.'));
+        }
+
+        if (!System::isInstalling()) {
+            SessionUtil::requireSession();
+        }
+        
+        // Set session variables -- this is what really does the Zikula login
+        SessionUtil::setVar('uid', $userObj['uid']);
+        SessionUtil::setVar('authentication_method', $authenticationMethod, 'Zikula_Users');
+
+        if (!empty($rememberMe)) {
+            SessionUtil::setVar('rememberme', 1);
+        }
+
+        // now that we've logged in the permissions previously calculated (if any) are invalid
+        $GLOBALS['authinfogathered'][$userObj['uid']] = 0;
     }
 
     /**
