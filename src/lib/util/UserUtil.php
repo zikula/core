@@ -680,7 +680,8 @@ class UserUtil
                     if (($userObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) && ($displayApprovalPending || $displayVerifyPending)) {
                         $moderationOrder = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, Users_Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
                         if (!$userObj['isverified']
-                                && (($moderationOrder == Users_Constant::APPROVAL_AFTER) || ($moderationOrder == Users_Constant::APPROVAL_ANY))
+                                && (($moderationOrder == Users_Constant::APPROVAL_AFTER) || ($moderationOrder == Users_Constant::APPROVAL_ANY)
+                                        || (!empty($userObj['approved_by'])))
                                 && $displayVerifyPending
                                 ) {
                             $message = __('Your request to register with this site is still waiting for verification of your e-mail address. Please check your inbox for a message from us.');
