@@ -16,7 +16,7 @@
     {modurl modname='Users' type='user' func='register' assign='form_action'}
     <div>
         <div class="z-w40 z-floatright">
-            {gt text='If you prefer, you can create an account and password for use only with this side by clicking below...'}
+            {gt text='If you prefer, you can create an account and password for use only with this site by clicking below...'}
         </div>
         <div class="z-w60">
             {gt text='Click on one of the following to log into this site using that service...'}
