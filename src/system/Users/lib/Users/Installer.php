@@ -19,25 +19,6 @@
 class Users_Installer extends Zikula_AbstractInstaller
 {
     /**
-     * Convenience access to the modname.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * Initializes the intstaller.
-     *
-     * @param Zikula_ServiceManager $serviceManager The service manager instance for the current core instance.
-     * @param array                 $options        The {@link Zikula_AbstractBase} options; optional; not used.
-     */
-    public function  __construct(Zikula_ServiceManager $serviceManager, array $options = array()) {
-        parent::__construct($serviceManager, $options);
-
-        $this->name = Users_Constant::MODNAME;
-    }
-
-    /**
      * Initialise the users module.
      *
      * This function is only ever called once during the lifetime of a particular
