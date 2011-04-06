@@ -44,7 +44,7 @@
  *  display            Optional choice between 'page' or 'startnum'. Show links using page number or starting item number (default is startnum)
  *  class              Optional class to apply to the pager container (default : z-pager)
  *  processDetailLinks Should the single page links be processed? (default: false if using pagerimage.tpl, otherwise true)
- *  optimize           Only deliver page links which are actually displayed to the template (default: false)
+ *  optimize           Only deliver page links which are actually displayed to the template (default: true)
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -80,7 +80,7 @@ function smarty_function_pager($params, Zikula_View $view)
     }
 
     if (!isset($params['optimize'])) {
-        $params['optimize'] = false;
+        $params['optimize'] = true;
     }
 
     $pager = array();
@@ -223,13 +223,13 @@ function smarty_function_pager($params, Zikula_View $view)
         $leftMargin = $pager['currentPage'] - $pageInterval;
         $rightMargin = $pager['currentPage'] + $pageInterval;
 
-        if ($leftMargin <= 1) {
-            $rightMargin += abs($leftMargin);
+        if ($leftMargin < 1) {
+            $rightMargin += abs($leftMargin) + 1;
             $leftMargin = 1;
         }
-        if ($rightMargin >= ($pager['countPages'] - 1)) {
-            $leftMargin -= abs($rightMargin - ($pager['countPages'] - 1));
-            $rightMargin = ($pager['countPages'] - 1);
+        if ($rightMargin > $pager['countPages']) {
+            $leftMargin -= $rightMargin - $pager['countPages'];
+            $rightMargin = $pager['countPages'];
         }
     }
 
@@ -238,9 +238,10 @@ function smarty_function_pager($params, Zikula_View $view)
 
         for ($currItem = 1; $currItem <= $pager['countPages']; $currItem++) {
 
+            $currItemVisible = true;
             if ($pager['maxPages'] > 0 &&
                 //(($currItem < $leftMargin && $currItem > 1) || ($currItem > $rightMargin && $currItem <= $pager['countPages']))) {
-                (($currItem < $leftMargin && $currItem > 1) || ($currItem > $rightMargin && $currItem < $pager['countPages']))) {
+                (($currItem < $leftMargin) || ($currItem > $rightMargin))) {
 
                 if ($pager['optimize']) {
                     continue;
@@ -259,15 +260,13 @@ function smarty_function_pager($params, Zikula_View $view)
             $pager['pages'][$currItem]['url'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
             $pager['pages'][$currItem]['isCurrentPage'] = ($pager['pages'][$currItem]['pagenr'] == $pager['currentPage']);
 
-            $pager['pages'][$currItem]['isVisible'] = (!isset($currItemVisible)) ? true : false;
-            //$pager['pages'][$currItem]['isVisible'] = true;
+            $pager['pages'][$currItem]['isVisible'] = $currItemVisible;
         }
         unset($pager['args'][$pager['posvar']]);
     }
 
     // link to first & prev page
-    $pager['first'] = DataUtil::formatForDisplay('1');
-    $pager['args'][$pager['posvar']] = $pager['first'];
+    $pager['args'][$pager['posvar']] = $pager['first'] = '1';
     $pager['firstUrl'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
     if ($params['display'] == 'page') {
          $pager['prev'] = ($pager['currentPage'] - 1);
