@@ -23,7 +23,7 @@ class Users_Listener_ClearUsersNamespace
      *
      * @var string
      */
-    protected static $modname = 'Users';
+    protected static $modname = Users_Constant::MODNAME;
 
     /**
      * Clears the session variable namespace used by the Users module.
