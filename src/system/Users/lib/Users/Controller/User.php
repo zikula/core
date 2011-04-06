@@ -1503,10 +1503,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     }
                 }
 
-                if ($verifycode && $reginfo && isset($reginfo['pass']) && !empty($reginfo['pass'])
-                        && ((isset($reginfo['passreminder']) && !empty($reginfo['passreminder'])) || ($reginfo['pass'] == Users_Constant::PWD_NO_USERS_AUTHENTICATION))
-                        ) {
-
+                if ($verifycode && $reginfo && isset($reginfo['pass']) && !empty($reginfo['pass'])) {
                     $verifyChg = ModUtil::apiFunc($this->name, 'registration', 'getVerificationCode', array(
                         'uid'   => $reginfo['uid'],
                     ));
