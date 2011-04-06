@@ -1,4 +1,5 @@
 {assign var="separator" value="&ndash;"}
+
 <div class="{$pagerPluginArray.class}">
     {if $pagerPluginArray.currentPage > 1}
         <a href="{$pagerPluginArray.firstUrl}" title="{gt text="First page"}">
