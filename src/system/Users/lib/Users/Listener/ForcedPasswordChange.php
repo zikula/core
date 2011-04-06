@@ -23,7 +23,7 @@ class Users_Listener_ForcedPasswordChange
      *
      * @var string
      */
-    protected static $modname = 'Users';
+    protected static $modname = Users_Constant::MODNAME;
 
     /**
      * Vetos (denies) a login attempt, and forces the user to change his password.

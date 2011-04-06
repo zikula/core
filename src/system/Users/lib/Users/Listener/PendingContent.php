@@ -23,7 +23,7 @@ class Users_Listener_PendingContent
      *
      * @var string
      */
-    protected static $modname = 'Users';
+    protected static $modname = Users_Constant::MODNAME;
 
     /**
      * Respond to 'get.pending_content' events with registration requests pending approval.
