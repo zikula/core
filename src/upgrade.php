@@ -629,6 +629,7 @@ function upgrade_columns($connection)
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_modname z_modname VARCHAR(64) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_name z_name VARCHAR(64) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_value z_value LONGTEXT";
+    $commands[] = "UPDATE {$prefix}_module_vars SET z_modname='Extensions' WHERE z_modname='Modules'";
     $commands[] = "ALTER TABLE {$prefix}_module_deps CHANGE pn_id z_id INT(11) AUTO_INCREMENT";
     $commands[] = "ALTER TABLE {$prefix}_module_deps CHANGE pn_modid z_modid INT(11) DEFAULT '0' NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_module_deps CHANGE pn_modname z_modname VARCHAR(64) NOT NULL";
