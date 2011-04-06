@@ -61,14 +61,6 @@ Prepare your existing installation
     login by username in the administration panel.  You will be required to
     login using your administration username.  Make sure you know it.
 
-  - New registrations pending verification will not be able to complete the
-    registration process.  This is an edge case, but you may wish to take a
-    note of any email addresses for users pending verification via the Users
-    module so you can contact them after the upgrade.  In general, users who
-    do not immediately verify their registrations will have given up and
-    abandoned the verification process so this is very much an edge case we
-    mention for completeness sake.
-
   - Before unpacking *any* files, delete the following directories:
       - system/
       - themes/
