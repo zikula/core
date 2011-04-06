@@ -642,7 +642,7 @@ class UserUtil
             // We got something other than a uid from the authentication process.
 
             if (!LogUtil::hasErrors() && $reportErrors) {
-                LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account.'));
+                LogUtil::registerError(__('Sorry! Login failed. The information you provided was incorrect.'));
             }
         } else {
             if (!$userObj) {

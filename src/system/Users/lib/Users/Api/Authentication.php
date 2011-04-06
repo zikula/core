@@ -352,7 +352,15 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                 }
             }
         }
-
+        
+        if (!$passwordAuthenticates && !$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+            if ($authenticationMethod['method'] == 'email') {
+                $this->registerError($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
+            } else {
+                $this->registerError($this->__('Sorry! The user name or password you entered was incorrect.'));
+            }
+        }
+            
         return $passwordAuthenticates;
     }
 
@@ -482,12 +490,20 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                 // account status. The account status is something for UserUtil::loginUsing() to deal with after we
                 // tell it whether the account authenticates or not.
                 $uid = UserUtil::getIdFromEmail($loginID, true);
+                
+                if (!$uid) {
+                    $this->registerError($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
+                }
             }
         } else {
             $uid = UserUtil::getIdFromName($loginID);
             if (!$uid) {
                 // Might be a registration. See above.
                 $uid = UserUtil::getIdFromName($loginID, true);
+
+                if (!$uid) {
+                    $this->registerError($this->__('Sorry! The user name or password you entered was incorrect.'));
+                }
             }
         }
 
