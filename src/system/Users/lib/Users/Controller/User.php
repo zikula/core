@@ -640,7 +640,7 @@ class Users_Controller_User extends Zikula_AbstractController
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
         
-        $proceedToForm = true;
+        $formStage = 'request';
         
         if ($this->request->isPost()) {
             $emailMessageSent = false;
@@ -662,19 +662,76 @@ class Users_Controller_User extends Zikula_AbstractController
                     $idfield = 'email';
                     $idvalue = $email;
                 }
-
-                $emailMessageSent = ModUtil::apiFunc($this->name, 'user', 'mailConfirmationCode', array(
-                    'idfield' => $idfield,
-                    'id' => $idvalue
-                ));
                 
-                if ($emailMessageSent) {
-                    $this->registerStatus($this->__f('Done! The confirmation code for %s has been sent via e-mail.', $idvalue));
-                    $proceedToForm = false;
-                } elseif ($idfield == 'email') {
-                    $this->registerError($this->__('Sorry! We are unable to send a password recovery code for that e-mail address. Please try your user name, or contact an administrator.'));
+                $userObj = UserUtil::getVars($idvalue, false, $idfield);
+
+                if ($userObj) {
+                    if ($userObj['activated'] == Users_Constant::ACTIVATED_ACTIVE) {
+                        if (!empty($userObj['pass']) && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
+                            $emailMessageSent = ModUtil::apiFunc($this->name, 'user', 'mailConfirmationCode', array(
+                                'idfield' => $idfield,
+                                'id' => $idvalue
+                            ));
+
+                            if ($emailMessageSent) {
+                                $this->registerStatus($this->__f('Done! The confirmation code for %s has been sent via e-mail.', $idvalue));
+                                $formStage = 'code';
+                            } elseif ($idfield == 'email') {
+                                $this->registerError($this->__('Sorry! We are unable to send a password recovery code for that e-mail address. Please try your user name, or contact an administrator.'));
+                            } else {
+                                $this->registerError($this->__('Sorry! We are unable to send a password recovery code for that user name. Please try your e-mail address, contact an administrator.'));
+                            }
+                        } else {
+                            $this->registerError($this->__('Sorry! Your account is not set up to use a password to log into this site. Please recover your account information to determine your available log-in options.'));
+                            $formStage = 'lostPwdUname';
+                        }
+                    } elseif (($usersObj['activated'] == Users_Constant::ACTIVATED_INACTIVE) && ($this->getVar(Users_Constant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS))) {
+                        $this->registerError($this->__('Sorry! Your account is marked as inactive. Please contact a site administrator for more information.'));
+                        $formStage = 'lostPwdUname';
+                    } elseif (($usersObj['activated'] == Users_Constant::ACTIVATED_PENDING_DELETE) && ($this->getVar(Users_Constant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS))) {
+                        $this->registerError($this->__('Sorry! Your account is marked for removal. Please contact a site administrator for more information.'));
+                        $formStage = 'lostPwdUname';
+                    } else {
+                        $this->registerError($this->__('Sorry! An account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
+                    }
                 } else {
-                    $this->registerError($this->__('Sorry! We are unable to send a password recovery code for that user name. Please try your e-mail address, contact an administrator.'));
+                    $displayPendingApproval = $this->getVar(Users_Constant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS);
+                    $displayPendingVerification = $this->getVar(Users_Constant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
+                    
+                    if ($displayPendingApproval || $displayPendingVerification) {
+                        $userObj = UserUtil::getVars($idvalue, false, $idfield, true);
+                        
+                        if ($userObj) {
+                            $registrationsModerated = $this->getVar(Users_Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, Users_Constant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
+                            if ($registrationsModerated) {
+                                $registrationApprovalOrder = $this->getVar(Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, Users_Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
+                                if (!$userObj['isapproved'] && ($registrationApprovalOrder == Users_Constant::APPROVAL_BEFORE)) {
+                                    $message = $this->__('Sorry! Your registration request is still waiting for approval from a site administrator.');
+                                    $formStage = 'lostPwdUname';
+                                } elseif (!$userObj['isverified'] && (($registrationApprovalOrder == Users_Constant::APPROVAL_AFTER) || ($registrationApprovalOrder == Users_Constant::APPROVAL_ANY) 
+                                        || (($registrationApprovalOrder == Users_Constant::APPROVAL_BEFORE) && $userObj['isapproved']))
+                                        ) {
+                                    $message = $this->__('Sorry! Your registration request is still waiting for verification of your e-mail address. Check your inbox for an e-mail message from us. If you need another verification e-mail sent, please contact a site administrator.');
+                                    $formStage = 'lostPwdUname';
+                                } else {
+                                    $message = $this->__('Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.');
+                                    $formStage = 'lostPwdUname';
+                                }
+                            } elseif (!$userObj['isverified']) {
+                                $message = $this->__('Sorry! Your registration request is still waiting for verification of your e-mail address. Check your inbox for an e-mail message from us. If you need another verification e-mail sent, please contact a site administrator.');
+                                $formStage = 'lostPwdUname';
+                            } else {
+                                $message = $this->__('Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.');
+                                $formStage = 'lostPwdUname';
+                            }
+                        } else {
+                            $message = $this->__('Sorry! An account could not be located with that information. Correct your entry and try again.');
+                        }
+                    } else {
+                        $message = $this->__('Sorry! An account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.');
+                    }
+                    
+                    $this->registerError($message);
                 }
             }
         } elseif ($this->request->isGet()) {
@@ -684,15 +741,19 @@ class Users_Controller_User extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        if ($proceedToForm) {
+        if ($formStage == 'request') {
             $templateVariables = array(
                 'uname' => $uname,
                 'email' => $email,
             );
             return $this->view->assign($templateVariables)
                     ->fetch('users_user_lostpassword.tpl');
-        } else {
+        } elseif ($formStage == 'code') {
             $this->redirect(ModUtil::url($this->name, 'user', 'lostPasswordCode'));
+        } elseif ($formStage == 'lostPwdUname') {
+            $this->redirect(ModUtil::url($this->name, 'user', 'lostPwdUname'));
+        } else {
+            $this->redirect(ModUtil::url($this->name));
         }
     }
 
@@ -789,7 +850,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     $idvalue = $email;
                 }
 
-                $checkConfArgs =array(
+                $checkConfArgs = array(
                     'idfield' => $idfield,
                     'id'      => $idvalue,
                     'code'    => $code,
