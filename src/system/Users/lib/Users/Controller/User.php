@@ -619,10 +619,7 @@ class Users_Controller_User extends Zikula_AbstractController
      * 
      * Parameters passed via SESSION:
      * ------------------------------
-     * Namespace: Zikula_Users
-     * Variable:  Users_Controller_User_mailUname
-     * Type:      array
-     * Contents:  An array containing the element 'email', the e-mail address of the user who lost his user name.
+     * None.
      * 
      * @return string The rendered template.
      */
@@ -631,13 +628,44 @@ class Users_Controller_User extends Zikula_AbstractController
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
 
-        $sessionVars = $this->request->getSession()->get('Users_Controller_User_mailUname', array(), 'Zikula_Users');
-        $this->request->getSession()->del('Users_Controller_User_mailUname', 'Zikula_Users');
+        $proceedToForm = true;
+        $email = '';
+        
+        if ($this->request->isPost()) {
+            $emailMessageSent = false;
 
-        $email = isset($sessionVars['email']) ? $sessionVars['email'] : '';
+            $this->checkCsrfToken();
 
-        return $this->view->assign('email', $email)
-                ->fetch('users_user_lostuname.tpl');
+            $email = $this->request->getPost()->get('email', null);
+
+            if (empty($email)) {
+                $this->registerError($this->__('Error! E-mail address field is empty.'));
+            } else {
+                // save username and password for redisplay
+                $emailMessageSent = ModUtil::apiFunc($this->name, 'user', 'mailUname', array(
+                    'idfield'   => 'email',
+                    'id'        => $email
+                ));
+                
+                if ($emailMessageSent) {
+                    $this->registerStatus($this->__f('Done! The user name for %s has been sent via e-mail.', $email));
+                    $proceedToForm = false;
+                } else {
+                    $this->registerError($this->__('Sorry! We are unable to send a user name reminder for that e-mail address. Please reenter your information, or contact an administrator.'));
+                }
+            }
+        } elseif ($this->request->isGet()) {
+            $email = '';
+        } else {
+            throw new Zikula_Exception_Forbidden();
+        }
+
+        if ($proceedToForm) {
+            return $this->view->assign('email', $email)
+                    ->fetch('users_user_lostuname.tpl');
+        } else {
+            $this->redirect(ModUtil::url($this->name, 'user', 'login'));
+        }
     }
 
     /**
@@ -660,7 +688,7 @@ class Users_Controller_User extends Zikula_AbstractController
      * 
      * @return bool True if successful request or expected error, false if unexpected error.
      */
-    public function mailUname()
+    public function XXXmailUname()
     {
         $emailMessageSent = false;
 
