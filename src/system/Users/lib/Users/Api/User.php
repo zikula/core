@@ -769,7 +769,7 @@ class Users_Api_User extends Zikula_AbstractApi
             );
             $links[] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'lostPwdUname'),
-                'text'  => $this->__('Lost user name or password'),
+                'text'  => $this->__('Recover account information or password'),
                 'class' => 'user-icon-password',
             );
         }
@@ -806,7 +806,7 @@ class Users_Api_User extends Zikula_AbstractApi
 
             foreach ($registrationErrors as $field => $messageList) {
                 $errorFields[$field] = true;
-                $errorMessages = array_merge($errorMessages, $messageList);
+                $errorMessages = array_merge($errorMessages, is_array($messageList) ? $messageList : array($messageList));
             }
         }
 

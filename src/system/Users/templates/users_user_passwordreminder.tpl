@@ -32,7 +32,7 @@
 </div>
 {/if}
 
-<form class="z-form" action="{modurl modname='Users' type='user' func='resetPassword'}" method="post">
+<form class="z-form" action="{modurl modname='Users' type='user' func='lostPasswordCode'}" method="post">
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_uname" name="uname" value="{$uname}" />

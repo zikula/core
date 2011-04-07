@@ -4,7 +4,7 @@
 
 <p class="z-informationmsg">{gt text="Please enter EITHER your user name OR your e-mail address below and click the 'Submit' button. You will be e-mailed a confirmation code. Check your e-mail, and follow the given instructions."}</p>
 
-<form class="z-form" action="{modurl modname='Users' type='user' func='mailconfirmationcode'}" method="post">
+<form class="z-form" action="{modurl modname='Users' type='user' func='lostpassword'}" method="post">
     <div>
         <input type="hidden" id="lostpasswordcsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
