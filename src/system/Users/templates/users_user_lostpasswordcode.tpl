@@ -23,7 +23,7 @@
         <fieldset>
             <div class="z-formrow">
                 <label for="users_code">{gt text='Confirmation code'}</label>
-                <input id="users_code" type="text" name="code" size="5" maxlength="6" value="{$code}" />
+                <input id="users_code" type="text" name="code" size="5" value="{$code}" />
             </div>
         </fieldset>
         <div class="z-formbuttons z-buttons">
