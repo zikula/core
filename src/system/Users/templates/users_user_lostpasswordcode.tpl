@@ -4,9 +4,10 @@
 
 <p class="z-informationmsg">{gt text="Please enter and EITHER your user name OR your e-mail address, and also enter the confirmation code you received. Once you enter this information and click the 'Submit' button you will receive a new password via e-mail."}</p>
 
-<form class="z-form" action="{modurl modname='Users' type='user' func='passwordreminder'}" method="post">
+<form class="z-form" action="{modurl modname='Users' type='user' func='lostPasswordCode'}" method="post">
     <div>
         <input type="hidden" id="lostpasswordcsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input type="hidden" id="users_lostpassword_setpass" name="setpass" value="0" />
         <fieldset>
             <div class="z-formrow">
                 <label for="users_uname">{gt text='User name'}</label>

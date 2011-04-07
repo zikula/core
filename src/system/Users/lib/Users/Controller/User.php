@@ -615,7 +615,7 @@ class Users_Controller_User extends Zikula_AbstractController
      * 
      * Parameters passed via POST:
      * ---------------------------
-     * None.
+     * string email The email address on the account of the account information to recover.
      * 
      * Parameters passed via SESSION:
      * ------------------------------
@@ -669,62 +669,6 @@ class Users_Controller_User extends Zikula_AbstractController
     }
 
     /**
-     * Send the user a lost uname.
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * string email The e-mail address of the user who lost his user name.
-     * 
-     * Parameters passed via POST:
-     * ---------------------------
-     * None.
-     * 
-     * Parameters passed via SESSION:
-     * ------------------------------
-     * Namespace: Zikula_Users
-     * Variable:  Users_Controller_User_mailUname
-     * Type:      array
-     * Contents:  An array containing the element 'email', the e-mail address of the user who lost his user name.
-     * 
-     * @return bool True if successful request or expected error, false if unexpected error.
-     */
-    public function XXXmailUname()
-    {
-        $emailMessageSent = false;
-
-        $this->checkCsrfToken();
-
-        $email = $this->request->getPost()->get('email', null);
-
-
-        if (empty($email)) {
-            $this->registerError($this->__('Error! E-mail address field is empty.'));
-        } else {
-            // save username and password for redisplay
-            SessionUtil::requireSession();
-            $this->request->getSession()->del('Users_Controller_User_mailUname', 'Zikula_Users');
-            $sessionVars = array(
-                'email' => $email,
-            );
-            $this->request->getSession()->set('Users_Controller_User_mailUname', $sessionVars, 'Zikula_Users');
-
-            $emailMessageSent = ModUtil::apiFunc($this->name, 'user', 'mailUname', array(
-                'idfield'   => 'email',
-                'id'        => $email
-            ));
-        }
-
-        if ($emailMessageSent) {
-            $this->request->getSession()->del('Users_Controller_User_mailUname', 'Zikula_Users');
-            $this->registerStatus($this->__f('Done! The user name for %s has been sent via e-mail.', $email))
-                    ->redirect(ModUtil::url($this->name, 'user', 'login'));
-        } else {
-            $this->registerError($this->__('Sorry! We are unable to send a user name reminder for that e-mail address. Please contact an administrator.'))
-                    ->redirect(ModUtil::url($this->name, 'user', 'lostUname'));
-        }
-    }
-
-    /**
      * Display the lost password form.
      *
      * Parameters passed via GET:
@@ -733,15 +677,12 @@ class Users_Controller_User extends Zikula_AbstractController
      * 
      * Parameters passed via POST:
      * ---------------------------
-     * None.
+     * string uname The user name on the account of the password to recover.
+     * string email The email address on the account of the password to recover.
      * 
      * Parameters passed via SESSION:
      * ------------------------------
-     * Namespace: Zikula_Users
-     * Variable:  Users_Conroller_User_mailConfirmationCode
-     * Type:      array
-     * Contents:  An array containing one of two elements: 'email', the e-mail address of the user who lost his password, or
-     *                  'uname', the user name of the user who lost his password.
+     * None.
      * 
      * @return string The rendered template.
      */
@@ -749,90 +690,60 @@ class Users_Controller_User extends Zikula_AbstractController
     {
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
+        
+        $proceedToForm = true;
+        
+        if ($this->request->isPost()) {
+            $emailMessageSent = false;
 
-        $sessionVars = $this->request->getSession()->get('Users_Conroller_User_mailConfirmationCode', array(), 'Zikula_Users');
-        $templateVariables = array(
-            'uname' => isset($sessionVars['uname']) ? $sessionVars['uname'] : '',
-            'email' => isset($sessionVars['email']) ? $sessionVars['email'] : '',
-        );
-        $this->request->getSession()->del('Users_Conroller_User_mailConfirmationCode', 'Zikula_Users');
+            $this->checkCsrfToken();
 
-        return $this->view->assign($templateVariables)
-                ->fetch('users_user_lostpassword.tpl');
-    }
+            $uname = $this->request->getPost()->get('uname', '');
+            $email = $this->request->getPost()->get('email', '');
 
-    /**
-     * Send the user a confirmation code in order to reset a lost password.
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * None.
-     * 
-     * Parameters passed via POST:
-     * ---------------------------
-     * string email The e-mail address of the user who lost his password.
-     * string uname The user name of the user who lost his password.
-     * 
-     * Parameters passed via SESSION:
-     * ------------------------------
-     * Namespace: Zikula_Users
-     * Variable:  Users_Conroller_User_mailConfirmationCode
-     * Type:      array
-     * Contents:  An array containing one of two elements: 'email', the e-mail address of the user who lost his password, or
-     *                  'uname', the user name of the user who lost his password.
-     * 
-     * @return bool True if successful request or expected error, false if unexpected error.
-     */
-    public function mailConfirmationCode()
-    {
-        $emailMessageSent = false;
-
-        $this->checkCsrfToken();
-
-        $uname = $this->request->getPost()->get('uname', null);
-        $email = $this->request->getPost()->get('email', null);
-
-        if (empty($uname) && empty($email)) {
-            $this->registerError($this->__('Error! User name and e-mail address fields are empty.'));
-            return false;
-        } elseif (!empty($email) && !empty($uname)) {
-            $this->registerError($this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
-            return false;
-        } else {
-            SessionUtil::requireSession();
-            $this->request->getSession()->del('Users_Conroller_User_mailConfirmationCode', 'Zikula_Users');
-            $sessionVars = array();
-            if (!empty($uname)) {
-                $idfield = 'uname';
-                $idvalue = $uname;
-                // save username for redisplay
-                $sessionVars['uname'] = $uname;
+            if (empty($uname) && empty($email)) {
+                $this->registerError($this->__('Error! User name and e-mail address fields are empty.'));
+            } elseif (!empty($email) && !empty($uname)) {
+                $this->registerError($this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
             } else {
-                $idfield = 'email';
-                $idvalue = $email;
-                // save email for redisplay
-                $sessionVars['email'] = $email;
-            }
-            $this->request->getSession()->set('Users_Conroller_User_mailConfirmationCode', $sessionVars, 'Zikula_Users');
+                if (!empty($uname)) {
+                    $idfield = 'uname';
+                    $idvalue = $uname;
+                } else {
+                    $idfield = 'email';
+                    $idvalue = $email;
+                }
 
-            $emailMessageSent = ModUtil::apiFunc($this->name, 'user', 'mailConfirmationCode', array(
-                'idfield' => $idfield,
-                'id' => $idvalue
-            ));
+                $emailMessageSent = ModUtil::apiFunc($this->name, 'user', 'mailConfirmationCode', array(
+                    'idfield' => $idfield,
+                    'id' => $idvalue
+                ));
+                
+                if ($emailMessageSent) {
+                    $this->registerStatus($this->__f('Done! The confirmation code for %s has been sent via e-mail.', $idvalue));
+                    $proceedToForm = false;
+                } elseif ($idfield == 'email') {
+                    $this->registerError($this->__('Sorry! We are unable to send a password recovery code for that e-mail address. Please try your user name, or contact an administrator.'));
+                } else {
+                    $this->registerError($this->__('Sorry! We are unable to send a password recovery code for that user name. Please try your e-mail address, contact an administrator.'));
+                }
+            }
+        } elseif ($this->request->isGet()) {
+            $uname = '';
+            $email = '';
+        } else {
+            throw new Zikula_Exception_Forbidden();
         }
 
-        if ($emailMessageSent) {
-            $this->request->getSession()->del('Users_Conroller_User_mailConfirmationCode', 'Zikula_Users');
-            $this->registerStatus($this->__f('Done! The confirmation code for %s has been sent via e-mail.', $idvalue))
-                    ->redirect(ModUtil::url($this->name, 'user', 'lostPasswordCode'));
+        if ($proceedToForm) {
+            $templateVariables = array(
+                'uname' => $uname,
+                'email' => $email,
+            );
+            return $this->view->assign($templateVariables)
+                    ->fetch('users_user_lostpassword.tpl');
         } else {
-            if ($idfield == 'email') {
-                $errorMessage = $this->__('Sorry! We are unable to send a password recovery code for that e-mail address. Please try your user name, or contact an administrator.');
-            } else {
-                $errorMessage = $this->__('Sorry! We are unable to send a password recovery code for that user name. Please try your e-mail address, contact an administrator.');
-            }
-            $this->registerError($errorMessage, null, ModUtil::url($this->name, 'user', 'lostPassword'));
-            return false;
+            $this->redirect(ModUtil::url($this->name, 'user', 'lostPasswordCode'));
         }
     }
 
@@ -845,149 +756,16 @@ class Users_Controller_User extends Zikula_AbstractController
      * string uname The user name of the user who lost his password.
      * string code  The confirmation code used to enable the user to reset his password.
      * 
-     * Parameters passed via POST:
-     * ---------------------------
-     * None.
+     * Parameters passed via POST -- from the lostpasswordcode template:
+     * -----------------------------------------------------------------
+     * boolean setpass Must be a value of 0 (zero).
+     * string  email   The e-mail address of the user who lost his password.
+     * string  uname   The user name of the user who lost his password.
+     * string  code    The confirmation code used to enable the user to reset his password.
      * 
-     * Parameters passed via SESSION:
-     * ------------------------------
-     * Namespace: Zikula_Users
-     * Variable:  Users_Controller_User_passwordReminder
-     * Type:      array
-     * Contents:  An array containing one of two elements: 'email', the e-mail address of the user who lost his password, or
-     *                  'uname', the user name of the user who lost his password, plus an additional element 'code' containing
-     *                  the confirmation code used to enable the user to reset his password.
-     * 
-     * @return string The rendered template.
-     */
-    public function lostPasswordCode()
-    {
-        // we shouldn't get here if logged in already....
-        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
-
-        $sessionVars = $this->request->getSession()->get('Users_Controller_User_passwordReminder', array(), 'Zikula_Users');
-        $this->request->getSession()->del('Users_Controller_User_passwordReminder', 'Zikula_Users');
-
-        $templateVariables = array(
-            'uname' => $this->request->getGet()->get('uname', isset($sessionVars['uname']) ? $sessionVars['uname'] : null),
-            'email' => $this->request->getGet()->get('email', isset($sessionVars['email']) ? $sessionVars['email'] : null),
-            'code'  => $this->request->getGet()->get('code',  isset($sessionVars['code']) ? $sessionVars['code'] : null),
-        );
-
-        return $this->view->assign($templateVariables)
-                ->fetch('users_user_lostpasswordcode.tpl');
-    }
-
-    /**
-     * Show the user his password reminder.
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * None.
-     * 
-     * Parameters passed via POST:
-     * ---------------------------
-     * string email The e-mail address of the user who lost his password.
-     * string uname The user name of the user who lost his password.
-     * string code  The confirmation code used to enable the user to reset his password.
-     * 
-     * Parameters passed via SESSION:
-     * ------------------------------
-     * Namespace: Zikula_Users
-     * Variable:  Users_Controller_User_passwordReminder
-     * Type:      array
-     * Contents:  An array containing one of two elements: 'email', the e-mail address of the user who lost his password, or
-     *                  'uname', the user name of the user who lost his password, plus an additional element 'code' containing
-     *                  the confirmation code used to enable the user to reset his password.
-     * 
-     * @return bool True if successful request or expected error, false if unexpected error.
-     */
-    public function passwordReminder()
-    {
-        $emailMessageSent = false;
-
-        $this->checkCsrfToken();
-
-        if ($this->request->isPost()) {
-            $uname = $this->request->getPost()->get('uname', null);
-            $email = $this->request->getPost()->get('email', null);
-            $code  = $this->request->getPost()->get('code',  null);
-        } elseif ($this->request->isGet()) {
-            $uname = $this->request->getGet()->get('uname', null);
-            $email = $this->request->getGet()->get('email', null);
-            $code  = $this->request->getGet()->get('code',  null);
-        }
-
-        if (empty($uname) && empty($email)) {
-            $this->registerError($this->__('Error! User name and e-mail address fields are empty.'));
-        } elseif (!empty($email) && !empty($uname)) {
-            $this->registerError($this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
-        } else {
-            if (!empty($uname)) {
-                $idfield = 'uname';
-                $idvalue = $uname;
-            } else {
-                $idfield = 'email';
-                $idvalue = $email;
-            }
-
-            $checkConfArgs =array(
-                'idfield' => $idfield,
-                'id'      => $idvalue,
-                'code'    => $code,
-            );
-            if (ModUtil::apiFunc($this->name, 'user', 'checkConfirmationCode', $checkConfArgs)) {
-                $this->request->getSession()->del('Users_Controller_User_passwordReminder', 'Zikula_Users');
-                $userInfo = UserUtil::getVars($idvalue, true, $idfield);
-                $passwordReminder = $userInfo['passreminder'];
-            } else {
-                $this->registerError($this->__("Error! The code that you've enter is invalid."));
-            }
-        }
-
-        if (!isset($userInfo)) {
-            // $userInfo is not set, so there was an error prior to an attempt to get the user.
-            // save username and password for redisplay
-            SessionUtil::requireSession();
-            $this->request->getSession()->del('Users_Controller_User_passwordReminder', 'Zikula_Users');
-            $sessionVars = array(
-                'uname' => $uname,
-                'email' => $email,
-                'code'  => $code,
-            );
-            $this->request->getSession()->set('Users_Controller_User_passwordReminder', $sessionVars, 'Zikula_Users');
-
-            $this->redirect(ModUtil::url($this->name, 'user', 'lostPasswordCode'));
-        } elseif (isset($userInfo) && !$userInfo) {
-            // $userInfo is set, but false. There was a database error retrieving the user.
-            $this->redirect(ModUtil::url($this->name, 'user', 'lostPasswordCode'));
-        } else {
-            // $userInfo is set, and not false, and $passwordReminder is available. Show it.
-            $rendererArgs = array(
-                'uname'             => $userInfo['uname'],
-                'passreminder'      => $passwordReminder,
-                'newpassreminder'   => '',
-                'errormessages'     => array(),
-            );
-
-            return $this->view->assign($rendererArgs)
-                    ->fetch('users_user_passwordreminder.tpl');
-        }
-    }
-
-    /**
-     * Render and process a password-reset, showing the password reminder if available.
-     *
-     * This function, as a result of successfully providing a verification code, will display
-     * to the user his user name and password reminder, and give him the opportunity to reset his
-     * password.
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * string lostpassword_uname The user name of the user whose password should be reset.
-     * 
-     * Parameters passed via POST:
-     * ---------------------------
+     * Parameters passed via POST -- from the passwordreminder template:
+     * -----------------------------------------------------------------
+     * string setpass         Must be a value of 1 (one).
      * string uname           The user name of the user who lost his password.
      * string newpass         The new password.
      * string newpassagain    The new password, repeated for verification.
@@ -997,27 +775,96 @@ class Users_Controller_User extends Zikula_AbstractController
      * ------------------------------
      * None.
      * 
-     * @return string|bool The rendered template; true on redirect; false on error.
+     * @return string The rendered template.
      */
-    public function resetPassword()
+    public function lostPasswordCode()
     {
-        $this->checkCsrfToken();
-
+        // we shouldn't get here if logged in already....
+        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
+        
+        $formStage = 'code';
+        $errorInfo = array();
+        
         if ($this->request->isPost()) {
-            $uname          = $this->request->getPost()->get('uname', '');
-            $newpass        = $this->request->getPost()->get('newpass', '');
-            $newpassagain   = $this->request->getPost()->get('newpassagain', '');
-            $newpassreminder= $this->request->getPost()->get('newpassreminder', '');
+            $this->checkCsrfToken();
+            
+            $setPass = $this->request->getPost()->get('setpass', false);
+
+            if (!$setPass) {
+                // lostpasswordcode form
+                $uname = $this->request->getPost()->get('uname', '');
+                $email = $this->request->getPost()->get('email', '');
+                $code  = $this->request->getPost()->get('code',  '');
+                
+                $newpass = '';
+                $newpassagain = '';
+                $newpassreminder = '';
+                $passreminder = '';
+            } else {
+                // Reset password (passwordreminder) form
+                $uname          = $this->request->getPost()->get('uname', '');
+                $newpass        = $this->request->getPost()->get('newpass', '');
+                $newpassagain   = $this->request->getPost()->get('newpassagain', '');
+                $newpassreminder= $this->request->getPost()->get('newpassreminder', '');
+                
+                $formStage = 'setpass';
+            }
         } elseif ($this->request->isGet()) {
-            $uname = $this->request->getGet()->get('lostpassword_uname', '');
+            $setpass = false;
+            $uname = $this->request->getGet()->get('uname', '');
+            $email = $this->request->getGet()->get('email', '');
+            $code = $this->request->getGet()->get('code', '');
+
+            $newpass = '';
+            $newpassagain = '';
+            $newpassreminder = '';
+            $passreminder = '';
         } else {
             throw new Zikula_Exception_Forbidden();
         }
+        
+        if (($formStage == 'code') && ($this->request->isPost() || !empty($uname) || !empty($email) || !empty($code))) {
+            // Got something to process from either GET or POST
+            if (empty($uname) && empty($email)) {
+                $this->registerError($this->__('Error! User name and e-mail address fields are empty.'));
+            } elseif (!empty($email) && !empty($uname)) {
+                $this->registerError($this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
+            } elseif (empty($code)) {
+                $this->registerError($this->__('Error! Please enter the confirmation code you received in the e-mail message.'));
+            } else {
+                if (!empty($uname)) {
+                    $idfield = 'uname';
+                    $idvalue = $uname;
+                } else {
+                    $idfield = 'email';
+                    $idvalue = $email;
+                }
 
-        $userinfo = UserUtil::getVars($uname, false, 'uname');
+                $checkConfArgs =array(
+                    'idfield' => $idfield,
+                    'id'      => $idvalue,
+                    'code'    => $code,
+                );
+                if (ModUtil::apiFunc($this->name, 'user', 'checkConfirmationCode', $checkConfArgs)) {
+                    $userObj = UserUtil::getVars($idvalue, true, $idfield);
+                    
+                    if (isset($userObj) && $userObj) {
+                        $passreminder = isset($userObj['passreminder']) ? $userObj['passreminder'] : '';
+                        $formStage = 'setpass';
+                    } else {
+                        $this->registerError($this->__('Sorry! Could not load that user account.'));
+                        $formStage = 'error';
+                    }
+                } else {
+                    $this->registerError($this->__("Error! The code that you've enter is invalid."));
+                }
+            }
+        } elseif ($formStage == 'setpass') {
+            $userObj = UserUtil::getVars($uname, false, 'uname');
 
-        if ($userinfo) {
-            if ($this->request->isPost()) {
+            if ($userObj) {
+                $passreminder = isset($userObj['passreminder']) ? $userObj['passreminder'] : '';
+                
                 $passwordErrors = ModUtil::apiFunc($this->name, 'registration', 'getPasswordErrors', array(
                     'uname'         => $uname,
                     'pass'          => $newpass,
@@ -1026,44 +873,53 @@ class Users_Controller_User extends Zikula_AbstractController
                 ));
 
                 if (empty($passwordErrors)) {
-                    $passwordSet = UserUtil::setPassword($newpass, $userinfo['uid']);
+                    $passwordSet = UserUtil::setPassword($newpass, $userObj['uid']);
 
                     if ($passwordSet) {
-                        $reminderSet = UserUtil::setVar('passreminder', $newpassreminder, $userinfo['uid']);
+                        $reminderSet = UserUtil::setVar('passreminder', $newpassreminder, $userObj['uid']);
 
                         if (!$reminderSet) {
-                            $this->registerError($this->__('Warning! Your new password has been saved, but there was an error while trying to save your new password reminder.'))
-                                    ->redirect(ModUtil::url($this->name, 'user', 'login'));
+                            $this->registerError($this->__('Warning! Your new password has been saved, but there was an error while trying to save your new password reminder.'));
                         } else {
-                            $this->registerStatus($this->__('Done! Your password has been reset, and you may now log in. Please keep your password in a safe place!'))
-                                    ->redirect(ModUtil::url($this->name, 'user', 'login'));
+                            $this->registerStatus($this->__('Done! Your password has been reset, and you may now log in. Please keep your password in a safe place!'));
                         }
+                        $formStage = 'login';
                     } else {
-                        $this->registerError($this->__('Error! Your new password could not be saved.'))
-                                ->redirect(ModUtil::url($this->name, 'user', 'lostPwdUname'));
+                        $this->registerError($this->__('Error! Your new password could not be saved.'));
+                        $formStage = 'error';
                     }
+                } else {
+                    $errorInfo = ModUtil::apiFunc($this->name, 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $passwordErrors));
                 }
+            } else {
+                $this->registerError($this->__('Sorry! Could not load that user account.'));
+                $formStage = 'error';
             }
-        } else {
-            $this->registerError($this->__('Sorry! Could not load that user account.'))
-                    ->redirect(ModUtil::url($this->name, 'user', 'lostPwdUname'));
         }
 
-        if (isset($passwordErrors) && !empty($passwordErrors)) {
-            $errorInfo = ModUtil::apiFunc($this->name, 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $passwordErrors));
+        if ($formStage == 'code') {
+            $templateVariables = array(
+                'uname' => $uname,
+                'email' => $email,
+                'code'  => $code,
+            );
+            return $this->view->assign($templateVariables)
+                    ->fetch('users_user_lostpasswordcode.tpl');
+        } elseif ($formStage == 'setpass') {
+            $templateVariables = array(
+                'uname'             => $uname,
+                'passreminder'      => $passreminder,
+                'newpassreminder'   => $newpassreminder,
+                'errormessages'     => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
+            );
+
+            return $this->view->assign($templateVariables)
+                    ->fetch('users_user_passwordreminder.tpl');
+        } elseif ($formStage == 'login') {
+            $this->redirect(ModUtil::url($this->name, 'user', 'login'));
         } else {
-            $errorInfo = array();
+            $this->redirect(ModUtil::url($this->name, 'user', 'lostPwdUname'));
         }
-
-        $rendererArgs = array(
-            'uname'             => $uname,
-            'passreminder'      => isset($userinfo['passreminder']) ? $userinfo['passreminder'] : '',
-            'newpassreminder'   => isset($newpassreminder) ? $newpassreminder : '',
-            'errormessages'     => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
-        );
-
-        return $this->view->assign($rendererArgs)
-                ->fetch('users_user_passwordreminder.tpl');
     }
 
     /**
