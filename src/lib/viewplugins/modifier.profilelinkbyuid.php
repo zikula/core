@@ -19,16 +19,16 @@
  * Example
  *
  *   Simple version, shows the username
- *   {$uid|uidprofilelink}
+ *   {$uid|profilelinkbyuid}
  *   Simple version, shows username, using class="classname"
- *   {$uid|uidprofilelink:classname}
+ *   {$uid|profilelinkbyuid:classname}
  *   Using profile.gif instead of username, no class
- *   {$uid|uidprofilelink:'':'images/profile.gif'}
+ *   {$uid|profilelinkbyuid:'':'images/profile.gif'}
  *
  *   Using language depending image from pnimg. Note that we pass
  *   the pnimg result array to the modifier as-is
  *   {img src='profile.gif' assign=profile}
- *   {$uid|uidprofilelink:'classname':$profile}
+ *   {$uid|profilelinkbyuid:'classname':$profile}
  *
  * @param string  $uid       The users uid.
  * @param string  $class     The class name for the link (optional).
@@ -38,7 +38,7 @@
  *
  * @return string The output.
  */
-function smarty_modifier_uidprofilelink($uid, $class = '', $image = '', $maxLength = 0)
+function smarty_modifier_profilelinkbyuid($uid, $class = '', $image = '', $maxLength = 0)
 {
     if (empty($uid) || (float)$uid < 1) {
         return $uid;
