@@ -157,8 +157,6 @@
         '{{gt text="Very Strong"}}'
         ]
     });
-    // Display and start the password meter
-    passmeter.start();
 </script>
 {/if}
 <script type="text/javascript">

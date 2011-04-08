@@ -139,14 +139,20 @@ Zikula.Users._PassMeter = Class.create({
 Zikula.Users.PassMeter = Class.create({
     initialize: function(passwordElementId, visualizationElementId, options) {
         this.passwordInput = $(passwordElementId);
-        this.visualizationDiv = $(visualizationElementId);
+        if (Object.isElement($(visualizationElementId))) {
+            this.visualizationDiv = $(visualizationElementId);
+        } else {
+            this.visualizationDiv = false;
+            options = visualizationElementId;
+        }
         this.options = Object.extend({
             username: false,
             onChange: false,
             messages: {},
             colors:  ["#ff0000", "#FFCC33", "#00FF00", "#008000"],
             scores: [20, 40, 60],
-            verdicts: ['Weak', 'Normal', 'Strong', 'Very Strong']
+            verdicts: ['Weak', 'Normal', 'Strong', 'Very Strong'],
+            autoRun: true
         }, options || { });
         this.calulator = new Zikula.Users._PassMeter(this.options);
         if(Object.isElement($(this.options.username))) {
@@ -154,6 +160,9 @@ Zikula.Users.PassMeter = Class.create({
                 test: function(word) {return word =='' || word != $F(this.options.username)},
                 msg: 'Password is the same as login!'
             }
+        }
+        if (this.options.autoRun) {
+            this.start();
         }
     },
     start: function() {
@@ -197,9 +206,15 @@ Zikula.Users.PassMeter = Class.create({
         })
         this.passindicatorScore = new Element('div',{'class':'passindicatorscore'})
         this.passindicatorMsg = new Element('div',{'class':'passindicatormsg'})
-        this.visualizationDiv.insert({
-            top: this.passindicatorContainer.insert(this.passindicatorScore).insert(this.passindicatorBarContainer).insert(this.passindicatorMsg)
-        });
+        if (this.visualizationDiv) {
+            this.visualizationDiv.insert({
+                top: this.passindicatorContainer.insert(this.passindicatorScore).insert(this.passindicatorBarContainer).insert(this.passindicatorMsg)
+            });
+        } else {
+            this.passwordInput.insert({
+                after: this.passindicatorContainer.insert(this.passindicatorScore).insert(this.passindicatorBarContainer).insert(this.passindicatorMsg)
+            });
+        }
         this.passindicatorBarContainer.insert(this.passindicatorBar);
     }
 });
