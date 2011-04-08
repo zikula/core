@@ -32,6 +32,7 @@
 function smarty_function_allowedhtml($params, &$smarty)
 {
     LogUtil::log(__f('Warning! Template plugin {%s} is deprecated.', array('allowedhtml')), E_USER_DEPRECATED);
+
     $AllowableHTML = System::getVar('AllowableHTML');
     $allowedhtml = '';
     foreach ($AllowableHTML as $key => $access) {

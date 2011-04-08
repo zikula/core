@@ -28,6 +28,8 @@
  */
 function smarty_function_version($params, $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('version', '$coredata.version_num')), E_USER_DEPRECATED);
+
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
     $return = Zikula_Core::VERSION_NUM;

@@ -42,6 +42,8 @@
  */
 function smarty_function_modcallhooks($params, $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('modcallhooks', 'notifydisplayhooks')), E_USER_DEPRECATED);
+
     $assign     = isset($params['assign'])     ? $params['assign']        : null;
     $hookid     = isset($params['hookid'])     ? $params['hookid']        : '';
     $hookaction = isset($params['hookaction']) ? $params['hookaction']    : null;

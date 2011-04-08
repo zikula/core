@@ -27,6 +27,7 @@
 function smarty_function_securityutil_checkpermission($params, $smarty)
 {
     LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('securityutil_checkpermission', 'checkpermission')), E_USER_DEPRECATED);
+
     if (!isset($params['component'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('securityutil_checkpermission', 'component')));
         return false;

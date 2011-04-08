@@ -27,6 +27,7 @@
 function smarty_function_secauthaction($params, &$smarty)
 {
     LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('secauthaction', 'checkpermission')), E_USER_DEPRECATED);
+
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $comp   = isset($params['comp'])   ? $params['comp']   : null;
     $inst   = isset($params['inst'])   ? $params['inst']   : null;

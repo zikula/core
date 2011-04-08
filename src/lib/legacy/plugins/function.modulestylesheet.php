@@ -30,6 +30,7 @@
 function smarty_function_modulestylesheet($params, &$smarty)
 {
     LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated.', array('modulestylesheet')), E_USER_DEPRECATED);
+
     // do nothing unless we are admin
     if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
         PageUtil::addVar('javascript', 'javascript/ajax/prototype.js');

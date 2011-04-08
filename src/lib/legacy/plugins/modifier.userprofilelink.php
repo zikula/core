@@ -40,6 +40,8 @@
  */
 function smarty_modifier_userprofilelink($string, $class = '', $image = '', $maxLength = 0)
 {
+    LogUtil::log(__f('Warning! Template modifier {$var|%1$s} is deprecated, please use {$var|%2$s} instead.', array('userprofilelink', 'profilelinkbyuname} {$var|profilelinkbyuid')), E_USER_DEPRECATED);
+
     // TODO - This does not handle cases where the uname is made up entirely of digits (e.g. $uname == "123456"). It will interpret it
     // as a uid. A new modifier is needed that acts on uids and only uids, and this modifier should act on unames and only unames.
     if (is_numeric($string)) {

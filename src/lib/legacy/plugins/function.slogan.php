@@ -28,6 +28,8 @@
  */
 function smarty_function_slogan($params, $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('slogan', '$modvars.ZConfig.slogan')), E_USER_DEPRECATED);
+
     $slogan = System::getVar('slogan');
 
     if (isset($params['assign'])) {

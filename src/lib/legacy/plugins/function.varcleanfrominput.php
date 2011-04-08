@@ -32,6 +32,7 @@
 function smarty_function_varcleanfrominput($params, $smarty)
 {
     LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('varcleanfrominput', 'formutil_getpassedvalue')), E_USER_DEPRECATED);
+
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $name   = isset($params['name'])   ? $params['name']   : null;
 
