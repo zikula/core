@@ -40,6 +40,8 @@
  */
 function smarty_function_modishooked($params, $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated.', array('modishooked')), E_USER_DEPRECATED);
+
     $assign   = isset($params['assign'])   ? $params['assign']   : null;
     $smodname = isset($params['smodname']) ? $params['smodname'] : null;
     $tmodname = isset($params['tmodname']) ? $params['tmodname'] : null;

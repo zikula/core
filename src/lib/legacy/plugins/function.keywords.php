@@ -43,6 +43,8 @@
  */
 function smarty_function_keywords($params, $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated.', array('keywords')), E_USER_DEPRECATED);
+
     $metatags = $view->getServiceManager()->getArgument('zikula_view.metatags');
 
     if (isset($params['assign'])) {

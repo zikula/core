@@ -33,6 +33,8 @@
  */
 function smarty_modifier_modcallhooks($string, $modname = '')
 {
+    LogUtil::log(__f('Warning! Template modifier {$var|%1$s} is deprecated.', array('modcallhooks')), E_USER_DEPRECATED);
+
     $extrainfo = array($string);
     if (!empty($modname)) {
         $extrainfo['module'] = $modname;

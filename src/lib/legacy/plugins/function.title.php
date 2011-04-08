@@ -31,6 +31,8 @@
  */
 function smarty_function_title($params, $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('title', "pagegetvar name='title'")), E_USER_DEPRECATED);
+
     $title = PageUtil::getVar('title');
     
     if (isset($params['assign'])) {

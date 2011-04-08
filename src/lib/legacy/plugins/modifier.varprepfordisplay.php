@@ -33,6 +33,7 @@
  */
 function smarty_modifier_varprepfordisplay($string)
 {
-    LogUtil::log(__f('Warning! Template modifier {%1$s} is deprecated, please use {%2$s} instead.', array('varprepfordisplay', 'safetext')), E_USER_DEPRECATED);
+    LogUtil::log(__f('Warning! Template modifier {$var|%1$s} is deprecated, please use {$var|%2$s} instead.', array('varprepfordisplay', 'safetext')), E_USER_DEPRECATED);
+
     return DataUtil::formatForDisplay($string);
 }

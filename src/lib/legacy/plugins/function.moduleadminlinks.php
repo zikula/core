@@ -34,6 +34,7 @@
 function smarty_function_moduleadminlinks($params, $view)
 {
     LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('moduleadminlinks', 'modulelinks')), E_USER_DEPRECATED);
+
     // set some defaults
     $start     = isset($params['start'])    ? $params['start']    : '[';
     $end       = isset($params['end'])      ? $params['end']      : ']';

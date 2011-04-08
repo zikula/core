@@ -25,6 +25,8 @@
  */
 function smarty_function_adminonlinemanual($params, $smarty)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated.', array('adminonlinemanual')), E_USER_DEPRECATED);
+
     $lang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
     $modinfo = ModUtil::getInfoFromName(ModUtil::getName());
     $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';

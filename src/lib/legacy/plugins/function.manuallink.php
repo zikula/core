@@ -38,6 +38,8 @@
  */
 function smarty_function_manuallink($params, Zikula_View $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated.', array('manuallink')), E_USER_DEPRECATED);
+
     $userlang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
     $stdlang = System::getVar('language_i18n');
 

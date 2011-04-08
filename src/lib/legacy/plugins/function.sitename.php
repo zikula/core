@@ -30,6 +30,8 @@
  */
 function smarty_function_sitename($params, $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('sitename', '$modvars.ZConfig.sitename')), E_USER_DEPRECATED);
+
     $sitename = System::getVar('sitename');
 
     if (isset($params['assign'])) {

@@ -43,6 +43,8 @@
  */
 function smarty_function_configgetvar($params, $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated.', array('configgetvar')), E_USER_DEPRECATED);
+
     $name      = isset($params['name'])    ? $params['name']    : null;
     $default   = isset($params['default']) ? $params['default'] : null;
     $html      = isset($params['html'])    ? $params['html']    : null;
