@@ -167,7 +167,6 @@
         '{{gt text="Very Strong"}}'
         ]
     });
-    passmeter.start();
 </script>
 {/if}
 <script type="text/javascript">
