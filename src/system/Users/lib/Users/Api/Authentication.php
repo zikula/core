@@ -445,6 +445,8 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
         // authenticationInfo can contain anything necessary for the authentication method, but most of the time will contain
         // a login ID of some sort, and a password. Set up authenticationInfo in templates as name="authenticationInfo[fieldname]" to
         // gather what is needed. In this case, we don't care about any password that might be in authenticationInfo.
+        
+        $authenticatedUid = false;
 
         // Validate authenticationInfo
         if (!isset($args['authentication_info']) || !is_array($args['authentication_info'])
@@ -484,30 +486,22 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
         // Note: the following is a bad example for custom modules because there no mapping table for the Users module.
         // A custom authentication module would look up a uid using its own mapping tables, not the users table or UserUtil.
         if ($authenticationMethod['method'] == 'email') {
-            $uid = UserUtil::getIdFromEmail($loginID);
-            if (!$uid) {
+            $authenticatedUid = UserUtil::getIdFromEmail($loginID);
+            if (!$authenticatedUid) {
                 // Might be a registration. Acting as an authenticationModule, we should not care at this point about the user's
                 // account status. The account status is something for UserUtil::loginUsing() to deal with after we
                 // tell it whether the account authenticates or not.
-                $uid = UserUtil::getIdFromEmail($loginID, true);
-                
-                if (!$uid) {
-                    $this->registerError($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
-                }
+                $authenticatedUid = UserUtil::getIdFromEmail($loginID, true);
             }
         } else {
-            $uid = UserUtil::getIdFromName($loginID);
-            if (!$uid) {
+            $authenticatedUid = UserUtil::getIdFromName($loginID);
+            if (!$authenticatedUid) {
                 // Might be a registration. See above.
-                $uid = UserUtil::getIdFromName($loginID, true);
-
-                if (!$uid) {
-                    $this->registerError($this->__('Sorry! The user name or password you entered was incorrect.'));
-                }
+                $authenticatedUid = UserUtil::getIdFromName($loginID, true);
             }
         }
 
-        return $uid;
+        return $authenticatedUid;
     }
 
     /**
@@ -541,6 +535,14 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
         $checkPassword = ModUtil::apiFunc($this->name, 'Authentication', 'checkPassword', $args, 'Zikula_Api_AbstractAuthentication');
         if ($checkPassword) {
             $authenticatedUid = ModUtil::apiFunc($this->name, 'Authentication', 'getUidForAuthenticationInfo', $args, 'Zikula_Api_AbstractAuthentication');
+            
+            if (!$authenticatedUid) {
+                if ($args['authentication_method']['method'] == 'email') {
+                    $this->registerError($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
+                } else {
+                    $this->registerError($this->__('Sorry! The user name or password you entered was incorrect.'));
+                }
+            }
         }
 
         return $authenticatedUid;
