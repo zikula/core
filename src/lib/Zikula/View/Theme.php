@@ -634,7 +634,10 @@ class Zikula_View_Theme extends Zikula_View
         $maincontent = $this->eventManager->notify($event)->getData();
 
         // add the module wrapper
-        $maincontent = '<div id="z-maincontent" class="z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
+        if (!$this->system) {
+            $module = $this->toplevelmodule ? $this->toplevelmodule : 'homepage';
+            $maincontent = '<div id="z-maincontent" class="z-module-' . DataUtil::formatForDisplay(strtolower($module)) . '">' . $maincontent . '</div>';
+        }
 
         // Assign the main content area to the template engine
         $this->assign_by_ref('maincontent', $maincontent);
