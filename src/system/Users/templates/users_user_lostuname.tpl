@@ -9,7 +9,7 @@
     <fieldset>
         <div class="z-formrow">
             <label for="users_email">{gt text='E-mail address'}</label>
-            <input id="users_email" type="text" name="email" size="40" maxlength="60" value="{$email}" />
+            <input id="users_email" type="text" name="email" size="40" maxlength="60" value="{$email|safetext}" />
         </div>
     </fieldset>
     <div class="z-formbuttons z-buttons">

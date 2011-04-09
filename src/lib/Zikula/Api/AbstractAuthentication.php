@@ -149,4 +149,42 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      */
     abstract public function authenticateUser(array $args);
 
+    /**
+     * Retrieve the account recovery information for the specified user.
+     * 
+     * The array returned by this function should be an empty array (not null) if the specified user does not have any
+     * authentication methods registered with the authentication module that are enabled for log-in.
+     * 
+     * If the specified user does have one or more authentication methods, then the array should contain one or more elements
+     * indexed numerically. Each element should be an associative array containing the following:
+     * 
+     * - 'modname' The authentication module name.
+     * - 'short_description' A brief (a few words) description or name of the authentication method.
+     * - 'long_description' A longer description or name of the authentication method.
+     * - 'uname' The user name _equivalent_ for the authentication method (e.g., the claimed OpenID).
+     * - 'link' If the authentication method is for an external service, then a link to the user's account on that service, or a general link to the service,
+     *            otherwise, an empty string (not null).
+     * 
+     * For example:
+     * 
+     * <code>
+     * $accountRecoveryInfo[] = array(
+     *     'modname'           => $this->name,
+     *     'short_description' => $this->__('E-mail Address'),
+     *     'long_description'  => $this->__('E-mail Address'),
+     *     'uname'             => $userObj['email'],
+     *     'link'              => '',
+     * )
+     * </code>
+     * 
+     * Parameters passed in the $arg array:
+     * ------------------------------------
+     * numeric 'uid' The user id of the user for which account recovery information should be retrieved.
+     * 
+     * @param array $args All parameters passed to this function.
+     * 
+     * @return An array of account recovery information.
+     */
+    abstract public function getAccountRecoveryInfoForUid(array $args);
+
 }
