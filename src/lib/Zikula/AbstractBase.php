@@ -714,7 +714,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      */
     protected function getService($id)
     {
-        $this->serviceManager->getService($id);
+        return $this->serviceManager->getService($id);
     }
 
     /**
