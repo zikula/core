@@ -155,17 +155,7 @@
 <script type="text/javascript">
     var passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
         username:'{{$formData->getFieldId('uname')}}',
-        minLength: '{{$modvars.Users.minpass}}',
-        messages: {
-            username: '{{gt text="Password can not match the username, choose a different password."}}',
-            minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.Users.minpass}}'
-        },
-        verdicts: [
-        '{{gt text="Weak"}}',
-        '{{gt text="Normal"}}',
-        '{{gt text="Strong"}}',
-        '{{gt text="Very Strong"}}'
-        ]
+        minLength: '{{$modvars.Users.minpass}}'
     });
 </script>
 {/if}
