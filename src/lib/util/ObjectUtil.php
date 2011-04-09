@@ -325,6 +325,8 @@ class ObjectUtil
             }
             $seq += 1;
         }
+        
+        DBUtil::flushCache($tablename);
     }
 
     /**
@@ -399,6 +401,8 @@ class ObjectUtil
         $sql = "UPDATE $table SET $column[$field]='" . DataUtil::formatForStore($altseq) . "' WHERE $column[$idcolumn]='" . DataUtil::formatForStore($obj[$idcolumn]) . "'";
         $upd2 = DBUtil::executeSQL($sql);
 
+        DBUtil::flushCache($tablename);
+        
         return true;
     }
 
@@ -507,6 +511,11 @@ class ObjectUtil
                                              $column[object_id] = '" . DataUtil::formatForStore($objID) . "'";
             DBUtil::executeSQL($sql);
         }
+        
+        DBUtil::flushCache('objectdata_attributes');
+        if (isset($dbtables[$type])) {
+            DBUtil::flushCache($type);
+        }
 
         $atrs = (isset($obj['__ATTRIBUTES__']) ? $obj['__ATTRIBUTES__'] : null);
         if (!$atrs) {
@@ -587,6 +596,10 @@ class ObjectUtil
             }
         }
 
+        if (isset($dbtables[$type])) {
+            DBUtil::flushCache($type);
+        }
+        
         return true;
     }
 
@@ -630,7 +643,14 @@ class ObjectUtil
         $sql = "DELETE FROM $table WHERE $column[object_type] = '" . DataUtil::formatForStore($type) . "' AND
                                          $column[object_id] = '" . DataUtil::formatForStore($objID) . "'";
 
-        return DBUtil::executeSQL($sql);
+        $recordsDeleted = DBUtil::executeSQL($sql);
+        
+        DBUtil::flushCache('objectdata_attributes');
+        if (isset($dbtables[$type])) {
+            DBUtil::flushCache($type);
+        }
+        
+        return $recordsDeleted;
     }
 
     /**
@@ -669,7 +689,14 @@ class ObjectUtil
                 . $column['object_type'] . ' = \'' . DataUtil::formatForStore($type) . '\' AND '
                 . $column['object_id'] . ' = \'' . DataUtil::formatForStore($objID) . '\'';
 
-        return (bool)DBUtil::executeSQL($sql);
+        $recordDeleted = (bool)DBUtil::executeSQL($sql);
+        
+        DBUtil::flushCache('objectdata_attributes');
+        if (isset($dbtables[$type])) {
+            DBUtil::flushCache($type);
+        }
+        
+        return $recordDeleted;
     }
 
     /**
@@ -687,6 +714,11 @@ class ObjectUtil
 
         $sql = "DELETE FROM $table WHERE $column[object_type] = '" . DataUtil::formatForStore($type) . "'";
         $res = DBUtil::executeSQL($sql);
+        
+        DBUtil::flushCache('objectdata_attributes');
+        if (isset($dbtables[$type])) {
+            DBUtil::flushCache($type);
+        }
 
         return $res;
     }
@@ -776,6 +808,11 @@ class ObjectUtil
             $obj['__META__']['metaid'] = $meta['id'];
             return $meta['id'];
         }
+        
+        $dbtables = DBUtil::getTables();
+        if (isset($dbtables[$tablename])) {
+            DBUtil::flushCache($tablename);
+        }
 
         return false;
     }
@@ -798,6 +835,11 @@ class ObjectUtil
         $meta = $obj['__META__'];
         if ($meta['obj_id'] > 0) {
             return DBUtil::updateObject($meta, 'objectdata_meta');
+        }
+
+        $dbtables = DBUtil::getTables();
+        if (isset($dbtables[$tablename])) {
+            DBUtil::flushCache($tablename);
         }
 
         return true;
@@ -829,6 +871,11 @@ class ObjectUtil
                         AND $meta_column[obj_id]='" . DataUtil::formatForStore($meta['obj_id']) . "'";
 
             $rc = DBUtil::deleteObject(array(), 'objectdata_meta', $where);
+        }
+
+        $dbtables = DBUtil::getTables();
+        if (isset($dbtables[$tablename])) {
+            DBUtil::flushCache($tablename);
         }
 
         return (boolean)$rc;
@@ -962,6 +1009,11 @@ class ObjectUtil
             }
         }
 
+        $dbtables = DBUtil::getTables();
+        if (isset($dbtables[$tablename])) {
+            DBUtil::flushCache($tablename);
+        }
+
         return (boolean)$res;
     }
 
@@ -981,7 +1033,14 @@ class ObjectUtil
         }
 
         $where = "cmo_table='" . DataUtil::formatForStore($tablename) . "' AND cmo_obj_id='" . DataUtil::formatForStore($obj[$idcolumn]) . "' AND cmo_obj_idcolumn='" . DataUtil::formatForStore($idcolumn) . "'";
-        return (boolean)DBUtil::deleteWhere('categories_mapobj', $where);
+        $categoriesDeleted = (boolean)DBUtil::deleteWhere('categories_mapobj', $where);
+        
+        $dbtables = DBUtil::getTables();
+        if (isset($dbtables[$tablename])) {
+            DBUtil::flushCache($tablename);
+        }
+
+        return $categoriesDeleted;
     }
 
     /**
