@@ -151,14 +151,17 @@ Zikula.Users.PassMeter = Class.create({
             messages: {},
             colors:  ["#ff0000", "#FFCC33", "#00FF00", "#008000"],
             scores: [20, 40, 60],
-            verdicts: ['Weak', 'Normal', 'Strong', 'Very Strong'],
+            verdicts: [Zikula.__('Weak'), Zikula.__('Normal'), Zikula.__('Strong'), Zikula.__('Very Strong')],
             autoRun: true
         }, options || { });
+        this.options.messages = Object.extend({
+            minLength: Zikula.__f('The minimum length for user passwords is %s characters.', this.options.minLength)
+        },this.options.messages);
         this.calulator = new Zikula.Users._PassMeter(this.options);
         if(Object.isElement($(this.options.username))) {
             this.calulator.restrictions.username = {
                 test: function(word) {return word ==='' || word != $F(this.options.username);},
-                msg: 'Password is the same as login!'
+                msg: Zikula.__('Password can not match the username, choose a different password.')
             };
         }
         if (this.options.autoRun) {
