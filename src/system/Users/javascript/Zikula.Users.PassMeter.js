@@ -3,7 +3,7 @@ Zikula.define('Users');
 
 Zikula.Users._PassMeter = Class.create({
     initialize: function(options) {
-        this.score = {}
+        this.score = {};
         this.options = Object.extend({
             minLength: 8,
             scores: [20, 35, 45, 60],
@@ -16,7 +16,7 @@ Zikula.Users._PassMeter = Class.create({
     dictionary: ['password','qwerty'],
     restrictions: {
         minLength: {
-            test: function(word){return word.length == 0 || word.length>=this.options.minLength},
+            test: function(word){return word.length === 0 || word.length>=this.options.minLength;},
             msg:'Password is to short'
         }
     },
@@ -134,7 +134,7 @@ Zikula.Users._PassMeter = Class.create({
 
         return this.score;
     }
-})
+});
 
 Zikula.Users.PassMeter = Class.create({
     initialize: function(passwordElementId, visualizationElementId, options) {
@@ -157,9 +157,9 @@ Zikula.Users.PassMeter = Class.create({
         this.calulator = new Zikula.Users._PassMeter(this.options);
         if(Object.isElement($(this.options.username))) {
             this.calulator.restrictions.username = {
-                test: function(word) {return word =='' || word != $F(this.options.username)},
+                test: function(word) {return word ==='' || word != $F(this.options.username);},
                 msg: 'Password is the same as login!'
-            }
+            };
         }
         if (this.options.autoRun) {
             this.start();
@@ -167,7 +167,7 @@ Zikula.Users.PassMeter = Class.create({
     },
     start: function() {
         if(!this.options.onChange) {
-            this.prepareVisualisation()
+            this.prepareVisualisation();
         }
         this.passwordInput.observe('keyup',this.onChange.bindAsEventListener(this));
         this.onChange();
@@ -192,7 +192,7 @@ Zikula.Users.PassMeter = Class.create({
                 width: (this.score.percent < 5 ? 5 : this.score.percent) + '%',
                 backgroundColor: this.options.colors[this.score.level],
                 backgroundPosition: '0 ' + this.score.percent+ '%'
-            })
+            });
             this.passindicatorScore.update(this.score.verdict + ' ('+this.score.percent+'%)');
             this.passindicatorMsg.update(this.score.messagesStr);
         }
@@ -203,9 +203,9 @@ Zikula.Users.PassMeter = Class.create({
         this.passindicatorBar = new Element('div',{'class':'passindicatorbar'}).setStyle({
                 backgroundColor: this.options.colors[0],
                 backgroundPosition: '0 0'
-        })
-        this.passindicatorScore = new Element('div',{'class':'passindicatorscore'})
-        this.passindicatorMsg = new Element('div',{'class':'passindicatormsg'})
+        });
+        this.passindicatorScore = new Element('div',{'class':'passindicatorscore'});
+        this.passindicatorMsg = new Element('div',{'class':'passindicatormsg'});
         if (this.visualizationDiv) {
             this.visualizationDiv.insert({
                 top: this.passindicatorContainer.insert(this.passindicatorScore).insert(this.passindicatorBarContainer).insert(this.passindicatorMsg)
