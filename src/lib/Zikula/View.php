@@ -2461,6 +2461,21 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         return false;
     }
+
+    /**
+     * Disable or enable add the module wrapper.
+     *
+     * @param boolean $wrap False to disable wrapper, true to enable it.
+     *
+     * @return $this
+     */
+    public function setWrapper($wrap)
+    {
+        if ($this->modinfo['name'] == $this->toplevelmodule) {
+            Zikula_View_Theme::getInstance()->system = !$wrap;
+        }
+        return $this;
+    }
 }
 
 /**
