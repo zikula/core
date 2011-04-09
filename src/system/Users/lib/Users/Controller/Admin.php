@@ -2453,6 +2453,9 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
             }
 
+            // Force reload of User object into cache.
+            $userObj = UserUtil::getVars($uid);
+
             if (!SecurityUtil::checkPermission('Users::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
                 throw new Zikula_Exception_Forbidden();
             }
