@@ -47,7 +47,7 @@
                 {* For the following, (isset($regactions.optname) == true) means that the current user can, in general, perform the operation; *}
                 {* ($regactions.optname == true) means that the operation can be performed for that individual registration record. *}
                 {if isset($regactions.display)}
-                <td class="z-center">
+                <td class="users_action">
                     {if $regactions.display}
                     <a href="{$regactions.display|safetext}">{img src='documentinfo.png' modname='core' set='icons/extrasmall' __title='Display registration details' __alt='Display registration details' class='tooltips'}</a>
                     {else}
@@ -57,7 +57,7 @@
                 </td>
                 {/if}
                 {if isset($regactions.modify)}
-                <td class="z-center">
+                <td class="users_action">
                     {if $regactions.modify}
                     <a href="{$regactions.modify|safetext}">{img src='xedit.png' modname='core' set='icons/extrasmall' __title='Modify registration details' __alt='Modify registration details' class='tooltips'}</a>
                     {else}
@@ -66,7 +66,7 @@
                 </td>
                 {/if}
                 {if isset($regactions.approve)}
-                <td class="z-center">
+                <td class="users_action">
                     {if $regactions.approve && !$reginfo.isverified}
                     {if isset($modvars.Users.moderation_order) && ($modvars.Users.moderation_order == 'Users_Constant::APPROVAL_AFTER'|const)}
                     <a href="{$regactions.approve|safetext}">{img src='button_ok.png' modname='core' set='icons/extrasmall' __title='Pre-approve (verification still required)' __alt='Pre-approve (verification still required)' class='tooltips'}</a>
@@ -81,7 +81,7 @@
                 </td>
                 {/if}
                 {if isset($regactions.deny)}
-                <td class="z-center">
+                <td class="users_action">
                     {if $regactions.deny}
                     <a href="{$regactions.deny|safetext}">{img src='delete_user.png' modname='core' set='icons/extrasmall' __title='Deny (deletes registration)' __alt='Deny (deletes registration)' class='tooltips'}</a>
                     {else}
@@ -90,7 +90,7 @@
                 </td>
                 {/if}
                 {if isset($regactions.verify)}
-                <td class="z-center">
+                <td class="users_action">
                     {if $regactions.verify}
                     {if !empty($reginfo.verifycode)}
                     {assign var='optionTitle' value=$titleIfSent}
@@ -104,7 +104,7 @@
                 </td>
                 {/if}
                 {if isset($regactions.approveForce)}
-                <td class="z-center">
+                <td class="users_action">
                     {if $regactions.approveForce && !$reginfo.isverified}
                     <a href="{$regactions.approveForce|safetext}">{img src='db_update.png' modname='core' set='icons/extrasmall' __title='Skip verification (approves, and creates a new user account)' __alt='Skip verification (approves, and creates a new user account)' class='tooltips'}</a>
                     {else}
