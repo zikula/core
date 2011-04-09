@@ -547,5 +547,83 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
         return $authenticatedUid;
     }
+    
+    /**
+     * Retrieve the account recovery information for the specified user.
+     * 
+     * The array returned by this function should be an empty array (not null) if the specified user does not have any
+     * authentication methods registered with the authentication module that are enabled for log-in.
+     * 
+     * If the specified user does have one or more authentication methods, then the array should contain one or more elements
+     * indexed numerically. Each element should be an associative array containing the following:
+     * 
+     * - 'modname' The authentication module name.
+     * - 'short_description' A brief (a few words) description or name of the authentication method.
+     * - 'long_description' A longer description or name of the authentication method.
+     * - 'uname' The user name _equivalent_ for the authentication method (e.g., the claimed OpenID).
+     * - 'link' If the authentication method is for an external service, then a link to the user's account on that service, or a general link to the service,
+     *            otherwise, an empty string (not null).
+     * 
+     * For example:
+     * 
+     * <code>
+     * $accountRecoveryInfo[] = array(
+     *     'modname'           => $this->name,
+     *     'short_description' => $this->__('E-mail Address'),
+     *     'long_description'  => $this->__('E-mail Address'),
+     *     'uname'             => $userObj['email'],
+     *     'link'              => '',
+     * )
+     * </code>
+     * 
+     * Parameters passed in the $arg array:
+     * ------------------------------------
+     * numeric 'uid' The user id of the user for which account recovery information should be retrieved.
+     * 
+     * @param array $args All parameters passed to this function.
+     * 
+     * @return An array of account recovery information.
+     */
+    public function getAccountRecoveryInfoForUid(array $args)
+    {
+        if (!isset($args) || empty($args)) {
+            throw new Zikula_Exception_Fatal($this->__('An invalid parameter array was received.'));
+        }
+        
+        $uid = isset($args['uid']) ? $args['uid'] : false;
+        if (!isset($uid) || !is_numeric($uid) || ((string)((int)$uid) != $uid)) {
+            throw new Zikula_Exception_Fatal($this->__('An invalid user id was received.'));
+        }
 
+        $userObj = UserUtil::getVars($uid);
+        
+        $lostUserNames = array();
+        if ($userObj) {
+            if (!empty($userObj['pass']) && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
+                $loginOption = $this->getVar(Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::DEFAULT_LOGIN_METHOD);
+
+                if (($loginOption == Users_Constant::LOGIN_METHOD_UNAME) || ($loginOption == Users_Constant::LOGIN_METHOD_ANY)) {
+                    $lostUserNames[] = array(
+                        'modname'           => $this->name,
+                        'short_description' => $this->__('User name'),
+                        'long_description'  => $this->__('User name'),
+                        'uname'             => $userObj['uname'],
+                        'link'              => '',
+                    );
+                }
+
+                if (($loginOption == Users_Constant::LOGIN_METHOD_EMAIL) || ($loginOption == Users_Constant::LOGIN_METHOD_ANY)) {
+                    $lostUserNames[] = array(
+                        'modname'           => $this->name,
+                        'short_description' => $this->__('E-mail Address'),
+                        'long_description'  => $this->__('E-mail Address'),
+                        'uname'             => $userObj['email'],
+                        'link'              => '',
+                    );
+                }
+            }
+        }
+        
+        return $lostUserNames;
+    }
 }

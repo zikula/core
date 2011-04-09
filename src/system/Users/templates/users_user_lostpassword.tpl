@@ -10,14 +10,14 @@
         <fieldset>
             <div class="z-formrow">
                 <label for="users_uname">{gt text='User name'}</label>
-                <input id="users_uname" type="text" name="uname" size="25" maxlength="25" value="{$uname}" />
+                <input id="users_uname" type="text" name="uname" size="25" maxlength="25" value="{$uname|safetext}" />
             </div>
             <div class="z-formrow">
                 <span class="z-label">{gt text='or'}</span>
             </div>
             <div class="z-formrow">
                 <label for="users_email">{gt text='E-mail address'}</label>
-                <input id="users_email" type="text" name="email" size="40" maxlength="60" value="{$email}" />
+                <input id="users_email" type="text" name="email" size="40" maxlength="60" value="{$email|safetext}" />
             </div>
         </fieldset>
         <div class="z-formbuttons z-buttons">

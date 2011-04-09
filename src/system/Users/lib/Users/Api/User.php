@@ -310,7 +310,7 @@ class Users_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * Send the user a lost user name code.
+     * Send the user an account information recovery e-mail.
      *
      * Parameters passed in the $args array:
      * -------------------------------------
@@ -341,25 +341,30 @@ class Users_Api_User extends Zikula_AbstractApi
             }
         }
 
-        $user = UserUtil::getVars($args['id'], true, $args['idfield']);
-
-        if ($user) {
+        $userObj = UserUtil::getVars($args['id'], true, $args['idfield']);
+        
+        if ($userObj) {
+            $authenticationMethods = UserUtil::getUserAccountRecoveryInfo($userObj['uid']);
+            
             $view = Zikula_View::getInstance($this->name, false);
             $viewArgs = array(
-                'uname'         => $user['uname'],
-                'sitename'      => System::getVar('sitename'),
-                'hostname'      => System::serverGetVar('REMOTE_ADDR'),
-                'url'           => ModUtil::url($this->name, 'user', 'login', array(), null, null, true),
-                'adminRequested'=> $adminRequested,
+                'uname'                 => $userObj['uname'],
+                'email'                 => $userObj['email'],
+                'has_password'          => !empty($userObj['pass']) && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION),
+                'authentication_methods'=> $authenticationMethods,
+                'sitename'              => System::getVar('sitename'),
+                'hostname'              => System::serverGetVar('REMOTE_ADDR'),
+                'url'                   => ModUtil::url($this->name, 'user', 'login', array(), null, null, true),
+                'adminRequested'        => $adminRequested,
             );
             $view->assign($viewArgs);
             $htmlBody = $view->fetch('users_email_lostuname_html.tpl');
             $plainTextBody = $view->fetch('users_email_lostuname_txt.tpl');
 
-            $subject = $this->__f('User name for %s', $user['uname']);
+            $subject = $this->__f('Account information for %s', $userObj['uname']);
 
             $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array(
-                'toaddress' => $user['email'],
+                'toaddress' => $userObj['email'],
                 'subject'   => $subject,
                 'body'      => $htmlBody,
                 'altbody'   => $plainTextBody

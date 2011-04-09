@@ -556,7 +556,7 @@ class Users_Controller_User extends Zikula_AbstractController
     }
 
     /**
-     * Display the lost user name form.
+     * Display the account information recovery form.
      *
      * Parameters passed via GET:
      * --------------------------
@@ -597,10 +597,10 @@ class Users_Controller_User extends Zikula_AbstractController
                 ));
                 
                 if ($emailMessageSent) {
-                    $this->registerStatus($this->__f('Done! The user name for %s has been sent via e-mail.', $email));
+                    $this->registerStatus($this->__f('Done! The account information for %s has been sent via e-mail.', $email));
                     $proceedToForm = false;
                 } else {
-                    $this->registerError($this->__('Sorry! We are unable to send a user name reminder for that e-mail address. Please reenter your information, or contact an administrator.'));
+                    $this->registerError($this->__('Sorry! We are unable to send the account information for that e-mail address. Please reenter your information, or contact an administrator.'));
                 }
             }
         } elseif ($this->request->isGet()) {
