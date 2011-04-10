@@ -638,22 +638,22 @@ class Zikula_View_Theme extends Zikula_View
         $maincontent = ob_get_contents();
         ob_end_clean();
 
-        $event = new Zikula_Event('theme.prefooter', $this, array(), $maincontent);
-        $maincontent = $this->eventManager->notify($event)->getData();
-
         // add the module wrapper
         if (!$this->system) {
             $module = $this->toplevelmodule ? $this->toplevelmodule : 'homepage';
             $maincontent = '<div id="z-maincontent" class="z-module-' . DataUtil::formatForDisplay(strtolower($module)) . '">' . $maincontent . '</div>';
         }
 
+        $event = new Zikula_Event('theme.prefetch', $this, array(), $maincontent);
+        $maincontent = $this->eventManager->notify($event)->getData();
+
         // Assign the main content area to the template engine
-        $this->assign_by_ref('maincontent', $maincontent);
+        $this->assign('maincontent', $maincontent);
 
         // render the page using the correct template
         $output = $this->fetch($this->themeconfig['page'], $this->pageid);
 
-        $event = new Zikula_Event('theme.postfooter', $this, array(), $output);
+        $event = new Zikula_Event('theme.postfetch', $this, array(), $output);
         echo $this->eventManager->notify($event)->getData();
     }
 
