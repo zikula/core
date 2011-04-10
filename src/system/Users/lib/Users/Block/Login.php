@@ -70,58 +70,57 @@ class Users_Block_Login extends Zikula_Controller_AbstractBlock
      *
      * @param array $blockInfo A blockinfo structure.
      *
-     * @return string|void The output.
+     * @return string The output.
      */
     public function display($blockInfo)
     {
-        if (!SecurityUtil::checkPermission('Loginblock::', $blockInfo['title'].'::', ACCESS_READ)) {
-            return;
-        }
+        $renderedOutput = '';
+        
+        if (SecurityUtil::checkPermission('Loginblock::', $blockInfo['title'].'::', ACCESS_READ)) {
+            if (!UserUtil::isLoggedIn()) {
+                if (empty($blockInfo['title'])) {
+                    $blockInfo['title'] = DataUtil::formatForDisplay('Login');
+                }
 
-        if (!UserUtil::isLoggedIn()) {
-            if (empty($blockInfo['title'])) {
-                $blockInfo['title'] = DataUtil::formatForDisplay('Login');
-            }
+                $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this);
 
-            $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this);
-
-            if ($authenticationMethodList->countEnabledForAuthentication() > 1) {
-                $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', false);
-            } else {
-                // There is only one (or there is none), so auto-select it.
-                $authenticationMethod = $authenticationMethodList->getAuthenticationMethodForDefault();
-                $selectedAuthenticationMethod = array(
-                    'modname'   => $authenticationMethod->modname,
-                    'method'    => $authenticationMethod->method,
-                );
-            }
-
-            // TODO - The order and availability should be set by block configuration
-            $authenticationMethodDisplayOrder = array();
-            foreach ($authenticationMethodList as $authenticationMethod) {
-                if ($authenticationMethod->isEnabledForAuthentication()) {
-                    $authenticationMethodDisplayOrder[] = array(
+                if ($authenticationMethodList->countEnabledForAuthentication() > 1) {
+                    $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', false);
+                } else {
+                    // There is only one (or there is none), so auto-select it.
+                    $authenticationMethod = $authenticationMethodList->getAuthenticationMethodForDefault();
+                    $selectedAuthenticationMethod = array(
                         'modname'   => $authenticationMethod->modname,
                         'method'    => $authenticationMethod->method,
                     );
                 }
+
+                // TODO - The order and availability should be set by block configuration
+                $authenticationMethodDisplayOrder = array();
+                foreach ($authenticationMethodList as $authenticationMethod) {
+                    if ($authenticationMethod->isEnabledForAuthentication()) {
+                        $authenticationMethodDisplayOrder[] = array(
+                            'modname'   => $authenticationMethod->modname,
+                            'method'    => $authenticationMethod->method,
+                        );
+                    }
+                }
+
+                $this->view->assign('authentication_method_display_order', $authenticationMethodDisplayOrder)
+                           ->assign('selected_authentication_method', $selectedAuthenticationMethod);
+
+                $tplName = mb_strtolower("users_block_login_{$blockInfo['position']}.tpl");
+                if ($this->view->template_exists($tplName)) {
+                    $blockInfo['content'] = $this->view->fetch($tplName);
+                } else {
+                    $blockInfo['content'] = $this->view->fetch('users_block_login.tpl');
+                }
+
+                $renderedOutput = BlockUtil::themeBlock($blockInfo);
             }
-
-            $this->view->assign('authentication_method_display_order', $authenticationMethodDisplayOrder)
-                       ->assign('selected_authentication_method', $selectedAuthenticationMethod);
-
-            $tplName = mb_strtolower("users_block_login_{$blockInfo['position']}.tpl");
-            if ($this->view->template_exists($tplName)) {
-                $blockInfo['content'] = $this->view->fetch($tplName);
-            } else {
-                $blockInfo['content'] = $this->view->fetch('users_block_login.tpl');
-            }
-
-            return BlockUtil::themeBlock($blockInfo);
-        } else {
-            return;
         }
-
+        
+        return $renderedOutput;
     }
 
 }
