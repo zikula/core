@@ -933,12 +933,12 @@ class UserUtil
      * No events are fired from this function. To receive events, use {@link loginUsing()}.
      *
      * @param string  $uname                The user name of the user who should be logged into the system; required.
-     * @param boolean $rememberme           If the user's login should be maintained on the computer from which the user is logging in, set this to true;
+     * @param boolean $rememberMe           If the user's login should be maintained on the computer from which the user is logging in, set this to true;
      *                                          optional, defaults to false.
      * 
      * @return void
      */
-    public static function setUserByUname($uname, $rememberme = false)
+    public static function setUserByUname($uname, $rememberMe = false)
     {
         if (!isset($uname) || !is_string($uname) || empty($uname)) {
             throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid uname.'));
@@ -951,7 +951,7 @@ class UserUtil
             'method'  => 'uname',
         );
         
-        self::setUserByUid($uid, $rememberme, $authenticationMethod);
+        self::setUserByUid($uid, $rememberMe, $authenticationMethod);
     }
 
     /**
@@ -960,14 +960,14 @@ class UserUtil
      * No events are fired from this function. To receive events, use {@link loginUsing()}.
      *
      * @param numeric $uid                  The user id of the user who should be logged into the system; required.
-     * @param boolean $rememberme           If the user's login should be maintained on the computer from which the user is logging in, set this to true;
+     * @param boolean $rememberMe           If the user's login should be maintained on the computer from which the user is logging in, set this to true;
      *                                          optional, defaults to false.
      * @param array   $authenticationMethod An array containing the authentication method used to log the user in; optional,
      *                                          defaults to the 'Users' module 'uname' method.
      * 
      * @return void
      */
-    public static function setUserByUid($uid, $rememberme = false, array $authenticationMethod = null)
+    public static function setUserByUid($uid, $rememberMe = false, array $authenticationMethod = null)
     {
         if (!isset($uid) || empty($uid) || ((string)((int)$uid) != $uid)) {
             throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid uid.'));
