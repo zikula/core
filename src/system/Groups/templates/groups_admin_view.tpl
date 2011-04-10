@@ -196,7 +196,7 @@
             {foreach item=useritem from=$useritems}
             <tr class="{cycle values='z-odd,z-even' name='pending'}">
                 <td>{$useritem.userid}</td>
-                <td><strong>{$useritem.username|userprofilelink}</strong></td>
+                <td><strong>{$useritem.username|profilelinkbyuname}</strong></td>
                 <td>{$useritem.gname}</td>
                 <td>{$useritem.application|safehtml}</td>
                 <td>
