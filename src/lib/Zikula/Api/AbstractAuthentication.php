@@ -34,12 +34,77 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      */
     abstract public function isReentrant();
 
+    /**
+     * Indicate whether this module supports the indicated authentication method.
+     * 
+     * Parameters passed in $args:
+     * ---------------------------
+     * string 'method' The name of the authentication method for which support is enquired.
+     *
+     * @param array $args All arguments passed to this function, see above.
+     * 
+     * @return boolean True if the indicated authentication method is supported by this module; otherwise false.
+     * 
+     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     */
     abstract public function supportsAuthenticationMethod(array $args);
 
+    /**
+     * Indicates whether a specified authentication method that is supported by this module is enabled for use.
+     * 
+     * Parameters passed in $args:
+     * ---------------------------
+     * string 'method' The name of the authentication method for which support is enquired.
+     *
+     * @param array $args All arguments passed to this function, see above.
+     * 
+     * @return boolean True if the indicated authentication method is enabled by this module; otherwise false.
+     * 
+     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     */
     abstract public function isEnabledForAuthentication(array $args);
 
+    /**
+     * Retrieves an array of authentication methods defined by this module, possibly filtered by only those that are enabled.
+     * 
+     * Parameters passed in $args:
+     * ---------------------------
+     * integer 'filter' Either {@link FILTER_ENABLED} (value 1), {@link FILTER_NONE} (value 0), or not present; allows the result to be filtered.
+     *                      If this argument is FILTER_ENABLED, then only those authentication methods that are also enabled are returned.
+     *
+     * @param array $args All arguments passed to this function.
+     * 
+     * @return array An array containing the authentication methods defined by this module, possibly filtered by only those that are enabled.
+     * 
+     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     */
     abstract public function getAuthenticationMethods(array $args = null);
     
+    /**
+     * Registers a user account record or a user registration request with the authentication method.
+     * 
+     * This is called during the user registration process to associate an authentication method provided by this authentication module
+     * with a user (either a full user account, or a user's registration request).
+     * 
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * array   'authentication_method' An array identifying the authentication method to associate with the user account or registration
+     *                                      record. The array should contain two elements: 'modname' containing the authentication module's
+     *                                      name (the name of this module), and 'method' containing the name of an authentication method
+     *                                      defined by this module.
+     * array   'authentication_info'   An array containing the authentication information for the user. The contents of the array are defined
+     *                                      by each authentication module.
+     * numeric 'uid'                   The user id of the user account record or registration request to associate with the authentication method and
+     *                                      authentication information.
+     *
+     * @param array $args All parameters passed to this function.
+     * 
+     * @return boolean True if the user account or registration request was successfully associated with the authentication method and 
+     *                      authentication information; otherwise false.
+     * 
+     * @throws Zikula_Exception_Fatal Thrown if the arguments array is invalid, or the user id, authentication method, or authentication information
+     *                                      is invalid.
+     */
     abstract public function register(array $args);
 
     /**
@@ -100,15 +165,23 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * Zikula user account. It does not return a Zikula user id (uid). In addition this function makes no attempt to
      * perform any login-related processes on the authenticating system.
      *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * array authentication_info The authentication info needed for this authmodule, including any user-entered password.
+     * 
      * @param array $args All arguments passed to this function.
-     *                      array   authentication_info    The authentication info needed for this authmodule, including any user-entered password.
      *
-     * @return array|boolean If the authentication info authenticates with the source, then an array is returned containing the user's 'claimed_id',
-     *                              plus requested simple registration information from the OpenID server; otherwise false on authentication failure or error.
+     * @return array|boolean If the authentication info authenticates with the source, then an array is returned containing the user's authentication
+     *                          information and any additional optional registration information that is passed back by the authentication method.
+     *                          The optional registration information can be used to pre-fill the registration form.
+     * 
+     * @throws Zikula_Exception_Fatal Thrown if the authentication method does not support registration, or if the arguments array or any of the
+     *                                  arguments are invalid.
      */
     public function checkPasswordForRegistration(array $args)
     {
         throw new Zikula_Exception_Fatal($this->__('Registration authentication is not supported by this authentication method.'));
+        return false;
     }
 
     /**
