@@ -37,7 +37,7 @@
 
 <h4 id="editmenu">{gt text="Content" domain='zikula'}</h4>
 <p class="z-informationmsg">{gt text="In the table below, drag and drop the menu items into your desired order. It is also possible to create nesting menu entries if you move an entry onto an existing row. The item order and the contents of each menu item are saved when you click the 'Save' button. The number in the right-hand column is the ID of the menu item. Use this ID number if you want to use permission rules to restrict access to the menu item." domain='zikula'}</p>
-<p class="z-informationmsg">{gt text="You can use bracket URLs in the form: &#123;ModName&#125;, &#123;ModName:func&#125; or &#123;ModName:func&amp;param1=value1&amp;param2=value2[:type]&#125;." domain='zikula'}</p>
+<p class="z-informationmsg">{gt text="You can use bracket URLs in the form: &#123;modname&#125;, &#123;modname:type:func&#125; or &#123;modname:type:func&amp;param1=value1&amp;param2=value2&#125;.  You may also specify the homepage as &#123;homepage&#125;." domain='zikula'}</p>
 <p style="margin:2em 0; padding:0;"><a id="appendmenuitem" class="z-icon-es-new" href="#">{gt text="Create new menu item" domain='zikula'}</a></p>
 
 {* return to this block after saving *}
