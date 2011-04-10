@@ -29,7 +29,7 @@
                 <td>{$u.__META__.dc_comment|default:''|safehtml}</td>
                 <td>{$u.__ATTRIBUTES__.field1|default:''|safetext}</td>
                 <td>{$u.__ATTRIBUTES__.field2|default:''|safetext}</td>
-                <td><a href="{modurl modname="ExampleDoctrine" func="edit" id=$u.id}">{gt text='Edit'}</a></td>
+                <td><a href="{modurl modname="ExampleDoctrine" type="user" func="edit" id=$u.id}">{gt text='Edit'}</a></td>
             </tr>
         {/foreach}
     </tbody>
