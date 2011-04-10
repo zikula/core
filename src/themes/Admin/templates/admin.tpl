@@ -51,9 +51,9 @@
                         <strong>{gt text='Quick Navigation'}: </strong>
                         <a href="{modurl modname="blocks" type="admin" func="view"}">{gt text='Blocks'}</a>
                         <a href="{modurl modname="themes" type="admin" func="view"}">{gt text='Themes'}</a>
-                        <a href="{modurl modname="permissions" type="admin"}">{gt text='Permissions'}</a>
-                        <a href="{modurl modname="settings" type="admin"}">{gt text='Settings'}</a>
-                        <a href="{modurl modname="users" type="admin"}">{gt text='Users'}</a>
+                        <a href="{modurl modname="permissions" type="admin" func="view"}">{gt text='Permissions'}</a>
+                        <a href="{modurl modname="settings" type="admin" func="view"}">{gt text='Settings'}</a>
+                        <a href="{modurl modname="users" type="admin" func="main"}">{gt text='Users'}</a>
                     </div>
                 </div>
                 <div class="dashboard">
