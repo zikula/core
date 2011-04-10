@@ -12,7 +12,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 /**
  * Zikula_View function to create a zikula.orgpatible URL for a specific module function.
  *
@@ -48,16 +47,34 @@
  */
 function smarty_function_modurl($params, Zikula_View $view)
 {
-    $assign       = isset($params['assign'])                  ? $params['assign']    : null;
-    $append       = isset($params['append'])                  ? $params['append']    : '';
-    $fragment     = isset($params['fragment'])                ? $params['fragment']  : null;
-    $fqurl        = isset($params['fqurl'])                   ? $params['fqurl']     : null;
-    $forcelongurl = isset($params['forcelongurl'])            ? (bool)$params['forcelongurl'] : false;
-    $func         = isset($params['func']) && $params['func'] ? $params['func']      : 'main';
-    $modname      = isset($params['modname'])                 ? $params['modname']   : null;
-    $ssl          = isset($params['ssl'])                     ? (bool)$params['ssl'] : null;
-    $forcelang    = isset($params['forcelang']) && $params['forcelang'] ? $params['forcelang']  : false;
-    $type         = isset($params['type']) && $params['type'] ? $params['type']      : 'user';
+    $assign = isset($params['assign']) ? $params['assign'] : null;
+    $append = isset($params['append']) ? $params['append'] : '';
+    $fragment = isset($params['fragment']) ? $params['fragment'] : null;
+    $fqurl = isset($params['fqurl']) ? $params['fqurl'] : null;
+    $forcelongurl = isset($params['forcelongurl']) ? (bool)$params['forcelongurl'] : false;
+
+    if (isset($params['func']) && $params['func']) {
+        $func = $params['func'];
+    } else {
+        if (System::isLegacyMode()) {
+            $func = 'main';
+        }
+        LogUtil::log('{modurl} - $func is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
+    }
+
+    if (isset($params['type']) && $params['type']) {
+        $type = $params['type'];
+    } else {
+        if (System::isLegacyMode()) {
+            $func = 'user';
+        }
+        LogUtil::log('{modurl} - $type is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
+    }
+
+    $modname = isset($params['modname']) ? $params['modname'] : null;
+    $ssl = isset($params['ssl']) ? (bool)$params['ssl'] : null;
+    $forcelang = isset($params['forcelang']) && $params['forcelang'] ? $params['forcelang'] : false;
+
 
     // avoid passing these to ModUtil::url
     unset($params['modname']);
