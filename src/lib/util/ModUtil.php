@@ -1213,10 +1213,20 @@ class ModUtil
      *
      * @return sting Absolute URL for call
      */
-    public static function url($modname, $type = 'user', $func = 'main', $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
+    public static function url($modname, $type = null, $func = null, $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
     {
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
+
+        if (is_null($type)) {
+            $type = 'user';
+            LogUtil::log('ModUtil::url() - $type is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
+        }
+
+        if (is_null($func)) {
+            $func = 'main';
+            LogUtil::log('ModUtil::url() - $func is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
+        }
 
         // validate
         if (!System::varValidate($modname, 'mod')) {
