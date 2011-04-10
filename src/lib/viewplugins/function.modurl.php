@@ -58,8 +58,11 @@ function smarty_function_modurl($params, Zikula_View $view)
     } else {
         if (System::isLegacyMode()) {
             $func = 'main';
+            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)), E_USER_DEPRECATED);
+        } else {
+            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)));
+            return false;
         }
-        LogUtil::log('{modurl} - $func is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
     }
 
     if (isset($params['type']) && $params['type']) {
@@ -67,8 +70,11 @@ function smarty_function_modurl($params, Zikula_View $view)
     } else {
         if (System::isLegacyMode()) {
             $func = 'user';
+            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)), E_USER_DEPRECATED);
+        } else {
+            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)));
+            return false;
         }
-        LogUtil::log('{modurl} - $type is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
     }
 
     $modname = isset($params['modname']) ? $params['modname'] : null;

@@ -1219,19 +1219,23 @@ class ModUtil
         $modname = isset($modname) ? ((string)$modname) : '';
 
         // note - when this legacy is to be removed, change method signature $type = null to $type making it a required argument.
-        if (is_null($type)) {
+        if (!$type) {
             if (System::isLegacyMode()) {
                 $type = 'user';
+                LogUtil::log('ModUtil::url() - $type is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
+            } else {
+                throw new UnexpectedValueException('ModUtil::url() - $type is a required argument, you must specify it explicitly.');
             }
-            LogUtil::log('ModUtil::url() - $type is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
         }
 
         // note - when this legacy is to be removed, change method signature $func = null to $func making it a required argument.
-        if (is_null($func)) {
+        if (!$func) {
             if (System::isLegacyMode()) {
                 $func = 'main';
+                LogUtil::log('ModUtil::url() - $func is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
+            } else {
+                throw new UnexpectedValueException('ModUtil::url() - $func is a required argument, you must specify it explicitly.');
             }
-            LogUtil::log('ModUtil::url() - $func is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
         }
 
         // validate
