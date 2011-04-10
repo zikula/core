@@ -75,8 +75,10 @@ $modinfo = ModUtil::getInfoFromName($module);
 
 // we need to force the mod load if we want to call a modules interactive init
 // function because the modules is not active right now
-$type = (empty($type)) ? $type = 'user' : $type;
-$func = (empty($func)) ? $func = 'main' : $func;
+if (System::isLegacyMode()) {
+    $type = (empty($type)) ? $type = 'user' : $type;
+    $func = (empty($func)) ? $func = 'main' : $func;
+}
 if ($type == 'init' || $type == 'interactiveinstaller') {
     ModUtil::load($modinfo['name'], $type, true);
 }

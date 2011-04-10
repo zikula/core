@@ -1339,15 +1339,8 @@ class ModUtil
                 $url = "$url" . (!empty($query) ? '?' . $query : '');
             }
         } else {
-            // Regular URLs
-            // The arguments
-            $urlargs = "module=$modname";
-            if ((!empty($type)) && ($type != 'user')) {
-                $urlargs .= "&type=$type";
-            }
-
-            // func is required.
-            $urlargs .= "&func=$func";
+            // Regular stuff 
+            $urlargs = "module=$modname&type=$type&func=$func";
 
             // add lang param to URL
             if (ZLanguage::isRequiredLangParam() || $forcelang) {

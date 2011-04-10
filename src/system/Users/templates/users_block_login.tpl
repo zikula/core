@@ -70,7 +70,7 @@
 
     <h5>{gt text="Do you need to..."}</h5>
     {if $modvars.Users.reg_allowreg}
-    <a class="user-icon-adduser" style="display:block;" href="{modurl modname='Users' func='register'}">{gt text="Create an account?"}</a>
+    <a class="user-icon-adduser" style="display:block;" href="{modurl modname='Users' type='user' func='register'}">{gt text="Create an account?"}</a>
     {/if}
-    <a class="user-icon-lostusername" style="display:block;" href="{modurl modname='Users' func='lostpwduname'}">{gt text="Recover your account information?"}</a>
+    <a class="user-icon-lostusername" style="display:block;" href="{modurl modname='Users' type='user' func='lostpwduname'}">{gt text="Recover your account information?"}</a>
 </div>
