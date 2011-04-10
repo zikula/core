@@ -62,10 +62,9 @@ document.observe('dom:loaded',Zikula.init);
 /**
  * Extends prototype Browser detection.
  * Adds following properties to original ones:<br />
- * - IES.IE8 - true when IE 8<br />
- * - IES.IE8e7 - true when IE8 is in IE7 mode<br />
- * - IES.IE7 - true when IE7 or IE8 in IE7 mode
- * (means that for IE8 in IE7 mode both - IE7 and IE8e7 are true)<br />
+ * - IES.IE9 - true when IE9<br />
+ * - IES.IE8 - true when IE8 or IE9 in IE8 mode<br />
+ * - IES.IE7 - true when IE7 or IE8/IE9 in IE7 mode
  * - IES.IE6 - true for IE6 or older
  *
  * @return {Object} Object with browsers info
@@ -75,14 +74,15 @@ Zikula.Browser = (function() {
         IE6: false,
         IE7: false,
         IE8: false,
-        IE8e7: false
+        IE9: false
     };
     if (Prototype.Browser.IE) {
-        if (document.documentMode != 'undefined' && document.documentMode == 8) {
+        if (document.documentMode != 'undefined' && document.documentMode == 9) {
+            IES.IE9 = true;
+        } else if (document.documentMode != 'undefined' && document.documentMode == 8) {
             IES.IE8 = true;
         } else if (typeof(document.documentElement.style.maxHeight) != 'undefined'){
             IES.IE7 = true;
-            IES.IE8e7 = (typeof(document.documentMode) != 'undefined'); //IE8 in IE7 mode
         } else {
             IES.IE6 = true;
         }
