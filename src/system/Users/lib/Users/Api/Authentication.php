@@ -85,7 +85,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
      * 
      * Parameters passed in $args:
      * ---------------------------
-     * string $args['method'] The name of the authentication method for which support is enquired.
+     * string 'method' The name of the authentication method for which support is enquired.
      *
      * @param array $args All arguments passed to this function, see above.
      * 
@@ -111,7 +111,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
      * 
      * Parameters passed in $args:
      * ---------------------------
-     * string $args['method'] The name of the authentication method for which support is enquired.
+     * string 'method' The name of the authentication method for which support is enquired.
      *
      * @param array $args All arguments passed to this function, see above.
      * 
@@ -139,8 +139,8 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
      * 
      * Parameters passed in $args:
      * ---------------------------
-     * integer $args['filter'] Either {@link FILTER_ENABLED} (value 1), {@link FILTER_NONE} (value 0), or not present; allows the result to be filtered.
-     *                              If this argument is FILTER_ENABLED, then only those authentication methods that are also enabled are returned.
+     * integer 'filter' Either {@link FILTER_ENABLED} (value 1), {@link FILTER_NONE} (value 0), or not present; allows the result to be filtered.
+     *                      If this argument is FILTER_ENABLED, then only those authentication methods that are also enabled are returned.
      *
      * @param array $args All arguments passed to this function.
      * 
@@ -193,10 +193,30 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
         return $authenticationMethods;
     }
-    
+
+    /**
+     * Registers a user account record or a user registration request with the authentication method.
+     * 
+     * This is called during the user registration process to associate an authentication method provided by this authentication module
+     * with a user (either a full user account, or a user's registration request).
+     * 
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * array   'authentication_method' Not used by the Users module.
+     * array   'authentication_info'   Not used by the Users module.
+     * numeric 'uid'                   Not used by the Users module.
+     *
+     * @param array $args All parameters passed to this function.
+     * 
+     * @return boolean True if the user account or registration request was successfully associated with the authentication method and 
+     *                      authentication information; otherwise false.
+     * 
+     * @throws Zikula_Exception_Fatal Thrown in all cases by the Users module. This module handles registrations as part of the core functionality.
+     */
     public function register(array $args)
     {
         throw new Zikula_Exception_Fatal($this->__f('The %1$s function is not implemented for the %1$s module. This core module handles registration of authentication information as part of the core registration process.', array('register()', 'Users')));
+        return false;
     }
 
     /**
@@ -583,6 +603,8 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
      * @param array $args All parameters passed to this function.
      * 
      * @return An array of account recovery information.
+     * 
+     * @throws Zikula_Exception_Fatal Thrown if an invalid arguments array or an invalid user id is received by the method.
      */
     public function getAccountRecoveryInfoForUid(array $args)
     {
