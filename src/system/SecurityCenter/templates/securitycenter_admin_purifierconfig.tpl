@@ -77,7 +77,7 @@
 
             <div class="z-buttons z-formbuttons">
                 {button src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
-                <a href="{modurl modname='SecurityCenter' type='admin'}" title="{gt text="Cancel"}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text="Cancel"}</a>
+                <a href="{modurl modname='SecurityCenter' type='admin' func="main"}" title="{gt text="Cancel"}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text="Cancel"}</a>
                 <a href="{modurl modname='SecurityCenter' type='admin' func='purifierconfig' reset='default'}" title="{gt text="Reset to Default Values"}">{img modname='core' src='reload.png' set='icons/extrasmall' __alt='Reset to Default Values' __title='Reset to Default Values'} {gt text="Reset to Default Values"}</a>
             </div>
         </div>
