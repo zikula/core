@@ -1345,9 +1345,9 @@ class ModUtil
             if ((!empty($type)) && ($type != 'user')) {
                 $urlargs .= "&type=$type";
             }
-            if ((!empty($func)) && ($func != 'main')) {
-                $urlargs .= "&func=$func";
-            }
+
+            // func is required.
+            $urlargs .= "&func=$func";
 
             // add lang param to URL
             if (ZLanguage::isRequiredLangParam() || $forcelang) {
