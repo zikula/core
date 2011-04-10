@@ -331,7 +331,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
                 if (($catid == $acid) || (($catid == false) && ($acid == $this->getVar('defaultcategory')))) {
                     $modinfo = ModUtil::getInfoFromName($adminmodule['name']);
-                    $menutexturl = ModUtil::url($modinfo['name'], 'admin');
+                    $menutexturl = ModUtil::url($modinfo['name'], 'admin', 'view');
                     $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
                     if ($displayNameType == 1) {
@@ -519,7 +519,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                 $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $adminmodule['id']));
                 $order = ModUtil::apiFunc('Admin', 'admin', 'getSortOrder',
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
-                $menutexturl = ModUtil::url($adminmodule['name'], 'admin');
+                $menutexturl = ModUtil::url($adminmodule['name'], 'admin', 'view');
                 $menutext = $adminmodule['displayname'];
                 $menutexttitle = $adminmodule['description'];
                 $adminlinks[$catid][] = array('menutexturl' => $menutexturl,
