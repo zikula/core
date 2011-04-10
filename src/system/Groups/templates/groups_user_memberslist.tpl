@@ -63,7 +63,7 @@
         {section name='members' loop=$members}
         <tr class="{cycle values='z-odd,z-even'}">
             <td>{img modname='core' set='icons/extrasmall' src=$members[members].isonline alt=$members[members].isonlinelbl}</td>
-            <td><strong>{$members[members].uname|userprofilelink}</strong></td>
+            <td><strong>{$members[members].uname|profilelinkbyuname}</strong></td>
             {if $useProfileModule eq true}
             <td class="z-center">{useravatar uid=$members[members].uid}</td>
             <td>{$members[members]._UREALNAME|default:''}</td>

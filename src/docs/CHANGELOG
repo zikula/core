@@ -155,7 +155,7 @@ Added missing member var for display area format in dateinput form plugin (issue
 Added doctrine support to selectmodobject(Array) view plugins (issue #2542)
 Included generic url routing classes (issue #2557)
 Added a new attribute, precision, to the formfloatinput Form plugin, which controls the number of digits after the decimal. (issue #2616)
-The userprofilelink Smarty modifier now accepts a wider range of user names, including user names with '@' (issue #2404).
+The userprofilelink Smarty modifier was splitted on profilelinkbyuid and profilelinkbyuname to avoid problems with numeric usernames (issue #2971).
 Horizontal and vertical drop down menu examples for menutree (issue #2313).
 Fix bad icon transparency. Now using PNG icon files (issue #2831).
 Fix inconsistency with styles vs style (issue #2805).
