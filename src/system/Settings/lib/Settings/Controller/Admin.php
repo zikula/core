@@ -23,7 +23,12 @@ class Settings_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in modifyconfig()
-        return $this->modifyconfig();
+        throw new Zikula_Exception_Redirect(ModUtil::url($this->name, 'admin', 'modifyconfig'), 301);
+    }
+
+    public function view()
+    {
+        return $this->main();
     }
 
     /**
