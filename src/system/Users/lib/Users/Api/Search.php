@@ -38,8 +38,7 @@ class Users_Api_Search extends Zikula_AbstractApi
      *
      * Parameters passed in the $args array:
      * -------------------------------------
-     * ? $args['active'] ?.
-     * 
+     * boolean 'active' Indicates that the Users module is an active part of the search(?).
      * 
      * @param array $args All parameters passed to this function.
      *

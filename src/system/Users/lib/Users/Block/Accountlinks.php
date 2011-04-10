@@ -51,35 +51,33 @@ class Users_Block_Accountlinks extends Zikula_Controller_AbstractBlock
      *
      * @param array $blockInfo A blockinfo structure.
      *
-     * @return string|void The rendered block.
+     * @return string The rendered block.
      */
     public function display($blockInfo)
     {
-        if (!SecurityUtil::checkPermission('Accountlinks::', $blockInfo['title']."::", ACCESS_READ)) {
-            return;
+        $renderedOutput = '';
+        
+        if (SecurityUtil::checkPermission('Accountlinks::', $blockInfo['title']."::", ACCESS_READ)) {
+            // Get variables from content block
+            $vars = BlockUtil::varsFromContent($blockInfo['content']);
+
+            // Call the modules API to get the items
+            if (ModUtil::available($this->name)) {
+                $accountlinks = ModUtil::apiFunc($this->name, 'user', 'accountLinks');
+
+                // Check for no items returned
+                if (!empty($accountlinks)) {
+                    $this->view->setCaching(false)
+                            ->assign('accountlinks', $accountlinks);
+
+                    // Populate block info and pass to theme
+                    $blockInfo['content'] = $this->view->fetch('users_block_accountlinks.tpl');
+
+                    $renderedOutput = BlockUtil::themeBlock($blockInfo);
+                }
+            }
         }
-
-        // Get variables from content block
-        $vars = BlockUtil::varsFromContent($blockInfo['content']);
-
-        // Call the modules API to get the items
-        if (!ModUtil::available($this->name)) {
-            return;
-        }
-
-        $accountlinks = ModUtil::apiFunc($this->name, 'user', 'accountLinks');
-
-        // Check for no items returned
-        if (empty($accountlinks)) {
-            return;
-        }
-
-        $this->view->setCaching(false)
-                ->assign('accountlinks', $accountlinks);
-
-        // Populate block info and pass to theme
-        $blockInfo['content'] = $this->view->fetch('users_block_accountlinks.tpl');
-
-        return BlockUtil::themeBlock($blockInfo);
+        
+        return $renderedOutput;
     }
 }
