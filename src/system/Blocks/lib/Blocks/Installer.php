@@ -147,9 +147,9 @@ class Blocks_Installer extends Zikula_AbstractInstaller
             $menucontent['blocktitles'][$lang] = $this->__('Main menu');
             // insert the links
             $menucontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('Administration'), 'url' => '{Admin:adminpanel:admin}', 'title' => $this->__('Go to the site administration'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $menucontent['links'][$lang][] = array('name' => $this->__('Administration'), 'url' => '{Admin:admin:adminpanel}', 'title' => $this->__('Go to the site administration'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
             $menucontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{Users}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('Log out'), 'url' => '{Users:logout}', 'title' => $this->__('Log out of this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $menucontent['links'][$lang][] = array('name' => $this->__('Log out'), 'url' => '{Users:user:logout}', 'title' => $this->__('Log out of this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
             $menucontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{Search}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
 
             $topnavcontent = array();

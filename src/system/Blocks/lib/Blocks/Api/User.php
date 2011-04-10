@@ -11,13 +11,11 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 /**
  * Blocks_Api_User class.
  */
 class Blocks_Api_User extends Zikula_AbstractApi
 {
-
     /**
      * Get all blocks.
      *
@@ -232,44 +230,40 @@ class Blocks_Api_User extends Zikula_AbstractApi
     public function encodebracketurl($url)
     {
         // allow a simple portable way to link to the home page of the site
-        if ($url == '{homepage}') {
-            $url = htmlspecialchars(System::getHomepageUrl());
-        } elseif (!empty($url)) {
-            switch ($url[0]) {
-                // Used to allow support for linking to modules with the use of bracket
-                case '{': // new module link
-                    $url = explode(':', substr($url, 1, - 1));
-                    // url[0] should be the module name
-                    if (isset($url[0]) && !empty($url[0])) {
-                        $modname = $url[0];
-                        // default for params
-                        $params = array();
-                        // url[1] can be a function or function&param=value
-                        if (isset($url[1]) && !empty($url[1])) {
-                            $urlparts = explode('&', $url[1]);
-                            $func = $urlparts[0];
-                            unset($urlparts[0]);
-                            if (count($urlparts) > 0) {
-                                foreach ($urlparts as $urlpart) {
-                                    $part = explode('=', $urlpart);
-                                    $params[trim($part[0])] = trim($part[1]);
-                                }
-                            }
-                        } else {
-                            $func = 'main';
-                        }
-                        // addon: url[2] can be the type parameter, default 'user'
-                        $type = (isset($url[2]) && !empty($url[2])) ? $url[2] : 'user';
-                        //  build the url
-                        $url = ModUtil::url($modname, $type, $func, $params);
-                    } else {
-                        $url = System::getHomepageUrl();
-                    }
-                    break;
-            }  // End Bracket Linking
+        if (empty($url) || $url == '{homepage}') {
+            return htmlspecialchars(System::getHomepageUrl());
         }
 
-        return $url;
+        if (!preg_match('#\{(.*)\}#', $url, $matches)) {
+            return __f('Extmenu block link "%s" invalid', $matches[0]);
+        }
+
+        $url = explode(':', $matches[1]);
+
+        $modname = $url[0];
+        if (isset($url[1])) {
+            $type = $url[1];
+        } else {
+            // defaults allowed here for usability
+            $type = 'user';
+        }
+
+        if (isset($url[2])) {
+            $func = $url[2];
+        } else {
+            // defaults allowed here for usability 
+            $func = 'main';
+        }
+
+        $params = array();
+        if (isset($url[3])) {
+            $urlparts = explode('&', $url[3]);
+            foreach ($urlparts as $urlpart) {
+                $part = explode('=', $urlpart);
+                $params[trim($part[0])] = trim($part[1]);
+            }
+        }
+        return ModUtil::url($modname, $type, $func, $params);
     }
 
 }
