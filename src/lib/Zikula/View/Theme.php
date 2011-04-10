@@ -594,12 +594,12 @@ class Zikula_View_Theme extends Zikula_View
      * Get Theme instance.
      *
      * @param string  $themeName  Theme name.
-     * @param boolean $usefilters Whether or not to use output filters.
-     * @param string  $cache_id   Cache Id (UNUSED - E_STRICT legacy).
+     * @param boolean|null $caching  Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id Cache Id.
      *
-     * @return Theme
+     * @return Zikula_Theme This instance.
      */
-    public static function getInstance($themeName = '', $usefilters = null)
+    public static function getInstance($themeName = '', $caching = null, $cache_id = null)
     {
         if (!$themeName) {
             $themeName = UserUtil::getTheme();
@@ -613,6 +613,14 @@ class Zikula_View_Theme extends Zikula_View
             $serviceManager->attachService($serviceId, $themeInstance);
         } else {
             $themeInstance = $serviceManager->getService($serviceId);
+        }
+
+        if (!is_null($caching)) {
+            $themeInstance->caching = $caching;
+        }
+
+        if (!is_null($cache_id)) {
+            $themeInstance->cache_id = $cache_id;
         }
 
         return $themeInstance;
