@@ -70,6 +70,6 @@ class Theme_Controller_User extends Zikula_AbstractController
     {
         ModUtil::apiFunc('Theme', 'user', 'resettodefault');
         LogUtil::registerStatus($this->__('Done! Theme has been reset to the default site theme.'));
-        return System::redirect(ModUtil::url('Theme'));
+        $this->redirect(ModUtil::url('Theme', 'user', 'main'));
     }
 }

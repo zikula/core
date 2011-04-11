@@ -37,7 +37,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-        return $this->view();
+		$this->redirect(ModUtil::url('Admin', 'admin', 'view'));
     }
 
     /**
@@ -81,7 +81,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Created new category.'));
         }
 
-        return System::redirect(ModUtil::url('Admin', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
     }
 
     /**
@@ -144,7 +144,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Saved category.'));
         }
 
-        return System::redirect(ModUtil::url('Admin', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
     }
 
     /**
@@ -199,7 +199,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Category deleted.'));
         }
 
-        return System::redirect(ModUtil::url('Admin', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
     }
 
     /**
@@ -263,7 +263,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     {
         if (!SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
             // suppress admin display - return to index.
-            return System::redirect(System::getHomepageUrl());
+            $this->redirect(System::getHomepageUrl());
         }
 
         $this->view->setCaching(false);
@@ -484,7 +484,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                         'category' => $category));
                 if ($result == false) {
                     LogUtil::registerError($this->__('Error! Could not add module to module category.'));
-                    return System::redirect(ModUtil::url('Admin', 'admin', 'view'));
+                    $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
                 }
             }
         }
@@ -494,7 +494,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return System::redirect(ModUtil::url('Admin', 'admin', 'main'));
+        $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
     }
 
     /**

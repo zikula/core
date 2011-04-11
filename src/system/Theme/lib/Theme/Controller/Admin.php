@@ -19,7 +19,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-        return $this->view();
+		$this->redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     /**
@@ -145,7 +145,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // check our input
         if (!isset($themename) || empty($themename)) {
             LogUtil::registerArgsError();
-            return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
+            $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
         }
 
         // Security check
@@ -170,7 +170,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
 
         // redirect back to the variables page
-        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     /**
@@ -263,7 +263,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
 
         // redirect back to the variables page
-        return System::redirect(ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename)));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename)));
     }
 
     /**
@@ -368,7 +368,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
 
         // redirect back to the settings page
-        return System::redirect(ModUtil::url('Theme', 'admin', 'palettes', array('themename' => $themename)));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'palettes', array('themename' => $themename)));
     }
 
     /**
@@ -577,7 +577,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
 
         // return the user to the correct place
-        return System::redirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
     }
 
     /**
@@ -654,7 +654,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
         if (!isset($pageconfigurations[$pcname])) {
             LogUtil::registerError($this->__('Error! No such page configuration assignment found.'));
-            return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
+            $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
         }
         $pageconfigparts = explode('/', $pcname);
 
@@ -749,7 +749,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
 
         // return the user to the correct place
-        return System::redirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
     }
 
     /**
@@ -800,7 +800,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
 
         // return the user to the correct place
-        return System::redirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
     }
 
     /**
@@ -876,7 +876,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Changed default theme.'));
         }
 
-        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
 
     }
 
@@ -932,7 +932,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     /**
@@ -1062,7 +1062,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
-        return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1090,7 +1090,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerError($this->__('Error! Failed to clear theme engine compiled templates.'));
         }
 
-        return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1118,7 +1118,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerError($this->__('Error! Failed to clear theme engine cached templates.'));
         }
 
-        return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1141,7 +1141,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $theme->clear_cssjscombinecache();
 
         LogUtil::registerStatus($this->__('Done! Deleted CSS/JS combination cached files.'));
-        return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1168,7 +1168,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerError($this->__('Error! Failed to clear rendering engine compiled templates.'));
         }
 
-        return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1195,7 +1195,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerError($this->__('Error! Failed to clear rendering engine cached pages.'));
         }
 
-        return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1214,6 +1214,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
 
         LogUtil::registerStatus($this->__('Done! Cleared all cache and compile directories.'));
-        return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+        $this->redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
     }
 }

@@ -49,7 +49,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
         }
 
         CategoryUtil::deleteCategoryByID($cid);
-        return System::redirect($url);
+        $this->redirect($url);
     }
 
     /**
@@ -90,7 +90,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
 
         if (!$obj->validate()) {
             $_POST['cid'] = (int)$_POST['category']['id'];
-            return System::redirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
+            $this->redirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
         }
 
         $attributes = array();
@@ -111,7 +111,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
 
         $msg = $this->__f('Done! Saved the %s category.', $oldData['name']);
         LogUtil::registerStatus($msg);
-        return System::redirect($url);
+        $this->redirect($url);
     }
 
     /**
@@ -152,7 +152,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
         $val = ObjectUtil::moveField($data, 'categories_category', $dir, 'sort_value');
 
         $url = System::serverGetVar('HTTP_REFERER');
-        return System::redirect($url);
+        $this->redirect($url);
     }
 
     /**
@@ -177,7 +177,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
         $data = $cat->getDataFromInput();
 
         if (!$cat->validate()) {
-            return System::redirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
+            $this->redirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
         }
 
         $cat->insert();
@@ -187,7 +187,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
 
         $msg = $this->__f('Done! Inserted the %s category.', $data['name']);
         LogUtil::registerStatus($msg);
-        return System::redirect($url);
+        $this->redirect($url);
     }
 
     /**
@@ -215,7 +215,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
             $obj->update();
         }
 
-        return System::redirect(System::serverGetVar('HTTP_REFERER'));
+        $this->redirect(System::serverGetVar('HTTP_REFERER'));
     }
 
 }

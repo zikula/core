@@ -19,7 +19,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-        return $this->view();
+		$this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     /**
