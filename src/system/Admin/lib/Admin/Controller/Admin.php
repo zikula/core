@@ -331,7 +331,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
                 if (($catid == $acid) || (($catid == false) && ($acid == $this->getVar('defaultcategory')))) {
                     $modinfo = ModUtil::getInfoFromName($adminmodule['name']);
-                    $menutexturl = ModUtil::url($modinfo['name'], 'admin', 'view');
+                    $menutexturl = ModUtil::url($modinfo['name'], 'admin', 'main');
                     $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
                     if ($displayNameType == 1) {
