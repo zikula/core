@@ -212,12 +212,11 @@ class FormUtil
      */
     public static function getValidationErrors()
     {
-        static $ve = null;
-        if (!$ve) {
-            if (isset($_SESSION['validationErrors']) && is_array($_SESSION['validationErrors'])) {
-                $ve = $_SESSION['validationErrors'];
-                unset($_SESSION['validationErrors']);
-            }
+        $ve = null;
+
+        if (isset($_SESSION['validationErrors']) && is_array($_SESSION['validationErrors'])) {
+            $ve = $_SESSION['validationErrors'];
+            unset($_SESSION['validationErrors']);
         }
 
         return $ve;
