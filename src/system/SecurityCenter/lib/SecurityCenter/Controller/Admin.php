@@ -33,7 +33,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-        return $this->modifyconfig(null);
+		$this->redirect(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -318,12 +318,12 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         // we need to auto logout the user if they changed from DB to FILE
         if ($cause_logout == true) {
             UserUtil::logout();
-            return System::redirect(ModUtil::url('Users', 'user', 'login'));
+            $this->redirect(ModUtil::url('Users', 'user', 'login'));
         }
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return System::redirect(ModUtil::url('SecurityCenter', 'admin', 'main'));
+        return $this->redirect(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -563,7 +563,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return System::redirect(ModUtil::url('SecurityCenter', 'admin', 'main'));
+        $this->redirect(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -758,7 +758,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Purged IDS Log.'));
         }
 
-        return System::redirect($redirect_url);
+       $this->redirect($redirect_url);
     }
 
     /**
@@ -825,7 +825,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         // all done successfully
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
-        return System::redirect(ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'));
+        $this->redirect(ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'));
     }
 
     /**

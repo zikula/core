@@ -29,7 +29,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-        return $this->view();
+		$this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
     }
 
     /**
@@ -106,10 +106,10 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             // Success
             LogUtil::registerStatus($this->__('Done! Saved module information.'));
         } else {
-            return System::redirect(ModUtil::url('Extensions', 'admin', 'modify', array('id' => $id)));
+            $this->redirect(ModUtil::url('Extensions', 'admin', 'modify', array('id' => $id)));
         }
 
-        return System::redirect(ModUtil::url('Extensions', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
     }
 
     /**
@@ -132,7 +132,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Saved module information.'));
         }
 
-        return System::redirect(ModUtil::url('Extensions', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
     }
 
     /**
@@ -155,7 +155,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Saved module information.'));
         }
 
-        return System::redirect(ModUtil::url('Extensions', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
     }
 
     /**
@@ -450,7 +450,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function listview()
     {
-        return $this->view();
+		$this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
     }
 
     /**
@@ -564,7 +564,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             foreach ($dependencies as $dependency) {
                 if (!ModUtil::apiFunc('Extensions', 'admin', 'initialise',
                                       array('id' => $dependency))) {
-                    return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
+                    $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                             'startnum' => $startnum,
                             'letter' => $letter,
                             'state' => $state)));
@@ -572,7 +572,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                 if (!ModUtil::apiFunc('Extensions', 'admin', 'setstate',
                                       array('id' => $dependency,
                                             'state' => ModUtil::STATE_ACTIVE))) {
-                    return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
+                    $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                             'startnum' => $startnum,
                             'letter' => $letter,
                             'state' => $state)));
@@ -602,12 +602,12 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                     LogUtil::registerStatus($this->__('Done! Activated module.'));
                 }
             }
-            return System::redirect(ModUtil::url('Extensions', 'admin', 'view',
+            $this->redirect(ModUtil::url('Extensions', 'admin', 'view',
                                                  array('startnum' => $startnum,
                                                        'letter' => $letter,
                                                        'state' => $state)));
         } elseif (is_bool($res)) {
-            return System::redirect(ModUtil::url('Extensions', 'admin', 'view',
+            $this->redirect(ModUtil::url('Extensions', 'admin', 'view',
                                                  array('startnum' => $startnum,
                                                        'letter' => $letter,
                                                        'state' => $state)));
@@ -637,7 +637,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         $moduleinfo = ModUtil::getInfo($id);
         if ($moduleinfo['state'] == 6) {
             LogUtil::registerError($this->__('Error! Module not allowed.'));
-            return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
+            $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
                     'state' => $state)));
@@ -651,7 +651,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Activated module.'));
         }
 
-        return System::redirect(ModUtil::url('Extensions', 'admin', 'view',
+        $this->redirect(ModUtil::url('Extensions', 'admin', 'view',
                                              array('startnum' => $startnum,
                                                    'letter' => $letter,
                                                    'state' => $state)));
@@ -721,12 +721,12 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             $this->view->clear_compiled();
             $this->view->clear_all_cache();
 
-            return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
+            $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
                     'state' => $state)));
         } elseif (is_bool($res)) {
-            return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
+            $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
                     'state' => $state)));
@@ -775,7 +775,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Deactivated module.'));
         }
 
-        return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
+        $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                 'startnum' => $startnum,
                 'letter' => $letter,
                 'state' => $state)));
@@ -860,7 +860,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         foreach ($dependents as $dependent) {
             if (!ModUtil::apiFunc('Extensions', 'admin', 'remove', array(
             'id' => $dependent))) {
-                return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
+                $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                         'startnum' => $startnum,
                         'letter' => $letter,
                         'state' => $state)));
@@ -874,7 +874,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             if (!ModUtil::apiFunc('Blocks', 'admin', 'delete', array(
             'bid' => $block['bid']))) {
                 LogUtil::registerError($this->__f('Error! Deleting the block %s .', $block['title']));
-                return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
+                $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                         'startnum' => $startnum,
                         'letter' => $letter,
                         'state' => $state)));
@@ -893,12 +893,12 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             SessionUtil::delVar('modules_state');
             SessionUtil::delVar('interactive_remove');
             LogUtil::registerStatus($this->__('Done! Uninstalled module.'));
-            return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
+            $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
                     'state' => $state)));
         } elseif (is_bool($res)) {
-            return System::redirect(ModUtil::url('Extensions', 'admin', 'view', array(
+            $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
                     'state' => $state)));
@@ -1039,7 +1039,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return System::redirect(ModUtil::url('Extensions', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
     }
 
     /**

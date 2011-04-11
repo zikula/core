@@ -217,7 +217,7 @@ class Categories_Controller_User extends Zikula_AbstractController
         }
 
         $url = ModUtil::url('Categories', 'user', 'edit', array('dr' => $dr));
-        return System::redirect($url);
+        $this->redirect($url);
     }
 
     /**
@@ -227,7 +227,7 @@ class Categories_Controller_User extends Zikula_AbstractController
     {
         $referer = SessionUtil::getVar('categories_referer');
         SessionUtil::DelVar('categories_referer');
-        return System::redirect($referer);
+        $this->redirect($referer);
     }
 
     /**
@@ -235,7 +235,7 @@ class Categories_Controller_User extends Zikula_AbstractController
      */
     public function getusercategories()
     {
-        return ModUtil::apiFunc('Categories', 'user', 'getusercategories');
+		$this->redirect(ModUtil::url('Categories', 'user', 'getusercategories'));
     }
 
     /**
@@ -243,7 +243,7 @@ class Categories_Controller_User extends Zikula_AbstractController
      */
     public function getusercategoryname()
     {
-        return ModUtil::apiFunc('Categories', 'user', 'getusercategoryname');
+		$this->redirect(ModUtil::url('Categories', 'user', 'getusercategoryname'));
     }
 
 }

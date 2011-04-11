@@ -49,6 +49,6 @@ class SecurityCenter_Controller_Adminform extends Zikula_AbstractController
         }
 
         // redirect back to view function
-        return System::redirect(ModUtil::url('SecurityCenter', 'admin', 'viewidslog'));
+        $this->redirect(ModUtil::url('SecurityCenter', 'admin', 'viewidslog'));
     }
 }

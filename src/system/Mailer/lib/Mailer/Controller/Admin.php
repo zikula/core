@@ -27,7 +27,7 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in modifyconfig()
-        return $this->modifyconfig();
+		$this->redirect(ModUtil::url('Mailer', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -128,7 +128,7 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return System::redirect(ModUtil::url('Mailer', 'admin', 'main'));
+        $this->redirect(ModUtil::url('Mailer', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -194,6 +194,6 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return System::redirect(ModUtil::url('Mailer', 'admin', 'testconfig'));
+        $this->redirect(ModUtil::url('Mailer', 'admin', 'testconfig'));
     }
 }

@@ -24,11 +24,12 @@ class Settings_Controller_Admin extends Zikula_AbstractController
     {
         // Security check will be done in modifyconfig()
         throw new Zikula_Exception_Redirect(ModUtil::url($this->name, 'admin', 'modifyconfig'), 301);
+		// ?? $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
     }
 
     public function view()
     {
-        return $this->main();
+		$this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -67,7 +68,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
 
         // if this form wasnt posted to redirect back
         if ($settings === null) {
-            return System::redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
+            $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
         }
 
         // validate the entry point
@@ -123,7 +124,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
 
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
-        return System::redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
+        $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -203,6 +204,6 @@ class Settings_Controller_Admin extends Zikula_AbstractController
         // all done successfully
         LogUtil::registerStatus($this->__('Done! Saved localisation settings.'));
 
-        return System::redirect($url);
+        $this->::redirect($url);
     }
 }

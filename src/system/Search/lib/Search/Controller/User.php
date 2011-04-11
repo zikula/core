@@ -25,7 +25,7 @@ class Search_Controller_User extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in form()
-        return $this->form();
+		$this->redirect(ModUtil::url('Search', 'user', 'form'));
     }
 
     /**
@@ -147,7 +147,7 @@ class Search_Controller_User extends Zikula_AbstractController
 
         if (empty($vars['q'])) {
             LogUtil::registerError ($this->__('Error! You did not enter any keywords to search for.'));
-            return System::redirect(ModUtil::url('Search', 'user', 'main'));
+            $this->redirect(ModUtil::url('Search', 'user', 'form'));
         }
 
         // set some defaults
