@@ -519,7 +519,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                 $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $adminmodule['id']));
                 $order = ModUtil::apiFunc('Admin', 'admin', 'getSortOrder',
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
-                $menutexturl = ModUtil::url($adminmodule['name'], 'admin', 'view');
+                $menutexturl = ModUtil::url($adminmodule['name'], 'admin', 'main');
                 $menutext = $adminmodule['displayname'];
                 $menutexttitle = $adminmodule['description'];
                 $adminlinks[$catid][] = array('menutexturl' => $menutexturl,
