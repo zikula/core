@@ -345,7 +345,7 @@ Finally, this event only fires in the event of a "normal" UI-oriented log-in att
 programmatically by directly calling the core functions will not see this event fired.
 
 #### `module.users.ui.login.failed`
-Occurs right after a successful attempt to log in. All handlers are notified.
+Occurs right after an unsuccessful attempt to log in. All handlers are notified.
 
  * The event subject contains the user's user record (from `UserUtil::getVars($event['uid'])`) if it has been found, otherwise null
  * The arguments of the event are as follows:
@@ -417,7 +417,7 @@ log-in process), `user.login.succeeded`, and/or `user.login.failed`.
 
  * The event's subject is set to the registration record (which might be a full user record).
  * The event's arguments are as follows:
-    * `'returnurl'` => A URL to which the user is redirected at the very end of the registration process.
+    * `'returnurl'` A URL to which the user is redirected at the very end of the registration process.
 
 __The `'redirecturl'` argument__ controls where the user will be directed at the end of the registration process.
 Initially, it will be blank, indicating that the default action should be taken. The default action depends on two
@@ -507,7 +507,7 @@ event will fire. This is a storage-level event, not a UI event. It should not be
 
 USERS MODULE
 ------------
-#### `module.users.config.updated
+#### `module.users.config.updated`
 Occurs after the Users module configuration has been updated via the administration interface.
 
 GROUPS
