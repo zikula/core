@@ -418,7 +418,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
                             // Notify that we are completing a registration session.
                             $eventArgs = array(
-                                'redirecturl'   => $redirectUrl,
+                                'redirecturl' => $redirectUrl,
                             );
                             $event = new Zikula_Event('module.users.ui.registration.succeeded', $registeredObj, $eventArgs);
                             $event = $this->eventManager->notify($event);
@@ -446,7 +446,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
                             // Notify that we are completing a registration session.
                             $eventArgs = array(
-                                'redirecturl'   => $redirectUrl,
+                                'redirecturl' => $redirectUrl,
                             );
                             $event = new Zikula_Event('module.users.ui.registration.failed', null, $eventArgs);
                             $event = $this->eventManager->notify($event);

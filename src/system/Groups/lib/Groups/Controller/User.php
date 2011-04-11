@@ -27,7 +27,7 @@ class Groups_Controller_User extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-        return $this->view();
+		$this->redirect(ModUtil::url('Groups', 'user', 'view'));
     }
 
     /**
@@ -209,7 +209,7 @@ class Groups_Controller_User extends Zikula_AbstractController
 
         $this->view->clear_cache('groups_user_memberslist.tpl');
 
-        return System::redirect(ModUtil::url('Groups', 'user', 'main'));
+        $this->redirect(ModUtil::url('Groups', 'user', 'view'));
     }
 
     /**

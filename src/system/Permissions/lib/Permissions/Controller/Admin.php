@@ -32,7 +32,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-        return $this->view();
+		$this->redirect(ModUtil::url('Permissions', 'admin', 'view'));
     }
 
     /**
@@ -252,7 +252,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Redirect
-        return System::redirect(ModUtil::url('Permissions', 'admin', 'view',
+        $this->redirect(ModUtil::url('Permissions', 'admin', 'view',
                         array('permgrp' => $permgrp)));
     }
 
@@ -293,7 +293,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Redirect
-        return System::redirect(ModUtil::url('Permissions', 'admin', 'view',
+        $this->redirect(ModUtil::url('Permissions', 'admin', 'view',
                         array('permgrp' => $permgrp)));
     }
 
@@ -335,7 +335,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         $objArray = DBUtil::selectObjectArray('group_perms', '', $orderBy);
         if (!$objArray && $action != 'add') {
             LogUtil::registerError($this->__('Error! No permission rules of this kind were found. Please add some first.'));
-            return System::redirect(ModUtil::url('modules', 'admin', 'main'));
+            $this->redirect(ModUtil::url('modules', 'admin', 'view'));
         }
 
         $this->view->assign('title', $viewperms)
@@ -461,7 +461,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
             }
         }
 
-        return System::redirect(ModUtil::url('Permissions', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Permissions', 'admin', 'view'));
     }
 
     /**
@@ -520,9 +520,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
             }
         }
 
-        return System::redirect(ModUtil::url('Permissions',
-                        'admin',
-                        'view'));
+        $this->redirect(ModUtil::url('Permissions', 'admin', 'view'));
     }
 
     /**
@@ -569,7 +567,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Deleted permission rule.'));
         }
 
-        return System::redirect(ModUtil::url('Permissions', 'admin', 'view',
+        $this->redirect(ModUtil::url('Permissions', 'admin', 'view',
                         array('permgrp' => $permgrp)));
     }
 
@@ -686,10 +684,10 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         // the module configuration has been updated successfuly
         if ($error == true) {
             LogUtil::registerStatus($this->__('Error! Could not save configuration: unknown permission rule ID.'));
-            return System::redirect(ModUtil::url('Permissions', 'admin', 'modifyconfig'));
+            $this->redirect(ModUtil::url('Permissions', 'admin', 'modifyconfig'));
         }
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
-        return System::redirect(ModUtil::url('Permissions', 'admin', 'main'));
+        $this->redirect(ModUtil::url('Permissions', 'admin', 'view'));
     }
 
     /**
@@ -701,7 +699,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
     {
         $username = FormUtil::getPassedValue('username', null, 'POST');
         $returnto = FormUtil::getPassedValue('returnto', System::getCurrentUri(), 'POST');
-        return System::redirect($returnto);
+        $this->redirect($returnto);
     }
 
 }
