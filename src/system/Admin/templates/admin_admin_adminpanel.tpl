@@ -38,7 +38,7 @@
                             {{foreach from=$modlinks item=modlink}}
                                 context_mcontext{{$moduleid}}.addItem({
                                     label: '{{$modlink.text|safetext}}',
-                                    callback: function(){window.location = Zikula.Config.baseURL + '{{$modlink.url}}';}
+                                    callback: function(){window.location = '{{$modlink.url}}';}
                                 });
                             {{/foreach}}
 
