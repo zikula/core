@@ -354,12 +354,15 @@ Admin.Module.moveResponse = function(req)
     var element = $('module_' + data.response);
     if(data.newParentCat != element.parentNode.id) {}
     //add module to new category submenu 
-    eval("context_catcontext" + data.newParentCat + ".addItem({label: \'" + data.modulename + "',callback: function(){window.location = + \'" + data.url + "\';}});");
+    window['context_catcontext' + data.newParentCat].addItem({
+        label: data.modulename,
+        callback: function(){window.location = data.url;}
+    });
     //remove from old category submenu
-    eval("var oldmenuitems = context_catcontext" + data.oldcid + ".items");
+    var oldmenuitems = window['context_catcontext'+data.oldcid]['items'];
     for (var j in oldmenuitems) {
         if (oldmenuitems[j].label.indexOf(data.modulename) != -1) {
-            eval("context_catcontext" + data.oldcid + ".items.splice(" + j + "," + 1 + ");");
+            window['context_catcontext'+data.oldcid]['items'].splice(j,1);
         	break;
         }
     }
@@ -445,7 +448,7 @@ Admin.Category.addResponse = function(req)
         + data.response + '" class="z-admindrop">&nbsp;</span>';
     newcat.setAttribute("class","admintab");
     newcat.setAttribute("id", "admintab_" + data.response);
-    eval("context_catcontext" + data.response + " =  new Control.ContextMenu('catcontext' + data.response,{leftClick: true,animation: false });");
+    window['context_catcontext' + data.response] =  new Control.ContextMenu('catcontext' + data.response,{leftClick: true,animation: false });
 
     var newelement = document.createElement('li');
     newelement.innerHTML = old;
