@@ -18,17 +18,18 @@
  * This function creates a help link from some parameters.
  *
  * Available parameters:
- *   - filename: name of file, defaults to 'help.txt'.
- *   - anchor:   anchor marker.
- *   - popup:    opens the help file in a new window using javascript.
- *   - width:    width of the window if newwindow is set, default 600.
- *   - height:   height of the window if newwindow is set, default 400.
- *   - title:    name of the new window if newwindow is set, default is modulename.
- *   - class:    class for use in the <a> tag.
- *   - assign:   if set, the results (array('url', 'link') are assigned to the corresponding variable instead of printed out.
+ *   - filename:      name of file, defaults to 'help.txt'.
+ *   - anchor:        anchor marker.
+ *   - popup:         opens the help file in a new window using javascript.
+ *   - width:         width of the window if newwindow is set, default 600.
+ *   - height:        height of the window if newwindow is set, default 400.
+ *   - title:         name of the new window if new window is set, default is 'Help'.
+ *   - link_contents: the text for the link (between the <a> and </a> tags); optional, if not specified, then the title is used.
+ *   - class:         class for use in the <a> tag.
+ *   - assign:        if set, the results (array('url', 'link') are assigned to the corresponding variable instead of printed out.
  *
  * Example
- * {helplink popup='1' width='400' height='300' title='help.txt'}
+ * {helplink popup='1' width='400' height='300' filename='help.txt' title='Help'}
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -41,6 +42,7 @@ function smarty_function_helplink($params, Zikula_View $view)
     $systemLang = System::getVar('language_i18n');
 
     $title = (isset($params['title'])) ? $params['title'] : 'Help';
+    $linkContents = (isset($params['link_contents'])) ? $params['link_contents'] : $title;
     $fileName = (isset($params['filename'])) ? $params['filename'] : 'help.txt';
     $chapter = (isset($params['anchor'])) ? '#' . $params['anchor'] : '';
     $class = (isset($params['class'])) ? $params['class'] : null;
@@ -77,12 +79,12 @@ function smarty_function_helplink($params, Zikula_View $view)
     if ($popup) {
         PageUtil::addVar('javascript', 'zikula.ui');
         $link = array();
-        $link[] = "<a id=\"{$linkID}\" {$class} href=\"#{$linkID}_content\" title=\"{$title}\">" . DataUtil::formatForDisplayHTML($title) . "</a>";
+        $link[] = "<a id=\"{$linkID}\" {$class} href=\"#{$linkID}_content\" title=\"{$title}\">" . DataUtil::formatForDisplayHTML($linkContents) . "</a>";
         $link[] = "<div id=\"{$linkID}_content\" style=\"display: none;\">{$contents}</div>";
         $link[] = "<script type=\"text/javascript\">var $linkID = new Zikula.UI.Window($('$linkID'),{resizable: true, width: $width, height: $height})</script>";
         $link = implode("\n", $link);
     } else {
-        $link = "<a id=\"{$linkID}\" {$class} href=\"" . DataUtil::formatForDisplay($url) . "\" title=\"{$title}\">" . DataUtil::formatForDisplayHTML($title) . "</a>";
+        $link = "<a id=\"{$linkID}\" {$class} href=\"" . DataUtil::formatForDisplay($url) . "\" title=\"{$title}\">" . DataUtil::formatForDisplayHTML($linkContents) . "</a>";
     }
 
     if (isset($params['assign'])) {
