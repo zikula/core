@@ -136,7 +136,7 @@ function _smarty_function_modulelinks($id, $links)
     foreach ($links as $link) {
         $html .= "context_modcontext{$id}.addItem({
                     label: '{$link['text']}',
-                    callback: function(){window.location = Zikula.Config.baseURL + '{$link['url']}';}
+                    callback: function(){window.location =  '{$link['url']}';}
                 });";
 
     }
