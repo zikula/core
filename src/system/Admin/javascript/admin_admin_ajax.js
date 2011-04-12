@@ -354,7 +354,7 @@ Admin.Module.moveResponse = function(req)
     var element = $('module_' + data.response);
     if(data.newParentCat != element.parentNode.id) {}
     //add module to new category submenu 
-    eval("context_catcontext" + data.newParentCat + ".addItem({label: \'" + data.modulename + "',callback: function(){window.location = Zikula.Config.baseURL + \'" + data.url + "\';}});");
+    eval("context_catcontext" + data.newParentCat + ".addItem({label: \'" + data.modulename + "',callback: function(){window.location = + \'" + data.url + "\';}});");
     //remove from old category submenu
     eval("var oldmenuitems = context_catcontext" + data.oldcid + ".items");
     for (var j in oldmenuitems) {
