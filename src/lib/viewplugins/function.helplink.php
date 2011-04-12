@@ -53,7 +53,7 @@ function smarty_function_helplink($params, Zikula_View $view)
     $paths = array(
             "$base/$userLang/$fileName",
             "$base/$systemLang/$fileName",
-            "$base/docs/en/$fileName",
+            "$base/en/$fileName",
     );
 
     $found = false;
