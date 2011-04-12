@@ -190,15 +190,13 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
             $vars['multilingual'] = false;
         }
 
+        $langs = array('list' => array_keys($vars['languages']),
+               'flat' => false);
         // check if there is allredy content
         if (empty($vars['menutree_content'])) {
             // no content - get list of menus to allow import
             $vars['menutree_menus'] = $this->_get_current_menus($blockinfo['bid']);
         } else {
-            // get data to decode content
-            $langs = array('list' => array_keys($vars['languages']),
-                           'flat' => false);
-
             // are there new langs not present in current menu?
             // check if there are new languages not present in current menu
             // if so - need to set reference lang to copy initial menu items data
