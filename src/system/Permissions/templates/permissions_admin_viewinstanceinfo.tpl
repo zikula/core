@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang}" dir="{langdirection}">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
-    <title>{title}</title>
+    <title>{pagegetvar name='title'}</title>
     <meta name="description" content="{$modvars.ZConfig.slogan}" />
     <meta name="keywords" content="{$metatags.keywords}" />
     <link rel="stylesheet" type="text/css" href="style/core.css" media="print,projection,screen" />
