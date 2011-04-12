@@ -164,7 +164,7 @@ class JCSSUtil
             }
         }
         if ($gettext) {
-            PageUtil::addVar('jsgettext', 'zikula');
+            PageUtil::addVar('jsgettext', 'zikula_js');
         }
         if (!empty($styles)) {
             PageUtil::addVar('stylesheet', $styles);

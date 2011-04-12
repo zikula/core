@@ -699,7 +699,7 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
     initialize: function(lang, data) {
         this.defaults = {
             lang: 'en',
-            domain: 'zikula',
+            domain: 'zikula_js',
             pluralForms: 'nplurals=2; plural=n == 1 ? 0 : 1;'
         };
 
