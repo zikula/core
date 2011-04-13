@@ -1,6 +1,20 @@
 {ajaxheader modname="Blocks" filename="blocks.js"}
 {pageaddvar name="javascript" value="javascript/helpers/Zikula.itemlist.js"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/extmenu_modify.css"}
+{pageaddvarblock}
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var list_menuitemlist = null;
+        document.observe("dom:loaded",function(){
+            list_menuitemlist = new Zikula.itemlist('menuitemlist', {headerpresent: true, firstidiszero: true, recursive: true, inputName: 'linksorder'});
+            $('appendmenuitem').observe('click',function(event){
+                list_menuitemlist.appenditem();
+                event.stop();
+            })
+        });
+        /* ]]> */
+    </script>
+{/pageaddvarblock}
 
 {if $redirect neq ''}
 <input type="hidden" name="redirect" value="{$redirect}" />
@@ -125,16 +139,3 @@
         {/foreach}
     </li>
 </ul>
-
-<script type="text/javascript">
-    /* <![CDATA[ */
-    var list_menuitemlist = null;
-    document.observe("dom:loaded",function(){
-        list_menuitemlist = new Zikula.itemlist('menuitemlist', {headerpresent: true, firstidiszero: true, recursive: true, inputName: 'linksorder'});
-    });
-    $('appendmenuitem').observe('click',function(event){
-        list_menuitemlist.appenditem();
-        event.stop();
-    })
-    /* ]]> */
-</script>

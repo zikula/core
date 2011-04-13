@@ -1,7 +1,17 @@
-{include file="blocks_admin_menu.tpl"}
 {ajaxheader modname=Blocks filename=blocks.js ui=true}
+{pageaddvarblock}
+    <script type="text/javascript">
+        var msgBlockStatusActive = '{{gt text="Active"}}';
+        var msgBlockStatusInactive = '{{gt text="Inactive"}}';
+        document.observe("dom:loaded", function() {
+            initactivationbuttons();
+            Zikula.UI.Tooltips($$('.tooltips'));
+        });
+    </script>
+{/pageaddvarblock}
 {gt text="Click to activate this block" assign=activate}
 {gt text="Click to deactivate this block" assign=deactivate}
+{include file="blocks_admin_menu.tpl"}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="view" size="large"}</div>
@@ -131,10 +141,3 @@
         </tbody>
     </table>
 </div>
-
-<script type="text/javascript">
-    var msgBlockStatusActive = '{{gt text="Active"}}';
-    var msgBlockStatusInactive = '{{gt text="Inactive"}}';
-    Event.observe(window, 'load', initactivationbuttons);
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>
