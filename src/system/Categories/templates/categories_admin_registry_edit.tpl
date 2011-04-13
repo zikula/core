@@ -1,4 +1,11 @@
 {ajaxheader ui=true}
+{pageaddvarblock}
+    <script type="text/javascript">
+        document.observe("dom:loaded", function() {
+            Zikula.UI.Tooltips($$('.tooltips'));
+        });
+    </script>
+{/pageaddvarblock}
 {gt text="Category registry" assign=templatetitle}
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer" id="top">
@@ -66,7 +73,3 @@
         </div>
     </form>
 </div>
-
-<script type="text/javascript">
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>
