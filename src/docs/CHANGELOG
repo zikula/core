@@ -104,7 +104,7 @@ Relocated system fatal error templates (siteoff.tpl, notinstalled.tpl, dbconnect
 Changed core module templates to use .tpl
 Issue #2209 Add date in Zikula error log file.
 Allow override of style/core.css with config/style/core.css.
-Provide 'pageutil.addvar_filter' event to override anything added by PageUtil::addVar, or {pageaddvar}.  This allows for complete override freedom.
+Provide 'pageutil.addvar_filter' event to override anything added by PageUtil::addVar, {pageaddvar}, or {pageaddvarblock}.  This allows for complete override freedom.
 New default pager style (Issue #2264).
 Streamlined user frontend of Themes module (Issue #2279).
 Added Upgrade All options, and Module API to upgrade all modules with one click.  This will work for all non-complicated upgrades of Core also.
@@ -171,3 +171,4 @@ New color picker solution (issue #2634).
 create easy drop-menu for module (admin) links (issue #2646).
 Dropdown menus (issue #2649).
 Several installer improvements (issue #2801).
+Added a new template block function {pageaddvarblock}...{/pageaddvarblock} to allow inline scripts, styles, etc. to be placed in the page's head section or near the closing body tag.
