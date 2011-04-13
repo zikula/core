@@ -1,10 +1,35 @@
-{strip}{gt text='New account registration' assign='templatetitle'}
-{ajaxheader modname='Users' filename='Zikula.Users.NewUser.js'}
-{if $modvars.Users.use_password_strength_meter}
-    {* TODO - Using ajaxheader here causes an error when the PassMeter is initialized. *}
-    {pageaddvar name='javascript' value='prototype'}
-    {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
-{/if}
+{strip}
+    {gt text='New account registration' assign='templatetitle'}
+    {ajaxheader modname='Users' filename='Zikula.Users.NewUser.js'}
+    {if $modvars.Users.use_password_strength_meter && ($authentication_method.modname == 'Users')}
+        {pageaddvar name='javascript' value='prototype'}
+        {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+        {pageaddvarblock name='footer'}
+            <script type="text/javascript">
+                var passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
+                    username:'{{$formData->getFieldId('uname')}}',
+                    minLength: '{{$modvars.Users.minpass}}'
+                });
+            </script>
+        {/pageaddvarblock}
+    {/if}
+    {pageaddvarblock}
+        <script type="text/javascript">
+            Zikula.Users.NewUser.setup = function() {
+                Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
+
+                Zikula.Users.NewUser.fieldId = {
+                    submit:         '{{$formData->getFormId()}}_submitnewuser',
+                    checkUser:      '{{$formData->getFormId()}}_checkuserajax',
+                    checkMessage:   '{{$formData->getFormId()}}_checkmessage',
+                    validMessage:   '{{$formData->getFormId()}}_validmessage',
+
+                    userName:       '{{$formData->getFieldId('uname')}}',
+                    email:          '{{$formData->getFieldId('email')}}',
+                };
+            }
+        </script>
+    {/pageaddvarblock}
 {/strip}
 
 {include file="users_user_menu.tpl"}
@@ -151,26 +176,3 @@
         </fieldset>
     </div>
 </form>
-{if $modvars.Users.use_password_strength_meter && ($authentication_method.modname == 'Users')}
-<script type="text/javascript">
-    var passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
-        username:'{{$formData->getFieldId('uname')}}',
-        minLength: '{{$modvars.Users.minpass}}'
-    });
-</script>
-{/if}
-<script type="text/javascript">
-    Zikula.Users.NewUser.setup = function() {
-        Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
-    
-        Zikula.Users.NewUser.fieldId = {
-            submit:         '{{$formData->getFormId()}}_submitnewuser',
-            checkUser:      '{{$formData->getFormId()}}_checkuserajax',
-            checkMessage:   '{{$formData->getFormId()}}_checkmessage',
-            validMessage:   '{{$formData->getFormId()}}_validmessage',
-        
-            userName:       '{{$formData->getFieldId('uname')}}',
-            email:          '{{$formData->getFieldId('email')}}',
-        };
-    }
-</script>

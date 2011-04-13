@@ -1,4 +1,25 @@
-{gt text="Search results" assign=templatetitle}
+{strip}
+    {gt text="Search results" assign=templatetitle}
+    {pageaddvarblock}
+        <script type="text/javascript">
+            document.observe("dom:loaded", function() {
+            {{if $deleteUsers}}
+                $('select_all').observe('click', function(e){
+                    Zikula.toggleInput('users_searchresults', true);
+                    e.stop()
+                });
+                $('deselect_all').observe('click', function(e){
+                    Zikula.toggleInput('users_searchresults', false);
+                    e.stop()
+                });
+            {{/if}}
+
+                Zikula.UI.Tooltips($$('.tooltips'));
+            });
+        </script>
+    {/pageaddvarblock}
+{/strip}
+
 {include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
@@ -59,18 +80,3 @@
         </div>
     </form>
 </div>
-{if $deleteUsers}
-<script type="text/javascript">
-    $('select_all').observe('click', function(e){
-        Zikula.toggleInput('users_searchresults', true);
-        e.stop()
-    });
-    $('deselect_all').observe('click', function(e){
-        Zikula.toggleInput('users_searchresults', false);
-        e.stop()
-    });
-</script>
-{/if}
-<script type="text/javascript">
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>

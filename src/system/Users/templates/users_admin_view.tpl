@@ -1,5 +1,15 @@
+{strip}
+    {insert name='csrftoken' assign='csrftoken'}
+    {pageaddvarblock}
+        <script type="text/javascript">
+            document.observe("dom:loaded", function() {
+                liveusersearch();
+                Zikula.UI.Tooltips($$('.tooltips'));
+            });
+        </script>
+    {/pageaddvarblock}
+{/strip}
 {include file="users_admin_menu.tpl"}
-{insert name='csrftoken' assign='csrftoken'}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="view" size="large"}</div>
     <h2>{gt text="Users list"}</h2>
@@ -11,9 +21,6 @@
             <a id="deleteuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.png" __title="Delete" __alt="Delete" class='tooltips'}</a>
             {img id="ajax_indicator" style="display: none;" modname=core set="ajax" src="indicator_circle.gif" alt=""}
             <div id="username_choices" class="autocomplete_user"></div>
-            <script type="text/javascript">
-                liveusersearch();
-            </script>
         </fieldset>
     </div>
 
@@ -141,7 +148,3 @@
 
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
-
-<script type="text/javascript">
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>

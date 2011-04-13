@@ -1,4 +1,13 @@
-{gt text="Registration applications list" assign=templatetitle}
+{strip}
+    {gt text="Registration applications list" assign=templatetitle}
+    {pageaddvarblock}
+        <script type="text/javascript">
+            document.observe("dom:loaded", function() {
+                Zikula.UI.Tooltips($$('.tooltips'));
+            });
+        </script>
+    {/pageaddvarblock}
+{/strip}
 {include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
@@ -167,7 +176,3 @@
     <p class="z-informationmsg">{gt text='There are no pending registration applications to review.'}</p>
     {/if}
 </div>
-
-<script type="text/javascript">
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>
