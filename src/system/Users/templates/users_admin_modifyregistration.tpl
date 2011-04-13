@@ -1,13 +1,9 @@
-{strip}{gt text='Edit registration of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
-{ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
-{if $modvars.Users.use_password_strength_meter == 1}
-    {* TODO - Using ajaheader here causes an error when the PassMeter is initialized. *}
-    {pageaddvar name='javascript' value='prototype'}
-    {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
-{/if}
+{strip}
+    {gt text='Edit registration of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
+    {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
+{/strip}
 
 {include file='users_admin_menu.tpl'}
-{/strip}
 
 <div id="{$formData->getFormId()}_errormsgs" class="z-errormsg{if empty($errorMessages)} z-hide{/if}">
     {if isset($errorMessages)}
