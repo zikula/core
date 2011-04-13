@@ -1,4 +1,20 @@
-{gt text="E-mail Users" assign=templatetitle}
+{strip}
+    {gt text="E-mail Users" assign=templatetitle}
+    {pageaddvarblock name='footer'}
+        <script type="text/javascript">
+            document.observe("dom:loaded", function() {
+                $('select_all').observe('click', function(e){
+                    Zikula.toggleInput('users_mailusers', true);
+                    e.stop()
+                });
+                $('deselect_all').observe('click', function(e){
+                    Zikula.toggleInput('users_mailusers', false);
+                    e.stop()
+                });
+            });
+        </script>
+    {/pageaddvarblock}
+{/strip}
 {include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
@@ -83,16 +99,3 @@
         </div>
     </form>
 </div>
-
-<script type="text/javascript">
-    $('select_all').observe('click', function(e){
-        Zikula.toggleInput('users_mailusers', true);
-        e.stop()
-    });
-    $('deselect_all').observe('click', function(e){
-        Zikula.toggleInput('users_mailusers', false);
-        e.stop()
-    });
-
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>

@@ -1,4 +1,18 @@
-{gt text='Password changer' assign='templatetitle'}
+{strip}
+    {gt text='Password changer' assign='templatetitle'}
+    {if $modvars.Users.use_password_strength_meter == 1}
+        {pageaddvar name='javascript' value='prototype'}
+        {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+        {pageaddvarblock name='footer'}
+            <script type="text/javascript">
+                var passmeter = new Zikula.Users.PassMeter('newpassword', 'users_user_changepassword_passmeter',{
+                    username:'usernamehidden',
+                    minLength: '{{$modvars.Users.minpass}}'
+                });
+            </script>
+        {/pageaddvarblock}
+    {/if}
+{/strip}
 {include file='users_user_menu.tpl'}
 
 {if $login}
@@ -42,17 +56,9 @@
                 </div>
                 {/if}
             </div>
+            {if $modvars.Users.use_password_strength_meter == 1}
             <div id="users_user_changepassword_passmeter">
             </div>
-            {if $modvars.Users.use_password_strength_meter eq 1}
-                {pageaddvar name='javascript' value='prototype'}
-                {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
-                <script type="text/javascript">
-                    var passmeter = new Zikula.Users.PassMeter('newpassword', 'users_user_changepassword_passmeter',{
-                        username:'usernamehidden',
-                        minLength: '{{$modvars.Users.minpass}}'
-                    });
-                </script>
             {/if}
             <div class="z-formrow">
                 <label for="newpasswordconfirm">{gt text="New password (repeat for verification)"}</label>

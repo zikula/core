@@ -1,20 +1,60 @@
-{strip}{gt text='Edit user account of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
-{ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
-{ajaxheader modname=$modinfo.name filename='Zikula.Users.Admin.NewUser.js' noscriptaculous=true effects=true}
-{if $modvars.Users.use_password_strength_meter == 1}
-    {* TODO - Using ajaheader here causes an error when the PassMeter is initialized. *}
-    {pageaddvar name='javascript' value='prototype'}
-    {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
-{/if}
-{insert name='csrftoken' assign='csrftoken'}
-{if ($formData->getFieldData('uid') == $coredata.user.uid)}
-    {assign var='editingSelf' value=true}
-{else}
-    {assign var='editingSelf' value=false}
-{/if}
+{strip}
+    {gt text='Edit user account of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
+    {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
+    {ajaxheader modname=$modinfo.name filename='Zikula.Users.Admin.NewUser.js' noscriptaculous=true effects=true}
+    {if $modvars.Users.use_password_strength_meter == 1}
+        {* TODO - Using ajaheader here causes an error when the PassMeter is initialized. *}
+        {pageaddvar name='javascript' value='prototype'}
+        {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+        {pageaddvarblock name='footer'}
+            <script type="text/javascript">
+                var passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
+                    username:'{{$formData->getFieldId('uname')}}',
+                    minLength: '{{$modvars.Users.minpass}}'
+                });
+            </script>
+        {/pageaddvarblock}
+    {/if}
+    {insert name='csrftoken' assign='csrftoken'}
+    {if ($formData->getFieldData('uid') == $coredata.user.uid)}
+        {assign var='editingSelf' value=true}
+    {else}
+        {assign var='editingSelf' value=false}
+    {/if}
+    {pageaddvarblock}
+        <script type="text/javascript">
+            Zikula.Users.NewUser.setup = function() {
+                Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
+
+                Zikula.Users.NewUser.fieldId = {
+                    submit:         '{{$formData->getFormId()}}_submit',
+                    checkUser:      '{{$formData->getFormId()}}_checkuserajax',
+                    checkMessage:   '{{$formData->getFormId()}}_checkmessage',
+                    validMessage:   '{{$formData->getFormId()}}_validmessage',
+
+                    userName:       '{{$formData->getFieldId('uname')}}',
+                    email:          '{{$formData->getFieldId('email')}}',
+                };
+            }
+
+            Zikula.Users.Admin.NewUser.setup = function() {
+                Zikula.Users.Admin.NewUser.fieldId = {
+                    passwordIsSetWrap:  '{{$formData->getFormId()}}_password_is_set_wrap',
+                    passwordNotSetWrap: '{{$formData->getFormId()}}_password_not_set_wrap',
+
+                    setPass:            '{{$formData->getFieldId('setpass')}}',
+                    setPassYes:         '{{$formData->getFieldId('setpass')}}_yes',
+                    setPassNo:          '{{$formData->getFieldId('setpass')}}_no',
+                    setPassWrap:        '{{$formData->getFieldId('setpass')}}_wrap',
+                    passWrap:           '{{$formData->getFieldId('pass')}}_wrap',
+                    email:              '{{$formData->getFieldId('email')}}',
+                };
+            }
+        </script>
+    {/pageaddvarblock}
+{/strip}
 
 {include file='users_admin_menu.tpl'}
-{/strip}
 
 <div id="{$formData->getFormId()}_errormsgs" class="z-errormsg{if empty($errorMessages)} z-hide{/if}">
     {if isset($errorMessages)}
@@ -183,42 +223,3 @@
         <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{img modname='core' set='icons/extrasmall' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
     </div>
 </div>
-{* Script blocks should remain at the end of the file so that it does not block progressive rendering of the page. *}
-{if $modvars.Users.use_password_strength_meter == 1}
-    <script type="text/javascript">
-        var passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
-            username:'{{$formData->getFieldId('uname')}}',
-            minLength: '{{$modvars.Users.minpass}}'
-        });
-    </script>
-{/if}
-<script type="text/javascript">
-    Zikula.Users.NewUser.setup = function() {
-        Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
-    
-        Zikula.Users.NewUser.fieldId = {
-            submit:         '{{$formData->getFormId()}}_submit',
-            checkUser:      '{{$formData->getFormId()}}_checkuserajax',
-            checkMessage:   '{{$formData->getFormId()}}_checkmessage',
-            validMessage:   '{{$formData->getFormId()}}_validmessage',
-        
-            userName:       '{{$formData->getFieldId('uname')}}',
-            email:          '{{$formData->getFieldId('email')}}',
-        };
-    }
-</script>
-<script type="text/javascript">
-    Zikula.Users.Admin.NewUser.setup = function() {
-        Zikula.Users.Admin.NewUser.fieldId = {
-            passwordIsSetWrap:  '{{$formData->getFormId()}}_password_is_set_wrap',
-            passwordNotSetWrap: '{{$formData->getFormId()}}_password_not_set_wrap',
-
-            setPass:            '{{$formData->getFieldId('setpass')}}',
-            setPassYes:         '{{$formData->getFieldId('setpass')}}_yes',
-            setPassNo:          '{{$formData->getFieldId('setpass')}}_no',
-            setPassWrap:        '{{$formData->getFieldId('setpass')}}_wrap',
-            passWrap:           '{{$formData->getFieldId('pass')}}_wrap',
-            email:              '{{$formData->getFieldId('email')}}',
-        };
-    }
-</script>

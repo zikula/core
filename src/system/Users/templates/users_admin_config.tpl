@@ -1,4 +1,52 @@
-{ajaxheader modname='Users' filename='Zikula.Users.Admin.Config.js' noscriptaculous=true effects=true}
+{strip}
+    {ajaxheader modname='Users' filename='Zikula.Users.Admin.Config.js' noscriptaculous=true effects=true}
+    {pageaddvar}
+        <script type="text/javascript">
+            Zikula.Users.Admin.Config.setup = function() {
+                Zikula.Users.Admin.Config.formId = '{{$configData->getFormId()}}';
+
+                {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_ENABLED'|constant}}
+                Zikula.Users.Admin.Config.registrationEnabledId = '{{$configData->getFieldId($fieldName)}}';
+                Zikula.Users.Admin.Config.registrationEnabledWrapId = '{{$configData->getFieldId($fieldName)}}' + '_wrap';
+                Zikula.Users.Admin.Config.registrationEnabledYesId = '{{$configData->getFieldId($fieldName)}}' + '_yes';
+                Zikula.Users.Admin.Config.registrationEnabledNoId = '{{$configData->getFieldId($fieldName)}}' + '_no';
+
+                {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED'|constant}}
+                Zikula.Users.Admin.Config.registrationModeratedId = '{{$configData->getFieldId($fieldName)}}';
+                Zikula.Users.Admin.Config.registrationModeratedYesId = '{{$configData->getFieldId($fieldName)}}' + '_yes';
+                Zikula.Users.Admin.Config.registrationModeratedNoId = '{{$configData->getFieldId($fieldName)}}' + '_no';
+
+                {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN'|constant}}
+                Zikula.Users.Admin.Config.registrationAutoLoginWrapId = '{{$configData->getFieldId($fieldName)}}' + '_wrap';
+
+                {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE'|constant}}
+                Zikula.Users.Admin.Config.registrationApprovalOrderWrapId = '{{$configData->getFieldId($fieldName)}}' + '_wrap';
+
+                {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE'|constant}}
+                Zikula.Users.Admin.Config.registrationVerificationModeId = '{{$configData->getFieldId($fieldName)}}';
+                Zikula.Users.Admin.Config.registrationVerificationModeUserPwdId = '{{$configData->getFieldId($fieldName)}}' + '_' + '{{'Users_Constant::VERIFY_USERPWD'|constant}}';
+                Zikula.Users.Admin.Config.registrationVerificationModeNoneId = '{{$configData->getFieldId($fieldName)}}' + '_' + '{{'Users_Constant::VERIFY_NO'|constant}}';
+
+                {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION'|constant}}
+                Zikula.Users.Admin.Config.registrationAntispamQuestionId = '{{$configData->getFieldId($fieldName)}}';
+
+                {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER'|constant}}
+                Zikula.Users.Admin.Config.registrationAntispamAnswerMandatoryId = '{{$configData->getFieldId($fieldName)}}' + '_mandatory';
+
+                {{assign var='fieldName' value='Users_Constant::MODVAR_LOGIN_METHOD'|constant}}
+                Zikula.Users.Admin.Config.loginMethodId = '{{$configData->getFieldId($fieldName)}}';
+                Zikula.Users.Admin.Config.loginMethodUserNameId = '{{$configData->getFieldId($fieldName)}}' + '_username';
+                Zikula.Users.Admin.Config.loginMethodEmailId = '{{$configData->getFieldId($fieldName)}}' + '_email';
+                Zikula.Users.Admin.Config.loginMethodEitherId = '{{$configData->getFieldId($fieldName)}}' + '_either';
+
+                {{assign var='fieldName' value='Users_Constant::MODVAR_REQUIRE_UNIQUE_EMAIL'|constant}}
+                Zikula.Users.Admin.Config.requireUniqueEmailYesId = '{{$configData->getFieldId($fieldName)}}' + '_yes';
+                Zikula.Users.Admin.Config.requireUniqueEmailNoId = '{{$configData->getFieldId($fieldName)}}' + '_no';
+            }
+        </script>
+    {/pageaddvar}
+{/strip}
+    
 {include file='users_admin_menu.tpl'}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="config" size="large"}</div>
@@ -380,47 +428,3 @@
         </div>
     </form>
 </div>
-{* This script block should remain at the end of the file so that it does not block progressive rendering of the page. *}
-<script type="text/javascript">
-    Zikula.Users.Admin.Config.setup = function() {
-        Zikula.Users.Admin.Config.formId = '{{$configData->getFormId()}}';
-
-        {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_ENABLED'|constant}}
-        Zikula.Users.Admin.Config.registrationEnabledId = '{{$configData->getFieldId($fieldName)}}';
-        Zikula.Users.Admin.Config.registrationEnabledWrapId = '{{$configData->getFieldId($fieldName)}}' + '_wrap';
-        Zikula.Users.Admin.Config.registrationEnabledYesId = '{{$configData->getFieldId($fieldName)}}' + '_yes';
-        Zikula.Users.Admin.Config.registrationEnabledNoId = '{{$configData->getFieldId($fieldName)}}' + '_no';
-
-        {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED'|constant}}
-        Zikula.Users.Admin.Config.registrationModeratedId = '{{$configData->getFieldId($fieldName)}}';
-        Zikula.Users.Admin.Config.registrationModeratedYesId = '{{$configData->getFieldId($fieldName)}}' + '_yes';
-        Zikula.Users.Admin.Config.registrationModeratedNoId = '{{$configData->getFieldId($fieldName)}}' + '_no';
-
-        {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN'|constant}}
-        Zikula.Users.Admin.Config.registrationAutoLoginWrapId = '{{$configData->getFieldId($fieldName)}}' + '_wrap';
-
-        {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE'|constant}}
-        Zikula.Users.Admin.Config.registrationApprovalOrderWrapId = '{{$configData->getFieldId($fieldName)}}' + '_wrap';
-
-        {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE'|constant}}
-        Zikula.Users.Admin.Config.registrationVerificationModeId = '{{$configData->getFieldId($fieldName)}}';
-        Zikula.Users.Admin.Config.registrationVerificationModeUserPwdId = '{{$configData->getFieldId($fieldName)}}' + '_' + '{{'Users_Constant::VERIFY_USERPWD'|constant}}';
-        Zikula.Users.Admin.Config.registrationVerificationModeNoneId = '{{$configData->getFieldId($fieldName)}}' + '_' + '{{'Users_Constant::VERIFY_NO'|constant}}';
-
-        {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION'|constant}}
-        Zikula.Users.Admin.Config.registrationAntispamQuestionId = '{{$configData->getFieldId($fieldName)}}';
-
-        {{assign var='fieldName' value='Users_Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER'|constant}}
-        Zikula.Users.Admin.Config.registrationAntispamAnswerMandatoryId = '{{$configData->getFieldId($fieldName)}}' + '_mandatory';
-
-        {{assign var='fieldName' value='Users_Constant::MODVAR_LOGIN_METHOD'|constant}}
-        Zikula.Users.Admin.Config.loginMethodId = '{{$configData->getFieldId($fieldName)}}';
-        Zikula.Users.Admin.Config.loginMethodUserNameId = '{{$configData->getFieldId($fieldName)}}' + '_username';
-        Zikula.Users.Admin.Config.loginMethodEmailId = '{{$configData->getFieldId($fieldName)}}' + '_email';
-        Zikula.Users.Admin.Config.loginMethodEitherId = '{{$configData->getFieldId($fieldName)}}' + '_either';
-
-        {{assign var='fieldName' value='Users_Constant::MODVAR_REQUIRE_UNIQUE_EMAIL'|constant}}
-        Zikula.Users.Admin.Config.requireUniqueEmailYesId = '{{$configData->getFieldId($fieldName)}}' + '_yes';
-        Zikula.Users.Admin.Config.requireUniqueEmailNoId = '{{$configData->getFieldId($fieldName)}}' + '_no';
-    }
-</script>

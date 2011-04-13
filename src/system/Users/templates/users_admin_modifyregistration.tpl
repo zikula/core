@@ -1,6 +1,23 @@
 {strip}
     {gt text='Edit registration of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
+    {pageaddvarblock}
+        <script type="text/javascript">
+            Zikula.Users.NewUser.setup = function() {
+                Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
+
+                Zikula.Users.NewUser.fieldId = {
+                    submit:         '{{$formData->getFormId()}}_submitnewuser',
+                    checkUser:      '{{$formData->getFormId()}}_checkuserajax',
+                    checkMessage:   '{{$formData->getFormId()}}_checkmessage',
+                    validMessage:   '{{$formData->getFormId()}}_validmessage',
+
+                    userName:       '{{$formData->getFieldId('uname')}}',
+                    email:          '{{$formData->getFieldId('email')}}',
+                };
+            }
+        </script>
+    {/pageaddvarblock}
 {/strip}
 
 {include file='users_admin_menu.tpl'}
@@ -74,19 +91,3 @@
         </div>
     </form>
 </div>
-{* Script blocks should remain at the end of the file so that it does not block progressive rendering of the page. *}
-<script type="text/javascript">
-    Zikula.Users.NewUser.setup = function() {
-        Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
-    
-        Zikula.Users.NewUser.fieldId = {
-            submit:         '{{$formData->getFormId()}}_submitnewuser',
-            checkUser:      '{{$formData->getFormId()}}_checkuserajax',
-            checkMessage:   '{{$formData->getFormId()}}_checkmessage',
-            validMessage:   '{{$formData->getFormId()}}_validmessage',
-        
-            userName:       '{{$formData->getFieldId('uname')}}',
-            email:          '{{$formData->getFieldId('email')}}',
-        };
-    }
-</script>
