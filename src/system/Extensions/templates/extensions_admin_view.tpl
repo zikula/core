@@ -1,4 +1,11 @@
 {ajaxheader ui=true}
+{pageaddvarblock}
+    <script type="text/javascript">
+        document.observe("dom:loaded", function() {
+            Zikula.UI.Tooltips($$('.tooltips'));
+        });
+    </script>
+{/pageaddvarblock}
 {include file="extensions_admin_menu.tpl"}
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"http://community.zikula.org/module-Extensions-view.htm\">`$extdbtitle`</a></strong>" var=extdblink}
@@ -78,7 +85,3 @@
     </table>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
-
-<script type="text/javascript">
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>
