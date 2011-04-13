@@ -23,14 +23,14 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @var array
      */
-    protected $services = array();
+    private $services = array();
 
     /**
      * Argument storage.
      *
      * @var array
      */
-    protected $arguments = array();
+    private $arguments = array();
 
     /**
      * ServiceManager constructor.
@@ -197,7 +197,7 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @return object The newly created service.
      */
-    protected function createService(Zikula_ServiceManager_Definition $definition)
+    private function createService(Zikula_ServiceManager_Definition $definition)
     {
         $reflection = new ReflectionClass($definition->getClassName());
 
@@ -233,7 +233,7 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @return array Compiled arguments.
      */
-    protected function compileArguments($arguments)
+    private function compileArguments($arguments)
     {
         $compiledArguments = array();
         foreach ($arguments as $argument) {
