@@ -1,4 +1,27 @@
 {ajaxheader modname=Groups filename=groups.js ui=true}
+{pageaddvarblock}
+    <script type="text/javascript">
+        // some defines
+        var updatinggroup = '...{{gt text="Updating group"}}...';
+        var deletinggroup = '...{{gt text="Deleting group"}}...';
+        var confirmDeleteGroup = '{{gt text="Do you really want to delete this group?"}}';
+
+        document.observe("dom:loaded", function() {
+            groupinit({{$defaultgroup}},{{$groups[0].gid}},{{$primaryadmingroup}});
+            Zikula.UI.Tooltips($$('.tooltips'));
+            
+            {{foreach item='group' from=$groups}}
+                //$('insert_{{$group.gid}}').addClassName('z-hide');
+                $('modify_{{$group.gid}}').addClassName('z-hide');
+                $('delete_{{$group.gid}}').addClassName('z-hide');
+                $('modifyajax_{{$group.gid}}').removeClassName('z-hide');
+                $('modifyajax_{{$group.gid}}').observe('click', function() {
+                    groupmodifyinit({{$group.gid}});
+                });
+            {{/foreach}}
+        });
+    </script>
+{/pageaddvarblock}
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
@@ -84,15 +107,6 @@
                         <a id="modify_{$group.gid}"  href="{$group.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit group: `$group.name`" __alt="Edit" class='tooltips'}</a>
                         <a id="delete_{$group.gid}"     href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.png modname=core set=icons/extrasmall __title="Delete group: `$group.name`" __alt="Delete" class='tooltips'}</a>
                         <a id="members_{$group.gid}"  href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=group.png modname=core set=icons/extrasmall __title="Membership of group: `$group.name`" __alt="Group membership" class='tooltips'}</a>
-                        <script type="text/javascript">
-                            //$('insert_{{$group.gid}}').addClassName('z-hide');
-                            $('modify_{{$group.gid}}').addClassName('z-hide');
-                            $('delete_{{$group.gid}}').addClassName('z-hide');
-                            $('modifyajax_{{$group.gid}}').removeClassName('z-hide');
-                            $('modifyajax_{{$group.gid}}').observe('click', function() {
-                                groupmodifyinit({{$group.gid}});
-                            });
-                        </script>
                     </span>
                     <span id="editgroupaction_{$group.gid}" class="z-itemcell z-w10 z-hide">
                         <button class="z-imagebutton tooltips" id="groupeditsave_{$group.gid}"   title="{gt text="Save group: `$group.name`"}">{img src=button_ok.png modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
@@ -213,16 +227,3 @@
 
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
-
-<script type="text/javascript">
-    Event.observe(window, 'load', function() {
-        groupinit({{$defaultgroup}},{{$groups[0].gid}},{{$primaryadmingroup}});
-    }, false);
-
-    // some defines
-    var updatinggroup = '...{{gt text="Updating group"}}...';
-    var deletinggroup = '...{{gt text="Deleting group"}}...';
-    var confirmDeleteGroup = '{{gt text="Do you really want to delete this group?"}}';
-
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>
