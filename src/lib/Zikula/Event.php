@@ -19,35 +19,35 @@
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Zikula_Event implements ArrayAccess
+class Zikula_Event implements Zikula_EventInterface, ArrayAccess
 {
     /**
      * Name of the event.
      *
      * @var string
      */
-    protected $name;
+    private $name;
 
     /**
      * Observer pattern subject.
      *
      * @var mixed usually object or callable
      */
-    protected $subject;
+    private $subject;
 
     /**
      * Array of arguments.
      *
      * @var array
      */
-    protected $args;
+    private $args;
 
     /**
-     * Flag when notified.
+     * Signal to stop further notification.
      *
      * @var boolean
      */
-    protected $notified;
+    private $stop = false;
 
     /**
      * Storage for any process type events.
@@ -69,25 +69,34 @@ class Zikula_Event implements ArrayAccess
     public function __construct($name, $subject = null, array $args = array(), $data = null)
     {
         // must have a name
-        if (empty($name) || !is_string($name)) {
-            throw new InvalidArgumentException('$name is a required argument and must be a string.');
+        if (empty($name)) {
+            throw new InvalidArgumentException('Event name cannot be empty');
         }
 
         $this->name = $name;
         $this->subject = $subject;
         $this->args = $args;
         $this->data = $data;
-        $this->notified = false;
     }
 
     /**
-     * Mark event as completed.
+     * Signal to stop further event notification.
      *
      * @return void
      */
-    public function setNotified()
+    public function stop()
     {
-        $this->notified = true;
+        $this->stop = true;
+    }
+
+    /**
+     * Has the event been stopped.
+     *
+     * @return boolean
+     */
+    public function isStopped()
+    {
+        return $this->stop;
     }
 
     /**
@@ -119,7 +128,7 @@ class Zikula_Event implements ArrayAccess
 
     /**
      * Set args property.
-     * 
+     *
      * @param array $args Arguments.
      *
      * @return Zikula_Event
@@ -131,9 +140,9 @@ class Zikula_Event implements ArrayAccess
     }
 
     /**
-     * Return value from $this->args[$key].
+     * Get argument by key.
      *
-     * @param string $key Key to the args array.
+     * @param string $key Key.
      *
      * @throws InvalidArgumentException If key is not found.
      *
@@ -149,9 +158,9 @@ class Zikula_Event implements ArrayAccess
     }
 
     /**
-     * Getter for args property.
+     * Getter for all arguments.
      *
-     * @return array Args property.
+     * @return array
      */
     public function getArgs()
     {
@@ -189,19 +198,9 @@ class Zikula_Event implements ArrayAccess
     }
 
     /**
-     * Answer question, "Has the event completed?".
+     * Has argument.
      *
-     * @return bool if handler has executed.
-     */
-    public function hasNotified()
-    {
-        return $this->notified;
-    }
-
-    /**
-     * Check if $key exists in args.
-     *
-     * @param string $key Key of args array.
+     * @param string $key Key of arguments array.
      *
      * @return boolean
      */
@@ -210,10 +209,8 @@ class Zikula_Event implements ArrayAccess
         return array_key_exists($key, $this->args);
     }
 
-    // implement ArrayAccess on $this->args property.
-
     /**
-     * ArrayAccess for $this->getArg().
+     * ArrayAccess for argument getter.
      *
      * @param string $key Array key.
      *
@@ -231,7 +228,7 @@ class Zikula_Event implements ArrayAccess
     }
 
     /**
-     * ArrayAccess for $this->setArg($key, $value).
+     * ArrayAccess for argument setter.
      *
      * @param string $key   Array key to set.
      * @param mixed  $value Value.
@@ -244,7 +241,7 @@ class Zikula_Event implements ArrayAccess
     }
 
     /**
-     * ArrayAccess for unset($key).
+     * ArrayAccess for unset argument.
      *
      * @param string $key Array key.
      *
@@ -258,7 +255,7 @@ class Zikula_Event implements ArrayAccess
     }
 
     /**
-     * AccessArray for $this->hasArg($key).
+     * AccessArray has argument.
      *
      * @param string $key Array key.
      *
