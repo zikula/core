@@ -1,6 +1,6 @@
 {strip}
     {ajaxheader modname='Users' filename='Zikula.Users.Admin.Config.js' noscriptaculous=true effects=true}
-    {pageaddvar}
+    {pageaddvarblock}
         <script type="text/javascript">
             Zikula.Users.Admin.Config.setup = function() {
                 Zikula.Users.Admin.Config.formId = '{{$configData->getFormId()}}';
@@ -44,7 +44,7 @@
                 Zikula.Users.Admin.Config.requireUniqueEmailNoId = '{{$configData->getFieldId($fieldName)}}' + '_no';
             }
         </script>
-    {/pageaddvar}
+    {/pageaddvarblock}
 {/strip}
     
 {include file='users_admin_menu.tpl'}
