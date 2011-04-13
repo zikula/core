@@ -1,4 +1,12 @@
 {ajaxheader ui=true}
+{pageaddvarblock}
+    <script type="text/javascript">
+        var accordion;
+        document.observe("dom:loaded", function() {
+            accordion = new Zikula.UI.Accordion('adminhelp');
+        });
+    </script>
+{/pageaddvarblock}
 {include file="admin_admin_menu.tpl"}
 <div class="z-admincontainer z-form">
     <div class="z-adminpageicon">{icon type="help" size="large"}</div>
@@ -68,10 +76,6 @@
             </ul>
         </div>
     </div>
-
-    <script type="text/javascript">
-        var accordion = new Zikula.UI.Accordion('adminhelp');
-    </script>
     <br />
 
     <fieldset>
