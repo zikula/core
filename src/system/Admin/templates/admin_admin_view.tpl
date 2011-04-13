@@ -1,4 +1,12 @@
 {ajaxheader ui=true}
+{pageaddvarblock}
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        Zikula.UI.Tooltips($$('.tooltips'));
+    });
+</script>
+{/pageaddvarblock}
+
 {include file="admin_admin_menu.tpl"}
 
 <div class="z-admincontainer">
@@ -32,7 +40,3 @@
     </div>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
-
-<script type="text/javascript">
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>
