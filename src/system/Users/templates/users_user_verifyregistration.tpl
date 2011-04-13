@@ -36,18 +36,20 @@
             <div class="z-formrow">
                 <label for="users_newpass">{gt text='Password'}</label>
                 <input id="users_newpass" type="password" name="newpass" size="25" maxlength="60" value="" />
-                {if $modvars.Users.use_password_strength_meter eq 1}
-                {pageaddvar name='javascript' value='prototype'}
-                {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
-
-                <script type="text/javascript">
-                    var passmeter = new Zikula.Users.PassMeter('users_newpass',{
-                        username:'users_uname',
-                        minLength: '{{$modvars.Users.minpass}}'
-                    });
-                </script>
-                {/if}
             </div>
+            <div id="users_verifyregistration_passmeter">
+            </div>
+            {if $modvars.Users.use_password_strength_meter eq 1}
+            {pageaddvar name='javascript' value='prototype'}
+            {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+
+            <script type="text/javascript">
+                var passmeter = new Zikula.Users.PassMeter('users_newpass', 'users_verifyregistration_passmeter',{
+                    username:'users_uname',
+                    minLength: '{{$modvars.Users.minpass}}'
+                });
+            </script>
+            {/if}
             <div class="z-formrow">
                 <label for="users_newpassagain">{gt text='Password (repeat for verification)'}</label>
                 <input id="users_newpassagain" type="password" name="newpassagain" size="25" maxlength="60" value="" />

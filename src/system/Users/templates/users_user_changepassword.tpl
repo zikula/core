@@ -41,17 +41,19 @@
                     {/foreach}
                 </div>
                 {/if}
-                {if $modvars.Users.use_password_strength_meter eq 1}
-                    {pageaddvar name='javascript' value='prototype'}
-                    {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
-                    <script type="text/javascript">
-                        var passmeter = new Zikula.Users.PassMeter('newpassword',{
-                            username:'usernamehidden',
-                            minLength: '{{$modvars.Users.minpass}}'
-                        });
-                    </script>
-                {/if}
             </div>
+            <div id="users_user_changepassword_passmeter">
+            </div>
+            {if $modvars.Users.use_password_strength_meter eq 1}
+                {pageaddvar name='javascript' value='prototype'}
+                {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+                <script type="text/javascript">
+                    var passmeter = new Zikula.Users.PassMeter('newpassword', 'users_user_changepassword_passmeter',{
+                        username:'usernamehidden',
+                        minLength: '{{$modvars.Users.minpass}}'
+                    });
+                </script>
+            {/if}
             <div class="z-formrow">
                 <label for="newpasswordconfirm">{gt text="New password (repeat for verification)"}</label>
                 <input type="password" id="newpasswordconfirm" name="newpasswordconfirm" class="{if isset($password_errors.passagain) && !empty($password_errors.passagain)}z-form-error{/if}" value="" />
