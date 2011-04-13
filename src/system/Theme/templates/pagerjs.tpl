@@ -1,20 +1,22 @@
-<script type="text/javascript">
-    function PagerChangeClass(id, class1, class2) {
-        var myobj = document.getElementById(id);
-        if (myobj.className == class1) {
-            myobj.className = class2;
+{pageaddvarblock}
+    <script type="text/javascript">
+        function PagerChangeClass(id, class1, class2) {
+            var myobj = document.getElementById(id);
+            if (myobj.className == class1) {
+                myobj.className = class2;
+            }
+            else {
+                myobj.className = class1;
+            }
         }
-        else {
-            myobj.className = class1;
-        }
-    }
 
-    function CheckPageLink(linkid) {
-        PagerChangeClass('showlink' + linkid + 'one', 'z-hide', 'z-show');
-        PagerChangeClass('showlink' + linkid + 'two', 'z-hide', 'z-show');
-        PagerChangeClass('showpages' + linkid, 'z-hide', 'z-show');
-    }
-</script>
+        function CheckPageLink(linkid) {
+            PagerChangeClass('showlink' + linkid + 'one', 'z-hide', 'z-show');
+            PagerChangeClass('showlink' + linkid + 'two', 'z-hide', 'z-show');
+            PagerChangeClass('showpages' + linkid, 'z-hide', 'z-show');
+        }
+    </script>
+{/pageaddvarblock}
 
 {assign var="separator" value=" | "}
 
