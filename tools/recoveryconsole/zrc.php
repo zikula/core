@@ -813,7 +813,7 @@ class RecoveryConsole
         $search  = '<div><strong class="blue">'.__('Still need help?').'</strong> '.__('Search the <em>entire</em> Zikula site here!').'</div>'."\n\n";
         $search .= '<form method="post" action="http://community.zikula.org/index.php" style="display:inline;">
                     <div>
-                        <img src="images/icons/extrasmall/search.gif" style="float:left;margin:2px 5px 0 0;" alt="search" />
+                        <img src="images/icons/extrasmall/search.png" style="float:left;margin:2px 5px 0 0;" alt="search" />
                         <input id="search_q" type="text" name="q" size="50" maxlength="255" />
                         <input type="hidden" name="name" value="Search" />
                         <input type="hidden" name="action" value="search" />
@@ -1171,7 +1171,7 @@ class RecoveryConsole
                     $output .= "<br /><br />\n";
 
                     foreach($this->tempdirsubs as $dir => $status) {
-                        $output .= '<img src="images/icons/extrasmall/button_ok.gif" alt="'.__('directory status').'" /> '.$dir."\n";
+                        $output .= '<img src="images/icons/extrasmall/button_ok.png" alt="'.__('directory status').'" /> '.$dir."\n";
                         $output .= "<br />\n";
                     }
 
@@ -1290,7 +1290,7 @@ class RecoveryConsole
             $form .= '<td class="center">'.$block['bid'].'</td>'."\n\n";
             $form .= '<td>'.$block['bkey'].'</td>'."\n\n";
             $form .= '<td>'.$block['title'].'</td>'."\n\n";
-            $form .= '<td class="center">'.(($block['active']) ? '<img src="images/icons/extrasmall/greenled.gif" alt="'.$block['title'].' :: '.__('active').'" title="'.$block['title'].' :: '.__('active').'" />' : '<img src="images/icons/extrasmall/yellowled.gif" alt="'.$block['title'].' :: '.__('inactive').'" title="'.$block['title'].' :: '.__('inactive').'" />').'</td>'."\n\n";
+            $form .= '<td class="center">'.(($block['active']) ? '<img src="images/icons/extrasmall/greenled.png" alt="'.$block['title'].' :: '.__('active').'" title="'.$block['title'].' :: '.__('active').'" />' : '<img src="images/icons/extrasmall/yellowled.png" alt="'.$block['title'].' :: '.__('inactive').'" title="'.$block['title'].' :: '.__('inactive').'" />').'</td>'."\n\n";
             $form .= '<td class="center">'.$block['mid'].'</td>'."\n\n";
             $form .= '<td class="center"><input type="radio" name="blocks['.$block['bid'].']" value="0"'.((empty($this->INPUT['blocks'][$block['bid']])) ? ' checked="checked"' : null).' /></td>'."\n\n";
             if ($block['active'] != 0) {
@@ -1326,9 +1326,9 @@ class RecoveryConsole
 
             foreach($this->tempdirsubs as $dir => $status) {
                 if ($status == 1) {
-                    $icon = 'button_ok.gif';
+                    $icon = 'button_ok.png';
                 } else {
-                    $icon = 'button_cancel.gif';
+                    $icon = 'button_cancel.png';
                 }
                 $form .= '<img src="images/icons/extrasmall/'.$icon.'" alt="'.__('directory status').'" /> '.$dir."\n";
                 $form .= "<br />\n";
@@ -1390,8 +1390,8 @@ class RecoveryConsole
         // Assemble and return the form markup.
         $form  = '            <div class="row"><div class="row_left">'.__('Core Version').'</div><div class="row_right">'.$this->siteCodebase.' '.$this->siteVersion.'</div></div>'."\n\n";
         $form .= '            <div class="row"><div class="row_left">'.__('Config File').'</div><div class="row_right">'.$this->siteConfigFile.'</div></div>'."\n\n";
-        $form .= '            <div class="row"><div class="row_left">'.__('Site Status').'</div><div class="row_right">'.(($this->siteInactive) ? '<img src="images/icons/extrasmall/redled.gif" />'.__('Off/Disabled') :'<img src="images/icons/extrasmall/greenled.gif" />'.__('On/Enabled')).'</div></div>'."\n\n";
-        $form .= '            <div class="row"><div class="row_left">'.__('Database').'</div><div class="row_right">'.(($this->dbEnabled) ? '<img src="images/icons/extrasmall/greenled.gif" />'.__('Connected') : '<img src="images/icons/extrasmall/redled.gif" />'.__('Not Connected')).'</div></div>'."\n\n";
+        $form .= '            <div class="row"><div class="row_left">'.__('Site Status').'</div><div class="row_right">'.(($this->siteInactive) ? '<img src="images/icons/extrasmall/redled.png" />'.__('Off/Disabled') :'<img src="images/icons/extrasmall/greenled.png" />'.__('On/Enabled')).'</div></div>'."\n\n";
+        $form .= '            <div class="row"><div class="row_left">'.__('Database').'</div><div class="row_right">'.(($this->dbEnabled) ? '<img src="images/icons/extrasmall/greenled.png" />'.__('Connected') : '<img src="images/icons/extrasmall/redled.png" />'.__('Not Connected')).'</div></div>'."\n\n";
         $form .= '            <div class="row"><div class="row_left">'.__('Site Language').'</div><div class="row_right">'.$this->siteLang.'</div></div>'."\n\n";
         $form .= '            <div class="row"><div class="row_left">'.__('Detected Themes').'</div><div class="row_right">'.$this->getMarkedUpOverviewThemeList().'</div></div>'."\n\n";
         $form .= '            <div class="row"><div class="row_left">'.__('Detected Modules').'</div><div class="row_right">'.$this->getMarkedUpOverviewModuleList().'</div></div>'."\n\n";
@@ -1423,11 +1423,11 @@ class RecoveryConsole
         $list = '<ul>';
         foreach ($themesarray as $theme) {
             if ($theme['name'] === $this->siteTheme) {
-                $list .= '<li><img src="images/icons/extrasmall/greenled.gif" alt="'.$theme['name'].' :: '.__('active').'" title="'.$theme['name'].' :: '.__('set as default').'" />';
+                $list .= '<li><img src="images/icons/extrasmall/greenled.png" alt="'.$theme['name'].' :: '.__('active').'" title="'.$theme['name'].' :: '.__('set as default').'" />';
             } else if ($theme['state'] == 1){
-                $list .= '<li><img src="images/icons/extrasmall/yellowled.gif" alt="'.$theme['name'].' :: '.__('inactive').'" title="'.$theme['name'].' :: '.__('inactive').'" />';
+                $list .= '<li><img src="images/icons/extrasmall/yellowled.png" alt="'.$theme['name'].' :: '.__('inactive').'" title="'.$theme['name'].' :: '.__('inactive').'" />';
             } else {
-                $list .= '<li><img src="images/icons/extrasmall/redled.gif" alt="'.$theme['name'].' :: '.__('uninitialized').'" title="'.$theme['name'].' :: '.__('uninitialized').'" />';
+                $list .= '<li><img src="images/icons/extrasmall/redled.png" alt="'.$theme['name'].' :: '.__('uninitialized').'" title="'.$theme['name'].' :: '.__('uninitialized').'" />';
             }
             // Append theme name.
             $list .= $theme['name'] . '</li>';
@@ -1466,23 +1466,23 @@ class RecoveryConsole
                 $list .= '<li>';
                 switch($mod['state']) {
                     case ModUtil::STATE_UNINITIALISED:
-                        $list .= '<img src="images/icons/extrasmall/redled.gif" alt="'.$mod['name'].' :: '.__('uninitialized').'" title="'.$mod['name'].' :: '.__('uninitialized').'" />';
+                        $list .= '<img src="images/icons/extrasmall/redled.png" alt="'.$mod['name'].' :: '.__('uninitialized').'" title="'.$mod['name'].' :: '.__('uninitialized').'" />';
                         break;
                     case ModUtil::STATE_INACTIVE:
-                        $list .= '<img src="images/icons/extrasmall/yellowled.gif" alt="'.$mod['name'].' :: '.__('inactive').'" title="'.$mod['name'].' :: '.__('inactive').'" />';
+                        $list .= '<img src="images/icons/extrasmall/yellowled.png" alt="'.$mod['name'].' :: '.__('inactive').'" title="'.$mod['name'].' :: '.__('inactive').'" />';
                         break;
                     case ModUtil::STATE_ACTIVE:
-                        $list .= '<img src="images/icons/extrasmall/greenled.gif" alt="'.$mod['name'].' :: '.__('active').'" title="'.$mod['name'].' :: '.__('active').'" />';
+                        $list .= '<img src="images/icons/extrasmall/greenled.png" alt="'.$mod['name'].' :: '.__('active').'" title="'.$mod['name'].' :: '.__('active').'" />';
                         break;
                     case ModUtil::STATE_MISSING:
-                        $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.gif" alt="'.$mod['name'].' :: '.__('files missing').'" title="'.$mod['name'].' :: '.__('files missing').'" />';
+                        $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.png" alt="'.$mod['name'].' :: '.__('files missing').'" title="'.$mod['name'].' :: '.__('files missing').'" />';
                         break;
                     case ModUtil::STATE_UPGRADED:
-                        $list .= '<img src="images/icons/extrasmall/agt_update-product.gif" alt="'.$mod['name'].' :: '.__('upgraded').'" title="'.$mod['name'].' :: '.__('upgraded').'" />';
+                        $list .= '<img src="images/icons/extrasmall/agt_update-product.png" alt="'.$mod['name'].' :: '.__('upgraded').'" title="'.$mod['name'].' :: '.__('upgraded').'" />';
                         break;
                     case ModUtil::STATE_INVALID:
                     default:
-                        $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.gif" alt="'.$mod['name'].' :: '.__('invalid').'" title="'.$mod['name'].' :: '.__('invalid').'" />';
+                        $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.png" alt="'.$mod['name'].' :: '.__('invalid').'" title="'.$mod['name'].' :: '.__('invalid').'" />';
                 }
                 // Append module name.
                 $list .= ' '.$mod['name'].'</li>';
@@ -1505,9 +1505,9 @@ class RecoveryConsole
         foreach ($this->blocks as $block) {
             // Append module-state image.
             if ($block['active'] == 1) {
-                $list .= '<li><img src="images/icons/extrasmall/greenled.gif" alt="'.$block['title'].' :: '.__('active').'" title="'.$block['title'].' :: '.__('active').'" />';
+                $list .= '<li><img src="images/icons/extrasmall/greenled.png" alt="'.$block['title'].' :: '.__('active').'" title="'.$block['title'].' :: '.__('active').'" />';
             } else {
-                $list .= '<li><img src="images/icons/extrasmall/yellowled.gif" alt="'.$block['title'].' :: '.__('inactive').'" title="'.$block['title'].' :: '.__('inactive').'" />';
+                $list .= '<li><img src="images/icons/extrasmall/yellowled.png" alt="'.$block['title'].' :: '.__('inactive').'" title="'.$block['title'].' :: '.__('inactive').'" />';
             }
             // Append block title.
             $list .= ' '.$block['title'].'</li>';
