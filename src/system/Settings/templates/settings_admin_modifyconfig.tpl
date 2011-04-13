@@ -1,6 +1,5 @@
 {include file='settings_admin_menu.tpl'}
 {ajaxheader modname=Settings filename=settings_admin_modifyconfig.js noscriptaculous=true effects=true}
-{pageaddvar name="javascript" value="javascript/texpand.js"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="options" size="large"}</div>
     <h2>{gt text="Main settings"}</h2>
@@ -33,7 +32,7 @@
                 <div id="settings_siteoff_container">
                     <div class="z-formrow">
                         <label for="settings_siteoffreason">{gt text="Reason for disabling site"}</label>
-                        <textarea id="settings_siteoffreason" class="z_texpand" name="settings[siteoffreason]" cols="50" rows="5">{$modvars.ZConfig.siteoffreason|safetext}</textarea>
+                        <textarea id="settings_siteoffreason" name="settings[siteoffreason]" cols="50" rows="5">{$modvars.ZConfig.siteoffreason|safetext}</textarea>
                     </div>
                 </div>
             </fieldset>
@@ -50,7 +49,7 @@
                 <div id="settings_keywords_container">
                     <div class="z-formrow">
                         <label for="settings_metakeywords">{gt text="Default meta keywords"}</label>
-                        <textarea id="settings_metakeywords" class="z_texpand" name="settings[metakeywords]" cols="60" rows="5">{$modvars.ZConfig.metakeywords|safetext}</textarea>
+                        <textarea id="settings_metakeywords" name="settings[metakeywords]" cols="60" rows="5">{$modvars.ZConfig.metakeywords|safetext}</textarea>
                     </div>
                 </div>
             </fieldset>

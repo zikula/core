@@ -97,13 +97,6 @@ Validation 1.5.4.1
     Location in Zikula: javascript/ajax/validation.min.js
     Patch details: none
 
-Texpand 0.9.7
-    Vendor website: http://github.com/gf3/texpand
-    Downloaded from: http://github.com/gf3/texpand
-    License: MIT
-    Location in Zikula: javascript/texpand.js
-    Patch details: none
-
 jQuery v1.5.2
     Vendor website: http://jquery.com/
     Downloaded from: http://jquery.com/
