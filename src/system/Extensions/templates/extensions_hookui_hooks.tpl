@@ -1,4 +1,26 @@
 {ajaxheader modname='Extensions' filename='hookui.js'}
+{pageaddvarblock}
+    <script type="text/javascript">
+        {{if $isProvider && !empty($providerAreas) && $total_available_subscriber_areas gt 0}}
+        document.observe("dom:loaded", function() {
+            $$('#subscriberslist input').each(function(obj) {
+                obj.observe('click', subscriberAreaToggle);
+            });
+        });
+        {{/if}}
+
+        {{if $isSubscriber && !empty($subscriberAreas) && $total_attached_provider_areas gt 0}}
+        var providerareas = new Array();
+        document.observe("dom:loaded", function() {
+            {{foreach from=$areasSorting key='sarea' item='parea'}}
+            {{assign var="sarea_md5" value=$sarea|md5}}
+            providerareas.push('{{$sarea_md5}}');
+            {{/foreach}}
+            initproviderareassorting();
+        });
+        {{/if}}
+    </script>
+{/pageaddvarblock}
 
 {admincategorymenu}
 <div class="z-adminbox">
@@ -155,20 +177,3 @@
     </div>
 
 </div>
-
-<script type="text/javascript">
-    {{if $isProvider && !empty($providerAreas) && $total_available_subscriber_areas gt 0}}
-    $$('#subscriberslist input').each(function(obj) {
-        obj.observe('click', subscriberAreaToggle);
-    });
-    {{/if}}
-
-    {{if $isSubscriber && !empty($subscriberAreas) && $total_attached_provider_areas gt 0}}
-    var providerareas = new Array();
-    {{foreach from=$areasSorting key='sarea' item='parea'}}
-    {{assign var="sarea_md5" value=$sarea|md5}}
-    providerareas.push('{{$sarea_md5}}');
-    {{/foreach}}
-    Event.observe(window, 'load', initproviderareassorting);
-    {{/if}}
-</script>
