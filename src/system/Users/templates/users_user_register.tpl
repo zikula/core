@@ -67,9 +67,9 @@
                 <label for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} size="25" maxlength="60" />
                 <em class="z-formnote z-sub">{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.Users.minpass}</em>
-                <div id="{$formData->getFormId()}_passmeter">
-                </div>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+            </div>
+            <div id="{$formData->getFormId()}_passmeter">
             </div>
             <div class="z-formrow">
                 {assign var='fieldName' value='passagain'}
