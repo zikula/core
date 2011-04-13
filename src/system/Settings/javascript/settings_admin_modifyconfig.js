@@ -9,10 +9,6 @@ function settings_modifyconfig_init()
     $('settings_shorturls_yes').observe('click', settings_shorturls_onchange);
     $('settings_shorturls_no').observe('click', settings_shorturls_onchange);
 
-    $$('.z_texpand').each(function(el) {
-        new Texpand(el, {autoShrink: false, shrinkOnBlur: false, expandOnFocus: false, expandOnLoad: true });
-    });
-
     if ($('settings_siteoff_no').checked) {
         $('settings_siteoff_container').hide();
     }
