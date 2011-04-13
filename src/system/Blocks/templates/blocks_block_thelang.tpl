@@ -12,6 +12,16 @@
 
 {elseif $format eq 2}
     {assign var='formid' value='thelang_'|cat:$bid}
+    {pageaddvarblock}
+        <script type="text/javascript">
+        <!--//
+        function blocks_block_thelang_changeaction() {
+            document.getElementById('{{$formid}}').action = document.getElementById('languageblock_changelang').value;
+            document.getElementById('{{$formid}}').submit();
+        }
+        //-->
+        </script>
+    {/pageaddvarblock}
     <form id="{$formid}" method="post" action="">
     <div style="text-align:left">
         <div><label for="languageblock_changelang">{gt text='Preferred language' domain='zikula'}</label></div>
@@ -26,14 +36,6 @@
         </select>
     </div>
     </form>
-    <script type="text/javascript">
-    <!--//
-    function blocks_block_thelang_changeaction() {
-        document.getElementById('{{$formid}}').action = document.getElementById('languageblock_changelang').value;
-        document.getElementById('{{$formid}}').submit();
-    }
-    //-->
-    </script>
 
 {else}
     <div>{gt text='Preferred language' domain='zikula'}</div>

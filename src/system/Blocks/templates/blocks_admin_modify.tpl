@@ -1,6 +1,29 @@
-{include file="blocks_admin_menu.tpl"}
 {ajaxheader ui=true}
 {pageaddvar name='javascript' value='javascript/helpers/Zikula.itemlist.js'}
+{pageaddvarblock}
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var total_existing_filters = {{$filter|@count}};
+        var list_placementfilterslist = null;
+        var defwindow = null;
+        document.observe("dom:loaded",function(){
+            list_placementfilterslist = new Zikula.itemlist('placementfilterslist', {headerpresent: true, firstidiszero: true, sortable: false});
+            $('appendfilter').observe('click',function(event){
+                list_placementfilterslist.appenditem();
+                event.stop();
+            });
+            defwindow = new Zikula.UI.Dialog($('blocks_advanced_placement_onclick'),
+                [{label: Zikula.__('Ok'), 'class': 'z-btgreen'}],
+                {minmax:true, width: 760, resizable: true}
+            );
+            $('blockupdateform').observe('submit',function(){
+                $('blockupdateform').insert($('block_placement_advanced').hide());
+            })
+        });
+        /* ]]> */
+    </script>
+{/pageaddvarblock}
+{include file="blocks_admin_menu.tpl"}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
@@ -97,21 +120,6 @@
                             </span>
                         </li>
                     </ul>
-
-                    <script type="text/javascript">
-                        /* <![CDATA[ */
-                        var total_existing_filters = {{$filter|@count}};
-                        var list_placementfilterslist = null;
-                        document.observe("dom:loaded",function(){
-                            list_placementfilterslist = new Zikula.itemlist('placementfilterslist', {headerpresent: true, firstidiszero: true, sortable: false});
-                        });
-                        $('appendfilter').observe('click',function(event){
-                            list_placementfilterslist.appenditem();
-                            event.stop();
-                        })
-                        /* ]]> */
-                    </script>
-
                 </div>
             </fieldset>
 
@@ -180,15 +188,3 @@
         </div>
     </form>
 </div>
-
-<script type="text/javascript">
-    /* <![CDATA[ */
-    var defwindow = new Zikula.UI.Dialog($('blocks_advanced_placement_onclick'),
-        [{label: Zikula.__('Ok'), 'class': 'z-btgreen'}],
-        {minmax:true, width: 760, resizable: true}
-    );
-    $('blockupdateform').observe('submit',function(){
-        $('blockupdateform').insert($('block_placement_advanced').hide());
-    })
-    /* ]]> */
-</script>

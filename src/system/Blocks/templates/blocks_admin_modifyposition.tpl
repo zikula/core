@@ -1,4 +1,9 @@
 {ajaxheader modname=Blocks filename=blocks.js}
+{pageaddvarblock}
+    <script type="text/javascript">
+        document.observe("dom:loaded", blocksmodifyinit);
+    </script>
+{/pageaddvarblock}
 {include file="blocks_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
@@ -85,7 +90,3 @@
         </div>
     </form>
 </div>
-
-<script type="text/javascript">
-    Event.observe(window, 'load', blocksmodifyinit);
-</script>
