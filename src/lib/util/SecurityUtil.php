@@ -262,7 +262,7 @@ class SecurityUtil
         // So when this method is called by Zikula_Response_Ajax  or Zikula_Response_Ajax_Error class
         // do not mark it as deprecated.
         $trace = debug_backtrace(false);
-        if (!in_array($trace[1]['class'], array('Zikula_Response_Ajax', 'Zikula_Response_Ajax_Error'))) {
+        if (!isset($trace[1]['class']) || !in_array($trace[1]['class'], array('Zikula_Response_Ajax', 'Zikula_Response_Ajax_Error'))) {
             LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', array(
             'SecurityUtil::generateAuthKey()',
             'SecurityUtil::generateCsrfToken()')), E_USER_DEPRECATED);
