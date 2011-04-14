@@ -6,13 +6,16 @@
         {* TODO - Using ajaxheader here causes an error when the PassMeter is initialized. *}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
-        {pageaddvarblock name='footer'}
-        <script type="text/javascript">
-            var passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
-                username:'{{$formData->getFieldId('uname')}}',
-                minLength: '{{$modvars.Users.minpass}}'
-            });
-        </script>
+        {pageaddvarblock}
+            <script type="text/javascript">
+                var passmeter = null;
+                document.observe("dom:loaded", function() {
+                    passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
+                        username:'{{$formData->getFieldId('uname')}}',
+                        minLength: '{{$modvars.Users.minpass}}'
+                    });
+                });
+            </script>
         {/pageaddvarblock}
     {/if}
     {pageaddvarblock}
