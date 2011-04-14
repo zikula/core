@@ -1,3 +1,27 @@
+{pageaddvarblock}
+    <script type="text/javascript">
+        // some defines
+        var adminpermission = {{$adminid}};
+        var lockadmin = {{$lockadmin}};
+
+        {{if $enablefilter eq true}}
+            var permgrp = '{{$permgrp}}';
+        {{else}}
+            var permgrp = -1;
+        {{/if}}
+        var updatingpermission = '{{gt text="Updating permission rule..."}}';
+        var deletingpermission = '{{gt text="Deleting permission rule..."}}';
+        var confirmdeleteperm  = '{{gt text="Do you really want to delete this permission rule?"}}';
+        var testingpermission  = '{{gt text="Testing permission..."}}';
+        var permissionlocked   = '{{gt text="This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page."}}';
+
+        document.observe("dom:loaded", function() {
+            permissioninit();
+            Zikula.UI.Tooltips($$('.tooltips'));
+        });
+
+    </script>
+{/pageaddvarblock}
 {include file="permissions_admin_menu.tpl"}
 
 <div class="z-admincontainer">
@@ -204,25 +228,4 @@
         </div>
     </form>
     {/if}
-
-    <script type="text/javascript">
-        // some defines
-        var adminpermission = {{$adminid}};
-        var lockadmin = {{$lockadmin}};
-
-        {{if $enablefilter eq true}}
-        var permgrp = '{{$permgrp}}';
-        {{else}}
-            var permgrp = -1;
-            {{/if}}
-            var updatingpermission = '{{gt text="Updating permission rule..."}}';
-            var deletingpermission = '{{gt text="Deleting permission rule..."}}';
-            var confirmdeleteperm  = '{{gt text="Do you really want to delete this permission rule?"}}';
-            var testingpermission  = '{{gt text="Testing permission..."}}';
-            var permissionlocked   = '{{gt text="This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page."}}';
-
-            Event.observe(window, 'load', function(){permissioninit();});
-
-            Zikula.UI.Tooltips($$('.tooltips'));
-        </script>
-    </div>
+</div>
