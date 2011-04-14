@@ -162,7 +162,7 @@ class Zikula_Tree
                 {$jsClass}.add('{$this->config['id']}','{$this->getConfigForScript()}');
             });
         </script>";
-        PageUtil::addVar('rawtext', $initScript);
+        PageUtil::addVar('header', $initScript);
         $tree = $this->_toHTML($this->tree,$this->config['id'],true);
         if ($this->config['withWraper']) {
             $wraperClass = !empty($this->config['wraperClass']) ? 'class="'.$this->config['wraperClass'].'"' : '';

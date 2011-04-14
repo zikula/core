@@ -129,7 +129,7 @@ class JCSSUtil
         $stylesheets = array_unique(array_values($stylesheets));
 
         $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
-        PageUtil::addVar('rawtext', $iehack);
+        PageUtil::addVar('header', $iehack);
 
         return $stylesheets;
     }

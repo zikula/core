@@ -21,7 +21,7 @@
  * Available parameters:
  *   - name:     The name of the page variable to obtain
  *
- * Zikula doesn't impose any restriction on the page variables name except for duplicate
+ * Zikula doesn't impose any restriction on the page variable's name except for duplicate
  * and reserved names. As of this writing, the list of reserved names consists of
  * <ul>
  * <li>title</li>
@@ -30,9 +30,14 @@
  * <li>stylesheet</li>
  * <li>javascript</li>
  * <li>body</li>
- * <li>rawtext</li>
+ * <li>header</li>
  * <li>footer</li>
  * </ul>
+ * 
+ * In addition, if your system is operating in legacy compatibility mode, then
+ * the variable 'rawtext' is reserved, and maps to 'header'. (When not operating in
+ * legacy compatibility mode, 'rawtext' is not reserved and will not be rendered
+ * to the page output by the page variable output filter.)
  *
  * Example
  *   {pageregistervar name='title'}

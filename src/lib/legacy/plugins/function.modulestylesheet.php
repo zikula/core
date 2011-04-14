@@ -34,7 +34,7 @@ function smarty_function_modulestylesheet($params, &$smarty)
     // do nothing unless we are admin
     if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
         PageUtil::addVar('javascript', 'javascript/ajax/prototype.js');
-        PageUtil::addVar('rawtext', '<script type="text/javascript">/* <![CDATA[ */ Event.observe(window, "load", function() { alert("'.__('You can safely remove the modulestylesheet plugin from your theme. It is obsolete since Zikula 1.1.0. The adding of stylesheet files has been automated and does not need user interference. This note is shown to Administrators only.').'");}); /* ]]> */</script>');
+        PageUtil::addVar('header', '<script type="text/javascript">/* <![CDATA[ */ Event.observe(window, "load", function() { alert("'.__('You can safely remove the modulestylesheet plugin from your theme. It is obsolete since Zikula 1.1.0. The adding of stylesheet files has been automated and does not need user interference. This note is shown to Administrators only.').'");}); /* ]]> */</script>');
     }
     return;
 }

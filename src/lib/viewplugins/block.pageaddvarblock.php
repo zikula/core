@@ -14,19 +14,19 @@
  */
 
 /**
- * Zikula_View function to add the contents of a block to either the rawtext (header) or footer multicontent page variable
+ * Zikula_View function to add the contents of a block to either the header or footer multicontent page variable
  *
- * This function adds the content of the block to either the end of the <head> portion of the page (using 'rawtext') or to 
- * a position just prior to the closing </body> tag, using 'footer'.
+ * This function adds the content of the block to either the end of the <head> portion of the page (using 'header') or to 
+ * a position just prior to the closing </body> tag (using 'footer').
  *
  * Available parameters:
- *   - name:     The name of the page variable to set, either 'rawtext' or 'footer'; default is 'rawtext'
+ *   - name:     The name of the page variable to set, either 'header' or 'footer'; optional, default is 'header'
  *
  * Examples:
  * 
  *  This inline stylesheet will appear in the page's <head> section just before the closing </head>:
  * <code>
- *   {pageaddvarblock name='rawtext'}
+ *   {pageaddvarblock name='header'}
  *   <style type="text/css">
  *       p { font-size: 1.5em; }
  *   </style>
@@ -51,9 +51,14 @@
 function smarty_block_pageaddvarblock($params, $content, Zikula_View $view)
 {
     if ($content) {
-        $varname = isset($params['name']) ? $params['name'] : 'rawtext';
+        $varname = isset($params['name']) ? $params['name'] : 'header';
         
-        if (($varname != 'rawtext') && ($varname != 'footer')) {
+        if (System::isLegacyMode() && ($varname == 'rawtext')) {
+            LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+            $varname = 'header';
+        }
+        
+        if (($varname != 'header') && ($varname != 'footer')) {
             throw new Zikula_Exception_Fatal(__f('Invalid page variable name: \'%1$s\'.', array($varname)));
         }
      
