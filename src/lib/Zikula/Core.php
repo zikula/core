@@ -467,7 +467,7 @@ class Zikula_Core
             PageUtil::registerVar('javascript', true);
             PageUtil::registerVar('jsgettext', true);
             PageUtil::registerVar('body', true);
-            PageUtil::registerVar('rawtext', true);
+            PageUtil::registerVar('header', true);
             PageUtil::registerVar('footer', true);
 
             $theme = Zikula_View_Theme::getInstance();

@@ -56,6 +56,9 @@ TEMPLATES
 
 - Page title comes from {pagegetvar name="title"} and not {title}
 
+- Replace any usage of the page variable 'rawtext' with 'header'. This affects 
+  {pagesetvar}, {pageaddvar}, {pageregistervar}, {pagegetvar} in templates.
+
 - Introduced persistent $coredata for miscellaneous templating data.
 
 - Introduced persistent $modvars array with all module vars.
@@ -293,6 +296,9 @@ MODULES
     And be able to filter the JOIN also with filter=fieldAlias1:eq:value
 
 - Remove any references to Loader::loadClass() - classes are loaded automatically.
+
+- Replace any usage of the page variable 'rawtext' with 'header'. This affects 
+  calls to the PageUtil functions.
 
 - You may now use the following convenience methods from OO controllers and APIs.
     (see lib/Zikula/Base.php for details)

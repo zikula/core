@@ -75,7 +75,7 @@ PageLock.PingTime = " . (PageLockLifetime*2/3) . ";
 PageLock.LockedHTML = '" . $lockedHtml . "';
 </script>";
 
-        PageUtil::addVar('rawtext', $html);
+        PageUtil::addVar('header', $html);
 
         return true;
     }

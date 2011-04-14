@@ -22,7 +22,7 @@ Please note that if you use browserhacks in your theme you should now use the
 lib/view/plugins/block.browserhack.php - an example might look like this:
 
     {browserhack condition="if IE 6" assign="ieconditional"}<link rel="stylesheet" type="text/css" href="{$stylepath}/fluid960gs/ie6.css" media="screen" />{/browserhack}
-    {pageaddvar name='rawtext' value=$ieconditional}
+    {pageaddvar name='header' value=$ieconditional}
 
 
 If you use embedded javascript in any templates and require to use any plugins
@@ -32,6 +32,12 @@ or templating inside the <script></script> block, please use double brackets,
 Plugin names
 ============
 Remove the prefix from any plugin names.
+
+Page variables
+==============
+The name of the 'rawtext' page variable (used with {pageaddvar}, {pagesetvar}, 
+etc.) has changed to 'header'. Any use of the 'rawtext' page variable should be
+changed to refer to 'header'.
 
 Multi-lingual themes
 ====================

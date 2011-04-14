@@ -135,7 +135,7 @@ class  Blocks_MenutreeTree extends Zikula_Tree
                 {$jsClass}.add('{$this->config['id']}','{$this->getConfigForScript()}');
             });
         </script>";
-        PageUtil::addVar('rawtext', $initScript);
+        PageUtil::addVar('header', $initScript);
         $wraperClass = !empty($this->config['wraperClass']) ? 'class="'.$this->config['wraperClass'].'"' : '';
         $tree = $this->_toHTML($this->tree,$this->config['id']);
         $this->html = "<div {$wraperClass}>{$tree}</div>";

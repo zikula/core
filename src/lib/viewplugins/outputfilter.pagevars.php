@@ -65,9 +65,9 @@ function smarty_outputfilter_pagevars($source, $view)
         }
     }
 
-    $rawtext = PageUtil::getVar('rawtext');
-    if (is_array($rawtext) && !empty($rawtext)) {
-        $return .= implode("\n", $rawtext) . "\n";
+    $headerContent = PageUtil::getVar('header');
+    if (is_array($headerContent) && !empty($headerContent)) {
+        $return .= implode("\n", $headerContent) . "\n";
     }
 
     // if we've got some page vars to add the header wrap the output in

@@ -172,3 +172,4 @@ create easy drop-menu for module (admin) links (issue #2646).
 Dropdown menus (issue #2649).
 Several installer improvements (issue #2801).
 Added a new template block function {pageaddvarblock}...{/pageaddvarblock} to allow inline scripts, styles, etc. to be placed in the page's head section or near the closing body tag.
+Renamed the page variable 'rawtext' to 'header' (Used with PageUtil, {pageaddvar}, {pagesetvar}, etc.). If operating in legacy mode, 'rawtext' will map to 'header', if not then 'rawtext' will be treated as just another page variable name, and will NOT render to the page.

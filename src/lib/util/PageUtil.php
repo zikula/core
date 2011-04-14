@@ -30,7 +30,7 @@
  * A module can register a new page variable by providing its metadata using the pnPageRegisterVar
  * function.
  *
- * Zikula doesn't impose any restriction on the page variabl's name except for duplicate
+ * Zikula doesn't impose any restriction on the page variable's name except for duplicate
  * and reserved names. As of this writing, the list of reserved names consists of
  * <ul>
  * <li>title</li>
@@ -38,9 +38,14 @@
  * <li>javascript</li>
  * <li>jsgettext</li>
  * <li>body</li>
- * <li>rawtext</li>
+ * <li>header</li>
  * <li>footer</li>
  * </ul>
+ * 
+ * In addition, if your system is operating in legacy compatibility mode, then
+ * the variable 'rawtext' is reserved, and maps to 'header'. (When not operating in
+ * legacy compatibility mode, 'rawtext' is not reserved and will not be rendered
+ * to the page output by the page variable output filter.)
  */
 class PageUtil
 {
@@ -48,7 +53,7 @@ class PageUtil
      * Register Var.
      *
      * Registers a new page variable.
-     * Zikula doesn't impose any restriction on the page variabl's name except for duplicate
+     * Zikula doesn't impose any restriction on the page variable's name except for duplicate
      * and reserved names. As of this writing, the list of reserved names consists of
      * <ul>
      * <li>title</li>
@@ -56,9 +61,14 @@ class PageUtil
      * <li>javascript</li>
      * <li>jsgettext</li>
      * <li>body</li>
-     * <li>rawtext</li>
+     * <li>header</li>
      * <li>footer</li>
      * </ul>
+     * 
+     * In addition, if your system is operating in legacy compatibility mode, then
+     * the variable 'rawtext' is reserved, and maps to 'header'. (When not operating in
+     * legacy compatibility mode, 'rawtext' is not reserved and will not be rendered
+     * to the page output by the page variable output filter.)
      *
      * @param string  $varname    The name of the new page variable.
      * @param boolean $multivalue To define a single or a multi valued variable.
@@ -75,6 +85,10 @@ class PageUtil
                 case 'description':
                 case 'keywords':
                     return true;
+                    break;
+                case 'rawtext':
+                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+                    $varname = 'header';
                     break;
             }
         }
@@ -120,6 +134,10 @@ class PageUtil
                 case 'description':
                 case 'keywords':
                     return true;
+                    break;
+                case 'rawtext':
+                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+                    $varname = 'header';
                     break;
             }
         }
@@ -177,6 +195,10 @@ class PageUtil
                 case 'keywords':
                     return $sm['zikula_view.metatags']['keywords'];
                     break;
+                case 'rawtext':
+                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+                    $varname = 'header';
+                    break;
             }
         }
 
@@ -226,6 +248,10 @@ class PageUtil
                     $sm['zikula_view.metatags']['keywords'] = $value;
                     return true;
                     break;
+                case 'rawtext':
+                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+                    $varname = 'header';
+                    break;
             }
         }
 
@@ -265,6 +291,15 @@ class PageUtil
     {
         global $_pageVars;
 
+        if (System::isLegacyMode()) {
+            switch ($varname) {
+                case 'rawtext':
+                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+                    $varname = 'header';
+                    break;
+            }
+        }
+        
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
             $_pageVars = array();
