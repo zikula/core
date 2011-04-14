@@ -1,5 +1,15 @@
-{include file="securitycenter_admin_menu.tpl"}
 {ajaxheader ui=true}
+{pageaddvarblock}
+    <script type="text/javascript">
+        document.observe('dom:loaded', function() {
+            $$('.eventfilter').each(function(element) {
+                new Zikula.UI.Window(element);
+            });
+            Zikula.UI.Tooltips($$('.tooltips'));
+        });
+    </script>
+{/pageaddvarblock}
+{include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="log" size="large"}</div>
     {gt text="All" assign=lblAll}
@@ -78,10 +88,3 @@
     </table>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
-
-<script type="text/javascript">
-    $$('.eventfilter').each(function(element) {
-        new Zikula.UI.Window(element);
-    })
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>
