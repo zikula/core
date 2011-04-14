@@ -1,6 +1,27 @@
 {pageaddvar name="javascript" value="javascript/ajax/prototype.js"}
 {pageaddvar name="javascript" value="system/SecurityCenter/javascript/securitycenter_admin_modifyconfig.js"}
+{pageaddvarblock}
+    <script type="text/javascript">
+        // <![CDATA[
+        function toggleIdsFields() {
+            $('securitycenter_idsfields').hide();
 
+            if ($('useidsyes').checked === true) {
+                $('securitycenter_idsfields').show();
+            }
+        }
+
+        document.observe('dom:loaded', function() {
+            $('useidsyes').observe('click', toggleIdsFields, false);
+            $('useidsyes').observe('keypress', toggleIdsFields, false);
+            $('useidsno').observe('click', toggleIdsFields, false);
+            $('useidsno').observe('keypress', toggleIdsFields, false);
+
+            toggleIdsFields();
+        });
+        // ]]>
+    </script>
+{/pageaddvarblock}
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="config" size="large"}</div>
@@ -283,24 +304,3 @@
         </div>
     </form>
 </div>
-
-<script type="text/javascript">
-    // <![CDATA[
-    document.observe('dom:loaded', function() {
-        $('useidsyes').observe('click', toggleIdsFields, false);
-        $('useidsyes').observe('keypress', toggleIdsFields, false);
-        $('useidsno').observe('click', toggleIdsFields, false);
-        $('useidsno').observe('keypress', toggleIdsFields, false);
-
-        toggleIdsFields();
-    });
-
-    function toggleIdsFields() {
-        $('securitycenter_idsfields').hide();
-
-        if ($('useidsyes').checked === true) {
-            $('securitycenter_idsfields').show();
-        }
-    }
-    // ]]>
-</script>
