@@ -3,11 +3,14 @@
     {if $modvars.Users.use_password_strength_meter == 1}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
-        {pageaddvarblock name='footer'}
+        {pageaddvarblock}
             <script type="text/javascript">
-                var passmeter = new Zikula.Users.PassMeter('newpassword', 'users_user_changepassword_passmeter',{
-                    username:'usernamehidden',
-                    minLength: '{{$modvars.Users.minpass}}'
+                var passmeter = null;
+                document.observe("dom:loaded", function() {
+                    passmeter = new Zikula.Users.PassMeter('newpassword', 'users_user_changepassword_passmeter',{
+                        username:'usernamehidden',
+                        minLength: '{{$modvars.Users.minpass}}'
+                    });
                 });
             </script>
         {/pageaddvarblock}

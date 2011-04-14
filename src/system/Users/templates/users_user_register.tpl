@@ -4,11 +4,14 @@
     {if $modvars.Users.use_password_strength_meter && ($authentication_method.modname == 'Users')}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
-        {pageaddvarblock name='footer'}
+        {pageaddvarblock}
             <script type="text/javascript">
-                var passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
-                    username:'{{$formData->getFieldId('uname')}}',
-                    minLength: '{{$modvars.Users.minpass}}'
+                var passmeter = null;
+                document.observe("dom:loaded", function() {
+                    passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
+                        username:'{{$formData->getFieldId('uname')}}',
+                        minLength: '{{$modvars.Users.minpass}}'
+                    });
                 });
             </script>
         {/pageaddvarblock}

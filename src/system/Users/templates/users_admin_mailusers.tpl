@@ -1,6 +1,6 @@
 {strip}
     {gt text="E-mail Users" assign=templatetitle}
-    {pageaddvarblock name='footer'}
+    {pageaddvarblock}
         <script type="text/javascript">
             document.observe("dom:loaded", function() {
                 $('select_all').observe('click', function(e){
