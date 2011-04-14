@@ -1,7 +1,14 @@
 {ajaxheader ui=true}
-{include file='theme_admin_menu.tpl'}
+{pageaddvarblock}
+    <script type="text/javascript">
+        document.observe("dom:loaded", function() {
+            Zikula.UI.Tooltips($$('.tooltips'));
+        });
+    </script>
+{/pageaddvarblock}
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"http://community.zikula.org/module-Extensions.htm\">`$extdbtitle`</a></strong>" var=extdblink}
+{include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="view" size="large"}</div>
     <h2>{gt text="Themes list"}</h2>
@@ -57,8 +64,3 @@
     <em>(*) = {gt text="Default theme"}</em>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
-
-<script type="text/javascript">
-    Zikula.UI.Tooltips($$('.tooltips'));
-</script>
-

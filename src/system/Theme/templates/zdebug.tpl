@@ -123,21 +123,26 @@
 {if isset($_smarty_debug_output) and $_smarty_debug_output eq "html"}
     {$debugoutput}
 {else}
-{*
-<script type="text/javascript">
-    if( self.name == '' ) {
-       var title = 'Zikula Console';
-    } else {
-       var title = 'Zikula Console -' + self.name;
-    }
-    _dbg_console = window.open("", title, "width=680,height=600,resizable,scrollbars=yes");
-    _dbg_console.document.write('<html><head><title>'+title+'</title></head><body><div id="debugcontent"></div></body class="donotremovemeorthepopupwillbreak"></html>');
-    _dbg_console.document.close();
-    _dbg_console.document.getElementById('debugcontent').innerHTML = '{{$debugoutput|escape:javascript}}';
-</script>
-*}
-<script type="text/javascript">
-    var _zdebug_console = new Zikula.zdebug(self.name, '{{$debugoutput|escape:javascript}}');
-    _zdebug_console.showConsole();
-</script>
+{pageaddvarblock}
+    {*
+    <script type="text/javascript">
+        if( self.name == '' ) {
+           var title = 'Zikula Console';
+        } else {
+           var title = 'Zikula Console -' + self.name;
+        }
+        _dbg_console = window.open("", title, "width=680,height=600,resizable,scrollbars=yes");
+        _dbg_console.document.write('<html><head><title>'+title+'</title></head><body><div id="debugcontent"></div></body class="donotremovemeorthepopupwillbreak"></html>');
+        _dbg_console.document.close();
+        _dbg_console.document.getElementById('debugcontent').innerHTML = '{{$debugoutput|escape:javascript}}';
+    </script>
+    *}
+    <script type="text/javascript">
+        var _zdebug_console = null;
+        document.observe("dom:loaded", function() {
+            _zdebug_console = new Zikula.zdebug(self.name, '{{$debugoutput|escape:javascript}}');
+            _zdebug_console.showConsole();
+        });
+    </script>
+{/pageaddvarblock}
 {/if}
