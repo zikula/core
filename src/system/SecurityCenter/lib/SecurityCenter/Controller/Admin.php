@@ -312,13 +312,15 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
 
         // the module configuration has been updated successfuly
         if ($validates) {
-            LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
+            $this->registerStatus($this->__('Done! Saved module configuration.'));
         }
 
         // we need to auto logout the user if they changed from DB to FILE
         if ($cause_logout == true) {
             UserUtil::logout();
-            $this->redirect(ModUtil::url('Users', 'user', 'login'));
+            $this->registerStatus($this->__('Session handling variables have changed. You must log in again.'));
+            $returnPage = urlencode(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
+            $this->redirect(ModUtil::url('Users', 'user', 'login', array('returnpage' => $returnPage)));
         }
 
         // This function generated no output, and so now it is complete we redirect
