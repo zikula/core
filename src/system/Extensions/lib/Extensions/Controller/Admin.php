@@ -29,7 +29,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-		$this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
     }
 
     /**
@@ -450,7 +450,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function listview()
     {
-		$this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
     }
 
     /**

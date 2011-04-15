@@ -32,7 +32,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-		$this->redirect(ModUtil::url('Permissions', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Permissions', 'admin', 'view'));
     }
 
     /**
