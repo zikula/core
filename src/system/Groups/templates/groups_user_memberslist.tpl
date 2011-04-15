@@ -24,7 +24,8 @@
             {if $group.state eq 0}
             <td>[ {gt text="Unavailable"} ]</td>
             {elseif $coredata.logged_in eq false}
-            <td>[ <a href="{modurl modname='Users' type='user' func='login'}" title="{gt text='Sorry! You must register for a user account on this site before you can apply for membership of a group.'}"> {gt text="Log in or register"}</a> ]</td>
+            {modurl modname='Groups' type='user' func='memberslist' gid=$group.gid assign='return_page'}
+            <td>[ <a href="{modurl modname='Users' type='user' func='login' returnpage=$return_page|urlencode}" title="{gt text='Sorry! You must register for a user account on this site before you can apply for membership of a group.'}"> {gt text="Log in or register"}</a> ]</td>
             {else}
             {if $group.status eq true}
             <td>[ <strong>{gt text="Pending"}</strong> | <a href="{modurl modname='Groups' type='user' func='membership' action='cancel' gid=$group.gid}" title="{gt text='Cancel'}">{gt text="Cancel"}</a> ]</td>

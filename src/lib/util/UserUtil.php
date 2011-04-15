@@ -902,7 +902,7 @@ class UserUtil
                             $sessionVars = SessionUtil::getVar('Users_User_Controller_login', array(), 'Zikula_Users', false, false);
                             
                             $sessionVars = array(
-                                'returnurl'             => isset($sessionVars['returnurl']) ? $sessionVars['returnurl'] : '',
+                                'returnpage'            => isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : '',
                                 'authentication_info'   => $authenticationInfo,
                                 'authentication_method' => $authenticationMethod,
                                 'rememberme'            => $rememberMe,

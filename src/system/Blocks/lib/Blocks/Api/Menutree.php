@@ -746,11 +746,18 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
                     )
             );
         } else {
+            $serviceManager = ServiceUtil::getManager();
+            $request = $this->serviceManager->getService('request');
+
+            $loginArgs = array();
+            if ($request->isGet()) {
+                $loginArgs['returnpage'] = urlencode(System::getCurrentUri());
+            }
             $links['login'] = array(
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Login', $dom),
-                            'href' => ModUtil::url('Users','user','login'),
+                            'href' => ModUtil::url('Users', 'user', 'login', $loginArgs),
                             'title' =>__('Login', $dom),
                             'className' => '',
                             'state' => 1,

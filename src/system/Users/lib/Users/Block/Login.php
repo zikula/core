@@ -105,9 +105,17 @@ class Users_Block_Login extends Zikula_Controller_AbstractBlock
                         );
                     }
                 }
-
+                
                 $this->view->assign('authentication_method_display_order', $authenticationMethodDisplayOrder)
                            ->assign('selected_authentication_method', $selectedAuthenticationMethod);
+                
+                // If the current page was reached via a POST or FILES then we don't want to return here.
+                // Only return if the current page was reached via a regular GET
+                if ($this->request->isGet()) {
+                    $this->view->assign('returnpage', System::getCurrentUri());
+                } else {
+                    $this->view->assign('returnpage', '');
+                }
 
                 $tplName = mb_strtolower("users_block_login_{$blockInfo['position']}.tpl");
                 if ($this->view->template_exists($tplName)) {

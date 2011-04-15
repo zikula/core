@@ -230,7 +230,14 @@ class LogUtil
         $code = 403;
         if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
-                $url = ModUtil::url('Users', 'user', 'login', array('returnurl' => urlencode(System::getCurrentUri())));
+                $serviceManager = ServiceUtil::getManager();
+                $request = $this->serviceManager->getService('request');
+                
+                $loginArgs = array();
+                if ($request->isGet()) {
+                    $loginArgs['returnpage'] = urlencode(System::getCurrentUri());
+                }
+                $url = ModUtil::url('Users', 'user', 'login', $loginArgs);
             }
             $code = null;
         }

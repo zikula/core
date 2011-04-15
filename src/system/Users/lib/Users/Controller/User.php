@@ -46,7 +46,7 @@ class Users_Controller_User extends Zikula_AbstractController
     public function main()
     {
         // Security check
-        $this->redirectUnless(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'login'));
+        $this->redirectUnless(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'login', array('returnpage' => urlencode(ModUtil::url($this->name, 'user', 'main')))));
 
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
             throw new Zikula_Exception_Forbidden();
@@ -532,7 +532,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     'authentication_method' => $selectedAuthenticationMethod,
                     'authentication_info'   => $authenticationInfo,
                     'rememberme'            => false,
-                    'returnurl'             => $redirectUrl,
+                    'returnpage'            => $redirectUrl,
                 );
                 return ModUtil::func($this->name, 'user', 'login', $loginArgs);
                 break;
@@ -965,11 +965,11 @@ class Users_Controller_User extends Zikula_AbstractController
      * array   authentication_method An array containing two elements: 'modname', the authentication module name, and 'method', the
      *                                      selected authentication method as defined by the module.
      * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
-     * string  returnurl             The URL of the page to return to if the log-in attempt is successful.
+     * string  returnpage            The URL of the page to return to if the log-in attempt is successful.
      * 
      * Parameters passed via GET:
      * --------------------------
-     * string returnurl The URL of the page to return to if the log-in attempt is successful.
+     * string returnpage The URL of the page to return to if the log-in attempt is successful.
      * 
      * Parameters passed via POST:
      * ---------------------------
@@ -977,7 +977,7 @@ class Users_Controller_User extends Zikula_AbstractController
      * array   authentication_method An array containing two elements: 'modname', the authentication module name, and 'method', the
      *                                      selected authentication method as defined by the module.
      * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
-     * string  returnurl             The URL of the page to return to if the log-in attempt is successful.
+     * string  returnpage            The URL of the page to return to if the log-in attempt is successful.
      * 
      * Parameters passed via SESSION:
      * ------------------------------
@@ -1010,7 +1010,11 @@ class Users_Controller_User extends Zikula_AbstractController
             $authenticationInfo     = isset($args['authentication_info']) ? $args['authentication_info'] : array();
             $selectedAuthenticationMethod = isset($args['authentication_method']) ? $args['authentication_method'] : array();
             $rememberMe             = isset($args['rememberme']) ? $args['rememberme'] : false;
-            $returnUrl              = isset($args['returnurl']) ? $args['returnurl'] : $this->request->getGet()->get('returnurl', '');
+            $returnPage             = isset($args['returnpage']) ? $args['returnpage'] : $this->request->getGet()->get('returnpage', '');
+            if (empty($returnPage)) {
+                // Check if returnurl was set instead of returnpage
+                $returnPage         = isset($args['returnurl']) ? $args['returnurl'] : $this->request->getGet()->get('returnurl', '');
+            }
             
             $isFunctionCall = true;
         } elseif (isset($args) && !is_array($args)) {
@@ -1025,7 +1029,11 @@ class Users_Controller_User extends Zikula_AbstractController
             $authenticationInfo     = $this->request->getPost()->get('authentication_info', array());
             $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
             $rememberMe             = $this->request->getPost()->get('rememberme', false);
-            $returnUrl              = $this->request->getPost()->get('returnurl', $this->request->getGet()->get('returnurl', ''));
+            $returnPage             = $this->request->getPost()->get('returnpage', $this->request->getGet()->get('returnpage', ''));
+            if (empty($returnPage)) {
+                // Check if returnurl was set instead of returnpage
+                $returnPage         = $this->request->getPost()->get('returnurl', $this->request->getGet()->get('returnurl', ''));
+            }
         } elseif ($this->request->isGet()) {
             $reentry = false;
             $reentrantTokenReceived = $this->request->getGet()->get('reentranttoken', '');
@@ -1041,7 +1049,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $authenticationInfo     = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
                 $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
                 $rememberMe             = isset($sessionVars['rememberme']) ? $sessionVars['rememberme'] : false;
-                $returnUrl              = isset($sessionVars['returnurl']) ? $sessionVars['returnurl'] : $this->request->getGet()->get('returnurl', '');
+                $returnPage             = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $this->request->getGet()->get('returnpage', '');
                 $user                   = isset($sessionVars['user_obj']) ? $sessionVars['user_obj'] : null;
                 
                 $isReentry = true;
@@ -1049,7 +1057,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $authenticationInfo     = array();
                 $selectedAuthenticationMethod = array();
                 $rememberMe             = false;
-                $returnUrl              = $this->request->getGet()->get('returnurl', '');
+                $returnPage             = $this->request->getGet()->get('returnpage', $this->request->getGet()->get('returnurl', ''));
                 $user                   = array();
                 
                 $event = new Zikula_Event('module.users.ui.login.started');
@@ -1078,7 +1086,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 // so using sessions on the anonymous user just before logging in should be ok.
                 SessionUtil::requireSession();
                 $sessionVars = array(
-                    'returnurl'             => $returnUrl,
+                    'returnpage'            => $returnPage,
                     'authentication_info'   => $authenticationInfo,
                     'authentication_method' => $selectedAuthenticationMethod,
                     'rememberme'            => $rememberMe,
@@ -1228,7 +1236,7 @@ class Users_Controller_User extends Zikula_AbstractController
             }
 
             $templateArgs = array(
-                'returnurl'                             => isset($returnUrl) ? $returnUrl : '',
+                'returnpage'                            => isset($returnPage) ? $returnPage : '',
                 'authentication_info'                   => isset($authenticationInfo) ? $authenticationInfo : array(),
                 'selected_authentication_method'        => $selectedAuthenticationMethod,
                 'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
@@ -1239,7 +1247,7 @@ class Users_Controller_User extends Zikula_AbstractController
         } else {
             $eventArgs = array(
                 'authentication_method' => $selectedAuthenticationMethod,
-                'redirecturl'           => $returnUrl,
+                'redirecturl'           => $returnPage,
             );
             
             if (isset($isFirstLogin)) {
@@ -1249,19 +1257,19 @@ class Users_Controller_User extends Zikula_AbstractController
             $event = new Zikula_Event('module.users.ui.login.succeeded', $user, $eventArgs);
             $event = $this->eventManager->notify($event);
             
-            $returnUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $returnUrl;
+            $returnPage = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $returnPage;
             
-            if (empty($returnUrl)) {
-                $returnUrl = System::getHomepageUrl();
+            if (empty($returnPage)) {
+                $returnPage = System::getHomepageUrl();
             }
 
             // A successful login.
             if ($this->getVar(Users_Constant::MODVAR_LOGIN_WCAG_COMPLIANT, 1) == 1) {
                 // WCAG compliant login
-                $this->redirect($returnUrl);
+                $this->redirect($returnPage);
             } else {
                 // meta refresh
-                $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $returnUrl);
+                $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $returnPage);
                 return true;
             }
         }
@@ -1653,7 +1661,7 @@ class Users_Controller_User extends Zikula_AbstractController
             } else {
                 $eventArgs = array(
                     'authentication_method' => $authenticationMethod,
-                    'redirecturl'           => $returnUrl,
+                    'redirecturl'           => $redirectUrl,
                 );
                 $event = new Zikula_Event('module.users.ui.login.succeeded', $user, $eventArgs);
                 $event = $this->eventManager->notify($event);
@@ -2103,7 +2111,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
         if (!UserUtil::isLoggedIn()) {
             $this->registerError($this->__('Please log into your account in order to confirm your change of e-mail address.'))
-                    ->redirect(ModUtil::url($this->name, 'user', 'login', array('returnurl' => urlencode(ModUtil::url($this->name, 'user', 'confirmChEmail', array('confirmcode' => $confirmcode))))));
+                    ->redirect(ModUtil::url($this->name, 'user', 'login', array('returnpage' => urlencode(ModUtil::url($this->name, 'user', 'confirmChEmail', array('confirmcode' => $confirmcode))))));
         }
 
         // get user new email that is waiting for confirmation
