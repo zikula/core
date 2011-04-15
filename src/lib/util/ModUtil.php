@@ -1366,6 +1366,11 @@ class ModUtil
                     }
                 }
             }
+
+            // add lang param to URL
+            if (ZLanguage::isRequiredLangParam() || $forcelang) {
+                $urlargs .= "&lang=$language";
+            }
         }
 
         if (isset($fragment)) {
