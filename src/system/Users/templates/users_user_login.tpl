@@ -33,7 +33,7 @@
     <div>
         <input id="users_login_selected_authentication_module" type="hidden" name="authentication_method[modname]" value="{$selected_authentication_method.modname|default:''}" />
         <input id="users_login_selected_authentication_method" type="hidden" name="authentication_method[method]" value="{$selected_authentication_method.method|default:''}" />
-        <input id="users_login_returnpage" type="hidden" name="returnpage" value="{$returnpage|urlencode}" />
+        <input id="users_login_returnpage" type="hidden" name="returnpage" value="{$returnpage}" />
         <input id="users_login_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         {if ($modvars.ZConfig.seclevel|lower == 'high')}
         <input id="users_login_rememberme" type="hidden" name="rememberme" value="0" />

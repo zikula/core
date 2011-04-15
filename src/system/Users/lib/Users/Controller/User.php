@@ -1029,10 +1029,10 @@ class Users_Controller_User extends Zikula_AbstractController
             $authenticationInfo     = $this->request->getPost()->get('authentication_info', array());
             $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
             $rememberMe             = $this->request->getPost()->get('rememberme', false);
-            $returnPage             = $this->request->getPost()->get('returnpage', $this->request->getGet()->get('returnpage', ''));
+            $returnPage             = $this->request->getPost()->get('returnpage', urldecode($this->request->getGet()->get('returnpage', '')));
             if (empty($returnPage)) {
                 // Check if returnurl was set instead of returnpage
-                $returnPage         = $this->request->getPost()->get('returnurl', $this->request->getGet()->get('returnurl', ''));
+                $returnPage         = $this->request->getPost()->get('returnurl', urldecode($this->request->getGet()->get('returnurl', '')));
             }
         } elseif ($this->request->isGet()) {
             $reentry = false;
@@ -1057,7 +1057,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $authenticationInfo     = array();
                 $selectedAuthenticationMethod = array();
                 $rememberMe             = false;
-                $returnPage             = $this->request->getGet()->get('returnpage', $this->request->getGet()->get('returnurl', ''));
+                $returnPage             = urldecode($this->request->getGet()->get('returnpage', $this->request->getGet()->get('returnurl', '')));
                 $user                   = array();
                 
                 $event = new Zikula_Event('module.users.ui.login.started');
