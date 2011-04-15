@@ -27,7 +27,7 @@ class Groups_Controller_User extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-		$this->redirect(ModUtil::url('Groups', 'user', 'view'));
+        $this->redirect(ModUtil::url('Groups', 'user', 'view'));
     }
 
     /**

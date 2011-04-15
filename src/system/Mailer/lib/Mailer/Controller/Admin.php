@@ -27,7 +27,7 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in modifyconfig()
-		$this->redirect(ModUtil::url('Mailer', 'admin', 'modifyconfig'));
+        $this->redirect(ModUtil::url('Mailer', 'admin', 'modifyconfig'));
     }
 
     /**

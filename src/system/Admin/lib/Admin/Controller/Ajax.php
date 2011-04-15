@@ -31,8 +31,8 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         //get info on the module
         $module = ModUtil::getInfo($moduleID);
         if (!$module) {
-        	//deal with couldnt get module info
-        	throw new Zikula_Exception_Fatal($this->__('Error! Could not get module name for id %s.'));
+            //deal with couldnt get module info
+            throw new Zikula_Exception_Fatal($this->__('Error! Could not get module name for id %s.'));
         }
         //get the module name
         $displayname = DataUtil::formatForDisplay($module['displayname']);
@@ -74,7 +74,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $cats = ModUtil::apiFunc('Admin', 'admin', 'getall');
         foreach ($cats as $cat) {
             if (in_array($catName, $cat)) {
-            	throw new Zikula_Exception_Fatal($this->__('Error! A category by this name already exists.'));
+                throw new Zikula_Exception_Fatal($this->__('Error! A category by this name already exists.'));
             }
         }
         //create the category
