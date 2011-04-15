@@ -965,11 +965,11 @@ class Users_Controller_User extends Zikula_AbstractController
      * array   authentication_method An array containing two elements: 'modname', the authentication module name, and 'method', the
      *                                      selected authentication method as defined by the module.
      * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
-     * string  returnpage            The URL of the page to return to if the log-in attempt is successful.
+     * string  returnpage            The URL of the page to return to if the log-in attempt is successful. (This URL must not be urlencoded.)
      * 
      * Parameters passed via GET:
      * --------------------------
-     * string returnpage The URL of the page to return to if the log-in attempt is successful.
+     * string returnpage The urlencoded URL of the page to return to if the log-in attempt is successful.
      * 
      * Parameters passed via POST:
      * ---------------------------
@@ -977,7 +977,7 @@ class Users_Controller_User extends Zikula_AbstractController
      * array   authentication_method An array containing two elements: 'modname', the authentication module name, and 'method', the
      *                                      selected authentication method as defined by the module.
      * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
-     * string  returnpage            The URL of the page to return to if the log-in attempt is successful.
+     * string  returnpage            The URL of the page to return to if the log-in attempt is successful. (This URL must not be urlencoded.)
      * 
      * Parameters passed via SESSION:
      * ------------------------------
@@ -985,7 +985,8 @@ class Users_Controller_User extends Zikula_AbstractController
      * Variable:  Users_Controller_User_login
      * Type:      array
      * Contents:  An array containing the information passed in via the $args array or the GET or POST variables, and additionaly, the
-     *                  element 'user_obj'if the user record has been loaded.
+     *                  element 'user_obj'if the user record has been loaded. (The returnpage element must not be urlencoded when stored
+     *                  on the session.)
      * 
      * @return boolean|string True on successful authentication and login, the rendered output of the appropriate
      *                        template to display the log-in form.
