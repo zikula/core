@@ -6,7 +6,8 @@ if (typeof(Zikula) == 'undefined') {
     Zikula = {};
 }
 
-Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
+Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */
+{
     /**
      * Class allowing to convert unordered list (ul/li) to collapsible trees.
      * Works the best with Zikula_Tree class, which prepare html output for tree.
@@ -59,12 +60,12 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
         // initialy hide childnodes
         this.getStatus();
         this.tree.select('ul').each(function(u) {
-            if(!this.status.get(u.up('li').identify())) {
+            if (!this.status.get(u.up('li').identify())) {
                 this.hideNode(u);
             }
         }.bind(this));
-
     },
+
     /**
      * Prepares nodes for draggin and dropping
      * @private
@@ -82,10 +83,10 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
         if (span) {
             span.observe('click',this.toggleNode.bindAsEventListener(this));
         }
-
     },
+
     /**
-     * Event hanlder for toggling nodes
+     * Event handler for toggling nodes
      * @private
      * @todo Make it public, allow to pass node as param
      * @param {Event} event Click event on node toggler
@@ -94,7 +95,7 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
     toggleNode: function(event) {
         var ul = event.element().up('li').down('ul')
         if (ul != undefined) {
-            if(ul.visible()) {
+            if (ul.visible()) {
                 this.hideNode(ul);
             } else {
                 this.showNode(ul);
@@ -102,6 +103,7 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
             this.saveStatus();
         }
     },
+
     /**
      * Expand selected node
      * @private
@@ -110,10 +112,11 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
      */
     showNode: function(node) {
         node.show();
-        node.previous('.'+this.config.toggler).writeAttribute('src',this.config.images.minus);
-        node.previous('.'+this.config.icon).writeAttribute('src',this.config.images.parentOpen);
-        this.status.set(node.up('li').identify(),node.visible());
+        node.previous('.'+this.config.toggler).writeAttribute('src', this.config.images.minus);
+        node.previous('.'+this.config.icon).writeAttribute('src', this.config.images.parentOpen);
+        this.status.set(node.up('li').identify(), node.visible());
     },
+
     /**
      * Collapse selected node
      * @private
@@ -122,10 +125,11 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
      */
     hideNode: function(node) {
         node.hide();
-        node.previous('.'+this.config.toggler).writeAttribute('src',this.config.images.plus);
-        node.previous('.'+this.config.icon).writeAttribute('src',this.config.images.parent);
-        this.status.set(node.up('li').identify(),node.visible());
+        node.previous('.'+this.config.toggler).writeAttribute('src', this.config.images.plus);
+        node.previous('.'+this.config.icon).writeAttribute('src', this.config.images.parent);
+        this.status.set(node.up('li').identify(), node.visible());
     },
+
     /**
      * Reads tree status (list of collapsed/expaned nodes) from cookie
      * @private
@@ -134,14 +138,16 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
     getStatus: function() {
         this.status = Zikula.Cookie.get(this.id) ? $H(Zikula.Cookie.get(this.id)) : new Hash();
     },
+
     /**
      * Saves tree status to cookie
      * @private
      * @return void
      */
     saveStatus: function() {
-        Zikula.Cookie.set(this.id,this.status,3600*24*7);
+        Zikula.Cookie.set(this.id, this.status,3600*24*7);
     },
+
     /**
      * Decode node id using config.nodeIdPattern RegExp
      * @private
@@ -151,6 +157,7 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
     getNodeId: function(node) {
         return Number(node.id.match(this.config.nodeIdPattern)[1]);
     },
+
     /**
      * Checks if config passed to initialize methdod is JSON and if so - decodes it
      * @private
@@ -158,11 +165,12 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
      * @return {mixed} Decoded config
      */
     decodeConfig: function(config) {
-        if(Object.isString(config) && config.isJSON()) {
+        if (Object.isString(config) && config.isJSON()) {
             config = config.evalJSON(true);
         }
         return config;
     },
+
     /**
      * Expands whole tree or given tree branch
      * @param {HTMLElement} [node] Branch to expand, if not provided - whole tree is expanded
@@ -170,11 +178,12 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
      */
     expandAll: function(node) {
         var base = Object.isElement(node) ? node : this.tree;
-        base.select('ul').each(function(ul){
+        base.select('ul').each(function(ul) {
             this.showNode(ul);
         }.bind(this));
         this.saveStatus();
     },
+
     /**
      * Collapse whole tree or given tree branch
      * @param {HTMLElement} [node] Branch to collapse, if not provided - whole tree is collapsed
@@ -182,11 +191,12 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
      */
     collapseAll: function(node) {
         var base = Object.isElement(node) ? node : this.tree;
-        base.select('ul').reverse(true).each(function(ul){
+        base.select('ul').reverse(true).each(function(ul) {
             this.hideNode(ul);
         }.bind(this));
         this.saveStatus();
     },
+
     /**
      * Serialize tree data and returns it as JSON.
      * When called without branch param - will serialize whole tree.
@@ -198,11 +208,12 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
     serialize: function(branch) {
         this.serialized = {};
         branch = branch == undefined ? this.tree : branch;
-        $(branch).select('li').each(function(node,index) {
-            this.serialized[this.getNodeId(node)] = this.serializeNode(node,index);
+        $(branch).select('li').each(function(node, index) {
+            this.serialized[this.getNodeId(node)] = this.serializeNode(node, index);
         }.bind(this));
         return Object.toJSON(this.serialized);
     },
+
     /**
      * Internal procedure for serializing nodes.
      * Reads node id, node name and parent id. If privides - adds to data lineno - sequence number.
@@ -212,15 +223,16 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */{
      */
     serializeNode: function(node,index) {
         return {
-            id:         this.getNodeId(node),
-            name:       node.down('a').innerHTML,
-            lineno:     index || null,
-            parent:     node.up('#'+this.tree.id+' li') ? this.getNodeId(node.up('#'+this.tree.id+' li')) : 0
+            id:     this.getNodeId(node),
+            name:   node.down('a').innerHTML,
+            lineno: index || null,
+            parent: node.up('#'+this.tree.id+' li') ? this.getNodeId(node.up('#'+this.tree.id+' li')) : 0
         };
     }
 });
 
-Object.extend(Zikula.Tree,/** @lends Zikula.Tree.prototype */{
+Object.extend(Zikula.Tree,/** @lends Zikula.Tree.prototype */
+{
     /**
      * List of initilized trees.
      * Trees initilized via add method are avaiable as Zikula.Tree.trees[element.id]
@@ -245,7 +257,8 @@ Object.extend(Zikula.Tree,/** @lends Zikula.Tree.prototype */{
     }
 });
 
-Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.prototype */{
+Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.prototype */
+{
     /**
      * Extension for {@link Zikula.Tree}. Allows to create sortable trees.<br />
      * After each tree change config.onSave callback is called. As params are passed:<br />
@@ -290,6 +303,7 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
             nodeLast:           'z-tree-last',
             nodeParent:         'z-tree-last',
             nodeLeaf:           'z-tree-leaf',
+            fixedParent:        'z-tree-fixedparent',
             disabled:           [],
             disabledForDrag:    [],
             disabledForDrop:    [],
@@ -308,37 +322,39 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
         this.tree.addClassName('z-tree-sortable');
 //        this.tree.select('li').each(this.initNode.bind(this));
     },
+
     /**
      * Prepares nodes for draggin and dropping
      * @private
      * @param {HTMLElement} node Node to prepare
      * @return void
      */
-    initNode: function($super,node) {
+    initNode: function($super, node) {
         $super(node);
-        if(this.config.disabled.include(this.getNodeId(node))) {
+        if (this.config.disabled.include(this.getNodeId(node))) {
             return;
         }
-        if(!this.config.disabledForDrag.include(this.getNodeId(node))) {
+        if (!this.config.disabledForDrag.include(this.getNodeId(node))) {
             node.addClassName(this.config.draggableClass);
-            new Draggable(node,{
-                handle:this.config.icon,
+            new Draggable(node, {
+                handle: this.config.icon,
                 onEnd: this.endDrag.bind(this),
-                onStart : this.startDrag.bind(this),
-                revert:true,
-                starteffect:null,
+                onStart: this.startDrag.bind(this),
+                revert: true,
+                starteffect: null,
                 scroll: window
             });
         }
         node.addClassName(this.config.droppableClass);
         Droppables.add(node, {
-            accept:this.config.draggableClass,
+            accept: this.config.draggableClass,
             hoverclass: this.config.dropOnClass,
-            overlap:'vertical',
-            onDrop:this.dropNode.bind(this),
-            onHover:this.hoverNode.bind(this)
+            overlap: 'vertical',
+            onDrop: this.dropNode.bind(this),
+            onHover: this.hoverNode.bind(this)
         });
     },
+
     /**
      * Draggable callback called when drag is started.
      * Clearch internal cache and marks dragging element
@@ -350,6 +366,7 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
         this.dropCache = {};
         draggable.element.addClassName(this.config.onDragClass);
     },
+
     /**
      * Draggable callback called when drag is finished.
      * Remove dragging indicators from tree.
@@ -359,7 +376,7 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
      * @return void
      */
     endDrag: function(draggable) {
-        if(this.dropCache.lastElement) {
+        if (this.dropCache.lastElement) {
             this.insertNode(draggable.element,this.dropCache.lastElement);
             this.drawNodes();
         }
@@ -369,6 +386,7 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
             .invoke('removeClassName',this.config.dropBeforeClass);
         draggable.element.removeClassName(this.config.onDragClass);
     },
+
     /**
      * Droppables callback called when node is hovered by dragged node
      * When hover takes time longer then defined in config.expandTimeout it expand hovered node
@@ -378,28 +396,29 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
      * @param {Number} overlap
      * @return void
      */
-    hoverNode: function(node,dropOnNode,overlap) {
+    hoverNode: function(node, dropOnNode, overlap) {
         window.clearTimeout(this.dropCache.timeout);
         this.tree.select('.'+this.config.dropAfterClass)
-            .invoke('removeClassName',this.config.dropAfterClass);
+            .invoke('removeClassName', this.config.dropAfterClass);
         this.tree.select('.'+this.config.dropBeforeClass)
-            .invoke('removeClassName',this.config.dropBeforeClass);
+            .invoke('removeClassName', this.config.dropBeforeClass);
         var o0 = this.config.disabledForDrop.include(this.getNodeId(dropOnNode)) ? 0.5 : this.config.dropAfterOverlap[0],
             o1 = this.config.disabledForDrop.include(this.getNodeId(dropOnNode)) ? 0.5 : this.config.dropAfterOverlap[1];
         if (overlap > o1) {
             dropOnNode.addClassName(this.config.dropBeforeClass);
-            this.dropCache.lastElement = ['before',dropOnNode.id];
+            this.dropCache.lastElement = ['before', dropOnNode.id];
         } else if (overlap <= o0) {
             dropOnNode.addClassName(this.config.dropAfterClass);
-            this.dropCache.lastElement = ['after',dropOnNode.id];
+            this.dropCache.lastElement = ['after', dropOnNode.id];
         } else {
-            this.dropCache.expand = this.expandOne.bindAsEventListener(this);
+            this.dropCache.expand  = this.expandOne.bindAsEventListener(this);
             this.dropCache.element = dropOnNode;
             this.dropCache.timeout = window.setTimeout(this.dropCache.expand, this.config.expandTimeout);
             dropOnNode.removeClassName(this.config.dropAfterClass);
             dropOnNode.removeClassName(this.config.dropBeforeClass);
         }
     },
+
     /**
      * Droppables callback which handle node insertions
      * @private
@@ -408,20 +427,21 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
      * @param {Event} point
      * @return {Boolean} True on succes, false otherwise
      */
-    dropNode: function(node,dropOnNode,point) {
+    dropNode: function(node, dropOnNode, point) {
         var insertion = true;
         if (dropOnNode.hasClassName(this.config.dropAfterClass)) {
-            insertion = this.insertNode(node,['after',dropOnNode]);
+            insertion = this.insertNode(node, ['after', dropOnNode]);
         } else if (dropOnNode.hasClassName(this.config.dropBeforeClass)) {
-            insertion = this.insertNode(node,['before',dropOnNode]);
+            insertion = this.insertNode(node, ['before', dropOnNode]);
         } else {
-            insertion = this.insertNode(node,['bottom',dropOnNode]);
+            insertion = this.insertNode(node, ['bottom', dropOnNode]);
         }
-        if(!insertion) {
+        if (!insertion) {
             return false;
         }
         return true;
     },
+
     /**
      * Procedure to hanlde node insertions
      * Checks if maxDepth is not exceeded and inserts node on specified position.
@@ -432,7 +452,7 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
      * @param {Boolean} [revert] Tells if insertion is for revert purposes
      * @return {Boolean} True on success, false otherwise
      */
-    insertNode: function(node,params,revert) {
+    insertNode: function(node, params, revert) {
         var dropOnNode = $(params[1]),
             position = params[0],
             newlevel = position == 'bottom';
@@ -442,17 +462,17 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
                 previous: node.previous('li') || null,
                 next: node.next('li') || null
         };
-        if(this.config.maxDepth > 0) {
-            var dropOnNodeLevel = this.countLevels(dropOnNode,'up'),
-                nodeLevel = this.countLevels(node,'down'),
+        if (this.config.maxDepth > 0) {
+            var dropOnNodeLevel = this.countLevels(dropOnNode, 'up'),
+                nodeLevel = this.countLevels(node, 'down'),
                 treeDepth = dropOnNodeLevel + nodeLevel + Number(newlevel) + 1;
-            if(treeDepth > this.config.maxDepth) {
+            if (treeDepth > this.config.maxDepth) {
                 alert(this.config.langLabels.maxdepthreached + this.config.maxDepth);
                 this.dropCache = {};
                 return false;
             }
         }
-        if(newlevel) {
+        if (newlevel) {
             var ul = dropOnNode.down('ul',0);
             if (ul == undefined) {
                 ul = new Element('ul');
@@ -464,8 +484,8 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
         var obj = {}
         obj[position] = node;
         dropOnNode.insert(obj);
-        if(!revert && Object.isFunction(this.config.onSave)
-            && !this.config.onSave(node,params,this.serialize())) {
+        if (!revert && Object.isFunction(this.config.onSave)
+            && !this.config.onSave(node, params, this.serialize())) {
             this.revertInsertion();
             return false;
         }
@@ -473,16 +493,17 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
         this.drawNodes();
         return true;
     },
+
     /**
      * Reverts last insertion
      * @private
      * @return void
      */
     revertInsertion: function(){
-        if(this.prevPosition == undefined) {
+        if (this.prevPosition == undefined) {
             return;
         }
-        if(this.prevPosition.previous) {
+        if (this.prevPosition.previous) {
             var ref = this.prevPosition.previous,
                 pos = 'after';
         } else if (this.prevPosition.next) {
@@ -492,8 +513,9 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
             var ref = this.prevPosition.parent,
                 pos = 'bottom';
         }
-        this.insertNode(this.prevPosition.node,[pos,ref],true);
+        this.insertNode(this.prevPosition.node, [pos,ref], true);
     },
+
     /**
      * Counts given node depth
      * @private
@@ -502,7 +524,7 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
      * @param {Boolean} stop Where to stop counting
      * @return {Nubmer} Node depth
      */
-    countLevels : function(node,mode,stop) {
+    countLevels : function(node, mode, stop) {
         var levels = 0;
         if (mode == 'up') {
             stop = (stop == undefined) ? this.tree : stop;
@@ -513,23 +535,25 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
                 }).size();
         } else if (mode == 'down') {
             levels = node.select('li').max(function(subnode) {
-                return this.countLevels(subnode,'up',node);
+                return this.countLevels(subnode, 'up', node);
             }.bind(this));
         }
         return isNaN(levels) ? 0 : levels;
     },
+
     /**
      * Callback used for expaning node hovered while dragging other node
      * @private
      * @return void
      */
     expandOne: function() {
-        if(this.dropCache.element && this.dropCache.element.down('ul') != undefined) {
+        if (this.dropCache.element && this.dropCache.element.down('ul') != undefined) {
             this.showNode(this.dropCache.element.down('ul'));
             this.dropCache.element = false;
             this.saveStatus();
         }
     },
+
     /**
      * Redraws whole tree
      * @private
@@ -538,6 +562,7 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
     drawNodes: function() {
         this.tree.select('li').each(this.drawNode.bind(this));
     },
+
     /**
      * Redraws selected node - sets proper class names on node, removes orphaned ul elements
      * @private
@@ -551,7 +576,7 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
             this.config.nodeLast,
             this.config.nodeParent,
             this.config.nodeLeaf
-        ].each(function(cn){
+        ].each(function(cn) {
             $(node).removeClassName(cn)
         });
         if (node.next() == undefined) {
@@ -560,25 +585,31 @@ Zikula.TreeSortable = Class.create(Zikula.Tree,/** @lends Zikula.TreeSortable.pr
         if (node.up('ul').select('li').size() == 1) {
             node.addClassName(this.config.nodeSingle);
         }
-        if (node.down('li') == undefined) {
-            node.addClassName(this.config.nodeLeaf);
-            node.down('.'+this.config.icon).writeAttribute('src',this.config.images.item);
-            if (node.down('ul') != undefined) {
-                node.down('ul').remove();
+        if (node.down('li') == undefined && node.down('ul') != undefined) {
+            node.down('ul').remove();
+        }
+        if (node.down('a').hasClassName(this.config.fixedParent) || node.down('li') != undefined) {
+            if (node.down('ul')) {
+                node.addClassName(this.config.nodeParent);
+                if (node.down('ul').visible()) {
+                    node.down('.'+this.config.toggler).writeAttribute({src: this.config.images.minus});
+                    node.down('.'+this.config.icon).writeAttribute('src', this.config.images.parentOpen);
+                } else {
+                    node.down('.'+this.config.icon).writeAttribute('src', this.config.images.parent);
+                }
+            } else {
+                node.addClassName(this.config.nodeLeaf);
+                node.down('.'+this.config.icon).writeAttribute('src', this.config.images.parent);
             }
         } else {
-            node.addClassName(this.config.nodeParent);
-            if(node.down('ul').visible()) {
-                node.down('.'+this.config.toggler).writeAttribute({src: this.config.images.minus});
-                node.down('.'+this.config.icon).writeAttribute('src',this.config.images.parentOpen);
-            } else {
-                node.down('.'+this.config.icon).writeAttribute('src',this.config.images.parent);
-            }
+            node.addClassName(this.config.nodeLeaf);
+            node.down('.'+this.config.icon).writeAttribute('src', this.config.images.item);
         }
     }
 });
 
-Object.extend(Zikula.TreeSortable,/** @lends Zikula.TreeSortable.prototype */{
+Object.extend(Zikula.TreeSortable,/** @lends Zikula.TreeSortable.prototype */
+{
     /**
      * List of initilized trees.
      * Trees initilized via add method are avaiable as Zikula.TreeSortable.trees[element.id]
@@ -598,7 +629,7 @@ Object.extend(Zikula.TreeSortable,/** @lends Zikula.TreeSortable.prototype */{
      */
     add: function(element,config) {
         if (!this.trees.hasOwnProperty(element)) {
-            this.trees[element] = new Zikula.TreeSortable(element,config);
+            this.trees[element] = new Zikula.TreeSortable(element, config);
         }
     }
 });

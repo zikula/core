@@ -963,8 +963,14 @@ class CategoryUtil
         }
         if ($category['is_leaf']) {
             $category['class'][] = 'leaf';
+        } else {
+            $category['class'][] = 'z-tree-fixedparent';
         }
         $category['class'] = implode(' ', $category['class']);
+
+        if (!$category['is_leaf']) {
+            $category['icon'] = 'folder_open.png';
+        }
 
         return $category;
     }
