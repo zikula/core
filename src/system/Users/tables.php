@@ -127,6 +127,10 @@ function Users_tables_for_220()
     //                      user theme switching is enabled.
     // ublockon         - User-defined Block On?: Whether the custom user-defined block is displayed or not (1 == true == displayed)
     // ublock           - User-defined Block: Custom user-defined block content.
+    // tz               - User's timezone, as supported by PHP (listed at http://us2.php.net/manual/en/timezones.php), and as expressed by
+    //                      the Olson tz database. Optional, if blank then the system default timezone should be used. [FUTURE USE]
+    // locale           - The user's chosen locale for i18n purposes, as defined by gettext, POSIX, and the Common Locale Data Repository;
+    //                      optional, if blank then the system default locale should be used. [FUTURE USE]
     //
     $dbinfo['users'] = DBUtil::getLimitedTablename('users');
     $dbinfo['users_column'] = array(
@@ -143,6 +147,8 @@ function Users_tables_for_220()
         'theme'         => 'z_theme',
         'ublockon'      => 'z_ublockon',
         'ublock'        => 'z_ublock',
+        'tz'            => 'z_tz',
+        'locale'        => 'z_locale',
     );
     $dbinfo['users_column_def'] = array(
         'uid'           => "I PRIMARY AUTO",
@@ -158,6 +164,8 @@ function Users_tables_for_220()
         'theme'         => "C(255) NOTNULL DEFAULT ''",
         'ublockon'      => "I1 NOTNULL DEFAULT 0",
         'ublock'        => "X NOTNULL DEFAULT ''",
+        'tz'            => "C(30) NOTNULL DEFAULT ''",
+        'locale'        => "C(5) NOTNULL DEFAULT ''",
     );
 
     $dbinfo['users_column_idx'] = array(
