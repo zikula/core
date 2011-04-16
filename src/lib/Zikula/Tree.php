@@ -371,7 +371,7 @@ class Zikula_Tree
         $liClass[] = ($i == $size && $size > 1) ? $this->config['nodeLast'] : '';
         $liClass[] = !empty($tab['nodes']) ? $this->config['nodeParent'] : $this->config['nodeLeaf'];
         $liClass = trim(implode(' ', array_filter($liClass)));
-        $liClass ='class="'.$liClass.'"';
+        $liClass = ' class="'.$liClass.'"';
 
         $indent = str_repeat(' ', $indentLevel*4);
 
