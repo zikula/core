@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <project name="zikula" default="clean">
+<project name="zikula" default="clean">
 
     <!-- invokation
         phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcb phpcpd phpunit pdepend phpmd phpdoc jsdoc build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
@@ -80,10 +80,20 @@
 
         <echo msg="Creating archive..." />
         <!-- zip's don't play nicely in Phing - using direct command -->
-        <exec escape="false" command="cd ${exportdir}; zip -D -r ${archivedir}/${package}.zip ." />
+        <!-- exec escape="false" command="cd ${exportdir}; zip -D -r ${archivedir}/${package}.zip ." / -->
+        <zip destfile="${archivedir}/${package}.zip">
+            <fileset dir="${exportdir}/${job_name}">
+                <include name="**/**" />
+            </fileset>
+        </zip>
 
         <!-- phing tar stopped working so do this the manual way -->
-        <exec escape="false" command="cd ${exportdir}; tar cp ${job_name} > ${archivedir}/${package}.tar; gzip ${archivedir}/${package}.tar" />
+        <!-- exec escape="false" command="cd ${exportdir}; tar cp ${job_name} > ${archivedir}/${package}.tar; gzip ${archivedir}/${package}.tar" / -->
+        <tar destfile="${archivedir}/${package}.tar.gz" compression="gzip">
+            <fileset dir="${exportdir}/${job_name}">
+                <include name="**/**" />
+            </fileset>
+        </tar>
 
         <echo msg="Files copied and compressed in build directory OK!" />
 
