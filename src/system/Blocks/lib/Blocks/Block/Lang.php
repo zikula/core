@@ -92,7 +92,7 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
         if (!isset($vars['languages']) || empty($vars['languages']) || !is_array($vars['languages'])) {
             $vars['languages'] = $this->getAvailableLanguages($vars['fulltranslation']);
         }
-        
+
         $this->view->setCaching(false);
 
         // assign the block vars
@@ -137,10 +137,10 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
         }
 
         // build URLS
-        
+
         $urls = array();
         foreach ($languages as $code) {
-            $thisurl = ModUtil::url($module, $type, $func, $get, null, null, null, $forcefqdn, $code);
+            $thisurl = ModUtil::url($module, $type, $func, $get, null, null, true, $forcefqdn, $code);
             if ($thisurl == '') {
                 $thisurl = ($shorturls && $dirBased ? $code : "$homepage?lang=$code");
             }
@@ -154,11 +154,11 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
                 }
                 $flag = (($flag && $shorturls && $dirBased) ? System::getBaseUrl() . $flag : $flag);
             }
-            
+
             if ($vars['fulltranslation'] == 2) {
                 ZLanguage::setLocale($code);
             }
-            
+
             $urls[] = array('code' => $code, 'name' => ZLanguage::getLanguageName($code), 'url' => $thisurl, 'flag' => $flag);
 
             if ($vars['fulltranslation'] == 2) {
