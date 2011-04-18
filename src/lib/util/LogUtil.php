@@ -231,7 +231,7 @@ class LogUtil
         if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
                 $serviceManager = ServiceUtil::getManager();
-                $request = $this->serviceManager->getService('request');
+                $request = $serviceManager->getService('request');
                 
                 $loginArgs = array();
                 if ($request->isGet()) {
