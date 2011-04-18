@@ -1287,7 +1287,7 @@ class ModUtil
             $siteRoot = $protocol . '://' . (($secureDomain != '') ? $secureDomain : ($host . $baseuri)) . '/';
         }
 
-        // Only convert User URLs. Exclude links that append a theme parameter
+        // Only convert type=user. Exclude links that append a theme parameter
         if ($shorturls && $shorturlstype == 0 && $type == 'user' && $forcelongurl == false) {
             if (isset($args['theme'])) {
                 $theme = $args['theme'];
@@ -1320,6 +1320,9 @@ class ModUtil
                     $func = '/';
                 }
                 $url = $modname . $func . $vars;
+
+                // remove trailing slash to prevent bad encoded of wrapped encodeurl(ModUtil::url()); calls refs #3002 - drak
+                $url = rtrim($url, '/'); 
             }
 
             if ($shorturlsdefaultmodule == $modinfo['name'] && $url != "{$modinfo['url']}/") {
@@ -1352,17 +1355,17 @@ class ModUtil
             if (!is_array($args)) {
                 return false;
             } else {
-                foreach ($args as $k => $v) {
-                    if (is_array($v)) {
-                        foreach ($v as $l => $w) {
+                foreach ($args as $key => $value) {
+                    if (is_array($value)) {
+                        foreach ($value as $l => $w) {
                             if (is_numeric($w) || !empty($w)) {
                                 // we suppress '', but allow 0 as value (see #193)
-                                $url .= "&$k" . "[$l]=$w";
+                                $url .= "&$key" . "[$l]=$w";
                             }
                         }
-                    } elseif (is_numeric($v) || !empty($v)) {
+                    } elseif (is_numeric($value) || !empty($value)) {
                         // we suppress '', but allow 0 as value (see #193)
-                        $url .= "&$k=$v";
+                        $url .= "&$key=$value";
                     }
                 }
             }
