@@ -319,7 +319,7 @@ class Search_Api_User extends Zikula_AbstractApi
         }
 
         // define the available user functions
-        $funcs = array('main', 'search', 'process', 'recent');
+        $funcs = array('main', 'form', 'search', 'process', 'recent');
         // set the correct function name based on our input
         if (empty($args['vars'][2])) {
             System::queryStringSetVar('func', 'main');
