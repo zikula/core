@@ -87,13 +87,13 @@
             </fileset>
         </zip>
 
-        <!-- phing tar stopped working so do this the manual way -->
-        <!-- exec escape="false" command="cd ${exportdir}; tar cp ${job_name} > ${archivedir}/${package}.tar; gzip ${archivedir}/${package}.tar" / -->
-        <tar destfile="${archivedir}/${package}.tar.gz" compression="gzip">
+        <!-- Use tar at commandline because phing tarballs don't support file chmod -->
+        <exec escape="false" command="cd ${exportdir}; tar cp ${job_name} > ${archivedir}/${package}.tar; gzip ${archivedir}/${package}.tar" />
+        <!-- tar destfile="${archivedir}/${package}.tar.gz" compression="gzip">
             <fileset dir="${exportdir}/${job_name}">
                 <include name="**/**" />
             </fileset>
-        </tar>
+        </tar -->
 
         <echo msg="Files copied and compressed in build directory OK!" />
 
