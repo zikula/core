@@ -887,12 +887,12 @@ class UserUtil
                         $sessionVarName = 'Users_Controller_User_login';
                         $sessionNamespace = 'Zikula_Users';
                         $redirectURL = ModUtil::url('Users', 'user', 'login', array('csrftoken' => SecurityUtil::generateCsrfToken()));
-                    } elseif (isset($eventData['redirectFunc'])) {
-                        if (isset($eventData['redirectFunc']['session'])) {
-                            $sessionVarName = $eventData['redirectFunc']['session']['var'];
-                            $sessionNamespace = isset($eventData['redirectFunc']['session']['namespace']) ? $eventData['redirectFunc']['session']['namespace'] : '/';
+                    } elseif (isset($eventData['redirect_func'])) {
+                        if (isset($eventData['redirect_func']['session'])) {
+                            $sessionVarName = $eventData['redirect_func']['session']['var'];
+                            $sessionNamespace = isset($eventData['redirect_func']['session']['namespace']) ? $eventData['redirect_func']['session']['namespace'] : '/';
                         }
-                        $redirectURL = ModUtil::url($eventData['redirectFunc']['modname'], $eventData['redirectFunc']['type'], $eventData['redirectFunc']['func'], $eventData['redirectFunc']['args']);
+                        $redirectURL = ModUtil::url($eventData['redirect_func']['modname'], $eventData['redirect_func']['type'], $eventData['redirect_func']['func'], $eventData['redirect_func']['args']);
                     }
 
                     if (isset($redirectURL)) {
