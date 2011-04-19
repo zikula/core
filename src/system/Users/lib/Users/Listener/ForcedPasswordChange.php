@@ -48,7 +48,7 @@ class Users_Listener_ForcedPasswordChange
         if ($userMustChangePassword && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
             $event->setNotified();
             $event->setData(array(
-                'redirectFunc'  => array(
+                'redirect_func'  => array(
                     'modname'   => self::$modname,
                     'type'      => 'user',
                     'func'      => 'changePassword',

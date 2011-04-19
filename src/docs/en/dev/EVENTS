@@ -251,7 +251,7 @@ Another alternative is to "break into" the log-in process to redirect the user t
 similar) that allows him to correct whatever situation is causing his log-in attempt to be vetoed. The
 expectation is that the notifying event handler will direct the user to a form to correct the situation,
 and then __redirect the user back into the log-in process to re-attempt logging in__. To accomplish this,
-instead of setting the `'retry'` event data, the notifying handler should set the `'redirectFunc'` 
+instead of setting the `'retry'` event data, the notifying handler should set the `'redirect_func'` 
 event data structure. This is an array which defines the information necessary to direct the 
 user to a controller function somewhere in the Zikula system (likely, within the same module as that
 which is vetoing the attempt). This array contains the following:
@@ -265,7 +265,7 @@ which is vetoing the attempt). This array contains the following:
             alternative to passing function arguments.
 
 In addition, if information from the log-in attempt is needed within the function, it can be made available in 
-session variables. To do this, add an array called `'session'` to the `'redirectFunc'` array structure. The contents
+session variables. To do this, add an array called `'session'` to the `'redirect_func'` array structure. The contents
 of the `'session'` array must be:
 
  * `'namespace'` The session name space in which to store the variable.
@@ -290,7 +290,7 @@ prior to logging in. The code used for the notification might look like the foll
 
     $event->setNotified();
     $event->setData(array(
-        'redirectFunc'  => array(
+        'redirect_func'  => array(
             'modname'   => 'Users',
             'type'      => 'user',
             'func'      => 'changePassword',
