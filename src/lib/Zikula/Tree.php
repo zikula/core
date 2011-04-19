@@ -54,13 +54,14 @@ class Zikula_Tree
     {
         $this->config = array(
             'objid'         => 'id',
+            'customJSClass' => '',
             'nestedSet'     => false,
+            'renderRoot'    => true,
             'id'            => 'zikulatree',
             'treeClass'     => 'tree',
             'nodePrefix'    => 'node_',
             'nullParent'    => 0, // what value is used for root level nodes? for example 0, null, '' (empty string)
             'sortable'      => false,
-            'renderRoot'    => true,
             'withWraper'    => true,
             'wraperClass'   => 'treewraper',
             'cssFile'       => 'javascript/helpers/Tree/Tree.css',
@@ -159,7 +160,11 @@ class Zikula_Tree
         PageUtil::addVar('javascript', 'prototype');
         PageUtil::addVar('javascript', 'livepipe');
         PageUtil::addVar('javascript', 'javascript/helpers/Zikula.Tree.js');
-        $jsClass = $this->config['sortable'] ? 'Zikula.TreeSortable' : 'Zikula.Tree';
+        if ($this->config['customJSClass']) {
+            $jsClass = $this->config['customJSClass'];
+        } else {
+            $jsClass = $this->config['sortable'] ? 'Zikula.TreeSortable' : 'Zikula.Tree';
+        }
         $initScript = "
         <script type=\"text/javascript\">
             document.observe('dom:loaded', function() {
@@ -190,9 +195,13 @@ class Zikula_Tree
     public function getConfigForScript($encode = true)
     {
         $jsConfig = $this->config;
-        $imagesKeys = array('plus', 'minus', 'parent', 'parentOpen', 'item');
+        $omitKeys = array('objid', 'nestedSet', 'customJSClass'. 'cssFile');
+        foreach ($omitKeys as $key) {
+            unset($jsConfig[$key]);
+        }
+        $imgsKeys = array('plus', 'minus', 'parent', 'parentOpen', 'item');
         $jsConfig['images'] = array();
-        foreach ($imagesKeys as $img) {
+        foreach ($imgsKeys as $img) {
             $jsConfig['images'][$img] = $this->config[$img];
             unset($jsConfig[$img]);
         }
