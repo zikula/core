@@ -155,7 +155,7 @@ Zikula.Tree = Class.create(/** @lends Zikula.Tree.prototype */
      * @return {Nubmer} Numeric Id
      */
     getNodeId: function(node) {
-        return Number(node.id.match(this.config.nodeIdPattern)[1]);
+        return node.id.match(this.config.nodeIdPattern)[1];
     },
 
     /**
