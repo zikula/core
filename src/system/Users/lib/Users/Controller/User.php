@@ -1012,10 +1012,6 @@ class Users_Controller_User extends Zikula_AbstractController
             $selectedAuthenticationMethod = isset($args['authentication_method']) ? $args['authentication_method'] : array();
             $rememberMe             = isset($args['rememberme']) ? $args['rememberme'] : false;
             $returnPage             = isset($args['returnpage']) ? $args['returnpage'] : $this->request->getGet()->get('returnpage', '');
-            if (empty($returnPage)) {
-                // Check if returnurl was set instead of returnpage
-                $returnPage         = isset($args['returnurl']) ? $args['returnurl'] : $this->request->getGet()->get('returnurl', '');
-            }
             
             $isFunctionCall = true;
         } elseif (isset($args) && !is_array($args)) {
