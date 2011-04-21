@@ -54,7 +54,7 @@ class Categories_DBObject_Registry extends DBObject
     public function validatePostProcess($type='user', $data=null)
     {
         $data = $this->_objData;
-        if ($data['modname'] && $data['table'] && $data['property'] && !$data['id']) {
+        if ($data['modname'] && $data['table'] && $data['property'] && (!isset($data['id']) || !$data['id'])) {
             $where = "WHERE crg_modname='$data[modname]' AND crg_table='$data[table]' AND crg_property='$data[property]'";
             $row = DBUtil::selectObject($this->_objType, $where);
             if ($row) {
@@ -65,5 +65,4 @@ class Categories_DBObject_Registry extends DBObject
         }
         return true;
     }
-
 }
