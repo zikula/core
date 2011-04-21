@@ -255,8 +255,9 @@ class Zikula_Tree
             if ($this->config['nestedSet']) {
                 if ((string)$item['level'] == 0) {
                     $parents[0] = $item[$objid];
+                } else {
+                    $item['parent_id'] = $parents[$item['level'] - 1];
                 }
-                $item['parent_id'] = $parents[$item['level'] - 1];
                 $parents[$item['level']] = $item[$objid];
             }
 
