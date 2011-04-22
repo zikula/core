@@ -59,10 +59,13 @@ div.z-admincategorydescription {
 #z-maincontent div.z-adminbox h1 {
     background: none;
     color: #333333;
-    line-height: 36px;
+    line-height: 48px;
     margin: 0;
     padding: 0;
     text-align: left;
+}
+#z-maincontent div.z-adminbox h1.z-tightmodtitle {
+    line-height: 30px;
 }
 
 #z-maincontent div.z-adminbox img {
@@ -98,7 +101,7 @@ div.z-admincategorydescription {
 }
 
 #z-maincontent div.z-adminpageicon+h2 {
-    margin-bottom: 12px;
+    margin-bottom: 20px;
     padding-top: 20px;
 }
 
