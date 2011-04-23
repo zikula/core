@@ -1319,9 +1319,6 @@ class ModUtil
                     $func = '/';
                 }
                 $url = $modname . $func . $vars;
-
-                // remove trailing slash to prevent bad encoded of wrapped encodeurl(ModUtil::url()); calls refs #3002 - drak
-                $url = rtrim($url, '/');
             }
 
             if ($shorturlsdefaultmodule == $modinfo['name'] && $url != "{$modinfo['url']}/") {
