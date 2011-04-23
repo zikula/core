@@ -14,16 +14,10 @@
                 {/if}
 
                 {* PHP 5.3.0 or greater requires date.timezone to be set in php.ini *}
-                {if $checks.checkdatetimezone}
-                {ini_get varname="date.timezone" assign="datetimezone"}
-
-                    {if $datetimezone}
-                        <li class="passed">{gt text="php.ini: date.timezone is set to %s"  tag1=$datetimezone}</li>
-                    {else}
-                        <li class="failed">{gt text="date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."}</li>{assign var=checkfailed value=true}
-                    {/if}
+                {if $datetimezone}
+                    <li class="passed">{gt text="php.ini: date.timezone is set to %s"  tag1=$datetimezone}</li>
                 {else}
-                    <li class="passed">{gt text="date.timezone not needed for php version %s."  tag1=$phpversion}</li>
+                    <li class="failed">{gt text="date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."}</li>{assign var=checkfailed value=true}
                 {/if}
 
                 {if $checks.register_globals}
@@ -69,7 +63,7 @@
                 {/if}
             </ul>
         </fieldset>
-        
+
         <fieldset>
             <legend>{gt text="Personal configuration file"}</legend>
             <ul class="systemrequirements">

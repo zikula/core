@@ -14,7 +14,7 @@
 
 /**
  * Install controller.
- * 
+ *
  * @return void
  */
 function install(Zikula_Core $core)
@@ -48,7 +48,7 @@ function install(Zikula_Core $core)
             'install/templates/plugins',
             );
     $smarty->clear_compiled_tpl();
-    
+
     $lang = FormUtil::getPassedValue('lang', '', 'GETPOST');
     $dbhost = FormUtil::getPassedValue('dbhost', '', 'GETPOST');
     $dbusername = FormUtil::getPassedValue('dbusername', '', 'GETPOST');
@@ -329,7 +329,7 @@ function install(Zikula_Core $core)
 function createuser($username, $password, $email)
 {
     $connection = Doctrine_Manager::connection();
-    
+
     // get the database connection
     ModUtil::dbInfoLoad('Users', 'Users');
     ModUtil::dbInfoLoad('Extensions', 'Extensions');
@@ -535,15 +535,8 @@ function validateMail($mail)
 function _check_requirements()
 {
     $results = array();
-    $results['phpsatisfied'] = version_compare(phpversion(), '5.2.6', ">=");
-
-    if (version_compare(phpversion(), '5.3.0', ">=")) {
-        // date.timezone must be set when PHP >= 5.3.0
-        $results['checkdatetimezone'] = (boolean)ini_get('date.timezone');
-    } else {
-        // don't care, PHP is < 5.3.0
-        $results['checkdatetimezone'] = true;
-    }
+    $results['phpsatisfied'] = version_compare(phpversion(), '5.3.2', ">=");
+    $results['datetimezone'] = ini_get('date.timezone');
 
     $results['pdo'] = extension_loaded('pdo');
     $results['register_globals'] = !ini_get('register_globals');
