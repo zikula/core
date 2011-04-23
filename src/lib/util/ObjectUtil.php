@@ -289,47 +289,6 @@ class ObjectUtil
     }
 
     /**
-     * Fixes the sequence numbers (column position) in a given table.
-     *
-     * Needed, if an object was added or deleted in a table using the
-     * arrow up/down feature.
-     *
-     * @param string  $tablename The tablename key for the PNTables structure.
-     * @param string  $field     The name of the field we wish to resequence (optional) (default='position').
-     * @param boolean $float     Whether or not to use a float (optional) (default=false (uses integer)).
-     * @param string  $idcolumn  The column which contains the unique ID.
-     *
-     * @return nothing
-     */
-    public static function resequenceFields($tablename, $field = 'position', $float = false, $idcolumn = 'id')
-    {
-        $dbtables = DBUtil::getTables();
-        $table = $dbtables[$tablename];
-        $column = $dbtables["{$tablename}_column"];
-
-        if (!$column[$field]) {
-            return z_exit(__f('%1$s: there is no [%2$s] field in the [%3$s] table.', array('ObjectUtil::resequenceFields', $field, $tablename)));
-        }
-
-        $sql = "SELECT $column[$idcolumn], $column[$field]
-                FROM $table
-                ORDER BY $column[$field]";
-        $res = DBUtil::executeSQL($sql);
-
-        $seq = ($float ? 1.0 : 1);
-        while (list ($id, $curseq) = $res->fields) {
-            $res->MoveNext();
-            if ($curseq != $seq) {
-                $sql = "UPDATE $table SET $column[$field] = '" . DataUtil::formatForStore($seq) . "' WHERE $column[$idcolumn]='" . DataUtil::formatForStore($id) . "'";
-                $upd = DBUtil::executeSQL($sql);
-            }
-            $seq += 1;
-        }
-        
-        DBUtil::flushCache($tablename);
-    }
-
-    /**
      * Increments or decremnts a sequence number (column position) in a table for a given ID.
      *
      * If exists, it swaps the sequence of the field above or down.
@@ -402,7 +361,7 @@ class ObjectUtil
         $upd2 = DBUtil::executeSQL($sql);
 
         DBUtil::flushCache($tablename);
-        
+
         return true;
     }
 
@@ -511,7 +470,7 @@ class ObjectUtil
                                              $column[object_id] = '" . DataUtil::formatForStore($objID) . "'";
             DBUtil::executeSQL($sql);
         }
-        
+
         DBUtil::flushCache('objectdata_attributes');
         if (isset($dbtables[$type])) {
             DBUtil::flushCache($type);
@@ -599,7 +558,7 @@ class ObjectUtil
         if (isset($dbtables[$type])) {
             DBUtil::flushCache($type);
         }
-        
+
         return true;
     }
 
@@ -644,12 +603,12 @@ class ObjectUtil
                                          $column[object_id] = '" . DataUtil::formatForStore($objID) . "'";
 
         $recordsDeleted = DBUtil::executeSQL($sql);
-        
+
         DBUtil::flushCache('objectdata_attributes');
         if (isset($dbtables[$type])) {
             DBUtil::flushCache($type);
         }
-        
+
         return $recordsDeleted;
     }
 
@@ -690,12 +649,12 @@ class ObjectUtil
                 . $column['object_id'] . ' = \'' . DataUtil::formatForStore($objID) . '\'';
 
         $recordDeleted = (bool)DBUtil::executeSQL($sql);
-        
+
         DBUtil::flushCache('objectdata_attributes');
         if (isset($dbtables[$type])) {
             DBUtil::flushCache($type);
         }
-        
+
         return $recordDeleted;
     }
 
@@ -714,7 +673,7 @@ class ObjectUtil
 
         $sql = "DELETE FROM $table WHERE $column[object_type] = '" . DataUtil::formatForStore($type) . "'";
         $res = DBUtil::executeSQL($sql);
-        
+
         DBUtil::flushCache('objectdata_attributes');
         if (isset($dbtables[$type])) {
             DBUtil::flushCache($type);
@@ -808,7 +767,7 @@ class ObjectUtil
             $obj['__META__']['metaid'] = $meta['id'];
             return $meta['id'];
         }
-        
+
         $dbtables = DBUtil::getTables();
         if (isset($dbtables[$tablename])) {
             DBUtil::flushCache($tablename);
@@ -1034,7 +993,7 @@ class ObjectUtil
 
         $where = "cmo_table='" . DataUtil::formatForStore($tablename) . "' AND cmo_obj_id='" . DataUtil::formatForStore($obj[$idcolumn]) . "' AND cmo_obj_idcolumn='" . DataUtil::formatForStore($idcolumn) . "'";
         $categoriesDeleted = (boolean)DBUtil::deleteWhere('categories_mapobj', $where);
-        
+
         $dbtables = DBUtil::getTables();
         if (isset($dbtables[$tablename])) {
             DBUtil::flushCache($tablename);
