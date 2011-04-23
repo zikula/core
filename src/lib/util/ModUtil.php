@@ -59,7 +59,7 @@ class ModUtil
 
     /**
      * Internal module cache.
-     * 
+     *
      * @var array
      */
     protected static $cache = array();
@@ -100,7 +100,7 @@ class ModUtil
                 ServiceUtil::HANDLERS => array(),
                 'Settings'          => array(),
         ));
-        
+
         // don't init vars during the installer or upgrader
         if (System::isInstalling()) {
             return;
@@ -120,7 +120,7 @@ class ModUtil
                 self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
             }
          }
-         
+
          // Pre-load the module variables array with empty arrays for known modules that
          // do not define any module variables to prevent unnecessary SQL queries to
          // the module_vars table.
@@ -153,13 +153,13 @@ class ModUtil
 
         // The cast to (array) is for the odd instance where self::$modvars[$modname] is set to null--not sure if this is really needed.
         $varExists = isset(self::$modvars[$modname]) && array_key_exists($name, (array)self::$modvars[$modname]);
-        
+
         if (!$varExists && System::isUpgrading()) {
             // Handle the upgrade edge case--the call to getVar() ensures vars for the module are loaded if newly available.
             $modvars = self::getVar($modname);
             $varExists = array_key_exists($name, (array)$modvars);
         }
-        
+
         return $varExists;
     }
 
@@ -624,7 +624,7 @@ class ModUtil
         if (!isset($serviceManager['modutil.dbinfoload.loaded'])) {
             $serviceManager['modutil.dbinfoload.loaded'] = array();
         }
-        
+
         $loaded = $serviceManager['modutil.dbinfoload.loaded'];
 
         // check to ensure we aren't doing this twice
@@ -681,7 +681,7 @@ class ModUtil
             if (!isset($serviceManager['dbtables'])) {
                 $serviceManager['dbtables'] = array();
             }
-            
+
             $dbtables = $serviceManager['dbtables'];
             $serviceManager['dbtables'] = array_merge($dbtables, (array)$data);
             $loaded[$modname] = true;
@@ -1272,10 +1272,9 @@ class ModUtil
         $shorturlsdefaultmodule = System::getVar('shorturlsdefaultmodule');
 
         // copy shorturls var so we don't overwrite static var (this can probably go, we're not using static vars - drak)
-//        $_shorturls = $shorturls;
-//        if (isset($args['returnpage'])) {
-//            $_shorturls = false;
-//        }
+        if (isset($args['returnpage'])) {
+            $shorturls = false;
+        }
 
         $language = ($forcelang ? $forcelang : ZLanguage::getLanguageCode());
 
@@ -1322,7 +1321,7 @@ class ModUtil
                 $url = $modname . $func . $vars;
 
                 // remove trailing slash to prevent bad encoded of wrapped encodeurl(ModUtil::url()); calls refs #3002 - drak
-                $url = rtrim($url, '/'); 
+                $url = rtrim($url, '/');
             }
 
             if ($shorturlsdefaultmodule == $modinfo['name'] && $url != "{$modinfo['url']}/") {
@@ -1342,7 +1341,7 @@ class ModUtil
                 $url = "$url" . (!empty($query) ? '?' . $query : '');
             }
         } else {
-            // Regular stuff 
+            // Regular stuff
             $urlargs = "module=$modname&type=$type&func=$func";
 
             // add lang param to URL
