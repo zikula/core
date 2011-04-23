@@ -53,6 +53,9 @@ class Zikula_KernelClassLoader
         }
 
         $this->namespaces[$namespace] = array('path' => str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $path)), 'separator' => $separator);
+
+        // Reverse sort keys, allows location of subnamespaces in different paths
+        krsort($this->namespaces);
     }
 
     /**
