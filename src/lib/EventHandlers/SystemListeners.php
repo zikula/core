@@ -628,7 +628,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
     /**
      * Listens for 'bootstrap.getconfig'
-     * 
+     *
      * @param Zikula_Event $event Event.
      *
      * @return void
@@ -642,7 +642,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if (is_readable('config/personal_config.php')) {
             include 'config/personal_config.php';
         }
-        
+
         if (is_readable('config/multisites_config.php')) {
             include 'config/multisites_config.php';
         }
@@ -660,7 +660,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      * Listens on the 'core.preinit' event.
      *
      * @param Zikula_Event $event Event.
-     * 
+     *
      * @return void
      */
     public function systemCheck(Zikula_Event $event)
@@ -683,8 +683,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         // check PHP version, shouldn't be necessary, but....
-        if (version_compare(PHP_VERSION, '5.2.6', '>=') == false) {
-            echo __f('Error! Zikula requires PHP version 5.2.6+. Your server seems to be using version %s.', PHP_VERSION);
+        if (version_compare(PHP_VERSION, '5.3.2', '>=') == false) {
+            echo __f('Error! Zikula requires PHP version 5.3.2+. Your server seems to be using version %s.', PHP_VERSION);
             $die = true;
         }
 
