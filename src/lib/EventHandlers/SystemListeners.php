@@ -751,7 +751,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * @return void
      */
-    public function clickJackProtection(Zikula $event)
+    public function clickJackProtection(Zikula_Event $event)
     {
         header('X-Frames-Options: SAMEORIGIN');
         header("X-Content-Security-Policy: frame-ancestors 'self'");
