@@ -12,12 +12,9 @@ RewriteEngine On
 # Enable RewriteBase if Zikula is installed to a sub-directory
 # RewriteBase /your/path/to/Zikula
 
-# handle the favicon to prevent a full request to our engine
-RewriteRule ^(.*)favicon.ico - [L]
-
 # rewrite any unknown directories and files
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-
-# re-add index.php back into the url
-RewriteRule ^(.+) index.php?$1 [L]
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -l
+RewriteRule ^(.*)$ - [NC,L]
+RewriteRule ^(.*)$ index.php [QSA,L]

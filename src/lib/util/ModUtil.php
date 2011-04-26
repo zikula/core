@@ -1271,9 +1271,11 @@ class ModUtil
         $shorturlsstripentrypoint = System::getVar('shorturlsstripentrypoint');
         $shorturlsdefaultmodule = System::getVar('shorturlsdefaultmodule');
 
-        // copy shorturls var so we don't overwrite static var (this can probably go, we're not using static vars - drak)
-        if (isset($args['returnpage'])) {
-            $shorturls = false;
+        // Don't encode URLs with escaped characters, like return urls.
+        foreach ($args as $v) {
+            if (strpos($v, '%') !== false) {
+                $shorturls = false;
+            }
         }
 
         $language = ($forcelang ? $forcelang : ZLanguage::getLanguageCode());
@@ -1319,6 +1321,7 @@ class ModUtil
                     $func = '/';
                 }
                 $url = $modname . $func . $vars;
+                $url = rtrim($url, '/');
             }
 
             if ($shorturlsdefaultmodule == $modinfo['name'] && $url != "{$modinfo['url']}/") {
