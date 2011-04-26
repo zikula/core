@@ -22,7 +22,7 @@
                 </div>
                 <div class="z-formrow">
                     <label>{gt text="Defaults"}</label>
-                    <span><a href="{modurl modname="Extensions" type="admin" func="modify" id=$id restore=true}">{gt text="Restore now"}</a> ({gt text="This may break your existing indexed URLs"})</span>
+                    <span><a id="restore_defaults" href="{modurl modname="Extensions" type="admin" func="modify" id=$id restore=true}">{gt text="Restore now"}</a> ({gt text="This may break your existing indexed URLs"})</span>
                 </div>
             </fieldset>
 
@@ -33,3 +33,13 @@
         </div>
     </form>
 </div>
+<script type="text/javascript">
+    $('restore_defaults').observe('click',function(event){
+        event.preventDefault();
+        Zikula.UI.Confirm(Zikula.__('Do you really want to reset displayname, url and description to defaults? This may break your existing indexed URLs.'),Zikula.__('Confirmation prompt'),function(res){
+            if (res) {
+                window.location = $('restore_defaults').readAttribute('href');
+            }
+        });
+    });
+</script>
