@@ -1,3 +1,4 @@
+{ajaxheader ui=true}
 {include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="config" size="large"}</div>
@@ -14,7 +15,7 @@
                 </div>
                 <div class="z-formrow">
                     <label>{gt text="Module defaults"}</label>
-                    <span><a href="{modurl modname="Extensions" type="admin" func="view" defaults=true csrftoken=$csrftoken}">{gt text="Hard module regenerate to reset displayname, url and description to defaults"}</a></span>
+                    <span><a id="restore_defaults" href="{modurl modname="Extensions" type="admin" func="view" defaults=true csrftoken=$csrftoken}">{gt text="Hard module regenerate to reset displayname, url and description to defaults"}</a></span>
                 </div>
             </fieldset>
 
@@ -25,3 +26,13 @@
         </div>
     </form>
 </div>
+<script type="text/javascript">
+    $('restore_defaults').observe('click',function(event){
+        event.preventDefault();
+        Zikula.UI.Confirm(Zikula.__('Do you really want to reset displayname, url and description to defaults? This may break your existing indexed URLs.'),Zikula.__('Confirmation prompt'),function(res){
+            if (res) {
+                window.location = $('restore_defaults').readAttribute('href');
+            }
+        });
+    });
+</script>
