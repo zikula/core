@@ -857,7 +857,7 @@ Zikula.UI.AlertDialog = Class.create(Zikula.UI.Dialog,/** @lends Zikula.UI.Alert
  * // after user click "someElement" Zikula.UI.ConfirmDialog is show
  * // when user confirm - deleteAction action is performed
  * $('someElement').observe('click',
- *     Zikula.UI.IfConfirmed('Do you want to remove test element?','Confirm action',deleteAction)
+ *     Zikula.UI.IfConfirmed('Do you want to remove test element?','Confirmation prompt',deleteAction)
  * );
  *
  * @param {String} text Confirm message

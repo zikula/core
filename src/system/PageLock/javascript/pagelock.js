@@ -24,7 +24,7 @@ PageLock.LockedPage = function()
 // Button event handler for "break lock"
 PageLock.BreakLock = function()
 {
-    Zikula.UI.Confirm(Zikula.__('Are you sure you want to break this lock?'),Zikula.__('Confirm action'),function(res){
+    Zikula.UI.Confirm(Zikula.__('Are you sure you want to break this lock?'),Zikula.__('Confirmation prompt'),function(res){
         if (res) {
             PageLock.StopLocking(false);
             PageLock.LockBroken = true;
