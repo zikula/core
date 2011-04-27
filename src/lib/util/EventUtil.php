@@ -68,18 +68,6 @@ class EventUtil
     }
 
     /**
-     * NotifyUntil event.
-     *
-     * @param Zikula_Event $event Event.
-     *
-     * @return Zikula_Event
-     */
-    static public function notifyUntil(Zikula_Event $event)
-    {
-        return self::getManager()->notifyUntil($event);
-    }
-
-    /**
      * Attach listener.
      *
      * @param string       $name    Name of event.

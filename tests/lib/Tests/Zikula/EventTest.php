@@ -157,7 +157,7 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
     public function testSetNotified()
     {
         $this->event->setNotified();
-        $this->assertTrue($this->event->hasNotified());
+        $this->assertTrue($this->event->isStopped());
     }
 
     /**
@@ -174,11 +174,11 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Event->hasNotified()
+     * Tests Event->isStopped()
      */
-    public function testHasNotified()
+    public function testisStopped()
     {
-        $this->assertFalse($this->event->hasNotified());
+        $this->assertFalse($this->event->isStopped());
     }
 }
 

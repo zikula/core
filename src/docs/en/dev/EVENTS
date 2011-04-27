@@ -22,7 +22,7 @@ BOOTSTRAP
 #### `boostrap.getconfig`
 Called in bootstrap.
 Receives Zikula_Core as subject.
-Handler should setNotified().
+Handler should stop().
 Purpose is to load the config/config.php
 
 #### `bootstrap.custom`
@@ -109,7 +109,7 @@ In order to override the classname calculated in `ModUtil::exec()`
 In order to override a pre-existing controller/api method, use this event type to override the class name that is loaded.
 This allows to override the methods using inheritance.
 Receives no subject, args of `array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
-and 'event data' of `$className`.  This can be altered by setting `$event->setData()` followed by `$event->setNotified()`
+and 'event data' of `$className`.  This can be altered by setting `$event->setData()` followed by `$event->stop()`
 
 #### `module_dispatch.service_links`
 Occurs when building admin menu items. Adds sublinks to a Services menu that is appended to all modules if populated.
@@ -120,7 +120,7 @@ format data like so:
 
 #### `module.mailer.api.sendmessage`
 Invoked from `Mailer_Api_User#sendmessage`. Subject is `Mailer_Api_User` with `$args`.
-This is a notifyUntil event so the event must `$event->setNotified()` and set any
+This is a notifyUntil event so the event must `$event->stop()` and set any
 return data into `$event->data`, or `$event->setData()`
 
 #### `pageutil.addvar_filter`
@@ -142,10 +142,10 @@ ERRORS
 Invoked if an exception is trapped in the front controller (index.php).
 Subject is the exception that was caught.
 Receives arguments array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
-Event handler must `setNotified()` if it executes.
+Event handler must `stop()` if it executes.
 
 #### `setup.errorreporting`
-Invoked during `System::init()`.  Used to activate `set_error_handler()`.  Event must `setNotified()`.
+Invoked during `System::init()`.  Used to activate `set_error_handler()`.  Event must `stop()`.
 
 #### `system.outputfilter`
 Filter type event for output filter HTML sanitisation
@@ -208,7 +208,7 @@ Occurs immediately prior to a log-in that is expected to succeed. (All prerequis
 successful login have been checked and are satisfied.) This event allows a module to
 intercept the login process and prevent a successful login from taking place. 
 
-This event uses `notifyUntil()`, so handlers are called until either one vetoes the login attempt,
+This event uses `notify()`, so handlers are called until either one vetoes the login attempt,
 or there are no more handlers for the event. A handler that needs to veto a login attempt
 should call `setNotify()`. This will prevent other handlers from receiving the event, will
 return to the login process, and will prevent the login from taking place. A handler that
@@ -229,7 +229,7 @@ do not introduce breaches of security.
     * `'authentication_method'` will contain the name of the module and the name of the method that was used to authenticated the user.
     * `'uid'` will contain the user's uid.
 
-An event handler can prevent (veto) the log-in attempt by calling `setNotified()` on the event. This is 
+An event handler can prevent (veto) the log-in attempt by calling `stop()` on the event. This is 
 enough to ensure that the log-in attempt is stopped, however this will result in a `Zikula_Exception_Forbidden`
 exception being thrown. 
 
@@ -288,7 +288,7 @@ This information is also passed back to the log-in process when the user is redi
 The Users module uses this method to handle users who have been forced by the administrator to change their password 
 prior to logging in. The code used for the notification might look like the following example:
 
-    $event->setNotified();
+    $event->stop();
     $event->setData(array(
         'redirect_func'  => array(
             'modname'   => 'Users',
@@ -338,7 +338,7 @@ the URL provided replaces the one provided by the returnurl parameter to the log
 string, then the user is redirected to the site's home page. An event handler should carefully consider whether 
 changing the `'redirecturl'` argument is appropriate. First, the user may be expecting to return to the page where
 he was when he initiated the log-in process. Being redirected to a different page might be disorienting to the user.
-Second, all event handlers are being notified of this event. This is not a `notifyUntil()` event. An event handler
+Second, all event handlers are being notified of this event. This is not a `notify()` event. An event handler
 that was notified prior to the current handler may already have changed the `'redirecturl'`.
 
 Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
@@ -362,7 +362,7 @@ If a `'redirecturl'` is specified by any entity intercepting and processing the 
 the user will be redirected to the URL provided, instead of being presented with the log-in form.  An event handler 
 should carefully consider whether changing the `'redirecturl'` argument is appropriate. First, the user may be expecting 
 to return to the log-in screen . Being redirected to a different page might be disorienting to the user.
-Second, all event handlers are being notified of this event. This is not a `notifyUntil()` event. An event handler
+Second, all event handlers are being notified of this event. This is not a `notify()` event. An event handler
 that was notified prior to the current handler may already have changed the `'redirecturl'`.
 
 Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
@@ -376,7 +376,7 @@ Occurs right after a successful logout. All handlers are notified.
 #### `user.gettheme`
 Called during UserUtil::getTheme() and is used to filter the results.  Receives arg['type']
 with the type of result to be filtered and the $themeName in the $event->data which can
-be modified.  Must $event->setNotified() if handler performs filter.
+be modified.  Must $event->stop() if handler performs filter.
 
 #### `user.account.create`
 Occurs after a user account is created. All handlers are notified. It does not apply to creation of a pending
@@ -463,7 +463,7 @@ status of the registration or user object received.
 
 An event handler should carefully consider whether changing the `'redirecturl'` argument is appropriate. First, the user may 
 be expecting to return to the log-in screen . Being redirected to a different page might be disorienting to the user. Second, 
-all event handlers are being notified of this event. This is not a `notifyUntil()` event. An event handler that was notified 
+all event handlers are being notified of this event. This is not a `notify()` event. An event handler that was notified 
 prior to the current handler may already have changed the `'redirecturl'`.
 
 #### `module.users.ui.registration.failed`
@@ -481,7 +481,7 @@ the user will be redirected to the URL provided, instead of being redirected to 
 An event handler should carefully consider whether changing the `'redirecturl'` argument is appropriate. First, the 
 user may be expecting to be directed to a page containing information on why the registration failed. Being redirected to a different 
 page might be disorienting to the user. Second, all event handlers are being notified of this event. This is not a 
-`notifyUntil()` event. An event handler that was notified prior to the current handler may already have changed the `'redirecturl'`.
+`notify()` event. An event handler that was notified prior to the current handler may already have changed the `'redirecturl'`.
 
 #### `user.registration.create`
 Occurs after a registration record is created, either through the normal user registration process, or through the 

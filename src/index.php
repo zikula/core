@@ -107,8 +107,8 @@ try {
     }
 } catch (Exception $e) {
     $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
-    $core->getEventManager()->notifyUntil($event);
-    if ($event->hasNotified()) {
+    $core->getEventManager()->notify($event);
+    if ($event->isStopped()) {
         $httpCode = $event['httpcode'];
         $message = $event['message'];
     } else {
