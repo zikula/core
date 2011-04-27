@@ -374,7 +374,7 @@ class Zikula_Core
             if (!System::isInstalling()) {
                 // this is here because it depends on the config.php loading.
                 $event = new Zikula_Event('setup.errorreporting', null, array('stage' => $stage));
-                $this->eventManager->notifyUntil($event);
+                $this->eventManager->notify($event);
             }
 
             // initialise custom event listeners from config.php settings

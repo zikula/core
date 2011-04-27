@@ -157,7 +157,7 @@ class Extensions_HookUI
         }
         
         $event->setData($view->fetch('extensions_hookui_hooks.tpl'));
-        $event->setNotified();
+        $event->stop();
     } 
 
     public static function moduleservices(Zikula_Event $event)
@@ -183,6 +183,6 @@ class Extensions_HookUI
         $view->assign('sublinks', $sublinks);
 
         $event->setData($view->fetch('extensions_hookui_moduleservices.tpl'));
-        $event->setNotified();
+        $event->stop();
     }
 }

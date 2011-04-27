@@ -44,12 +44,12 @@ The folllowing show an example of one of each kind of event handler, notify, not
         /**
          * NotifyUntil handler.
          *
-         * This type of handler is called by $eventManager->notifyUntil($event) which
+         * This type of handler is called by $eventManager->notify($event) which
          * will keep calling all registered handlers of the name until one
          * responds.
          *
          * This handler should check to see if it should execute and if so it
-         * must call $event->setNotified();.
+         * must call $event->stop();.
          *
          * @param Event $event
          *
@@ -59,7 +59,7 @@ The folllowing show an example of one of each kind of event handler, notify, not
         public function handlerUntil(Event $event)
         {
             if ($event->getHas('foo')) {
-                $event->setNotified();
+                $event->stop();
             }
         }
 
@@ -106,7 +106,7 @@ The folllowing show an example of one of each kind of event handler, notify, not
             }
 
             $event->data++;
-            $event->setNotified();
+            $event->stop();
         }
     }
 

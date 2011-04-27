@@ -81,7 +81,7 @@ class ModulePlugin_Users_Example_Plugin extends Zikula_AbstractPlugin implements
         $view = Zikula_View_plugin::getModulePluginInstance($this->moduleName, $this->pluginName);
 
         $event->setData($view->fetch('anotherfunction.tpl'));
-        $event->setNotified();
+        $event->stop();
     }
 
     /**

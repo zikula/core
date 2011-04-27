@@ -403,7 +403,7 @@ MISCELLANEOUS
 - The name of the classes are Modulename_$type (case sensitive).
   The $func argument would be the public methods contained therein.
   Also see the EventHandlers folder which shows how a method can be
-  added to the controller via a notifyUntil() events of name
+  added to the controller via a notify() events of name
   'controller.method_not_found' and 'controllerapi.method_not_found'
   for APIs.
 

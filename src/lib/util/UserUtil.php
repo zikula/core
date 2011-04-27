@@ -877,9 +877,9 @@ class UserUtil
                     'uid'                   => $userObj['uid'],
                 );
                 $event = new Zikula_Event('user.login.veto', $userObj, $eventArgs);
-                $event = EventUtil::notifyUntil($event);
+                $event = EventUtil::notify($event);
 
-                if ($event->hasNotified()) {
+                if ($event->isStopped()) {
                     // The login attempt has been vetoed by one or more modules.
                     $eventData = $event->getData();
 
@@ -1913,7 +1913,7 @@ class UserUtil
     private static function _getThemeFilterEvent($themeName, $type)
     {
         $event = new Zikula_Event('user.gettheme', null, array('type' => $type), $themeName);
-        return EventUtil::notifyUntil($event)->getData();
+        return EventUtil::notify($event)->getData();
     }
 
     /**
