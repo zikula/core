@@ -1273,8 +1273,19 @@ class ModUtil
 
         // Don't encode URLs with escaped characters, like return urls.
         foreach ($args as $v) {
-            if (strpos($v, '%') !== false) {
-                $shorturls = false;
+            if (!is_array($v)) {
+                if (strpos($v, '%') !== false) {
+                    $shorturls = false;
+                    break;
+                }
+            } else {
+                foreach ($v as $vv) {
+                    if (strpos($vv, '%') !== false) {
+                        $shorturls = false;
+                        break;
+                    }
+                }
+                break;
             }
         }
 
