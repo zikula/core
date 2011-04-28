@@ -1577,6 +1577,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     color: #666666;
     float: left;
     font-weight: bold;
+    outline: 0; /* remove Firefox border */
     padding: 5px;
     position: relative;
     text-decoration: none;
@@ -1584,7 +1585,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 
 .z-tabs li > a:hover {
     background: #fff !important;
-    border-right: 1px solid #ccc;
     color: #000;
     text-decoration: none;
 }
@@ -1597,6 +1597,13 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 
 .z-tabs li.active a:hover {
     border-right: 1px solid transparent;
+}
+
+.z-tabs-content {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    padding: 5px;
 }
 
 /******************************************************************************

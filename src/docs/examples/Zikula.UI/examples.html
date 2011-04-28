@@ -102,6 +102,12 @@
     <body>
         <div id="zikula-ui-tests" class="z-form">
             <h1>Zikula UI Features</h1>
+            <div class="z-informationmsg">
+                You can use Zikula.UI with:
+                <pre>{pageaddvar name='javascript' value='zikula.ui'}</pre>
+                or enabling the ui parameter to the ajaxheader plugin call:
+                <pre>{ajaxheader ... ui=true}</pre>
+            </div>
             <ul>
                 <li><a href="#link_tooltip">Tooltips</a></li>
                 <li><a href="#link_window">Window - simple dragable window with button to close</a></li>
