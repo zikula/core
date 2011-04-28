@@ -1201,7 +1201,8 @@ Zikula.UI.Tabs = Class.create(Control.Tabs,/** @lends Zikula.UI.Tabs.prototype *
         }, options || { });
         $(tab_list_container).addClassName(options.containerClass);
         $super(tab_list_container,options);
-        if(this.options.equal) {
+        this.containers.values().invoke('addClassName', options.containerClass+'-content');
+        if (this.options.equal) {
             this.alignTabs();
         }
     },
@@ -1214,7 +1215,7 @@ Zikula.UI.Tabs = Class.create(Control.Tabs,/** @lends Zikula.UI.Tabs.prototype *
      */
     setActiveTab: function($super,link) {
         $super(link);
-        if(this.options.equal) {
+        if (this.options.equal) {
             this.alignTabs();
         }
     },
@@ -1224,8 +1225,8 @@ Zikula.UI.Tabs = Class.create(Control.Tabs,/** @lends Zikula.UI.Tabs.prototype *
      * @return void
      */
     alignTabs: function() {
-        this.maxHeight = this.containers.values().invoke('getHeight').max();
-        this.containers.values().invoke('setStyle',{minHeight: this.maxHeight.toUnits()});
+        this.maxHeight = this.containers.values().invoke('getContentHeight').max();
+        this.containers.values().invoke('setStyle', {minHeight: this.maxHeight.toUnits()});
     }
 });
 
