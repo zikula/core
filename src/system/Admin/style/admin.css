@@ -64,9 +64,6 @@ div.z-admincategorydescription {
     padding: 0;
     text-align: left;
 }
-#z-maincontent div.z-adminbox h1.z-tightmodtitle {
-    line-height: 30px;
-}
 
 #z-maincontent div.z-adminbox img {
     float: left;
