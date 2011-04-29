@@ -165,7 +165,7 @@ Occurs just before `Zikula_View_Theme#__construct()` finishes.
 The subject is the Zikula_View_Theme instance.
 
 #### `theme.load_config`
-Runs just before `Theme#_load_config()` completed.  Subject is the Theme instance.
+Runs just before `Theme#load_config()` completed.  Subject is the Theme instance.
 
 #### `theme.prefetch`
 Occurs in `Theme::themefooter()` just before getting the `$maincontent`.  The
