@@ -282,8 +282,11 @@ class Zikula_View_Theme extends Zikula_View
         // define the plugin directories
         $this->_plugin_dirs();
 
+        // set the config directory
+        $this->_set_configdir();
+
         // load the theme configuration
-        $this->_load_config();
+        $this->load_config();
 
         // check for cached output
         // turn on caching, check for cached output and then disable caching
@@ -874,6 +877,10 @@ class Zikula_View_Theme extends Zikula_View
         $this->assign('module', $this->toplevelmodule);
         $this->assign('type', $this->type);
         $this->assign('func', $this->func);
+
+        // load the theme variables
+        $inifile = $this->themepath . '/templates/config/themevariables.ini';
+        $this->load_vars($inifile, 'variables');
     }
 
     /**
@@ -881,11 +888,8 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return void
      */
-    private function _load_config()
+    public function load_config()
     {
-        // set the config directory
-        $this->_set_configdir();
-
         // load the page configurations
         $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $this->name));
 
@@ -986,21 +990,17 @@ class Zikula_View_Theme extends Zikula_View
             }
         }
 
-        // load the theme settings
-        $inifile = $this->themepath . '/templates/config/themevariables.ini';
-        $this->load_vars($inifile, 'variables');
-
-        // load the palette
+        // load the palette if set
         if (isset($this->themeconfig['palette'])) {
             $inifile = $this->themepath . '/templates/config/themepalettes.ini';
             $this->load_vars($inifile, $this->themeconfig['palette'], 'palette');
         }
 
-        $event = new Zikula_Event('theme.load_config', $this);
-        $this->eventManager->notify($event);
-
         // assign the palette
         $this->assign('palette', isset($this->themeconfig['palette']) ? $this->themeconfig['palette'] : null);
+
+        $event = new Zikula_Event('theme.load_config', $this);
+        $this->eventManager->notify($event);
     }
 
     /**
