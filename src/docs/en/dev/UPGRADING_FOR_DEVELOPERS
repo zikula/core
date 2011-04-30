@@ -389,9 +389,9 @@ MISCELLANEOUS
   extend from CustomEventHandler.
 
 - In modules you can autoload event handlers by calling
-  EventManagerUtil::attachCustomHandlers($path) which should be a folder with
+  EventUtil::attachCustomHandlers($path) which should be a folder with
   just event handlers, or if you have static method handler just load them
-  directly with EventManagerUtil::attach($name, $callable) [see ** below]
+  directly with EventUtil::getManager()->attach($name, $callable); [see ** below]
   This method could be used to load event handler dynamically from a ConfigVar()
   containing array('name' => $name, 'callable' => $callable);
 
