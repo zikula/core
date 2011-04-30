@@ -293,6 +293,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // Add ServiceManager and EventManager to all templates
         parent::assign('serviceManager', $this->serviceManager);
         parent::assign('eventManager', $this->eventManager);
+        parent::assign('request', $this->request);
         parent::assign('zikula_core', $this->serviceManager->getService('zikula'));
         parent::assign('modvars', ModUtil::getModvars()); // Get all modvars from any modules that have accessed their modvars at least once.
 
