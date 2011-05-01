@@ -227,21 +227,14 @@ class DBObject
      *
      * @return array Empty data object.
      */
-    public function generateEmptyObject()
+    public function createEmptyObject()
     {
-        $dbtables = DBUtil::getTables();
-        $tkey = $this->_objType;
-        $ckey = $this->_objType . "_column";
-        $this->_table = isset($dbtables[$tkey]) ? $dbtables[$tkey] : '';
-        $this->_columns = isset($dbtables[$ckey]) ? $dbtables[$ckey] : '';
+        $data = ObjectUtil::createEmptyObject ($this->_objType);
+        if ($data) {
+            $this->_objData = $data;
+        } 
 
-        $data = array();
-        foreach ($this->_columns as $k => $v) {
-            $data[$k] = null;
-        }
-
-        $this->setData($data);
-        return $data;
+        return $this->_objData;
     }
 
     /**

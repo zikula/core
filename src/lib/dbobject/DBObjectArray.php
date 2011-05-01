@@ -289,24 +289,16 @@ class DBObjectArray
      */
     public function generateEmptyObjectArray($num = 1)
     {
-        $dbtables = DBUtil::getTables();
-        $tkey = $this->_objType;
-        $ckey = $this->_objType . "_column";
-        $this->_table = isset($dbtables[$tkey]) ? $dbtables[$tkey] : '';
-        $this->_columns = isset($dbtables[$ckey]) ? $dbtables[$ckey] : '';
+        $item = ObjectUtil::createEmptyObject ($this->_objType);
+        if ($item) {
+            $data = array();
+            for ($i = 0; $i < $num; $i++) {
+                $data[] = $item;
+            }
+            $this->_objData = $data;
+        } 
 
-        $item = array();
-        foreach ($this->_columns as $k => $v) {
-            $item[$k] = null;
-        }
-
-        $data = array();
-        for ($i = 0; $i < $num; $i++) {
-            $data[] = $item;
-        }
-
-        $this->setData($data);
-        return $data;
+        return $this->_objData;
     }
 
     /**

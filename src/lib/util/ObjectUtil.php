@@ -178,6 +178,36 @@ class ObjectUtil
     }
 
     /**
+     * Create an empty object: all fields known via pntables are set to null
+     *
+     * @param array  $tablename The system tablename registered in the pntables array
+     *
+     * @return The create object (success) or false (failure)
+     */
+    public static function createEmptyObject ($tablename) 
+    { 
+        if (!$tablename) {
+            return LogUtil::registerError ('Invalid [tablename] received');
+        } 
+
+        $pntables = DBUtil::getTables();
+        if (!isset($pntables[$tablename])) {
+            return LogUtil::registerError ("Tablename [$tablename] not set in pntables array");
+        } 
+        if (!isset($pntables["${tablename}_column"])) {
+            return LogUtil::registerError ("Columns [${tablename}_column] not set in pntables array");
+        } 
+
+        $cols = $pntables["${tablename}_column"];
+        $data = array();
+        foreach ($cols as $k=>$v) {
+            $data[$k] = null;
+        } 
+
+        return $data;
+    }
+
+    /**
      * If the specified field is set return it, otherwise return default.
      *
      * @param array  $obj     The object to get the field from.
