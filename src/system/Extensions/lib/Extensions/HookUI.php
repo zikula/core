@@ -155,10 +155,10 @@ class Extensions_HookUI
             }
             $view->assign('suggestedProviders', $suggested_providers);
         }
-        
+
         $event->setData($view->fetch('extensions_hookui_hooks.tpl'));
         $event->stop();
-    } 
+    }
 
     public static function moduleservices(Zikula_Event $event)
     {
