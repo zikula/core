@@ -14,9 +14,9 @@
  */
 
 /**
- * HookProvider model class.
+ * HookSubscriber model class.
  */
-class Zikula_Doctrine_Model_HookProviders extends Doctrine_Record
+class Zikula_Doctrine_Model_HookSubscriber extends Doctrine_Record
 {
     /**
      * Set table definitions.
@@ -25,7 +25,8 @@ class Zikula_Doctrine_Model_HookProviders extends Doctrine_Record
      */
     public function setTableDefinition()
     {
-        $this->setTableName('hook_providers');
+        $this->setTableName('hook_subscriber');
+
         $this->hasColumn('id', 'integer', 4, array(
              'type' => 'integer',
              'length' => 4,
@@ -34,6 +35,7 @@ class Zikula_Doctrine_Model_HookProviders extends Doctrine_Record
              'primary' => true,
              'autoincrement' => true,
              ));
+
         $this->hasColumn('owner', 'string', 40, array(
              'type' => 'string',
              'length' => 40,
@@ -43,60 +45,18 @@ class Zikula_Doctrine_Model_HookProviders extends Doctrine_Record
              'notnull' => true,
              'autoincrement' => false,
              ));
-        $this->hasColumn('area', 'string', 60, array(
+
+        $this->hasColumn('subowner', 'string', 40, array(
              'type' => 'string',
-             'length' => 60,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
-        $this->hasColumn('name', 'string', null, array(
-             'type' => 'string',
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
-        $this->hasColumn('type', 'string', 20, array(
-             'type' => 'string',
-             'length' => 20,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
-        $this->hasColumn('classname', 'string', 60, array(
-             'type' => 'string',
-             'length' => 60,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
-        $this->hasColumn('method', 'string', 20, array(
-             'type' => 'string',
-             'length' => 20,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
-        $this->hasColumn('serviceid', 'string', 60, array(
-             'type' => 'string',
-             'length' => 60,
+             'length' => 40,
              'fixed' => false,
              'unsigned' => false,
              'primary' => false,
              'notnull' => false,
              'autoincrement' => false,
              ));
-        $this->hasColumn('weight', 'integer', 4, array(
+
+        $this->hasColumn('sareaid', 'integer', 4, array(
              'type' => 'integer',
              'length' => 4,
              'fixed' => false,
@@ -106,9 +66,39 @@ class Zikula_Doctrine_Model_HookProviders extends Doctrine_Record
              'autoincrement' => false,
              ));
 
+        $this->hasColumn('hooktype', 'string', 20, array(
+             'type' => 'string',
+             'length' => 20,
+             'fixed' => false,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => true,
+             'autoincrement' => false,
+             ));
+
+        $this->hasColumn('category', 'string', 10, array(
+             'type' => 'string',
+             'length' => 10,
+             'fixed' => false,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => true,
+             'autoincrement' => false,
+             ));
+
+        $this->hasColumn('eventname', 'string', 60, array(
+             'type' => 'string',
+             'length' => 60,
+             'fixed' => false,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => true,
+             'autoincrement' => false,
+             ));
+
         $this->index('myindex', array(
                 'fields' => array(
-                    'name' => array(
+                    'eventname' => array(
                         'sorting' => 'ASC',
                         'length'  => 60),
                     ),
@@ -123,5 +113,6 @@ class Zikula_Doctrine_Model_HookProviders extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
+
     }
 }

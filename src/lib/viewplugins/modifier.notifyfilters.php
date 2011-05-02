@@ -22,14 +22,14 @@
  * Example
  *   {$foo|notifyfilters:'news.filterhook.articles'}
  *
- * @param string      $string    The contents to filter.
+ * @param string      $content   The contents to filter.
  * @param string      $eventName The contents to filter.
  * @param Zikula_View $view      Zikula_View instance (added automatically).
  *
  * @return string The modified output.
  */
-function smarty_modifier_notifyfilters($string, $eventName, $view)
+function smarty_modifier_notifyfilters($content, $eventName, $view)
 {
-    $event = new Zikula_Event($eventName, $view, array('caller' => $view->getTopLevelModule()), $string);
-    return EventUtil::getManager()->notify($event)->getData();
+    $hook = new Zikula_FilterHook($eventName, $view->getToplevelmodule(), $view, $content);
+    return $view->getServiceManager()->getService('zikula.hookmanager')->notify($hook)->getData();
 }
