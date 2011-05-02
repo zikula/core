@@ -73,7 +73,7 @@ method called `setupHookBundles()` to Version.php, for example:
 During installation of the module you must register the bundles with the
 persistence layer using:
 
-    HookUtil::registerHookSubscriberBundles($this->version);
+    HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
 
 During the upgrade of the module to a new version which changes the subscriber's
 registered hook information, you must upgrade the new hook bundles with the
@@ -134,7 +134,7 @@ following method:
 Third, on installation or upgrade of the module you must register the bundles with the
 persistence layer. During installation use:
 
-    HookUtil::registerHookProviderBundles($this->version);
+    HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
 
 During upgrade, use:
 

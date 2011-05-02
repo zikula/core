@@ -46,8 +46,24 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
         $this->addHandlerDefinition('core.init', 'initDB');
+        $this->addHandlerDefinition('core.preinit', 'setupHookManager');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
+    }
+
+    /**
+     * Listens on 'core.preinit' event.
+     *
+     * Sets up hookmanager.
+     *
+     * @param Zikula_Event $event Event.
+     */
+    public function setupHookManager(Zikula_Event $event)
+    {
+        $storageDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_Storage_Doctrine');
+        $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula_HookManager');
+        $hookManagerDef->setConstructorArgs(array($storageDef, new Zikula_ServiceManager_Definition('Zikula_EventManager', array(new Zikula_ServiceManager_Reference('zikula.servicemanager')))));
+        $this->serviceManager->registerService('zikula.hookmanager', $hookManagerDef);
     }
 
     /**
@@ -245,7 +261,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
                 ServiceUtil::loadPersistentServices();
                 PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");
                 EventUtil::loadPersistentEvents();
-                HookUtil::loadHandlers();
             }
         }
     }

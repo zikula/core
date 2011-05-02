@@ -57,7 +57,7 @@ class Users_Version extends Zikula_AbstractVersion
 
     /**
      * Define the hook bundles supported by this module.
-     * 
+     *
      * @return void
      */
     protected function setupHookBundles()
@@ -65,7 +65,7 @@ class Users_Version extends Zikula_AbstractVersion
         // Subscriber bundles
 
         // Bundle for forms that create and edit user account records (both by admin and by user).
-        $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.users.user', $this->__('User and registration management hooks'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'modulehook_area.users.user', 'ui', $this->__('User and registration management hooks'));
         $bundle->addType('ui.view',         'users.hook.user.ui.view');
         $bundle->addType('ui.edit',         'users.hook.user.ui.edit');
         $bundle->addType('ui.delete',       'users.hook.user.ui.delete');
@@ -76,14 +76,14 @@ class Users_Version extends Zikula_AbstractVersion
         $this->registerHookSubscriberBundle($bundle);
 
         // Bundle for the login form (both the block and the login).
-        $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.users.login', $this->__('Login form and block hooks'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'modulehook_area.users.login', 'ui', $this->__('Login form and block hooks'));
         $bundle->addType('ui.edit',         'users.hook.login.ui.edit');
         $bundle->addType('validate.edit',   'users.hook.login.validate.edit');
         $bundle->addType('process.edit',    'users.hook.login.process.edit');
         $this->registerHookSubscriberBundle($bundle);
 
         // Bundle for the list of authentication methods on the login block and the login.
-        $bundle = new Zikula_Version_HookSubscriberBundle('modulehook_area.users.authentication_method_selectors', $this->__('Pre-login authentication method selector hooks'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'modulehook_area.users.authentication_method_selectors', 'ui', $this->__('Pre-login authentication method selector hooks'));
         $bundle->addType('ui.view',         'users.hook.authentication_method_selectors.ui.view');
         $this->registerHookSubscriberBundle($bundle);
     }

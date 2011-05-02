@@ -42,8 +42,7 @@ class Extensions_Installer extends Zikula_AbstractInstaller
         }
 
         // create hook provider table.
-        Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders', 'Zikula_Doctrine_Model_HookSubscribers',
-                'Zikula_Doctrine_Model_HookBindings'));
+        Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
         EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
         EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
 
@@ -80,8 +79,7 @@ class Extensions_Installer extends Zikula_AbstractInstaller
             case '3.7.6':
             case '3.7.8':
                 // create the new hooks tables
-                Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookProviders', 'Zikula_Doctrine_Model_HookSubscribers',
-                'Zikula_Doctrine_Model_HookBindings'));
+                Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
                 EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
                 EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
             case '3.7.9':

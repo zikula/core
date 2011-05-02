@@ -85,7 +85,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
 
     /**
      * Setter for view property.
-     * 
+     *
      * @param Zikula_Form_View $view Zikula_Form_View.
      *
      * @return void
@@ -107,7 +107,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
 
     /**
      * Set domain property.
-     * 
+     *
      * @param string $domain Domain.
      *
      * @return void
@@ -246,10 +246,8 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
         }
 
         // set caller's name
-        $args['caller'] = $args['controller']->getName();
-
-        $event = new Zikula_Event($name, $subject, $args, $data);
-        return $this->view->getEventManager()->notify($event);
+        $hook = new Zikula_Hook($name, $args['controller']->getName(), $subject, $args, $data);
+        return $this->view->getServiceManager()->getService('zikula.hookmanager')->notify($hook);
     }
 
     /**

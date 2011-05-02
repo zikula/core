@@ -29,7 +29,6 @@ class HookUtil
      * Subscriber capability key.
      */
     const SUBSCRIBER_CAPABLE = 'hook_subscriber';
-
     /**
      * Constructor.
      */

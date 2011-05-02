@@ -41,7 +41,7 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
 
     /**
      * Display hook response object.
-     * 
+     *
      * @var Zikula_Response_DisplayHook
      */
     protected $display;
@@ -52,14 +52,14 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
      * @var Zikula_Provider_HookValidation
      */
     protected $validation;
-    
+
     /**
      * This object's reflection.
      *
      * @var ReflectionObject
      */
     protected $reflection;
-    
+
     /**
      * Constructor.
      *
