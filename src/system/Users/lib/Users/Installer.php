@@ -51,8 +51,8 @@ class Users_Installer extends Zikula_AbstractInstaller
         EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
         
         // Register persistent hook bundles
-        HookUtil::registerHookSubscriberBundles($this->version);
-        HookUtil::registerHookProviderBundles($this->version);
+        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+        HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
 
         // Initialisation successful
         return true;

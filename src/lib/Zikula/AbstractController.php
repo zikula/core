@@ -83,15 +83,12 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      * @throws InvalidArgumentException If args['controller'] is not a Zikula_AbstractController instance.
      *
-     * @return Zikula_Event
+     * @return Zikula_Hook
      */
     public function notifyHooks($name, $subject=null, $id=null, $args=array(), $data=null)
     {
         // set ID.
         $args['id'] = $id;
-
-        // set caller's name
-        $args['caller'] = $this->name;
 
         if (!isset($args['controller'])) {
             $args['controller'] = $this;
@@ -101,8 +98,8 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
             throw new InvalidArgumentException(__f('%s is not an instance of Zikula_AbstractController, the $args[\'controller\'] argument must be the controller who is notifying these hooks', get_class($this)));
         }
 
-        $event = new Zikula_Event($name, $subject, $args, $data);
-        return $this->eventManager->notify($event);
+        $hook = new Zikula_Hook($name, $this->name, $subject, $args, $data);
+        return $this->getService('zikula.hookmanager')->notify($hook);
     }
 
     /**
