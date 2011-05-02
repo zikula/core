@@ -57,6 +57,13 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     public $data;
 
     /**
+     * Exception.
+     *
+     * @var Exception
+     */
+    private $exception;
+
+    /**
      * Encapsulate an event called $name with $subject.
      *
      * @param string $name    Name of the event.
@@ -207,6 +214,47 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     public function hasArg($key)
     {
         return array_key_exists($key, $this->args);
+    }
+
+    /**
+     * Get exception.
+     *
+     * @throws RuntimeException If no exeception was set.
+     *
+     * @return Exception
+     */
+    public function getException()
+    {
+        if (!$this->hasException()) {
+            throw new RuntimeException('No exception was set during this event notification.');
+        }
+        return $this->exception;
+    }
+
+    /**
+     * Set exception.
+     *
+     * Rather than throw an exception within an event handler,
+     * instead you can store it here then stop() execution.
+     * This can then be rethrown or handled politely.
+     *
+     * @param Exception $exception Exception.
+     *
+     * @return Exception
+     */
+    public function setException($exception)
+    {
+        $this->exception = $exception;
+    }
+
+    /**
+     * Has exception.
+     *
+     * @return Exception
+     */
+    public function hasException()
+    {
+        return (bool)$this->exception;
     }
 
     /**
