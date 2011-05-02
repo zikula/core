@@ -42,6 +42,7 @@ function smarty_block_form($params, $content, $view)
     <div>
         {$view->getStateHTML()}
         {$view->getIncludesHTML()}
+        {$view->getDataHTML()}
         {$view->getCsrfTokenHtml()}
         <input type=\"hidden\" name=\"__formid\" id=\"form__id\" value=\"{$formId}\" />
         <input type=\"hidden\" name=\"FormEventTarget\" id=\"FormEventTarget\" value=\"\" />
