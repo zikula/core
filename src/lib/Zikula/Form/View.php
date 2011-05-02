@@ -56,6 +56,14 @@ class Zikula_Form_View extends Zikula_View
     public $plugins;
 
     /**
+     * Array of persistent data through the form processing
+     *
+     * @var array
+     * @internal
+     */
+    public $data;
+
+    /**
      * Stack with all instantiated blocks (push when starting block, pop when ending block).
      *
      * @var array
@@ -157,6 +165,7 @@ class Zikula_Form_View extends Zikula_View
 
         $this->initializeState();
         $this->initializeIncludes();
+        $this->initializeData();
     }
 
     /**
@@ -216,6 +225,7 @@ class Zikula_Form_View extends Zikula_View
             $this->setFormId($formId);
 
             $this->decodeIncludes();
+            $this->decodeData();
             $this->decodeState();
 
             if ($eventHandler->initialize($this) === false) {
@@ -857,6 +867,68 @@ class Zikula_Form_View extends Zikula_View
                 require_once $includeFilename;
             }
         }
+    }
+
+    // --- Persistent data ---
+
+    /**
+     * Initializes the data memory.
+     *
+     * @return void
+     */
+    public function initializeData()
+    {
+        $this->data = array();
+    }
+
+    /**
+     * Get a data field or all the persistent data.
+     *
+     * @return mixed One or all the persistent data.
+     */
+    public function getData($key=null)
+    {
+        if ($key) {
+            return isset($this->data[$key]) ? $this->data[$key] : null;
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * Set a persistent data field.
+     *
+     * @return void.
+     */
+    public function setData($key, $value)
+    {
+        if ($key) {
+            $this->data[$key] = $value;
+        }
+    }
+
+    /**
+     * Save data to session.
+     *
+     * @return string Empty string.
+     */
+    public function getDataHTML()
+    {
+        $_SESSION['__forms'][$this->formId]['data'] = $this->getData();
+        return '';
+    }
+
+    /**
+     * Decode data from session.
+     *
+     * @return void
+     */
+    public function decodeData()
+    {
+        if (!isset($_SESSION['__forms'][$this->formId]['data'])) {
+            throw new Exception('Failed to decode form includes - this should not have happened');
+        }
+        $this->data = $_SESSION['__forms'][$this->formId]['data'];
     }
 
     // --- Add nonce ---
