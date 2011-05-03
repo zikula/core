@@ -156,10 +156,10 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
         
         $args = (array)$args;
         $isFirstIteration = true;
-        foreach($args as $key => $value) {
+        foreach ($args as $key => $value) {
             $valuePrefix = ($inArray && is_string($key)? $key . ' => ' : '' );
             
-            if(!$isFirstIteration) {
+            if (!$isFirstIteration) {
                 $preview .= ', ';
             }
             $isFirstIteration = false;
@@ -181,7 +181,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             }
         }
         
-        if($inArray) {
+        if ($inArray) {
             $preview .= ')';
         }
         
@@ -239,7 +239,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
         
         $html = '<li>' . $html . '</li>';
         
-        if($level == 1) {
+        if ($level == 1) {
             $html = '<ul>' . $html . '</ul>';
         }
         
