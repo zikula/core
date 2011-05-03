@@ -42,7 +42,7 @@ class Blocks_MenutreeUtil
             $themesTpls[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/templates/modules/Blocks/menutree', false, true, 'tpl', false);
         }
         foreach ($adminThemes as $at) {
-            if (!array_key_exists($at['name'],$themesTpls)) {
+            if (!array_key_exists($at['name'], $themesTpls)) {
                 $themesTpls[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/templates/modules/Blocks/menutree', false, true, 'tpl', false);
             }
         }
@@ -52,24 +52,27 @@ class Blocks_MenutreeUtil
 
         // get tpls which exist in some themes
         $tpls['themes']['some'] = array_unique(call_user_func_array('array_merge', $themesTpls));
-        $tpls['themes']['some'] = array_diff($tpls['themes']['some'],$tpls['themes']['all'],$tpls['modules'],$sysTpls);
+        $tpls['themes']['some'] = array_diff($tpls['themes']['some'], $tpls['themes']['all'], $tpls['modules'], $sysTpls);
 
-        $templates = array_unique(array_merge($tpls['modules'],$tpls['themes']['all']));
-        $templates = array_diff($templates,$sysTpls);
+        $templates = array_unique(array_merge($tpls['modules'], $tpls['themes']['all']));
+        $templates = array_diff($templates, $sysTpls);
         sort($templates);
 
         // prepare array values
         $templatesValues = array();
-        foreach($templates as $t) {
+        foreach ($templates as $t) {
             $templatesValues[] = 'menutree/'.$t;
         }
         // fill array keys using values
-        $templates = array_combine($templatesValues,$templates);
+        $templates = array_combine($templatesValues, $templates);
 
         $someThemes = __('Only in some themes');
         if (!empty($tpls['themes']['some'])) {
             sort($tpls['themes']['some']);
-            $templates[$someThemes] = array_combine($tpls['themes']['some'],$tpls['themes']['some']);
+            foreach ($tpls['themes']['some'] as $k => $t) {
+                $tpls['themes']['some'][$k] = 'menutree/'.$t;
+            }
+            $templates[$someThemes] = array_combine($tpls['themes']['some'], $tpls['themes']['some']);
         }
 
         return self::normalize($templates);

@@ -321,14 +321,11 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         // sort tree array according to lineno key
         uasort($vars['menutree_content'], array('Blocks_Block_Menutree','sort_menu'));
 
-        $serviceManager = ServiceUtil::getManager();
-        $themeEngine = $serviceManager->getService('zikula.theme');
-
         // get other form data
         $menutree_data = FormUtil::getPassedValue('menutree');
 
         $vars['menutree_tpl'] = isset($menutree_data['tpl']) ? $menutree_data['tpl'] : '';
-        if (empty($vars['menutree_tpl']) || (!$this->view->template_exists($vars['menutree_tpl']) && !$themeEngine->template_exists('Blocks/menutree/'.$vars['menutree_tpl']))) {
+        if (empty($vars['menutree_tpl']) || !$this->view->template_exists($vars['menutree_tpl'])) {
             $vars['menutree_tpl'] = 'menutree/blocks_block_menutree_default.tpl';
         }
 
