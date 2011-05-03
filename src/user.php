@@ -14,4 +14,4 @@
 
 include 'lib/bootstrap.php';
 $core->init();
-System::redirect(ModUtil::url('Users'));
+System::redirect(ModUtil::url('Users', 'user', 'main'));
