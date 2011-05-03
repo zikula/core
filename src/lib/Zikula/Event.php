@@ -240,7 +240,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      *
      * @param Exception $exception Exception.
      *
-     * @return Exception
+     * @return void
      */
     public function setException($exception)
     {

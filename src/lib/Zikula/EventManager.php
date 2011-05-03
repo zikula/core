@@ -188,7 +188,8 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
                 // invoke service method
                 $service->$method($event);
         } else {
-            if (is_array($handler)) { // PHP callable format
+            if (is_array($handler)) {
+                // PHP callable format
                 if (is_object($handler[0])) {
                     // invoke instanciated object method.
                     $handler[0]->$handler[1]($event);
