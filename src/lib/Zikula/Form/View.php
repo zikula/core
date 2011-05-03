@@ -56,7 +56,7 @@ class Zikula_Form_View extends Zikula_View
     public $plugins;
 
     /**
-     * Array of persistent data through the form processing
+     * Array of persistent state data through the form processing.
      *
      * @var array
      * @internal
@@ -164,8 +164,8 @@ class Zikula_Form_View extends Zikula_View
         $this->_isValid = null;
 
         $this->initializeState();
+        $this->initializeStateData();
         $this->initializeIncludes();
-        $this->initializeData();
     }
 
     /**
@@ -225,7 +225,7 @@ class Zikula_Form_View extends Zikula_View
             $this->setFormId($formId);
 
             $this->decodeIncludes();
-            $this->decodeData();
+            $this->decodeStateData();
             $this->decodeState();
 
             if ($eventHandler->initialize($this) === false) {
@@ -869,68 +869,6 @@ class Zikula_Form_View extends Zikula_View
         }
     }
 
-    // --- Persistent data ---
-
-    /**
-     * Initializes the data memory.
-     *
-     * @return void
-     */
-    public function initializeData()
-    {
-        $this->data = array();
-    }
-
-    /**
-     * Get a data field or all the persistent data.
-     *
-     * @return mixed One or all the persistent data.
-     */
-    public function getData($key=null)
-    {
-        if ($key) {
-            return isset($this->data[$key]) ? $this->data[$key] : null;
-        }
-
-        return $this->data;
-    }
-
-    /**
-     * Set a persistent data field.
-     *
-     * @return void.
-     */
-    public function setData($key, $value)
-    {
-        if ($key) {
-            $this->data[$key] = $value;
-        }
-    }
-
-    /**
-     * Save data to session.
-     *
-     * @return string Empty string.
-     */
-    public function getDataHTML()
-    {
-        $_SESSION['__forms'][$this->formId]['data'] = $this->getData();
-        return '';
-    }
-
-    /**
-     * Decode data from session.
-     *
-     * @return void
-     */
-    public function decodeData()
-    {
-        if (!isset($_SESSION['__forms'][$this->formId]['data'])) {
-            throw new Exception('Failed to decode form includes - this should not have happened');
-        }
-        $this->data = $_SESSION['__forms'][$this->formId]['data'];
-    }
-
     // --- Add nonce ---
 
     /**
@@ -943,6 +881,71 @@ class Zikula_Form_View extends Zikula_View
         $key = SecurityUtil::generateCsrfToken($this->serviceManager);
         $html = "<input type=\"hidden\" name=\"csrftoken\" value=\"{$key}\" id=\"FormCsrfToken_{$this->formId}\" />";
         return $html;
+    }
+
+    // --- Persistent state data ---
+
+    /**
+     * Initializes the data memory.
+     *
+     * @return void
+     */
+    public function initializeStateData()
+    {
+        $this->data = array();
+    }
+
+    /**
+     * Get a data field or all the persistent data.
+     *
+     * @return mixed One or all the persistent data.
+     */
+    public function getStateData($key=null)
+    {
+        if ($key) {
+            return isset($this->data[$key]) ? $this->data[$key] : null;
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * Set a persistent data field.
+     *
+     * @param string $key   ID of the value to set in the state data array.
+     * @param mixed  $value Data to set.
+     *
+     * @return void.
+     */
+    public function setStateData($key, $value)
+    {
+        if ($key) {
+            $this->data[$key] = $value;
+        }
+    }
+
+    /**
+     * Save data to session.
+     *
+     * @return string Empty string.
+     */
+    public function getStateDataHTML()
+    {
+        $_SESSION['__forms'][$this->formId]['data'] = $this->getStateData();
+        return '';
+    }
+
+    /**
+     * Decode data from session.
+     *
+     * @return void
+     */
+    public function decodeStateData()
+    {
+        if (!isset($_SESSION['__forms'][$this->formId]['data'])) {
+            throw new Exception('Failed to decode form includes - this should not have happened');
+        }
+        $this->data = $_SESSION['__forms'][$this->formId]['data'];
     }
 
     // --- State management ---
