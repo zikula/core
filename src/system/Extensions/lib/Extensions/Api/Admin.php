@@ -392,8 +392,8 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if ($oomod) {
-            HookUtil::unregisterHookProviderBundles($version);
-            HookUtil::unregisterHookSubscriberBundles($version);
+            HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
+            HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
         }
 
         // remove the entry from the modules table
@@ -642,7 +642,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                                 DBUtil::updateObject($hook, 'hooks');
                             }
                         }
-                        
+
                         $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[tmodule] = '$save[name]'");
                         if ($hooks) {
                             foreach ($hooks as $hook) {
@@ -656,7 +656,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 }
                 unset($tables);
             }
-            
+
             if (isset($dbmodules[$name]) && $dbmodules[$name]['state'] > 10) {
                 $dbmodules[$name]['state'] = $dbmodules[$name]['state'] - 20;
                 $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => $dbmodules[$name]['state']));
