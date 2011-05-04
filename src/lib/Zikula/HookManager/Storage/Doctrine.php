@@ -332,6 +332,58 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         return false;
     }
 
+    public function bindingBetweenAreas($subscriberArea, $providerArea)
+    {
+        $sareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
+                ->findBy('areaname', $subscriberArea)
+                ->getFirst()
+                ->get('id');
+
+        $pareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
+                ->findBy('areaname', $providerArea)
+                ->getFirst()
+                ->get('id');
+
+        return Doctrine_Query::create()->select()
+                ->andWhere('sareaid = ?', $sareaId)
+                ->andWhere('pareaid = ?', $pareaId)
+                ->from('Zikula_Doctrine_Model_HookBindings')
+                ->fetchOne();
+    }
+
+    public function allowBindingBetweenAreas($subscriberarea, $providerarea)
+    {
+        $sareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
+                ->findBy('areaname')
+                ->getFirst()
+                ->get('id');
+
+        $subscribers = Doctrine_Query::create()->select()
+                ->where('sareaid = ?', $sareaId)
+                ->from('Zikula_Doctrine_Model_HookSubscriber')
+                ->fetchArray();
+
+        if (!$subscribers) {
+            return false;
+        }
+
+        $allow = false;
+        foreach ($subscribers as $subscriber) {
+            $hookprovider = Doctrine_Query::create()->select()
+                    ->where('pareaid = ?', $providerarea)
+                    ->andWhere('hooktype = ?', $subscriber['type'])
+                    ->from('Zikula_Doctrine_Model_HookProvider')
+                    ->fetchArray();
+
+            if ($hookprovider) {
+                $allow = true;
+                break;
+            }
+        }
+
+        return $allow;
+    }
+
     private function registerArea($areaName, $areaType, $owner, $subOwner, $category)
     {
         if ($areaType !== self::PROVIDER && $areaType !== self::SUBSCRIBER) {

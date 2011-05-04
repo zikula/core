@@ -124,6 +124,16 @@ class Zikula_HookManager
         return $this->storage->setBindOrder($subscriberAreaName, $providerAreas);
     }
 
+    public function bindingBetweenAreas($subscriberArea, $providerArea)
+    {
+        return $this->storage->bindingBetweenAreas($subscriberArea, $providerArea);
+    }
+
+    public function allowBindingBetweenAreas($subscriberarea, $providerarea)
+    {
+        return $this->storage->allowBindingBetweenAreas($subscriberarea, $providerarea);
+    }
+
     public function loadRuntimeHandlers()
     {
         $handlers = $this->storage->getRuntimeHandlers();

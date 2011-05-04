@@ -175,8 +175,15 @@ class HookUtil
         return $hookManager->setBindOrder($subscriberAreaName);
     }
 
-    public static function allowBindingBetweenAreas($provider, $subscriber)
+    public static function bindingBetweenAreas($subscriberArea, $providerArea)
     {
+        $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+        return $hookManager->bindingBetweenAreas($subscriberArea, $providerArea);
+    }
 
+    public static function allowBindingBetweenAreas($subscriberArea, $providerArea)
+    {
+        $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+        return $hookManager->allowBindingBetweenAreas($subscriberArea, $providerArea);
     }
 }
