@@ -148,7 +148,7 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
      *
      * @return array Non associative array of handlers, empty array if none were found.
      */
-    public function getHandlers($name)
+    private function getHandlers($name)
     {
         $handlers = array();
         if ($this->hasHandlers($name)) {
@@ -213,7 +213,7 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
      *
      * @return boolean
      */
-    public function hasHandlers($name)
+    private function hasHandlers($name)
     {
         return array_key_exists($name, $this->handlers);
     }
