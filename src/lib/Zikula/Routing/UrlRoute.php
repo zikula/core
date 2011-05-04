@@ -62,7 +62,7 @@ class Zikula_Routing_UrlRoute
 
     /**
      * Array with tokens determined during regex compilation.
-     * 
+     *
      * @var array
      */
     protected $tokens;
@@ -82,7 +82,7 @@ class Zikula_Routing_UrlRoute
             $urlPattern .= '/';
         }
 
-        // append a star for automatic addition of all params which were not considered in the pattern 
+        // append a star for automatic addition of all params which were not considered in the pattern
         $urlPattern .= '*';
 
         // store given arguments
@@ -263,7 +263,7 @@ class Zikula_Routing_UrlRoute
      * Compiles the url pattern including creation of regex and collecting tokens as well as variables.
      *
      * @throws InvalidArgumentException With invalid pattern.
-     * 
+     *
      * @return boolean True.
      */
     protected function compile()
@@ -300,7 +300,7 @@ class Zikula_Routing_UrlRoute
         }
 
         // create regex
-        $regex = '#';
+        $regex = '#^';
         for ($i = 0, $max = count($this->tokens); $i < $max; $i++) {
             $token = $this->tokens[$i];
             if ($token[0] == 'variable') {
@@ -325,7 +325,7 @@ class Zikula_Routing_UrlRoute
                 }
             }
         }
-        $regex .= '#';
+        $regex .= '$#';
 
         // store the result
         $this->regex = $regex;
