@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-02 13:14-0500\n"
+"POT-Creation-Date: 2011-05-04 20:36-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,21 +16,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: javascript/helpers/Zikula.UI.js:841 javascript/helpers/Zikula.UI.js:925
-#: javascript/helpers/Zikula.UI.js:1122
+#: javascript/helpers/Zikula.UI.js:848 javascript/helpers/Zikula.UI.js:931
+#: javascript/helpers/Zikula.UI.js:1095
 msgid "Ok"
 msgstr ""
 
-#: javascript/helpers/Zikula.UI.js:926 javascript/helpers/Zikula.UI.js:1032
+#: javascript/helpers/Zikula.UI.js:932 javascript/helpers/Zikula.UI.js:1051
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:42
+#: system/Categories/javascript/categories_admin_view.js:93
+#: system/Categories/javascript/categories_admin_view.js:104
+#: system/Categories/javascript/categories_admin_view.js:249
 msgid "Cancel"
 msgstr ""
 
-#: javascript/helpers/Zikula.UI.js:1031
+#: javascript/helpers/Zikula.UI.js:1050
+#: system/Categories/javascript/categories_admin_view.js:248
 msgid "Submit"
 msgstr ""
 
-#: javascript/helpers/Zikula.UI.js:1101 javascript/helpers/Zikula.UI.js:1102
+#: javascript/helpers/Zikula.UI.js:1093
 msgid "Select multiple"
 msgstr ""
 
@@ -60,31 +64,31 @@ msgstr ""
 msgid "Image #{index} of #{total}"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:101
+#: javascript/helpers/Zikula.js:105
 #, php-format
 msgid "illegal JSON response: \\n%1$s in\\n%2$s"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:408
+#: javascript/helpers/Zikula.js:403
 msgid "Ajax connection time out!"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:674 javascript/helpers/Zikula.js:766
+#: javascript/helpers/Zikula.js:686 javascript/helpers/Zikula.js:778
 msgid "hello"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:675 javascript/helpers/Zikula.js:780
+#: javascript/helpers/Zikula.js:687 javascript/helpers/Zikula.js:792
 #, php-format
 msgid "hello %s"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:676 javascript/helpers/Zikula.js:795
+#: javascript/helpers/Zikula.js:688 javascript/helpers/Zikula.js:807
 msgid "hello my friend"
 msgid_plural "hello my friends"
 msgstr[0] ""
 msgstr[1] ""
 
-#: javascript/helpers/Zikula.js:677 javascript/helpers/Zikula.js:818
+#: javascript/helpers/Zikula.js:689 javascript/helpers/Zikula.js:830
 #, php-format
 msgid "hello my friend %s"
 msgid_plural "hello my friends %s"
@@ -124,18 +128,23 @@ msgid "Active?"
 msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:28
+#: system/Categories/javascript/categories_admin_view.js:48
 msgid "Activate"
 msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:29
+#: system/Categories/javascript/categories_admin_view.js:57
 msgid "Deactivate"
 msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:30
+#: system/Categories/javascript/categories_admin_view.js:30
 msgid "Edit"
 msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:31
+#: system/Categories/javascript/categories_admin_view.js:36
+#: system/Categories/javascript/categories_admin_view.js:92
 msgid "Delete"
 msgstr ""
 
@@ -191,6 +200,85 @@ msgstr ""
 msgid "Marked fields are required"
 msgstr ""
 
-#: system/Admin/javascript/admin_admin_ajax.js:399
+#: system/PageLock/javascript/pagelock.js:27
+msgid "Are you sure you want to break this lock?"
+msgstr ""
+
+#: system/PageLock/javascript/pagelock.js:27
+#: system/Categories/javascript/categories_admin_view.js:110
+msgid "Confirmation prompt"
+msgstr ""
+
+#: system/PageLock/javascript/pagelock.js:142
+msgid "Back"
+msgstr ""
+
+#: system/PageLock/javascript/pagelock.js:143
+msgid "Check again"
+msgstr ""
+
+#: system/PageLock/javascript/pagelock.js:144
+msgid "Ignore Lock"
+msgstr ""
+
+#: system/Users/javascript/Zikula.Users.PassMeter.js:154
+msgid "Weak"
+msgstr ""
+
+#: system/Users/javascript/Zikula.Users.PassMeter.js:154
+msgid "Normal"
+msgstr ""
+
+#: system/Users/javascript/Zikula.Users.PassMeter.js:154
+msgid "Strong"
+msgstr ""
+
+#: system/Users/javascript/Zikula.Users.PassMeter.js:154
+msgid "Very Strong"
+msgstr ""
+
+#: system/Users/javascript/Zikula.Users.PassMeter.js:158
+#, php-format
+msgid "The minimum length for user passwords is %s characters."
+msgstr ""
+
+#: system/Users/javascript/Zikula.Users.PassMeter.js:164
+msgid "Password can not match the username, choose a different password."
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:42
+msgid "Copy"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:66
+msgid "Add category (after selected)); ?>"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:72
+msgid "Add subcategory (into selected)); ?>"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:89
+msgid "Do you really want to delete this category?"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:97
+#, php-format
+msgid "It contains %s direct sub-categories."
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:99
+msgid "Please also choose what to do with this category's sub-categories."
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:102
+msgid "Delete all sub-categories"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:103
+msgid "Move all sub-categories"
+msgstr ""
+
+#: system/Admin/javascript/admin_admin_ajax.js:401
 msgid "You must enter a name for the new category"
 msgstr ""
