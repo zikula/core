@@ -185,13 +185,26 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     }
 
     /**
-     * Getter for name property.
+     * Get event name.
      *
      * @return string Name property.
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set event name.
+     *
+     * @param type $name Event Name
+     *
+     * @return Zikula_Event
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
     }
 
     /**
