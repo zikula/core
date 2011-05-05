@@ -85,9 +85,9 @@ class Zikula_Doctrine_Model_HookRuntime extends Doctrine_Record
                 'autoincrement' => false,
         ));
 
-        $this->hasColumn('pareaid', 'string', 60, array(
-                'type' => 'string',
-                'length' => 60,
+        $this->hasColumn('pareaid', 'integer', 4, array(
+                'type' => 'integer',
+                'length' => 4,
                 'fixed' => false,
                 'unsigned' => false,
                 'primary' => false,
