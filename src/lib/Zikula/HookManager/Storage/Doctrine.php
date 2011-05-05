@@ -335,12 +335,12 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
     public function bindingBetweenAreas($subscriberArea, $providerArea)
     {
         $sareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
-                ->findByAreaname($subscriberArea)
+                ->findBy('areaname', $subscriberArea)
                 ->getFirst()
                 ->get('id');
 
         $pareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
-                ->findByAreaname($providerArea)
+                ->findBy('areaname', $providerArea)
                 ->getFirst()
                 ->get('id');
 
@@ -354,7 +354,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
     public function allowBindingBetweenAreas($subscriberarea, $providerarea)
     {
         $sareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
-                ->findByAreaname($subscriberarea)
+                ->findBy('areaname', $subscriberarea)
                 ->getFirst()
                 ->get('id');
         
@@ -370,7 +370,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         $allow = false;
         foreach ($subscribers as $subscriber) {
             $pareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
-                ->findByAreaname($providerarea)
+                ->findBy('areaname', $providerarea)
                 ->getFirst()
                 ->get('id');
 
