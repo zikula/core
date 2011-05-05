@@ -335,29 +335,29 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
     public function bindingBetweenAreas($subscriberArea, $providerArea)
     {
         $sareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
-                ->findBy('areaname', $subscriberArea)
+                ->findByAreaname($subscriberArea)
                 ->getFirst()
                 ->get('id');
 
         $pareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
-                ->findBy('areaname', $providerArea)
+                ->findByAreaname($providerArea)
                 ->getFirst()
                 ->get('id');
 
         return Doctrine_Query::create()->select()
                 ->andWhere('sareaid = ?', $sareaId)
                 ->andWhere('pareaid = ?', $pareaId)
-                ->from('Zikula_Doctrine_Model_HookBindings')
+                ->from('Zikula_Doctrine_Model_HookBinding')
                 ->fetchOne();
     }
 
     public function allowBindingBetweenAreas($subscriberarea, $providerarea)
     {
         $sareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
-                ->findBy('areaname')
+                ->findByAreaname($subscriberarea)
                 ->getFirst()
                 ->get('id');
-
+        
         $subscribers = Doctrine_Query::create()->select()
                 ->where('sareaid = ?', $sareaId)
                 ->from('Zikula_Doctrine_Model_HookSubscriber')
@@ -369,9 +369,14 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
 
         $allow = false;
         foreach ($subscribers as $subscriber) {
+            $pareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
+                ->findByAreaname($providerarea)
+                ->getFirst()
+                ->get('id');
+
             $hookprovider = Doctrine_Query::create()->select()
-                    ->where('pareaid = ?', $providerarea)
-                    ->andWhere('hooktype = ?', $subscriber['type'])
+                    ->where('pareaid = ?', $pareaId)
+                    ->andWhere('hooktype = ?', $subscriber['hooktype'])
                     ->from('Zikula_Doctrine_Model_HookProvider')
                     ->fetchArray();
 
