@@ -115,19 +115,30 @@ class Extensions_HookUI
             $currentSorting = array();
             $total_attached_provider_areas = 0;
             for ($i=0 ; $i < count($subscriberAreas) ; $i++) {
-                $currentSorting[$subscriberAreas[$i]] = array();
-                $sortsByArea = HookUtil::getDisplaySortsByArea($subscriberAreas[$i]);
+                $sortsByArea = HookUtil::getBindingsFor($subscriberAreas[$i]);
                 foreach ($sortsByArea as $sba) {
-                    array_push($currentSorting[$subscriberAreas[$i]], $sba);
+                    $areaname = $sba['areaname'];
+                    $category = $sba['category'];
+
+                    if (!isset($currentSorting[$category])) {
+                        $currentSorting[$category] = array();
+                    }
+
+                    if (!isset($currentSorting[$category][$subscriberAreas[$i]])) {
+                        $currentSorting[$category][$subscriberAreas[$i]] = array();
+                    }
+
+                    array_push($currentSorting[$category][$subscriberAreas[$i]], $areaname);
                     $total_attached_provider_areas++;
 
                     // get hook provider from it's area
-                    $sbaProviderModule = HookUtil::getOwnerByProviderArea($sba);
+                    $sbaProviderModule = HookUtil::getOwnerByArea($areaname);
+                    
                     // create an instance of the provider's version
                     $sbaProviderModuleVersion = $sbaProviderModule.'_Version';
                     $sbaProviderModuleVersionObj = new $sbaProviderModuleVersion;
                     // get the bundle title
-                    $currentSortingTitles[$sba] = $view->__($sbaProviderModuleVersionObj->getHookProviderBundle($sba)->getTitle());
+                    $currentSortingTitles[$areaname] = $view->__($sbaProviderModuleVersionObj->getHookProviderBundle($areaname)->getTitle());
                 }
             }
             $view->assign('areasSorting', $currentSorting);
@@ -147,7 +158,7 @@ class Extensions_HookUI
                 }
 
                 // check for binding and exclude this provider if he is already attached
-                $binding = HookUtil::bindingsBetweenProviderAndSubscriber($moduleName, $suggested_providers[$i]['name']);
+                $binding = HookUtil::bindingsBetweenSubscriberAndProvider($moduleName, $suggested_providers[$i]['name']);
                 if (!empty($binding)) {
                     unset($suggested_providers[$i]);
                     continue;

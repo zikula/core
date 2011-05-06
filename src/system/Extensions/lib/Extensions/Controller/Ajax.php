@@ -91,7 +91,7 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         }
 
         // get subscriber module based on area and do some checks
-        $subscriber = HookUtil::getOwnerBySubscriberArea($subscriberarea);
+        $subscriber = HookUtil::getOwnerByArea($subscriberarea);
         if (empty($subscriber)) {
             throw new Zikula_Exception_Fatal($this->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
@@ -107,7 +107,7 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         }
         
         // set sorting
-        HookUtil::setDisplaySortsByArea($subscriberarea, $providerarea);
+        HookUtil::setBindOrder($subscriberarea, $providerarea);
 
         $ol_id = $this->request->getPost()->get('ol_id','');
 
