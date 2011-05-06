@@ -33,7 +33,7 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         }
 
         // get subscriber module based on area and do some checks
-        $subscriber = HookUtil::getOwnerBySubscriberArea($subscriberarea);
+        $subscriber = HookUtil::getOwnerByArea($subscriberarea);
         if (empty($subscriber)) {
             throw new Zikula_Exception_Fatal($this->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
@@ -44,13 +44,12 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
 
         // get providerarea from POST
         $providerarea = $this->request->getPost()->get('providerarea','');
-
         if (empty($providerarea)) {
             throw new Zikula_Exception_Fatal($this->__('No provider area passed.'));
         }
 
         // get provider module based on area and do some checks
-        $provider = HookUtil::getOwnerByProviderArea($providerarea);
+        $provider = HookUtil::getOwnerByArea($providerarea);
         if (empty($provider)) {
             throw new Zikula_Exception_Fatal($this->__f('Module "%s" is not a valid provider.', $provider));
         }
@@ -59,13 +58,15 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         }
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN));
 
+        // get hookmanager
+        $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+
         // check if binding between areas exists
         $binding = HookUtil::bindingBetweenAreas($subscriberarea, $providerarea);
-        
         if (!$binding) {
-            HookUtil::bindSubscribersToProvider($subscriberarea, $providerarea);
+            $hookManager->bindSubscriber($subscriberarea, $providerarea);
         } else {
-            HookUtil::unbindSubscribersFromProvider($subscriberarea, $providerarea);
+            $hookManager->unbindSubscriber($subscriberarea, $providerarea);
         }
         
         return new Zikula_Response_Ajax(array('result' => true));
