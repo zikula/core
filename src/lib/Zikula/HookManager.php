@@ -138,6 +138,11 @@ class Zikula_HookManager
     {
         return $this->storage->allowBindingBetweenAreas($subscriberarea, $providerarea);
     }
+
+    public function bindingsBetweenSubscriberAndProvider($subscriberName, $providerName)
+    {
+        return $this->storage->bindingsBetweenSubscriberAndProvider($subscriberName, $providerName);
+    }
     
     public function bindSubscriber($subscriberArea, $providerArea)
     {

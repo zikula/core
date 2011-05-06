@@ -397,6 +397,15 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         return $allow;
     }
 
+    public function bindingsBetweenSubscriberAndProvider($subscriberName, $providerName)
+    {
+        return Doctrine_Query::create()->select()
+                ->andWhere('sowner = ?', $subscriberName)
+                ->andWhere('powner = ?', $providerName)
+                ->from('Zikula_Doctrine_Model_HookBinding')
+                ->fetchArray();
+    }
+
     private function registerArea($areaName, $areaType, $owner, $subOwner, $category)
     {
         if ($areaType !== self::PROVIDER && $areaType !== self::SUBSCRIBER) {

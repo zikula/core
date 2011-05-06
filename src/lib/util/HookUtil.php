@@ -192,4 +192,10 @@ class HookUtil
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
         return $hookManager->allowBindingBetweenAreas($subscriberArea, $providerArea);
     }
+
+    public static function bindingsBetweenSubscriberAndProvider($subscriberName, $providerName)
+    {
+        $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+        return $hookManager->bindingsBetweenSubscriberAndProvider($subscriberName, $providerName);
+    }
 }
