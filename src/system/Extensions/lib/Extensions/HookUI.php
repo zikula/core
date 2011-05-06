@@ -158,8 +158,8 @@ class Extensions_HookUI
                 }
 
                 // check for binding and exclude this provider if he is already attached
-                $binding = HookUtil::bindingsBetweenSubscriberAndProvider($moduleName, $suggested_providers[$i]['name']);
-                if (!empty($binding)) {
+                $bindings = HookUtil::getBindingsBetweenSubscriberAndProvider($moduleName, $suggested_providers[$i]['name']);
+                if (!empty($bindings)) {
                     unset($suggested_providers[$i]);
                     continue;
                 }

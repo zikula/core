@@ -104,7 +104,7 @@
 
                                 {callfunc x_class='HookUtil' x_method='allowBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
                                 {if !$allow_binding}{continue}{/if}
-                                {callfunc x_class='HookUtil' x_method='bindingBetweenAreas' sarea=$sarea parea=$parea x_assign='binding'}
+                                {callfunc x_class='HookUtil' x_method='getBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='binding'}
                                 <input type="checkbox" id="chk_{$sarea_md5}_{$parea_md5}" name="chk[{$sarea_md5}][{$parea_md5}]" value="subscriberarea={$sarea}#providerarea={$parea}" {if $binding}checked="checked"{/if} /> {$providerAreasTitles.$parea} <span class="z-sub">({$parea})</span><br />
                                 {/foreach}
                             </div>

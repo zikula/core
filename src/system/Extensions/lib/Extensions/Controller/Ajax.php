@@ -62,7 +62,7 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $hookManager = $this->serviceManager->getService('zikula.hookmanager');
 
         // check if binding between areas exists
-        $binding = HookUtil::bindingBetweenAreas($subscriberarea, $providerarea);
+        $binding = HookUtil::getBindingBetweenAreas($subscriberarea, $providerarea);
         if (!$binding) {
             $hookManager->bindSubscriber($subscriberarea, $providerarea);
         } else {
