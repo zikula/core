@@ -36,7 +36,7 @@
     <h2>{$templatetitle}</h2>
 
     <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
-    
+
     <form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='Users' type='admin' func='modifyRegistration'}" method="post">
         <div>
             <input type="hidden" id="{$formData->getFormId()}_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -75,7 +75,7 @@
                 </div>
             </fieldset>
 
-            {notifydisplayhooks eventname='users.hook.user.ui.edit' area='modulehook_area.users.user' subject=$formData->toUserArray() id=$formData->getFieldData('uid')}
+            {notifydisplayhooks eventname='users.hook.user.ui.edit' subject=$formData->toUserArray() id=$formData->getFieldData('uid')}
 
             <fieldset>
                 <legend>{gt text="Check your entries and submit your updates"}</legend>

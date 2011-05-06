@@ -72,7 +72,7 @@
     <h2>{$templatetitle}</h2>
 
     <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
-    
+
     {if $editingSelf}
     <div class="z-informationmsg">{gt text='You are editing your own record, therefore you are not permitted to change your membership in certain system groups, and you are not permitted to change your activated state. These fields are disabled below.'}</div>
     {/if}
@@ -201,7 +201,7 @@
                 <p id="{$formData->getFormId()}_groupmembership_error" class="z-formnote z-errormsg{if !isset($errorFields.groupmembership)} z-hide{/if}">{if isset($errorFields.groupmembership)}{$errorFields.groupmembership}{/if}</p>
             </fieldset>
 
-            {notifydisplayhooks eventname='users.hook.user.ui.edit' area='modulehook_area.users.user' subject=$formData->toUserArray() id=$formData->getFieldData('uid') caller="Users"}
+            {notifydisplayhooks eventname='users.hook.user.ui.edit' subject=$formData->toUserArray() id=$formData->getFieldData('uid') caller="Users"}
 
             <fieldset>
                 <legend>{gt text="Check your entries and save your updates"}</legend>
@@ -216,7 +216,7 @@
             </fieldset>
         </div>
     </form>
-    
+
     <div class="z-adminpageicon">{icon type="utilities" size="large"}</div>
     <h2>{gt text='Other actions for %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname')}</h2>
     <div class="z-center z-buttons">

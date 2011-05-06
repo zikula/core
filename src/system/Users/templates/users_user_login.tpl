@@ -53,9 +53,9 @@
         </fieldset>
 
         {if isset($user_obj) && !empty($user_obj)}
-            {notifydisplayhooks eventname='users.hook.login.ui.edit' area='login' id=$user_obj.uid subject=$user_obj form_type='loginscreen'}
+            {notifydisplayhooks eventname='users.hook.login.ui.edit' id=$user_obj.uid subject=$user_obj form_type='loginscreen'}
         {else}
-            {notifydisplayhooks eventname='users.hook.login.ui.edit' area='login' form_type='loginscreen'}
+            {notifydisplayhooks eventname='users.hook.login.ui.edit' form_type='loginscreen'}
         {/if}
 
         <div class="z-formbuttons z-buttons">
