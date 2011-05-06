@@ -163,6 +163,12 @@ class HookUtil
         return $hookManager->getSubscriberAreasByOwner($moduleName);
     }
 
+    public static function getOwnerByArea($areaName)
+    {
+        $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+        return $hookManager->getOwnerByArea($areaName);
+    }
+
     public static function getBindingsFor($areaName)
     {
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');

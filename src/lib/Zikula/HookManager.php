@@ -114,6 +114,11 @@ class Zikula_HookManager
         return $this->storage->getProviderAreasByOwner($owner);
     }
 
+    public function getOwnerByArea($areaName)
+    {
+        return $this->storage->getOwnerByArea($areaName);
+    }
+
     public function getAreaId($areaName)
     {
         return $this->storage->getAreaId($areaName);
