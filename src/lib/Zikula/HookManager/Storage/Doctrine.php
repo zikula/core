@@ -277,6 +277,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         }
 
         $area = $area[0];
+        
         if ($area['areatype'] == self::PROVIDER) {
             $table = 'Zikula_Doctrine_Model_HookProvider';
             $areaIdField = 'pareaid';
@@ -288,6 +289,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         $results = Doctrine_Query::create()->select()//$areaIdField)
                 ->from('Zikula_Doctrine_Model_HookBinding')
                 ->where("$areaIdField = ?", $area['id'])
+                ->orderBy('sortorder ASC, sareaid ASC')
                 ->fetchArray();
 
         $areas = array();
@@ -318,13 +320,13 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         // sort bindings in order of appearance from $providerAreaIds
         $counter = 1;
         foreach ($providerAreaIds as $id) {
-            var_dump(Doctrine_Query::create()
+            Doctrine_Query::create()
                             ->update('Zikula_Doctrine_Model_HookBinding b')
                             ->set('b.sortorder', $counter)
                             ->where("b.sareaid = $sareaId")
                             ->andWhere("b.pareaid = $id")
-                            ->execute()
-            );
+                            ->execute();
+            
             $counter++;
         }
     }
