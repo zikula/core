@@ -18,6 +18,7 @@
  */
 interface Zikula_HookInterface extends Zikula_EventInterface
 {
+    public function getId();
     public function getAreaId();
     public function setAreaId($areaId);
 }

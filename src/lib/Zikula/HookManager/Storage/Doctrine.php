@@ -145,6 +145,14 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
                 ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     }
 
+    public function getOwnerByArea($areaName)
+    {
+        return Doctrine_Query::create()->select('owner')
+                ->where('areaname = ?', $areaName)
+                ->from('Zikula_Doctrine_Model_HookArea')
+                ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+    }
+
     private function generateRuntimeHandlers()
     {
         // truncate runtime
