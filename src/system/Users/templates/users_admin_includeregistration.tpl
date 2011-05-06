@@ -23,7 +23,7 @@
 </div>
 {/if}
 
-{notifydisplayhooks eventname='users.hook.user.ui.view' area='modulehook_area.users.user' subject=$reginfo id=$reginfo['uid'])}
+{notifydisplayhooks eventname='users.hook.user.ui.view' subject=$reginfo id=$reginfo['uid'])}
 
 <div class="z-form">
     <fieldset>

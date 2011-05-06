@@ -152,7 +152,7 @@
             {$smarty.capture.email}
         {/if}
 
-        {notifydisplayhooks eventname='users.hook.user.ui.edit' area='modulehook_area.users.registration' subject=null id=null}
+        {notifydisplayhooks eventname='users.hook.user.ui.edit' subject=null id=null}
 
         {if !empty($modvars.Users.reg_question)}
         <fieldset>

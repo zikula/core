@@ -44,9 +44,9 @@
             </fieldset>
 
             {if $callbackFunc == 'mailUsers'}
-            {notifydisplayhooks eventname='users.hook.mailuserssearch.ui.edit' area='mailusers'}
+            {notifydisplayhooks eventname='users.hook.mailuserssearch.ui.edit'}
             {else}
-            {notifydisplayhooks eventname='users.hook.search.ui.edit' area='search'}
+            {notifydisplayhooks eventname='users.hook.search.ui.edit'}
             {/if}
 
             <div class="z-formbuttons z-buttons">

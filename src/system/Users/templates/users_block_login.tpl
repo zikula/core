@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            {notifydisplayhooks eventname='users.hook.login.ui.edit' area='modulehook_area.users.login' form_type='loginblock'}
+            {notifydisplayhooks eventname='users.hook.login.ui.edit' form_type='loginblock'}
 
             {/if}
             <div class="z-buttons z-right">
