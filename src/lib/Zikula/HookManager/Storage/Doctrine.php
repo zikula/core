@@ -342,7 +342,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         return false;
     }
 
-    public function bindingBetweenAreas($subscriberArea, $providerArea)
+    public function getBindingBetweenAreas($subscriberArea, $providerArea)
     {
         $sareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
                 ->findBy('areaname', $subscriberArea)
@@ -399,7 +399,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         return $allow;
     }
 
-    public function bindingsBetweenSubscriberAndProvider($subscriberName, $providerName)
+    public function getBindingsBetweenSubscriberAndProvider($subscriberName, $providerName)
     {
         return Doctrine_Query::create()->select()
                 ->andWhere('sowner = ?', $subscriberName)

@@ -32,9 +32,9 @@ interface Zikula_HookManager_StorageInterface
     public function getSubscribersByOwner($owner);
     public function getSubscriberByEventName($eventName);
     public function setBindOrder($subscriberAreaName, array $providerAreas);
-    public function bindingBetweenAreas($subscriberArea, $providerArea);
+    public function getBindingBetweenAreas($subscriberArea, $providerArea);
     public function allowBindingBetweenAreas($subscriberarea, $providerarea);
     public function getOwnerByArea($areaName);
-    public function bindingsBetweenSubscriberAndProvider($subscriberName, $providerName);
+    public function getBindingsBetweenSubscriberAndProvider($subscriberName, $providerName);
 }
 
