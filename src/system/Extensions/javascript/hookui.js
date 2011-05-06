@@ -43,6 +43,7 @@ function initproviderareassorting()
 {
     for(var i=0; i < providerareas.length; i++) {
         var area = 'providerareassortlist_'+providerareas[i];
+
         Sortable.create(area,
         {
             dropOnEmpty: true,
@@ -74,7 +75,7 @@ function changeproviderareaorder()
 
     // the area of our subscriber
     var subscriber_area = $(ol_id+'_h').value;
-    
+
     // the areas of the providers that are attached to the area of our subscriber
     // note that the loop starts from 1 and not 0, because the first item (0)
     // is the area of our subscriber (which we already have)

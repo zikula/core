@@ -46,7 +46,7 @@ class HookUtil
      */
     public static function getHookProviders()
     {
-        return ModUtil::getModulesCapableOf(self::SUBSCRIBER_CAPABLE);
+        return ModUtil::getModulesCapableOf(self::PROVIDER_CAPABLE);
     }
 
     /**
@@ -178,7 +178,7 @@ class HookUtil
     public static function setBindOrder($subscriberAreaName, array $providerAreas)
     {
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
-        return $hookManager->setBindOrder($subscriberAreaName);
+        return $hookManager->setBindOrder($subscriberAreaName, $providerAreas);
     }
 
     public static function bindingBetweenAreas($subscriberArea, $providerArea)

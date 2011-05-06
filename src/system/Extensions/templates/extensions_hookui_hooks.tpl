@@ -1,24 +1,26 @@
 {ajaxheader modname='Extensions' filename='hookui.js'}
 {pageaddvarblock}
     <script type="text/javascript">
-        {{if $isProvider && !empty($providerAreas) && $total_available_subscriber_areas gt 0}}
-        document.observe("dom:loaded", function() {
-            $$('#subscriberslist input').each(function(obj) {
-                obj.observe('click', subscriberAreaToggle);
-            });
+    {{if $isProvider && !empty($providerAreas) && $total_available_subscriber_areas gt 0}}
+    document.observe("dom:loaded", function() {
+        $$('#subscriberslist input').each(function(obj) {
+            obj.observe('click', subscriberAreaToggle);
         });
-        {{/if}}
+    });
+    {{/if}}
 
-        {{if $isSubscriber && !empty($subscriberAreas) && $total_attached_provider_areas gt 0}}
-        var providerareas = new Array();
-        document.observe("dom:loaded", function() {
-            {{foreach from=$areasSorting key='sarea' item='parea'}}
-            {{assign var="sarea_md5" value=$sarea|md5}}
-            providerareas.push('{{$sarea_md5}}');
-            {{/foreach}}
-            initproviderareassorting();
-        });
-        {{/if}}
+    {{if $isSubscriber && !empty($subscriberAreas) && $total_attached_provider_areas gt 0}}
+    var providerareas = new Array();
+    document.observe("dom:loaded", function() {
+        {{foreach from=$areasSorting key='category' item='area'}}
+        {{foreach from=$area key='sarea' item='pareas'}}
+        {{assign var="sarea_md5" value=$sarea|md5}}
+        providerareas.push('{{$sarea_md5}}');
+        {{/foreach}}
+        {{/foreach}}
+        initproviderareassorting();
+    });
+    {{/if}}
     </script>
 {/pageaddvarblock}
 
@@ -57,63 +59,63 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {foreach from=$hooksubscribers item='subscriber'}
-                    {if empty($subscriber.areas)}{continue}{/if}
+                {foreach from=$hooksubscribers item='subscriber'}
+                {if empty($subscriber.areas)}{continue}{/if}
 
-                    <tr class="{cycle values="z-odd,z-even"}">
-                        <td>{$subscriber.id}</td>
-                        <td>{$subscriber.displayname|safetext|default:$subscriber.name}</td>
-                        <td>
+                <tr class="{cycle values="z-odd,z-even"}">
+                    <td>{$subscriber.id}</td>
+                    <td>{$subscriber.displayname|safetext|default:$subscriber.name}</td>
+                    <td>
 
-                            {foreach from=$subscriber.areas item='sarea' name='loop_sareas'}
-                            {assign var="sarea_md5" value=$sarea|md5}
+                        {foreach from=$subscriber.areas item='sarea' name='loop_sareas'}
+                        {assign var="sarea_md5" value=$sarea|md5}
 
-                            {* preliminary check to see if binding is allowed, if no bindings are allowed we don't show this row. Better usability. *}
-                            {assign var="total_bindings" value=0}
-                            {foreach from=$providerAreas item='parea'}
-                            {callfunc x_class='HookUtil' x_method='allowBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
-                            {if $allow_binding}
-                            {assign var="total_bindings" value=$total_bindings+1}
-                            {break}
-                            {/if}
-                            {/foreach}
+                        {* preliminary check to see if binding is allowed, if no bindings are allowed we don't show this row. Better usability. *}
+                        {assign var="total_bindings" value=0}
+                        {foreach from=$providerAreas item='parea'}
+                        {callfunc x_class='HookUtil' x_method='allowBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
+                        {if $allow_binding}
+                        {assign var="total_bindings" value=$total_bindings+1}
+                        {break}
+                        {/if}
+                        {/foreach}
 
-                            {if $total_bindings eq 0}
-                            {continue}
-                            {/if}
+                        {if $total_bindings eq 0}
+                        {continue}
+                        {/if}
 
-                            {if $smarty.foreach.loop_sareas.iteration lte $smarty.foreach.loop_sareas.total && $smarty.foreach.loop_sareas.iteration gt 1}
-                            {* TODO - do this with styles perhaps ? *}
-                            <div style="height:5px; margin-top: 5px; border-top:1px dotted #dedede;"></div>
-                            {/if}
+                        {if $smarty.foreach.loop_sareas.iteration lte $smarty.foreach.loop_sareas.total && $smarty.foreach.loop_sareas.iteration gt 1}
+                        {* TODO - do this with styles perhaps ? *}
+                        <div style="height:5px; margin-top: 5px; border-top:1px dotted #dedede;"></div>
+                        {/if}
 
-                            <div class="z-clearfix">
-                                <div class="z-floatleft z-w45">
-                                    {$subscriber.areasTitles.$sarea} <span class="z-sub">({$sarea})</span>
-                                </div>
-
-                                <div class="z-floatleft z-w10 z-center">
-                                    {img src="attach.png" modname="core" set="icons/extrasmall"}
-                                </div>
-
-                                <div class="z-floatleft z-w45">
-                                    {foreach from=$providerAreas item='parea'}
-                                    {assign var="parea_md5" value=$parea|md5}
-
-                                    {callfunc x_class='HookUtil' x_method='allowBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
-                                    {if !$allow_binding}{continue}{/if}
-                                    {callfunc x_class='HookUtil' x_method='bindingBetweenAreas' sarea=$sarea parea=$parea x_assign='binding'}
-                                    <input type="checkbox" id="chk_{$sarea_md5}_{$parea_md5}" name="chk[{$sarea_md5}][{$parea_md5}]" value="subscriberarea={$sarea}#providerarea={$parea}" {if $binding}checked="checked"{/if} /> {$providerAreasTitles.$parea} <span class="z-sub">({$parea})</span><br />
-                                    {/foreach}
-                                </div>
+                        <div class="z-clearfix">
+                            <div class="z-floatleft z-w45">
+                                {$subscriber.areasTitles.$sarea} <span class="z-sub">({$sarea})</span>
                             </div>
 
-                            {/foreach}
+                            <div class="z-floatleft z-w10 z-center">
+                                {img src="attach.png" modname="core" set="icons/extrasmall"}
+                            </div>
 
-                        </td>
+                            <div class="z-floatleft z-w45">
+                                {foreach from=$providerAreas item='parea'}
+                                {assign var="parea_md5" value=$parea|md5}
 
-                    </tr>
-                    {/foreach}
+                                {callfunc x_class='HookUtil' x_method='allowBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
+                                {if !$allow_binding}{continue}{/if}
+                                {callfunc x_class='HookUtil' x_method='bindingBetweenAreas' sarea=$sarea parea=$parea x_assign='binding'}
+                                <input type="checkbox" id="chk_{$sarea_md5}_{$parea_md5}" name="chk[{$sarea_md5}][{$parea_md5}]" value="subscriberarea={$sarea}#providerarea={$parea}" {if $binding}checked="checked"{/if} /> {$providerAreasTitles.$parea} <span class="z-sub">({$parea})</span><br />
+                                {/foreach}
+                            </div>
+                        </div>
+
+                        {/foreach}
+
+                    </td>
+
+                </tr>
+                {/foreach}
                 </tbody>
             </table>
 
@@ -149,7 +151,10 @@
                 {/if}
             </p>
 
-            {foreach from=$areasSorting key='sarea' item='pareas' name='loop_sareas'}
+            {foreach from=$areasSorting key='category' item='area'}
+            <h3>{$category}</h3>
+            
+            {foreach from=$area key='sarea' item='pareas' name='loop_sareas'}
             {assign var="sarea_md5" value=$sarea|md5}
 
             <ol id="providerareassortlist_{$sarea_md5}" class="z-itemlist">
@@ -170,6 +175,7 @@
                 {/foreach}
             </ol>
 
+            {/foreach}
             {/foreach}
         </fieldset>
         {/if}
