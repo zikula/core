@@ -27,10 +27,15 @@ class Zikula_ProcessHook extends Zikula_AbstractHook
      */
     protected $url;
 
-    public function __construct($name, $id=null, Zikula_ModUrl $url=null)
+    public function __construct($name, $id, Zikula_ModUrl $url=null)
     {
         $this->name = $name;
         $this->id = $id;
         $this->url = $url;
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
     }
 }
