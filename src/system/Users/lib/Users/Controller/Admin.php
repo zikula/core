@@ -73,7 +73,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * string  letter   The first letter of the user names to display.
      * string  sort     The field on which to sort the data.
      * string  sortdir  Either 'ASC' for an ascending sort (a to z) or 'DESC' for a descending sort (z to a).
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * None.
@@ -83,7 +83,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * None.
      *
      * @return string HTML string containing the rendered template.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function view()
@@ -99,7 +99,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if (!$this->request->isGet()) {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         $sort = $this->request->getGet()->get('sort', isset($args['sort']) ? $args['sort'] : 'uname');
         $sortDirection = $this->request->getGet()->get('sortdir', isset($args['sortdir']) ? $args['sortdir'] : 'ASC');
         $sortArgs = array(
@@ -108,14 +108,14 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if (!isset($sortArgs['uname'])) {
             $sortArgs['uname'] = 'ASC';
         }
-        
+
         $getAllArgs = array(
             'startnum'  => $this->request->getGet()->get('startnum', isset($args['startnum']) ? $args['startnum'] : null),
             'numitems'  => $itemsPerPage,
             'letter'    => $this->request->getGet()->get('letter', isset($args['letter']) ? $args['letter'] : null),
             'sort'      => $sortArgs,
         );
-        
+
         // Get all users as specified by the arguments.
         $userList = ModUtil::apiFunc($this->name, 'user', 'getAll', $getAllArgs);
 
@@ -126,7 +126,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         $userGroupsAccess = array();
         $groupsArray = array();
         $canSeeGroups = !empty($groups);
-        
+
         foreach ($groups as $group) {
             $userGroupsAccess[$group['gid']] = array('gid' => $group['gid']);
 
@@ -169,7 +169,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 'modify'                    => $currentUserHasEditAccess,
                 'deleteUsers'               => $currentUserHasDeleteAccess,
             );
-            
+
             if ($isGuestAccount) {
                 $userList[$key]['userGroupsView'] = array();
             } else {
@@ -223,17 +223,17 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * See the definition of {@link Users_Controller_FormData_NewUserForm}.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
      *
      * @return string HTML string containing the rendered template.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access, or if the method of accessing this function is improper.
      */
     public function newUser()
@@ -248,18 +248,18 @@ class Users_Controller_Admin extends Zikula_AbstractController
             // TODO - The home page typically does not display errors.
             $this->redirect(System::getHomepageUrl());
         }
-        
+
         $proceedToForm = true;
         $formData = new Users_Controller_FormData_NewUserForm('users_newuser', $this->serviceManager);
         $errorFields = array();
         $errorMessages = array();
-        
+
         if ($this->request->isPost()) {
             // Returning from a form POST operation. Process the input.
             $this->checkCsrfToken();
-            
+
             $formData->setFromRequestCollection($this->request->getPost());
-            
+
             $registrationArgs = array(
                 'checkMode'         => 'new',
                 'emailagain'        => $formData->getField('emailagain')->getData(),
@@ -275,33 +275,34 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 'email'         => mb_strtolower($formData->getField('email')->getData()),
             );
             $registrationArgs['reginfo'] = $registrationInfo;
-            
+
             $sendPass = $formData->getField('sendpass')->getData();
-                
+
             if ($formData->isValid()) {
                 $errorFields = ModUtil::apiFunc($this->name, 'registration', 'getRegistrationErrors', $registrationArgs);
             } else {
                 $errorFields = $formData->getErrorMessages();
             }
-                
-            $validators = $this->notifyHooks('users.hook.user.validate.edit', $registrationInfo, null, array(), new Zikula_Hook_ValidationProviders())->getData();
-            
+
+            $hook = new Zikula_ValidationHook('users.hook.user.validate.edit', new Zikula_Hook_ValidationProviders());
+            $validators = $this->notifyHooks($hook)->getValidators();
+
             if (empty($errorFields) && !$validators->hasErrors()) {
                 // TODO - Future functionality to suppress e-mail notifications, see ticket #2351
                 //$currentUserEmail = UserUtil::getVar('email');
                 //$adminNotifyEmail = $this->getVar('reg_notifyemail', '');
                 //$adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
-                
+
                 $registeredObj = ModUtil::apiFunc($this->name, 'registration', 'registerNewUser', array(
                     'reginfo'           => $registrationInfo,
                     'sendpass'          => $sendPass,
                     'usernotification'  => true,
                     'adminnotification' => true,
                 ));
-                
+
                 if (isset($registeredObj) && $registeredObj) {
                     $this->notifyHooks('users.hook.user.process.edit', $registeredObj, $registeredObj['uid']);
-                    
+
                     if ($registeredObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) {
                         $this->registerStatus($this->__('Done! Created new registration application.'));
                     } elseif (isset($registeredObj['activated'])) {
@@ -309,7 +310,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     } else {
                         $this->registerError($this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
                     }
-                    
+
                     $proceedToForm = false;
                 } else {
                     $this->registerError($this->__('Error! Could not create the new user account or registration application.'));
@@ -329,51 +330,51 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
         }
     }
-    
+
     /**
      * Renders a user search form used by both the search operation and the mail users operation.
-     * 
+     *
      * @param string $callbackFunc Either 'search' or 'mailUsers', indicating which operation is calling this function.
-     * 
+     *
      * @return string The rendered output from the template, appropriate for the indicated operation.
      */
     protected function renderSearchForm($callbackFunc = 'search')
     {
         // get group items
         $groups = ModUtil::apiFunc('Groups', 'user', 'getAll');
-        
+
         return $this->view->assign('groups', $groups)
                 ->assign('callbackFunc', $callbackFunc)
                 ->fetch('users_admin_search.tpl');
     }
-    
+
     /**
      * Gathers the user input from a rendered search form, and also makes the appropriate hook calls.
-     * 
+     *
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * string  uname         A fragment of a user name on which to search using an SQL LIKE clause. The user name will be
      *                              surrounded by wildcards.
      * integer ugroup        A group id in which to search (only users who are members of the specified group are returned).
-     * string  email         A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address 
+     * string  email         A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address
      *                              will be surrounded by wildcards.
-     * string  regdateafter  An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date 
+     * string  regdateafter  An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date
      *                              after the date specified will be returned.
-     * string  regdatebefore An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date 
+     * string  regdatebefore An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date
      *                              before the date specified will be returned.
-     * array   dynadata      An array of search values to be passed to the designated profile module. Only those user records 
+     * array   dynadata      An array of search values to be passed to the designated profile module. Only those user records
      *                              also satisfying the profile module's search of its dataare returned.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @param string $callbackFunc Either 'search' or 'mailUsers', indicating which operation is calling this function.
-     * 
+     *
      * @return array|boolean An array of search results, which may be empty; false if the search was unsuccessful.
      */
     protected function getSearchResults($callbackFunc = 'search')
@@ -385,36 +386,36 @@ class Users_Controller_Admin extends Zikula_AbstractController
             'regdateafter'  => $this->request->getPost()->get('regdateafter', null),
             'regdatebefore' => $this->request->getPost()->get('regdatebefore', null),
         );
-        
+
         if ($callbackFunc == 'mailUsers') {
             $processEditEvent = $this->notifyHooks('users.hook.mailuserssearch.process.edit', null, null, array(), $findUsersArgs);
         } else {
             $processEditEvent = $this->notifyHooks('users.hook.search.process.edit', null, null, array(), $findUsersArgs);
         }
-        
+
         $findUsersArgs = $processEditEvent->getData();
 
         // call the api
         return ModUtil::apiFunc($this->name, 'admin', 'findUsers', $findUsersArgs);
     }
-    
+
     /**
      * Displays a user account search form, or the search results from a post.
      *
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * See the definition of {@link getSearchResults()}.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return string HTML string containing the rendered template.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function search()
@@ -422,10 +423,10 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         if ($this->request->isPost()) {
             $this->checkCsrfToken();
-            
+
             $usersList = $this->getSearchResults();
 
             if ($usersList) {
@@ -451,7 +452,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $this->registerError($this->__('Sorry! No matching users found.'));
             }
         }
-        
+
         if (isset($usersList) && $usersList) {
             return $this->view->assign('items', $usersList)
                     ->assign('actions', $actions)
@@ -470,21 +471,21 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * string formid The form id posting to this function. Used to determine the workflow.
-     * 
+     *
      * See also the definition of {@link getSearchResults()}.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return string HTML string containing the rendered template.
-     * 
+     *
      * @throws Zikula_Exception_Fatal     Thrown if the function enters an unknown state.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have comment access, or if the method of accessing this function is improper.
      */
     public function mailUsers()
@@ -492,22 +493,22 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT)) {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         if ($this->request->isPost()) {
             $this->checkCsrfToken();
-            
+
             $formId = $this->request->getPost()->get('formid', 'UNKNOWN');
-                
+
             if ($formId == 'users_search') {
                 $userList = $this->getSearchResults('mailUsers');
-                
+
                 if (!isset($userList) || !$userList) {
                     $this->registerError($this->__('Sorry! No matching users found.'));
                 }
             } elseif ($formId == 'users_mailusers') {
                 $uid = $this->request->getPost()->get('userid', null);
                 $sendmail = $this->request->getPost()->get('sendmail', null);
-                
+
                 $mailSent = ModUtil::apiFunc($this->name, 'admin', 'sendmail', array(
                     'uid'       => $uid,
                     'sendmail'  => $sendmail,
@@ -518,7 +519,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         } elseif (!$this->request->isGet()) {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         if ($this->request->isGet() || (($formId == 'users_search') && (!isset($userList) || !$userList)) || (($formId == 'users_mailusers') && !$mailSent)) {
             return $this->renderSearchForm('mailUsers');
         } elseif ($formId == 'users_search') {
@@ -539,19 +540,19 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * --------------------------
      * numeric userid The user id of the user to be modified.
      * string  uname  The user name of the user to be modified.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * array access_permissions An array used to modify a user's group membership.
-     * 
+     *
      * See also the definition of {@link Users_Controller_FormData_ModifyUserForm}.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return string HTML string containing the rendered template.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
      */
     public function modify()
@@ -560,25 +561,25 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         $proceedToForm = true;
-        
+
         $formData = new Users_Controller_FormData_ModifyUserForm('users_modify', $this->serviceManager);
 
         if ($this->request->isPost()) {
             $this->checkCsrfToken();
-            
+
             $formData->setFromRequestCollection($this->request->getPost());
             $accessPermissions = $this->request->getPost()->get('access_permissions', null);
             $user = $formData->toUserArray(true);
             $originalUser = UserUtil::getVars($user['uid']);
             $userAttributes = isset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
-            
+
             // security check for this record
             if (!SecurityUtil::checkPermission('Users::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
                 throw new Zikula_Exception_Forbidden();
             }
-            
+
             if ($formData->isValid()) {
                 $registrationArgs = array(
                     'checkmode'         => 'modify',
@@ -594,7 +595,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             } else {
                 $errorFields = $formData->getErrorMessages();
             }
-            
+
             $validators = $this->notifyHooks('users.hook.user.validate.edit', $user, $user['uid'], array(), new Zikula_Hook_ValidationProviders())->getData();
 
             if (!$errorFields && !$validators->hasErrors()) {
@@ -630,7 +631,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     UserUtil::setPassword($user['pass'], $originalUser['uid']);
                     UserUtil::setVar('passreminder', $user['passreminder'], $originalUser['uid']);
                 }
-                
+
                 $user = UserUtil::getVars($user['uid'], true);
 
                 // TODO - This all needs to move to a Groups module hook.
@@ -669,7 +670,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                         }
                     }
                 }
-                
+
                 $this->notifyHooks('users.hook.user.process.edit', $user, $user['uid']);
                 $this->registerStatus($this->__("Done! Saved user's account information."));
 
@@ -678,7 +679,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         } elseif ($this->request->isGet()) {
             $uid    = $this->request->getGet()->get('userid', null);
             $uname  = $this->request->getGet()->get('uname', null);
-            
+
             // check arguments
             if (is_null($uid) && is_null($uname)) {
                 $this->registerError(LogUtil::getErrorMsgArgs());
@@ -695,7 +696,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $this->registerError($this->__("Error! You can't edit the guest account."));
                 $proceedToForm = false;
             }
-            
+
             // get the user vars
             $originalUser = UserUtil::getVars($uid);
             if ($originalUser == false) {
@@ -703,11 +704,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $proceedToForm = false;
             }
             $userAttributes = isset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
-            
+
             $formData->setFromArray($originalUser);
             $formData->getField('emailagain')->setData($originalUser['email']);
             $formData->getField('pass')->setData('');
-            
+
             $accessPermissions = array();
             $errorFields = array();
         } else {
@@ -733,7 +734,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     $gidsUserMemberOf[] = $user_group['gid'];
                 }
             }
-            
+
             foreach ($allGroups as $group) {
                 if (SecurityUtil::checkPermission('Groups::', "{$group['gid']}::", ACCESS_EDIT)) {
                     $accessPermissions[$group['gid']] = array();
@@ -761,25 +762,25 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
     /**
      * Allows an administrator to send a user his user name via email.
-     * 
+     *
      * Parameters passed via GET:
      * --------------------------
      * numeric userid The user id of the user to be modified.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * numeric userid The user id of the user to be modified.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return void
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
-     * 
+     *
      * @todo The link on the view page should be a mini form, and should post.
-     * 
+     *
      * @todo This should have a confirmation page.
      */
     public function lostUsername()
@@ -824,25 +825,25 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
     /**
      * Allows an administrator to send a user a password recovery verification code.
-     * 
+     *
      * Parameters passed via GET:
      * --------------------------
      * numeric userid The user id of the user to be modified.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * None.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
      *
      * @return bool True on success and redirect; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
-     * 
+     *
      * @todo The link on the view page should be a mini form, and should post.
-     * 
+     *
      * @todo This should have a confirmation page.
      */
     public function lostPassword()
@@ -886,17 +887,17 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * --------------------------
      * numeric userid The user id of the user to be deleted.
      * string  uname  The user name of the user to be deleted.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * numeric userid The user id of the user to be deleted.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
      *
      * @return string HTML string containing the rendered template.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have delete access, or if the method of accessing this function is improper.
      */
     public function deleteUsers()
@@ -905,7 +906,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_DELETE)) {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         $proceedToForm = false;
         $processDelete = false;
 
@@ -915,12 +916,12 @@ class Users_Controller_Admin extends Zikula_AbstractController
         } elseif ($this->request->isGet()) {
             $userid = $this->request->getGet()->get('userid', null);
             $uname  = $this->request->getGet()->get('uname', null);
-            
+
             // retreive userid from uname
             if (is_null($userid) && !empty($uname)) {
                 $userid = UserUtil::getIdFromName($uname);
             }
-            
+
             $proceedToForm = true;
         } else {
             throw new Zikula_Exception_Forbidden();
@@ -930,7 +931,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $this->registerError($this->__('Sorry! No such user found.'));
             $proceedToForm = false;
         }
-        
+
         if (!is_array($userid)) {
             $userid = array($userid);
         }
@@ -959,7 +960,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $processDelete = false;
             }
         }
-        
+
         if ($processDelete) {
             $valid = true;
             foreach ($userid as $uid) {
@@ -968,12 +969,12 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     $valid = false;
                 }
             }
-            
+
             if (!$valid) {
                 $proceedToForm = (count($userid) == 1);
             } else {
                 $deleted = ModUtil::apiFunc($this->name, 'admin', 'deleteUser', array('uid' => $userid));
-                
+
                 if ($deleted) {
                     foreach ($userid as $uid) {
                         $this->notifyHooks('users.hook.user.process.delete', UserUtil::getVars($uid), $uid);
@@ -1096,15 +1097,15 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * Parameters passed via GET:
      * --------------------------
-     * string  restorview If returning from an action, and the previous view should be restored, then the value should be 'view'; 
+     * string  restorview If returning from an action, and the previous view should be restored, then the value should be 'view';
      *                          otherwise not present.
-     * integer startnum   The ordinal number of the first record to display, especially if using itemsperpage to limit 
+     * integer startnum   The ordinal number of the first record to display, especially if using itemsperpage to limit
      *                          the number of records on a single page.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * numeric userid The user id of the user to be deleted.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * Namespace: Zikula_Users
@@ -1113,7 +1114,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Contents:  An array containing the parameters to restore the view configuration prior to executing an action.
      *
      * @return string HTML string containing the rendered template.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
      */
     public function viewRegistrations()
@@ -1205,7 +1206,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 'posvar'    => 'startnum',
             );
         }
-        
+
         return $this->view->add_core_data()
             ->assign('reglist', $reglist)
             ->assign('actions', $actions)
@@ -1219,17 +1220,17 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * numeric uid The id of the registration request (id) to retrieve and display.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * None.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
      *
      * @return string HTML string containing the rendered template.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function displayRegistration()
@@ -1287,22 +1288,22 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * numeric uid        The id of the registration request (id) to retrieve and display.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
      *                          otherwise not present.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
-     * string restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     * string restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
      *                          otherwise not present.
-     * 
+     *
      * See also the definition of {@link Users_Controller_FormData_ModifyRegistrationForm}.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
      *
      * @return string|bool The rendered template; false on error.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
      */
     public function modifyRegistration()
@@ -1310,29 +1311,29 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         $proceedToForm = true;
-        
+
         $formData = new Users_Controller_FormData_ModifyRegistrationForm('users_modifyreg', $this->serviceManager);
         $errorFields = array();
         $errorMessages = array();
 
         if ($this->request->isPost()) {
             $this->checkCsrfToken();
-            
+
             $formData->setFromRequestCollection($this->request->getPost());
-            
+
             $restoreView = $this->request->getPost()->get('restoreview', 'view');
 
             $registration = $formData->toUserArray(true);
             $originalRegistration = UserUtil::getVars($registration['uid'], false, 'uid', true);
             $userAttributes = isset($originalRegistration['__ATTRIBUTES__']) ? $originalRegistration['__ATTRIBUTES__'] : array();
-            
+
             // security check for this record
             if (!SecurityUtil::checkPermission('Users::', "{$originalRegistration['uname']}::{$originalRegistration['uid']}", ACCESS_EDIT)) {
                 throw new Zikula_Exception_Forbidden();
             }
-            
+
             if ($formData->isValid()) {
                 $registrationArgs = array(
                     'reginfo'           => $registration,
@@ -1346,7 +1347,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             } else {
                 $errorFields = $formData->getErrorMessages();
             }
-            
+
             $validators = $this->notifyHooks('users.hook.user.validate.edit', $registration, $registration['uid'], array(), new Zikula_Hook_ValidationProviders())->getData();
 
             if (!$errorFields && !$validators->hasErrors()) {
@@ -1377,7 +1378,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     UserUtil::setVar('email', $registration['email'], $originalRegistration['uid']);
                     $emailUpdated = true;
                 }
-                
+
                 $registration = UserUtil::getVars($registration['uid'], true, 'uid', true);
 
                 if ($emailUpdated) {
@@ -1398,7 +1399,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         } elseif ($this->request->isGet()) {
             $uid = $this->request->getGet()->get('uid', null);
-            
+
             if (!is_int($uid)) {
                 if (!is_numeric($uid) || ((string)((int)$uid) != $uid)) {
                     $this->registerError($this->__('Error! Invalid registration uid.'));
@@ -1416,7 +1417,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
             $formData->setFromArray($registration);
             $formData->getField('emailagain')->setData($registration['email']);
-            
+
             $restoreView = $this->request->getGet()->get('restoreview', 'view');
         } else {
             throw new Zikula_Exception_Forbidden();
@@ -1427,7 +1428,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             if (!SecurityUtil::checkPermission('Users::', "{$registration['uname']}::{$registration['uid']}", ACCESS_EDIT)) {
                 throw new Zikula_Exception_Forbidden();
             }
-            
+
             $rendererArgs = array(
                 'user_attributes'       => $userAttributes,
                 'errorMessages'         => $errorMessages,
@@ -1458,23 +1459,23 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * --------------------------
      * numeric uid        The id of the registration request (id) to verify.
      * boolean force      True to force the registration to be verified.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
      *                          otherwise not present.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * numeric uid        The id of the registration request (uid) to verify.
      * boolean force      True to force the registration to be verified.
      * boolean confirmed  True to execute this function's action.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
      *                          otherwise not present.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
      *
      * @return string|bool The rendered template; true on success; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function verifyRegistration()
@@ -1572,22 +1573,22 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * --------------------------
      * numeric uid        The id of the registration request (id) to approve.
      * boolean force      True to force the registration to be approved.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
      *                          otherwise not present.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * numeric uid        The id of the registration request (uid) to approve.
      * boolean force      True to force the registration to be approved.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
      *                          otherwise not present.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
      *
      * @return string|bool The rendered template; true on success; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function approveRegistration()
@@ -1666,7 +1667,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 ->fetch('users_admin_approveregistration.tpl');
         } else {
             $this->checkCsrfToken();
-            
+
             $approved = ModUtil::apiFunc($this->name, 'registration', 'approve', array(
                 'reginfo'   => $reginfo,
                 'force'     => $forceVerification,
@@ -1695,24 +1696,24 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * numeric uid        The id of the registration request (id) to deny.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
      *                          otherwise not present.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * numeric uid        The id of the registration request (uid) to deny.
      * boolean confirmed  True to execute this function's action.
      * boolean usernorify True to notify the user that his registration request was denied; otherwise false.
      * string  reason     The reason the registration request was denied, included in the notification.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view', 
+     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
      *                          otherwise not present.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
      *
      * @return string|bool The rendered template; true on success; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the user does not have delete access, or if the method used to access this function is improper.
      */
     public function denyRegistration()
@@ -1813,17 +1814,17 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * See the definition of {@link Users_Controller_FormData_ConfigForm}.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
      *
      * @return string The rendered configuration settings template.
-     * 
+     *
      * @throws Zikula_Exception_Fatal     Thrown if the function is accessed improperly.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access.
      */
@@ -1833,16 +1834,16 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if (!(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN))) {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         $configData = new Users_Controller_FormData_ConfigForm('users_config', $this->serviceManager);
         $errorFields = array();
-        
+
         if ($this->request->isPost()) {
             $this->checkCsrfToken();
-            
+
             $modVars = $this->request->getPost();
             $configData->setFromRequestCollection($modVars);
-            
+
             if ($configData->isValid()) {
                 $modVars = $configData->toArray();
                 $this->setVars($modVars);
@@ -1852,19 +1853,19 @@ class Users_Controller_Admin extends Zikula_AbstractController
             } else {
                 $errorFields = $configData->getErrorMessages();
                 $errorCount = count($errorFields);
-                $this->registerError($this->_fn('There was a problem with one of the module settings. Please review the message below, correct the error, and resubmit your changes.', 
-                        'There were problems with %1$d module settings. Please review the messages below, correct the errors, and resubmit your changes.', 
+                $this->registerError($this->_fn('There was a problem with one of the module settings. Please review the message below, correct the error, and resubmit your changes.',
+                        'There were problems with %1$d module settings. Please review the messages below, correct the errors, and resubmit your changes.',
                         $errorCount, array($errorCount)));
             }
         } elseif (!$this->request->isGet()) {
             throw new Zikula_Exception_Fatal();
         }
-        
+
         return $this->view->assign_by_ref('configData', $configData)
             ->assign('errorFields', $errorFields)
             ->fetch('users_admin_config.tpl');
     }
-    
+
     /**
      * Show the form to choose a CSV file and import several users from this file.
      *
@@ -1874,20 +1875,20 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *                                  is not set. Allows this function to be called internally, rather than as a result of a form post.
      * array   $args['importFile'] Information about the file to import. Used as the default if $_FILES['importFile'] is not set.
      *                                  Allows this function to be called internally, rather than as a result of a form post.
-     * integer $args['delimiter']  A code indicating the delimiter used in the file. Used as the default if $_POST['delimiter'] 
+     * integer $args['delimiter']  A code indicating the delimiter used in the file. Used as the default if $_POST['delimiter']
      *                                  is not set. Allows this function to be called internally, rather than as a result of a form post.
-     * 
+     *
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * boolean confirmed  True if the user has confirmed the upload/import.
-     * array   importFile Structured information about the file to import, from <input type="file" name="fileFieldName" ... /> and stored 
+     * array   importFile Structured information about the file to import, from <input type="file" name="fileFieldName" ... /> and stored
      *                          in $_FILES['fileFieldName']. See http://php.net/manual/en/features.file-upload.post-method.php .
      * integer delimiter  A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
@@ -1895,7 +1896,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * @param array $args All arguments passed to the function.
      *
      * @return redirect user to admin main page if success and show again the forn otherwise
-     * 
+     *
      * @throws Zikula_Exception_Fatal     Thrown if the $args parameter is not valid.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access.
      */
@@ -1960,11 +1961,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * integer $args['exportLastLogin'] Flag to export the last login date/time, 1 for yes.
      * integer $args['exportRegDate']   Flag to export the registration date/time, 1 for yes.
      * integer $args['exportGroups']    Flag to export the group membership, 1 for yes.
-     * 
+     *
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * boolean confirmed       True if the user has confirmed the export.
@@ -1975,7 +1976,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * integer exportLastLogin Flag to export the last login date/time, 1 for yes.
      * integer exportRegDate   Flag to export the registration date/time, 1 for yes.
      * integer exportGroups    Flag to export the group membership, 1 for yes.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
@@ -1983,7 +1984,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * @param array $args All arguments passed to the function.
      *
      * @return redirect user to the form if confirmed not 1, else export the csv file.
-     * 
+     *
      * @throws Zikula_Exception_Fatal     Thrown if parameters are passed via the $args array, but $args is invalid.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access, or method this function was accessed is invalid.
      */
@@ -2160,11 +2161,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * None.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
@@ -2328,7 +2329,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 }
                 $emailsArray[] = $email;
             }
-            
+
             // validate activation value
             $importValues[$counter - 1]['activated'] = isset($importValues[$counter - 1]['activated']) ? (int)$importValues[$counter - 1]['activated'] : Users_Constant::ACTIVATED_ACTIVE;
             $activated = $importValues[$counter - 1]['activated'];
@@ -2403,18 +2404,18 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * numeric userid The uid of the user for whom a change of password should be forced (or canceled).
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * numeric userid                    The uid of the user for whom a change of password should be forced (or canceled).
      * boolean user_must_change_password True to force the user to change his password at his next log-in attempt, otherwise false.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
      *
      * @return string The rendered output from either the template for confirmation.
-     * 
+     *
      * @throws Zikula_Exception_Fatal     Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
      *                                      or the account record is not in a consistent state.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access for the account record.
