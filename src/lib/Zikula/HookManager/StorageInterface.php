@@ -27,14 +27,14 @@ interface Zikula_HookManager_StorageInterface
     public function getBindingsFor($areaName);
     public function getSubscriberAreasByOwner($owner);
     public function getProviderAreasByOwner($owner);
-    public function getAreaIdByEventName($eventName);
+    public function getRuntimeMetaByEventName($eventName);
     public function getRuntimeHandlers();
     public function getSubscribersByOwner($owner);
     public function getSubscriberByEventName($eventName);
     public function setBindOrder($subscriberAreaName, array $providerAreas);
     public function getBindingBetweenAreas($subscriberArea, $providerArea);
-    public function allowBindingBetweenAreas($subscriberarea, $providerarea);
+    public function isAllowedBindingBetweenAreas($subscriberArea, $providerArea);
     public function getOwnerByArea($areaName);
-    public function getBindingsBetweenSubscriberAndProvider($subscriberName, $providerName);
+    public function getBindingsBetweenOwners($subscriberOwner, $providerOwner);
 }
 
