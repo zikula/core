@@ -1071,82 +1071,139 @@ class Users_Controller_User extends Zikula_AbstractController
         // Any authentication information for use in this pass through login is gathered, so ensure any session variable
         // is cleared, even if we are coming in through a post or a function call that didn't gather info from the session.
         $this->request->getSession()->del('Users_Controller_User_login', 'Zikula_Users');
+        
+        $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this);
 
         if ($this->request->isPost() || $isFunctionCall || $isReentry) {
+            // A form submission, or a simulated submission as a function call.
             if (isset($authenticationInfo) && is_array($authenticationInfo) && !empty($authenticationInfo)) {
-                // A form submission, or a simulated submission as a function call.
+                if (!isset($selectedAuthenticationMethod) || !is_array($selectedAuthenticationMethod) || empty($selectedAuthenticationMethod)
+                        || !isset($selectedAuthenticationMethod['modname']) || empty($selectedAuthenticationMethod['modname'])
+                        || !isset($selectedAuthenticationMethod['method']) || empty($selectedAuthenticationMethod['method'])
+                        ) {
+                    throw new Zikula_Exception_Fatal($this->__('Error! Invalid authentication method information.'));
+                }
+                
+                if (ModUtil::available($selectedAuthenticationMethod['modname']) 
+                        && ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'isEnabledForAuthentication', $selectedAuthenticationMethod)
+                        ) {
+                    // The authentication method is reasonably valid, moving on to validate the user-entered credentials
+                    $validateAuthenticationInfoArgs = array(
+                        'authenticationMethod'  => $selectedAuthenticationMethod,
+                        'authenticationInfo'    => $authenticationInfo,
+                    );
+                    
+                    if (ModUtil::func($selectedAuthenticationMethod['modname'], 'authentication', 'validateAuthenticationInformation', $validateAuthenticationInfoArgs)) {
+                        // The authentication method and the authentication information have been validated at the UI level. 
+                        // 
+                        // Moving on to the actual authentication process. Save the submitted information in case the authentication 
+                        // method is external and reentrant.
+                        //
+                        // We're using sessions here, even though anonymous sessions might be turned off for anonymous users.
+                        // If the user is trying to log in, then he's going to get a session if he's successful,
+                        // so using sessions on the anonymous user just before logging in should be ok.
+                        SessionUtil::requireSession();
+                        $sessionVars = array(
+                            'returnpage'            => $returnPage,
+                            'authentication_info'   => $authenticationInfo,
+                            'authentication_method' => $selectedAuthenticationMethod,
+                            'rememberme'            => $rememberMe,
+                            'reentranttoken'        => $reentrantToken,
+                        );
+                        $this->request->getSession()->set('Users_Controller_User_login', $sessionVars, 'Zikula_Users');
 
-                // Save the submitted information in case the authentication method is external and reentrant.
-                //
-                // We're using sessions here, even though anonymous sessions might be turned off for anonymous users.
-                // If the user is trying to log in, then he's going to get a session if he's successful,
-                // so using sessions on the anonymous user just before logging in should be ok.
-                SessionUtil::requireSession();
-                $sessionVars = array(
-                    'returnpage'            => $returnPage,
-                    'authentication_info'   => $authenticationInfo,
-                    'authentication_method' => $selectedAuthenticationMethod,
-                    'rememberme'            => $rememberMe,
-                    'reentranttoken'        => $reentrantToken,
-                );
-                $this->request->getSession()->set('Users_Controller_User_login', $sessionVars, 'Zikula_Users');
+                        // The authentication method selected might be reentrant (it might send the user out to an external web site
+                        // for authentication, and then send us back to finish the job). We need to tell the external system to where
+                        // we would like to return.
+                        $reentrantUrl = ModUtil::url($this->name, 'user', 'login', array('reentranttoken' => $reentrantToken), null, null, true, true);
 
-                // The authentication method selected might be reentrant (it might send the user out to an external web site
-                // for authentication, and then send us back to finish the job). We need to tell the external system to where
-                // we would like to return.
-                $reentrantUrl = ModUtil::url($this->name, 'user', 'login', array('reentranttoken' => $reentrantToken), null, null, true, true);
+                        // There may be hook providers that need to be validated, so we cannot yet log in. The hook providers will
+                        // need a user object to make sure they know who they're dealing with. Authenticate (so we are sure that
+                        // the user is who he says he is) and get a user.
+                        //
+                        // The chosen authentication method might be reentrant, and this is the point were the user might be directed
+                        // outside the Zikula system for external authentication.
+                        $user = UserUtil::authenticateUserUsing($selectedAuthenticationMethod, $authenticationInfo, $reentrantUrl, true);
 
-                // There may be hook providers that need to be validated, so we cannot yet log in. The hook providers will
-                // need a user object to make sure they know who they're dealing with. Authenticate (so we are sure that
-                // the user is who he says he is) and get a user.
-                //
-                // The chosen authentication method might be reentrant, and this is the point were the user might be directed
-                // outside the Zikula system for external authentication.
-                $user = UserUtil::authenticateUserUsing($selectedAuthenticationMethod, $authenticationInfo, $reentrantUrl, true);
+                        // If we have gotten to this point in the same call to login(), then the authentication method was not external
+                        // and reentrant, so we should not need the session variable any more. If it is external and reentrant, and the
+                        // user was required to exit the Zikula system for authentication on the external system, then we will not get
+                        // to this point until the reentrant call back to login() (at which point the variable should, again, not be needed
+                        // anymore).
+                        $this->request->getSession()->del('Users_Controller_User_login', 'Zikula_Users');
 
-                // If we have gotten to this point in the same call to login(), then the authentication method was not external
-                // and reentrant, so we should not need the session variable any more. If it is external and reentrant, and the
-                // user was required to exit the Zikula system for authentication on the external system, then we will not get
-                // to this point until the reentrant call back to login() (at which point the variable should, again, not be needed
-                // anymore).
-                $this->request->getSession()->del('Users_Controller_User_login', 'Zikula_Users');
+                        // Did we get a good user? If so, then we can proceed to hook validation.
+                        if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
+                            $validators = new Zikula_Hook_ValidationProviders();
+                            $validationEvent = $this->notifyHooks('users.hook.login.validate.edit', $user, $user['uid'], array(), $validators);
+                            $validators = $validationEvent->getData();
 
-                // Did we get a good user? If so, then we can proceed to hook validation.
-                if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
-                    $validators = new Zikula_Hook_ValidationProviders();
-                    $validationEvent = $this->notifyHooks('users.hook.login.validate.edit', $user, $user['uid'], array(), $validators);
-                    $validators = $validationEvent->getData();
+                            if (!$validators->hasErrors()) {
+                                // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check
+                                // the user's ability to log in. If we don't do this, then user.login.veto might trap and cancel the login attempt again.
+                                $this->notifyHooks('users.hook.login.process.edit', $user, $user['uid'], array('form_type' => 'loginscreen'));
 
-                    if (!$validators->hasErrors()) {
-                        // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check
-                        // the user's ability to log in. If we don't do this, then user.login.veto might trap and cancel the login attempt again.
-                        $this->notifyHooks('users.hook.login.process.edit', $user, $user['uid'], array('form_type' => 'loginscreen'));
-                        
-                        if (!isset($user['lastlogin']) || empty($user['lastlogin']) || ($user['lastlogin'] == '1970-01-01 00:00:00')) {
-                            $isFirstLogin = true;
+                                if (!isset($user['lastlogin']) || empty($user['lastlogin']) || ($user['lastlogin'] == '1970-01-01 00:00:00')) {
+                                    $isFirstLogin = true;
+                                } else {
+                                    $isFirstLogin = false;
+                                }
+
+                                // Because we are passing a $user and setting checkPassword false, this call back into the authentication
+                                // chain should not trigger an external re-authentication, so it should not need preparation for reentry.
+                                $loggedIn = UserUtil::loginUsing($selectedAuthenticationMethod, $authenticationInfo, $rememberMe, $reentrantUrl, false, $user);
+
+                                if (!$loggedIn) {
+                                    // Because the user was preauthentication, this should never happen, but just in case...
+
+                                    if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                                        $this->registerError($this->__('Your log-in request was not completed.'));
+                                    }  
+
+                                    $eventArgs = array(
+                                        'authentication_method' => $selectedAuthenticationMethod,
+                                        'authentication_info'   => $authenticationInfo,
+                                        'redirecturl'           => '',
+                                    );
+                                    $failedEvent = new Zikula_Event('module.users.ui.login.failed', $user, $eventArgs);
+                                    $failedEvent = $this->eventManager->notify($failedEvent);
+
+                                    $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
+                                    if (!empty($redirectUrl)) {
+                                        $this->redirect($redirectUrl);
+                                    }
+                                }
+                            } else {
+                                if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                                    $this->registerError($this->__('Your log-in request was not completed.'));
+                                }
+
+                                $eventArgs = array(
+                                    'authentication_method' => $selectedAuthenticationMethod,
+                                    'authentication_info'   => $authenticationInfo,
+                                    'redirecturl'           => '',
+                                );
+                                $failedEvent = new Zikula_Event('module.users.ui.login.failed', $user, $eventArgs);
+                                $failedEvent = $this->eventManager->notify($failedEvent);
+
+                                $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
+                                if (!empty($redirectUrl)) {
+                                    $this->redirect($redirectUrl);
+                                }
+                            }
                         } else {
-                            $isFirstLogin = false;
-                        }
-
-                        // Because we are passing a $user and setting checkPassword false, this call back into the authentication
-                        // chain should not trigger an external re-authentication, so it should not need preparation for reentry.
-                        $loggedIn = UserUtil::loginUsing($selectedAuthenticationMethod, $authenticationInfo, $rememberMe, $reentrantUrl, false, $user);
-                        
-                        if (!$loggedIn) {
-                            // Because the user was preauthentication, this should never happen, but just in case...
-                            
                             if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
-                                $this->registerError($this->__('Your log-in request was not completed.'));
-                            }  
-                            
+                                $this->registerError($this->__('There is no user account matching that information, or the password you gave does not match the password on file for that account.'));
+                            }
+
                             $eventArgs = array(
                                 'authentication_method' => $selectedAuthenticationMethod,
                                 'authentication_info'   => $authenticationInfo,
                                 'redirecturl'           => '',
                             );
-                            $failedEvent = new Zikula_Event('module.users.ui.login.failed', $user, $eventArgs);
+                            $failedEvent = new Zikula_Event('module.users.ui.login.failed', null, $eventArgs);
                             $failedEvent = $this->eventManager->notify($failedEvent);
-                            
+
                             $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
                             if (!empty($redirectUrl)) {
                                 $this->redirect($redirectUrl);
@@ -1154,63 +1211,24 @@ class Users_Controller_User extends Zikula_AbstractController
                         }
                     } else {
                         if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
-                            $this->registerError($this->__('Your log-in request was not completed.'));
-                        }
-                            
-                        $eventArgs = array(
-                            'authentication_method' => $selectedAuthenticationMethod,
-                            'authentication_info'   => $authenticationInfo,
-                            'redirecturl'           => '',
-                        );
-                        $failedEvent = new Zikula_Event('module.users.ui.login.failed', $user, $eventArgs);
-                        $failedEvent = $this->eventManager->notify($failedEvent);
-
-                        $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
-                        if (!empty($redirectUrl)) {
-                            $this->redirect($redirectUrl);
+                            $this->registerError($this->__('The credentials you entered were not valid. Please reenter the requested information and try again.'));
                         }
                     }
                 } else {
-                    if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
-                        $this->registerError($this->__('There is no user account matching that information, or the password you gave does not match the password on file for that account.'));
-                    }
-
-                    $eventArgs = array(
-                        'authentication_method' => $selectedAuthenticationMethod,
-                        'authentication_info'   => $authenticationInfo,
-                        'redirecturl'           => '',
-                    );
-                    $failedEvent = new Zikula_Event('module.users.ui.login.failed', null, $eventArgs);
-                    $failedEvent = $this->eventManager->notify($failedEvent);
-
-                    $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
-                    if (!empty($redirectUrl)) {
-                        $this->redirect($redirectUrl);
+                    if ($authenticationMethodList->countEnabledForAuthentication() <= 1) {
+                        $this->registerError($this->__('The selected log-in method is not currently available. Please contact the site administrator for assistance.'));
+                    } else {
+                        $this->registerError($this->__('The selected log-in method is not currently available. Please choose another or contact the site administrator for assistance.'));
                     }
                 }
             } elseif (isset($authenticationInfo) && (!is_array($authenticationInfo))) {
-                $this->registerError($this->__('Error! Invalid authentication information received.'));
-
-                $eventArgs = array(
-                    'authentication_method' => $selectedAuthenticationMethod,
-                    'authentication_info'   => $authenticationInfo,
-                    'redirecturl'           => '',
-                );
-                $failedEvent = new Zikula_Event('module.users.ui.login.failed', null, $eventArgs);
-                $failedEvent = $this->eventManager->notify($failedEvent);
-
-                $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
-                if (!empty($redirectUrl)) {
-                    $this->redirect($redirectUrl);
-                }
+                throw new Zikula_Exception_Fatal($this->__('Error! Invalid authentication information received.'));
             }
         }
 
         if (!$loggedIn) {
             // Either a GET request type to initially display the login form, or a failed login attempt
             // which means the login form should be displayed anyway.
-            $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this);
-
             if ((!isset($selectedAuthenticationMethod) || empty($selectedAuthenticationMethod))
                     && ($authenticationMethodList->countEnabledForAuthentication() <= 1)
                     ) {
