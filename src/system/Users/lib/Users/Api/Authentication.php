@@ -274,8 +274,6 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
         $authenticationInfo = $args['authentication_info'];
         $authenticationMethod = $args['authentication_method'];
-        $unameEquivalentFieldName = ($authenticationMethod['method'] == 'email') ? 'e-mail address' : 'user name';
-        $passEquivalentFieldName = 'password';
 
         $passwordAuthenticates = false;
 
