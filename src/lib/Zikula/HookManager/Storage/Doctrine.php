@@ -21,6 +21,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
     const SUBSCRIBER = 's';
 
     private $runtimeHandlers = array();
+
     public function registerSubscriber($owner, $subOwner, $areaName, $areaType, $category, $eventName)
     {
         $areaId = $this->registerArea($areaName, self::SUBSCRIBER, $owner, $subOwner, $category);
@@ -208,6 +209,8 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
                 $binding->save();
             }
         }
+
+        return true;
     }
 
     public function getRuntimeHandlers()
@@ -277,7 +280,6 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         }
 
         $area = $area[0];
-        
         if ($area['areatype'] == self::PROVIDER) {
             $table = 'Zikula_Doctrine_Model_HookProvider';
             $areaIdField = 'pareaid';
@@ -326,16 +328,17 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
                             ->where("b.sareaid = $sareaId")
                             ->andWhere("b.pareaid = $id")
                             ->execute();
-            
             $counter++;
         }
+
+        $this->generateRuntimeHandlers();
     }
 
-    public function getAreaIdByEventName($eventName)
+    public function getRuntimeMetaByEventName($eventName)
     {
         foreach ($this->runtimeHandlers as $handler) {
             if ($handler['eventname'] == $eventName) {
-                return $handler['sareaid'];
+                return array('areaid' => $handler['sareaid'], 'owner' => $handler['sowner']);
             }
         }
 
@@ -361,13 +364,13 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
                 ->fetchOne();
     }
 
-    public function allowBindingBetweenAreas($subscriberarea, $providerarea)
+    public function isAllowedBindingBetweenAreas($subscriberArea, $providerArea)
     {
         $sareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
-                ->findBy('areaname', $subscriberarea)
+                ->findBy('areaname', $subscriberArea)
                 ->getFirst()
                 ->get('id');
-        
+
         $subscribers = Doctrine_Query::create()->select()
                 ->where('sareaid = ?', $sareaId)
                 ->from('Zikula_Doctrine_Model_HookSubscriber')
@@ -380,7 +383,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         $allow = false;
         foreach ($subscribers as $subscriber) {
             $pareaId = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
-                ->findBy('areaname', $providerarea)
+                ->findBy('areaname', $providerArea)
                 ->getFirst()
                 ->get('id');
 
@@ -399,11 +402,11 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         return $allow;
     }
 
-    public function getBindingsBetweenSubscriberAndProvider($subscriberName, $providerName)
+    public function getBindingsBetweenOwners($subscriberOwner, $providerOwner)
     {
         return Doctrine_Query::create()->select()
-                ->andWhere('sowner = ?', $subscriberName)
-                ->andWhere('powner = ?', $providerName)
+                ->andWhere('sowner = ?', $subscriberOwner)
+                ->andWhere('powner = ?', $providerOwner)
                 ->from('Zikula_Doctrine_Model_HookBinding')
                 ->fetchArray();
     }

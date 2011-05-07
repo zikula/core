@@ -29,7 +29,6 @@ class Zikula_HookManager
      * @var Zikula_EventManager
      */
     private $eventManager;
-
     /**
      * Runtime hooks handlers loaded flag.
      *
@@ -57,10 +56,13 @@ class Zikula_HookManager
         }
 
         $this->decorateHook($hook);
+        if (!$hook->getAreaId()) {
+            return $hook;
+        }
+
         $this->eventManager->notify($hook);
         return $hook;
     }
-
 
     public function registerSubscriberBundle(Zikula_HookManager_SubscriberBundle $bundle)
     {
@@ -126,7 +128,8 @@ class Zikula_HookManager
 
     public function setBindOrder($subscriberAreaName, array $providerAreas)
     {
-        return $this->storage->setBindOrder($subscriberAreaName, $providerAreas);
+        $this->storage->setBindOrder($subscriberAreaName, $providerAreas);
+        $this->reload();
     }
 
     public function getBindingBetweenAreas($subscriberArea, $providerArea)
@@ -134,16 +137,16 @@ class Zikula_HookManager
         return $this->storage->getBindingBetweenAreas($subscriberArea, $providerArea);
     }
 
-    public function allowBindingBetweenAreas($subscriberarea, $providerarea)
+    public function isAllowedBindingBetweenAreas($subscriberarea, $providerarea)
     {
-        return $this->storage->allowBindingBetweenAreas($subscriberarea, $providerarea);
+        return $this->storage->isAllowedBindingBetweenAreas($subscriberarea, $providerarea);
     }
 
-    public function getBindingsBetweenSubscriberAndProvider($subscriberName, $providerName)
+    public function getBindingsBetweenOwners($subscriberName, $providerName)
     {
-        return $this->storage->getBindingsBetweenSubscriberAndProvider($subscriberName, $providerName);
+        return $this->storage->getBindingsBetweenOwners($subscriberName, $providerName);
     }
-    
+
     public function bindSubscriber($subscriberArea, $providerArea)
     {
         return $this->storage->bindSubscriber($subscriberArea, $providerArea);
@@ -185,9 +188,13 @@ class Zikula_HookManager
 
     private function decorateHook(Zikula_HookInterface $hook)
     {
-
-        $areaId = $this->storage->getAreaIdByEventName($hook->getName());
-        $hook->setAreaId($areaId);
+        $owningSide = $this->storage->getRuntimeMetaByEventName($hook->getName());
+        if ($owningSide) {
+            $hook->setAreaId($owningSide['areaid']);
+            if (!$hook->getCaller()) {
+                $hook->setCaller($owningSide['owner']);
+            }
+        }
     }
 
     private function reload()
