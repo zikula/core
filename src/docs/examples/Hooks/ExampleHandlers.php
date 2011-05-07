@@ -38,16 +38,16 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the id of the object.
      * args[caller] the module who notified of this event.
      *
-     * @param Zikula_Event $event The hookable event.
+     * @param Zikula_Hook $hook The hookable event.
      *
      * @return void
      */
-    public function ui_view(Zikula_Event $event)
+    public function ui_view(Zikula_DisplayHook $hook)
     {
         // security check - return void if not allowed.
 
-        $module = $event['caller'];
-        $id = $event['id'];
+        $module = $hook->getCaller();
+        $id = $hook->getId();
 
         // view - get from data"base - if not found, render error template or issue a logutil
         $comment = get_comment_from_db("where id = $id AND module = $module"); // fake database call
@@ -57,7 +57,8 @@ class Example_HookHandler extends Zikula_HookHandler
 
         // add this response to the event stack
         // the area names are the names of *THIS* provider's area
-        $event->data['modulehook_area.modname.area'] = new Zikula_Response_DisplayHook('modulehook_area.modname.area', $view, 'areaname_ui_view.tpl');
+        $response = new Zikula_Response_DisplayHook('modulehook_area.modname.area', $view, 'areaname_ui_view.tpl');
+        $hook->setResponse($response);
     }
 
     /**
@@ -67,16 +68,17 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the ID of the subject.
      * args[caller] the module who notified of this event.
      *
-     * @param Zikula_Event $event The hookable event.
+     * @param Zikula_Hook $hook The hookable event.
      *
      * @return void
      */
-    public function ui_edit(Zikula_Event $event)
+    public function ui_edit(Zikula_DisplayHook $hook)
     {
         // security check - return void if not allowed.
 
-        $module = $event['caller'];
-        $id = $event['id'];
+        $module = $hook->getCaller();
+        $id = $hook->getId();
+
 
         if (!$this->validation) {
             // since no validation object exists, this is the first time display of the create/edit form.
@@ -100,15 +102,15 @@ class Example_HookHandler extends Zikula_HookHandler
         $view->assign('hook_comments', $comments);
 
         // add this response to the event stack
-        $name = "hookhandler.commants.general.ui.edit";
-        $event->data[$name] = new Zikula_Response_DisplayHook($name, $view, "areaname_ui_edit.tpl");
+        $response = new Zikula_Response_DisplayHook($name, $view, "areaname_ui_edit.tpl");
+        $hook->setResponse($response);
     }
 
     /**
      * Example validation handler for validate.* hook type.
      *
-     * The property $event->data is an instance of Zikula_Collection_HookValidationProviders
-     * Use the $event->data->set() method to log the validation response.
+     * The property $hook->data is an instance of Zikula_Collection_HookValidationProviders
+     * Use the $hook->data->set() method to log the validation response.
      *
      * This method populates this hookhandler object with a Zikula_Provider_HookValidation
      * so the information is available to the ui_edit method if validation fails,
@@ -116,11 +118,11 @@ class Example_HookHandler extends Zikula_HookHandler
      *
      * This handler works for create and edit actions equally.
      *
-     * @param Zikula_Event $event The hookable event.
+     * @param Zikula_Hook $hook The hookable event.
      *
      * @return void
      */
-    public function validate_edit(Zikula_Event $event)
+    public function validate_edit(Zikula_ValidationHook $hook)
     {
         // validation checks
         $comments = FormUtil::getPassedValue('hook_comments', null, 'POST');
@@ -129,7 +131,7 @@ class Example_HookHandler extends Zikula_HookHandler
             $this->validation->addError('name', 'Name must be at least 3 characters long.');
         }
 
-        $event->data->set('hookhandler.comments.ui.edit', $this->validation);
+        $hook->setValidator('hookhandler.comments.ui.edit', $this->validation);
     }
 
     /**
@@ -143,19 +145,22 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the ID of the subject.
      * args[caller] the module who notified of this event.
      *
-     * @param Zikula_Event $event The hookable event.
+     * @param Zikula_Hook $hook The hookable event.
      *
      * @return void
      */
-    public function process_update(Zikula_Event $event)
+    public function process_update(Zikula_ProcessHook $hook)
     {
         if (!$this->validation) {
             return;
         }
 
         $object = $this->validation->getObject();
-        if (!$event['id']) {
-            // new so do an INSERT
+        if (!$hook->getId()) {
+            $urlData = $hook->getUrl()->serialize();
+            $areaId = $hook->getAreaId();
+            $caller = $hook->getCaller();
+            // new so do an INSERT including the $urlData, and $hook->getAreaId();
         } else {
             // existing so do an UPDATE
         }
@@ -168,51 +173,47 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the is of the object
      * args[caller] is the name of who notified this event.
      *
-     * @param Zikula_Event $event The hookable event.
+     * @param Zikula_Hook $hook The hookable event.
      *
      * @return void
      */
-    public function process_delete(Zikula_Event $event)
+    public function process_delete(Zikula_ProcessHook $hook)
     {
-        delete("where id = $event[id] AND module = $event[caller]");
+        delete("where id = {$hook->getId()} AND module = {$hook->getCaller()}");
     }
 
     /**
      * Filter hook (OPTIONAL) - READ BELOW.
      *
      * This would not normally be grouped in the same area as the the
-     * other ui, process and validate hook handlers.  Logically this handler 
+     * other ui, process and validate hook handlers.  Logically this handler
      * DOES NOT belong grouped with the other handlers because it's not part of
      * the workflow of a display hook that requires validation and processing.
      * Normally these kind of handlers would be in their own area, and there
      * may even be multiple filters, each in a different area.
      *
      * The filter receives the Zikula_View as the subject
-     * (from the template that invoked it).  For convenience the caller's name
-     * is also additionally logged in the $event['caller'] although this could
-     * be easily derived from the Zikula_View.
+     * (from the template that invoked it).
      *
      * Subject is the Zikula_View.
-     * args[caller] the module who notified of this event.
-     * $event->data is the data to be filtered (or not).
+     * $hook->data is the data to be filtered (or not).
      *
      * There is nothing to return.  If the filter decides to
-     * run then it should just alter the $event->data property of the
+     * run then it should just alter the $hook->data property of the
      * event.
      *
-     * @param Zikula_Event $event The hookable event.
+     * @param Zikula_Hook $hook The hookable event.
      *
      * @return void
      */
-    public function filter(Zikula_Event $event)
+    public function filter(Zikula_FilterHook $hook)
     {
-        $view = $event->getSubject(); // Zikula_View, if needed.
         if (somecontition) {
             return;
         }
 
         // do the actual filtering (or not)
-        $event->data = str_replace('FOO', 'BAR', $this->data);
+        $hook->data = str_replace('FOO', 'BAR', $this->data);
     }
 
 }

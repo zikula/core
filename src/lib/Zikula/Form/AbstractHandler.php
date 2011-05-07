@@ -223,30 +223,9 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
 
     /**
      * Notify any hookable events.
-     *
-     * @param string $name    The event name for the hookable event.
-     * @param mixed  $subject The subject of the event.
-     * @param mixed  $id      The ID of the subject.
-     * @param array  $args    Extra meta data.
-     * @param mixes  $data    Any data to filter.
-     *
-     * @return Zikula_Event
      */
-    public function notifyHooks($name, $subject=null, $id=null, $args=array(), $data=null)
+    public function notifyHooks(Zikula_HookInterface $hook)
     {
-        // set ID.
-        $args['id'] = $id;
-
-        if (!isset($args['controller'])) {
-            $args['controller'] = $this->view->get_tpl_var('controller');
-        }
-
-        if (!$args['controller'] instanceof Zikula_AbstractController) {
-            throw new InvalidArgumentException(__f('%s is not an instance of Zikula_AbstractController, the $args[\'controller\'] argument must be the controller who is notifying these hooks', get_class($this)));
-        }
-
-        // set caller's name
-        $hook = new Zikula_Hook($name, $args['controller']->getName(), $subject, $args, $data);
         return $this->view->getServiceManager()->getService('zikula.hookmanager')->notify($hook);
     }
 

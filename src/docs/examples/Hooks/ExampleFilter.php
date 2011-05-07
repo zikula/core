@@ -32,31 +32,27 @@ class Example_HookFilters
     /**
      * Filter hook.
      *
-     * The filter receives the Zikula_View as the subject 
-     * (from the template that invoked it).  For convenience the caller's name
-     * is also additionally logged in the $event['caller'] although this could
-     * be easily derived from the Zikula_View.
+     * The filter receives the Zikula_View as the subject
+     * (from the template that invoked it).
      *
      * Subject is the Zikula_View.
-     * args[caller] the module who notified of this event.
-     * $event->data is the data to be filtered (or not).
+     * $hook->data is the data to be filtered (or not).
      *
      * There is nothing to return.  If the filter decides to
-     * run then it should just alter the $event->data property of the
+     * run then it should just alter the $hook->data property of the
      * event.
      *
-     * @param Zikula_Event $event The hookable event.
+     * @param Zikula_Hook $hook The hookable event.
      *
      * @return void
      */
-    public static function filter(Zikula_Event $event)
+    public function filter(Zikula_FilterHook $hook)
     {
-        $view = $event->getSubject(); // Zikula_View, if needed.
         if (somecontition) {
             return;
         }
 
         // do the actual filtering (or not)
-        $event->data = str_replace('FOO', 'BAR', $this->data);
+        $hook->data = str_replace('FOO', 'BAR', $this->data);
     }
 }
