@@ -26,19 +26,21 @@ function smarty_core_assemble_plugin_filepath($params, &$smarty)
 
         $_plugin_filepath = $_plugin_dir . DIRECTORY_SEPARATOR . $_plugin_filename;
 
-        // see if path is relative
-        if (!preg_match("/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/", $_plugin_dir)) {
+        // try relative to cwd (or absolute)
+        if (@is_readable($_plugin_filepath)) {
+            $_return = $_plugin_filepath;
+            break;
+        }
+
+        // ZIKULA MOVE TO AVOID CHECKS INSIDE SMARTY FOLDER ALWAYS
+        // BUT ONLY FOR 'plugins' $_plugin_dir
+        if ($_plugin_dir == 'plugins') {
             $_relative_paths[] = $_plugin_dir;
             // relative path, see if it is in the SMARTY_DIR
             if (@is_readable(SMARTY_DIR . $_plugin_filepath)) {
                 $_return = SMARTY_DIR . $_plugin_filepath;
                 break;
             }
-        }
-        // try relative to cwd (or absolute)
-        if (@is_readable($_plugin_filepath)) {
-            $_return = $_plugin_filepath;
-            break;
         }
     }
 

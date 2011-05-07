@@ -1444,7 +1444,6 @@ class ModUtil
     public static function getName()
     {
         if (!isset(self::$cache['modgetname'])) {
-            $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
             self::$cache['modgetname'] = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
             if (empty(self::$cache['modgetname'])) {
@@ -1455,6 +1454,8 @@ class ModUtil
             // the real name from the db
             $modinfo = self::getInfo(self::getIdFromName(self::$cache['modgetname']));
             if (isset($modinfo['name'])) {
+                $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
+
                 self::$cache['modgetname'] = $modinfo['name'];
                 if ((!$type == 'init' || !$type == 'initeractiveinstaller') && !self::available(self::$cache['modgetname'])) {
                     self::$cache['modgetname'] = System::getVar('startpage');

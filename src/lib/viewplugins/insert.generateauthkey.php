@@ -21,7 +21,7 @@
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- * <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users" }" />
+ * <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Users'}" />
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -30,7 +30,7 @@
  */
 function smarty_insert_generateauthkey($params, $view)
 {
-    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('insert name="secgenauthkey" module="..."}', '{insert name="csrftoken"')), E_USER_DEPRECATED);
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('insert name="secgenauthkey" ...', "insert name='csrftoken' ...")), E_USER_DEPRECATED);
     $module = isset($params['module']) ? $params['module'] : null;
 
     if (!$module) {

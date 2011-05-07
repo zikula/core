@@ -171,6 +171,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // the topmost module. For Hooks, Blocks, API Functions and others
         // you need to set this property to the name of the respective module!
         $this->toplevelmodule = ModUtil::getName();
+
         $this->moduleName = ModUtil::getName();
         if (!$moduleName) {
             $moduleName = $this->toplevelmodule;
@@ -182,13 +183,14 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->baseurl = System::getBaseUrl();
         $this->baseuri = System::getBaseUri();
 
-        //---- Plugins handling -----------------------------------------------
-        // add plugin paths
+        // system info
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
         $this->theme = $theme = $this->themeinfo['directory'];
 
         $this->modinfo = ModUtil::getInfoFromName($moduleName);
 
+        //---- Plugins handling -----------------------------------------------
+        // add plugin paths
         switch ($this->module[$moduleName]['type'])
         {
             case ModUtil::TYPE_MODULE :
@@ -204,16 +206,18 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                 $mpluginPathOld = "system/" . $this->module[$moduleName]['directory'] . "/pntemplates/plugins";
         }
 
-        // Add standard plugin search path
+        // add standard plugin search path
+        $this->plugins_dir = array();
         $this->addPluginDir('config/plugins'); // Official override
-        $this->addPluginDir("themes/$theme/templates/modules/$moduleName/plugins"); // Module override in themes
+        $this->addPluginDir('lib/viewplugins'); // Core plugins
         $this->addPluginDir("themes/$theme/plugins"); // Theme plugins
+        $this->addPluginDir('plugins'); // Smarty core plugins
         $this->addPluginDir($mpluginPath); // Plugins for current module
         if (System::isLegacyMode()) {
-            $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
             $this->addPluginDir('lib/legacy/plugins'); // Core legacy plugins
+            $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
+            $this->addPluginDir("themes/$theme/templates/modules/$moduleName/plugins"); // Module override in themes
         }
-        $this->addPluginDir('lib/viewplugins'); // Core plugins
 
         // check if the recent 'type' parameter in the URL is admin and if yes,
         // include system/Admin/templates/plugins to the plugins_dir array
@@ -224,10 +228,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         }
 
         //---- Cache handling -------------------------------------------------
-        if (isset($caching) && is_bool($caching)) {
-            $this->caching = $caching;
+        if (isset($caching) && in_array((int)$caching, array(0, 1, 2))) {
+            $this->caching = (int)$caching;
         } else {
-            $this->caching = ModUtil::getVar('Theme', 'render_cache');
+            $this->caching = (int)ModUtil::getVar('Theme', 'render_cache');
         }
 
         if (isset($_POST) && count($_POST) != 0) {
@@ -235,27 +239,31 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $this->caching = false;
         }
 
+        $this->cache_dir      = CacheUtil::getLocalDir() . '/view_cache';
         $this->cache_lifetime = ModUtil::getVar('Theme', 'render_lifetime');
-        $this->cache_dir = CacheUtil::getLocalDir() . '/view_cache';
-        $this->compile_check = ModUtil::getVar('Theme', 'render_compile_check');
-        $this->force_compile = ModUtil::getVar('Theme', 'render_force_compile');
+        $this->compile_check  = ModUtil::getVar('Theme', 'render_compile_check');
+        $this->force_compile  = ModUtil::getVar('Theme', 'render_force_compile');
 
         $this->compile_dir = CacheUtil::getLocalDir() . '/view_compiled';
-        $this->compile_id = '';
-        $this->cache_id = '';
+        $this->compile_id  = '';
+        $this->cache_id    = '';
+
         $this->expose_template = (ModUtil::getVar('Theme', 'render_expose_template') == true) ? true : false;
-        $this->register_block('nocache', 'Zikula_View_block_nocache', false);
 
         // register resource type 'z' this defines the way templates are searched
         // during {include file='my_template.tpl'} this enables us to store selected module
         // templates in the theme while others can be kept in the module itself.
-        $this->register_resource('z', array('z_get_template',
+        $this->register_resource('z', array('Zikula_View_Resource',
+                                            'z_get_template',
                                             'z_get_timestamp',
                                             'z_get_secure',
                                             'z_get_trusted'));
 
         // set 'z' as default resource type
         $this->default_resource_type = 'z';
+
+        // register the 'nocache' block to allow dynamic zones on cached templates
+        $this->register_block('nocache', array('Zikula_View_Resource', 'block_nocache'), false);
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
         if (($this->serviceManager->getService('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
@@ -272,15 +280,16 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->register_prefilter('z_prefilter_gettext_params');
         $this->register_prefilter('z_prefilter_notifyfilters');
 
-        // Assign some useful theme settings
-        //$this->assign(ThemeUtil::getVar()); // TODO A [investigate - this appears to always be empty and causes loops] (drak)
+        // Assign some useful settings
         $this->assign('baseurl', $this->baseurl);
         $this->assign('baseuri', $this->baseuri);
         $this->assign('themepath', $this->baseurl . 'themes/' . $theme);
-        $this->assign('stylepath', $this->baseurl . 'themes/' . $theme . '/style');
-        $this->assign('scriptpath', $this->baseurl . 'themes/' . $theme . '/javascript');
-        $this->assign('imagepath', $this->baseurl . 'themes/' . $theme . '/images');
-        $this->assign('imagelangpath', $this->baseurl . 'themes/' . $theme . '/images/' . $this->language);
+        if (System::isLegacyMode()) {
+            $this->assign('stylepath', $this->baseurl . 'themes/' . $theme . '/style');
+            $this->assign('scriptpath', $this->baseurl . 'themes/' . $theme . '/javascript');
+            $this->assign('imagepath', $this->baseurl . 'themes/' . $theme . '/images');
+            $this->assign('imagelangpath', $this->baseurl . 'themes/' . $theme . '/images/' . $this->language);
+        }
 
         // for {gt} template plugin to detect gettext domain
         if ($this->module[$moduleName]['type'] == ModUtil::TYPE_MODULE) {
@@ -290,16 +299,16 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // make render object available to modifiers
         parent::assign('zikula_view', $this);
 
-        // Add ServiceManager and EventManager to all templates
+        // add ServiceManager, EventManager and others to all templates
         parent::assign('serviceManager', $this->serviceManager);
         parent::assign('eventManager', $this->eventManager);
-        parent::assign('request', $this->request);
         parent::assign('zikula_core', $this->serviceManager->getService('zikula'));
+        parent::assign('request', $this->request);
         parent::assign('modvars', ModUtil::getModvars()); // Get all modvars from any modules that have accessed their modvars at least once.
 
         $this->add_core_data();
 
-        // Metadata for SEO
+        // metadata for SEO
         if (!isset($this->serviceManager['zikula_view.metatags'])) {
             $this->serviceManager['zikula_view.metatags'] = new ArrayObject(array());
         }
@@ -311,8 +320,758 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                             'modinfo' => $this->modinfo,
                             'themeinfo' => $this->themeinfo));
 
+        if (!$this instanceof Zikula_View_Theme) {
+            $this->assign('homepage', ThemeUtil::getVar('homepage'));
+            $this->assign('type', ThemeUtil::getVar('type'));
+            $this->assign('func', ThemeUtil::getVar('func'));
+        }
+
         $event = new Zikula_Event('view.init', $this);
         $this->eventManager->notify($event);
+    }
+
+    /**
+     * Setup the current instance of the Zikula_View class and return it back to the module.
+     *
+     * @param string       $module   Module name.
+     * @param boolean|null $caching  Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id Cache Id.
+     *
+     * @return Zikula_View This instance.
+     */
+    public static function getInstance($module = null, $caching = null, $cache_id = null)
+    {
+        if (is_null($module)) {
+            $module = ModUtil::getName();
+        }
+
+        $serviceManager = ServiceUtil::getManager();
+        $serviceId = strtolower(sprintf('zikula.view.%s', $module));
+        if (!$serviceManager->hasService($serviceId)) {
+            $view = new self($serviceManager, $module, $caching);
+            $serviceManager->attachService($serviceId, $view);
+        } else {
+            $view = $serviceManager->getService($serviceId);
+        }
+
+        if (!is_null($caching)) {
+            $view->caching = (int)$caching;
+        }
+
+        if (!is_null($cache_id)) {
+            $view->cache_id = $cache_id;
+        }
+
+        if ($module === null) {
+            $module = $view->toplevelmodule;
+        }
+
+        if (!array_key_exists($module, $view->module)) {
+            $view->module[$module] = ModUtil::getInfoFromName($module);
+            //$instance->modinfo = ModUtil::getInfoFromName($module);
+            $view->_add_plugins_dir($module);
+        }
+
+        // for {gt} template plugin to detect gettext domain
+        if ($view->module[$module]['type'] == ModUtil::TYPE_MODULE) {
+            $view->domain = ZLanguage::getModuleDomain($view->module[$module]['name']);
+        }
+
+        if (System::isLegacyMode()) {
+            // load the usemodules configuration if exists
+            $modpath = ($view->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+            $usepath = "$modpath/" . $view->module[$module]['directory'] . '/templates/config';
+            $usepathOld = "$modpath/" . $view->module[$module]['directory'] . '/pntemplates/config';
+            $usemod_confs = array();
+            $usemod_confs[] = "$usepath/usemodules.txt";
+            $usemod_confs[] = "$usepathOld/usemodules.txt";
+            $usemod_confs[] = "$usepath/usemodules"; // backward compat for < 1.2 // TODO A depreciate from 1.4
+            // load the config file
+            foreach ($usemod_confs as $usemod_conf) {
+                if (is_readable($usemod_conf) && is_file($usemod_conf)) {
+                    $additionalmodules = file($usemod_conf);
+                    if (is_array($additionalmodules)) {
+                        foreach ($additionalmodules as $addmod) {
+                            $view->_add_plugins_dir(trim($addmod));
+                        }
+                    }
+                }
+            }
+        }
+
+        return $view;
+    }
+
+    /**
+     * Get module plugin Zikula_View_Plugin instance.
+     *
+     * @param string       $modName    Module name.
+     * @param string       $pluginName Plugin name.
+     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id   Cache Id.
+     *
+     * @return Zikula_View_Plugin The plugin instance.
+     */
+    public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null)
+    {
+        return Zikula_View_Plugin::getInstance($modName, $pluginName, $caching, $cache_id);
+    }
+
+    /**
+     * Get system plugin Zikula_View_Plugin instance.
+     *
+     * @param string       $pluginName Plugin name.
+     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id   Cache Id.
+     *
+     * @return Zikula_View_Plugin The plugin instance.
+     */
+    public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null)
+    {
+        $modName = 'zikula';
+        return Zikula_View_Plugin::getPluginInstance($modName, $pluginName, $caching, $cache_id);
+    }
+
+    /**
+     * Checks whether requested template exists.
+     *
+     * @param string $template Template name.
+     *
+     * @return boolean
+     */
+    public function template_exists($template)
+    {
+        return (bool)$this->get_template_path($template);
+    }
+
+    /**
+     * Checks which path to use for required template.
+     *
+     * @param string $template Template name.
+     *
+     * @return string Template path.
+     */
+    public function get_template_path($template)
+    {
+        if (isset($this->templateCache[$template])) {
+            return $this->templateCache[$template];
+        }
+
+        // the current module
+        $modname = ModUtil::getName();
+
+        foreach ($this->module as $module => $modinfo) {
+            // prepare the values for OS
+            $module = $modinfo['name'];
+
+            $os_modname = DataUtil::formatForOS($modname);
+            $os_module = DataUtil::formatForOS($module);
+            $os_theme = DataUtil::formatForOS($this->theme);
+            $os_dir = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
+
+            $ostemplate = DataUtil::formatForOS($template);
+
+            $relativepath = "$os_dir/$os_module/templates";
+            $templatefile = "$relativepath/$ostemplate";
+            $override = self::getTemplateOverride($templatefile);
+            if ($override === false) {
+                // no override present
+                if (!System::isLegacyMode()) {
+                    if (is_readable($templatefile)) {
+                        $this->templateCache[$template] = $relativepath;
+                        return $relativepath;
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                if (is_readable($override)) {
+                    $path = substr($override, 0, strrpos($override, $ostemplate));
+                    $this->templateCache[$template] = $path;
+                    return $path;
+                }
+            }
+
+            // The rest of this code is scheduled for removal from 1.4.0 - drak
+
+            // check the module for which we're looking for a template is the
+            // same as the top level mods. This limits the places to look for
+            // templates.
+            if ($module == $modname) {
+                $search_path = array(
+                        "themes/$os_theme/templates/modules/$os_module", // themepath
+                        "config/templates/$os_module", //global path
+                        "$os_dir/$os_module/templates", // modpath
+                        "$os_dir/$os_module/pntemplates", // modpath old
+                );
+            } else {
+                $search_path = array("themes/$os_theme/templates/modules/$os_module/$os_modname", // themehookpath
+                        "themes/$os_theme/templates/modules/$os_module", // themepath
+                        "config/templates/$os_module/$os_modname", //globalhookpath
+                        "config/templates/$os_module", //global path
+                        "$os_dir/$os_module/templates/$os_modname", //modhookpath
+                        "$os_dir/$os_module/templates", // modpath
+                        "$os_dir/$os_module/pntemplates/$os_modname", // modhookpathold
+                        "$os_dir/$os_module/pntemplates", // modpath old
+                );
+            }
+
+            foreach ($search_path as $path) {
+                if (is_readable("$path/$ostemplate")) {
+                    $this->templateCache[$template] = $path;
+                    return $path;
+                }
+            }
+        }
+
+        // when we arrive here, no path was found
+        return false;
+    }
+
+    /**
+     * Add core data to the template.
+     *
+     * This function adds some basic data to the template depending on the
+     * current user and the Zikula settings.  There is no need to call this as it's
+     * invoked automatically on instanciation.
+     *
+     * In legacy mode 'coredata' will contain the module vars, but not when disabled.
+     * This is just for BC legacy - to access module vars there is a 'modvars' property
+     * assigned to all templates.
+     *
+     * @return Zikula_View
+     */
+    public function add_core_data()
+    {
+        if (!isset($this->serviceManager['zikula_view.coredata'])) {
+            $this->serviceManager['zikula_view.coredata'] = new ArrayObject(array());
+        }
+
+        $core = $this->serviceManager['zikula_view.coredata'];
+        $core['version_num'] = Zikula_Core::VERSION_NUM;
+        $core['version_id'] = Zikula_Core::VERSION_ID;
+        $core['version_sub'] = Zikula_Core::VERSION_SUB;
+        $core['logged_in'] = UserUtil::isLoggedIn();
+        $core['language'] = $this->language;
+
+        // add userdata
+        $core['user']   = UserUtil::getVars(SessionUtil::getVar('uid'));
+
+        if (System::isLegacyMode()) {
+            // add modvars of current modules
+            foreach ($this->module as $module => $dummy) {
+                if (!empty($module)) {
+                    $core[$module] = ModUtil::getVar($module);
+                }
+            }
+
+            // add mod vars of all modules supplied as parameter
+            $modulenames = func_get_args();
+            foreach ($modulenames as $modulename) {
+                // if the modulename is empty do nothing
+                if (!empty($modulename) && !is_array($modulename) && !array_key_exists($modulename, $this->module)) {
+                    // check if user wants to have config
+                    if ($modulename == ModUtil::CONFIG_MODULE) {
+                        $ZConfig = ModUtil::getVar(ModUtil::CONFIG_MODULE);
+                        foreach ($ZConfig as $key => $value) {
+                            // gather all config vars
+                            $core['ZConfig'][$key] = $value;
+                        }
+                    } else {
+                        $core[$modulename] = ModUtil::getVar($modulename);
+                    }
+                }
+            }
+
+            $this->assign('pncore', $core);
+        }
+
+        // Module vars
+        parent::assign('coredata', $core);
+
+        return $this;
+    }
+
+    /**
+     * Executes & returns the template results.
+     *
+     * This returns the template output instead of displaying it.
+     * Supply a valid template name.
+     * As an optional second parameter, you can pass a cache id.
+     * As an optional third parameter, you can pass a compile id.
+     *
+     * @param string  $template   The name of the template.
+     * @param string  $cache_id   The cache ID (optional).
+     * @param string  $compile_id The compile ID (optional).
+     * @param boolean $display    Whether or not to display directly (optional).
+     * @param boolean $reset      Reset singleton defaults (optional). deprecated.
+     *
+     * @return string The template output.
+     */
+    public function fetch($template, $cache_id = null, $compile_id = null, $display = false, $reset = true)
+    {
+        $this->_setup_template($template);
+
+        if (is_null($cache_id)) {
+            $cache_id = $this->cache_id;
+        }
+
+        if (is_null($compile_id)) {
+            $compile_id = $this->compile_id;
+        }
+
+        $this->template = $this->template_dir . '/' . $template;
+        $output = $this->_fetch($template, $cache_id, $compile_id, $display);
+
+        if ($this->expose_template == true) {
+            $template = DataUtil::formatForDisplay($template);
+            $output = "\n<!-- Start " . $this->template_dir . "/$template -->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
+        }
+
+        $event = new Zikula_Event('view.postfetch', $this, array('template' => $template), $output);
+        return $this->eventManager->notify($event)->getData();
+    }
+
+    /**
+     * Executes & displays the template results.
+     *
+     * This displays the template.
+     * Supply a valid template name.
+     * As an optional second parameter, you can pass a cache id.
+     * As an optional third parameter, you can pass a compile id.
+     *
+     * @param string $template   The name of the template.
+     * @param string $cache_id   The cache ID (optional).
+     * @param string $compile_id The compile ID (optional).
+     *
+     * @return boolean
+     */
+    public function display($template, $cache_id = null, $compile_id = null)
+    {
+        echo $this->fetch($template, $cache_id, $compile_id);
+        return true;
+    }
+
+    /**
+     * Returns an auto_id for auto-file-functions.
+     *
+     * @param string $cache_id   The cache ID (optional).
+     * @param string $compile_id The compile ID (optional).
+     *
+     * @return string|null The auto_id, or null if neither $cache_id nor $compile_id are set.
+     */
+    function _get_auto_id($cache_id=null, $compile_id=null)
+    {
+        if (!empty($cache_id)) {
+            $this->_filter_auto_id($cache_id);
+        }
+        if (!empty($compile_id)) {
+            $this->_filter_auto_id($compile_id);
+        }
+
+        $auto_id = $cache_id . (!empty($compile_id) ? '/'.$compile_id  : '');
+
+        // removes a trailing slash if present
+        if (substr($auto_id, -1) == '/') {
+            $auto_id = substr($auto_id, 0, -1);
+        }
+
+        return $auto_id;
+    }
+
+    /**
+     * utility method to filter the IDs of not desired chars.
+     *
+     * @param string $id Cache or compile ID to filter.
+     *
+     * @return void
+     */
+    private function _filter_auto_id(&$id)
+    {
+        // convert some chars used as separators
+        $id = str_replace(array(':', '=', ','), '_', $id);
+        // convert the "Smarty cache groups" | to paths
+        $id = str_replace('|', '/', $id);
+        // and remove anything outside the acceptable range
+        $id = preg_replace('#[^a-zA-Z0-9-_/]+#', '', $id);
+    }
+
+    /**
+     * Get a concrete filename for automagically created content.
+     *
+     * @param string $auto_base   The base path.
+     * @param string $auto_source The file name (optional).
+     * @param string $auto_id     The ID (optional).
+     *
+     * @return string The concrete path and file name to the content.
+     */
+    function _get_auto_filename($path, $auto_source = null, $auto_id = null)
+    {
+        // format auto_source for os to make sure that id does not contain 'ugly' characters
+        $auto_source = DataUtil::formatForOS($auto_source);
+
+        // build a hierarchical directory path
+        $path .= '/' . $this->modinfo['directory'];
+
+        if ($this instanceof Zikula_View_Plugin) {
+            $path .= '_' . $this->pluginName;
+        }
+
+        // add the cache_id path if set
+        $path .= !empty($auto_id) ? '/' . $auto_id : '';
+
+        // takes in account the source subdirectory
+        $path .= strpos($auto_source, '/') !== false ? '/' . dirname($auto_source) : '';
+
+        if (!file_exists($path)) {
+            mkdir($path, $this->serviceManager['system.chmod_dir'], true);
+        }
+
+        $path .= '/';
+
+        // if there's a explicit source, it
+        if ($auto_source) {
+            $extension = FileUtil::getExtension($auto_source);
+            // isolates the filename on the source path passed
+            $path .= FileUtil::getFilebase($auto_source);
+            // add the variable stuff only if $auto_source is present
+            // to allow a easy flush cache for all the themes/languages
+            $path .= '--t' . $this->themeinfo['directory'] . '-l';
+            if (System::getVar('multilingual') == 1) {
+                $path .= $this->language;
+            }
+            // end with a suffix convention of filename--Themename-lang.ext
+            $path .= ($extension ? ".$extension" : '');
+        }
+
+        return $path;
+    }
+
+    /**
+     * Finds out if a template is already cached.
+     *
+     * This returns true if there is a valid cache for this template.
+     * Right now, we are just passing it to the original Smarty function.
+     * We might introduce a function to decide if the cache is in need
+     * to be refreshed...
+     *
+     * @param string $template   The name of the template.
+     * @param string $cache_id   The cache ID (optional).
+     * @param string $compile_id The compile ID (optional).
+     *
+     * @return boolean
+     */
+    public function is_cached($template, $cache_id = null, $compile_id = null)
+    {
+        if (is_null($cache_id)) {
+            $cache_id = $this->cache_id;
+        }
+
+        if (is_null($compile_id)) {
+            $compile_id = $this->compile_id;
+        }
+
+        return parent::is_cached($template, $cache_id, $compile_id);
+    }
+
+    /**
+     * Clears the cache for a specific template.
+     *
+     * This returns true if there is a valid cache for this template.
+     * Right now, we are just passing it to the original Smarty function.
+     * We might introduce a function to decide if the cache is in need
+     * to be refreshed...
+     *
+     * @param string $template   The name of the template.
+     * @param string $cache_id   The cache ID (optional).
+     * @param string $compile_id The compile ID (optional).
+     * @param string $expire     Minimum age in sec. the cache file must be before it will get cleared (optional).
+     *
+     * @return  boolean
+     */
+    public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null)
+    {
+        $cache_dir = $this->cache_dir;
+
+        $cached_files = FileUtil::getFiles($cache_dir, true, false, array('tpl'), null, false);
+
+        if ($template == null) {
+            if ($expire == null) {
+                foreach ($cached_files as $cf) {
+                    unlink(realpath($cf));
+                }
+            } else {
+                // actions for when $exp_time is not null
+            }
+        } else {
+            if ($expire == null) {
+                $auto_id = self::_get_auto_id($cache_id, $compile_id);
+                $auto_filename = self::_get_auto_filename($cache_dir, $template, $auto_id);
+
+                // FIX ME complete rework
+                if (!empty($auto_id)) {
+                    if (file_exists($auto_filename)) {
+                        unlink($auto_filename);
+                    }
+                } else {
+                    $template_filebase = FileUtil::getFilebase($template);
+                    foreach ($cached_files as $cf) {
+                        if (strpos($cf, $template_filebase) !== false) {
+                            unlink(realpath($cf));
+                        }
+                    }
+                }
+            } else {
+                // actions for when $expire is not null
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Clear all cached templates.
+     *
+     * @param string $exp_time Expire time.
+     *
+     * @return boolean Results of {@link smarty_core_rm_auto()}.
+     */
+    public function clear_all_cache($exp_time = null)
+    {
+        return $this->clear_cache(null, null, null, $exp_time);
+    }
+
+    /**
+     * Clear all compiled templates.
+     *
+     * @param string $exp_time Expire time.
+     *
+     * @return boolean Results of {@link smarty_core_rm_auto()}.
+     */
+    public function clear_compiled($exp_time = null)
+    {
+        $compile_dir = $this->compile_dir;
+
+        $compiled_files = FileUtil::getFiles($compile_dir, true, false, array('php', 'inc'), null, false);
+
+        if ($exp_time == null) {
+            foreach ($compiled_files as $cf) {
+                unlink(realpath($cf));
+            }
+        } else {
+            // actions for when $exp_time is not null
+        }
+
+        return true;
+    }
+
+    /**
+     * Assign variable to template.
+     *
+     * @param string $key   Variable name.
+     * @param mixed  $value Value.
+     *
+     * @return Zikula_View
+     */
+    function assign($key, $value = null)
+    {
+        $this->_assign_check($key);
+        parent::assign($key, $value);
+        return $this;
+    }
+
+    /**
+     * Assign variable to template by reference.
+     *
+     * @param string $key    Variable name.
+     * @param mixed  &$value Value.
+     *
+     * @return Zikula_View
+     */
+    function assign_by_ref($key, &$value)
+    {
+        $this->_assign_check($key);
+        parent::assign_by_ref($key, $value);
+        return $this;
+    }
+
+    /**
+     * Prevent certain variables from being overwritten.
+     *
+     * @param string $key The protected variable key.
+     *
+     * @return void
+     */
+    protected function _assign_check($key)
+    {
+        if (is_array($key)) {
+            foreach ($key as $v) {
+                self::_assign_check($v);
+            }
+            return;
+        }
+
+        if (is_string($key)) {
+            switch (strtolower($key))
+            {
+                case 'zikula_view':
+                case 'zikula_core':
+                case 'modvars':
+                case 'metatags':
+                case 'coredata':
+                case 'servicemanager':
+                case 'eventmanager':
+                    $this->trigger_error(__f('%s is a protected template variable and may not be assigned', $key));
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Set up paths for the template.
+     *
+     * This function sets the template and the config path according
+     * to where the template is found (Theme or Module directory)
+     *
+     * @param string $template The template name.
+     *
+     * @return void
+     */
+    public function _setup_template($template)
+    {
+        // default directory for templates
+        $this->template_dir = $this->get_template_path($template);
+        $this->templatePath = $this->template_dir . '/' . $template;
+        $this->config_dir = $this->template_dir . '/config';
+    }
+
+    /**
+     * Add a plugin dir to the search path.
+     *
+     * Avoids adding duplicates.
+     *
+     * @param string $dir The directory to add.
+     *
+     * @return Zikula_View This instance.
+     */
+    public function addPluginDir($dir)
+    {
+        if (in_array($dir, $this->plugins_dir) || !@is_dir($dir)) {
+            // TODO - !is_dir(...) should probably throw an exception.
+            return $this;
+        }
+
+        array_push($this->plugins_dir, $dir);
+        return $this;
+    }
+
+    /**
+     * add a plugins dir to _plugin_dir array
+     *
+     * This function takes  module name and adds two path two the plugins_dir array
+     * when existing
+     *
+     * @param string $module Well known module name.
+     *
+     * @return void
+     */
+    private function _add_plugins_dir($module)
+    {
+        if (empty($module)) {
+            return;
+        }
+
+        $modinfo = ModUtil::getInfoFromName($module);
+        if (!$modinfo) {
+            return;
+        }
+
+        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $this->addPluginDir("$modpath/$modinfo[directory]/templates/plugins");
+
+        if (System::isLegacyMode()) {
+            $this->addPluginDir("$modpath/$modinfo[directory]/pntemplates/plugins");
+        }
+    }
+
+    /**
+     * Execute a template override event.
+     *
+     * @param string $template Path to template.
+     *
+     * @throws InvalidArgumentException If event handler returns a non-existent template.
+     *
+     * @return mixed String if found, false if no override present.
+     */
+    public static function getTemplateOverride($template)
+    {
+        $event = new Zikula_Event('zikula_view.template_override', null, array(), $template);
+        EventUtil::getManager()->notify($event);
+
+        if ($event->isStopped()) {
+            $ostemplate = DataUtil::formatForOS($event->getData());
+            if (is_readable($ostemplate)) {
+                return $ostemplate;
+            } else {
+                throw new InvalidArgumentException(__f('zikula_view.template_override returned a non-existent template path %s', $ostemplate));
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Translate.
+     *
+     * @param string $msgid String to be translated.
+     *
+     * @return string The $msgid translated by gettext.
+     */
+    public function __($msgid)
+    {
+        return __($msgid, $this->domain);
+    }
+
+    /**
+     * Translate with sprintf().
+     *
+     * @param string       $msgid  String to be translated.
+     * @param string|array $params Args for sprintf().
+     *
+     * @return string The $msgid translated by gettext.
+     */
+    public function __f($msgid, $params)
+    {
+        return __f($msgid, $params, $this->domain);
+    }
+
+    /**
+     * Translate plural string.
+     *
+     * @param string $singular Singular instance.
+     * @param string $plural   Plural instance.
+     * @param string $count    Object count.
+     *
+     * @return string Translated string.
+     */
+    public function _n($singular, $plural, $count)
+    {
+        return _n($singular, $plural, $count, $this->domain);
+    }
+
+    /**
+     * Translate plural string with sprintf().
+     *
+     * @param string       $sin    Singular instance.
+     * @param string       $plu    Plural instance.
+     * @param string       $n      Object count.
+     * @param string|array $params Sprintf() arguments.
+     *
+     * @return string The $sin or $plu translated by gettext, based on $n.
+     */
+    public function _fn($sin, $plu, $n, $params)
+    {
+        return _fn($sin, $plu, $n, $params, $this->domain);
     }
 
     /**
@@ -327,7 +1086,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
     /**
      * Get the request.
-     * 
+     *
      * @return Zikula_Request_Http
      */
     public function getRequest()
@@ -337,7 +1096,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
     /**
      * Get the Zikula controller.
-     * 
+     *
      * @return Zikula_AbstractController
      */
     public function getController()
@@ -347,7 +1106,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
     /**
      * Set the controller property.
-     * 
+     *
      * @param Zikula_AbstractController $controller Controller to set.
      *
      * @return void
@@ -494,611 +1253,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     }
 
     /**
-     * Add a plugin dir to the search path.
-     *
-     * Avoids adding duplicates.
-     *
-     * @param string $dir The directory to add.
-     *
-     * @return Zikula_View This instance.
-     */
-    public function addPluginDir($dir)
-    {
-        if (in_array($dir, $this->plugins_dir) || !is_dir($dir)) {
-            // TODO - !is_dir(...) should probably throw an exception.
-            return $this;
-        }
-
-        array_push($this->plugins_dir, $dir);
-        return $this;
-    }
-
-    /**
-     * Translate.
-     *
-     * @param string $msgid String to be translated.
-     *
-     * @return string The $msgid translated by gettext.
-     */
-    public function __($msgid)
-    {
-        return __($msgid, $this->domain);
-    }
-
-    /**
-     * Translate with sprintf().
-     *
-     * @param string       $msgid  String to be translated.
-     * @param string|array $params Args for sprintf().
-     *
-     * @return string The $msgid translated by gettext.
-     */
-    public function __f($msgid, $params)
-    {
-        return __f($msgid, $params, $this->domain);
-    }
-
-    /**
-     * Translate plural string.
-     *
-     * @param string $singular Singular instance.
-     * @param string $plural   Plural instance.
-     * @param string $count    Object count.
-     *
-     * @return string Translated string.
-     */
-    public function _n($singular, $plural, $count)
-    {
-        return _n($singular, $plural, $count, $this->domain);
-    }
-
-    /**
-     * Translate plural string with sprintf().
-     *
-     * @param string       $sin    Singular instance.
-     * @param string       $plu    Plural instance.
-     * @param string       $n      Object count.
-     * @param string|array $params Sprintf() arguments.
-     *
-     * @return string The $sin or $plu translated by gettext, based on $n.
-     */
-    public function _fn($sin, $plu, $n, $params)
-    {
-        return _fn($sin, $plu, $n, $params, $this->domain);
-    }
-
-    /**
-     * Setup the current instance of the Zikula_View class and return it back to the module.
-     *
-     * @param string       $module   Module name.
-     * @param boolean|null $caching  Whether or not to cache (boolean) or use config variable (null).
-     * @param string       $cache_id Cache Id.
-     *
-     * @return Zikula_View This instance.
-     */
-    public static function getInstance($module = null, $caching = null, $cache_id = null)
-    {
-        if (is_null($module)) {
-            $module = ModUtil::getName();
-        }
-
-        $serviceManager = ServiceUtil::getManager();
-        $serviceId = strtolower(sprintf('zikula.view.%s', $module));
-        if (!$serviceManager->hasService($serviceId)) {
-            $view = new self($serviceManager, $module, $caching);
-            $serviceManager->attachService($serviceId, $view);
-        } else {
-            $view = $serviceManager->getService($serviceId);
-        }
-
-        if (!is_null($caching)) {
-            $view->caching = $caching;
-        }
-
-        if (!is_null($cache_id)) {
-            $view->cache_id = $cache_id;
-        }
-
-        if ($module === null) {
-            $module = $view->toplevelmodule;
-        }
-
-        if (!array_key_exists($module, $view->module)) {
-            $view->module[$module] = ModUtil::getInfoFromName($module);
-            //$instance->modinfo = ModUtil::getInfoFromName($module);
-            $view->_add_plugins_dir($module);
-        }
-
-        // for {gt} template plugin to detect gettext domain
-        if ($view->module[$module]['type'] == ModUtil::TYPE_MODULE) {
-            $view->domain = ZLanguage::getModuleDomain($view->module[$module]['name']);
-        }
-
-        if (System::isLegacyMode()) {
-            // load the usemodules configuration if exists
-            $modpath = ($view->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-            $usepath = "$modpath/" . $view->module[$module]['directory'] . '/templates/config';
-            $usepathOld = "$modpath/" . $view->module[$module]['directory'] . '/pntemplates/config';
-            $usemod_confs = array();
-            $usemod_confs[] = "$usepath/usemodules.txt";
-            $usemod_confs[] = "$usepathOld/usemodules.txt";
-            $usemod_confs[] = "$usepath/usemodules"; // backward compat for < 1.2 // TODO A depreciate from 1.4
-            // load the config file
-            foreach ($usemod_confs as $usemod_conf) {
-                if (is_readable($usemod_conf) && is_file($usemod_conf)) {
-                    $additionalmodules = file($usemod_conf);
-                    if (is_array($additionalmodules)) {
-                        foreach ($additionalmodules as $addmod) {
-                            $view->_add_plugins_dir(trim($addmod));
-                        }
-                    }
-                }
-            }
-        }
-
-        return $view;
-    }
-
-    /**
-     * Get module plugin Zikula_View_Plugin instance.
-     *
-     * @param string       $modName    Module name.
-     * @param string       $pluginName Plugin name.
-     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
-     * @param string       $cache_id   Cache Id.
-     *
-     * @return Zikula_View_Plugin The plugin instance.
-     */
-    public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null)
-    {
-        return Zikula_View_Plugin::getInstance($modName, $pluginName, $caching, $cache_id);
-    }
-
-    /**
-     * Get system plugin Zikula_View_Plugin instance.
-     *
-     * @param string       $pluginName Plugin name.
-     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
-     * @param string       $cache_id   Cache Id.
-     *
-     * @return Zikula_View_Plugin The plugin instance.
-     */
-    public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null)
-    {
-        $modName = 'zikula';
-        return Zikula_View_Plugin::getPluginInstance($modName, $pluginName, $caching, $cache_id);
-    }
-
-    /**
-     * Checks whether requested template exists.
-     *
-     * @param string $template Template name.
-     *
-     * @return boolean
-     */
-    public function template_exists($template)
-    {
-        return (bool)$this->get_template_path($template);
-    }
-
-    /**
-     * Checks which path to use for required template.
-     *
-     * @param string $template Template name.
-     *
-     * @return string Template path.
-     */
-    public function get_template_path($template)
-    {
-        if (isset($this->templateCache[$template])) {
-            return $this->templateCache[$template];
-        }
-
-        // the current module
-        $modname = ModUtil::getName();
-
-        foreach ($this->module as $module => $modinfo) {
-            // prepare the values for OS
-            $module = $modinfo['name'];
-
-            $os_modname = DataUtil::formatForOS($modname);
-            $os_module = DataUtil::formatForOS($module);
-            $os_theme = DataUtil::formatForOS($this->theme);
-            $os_dir = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
-
-            $ostemplate = DataUtil::formatForOS($template);
-
-            $relativepath = "$os_dir/$os_module/templates";
-            $templatefile = "$relativepath/$ostemplate";
-            $override = self::getTemplateOverride($templatefile);
-            if ($override === false) {
-                // no override present
-                if (!System::isLegacyMode()) {
-                    if (is_readable($templatefile)) {
-                        $this->templateCache[$template] = $relativepath;
-                        return $relativepath;
-                    } else {
-                        return false;
-                    }
-                }
-            } else {
-                if (is_readable($override)) {
-                    $path = substr($override, 0, strrpos($override, $ostemplate));
-                    $this->templateCache[$template] = $path;
-                    return $path;
-                }
-            }
-            
-            // The rest of this code is scheduled for removal from 1.4.0 - drak
-            
-            // check the module for which we're looking for a template is the
-            // same as the top level mods. This limits the places to look for
-            // templates.
-            if ($module == $modname) {
-                $search_path = array(
-                        "themes/$os_theme/templates/modules/$os_module", // themepath
-                        "config/templates/$os_module", //global path
-                        "$os_dir/$os_module/templates", // modpath
-                        "$os_dir/$os_module/pntemplates", // modpath old
-                );
-            } else {
-                $search_path = array("themes/$os_theme/templates/modules/$os_module/$os_modname", // themehookpath
-                        "themes/$os_theme/templates/modules/$os_module", // themepath
-                        "config/templates/$os_module/$os_modname", //globalhookpath
-                        "config/templates/$os_module", //global path
-                        "$os_dir/$os_module/templates/$os_modname", //modhookpath
-                        "$os_dir/$os_module/templates", // modpath
-                        "$os_dir/$os_module/pntemplates/$os_modname", // modhookpathold
-                        "$os_dir/$os_module/pntemplates", // modpath old
-                );
-            }
-
-            foreach ($search_path as $path) {
-                if (is_readable("$path/$ostemplate")) {
-                    $this->templateCache[$template] = $path;
-                    return $path;
-                }
-            }
-        }
-
-        // when we arrive here, no path was found
-        return false;
-    }
-
-    /**
-     * Executes & returns the template results.
-     *
-     * This returns the template output instead of displaying it.
-     * Supply a valid template name.
-     * As an optional second parameter, you can pass a cache id.
-     * As an optional third parameter, you can pass a compile id.
-     *
-     * @param string  $template   The name of the template.
-     * @param string  $cache_id   The cache ID (optional).
-     * @param string  $compile_id The compile ID (optional).
-     * @param boolean $display    Whether or not to display directly (optional).
-     * @param boolean $reset      Reset singleton defaults (optional). deprecated.
-     *
-     * @return string The template output.
-     */
-    public function fetch($template, $cache_id = null, $compile_id = null, $display = false, $reset = true)
-    {
-        $this->_setup_template($template);
-
-        if (is_null($cache_id)) {
-            $cache_id = $this->cache_id;
-        }
-
-        if (is_null($compile_id)) {
-            $compile_id = $this->compile_id;
-        }
-
-        $this->template = $this->template_dir . '/' . $template;
-        $output = parent::fetch($template, $cache_id, $compile_id, $display);
-
-        if ($this->expose_template == true) {
-            $template = DataUtil::formatForDisplay($template);
-            $output = "\n<!-- Start " . $this->template_dir . "/$template -->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
-        }
-
-        $event = new Zikula_Event('view.postfetch', $this, array('template' => $template), $output);
-        return $this->eventManager->notify($event)->getData();
-    }
-
-    /**
-     * Executes & displays the template results.
-     *
-     * This displays the template.
-     * Supply a valid template name.
-     * As an optional second parameter, you can pass a cache id.
-     * As an optional third parameter, you can pass a compile id.
-     *
-     * @param string $template   The name of the template.
-     * @param string $cache_id   The cache ID (optional).
-     * @param string $compile_id The compile ID (optional).
-     *
-     * @return boolean
-     */
-    public function display($template, $cache_id = null, $compile_id = null)
-    {
-        echo $this->fetch($template, $cache_id, $compile_id);
-        return true;
-    }
-
-    /**
-     * Returns an auto_id for auto-file-functions.
-     *
-     * @param string $cache_id   The cache ID (optional).
-     * @param string $compile_id The compile ID (optional).
-     *
-     * @return string|null The auto_id, or null if neither $cache_id nor $compile_id are set.
-     */
-    function _get_auto_id($cache_id=null, $compile_id=null)
-    {
-        if (isset($cache_id)) {
-            $auto_id = (isset($compile_id) && !empty($compile_id)) ? $cache_id . '_' . $compile_id  : $cache_id;
-        } elseif (isset($compile_id)) {
-            $auto_id = $compile_id;
-        }
-
-        if (isset($auto_id)) {
-            return md5($auto_id);
-        }
-
-        return null;
-    }
-
-    /**
-     * Get a concrete filename for automagically created content.
-     *
-     * @param string $auto_base   The base path.
-     * @param string $auto_source The file name (optional).
-     * @param string $auto_id     The ID (optional).
-     *
-     * @return string The concrete path and file name to the content.
-     * 
-     * @staticvar string|null
-     * @staticvar string|null
-     */
-    function _get_auto_filename($auto_base, $auto_source = null, $auto_id = null)
-    {
-        $path = $auto_base . '/';
-
-        $multilingual = System::getVar('multilingual');
-
-        if ($multilingual == 1) {
-            $path .= $this->language . '/';
-        }
-
-        if ($this instanceof Zikula_View_Theme) {
-            $path .= $this->themeinfo['directory'] . '/';
-        } elseif ($this instanceof Zikula_View_Plugin) {
-            $path .= $this->themeinfo['directory'] . '/' . $this->modinfo['directory'] . '/' . $this->pluginName . '/';
-        } else {
-            $path .= $this->themeinfo['directory'] . '/' . $this->modinfo['directory'] . '/';
-        }
-        
-        if (!file_exists($path)) {
-            mkdir($path, $this->serviceManager['system.chmod_dir'], true);
-        }
-
-        // format auto_source for os to make sure that id does not contain 'ugly' characters
-        $auto_source = DataUtil::formatForOS($auto_source);
-
-        // create a hash from default dsn + $auto_source and use it in the filename
-        $hash = md5(serialize($this->serviceManager['databases'] . '+' . $auto_source));
-        $filebase = FileUtil::getFilebase($auto_source);
-        $filebase_hashed = $filebase . '-' . $hash;
-        
-        // include auto_id in the filename 
-        if (isset($auto_id) && !empty($auto_id)) {
-            $filebase_hashed = $auto_id . '-' . $filebase_hashed;
-        }
-        
-        // replace the original filebase with the hashed one
-        $file = str_replace($filebase, $filebase_hashed, $auto_source);
-
-        return $path.$file;
-    }
-
-    /**
-     * Finds out if a template is already cached.
-     *
-     * This returns true if there is a valid cache for this template.
-     * Right now, we are just passing it to the original Smarty function.
-     * We might introduce a function to decide if the cache is in need
-     * to be refreshed...
-     *
-     * @param string $template   The name of the template.
-     * @param string $cache_id   The cache ID (optional).
-     * @param string $compile_id The compile ID (optional).
-     *
-     * @return boolean
-     */
-    public function is_cached($template, $cache_id = null, $compile_id = null)
-    {
-        if (is_null($cache_id)) {
-            $cache_id = $this->cache_id;
-        }
-
-        if (is_null($compile_id)) {
-            $compile_id = $this->compile_id;
-        }
-
-        return parent::is_cached($template, $cache_id, $compile_id);
-    }
-
-    /**
-     * Clears the cache for a specific template.
-     *
-     * This returns true if there is a valid cache for this template.
-     * Right now, we are just passing it to the original Smarty function.
-     * We might introduce a function to decide if the cache is in need
-     * to be refreshed...
-     *
-     * @param string $template   The name of the template.
-     * @param string $cache_id   The cache ID (optional).
-     * @param string $compile_id The compile ID (optional).
-     * @param string $expire     Minimum age in sec. the cache file must be before it will get cleared (optional).
-     *
-     * @return  boolean
-     */
-    public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null)
-    {
-        $cache_dir = $this->cache_dir;
-
-        $cached_files = FileUtil::getFiles($cache_dir, true, false, array('tpl'), null, false);
-
-        if ($template == null) {
-            if ($expire == null) {
-                foreach ($cached_files as $cf) {
-                    unlink(realpath($cf));
-                }
-            } else {
-                // actions for when $exp_time is not null
-            }
-        } else {
-            if ($expire == null) {
-                $auto_id = self::_get_auto_id($cache_id, $compile_id);
-                $auto_filename = self::_get_auto_filename($cache_dir, $template, $auto_id);
-                
-                if (isset($auto_id) && !empty($auto_id)) {
-                    if (file_exists($auto_filename)) {
-                        unlink($auto_filename);
-                    }
-                } else {
-                    $template_filebase = FileUtil::getFilebase($template);
-                    foreach ($cached_files as $cf) {
-                        if (strpos($cf, $template_filebase) !== false) {
-                            unlink(realpath($cf));
-                        }
-                    }
-                }
-            } else {
-                // actions for when $expire is not null
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Clear all cached templates.
-     *
-     * @param string $exp_time Expire time.
-     *
-     * @return boolean Results of {@link smarty_core_rm_auto()}.
-     */
-    public function clear_all_cache($exp_time = null)
-    {
-        return $this->clear_cache(null, null, null, $exp_time);
-    }
-
-    /**
-     * Clear all compiled templates.
-     *
-     * @param string $exp_time Expire time.
-     *
-     * @return boolean Results of {@link smarty_core_rm_auto()}.
-     */
-    public function clear_compiled($exp_time = null)
-    {
-        $compile_dir = $this->compile_dir;
-
-        $compiled_files = FileUtil::getFiles($compile_dir, true, false, array('php', 'inc'), null, false);
-
-        if ($exp_time == null) {
-            foreach ($compiled_files as $cf) {
-                unlink(realpath($cf));
-            }
-        } else {
-            // actions for when $exp_time is not null
-        }
-
-        return true;
-    }
-
-    /**
-     * Assign variable to template.
-     *
-     * @param string $key   Variable name.
-     * @param mixed  $value Value.
-     *
-     * @return Zikula_View
-     */
-    function assign($key, $value = null)
-    {
-        $this->_assign_check($key);
-        parent::assign($key, $value);
-        return $this;
-    }
-
-    /**
-     * Assign variable to template by reference.
-     *
-     * @param string $key    Variable name.
-     * @param mixed  &$value Value.
-     *
-     * @return Zikula_View
-     */
-    function assign_by_ref($key, &$value)
-    {
-        $this->_assign_check($key);
-        parent::assign_by_ref($key, $value);
-        return $this;
-    }
-
-    /**
-     * Prevent certain variables from being overwritten.
-     *
-     * @param string $key The protected variable key.
-     *
-     * @return void
-     */
-    protected function _assign_check($key)
-    {
-        if (is_array($key)) {
-            foreach ($key as $v) {
-                self::_assign_check($v);
-            }
-            return;
-        }
-
-        if (is_string($key)) {
-            switch (strtolower($key))
-            {
-                case 'zikula_view':
-                case 'zikula_core':
-                case 'modvars':
-                case 'metatags':
-                case 'coredata':
-                case 'servicemanager':
-                case 'eventmanager':
-                    $this->trigger_error(__f('%s is a protected template variable and may not be assigned', $key));
-                    break;
-            }
-        }
-    }
-
-    /**
-     * Set up paths for the template.
-     *
-     * This function sets the template and the config path according
-     * to where the template is found (Theme or Module directory)
-     *
-     * @param string $template The template name.
-     *
-     * @return void
-     */
-    public function _setup_template($template)
-    {
-        // default directory for templates
-        $this->template_dir = $this->get_template_path($template);
-        $this->templatePath = $this->template_dir . '/' . $template;
-        $this->config_dir = $this->template_dir . '/config';
-    }
-
-    /**
      * Get template path.
      *
      * This is calculated by _setup_template() invoked during fetch().
@@ -1118,99 +1272,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     public function getTemplatePaths()
     {
         return $this->templatePaths;
-    }
-
-    /**
-     * add a plugins dir to _plugin_dir array
-     *
-     * This function takes  module name and adds two path two the plugins_dir array
-     * when existing
-     *
-     * @param string $module Well known module name.
-     *
-     * @return void
-     */
-    private function _add_plugins_dir($module)
-    {
-        if (empty($module)) {
-            return;
-        }
-
-        $modinfo = ModUtil::getInfoFromName($module);
-        if (!$modinfo) {
-            return;
-        }
-
-        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-        $this->addPluginDir("$modpath/$modinfo[directory]/templates/plugins");
-
-        if (System::isLegacyMode()) {
-            $this->addPluginDir("$modpath/$modinfo[directory]/pntemplates/plugins");
-        }
-    }
-
-    /**
-     * Add core data to the template.
-     *
-     * This function adds some basic data to the template depending on the
-     * current user and the Zikula settings.  There is no need to call this as it's
-     * invoked automatically on instanciation.
-     *
-     * In legacy mode 'coredata' will contain the module vars, but not when disabled.
-     * This is just for BC legacy - to access module vars there is a 'modvars' property
-     * assigned to all templates.
-     *
-     * @return Zikula_View
-     */
-    public function add_core_data()
-    {
-        if (!isset($this->serviceManager['zikula_view.coredata'])) {
-            $this->serviceManager['zikula_view.coredata'] = new ArrayObject(array());
-        }
-
-        $core = $this->serviceManager['zikula_view.coredata'];
-        $core['version_num'] = Zikula_Core::VERSION_NUM;
-        $core['version_id'] = Zikula_Core::VERSION_ID;
-        $core['version_sub'] = Zikula_Core::VERSION_SUB;
-        $core['logged_in'] = UserUtil::isLoggedIn();
-        $core['language'] = $this->language;
-        
-        // add userdata
-        $core['user'] = UserUtil::getVars(SessionUtil::getVar('uid'));
-
-        if (System::isLegacyMode()) {
-            // add modvars of current modules
-            foreach ($this->module as $module => $dummy) {
-                if (!empty($module)) {
-                    $core[$module] = ModUtil::getVar($module);
-                }
-            }
-
-            // add mod vars of all modules supplied as parameter
-            $modulenames = func_get_args();
-            foreach ($modulenames as $modulename) {
-                // if the modulename is empty do nothing
-                if (!empty($modulename) && !is_array($modulename) && !array_key_exists($modulename, $this->module)) {
-                    // check if user wants to have config
-                    if ($modulename == ModUtil::CONFIG_MODULE) {
-                        $ZConfig = ModUtil::getVar(ModUtil::CONFIG_MODULE);
-                        foreach ($ZConfig as $key => $value) {
-                            // gather all config vars
-                            $core['ZConfig'][$key] = $value;
-                        }
-                    } else {
-                        $core[$modulename] = ModUtil::getVar($modulename);
-                    }
-                }
-            }
-
-            $this->assign('pncore', $core);
-        }
-
-        // Module vars
-        parent::assign('coredata', $core);
-
-        return $this;
     }
 
     /**
@@ -1474,13 +1535,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve whether caching is enabled.
      *
-     * Values:
-     * <ul>
-     *  <li>0 = no caching</li>
-     *  <li>1 = use class cache_lifetime value</li>
-     *  <li>2 = use cache_lifetime in cache file</li>
-     * </ul>
-     *
      * @return integer A code indicating whether caching is enabled.
      */
     public function getCaching()
@@ -1491,13 +1545,19 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set Caching.
      *
-     * @param boolean $boolean True or false.
+     * <ul>
+     *  <li>0 = no caching</li>
+     *  <li>1 = use class cache_lifetime value</li>
+     *  <li>2 = use cache_lifetime in cache file</li>
+     * </ul>
+     *
+     * @param integer $caching 0.
      *
      * @return $this
      */
-    public function setCaching($boolean)
+    public function setCaching($caching)
     {
-        $this->caching = (bool)$boolean;
+        $this->caching = (int)$caching;
         return $this;
     }
 
@@ -2438,32 +2498,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     }
 
     /**
-     * Execute a template override event.
-     *
-     * @param string $template Path to template.
-     *
-     * @throws InvalidArgumentException If event handler returns a non-existent template.
-     *
-     * @return mixed String if found, false if no override present.
-     */
-    public static function getTemplateOverride($template)
-    {
-        $event = new Zikula_Event('zikula_view.template_override', null, array(), $template);
-        EventUtil::getManager()->notify($event);
-
-        if ($event->isStopped()) {
-            $ostemplate = DataUtil::formatForOS($event->getData());
-            if (is_readable($ostemplate)) {
-                return $ostemplate;
-            } else {
-                throw new InvalidArgumentException(__f('zikula_view.template_override returned a non-existent template path %s', $ostemplate));
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Disable or enable add the module wrapper.
      *
      * @param boolean $wrap False to disable wrapper, true to enable it.
@@ -2477,99 +2511,211 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         }
         return $this;
     }
-}
 
-/**
- * Smarty block function to prevent template parts from being cached
- *
- * @param array       $param   Tag parameters.
- * @param string      $content Block content.
- * @param Zikula_View $view    Reference to smarty instance.
- *
- * @return string
- **/
-function Zikula_View_block_nocache($param, $content, $view)
-{
-    return $content;
-}
+    /**
+     * Smarty override to customize the core.process_cached_inserts
+     *
+     * @param string $resource_name
+     * @param string $cache_id
+     * @param string $compile_id
+     * @param boolean $display
+     */
+    private function _fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
+    {
+        static $_cache_info = array();
 
-/**
- * Smarty resource function to determine correct path for template inclusion.
- *
- * For more information about parameters see http://smarty.php.net/manual/en/template.resources.php.
- *
- * @param string      $tpl_name    Template name.
- * @param string      &$tpl_source Template source.
- * @param Zikula_View $view        Reference to Smarty instance.
- *
- * @access private
- * @return boolean
- */
-function z_get_template($tpl_name, &$tpl_source, $view)
-{
-    // determine the template path and store the template source
+        $_smarty_old_error_level = $this->debugging ? error_reporting() : error_reporting(isset($this->error_reporting)
+               ? $this->error_reporting : error_reporting() & ~E_NOTICE);
 
-    // get path, checks also if tpl_name file_exists and is_readable
-    $tpl_path = $view->get_template_path($tpl_name);
+        if (!$this->debugging && $this->debugging_ctrl == 'URL') {
+            $_query_string = $this->request_use_auto_globals ? $_SERVER['QUERY_STRING'] : $GLOBALS['HTTP_SERVER_VARS']['QUERY_STRING'];
+            if (@strstr($_query_string, $this->_smarty_debug_id)) {
+                if (@strstr($_query_string, $this->_smarty_debug_id . '=on')) {
+                    // enable debugging for this browser session
+                    @setcookie('SMARTY_DEBUG', true);
+                    $this->debugging = true;
+                } elseif (@strstr($_query_string, $this->_smarty_debug_id . '=off')) {
+                    // disable debugging for this browser session
+                    @setcookie('SMARTY_DEBUG', false);
+                    $this->debugging = false;
+                } else {
+                    // enable debugging for this page
+                    $this->debugging = true;
+                }
+            } else {
+                $this->debugging = (bool)($this->request_use_auto_globals ? @$_COOKIE['SMARTY_DEBUG'] : @$GLOBALS['HTTP_COOKIE_VARS']['SMARTY_DEBUG']);
+            }
+        }
 
-    if ($tpl_path !== false) {
-        $tpl_source = file_get_contents(DataUtil::formatForOS($tpl_path . '/' . $tpl_name));
-        return true;
+        if ($this->debugging) {
+            // capture time for debugging info
+            $_params = array();
+            require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+            $_debug_start_time = smarty_core_get_microtime($_params, $this);
+            $this->_smarty_debug_info[] = array('type'      => 'template',
+                                                'filename'  => $resource_name,
+                                                'depth'     => 0);
+            $_included_tpls_idx = count($this->_smarty_debug_info) - 1;
+        }
+
+        if (!isset($compile_id)) {
+            $compile_id = $this->compile_id;
+        }
+
+        $this->_compile_id = $compile_id;
+        $this->_inclusion_depth = 0;
+
+        if ($this->caching) {
+            // save old cache_info, initialize cache_info
+            array_push($_cache_info, $this->_cache_info);
+            $this->_cache_info = array();
+            $_params = array(
+                'tpl_file' => $resource_name,
+                'cache_id' => $cache_id,
+                'compile_id' => $compile_id,
+                'results' => null
+            );
+            require_once(SMARTY_CORE_DIR . 'core.read_cache_file.php');
+            if (smarty_core_read_cache_file($_params, $this)) {
+                $_smarty_results = $_params['results'];
+                if (!empty($this->_cache_info['insert_tags'])) {
+                    $_params = array('plugins' => $this->_cache_info['insert_tags']);
+                    require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
+                    smarty_core_load_plugins($_params, $this);
+                    $_params = array('results' => $_smarty_results);
+                    // ZIKULA OVERRIDE
+                    require_once('lib/viewplugins/zikula.process_cached_inserts.php');
+                    $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
+                }
+                if (!empty($this->_cache_info['cache_serials'])) {
+                    $_params = array('results' => $_smarty_results);
+                    require_once(SMARTY_CORE_DIR . 'core.process_compiled_include.php');
+                    $_smarty_results = smarty_core_process_compiled_include($_params, $this);
+                }
+
+
+                if ($display) {
+                    if ($this->debugging)
+                    {
+                        // capture time for debugging info
+                        $_params = array();
+                        require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+                        $this->_smarty_debug_info[$_included_tpls_idx]['exec_time'] = smarty_core_get_microtime($_params, $this) - $_debug_start_time;
+                        require_once(SMARTY_CORE_DIR . 'core.display_debug_console.php');
+                        $_smarty_results .= smarty_core_display_debug_console($_params, $this);
+                    }
+                    if ($this->cache_modified_check) {
+                        $_server_vars = ($this->request_use_auto_globals) ? $_SERVER : $GLOBALS['HTTP_SERVER_VARS'];
+                        $_last_modified_date = @substr($_server_vars['HTTP_IF_MODIFIED_SINCE'], 0, strpos($_server_vars['HTTP_IF_MODIFIED_SINCE'], 'GMT') + 3);
+                        $_gmt_mtime = gmdate('D, d M Y H:i:s', $this->_cache_info['timestamp']).' GMT';
+                        if (@count($this->_cache_info['insert_tags']) == 0
+                            && !$this->_cache_serials
+                            && $_gmt_mtime == $_last_modified_date) {
+                            if (php_sapi_name()=='cgi')
+                                header('Status: 304 Not Modified');
+                            else
+                                header('HTTP/1.1 304 Not Modified');
+
+                        } else {
+                            header('Last-Modified: '.$_gmt_mtime);
+                            echo $_smarty_results;
+                        }
+                    } else {
+                            echo $_smarty_results;
+                    }
+                    error_reporting($_smarty_old_error_level);
+                    // restore initial cache_info
+                    $this->_cache_info = array_pop($_cache_info);
+                    return true;
+                } else {
+                    error_reporting($_smarty_old_error_level);
+                    // restore initial cache_info
+                    $this->_cache_info = array_pop($_cache_info);
+                    return $_smarty_results;
+                }
+            } else {
+                $this->_cache_info['template'][$resource_name] = true;
+                if ($this->cache_modified_check && $display) {
+                    header('Last-Modified: '.gmdate('D, d M Y H:i:s', time()).' GMT');
+                }
+            }
+        }
+
+        // load filters that are marked as autoload
+        if (count($this->autoload_filters)) {
+            foreach ($this->autoload_filters as $_filter_type => $_filters) {
+                foreach ($_filters as $_filter) {
+                    $this->load_filter($_filter_type, $_filter);
+                }
+            }
+        }
+
+        $_smarty_compile_path = $this->_get_compile_path($resource_name);
+
+        // if we just need to display the results, don't perform output
+        // buffering - for speed
+        $_cache_including = $this->_cache_including;
+        $this->_cache_including = false;
+        if ($display && !$this->caching && count($this->_plugins['outputfilter']) == 0) {
+            if ($this->_is_compiled($resource_name, $_smarty_compile_path)
+                    || $this->_compile_resource($resource_name, $_smarty_compile_path))
+            {
+                include($_smarty_compile_path);
+            }
+        } else {
+            ob_start();
+            if ($this->_is_compiled($resource_name, $_smarty_compile_path)
+                    || $this->_compile_resource($resource_name, $_smarty_compile_path))
+            {
+                include($_smarty_compile_path);
+            }
+            $_smarty_results = ob_get_contents();
+            ob_end_clean();
+
+            foreach ((array)$this->_plugins['outputfilter'] as $_output_filter) {
+                $_smarty_results = call_user_func_array($_output_filter[0], array($_smarty_results, &$this));
+            }
+        }
+
+        if ($this->caching) {
+            $_params = array('tpl_file' => $resource_name,
+                        'cache_id' => $cache_id,
+                        'compile_id' => $compile_id,
+                        'results' => $_smarty_results);
+            require_once(SMARTY_CORE_DIR . 'core.write_cache_file.php');
+            smarty_core_write_cache_file($_params, $this);
+            // ZIKULA OVERRIDE
+            require_once('lib/viewplugins/zikula.process_cached_inserts.php');
+            $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
+
+            if ($this->_cache_serials) {
+                // strip nocache-tags from output
+                $_smarty_results = preg_replace('!(\{/?nocache\:[0-9a-f]{32}#\d+\})!s'
+                                                ,''
+                                                ,$_smarty_results);
+            }
+            // restore initial cache_info
+            $this->_cache_info = array_pop($_cache_info);
+        }
+        $this->_cache_including = $_cache_including;
+
+        if ($display) {
+            if (isset($_smarty_results)) { echo $_smarty_results; }
+            if ($this->debugging) {
+                // capture time for debugging info
+                $_params = array();
+                require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+                $this->_smarty_debug_info[$_included_tpls_idx]['exec_time'] = (smarty_core_get_microtime($_params, $this) - $_debug_start_time);
+                require_once(SMARTY_CORE_DIR . 'core.display_debug_console.php');
+                echo smarty_core_display_debug_console($_params, $this);
+            }
+            error_reporting($_smarty_old_error_level);
+            return;
+        } else {
+            error_reporting($_smarty_old_error_level);
+            if (isset($_smarty_results)) { return $_smarty_results; }
+        }
     }
-
-    return LogUtil::registerError(__f('Error! The template [%1$s] is not available in the [%2$s] module.', array(
-            $tpl_name,
-            $view->toplevelmodule)));
-}
-
-/**
- * Get the timestamp of the last change of the $tpl_name file.
- *
- * @param string      $tpl_name       Template name.
- * @param string      &$tpl_timestamp Template timestamp.
- * @param Zikula_View $view           Reference to Smarty instance.
- *
- * @return boolean
- */
-function z_get_timestamp($tpl_name, &$tpl_timestamp, $view)
-{
-    // get path, checks also if tpl_name file_exists and is_readable
-    $tpl_path = $view->get_template_path($tpl_name);
-
-    if ($tpl_path !== false) {
-        $tpl_timestamp = filemtime(DataUtil::formatForOS($tpl_path . '/' . $tpl_name));
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * Checks whether or not a template is secure.
- *
- * @param string      $tpl_name Template name.
- * @param Zikula_View $view     Reference to Smarty instance.
- *
- * @return boolean
- */
-function z_get_secure($tpl_name, $view)
-{
-    // assume all templates are secure
-    return true;
-}
-
-/**
- * Whether or not the template is trusted.
- *
- * @param string      $tpl_name Template name.
- * @param Zikula_View $view     Reference to Smarty instance.
- *
- * @return void
- */
-function z_get_trusted($tpl_name, $view)
-{
-    // not used for templates
-    return;
 }
 
 /**
