@@ -160,6 +160,11 @@ Triggered by a native ajax request from a theme.  This occurs when the following
 `ajax.php?module=theme&func=dispatch&.....`
 Handlers should be registered in the theme.
 
+#### `theme.preinit`
+Occurs on the startup of the `Zikula_View_Theme#__construct()`.
+The subject is the Zikula_View_Theme instance.
+Is useful to setup a customized theme configuration or cache_id.
+
 #### `theme.init`
 Occurs just before `Zikula_View_Theme#__construct()` finishes.
 The subject is the Zikula_View_Theme instance.
