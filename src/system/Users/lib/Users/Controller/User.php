@@ -87,19 +87,19 @@ class Users_Controller_User extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * See the definition of {@link Users_Controller_FormData_RegistrationForm}.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * Parameters passed via SERVER:
      * ------------------------------
      * string HTTP_USER_AGENT The browser user agent string, for comparison with illegal user agent strings.
-     * 
+     *
      * @return string The rendered template.
      */
     public function register()
@@ -111,11 +111,11 @@ class Users_Controller_User extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission($this->name .'::', '::', ACCESS_READ)) {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         if (!$this->getVar(Users_Constant::MODVAR_REGISTRATION_ENABLED, Users_Constant::DEFAULT_REGISTRATION_ENABLED)) {
             return $this->view->fetch('users_user_registration_disabled.tpl');
         }
-        
+
         $state = 'error';
         $processState = 'error';
         if ($this->request->isGet()) {
@@ -126,38 +126,38 @@ class Users_Controller_User extends Zikula_AbstractController
                     $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
                     $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
                     $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
-                    
+
                     if ($reentrantToken != $reentrantTokenReceived) {
                         throw new Zikula_Exception_Forbidden();
                     }
                 } else {
                     throw new Zikula_Exception_Fatal($this->__('An internal error occurred. Failed to retrieve stored registration state.'));
                 }
-                
+
                 $state = 'process';
                 $processState = 'authenticate';
             } else {
                 $selectedAuthenticationMethod = array();
                 $authenticationInfo = array();
-                
+
                 $state = 'process';
                 $processState = 'start';
             }
         } elseif ($this->request->isPost()) {
             $this->checkCsrfToken();
-            
+
             if ($this->request->getPost()->get('authentication_method_selector', false)) {
                 $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', false);
                 $authenticationInfo = array();
-                
+
                 $state = 'process';
                 $processState = 'authentication_method_selector';
             } elseif ($this->request->getPost()->get('registration_authentication_info', false)) {
                 $authenticationInfo           = $this->request->getPost()->get('authentication_info', array());
                 $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
-                
+
                 $reentrantToken = substr(SecurityUtil::generateCsrfToken(), 0, 10);
-                
+
                 $state = 'process';
                 $processState = 'authenticate';
             } elseif ($this->request->getPost()->get('registration_info', false)) {
@@ -165,14 +165,14 @@ class Users_Controller_User extends Zikula_AbstractController
                 $formData->setFromRequestCollection($this->request->getPost());
                 $selectedAuthenticationMethod = unserialize($this->request->getPost()->get('authentication_method_ser', false));
                 $authenticationInfo = unserialize($this->request->getPost()->get('authentication_info_ser', false));
-                
+
                 $state = 'process';
                 $processState = 'register';
             }
         } else {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         while ($state == 'process') {
             switch ($processState) {
                 // Initial starting point for registration - a GET request without a reentrant token
@@ -204,7 +204,7 @@ class Users_Controller_User extends Zikula_AbstractController
                             'modname' => 'Users',
                             'method'  => 'uname',
                         );
-                        
+
                         $state = 'display_registration';
                         $processState = 'error';
                     } else {
@@ -212,7 +212,7 @@ class Users_Controller_User extends Zikula_AbstractController
                         $processState = 'error';
                     }
                     break;
-                    
+
                 // One of the authentication method selectors on the registration methods page was clicked.
                 case 'authentication_method_selector':
                     if (!$selectedAuthenticationMethod || !is_array($selectedAuthenticationMethod) || empty($selectedAuthenticationMethod)
@@ -221,7 +221,7 @@ class Users_Controller_User extends Zikula_AbstractController
                             ) {
                         throw new Zikula_Exception_Fatal($this->__('An invalid authentication method was selected.'));
                     }
-                    
+
                     if ($selectedAuthenticationMethod['modname'] == $this->name) {
                         $state = 'display_registration';
                         $processState = 'error';
@@ -230,10 +230,10 @@ class Users_Controller_User extends Zikula_AbstractController
                         $processState = 'error';
                     }
                     break;
-                    
+
                 // The user provided and submitted the authentication information form on the registration methods page in order
                 // to authenticate his credentials with the authentication method in order to proceed to the main registration page,
-                // OR the user is reentering the registration process after exiting to the external authentication service to 
+                // OR the user is reentering the registration process after exiting to the external authentication service to
                 // authenticate his credentials.
                 case 'authenticate':
                     // Save the submitted information in case the authentication method is external and reentrant.
@@ -275,14 +275,14 @@ class Users_Controller_User extends Zikula_AbstractController
                             $authenticationApiArgs['authentication_info'] = $checkPasswordResult['authentication_info'];
                         }
                         $uid = ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'getUidForAuthenticationInfo', $authenticationApiArgs, 'Zikula_Api_AbstractAuthentication');
-                        
+
                         if ($uid === false) {
                             if (isset($checkPasswordResult['authentication_info'])) {
                                 $authenticationInfo = $checkPasswordResult['authentication_info'];
                             }
-                            
+
                             $formData = new Users_Controller_FormData_RegistrationForm('users_register', $this->serviceManager);
-                            
+
                             $registrationInfo = (isset($checkPasswordResult['registration_info']) && is_array($checkPasswordResult['registration_info'])) ? $checkPasswordResult['registration_info'] : array();
                             if (!empty($registrationInfo)) {
                                 if (isset($registrationInfo['nickname']) && !empty($registrationInfo['nickname'])) {
@@ -292,7 +292,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                     $formData->setField('email', $registrationInfo['email']);
                                 }
                             }
-                            
+
                             $state = 'display_registration';
                             $processState = 'error';
                         } else {
@@ -308,12 +308,12 @@ class Users_Controller_User extends Zikula_AbstractController
                         $processState = 'error';
                     }
                     break;
-                    
+
                 // The user filled in and submitted the main registration form.
                 case 'register':
                     $canLogIn = false;
                     $redirectUrl = '';
-                    
+
                     $formData->getField('uname')->setData(mb_strtolower($formData->getField('uname')->getData()));
                     $formData->getField('email')->setData(mb_strtolower($formData->getField('email')->getData()));
 
@@ -333,7 +333,8 @@ class Users_Controller_User extends Zikula_AbstractController
                         $errorFields = $formData->getErrorMessages();
                     }
 
-                    $validators = $this->notifyHooks('users.hook.user.validate.edit', $reginfo, null, array(), new Zikula_Hook_ValidationProviders())->getData();
+                    $hook = new Zikula_ValidationHook('users.hook.user.validate.edit', new Zikula_Hook_ValidationProviders());
+                    $validators = $this->notifyHooks($hook)->getValidators();
 
                     if (empty($errorFields) && !$validators->hasErrors()) {
                         $currentUserEmail = UserUtil::getVar('email');
@@ -371,7 +372,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                 );
                             }
 
-                            $this->notifyHooks('users.hook.user.process.edit', $registeredObj, $registeredObj['uid']);
+                            $this->notifyHooks(new Zikula_ProcessHook('users.hook.user.process.edit', $registeredObj['uid']));
 
                             if (!empty($registeredObj['regErrors'])) {
                                 $this->view->assign('regErrors', $registeredObj['regErrors']);
@@ -423,7 +424,7 @@ class Users_Controller_User extends Zikula_AbstractController
                             $event = new Zikula_Event('module.users.ui.registration.succeeded', $registeredObj, $eventArgs);
                             $event = $this->eventManager->notify($event);
                             $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
-                            
+
                             if ($canLogIn && $this->getVar(Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN, Users_Constant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
                                 if (empty($redirectUrl)) {
                                     $redirectUrl = System::getHomepageUrl();
@@ -451,7 +452,7 @@ class Users_Controller_User extends Zikula_AbstractController
                             $event = new Zikula_Event('module.users.ui.registration.failed', null, $eventArgs);
                             $event = $this->eventManager->notify($event);
                             $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
-                            
+
                             if (!empty($redirectUrl)) {
                                 $state = 'redirect';
                                 $processState = 'error';
@@ -462,18 +463,18 @@ class Users_Controller_User extends Zikula_AbstractController
                         }
                     }
                     break;
-                    
+
                 // An unknown processing state.
                 default:
                     throw new Zikula_Exception_Fatal($this->__('The registration process has entered an unknown processing state.'));
                     break;
             }
         }
-        
+
         switch ($state) {
             case 'display_method_selector':
                 $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this, array(), Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
-                
+
                 // TODO - The order and availability should be set by configuration
                 $authenticationMethodDisplayOrder = array();
                 foreach ($authenticationMethodList as $am) {
@@ -500,12 +501,12 @@ class Users_Controller_User extends Zikula_AbstractController
                 return $this->view->assign($templateArgs)
                         ->fetch('users_user_registration_method.tpl');
                 break;
-                
+
             case 'display_registration':
                 if (!isset($formData)) {
                     $formData = new Users_Controller_FormData_RegistrationForm('users_register', $this->serviceManager);
                 }
-                
+
                 $rendererArgs = array(
                     'authentication_method' => $selectedAuthenticationMethod,
                     'authentication_info'   => $authenticationInfo,
@@ -518,15 +519,15 @@ class Users_Controller_User extends Zikula_AbstractController
                         ->assign($rendererArgs)
                         ->fetch('users_user_register.tpl');
                 break;
-            
+
             case 'display_status':
                 return $this->view->fetch('users_user_displaystatusmsg.tpl');
                 break;
-            
+
             case 'redirect':
                 $this->redirect($redirectUrl);
                 break;
-            
+
             case 'auto_login':
                 $loginArgs = array(
                     'authentication_method' => $selectedAuthenticationMethod,
@@ -536,7 +537,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 );
                 return ModUtil::func($this->name, 'user', 'login', $loginArgs);
                 break;
-            
+
             default:
                 throw new Zikula_Exception_Fatal($this->__('The registration process has entered an unknown state.'));
         }
@@ -561,15 +562,15 @@ class Users_Controller_User extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * string email The email address on the account of the account information to recover.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return string The rendered template.
      */
     public function lostUname()
@@ -579,7 +580,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
         $proceedToForm = true;
         $email = '';
-        
+
         if ($this->request->isPost()) {
             $emailMessageSent = false;
 
@@ -595,7 +596,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     'idfield'   => 'email',
                     'id'        => $email
                 ));
-                
+
                 if ($emailMessageSent) {
                     $this->registerStatus($this->__f('Done! The account information for %s has been sent via e-mail.', $email));
                     $proceedToForm = false;
@@ -623,25 +624,25 @@ class Users_Controller_User extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * string uname The user name on the account of the password to recover.
      * string email The email address on the account of the password to recover.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return string The rendered template.
      */
     public function lostPassword()
     {
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
-        
+
         $formStage = 'request';
-        
+
         if ($this->request->isPost()) {
             $emailMessageSent = false;
 
@@ -662,7 +663,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     $idfield = 'email';
                     $idvalue = $email;
                 }
-                
+
                 $userObj = UserUtil::getVars($idvalue, false, $idfield);
 
                 if ($userObj) {
@@ -697,10 +698,10 @@ class Users_Controller_User extends Zikula_AbstractController
                 } else {
                     $displayPendingApproval = $this->getVar(Users_Constant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS);
                     $displayPendingVerification = $this->getVar(Users_Constant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
-                    
+
                     if ($displayPendingApproval || $displayPendingVerification) {
                         $userObj = UserUtil::getVars($idvalue, false, $idfield, true);
-                        
+
                         if ($userObj) {
                             $registrationsModerated = $this->getVar(Users_Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, Users_Constant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
                             if ($registrationsModerated) {
@@ -708,7 +709,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                 if (!$userObj['isapproved'] && ($registrationApprovalOrder == Users_Constant::APPROVAL_BEFORE)) {
                                     $message = $this->__('Sorry! Your registration request is still waiting for approval from a site administrator.');
                                     $formStage = 'lostPwdUname';
-                                } elseif (!$userObj['isverified'] && (($registrationApprovalOrder == Users_Constant::APPROVAL_AFTER) || ($registrationApprovalOrder == Users_Constant::APPROVAL_ANY) 
+                                } elseif (!$userObj['isverified'] && (($registrationApprovalOrder == Users_Constant::APPROVAL_AFTER) || ($registrationApprovalOrder == Users_Constant::APPROVAL_ANY)
                                         || (($registrationApprovalOrder == Users_Constant::APPROVAL_BEFORE) && $userObj['isapproved']))
                                         ) {
                                     $message = $this->__('Sorry! Your registration request is still waiting for verification of your e-mail address. Check your inbox for an e-mail message from us. If you need another verification e-mail sent, please contact a site administrator.');
@@ -730,7 +731,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     } else {
                         $message = $this->__('Sorry! An account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.');
                     }
-                    
+
                     $this->registerError($message);
                 }
             }
@@ -765,14 +766,14 @@ class Users_Controller_User extends Zikula_AbstractController
      * string email The e-mail address of the user who lost his password.
      * string uname The user name of the user who lost his password.
      * string code  The confirmation code used to enable the user to reset his password.
-     * 
+     *
      * Parameters passed via POST -- from the lostpasswordcode template:
      * -----------------------------------------------------------------
      * boolean setpass Must be a value of 0 (zero).
      * string  email   The e-mail address of the user who lost his password.
      * string  uname   The user name of the user who lost his password.
      * string  code    The confirmation code used to enable the user to reset his password.
-     * 
+     *
      * Parameters passed via POST -- from the passwordreminder template:
      * -----------------------------------------------------------------
      * string setpass         Must be a value of 1 (one).
@@ -780,24 +781,24 @@ class Users_Controller_User extends Zikula_AbstractController
      * string newpass         The new password.
      * string newpassagain    The new password, repeated for verification.
      * string newpassreminder The new password reminder.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return string The rendered template.
      */
     public function lostPasswordCode()
     {
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
-        
+
         $formStage = 'code';
         $errorInfo = array();
-        
+
         if ($this->request->isPost()) {
             $this->checkCsrfToken();
-            
+
             $setPass = $this->request->getPost()->get('setpass', false);
 
             if (!$setPass) {
@@ -805,7 +806,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $uname = $this->request->getPost()->get('uname', '');
                 $email = $this->request->getPost()->get('email', '');
                 $code  = $this->request->getPost()->get('code',  '');
-                
+
                 $newpass = '';
                 $newpassagain = '';
                 $newpassreminder = '';
@@ -816,7 +817,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $newpass        = $this->request->getPost()->get('newpass', '');
                 $newpassagain   = $this->request->getPost()->get('newpassagain', '');
                 $newpassreminder= $this->request->getPost()->get('newpassreminder', '');
-                
+
                 $formStage = 'setpass';
             }
         } elseif ($this->request->isGet()) {
@@ -832,7 +833,7 @@ class Users_Controller_User extends Zikula_AbstractController
         } else {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         if (($formStage == 'code') && ($this->request->isPost() || !empty($uname) || !empty($email) || !empty($code))) {
             // Got something to process from either GET or POST
             if (empty($uname) && empty($email)) {
@@ -857,7 +858,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 );
                 if (ModUtil::apiFunc($this->name, 'user', 'checkConfirmationCode', $checkConfArgs)) {
                     $userObj = UserUtil::getVars($idvalue, true, $idfield);
-                    
+
                     if (isset($userObj) && $userObj) {
                         $passreminder = isset($userObj['passreminder']) ? $userObj['passreminder'] : '';
                         $formStage = 'setpass';
@@ -874,7 +875,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
             if ($userObj) {
                 $passreminder = isset($userObj['passreminder']) ? $userObj['passreminder'] : '';
-                
+
                 $passwordErrors = ModUtil::apiFunc($this->name, 'registration', 'getPasswordErrors', array(
                     'uname'         => $uname,
                     'pass'          => $newpass,
@@ -966,11 +967,11 @@ class Users_Controller_User extends Zikula_AbstractController
      *                                      selected authentication method as defined by the module.
      * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
      * string  returnpage            The URL of the page to return to if the log-in attempt is successful. (This URL must not be urlencoded.)
-     * 
+     *
      * Parameters passed via GET:
      * --------------------------
      * string returnpage The urlencoded URL of the page to return to if the log-in attempt is successful.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * array   authentication_info   An array containing the authentication information entered by the user.
@@ -978,7 +979,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *                                      selected authentication method as defined by the module.
      * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
      * string  returnpage            The URL of the page to return to if the log-in attempt is successful. (This URL must not be urlencoded.)
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * Namespace: Zikula_Users
@@ -987,7 +988,7 @@ class Users_Controller_User extends Zikula_AbstractController
      * Contents:  An array containing the information passed in via the $args array or the GET or POST variables, and additionaly, the
      *                  element 'user_obj'if the user record has been loaded. (The returnpage element must not be urlencoded when stored
      *                  on the session.)
-     * 
+     *
      * @return boolean|string True on successful authentication and login, the rendered output of the appropriate
      *                        template to display the log-in form.
      *
@@ -1012,7 +1013,7 @@ class Users_Controller_User extends Zikula_AbstractController
             $selectedAuthenticationMethod = isset($args['authentication_method']) ? $args['authentication_method'] : array();
             $rememberMe             = isset($args['rememberme']) ? $args['rememberme'] : false;
             $returnPage             = isset($args['returnpage']) ? $args['returnpage'] : $this->request->getGet()->get('returnpage', '');
-            
+
             $isFunctionCall = true;
         } elseif (isset($args) && !is_array($args)) {
             // Coming from a function call, but bad $args
@@ -1034,12 +1035,12 @@ class Users_Controller_User extends Zikula_AbstractController
         } elseif ($this->request->isGet()) {
             $reentry = false;
             $reentrantTokenReceived = $this->request->getGet()->get('reentranttoken', '');
-            
+
             $sessionVars = $this->request->getSession()->get('Users_Controller_User_login', array(), 'Zikula_Users');
             $this->request->getSession()->del('Users_Controller_User_login', 'Zikula_Users');
 
             $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
-            
+
             if (!empty($reentrantTokenReceived) && ($reentrantTokenReceived == $reentrantToken)) {
                 // We are coming back (reentering) from someplace else. It is likely that we are coming back from an external
                 // authentication process initiated by an authentication module such as OpenID.
@@ -1048,7 +1049,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $rememberMe             = isset($sessionVars['rememberme']) ? $sessionVars['rememberme'] : false;
                 $returnPage             = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $this->request->getGet()->get('returnpage', '');
                 $user                   = isset($sessionVars['user_obj']) ? $sessionVars['user_obj'] : null;
-                
+
                 $isReentry = true;
             } else {
                 $authenticationInfo     = array();
@@ -1056,7 +1057,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $rememberMe             = false;
                 $returnPage             = urldecode($this->request->getGet()->get('returnpage', $this->request->getGet()->get('returnurl', '')));
                 $user                   = array();
-                
+
                 $event = new Zikula_Event('module.users.ui.login.started');
                 $this->eventManager->notify($event);
             }
@@ -1071,7 +1072,7 @@ class Users_Controller_User extends Zikula_AbstractController
         // Any authentication information for use in this pass through login is gathered, so ensure any session variable
         // is cleared, even if we are coming in through a post or a function call that didn't gather info from the session.
         $this->request->getSession()->del('Users_Controller_User_login', 'Zikula_Users');
-        
+
         $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this);
 
         if ($this->request->isPost() || $isFunctionCall || $isReentry) {
@@ -1083,8 +1084,8 @@ class Users_Controller_User extends Zikula_AbstractController
                         ) {
                     throw new Zikula_Exception_Fatal($this->__('Error! Invalid authentication method information.'));
                 }
-                
-                if (ModUtil::available($selectedAuthenticationMethod['modname']) 
+
+                if (ModUtil::available($selectedAuthenticationMethod['modname'])
                         && ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'isEnabledForAuthentication', $selectedAuthenticationMethod)
                         ) {
                     // The authentication method is reasonably valid, moving on to validate the user-entered credentials
@@ -1092,11 +1093,11 @@ class Users_Controller_User extends Zikula_AbstractController
                         'authenticationMethod'  => $selectedAuthenticationMethod,
                         'authenticationInfo'    => $authenticationInfo,
                     );
-                    
+
                     if (ModUtil::func($selectedAuthenticationMethod['modname'], 'authentication', 'validateAuthenticationInformation', $validateAuthenticationInfoArgs)) {
-                        // The authentication method and the authentication information have been validated at the UI level. 
-                        // 
-                        // Moving on to the actual authentication process. Save the submitted information in case the authentication 
+                        // The authentication method and the authentication information have been validated at the UI level.
+                        //
+                        // Moving on to the actual authentication process. Save the submitted information in case the authentication
                         // method is external and reentrant.
                         //
                         // We're using sessions here, even though anonymous sessions might be turned off for anonymous users.
@@ -1134,14 +1135,14 @@ class Users_Controller_User extends Zikula_AbstractController
 
                         // Did we get a good user? If so, then we can proceed to hook validation.
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
-                            $validators = new Zikula_Hook_ValidationProviders();
-                            $validationEvent = $this->notifyHooks('users.hook.login.validate.edit', $user, $user['uid'], array(), $validators);
-                            $validators = $validationEvent->getData();
+                            $hook = new Zikula_ValidationHook('users.hook.login.validate.edit', new Zikula_Hook_ValidationProviders());
+                            $this->notifyHooks($hook);
+                            $validators = $hook->getValidators();
 
                             if (!$validators->hasErrors()) {
                                 // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check
                                 // the user's ability to log in. If we don't do this, then user.login.veto might trap and cancel the login attempt again.
-                                $this->notifyHooks('users.hook.login.process.edit', $user, $user['uid'], array('form_type' => 'loginscreen'));
+                                $this->notifyHooks(new Zikula_ProcessHook('users.hook.login.process.edit', $user['uid']));
 
                                 if (!isset($user['lastlogin']) || empty($user['lastlogin']) || ($user['lastlogin'] == '1970-01-01 00:00:00')) {
                                     $isFirstLogin = true;
@@ -1158,7 +1159,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
                                     if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
                                         $this->registerError($this->__('Your log-in request was not completed.'));
-                                    }  
+                                    }
 
                                     $eventArgs = array(
                                         'authentication_method' => $selectedAuthenticationMethod,
@@ -1264,16 +1265,16 @@ class Users_Controller_User extends Zikula_AbstractController
                 'authentication_method' => $selectedAuthenticationMethod,
                 'redirecturl'           => $returnPage,
             );
-            
+
             if (isset($isFirstLogin)) {
                 $eventArgs['is_first_login'] = $isFirstLogin;
             }
-            
+
             $event = new Zikula_Event('module.users.ui.login.succeeded', $user, $eventArgs);
             $event = $this->eventManager->notify($event);
-            
+
             $returnPage = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $returnPage;
-            
+
             if (empty($returnPage)) {
                 $returnPage = System::getHomepageUrl();
             }
@@ -1310,7 +1311,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 'uid'                   => $userObj['uid'],
             ));
             $this->eventManager->notify($event);
-            
+
             if ($login_redirect == 1) {
                 // WCAG compliant logout - we redirect to index.php because
                 // we might no have the permission for the recent site any longer
@@ -1342,7 +1343,7 @@ class Users_Controller_User extends Zikula_AbstractController
      * --------------------------
      * string uname      The user name of the user who is verifying his e-mail address for registration.
      * string verifycode The code sent to the user in order to verify his e-mail address.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * string uname           The user name of the user who is verifying his e-mail address for registration.
@@ -1351,11 +1352,11 @@ class Users_Controller_User extends Zikula_AbstractController
      *                              at that time), then this contains the user's new password.
      * string newpassagain    The new password repeated for verification.
      * string newpassreminder The new password reminder.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return string|bool The rendered template; true on redirect; false on error.
      */
     public function verifyRegistration()
@@ -1523,15 +1524,15 @@ class Users_Controller_User extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * string code Confirmation/Activation code.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * string code Confirmation/Activation code.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success, otherwise false.
@@ -1624,17 +1625,17 @@ class Users_Controller_User extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * string  user       The user name of the user attempting to log in.
      * string  pass       The password of the user attempting to log in.
      * boolean rememberme Whether the login session should persist.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return bool True.
      */
     public function siteOffLogin()
@@ -1649,9 +1650,9 @@ class Users_Controller_User extends Zikula_AbstractController
         } else {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         $redirectUrl = System::getHomepageUrl();
-        
+
         $authenticationInfo = array(
             'login_id'  => $user,
             'pass'      => $pass
@@ -1665,7 +1666,7 @@ class Users_Controller_User extends Zikula_AbstractController
             $user = UserUtil::getVars();
             if (!SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN)) {
                 UserUtil::logout();
-                
+
                 $eventArgs = array(
                     'authentication_method' => $authenticationMethod,
                     'redirecturl'           => '',
@@ -1727,16 +1728,16 @@ class Users_Controller_User extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * boolean ublockon Whether the block is displayed or not.
      * mixed   ublock   ?.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return bool True on success, otherwise false.
      */
     public function updateUsersBlock()
@@ -1785,22 +1786,22 @@ class Users_Controller_User extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * boolean login True if in the middle of a log-in attempt and changing the password via a forced password change.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * boolean login True if in the middle of a log-in attempt and changing the password via a forced password change.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * Namespace: Zikula_Users
      * Variable:  Users_Controller_User_changePassword
      * Type:      array
      * Contents:  An array containing the information saved from the log-in attempt in order to re-enter it, including:
-     *              'authentication_method', an array containing the selected authentication module name and method name, 
+     *              'authentication_method', an array containing the selected authentication module name and method name,
      *              'authentication_info', an array containing the authentication information entered by the user,
      *              'user_obj', a user record containing the user information found during the log-in attempt,
      *              'password_errors', errors that have occurred during a previous pass through this function.
-     * 
+     *
      * @return string The rendered template.
      */
     public function changePassword($args)
@@ -1813,7 +1814,7 @@ class Users_Controller_User extends Zikula_AbstractController
         // The check for $args must be first, because isPost() and isGet() will be set for the function that called this one
         if (isset($args) && !empty($args) && is_array($args)) {
             // Arrived via function call
-            
+
             if (!isset($args['login'])) {
                 $args['login'] = false;
             }
@@ -1881,24 +1882,24 @@ class Users_Controller_User extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * string oldpassword        The original password.
      * string newpassword        The new password to be stored for the user.
      * string newpasswordconfirm Verification of the new password to be stored for the user.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * Namespace: Zikula_Users
      * Variable:  Users_Controller_User_updatePassword
      * Type:      array
      * Contents:  An array containing the information saved from the log-in attempt in order to re-enter it, including:
-     *              'authentication_method', an array containing the selected authentication module name and method name, 
+     *              'authentication_method', an array containing the selected authentication module name and method name,
      *              'authentication_info', an array containing the authentication information entered by the user,
      *              'user_obj', a user record containing the user information found during the log-in attempt,
      *              'password_errors', errors that have occurred during a previous pass through this function.
-     * 
+     *
      * @return bool True on success, otherwise false.
      */
     public function updatePassword()
@@ -1909,7 +1910,7 @@ class Users_Controller_User extends Zikula_AbstractController
         if (!$this->request->isPost()) {
             throw new Zikula_Exception_Forbidden();
         }
-        
+
         $this->checkCsrfToken();
 
         if (isset($sessionVars) && !empty($sessionVars)) {
@@ -1952,7 +1953,7 @@ class Users_Controller_User extends Zikula_AbstractController
         if (empty($passwordErrors)) {
             if (UserUtil::setPassword($newPassword, $uid)) {
                 // no user.update event for password chagnes.
-                
+
                 $passwordChanged = true;
 
                 // Clear the forced change of password flag, if it exists.
@@ -2021,16 +2022,16 @@ class Users_Controller_User extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * None.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * string newemail      The new e-mail address to store for the user.
      * string newemailagain The new e-mail address repeated for verification.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return bool True on success, otherwise false.
      */
     public function updateEmail()
@@ -2107,15 +2108,15 @@ class Users_Controller_User extends Zikula_AbstractController
      * Parameters passed via GET:
      * --------------------------
      * string confirmcode The confirmation code for verifying the change of e-mail address.
-     * 
+     *
      * Parameters passed via POST:
      * ---------------------------
      * None.
-     * 
+     *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success, otherwise false.
