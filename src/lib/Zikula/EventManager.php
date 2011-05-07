@@ -196,8 +196,7 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
                 } else {
                     // invoke static class method.
                     //$handler[0]::$handler[1]($event);
-                    $callable = "$handler[0]::$handler[1]"; // for PHP 5.2.6, remove from 1.3.1
-                    $callable($event);
+                    call_user_func(array($handler[0], $handler[1]), $event); // for PHP 5.2.6, remove from 1.3.1
                 }
             } else {
                 // invoke function
