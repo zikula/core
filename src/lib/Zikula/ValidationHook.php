@@ -14,25 +14,28 @@
  */
 
 /**
- * Content filter hook.
+ * Content validation hook.
  */
-class Zikula_FilterHook extends Zikula_AbstractHook
+class Zikula_ValidationHook extends Zikula_AbstractHook
 {
-    private $data;
+    /**
+     * @var Zikula_Hook_ValidationProviders
+     */
+    private $validators;
 
-    public function __construct($name, $data=null)
+    public function __construct($name, Zikula_Hook_ValidationProviders $validators)
     {
         $this->name = $name;
-        $this->data = $data;
+        $this->validators = $validators;
     }
 
-    public function getData()
+    public function setValidator($name, Zikula_Response_HookValidation $response)
     {
-        return $this->data;
+        $this->validators->set($name, $response);
     }
 
-    public function setData($data)
+    public function getValidators()
     {
-        $this->data = $data;
+        return $this->validators;
     }
 }

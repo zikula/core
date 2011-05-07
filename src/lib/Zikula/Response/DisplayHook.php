@@ -29,7 +29,7 @@ class Zikula_Response_DisplayHook
 
     /**
      * Zikula_View
-     * 
+     *
      * @var Zikula_View
      */
     protected $view;
