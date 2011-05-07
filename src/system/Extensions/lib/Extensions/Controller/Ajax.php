@@ -27,13 +27,13 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
 
         // get subscriberarea from POST
-        $subscriberarea = $this->request->getPost()->get('subscriberarea','');
-        if (empty($subscriberarea)) {
+        $subscriberArea = $this->request->getPost()->get('subscriberarea','');
+        if (empty($subscriberArea)) {
             throw new Zikula_Exception_Fatal($this->__('No subscriber area passed.'));
         }
 
         // get subscriber module based on area and do some checks
-        $subscriber = HookUtil::getOwnerByArea($subscriberarea);
+        $subscriber = HookUtil::getOwnerByArea($subscriberArea);
         if (empty($subscriber)) {
             throw new Zikula_Exception_Fatal($this->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
@@ -43,13 +43,13 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN));
 
         // get providerarea from POST
-        $providerarea = $this->request->getPost()->get('providerarea','');
-        if (empty($providerarea)) {
+        $providerArea = $this->request->getPost()->get('providerarea','');
+        if (empty($providerArea)) {
             throw new Zikula_Exception_Fatal($this->__('No provider area passed.'));
         }
 
         // get provider module based on area and do some checks
-        $provider = HookUtil::getOwnerByArea($providerarea);
+        $provider = HookUtil::getOwnerByArea($providerArea);
         if (empty($provider)) {
             throw new Zikula_Exception_Fatal($this->__f('Module "%s" is not a valid provider.', $provider));
         }
@@ -62,19 +62,19 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $hookManager = $this->serviceManager->getService('zikula.hookmanager');
 
         // check if binding between areas exists
-        $binding = HookUtil::getBindingBetweenAreas($subscriberarea, $providerarea);
+        $binding = HookUtil::getBindingBetweenAreas($subscriberArea, $providerArea);
         if (!$binding) {
-            $hookManager->bindSubscriber($subscriberarea, $providerarea);
+            $hookManager->bindSubscriber($subscriberArea, $providerArea);
         } else {
-            $hookManager->unbindSubscriber($subscriberarea, $providerarea);
+            $hookManager->unbindSubscriber($subscriberArea, $providerArea);
         }
-        
+
         return new Zikula_Response_Ajax(array('result' => true));
     }
-    
+
     /**
      * changeproviderareaorder
-     * This function changes the order of the providers' areas that are attached to a subscriber     
+     * This function changes the order of the providers' areas that are attached to a subscriber
      *
      * @param subscriber string     name of the subscriber
      * @param providerorder array   array of sorted provider ids
@@ -105,7 +105,7 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         if (!(is_array($providerarea) && count($providerarea) > 0)) {
             throw new Zikula_Exception_Fatal($this->__('Providers\' areas order is not an array.'));
         }
-        
+
         // set sorting
         HookUtil::setBindOrder($subscriberarea, $providerarea);
 

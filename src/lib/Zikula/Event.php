@@ -26,28 +26,28 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      *
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * Observer pattern subject.
      *
      * @var mixed usually object or callable
      */
-    private $subject;
+    protected $subject;
 
     /**
      * Array of arguments.
      *
      * @var array
      */
-    private $args;
+    protected $args;
 
     /**
      * Signal to stop further notification.
      *
      * @var boolean
      */
-    private $stop = false;
+    protected $stop = false;
 
     /**
      * Storage for any process type events.
@@ -61,7 +61,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      *
      * @var Exception
      */
-    private $exception;
+    protected $exception;
 
     /**
      * Encapsulate an event called $name with $subject.

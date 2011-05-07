@@ -17,19 +17,19 @@
  * Zikula_View modifier for filter hooks.
  *
  * Available parameters:
- *   - eventName:  Name of the event.
+ *   - eventName:  Name of the hook event.
  *
  * Example
  *   {$foo|notifyfilters:'news.filterhook.articles'}
  *
  * @param string      $content   The contents to filter.
- * @param string      $eventName The contents to filter.
+ * @param string      $eventName Hook event name.
  * @param Zikula_View $view      Zikula_View instance (added automatically).
  *
  * @return string The modified output.
  */
 function smarty_modifier_notifyfilters($content, $eventName, $view)
 {
-    $hook = new Zikula_FilterHook($eventName, $view->getToplevelmodule(), $view, $content);
+    $hook = new Zikula_FilterHook($eventName, $content);
     return $view->getServiceManager()->getService('zikula.hookmanager')->notify($hook)->getData();
 }

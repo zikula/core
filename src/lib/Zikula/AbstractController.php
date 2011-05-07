@@ -75,30 +75,10 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Notify any hookable events.
      *
-     * @param string $name    The event name for the hookable event.
-     * @param mixed  $subject The subject of the event.
-     * @param mixed  $id      The ID of the subject.
-     * @param array  $args    Extra meta data.
-     * @param mixes  $data    Any data to filter.
-     *
-     * @throws InvalidArgumentException If args['controller'] is not a Zikula_AbstractController instance.
-     *
-     * @return Zikula_Hook
+     * @return Zikula_AbstractHook
      */
-    public function notifyHooks($name, $subject=null, $id=null, $args=array(), $data=null)
+    public function notifyHooks(Zikula_HookInterface $hook)
     {
-        // set ID.
-        $args['id'] = $id;
-
-        if (!isset($args['controller'])) {
-            $args['controller'] = $this;
-        }
-
-        if (!$args['controller'] instanceof Zikula_AbstractController) {
-            throw new InvalidArgumentException(__f('%s is not an instance of Zikula_AbstractController, the $args[\'controller\'] argument must be the controller who is notifying these hooks', get_class($this)));
-        }
-
-        $hook = new Zikula_Hook($name, $this->name, $subject, $args, $data);
         return $this->getService('zikula.hookmanager')->notify($hook);
     }
 

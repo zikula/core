@@ -25,13 +25,13 @@ class Example_Controller_User extends Zikula_AbstractController
     {
         $id = FormUtil::getPassedValue('id', null, 'GET');
         $this->throwNotFoundIf(!$id);
-        
+
         $article = dbcall('...');
         $this->view->assign('artcile', $article);
         $this->view->fetch('example_user_view.tpl');
 
         // note the called template should execute
-        // {notifydisplayhooks eventname='example.hook.general.ui.view' subject=$article id=$article[id]}
+        // {notifydisplayhooks eventname='example.hook.general.ui.view' id=$article[id]}
     }
 
     public function edit()
@@ -42,9 +42,12 @@ class Example_Controller_User extends Zikula_AbstractController
 
         if (!$id && !$submit) {
             // create action
-            $article = array('title' => '', 'body' => '');
+            $article = array('title' => $title, 'body' => $body);
             // or if using Doctrine/DBObject something like this:
             $article = new Example_Model_Article();
+            $article->setTitle($title);
+            $article->setBody($body);
+            $article->save();
         } elseif ($id && !$submit) {
             // starting edit action (display item to be edited).
             $article = dbcall("where id = $id...");
@@ -53,17 +56,20 @@ class Example_Controller_User extends Zikula_AbstractController
         // handle submit (validate and commit as appropriate).
         if ($submit) {
             // Do our validations
-            $articleValid = $this->validateArticle($article); // a protected method of this class which validates articles.
+            $articleValid = $this->validateArticle($article); // a method of this class which validates articles.
 
             // validate any hooks
             $validators = new Zikula_Collection_HookValidationProviders();
-            $validators = $this->notifyHooks('example.hook.general.validate.edit', $article, $article['id'], array(), $validators)->getData();
+            $hook = new Zikula_ValidationHook('example.hook.general.validate.edit', $article['id'], $this, $validators);
+            $this->notifyHooks($hook);
             if (!$validators->hasErrors() && !$articleValid) {
                 // commit to the database
                 $article->save();
 
+                $url = new Zikula_ModUrl('Example', 'user', 'edit', 'en', array('id' => $id));
                 // notify any hooks they may now commit the as the original form has been committed.
-                $this->notifyHooks('example.hook.general.process.edit', $article, $id);
+                $hook = new Zikula_ProcessHook('example.hook.general.process.edit', $id, $url);
+                $this->notifyHooks($hook);
             }
         }
 

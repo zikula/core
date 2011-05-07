@@ -73,7 +73,7 @@
                         {* preliminary check to see if binding is allowed, if no bindings are allowed we don't show this row. Better usability. *}
                         {assign var="total_bindings" value=0}
                         {foreach from=$providerAreas item='parea'}
-                        {callfunc x_class='HookUtil' x_method='allowBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
+                        {callfunc x_class='HookUtil' x_method='isAllowedBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
                         {if $allow_binding}
                         {assign var="total_bindings" value=$total_bindings+1}
                         {break}
@@ -102,7 +102,7 @@
                                 {foreach from=$providerAreas item='parea'}
                                 {assign var="parea_md5" value=$parea|md5}
 
-                                {callfunc x_class='HookUtil' x_method='allowBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
+                                {callfunc x_class='HookUtil' x_method='isAllowedBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
                                 {if !$allow_binding}{continue}{/if}
                                 {callfunc x_class='HookUtil' x_method='getBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='binding'}
                                 <input type="checkbox" id="chk_{$sarea_md5}_{$parea_md5}" name="chk[{$sarea_md5}][{$parea_md5}]" value="subscriberarea={$sarea}#providerarea={$parea}" {if $binding}checked="checked"{/if} /> {$providerAreasTitles.$parea} <span class="z-sub">({$parea})</span><br />
