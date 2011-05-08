@@ -66,21 +66,23 @@
                     <td>{$subscriber.id}</td>
                     <td>{$subscriber.displayname|safetext|default:$subscriber.name}</td>
                     <td>
+                        {assign var="connection_exists" value=false}
 
                         {foreach from=$subscriber.areas item='sarea' name='loop_sareas'}
                         {assign var="sarea_md5" value=$sarea|md5}
-
                         {* preliminary check to see if binding is allowed, if no bindings are allowed we don't show this row. Better usability. *}
                         {assign var="total_bindings" value=0}
                         {foreach from=$providerAreas item='parea'}
                         {callfunc x_class='HookUtil' x_method='isAllowedBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
                         {if $allow_binding}
                         {assign var="total_bindings" value=$total_bindings+1}
+                        {assign var="connection_exists" value=true}
                         {break}
                         {/if}
                         {/foreach}
 
                         {if $total_bindings eq 0}
+                        {if $connection_exists eq false}<span class="z-sub">{gt text="%s module can't connect to %s module. No connections are supported" tag1=$currentmodule tag2=$subscriber.displayname|safetext|default:$subscriber.name}</span>{/if}
                         {continue}
                         {/if}
 
