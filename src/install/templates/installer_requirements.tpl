@@ -10,7 +10,7 @@
                 {if $checks.phpsatisfied}
                     <li class="passed">{gt text="Your PHP version is %s."  tag1=$phpversion}</li>
                 {else}
-                    <li class="failed">{gt text="You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version 5.2.6 or later." tag1=$phpversion}</li>{assign var=checkfailed value=true}
+                    <li class="failed">{gt text="You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version 5.3.2 or later." tag1=$phpversion}</li>{assign var=checkfailed value=true}
                 {/if}
 
                 {* PHP 5.3.0 or greater requires date.timezone to be set in php.ini *}
