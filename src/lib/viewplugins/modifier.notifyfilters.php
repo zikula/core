@@ -24,11 +24,10 @@
  *
  * @param string      $content   The contents to filter.
  * @param string      $eventName Hook event name.
- * @param Zikula_View $view      Zikula_View instance (added automatically).
  *
  * @return string The modified output.
  */
-function smarty_modifier_notifyfilters($content, $eventName, $view)
+function smarty_modifier_notifyfilters($content, $eventName)
 {
     $hook = new Zikula_FilterHook($eventName, $content);
     return $view->getServiceManager()->getService('zikula.hookmanager')->notify($hook)->getData();
