@@ -37,7 +37,7 @@ class Zikula_View_Resource
     static function z_get_template($tpl_name, &$tpl_source, $view)
     {
         if (strpos($tpl_name, 'insert.') === 0) {
-            return self::z_get_insert($tpl_name, &$tpl_source, $view);
+            return self::z_get_insert($tpl_name, $tpl_source, $view);
         }
 
         // determine the template path and store the template source

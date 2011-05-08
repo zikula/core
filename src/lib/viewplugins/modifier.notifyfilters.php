@@ -30,6 +30,6 @@
  */
 function smarty_modifier_notifyfilters($string, $eventName, $view)
 {
-    $event = new Zikula_Event($eventName, $view, array('caller' => $view->getToplevelmodule()), $string);
+    $event = new Zikula_Event($eventName, $view, array('caller' => $view->getTopLevelModule()), $string);
     return EventUtil::getManager()->notify($event)->getData();
 }

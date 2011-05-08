@@ -18,12 +18,6 @@
 class Zikula_View_Theme extends Zikula_View
 {
     // base theme info
-    /**
-     * Theme Id.
-     *
-     * @var integer
-     */
-    public $id;
 
     /**
      * Theme name.
@@ -31,20 +25,6 @@ class Zikula_View_Theme extends Zikula_View
      * @var string
      */
     public $name;
-
-    /**
-     * Display name.
-     *
-     * @var string
-     */
-    public $displayname;
-
-    /**
-     * Description.
-     *
-     * @var string
-     */
-    public $description;
 
     /**
      * Directory.
@@ -59,13 +39,6 @@ class Zikula_View_Theme extends Zikula_View
      * @var string
      */
     public $version;
-
-    /**
-     * Contact.
-     *
-     * @var string
-     */
-    public $contact;
 
     /**
      * State.
@@ -126,26 +99,8 @@ class Zikula_View_Theme extends Zikula_View
      */
     public $themeconfig;
 
-    /**
-     * Homepage flag.
-     *
-     * @var boolean
-     */
-    public $home;
 
-    /**
-     * Type.
-     *
-     * @var integer
-     */
-    public $type;
-
-    /**
-     * Function.
-     *
-     * @var string
-     */
-    public $func;
+    // base user information
 
     /**
      * User id.
@@ -161,14 +116,15 @@ class Zikula_View_Theme extends Zikula_View
      */
     protected $gids = array();
 
-    // publics to identify our page
-
     /**
-     * Component id.
+     * Whether or not the user is logged in.
      *
-     * @var integer
+     * @var boolean.
      */
-    public $componentid;
+    public $isloggedin;
+
+
+    // publics to identify our page
 
     /**
      * Page type.
@@ -192,20 +148,6 @@ class Zikula_View_Theme extends Zikula_View
     public $requesturi;
 
     /**
-     * Permission level.
-     *
-     * @var constant
-     */
-    public $permlevel;
-
-    /**
-     * Whether or not the user is logged in.
-     *
-     * @var boolean.
-     */
-    public $isloggedin;
-
-    /**
      * Internal override Map.
      *
      * @var array
@@ -220,15 +162,18 @@ class Zikula_View_Theme extends Zikula_View
      */
     public function __construct($serviceManager, $themeName)
     {
-        // store our theme directory
-        $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themeName));
-        foreach ($themeinfo as $key => $value) {
-            $this->$key = $value;
+        // store our theme information
+        $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themeName));
+        // prevents any case mismatch
+        $themeName = $this->themeinfo['name'];
+
+        foreach (array('name', 'directory', 'version', 'state', 'xhtml') as $key) {
+            $this->$key = $this->themeinfo[$key];
         }
 
         parent::__construct($serviceManager);
 
-        if ($themeinfo['i18n']) {
+        if ($this->themeinfo['i18n']) {
             ZLanguage::bindThemeDomain($this->name);
             // property for {gt} template plugin to detect language domain
             $this->domain = ZLanguage::getThemeDomain($this->name);
@@ -252,10 +197,12 @@ class Zikula_View_Theme extends Zikula_View
         $this->force_compile = ModUtil::getVar('Theme', 'force_compile');
         // template caching
         $this->cache_dir = CacheUtil::getLocalDir() . '/Theme_cache';
-        $this->caching = ModUtil::getVar('Theme', 'enablecache');
+        $this->caching   = ModUtil::getVar('Theme', 'enablecache');
+        if ($this->caching) {
+            $this->cache_modified_check = true;
+        }
 
-        $type = FormUtil::getPassedValue('type', null, 'GETPOST');
-        if ($this->caching && strtolower($type) != 'admin') {
+        if ($this->caching && strtolower($this->type) != 'admin') {
             $modulesnocache = explode(',', ModUtil::getVar('Theme', 'modulesnocache'));
             if (in_array($this->toplevelmodule, $modulesnocache)) {
                 $this->caching = false;
@@ -336,11 +283,11 @@ class Zikula_View_Theme extends Zikula_View
             $themeInstance = $serviceManager->getService($serviceId);
         }
 
-        if (!is_null($caching)) {
+        if ($caching) {
             $themeInstance->caching = $caching;
         }
 
-        if (!is_null($cache_id)) {
+        if ($cache_id) {
             $themeInstance->cache_id = $cache_id;
         }
 
@@ -360,8 +307,8 @@ class Zikula_View_Theme extends Zikula_View
         ob_end_clean();
 
         // add the module wrapper
-        if (!$this->system) {
-            $maincontent = '<div id="z-maincontent" class="'.($this->home ? 'z-homepage ' : '').'z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
+        if (!$this->themeinfo['system']) {
+            $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
         }
 
         $event = new Zikula_Event('theme.prefetch', $this, array(), $maincontent);
@@ -523,7 +470,7 @@ class Zikula_View_Theme extends Zikula_View
         $auto_source = DataUtil::formatForOS($auto_source);
 
         // add the Theme name as first folder
-        $path .= '/' . $this->themeinfo['directory'];
+        $path .= '/' . $this->directory;
 
         // the last folder is the cache_id if set
         $path .= !empty($auto_id) ? '/' . $auto_id : '';
@@ -562,21 +509,11 @@ class Zikula_View_Theme extends Zikula_View
      */
     private function _base_vars()
     {
-        // get variables from input
-        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $type   = FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
-        $func   = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
-
-        // set vars based on the module structures
-        $this->home = (empty($module)) ? true : false;
-        $this->type = strtolower(!$this->home ? $type : System::getVar('starttype'));
-        $this->func = strtolower(!$this->home ? $func : System::getVar('startfunc'));
-
         // identify the page type
         $this->pagetype = 'module';
         if ((stristr(System::serverGetVar('PHP_SELF'), 'admin.php') || strtolower($this->type) == 'admin')) {
             $this->pagetype = 'admin';
-        } else if (empty($module)) {
+        } elseif (empty($module)) {
             $this->pagetype = 'home';
         }
 
@@ -598,9 +535,9 @@ class Zikula_View_Theme extends Zikula_View
         if (!$this->cache_id) {
             // mod / homepage_?type_func / gids or guest / customargs
             $this->cache_id = $this->toplevelmodule
-                            . '/' . ($this->home ? 'homepage_' : '') . $this->type . '_' . $this->func
+                            . '/' . ($this->homepage ? 'homepage_' : '') . $this->type . '_' . $this->func
                             . '/' . ($this->isloggedin ? 'g_'.$this->getGidsString() : 'guest')
-                            . (!$this->home ? $this->_get_customargs() : '/' . str_replace(',', '/', System::getVar('startargs')));
+                            . (!$this->homepage ? $this->_get_customargs() : '/' . str_replace(',', '/', System::getVar('startargs')));
         }
 
         // assign some basic paths for the engine
@@ -613,19 +550,15 @@ class Zikula_View_Theme extends Zikula_View
         $this->scriptpath    = $this->themepath . '/javascript';
 
         // make the base vars available to all templates
-        $this->assign('pagetype', $this->pagetype);
-        $this->assign('lang', $this->language);
-        $this->assign('loggedin', $this->isloggedin);
-        $this->assign('uid', $this->uid);
-        $this->assign('themepath', $this->themepath);
-        $this->assign('imagepath', $this->imagepath);
-        $this->assign('imagelangpath', $this->imagelangpath);
-        $this->assign('stylepath', $this->stylepath);
-        $this->assign('scriptpath', $this->scriptpath);
-        $this->assign('module', $this->toplevelmodule);
-        $this->assign('type', $this->type);
-        $this->assign('func', $this->func);
-        $this->assign('homepage', $this->home);
+        $this->assign('module', $this->toplevelmodule)
+             ->assign('uid', $this->uid)
+             ->assign('loggedin', $this->isloggedin)
+             ->assign('pagetype', $this->pagetype)
+             ->assign('themepath', $this->themepath)
+             ->assign('imagepath', $this->imagepath)
+             ->assign('imagelangpath', $this->imagelangpath)
+             ->assign('stylepath', $this->stylepath)
+             ->assign('scriptpath', $this->scriptpath);
 
         // load the theme variables
         $inifile = $this->themepath . '/templates/config/themevariables.ini';
@@ -686,7 +619,7 @@ class Zikula_View_Theme extends Zikula_View
             // identify and load the correct module configuration
 
             // checks homepage match
-            if ($this->home && isset($pageconfigurations['*home'])) {
+            if ($this->homepage && isset($pageconfigurations['*home'])) {
                 // allow us to match any non-zikula query string
                 $homeWithArgs = 'home' . '/' . $this->qstring;
                 if (isset($pageconfigurations[$homeWithArgs])) {
@@ -706,7 +639,7 @@ class Zikula_View_Theme extends Zikula_View
 
             // search for arguments match
             } else {
-                $customargs = $this->toplevelmodule . '/' . $this->type . '/' . $this->func . $customargs;
+                $customargs = $this->toplevelmodule . '/' . $this->type . '/' . $this->func . $this->_get_customargs();
                 // find any page configurations that match in a sub string comparison
                 $match = '';
                 $matchlength = 0;
@@ -793,8 +726,7 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         if (!empty($section) && isset($vars[$section])) {
-            $this->assign($assign ? array(
-                (string)$assign => $vars[$section]) : $vars[$section]);
+            $this->assign($assign ? array((string)$assign => $vars[$section]) : $vars[$section]);
             return true;
         }
 
@@ -852,20 +784,10 @@ class Zikula_View_Theme extends Zikula_View
         // The configuration has been changed, so we clear all caches.
         // clear Zikula_View_Theme cache
         self::clear_all_cache();
-        // clear Zikula_View cache
+        // clear Zikula_View cache (really needed?)
         Zikula_View::getInstance()->clear_all_cache();
 
         return true;
-    }
-
-    /**
-     * Retrieve the theme ID.
-     *
-     * @return integer The theme ID.
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -876,36 +798,6 @@ class Zikula_View_Theme extends Zikula_View
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Retrieve the theme's display name.
-     *
-     * @return string The display name.
-     */
-    public function getDisplayname()
-    {
-        return $this->displayname;
-    }
-
-    /**
-     * Retrieve the theme's description.
-     *
-     * @return string The description of the theme.
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Retrieve the theme type.
-     *
-     * @return <type>
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**
@@ -926,16 +818,6 @@ class Zikula_View_Theme extends Zikula_View
     public function getVersion()
     {
         return $this->version;
-    }
-
-    /**
-     * Retrieve the contact information for the theme.
-     *
-     * @return string The theme's contact information.
-     */
-    public function getContact()
-    {
-        return $this->contact;
     }
 
     /**
@@ -970,7 +852,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return string The path to the theme.
      */
-    public function getThemepath()
+    public function getThemePath()
     {
         return $this->themepath;
     }
@@ -980,7 +862,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return string The path to the theme's images.
      */
-    public function getImagepath()
+    public function getImagePath()
     {
         return $this->imagepath;
     }
@@ -990,7 +872,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return string The path to the theme's language-specific images.
      */
-    public function getImagelangpath()
+    public function getImageLangPath()
     {
         return $this->imagelangpath;
     }
@@ -1000,7 +882,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return string The path to the theme's stylesheets.
      */
-    public function getStylepath()
+    public function getStylePath()
     {
         return $this->stylepath;
     }
@@ -1010,7 +892,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return string The path to the theme's javascript files.
      */
-    public function getScriptpath()
+    public function getScriptPath()
     {
         return $this->scriptpath;
     }
@@ -1020,7 +902,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return array The contents of the theme configuration (or the master configuration).
      */
-    public function getThemeconfig()
+    public function getThemeConfig()
     {
         return $this->themeconfig;
     }
@@ -1030,9 +912,9 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return boolean True if this is a home page (module name is empty), otherwise false.
      */
-    public function getHome()
+    public function isHomePage()
     {
-        return $this->home;
+        return $this->homepage;
     }
 
     /**
@@ -1066,23 +948,13 @@ class Zikula_View_Theme extends Zikula_View
     }
 
     /**
-     * Retrive the name of the controller function.
+     * Indicates whether the current user is logged in.
      *
-     * @return string The name of the controller function.
+     * @return boolean True if the current user is logged in, false if the current user is anonymous (a guest).
      */
-    public function getFunc()
+    public function getIsLoggedIn()
     {
-        return $this->func;
-    }
-
-    /**
-     * Retrieve the component ID.
-     *
-     * @return <type>
-     */
-    public function getComponentid()
-    {
-        return $this->componentid;
+        return $this->isloggedin;
     }
 
     /**
@@ -1090,7 +962,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return string One of 'module', 'admin' or 'home'.
      */
-    public function getPagetype()
+    public function getPageType()
     {
         return $this->pagetype;
     }
@@ -1110,29 +982,9 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return string The current page's request URI.
      */
-    public function getRequesturi()
+    public function getRequestUri()
     {
         return $this->requesturi;
-    }
-
-    /**
-     * Retrieve the permission level.
-     *
-     * @return mixed The permission level.
-     */
-    public function getPermlevel()
-    {
-        return $this->permlevel;
-    }
-
-    /**
-     * Indicates whether the current user is logged in.
-     *
-     * @return boolean True if the current user is logged in, false if the current user is anonymous (a guest).
-     */
-    public function getIsloggedin()
-    {
-        return $this->isloggedin;
     }
 
     /**
@@ -1142,7 +994,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return void
      */
-    public function setCache_id($cache_id)
+    public function setCacheId($cache_id)
     {
         $this->cache_id = $cache_id;
     }
@@ -1154,7 +1006,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return void
      */
-    public function setThemeconfig($themeconfig)
+    public function setThemeConfig($themeconfig)
     {
         if ($themeconfig && is_array($themeconfig)) {
             $this->themeconfig = $themeconfig;
