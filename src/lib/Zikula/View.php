@@ -17,6 +17,10 @@
  */
 class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 {
+    const CACHE_DISABLED = 0;
+    const CACHE_ENABLED = 1;
+    const CACHE_INDIVIDUAL = 2;
+
     /**
      * Translation domain of the calling module.
      *
@@ -162,7 +166,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
      * @param string                $moduleName     Module name ("zikula" for system plugins).
-     * @param boolean|null          $caching        Whether or not to cache (boolean) or use config variable (null).
+     * @param integer|null          $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      */
     public function __construct(Zikula_ServiceManager $serviceManager, $moduleName = '', $caching = null)
     {
@@ -250,7 +254,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         if (isset($_POST) && count($_POST) != 0) {
             // write actions should not be cached or weird things happen
-            $this->caching = false;
+            $this->caching = Zikula_View::CACHE_DISABLED;
         }
 
         $this->compile_id  = '';
@@ -347,7 +351,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * Setup the current instance of the Zikula_View class and return it back to the module.
      *
      * @param string       $module   Module name.
-     * @param boolean|null $caching  Whether or not to cache (boolean) or use config variable (null).
+     * @param integer|null $caching  Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      * @param string       $cache_id Cache Id.
      *
      * @return Zikula_View This instance.
@@ -420,7 +424,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @param string       $modName    Module name.
      * @param string       $pluginName Plugin name.
-     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
+     * @param integer|null $caching    Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      * @param string       $cache_id   Cache Id.
      *
      * @return Zikula_View_Plugin The plugin instance.
@@ -434,7 +438,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * Get system plugin Zikula_View_Plugin instance.
      *
      * @param string       $pluginName Plugin name.
-     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
+     * @param integer|null $caching    Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      * @param string       $cache_id   Cache Id.
      *
      * @return Zikula_View_Plugin The plugin instance.

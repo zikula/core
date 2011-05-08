@@ -141,7 +141,7 @@ class Zikula_Form_View extends Zikula_View
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
      * @param string                $module         Module name.
-     * @param boolean               $caching        Caching flag (not used - just for e_strict).
+     * @param integer               $caching        Caching flag (not used - just for e_strict).
      */
     public function __construct(Zikula_ServiceManager $serviceManager, $module, $caching=null)
     {

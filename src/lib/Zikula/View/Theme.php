@@ -197,23 +197,23 @@ class Zikula_View_Theme extends Zikula_View
         $this->force_compile = ModUtil::getVar('Theme', 'force_compile');
         // template caching
         $this->cache_dir = CacheUtil::getLocalDir() . '/Theme_cache';
-        $this->caching   = ModUtil::getVar('Theme', 'enablecache');
-        if ($this->caching) {
+        $this->caching   = (int)ModUtil::getVar('Theme', 'enablecache');
+        /*if ($this->caching) {
             $this->cache_modified_check = true;
-        }
+        }*/
 
         if ($this->caching && strtolower($this->type) != 'admin') {
             $modulesnocache = explode(',', ModUtil::getVar('Theme', 'modulesnocache'));
             if (in_array($this->toplevelmodule, $modulesnocache)) {
-                $this->caching = false;
+                $this->caching = Zikula_View::CACHE_DISABLED;
             }
         } else {
-            $this->caching = false;
+            $this->caching = Zikula_View::CACHE_DISABLED;
         }
 
         // halt caching for write operations to prevent strange things happening
         if (isset($_POST) && count($_POST) != 0) {
-            $this->caching = false;
+            $this->caching = Zikula_View::CACHE_DISABLED;
         }
 
         $this->cache_lifetime = ModUtil::getVar('Theme', 'cache_lifetime');
@@ -261,8 +261,8 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Get Theme instance.
      *
-     * @param string  $themeName  Theme name.
-     * @param boolean|null $caching  Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $themeName  Theme name.
+     * @param integer|null $caching  Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      * @param string       $cache_id Cache Id.
      *
      * @return Zikula_Theme This instance.
@@ -283,11 +283,11 @@ class Zikula_View_Theme extends Zikula_View
             $themeInstance = $serviceManager->getService($serviceId);
         }
 
-        if ($caching) {
+        if (!is_null($caching)) {
             $themeInstance->caching = $caching;
         }
 
-        if ($cache_id) {
+        if (!is_null($cache_id)) {
             $themeInstance->cache_id = $cache_id;
         }
 

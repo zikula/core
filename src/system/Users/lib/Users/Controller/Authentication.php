@@ -27,8 +27,8 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
      */
     protected function postInitialize()
     {
-        // Set caching to false by default.
-        $this->view->setCaching(false);
+        // Disable caching by default.
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
     }
 
     /**
