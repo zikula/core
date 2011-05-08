@@ -30,7 +30,7 @@ class Zikula_View_Plugin extends Zikula_View
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
      * @param string                $module         Module name ("zikula" for system plugins).
      * @param string                $pluginName     Plugin name.
-     * @param boolean|null          $caching        Whether or not to cache (boolean) or use config variable (null).
+     * @param integer|null          $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      */
     public function __construct(Zikula_ServiceManager $serviceManager, $module = 'zikula', $pluginName, $caching = null)
     {
@@ -62,7 +62,7 @@ class Zikula_View_Plugin extends Zikula_View
      *
      * @param string       $moduleName Module name.
      * @param string       $pluginName Plugin name.
-     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
+     * @param integer|null $caching    Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      * @param string       $cache_id   Cache Id.
      *
      * @return Zikula_View_Plugin instance.

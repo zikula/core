@@ -31,8 +31,8 @@ class Users_Block_Login extends Zikula_Controller_AbstractBlock
      */
     protected function postInitialize()
     {
-        // Set caching to false by default.
-        $this->view->setCaching(false);
+        // Disable caching by default.
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
     }
 
     /**
