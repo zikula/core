@@ -38,7 +38,7 @@
 
         {if $isProvider && !empty($providerAreas) && $total_available_subscriber_areas gt 0}
         <fieldset>
-            <legend>{gt text="Connect %s to other modules" tag1=$currentmodule|safehtml}</legend>
+            <legend>{gt text="Connect %s to other modules" tag1=$currentmodule|safetext}</legend>
             <p class="z-informationmsg">
                 {assign var="total_provider_areas" value=$providerAreas|@count}
                 {gt text="%s module provides the following area:" plural="%s module provides the following areas:" tag1=$currentmodule|safetext count=$total_provider_areas}
@@ -82,7 +82,7 @@
                         {/foreach}
 
                         {if $total_bindings eq 0}
-                        {if $connection_exists eq false}<span class="z-sub">{gt text="%s module can't connect to %s module. No connections are supported" tag1=$currentmodule tag2=$subscriber.displayname|safetext|default:$subscriber.name}</span>{/if}
+                        {if $connection_exists eq false}<span class="z-sub">{gt text="%s module can't connect to %s module. No connections are supported" tag1=$currentmodule tag2=$subscriber.name|safetext}</span>{/if}
                         {continue}
                         {/if}
 
