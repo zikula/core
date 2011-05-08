@@ -72,7 +72,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface, ArrayAccess
     /**
      * Set caller.
      *
-     * @return Zikula_Hook
+     * @return Zikula_AbstractHook
      */
     public function setCaller($caller)
     {
@@ -132,9 +132,9 @@ class Zikula_AbstractHook implements Zikula_HookInterface, ArrayAccess
     /**
      * Set event name.
      *
-     * @param type $name Event Name
+     * @param type $name Hook event Name
      *
-     * @return Zikula_Event
+     * @return Zikula_AbstractHook
      */
     public function setName($name)
     {
@@ -148,7 +148,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface, ArrayAccess
      * @param string $key   Argument name.
      * @param mixed  $value Value.
      *
-     * @return Zikula_Event
+     * @return Zikula_AbstractHook
      */
     public function setArg($key, $value)
     {
@@ -161,7 +161,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface, ArrayAccess
      *
      * @param array $args Arguments.
      *
-     * @return Zikula_Event
+     * @return Zikula_AbstractHook
      */
     public function setArgs(array $args = array())
     {
