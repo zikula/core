@@ -228,6 +228,10 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         $pa = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
                 ->findBy('areaname', $providerArea);
 
+        if ($sa->getFirst()->get('category') != $pa->getFirst()->get('category')) {
+            throw new LogicException('Cannot bind areas from different categories');
+        }
+
         $binding = new Zikula_Doctrine_Model_HookBinding();
         $binding->merge(array(
                 'sowner' => $sa->getFirst()->get('owner'),
