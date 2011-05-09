@@ -566,7 +566,7 @@ class ModUtil
     {
         $modules = self::getAllMods();
         if (array_key_exists($module, $modules)) {
-            return $module['capabilities'];
+            return $modules[$module]['capabilities'];
         }
         return false;
     }
@@ -589,7 +589,7 @@ class ModUtil
                 if (($mod['state'] == self::STATE_ACTIVE)
                     || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $mod['name'])
                         && ($mod['state'] == self::STATE_UPGRADED || $mod['state'] == self::STATE_INACTIVE))) {
-                    self::$cache['modsarray'][$key] = $mod;
+                    self::$cache['modsarray'][$mod['name']] = $mod;
                 }
             }
         }
