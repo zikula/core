@@ -112,7 +112,7 @@ class Example_HookHandler extends Zikula_HookHandler
      * The property $hook->data is an instance of Zikula_Collection_HookValidationProviders
      * Use the $hook->data->set() method to log the validation response.
      *
-     * This method populates this hookhandler object with a Zikula_Provider_HookValidation
+     * This method populates this hookhandler object with a Zikula_Hook_ValidationReponse
      * so the information is available to the ui_edit method if validation fails,
      * and so the process_* can write the validated data to the database.
      *
@@ -126,7 +126,7 @@ class Example_HookHandler extends Zikula_HookHandler
     {
         // validation checks
         $comments = FormUtil::getPassedValue('hook_comments', null, 'POST');
-        $this->validation = new Zikula_Provider_HookValidation('comments', $comments);
+        $this->validation = new Zikula_Hook_ValidationReponse('comments', $comments);
         if (strlen($comments['name'] < 2)) {
             $this->validation->addError('name', 'Name must be at least 3 characters long.');
         }
