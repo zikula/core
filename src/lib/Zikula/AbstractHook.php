@@ -29,7 +29,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface, ArrayAccess
      *
      * @var array
      */
-    protected $args;
+    protected $args = array();
 
     /**
      * Subscriber area id.
