@@ -438,7 +438,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         return $areaId;
     }
 
-    private function getAreaId($areaName)
+    public function getAreaId($areaName)
     {
         $id = Doctrine_Core::getTable('Zikula_Doctrine_Model_HookArea')
                 ->findBy('areaname', $areaName);
