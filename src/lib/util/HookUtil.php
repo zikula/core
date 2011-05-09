@@ -29,6 +29,12 @@ class HookUtil
      * Subscriber capability key.
      */
     const SUBSCRIBER_CAPABLE = 'hook_subscriber';
+
+    /**
+     * Allow to provide to self.
+     */
+    const SUBSCRIBE_OWN = 'subscribe_own';
+
     /**
      * Constructor.
      */
@@ -62,7 +68,7 @@ class HookUtil
     }
 
     /**
-     * Is a module is subscriber capable.
+     * Is a module is provider capable.
      *
      * @param string $module Module name.
      *
@@ -71,6 +77,19 @@ class HookUtil
     public static function isProviderCapable($module)
     {
         return (bool)ModUtil::isCapable($module, self::PROVIDER_CAPABLE);
+    }
+
+    /**
+     * Is a module is allowed to subscribe to own provider to itself capable.
+     *
+     * @param string $module Module name.
+     *
+     * @return boolean
+     */
+    public static function isSubscribeSelfCapable($module)
+    {
+        $capabilities = ModUtil::getCapabilitiesOf($module);
+        return $capabilities[self::SUBSCRIBER_CAPABLE][self::SUBSCRIBE_OWN];
     }
 
     /**
