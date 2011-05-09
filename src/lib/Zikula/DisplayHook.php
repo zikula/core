@@ -26,6 +26,13 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
     private $responses = array();
 
     /**
+     * The return url.
+     *
+     * @var Zikula_ModUrl
+     */
+    private $url;
+
+    /**
      * @var Zikula_AbstractController
      */
     private $controller;
@@ -67,5 +74,14 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
     public function getResponses()
     {
         return $this->responses;
+    }
+
+    /**
+     *
+     * @return Zikula_ModUrl
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 }
