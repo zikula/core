@@ -723,6 +723,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         if (System::isDevelopmentMode() || System::isInstalling()) {
             $temp = $this->serviceManager->getArgument('temp');
+            if (!is_dir($temp) && !is_writable($temp)) {
+               die(__f('The temporary directory "%s" and all subfolders must be writable', $temp));
+            }
 
             $folders = array(
                     $temp,
