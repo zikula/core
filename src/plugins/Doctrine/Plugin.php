@@ -66,6 +66,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $ORMConfig->setQueryCacheImpl($dbCache);
         $ORMConfig->setProxyDir('ztemp/doctrinemodels');
         $ORMConfig->setProxyNamespace('DoctrineProxy');
-        $serviceManager->attachService('doctrine.entitymanager', \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig));
+        $emCreate = "Doctrine\\ORM\\EntityManager::create"; // PHP 5.2 workaround - remove from 1.3.1
+        $serviceManager->attachService('doctrine.entitymanager', $emCreate($dbConfig, $ORMConfig));
     }
 }
