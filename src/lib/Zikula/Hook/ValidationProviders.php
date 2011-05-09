@@ -37,8 +37,11 @@ class Zikula_Hook_ValidationProviders extends Zikula_Collection_Container
      *
      * @return void
      */
-    public function set($name, Zikula_Hook_ValidationReponse $response)
+    public function set($name, $response)
     {
+        if (!$response instanceof Zikula_Hook_ValidationReponse) {
+            throw new InvalidArgumentException('$response must be an instance of Zikula_Hook_ValidationReponse');
+        }
         $this->collection[$name] = $response;
     }
 
