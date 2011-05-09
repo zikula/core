@@ -165,7 +165,7 @@ class HookUtil
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
         foreach ($bundles as $bundle) {
             $hookManager->unregisterSubscriberBundle($bundle);
-            $event = new Zikula_Event('installer.subscriberbundle.uninstalled', $bundle, array('areaid' => $hookManager->getSubscriberAreaId($bundle->getArea())));
+            $event = new Zikula_Event('installer.subscriberbundle.uninstalled', $bundle, array('areaid' => $hookManager->getAreaId($bundle->getArea())));
             EventUtil::notify($event);
         }
     }
