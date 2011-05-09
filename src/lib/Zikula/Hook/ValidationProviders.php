@@ -19,7 +19,7 @@
 class Zikula_Hook_ValidationProviders extends Zikula_Collection_Container
 {
     /**
-     * Construct a new Zikula_Hook_HookValidationProviders.
+     * Constructor.
      *
      * @param string      $name       The name of the collection.
      * @param ArrayObject $collection The collection (optional).
@@ -33,11 +33,11 @@ class Zikula_Hook_ValidationProviders extends Zikula_Collection_Container
      * Set response.
      *
      * @param string                         $name     Name.
-     * @param Zikula_Response_HookValidation $response Validation response.
+     * @param Zikula_Hook_ValidationReponse $response Validation response.
      *
      * @return void
      */
-    public function set($name, $response)
+    public function set($name, Zikula_Hook_ValidationReponse $response)
     {
         $this->collection[$name] = $response;
     }

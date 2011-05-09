@@ -16,7 +16,7 @@
 /**
  * Validation object for hooks.
  */
-class Zikula_Provider_HookValidation
+class Zikula_Hook_ValidationReponse
 {
     /**
      * Object key.
@@ -27,7 +27,7 @@ class Zikula_Provider_HookValidation
 
     /**
      * The object of validation.
-     * 
+     *
      * @var array|object
      */
     protected $object;
