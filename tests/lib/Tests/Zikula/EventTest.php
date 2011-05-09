@@ -152,11 +152,11 @@ class Tests_Zikula_EventTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Event->setNotified()
+     * Tests Event->stop()
      */
-    public function testSetNotified()
+    public function teststop()
     {
-        $this->event->setNotified();
+        $this->event->stop();
         $this->assertTrue($this->event->isStopped());
     }
 
