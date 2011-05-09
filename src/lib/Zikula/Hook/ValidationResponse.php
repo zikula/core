@@ -16,7 +16,7 @@
 /**
  * Validation object for hooks.
  */
-class Zikula_Hook_ValidationReponse
+class Zikula_Hook_ValidationResponse
 {
     /**
      * Object key.
