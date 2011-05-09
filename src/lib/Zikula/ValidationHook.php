@@ -23,13 +23,13 @@ class Zikula_ValidationHook extends Zikula_AbstractHook
      */
     private $validators;
 
-    public function __construct($name, Zikula_Hook_ValidationReponse $validators)
+    public function __construct($name, Zikula_Hook_ValidationResponse $validators)
     {
         $this->name = $name;
         $this->validators = $validators;
     }
 
-    public function setValidator($name, Zikula_Hook_ValidationReponse $response)
+    public function setValidator($name, Zikula_Hook_ValidationResponse $response)
     {
         $this->validators->set($name, $response);
     }
