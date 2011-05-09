@@ -48,6 +48,7 @@ function install(Zikula_Core $core)
             'install/templates/plugins',
             );
     $smarty->clear_compiled_tpl();
+    file_put_contents("$tempDir/view_compiled/index.html", '');
 
     $lang = FormUtil::getPassedValue('lang', '', 'GETPOST');
     $dbhost = FormUtil::getPassedValue('dbhost', '', 'GETPOST');
@@ -113,6 +114,7 @@ function install(Zikula_Core $core)
         header('HTTP/1.1 503 Service Unavailable');
         $smarty->display('notinstalled.tpl');
         $smarty->clear_compiled_tpl();
+        file_put_contents("$tempDir/view_compiled/index.html", '');
         exit;
     }
 
@@ -321,6 +323,7 @@ function install(Zikula_Core $core)
     $smarty->assign('maincontent', $smarty->fetch($templateName));
     $smarty->display('installer_page.tpl');
     $smarty->clear_compiled_tpl();
+    file_put_contents("$tempDir/view_compiled/index.html", '');
 }
 
 /**
