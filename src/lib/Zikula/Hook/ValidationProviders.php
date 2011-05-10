@@ -33,14 +33,14 @@ class Zikula_Hook_ValidationProviders extends Zikula_Collection_Container
      * Set response.
      *
      * @param string                         $name     Name.
-     * @param Zikula_Hook_ValidationReponse $response Validation response.
+     * @param Zikula_Hook_ValidationResponse $response Validation response.
      *
      * @return void
      */
     public function set($name, $response)
     {
-        if (!$response instanceof Zikula_Hook_ValidationReponse) {
-            throw new InvalidArgumentException('$response must be an instance of Zikula_Hook_ValidationReponse');
+        if (!$response instanceof Zikula_Hook_ValidationResponse) {
+            throw new InvalidArgumentException('$response must be an instance of Zikula_Hook_ValidationResponse');
         }
         $this->collection[$name] = $response;
     }
