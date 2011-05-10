@@ -125,10 +125,8 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
 
         // make homepage calculations
         $shorturls = System::getVar('shorturls', false);
-        $shorturlstype = System::getVar('shorturlstype');
-        $dirBased = ($shorturlstype == 0 ? true : false);
 
-        if ($shorturls && $dirBased) {
+        if ($shorturls) {
             $homepage = System::getBaseUrl().System::getVar('entrypoint', 'index.php');
             $forcefqdn = true;
         } else {
@@ -142,7 +140,7 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
         foreach ($languages as $code) {
             $thisurl = ModUtil::url($module, $type, $func, $get, null, null, true, $forcefqdn, $code);
             if ($thisurl == '') {
-                $thisurl = ($shorturls && $dirBased ? $code : "$homepage?lang=$code");
+                $thisurl = ($shorturls ? $code : "$homepage?lang=$code");
             }
             $codeFS = ZLanguage::transformFS($code);
 
@@ -152,7 +150,7 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
                 if (!file_exists($flag)) {
                     $flag = '';
                 }
-                $flag = (($flag && $shorturls && $dirBased) ? System::getBaseUrl() . $flag : $flag);
+                $flag = (($flag && $shorturls) ? System::getBaseUrl() . $flag : $flag);
             }
 
             if ($vars['fulltranslation'] == 2) {
