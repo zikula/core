@@ -20,27 +20,27 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
 {
     /**
      * CSRF Token.
-     * 
+     *
      * @var string
      */
     protected $csrfToken;
 
     /**
      * Authid Token.
-     * 
+     *
      * @var string
      */
     protected $authid;
 
     /**
      * Flag to create a new nonce.
-     * 
+     *
      * @var boolean
      */
     protected $newCsrfToken = true;
 
     /**
-     * Reponse status messages.
+     * Response status messages.
      *
      * @var array
      */
@@ -48,11 +48,11 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
 
     /**
      * Options array.
-     * 
+     *
      * @var array
      */
     protected $options;
-    
+
     /**
      * Convert class to string.
      *
@@ -81,7 +81,7 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
 
     /**
      * Generate system level payload.
-     * 
+     *
      * @return array
      */
     protected function generateCoreData()
@@ -100,7 +100,7 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
         }
         $logUtilMessages = (array)LogUtil::getStatusMessages();
         $core['statusmsg'] = array_merge($this->messages,$logUtilMessages);
-        
+
         return $core;
     }
 

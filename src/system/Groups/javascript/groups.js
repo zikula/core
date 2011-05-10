@@ -51,7 +51,7 @@ function groupappend()
 {
     if (appending == false) {
         appending = true;
-        
+
         new Zikula.Ajax.Request(
             "ajax.php?module=Groups&func=creategroup",
             {
@@ -64,7 +64,7 @@ function groupappend()
  * Ajax response function for appending a new group: adds a new li,
  * updates fields and makes them visible. More important: renames all ids
  *
- *@params req reponse from ajax call;
+ *@params req response from ajax call;
  *@return none;
  */
 function groupappend_response(req)

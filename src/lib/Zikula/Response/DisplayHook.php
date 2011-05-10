@@ -14,7 +14,7 @@
  */
 
 /**
- * Zikula display hook reponse class.
+ * Zikula display hook response class.
  *
  * Hook handlers should return one of these.
  */
@@ -22,7 +22,7 @@ class Zikula_Response_DisplayHook
 {
     /**
      * Name.
-     * 
+     *
      * @var string
      */
     protected $area;

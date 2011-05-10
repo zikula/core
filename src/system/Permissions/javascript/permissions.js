@@ -13,7 +13,7 @@ function permissioninit()
     // craigh specialsuperusability extension :-)
     deleteiconhtml = $('permeditdelete_' + adminpermission).innerHTML;
     canceliconhtml = $('permeditcancel_' + adminpermission).innerHTML;
-     
+
     /* highlight admin permission */
     if (adminpermission != -1) {
         if ($('permission_' + adminpermission)) {
@@ -25,8 +25,8 @@ function permissioninit()
     }
 
     $A(document.getElementsByClassName('z-sortable', 'permissionlist')).each(
-        function(node) 
-        { 
+        function(node)
+        {
             var thispermid = node.id.split('_')[1];
             if (lockadmin == 1 && thispermid == adminpermission) {
                 // adminpermission found, locking required
@@ -53,7 +53,7 @@ function permissioninit()
 
     // set observers on all existing groups images
     $$('button.z-imagebutton').each(
-    function(singlebutton) 
+    function(singlebutton)
     {
         var permid = singlebutton.id.split('_')[1];
         switch(singlebutton.id.split('_')[0])
@@ -70,24 +70,24 @@ function permissioninit()
         }
     });
 
-    $('appendajax').removeClassName('z-hide'); 
+    $('appendajax').removeClassName('z-hide');
     if ($('permgroupfilterform')) {
-        $('permgroupfilterform').action = 'javascript:void(0);'; 
-        $('permgroupfiltersubmit').remove('z-hide'); 
-        $('permgroupfiltersubmitajax').removeClassName('z-hide'); 
+        $('permgroupfilterform').action = 'javascript:void(0);';
+        $('permgroupfiltersubmit').remove('z-hide');
+        $('permgroupfiltersubmitajax').removeClassName('z-hide');
     }
     $('testpermsubmit').remove();
     $('testpermsubmitajax').removeClassName('z-hide');
-    $('testpermform').action = 'javascript:void(0);'; 
+    $('testpermform').action = 'javascript:void(0);';
 
     $('permissiondraganddrophint').removeClassName('z-hide');
 
     Sortable.create('permissionlist',
-                    { 
+                    {
                       only: 'z-sortable',
                       onUpdate: sortorderchanged
                     });
-    
+
 }
 
 /**
@@ -112,7 +112,7 @@ function permappend()
  * Ajax response function for appending a new permission: adds a new li,
  * updates fields and makes them visible. More important: renames all ids
  *
- *@params req reponse from ajax call;
+ *@params req response from ajax call;
  *@return none;
  */
 function permappend_response(req)
@@ -156,10 +156,10 @@ function permappend_response(req)
 
     // hide cancel icon for new permissions
     $('permeditcancel_' + data.pid).addClassName('z-hide');
-    // update delete icon to show cancel icon 
+    // update delete icon to show cancel icon
     $('permeditdelete_' + data.pid).update(canceliconhtml);
 
-    // update some innerHTML 
+    // update some innerHTML
     $('permdrag_' + data.pid).update('(' + data.pid + ')');
     $('permcomp_' + data.pid).update(data.component);
     $('perminst_' + data.pid).update(data.instance);
@@ -180,7 +180,7 @@ function permappend_response(req)
     $('permeditdelete_' + data.pid).observe('click',  function() { permdelete(data.pid); });
     $('permeditcancel_' + data.pid).observe('click',  function() { permmodifycancel(data.pid); });
 
-    // add class to make it sortable 
+    // add class to make it sortable
     $('permission_' + data.pid).addClassName('z-sortable');
     $('permission_' + data.pid).addClassName('normalpermission');
     $('permission_' + data.pid).addClassName('z-itemsort');
@@ -188,17 +188,17 @@ function permappend_response(req)
     // remove class to make edit button visible
     $('modifyajax_' + data.pid).removeClassName('z-hide');
     $('modifyajax_' + data.pid).observe('click', function() { permmodifyinit(data.pid); });
-    
+
     // turn on edit mode
     enableeditfields(data.pid);
-    
+
     // we are ready now, make it visible
     $('permission_' + data.pid).removeClassName('z-hide');
     new Effect.Highlight('permission_' + data.pid, { startcolor: '#ffff99', endcolor: '#ffffff' });
-    
+
     // update the sortable
     Sortable.create("permissionlist",
-                    { 
+                    {
                       only: 'z-sortable',
                       constraint: false,
                       onUpdate: sortorderchanged
@@ -234,10 +234,10 @@ function sortorderchanged()
     // this is necessary to get the correct result from Sortable.serialize because otherwise
     // the adminpermission is left out and gets sequence value of 0 which puts it on top of the
     // list
-    $('permission_' + adminpermission).addClassName('z-sortable');    
+    $('permission_' + adminpermission).addClassName('z-sortable');
     var pars = Sortable.serialize('permissionlist', { 'name': 'permorder' });
     // remove sortable class from adminpermission
-    $('permission_' + adminpermission).removeClassName('z-sortable');    
+    $('permission_' + adminpermission).removeClassName('z-sortable');
 
     new Zikula.Ajax.Request(
         "ajax.php?module=Permissions&func=changeorder",
@@ -261,7 +261,7 @@ function sortorderchanged_response(req)
     }
     Zikula.recolor('permissionlist', 'permlistheader');
 }
-   
+
 /**
  * Start edit of permissions: hide/show the neceaasty fields
  *
@@ -316,7 +316,7 @@ function permmodify(permid)
         new Zikula.Ajax.Request(
             "ajax.php?module=Permissions&func=updatepermission",
             {
-                parameters: pars, 
+                parameters: pars,
                 onComplete: permmodify_response
             });
     }
@@ -339,7 +339,7 @@ function permmodify_response(req)
 
     $('groupid_' + data.pid).value = data.gid;
     $('levelid_' + data.pid).value = data.level;
-    
+
     $('permgroup_' + data.pid).update(data.groupname);
     $('permcomp_' + data.pid).update(data.component);
     $('editpermcomp_' + data.pid, data.component);
@@ -349,7 +349,7 @@ function permmodify_response(req)
 
     // show trascan icon for new permissions if necessary
     $('permeditcancel_' + data.pid).removeClassName('z-hide');
-    // update delete icon to show trashcan icon 
+    // update delete icon to show trashcan icon
     $('permeditdelete_' + data.pid).update(deleteiconhtml);
 
     // update the observer for cancel, it might lea to delete if this rule
@@ -381,7 +381,7 @@ function permdelete(permid)
             {
                 parameters: pars,
                 onComplete: permdelete_response
-            }); 
+            });
     }
 }
 
@@ -467,7 +467,7 @@ function setmodifystatus(permid, newvalue)
 
 /**
  * Use to temporarily show an infotext instead of the permission. Must be
- * called twice: 
+ * called twice:
  * #1: Show the infotext
  * #2: restore normal display
  * If both parameters are missing all infotext fields will be restored to
@@ -495,12 +495,12 @@ function showinfo(permid, infotext)
         $A(document.getElementsByClassName('permissioninfo')).each(function(perminfo) {
             $(perminfo).update('&nbsp;');
             $(perminfo).addClassName('z-hide');
-        });    
+        });
         $A(document.getElementsByClassName('permissioncontent')).each(function(permcontent) {
             $(permcontent).removeClassName('z-hide');
-        });    
+        });
     }
-}    
+}
 
 /**
  * Filters the permission list as requested
@@ -523,8 +523,8 @@ function permgroupfilter()
             $('filterwarninggroup').show();
         }
         $A(document.getElementsByClassName('z-sortable')).each(
-            function(el) 
-            { 
+            function(el)
+            {
                 permid = el.id.split('_')[1];
                 if (filter == -1) {
                     // show all groups - reset view
@@ -536,7 +536,7 @@ function permgroupfilter()
                     } else {
                         $('permission_' + permid).show();
                     }
-                } 
+                }
             });
     } else if (filtertype == 'c') {
         $('filterwarninggroup').hide();
@@ -546,8 +546,8 @@ function permgroupfilter()
             $('filterwarningcomponent').show();
         }
         $A(document.getElementsByClassName('z-sortable')).each(
-            function(el) 
-            { 
+            function(el)
+            {
                 // show all permissions with .* and filter
                 permid = el.id.split('_')[1];
                 if (filter == -1) {
@@ -560,7 +560,7 @@ function permgroupfilter()
                     } else {
                         $('permission_' + permid).hide();
                     }
-                } 
+                }
             });
     }
     if (filter == -1) {
@@ -584,7 +584,7 @@ function performpermissiontest()
     new Zikula.Ajax.Request(
         "ajax.php?module=Permissions&func=testpermission",
         {
-            parameters: pars, 
+            parameters: pars,
             onComplete: performpermissiontest_response
         }
     );
