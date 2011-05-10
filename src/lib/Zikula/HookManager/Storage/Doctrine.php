@@ -394,6 +394,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
             $hookprovider = Doctrine_Query::create()->select()
                     ->where('pareaid = ?', $pareaId)
                     ->andWhere('hooktype = ?', $subscriber['hooktype'])
+                    ->andWhere('category = ?', $subscriber['category'])
                     ->from('Zikula_Doctrine_Model_HookProvider')
                     ->fetchArray();
 
