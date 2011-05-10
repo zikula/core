@@ -530,11 +530,11 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                 );
             }
         }
-        
+
         foreach($adminlinks as &$item) {
             usort($item, '_sortAdminModsByOrder');
         }
-        
+
         $menuoptions = array();
         $possible_cids = array();
         $permission = false;
@@ -682,7 +682,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             $onlineVersion = $updateversion;
         } else {
             $s = (extension_loaded('openssl') ? 's' : '');
-            $onlineVersion = trim($this->_zcurl("http$s://update.zikula.org/cgi-bin/engine/checkcoreversion.cgi"));
+            $onlineVersion = trim($this->_zcurl("http$s://update.zikula.org/cgi-bin/engine/checkcoreversion13.cgi"));
             if ($onlineVersion === false) {
                 return array('update_show' => false);
             }
