@@ -252,7 +252,7 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
                 $langname = ZLanguage::getLanguageName($code);
                 ZLanguage::setLocale($savedLanguage);
             } else {
-                $langname = ZLanguage::getLanguageName($savedLanguage);
+                $langname = ZLanguage::getLanguageName($code);
             }
             $list[] = array('code' => $code,
                             'name' => $langname,
