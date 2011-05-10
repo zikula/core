@@ -68,7 +68,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $ORMConfig->setProxyNamespace('DoctrineProxy');
 
         // PHP 5.2 workaround - remove from 1.3.1
-        $entityManager = call_user_func_array(array('\\Doctrine\\ORM\\EntityManager', 'create'), array($dbConfig, $ORMConfig));
+        $entityManager = call_user_func_array(array('Doctrine\ORM\EntityManager', 'create'), array($dbConfig, $ORMConfig));
         $serviceManager->attachService('doctrine.entitymanager', $entityManager);
     }
 }
