@@ -49,7 +49,7 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Validation object.
      *
-     * @var Zikula_Hook_ValidationReponse
+     * @var Zikula_Hook_ValidationResponse
      */
     protected $validation;
 
