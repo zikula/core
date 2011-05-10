@@ -61,9 +61,9 @@ class Zikula_ModUrl
         return $this->fragment;
     }
 
-    public function getUrl()
+    public function getUrl($ssl = null, $fqurl = null, $forcelongurl = false, $forcelang=true)
     {
-        return ModUtil::url($this->application, $this->controller, $this->action, $this->args, null, $this->fragment, null, false, true);
+        return ModUtil::url($this->application, $this->controller, $this->action, $this->args, $ssl, $this->fragment, $fqurl, $forcelongurl, $forcelang);
     }
 
 //    public function getRoute()
@@ -83,6 +83,11 @@ class Zikula_ModUrl
 
     public function serialize()
     {
-        return serialize(array('application' => $this->application, 'controller' => $this->controller, 'action' => $this->action, 'args' => $this->args, 'language' => $this->language, 'fragment' => $this->fragment));
+        return serialize($this->toArray());
+    }
+
+    public function toArray()
+    {
+        return array('application' => $this->application, 'controller' => $this->controller, 'action' => $this->action, 'args' => $this->args, 'language' => $this->language, 'fragment' => $this->fragment);
     }
 }
