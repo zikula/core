@@ -258,7 +258,7 @@ class SecurityUtil
      */
     public static function generateAuthKey($modname = '')
     {
-        // Ugly hack for Zikula_Reponse_Ajax which for BC reasons needs to add authid to response
+        // Ugly hack for Zikula_Response_Ajax which for BC reasons needs to add authid to response
         // So when this method is called by Zikula_Response_Ajax  or Zikula_Response_Ajax_Error class
         // do not mark it as deprecated.
         $trace = debug_backtrace(false);
