@@ -21,13 +21,13 @@
  * Available parameters:
  * - 'eventname' The name of the hook event [required].
  * - 'id'        The ID if the subject.
- * - 'objecturl' Zikula_ModUrl instance or null.
+ * - 'urlobject' Zikula_ModUrl instance or null.
  * - 'assign'    If set, the results array is assigned to the named variable instead display [optional].
  * - all remaining parameters are passed to the hook via the args param in the event.
  *
  * Example:
- *  {notifydisplayhooks eventname='news.hook.item.ui.view' id=$id objecturl=$urlObject}
- *  {notifydisplayhooks eventname='news.hook.item.ui.view' id=$id objecturl=$urlObject assign='displayhooks'}
+ *  {notifydisplayhooks eventname='news.hook.item.ui.view' id=$id urlobject=$urlObject}
+ *  {notifydisplayhooks eventname='news.hook.item.ui.view' id=$id urlobject=$urlObject assign='displayhooks'}
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -43,14 +43,14 @@ function smarty_function_notifydisplayhooks($params, Zikula_View $view)
     }
     $eventname = $params['eventname'];
     $id = isset($params['id']) ? $params['id'] : null;
-    $objectUrl = isset($params['urlobject']) ? $params['urlobject'] : null;
-    if ($objectUrl && !$objectUrl instanceof Zikula_ModUrl) {
+    $urlObject = isset($params['urlobject']) ? $params['urlobject'] : null;
+    if ($urlObject && !$urlObject instanceof Zikula_ModUrl) {
         return trigger_error(__f('Error! "%1$s" must be an instance of %2$s', array('urlobject', 'Zikula_ModUrl')));
     }
     $assign  = isset($params['assign']) ? $params['assign'] : false;
 
     // create event and notify
-    $hook = new Zikula_DisplayHook($eventname, $id, $view->getController(), $objectUrl);
+    $hook = new Zikula_DisplayHook($eventname, $id, $view->getController(), $urlObject);
     $view->getServiceManager()->getService('zikula.hookmanager')->notify($hook);
     $responses = $hook->getResponses();
 
