@@ -87,7 +87,22 @@ class Theme_Api_User extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        return $this->_readinifile(array('theme'=> $args['theme'], 'file' => $args['filename'], 'sections' => true));
+        $default = array(
+                       'page' => '',
+                       'block' => '',
+                       'palette' => '', // deprecated
+                       'modulewrapper' => 0, // deprecated
+                       'blockwrapper' => 0, // deprecated
+                       'blockinstances' => array(),
+                       'blocktypes' => array(),
+                       'blockpositions' => array(),
+                       'filters' => array()
+                   );
+
+        $config = $this->_readinifile(array('theme'=> $args['theme'], 'file' => $args['filename'], 'sections' => true));
+        $config = array_merge($default, $config);
+
+        return $config;
     }
 
     /**
@@ -145,12 +160,12 @@ class Theme_Api_User extends Zikula_AbstractApi
             $args['sections'] = false;
         }
 
-        $ostheme = DataUtil::formatForOS($themeinfo['directory']);
-        $ospntemp = CacheUtil::getLocalDir();
-        $osfile = DataUtil::formatForOS($args['file']);
+        $ostemp   = CacheUtil::getLocalDir();
+        $ostheme  = DataUtil::formatForOS($themeinfo['directory']);
+        $osfile   = DataUtil::formatForOS($args['file']);
 
-        if (file_exists($ospntemp.'/Theme_Config/'.$ostheme.'_'.$osfile)) {
-            return parse_ini_file($ospntemp.'/Theme_Config/'.$ostheme.'_'.$osfile, $args['sections']);
+        if (file_exists($ostemp.'/Theme_Config/'.$ostheme.'_'.$osfile)) {
+            return parse_ini_file($ostemp.'/Theme_Config/'.$ostheme.'_'.$osfile, $args['sections']);
         } else if (file_exists('themes/'.$ostheme.'/templates/config/'.$osfile)) {
             return parse_ini_file('themes/'.$ostheme.'/templates/config/'.$osfile, $args['sections']);
         }
@@ -175,14 +190,15 @@ class Theme_Api_User extends Zikula_AbstractApi
 
         $content = ModUtil::apiFunc('theme', 'user', 'createinifile', array('has_sections' => $args['has_sections'], 'assoc_arr' => $args['assoc_arr']));
 
+        $ostemp  = CacheUtil::getLocalDir();
         $ostheme = DataUtil::formatForOS($themeinfo['directory']);
-        $ospntemp = CacheUtil::getLocalDir();
-        $osfile = DataUtil::formatForOS($args['file']);
+        $osfile  = DataUtil::formatForOS($args['file']);
 
         if (is_writable($fullfile = 'themes/' . $ostheme . '/templates/config/' .$osfile)) {
             $handle = fopen($fullfile, 'w');
-        } elseif (is_writable($fullfile = $ospntemp.'/Theme_Config/'.$ostheme.'_'.$osfile)) {
-            $handle = fopen($fullfile, 'w');
+        } elseif (is_writable($ostemp.'/Theme_Config/')) {
+            $fullfile = $ostemp.'/Theme_Config/'.$ostheme.'_'.$osfile;
+            $handle = fopen($fullfile, 'w+');
         } else {
             return LogUtil::registerError($this->__f('Error! Could not open file so that it could be written to: %s', $osfile));
         }
@@ -215,19 +231,26 @@ class Theme_Api_User extends Zikula_AbstractApi
 
         $content = '';
         if ($args['has_sections']) {
-            foreach ($args['assoc_arr'] as $key => $elem) {
-                if (!is_array($elem)) {
-                    $content .= $key.' = '.$elem."\r\n";
+            foreach ($args['assoc_arr'] as $section => $sectionval) {
+                // process and write each section value
+                if (!is_array($sectionval)) {
+                    $content .= "$section = $sectionval\r\n";
                 } else {
-                    $content .= "\r\n[".$key."]\r\n";
-                    foreach ($elem as $key2=>$elem2) {
-                        $content .= $key2.' = '.$elem2."\r\n";
+                    $content .= "\r\n[$section]\r\n";
+                    foreach ($sectionval as $var => $value) {
+                        if (is_array($value)) {
+                            foreach ($value as $k => $v) {
+                                $content .= "{$var}[{$k}] = $v\r\n";
+                            }
+                        } else {
+                            $content .= "$var = $value\r\n";
+                        }
                     }
                 }
             }
         } else {
-            foreach ($args['assoc_arr'] as $key => $elem) {
-                $content .= $key.' = '.$elem."\r\n";
+            foreach ($args['assoc_arr'] as $key => $value) {
+                $content .= "$key = $value\r\n";
             }
         }
 
@@ -246,7 +269,7 @@ class Theme_Api_User extends Zikula_AbstractApi
 
         $allpalettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
         $palettes = array();
-        foreach (array_keys($allpalettes) as $name) {
+        foreach (array_keys((array)$allpalettes) as $name) {
             $palettes[$name] = $name;
         }
 

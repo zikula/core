@@ -456,7 +456,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // assign the base filename, themename, theme info, moduletemplates, blocktemplates and palettes
         $this->view->assign('filename', $filename)

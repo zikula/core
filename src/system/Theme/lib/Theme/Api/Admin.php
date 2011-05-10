@@ -118,6 +118,7 @@ class Theme_Api_Admin extends Zikula_AbstractApi
         } else {
             $themename = $args['themename'];
         }
+
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['themename']));
         if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
             return LogUtil::registerArgsError();
@@ -143,6 +144,7 @@ class Theme_Api_Admin extends Zikula_AbstractApi
         // get the theme page configurations and write them back to the running config directory
         $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
         ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
+
         foreach ($pageconfigurations as $pageconfiguration) {
             $fullpageconfiguration = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $pageconfiguration['file']));
             ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $fullpageconfiguration, 'has_sections' => true, 'file' => $pageconfiguration['file']));
@@ -199,7 +201,7 @@ class Theme_Api_Admin extends Zikula_AbstractApi
         ModUtil::apiFunc('Theme', 'user', 'clear_cached');
 
         // try to delete the files
-        if($args['deletefiles'] == 1) {
+        if ($args['deletefiles'] == 1) {
             ModUtil::apiFunc('Theme', 'admin', 'deletefiles', array('themename' => $themeinfo['name'], 'themedirectory' => $themeinfo['directory']));
         }
 
@@ -232,9 +234,8 @@ class Theme_Api_Admin extends Zikula_AbstractApi
 
         if (is_writable('themes') && is_writable('themes/' . $osthemedirectory)) {
             $res = FileUtil::deldir('themes/' .$osthemedirectory);
-            if($res == true) {
-                LogUtil::registerStatus(__('Done! Removed theme files from the file system.'));
-                return $res;
+            if ($res == true) {
+                return LogUtil::registerStatus(__('Done! Removed theme files from the file system.'));
             }
             return LogUtil::registerError(__('Error! Could not delete theme files from the file system. Please remove them by another means (FTP, SSH, ...).'));
         }
@@ -302,9 +303,9 @@ class Theme_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $ospntemp = CacheUtil::getLocalDir();
+        $ostemp  = CacheUtil::getLocalDir();
         $ostheme = DataUtil::formatForOS($themename);
-        $osfile = $ospntemp.'/Theme_Config/'.$ostheme.'_'.DataUtil::formatForOS($args['file']);
+        $osfile  = $ostemp.'/Theme_Config/'.$ostheme.'_'.DataUtil::formatForOS($args['file']);
 
         if (file_exists($osfile) && is_writable($osfile)) {
             unlink($osfile);
