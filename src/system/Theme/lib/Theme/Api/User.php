@@ -106,6 +106,27 @@ class Theme_Api_User extends Zikula_AbstractApi
     }
 
     /**
+     * Get all configurations available for a theme
+     */
+    public function getconfigurations($args)
+    {
+        // check our input
+        if (!isset($args['theme']) || empty($args['theme'])) {
+            return LogUtil::registerArgsError();
+        }
+
+        $themeinfo   = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
+        $templatedir = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates/config';
+
+        // get the available .ini files and exclude the core ones
+        $inifiles = FileUtil::getFiles($templatedir, false, true, '.ini', 'f');
+        $inifiles = array_diff($inifiles, array('admin.ini', 'pageconfigurations.ini', 'themevariables.ini', 'themepalettes.ini'));
+        sort($inifiles);
+
+        return $inifiles;
+    }
+
+    /**
      * Get all templates for a theme
      */
     public function gettemplates($args)
@@ -115,26 +136,20 @@ class Theme_Api_User extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
-        $templatedir = realpath('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates');
+        $args['type'] = isset($args['type']) ? DataUtil::formatForOS($args['type']) : 'modules';
 
-        if (!isset($args['type']) || $args['type'] == 'modules') {
-            $args['type'] = 'modules';
-            $templatelist = FileUtil::getFiles($templatedir, false, false, '.tpl', 'f');
+        $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
+        $templatedir = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates';
+
+        if ($args['type'] == 'modules') {
+            $templatelist = FileUtil::getFiles($templatedir, false, true, '.tpl', 'f');
         } else {
             $templatelist = array();
         }
 
-        $templatelist = array_merge($templatelist, FileUtil::getFiles($templatedir.'/'.DataUtil::formatForOS($args['type']), false, false, '.tpl', 'f'));
+        $templatelist = array_merge($templatelist, FileUtil::getFiles($templatedir.'/'.$args['type'], false, $args['type'], '.tpl', 'f'));
 
-        $templates = array();
-        $dirlen = strlen($templatedir . '/');
-        foreach ($templatelist as $template) {
-            $template = realpath($template);
-            $templates[] = substr($template, $dirlen, strlen($template));
-        }
-
-        return $templates;
+        return $templatelist;
     }
 
     /**
@@ -287,7 +302,7 @@ class Theme_Api_User extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Notice: Theme switching is currently disabled.'));
         }
 
-        if (!SecurityUtil::checkPermission( 'Theme::', '::', ACCESS_COMMENT)) {
+        if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_COMMENT)) {
             return LogUtil::registerPermissionError();
         }
 

@@ -24,7 +24,7 @@
             {/foreach}
         </tbody>
     </table>
-    <h3>{gt text="Page configurations"}</h3>
+    <h3>{gt text="Page configurations in use"}</h3>
     <table class="z-datatable">
         <thead>
             <tr>
