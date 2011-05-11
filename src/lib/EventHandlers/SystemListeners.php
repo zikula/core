@@ -745,7 +745,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
                     mkdir($folder, $this->serviceManager->getArgument('system.chmod_dir'), true);
                 }
                 if (!is_writable($folder)) {
-                    echo __f("Error! Folder '%s' was not found.", $folder) . '<br />';
+                    echo __f("System error! Folder '%s' was not found or is not writable.", $folder) . '<br />';
                     $die = true;
                 }
             }

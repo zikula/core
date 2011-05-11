@@ -305,7 +305,7 @@ class Theme_Api_Admin extends Zikula_AbstractApi
 
         $ostemp  = CacheUtil::getLocalDir();
         $ostheme = DataUtil::formatForOS($themename);
-        $osfile  = $ostemp.'/Theme_Config/'.$ostheme.'_'.DataUtil::formatForOS($args['file']);
+        $osfile  = $ostemp.'/Theme_Config/'.$ostheme.'/'.DataUtil::formatForOS($args['file']);
 
         if (file_exists($osfile) && is_writable($osfile)) {
             unlink($osfile);

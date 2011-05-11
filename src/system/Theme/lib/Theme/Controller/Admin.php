@@ -116,9 +116,20 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // get the theme info
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
 
+        $ostemp = CacheUtil::getLocalDir();
+        $zpath  = $ostemp.'/Theme_Config/'.DataUtil::formatForOS($themeinfo['directory']);
+        $tpath  = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates/config';
+
         // check if we can edit the theme and, if not, create the running config
-        if (!is_writable('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/templates/config') && $themeinfo['type'] == ThemeUtil::TYPE_XANTHIA3) {
-            ModUtil::apiFunc('Theme', 'admin', 'createrunningconfig', array('themename' => $themename));
+        if (!is_writable($tpath.'/pageconfigurations.ini') && $themeinfo['type'] == ThemeUtil::TYPE_XANTHIA3) {
+            if (!file_exists($zpath) || is_writable($zpath)) {
+                ModUtil::apiFunc('Theme', 'admin', 'createrunningconfig', array('themename' => $themename));
+
+                LogUtil::registerStatus($this->__f('Notice: The changes made via Admin Panel will be saved on \'%1$s\' because it seems that the .ini files on \'%2$s\' are not writable.', array($zpath, $tpath)));
+
+            } else {
+                LogUtil::registerError($this->__f('Error! Cannot write any configuration changes. Make sure that the .ini files on \'%1$s\' or \'%2$s\', and the folder itself, are writable.', array($tpath, $zpath)));
+            }
         }
 
         $this->view->setCaching(false);
@@ -126,6 +137,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // assign theme name, theme info and return output
         return $this->view->assign('themename', $themename)
                           ->assign('themeinfo', $themeinfo)
+                          ->assign('zpath', $zpath)
                           ->fetch('theme_admin_modify.tpl');
     }
 
