@@ -3,6 +3,9 @@
     {include file="theme_admin_modifymenu.tpl"}
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
     <h2>{gt text="Variables"}</h2>
+
+    <div class="z-informationmsg">{gt text='You can handle plain variables <var>name &rarr; value</var>, but also setup arrays in the format <var>name[key] &rarr; value</var>.'}</div>
+
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatevariables"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />

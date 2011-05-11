@@ -30,22 +30,48 @@ class Theme_Api_User extends Zikula_AbstractApi
             $dom = $this->_getthemedomain($args['theme']);
 
             foreach (array_keys($variables['variables']) as $var) {
-                if (!isset($args['explode']) || $args['explode'] != false) {
-                    if (isset($variables[$var]['type']) && $variables[$var]['type'] == 'select') {
-                        $variables[$var]['values'] = explode(',', __($variables[$var]['values'], $dom));
-                        $variables[$var]['output'] = explode(',', __($variables[$var]['output'], $dom));
+                if (is_array($variables['variables'][$var])) {
+                    // process each array field and insert it in $variables.variables
+                    foreach ($variables['variables'][$var] as $k => $v) {
+                        if (!isset($variables["$var.$k"])) {
+                            $variables["{$var}[{$k}]"] = array('editable' => true, 'type' => 'text');
+                        } else {
+                            $variables["{$var}[{$k}]"] = $variables["$var.$k"];
+                            unset($variables["$var.$k"]);
+                        }
+                        $variables['variables']["{$var}[{$k}]"] = $v;
+
+                        $this->_variable_options($variables["{$var}[{$k}]"], $args, $dom);
                     }
-                }
-                if (isset($variables[$var]['language'])) {
-                    $variables[$var]['language'] = __($variables[$var]['language'], $dom);
-                }
-                if (!isset($variables[$var])) {
-                    $variables[$var] = array('editable' => true, 'type' => 'text');
+                    unset($variables['variables'][$var]);
+
+                } else {
+                    // process the options of the single value
+                    if (!isset($variables[$var])) {
+                        $variables[$var] = array('editable' => true, 'type' => 'text');
+                    }
+                    $this->_variable_options($variables[$var], $args, $dom);
                 }
             }
         }
 
         return $variables;
+    }
+
+    /**
+     * Internal variable options processor
+     */
+    private function _variable_options(&$options, $args, $dom)
+    {
+        if (!isset($args['explode']) || $args['explode'] != false) {
+            if (isset($options['type']) && $options['type'] == 'select') {
+                $options['values'] = explode(',', __($options['values'], $dom));
+                $options['output'] = explode(',', __($options['output'], $dom));
+            }
+        }
+        if (isset($options['language'])) {
+            $options['language'] = __($options['language'], $dom);
+        }
     }
 
     /**
