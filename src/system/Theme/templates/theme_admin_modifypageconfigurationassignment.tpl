@@ -7,14 +7,20 @@
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="themename" value="{$themename|safetext}" />
+
+            {if !isset($modules.$pagemodule) and ($pagemodule neq 'master') and ($pagemodule|strpos:'*' !== 0)}
+            <div class="z-warningmsg">{gt text='The module specified on this assignment [%s] seems to not be available on the system.' tag1=$pagemodule|safetext}</div>
+            {/if}
+
             <fieldset>
                 <div class="z-formrow">
                     <label for="theme_pagemodule">{gt text="Module"}</label>
                     <select id="theme_pagemodule" name="pagemodule">
                         <option value="">&nbsp;</option>
-                        <option value="*home" {if $pagemodule eq '*home'} selected="selected"{/if}>{gt text="Home page"}</option>
-                        <option value="*admin" {if $pagemodule eq '*admin'} selected="selected"{/if}>{gt text="Admin panel pages"}</option>
                         <option value="master" {if $pagemodule eq 'master'} selected="selected"{/if}>{gt text="Master"}</option>
+                        <option value="*home" {if $pagemodule eq '*home'} selected="selected"{/if}>{gt text="Homepage"}</option>
+                        <option value="*admin" {if $pagemodule eq '*admin'} selected="selected"{/if}>{gt text="Admin panel pages"}</option>
+                        <option value="*editor" {if $pagemodule eq '*editor'} selected="selected"{/if}>{gt text="Editor panel pages"}</option>
                         {html_options options=$modules selected=$pagemodule}
                     </select>
                 </div>
