@@ -115,6 +115,7 @@ class Zikula_Workflow
         } else {
             $obj['__WORKFLOW__'] = $insertObj;
         }
+
         return true;
     }
 
@@ -191,6 +192,7 @@ class Zikula_Workflow
         // if this is an initial object then we need to register with the DB
         if ($stateID == 'initial') {
             $this->registerWorkflow($obj, $stateID);
+            $this->workflowData = $obj['__WORKFLOW__'];
         }
 
         // change the workflow state
