@@ -443,7 +443,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $filename = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'GET');
 
         // check our input
-        if (!isset($themename) || empty($themename)) {
+        if (empty($themename)) {
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
@@ -459,7 +459,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // read our configuration file
         $pageconfiguration = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
-        if (!isset($pageconfiguration) || empty($pageconfiguration)) {
+        if (empty($pageconfiguration)) {
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
@@ -518,17 +518,17 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // assign the output variables and fetch the template
-        $this->view->assign('filename', $filename)
-                   ->assign('themename', $themename)
-                   ->assign('themeinfo', $themeinfo)
-                   ->assign('moduletemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename)))
-                   ->assign('blocktemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename, 'type' => 'blocks')))
-                   ->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettenames', array('theme' => $themename)))
-                   ->assign('blockpositions', $blockpositions)
-                   ->assign('allblocks', $allblocks)
-                   ->assign('blocks', $blocks)
-                   ->assign('pageconfiguration', $pageconfiguration)
-                   ->fetch('theme_admin_modifypageconfigtemplates.tpl');
+        return $this->view->assign('filename', $filename)
+                          ->assign('themename', $themename)
+                          ->assign('themeinfo', $themeinfo)
+                          ->assign('moduletemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename)))
+                          ->assign('blocktemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename, 'type' => 'blocks')))
+                          ->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettenames', array('theme' => $themename)))
+                          ->assign('blockpositions', $blockpositions)
+                          ->assign('allblocks', $allblocks)
+                          ->assign('blocks', $blocks)
+                          ->assign('pageconfiguration', $pageconfiguration)
+                          ->fetch('theme_admin_modifypageconfigtemplates.tpl');
     }
 
     /**
@@ -982,16 +982,16 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
 
         // assign the output variables and fetch the template
-        $this->view->assign('mods', $mods)
-                   // assign all module vars
-                   ->assign($this->getVars())
-                   // assign an csrftoken for the clear cache/compile links
-                   ->assign('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager, true))
-                   // assign the core config var
-                   ->assign('theme_change', System::getVar('theme_change'))
-                   // extracted list of non-cached mods
-                   ->assign('modulesnocache', array_flip(explode(',', $this->getVar('modulesnocache'))))
-                   ->fetch('theme_admin_modifyconfig.tpl');
+        return $this->view->assign('mods', $mods)
+                          // assign all module vars
+                          ->assign($this->getVars())
+                          // assign an csrftoken for the clear cache/compile links
+                          ->assign('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager, true))
+                          // assign the core config var
+                          ->assign('theme_change', System::getVar('theme_change'))
+                          // extracted list of non-cached mods
+                          ->assign('modulesnocache', array_flip(explode(',', $this->getVar('modulesnocache'))))
+                          ->fetch('theme_admin_modifyconfig.tpl');
     }
 
     /**
