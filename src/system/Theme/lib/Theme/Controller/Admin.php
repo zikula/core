@@ -32,9 +32,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $this->view->setCaching(false);
-
-        if(isset($this->serviceManager['multisites.enabled']) && $this->serviceManager['multisites.enabled'] == 1){
+        if (isset($this->serviceManager['multisites.enabled']) && $this->serviceManager['multisites.enabled'] == 1){
             // only the main site can regenerate the themes list
             if($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET')){
                 //return true but any action has been made
@@ -61,16 +59,18 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         $themes = array_slice($allthemes, $startnum-1, $itemsperpage);
 
+        $this->view->setCaching(false);
+
         $this->view->assign('themes', $themes);
 
         // assign default theme
         $this->view->assign('currenttheme', System::getVar('Default_Theme'));
 
-        // assign the values for the smarty plugin to produce a pager
+        // assign the values for the pager plugin
         $this->view->assign('pager', array('numitems' => sizeof($allthemes),
                                            'itemsperpage' => $itemsperpage));
 
-        // Return the output that has been generated to the template
+        // return the output that has been generated to the template
         return $this->view->fetch('theme_admin_view.tpl');
     }
 
@@ -116,7 +116,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // get the theme info
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
 
-
         // check if we can edit the theme and, if not, create the running config
         if (!is_writable('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/templates/config') && $themeinfo['type'] == ThemeUtil::TYPE_XANTHIA3) {
             ModUtil::apiFunc('Theme', 'admin', 'createrunningconfig', array('themename' => $themename));
@@ -157,9 +156,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $curthemeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
 
         // reset the flag fields so that the form settings always get used
-        $curthemeinfo['user'] = 0;
+        $curthemeinfo['user']   = 0;
         $curthemeinfo['system'] = 0;
-        $curthemeinfo['admin'] = 0;
+        $curthemeinfo['admin']  = 0;
 
         // add the new theme variable to the existing variables
         $newthemeinfo = array_merge($curthemeinfo, $themeinfo);
@@ -219,11 +218,11 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // get our input
-        $variablesnames = FormUtil::getPassedValue('variablesnames', isset($args['variablesnames']) ? $args['variablesnames'] : null, 'POST');
-        $variablesvalues = FormUtil::getPassedValue('variablesvalues', isset($args['variablesvalues']) ? $args['variablesvalues'] : null, 'POST');
-        $newvariablename = FormUtil::getPassedValue('newvariablename', isset($args['newvariablename']) ? $args['newvariablename'] : null, 'POST');
+        $variablesnames   = FormUtil::getPassedValue('variablesnames', isset($args['variablesnames']) ? $args['variablesnames'] : null, 'POST');
+        $variablesvalues  = FormUtil::getPassedValue('variablesvalues', isset($args['variablesvalues']) ? $args['variablesvalues'] : null, 'POST');
+        $newvariablename  = FormUtil::getPassedValue('newvariablename', isset($args['newvariablename']) ? $args['newvariablename'] : null, 'POST');
         $newvariablevalue = FormUtil::getPassedValue('newvariablevalue', isset($args['newvariablevalue']) ? $args['newvariablevalue'] : null, 'POST');
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
+        $themename        = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -463,16 +462,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
-
-        // assign the base filename, themename, theme info, moduletemplates, blocktemplates and palettes
-        $this->view->assign('filename', $filename)
-                   ->assign('themename', $themename)
-                   ->assign('themeinfo', $themeinfo)
-                   ->assign('moduletemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename)))
-                   ->assign('blocktemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename, 'type' => 'blocks')))
-                   ->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettenames', array('theme' => $themename)));
-
         // get all block positions
         $blockpositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
         foreach ($blockpositions as $name => $blockposition) {
@@ -482,7 +471,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             }
             $blockpositions[$name] = $blockposition['description'];
         }
-        $this->view->assign('blockpositions', $blockpositions);
 
         // call the block API to get a list of all available blocks
         $allblocks = BlockUtil::loadAll();
@@ -495,10 +483,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
                 }
             }
         }
-        $this->view->assign('allblocks', $allblocks);
 
         // call the block API to get a list of all defined block instances
-        $this->view->assign('blocks', $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall'));
+        $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall');
         foreach ($blocks as $block) {
             // check the page configuration
             if (!isset($pageconfiguration['blockinstances'][$block['bid']])) {
@@ -527,11 +514,20 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             $pageconfiguration['filters']['postfilters'] = '';
         }
 
-        // assign the page configuration array
-        $this->view->assign('pageconfiguration', $pageconfiguration);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
-        // Return the output that has been generated by this function
-        return $this->view->fetch('theme_admin_modifypageconfigtemplates.tpl');
+        // assign the output variables and fetch the template
+        $this->view->assign('filename', $filename)
+                   ->assign('themename', $themename)
+                   ->assign('themeinfo', $themeinfo)
+                   ->assign('moduletemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename)))
+                   ->assign('blocktemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename, 'type' => 'blocks')))
+                   ->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettenames', array('theme' => $themename)))
+                   ->assign('blockpositions', $blockpositions)
+                   ->assign('allblocks', $allblocks)
+                   ->assign('blocks', $blocks)
+                   ->assign('pageconfiguration', $pageconfiguration)
+                   ->fetch('theme_admin_modifypageconfigtemplates.tpl');
     }
 
     /**
@@ -599,7 +595,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     }
 
     /**
-     * check if the given filter exists
+     * Check if the given filter exists
      *
      */
     private function _checkfilters($type, $filters)
@@ -621,22 +617,24 @@ class Theme_Controller_Admin extends Zikula_AbstractController
                 }
             }
         }
+
         $leftover = array_diff($filters, $newfilters);
-        if (count($leftover)>0) {
+        if (count($leftover) > 0) {
             LogUtil::registerError($this->__f('Error! Removed unknown \'%1$s\': \'%2$s\'.', array(DataUtil::formatForDisplay($type), DataUtil::formatForDisplay(implode(',', $leftover)))));
         }
+
         return implode(',', $newfilters);
     }
 
     /**
-     * modify a theme page configuration
+     * Modify a theme page configuration
      *
      */
     public function modifypageconfigurationassignment($args)
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
-        $pcname = FormUtil::getPassedValue('pcname', isset($args['pcname']) ? $args['pcname'] : null, 'GET');
+        $pcname    = FormUtil::getPassedValue('pcname', isset($args['pcname']) ? $args['pcname'] : null, 'GET');
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -652,13 +650,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Theme::', "$themename::pageconfigurations", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
-
-        $this->view->setCaching(false);
-
-        // assign the page config assignment name, theme name and theme info
-        $this->view->assign('pcname', $pcname)
-                   ->assign('themename', $themename)
-                   ->assign('themeinfo', $themeinfo);
 
         // assign all modules
         $allmods = ModUtil::getAllMods();
@@ -692,6 +683,13 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             $pageconfigassignment['pagecustomargs'] = $pageconfigparts[3];
         }
         $this->view->assign($pageconfigassignment);
+
+        $this->view->setCaching(false);
+
+        // assign the page config assignment name, theme name and theme info
+        $this->view->assign('pcname', $pcname)
+                   ->assign('themename', $themename)
+                   ->assign('themeinfo', $themeinfo);
 
         // Return the output that has been generated by this function
         return $this->view->fetch('theme_admin_modifypageconfigurationassignment.tpl');
@@ -954,8 +952,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     }
 
     /**
-     * modify theme settings
-     *
+     * Modify Theme settings.
      */
     public function modifyconfig()
     {
@@ -964,27 +961,17 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $this->view->setCaching(false);
-
-        // assign all module vars
-        $this->view->assign($this->getVars());
-
-        // assign an csrftoken for the clear cache/compile links
-        $this->view->assign('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager, true));
-
-        // assign the core config var
-        $this->view->assign('theme_change', System::getVar('theme_change'));
-
         // assign a list of modules suitable for html_options
         $usermods = ModUtil::getUserMods();
         $mods = array();
         foreach ($usermods as $usermod) {
             $mods[$usermod['name']] = $usermod['displayname'];
         }
-        $this->view->assign('mods', $mods);
 
-        // assign an extracted list of non-cached mods
-        $this->view->assign('modulesnocache', array_flip(explode(',', $this->getVar('modulesnocache'))));
+        $this->view->setCaching(false);
+
+        // register the renderer object allow access to various view values
+        $this->view->register_object('render', $this->view);
 
         // check for a .htaccess file
         if (file_exists('.htaccess')){
@@ -993,11 +980,17 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             $this->view->assign('htaccess', 0);
         }
 
-        // register the renderer object allow access to various smarty values
-        $this->view->register_object('render', $this->view);
-
-        // Return the output that has been generated by this function
-        return $this->view->fetch('theme_admin_modifyconfig.tpl');
+        // assign the output variables and fetch the template
+        $this->view->assign('mods', $mods)
+                   // assign all module vars
+                   ->assign($this->getVars())
+                   // assign an csrftoken for the clear cache/compile links
+                   ->assign('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager, true))
+                   // assign the core config var
+                   ->assign('theme_change', System::getVar('theme_change'))
+                   // extracted list of non-cached mods
+                   ->assign('modulesnocache', array_flip(explode(',', $this->getVar('modulesnocache'))))
+                   ->fetch('theme_admin_modifyconfig.tpl');
     }
 
     /**
@@ -1065,7 +1058,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $render_force_compile = (bool)FormUtil::getPassedValue('render_force_compile', isset($args['render_force_compile']) ? $args['render_force_compile'] : false, 'POST');
         $this->setVar('render_force_compile', $render_force_compile);
 
-        $render_cache = (bool)FormUtil::getPassedValue('render_cache', isset($args['render_cache']) ? $args['render_cache'] : false, 'POST');
+        $render_cache = (int)FormUtil::getPassedValue('render_cache', isset($args['render_cache']) ? $args['render_cache'] : false, 'POST');
         $this->setVar('render_cache', $render_cache);
 
         $render_lifetime = (int)FormUtil::getPassedValue('render_lifetime', isset($args['render_lifetime']) ? $args['render_lifetime'] : 3600, 'POST');
@@ -1100,7 +1093,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $theme = Zikula_View_Theme::getInstance('Theme');
+        $theme = Zikula_View_Theme::getInstance();
         $res   = $theme->clear_compiled();
 
         if ($res) {
@@ -1128,7 +1121,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $theme = Zikula_View_Theme::getInstance('Theme');
+        $theme = Zikula_View_Theme::getInstance();
         $res   = $theme->clear_all_cache();
 
         if ($res) {
@@ -1156,7 +1149,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $theme = Zikula_View_Theme::getInstance('Theme');
+        $theme = Zikula_View_Theme::getInstance();
         $theme->clear_cssjscombinecache();
 
         LogUtil::registerStatus($this->__('Done! Deleted CSS/JS combination cached files.'));
