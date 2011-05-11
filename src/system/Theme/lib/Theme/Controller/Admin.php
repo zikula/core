@@ -240,16 +240,30 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
 
         // get the original file source
-        $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true, 'explode' => false));
+        $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => false, 'explode' => false));
 
         // form our existing variables
         $newvariables = array();
         foreach ($variablesnames as $id => $variablename) {
-            $newvariables[$variablename] = $variablesvalues[$id];
+            preg_match('/^([\d\w_)]+)(\[([\d\w_)]+)\])?$/', $variablename, $matches);
+            if (isset($matches[1])) {
+                if (isset($matches[3])) {
+                    $newvariables[$matches[1]][$matches[3]] = $variablesvalues[$id];
+                } else {
+                    $newvariables[$matches[1]] = $variablesvalues[$id];
+                }
+            }
         }
         // add the new theme variable to the existing variables
         if (!empty($newvariablename) && !empty($newvariablevalue)) {
-            $newvariables[$newvariablename] = $newvariablevalue;
+            preg_match('/^([\d\w_)]+)(\[([\d\w_)]+)\])?$/', $newvariablename, $matches);
+            if (isset($matches[1])) {
+                if (isset($matches[3])) {
+                    $newvariables[$matches[1]][$matches[3]] = $newvariablevalue;
+                } else {
+                    $newvariables[$matches[1]] = $newvariablevalue;
+                }
+            }
         }
 
         // re-add the new values
