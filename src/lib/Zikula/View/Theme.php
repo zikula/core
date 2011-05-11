@@ -307,7 +307,7 @@ class Zikula_View_Theme extends Zikula_View
         ob_end_clean();
 
         // add the module wrapper
-        if (!$this->themeinfo['system']) {
+        if (!$this->themeinfo['system'] && (bool)$this->themeconfig['modulewrapper']) {
             $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
         }
 
@@ -336,9 +336,9 @@ class Zikula_View_Theme extends Zikula_View
         // assign the block information
         $this->assign($block);
 
-        $bid = $block['bid'];
-        $bkey = $block['bkey'];
-        $position = $block['position'];
+        $bid      = $block['bid'];
+        $bkey     = strtolower($block['bkey']);
+        $position = strtolower($block['position']);
 
         // fix block positions - for now....
         if ($position == 'l') {
@@ -356,7 +356,7 @@ class Zikula_View_Theme extends Zikula_View
         $this->_plugins['outputfilter'] = array();
         // HACK: Save/restore cache settings
         $caching = $this->caching;
-        $this->caching = false;
+        $this->caching = Zikula_View::CACHE_DISABLED;
 
         $return = '';
         // determine the correct template and construct the output
@@ -366,10 +366,10 @@ class Zikula_View_Theme extends Zikula_View
         } elseif (isset($this->themeconfig['blocktypes'][$bkey]) && !empty($this->themeconfig['blocktypes'][$bkey])) {
             $return .= $this->fetch($this->themeconfig['blocktypes'][$bkey]);
 
-        } else if (isset($this->themeconfig['blockpositions'][$position]) && !empty($this->themeconfig['blockpositions'][$position])) {
+        } elseif (isset($this->themeconfig['blockpositions'][$position]) && !empty($this->themeconfig['blockpositions'][$position])) {
             $return .= $this->fetch($this->themeconfig['blockpositions'][$position]);
 
-        } else if (isset($this->themeconfig['block']) && !empty($this->themeconfig['block'])) {
+        } elseif (!empty($this->themeconfig['block'])) {
             $return .= $this->fetch($this->themeconfig['block']);
 
         } else {
@@ -384,7 +384,9 @@ class Zikula_View_Theme extends Zikula_View
         // HACK: Save/restore cache settings
         $this->caching = $caching;
 
-        $return = '<div class="z-block z-blockposition-' . DataUtil::formatForDisplay($block['position']) . ' z-bkey-' . DataUtil::formatForDisplay(strtolower($block['bkey'])) . ' z-bid-' . DataUtil::formatForDisplay($block['bid']) . '">' . "\n" . $return . "</div>\n";
+        if ((bool)$this->themeconfig['blockwrapper']) {
+            $return = '<div class="z-block z-blockposition-' . DataUtil::formatForDisplay($block['position']) . ' z-bkey-' . DataUtil::formatForDisplay(strtolower($block['bkey'])) . ' z-bid-' . DataUtil::formatForDisplay($block['bid']) . '">' . "\n" . $return . "</div>\n";
+        }
 
         return $return;
     }
@@ -676,29 +678,35 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         // register any filters
-        if (isset($this->themeconfig['filters']) && !empty($this->themeconfig['filters'])) {
+        if (!empty($this->themeconfig['filters'])) {
+            // check for output filters
             if (isset($this->themeconfig['filters']['outputfilters']) && !empty($this->themeconfig['filters']['outputfilters'])) {
-                $this->themeconfig['filters']['outputfilters'] = explode(',', $this->themeconfig['filters']['outputfilters']);
-                foreach ($this->themeconfig['filters']['outputfilters'] as $filter) {
+                $filters = $this->themeconfig['filters']['outputfilters'];
+                $filters = !is_array($filters) ? explode(',', $filters) : $filters;
+                foreach ($filters as $filter) {
                     $this->load_filter('output', $filter);
                 }
             }
+            // check for pre filters
             if (isset($this->themeconfig['filters']['prefilters']) && !empty($this->themeconfig['filters']['prefilters'])) {
-                $this->themeconfig['filters']['prefilters'] = explode(',', $this->themeconfig['filters']['prefilters']);
-                foreach ($this->themeconfig['filters']['prefilters'] as $filter) {
+                $filters = $this->themeconfig['filters']['prefilters'];
+                $filters = !is_array($filters) ? explode(',', $filters) : $filters;
+                foreach ($filters as $filter) {
                     $this->load_filter('pre', $filter);
                 }
             }
+            // check for post filters
             if (isset($this->themeconfig['filters']['postfilters']) && !empty($this->themeconfig['filters']['postfilters'])) {
-                $this->themeconfig['filters']['postfilters'] = explode(',', $this->themeconfig['filters']['postfilters']);
-                foreach ($this->themeconfig['filters']['postfilters'] as $filter) {
+                $filters = $this->themeconfig['filters']['postfilters'];
+                $filters = !is_array($filters) ? explode(',', $filters) : $filters;
+                foreach ($filters as $filter) {
                     $this->load_filter('post', $filter);
                 }
             }
         }
 
         // load the palette if set
-        if (isset($this->themeconfig['palette'])) {
+        if (!empty($this->themeconfig['palette'])) {
             $inifile = $this->themepath . '/templates/config/themepalettes.ini';
             $this->load_vars($inifile, $this->themeconfig['palette'], 'palette');
         }

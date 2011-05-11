@@ -468,26 +468,27 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // get all block positions
         $blockpositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
-        $positions = array();
-        foreach ($blockpositions as $blockposition) {
+        foreach ($blockpositions as $name => $blockposition) {
             // check the page configuration
             if (!isset($pageconfiguration['blockpositions'][$blockposition['name']])) {
-                $pageconfiguration['blockpositions'][$blockposition['name']] = '';
+                $pageconfiguration['blockpositions'][$name] = '';
             }
-            $positions[$blockposition['name']] = $blockposition['name'];
+            $blockpositions[$name] = $blockposition['description'];
         }
-        $this->view->assign('blockpositions', $positions);
+        $this->view->assign('blockpositions', $blockpositions);
 
         // call the block API to get a list of all available blocks
-        $this->view->assign('allblocks', $allblocks = BlockUtil::loadAll());
+        $allblocks = BlockUtil::loadAll();
         foreach ($allblocks as $key => $blocks) {
-            foreach ($blocks as $block) {
+            foreach ($blocks as $k => $block) {
+                $allblocks[$key][$k]['bkey'] = $bkey = strtolower($block['bkey']);
                 // check the page configuration
-                if (!isset($pageconfiguration['blocktypes'][$block['bkey']])) {
-                    $pageconfiguration['blocktypes'][$block['bkey']] = '';
+                if (!isset($pageconfiguration['blocktypes'][$bkey])) {
+                    $pageconfiguration['blocktypes'][$bkey] = '';
                 }
             }
         }
+        $this->view->assign('allblocks', $allblocks);
 
         // call the block API to get a list of all defined block instances
         $this->view->assign('blocks', $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall'));
@@ -500,21 +501,23 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // palette default
         if (!isset($pageconfiguration['palette'])) {
-            $pageconfiguration['palette'] = null;
+            $pageconfiguration['palette'] = '';
         }
 
         // block  default
         if (!isset($pageconfiguration['block'])) {
-            $pageconfiguration['block'] = null;
+            $pageconfiguration['block'] = '';
         }
 
-        // filter defaults
-        if (!isset($pageconfiguration['filters'])) {
-            $pageconfiguration['filters'] = array(
-                    'outputfilters' => null,
-                    'prefilters' => null,
-                    'postfilters' => null
-            );
+        // filters defaults
+        if (!isset($pageconfiguration['filters']['outputfilters'])) {
+            $pageconfiguration['filters']['outputfilters'] = '';
+        }
+        if (!isset($pageconfiguration['filters']['prefilters'])) {
+            $pageconfiguration['filters']['prefilters'] = '';
+        }
+        if (!isset($pageconfiguration['filters']['postfilters'])) {
+            $pageconfiguration['filters']['postfilters'] = '';
         }
 
         // assign the page configuration array
@@ -533,17 +536,22 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
-        $filename = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'POST');
-        $pagetemplate = FormUtil::getPassedValue('pagetemplate', isset($args['pagetemplate']) ? $args['pagetemplate'] : null, 'POST');
-        $pagepalette = FormUtil::getPassedValue('pagepalette', isset($args['pagepalette']) ? $args['pagepalette'] : null, 'POST');
-        $blockpositiontemplates = FormUtil::getPassedValue('blockpositiontemplates', isset($args['blockpositiontemplates']) ? $args['blockpositiontemplates'] : null, 'POST');
-        $blocktypetemplates = FormUtil::getPassedValue('blocktypetemplates', isset($args['blocktypetemplates']) ? $args['blocktypetemplates'] : null, 'POST');
+        $themename     = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
+        $filename      = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'POST');
+        $pagetemplate  = FormUtil::getPassedValue('pagetemplate', isset($args['pagetemplate']) ? $args['pagetemplate'] : '', 'POST');
+        $blocktemplate = FormUtil::getPassedValue('blocktemplate', isset($args['blocktemplate']) ? $args['blocktemplate'] : '', 'POST');
+        $pagepalette   = FormUtil::getPassedValue('pagepalette', isset($args['pagepalette']) ? $args['pagepalette'] : '', 'POST');
+        $modulewrapper = FormUtil::getPassedValue('modulewrapper', isset($args['modulewrapper']) ? $args['modulewrapper'] : 1, 'POST');
+        $blockwrapper  = FormUtil::getPassedValue('blockwrapper', isset($args['blockwrapper']) ? $args['blockwrapper'] : 1, 'POST');
+
         $blockinstancetemplates = FormUtil::getPassedValue('blockinstancetemplates', isset($args['blockinstancetemplates']) ? $args['blockinstancetemplates'] : null, 'POST');
+        $blocktypetemplates     = FormUtil::getPassedValue('blocktypetemplates', isset($args['blocktypetemplates']) ? $args['blocktypetemplates'] : null, 'POST');
+        $blockpositiontemplates = FormUtil::getPassedValue('blockpositiontemplates', isset($args['blockpositiontemplates']) ? $args['blockpositiontemplates'] : null, 'POST');
+
         $filters = FormUtil::getPassedValue('filters', isset($args['filters']) ? $args['filters'] : null, 'POST');
 
         // check our input
-        if (!isset($themename) || empty($themename)) {
+        if (empty($themename) || empty($pagetemplate)) {
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
@@ -558,11 +566,14 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
 
         // form the new page configuration
-        $pageconfiguration['page'] = $pagetemplate;
-        $pageconfiguration['palette'] = $pagepalette;
-        $pageconfiguration['blocktypes'] = $blocktypetemplates;
-        $pageconfiguration['blockpositions'] = $blockpositiontemplates;
-        $pageconfiguration['blockinstances'] = $blockinstancetemplates;
+        $pageconfiguration['page']           = $pagetemplate;
+        $pageconfiguration['block']          = $blocktemplate;
+        $pageconfiguration['palette']        = $pagepalette;
+        $pageconfiguration['modulewrapper']  = $modulewrapper;
+        $pageconfiguration['blockwrapper']   = $blockwrapper;
+        $pageconfiguration['blockinstances'] = array_filter($blockinstancetemplates);
+        $pageconfiguration['blocktypes']     = array_filter($blocktypetemplates);
+        $pageconfiguration['blockpositions'] = array_filter($blockpositiontemplates);
 
         // check if the filters exists. We do this now and not when using them to increase performance
         $filters['outputfilters'] = $this->_checkfilters('outputfilter', $filters['outputfilters']);
