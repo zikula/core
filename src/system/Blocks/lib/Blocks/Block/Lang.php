@@ -140,7 +140,8 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
         foreach ($languages as $code) {
             $thisurl = ModUtil::url($module, $type, $func, $get, null, null, $forcefqdn, !$shorturls, $code);
             if ($thisurl == '') {
-                $thisurl = ($shorturls ? $code : "$homepage?lang=$code");
+                //$thisurl = ($shorturls ? $code : "$homepage?lang=$code");
+                $thisurl = "$homepage?lang=$code";
             }
             $codeFS = ZLanguage::transformFS($code);
 
