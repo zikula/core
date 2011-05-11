@@ -239,8 +239,8 @@ class Theme_Api_User extends Zikula_AbstractApi
         $ostheme  = DataUtil::formatForOS($themeinfo['directory']);
         $osfile   = DataUtil::formatForOS($args['file']);
 
-        if (file_exists($ostemp.'/Theme_Config/'.$ostheme.'_'.$osfile)) {
-            return parse_ini_file($ostemp.'/Theme_Config/'.$ostheme.'_'.$osfile, $args['sections']);
+        if (file_exists($ostemp.'/Theme_Config/'.$ostheme.'/'.$osfile)) {
+            return parse_ini_file($ostemp.'/Theme_Config/'.$ostheme.'/'.$osfile, $args['sections']);
         } else if (file_exists('themes/'.$ostheme.'/templates/config/'.$osfile)) {
             return parse_ini_file('themes/'.$ostheme.'/templates/config/'.$osfile, $args['sections']);
         }
@@ -269,21 +269,32 @@ class Theme_Api_User extends Zikula_AbstractApi
         $ostheme = DataUtil::formatForOS($themeinfo['directory']);
         $osfile  = DataUtil::formatForOS($args['file']);
 
-        if (is_writable($fullfile = 'themes/' . $ostheme . '/templates/config/' .$osfile)) {
-            $handle = fopen($fullfile, 'w');
-        } elseif (is_writable($ostemp.'/Theme_Config/')) {
-            $fullfile = $ostemp.'/Theme_Config/'.$ostheme.'_'.$osfile;
-            $handle = fopen($fullfile, 'w+');
+        // verify the writable paths
+        $tpath = 'themes/'.$ostheme.'/templates/config';
+
+        if (is_writable($tpath.'/'.$osfile)) {
+            $handle = fopen($tpath.'/'.$osfile, 'w+');
+
         } else {
-            return LogUtil::registerError($this->__f('Error! Could not open file so that it could be written to: %s', $osfile));
+            if (!file_exists($zpath = $ostemp.'/Theme_Config/'.$ostheme)) {
+                mkdir($zpath, $this->serviceManager['system.chmod_dir'], true);
+            }
+
+            if (is_writable($zpath.'/'.$osfile)) {
+                $handle = fopen($zpath.'/'.$osfile, 'w+');
+            } else {
+                return LogUtil::registerError($this->__f("Error! Cannot write in '%s' or '%s' to store the contents of '%s'.", array($tpath, $zpath, $osfile)));
+            }
         }
 
+        // validate the resulting handler and the write operation result
         if (!isset($handle) || !is_resource($handle)) {
             return LogUtil::registerError($this->__f('Error! Could not open file so that it could be written to: %s', $osfile));
+
         } else {
             if (fwrite($handle, $content) === false) {
                 fclose($handle);
-                return LogUtil::registerError($this->__f('Error! could not write to file: %s', $osfile));
+                return LogUtil::registerError($this->__f('Error! Could not write to file: %s', $osfile));
             }
             fclose($handle);
             return true;
