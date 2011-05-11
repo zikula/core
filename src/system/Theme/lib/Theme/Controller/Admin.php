@@ -407,9 +407,8 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
         ksort($pageconfigurations);
 
-        // identify existing page configuration files
+        // checks the  page configuration files in use
         $pageconfigfiles = array();
-        $existingconfigs = array();
         foreach ($pageconfigurations as $pageconfiguration) {
             if ($exists = file_exists("themes/$themeinfo[directory]/templates/config/$pageconfiguration[file]")) {
                 $existingconfigs[] = $pageconfiguration['file'];
@@ -417,7 +416,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             $pageconfigfiles[$pageconfiguration['file']] = $exists;
         }
         ksort($pageconfigfiles);
-        sort($existingconfigs);
+
+        // gets the available page configurations on the theme
+        $existingconfigs = ModUtil::apiFunc('Theme', 'user', 'getconfigurations', array('theme' => $themename));
 
         // assign the output vars
         $this->view->assign('themename', $themename)
