@@ -90,39 +90,45 @@
 
             <div class="z-informationmsg">{gt text='The theme engine will consider the more specific setup; in that order, a block instance template, is used over a block type template, and a block position one.'}</div>
 
-            <fieldset>
-                <legend>{gt text="Block position templates"}</legend>
+            <ul id="blocktemplates">
+                <li class="tab"><a href="#blockinstancestab">{gt text="Block instance templates"}</a></li>
+                <li class="tab"><a href="#blocktypestab">{gt text="Block type templates"}</a></li>
+                <li class="tab"><a href="#blockpositionstab">{gt text="Block position templates"}</a></li>
+            </ul>
 
-                {foreach from=$blockpositions key='position' item='description'}
-                <div class="z-formrow">
-                    <label for="theme_blocktemplate_{$position|safetext}" title="{$description|safetext}">{$position}</label>
-                    <select id="theme_blocktemplate_{$position|safetext}" name="blockpositiontemplates[{$position|safetext}]">
-                        <option value="">{gt text="Default template"}</option>
-                        {html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blockpositions.$position}
-                    </select>
-                </div>
-                {/foreach}
-                {capture assign='undefinedblockpositions'}
-                {strip}
-                <ul>
-                    {assign var='undefinedblockposition' value=false}
-                    {foreach name='blockpositions' from=$pageconfiguration.blockpositions key='position' item='template'}
-                        {if !isset($blockpositions.$position)}
-                            {assign var='undefinedblockposition' value=true}
-                            <li><a href="{modurl modname="Blocks" type="admin" func="newposition" name=$position|safetext}">{$position|safetext}</a></li>
-                        {/if}
+            <div id="blockpositionstab">
+                <fieldset>
+                    <legend>{gt text="Existing block positions"}</legend>
+
+                    {foreach from=$blockpositions key='position' item='description'}
+                    <div class="z-formrow">
+                        <label for="theme_blocktemplate_{$position|safetext}" title="{$description|safetext}">{$position}</label>
+                        <select id="theme_blocktemplate_{$position|safetext}" name="blockpositiontemplates[{$position|safetext}]">
+                            <option value="">{gt text="Default template"}</option>
+                            {html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blockpositions.$position}
+                        </select>
+                    </div>
                     {/foreach}
-                </ul>
-                {/strip}
-                {/capture}
-                {if $undefinedblockposition eq true}
-                <div class="z-warningmsg z-formnote" id="theme_undefinedblockpositions">{gt text="<p>The following block positions are used in this page configuration, but they have not been defined within the Blocks module;</p>%s<p>Click on a block position to go create that position.</p>" tag1=$undefinedblockpositions}</div>
-                {/if}
-            </fieldset>
+                    {capture assign='undefinedblockpositions'}
+                    {strip}
+                    <ul>
+                        {assign var='undefinedblockposition' value=false}
+                        {foreach name='blockpositions' from=$pageconfiguration.blockpositions key='position' item='template'}
+                            {if !isset($blockpositions.$position)}
+                                {assign var='undefinedblockposition' value=true}
+                                <li><a href="{modurl modname="Blocks" type="admin" func="newposition" name=$position|safetext}">{$position|safetext}</a></li>
+                            {/if}
+                        {/foreach}
+                    </ul>
+                    {/strip}
+                    {/capture}
+                    {if $undefinedblockposition eq true}
+                    <div class="z-warningmsg z-formnote" id="theme_undefinedblockpositions">{gt text="<p>The following block positions are used in this page configuration, but they have not been defined within the Blocks module;</p>%s<p>Click on a block position to go create that position.</p>" tag1=$undefinedblockpositions}</div>
+                    {/if}
+                </fieldset>
+            </div>
 
-            <fieldset>
-                <legend>{gt text="Block type templates"}</legend>
-
+            <div id="blocktypestab">
                 {foreach from=$allblocks item='moduleblocks'}
                 {foreach from=$moduleblocks item='block' name='modblocks'}
                 {if $smarty.foreach.modblocks.first}
@@ -142,27 +148,31 @@
                 {/if}
                 {/foreach}
                 {/foreach}
-            </fieldset>
+            </div>
 
-            <fieldset>
-                <legend>{gt text="Block instance templates"}</legend>
-                {foreach from=$blocks item='block'}
-                <div class="z-formrow">
-                    <label for="theme_blocktemplate_{$block.bid|safetext}" title="{$block.description|safetext}">
-                        {if $block.title neq ''}
-                            {$block.title|safetext}
-                        {else}
-                            {gt text='Untitled block of type %1$s' tag1=$block.bkey}
-                        {/if}
-                        <span class="z-sub">({$block.bid})</span>
-                    </label>
-                    <select id="theme_blocktemplate_{$block.bid|safetext}" name="blockinstancetemplates[{$block.bid|safetext}]">
-                        <option value="">{gt text="Default template"}</option>
-                        {html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blockinstances[$block.bid]}
-                    </select>
-                </div>
-                {/foreach}
-            </fieldset>
+            <div id="blockinstancestab">
+                <fieldset>
+                    <legend>{gt text="Existing block instances"}</legend>
+
+                    {foreach from=$blocks item='block'}
+                    <div class="z-formrow">
+                        <label for="theme_blocktemplate_{$block.bid|safetext}" title="{$block.description|safetext}">
+                            {if $block.title neq ''}
+                                {$block.title|safetext}
+                            {else}
+                                {gt text='Untitled block of type %1$s' tag1=$block.bkey}
+                            {/if}
+                            <span class="z-sub">({$block.bid})</span>
+                        </label>
+                        <select id="theme_blocktemplate_{$block.bid|safetext}" name="blockinstancetemplates[{$block.bid|safetext}]">
+                            <option value="">{gt text="Default template"}</option>
+                            {html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blockinstances[$block.bid]}
+                        </select>
+                    </div>
+                    {/foreach}
+                </fieldset>
+            </div>
+
             <div class="z-buttons z-formbuttons">
                 {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
                 <a href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
@@ -172,5 +182,8 @@
 </div>
 
 <script type="text/javascript">
-    Zikula.UI.Tooltips($$('label'));
+    Event.observe(window, 'load', function() {
+        Zikula.UI.Tooltips($$('label'));
+        tabstest = new Zikula.UI.Tabs('blocktemplates', {equal: true});
+    });
 </script>
