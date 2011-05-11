@@ -224,9 +224,6 @@ class Zikula_View_Theme extends Zikula_View
         // define the plugin directories
         $this->_plugin_dirs();
 
-        // set the config directory
-        $this->_set_configdir();
-
         // load the theme configuration
         $this->load_config();
 
@@ -563,7 +560,7 @@ class Zikula_View_Theme extends Zikula_View
              ->assign('scriptpath', $this->scriptpath);
 
         // load the theme variables
-        $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $this->themeinfo['name']));
+        $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $this->name));
         $this->assign($variables['variables']);
     }
 
@@ -707,27 +704,12 @@ class Zikula_View_Theme extends Zikula_View
 
         // load the palette if set
         if (!empty($this->themeconfig['palette'])) {
-            $palette = ModUtil::apiFunc('Theme', 'user', 'getpalette', array('theme' => $args['theme'], 'palette' => $this->themeconfig['palette']));
+            $palette = ModUtil::apiFunc('Theme', 'user', 'getpalette', array('theme' => $this->name, 'palette' => $this->themeconfig['palette']));
             $this->assign('palette', $palette);
         }
 
         $event = new Zikula_Event('theme.load_config', $this);
         $this->eventManager->notify($event);
-    }
-
-    /**
-     * Set the config directory for this theme.
-     *
-     * @return void
-     */
-    private function _set_configdir()
-    {
-        // check for a running configuration in the ztemp/Theme_Config directory
-        if (is_dir($dir = CacheUtil::getLocalDir() . '/Theme_Config/' . DataUtil::formatForOS($this->name))) {
-            $this->config_dir = $dir;
-        } else {
-            $this->config_dir = $this->themepath . '/templates/config';
-        }
     }
 
     /**
