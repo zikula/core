@@ -1200,7 +1200,7 @@ Zikula.UI.Tabs = Class.create(Control.Tabs,/** @lends Zikula.UI.Tabs.prototype *
             activeClassName: 'active'
         }, options || { });
         $(tab_list_container).addClassName(options.containerClass);
-        $super(tab_list_container,options);
+        $super(tab_list_container, options);
         this.containers.values().invoke('addClassName', options.containerClass+'-content');
         if (this.options.equal) {
             this.alignTabs();
@@ -1225,7 +1225,10 @@ Zikula.UI.Tabs = Class.create(Control.Tabs,/** @lends Zikula.UI.Tabs.prototype *
      * @return void
      */
     alignTabs: function() {
+        this.containers.values().invoke('show');
         this.maxHeight = this.containers.values().invoke('getContentHeight').max();
+        this.containers.values().invoke('hide');
+        this.activeContainer.show();
         this.containers.values().invoke('setStyle', {minHeight: this.maxHeight.toUnits()});
     }
 });
