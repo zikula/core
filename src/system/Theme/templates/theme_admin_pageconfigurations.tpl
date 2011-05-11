@@ -34,7 +34,7 @@
             </tr>
         </thead>
         <tbody>
-            {foreach from=$pageconfigs item=fileexists key=filename}
+            {foreach from=$pageconfigs item='fileexists' key='filename'}
             <tr class="{cycle name=pageconfigs values=z-odd,z-even}">
                 <td>{$filename|safetext}</td>
                 <td>{$fileexists|yesno}</td>
@@ -43,7 +43,9 @@
             {/foreach}
         </tbody>
     </table>
+
     <p class="z-informationmsg">{gt text="Notice: Any configuration files that Zikula cannot find must be created in 'themes/%s/templates/config'." tag1=$themename}</p>
+
     <h3>{gt text="Create new page configuration assignment"}</h3>
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
@@ -75,7 +77,9 @@
                 </div>
                 <div class="z-formrow">
                     <label for="theme_filename">{gt text="Configuration file"}</label>
-                    <input id="theme_filename" type="text" name="filename" size="30" />
+                    <select id="theme_filename" name="filename">
+                        {html_options values=$existingconfigs output=$existingconfigs}
+                    </select>
                 </div>
                 <div class="z-buttons z-formbuttons">
                     {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
