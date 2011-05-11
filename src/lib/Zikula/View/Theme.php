@@ -563,8 +563,8 @@ class Zikula_View_Theme extends Zikula_View
              ->assign('scriptpath', $this->scriptpath);
 
         // load the theme variables
-        $inifile = $this->themepath . '/templates/config/themevariables.ini';
-        $this->load_vars($inifile, 'variables');
+        $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $this->themeinfo['name']));
+        $this->assign($variables['variables']);
     }
 
     /**
@@ -707,38 +707,12 @@ class Zikula_View_Theme extends Zikula_View
 
         // load the palette if set
         if (!empty($this->themeconfig['palette'])) {
-            $inifile = $this->themepath . '/templates/config/themepalettes.ini';
-            $this->load_vars($inifile, $this->themeconfig['palette'], 'palette');
+            $palette = ModUtil::apiFunc('Theme', 'user', 'getpalette', array('theme' => $args['theme'], 'palette' => $this->themeconfig['palette']));
+            $this->assign('palette', $palette);
         }
-
-        // assign the palette
-        $this->assign('palette', isset($this->themeconfig['palette']) ? $this->themeconfig['palette'] : null);
 
         $event = new Zikula_Event('theme.load_config', $this);
         $this->eventManager->notify($event);
-    }
-
-    /**
-     * Assign a set of vars to the theme.
-     *
-     * @param string $file    Ini file to parse.
-     * @param string $section Name of the ini section to include (if null assign all).
-     * @param string $assign  Var name to assign in the theme vars.
-     *
-     * @return boolean
-     */
-    private function load_vars($file, $section = null, $assign = null)
-    {
-        if (!file_exists($file) || !($vars = parse_ini_file($file, true))) {
-            return false;
-        }
-
-        if (!empty($section) && isset($vars[$section])) {
-            $this->assign($assign ? array((string)$assign => $vars[$section]) : $vars[$section]);
-            return true;
-        }
-
-        $this->assign($assign ? array((string)$assign => $vars) : $vars);
     }
 
     /**

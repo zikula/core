@@ -88,6 +88,40 @@ class Theme_Api_User extends Zikula_AbstractApi
     }
 
     /**
+     * Get one palette for a theme
+     */
+    public function getpalette($args)
+    {
+        // check our input
+        if (!isset($args['theme']) || empty($args['theme']) || !isset($args['palette']) || empty($args['palette'])) {
+            return LogUtil::registerArgsError();
+        }
+
+        $allpalettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
+
+        return isset($allpalettes[$args['palette']]) ? $allpalettes[$args['palette']] : null;
+    }
+
+    /**
+     * Get a list of palettes available for a theme
+     */
+    public function getpalettenames($args)
+    {
+        // check our input
+        if (!isset($args['theme']) || empty($args['theme'])) {
+            return LogUtil::registerArgsError();
+        }
+
+        $allpalettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
+        $palettes = array();
+        foreach (array_keys((array)$allpalettes) as $name) {
+            $palettes[$name] = $name;
+        }
+
+        return $palettes;
+    }
+
+    /**
      * Get all page configurations for a theme
      */
     public function getpageconfigurations($args)
@@ -299,27 +333,7 @@ class Theme_Api_User extends Zikula_AbstractApi
     }
 
     /**
-     * get a list of palettes available for a theme
-     */
-    public function getpalettenames($args)
-    {
-        // check our input
-        if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
-        }
-
-        $allpalettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
-        $palettes = array();
-        foreach (array_keys((array)$allpalettes) as $name) {
-            $palettes[$name] = $name;
-        }
-
-        return $palettes;
-    }
-
-    /**
-     * reset the current users theme to the site default
-     *
+     * Reset the current users theme to the site default
      */
     public function resettodefault($args)
     {
