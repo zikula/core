@@ -1,18 +1,31 @@
 ZIKULA HOOKS
 ============
+
 This document describes the Zikula Hook system.
+
 
 What is a hook?
 ---------------
-A hook is just another kind of event that occurs in Zikula and should really be called
-'hookable events'.  Unlike events, hookable events are used to attach modules/plugins to
-other modules so that they can add UI functionality. They are completely configurable by the
-site administrator: the administrator can choose which modules are hooked onto
-which, and what order they are executed in.  For example, a comments module could
-attach comments to a blog module.  Similarly a ratings module could be attached to a
-blog module, so that all articles would have now have ratings.
+A hook another kind of event that occurs in execution life-cycle and should really be called
+'hookable events'.  Unlike generic events, display hookable events are used to create a
+dynamic relation to an object.  It may be 1:1 or 1:n.
 
-Other examples could be adding extra fields to forms to gather extra information.
+In the case of 1:n relations, they attach to an object's view.  In the case of 1:1 relations
+they intercept the objects entire lifecycle (create, validate, edit, view and delete).
+
+Hook relations are entirely configurable by the site administrator and not controlled by
+the programmer.
+
+Example uses of 1:n relations: adding comments to a blog article view, or maybe ratings.
+Example uses of 1:1 relations: generally to gather extra information on a form for example
+adding an age verification field to a form.
+
+There are some more esoteric uses of hookable events which may not add any relation to
+forms but instead allow the creation of a blog article ping.
+
+The other kind of hookable events are hook filters which allow the site administrator
+to selectively filter content.
+
 
 Providers and Subscriber
 ------------------------
@@ -32,6 +45,7 @@ A subscriber is a module that defines hookable events and sends notifications
 that they have occurred. An example of a subscriber might be a module that
 manages news stories, to which the comment hook provider example described
 above might be hooked.
+
 
 Areas
 -----
@@ -53,6 +67,7 @@ For example:
 
     modulehook_area.comments.general (the provider area)
     modulehook_area.news.articles    (the subscriber area)
+
 
 Subscriber Modules
 ------------------
@@ -251,6 +266,7 @@ instance in the following manner.
         $hook->setResponse(new Zikula_Response_DisplayHook('modulehook_area.modname.area', $view, $template));
     }
 
+
 GENERAL WORKFLOW OF HOOKS
 -------------------------
 The general workflow of hooks is as follows.
@@ -371,7 +387,7 @@ action.  Ultimately when a controller (that makes use of hooks) deletes an item,
 must notify the attached modules to prevent orphaned records.  This is done simply by
 triggering a hookable event with
 
-    new Zikula_ProcessHook($name, $id, $url); 
+    new Zikula_ProcessHook($name, $id, $url);
 
 `ui.delete` hooks are displayed in the template with
 
