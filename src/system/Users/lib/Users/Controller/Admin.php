@@ -748,6 +748,9 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 }
             }
 
+            if (!isset($userAttributes['realname'])) {
+                $userAttributes['realname'] = '';
+            }
             return $this->view->assign_by_ref('formData', $formData)
                 ->assign('user_attributes', $userAttributes)
                 ->assign('defaultGroupId', ModUtil::getVar('Groups', 'defaultgroup', 1))
