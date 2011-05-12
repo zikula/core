@@ -48,6 +48,11 @@
                 {/foreach}
                 <br />
                 {gt text="To connect %s to one of the modules from the list below, click on the checkbox(es) next to the corresponding area." tag1=$currentmodule|safetext}
+
+                {if $isSubscriberSelfCapable}
+                <br /><br />
+                {gt text='If you attach %s to itself, the page will refresh in order to reload the attached areas.' tag1=$currentmodule|safetext}
+                {/if}
             </p>
 
             <table class="z-datatable" id="subscriberslist">
