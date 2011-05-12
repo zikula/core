@@ -700,7 +700,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         // check PHP version, shouldn't be necessary, but....
         // todo: this skip_versioncheck check goes after release of 1.3.0 - drak
-        if (isset($GLOBALS['ZConfig']['skip_versioncheck']) && version_compare(PHP_VERSION, '5.3.2', '>=') == false) {
+        if (!isset($GLOBALS['ZConfig']['skip_versioncheck']) && version_compare(PHP_VERSION, '5.3.2', '>=') == false) {
             echo __f('Error! Zikula requires PHP version 5.3.2+. Your server seems to be using version %s.', PHP_VERSION);
             $die = true;
         }
