@@ -41,7 +41,7 @@ class pnRender extends Zikula_View
      */
     public function __construct($module = '', $caching = null)
     {
-        parent::__construct($module, $caching);
+        parent::__construct(ServiceUtil::getManager(), $module, $caching);
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Zikula_View')), E_USER_DEPRECATED);
     }
 }
@@ -56,7 +56,7 @@ class Theme extends Zikula_View_Theme
 {
     public function __construct($theme)
     {
-        parent::__construct($theme);
+        parent::__construct(ServiceUtil::getManager(), $theme);
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Zikula_View_Theme')), E_USER_DEPRECATED);
     }
 }
@@ -145,7 +145,7 @@ class DBConnectionStack
      * @param boolean $lazyConnect Whether or not to connect lazy.
      *
      * @deprecated
-     * 
+     *
      * @throws PDOException If database connection failed.
      * @return Doctrine_Connection Desired database connection reference.
      */
@@ -3950,7 +3950,7 @@ function z_prayer($data, $die = true)
  * @param boolean $functions Whether to show function names for objects (default=false) (optional).
  *
  * @deprecated since 1.3.0
- * 
+ *
  * @return void
  */
 function prayer($data, $functions = false)
