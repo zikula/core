@@ -36,6 +36,7 @@ function togglesubscriberareastatus_response(req)
 
     // in case module is SubscriberSelfCapable
     // refresh page to reload attached areas
+    // TODO: dynamically add/remove area with ajax without refreshing
     if (data.isSubscriberSelfCapable) {
         $$('input[type=checkbox]').each(function(e) {
             if (e.type == 'checkbox') {
