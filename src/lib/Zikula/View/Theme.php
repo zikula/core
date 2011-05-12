@@ -702,6 +702,11 @@ class Zikula_View_Theme extends Zikula_View
             }
         }
 
+        // load the pageconfiguration variables
+        if (!empty($this->themeconfig['variables'])) {
+            $this->assign($this->themeconfig['variables']);
+        }
+
         // load the palette if set
         if (!empty($this->themeconfig['palette'])) {
             $palette = ModUtil::apiFunc('Theme', 'user', 'getpalette', array('theme' => $this->name, 'palette' => $this->themeconfig['palette']));
