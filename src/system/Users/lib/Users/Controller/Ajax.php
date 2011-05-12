@@ -66,7 +66,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * string  checkmode      Either 'new' or 'modify', depending on whether the record is a new user or an existing user or registration.
      *
      * @return array A Zikula_Response_Ajax containing error messages and message counts.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if registration is disbled.
      */
     public function getRegistrationErrors()
@@ -79,15 +79,15 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'passreminder'  => $this->request->getPost()->get('passreminder', null),
             'email'         => $this->request->getPost()->get('email', null),
         );
-        
+
         $checkMode = $this->request->getPost()->get('checkmode', 'new');
         $isRegistration = ($checkMode == 'new') || !isset($userOrRegistration['uid']) || empty($userOrRegistration['uid']);
-        
+
         // Check if registration is disabled and the user is not an admin.
         if ($isRegistration && !$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             throw new Zikula_Exception_Forbidden($this->__('Sorry! New user registration is currently disabled.'));
         }
-        
+
         $returnValue = array(
             'errorMessagesCount'    => 0,
             'errorMessages'         => array(),
@@ -120,9 +120,9 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
                 $returnValue['errorFieldsCount']++;
             }
         }
-        
-        $validators = $this->notifyHooks('users.hook.user.validate.edit', $userOrRegistration, ((isset($userOrRegistration['uid']) && !empty($userOrRegistration['uid'])) ? $userOrRegistration['uid'] : null), array(), new Zikula_Hook_ValidationProviders())->getData();
 
+        $hook = new Zikula_ValidationHook('users.hook.user.validate.edit', new Zikula_Hook_ValidationProviders());
+        $validators = $this->notifyHooks($hook)->getValidators();
         if ($validators->hasErrors()) {
             $areaErrorCollections = $validators->getCollection();
             foreach ($areaErrorCollections as $area => $errorCollection) {
@@ -142,7 +142,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
                     $totalErrors, array($totalErrors));
             $returnValue['errorMessagesCount']++;
         }
-        
+
         return new Zikula_Response_Ajax($returnValue);
     }
 
@@ -153,9 +153,9 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * ---------------------------
      * string form_type             An indicator of the type of form the fields will appear on.
      * array  authentication_method An array containing the authentication module name ('modname') and authentication method name ('method').
-     * 
+     *
      * @return Zikula_Response_Ajax An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if the authentication module name or method name are not valid.
      */
     public function getLoginFormFields()
@@ -178,7 +178,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'form_type' => $formType,
             'method'    => $method,
         ));
-        
+
         return new Zikula_Response_Ajax(array(
             'content'   => $loginFormFields,
             'modname'   => $modname,
