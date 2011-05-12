@@ -15,7 +15,7 @@
 /**
  * AbstractHook class.
  */
-class Zikula_AbstractHook implements Zikula_HookInterface, ArrayAccess
+class Zikula_AbstractHook implements Zikula_HookInterface
 {
     /**
      * Name.
@@ -23,13 +23,6 @@ class Zikula_AbstractHook implements Zikula_HookInterface, ArrayAccess
      * @var string
      */
     protected $name;
-
-    /**
-     * Arguments.
-     *
-     * @var array
-     */
-    protected $args = array();
 
     /**
      * Subscriber area id.
@@ -140,129 +133,5 @@ class Zikula_AbstractHook implements Zikula_HookInterface, ArrayAccess
     {
         $this->name = $name;
         return $this;
-    }
-
-    /**
-     * Add argument to event.
-     *
-     * @param string $key   Argument name.
-     * @param mixed  $value Value.
-     *
-     * @return Zikula_AbstractHook
-     */
-    public function setArg($key, $value)
-    {
-        $this->args[$key] = $value;
-        return $this;
-    }
-
-    /**
-     * Set args property.
-     *
-     * @param array $args Arguments.
-     *
-     * @return Zikula_AbstractHook
-     */
-    public function setArgs(array $args = array())
-    {
-        $this->args = $args;
-        return $this;
-    }
-
-    /**
-     * Get argument by key.
-     *
-     * @param string $key Key.
-     *
-     * @throws InvalidArgumentException If key is not found.
-     *
-     * @return mixed Contents of array key.
-     */
-    public function getArg($key)
-    {
-        if ($this->hasArg($key)) {
-            return $this->args[$key];
-        }
-
-        throw new InvalidArgumentException(sprintf('%s not found in %s', $key, $this->name));
-    }
-
-    /**
-     * Getter for all arguments.
-     *
-     * @return array
-     */
-    public function getArgs()
-    {
-        return $this->args;
-    }
-
-    /**
-     * Has argument.
-     *
-     * @param string $key Key of arguments array.
-     *
-     * @return boolean
-     */
-    public function hasArg($key)
-    {
-        return array_key_exists($key, $this->args);
-    }
-
-    /**
-     * ArrayAccess for argument getter.
-     *
-     * @param string $key Array key.
-     *
-     * @throws InvalidArgumentException If key does not exist in $this->args.
-     *
-     * @return mixed
-     */
-    public function offsetGet($key)
-    {
-        if ($this->hasArg($key)) {
-            return $this->args[$key];
-        }
-
-        throw new InvalidArgumentException(sprintf('The requested key %s does not exist', $key));
-    }
-
-    /**
-     * ArrayAccess for argument setter.
-     *
-     * @param string $key   Array key to set.
-     * @param mixed  $value Value.
-     *
-     * @return void
-     */
-    public function offsetSet($key, $value)
-    {
-        $this->setArg($key, $value);
-    }
-
-    /**
-     * ArrayAccess for unset argument.
-     *
-     * @param string $key Array key.
-     *
-     * @return void
-     */
-    public function offsetUnset($key)
-    {
-        if ($this->hasArg($key)) {
-            unset($this->args[$key]);
-        }
-    }
-
-    /**
-     * AccessArray has argument.
-     *
-     * @param string $key Array key.
-     *
-     * @return boolean
-     */
-    public function offsetExists($key)
-    {
-        return $this->hasArg($key);
     }
 }
