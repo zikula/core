@@ -539,7 +539,7 @@ function _check_requirements()
 {
     $results = array();
     // todo: this skip_versioncheck check goes after release of 1.3.0 - drak
-    if (isset($GLOBALS['ZConfig']['skip_versioncheck'])) {
+    if (isset($GLOBALS['ZConfig']['System']['skip_version_check'])) {
         $results['phpsatisfied'] = true;
     } else {
         $results['phpsatisfied'] = version_compare(phpversion(), '5.3.2', ">=");
