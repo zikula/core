@@ -51,7 +51,7 @@
 
                 {if $isSubscriberSelfCapable}
                 <br /><br />
-                {gt text='If you attach %s to itself, the page will refresh in order to reload the attached areas.' tag1=$currentmodule|safetext}
+                {gt text='If you attach/detach %s to/from itself, the page will refresh in order to reload the attached/detached areas.' tag1=$currentmodule|safetext}
                 {/if}
             </p>
 
