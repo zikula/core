@@ -184,6 +184,6 @@
 <script type="text/javascript">
     Event.observe(window, 'load', function() {
         Zikula.UI.Tooltips($$('label'));
-        tabstest = new Zikula.UI.Tabs('blocktemplates', {equal: true});
+        tabstest = new Zikula.UI.Tabs('blocktemplates');
     });
 </script>

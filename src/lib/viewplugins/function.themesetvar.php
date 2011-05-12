@@ -14,40 +14,32 @@
  */
 
 /**
- * Plugin to get a variable from the theme
+ * Plugin to set a variable on the theme
  *
- * This function returns the corresponding value set on the theme
+ * This function set the corresponding value on a theme variable
  *
  * Available parameters:
  *   - name:    Name of the variable
- *   - default: If set, the default value to return if the variable is not set
- *   - assign:  If set, the results are assigned to the corresponding variable instead of printed out
+ *   - value:   The value to set on the variable
  *
  * Example
- * {themegetvar name='themepath'}
- * {themegetvar name='scriptpath' assign='scriptpath'}
+ * {themesetvar name='master' assign='1col'} for Andreas08
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
  *
- * @return string The colour definition.
+ * @return mixed
  */
-function smarty_function_themegetvar($params, Zikula_View $view)
+function smarty_function_themesetvar($params, Zikula_View $view)
 {
-    $assign  = isset($params['assign'])  ? $params['assign']  : null;
-    $default = isset($params['default']) ? $params['default'] : null;
-    $name    = isset($params['name'])    ? $params['name']    : null;
+    $name   = isset($params['name'])   ? $params['name']    : null;
+    $value  = isset($params['value'])  ? $params['value'] : null;
+    $assign = isset($params['assign']) ? $params['assign']  : null;
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('themegetvar', 'name')));
         return false;
     }
 
-    $result = ThemeUtil::getVar($name, $default);
-
-    if ($assign) {
-        $view->assign($assign, $result);
-    } else {
-        return $result;
-    }
+    ThemeUtil::setVar($name, $value);
 }
