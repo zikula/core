@@ -596,7 +596,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $errorFields = $formData->getErrorMessages();
             }
 
-            $validators = $this->notifyHooks('users.hook.user.validate.edit', $user, $user['uid'], array(), new Zikula_Hook_ValidationProviders())->getData();
+            $hook = new Zikula_ValidationHook('users.hook.user.validate.edit', new Zikula_Hook_ValidationProviders());
+            $validators = $this->notifyHooks($hook)->getValidators();
 
             if (!$errorFields && !$validators->hasErrors()) {
                 if ($originalUser['uname'] != $user['uname']) {
@@ -671,7 +672,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     }
                 }
 
-                $this->notifyHooks('users.hook.user.process.edit', $user, $user['uid']);
+                $this->notifyHooks(new Zikula_ProcessHook('users.hook.user.process.edit', $user['uid']));
                 $this->registerStatus($this->__("Done! Saved user's account information."));
 
                 $proceedToForm = false;
