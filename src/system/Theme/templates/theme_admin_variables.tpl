@@ -2,7 +2,7 @@
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.tpl"}
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
-    <h2>{gt text="Variables"}</h2>
+    <h2>{gt text="Variables"}{if $filename} &raquo; {$filename}{/if}</h2>
 
     <div class="z-informationmsg">{gt text='You can handle plain variables <var>name &rarr; value</var>, but also setup arrays in the format <var>name[key] &rarr; value</var>.'}</div>
 
@@ -10,6 +10,7 @@
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="themename" value="{$themename|safetext}" />
+            <input type="hidden" name="filename" value="{$filename|safetext}" />
             <table class="z-datatable">
                 <thead>
                     <tr>
@@ -49,7 +50,13 @@
                 </tbody>
             </table>
             <fieldset>
-                <legend>{gt text="Add new theme variable"}</legend>
+                <legend>
+                    {if !$filename}
+                        {gt text="Add new theme variable"}
+                    {else}
+                        {gt text="Add new page variable"}
+                    {/if}
+                </legend>
                 <div class="z-formrow">
                     <label for="theme_newvariablename">{gt text="Name"}</label>
                     <input id="theme_newvariablename" type="text" name="newvariablename" size="30" />
@@ -58,11 +65,11 @@
                     <label for="theme_newvariablevalue">{gt text="Value"}</label>
                     <input id="theme_newvariablevalue" type="text" name="newvariablevalue" size="30" />
                 </div>
-                <div class="z-buttons z-formbuttons">
-                    {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                    <a href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/small __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
-                </div>
             </fieldset>
+            <div class="z-buttons z-formbuttons">
+                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+                <a href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/small __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            </div>
         </div>
     </form>
 </div>

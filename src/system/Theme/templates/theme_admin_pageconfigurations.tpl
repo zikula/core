@@ -38,7 +38,10 @@
             <tr class="{cycle name=pageconfigs values=z-odd,z-even}">
                 <td>{$filename|safetext}</td>
                 <td>{$fileexists|yesno}</td>
-                <td class="z-right"><a href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}">{img modname=core src=xedit.png set=icons/extrasmall __alt="Edit" __title="Edit"}</a></td>
+                <td class="z-right">
+                    <a href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}">{img modname=core src=xedit.png set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
+                    <a href="{modurl modname=Theme type=admin func=variables themename=$themename filename=$filename}">{img modname=core src=configure.png set=icons/extrasmall __alt="Variables" __title="Variables"}</a>
+                </td>
             </tr>
             {/foreach}
         </tbody>

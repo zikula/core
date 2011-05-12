@@ -24,34 +24,56 @@ class Theme_Api_User extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $variables = $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themevariables.ini', 'sections' => true));
+        $args['variables'] = $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themevariables.ini', 'sections' => true));
 
         if (isset($args['formatting']) && is_bool($args['formatting']) && $args['formatting']) {
-            $dom = $this->_getthemedomain($args['theme']);
+            $args['variables'] = $this->formatvariables($args);
+        }
 
-            foreach (array_keys($variables['variables']) as $var) {
-                if (is_array($variables['variables'][$var])) {
-                    // process each array field and insert it in $variables.variables
-                    foreach ($variables['variables'][$var] as $k => $v) {
-                        if (!isset($variables["$var.$k"])) {
-                            $variables["{$var}[{$k}]"] = array('editable' => true, 'type' => 'text');
-                        } else {
-                            $variables["{$var}[{$k}]"] = $variables["$var.$k"];
-                            unset($variables["$var.$k"]);
-                        }
-                        $variables['variables']["{$var}[{$k}]"] = $v;
+        return $args['variables'];
+    }
 
-                        $this->_variable_options($variables["{$var}[{$k}]"], $args, $dom);
+    /**
+     * Format the variables of a theme or pageconfiguration
+     * It uses the theme additional variables as a base which should be variables specifications
+     */
+    public function formatvariables($args)
+    {
+        // check our input
+        if (!isset($args['theme']) || empty($args['theme']) || !isset($args['variables']) || empty($args['variables'])) {
+            return LogUtil::registerArgsError();
+        }
+
+        $dom = $this->_getthemedomain($args['theme']);
+
+        // take any variables specification from the themevars
+        $themevars = $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themevariables.ini', 'sections' => true));
+        unset($themevars['variables']);
+
+        $variables = array_merge($themevars, $args['variables']);
+
+        foreach (array_keys($variables['variables']) as $var) {
+            if (is_array($variables['variables'][$var])) {
+                // process each array field and insert it in $variables.variables
+                foreach ($variables['variables'][$var] as $k => $v) {
+                    if (!isset($variables["$var.$k"])) {
+                        $variables["{$var}[{$k}]"] = array('editable' => true, 'type' => 'text');
+                    } else {
+                        $variables["{$var}[{$k}]"] = $variables["$var.$k"];
+                        unset($variables["$var.$k"]);
                     }
-                    unset($variables['variables'][$var]);
+                    $variables['variables']["{$var}[{$k}]"] = $v;
 
-                } else {
-                    // process the options of the single value
-                    if (!isset($variables[$var])) {
-                        $variables[$var] = array('editable' => true, 'type' => 'text');
-                    }
-                    $this->_variable_options($variables[$var], $args, $dom);
+                    $this->_variable_options($variables["{$var}[{$k}]"], $args, $dom);
                 }
+                unset($variables['variables'][$var]);
+
+            } else {
+                // process the options of the single value
+                if (!isset($variables[$var])) {
+                    $variables[$var] = array('editable' => true, 'type' => 'text');
+                }
+                $this->_variable_options($variables[$var], $args, $dom);
             }
         }
 
@@ -147,22 +169,26 @@ class Theme_Api_User extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
+        $config = $this->_readinifile(array('theme'=> $args['theme'], 'file' => $args['filename'], 'sections' => true));
+        
+        if (!$config) {
+            return false;
+        }
+
         $default = array(
                        'page' => '',
                        'block' => '',
                        'palette' => '', // deprecated
-                       'modulewrapper' => 1, // deprecated
-                       'blockwrapper' => 1, // deprecated
+                       'modulewrapper' => 1,
+                       'blockwrapper' => 1,
                        'blockinstances' => array(),
                        'blocktypes' => array(),
                        'blockpositions' => array(),
-                       'filters' => array()
+                       'filters' => array(),
+                       'variables' => array()
                    );
 
-        $config = $this->_readinifile(array('theme'=> $args['theme'], 'file' => $args['filename'], 'sections' => true));
-        $config = array_merge($default, $config);
-
-        return $config;
+        return array_merge($default, $config);
     }
 
     /**
@@ -280,7 +306,7 @@ class Theme_Api_User extends Zikula_AbstractApi
                 mkdir($zpath, $this->serviceManager['system.chmod_dir'], true);
             }
 
-            if (is_writable($zpath.'/'.$osfile)) {
+            if (!file_exists($zpath.'/'.$osfile) || is_writable($zpath.'/'.$osfile)) {
                 $handle = fopen($zpath.'/'.$osfile, 'w+');
             } else {
                 return LogUtil::registerError($this->__f("Error! Cannot write in '%s' or '%s' to store the contents of '%s'.", array($tpath, $zpath, $osfile)));

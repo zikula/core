@@ -192,9 +192,10 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
+        $filename  = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'GET');
 
         // check our input
-        if (!isset($themename) || empty($themename)) {
+        if (empty($themename)) {
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
@@ -209,15 +210,27 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
+        if ($filename) {
+            $variables = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+            if (!$variables) {
+                return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
+            }
+            $variables = ModUtil::apiFunc('Theme', 'user', 'formatvariables', array('theme' => $themename, 'variables' => $variables, 'formatting' => true));
+
+        } else {
+            $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true));
+        }
+
         // load the language file
         ZLanguage::bindThemeDomain($themename);
 
         $this->view->setCaching(false);
 
         // assign variables, themename, themeinfo and return output
-        return $this->view->assign('variables', ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true)))
+        return $this->view->assign('variables', $variables)
                           ->assign('themename', $themename)
                           ->assign('themeinfo', $themeinfo)
+                          ->assign('filename', $filename)
                           ->fetch('theme_admin_variables.tpl');
     }
 
@@ -234,7 +247,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $variablesvalues  = FormUtil::getPassedValue('variablesvalues', isset($args['variablesvalues']) ? $args['variablesvalues'] : null, 'POST');
         $newvariablename  = FormUtil::getPassedValue('newvariablename', isset($args['newvariablename']) ? $args['newvariablename'] : null, 'POST');
         $newvariablevalue = FormUtil::getPassedValue('newvariablevalue', isset($args['newvariablevalue']) ? $args['newvariablevalue'] : null, 'POST');
-        $themename        = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
+
+        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
+        $filename  = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'POST');
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -252,7 +267,19 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
 
         // get the original file source
-        $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => false, 'explode' => false));
+        if ($filename) {
+            $variables = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+            if (!$variables) {
+                return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
+            }
+            $returnurl = ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename));
+
+        } else {
+            $filename  = 'themevariables.ini';
+            $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename));
+
+            $returnurl = ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename));
+        }
 
         // form our existing variables
         $newvariables = array();
@@ -282,13 +309,13 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $variables['variables'] = $newvariables;
 
         // rewrite the variables to the running config
-        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => 'themevariables.ini'));
+        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => $filename));
 
         // set a status message
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
 
         // redirect back to the variables page
-        $this->redirect(ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename)));
+        $this->redirect($returnurl);
     }
 
     /**
