@@ -23,12 +23,14 @@ class Zikula_HookManager
      * @var Zikula_HookManager_StorageInterface
      */
     private $storage;
+
     /**
      * Event Manager.
      *
      * @var Zikula_EventManager
      */
     private $eventManager;
+
     /**
      * Runtime hooks handlers loaded flag.
      *
@@ -36,17 +38,35 @@ class Zikula_HookManager
      */
     private $loaded;
 
+    /**
+     * Constructor.
+     *
+     * @param Zikula_HookManager_StorageInterface $storage
+     * @param Zikula_EventManager $eventManager
+     */
     public function __construct(Zikula_HookManager_StorageInterface $storage, Zikula_EventManager $eventManager)
     {
         $this->storage = $storage;
         $this->eventManager = $eventManager;
     }
 
+    /**
+     * Get storage driver.
+     *
+     * @return Zikula_HookManager_StorageInterface
+     */
     public function getStorage()
     {
         return $this->storage;
     }
 
+    /**
+     * Notify hook handlers.
+     *
+     * @param Zikula_HookInterface $hook Hook instance.
+     *
+     * @return Zikula_HookInterface
+     */
     public function notify(Zikula_HookInterface $hook)
     {
         if (!$this->loaded) {
@@ -64,6 +84,11 @@ class Zikula_HookManager
         return $hook;
     }
 
+    /**
+     * Register a subscriber bundle with persistence.
+     *
+     * @param Zikula_HookManager_SubscriberBundle $bundle
+     */
     public function registerSubscriberBundle(Zikula_HookManager_SubscriberBundle $bundle)
     {
         foreach ($bundle->getHookTypes() as $areaType => $eventName) {
@@ -72,12 +97,22 @@ class Zikula_HookManager
         $this->reload();
     }
 
+    /**
+     * Unregister a subscriber bundle from persistence.
+     *
+     * @param Zikula_HookManager_SubscriberBundle $bundle
+     */
     public function unregisterSubscriberBundle(Zikula_HookManager_SubscriberBundle $bundle)
     {
         $this->storage->unregisterSubscriberByArea($bundle->getArea());
         $this->reload();
     }
 
+    /**
+     * Register provider bundle with persistence.
+     *
+     * @param Zikula_HookManager_ProviderBundle $bundle
+     */
     public function registerProviderBundle(Zikula_HookManager_ProviderBundle $bundle)
     {
         foreach ($bundle->getHooks() as $name => $hook) {
@@ -86,6 +121,11 @@ class Zikula_HookManager
         $this->reload();
     }
 
+    /**
+     * Unregister a provider bundle with persistence.
+     *
+     * @param Zikula_HookManager_ProviderBundle $bundle
+     */
     public function unregisterProviderBundle(Zikula_HookManager_ProviderBundle $bundle)
     {
         $this->storage->unregisterProviderByArea($bundle->getArea());
@@ -106,57 +146,137 @@ class Zikula_HookManager
         return $this->storage->getBindingsFor($areaName);
     }
 
+    /**
+     * Get subscriber areas for an owner.
+     *
+     * @param string $owner
+     *
+     * @return array
+     */
     public function getSubscriberAreasByOwner($owner)
     {
         return $this->storage->getSubscriberAreasByOwner($owner);
     }
 
+    /**
+     * Get provider areas for an owner.
+     *
+     * @param string $owner
+     *
+     * @return array
+     */
     public function getProviderAreasByOwner($owner)
     {
         return $this->storage->getProviderAreasByOwner($owner);
     }
 
+    /**
+     * Get owber by area.
+     *
+     * @param string $areaName
+     *
+     * @return string
+     */
     public function getOwnerByArea($areaName)
     {
         return $this->storage->getOwnerByArea($areaName);
     }
 
+    /**
+     * Get area id.
+     *
+     * @param string $areaName
+     *
+     * @return integer
+     */
     public function getAreaId($areaName)
     {
         return $this->storage->getAreaId($areaName);
     }
 
+    /**
+     * Set the bind order of hooks.
+     *
+     * Used to resort the order providers are invoked for a given
+     * area name.
+     *
+     * @param string $subscriberAreaName
+     * @param array $providerAreas Array of provider area names.
+     */
     public function setBindOrder($subscriberAreaName, array $providerAreas)
     {
         $this->storage->setBindOrder($subscriberAreaName, $providerAreas);
         $this->reload();
     }
 
+    /**
+     * Get binding between areas.
+     *
+     * @param string $subscriberArea
+     * @param string $providerArea
+     *
+     * @return array
+     */
     public function getBindingBetweenAreas($subscriberArea, $providerArea)
     {
         return $this->storage->getBindingBetweenAreas($subscriberArea, $providerArea);
     }
 
+    /**
+     * Check if areas may be bound together.
+     *
+     * @param string $subscriberarea
+     * @param string $providerarea
+     *
+     * @return boolean
+     */
     public function isAllowedBindingBetweenAreas($subscriberarea, $providerarea)
     {
         return $this->storage->isAllowedBindingBetweenAreas($subscriberarea, $providerarea);
     }
 
+    /**
+     * Get bindings between two owners.
+     *
+     * @param string $subscriberName
+     * @param string $providerName
+     *
+     * @return array
+     */
     public function getBindingsBetweenOwners($subscriberName, $providerName)
     {
         return $this->storage->getBindingsBetweenOwners($subscriberName, $providerName);
     }
 
+    /**
+     * Bind subscriber and provider area together.
+     *
+     * @param string $subscriberArea
+     * @param string $providerArea
+     *
+     * @throws LogicException
+     */
     public function bindSubscriber($subscriberArea, $providerArea)
     {
-        return $this->storage->bindSubscriber($subscriberArea, $providerArea);
+        $this->storage->bindSubscriber($subscriberArea, $providerArea);
     }
 
+    /**
+     * Unbind subscriber.
+     *
+     * @param string $subscriberArea
+     * @param string $providerArea
+     */
     public function unbindSubscriber($subscriberArea, $providerArea)
     {
         return $this->storage->unbindSubscriber($subscriberArea, $providerArea);
     }
 
+    /**
+     * Load runtime hook listeners.
+     *
+     * @return Zikula_HookManager
+     */
     public function loadRuntimeHandlers()
     {
         $handlers = $this->storage->getRuntimeHandlers();
@@ -175,6 +295,13 @@ class Zikula_HookManager
         return $this;
     }
 
+    /**
+     * Resolve callable.
+     *
+     * @param array $handler
+     *
+     * @return array|Zikula_ServiceHandler
+     */
     private function resolveCallable(array $handler)
     {
         if ($handler['serviceid']) {
@@ -186,6 +313,11 @@ class Zikula_HookManager
         return $callable;
     }
 
+    /**
+     * Decorate hook with required metadata.
+     *
+     * @param Zikula_HookInterface $hook
+     */
     private function decorateHook(Zikula_HookInterface $hook)
     {
         $owningSide = $this->storage->getRuntimeMetaByEventName($hook->getName());
@@ -197,6 +329,9 @@ class Zikula_HookManager
         }
     }
 
+    /**
+     * Flush and reload handers.
+     */
     private function reload()
     {
         $this->eventManager->flushHandlers();

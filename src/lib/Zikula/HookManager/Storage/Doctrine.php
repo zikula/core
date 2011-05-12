@@ -6,8 +6,8 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage HookManager
+ * @package HookManager
+ * @subpackage Storage
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -229,7 +229,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
                 ->findBy('areaname', $providerArea);
 
         if ($sa->getFirst()->get('category') != $pa->getFirst()->get('category')) {
-            throw new LogicException('Cannot bind areas from different categories');
+            throw new Zikula_HookManager_Exception_LogicException('Cannot bind areas from different categories.');
         }
 
         $binding = new Zikula_Doctrine_Model_HookBinding();
@@ -419,7 +419,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
     private function registerArea($areaName, $areaType, $owner, $subOwner, $category)
     {
         if ($areaType !== self::PROVIDER && $areaType !== self::SUBSCRIBER) {
-            throw new InvalidArgumentException('$areaType must be "p" or "s"');
+            throw new Zikula_HookManager_Exception_InvalidArgumentException('$areaType must be "p" or "s"');
         }
 
         // if there is an area registered, if not, create it.
