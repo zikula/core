@@ -151,7 +151,7 @@
     <!-- PHPDocumentor -->
     <target name="docblox">
         <echo msg="Generating 'Api Documentation' with DocBlox..." />
-        <exec command="docblox --directory ${sourcedir}/src/lib/dbobject,${sourcedir}/src/lib/i18n,${sourcedir}/src/lib/viewplugins,${sourcedir}/src/lib/StreamReader,${sourcedir}/src/lib/util,${sourcedir}/src/lib/Zikula --target ${builddir}/docs" escape="false" />
+        <exec command="docblox project:run --directory ${sourcedir}/src/lib/dbobject,${sourcedir}/src/lib/i18n,${sourcedir}/src/lib/viewplugins,${sourcedir}/src/lib/StreamReader,${sourcedir}/src/lib/util,${sourcedir}/src/lib/Zikula --target ${builddir}/docs" escape="false" />
     </target>
 
     <!-- PHP copy/paste analysis -->
