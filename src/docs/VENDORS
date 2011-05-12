@@ -30,6 +30,12 @@ Doctrine 1.2.4
     License: LGPL
     Location in Zikula: lib/vendor/Doctrine
 
+Doctrine 2.0.4
+    Vendor website: http://www.doctrine-project.org/
+    Downloaded from: http://www.doctrine-project.org/projects/orm/download/
+    License: LGPL
+    Location in Zikula: plugins/Doctrine/lib
+
 RC4Crypt 3.2
     Vendor website: http://rc4crypt.devhome.org (defunct).
     Downloaded from: (unknown)
@@ -97,7 +103,7 @@ Validation 1.5.4.1
     Location in Zikula: javascript/ajax/validation.min.js
     Patch details: none
 
-jQuery v1.6.0
+jQuery v1.6.1
     Vendor website: http://jquery.com/
     Downloaded from: http://jquery.com/
     License: MIT
