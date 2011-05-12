@@ -14,7 +14,7 @@
 /**
  * DoctrineExtensions plugin definition.
  */
-class DoctrineExtensions_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
+class System_Plugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
 {
     /**
      * Get plugin meta data.
