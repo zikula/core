@@ -31,6 +31,19 @@ function togglesubscriberareastatus_response(req)
         Zikula.showajaxerror(req.getMessage());
         return;
     }
+
+    var data = req.getData();
+
+    // in case module is SubscriberSelfCapable
+    // refresh page to reload attached areas
+    if (data.isSubscriberSelfCapable) {
+        $$('input[type=checkbox]').each(function(e) {
+            if (e.type == 'checkbox') {
+                e.disabled = true;
+            }
+        });
+        window.location = data.refreshURL;
+    }
 }
 
 /**
@@ -41,7 +54,7 @@ function togglesubscriberareastatus_response(req)
  */
 function initproviderareassorting()
 {
-    for(var i=0; i < providerareas.length; i++) {
+    for (var i=0; i < providerareas.length; i++) {
         var area = 'providerareassortlist_'+providerareas[i];
 
         Sortable.create(area,

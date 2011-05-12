@@ -69,7 +69,14 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
             $hookManager->unbindSubscriber($subscriberArea, $providerArea);
         }
 
-        return new Zikula_Response_Ajax(array('result' => true));
+        // ajax response
+        $response = array(
+            'result' => true,
+            'isSubscriberSelfCapable' => (HookUtil::isSubscriberSelfCapable($subscriber) ? true : false),
+            'refreshURL' => ModUtil::url($provider, 'admin', 'hooks', array(), null, null, true)
+        );
+
+        return new Zikula_Response_Ajax($response);
     }
 
     /**
