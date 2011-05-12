@@ -151,8 +151,8 @@ class Theme_Api_User extends Zikula_AbstractApi
                        'page' => '',
                        'block' => '',
                        'palette' => '', // deprecated
-                       'modulewrapper' => 0, // deprecated
-                       'blockwrapper' => 0, // deprecated
+                       'modulewrapper' => 1, // deprecated
+                       'blockwrapper' => 1, // deprecated
                        'blockinstances' => array(),
                        'blocktypes' => array(),
                        'blockpositions' => array(),
