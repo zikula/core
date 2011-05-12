@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
+ * @package HookManager
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,35 +22,35 @@ class Zikula_HookManager_ProviderBundle
      *
      * @var string
      */
-    protected $owner;
+    private $owner;
 
     /**
      * Sub Owner.
      *
      * @var string
      */
-    protected $subOwner;
+    private $subOwner;
 
     /**
      * Hook handlers.
      *
      * @var array
      */
-    protected $hooks = array();
+    private $hooks = array();
 
     /**
      * Title.
      *
      * @var string
      */
-    protected $title;
+    private $title;
 
     /**
      * Area ID.
      *
      * @var string
      */
-    protected $area;
+    private $area;
 
     /**
      * Category.
