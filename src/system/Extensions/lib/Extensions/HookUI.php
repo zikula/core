@@ -48,6 +48,9 @@ class Extensions_HookUI
         $isSubscriber = (HookUtil::isSubscriberCapable($moduleName)) ? true : false;
         $view->assign('isSubscriber', $isSubscriber);
 
+        $isSubscriberSelfCapable = (HookUtil::isSubscriberSelfCapable($moduleName)) ? true : false;
+        $view->assign('isSubscriberSelfCapable', $isSubscriberSelfCapable);
+
         // get areas of module and bundle titles also
         if ($isProvider) {
             $providerAreas = HookUtil::getProviderAreasByOwner($moduleName);
@@ -78,7 +81,8 @@ class Extensions_HookUI
             $total_available_subscriber_areas = 0;
             for ($i=0 ; $i < $total_hooksubscribers ; $i++) {
                 // don't allow subscriber and provider to be the same
-                if ($hooksubscribers[$i]['name'] == $moduleName) {
+                // unless subscriber has the ability to connect to it's own providers
+                if ($hooksubscribers[$i]['name'] == $moduleName && !$isSubscriberSelfCapable) {
                     unset($hooksubscribers[$i]);
                     continue;
                 }
