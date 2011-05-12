@@ -160,7 +160,7 @@ class Zikula_View_Theme extends Zikula_View
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
      * @param string                $themeName      Theme name.
      */
-    public function __construct($serviceManager, $themeName)
+    public function __construct(Zikula_ServiceManager $serviceManager, $themeName)
     {
         // store our theme information
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themeName));
