@@ -75,7 +75,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Notify any hookable events.
      *
-     * @return Zikula_AbstractHook
+     * @return Zikula_HookInterface
      */
     public function notifyHooks(Zikula_HookInterface $hook)
     {

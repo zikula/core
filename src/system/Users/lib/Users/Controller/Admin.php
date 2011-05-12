@@ -616,7 +616,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                         'old_value' => $originalUser['uname'],
                     );
                     $updateEvent = new Zikula_Event('user.account.update', $updatedUserObj, $eventArgs, $eventData);
-                    EventUtil::notify($updateEvent);
+                    $this->eventManager->notify($updateEvent);
                 }
                 if ($originalUser['email'] != $user['email']) {
                     UserUtil::setVar('email', $user['email'], $originalUser['uid']);
@@ -1369,7 +1369,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                         'old_value' => $originalRegistration['uname'],
                     );
                     $updateEvent = new Zikula_Event('user.registration.update', $updatedRegistrationObj, $eventArgs, $eventData);
-                    EventUtil::notify($updateEvent);
+                    $this->eventManager->notify($updateEvent);
                 }
                 if ($originalRegistration['theme'] != $registration['theme']) {
                     UserUtil::setVar('theme', $registration['theme'], $originalRegistration['uid']);
