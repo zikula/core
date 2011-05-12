@@ -148,10 +148,16 @@
         <exec escape="false" command="cd ${patchdir}; zip -D -r ${archivedir}/${package}.patch.zip ." />
     </target>
 
-    <!-- PHPDocumentor -->
+    <!-- Docblox documentor -->
     <target name="docblox">
         <echo msg="DocBlox..." />
         <exec command="docblox project:run --directory ${sourcedir}/src/lib/dbobject,${sourcedir}/src/lib/i18n,${sourcedir}/src/lib/viewplugins,${sourcedir}/src/lib/StreamReader,${sourcedir}/src/lib/util,${sourcedir}/src/lib/Zikula --target ${builddir}/docs" escape="false" />
+    </target>
+
+    <!-- PHPDocumentor -->
+    <target name="phpdoc">
+        <echo msg="PHPDocumentor..." />
+        <exec command="phpdoc --directory ${sourcedir}/src/lib/dbobject,${sourcedir}/src/lib/i18n,${sourcedir}/src/lib/viewplugins,${sourcedir}/src/lib/StreamReader,${sourcedir}/src/lib/util,${sourcedir}/src/lib/Zikula --target ${builddir}/docs" escape="false" />
     </target>
 
     <!-- PHP copy/paste analysis -->
