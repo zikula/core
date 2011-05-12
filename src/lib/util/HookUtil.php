@@ -89,7 +89,12 @@ class HookUtil
     public static function isSubscriberSelfCapable($module)
     {
         $capabilities = ModUtil::getCapabilitiesOf($module);
-        return $capabilities[self::SUBSCRIBER_CAPABLE][self::SUBSCRIBE_OWN];
+        
+        if (isset($capabilities[self::SUBSCRIBER_CAPABLE][self::SUBSCRIBE_OWN])) {
+            return $capabilities[self::SUBSCRIBER_CAPABLE][self::SUBSCRIBE_OWN];
+        } else {
+            return false;
+        }
     }
 
     /**
