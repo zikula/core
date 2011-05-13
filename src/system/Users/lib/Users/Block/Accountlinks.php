@@ -67,8 +67,8 @@ class Users_Block_Accountlinks extends Zikula_Controller_AbstractBlock
 
                 // Check for no items returned
                 if (!empty($accountlinks)) {
-                    $this->view->setCaching(false)
-                            ->assign('accountlinks', $accountlinks);
+                    $this->view->setCaching(Zikula_View::CACHE_DISABLED)
+                               ->assign('accountlinks', $accountlinks);
 
                     // Populate block info and pass to theme
                     $blockInfo['content'] = $this->view->fetch('users_block_accountlinks.tpl');

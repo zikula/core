@@ -322,7 +322,7 @@ class Blocks_Block_Extmenu extends Zikula_Controller_AbstractBlock
         }
         $vars['links'] = $menuitems;
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // assign the vars
         $this->view->assign($vars)

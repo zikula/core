@@ -40,8 +40,6 @@ class Categories_Controller_Admin extends Zikula_AbstractController
         $cats = CategoryUtil::getSubCategories($root_id, true, true, true, true, true);
         $menuTxt = CategoryUtil::getCategoryTreeJS($cats, true, true);
 
-        $this->view->setCaching(false);
-
         $this->view->assign('menuTxt', $menuTxt);
         return $this->view->fetch('categories_admin_view.tpl');
     }
@@ -54,8 +52,6 @@ class Categories_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-
-        $this->view->setCaching(false);
 
         return $this->view->fetch('categories_admin_config.tpl');
     }
@@ -132,8 +128,6 @@ class Categories_Controller_Admin extends Zikula_AbstractController
 
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
 
-        $this->view->setCaching(false);
-
         $this->view->assign('mode', $mode)
                 ->assign('category', $editCat)
                 ->assign('attributes', $attributes)
@@ -176,13 +170,11 @@ class Categories_Controller_Admin extends Zikula_AbstractController
         $objArray = new $arrayClass ();
         $dataA = $objArray->get($where, $sort);
 
-        $this->view->setCaching(false);
-
         $this->view->assign('objectArray', $dataA)
-                ->assign('newobj', $data)
-                ->assign('root_id', $root_id)
-                ->assign('id', $id)
-                ->assign('validation', $obj->_objValidation);
+                   ->assign('newobj', $data)
+                   ->assign('root_id', $root_id)
+                   ->assign('id', $id)
+                   ->assign('validation', $obj->_objValidation);
 
         return $this->view->fetch('categories_admin_registry_edit.tpl');
     }
@@ -201,10 +193,8 @@ class Categories_Controller_Admin extends Zikula_AbstractController
         $obj = new $class ();
         $data = $obj->get($id);
 
-        $this->view->setCaching(false);
-
         $this->view->assign('data', $data)
-                ->assign('id', $id);
+                   ->assign('id', $id);
 
         return $this->view->fetch('categories_admin_registry_delete.tpl');
     }
@@ -237,14 +227,11 @@ class Categories_Controller_Admin extends Zikula_AbstractController
         $allCats = CategoryUtil::getSubCategories($root_id, true, true, true, false, true, $cid);
         $selector = CategoryUtil::getSelector_Categories($allCats);
 
-        $this->view->setCaching(false);
-
         $this->view->assign('category', $category)
-                ->assign('numSubcats', count($subCats))
-                ->assign('categorySelector', $selector);
+                   ->assign('numSubcats', count($subCats))
+                   ->assign('categorySelector', $selector);
 
-        $tplName = 'categories_admin_' . $op . '.tpl';
-        return $this->view->fetch($tplName);
+        return $this->view->fetch("categories_admin_{$op}.tpl");
     }
 
     /**
@@ -256,14 +243,12 @@ class Categories_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $this->view->setCaching(false);
-
         $this->view->assign('userrootcat', $this->getVar('userrootcat', '/__SYSTEM__'))
-                ->assign('allowusercatedit', $this->getVar('allowusercatedit', 0))
-                ->assign('autocreateusercat', $this->getVar('autocreateusercat', 0))
-                ->assign('autocreateuserdefaultcat', $this->getVar('autocreateuserdefaultcat', 0))
-                ->assign('userdefaultcatname', $this->getVar('userdefaultcatname', 0))
-                ->assign('permissionsall', $this->getVar('permissionsall', 0));
+                   ->assign('allowusercatedit', $this->getVar('allowusercatedit', 0))
+                   ->assign('autocreateusercat', $this->getVar('autocreateusercat', 0))
+                   ->assign('autocreateuserdefaultcat', $this->getVar('autocreateuserdefaultcat', 0))
+                   ->assign('userdefaultcatname', $this->getVar('userdefaultcatname', 0))
+                   ->assign('permissionsall', $this->getVar('permissionsall', 0));
 
         return $this->view->fetch('categories_admin_preferences.tpl');
     }

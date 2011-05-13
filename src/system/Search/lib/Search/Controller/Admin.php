@@ -17,7 +17,6 @@
  */
 class Search_Controller_Admin extends Zikula_AbstractController
 {
-
     /**
      * The main administration function.
      *
@@ -59,8 +58,6 @@ class Search_Controller_Admin extends Zikula_AbstractController
                 $plugins[$key]['disabled'] = $this->getVar("disable_$plugin[title]");
             }
         }
-
-        $this->view->setCaching(false);
 
         // assign all module vars
         $this->view->assign($this->getVars());
@@ -116,5 +113,4 @@ class Search_Controller_Admin extends Zikula_AbstractController
         // the user to an appropriate page for them to carry on their work
         $this->redirect(ModUtil::url('Search', 'admin', 'modifyconfig'));
     }
-
 }

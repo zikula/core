@@ -91,8 +91,6 @@ class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
             }
         }
 
-        $this->view->setCaching(false);
-
         $this->view->assign('admincategories', $admincategories);
 
         // Populate block info and pass to theme

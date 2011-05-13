@@ -52,7 +52,7 @@ class Theme_Controller_User extends Zikula_AbstractController
             }
         }
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('currentthemepic', $currentthemepic)
                    ->assign('currenttheme', $currenttheme)

@@ -111,7 +111,7 @@ class Search_Block_Search extends Zikula_Controller_AbstractBlock
             }
         }
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // assign the block vars array
         $this->view->assign('searchvars', $vars)

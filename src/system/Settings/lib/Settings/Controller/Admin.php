@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-
 class Settings_Controller_Admin extends Zikula_AbstractController
 {
     /**
@@ -37,8 +36,6 @@ class Settings_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-
-        $this->view->setCaching(false);
 
         return $this->view->fetch('settings_admin_modifyconfig.tpl');
     }
@@ -132,8 +129,6 @@ class Settings_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-
-        $this->view->setCaching(false);
 
         // get the server timezone and pass it to template - we should not allow to change this
         $this->view->assign('timezone_server', DateUtil::getTimezone());

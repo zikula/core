@@ -110,7 +110,7 @@ class Blocks_Block_Finclude extends Zikula_Controller_AbstractBlock
             $vars['typo'] = 0;
         }
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // assign the vars
         $this->view->assign($vars);

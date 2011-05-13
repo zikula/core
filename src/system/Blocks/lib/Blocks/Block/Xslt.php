@@ -94,7 +94,7 @@ class Blocks_Block_Xslt extends Zikula_Controller_AbstractBlock
         // Get our block vars
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // assign our block vars
         $this->view->assign($vars);

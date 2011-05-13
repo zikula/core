@@ -93,7 +93,7 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
             $vars['languages'] = $this->getAvailableLanguages($vars['fulltranslation']);
         }
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // assign the block vars
         $this->view->assign($vars);
@@ -195,7 +195,7 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
             $vars['fulltranslation'] = 1;
         }
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // assign the approriate values
         $this->view->assign($vars);

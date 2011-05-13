@@ -83,7 +83,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
 
         Zikula_AbstractController::configureView();
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('mode', $mode)
             ->assign('category', $editCat)
@@ -214,7 +214,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $selector = CategoryUtil::getSelector_Categories($allCats);
 
         Zikula_AbstractController::configureView();
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('categorySelector', $selector);
         $result = array(
