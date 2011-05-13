@@ -4,6 +4,7 @@
 /.project
 /.settings
 /.buildpath
+/.idea
 
 # /src/config/
 /src/config/personal_config.php
@@ -16,20 +17,25 @@
 
 # /src/modules/
 /src/modules/*
-/src/modules/!index\.html
 /src/modules/!\.htaccess
 
 # /src/plugins
 /src/plugins/!README
 
+# /src/userdata
+/src/userdata/*
+/src/userdata/!\.htaccess
+
 # /src/ztemp
-/src/ztemp/errors_log/*
-/src/ztemp/purifierCache/*
-/src/ztemp/idsTmp/*
-/src/ztemp/view_cache/*
-/src/ztemp/view_compiled/*
-/src/ztemp/Theme_cache/*
-/src/ztemp/Theme_compiled/*
-/src/ztemp/Theme_Config/*
-/src/ztemp/doctrinemodels/*
+/src/ztemp/*
+/src/userdata/!\.htaccess
+/src/ztemp/errors_log/!\.index.html
+/src/ztemp/purifierCache/!\.index.html
+/src/ztemp/idsTmp/!\.index.html
+/src/ztemp/view_cache/!\.index.html
+/src/ztemp/view_compiled/!\.index.html
+/src/ztemp/Theme_cache/!\.index.html
+/src/ztemp/Theme_compiled/!\.index.html
+/src/ztemp/Theme_Config/!\.index.html
+/src/ztemp/doctrinemodels/!\.index.html
 
