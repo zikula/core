@@ -61,9 +61,8 @@ class Groups_Controller_User extends Zikula_AbstractController
                 'uid'      => UserUtil::getVar('uid'),
                 'islogged' => $islogged));
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
-        $this->view->add_core_data();
         $this->view->assign('mainpage', true);
 
         // The return value of the function is checked here, and if the function
@@ -100,9 +99,8 @@ class Groups_Controller_User extends Zikula_AbstractController
             }
         }
 
-        $this->view->add_core_data();
-        $this->view->assign('nogroups', false);
-        $this->view->assign('items', $groupitems);
+        $this->view->assign('nogroups', false)
+                   ->assign('items', $groupitems);
 
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countitems'),
                                            'itemsperpage' => $itemsperpage));
@@ -160,8 +158,6 @@ class Groups_Controller_User extends Zikula_AbstractController
                 return DataUtil::formatForDisplay($this->__('Sorry! That group is closed.'));
             }
         }
-
-        $this->view->add_core_data();
 
         $this->view->assign('mainpage',     true)
                    ->assign('gid',          $gid)
@@ -250,8 +246,6 @@ class Groups_Controller_User extends Zikula_AbstractController
         $group['statelbl'] = $statelabel[$group['state']];
 
         $this->view->assign('mainpage', false);
-
-        $this->view->add_core_data();
 
         $this->view->assign('group', $group);
 

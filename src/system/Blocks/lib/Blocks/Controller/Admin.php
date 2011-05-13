@@ -263,8 +263,6 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
 
         $this->view->setCaching(false);
 
-        $this->view->add_core_data();
-
         // Title - putting a title ad the head of each page reminds the user what
         // they are doing
         if (!empty($modinfo['name'])) {
@@ -455,8 +453,6 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         }
 
         $this->view->setCaching(false);
-
-        $this->view->add_core_data();
 
         // Block
         // Load all blocks (trickier than it sounds)
