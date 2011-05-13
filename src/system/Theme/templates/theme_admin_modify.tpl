@@ -5,8 +5,6 @@
 
     <h2>{gt text="Settings for %s" tag1=$themename}</h2>
 
-    <div class="z-warningmsg">{gt text="If the module cannot write on any .ini file, it will write a modified copy on '%s' and the Theme Engine will use it." tag1=$zpath}</div>
-
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatesettings"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
