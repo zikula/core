@@ -95,8 +95,33 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     }
 
     /**
+     * Running config checker
+     */
+    private function checkRunningConfig($themeinfo)
+    {
+        $ostemp = CacheUtil::getLocalDir();
+        $zpath  = $ostemp.'/Theme_Config/'.DataUtil::formatForOS($themeinfo['directory']);
+        $tpath  = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates/config';
+
+        // check if we can edit the theme and, if not, create the running config
+        if (!is_writable($tpath.'/pageconfigurations.ini')) {
+            if (!file_exists($zpath) || is_writable($zpath)) {
+                ModUtil::apiFunc('Theme', 'admin', 'createrunningconfig', array('themename' => $themeinfo['name']));
+
+                LogUtil::registerStatus($this->__f('Notice: The changes made via Admin Panel will be saved on \'%1$s\' because it seems that the .ini files on \'%2$s\' are not writable.', array($zpath, $tpath)));
+
+            } else {
+                LogUtil::registerError($this->__f('Error! Cannot write any configuration changes. Make sure that the .ini files on \'%1$s\' or \'%2$s\', and the folder itself, are writable.', array($tpath, $zpath)));
+            }
+        } else {
+            LogUtil::registerStatus($this->__f('Notice: Seems that your %1$s\'s .ini files are writable. Be sure that there are no .ini files on \'%2$s\' because if so, the Theme Engime will consider them and not your %1$s\'s ones.', array($themeinfo['name'], $zpath)));
+        }
+
+        LogUtil::registerStatus($this->__f("If the system cannot write on any .ini file, the changes will be saved on '%s' and the Theme Engine will use it.", $zpath));
+    }
+
+    /**
      * modify theme
-     *
      */
     public function modify($args)
     {
@@ -116,28 +141,14 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // get the theme info
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
 
-        $ostemp = CacheUtil::getLocalDir();
-        $zpath  = $ostemp.'/Theme_Config/'.DataUtil::formatForOS($themeinfo['directory']);
-        $tpath  = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates/config';
-
-        // check if we can edit the theme and, if not, create the running config
-        if (!is_writable($tpath.'/pageconfigurations.ini') && $themeinfo['type'] == ThemeUtil::TYPE_XANTHIA3) {
-            if (!file_exists($zpath) || is_writable($zpath)) {
-                ModUtil::apiFunc('Theme', 'admin', 'createrunningconfig', array('themename' => $themename));
-
-                LogUtil::registerStatus($this->__f('Notice: The changes made via Admin Panel will be saved on \'%1$s\' because it seems that the .ini files on \'%2$s\' are not writable.', array($zpath, $tpath)));
-
-            } else {
-                LogUtil::registerError($this->__f('Error! Cannot write any configuration changes. Make sure that the .ini files on \'%1$s\' or \'%2$s\', and the folder itself, are writable.', array($tpath, $zpath)));
-            }
-        }
+        // check that we have writable files
+        $this->checkRunningConfig($themeinfo);
 
         $this->view->setCaching(false);
 
         // assign theme name, theme info and return output
         return $this->view->assign('themename', $themename)
                           ->assign('themeinfo', $themeinfo)
-                          ->assign('zpath', $zpath)
                           ->fetch('theme_admin_modify.tpl');
     }
 
@@ -212,9 +223,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         if ($filename) {
             $variables = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
-            if (!$variables) {
-                return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
-            }
             $variables = ModUtil::apiFunc('Theme', 'user', 'formatvariables', array('theme' => $themename, 'variables' => $variables, 'formatting' => true));
 
         } else {
@@ -223,6 +231,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // load the language file
         ZLanguage::bindThemeDomain($themename);
+
+        // check that we have writable files
+        $this->checkRunningConfig($themeinfo);
 
         $this->view->setCaching(false);
 
@@ -269,15 +280,11 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // get the original file source
         if ($filename) {
             $variables = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
-            if (!$variables) {
-                return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
-            }
-            $returnurl = ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename));
+            $returnurl = ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename, 'filename' => $filename));
 
         } else {
             $filename  = 'themevariables.ini';
             $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename));
-
             $returnurl = ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename));
         }
 
@@ -341,6 +348,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Theme::', "$themename::colors", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
+
+        // check that we have writable files
+        $this->checkRunningConfig($themeinfo);
 
         $this->view->setCaching(false);
 
@@ -447,8 +457,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $this->view->setCaching(false);
-
         // assign an array to populate the modules dropdown
         $allmods = ModUtil::getAllMods();
         $mods = array();
@@ -473,6 +481,11 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // gets the available page configurations on the theme
         $existingconfigs = ModUtil::apiFunc('Theme', 'user', 'getconfigurations', array('theme' => $themename));
 
+        // check that we have writable files
+        $this->checkRunningConfig($themeinfo);
+
+        $this->view->setCaching(false);
+
         // assign the output vars
         $this->view->assign('themename', $themename)
                    ->assign('themeinfo', $themeinfo)
@@ -493,7 +506,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
-        $filename = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'GET');
+        $filename  = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'GET');
 
         // check our input
         if (empty($themename)) {
@@ -620,6 +633,12 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::pageconfigurations", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
+        }
+
+        // read our configuration file
+        $pageconfiguration = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+        if (empty($pageconfiguration)) {
+            return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
         // form the new page configuration

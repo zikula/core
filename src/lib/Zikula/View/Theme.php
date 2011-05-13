@@ -664,7 +664,7 @@ class Zikula_View_Theme extends Zikula_View
             $this->themeconfig = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
 
             // check if we've not got a valid theme configation
-            if (!$this->themeconfig) {
+            if (!$this->themeconfig['page']) {
                 $file = 'master.ini';
                 $this->themeconfig = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
             }

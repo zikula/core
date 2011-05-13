@@ -171,10 +171,6 @@ class Theme_Api_User extends Zikula_AbstractApi
 
         $config = $this->_readinifile(array('theme'=> $args['theme'], 'file' => $args['filename'], 'sections' => true));
         
-        if (!$config) {
-            return false;
-        }
-
         $default = array(
                        'page' => '',
                        'block' => '',
