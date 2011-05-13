@@ -121,7 +121,7 @@ class Theme_Block_Themeswitcher extends Zikula_Controller_AbstractBlock
             $vars['format'] = 1;
         }
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // assign the approriate values
         $this->view->assign($vars);

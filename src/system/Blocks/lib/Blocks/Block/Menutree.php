@@ -229,7 +229,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         $vars['menutree_content'] = $tree->getHTML();
 
         // Create output object
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // get all templates and stylesheets.
         $vars['tpls'] = Blocks_MenutreeUtil::getTemplates();
@@ -302,7 +302,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // check if import old menu
         $menutree_menus = FormUtil::getPassedValue('menutree_menus', 'null');

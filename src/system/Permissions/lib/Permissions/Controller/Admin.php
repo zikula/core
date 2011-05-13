@@ -53,8 +53,6 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         $testinstance = FormUtil::getPassedValue('test_instance', null, 'POST');
         $testlevel = FormUtil::getPassedValue('test_level', null, 'POST');
 
-        $this->view->setCaching(false);
-
         $testresult = '';
         if (!empty($testuser) &&
                 !empty($testcomponent) &&
@@ -318,8 +316,6 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         // decide default view
         $rowview = is_null($this->getVar('rowview')) ? '25' : $this->getVar('rowview');
 
-        $this->view->setCaching(false);
-
         // Assign the permission levels
         $this->view->assign('permissionlevels', SecurityUtil::accesslevelnames());
 
@@ -545,8 +541,6 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         if (empty($confirmation)) {
             // No confirmation yet
 
-            $this->view->setCaching(false);
-
             // Add a hidden field for the item ID to the output
             $this->view->assign('pid', $pid);
 
@@ -611,8 +605,6 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $this->view->setCaching(false);
-
         // Get all permissions schemas, sort and assign to the template
         $this->view->assign('schemas', ModUtil::apiFunc('Permissions', 'admin', 'getallschemas'));
 
@@ -634,8 +626,6 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-
-        $this->view->setCaching(false);
 
         // assign the module vars
         $this->view->assign($this->getVars());

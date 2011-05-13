@@ -28,7 +28,7 @@ class Categories_Controller_User extends Zikula_AbstractController
             SessionUtil::setVar('categories_referer', $referer);
         }
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('allowusercatedit', $this->getVar('allowusercatedit', 0));
         return $this->view->fetch('categories_user_editcategories.tpl');
@@ -118,16 +118,16 @@ class Categories_Controller_User extends Zikula_AbstractController
 
         $languages = ZLanguage::getInstalledLanguages();
 
-        $this->view->setCaching(false);
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         return $this->view->assign('rootCat', $rootCat)
-                ->assign('category', $editCat)
-                ->assign('attributes', $attributes)
-                ->assign('allCats', $allCats)
-                ->assign('languages', $languages)
-                ->assign('userlanguage', ZLanguage::getLanguageCode())
-                ->assign('referer', SessionUtil::getVar('categories_referer'))
-                ->fetch('categories_user_edit.tpl');
+                    ->assign('category', $editCat)
+                    ->assign('attributes', $attributes)
+                    ->assign('allCats', $allCats)
+                    ->assign('languages', $languages)
+                    ->assign('userlanguage', ZLanguage::getLanguageCode())
+                    ->assign('referer', SessionUtil::getVar('categories_referer'))
+                    ->fetch('categories_user_edit.tpl');
     }
 
     /**

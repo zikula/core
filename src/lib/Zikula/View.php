@@ -252,8 +252,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $this->caching = (int)ModUtil::getVar('Theme', 'render_cache');
         }
 
+        // write actions should not be cached or weird things happen
         if (isset($_POST) && count($_POST) != 0) {
-            // write actions should not be cached or weird things happen
             $this->caching = Zikula_View::CACHE_DISABLED;
         }
 

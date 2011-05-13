@@ -17,13 +17,9 @@
  */
 class Extensions_Controller_Admin extends Zikula_AbstractController
 {
-    public function postInitialize()
-    {
-        $this->view->setCaching(false);
-    }
-
     /**
      * Extensions Module main admin function
+     *
      * @return string HTML output string
      */
     public function main()

@@ -202,7 +202,7 @@ class Zikula_View_Theme extends Zikula_View
             $this->cache_modified_check = true;
         }*/
 
-        if ($this->caching && strtolower($this->type) != 'admin') {
+        if ($this->caching && strpos($this->type, 'admin') !== 0) {
             $modulesnocache = explode(',', ModUtil::getVar('Theme', 'modulesnocache'));
             if (in_array($this->toplevelmodule, $modulesnocache)) {
                 $this->caching = Zikula_View::CACHE_DISABLED;

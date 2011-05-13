@@ -43,6 +43,12 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
         $this->setView();
         $this->view->setController($this);
         $this->view->assign('controller', $this);
+
+        // *_Admin*.php controllers are not cached by default
+        $classname = explode('_', strtolower(get_class($this)));
+        if (strpos(end($classname), 'admin') !== 0) {
+            $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        }
     }
 
     /**

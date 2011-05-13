@@ -59,8 +59,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         $themes = array_slice($allthemes, $startnum-1, $itemsperpage);
 
-        $this->view->setCaching(false);
-
         $this->view->assign('themes', $themes);
 
         // assign default theme
@@ -143,8 +141,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // check that we have writable files
         $this->checkRunningConfig($themeinfo);
-
-        $this->view->setCaching(false);
 
         // assign theme name, theme info and return output
         return $this->view->assign('themename', $themename)
@@ -234,8 +230,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // check that we have writable files
         $this->checkRunningConfig($themeinfo);
-
-        $this->view->setCaching(false);
 
         // assign variables, themename, themeinfo and return output
         return $this->view->assign('variables', $variables)
@@ -351,8 +345,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // check that we have writable files
         $this->checkRunningConfig($themeinfo);
-
-        $this->view->setCaching(false);
 
         // assign palettes, themename, themeinfo and return output
         return $this->view->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $themename)))
@@ -483,8 +475,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // check that we have writable files
         $this->checkRunningConfig($themeinfo);
-
-        $this->view->setCaching(false);
 
         // assign the output vars
         $this->view->assign('themename', $themename)
@@ -753,8 +743,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
         $this->view->assign($pageconfigassignment);
 
-        $this->view->setCaching(false);
-
         // assign the page config assignment name, theme name and theme info
         $this->view->assign('pcname', $pcname)
                    ->assign('themename', $themename)
@@ -864,8 +852,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // Check for confirmation.
         if (empty($confirmation)) {
             // No confirmation yet
-            $this->view->setCaching(false);
-
             // Assign the theme info
             $this->view->assign($themeinfo);
 
@@ -910,8 +896,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
-        $this->view->setCaching(false);
-
         // assign the theme info and return output
         return $this->view->assign('themeinfo', ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename)))
                           ->fetch('theme_admin_credits.tpl');
@@ -942,8 +926,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // Check for confirmation.
         if (empty($confirmation)) {
             // No confirmation yet
-            $this->view->setCaching(false);
-
             // Add a hidden field for the item ID to the output
             $this->view->assign('themename', $themename);
 
@@ -996,8 +978,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         if (empty($confirmation)) {
             // No confirmation yet
 
-            $this->view->setCaching(false);
-
             // Add the message id
             $this->view->assign($themeinfo);
 
@@ -1038,8 +1018,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         foreach ($usermods as $usermod) {
             $mods[$usermod['name']] = $usermod['displayname'];
         }
-
-        $this->view->setCaching(false);
 
         // register the renderer object allow access to various view values
         $this->view->register_object('render', $this->view);
