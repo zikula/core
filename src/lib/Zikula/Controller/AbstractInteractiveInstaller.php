@@ -28,8 +28,7 @@ abstract class Zikula_Controller_AbstractInteractiveInstaller extends Zikula_Abs
         // Create renderer object
         $this->setView();
         $this->view->assign('controller', $this);
-        $this->view->setCaching(false);
-        $this->view->add_core_data();
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
         $this->view->clear_compiled();
         $this->view->clear_cache();
     }

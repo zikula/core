@@ -1211,11 +1211,10 @@ class Users_Controller_Admin extends Zikula_AbstractController
             );
         }
 
-        return $this->view->add_core_data()
-            ->assign('reglist', $reglist)
-            ->assign('actions', $actions)
-            ->assign('pager', $pager)
-            ->fetch('users_admin_viewregistrations.tpl');
+        return $this->view->assign('reglist', $reglist)
+                          ->assign('actions', $actions)
+                          ->assign('pager', $pager)
+                          ->fetch('users_admin_viewregistrations.tpl');
     }
 
     /**
@@ -1545,12 +1544,12 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     $this->__('%m-%d-%Y %H:%M'));
             }
 
-            return $this->view->add_core_data()
-                ->assign('reginfo', $reginfo)
-                ->assign('restoreview', $restoreView)
-                ->assign('force', $forceVerification)
-                ->assign('cancelurl', $cancelUrl)
-                ->fetch('users_admin_verifyregistration.tpl');
+            return $this->view->assign('reginfo', $reginfo)
+                              ->assign('restoreview', $restoreView)
+                              ->assign('force', $forceVerification)
+                              ->assign('cancelurl', $cancelUrl)
+                              ->fetch('users_admin_verifyregistration.tpl');
+
         } else {
             $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
                 'reginfo'   => $reginfo,
@@ -1663,12 +1662,12 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     $this->__('%m-%d-%Y %H:%M'));
             }
 
-            return $this->view->add_core_data()
-                ->assign('reginfo', $reginfo)
-                ->assign('restoreview', $restoreView)
-                ->assign('force', $forceVerification)
-                ->assign('cancelurl', $cancelUrl)
-                ->fetch('users_admin_approveregistration.tpl');
+            return $this->view->assign('reginfo', $reginfo)
+                              ->assign('restoreview', $restoreView)
+                              ->assign('force', $forceVerification)
+                              ->assign('cancelurl', $cancelUrl)
+                              ->fetch('users_admin_approveregistration.tpl');
+
         } else {
             $this->checkCsrfToken();
 
@@ -1776,11 +1775,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     $this->__('%m-%d-%Y %H:%M'));
             }
 
-            return $this->view->add_core_data()
-                ->assign('reginfo', $reginfo)
-                ->assign('restoreview', $restoreView)
-                ->assign('cancelurl', $cancelUrl)
-                ->fetch('users_admin_denyregistration.tpl');
+            return $this->view->assign('reginfo', $reginfo)
+                              ->assign('restoreview', $restoreView)
+                              ->assign('cancelurl', $cancelUrl)
+                              ->fetch('users_admin_denyregistration.tpl');
+
         } else {
             $denied = ModUtil::apiFunc($this->name, 'registration', 'remove', array(
                 'reginfo'   => $reginfo,
