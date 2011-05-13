@@ -8,7 +8,7 @@
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
     <h2>{gt text="Edit block position"}</h2>
-    <form class="z-form" action="{modurl modname="Blocks" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form id="blockpositionform" class="z-form" action="{modurl modname="Blocks" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" id="position" name="position[pid]" value="{$pid|safetext}" />
@@ -30,8 +30,9 @@
             </fieldset>
 
             <h2>{gt text="Block assignments"}</h2>
+            <p class="z-informationmsg">{gt text="Notice: Use drag and drop to arrange the blocks in this position into your desired order. The new block order will be saved automatically."}</p>
+
             <h3>{gt text="Blocks assigned to this position"}</h3>
-            <p>{gt text="Notice: Use drag and drop to arrange the blocks in this position into your desired order. The new block order will be saved automatically."}</p>
             <ol id="assignedblocklist" class="z-itemlist">
                 <li id="assignedblocklistheader" class="z-itemheader z-itemsortheader z-clearfix">
                     <span class="z-itemcell z-w25">{gt text="Title"}</span>

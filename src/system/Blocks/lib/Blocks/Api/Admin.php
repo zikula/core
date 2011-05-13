@@ -17,7 +17,6 @@
  */
 class Blocks_Api_Admin extends Zikula_AbstractApi
 {
-
     /**
      * Update attributes of a block.
      *
