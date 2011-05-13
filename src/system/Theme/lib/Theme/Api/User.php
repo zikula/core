@@ -87,7 +87,7 @@ class Theme_Api_User extends Zikula_AbstractApi
     {
         if (!isset($args['explode']) || $args['explode'] != false) {
             if (isset($options['type']) && $options['type'] == 'select') {
-                $options['values'] = explode(',', __($options['values'], $dom));
+                $options['values'] = explode(',', $options['values']);
                 $options['output'] = explode(',', __($options['output'], $dom));
             }
         }
