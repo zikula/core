@@ -651,7 +651,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         }
 
         // all done
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $pid), null. 'blockpositionform'));
+        $this->redirect(ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $pid), null, 'blockpositionform'));
     }
 
     /**
