@@ -49,6 +49,7 @@ if (in_array('pn_id', array_keys($columns))) {
 }
 
 if (!isset($columns['z_capabilities'])) {
+    Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
     ModUtil::dbInfoLoad('Extensions', 'Extensions');
     DBUtil::changeTable('modules');
     ModUtil::dbInfoLoad('Blocks', 'Blocks');
