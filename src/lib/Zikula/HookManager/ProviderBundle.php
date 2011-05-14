@@ -157,18 +157,16 @@ class Zikula_HookManager_ProviderBundle
      * @param string  $className Class.
      * @param string  $method    Method name.
      * @param string  $serviceId Service ID if this is NOT a static class method.
-     * @param integer $priority  Default weighting.
      *
      * @return Zikula_HookManager_ProviderBundle
      */
-    public function addHook($name, $hookType, $className, $method, $serviceId=null, $priority=10)
+    public function addHook($name, $hookType, $className, $method, $serviceId=null)
     {
         $this->hooks[$name] = array(
                 'hooktype' => $hookType,
                 'classname' => $className,
                 'method' => $method,
                 'serviceid' => $serviceId,
-                'priority' => $priority,
                 );
 
         return $this;
