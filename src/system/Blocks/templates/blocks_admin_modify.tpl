@@ -14,7 +14,7 @@
             });
             defwindow = new Zikula.UI.Dialog($('blocks_advanced_placement_onclick'),
                 [{label: Zikula.__('Ok'), 'class': 'z-btgreen'}],
-                {minmax:true, width: 760, resizable: true}
+                {minmax:true, width: 760, height: 340, resizable: true}
             );
             $('blockupdateform').observe('submit',function(){
                 $('blockupdateform').insert($('block_placement_advanced').hide());
@@ -82,8 +82,8 @@
                             <li id="li_placementfilterslist_{$loop_index}" class="{cycle values='z-odd,z-even'} z-clearfix">
                                 <span class="z-itemcell z-w25">
                                     <select id="filters_{$loop_index}_module" name="filters[{$loop_index}][module]">
-                                        {foreach from=$mods item='mod' name='modlist'}
-                                        <option value="{$mod.name}" {if $placementfilter.module eq $mod.name}selected="selected"{/if}>{$mod.displayname}</option>
+                                        {foreach from=$mods key='name' item='displayname' name='modlist'}
+                                        <option value="{$name}" {if $placementfilter.module eq $name}selected="selected"{/if}>{$displayname}</option>
                                         {/foreach}
                                     </select>
                                 </span>
@@ -106,8 +106,8 @@
                         <li id="placementfilterslist_emptyitem" class="z-clearfix">
                             <span class="z-itemcell z-w25">
                                 <select class="listinput" id="filters_X_module" name="filtersdummy[]">
-                                    {foreach from=$mods item='mod' name='modlist'}
-                                    <option value="{$mod.name}">{$mod.displayname}</option>
+                                    {foreach from=$mods key='name' item='displayname' name='modlist'}
+                                    <option value="{$name}">{$displayname}</option>
                                     {/foreach}
                                 </select>
                             </span>
