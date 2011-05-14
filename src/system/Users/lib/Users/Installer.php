@@ -49,7 +49,7 @@ class Users_Installer extends Zikula_AbstractInstaller
         EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('Users_Listener_ForcedPasswordChange', 'forcedPasswordChangeListener'));
         EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
         EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
-        
+
         // Register persistent hook bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
         HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
@@ -108,13 +108,13 @@ class Users_Installer extends Zikula_AbstractInstaller
                 if ($this->getVar(Users_Constant::MODVAR_HASH_METHOD, false) == 'md5') {
                     $this->setVar(Users_Constant::MODVAR_HASH_METHOD, Users_Constant::DEFAULT_HASH_METHOD);
                 }
-                
+
                 // Convert the banned user names to a comma separated list.
                 $bannedUnames = $this->getVar(Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
                 $bannedUnames = preg_split('/\s+/', $bannedUnames);
                 $bannedUnames = implode(', ', $bannedUnames);
                 $this->setVar(Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, $bannedUnames);
-                
+
                 // System-generated passwords are deprecated since 1.3.0. Change it to
                 // User-generated passwords.
                 $regVerifyEmail = $this->getVar(Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE, Users_Constant::VERIFY_NO);
@@ -124,7 +124,7 @@ class Users_Installer extends Zikula_AbstractInstaller
 
                 // IDN domains setting moving to system settings.
                 System::setVar('idnnames', (bool)$this->getVar('idnnames', true));
-                
+
                 // Minimum age is moving to Legal
                 ModUtil::setVar('Legal', 'minimumAge', $this->getVar('minage', 0));
 
@@ -136,8 +136,8 @@ class Users_Installer extends Zikula_AbstractInstaller
                 EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('Users_Listener_ForcedPasswordChange', 'forcedPasswordChangeListener'));
                 EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
                 EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
-                HookUtil::upgradeHookSubscriberBundles($this->version);
-                HookUtil::upgradeHookProviderBundles($this->version);
+                HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+                HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
             case '2.2.0':
                 // This s the current version: add 2.2.0 --> next when appropriate
         }
@@ -303,13 +303,13 @@ class Users_Installer extends Zikula_AbstractInstaller
         if (!DBUtil::changeTable('users_temp')) {
             return false;
         }
-                
+
         // Get the dbinfo for the new version
         ModUtil::dbInfoLoad('Users', 'Users');
 
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
         $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
-        
+
         $serviceManager = ServiceUtil::getManager();
         $dbinfoSystem = $serviceManager['dbtables'];
         $dbinfo113X = Users_tables('1.13');
@@ -358,7 +358,7 @@ class Users_Installer extends Zikula_AbstractInstaller
         $tempColumn = $dbinfo113X['users_temp_column'];
         $verifyColumn = $dbinfo220['users_verifychg_column'];
         $usersColumn = $dbinfo220['users_column'];
-        
+
         $legalModInfo = ModUtil::getInfoFromName('Legal');
         if (($legalModInfo['state'] == ModUtil::STATE_ACTIVE) || ($legalModInfo['state'] == ModUtil::STATE_UPGRADED)) {
             $legalModuleActive = true;
@@ -388,7 +388,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                     // force user names and emails to lower case
                     $userArray[$key]['uname'] = mb_strtolower($userArray[$key]['uname']);
                     $userArray[$key]['email'] = mb_strtolower($userArray[$key]['email']);
-                    
+
                     if ($userArray[$key]['user_regdate'] == '1970-01-01 00:00:00') {
                         $userArray[$key]['user_regdate'] = $nowUTCStr;
                         $userArray[$key]['approved_date'] = $nowUTCStr;
@@ -396,7 +396,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                         $userArray[$key]['approved_date'] = $userArray[$key]['user_regdate'];
                     }
                     $userArray[$key]['approved_by'] = 2;
-                    
+
                     // merge hash method for salted passwords, leave salt blank
                     if (!empty($userArray[$key]['pass']) && (strpos($userArray[$key]['pass'], '$$') === false)) {
                         $userArray[$key]['pass'] =
@@ -417,11 +417,11 @@ class Users_Installer extends Zikula_AbstractInstaller
                             $userArray[$key]['__ATTRIBUTES__'][$fieldName] = $userArray[$key][$fieldName];
                         }
                     }
-                    
+
                     if ($legalModuleActive && ($userArray[$key]['uid'] > 2)) {
                         $userRegDateTime = new DateTime($userArray[$key]['user_regdate'], new DateTimeZone('UTC'));
                         $policyDateTimeStr = $userRegDateTime->format(DATE_ISO8601);
-                        
+
                         if ($termsOfUseActive) {
                             $userArray[$key]['__ATTRIBUTES__']['_Legal_termsOfUseAccepted'] = $policyDateTimeStr;
                         }
@@ -461,7 +461,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                     // type == 1: User registration pending approval (moderation)
                     if ($userTempArray[$key]['type'] == 1) {
                         $userObj = array();
-                    
+
                         // Ensure uname and email are lower case
                         $userObj['uname'] = mb_strtolower($userTempArray[$key]['uname']);
                         $userObj['email'] = mb_strtolower($userTempArray[$key]['email']);
@@ -471,13 +471,13 @@ class Users_Installer extends Zikula_AbstractInstaller
 
                         $userObj['approved_by'] = 0;
                         $userObj['activated'] = Users_Constant::ACTIVATED_PENDING_REG;
-                        
+
                         if (!empty($userTempArray[$key]['dynamics'])) {
                             $userObj['__ATTRIBUTES__'] = unserialize($userTempArray[$key]['dynamics']);
                         } else {
                             $userObj['__ATTRIBUTES__'] = array();
                         }
-                        
+
                         if (isset($userObj['dynamics']) && !empty($userObj['dynamics'])) {
                             if (DataUtil::is_serialized($userObj['dynamics'])) {
                                 $dynamics = @unserialize($userObj['dynamics']);
@@ -488,9 +488,9 @@ class Users_Installer extends Zikula_AbstractInstaller
                                 }
                             }
                         }
-                        
+
                         $userObj['__ATTRIBUTES__']['_Users_isVerified'] = 0;
-                    
+
                         if ($legalModuleActive) {
                             $userRegDateTime = new DateTime($userArray[$key]['user_regdate'], new DateTimeZone('UTC'));
                             $policyDateTimeStr = $userRegDateTime->format(DATE_ISO8601);
@@ -505,7 +505,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                                 $userObj['__ATTRIBUTES__']['_Legal_agePolicyConfirmed'] = $policyDateTimeStr;
                             }
                         }
-                        
+
                         $userArray[] = $userObj;
                     } else {
                         throw new Zikula_Exception_Fatal($this->__f('Unknown users_temp record type: %1$s', array($userTempArray[$key]['type'])));
@@ -536,7 +536,7 @@ class Users_Installer extends Zikula_AbstractInstaller
             $dbinfoSystem[$key] = $value;
         }
         $serviceManager['dbtables'] = $dbinfoSystem;
-        
+
         // Update users table for data type change of activated field.
         if (!DBUtil::changeTable('users')) {
             return false;
