@@ -1279,7 +1279,14 @@ class ModUtil
                 }
             } else {
                 foreach ($v as $vv) {
-                    if (strpos($vv, '%') !== false) {
+                    if (is_array($vv)) {
+                        foreach ($vv as $vvv) {
+                            if (!is_array($vvv) && strpos($vvv, '%') !== false) {
+                                $shorturls = false;
+                                break;
+                            }
+                        }
+                    } elseif (strpos($vv, '%') !== false) {
                         $shorturls = false;
                         break;
                     }
@@ -1369,11 +1376,22 @@ class ModUtil
                         foreach ($value as $l => $w) {
                             if (is_numeric($w) || !empty($w)) {
                                 // we suppress '', but allow 0 as value (see #193)
-                                $url .= "&$key" . "[$l]=$w";
+                                if (is_array($w)) {
+                                    foreach ($w as $m => $n) {
+                                        if (is_numeric($n) || !empty($n)) {
+                                            $n    = strpos($n, '%') !== false ? $n : urlencode($n);
+                                            $url .= "&$key" . "[$l][$m]=$n";
+                                        }
+                                    }
+                                } else {
+                                    $w    = strpos($w, '%') !== false ? $w : urlencode($w);
+                                    $url .= "&$key" . "[$l]=$w";
+                                }
                             }
                         }
                     } elseif (is_numeric($value) || !empty($value)) {
                         // we suppress '', but allow 0 as value (see #193)
+                        $w    = strpos($value, '%') !== false ? $value : urlencode($value);
                         $url .= "&$key=$value";
                     }
                 }

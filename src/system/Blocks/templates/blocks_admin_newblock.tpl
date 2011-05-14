@@ -9,21 +9,22 @@
                 <legend>{gt text="New block"}</legend>
                 <div class="z-formrow">
                     <label for="blocks_title">{gt text="Title"}</label>
-                    <input id="blocks_title" name="title" type="text" size="40" maxlength="255" />
+                    <input id="blocks_title" name="block[title]" value="{$block.title|default:''}" type="text" size="40" maxlength="255" />
                 </div>
                 <div class="z-formrow">
                     <label for="blocks_description">{gt text="Description"}</label>
-                    <input id="blocks_description" name="description" type="text" size="40" maxlength="255" />
+                    <input id="blocks_description" name="block[description]" value="{$block.description|default:''}" type="text" size="40" maxlength="255" />
                 </div>
                 <div class="z-formrow">
                     <label for="blocks_blockid">{gt text="Block"}</label>
-                    <select id="blocks_blockid" name="blockid">
-                        {html_options options=$blockids}
+                    <select id="blocks_blockid" name="block[blockid]"{if $block.blockid eq 'error'} class="z-form-error"{/if}>
+                        <option value="" label="{gt text='Choose one'}">{gt text='Choose one'}</option>
+                        {html_options options=$blockids selected=$block.blockid|default:''}
                     </select>
                 </div>
                 <div class="z-formrow">
                     <label for="blocks_language">{gt text="Language"} </label>
-                    {html_select_locales id=blocks_language name=language installed=true all=true}
+                    {html_select_locales id=blocks_language name="block[language]" installed=true all=true selected=$block.language|default:''}
                 </div>
             </fieldset>
             <fieldset>
@@ -31,8 +32,8 @@
                 <div class="z-formrow">
                     <label for="blocks_position">{gt text="Position(s)"}</label>
                     <div>
-                        <select id="blocks_position" name="positions[]" multiple="multiple">
-                            {html_options options=$block_positions}
+                        <select id="blocks_position" name="block[positions][]" multiple="multiple">
+                            {html_options options=$block_positions selected=$block.positions}
                         </select>
                     </div>
                 </div>
@@ -43,15 +44,19 @@
                 <div class="z-formrow">
                     <label for="blocks_collapsable">{gt text="Collapsible"}</label>
                     <div id="blocks_collapsable">
-                        <label for="blocks_collapsable_yes">{gt text="Yes"}</label><input id="blocks_collapsable_yes" name="collapsable" type="radio" value="1" checked="checked" />
-                        <label for="blocks_collapsable_no">{gt text="No"}</label><input id="blocks_collapsable_no" name="collapsable" type="radio" value="0" />
+                        <label for="blocks_collapsable_yes">{gt text="Yes"}</label>
+                        <input id="blocks_collapsable_yes" name="block[collapsable]" type="radio" value="1"{if $block.collapsable|default:0 eq 1} checked="checked"{/if} />
+                        <label for="blocks_collapsable_no">{gt text="No"}</label>
+                        <input id="blocks_collapsable_no" name="block[collapsable]" type="radio" value="0"{if $block.collapsable|default:0 eq 0} checked="checked"{/if} />
                     </div>
                 </div>
                 <div class="z-formrow">
                     <label for="blocks_defaultstate">{gt text="Default state"}</label>
                     <div id="blocks_defaultstate">
-                        <label for="blocks_defaultstate_expanded">{gt text="Expanded"}</label><input id="blocks_defaultstate_expanded" name="defaultstate" type="radio" value="1" checked="checked" />
-                        <label for="blocks_defaultstate_collapsed">{gt text="Collapsed"}</label><input id="blocks_defaultstate_collapsed" name="defaultstate" type="radio" value="0" />
+                        <label for="blocks_defaultstate_expanded">{gt text="Expanded"}</label>
+                        <input id="blocks_defaultstate_expanded" name="block[defaultstate]" type="radio" value="1"{if $block.defaultstate|default:1 eq 1} checked="checked"{/if} />
+                        <label for="blocks_defaultstate_collapsed">{gt text="Collapsed"}</label>
+                        <input id="blocks_defaultstate_collapsed" name="block[defaultstate]" type="radio" value="0"{if $block.defaultstate|default:1 eq 0} checked="checked"{/if} />
                     </div>
                 </div>
             </fieldset>
