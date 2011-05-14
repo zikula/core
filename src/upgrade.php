@@ -48,7 +48,7 @@ if (in_array('pn_id', array_keys($columns))) {
     upgrade_columns($connection);
 }
 
-if (!isset($columns['capabilities'])) {
+if (!isset($columns['z_capabilities'])) {
     ModUtil::dbInfoLoad('Extensions', 'Extensions');
     DBUtil::changeTable('modules');
     ModUtil::dbInfoLoad('Blocks', 'Blocks');
