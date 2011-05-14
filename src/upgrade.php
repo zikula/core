@@ -625,7 +625,7 @@ function upgrade_columns($connection)
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_help z_help VARCHAR(255) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_license z_license VARCHAR(255) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_securityschema z_securityschema TEXT NOT NULL";
-    $commands[] = "UPDATE {$prefix}_modules SET z_name = 'Extensions', z_displayname = 'Extensions manager', z_url = 'extensions', z_description = 'Manage your modules and plugins.', z_directory =  'Extensions', z_securityschema = 'a:1:{s:9:\"Extensions::\";s:2:\"::\";}' WHERE {$prefix}_modules.z_id = 1 AND {$prefix}_modules.z_name = 'Modules'";
+    $commands[] = "UPDATE {$prefix}_modules SET z_name = 'Extensions', z_displayname = 'Extensions manager', z_url = 'extensions', z_description = 'Manage your modules and plugins.', z_directory =  'Extensions', z_securityschema = 'a:1:{s:9:\"Extensions::\";s:2:\"::\";}' WHERE {$prefix}_modules.z_name = 'Modules'";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_id z_id INT(11) AUTO_INCREMENT";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_modname z_modname VARCHAR(64) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_name z_name VARCHAR(64) NOT NULL";
