@@ -664,7 +664,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     public function registerHookSubscriberBundle(Zikula_HookManager_SubscriberBundle $bundle)
     {
         if (array_key_exists($bundle->getArea(), $this->hookSubscriberBundles)) {
-            throw new InvalidArgumentException(sprintf('Area %s is already registered', $area));
+            throw new InvalidArgumentException(sprintf('Area %s is already registered', $bundle->getArea()));
         }
 
         $this->hookSubscriberBundles[$bundle->getArea()] = $bundle;
@@ -681,7 +681,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     public function registerHookProviderBundle(Zikula_HookManager_ProviderBundle $bundle)
     {
         if (array_key_exists($bundle->getArea(), $this->hookProviderBundles)) {
-            throw new InvalidArgumentException(sprintf('Area %s is already registered'));
+            throw new InvalidArgumentException(sprintf('Area %s is already registered', $bundle->getArea()));
         }
 
         $this->hookProviderBundles[$bundle->getArea()] = $bundle;
