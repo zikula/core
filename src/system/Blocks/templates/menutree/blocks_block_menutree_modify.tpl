@@ -73,7 +73,7 @@
         <div class="z-formrow">
             <label for="menutree_stylesheet">{gt text="Stylesheet"}</label>
             <select id="menutree_stylesheet" name="menutree[stylesheet]">
-                <option value="null">{gt text="choose stylesheet"}</option>
+                <option value="null">{gt text="Choose stylesheet"}</option>
                 {html_options options=$styles selected=$menutree_stylesheet}
             </select>
             <p id="menutree_stylesheet_helper" class="z-formnote z-informationmsg" style="display: none;">{gt text='The list of stylesheets has been limited to those which appear to be associated with selected template.<br />If you do not find among them stylesheet you are looking for - you can <a href="#" title="Click here, to display all stylesheets">show all stylesheets</a>.'}</p>
@@ -240,7 +240,7 @@
                     <label for="link_className">{gt text="CSS class"}</label>
                     {if $menutree_linkclass}
                     <select name="link_className" id="link_className">
-                        <option value="">{gt text="choose class"}</option>
+                        <option value="">{gt text="Choose class"}</option>
                         {foreach from=$menutree_linkclasses key=id item=class}
                             <option value="{$class.name}">{$class.title}</option>
                         {/foreach}

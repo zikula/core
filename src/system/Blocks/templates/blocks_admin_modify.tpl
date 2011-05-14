@@ -1,28 +1,6 @@
 {ajaxheader ui=true}
 {pageaddvar name='javascript' value='javascript/helpers/Zikula.itemlist.js'}
-{pageaddvarblock}
-    <script type="text/javascript">
-        /* <![CDATA[ */
-        var total_existing_filters = {{$filter|@count}};
-        var list_placementfilterslist = null;
-        var defwindow = null;
-        document.observe("dom:loaded",function(){
-            list_placementfilterslist = new Zikula.itemlist('placementfilterslist', {headerpresent: true, firstidiszero: true, sortable: false});
-            $('appendfilter').observe('click',function(event){
-                list_placementfilterslist.appenditem();
-                event.stop();
-            });
-            defwindow = new Zikula.UI.Dialog($('blocks_advanced_placement_onclick'),
-                [{label: Zikula.__('Ok'), 'class': 'z-btgreen'}],
-                {minmax:true, width: 760, height: 340, resizable: true}
-            );
-            $('blockupdateform').observe('submit',function(){
-                $('blockupdateform').insert($('block_placement_advanced').hide());
-            })
-        });
-        /* ]]> */
-    </script>
-{/pageaddvarblock}
+
 {include file="blocks_admin_menu.tpl"}
 
 <div class="z-admincontainer">
@@ -157,7 +135,7 @@
             <fieldset>
                 <legend>{gt text="Customisation"}</legend>
                 {if $admin_tableless}
-                {$blockoutput}
+                    {$blockoutput}
                 {else}
                 <table>
                     {$blockoutput}
@@ -176,9 +154,9 @@
             </fieldset>
 
             {if isset($redirect) && $redirect neq ''}
-            {assign var="cancelurl" value=$redirect|urldecode}
+                {assign var="cancelurl" value=$redirect|urldecode}
             {else}
-            {modurl modname="Blocks" type="admin" func="view" assign="cancelurl"}
+                {modurl modname="Blocks" type="admin" func="view" assign="cancelurl"}
             {/if}
 
             <div class="z-buttons z-formbuttons">
@@ -188,3 +166,27 @@
         </div>
     </form>
 </div>
+
+{pageaddvarblock}
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var total_existing_filters = {{$filter|@count}};
+    var list_placementfilterslist = null;
+    var defwindow = null;
+    document.observe("dom:loaded",function(){
+        list_placementfilterslist = new Zikula.itemlist('placementfilterslist', {headerpresent: true, firstidiszero: true, sortable: false});
+        $('appendfilter').observe('click',function(event){
+            list_placementfilterslist.appenditem();
+            event.stop();
+        });
+        defwindow = new Zikula.UI.Dialog($('blocks_advanced_placement_onclick'),
+            [{label: Zikula.__('Ok'), 'class': 'z-btgreen'}],
+            {minmax:true, width: 760, height: 340, resizable: true}
+        );
+        $('blockupdateform').observe('submit',function(){
+            $('blockupdateform').insert($('block_placement_advanced').hide());
+        })
+    });
+    /* ]]> */
+</script>
+{/pageaddvarblock}
