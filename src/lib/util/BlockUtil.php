@@ -190,63 +190,63 @@ class BlockUtil
     /**
      * Display a block based on the current theme.
      *
-     * @param array $row Block info.
+     * @param array $blockinfo Block info.
      *
      * @return string The rendered output.
      */
-    public static function themeBlock($row)
+    public static function themeBlock($blockinfo)
     {
         static $themeinfo, $themedir, $upb, $downb;
 
-        if (!isset($row['bid'])) {
-            $row['bid'] = '';
+        if (!isset($blockinfo['bid'])) {
+            $blockinfo['bid'] = '';
         }
-        if (!isset($row['title'])) {
-            $row['title'] = '';
-        }
-
-        if (!isset($themeinfo)) {
-            $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
-            $themedir = DataUtil::formatForOS($themeinfo['directory']);
+        if (!isset($blockinfo['title'])) {
+            $blockinfo['title'] = '';
         }
 
-        // check for collapsable menus being enabled, and setup the collapsable menu image.
-        if (!isset($upb)) {
-            if (file_exists('themes/' . $themedir . '/images/upb.png')) {
-                $upb = '<img src="themes/' . $themedir . '/images/upb.png" alt="-" />';
-            } elseif (file_exists('themes/' . $themedir . '/images/14_layer_raiselayer.png')) {
-                $upb = '<img src="themes/' . $themedir . '/images/14_layer_raiselayer.png" alt="-" />';
-            } else {
-                $upb = '<img src="images/icons/extrasmall/14_layer_raiselayer.png" alt="-" />';
+        if (UserUtil::isLoggedIn() && ModUtil::getVar('Blocks', 'collapseable') == 1 && isset($blockinfo['collapsable']) && ($blockinfo['collapsable'] == '1')) {
+            if (!isset($themeinfo)) {
+                $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
+                $themedir = DataUtil::formatForOS($themeinfo['directory']);
             }
-        }
-        if (!isset($downb)) {
-            if (file_exists('themes/' . $themedir . '/images/downb.png')) {
-                $downb = '<img src="themes/' . $themedir . '/images/downb.png" alt="+" />';
-            } elseif (file_exists('themes/' . $themedir . '/images/14_layer_lowerlayer.png')) {
-                $downb = '<img src="themes/' . $themedir . '/images/14_layer_lowerlayer.png" alt="+" />';
-            } else {
-                $downb = '<img src="images/icons/extrasmall/14_layer_lowerlayer.png" alt="+" />';
-            }
-        }
 
-        if (UserUtil::isLoggedIn() && ModUtil::getVar('Blocks', 'collapseable') == 1 && isset($row['collapsable']) && ($row['collapsable'] == '1')) {
-            if (self::checkUserBlock($row) == '1') {
-                if (!empty($row['title'])) {
-                    $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid']))) . '">' . $upb . '</a>';
-                }
-            } else {
-                $row['content'] = '';
-                if (!empty($row['title'])) {
-                    $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid']))) . '">' . $downb . '</a>';
+            // check for collapsable menus being enabled, and setup the collapsable menu image.
+            if (!isset($upb)) {
+                if (file_exists('themes/' . $themedir . '/images/upb.png')) {
+                    $upb = '<img src="themes/' . $themedir . '/images/upb.png" alt="-" />';
+                } elseif (file_exists('themes/' . $themedir . '/images/14_layer_raiselayer.png')) {
+                    $upb = '<img src="themes/' . $themedir . '/images/14_layer_raiselayer.png" alt="-" />';
+                } else {
+                    $upb = '<img src="images/icons/extrasmall/14_layer_raiselayer.png" alt="-" />';
                 }
             }
+            if (!isset($downb)) {
+                if (file_exists('themes/' . $themedir . '/images/downb.png')) {
+                    $downb = '<img src="themes/' . $themedir . '/images/downb.png" alt="+" />';
+                } elseif (file_exists('themes/' . $themedir . '/images/14_layer_lowerlayer.png')) {
+                    $downb = '<img src="themes/' . $themedir . '/images/14_layer_lowerlayer.png" alt="+" />';
+                } else {
+                    $downb = '<img src="images/icons/extrasmall/14_layer_lowerlayer.png" alt="+" />';
+                }
+            }
+
+            if (self::checkUserBlock($blockinfo) == '1') {
+                if (!empty($blockinfo['title'])) {
+                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $upb . '</a>';
+                }
+            } else {
+                $blockinfo['content'] = '';
+                if (!empty($blockinfo['title'])) {
+                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $downb . '</a>';
+                }
+            }
+            // end collapseable menu config
         } else {
-            $row['minbox'] = '';
+            $blockinfo['minbox'] = '';
         }
-        // end collapseable menu config
 
-        return Zikula_View_Theme::getInstance()->themesidebox($row);
+        return Zikula_View_Theme::getInstance()->themesidebox($blockinfo);
     }
 
     /**
@@ -436,21 +436,21 @@ class BlockUtil
      * Checks if the user has a state set for a current block.
      * Sets the default state for that block if not present.
      *
-     * @param array $row Block info.
+     * @param array $blockinfo Block info.
      *
      * @return boolean
      */
-    public static function checkUserBlock($row)
+    public static function checkUserBlock($blockinfo)
     {
-        if (!isset($row['bid'])) {
-            $row['bid'] = '';
+        if (!isset($blockinfo['bid'])) {
+            $blockinfo['bid'] = '';
         }
 
         if (UserUtil::isLoggedIn()) {
             $uid = UserUtil::getVar('uid');
             $dbtable = DBUtil::getTables();
             $column = $dbtable['userblocks_column'];
-            $where = "WHERE $column[bid] = '" . DataUtil::formatForStore($row['bid']) . "'
+            $where = "WHERE $column[bid] = '" . DataUtil::formatForStore($blockinfo['bid']) . "'
                   AND $column[uid] = '" . DataUtil::formatForStore($uid) . "'";
 
             $result = DBUtil::selectObject('userblocks', $where);
@@ -460,7 +460,7 @@ class BlockUtil
             }
             if (!$result) {
                 $uid = DataUtil::formatForStore($uid);
-                $obj = array('uid' => $uid, 'bid' => $row['bid'], 'active' => $row['defaultstate']);
+                $obj = array('uid' => $uid, 'bid' => $blockinfo['bid'], 'active' => $blockinfo['defaultstate']);
                 if (!DBUtil::insertObject($obj, 'userblocks', 'bid', true)) {
                     LogUtil::registerError(__f('Error! A database error occurred: \'%1$s: %2$s\'.', array($dbconn->ErrorNo(), $dbconn->ErrorMsg())));
                     return true; // FIXME: should this really return true (RNG)
@@ -542,13 +542,13 @@ class BlockUtil
     /**
      * Alias to pnBlockDisplayPosition.
      *
-     * @param array $row Block info.
+     * @param array $blockinfo Block info.
      *
      * @return string The rendered output.
      */
-    public static function themesideblock($row)
+    public static function themesideblock($blockinfo)
     {
-        return self::themeBlock($row);
+        return self::themeBlock($blockinfo);
     }
 
 }
