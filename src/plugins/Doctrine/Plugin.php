@@ -25,7 +25,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
     {
         return array('displayname' => $this->__('Doctrine ORM'),
                      'description' => $this->__('Provides Doctrine ORM, DBAL and Common layers of Doctrine 2'),
-                     'version'     => '2.0.4'
+                     'version'     => '2.0.5'
                       );
     }
 
