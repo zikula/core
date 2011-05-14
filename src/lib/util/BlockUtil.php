@@ -50,7 +50,7 @@ class BlockUtil
             return;
         }
         if (!isset($modname)) {
-            $modname = ModUtil::getName();
+            $modname = FormUtil::getPassedValue('module', '_homepage_', 'GETPOST', FILTER_SANITIZE_STRING);
         }
 
         // get the blocks in this block position

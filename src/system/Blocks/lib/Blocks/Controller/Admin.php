@@ -270,8 +270,16 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         // assign the block
         $this->view->assign($blockinfo);
 
-        // assign the list of modules
-        $this->view->assign('mods', ModUtil::getAllMods());
+        // build and assign the list of modules
+        $homepage = array('_homepage_' => $this->__('Homepage'));
+        $modules  = ModUtil::getAllMods();
+        unset($modules['zikula']);
+        foreach ($modules as $name => $module) {
+            $modules[$name] = $module['displayname'];
+        }
+        asort($modules);
+
+        $this->view->assign('mods', array_merge($homepage, $modules));
 
         // assign block positions
         $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
@@ -420,7 +428,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('Blocks', 'admin', 'update', $blockinfo)) {
             // Success
-            LogUtil::registerStatus($this->__('Done! Saved blocks.'));
+            LogUtil::registerStatus($this->__('Done! Block saved.'));
         }
 
         if (isset($redirect) && !empty($redirect)) {
@@ -432,6 +440,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
             $this->redirect(ModUtil::url('Blocks', 'admin', 'modify',
                             array('bid' => $returntoblock)));
         }
+
         $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
@@ -521,7 +530,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         // Pass to API
         $bid = ModUtil::apiFunc('Blocks', 'admin', 'create', $blockinfo);
         if ($bid != false) {
-            LogUtil::registerStatus($this->__('Done! Created block.'));
+            LogUtil::registerStatus($this->__('Done! Block created.'));
             $this->redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
         }
 
@@ -579,7 +588,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         if (ModUtil::apiFunc('Blocks', 'admin', 'delete',
                         array('bid' => $bid))) {
             // Success
-            LogUtil::registerStatus($this->__('Done! Deleted block.'));
+            LogUtil::registerStatus($this->__('Done! Block deleted.'));
         }
 
         $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
@@ -630,7 +639,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         $pid = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => $position['name'], 'description' => $position['description']));
 
         if (!$pid) {
-            LogUtil::registerStatus($this->__('Done! Created block position.'));
+            LogUtil::registerStatus($this->__('Done! Block position created.'));
         }
 
         // all done
@@ -713,7 +722,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         if (ModUtil::apiFunc('Blocks', 'admin', 'updateposition',
                         array('pid' => $position['pid'], 'name' => $position['name'], 'description' => $position['description']))) {
             // all done
-            LogUtil::registerStatus($this->__('Done! Saved block.'));
+            LogUtil::registerStatus($this->__('Done! Block position saved.'));
         }
 
         $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
@@ -759,7 +768,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
 
         if (ModUtil::apiFunc('Blocks', 'admin', 'deleteposition', array('pid' => $pid))) {
             // Success
-            LogUtil::registerStatus($this->__('Done! Deleted block position.'));
+            LogUtil::registerStatus($this->__('Done! Block position deleted.'));
         }
 
         $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
@@ -811,5 +820,4 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
 
         $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
-
 }
