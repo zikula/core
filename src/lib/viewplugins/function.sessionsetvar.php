@@ -30,33 +30,33 @@
  * Example
  *   {sessionsetvar name='foo' value='bar'}
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      $smarty     Reference to the Smarty object
- * @param        string      $name        The name of the session variable to obtain
- * @return       null
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Smarty object
+ * @param string      $name   The name of the session variable to obtain
+ *
+ * @return mixed
  */
-function smarty_function_sessionsetvar($params, $smarty)
+function smarty_function_sessionsetvar($params, Zikula_View $view)
 {
-    LogUtil::log(__f('Warning! Template plugin {%s} is deprecated.', array('sessionsetvar')), E_USER_DEPRECATED);
-
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $name    = isset($params['name'])    ? $params['name']    : null;
     $value   = isset($params['value'])   ? $params['value']   : null;
+    $path    = isset($params['path'])    ? $params['path']    : '/';
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessionsetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessionsetvar', 'name')));
         return false;
     }
 
     if (!$value) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessionsetvar', 'value')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessionsetvar', 'value')));
         return false;
     }
 
-    $result = SessionUtil::setVar($name, $value);
+    $result = $view->getRequest()->getSession()->set($name, $value, $path);
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

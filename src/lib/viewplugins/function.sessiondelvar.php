@@ -21,34 +21,33 @@
  *
  * Available parameters:
  *   - name:    The name of the session variable to delete
+ *   - path:    The namespace.
  *   - assign:  If set, the result is assigned to the corresponding variable instead of printed out
  *
  * Example
  *   {sessiondelvar name='foobar'}
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      $smarty     Reference to the Smarty object
- * @param        string      $name        The name of the session variable to delete
- * @return       string      The session variable
+ * @param  array       $params All attributes passed to this function from the template
+ * @param  Zikula_View $view   Reference to the Smarty object
+ * @param  string      $name   The name of the session variable to delete
+ *
+ * @return mixed
  */
-function smarty_function_sessiondelvar($params, $smarty)
+function smarty_function_sessiondelvar($params, Zikula_View $view)
 {
-    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated.', array('sessiondelvar')), E_USER_DEPRECATED);
-
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $name    = isset($params['name'])    ? $params['name']    : null;
-    $default = isset($params['default']) ? $params['default'] : null;
     $path    = isset($params['path'])    ? $params['path']    : '/';
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessiondelvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessiondelvar', 'name')));
         return false;
     }
 
-    $result = SessionUtil::delVar($name, $default, $path);
+    $result = $view->getRequest()->getSession()->del($name, $path);
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }
