@@ -67,16 +67,13 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
                 ->from('Zikula_Doctrine_Model_HookBinding')
                 ->execute();
 
-        // check if areas have been orphaned
-        $subscribers = Doctrine_Query::create()->select()
-                ->where('sareaid = ?', $areaId)
-                ->from('Zikula_Doctrine_Model_HookSubscriber');
-        if (!$subscribers->count()) {
-            Doctrine_Query::create()->delete()
-                    ->where('id = ?', $areaId)
-                    ->from('Zikula_Doctrine_Model_HookArea')
-                    ->execute();
-        }
+        // clean areas
+        Doctrine_Query::create()->delete()
+                ->where('id = ?', $areaId)
+                ->from('Zikula_Doctrine_Model_HookArea')
+                ->execute();
+
+        $this->generateRuntimeHandlers();
     }
 
     public function registerProvider($name, $owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId=null)
@@ -118,6 +115,14 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
                 ->where('pareaid = ?', $areaId)
                 ->from('Zikula_Doctrine_Model_HookBinding')
                 ->execute();
+
+        // clean area
+        Doctrine_Query::create()->delete()
+                ->where('id = ?', $areaId)
+                ->from('Zikula_Doctrine_Model_HookArea')
+                ->execute();
+
+        $this->generateRuntimeHandlers();
     }
 
     public function getSubscribersByOwner($owner)
