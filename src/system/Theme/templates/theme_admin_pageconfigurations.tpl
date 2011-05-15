@@ -61,10 +61,9 @@
                     <label for="theme_pagemodule">{gt text="Module"}</label>
                     <select id="theme_pagemodule" name="pagemodule">
                         <option value="">&nbsp;</option>
-                        <option value="master">{gt text="Master"}</option>
-                        <option value="*home">{gt text="Homepage"}</option>
-                        <option value="*admin">{gt text="Admin panel pages"}</option>
-                        <option value="*editor">{gt text="Editor panel pages"}</option>
+                        {foreach from=$pagetypes key='pagevalue' item='pagetext'}
+                        <option value="{$pagevalue}">{$pagetext}</option>
+                        {/foreach}
                         {html_options options=$modules}
                     </select>
                 </div>

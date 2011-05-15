@@ -459,9 +459,23 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // assign the page configuration assignments
         $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
 
+        // defines the default types and master
+        $pagetypes = array(
+            'master'  => $this->__('Master'),
+            '*home'   => $this->__('Homepage'),
+            '*admin'  => $this->__('Admin panel pages'),
+            '*editor' => $this->__('Editor panel pages')
+        );
+
         // checks the  page configuration files in use
         $pageconfigfiles = array();
-        foreach ($pageconfigurations as $pageconfiguration) {
+        foreach ($pageconfigurations as $name => $pageconfiguration) {
+            // checks for non-standard pagetypes
+            if (strpos($name, '*') === 0 && !isset($pagetypes[$name])) {
+                //! Pages inside a specific Controller type (editor, moderator, user)
+                $pagetypes[$name] = $this->__f('%s type pages', ucfirst(substr($name, 1)));
+            }
+            // check if the file exists
             if ($exists = file_exists("themes/$themeinfo[directory]/templates/config/$pageconfiguration[file]")) {
                 $existingconfigs[] = $pageconfiguration['file'];
             }
@@ -478,6 +492,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // assign the output vars
         $this->view->assign('themename', $themename)
                    ->assign('themeinfo', $themeinfo)
+                   ->assign('pagetypes', $pagetypes)
                    ->assign('modules', $mods)
                    ->assign('pageconfigurations', $pageconfigurations)
                    ->assign('pageconfigs', $pageconfigfiles)
@@ -726,10 +741,28 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerError($this->__('Error! No such page configuration assignment found.'));
             $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
         }
-        $pageconfigparts = explode('/', $pcname);
+
+        // defines the default types and master
+        $pagetypes = array(
+            'master'  => $this->__('Master'),
+            '*home'   => $this->__('Homepage'),
+            '*admin'  => $this->__('Admin panel pages'),
+            '*editor' => $this->__('Editor panel pages')
+        );
+
+        // checks for non-standard pagetypes
+        foreach ($pageconfigurations as $name => $pageconfiguration) {
+            if (strpos($name, '*') === 0 && !isset($pagetypes[$name])) {
+                //! Pages inside a specific Controller type (editor, moderator, user)
+                $pagetypes[$name] = $this->__f('%s type pages', ucfirst(substr($name, 1)));
+            }
+        }
 
         // form the page config assignment array setting some useful key names
         $pageconfigassignment = array('pagemodule' => null, 'pagetype' => null, 'pagefunc' => null, 'pagecustomargs' => null);
+
+        $pageconfigparts = explode('/', $pcname);
+
         $pageconfigassignment['pagemodule'] = $pageconfigparts[0];
         if (isset($pageconfigparts[1])) {
             $pageconfigassignment['pagetype'] = $pageconfigparts[1];
@@ -753,6 +786,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
                    ->assign('pcname', $pcname)
                    ->assign('themename', $themename)
                    ->assign('themeinfo', $themeinfo)
+                   ->assign('pagetypes', $pagetypes)
                    ->assign('modules', $mods)
                    ->assign('filename', $pageconfigurations[$pcname]['file']);
 
