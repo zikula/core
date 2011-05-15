@@ -37,8 +37,6 @@
  */
 function smarty_function_sessiongetvar($params, $smarty)
 {
-    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated.', array('sessiongetvar')), E_USER_DEPRECATED);
-
     $assign               = isset($params['assign'])               ? $params['assign']               : null;
     $default              = isset($params['default'])              ? $params['default']              : null;
     $name                 = isset($params['name'])                 ? $params['name']                 : null;
