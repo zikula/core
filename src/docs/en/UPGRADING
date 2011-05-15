@@ -32,10 +32,13 @@ Theme naming considerations
 
   - Rename your theme folder with a capital letter.  If you are on a Windows machine,
     please note that Windows does not care about casing so you have to first
-    rename the folder in two steps like this:-
-         `mytheme => mythemeX`
-         and then
-         `mythemeX => Mytheme`
+    rename the folder in two steps like this:
+
+         mytheme => mythemeX
+
+    and then
+
+         mythemeX => MyTheme
 
     If you are on a linux or mac system, you can rename directly.
 
@@ -62,10 +65,13 @@ Prepare your existing installation
     login using your administration username.  Make sure you know it.
 
   - Before unpacking *any* files, delete the following directories:
+
       - system/
       - themes/
       - includes/
       - pnTemp/
+
+    saving the stuff that you may have inside pnTemp like file uploads.
 
   - Unpack the Zikula installation files.
 
@@ -73,15 +79,17 @@ Prepare your existing installation
     will be unable to proceed with the upgrade.
 
   - Upload all files from the package you downloaded, copying over your files.
-    Manually edit the NEW config/config.php with your database credentials. Please
-    be aware the config.php is quite different so please make sure you merge in
-    the differences from the old config.php to the new one. To make this easy
-    pay close attention to lines
+    Manually edit the NEW config/config.php with your database credentials as plain
+    text; 1.3 version do not use encoded values. Please be aware the config.php
+    is quite different so please make sure you merge in the differences from the old
+    config.php to the new one. To make this easy pay close attention to lines:
+
            $ZConfig['System']['installed']
            $ZConfig['System']['prefix']
            $ZConfig['DBInfo']['databases']['default']*
 
     Do not change the following lines.
+
            $ZConfig['System']['temp']
 
 Run the upgrade
@@ -105,6 +113,14 @@ to be considered the same as the Menutree module because implementation in the
 Zikula Core is substantially different so the upgrade process will not 'import'
 the configurations from your Menutree module: they should be recreated manually.
 
+You need to recreate all the menu blocks links too, because the standard changed from:
+
+    {module:function&param1=value1&param2=value2:TYPE}
+
+to
+
+    {module:TYPE:function&param1=value1&param2=value2}
+
 Please note that once you have successfully upgraded, you should follow the steps
 in UPGRADING_THEME to refactor your theme to the new standards.  There are only
 a few changes to make, but you will benefit from all the new features by doing
@@ -125,4 +141,3 @@ This will be reported after the upgrade.
 Congratulations! Your upgrade is complete. We hope you enjoy using this new
 Zikula Core version. If you have any comments, please use the feedback forum on
 http://community.zikula.org.
-
