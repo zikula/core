@@ -22,7 +22,9 @@ Smarty 2.6.26
     Downloaded from: http://www.smarty.net/download.php
     License: LGPL 2.1+
     Location in Zikula: lib/vendor/Smarty
-    Patch details: Removed check inside the Smarty folder except for its core 'plugins' https://gist.github.com/960158
+    Patch details:
+    - Removed check inside the Smarty folder except for its core 'plugins' https://gist.github.com/960158
+    - Security fix on the math plugin http://tinyurl.com/3b6p6vk
 
 Doctrine 1.2.4
     Vendor website: http://www.doctrine-project.org/
