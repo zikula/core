@@ -8,6 +8,7 @@
             <tr>
                 <th>{gt text="Name"}</th>
                 <th>{gt text="Configuration file"}</th>
+                <th>{gt text="Important"}</th>
                 <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
@@ -16,6 +17,7 @@
             <tr class="{cycle name=pageconfigurations values=z-odd,z-even}">
                 <td>{$name|safetext}</td>
                 <td>{$filesection.file|safetext}</td>
+                <td>{$filesection.important|default:0|yesno}</td>
                 <td class="z-right">
                     <a href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=xedit.png set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
                     <a href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=14_layer_deletelayer.png set=icons/extrasmall __alt="Delete" __title="Delete"}</a>
@@ -59,9 +61,10 @@
                     <label for="theme_pagemodule">{gt text="Module"}</label>
                     <select id="theme_pagemodule" name="pagemodule">
                         <option value="">&nbsp;</option>
-                        <option value="*home">{gt text="Home page"}</option>
-                        <option value="*admin">{gt text="Admin panel pages"}</option>
                         <option value="master">{gt text="Master"}</option>
+                        <option value="*home">{gt text="Homepage"}</option>
+                        <option value="*admin">{gt text="Admin panel pages"}</option>
+                        <option value="*editor">{gt text="Editor panel pages"}</option>
                         {html_options options=$modules}
                     </select>
                 </div>
@@ -83,6 +86,11 @@
                     <select id="theme_filename" name="filename">
                         {html_options values=$existingconfigs output=$existingconfigs}
                     </select>
+                </div>
+                <div class="z-formrow">
+                    <label for="theme_important">{gt text="Important"}</label>
+                    <input id="theme_important" type="checkbox" name="pageimportant" value="1" />
+                    <em class="z-formnote z-sub">{gt text="Any match with this assignment will be consider over the following others."}</em>
                 </div>
                 <div class="z-buttons z-formbuttons">
                     {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
