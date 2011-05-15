@@ -7,6 +7,7 @@
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" name="themename" value="{$themename|safetext}" />
+            <input type="hidden" name="pcname" value="{$pcname|safetext}" />
 
             {if !isset($modules.$pagemodule) and ($pagemodule neq 'master') and ($pagemodule|strpos:'*' !== 0)}
             <div class="z-warningmsg">{gt text='The module specified on this assignment [%s] seems to not be available on the system.' tag1=$pagemodule|safetext}</div>
@@ -39,10 +40,17 @@
                 </div>
                 <div class="z-formrow">
                     <label for="theme_filename">{gt text="Configuration file"}</label>
-                    <input id="theme_filename" type="text" name="filename" size="30" value="{$filename|safetext}" />
+                    <select id="theme_filename" name="filename">
+                        {html_options values=$existingconfigs output=$existingconfigs selected=$filename}
+                    </select>
+                </div>
+                <div class="z-formrow">
+                    <label for="theme_important">{gt text="Important"}</label>
+                    <input id="theme_important" type="checkbox" name="pageimportant" value="1"{if $pageimportant|default:0} checked="checked"{/if} />
+                    <em class="z-formnote z-sub">{gt text="Any match with this assignment will be consider over the following others."}</em>
                 </div>
                 <div class="z-buttons z-formbuttons">
-                    {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save"}
+                    {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
                     <a href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 </div>
             </fieldset>

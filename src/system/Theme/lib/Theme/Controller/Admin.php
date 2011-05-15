@@ -458,7 +458,6 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // assign the page configuration assignments
         $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
-        ksort($pageconfigurations);
 
         // checks the  page configuration files in use
         $pageconfigfiles = array();
@@ -741,10 +740,17 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         if (isset($pageconfigparts[3])) {
             $pageconfigassignment['pagecustomargs'] = $pageconfigparts[3];
         }
-        $this->view->assign($pageconfigassignment);
+        if (isset($pageconfigurations[$pcname]['important']) && $pageconfigurations[$pcname]['important']) {
+            $pageconfigassignment['important'] = 1;
+        }
+
+        // gets the available page configurations on the theme
+        $existingconfigs = ModUtil::apiFunc('Theme', 'user', 'getconfigurations', array('theme' => $themename));
 
         // assign the page config assignment name, theme name and theme info
-        $this->view->assign('pcname', $pcname)
+        $this->view->assign($pageconfigassignment)
+                   ->assign('existingconfigs', $existingconfigs)
+                   ->assign('pcname', $pcname)
                    ->assign('themename', $themename)
                    ->assign('themeinfo', $themeinfo)
                    ->assign('modules', $mods)
@@ -769,6 +775,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $pagetype = FormUtil::getPassedValue('pagetype', isset($args['pagetype']) ? $args['pagetype'] : 'user', 'POST');
         $pagefunc = FormUtil::getPassedValue('pagefunc', isset($args['pagefunc']) ? $args['pagefunc'] : null, 'POST');
         $pagecustomargs = FormUtil::getPassedValue('pagecustomargs', isset($args['pagecustomargs']) ? $args['pagecustomargs'] : null, 'POST');
+        $pageimportant = FormUtil::getPassedValue('pageimportant', isset($args['pageimportant']) ? $args['pageimportant'] : null, 'POST');
         $filename = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'POST');
 
         // check our input
@@ -789,14 +796,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // read the list of existing page config assignments
         $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
 
-        // remove the config assignment being updated
-        if (isset($pcname)) {
-            unset($pageconfigurations[$pcname]);
-        }
-
         // form the new page configuration
         $newpageconfiguration = $pagemodule;
-        if ($pagemodule != '*home' && $pagemodule != '*admin' && $pagemodule != 'master') {
+        if (strpos($pagemodule, '*') !== 0 && $pagemodule != 'master') {
             $newpageconfiguration .= '/';
             if (isset($pagetype)) {
                 $newpageconfiguration .= $pagetype;
@@ -812,10 +814,22 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
         // remove any 'empty' parameters from the string
         $newpageconfiguration = trim($newpageconfiguration, '/');
+
+        // remove the config assignment if was changed
+        if (isset($pcname) && isset($pageconfigurations[$pcname]) && $pcname != $newpageconfiguration) {
+            // need to place the new one in the old position
+            $keys = array_keys($pageconfigurations);
+            $pos  = array_search($pcname, $keys);
+            $keys[$pos] = $newpageconfiguration;
+            $pageconfigurations = array_combine($keys, array_values($pageconfigurations));
+        }
+
+        // fill the pageconfiguration info
         $pageconfigurations[$newpageconfiguration] = array('file' => $filename);
 
-        // sort the page configurations
-        ksort($pageconfigurations);
+        if (isset($pageimportant)) {
+            $pageconfigurations[$newpageconfiguration]['important'] = 1;
+        }
 
         // write the page configurations back to the running config
         ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
