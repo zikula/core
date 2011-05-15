@@ -29,32 +29,28 @@
  * Example
  *   {sessiongetvar name='foobar'|safetext}
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      $smarty     Reference to the Smarty object
- * @param        string      $name        The name of the session variable to obtain
- * @param        string      $default     (optional) The default value to return if the session variable is not set
- * @return       string      The session variable
+ * @param array       $params  All attributes passed to this function from the template
+ * @param Zikula_View $view    Reference to the Smarty object
+ * @param string      $name    The name of the session variable to obtain
+ *
+ * @return mixed
  */
-function smarty_function_sessiongetvar($params, $smarty)
+function smarty_function_sessiongetvar($params, Zikula_View $view)
 {
-    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated.', array('sessiongetvar')), E_USER_DEPRECATED);
-
     $assign               = isset($params['assign'])               ? $params['assign']               : null;
     $default              = isset($params['default'])              ? $params['default']              : null;
     $name                 = isset($params['name'])                 ? $params['name']                 : null;
     $path                 = isset($params['path'])                 ? $params['path']                 : '/';
-    $autocreate           = isset($params['autocreate'])           ? $params['autocreate']           : true;
-    $overwriteExistingVar = isset($params['overwriteExistingVar']) ? $params['overwriteExistingVar'] : false;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessiongetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessiongetvar', 'name')));
         return false;
     }
 
-    $result = SessionUtil::getVar($name, $default, $path, $autocreate, $overwriteExistingVar);
+    $result = $view->getRequest()->getSession()->get($name, $default, $path);
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }
