@@ -32,6 +32,16 @@ class Extensions_Controller_AdminPlugin extends Zikula_AbstractController
     protected $pluginController;
 
     /**
+     * initialise.
+     *
+     * @return void
+     */
+    protected function initialize()
+    {
+        // Do not setupt a view for this controller.
+    }
+
+    /**
      * Dispatch a module view request.
      *
      * @return mixed

@@ -16,6 +16,16 @@
 class SecurityCenter_Controller_Adminform extends Zikula_AbstractController
 {
     /**
+     * Initialise.
+     *
+     * @return void
+     */
+    protected function initialize()
+    {
+        // Do not setup a view pfor this controller.
+    }
+
+    /**
      * Function to delete an ids log entry
      */
     public function deleteidsentry()

@@ -14,6 +14,17 @@
 class Theme_Controller_Admin extends Zikula_AbstractController
 {
     /**
+     * Post initialise.
+     *
+     * @return void
+     */
+    protected function postInitialize()
+    {
+        // In this controller we do not want caching.
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+    }
+
+    /**
      * the main admin function
      */
     public function main()

@@ -15,6 +15,17 @@
 class Groups_Controller_Admin extends Zikula_AbstractController
 {
     /**
+     * Post initialise.
+     *
+     * @return void
+     */
+    protected function postInitialize()
+    {
+        // In this controller we do not want caching.
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+    }
+
+    /**
      * Groups Module main administration function
      * This function is the default function, and is called whenever the
      * module is initiated without defining arguments.  As such it can

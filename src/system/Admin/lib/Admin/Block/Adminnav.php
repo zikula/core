@@ -15,6 +15,17 @@
 class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
 {
     /**
+     * Post initialise.
+     *
+     * @return void
+     */
+    protected function postInitialize()
+    {
+        // In this block we do not want caching.
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+    }
+
+    /**
      * initialise block
      */
     public function init()
