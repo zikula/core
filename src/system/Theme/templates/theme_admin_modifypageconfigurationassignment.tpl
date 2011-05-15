@@ -18,10 +18,9 @@
                     <label for="theme_pagemodule">{gt text="Module"}</label>
                     <select id="theme_pagemodule" name="pagemodule">
                         <option value="">&nbsp;</option>
-                        <option value="master" {if $pagemodule eq 'master'} selected="selected"{/if}>{gt text="Master"}</option>
-                        <option value="*home" {if $pagemodule eq '*home'} selected="selected"{/if}>{gt text="Homepage"}</option>
-                        <option value="*admin" {if $pagemodule eq '*admin'} selected="selected"{/if}>{gt text="Admin panel pages"}</option>
-                        <option value="*editor" {if $pagemodule eq '*editor'} selected="selected"{/if}>{gt text="Editor panel pages"}</option>
+                        {foreach from=$pagetypes key='pagevalue' item='pagetext'}
+                        <option value="{$pagevalue}"{if $pagemodule eq $pagevalue} selected="selected"{/if}>{$pagetext}</option>
+                        {/foreach}
                         {html_options options=$modules selected=$pagemodule}
                     </select>
                 </div>
