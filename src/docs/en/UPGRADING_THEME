@@ -35,7 +35,7 @@ Remove the prefix from any plugin names.
 
 Page variables
 ==============
-The name of the 'rawtext' page variable (used with {pageaddvar}, {pagesetvar}, 
+The name of the 'rawtext' page variable (used with {pageaddvar}, {pagesetvar},
 etc.) has changed to 'header'. Any use of the 'rawtext' page variable should be
 changed to refer to 'header'.
 
@@ -71,7 +71,7 @@ And a module like this:
 
 Block configuration files
 =========================
-The theme configuration files in themes/<Themename>/config
+The theme configuration files in themes/`ThemeName`/config
 Please update these to point to the relative path of the block templates.
 This will vastly increase the speed it takes Zikula to find the requested
 template when a block is loaded.  An example might look like this:
@@ -87,16 +87,16 @@ Theme overrides
 ===============
 In order to override a template in a theme it is now necessary to specically
 tell Zikula about it.  You can do it by adding a file called 'overrides.yml'
-directly in your themes/<Themename>/ folder.  This file is in YAML format.
+directly in your themes/`ThemeName`/ folder.  This file is in YAML format.
 
 Simply specify the relative path of the template you want to override on the left
 followed by a colon and space, then the relative path to the overriden template.
 There is one warning here.  The path and template name specificed in the module,
 block or theme must exist in the override.
 
-So if a module calls template.tpl, then you can have <pathto>/template.tpl
+So if a module calls template.tpl, then you can have `pathto`/template.tpl
 but if a module calls user/template.tpl, then you have to override
-with <pathto>/user/template.tpl
+with `pathto`/user/template.tpl
 
 An example is kept in the Andreas08 theme shipped with this package and looks like
 this:
@@ -104,4 +104,3 @@ this:
     ## original/file.tpl: override/file.tpl
     ---
     system/Search/templates/search_block_search.tpl: themes/Andreas08/templates/modules/Search/search_block_search.tpl
-

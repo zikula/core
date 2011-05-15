@@ -2,16 +2,14 @@ ZIKULA INSTALLATION INSTRUCTIONS
 More detailed installation documentation is available in the Documentation Wiki
 at http://community.zikula.org/
 
-========
 CONTENTS
 ========
-1. Zikula
-2. Setup Consideration
-3. New Installation
-   i. Graphical Browser Install
-   b. Manual SQL Dump Install
-4. Final Note
-
+1.  Zikula
+2.  Setup Consideration
+3.  New Installation
+    *  Graphical Browser Install
+    *  Manual SQL Dump Install
+4.  Final Note
 
 1. Zikula
 =========
@@ -62,7 +60,7 @@ There are two installation methods for Zikula:
        MySQL 5.x database, and may not work with other databases, or MySQL
        versions. Once you have imported the SQL dump, you should manually edit
        config/config.php and add the appropriate database connection details in
-       the area reserved for the 'default' connection. Should you install in 
+       the area reserved for the 'default' connection. Should you install in
        this manner, the administration login username is "admin" with password
        "Password" (without the quotes).
 
@@ -73,4 +71,3 @@ so can cause extensive problems when upgrading the system in the future and
 therefore these 'hacks' are not recommended. Zikula has a flexible extensions
 system and configuration override system to allow customization and we recommend
 you consult the developer documentation about this.
-

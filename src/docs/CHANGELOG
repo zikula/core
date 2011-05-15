@@ -1,176 +1,177 @@
 CHANGELOG - ZIKULA 1.3.0
 ------------------------
-Removed support for PHP register_globals = On.
-Moved minimum PHP version to 5.3.2.
-Removed ADODB and replaced with Doctrine 1.2.3.
-Upgraded to PHPMailer 5.1.
-Replaced SafeHTML with HTMLPurifier.
-Introduced LivePipe UI library.
-Improved installer - less steps, less fiddling required and no need to delete installation/upgrade scripts.
-New fully OO MVC module format.
-Added system-wide and module specific event based plugin system.
-Merged all templating and rendering control to Theme module.
-Complete overhaul of Users module.
-Removed old Authentication API.
-Introduced new Authentication API capable of dealing with modern authentication (login) methods.
-The Users module configuration variable 'changepassword', which indicated that the Users module did not manage an account's password, has been deprecated. To provide alternate management, override the appropriate template(s) and/or function(s). To provide full authentication services, implement the Authentication API in a module.
-The mechanics of the authentication (login) process have changed, and the templates and functions have been updated accordingly. Templates that override the standard templates used for the login process will need to be updated, or removed.
-Added the ability to register a new account that is associated with an authentication method other than a username and password (Users module authentication).
-The mechanics of the registration process have changed, and the templates and functions have been updated accordingly. Templates that override the standard templates used for the login process will need to be updated, or removed.
-Several functions throughout the Users module have been either deprecated or removed entirely, in order to support the new log-in and registration paradigms. Customizations at the function level must be updated accordingly.
-Elements of the Legal module that were found in the Users module have been removed, and their functionality replaced with hooks or events. The age-check during registration has moved to the Legal module.
-Introduced new AJAX workflow.
-Removed and replaced debugging architecture.
-Removed all old legacy support.
-Added database caching capabilities to DBUtil.
-Migrated to using { } in templates with backward compatability for old delimiters.
-Removed requirement to delete install* and upgrade.php to access administration.
-Fixed UserUtil::getVars & UserUtil::getIDFromName functions can retrieve by all-numeric username.
-Removed on-the-fly JS minifier for performance reasons.
-Removed the need to 'regenerate' module list, this is now done automatically each time the module list is viewed.  It will also automatically remove invalid modules that have been removed from the file system.
-Removed MD5 as a valid hash method for user passwords.
-Removed dependency for legal module in Users module.
-Removed unneeded permission check in users_user_view, issue #1850.
-Prevent a rare Smarty exception when viewing pending registrations. Issue #1854.
-Removed unused instance permission checks on pending registrations. Issue #1848.
-Fixed problem with deleting group via ajax with insufficient permissions (issue #1568).
-Allow module to specify core version requirements.
-Added missing icons for blocks collapsible function (issue #1847).
-Moved search procedure to api function (issue #1859).
-Respect searchtype for searching in user names (issue #1892).
-Corrected Greek and Dutch lang files for jscalendar (issue #1808).
-Admin panel icons are shown to a user if that user has edit access for at least one instance. (issue #1026).
-When accessing the site through the admin.php entry point with no module specified, if the user is not logged in then he is redirected to a login screen. (issue #1729).
-The category_path plugin now uses the idcolumn attribute. (issue #1884).
-Improved prefilter for script tags to (properly) match a wider set of cases. (Issue #1899).
-Corrected minor defects that generated notices. (issues #1901, #1902).
-The Mailer module can now send multipart/alternative e-mails with the specification of a plain-text altbody. (Issue #1768).
-Fix a problem with the encodeurl function of the Search module. (issue #1866).
-New modulelinks navigation plugin (Issue #1238).
-Searchbox toggle (issue #1810).
-Link to help page for each security alert (issue #1692).
-Missing language domain in themeswitcher block (issue #1896).
-HTML Settings: check all radios (issue #1551).
-The generic stylesheet (style/core.css) is now loaded before all other stylesheets that are loaded through pagevars. (Issue #1911).
-Add requirement/warning messsage into the admin panel for the blocks. (issue #757).
-Permission checks in the Users module were made more consistent throughout. (issue #1872).
-New APIs DataUtil::decodeNVP(), DataUtil::encodeNVP(), DataUtil::encodeNVPArray().
-Changed old password checker js sytem to "passwordchecker" (#1841).
-Adapted the Extensions module for a Zikula multisites system with multiple domains (issue #1968).
-Modify html maxlength of block title to reflect the database structure. (issue #1980).
-Addition of FileSystem class libraries to allow easy interaction with file systems via local/ftp(s)/sftp. (issue #1517).
-Ability to export CSV file from users module added (issue #1954).
-Escaped illegal char in pagelock template (issue #2004).
-Added html exception to htaccess file (pagelock window was unreadable due an apache message) (issue #2006).
-Added minute based refresh times for blocks (issue #1999).
-Added ability to administrate adminpanel with ajax, move modules to different categories, create/edit/delete admin categories (issue #1919).
-[Issue #2017] Altered ZLanguage::countryMap() for Sweden from sv to se.  Note the language code should be so, but the country code should be se.
-Blocks module admin section now has filtering options for block-position, module, language and active-status. The allows remove of the old showall/showinactive link in the admin section. (Issue #2012 & Issue #2020)
-Blocks module now has sorting options for the main columns in the admin view (Issue #2012).
-Added various events through out the core execution cycle.
-Fixed Zikula_Form_View::registerPlugin() in environments where the installation is not in the server document root.
-Added adapter to support the illegal use of DBUtil::executeSQL() processing the ADODB object manually (without the use of DBUtil::marshallObjects().
-Fixed theme list not sorted correctly on Theme view (Issue #1974).
-Fixed pager plugin images always in english (Issue #1883).
-Fixed wrong contents in modvar 'permareplace' (Issue #2044).
-Updated css messages (Issue #2043 & Issue #2030).
-Added support for HTTP 500 response in Errors module.
-Improved password recovery workflow (Issue #1631).
-Added user name recovery (Issue #243).
-New location for core stylesheet in /style/core.css (Issue #2211).
-Added @import handling to css combiner (Issue #1801).
-Fixed issue with system vars and modvars that prevented retrieval of a stored NULL value which would return the default value instead.
-Added exception support in front controller and module controllers.
-Removed core hack for AdvMailer module, use mailer.sendmessage events instead.
-Removed core hack for MultiHook module, use theme.init events instead.
-Added const render plugin and modifier to allow class constants in templates.
-Added front controller exception handling.
-Removed Zikula_View singleton pattern, this is now handled via Zikula_ServiceManager, one instance per module or plugin.
-Removed need to specify domain= in template {gt} calls.
-Improved StringUtil::highlightWords() (patch by Gabriele Pohl).
-When short URLs are enabled, 3-letter or 2-letters can't be used anymore (issue #1800).  This also fixes issues with the RSS theme.
-Fixed validation of directory based short URLs to produce 404 if target not found issue (#923).
-Deprecated FileUtil::mkdirs(), use native PHP mkdir() with $recursion flag set true instead.
-Merged ObjectData and Workflow table definitions to Settings and deleted the modules - don't need separate modules just to provide table definitions.
-tables.php: $module_column is now unnecessary if the there is no column prefix, i.e. if name => name.
-All templates now have $eventManager, $serverManager and $controller (being the OO controller owner).
-OO controllers now automatically creates renderer object and store in $renderer.
-Issue #1838 (DataUtil::formatForOS() not Windows file path compatible).
-New location for core stylesheet in /style/core.css (Issue #2211).
-Deprecated ZFeed and SimplePie from the core.
-Added @import handling to css combiner (Issue #1801).
-New button styling (Issue #1574).
-Relocated system fatal error templates (siteoff.tpl, notinstalled.tpl, dbconnectionerror.tpl and sessionfailed.tpl) to system/Theme/templates/system.
-Changed core module templates to use .tpl
-Issue #2209 Add date in Zikula error log file.
-Allow override of style/core.css with config/style/core.css.
-Provide 'pageutil.addvar_filter' event to override anything added by PageUtil::addVar, {pageaddvar}, or {pageaddvarblock}.  This allows for complete override freedom.
-New default pager style (Issue #2264).
-Streamlined user frontend of Themes module (Issue #2279).
-Added Upgrade All options, and Module API to upgrade all modules with one click.  This will work for all non-complicated upgrades of Core also.
-Fixed LogUtil errors in CategoryUtil, Issue #2276 (patch by Craig Heydenburg).
-Admin icons update of the system modules (Issue #2300).
-tables.php now supports index options in the _column_idx array.  array(inxname, array('columns' => array(fld1, fld2..), 'options' => 'unique') Issue #1885.
-Merged the menutree into the Blocks module.
-Added htmlentities modifier to properly convert utf8 chars to html entities.
-Replaced SetEnvIf with FilesMatch in .htaccess files (Issue #2334). Removed extensions tif, flv, ico, cur from all .htaccess, swf from all except modules/ and html from all except system/Theme/includes
-Added FileUtil::exportCSV() to simplify data export to csv files.
-Themes can now process ajax request natively - issue #2326.
-New block with User account links - issue #2374.
-Deprecated DataUtil::parseIniFile(), use native PHP parse_ini_file() instead.
-The Mailer module can now send text-only, HTML-only, and multi-part/alternative e-mail messages. Multi-part/alternative messages contain both a plain text message and an HTML-formatted message. If a recipient's e-mail client does not support HTML messages, then the plain-text message will be displayed to him.
-Admin can now resend a verification e-mail for a pending registration.
-Admin can now send a password reset e-mail to a user.
-All e-mail messages sent by the Users module can now be multi-part/alternative messages, containing both a plain-text version and an HTML version of the message. Templates for both are provided and automatically used if present.
-The subject line of all e-mail messages sent by the Users module can now be set from within the e-mail message template. See the templates provided for examples. If multi-part/alternative messages are to be sent, the subject from the HTML version of the message is used (however, the subject should not use HTML).
-The template file names for all e-mail messages sent from the Users module have changed. If a site upgrading from 1.2 has created custom templates for these messages, they should be converted to the new names, and the ability to send multi-part/alternative messages should be accounted for.
-If an attempt is made to log into an account that is pending registration (either because it is awaiting approval, or is awaiting verification, or both), the site admin can elect to display that status to the user in the error message on log-in failure.
-If an attempt is made to log into an account that is inactive (either because or is awaiting legacy activation, or because the admin set that activated state for the user), the site admin can elect to display that status to the user in the error message on log-in failure.
-The password recovery work flow has been improved to be clearer to the user.
-The new account registration process now collects a password reminder, and displays this reminder to the user as part of the password recovery process. For existing sites upgrading to 1.3, existing users will be asked for a password reminder when they change their password.
-The option to have the system generate a password and send it to a newly registering user has been removed as a verification option. Sites upgrading to 1.3 who have this option set will find this option changed to verification with a user-selected password.
-Except in one case, passwords are no longer sent via e-mail to newly registering users. The one exception is when an admin creates a user account, sets a password for that account himself, and specifically elects to send the password via e-mail.
-Confirmation or verification codes for registration verification, verification of change of e-mail address, and for password reset requests all now use the same mechanism and are handled consistently.
-Requests to change e-mail addresses that go unverified can be set to expire and be removed a specified number of days after the request is made.
-Requests to register a new account where e-mail address verification is required can be set to expire and be removed a specified number of days after the e-mail verification message is sent. Registrations whose e-mail verification expires will be removed from the system. Registrations awaiting approval will not expire until after they are approved.
-If the registration process is configured for both moderation (admin approval) and e-mail verification, then the order in which these occur can be set. Verification can be required before approval, after approval, or at any time before or after. The admin can override the order and cause one or the other process to occur at any time.
-Error checking of registration and user account fields has been improved and unified.
-All user names and e-mail addresses are now stored in (and thus displayed in) lower case.
-New user names are required to consist of only letters, numbers, underscores and periods. Accented and other non-ASCII characters are permitted as long as their Unicode type is set to the letter or digit group.
-When retrieving user accounts (for any purpose, including for logging in) by e-mail address, a duplicate e-mail address check is performed even if the Users module is set to require unique e-mail addresses. This is to prevent the wrong account from being returned if duplicate e-mail addresses were allowed at any point or were added by the administrator.
-A user with rights to delete user accounts is prevented from deleting his own account.
-The registration date, last login date, and all other dates saved to the database tables by the Users module are now guaranteed to be UTC date/times in the database. They might be adjusted for display by other functions, however.
-Added option to translate the language changer block option into native language - issue #2119.
-Added {gettext} block issue #2414.
-Added debugging toolbar (configurable in config.php).
-Changed the label for the user's account activated status from 'Activated' to 'Status' in the administrator's Users manager.
-The users list in the administrator's Users manager is now sortable by user name, uid (internal ID), registration date, date last logged in, and status.
-Added markdown and markdown-extra support and with Smarty modifiers issue #2487.
-Added doctrine templates for ObjectUtil services (issue #2447)
-Added doctrine support to DropdownRelationlist form view plugin (issue #2442)
-Added more HTML5 tags to allowed HTML settings page (issue #2460)
-Fixed conflict in search module short-urls url (issue #2494)
-Fixed minor issue in uploadinput form plugin (issue #2551)
-Added missing member var for display area format in dateinput form plugin (issue #2552)
-Added doctrine support to selectmodobject(Array) view plugins (issue #2542)
-Included generic url routing classes (issue #2557)
-Added a new attribute, precision, to the formfloatinput Form plugin, which controls the number of digits after the decimal. (issue #2616)
-The userprofilelink Smarty modifier was splitted on profilelinkbyuid and profilelinkbyuname to avoid problems with numeric usernames (issue #2971).
-Horizontal and vertical drop down menu examples for menutree (issue #2313).
-Fix bad icon transparency. Now using PNG icon files (issue #2831).
-Fix inconsistency with styles vs style (issue #2805).
-Cleanup RSS icons (issue #2830).
-Appropriate style for number fields (issue #2757).
-The localized category name is mandatory, while the form says otherwise (issue #2749).
-new Categories are by default not active, which is confusing IMO (issue #2748).
-Smoother animation with Zikula.UI.Accordion (issue #2715).
-Switchdisplaystate Rendering Bug in IE7 and Chrome (issue #2714, #2707).
-CSS issues in IE and Chrome (issue #2685, #2702).
-Smilies removed (issue #2640).
-New color picker solution (issue #2634).
-create easy drop-menu for module (admin) links (issue #2646).
-Dropdown menus (issue #2649).
-Several installer improvements (issue #2801).
-Added a new template block function {pageaddvarblock}...{/pageaddvarblock} to allow inline scripts, styles, etc. to be placed in the page's head section or near the closing body tag.
-Renamed the page variable 'rawtext' to 'header' (Used with PageUtil, {pageaddvar}, {pagesetvar}, etc.). If operating in legacy mode, 'rawtext' will map to 'header', if not then 'rawtext' will be treated as just another page variable name, and will NOT render to the page.
-Enabled support of persistent data on Zikula_Form_View to let Form Handlers store data through the process (issue #3023)
+
+* Removed support for PHP register_globals = On.
+* Moved minimum PHP version to 5.3.2.
+* Removed ADODB and replaced with Doctrine 1.2.3.
+* Upgraded to PHPMailer 5.1.
+* Replaced SafeHTML with HTMLPurifier.
+* Introduced LivePipe UI library.
+* Improved installer - less steps, less fiddling required and no need to delete installation/upgrade scripts.
+* New fully OO MVC module format.
+* Added system-wide and module specific event based plugin system.
+* Merged all templating and rendering control to Theme module.
+* Complete overhaul of Users module.
+* Removed old Authentication API.
+* Introduced new Authentication API capable of dealing with modern authentication (login) methods.
+* The Users module configuration variable 'changepassword', which indicated that the Users module did not manage an account's password, has been deprecated. To provide alternate management, override the appropriate template(s) and/or function(s). To provide full authentication services, implement the Authentication API in a module.
+* The mechanics of the authentication (login) process have changed, and the templates and functions have been updated accordingly. Templates that override the standard templates used for the login process will need to be updated, or removed.
+* Added the ability to register a new account that is associated with an authentication method other than a username and password (Users module authentication).
+* The mechanics of the registration process have changed, and the templates and functions have been updated accordingly. Templates that override the standard templates used for the login process will need to be updated, or removed.
+* Several functions throughout the Users module have been either deprecated or removed entirely, in order to support the new log-in and registration paradigms. Customizations at the function level must be updated accordingly.
+* Elements of the Legal module that were found in the Users module have been removed, and their functionality replaced with hooks or events. The age-check during registration has moved to the Legal module.
+* Introduced new AJAX workflow.
+* Removed and replaced debugging architecture.
+* Removed all old legacy support.
+* Added database caching capabilities to DBUtil.
+* Migrated to using { } in templates with backward compatability for old delimiters.
+* Removed requirement to delete install* and upgrade.php to access administration.
+* Fixed UserUtil::getVars & UserUtil::getIDFromName functions can retrieve by all-numeric username.
+* Removed on-the-fly JS minifier for performance reasons.
+* Removed the need to 'regenerate' module list, this is now done automatically each time the module list is viewed.  It will also automatically remove invalid modules that have been removed from the file system.
+* Removed MD5 as a valid hash method for user passwords.
+* Removed dependency for legal module in Users module.
+* Removed unneeded permission check in users_user_view. (issue #1850).
+* Prevent a rare Smarty exception when viewing pending registrations. (issue #1854).
+* Removed unused instance permission checks on pending registrations. (issue #1848).
+* Fixed problem with deleting group via ajax with insufficient permissions (issue #1568).
+* Allow module to specify core version requirements.
+* Added missing icons for blocks collapsible function. (issue #1847).
+* Moved search procedure to api function. (issue #1859).
+* Respect searchtype for searching in user names. (issue #1892).
+* Corrected Greek and Dutch lang files for jscalendar. (issue #1808).
+* Admin panel icons are shown to a user if that user has edit access for at least one instance. (issue #1026).
+* When accessing the site through the admin.php entry point with no module specified, if the user is not logged in then he is redirected to a login screen. (issue #1729).
+* The category_path plugin now uses the idcolumn attribute. (issue #1884).
+* Improved prefilter for script tags to (properly) match a wider set of cases. (issue #1899).
+* Corrected minor defects that generated notices. (issues #1901, #1902).
+* The Mailer module can now send multipart/alternative e-mails with the specification of a plain-text altbody. (issue #1768).
+* Fix a problem with the encodeurl function of the Search module. (issue #1866).
+* New modulelinks navigation plugin. (issue #1238).
+* Searchbox toggle. (issue #1810).
+* Link to help page for each security alert. (issue #1692).
+* Missing language domain in themeswitcher block. (issue #1896).
+* HTML Settings: check all radios. (issue #1551).
+* The generic stylesheet (style/core.css) is now loaded before all other stylesheets that are loaded through pagevars. (issue #1911).
+* Add requirement/warning messsage into the admin panel for the blocks. (issue #757).
+* Permission checks in the Users module were made more consistent throughout. (issue #1872).
+* New APIs DataUtil::decodeNVP(), DataUtil::encodeNVP(), DataUtil::encodeNVPArray().
+* Changed old password checker js sytem to "passwordchecker". (issue #1841).
+* Adapted the Extensions module for a Zikula multisites system with multiple domains. (issue #1968).
+* Modify html maxlength of block title to reflect the database structure. (issue #1980).
+* Addition of FileSystem class libraries to allow easy interaction with file systems via local/ftp(s)/sftp. (issue #1517).
+* Ability to export CSV file from users module added. (issue #1954).
+* Escaped illegal char in pagelock template. (issue #2004).
+* Added html exception to htaccess file (pagelock window was unreadable due an apache message). (issue #2006).
+* Added minute based refresh times for blocks. (issue #1999).
+* Added ability to administrate adminpanel with ajax, move modules to different categories, create/edit/delete admin categories. (issue #1919).
+* Altered ZLanguage::countryMap() for Sweden from sv to se.  Note the language code should be so, but the country code should be se. (issue #2017).
+* Blocks module admin section now has filtering options for block-position, module, language and active-status. The allows remove of the old showall/showinactive link in the admin section. (issue #2012, #2020)
+* Blocks module now has sorting options for the main columns in the admin view. (issue #2012).
+* Added various events through out the core execution cycle.
+* Fixed Zikula_Form_View::registerPlugin() in environments where the installation is not in the server document root.
+* Added adapter to support the illegal use of DBUtil::executeSQL() processing the ADODB object manually (without the use of DBUtil::marshallObjects().
+* Fixed theme list not sorted correctly on Theme view. (issue #1974).
+* Fixed pager plugin images always in english. (issue #1883).
+* Fixed wrong contents in modvar 'permareplace'. (issue #2044).
+* Updated css messages. (issue #2043, #2030).
+* Added support for HTTP 500 response in Errors module.
+* Improved password recovery workflow. (issue #1631).
+* Added user name recovery. (issue #243).
+* Fixed issue with system vars and modvars that prevented retrieval of a stored NULL value which would return the default value instead.
+* Added exception support in front controller and module controllers.
+* Removed core hack for AdvMailer module, use mailer.sendmessage events instead.
+* Removed core hack for MultiHook module, use theme.init events instead.
+* Added const render plugin and modifier to allow class constants in templates.
+* Added front controller exception handling.
+* Removed Zikula_View singleton pattern, this is now handled via Zikula_ServiceManager, one instance per module or plugin.
+* Removed need to specify domain= in template {gt} calls.
+* Improved StringUtil::highlightWords() (patch by Gabriele Pohl).
+* When short URLs are enabled, 3-letter or 2-letters can't be used anymore. This also fixes issues with the RSS theme. (issue #1800).
+* Fixed validation of directory based short URLs to produce 404 if target not found. (issue #923).
+* Deprecated FileUtil::mkdirs(), use native PHP mkdir() with $recursion flag set true instead.
+* Merged ObjectData and Workflow table definitions to Settings and deleted the modules - don't need separate modules just to provide table definitions.
+* tables.php: $module_column is now unnecessary if the there is no column prefix, i.e. if name => name.
+* All templates now have $eventManager, $serverManager and $controller (being the OO controller owner).
+* OO controllers now automatically creates renderer object and store in $renderer.
+* DataUtil::formatForOS() not Windows file path compatible. (issue #1838).
+* New location for core stylesheet in /style/core.css. (issue #2211).
+* Deprecated ZFeed and SimplePie from the core.
+* New location for core stylesheet in /style/core.css. (issue #2211).
+* Added @import handling to css combiner. (issue #1801).
+* New button styling. (issue #1574).
+* Relocated system fatal error templates (siteoff.tpl, notinstalled.tpl, dbconnectionerror.tpl and sessionfailed.tpl) to system/Theme/templates/system.
+* Changed core module templates to use .tpl
+* Add date in Zikula error log file. (issue #2209).
+* Allow override of style/core.css with config/style/core.css.
+* Provide 'pageutil.addvar_filter' event to override anything added by PageUtil::addVar, {pageaddvar}, or {pageaddvarblock}.  This allows for complete override freedom.
+* New default pager style. (issue #2264).
+* Streamlined user frontend of Themes module. (issue #2279, #3034).
+* Added Upgrade All options, and Module API to upgrade all modules with one click.  This will work for all non-complicated upgrades of Core also.
+* Fixed LogUtil errors in CategoryUtil (patch by Craig Heydenburg). (issue #2276).
+* Admin icons update of the system modules. (issue #2300).
+* tables.php now supports index options in the _column_idx array.  array(inxname, array('columns' => array(fld1, fld2..), 'options' => 'unique'). (issue #1885).
+* Merged the menutree into the Blocks module.
+* Added htmlentities modifier to properly convert utf8 chars to html entities.
+* Replaced SetEnvIf with FilesMatch in .htaccess files. Removed extensions tif, flv, ico, cur from all .htaccess, swf from all except modules/ and html from all except system/Theme/includes. (issue #2334).
+* Added FileUtil::exportCSV() to simplify data export to csv files.
+* Themes can now process ajax request natively. (issue #2326).
+* New block with User account links. (issue #2374).
+* Deprecated DataUtil::parseIniFile(), use native PHP parse_ini_file() instead.
+* The Mailer module can now send text-only, HTML-only, and multi-part/alternative e-mail messages. Multi-part/alternative messages contain both a plain text message and an HTML-formatted message. If a recipient's e-mail client does not support HTML messages, then the plain-text message will be displayed to him.
+* Admin can now resend a verification e-mail for a pending registration.
+* Admin can now send a password reset e-mail to a user.
+* All e-mail messages sent by the Users module can now be multi-part/alternative messages, containing both a plain-text version and an HTML version of the message. Templates for both are provided and automatically used if present.
+* The subject line of all e-mail messages sent by the Users module can now be set from within the e-mail message template. See the templates provided for examples. If multi-part/alternative messages are to be sent, the subject from the HTML version of the message is used (however, the subject should not use HTML).
+* The template file names for all e-mail messages sent from the Users module have changed. If a site upgrading from 1.2 has created custom templates for these messages, they should be converted to the new names, and the ability to send multi-part/alternative messages should be accounted for.
+* If an attempt is made to log into an account that is pending registration (either because it is awaiting approval, or is awaiting verification, or both), the site admin can elect to display that status to the user in the error message on log-in failure.
+* If an attempt is made to log into an account that is inactive (either because or is awaiting legacy activation, or because the admin set that activated state for the user), the site admin can elect to display that status to the user in the error message on log-in failure.
+* The password recovery work flow has been improved to be clearer to the user.
+* The new account registration process now collects a password reminder, and displays this reminder to the user as part of the password recovery process. For existing sites upgrading to 1.3, existing users will be asked for a password reminder when they change their password.
+* The option to have the system generate a password and send it to a newly registering user has been removed as a verification option. Sites upgrading to 1.3 who have this option set will find this option changed to verification with a user-selected password.
+* Except in one case, passwords are no longer sent via e-mail to newly registering users. The one exception is when an admin creates a user account, sets a password for that account himself, and specifically elects to send the password via e-mail.
+* Confirmation or verification codes for registration verification, verification of change of e-mail address, and for password reset requests all now use the same mechanism and are handled consistently.
+* Requests to change e-mail addresses that go unverified can be set to expire and be removed a specified number of days after the request is made.
+* Requests to register a new account where e-mail address verification is required can be set to expire and be removed a specified number of days after the e-mail verification message is sent. Registrations whose e-mail verification expires will be removed from the system. Registrations awaiting approval will not expire until after they are approved.
+* If the registration process is configured for both moderation (admin approval) and e-mail verification, then the order in which these occur can be set. Verification can be required before approval, after approval, or at any time before or after. The admin can override the order and cause one or the other process to occur at any time.
+* Error checking of registration and user account fields has been improved and unified.
+* All user names and e-mail addresses are now stored in (and thus displayed in) lower case.
+* New user names are required to consist of only letters, numbers, underscores and periods. Accented and other non-ASCII characters are permitted as long as their Unicode type is set to the letter or digit group.
+* When retrieving user accounts (for any purpose, including for logging in) by e-mail address, a duplicate e-mail address check is performed even if the Users module is set to require unique e-mail addresses. This is to prevent the wrong account from being returned if duplicate e-mail addresses were allowed at any point or were added by the administrator.
+* A user with rights to delete user accounts is prevented from deleting his own account.
+* The registration date, last login date, and all other dates saved to the database tables by the Users module are now guaranteed to be UTC date/times in the database. They might be adjusted for display by other functions, however.
+* Added option to translate the language changer block option into native language. (issue #2119).
+* Added {gettext} block. (issue #2414).
+* Added debugging toolbar (configurable in config.php).
+* Changed the label for the user's account activated status from 'Activated' to 'Status' in the administrator's Users manager.
+* The users list in the administrator's Users manager is now sortable by user name, uid (internal ID), registration date, date last logged in, and status.
+* Added markdown and markdown-extra support and with Smarty modifiers. (issue #2487).
+* Added doctrine templates for ObjectUtil services. (issue #2447).
+* Added doctrine support to DropdownRelationlist form view plugin. (issue #2442).
+* Added more HTML5 tags to allowed HTML settings page. (issue #2460).
+* Fixed conflict in search module short-urls url. (issue #2494).
+* Fixed minor issue in uploadinput form plugin. (issue #2551).
+* Added missing member var for display area format in dateinput form plugin. (issue #2552).
+* Added doctrine support to selectmodobject(Array) view plugins. (issue #2542).
+* Included generic url routing classes. (issue #2557)
+* Added a new attribute, precision, to the formfloatinput Form plugin, which controls the number of digits after the decimal. (issue #2616)
+* The userprofilelink Smarty modifier was splitted on profilelinkbyuid and profilelinkbyuname to avoid problems with numeric usernames (issue #2971).
+* Horizontal and vertical drop down menu examples for menutree. (issue #2313).
+* Fix bad icon transparency. Now using PNG icon files. (issue #2831).
+* Fix inconsistency with styles vs style. (issue #2805).
+* Cleanup RSS icons. (issue #2830).
+* Appropriate style for number fields. (issue #2757).
+* The localized category name is mandatory, while the form says otherwise. (issue #2749).
+* new Categories are by default not active, which is confusing IMO. (issue #2748).
+* Smoother animation with Zikula.UI.Accordion. (issue #2715).
+* Switchdisplaystate Rendering Bug in IE7 and Chrome. (issue #2714, #2707).
+* CSS issues in IE and Chrome. (issue #2685, #2702).
+* Smilies removed. (issue #2640).
+* New color picker solution. (issue #2634).
+* create easy drop-menu for module (admin) links. (issue #2646).
+* Dropdown menus. (issue #2649).
+* Several installer improvements. (issue #2801).
+* Added a new template block function {pageaddvarblock}...{/pageaddvarblock} to allow inline scripts, styles, etc. to be placed in the page's head section or near the closing body tag.
+* Renamed the page variable 'rawtext' to 'header' (Used with PageUtil, {pageaddvar}, {pagesetvar}, etc.). If operating in legacy mode, 'rawtext' will map to 'header', if not then 'rawtext' will be treated as just another page variable name, and will NOT render to the page.
+* Enabled support of persistent data on Zikula_Form_View to let Form Handlers store data through the process. (issue #3023).
+* Theme config .ini files now can handle their own variables, overriding the themevariables.ini general ones. (issue #3034).
