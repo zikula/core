@@ -49,7 +49,7 @@ Theme naming considerations
 Module considerations
 ---------------------
   Make sure all your modules are compatible with Zikula 1.2.x and have been completely
-  converted to 'gettext'.  Modules that are not will not function in Zikula 1.3.
+  converted to 'Gettext'.  Modules that are not will not function in Zikula 1.3.
 
   Zikula 1.2.x compliant modules will work in Zikula Core 1.3.x
 
@@ -79,8 +79,8 @@ Prepare your existing installation
     will be unable to proceed with the upgrade.
 
   - Upload all files from the package you downloaded, copying over your files.
-    Manually edit the NEW config/config.php with your database credentials as plain
-    text; 1.3 version do not use encoded values. Please be aware the config.php
+    Manually edit the NEW `config/config.php` with your database credentials as plain
+    text; 1.3 version do not use encoded values. Please be aware the `config.php`
     is quite different so please make sure you merge in the differences from the old
     config.php to the new one. To make this easy pay close attention to lines:
 
@@ -94,11 +94,11 @@ Prepare your existing installation
 
 Run the upgrade
 ===============
-WARNING - the moment you run upgrade.php, preparitory changes will be made the
+WARNING - the moment you run `upgrade.php`, preparitory changes will be made the
 the database for the 1.3 upgrade.  Your system will no longer function until you
 then manually complete the remaining step.
 
-Run the upgrade.php from the browser http://example.com/upgrade.php
+Run the upgrade.php from the browser `http://example.com/upgrade.php`
 Simply follow the instructions - this will involve chosing language, entering
 your administrator login and pressing next a few times.
 
