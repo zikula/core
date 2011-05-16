@@ -9,7 +9,7 @@ otherwise transform content.
 Category
 --------
 
-Filters are implemented in their own category 'filter'.
+Filters are implemented in their own category 'filters'.
 
 
 Area Type
@@ -17,9 +17,9 @@ Area Type
 
 There is only one kind of hook type in a filter bundle:
 
-    ui.filter       - This is a filter to be applied in a given area.  Filters should probably
-                      Have their own separate area(s) as it would give a user more control over
-                      what filters are applied and where.
+    filter   - This is a filter to be applied in a given area.  Filters should probably
+               Have their own separate area(s) as it would give a user more control over
+               what filters are applied and where.
 
 
 Subscriber Implementation
@@ -27,7 +27,7 @@ Subscriber Implementation
 
 Usage in a template:
 
-    {$var|notifyfilters:'news.filterhook.articles'}
+    {$var|notifyfilters:'news.filter_hooks.articles.filter'}
 
 This generates a Zikula_FilterHook event object that has the event name and
 the data to be filtered.
@@ -38,7 +38,7 @@ Provider Implementation
 
     class Handler
     {
-        public function ui_filter(Zikula_FilterHook $hook)
+        public static function filter(Zikula_FilterHook $hook)
         {
             $data = $hook->getData();
             $data = str_replace('foo', 'bar', $data);

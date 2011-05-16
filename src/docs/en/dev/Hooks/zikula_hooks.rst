@@ -29,41 +29,54 @@ The other kind of hookable events are hook filters which allow the site administ
 to selectively filter content.
 
 
+General Naming Convention
+-------------------------
+
+By convention we are use lower case letter and number, with full-stop and underscore
+characters only.  The full-stop is used to separate out logically separate items,
+a kind of namespacing, while the underscore is used in place of a space character
+to punctuate logically connected items.
+
+
 Area Naming
 -----------
 
 Areas should all be unique, so please use this format:
 
-    <type>_area.<category>.mymodule.<areaname>
+    <type>.<name>.<category>.<areaname>
+
+Type can be 'subscriber' or 'provider'
 
 For example:
 
-    provider_area.ui.ratings.rating (the provider area in 'ui' category)
-    subscriber_area.ui.news.articles  (the subscriber area in 'ui' category)
+    provider.ratings.ui_hooks.rating (the provider area in 'ui_hooks' category)
+    subscriber.ratings.blog.ui_hooks.articles  (the subscriber area in 'ui_hooks' category)
 
-    provider_area.filter.ratings.rating (the provider area in 'filter' category)
-    subscriber_area.filter.news.articles  (the subscriber area in 'filter' category)
+    provider.ratings.filter_hooks.rating (the provider area in 'filter_hooks' category)
+    subscriber.blog.filter_hooks.articles  (the subscriber area in 'filter_hooks' category)
 
 
 Hook Types
 ----------
 The following is a list of valid hook types.
 
-### 'ui' category
+### 'ui_hooks' category
 
-    ui.view         - Display hook for view/display templates.
-    ui.edit         - Display hook for create/edit forms.
-    ui.delete       - Display hook for delete dialogues (generally not used).
+    display_view    - Display hook for view/display templates.
 
-    validate.edit   - Used to validate input from an ui create/edit form.
-    validate.delete - Used to validate input from an ui create/edit form (generally no used).
+    form_edit       - Display hook for create/edit forms.
+    form_delete     - Display hook for delete dialogues.
 
-    process.edit    - Perform the final update actions for a ui create/edit form.
-    process.delete  - Perform the final delete actions for a ui form.
+    validate_edit   - Used to validate input from a create/edit form.
+    validate_delete - Used to validate input from a delete form.
 
-### 'filter' category
+    process_edit    - Perform the final update actions for a create/edit form.
+    process_delete  - Perform the final delete actions for a delete form.
 
-    ui.filter       - Filter's content in a template.
+
+### 'filter_hooks' category
+
+    filter          - Filter's content in a template.
 
 
 Subscriber Capability
@@ -86,15 +99,18 @@ using "Subscriber Bundles".  This is done in the Version.php
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookSubscriberBundle($this->name, 'subscriber_area.ui.news.articles', 'ui', $this->__('News Display Hooks'));
-        $bundle->addType('ui.view', 'news.hook.articles.ui.view');
-        $bundle->addType('ui.edit', 'news.hook.articles.ui.edit');
-        $bundle->addType('ui.delete', 'news.hook.articles.ui.delete');
-        $bundle->addType('validate.edit', 'news.hook.articles.validate.edit');
-        $bundle->addType('validate.delete', 'news.hook.articles.validate.delete');
-        $bundle->addType('process.edit', 'news.hook.articles.process.edit');
-        $bundle->addType('process.delete', 'news.hook.articles.process.delete');
+        $bundle = new Zikula_Version_HookSubscriberBundle($this->name, 'subscriber.blog.ui_hooks.articles', 'ui_hooks', $this->__('blog Article UI Hooks'));
+        $bundle->addEvent('display_view', 'blog.ui_hooks.articles.display_view');
+        $bundle->addEvent('form_edit', 'blog.ui_hooks.articles.form_edit');
+        $bundle->addEvent('form_delete', 'blog.ui_hooks.articles.form_delete');
+        $bundle->addEvent('validate_edit', 'blog.ui_hooks.articles.validate_edit');
+        $bundle->addEvent('validate_delete', 'blog.ui_hooks.articles.validate_delete');
+        $bundle->addEvent('process_edit', 'blog.ui_hooks.articles.process_edit');
+        $bundle->addEvent('process_delete', 'blog.ui_hooks.articles.process_delete');
+        $this->registerHookSubscriberBundle($bundle);
 
+        $bundle = new Zikula_Version_HookSubscriberBundle($this->name, 'subscriber.blog.filter_hooks.articles', 'filter_hooks', $this->__('blog Article Filter Hooks'));
+        $bundle->addEvent('filter', 'blog.filter_hooks.articles.filter');
         $this->registerHookSubscriberBundle($bundle);
     }
 
@@ -105,17 +121,14 @@ persistence layer using:
 
 The `addType()` method used in setting up hook bundles is how a subscriber
 indicates what hookable events are available (understood) by the module.
-The first parameter is the hook type (e.g., `'ui.view'`). The second parameter
-is the event name that is triggered by *THIS* module (e.g., `'news.hook.articles.ui.view'`).
+The first parameter is the hook type (e.g., `'display_view'`). The second parameter
+is the event name that is triggered by *THIS* module (e.g., `'blog.ui_hooks.articles.display_view'`).
 
-So if this module was a news module, then the second parameter is the unique
-name of a hookable event that only *this* news module actually triggers.  Under
+So if this module was a blog module, then the second parameter is the unique
+name of a hookable event that only *this* blog module actually triggers.  Under
 the hood, when a user attaches, say, a comment module (a hook provider), then
 the hook handler of the comment module will be attached to the HookManager
-using the event name supplied by the news module (the hook subscriber).
-
-For example, `attach news.ui.view` to `comments.handler.ui.view` which is the name of a
-callable handler registered by the hook provider (comment).
+using the event name supplied by the blog module (the hook subscriber).
 
 
 Provider Capability
@@ -138,8 +151,8 @@ what areas are supported and describes the hook handlers.
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookProviderBundle($this->name, 'provider_area.ui.ratings.rating', 'ui', $this->__('Ratings Hook Poviders'));
-        $bundle->addHook('hookhandler.ratings.ui.view', 'ui.view', 'Ratings_HookHandler', 'uiView', 'ratings.service');
+        $bundle = new Zikula_Version_HookProviderBundle($this->name, 'provider.ui_hooks.ratings.rating', 'ui_hooks', $this->__('Ratings Hook Poviders'));
+        $bundle->addServiceHandler('display_view', 'Ratings_HookHandler', 'displayView', 'ratings.rating');
         // add other hook handlers as needed
 
         $this->registerHookProviderBundle($bundle);
@@ -150,51 +163,45 @@ persistence layer using:
 
     HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
 
-A module may register either static class callable methods, like `Foo::Bar($event)` or
-services (which are instantiated class objects).  If using services, they must be
-instances of Zikula_Hook_AbstractHandler.  We use one API to register this.
+You may register static class methods as hook handlers or services.  Use the appropriate
+method `bundle->addServiceHandler()` and `bundle->addStaticHandler()` as required.
 
-Leaving `$serviceId = null`, will tell Zikula the callable is a static class method.
-If you give a `$serviceId`, then this class will be instantiated and used.  This means
-you can use the same `$serviceId` and have multiple methods inside if you wish.
+Service handlers must be an instance of Zikula_Hook_AbstractHandler.  This is preferred
+when the hook workflow requires some kind of runtime persistence for validation. When doing
+so you should specify the same service ID for all handlers in the bundle - this will ensure
+the same object is used throughout the runtime session which thus provides the persistence
+for the duration of the request cycle.
 
-The $name of the hook is the name of the handler - a common name.  This is NOT
-an event name.
-
-    $bundle->addHook($name, $type, $className, $method, $serviceId);
-
+Examples:
     // registering a static method handler.
-    $bundle->addHook('hookhandler.ratings.ui.view', 'ui.view', 'Ratings_Hooks', 'uiView');
+    $bundle->addStaticHandler('display_view', 'Ratings_Hooks', 'displayView', 'ratings.rating');
 
     // registering a service (preferred - class must be an instance of Zikula_Hook_AbstractHandler)
-    $bundle->addHook('hookhandler.ratings.ui.view', 'ui.view', 'Ratings_Hooks', 'uiView', 'module.ratings.ratings_hooks');
+    $bundle->addServiceHandler('display_.view', 'Ratings_Hooks', 'displayView', 'ratings.rating');
 
 
 Hook Events
 -----------
 
 In this section we will discuss the actual hookable event that is triggered by
-a subscriber module.
+a subscriber module.  The hook event object encapsulates information about the
+hookable event. First, we need the hook event name, e.g. `<module>.<category>.<area>.<type>`
 
-The hook event encapsulates information about the hookable event. First, we need
-the hook event name, e.g. `<module>.hook.<area>.ui.edit`
+### Naming Convention
 
-In PHP code, we must then create an appropriate hook object and then notify that
-hook using HookManager's notify.
+Hook events should be named as follows:
 
-In a template we must use the correct template plugin to notify the hooks.
+    `<module>.<category>.<area>.<type>`
 
-It might looks like this:
+### Event Trigger
 
-    $hookEvent = new Zikula_ProcessHook('news.hook.articles.process.update', $id, $url);
-    $this->notifyHooks($hookEvent);
-
-The URL is an instance of Zikula_ModUrl() which describes the URL of how to
-retrieve this particular object (the parent of the hook).
+To create a hookable event, create an appropriate hook object and then notify that
+hook using HookManager's notify() method.
 
 
-Implementing Hooks from the Subscriber Side
--------------------------------------------
+Subscriber Implementation
+-------------------------
+
 Hooks are only for use with the UI, and with UI-related processing like validation.
 
 Their main purpose it so one module can be attached to another at the UI layer,
@@ -203,33 +210,31 @@ implementation of hooks from the subscriber's side. In our example, that
 would mean the Blogging module.
 
 We don't need to be concerned with attaching hooks to modules, that is handled
-automatically by the administration UI.
+automatically by the administration UI and is under the control of the administrator.
 
 Attaching display hooks is very simple.  Inside the template simply add
 
-    {notifydisplayhooks eventname='news.hook.articles.ui.view' id=$id}
+    {notifydisplayhooks eventname='blog.ui_hooks.articles.display_view' id=$id}
 
-`$caller` will be added automatically unless you need to specify it, but the value is taken
-from the Zikula_View instance so in general it's not needed.
-
-The plugin will return all display hooks, sorted according to the administration
-settings.  The return is an array of
+The plugin will return all display hooks handler that respondes, sorted according to
+the administration settings.  The return is an array of
 
     array(
-        'providerarea1' => 'output1',
-        'providerarea2' => 'output2'
+        'providerarea1' => `Zikula_Response_DisplayHook`, // object
+        'providerarea2' => `Zikula_Response_DisplayHook`, // object
     );
 
 In the module controllers, you will need to implement the process and or validation
-hook types.  This can be done as follows:
+hook types.  This can be done as follows (example of a process hook).
 
-    $url = new Zikula_ModUrl(....); // describes how to retrieve this object
-    $hook = new Zikula_Process('news.hook.articles.process.create', $id, $url);
+    $url = new Zikula_ModUrl(....); // describes how to retrieve this object by URL metadata
+    $hook = new Zikula_Process('blog.ui_hooks.articles.process_create', $id, $url);
     $this->notifyHooks->notify($hook);
 
 
-HOOK RESPONSES FROM PROVIDERS
------------------------------
+Provider Display Hooks
+----------------------
+
 A hook handler should respond to a hookable event with a `Zikula_Response_DisplayHook`
 instance in the following manner.
 
@@ -243,23 +248,24 @@ instance in the following manner.
         // do stuff...
 
         // add this response to the event stack
-        $hook->setResponse(new Zikula_Response_DisplayHook('modulehook_area.modname.area', $view, $template));
+        $hook->setResponse(new Zikula_Response_DisplayHook('subscriber.ui_hooks.modname.area', $view, $template));
     }
 
 
-GENERAL WORKFLOW OF HOOKS
--------------------------
+WORKFLOW OF HOOKS
+-----------------
+
 The general workflow of hooks is as follows.
 
-#### Displaying an item ####
+### Displaying an item
 
 When viewing an item of some sort, we want to allow other modules to attach some form of
-content to the display view.  We simply notify `ui.view` hooks with the item being displayed
+content to the display view.  We simply notify `display_view` hooks with the item being displayed
 (the subject), the id and the module name as arguments.
 
-In the template we simply use something like this, using the `ui.view` hook type.
+In the template we simply use something like this, using the `display_view` hook type.
 
-    {notifydisplayhooks eventname='<module>.hook.<area>.ui.view' id=$id}
+    {notifydisplayhooks eventname='<module>.ui_hooks.<area>.display_view' id=$id}
 
 
 Introduction to new/edit/delete types
@@ -280,22 +286,23 @@ For this reason also, there is no need for separate display and processing metho
 `edit()` to display edit form, and `update()` to validate and update the record, followed by a
 redirect simply do not make sense when it can be done easily in one controller method.
 
-#### Creating a new item ####
+
+### Creating a new item
 
 When when we create an item, essentially, we visit an edit page with no id in the request.
 From this we know that the action is not an edit, but a 'create new'.  We can determine
 if it's a brand new form or a submitted form by reading the form submit property.
 Accordingly, we can notify the system of the hook events.
 
-When displaying a new empty form, we simply trigger a `ui.edit` in the template with
+When displaying a new empty form, we simply trigger a `form_edit` in the template with
 {notifydisplayhooks} using a null id.
 
-    {notifydisplayhooks eventname='<module>.hook.<area>.ui.edit' id=null}
+    {notifydisplayhooks eventname='<module>.ui_hooks.<area>.form_edit' id=null}
 
 When we come to validate a new create form, this means we have received a submit command
-in the form.  We can then validate our form and then trigger a `validate.edit` hook with
+in the form.  We can then validate our form and then trigger a `validate_edit` hook with
 
-    $hook = new Zikula_ValidationHook('...validate.edit', new Zikula_Collection_HookValidationProviders());
+    $hook = new Zikula_ValidationHook('...validate_edit', new Zikula_Collection_HookValidationProviders());
     $this->notifyHooks($hook);
     $validators = $hook->getValidators();
 
@@ -304,7 +311,7 @@ with `$validators->hasErrors()`.  Together with the form submit the method can d
 if it's safe to commit the data to the database or, if the form needs to be redisplayed with
 validation errors.
 
-If it's ok simply commit the form data, then trigger a `process.edit` Zikula_ProcessHook with
+If it's ok simply commit the form data, then trigger a `process_edit` Zikula_ProcessHook with
 
     new Zikula_ProcessHook($name, $id, $url);
 
@@ -316,11 +323,12 @@ the validation problems automatically as the validation of each handler will per
 the `Zikula_HookHandler` instances unless using an outdated workflow where the validation method
 redirects to display methods, in which case you will have to do validation again.
 
-`ui.edit` hooks are displayed in the template with
+`form_edit` hooks are displayed in the template with
 
-    {notifydisplayhooks eventname='<module>.hook.<area>.ui.edit' id=$id}
+    {notifydisplayhooks eventname='<module>.ui_hooks.<area>.form_edit' id=$id}
 
-#### Editing an existing item ####
+
+### Editing an existing item
 
 When when we edit an item, we visit an edit page with an id in the request and the
 controller will retrieve the item to be edited from the database.
@@ -329,14 +337,14 @@ We can determine if we should validate and commit the item or just display the i
 editing by reading the form submit property.
 Accordingly, we can notify the system of the hook events.
 
-When displaying an edit form, we simply trigger a `ui.edit` hook with with
+When displaying an edit form, we simply trigger a `form_edit` hook with with
 
-     {notifydisplayhooks eventname='<module>.hook.<area>.ui.edit' id=$id}
+     {notifydisplayhooks eventname='<module>.ui_hooks.<area>.form_edit' id=$id}
 
 When we come to validate an edit form, this means we have received a submit command
-in the form.  We can then validate our form and then trigger a `validate.edit` event with
+in the form.  We can then validate our form and then trigger a `validate_edit` event with
 
-    $hook = new Zikula_ValidationHook('...validate.edit', new Zikula_Collection_HookValidationProviders());
+    $hook = new Zikula_ValidationHook('...validate_edit', new Zikula_Collection_HookValidationProviders());
     $this->notifyHooks($hook);
     $validators = $hook->getValidators();
 
@@ -345,20 +353,22 @@ with `$validators->hasErrors()`.  Together with the form submit the method can d
 if it's safe to commit the data to the database or, if the form needs to be redisplayed with
 validation errors.
 
-If it's ok simply commit the form data, then trigger a `process.edit` event with
+If it's ok simply commit the form data, then trigger a `process_edit` event with
 
     new Zikula_ProcessHook($name, $id, $url);
 
 If the data is not ok, then simply redisplay the template.  The triggered event will pick up
 the validation problems automatically as the validation of each handler will persist in
-the `Zikula_HookHandler` instances unless using an outdated workflow where the validation method
+the `Zikula_Hook_AbstractHandler` instances unless using an outdated workflow where the validation method
 redirects to display methods, in which case you will have to do validation again.
 
-`ui.edit` hooks are displayed in the template with
+`form_edit` hooks are displayed in the template with
 
-    {notifydisplayhooks eventname='<module>.hook.<area>.ui.edit' id=$id}
+    {notifydisplayhooks eventname='<module>.ui_hooks.<area>.form_edit' id=$id}
 
-#### Deleting an item ####
+
+### Deleting an item
+
 There are many different approaches that can be taken to deleting an item. For example we
 can add a delete button to an edit form.  We usually would have a confirmation screen
 or we might just use a javascript confirmation.  Generally, we would not want to add
@@ -369,8 +379,7 @@ triggering a hookable event with
 
     new Zikula_ProcessHook($name, $id, $url);
 
-`ui.delete` hooks are displayed in the template with
+`form_delete` hooks are displayed in the template with
 
-    {notifydisplayhooks eventname='<module>.hook.<area>.ui.delete' id=$id}
-
+    {notifydisplayhooks eventname='<module>.ui_hook.<area>.form_delete' id=$id}
 
