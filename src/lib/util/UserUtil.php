@@ -17,7 +17,6 @@
  */
 class UserUtil
 {
-
     /**
      * Return a user object.
      *
@@ -185,20 +184,11 @@ class UserUtil
     {
         $userdata = self::getUsers($where, $orderBy);
 
-        $keys = array_keys($userdata);
-        $size = sizeof($keys);
-        $list = '';
-
-        if ($size == 0) {
-            return '-1';
-        }
-
-        for ($i = 0; $i < $size; $i++) {
-            $list .= $keys[$i] . $separator;
-        }
-
-        if (($length = strlen($list)) > 0) {
-            $list = substr($list, 0, $length - 1);
+        $list = '-1';
+        if ($userdata && count($userdata)) {
+            $uids = array_keys($userdata);
+            sort($uids);
+            $list = implode((string)$separator, $uids);
         }
 
         return $list;
@@ -235,16 +225,11 @@ class UserUtil
     {
         $groupdata = self::getGroups($where, $orderBy);
 
-        $keys = array_keys($groupdata);
-        $numkeys = sizeof($keys);
         $list = '';
-
-        for ($i = 0; $i < $numkeys; $i++) {
-            $list .= $keys[$i] . $separator;
-        }
-
-        if (($length = strlen($list)) > 0) {
-            $list = substr($list, 0, $length - 1);
+        if ($groupdata && count($groupdata)) {
+            $gids = array_keys($groupdata);
+            sort($gids);
+            $list = implode((string)$separator, $gids);
         }
 
         return $list;
@@ -268,8 +253,7 @@ class UserUtil
             $where = "WHERE z_uid = '" . DataUtil::formatForStore($uid) . "'";
         }
 
-        $groups = DBUtil::selectFieldArray('group_membership', 'gid', $where);
-        return $groups;
+        return DBUtil::selectFieldArray('group_membership', 'gid', $where);
     }
 
     /**
@@ -280,29 +264,30 @@ class UserUtil
      *
      * @return string A string list of group ids.
      */
-    public static function getGroupListForUser($uid = 0, $separator = ",")
+    public static function getGroupListForUser($uid = null, $separator = ',')
     {
+        static $cache;
+
         if (!$uid) {
             $uid = self::getVar('uid');
         }
 
-        $gidArray = self::getGroupsForUser($uid);
-        $size = count($gidArray);
-        $gidlist = '';
-
-        if ($size == 0) {
-            return "-1";
+        if (!$uid) {
+            return '-1';
         }
 
-        for ($i = 0; $i < $size; $i++) {
-            $gidlist .= $gidArray[$i] . $separator;
+        if (!isset($cache[$uid])) {
+            $gidArray = self::getGroupsForUser($uid);
+
+            if ($gidArray && (bool)count($gidArray)) {
+                sort($gidArray);
+                $cache[$uid] = implode((string)$separator, $gidArray);
+            } else {
+                $cache[$uid] = '-1';
+            }
         }
 
-        if (($length = strlen($gidlist)) > 0) {
-            $gidlist = substr($gidlist, 0, $length - 1);
-        }
-
-        return $gidlist;
+        return $cache[$uid];
     }
 
     /**
@@ -319,8 +304,8 @@ class UserUtil
         }
 
         $where = "WHERE z_gid = '" . DataUtil::formatForStore($gid) . "'";
-        $users = DBUtil::selectFieldArray('group_membership', 'uid', $where);
-        return $users;
+
+        return DBUtil::selectFieldArray('group_membership', 'uid', $where);
     }
 
     /**
@@ -332,13 +317,14 @@ class UserUtil
     {
         // decide if we have to use the (obsolete) DUDs from the Profile module
         $profileModule = System::getVar('profilemodule', '');
+
         if (empty($profileModule) || $profileModule != 'Profile' || !ModUtil::available($profileModule)) {
             return array();
         }
 
         ModUtil::dbInfoLoad($profileModule);
-        $dudfields = DBUtil::selectObjectArray('user_property');
-        return $dudfields;
+
+        return DBUtil::selectObjectArray('user_property');
     }
 
     /**
@@ -403,22 +389,22 @@ class UserUtil
 
         $groupdata = self::getGroups('', 'ORDER BY z_name');
 
-        if (sizeof($groupdata) == 0) {
+        if (!$groupdata || !count($groupdata)) {
             return $dropdown;
         }
-
-        $keys = array_keys($groupdata);
-        $numkeys = sizeof($keys);
 
         if ($includeAll) {
             $dropdown[] = array('id' => $includeAll, 'name' => $allText);
         }
 
-        for ($i = 0; $i < $numkeys; $i++) {
-            if (!isset($ignore[$keys[$i]])) {
-                $dropdown[] = array('id' => $keys[$i], 'name' => $groupdata[$keys[$i]]['name']);
+        foreach (array_keys($groupdata) as $gid) {
+            if (!isset($ignore[$gid])) {
+                $gname = $groupdata[$gid]['name'];
+                $dropdown[$gname] = array('id' => $gid, 'name' => $gname);
             }
         }
+
+        ksort($dropdown);
 
         return $dropdown;
     }
@@ -450,22 +436,22 @@ class UserUtil
 
         $userdata = self::getUsers($where, 'ORDER BY z_uname');
 
-        if (sizeof($userdata) == 0) {
+        if (!$userdata || !count($userdata)) {
             return $dropdown;
         }
-
-        $keys = array_keys($userdata);
-        $numkeys = sizeof($keys);
 
         if ($includeAll) {
             $dropdown[] = array('id' => $includeAll, 'name' => $allText);
         }
 
-        for ($i = 0; $i < $numkeys; $i++) {
-            if (!isset($ignore[$keys[$i]])) {
-                $dropdown[] = array('id' => $keys[$i], 'name' => $userdata[$keys[$i]]['name']);
+        foreach (array_keys($userdata) as $uid) {
+            if (!isset($ignore[$uid])) {
+                $uname = $userdata[$uid]['uname'];
+                $dropdown[$uname] = array('id' => $uid, 'name' => $uname);
             }
         }
+
+        ksort($uname);
 
         return $dropdown;
     }
@@ -485,7 +471,7 @@ class UserUtil
         if (!isset($uid) || !is_numeric($uid) || ((string)((int)$uid) != $uid) || (($uid < -1) || ($uid == 0) || ($uid == 1))) {
             throw new Zikula_Exception_Fatal('Attempt to get authentication information for an invalid user id.');
         }
-        
+
         if ($uid == -1) {
             if (self::isLoggedIn()) {
                 $uid = self::getVar('uid');
@@ -493,9 +479,9 @@ class UserUtil
                 throw new Zikula_Exception_Fatal('Attempt to get authentication information for an invalid user id.');
             }
         }
-        
+
         $userAuthenticationInfo = array();
-        
+
         $authenticationModules = ModUtil::getModulesCapableOf(Users_Constant::CAPABILITY_AUTHENTICATION);
         if ($authenticationModules) {
             $accountRecoveryArgs = array (
@@ -508,7 +494,7 @@ class UserUtil
                 }
             }
         }
-        
+
         return $userAuthenticationInfo;
     }
 
@@ -525,18 +511,21 @@ class UserUtil
     public static function login($loginID, $userEnteredPassword, $rememberme = false, $checkPassword = true)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::loginUsing()')), E_USER_DEPRECATED);
+
         $authenticationInfo = array(
-                'login_id'  => $loginID,
-                'pass'      => $userEnteredPassword,
+            'login_id' => $loginID,
+            'pass'     => $userEnteredPassword,
         );
         $authenticationMethod = array(
             'modname'   => 'Users',
         );
+
         if (ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::DEFAULT_LOGIN_METHOD) == Users_Constant::LOGIN_METHOD_EMAIL) {
             $authenticationMethod['method'] = 'email';
         } else {
             $authenticationMethod['method'] = 'uname';
         }
+
         return self::loginUsing($authenticationMethod, $authenticationInfo, $rememberme, null, $checkPassword);
     }
 
@@ -622,11 +611,12 @@ class UserUtil
             // Authenticate the loginID and userEnteredPassword against the specified authentication module.
             // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
             $checkPasswordArgs = array(
-                    'authentication_info'   => $authenticationInfo,
-                    'authentication_method' => $authenticationMethod,
-                    'reentrant_url'         => $reentrantURL,
+                'authentication_info'   => $authenticationInfo,
+                'authentication_method' => $authenticationMethod,
+                'reentrant_url'         => $reentrantURL,
             );
             return ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'checkPassword', $checkPasswordArgs, 'Zikula_Api_AbstractAuthentication');
+
         } else {
             return false;
         }
@@ -668,9 +658,9 @@ class UserUtil
 
         if (self::preAuthenticationValidation($authenticationMethod, $reentrantURL)) {
             $authenticateUserArgs = array(
-                    'authentication_info'   => $authenticationInfo,
-                    'authentication_method' => $authenticationMethod,
-                    'reentrant_url'         => $reentrantURL,
+                'authentication_info'   => $authenticationInfo,
+                'authentication_method' => $authenticationMethod,
+                'reentrant_url'         => $reentrantURL,
             );
             $authenticatedUid = ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'authenticateUser', $authenticateUserArgs, 'Zikula_Api_AbstractAuthentication');
         }
@@ -898,9 +888,9 @@ class UserUtil
                     if (isset($redirectURL)) {
                         if (isset($sessionVarName)) {
                             SessionUtil::requireSession();
-                            
+
                             $sessionVars = SessionUtil::getVar('Users_User_Controller_login', array(), 'Zikula_Users', false, false);
-                            
+
                             $sessionVars = array(
                                 'returnpage'            => isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : '',
                                 'authentication_info'   => $authenticationInfo,
@@ -943,14 +933,14 @@ class UserUtil
         if (!isset($uname) || !is_string($uname) || empty($uname)) {
             throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid uname.'));
         }
-        
+
         $uid = self::getIdFromName($uname);
-        
+
         $authenticationMethod = array(
             'modname' => 'Users',
             'method'  => 'uname',
         );
-        
+
         self::setUserByUid($uid, $rememberMe, $authenticationMethod);
     }
 
@@ -972,12 +962,12 @@ class UserUtil
         if (!isset($uid) || empty($uid) || ((string)((int)$uid) != $uid)) {
             throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid uid.'));
         }
-        
+
         $userObj = self::getVars($uid);
         if (!isset($userObj) || !is_array($userObj) || empty($userObj)) {
             throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an unknown uid.'));
         }
-        
+
         if (!isset($authenticationMethod)) {
             $authenticationMethod = array(
                 'modname' => 'Users',
@@ -988,7 +978,7 @@ class UserUtil
                 ) {
             throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid authentication method.'));
         }
-        
+
         // Storing Last Login date -- store it in UTC! Do not use date() function!
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
         if (!self::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $userObj['uid'])) {
@@ -999,7 +989,7 @@ class UserUtil
         if (!System::isInstalling()) {
             SessionUtil::requireSession();
         }
-        
+
         // Set session variables -- this is what really does the Zikula login
         SessionUtil::setVar('uid', $userObj['uid']);
         SessionUtil::setVar('authentication_method', $authenticationMethod, 'Zikula_Users');
@@ -1538,6 +1528,7 @@ class UserUtil
     public static function getPasswordHashMethodCode($hashAlgorithmName)
     {
         static $hashMethodCodesByName;
+
         if (!isset($hashMethodCodesByName)) {
             $hashMethodCodesByName = self::getPasswordHashMethods(false);
         }
@@ -1561,6 +1552,7 @@ class UserUtil
     public static function getPasswordHashMethodName($hashAlgorithmCode)
     {
         static $hashMethodNamesByCode;
+
         if (!isset($hashMethodNamesByCode)) {
             $hashMethodNamesByCode = self::getPasswordHashMethods(true);
         }
@@ -1588,6 +1580,7 @@ class UserUtil
     public static function validatePassword($unhashedPassword)
     {
         $minLength = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH, Users_Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
+
         return isset($unhashedPassword)
                 && is_string($unhashedPassword)
                 && (strlen($unhashedPassword) >= $minLength);
@@ -1621,6 +1614,7 @@ class UserUtil
             if (!$hashAlgorithmName) {
                 return LogUtil::registerArgsError();
             }
+
         } else {
             $hashAlgorithmName = ModUtil::getVar('Users', 'hash_method', '');
             $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
@@ -1631,6 +1625,7 @@ class UserUtil
 
         return SecurityUtil::getSaltedHash($unhashedPassword, $hashAlgorithmName, self::getPasswordHashMethods(false), 5, Users_Constant::SALT_DELIM);
 
+        // FIXME this return is not reached
         return array(
                 'hashMethodCode' => $hashMethodCode,
                 'hash' => hash($hashAlgorithmName, $unhashedPassword),
@@ -1650,6 +1645,7 @@ class UserUtil
         }
         $minLength = min($minLength, 25);
         $maxLength = min($minLength + 3, 25);
+
         return RandomUtil::getStringForPassword($minLength, $maxLength);
     }
 
@@ -1837,6 +1833,7 @@ class UserUtil
     public static function getTheme($force = false)
     {
         static $theme;
+
         if (isset($theme) && !$force) {
             return $theme;
         }
@@ -1983,6 +1980,7 @@ class UserUtil
     public static function getIdFromName($uname, $forRegistration = false)
     {
         $result = self::getVars($uname, false, 'uname', $forRegistration);
+
         return ($result && isset($result['uid']) ? $result['uid'] : false);
     }
 
@@ -1997,6 +1995,7 @@ class UserUtil
     public static function getIdFromEmail($email, $forRegistration = false)
     {
         $result = self::getVars($email, false, 'email', $forRegistration);
+
         return ($result && isset($result['uid']) ? $result['uid'] : false);
     }
 
@@ -2055,9 +2054,9 @@ class UserUtil
                 ) {
             throw new InvalidArgumentException(__('An invalid uid was provided.'));
         }
-        
+
         $isRegistration = false;
-        
+
         $user = self::getVars($uid);
         if (!$user) {
             $user = self::getVars($uid, false, 'uid', true);
@@ -2065,7 +2064,7 @@ class UserUtil
                 $isRegistration = true;
             }
         }
-        
+
         return $isRegistration;
     }
 }
