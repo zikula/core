@@ -61,8 +61,10 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupHookManager(Zikula_Event $event)
     {
         $storageDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_Storage_Doctrine');
-        $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula_HookManager');
-        $hookManagerDef->setConstructorArgs(array($storageDef, new Zikula_ServiceManager_Definition('Zikula_EventManager', array(new Zikula_ServiceManager_Reference('zikula.servicemanager')))));
+        $smRef = new Zikula_ServiceManager_Reference('zikula.servicemanager');
+        $eventManagerDef = new Zikula_ServiceManager_Definition('Zikula_EventManager', array($smRef));
+        $hookFactoryDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_ServiceFactory', array($smRef, 'zikula.eventmanager'));
+        $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula_HookManager',  array($storageDef, $eventManagerDef, $hookFactoryDef));
         $this->serviceManager->registerService('zikula.hookmanager', $hookManagerDef);
     }
 
