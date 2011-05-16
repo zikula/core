@@ -20,7 +20,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
 {
     /**
      * Find users.
-     * 
+     *
      * Parameters passed in the $args array:
      * -------------------------------------
      * string $args['uname']         A fragment of a user name on which to search using an SQL
@@ -137,7 +137,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
      * numeric|array $args['uid']  A single (numeric integer) user id, or an array of user ids to delete.
      * boolean       $args['mark'] If true, then mark for deletion, but do not actually delete.
      *                                  defaults to false.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True if successful, false otherwise.
@@ -208,7 +208,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
 
     /**
      * Send an e-mail message to one or more users.
-     * 
+     *
      * Parameters passed in the $args array:
      * -------------------------------------
      * numeric|array $args['uid']                         A single (numeric integer) uid or an array of uids to which the e-mail should be sent.
@@ -223,7 +223,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
      * @param array $args All arguments passed to this function.
      *
      * @return bool True on success; otherwise false
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have sufficient access to send mail.
      */
     public function sendmail($args)
@@ -378,7 +378,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
      * -------------------------------------
      * string $args['key']         The field to be searched, typically 'uname' or 'email'.
      * array  $args['valuesarray'] An array containing the values to be matched.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return array|bool An array of user records indexed by user name, each whose key field matches one value in the
@@ -415,7 +415,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
      * array $args['importvalues'] An array of information used to create new user records. Each element of the
      *                                  array should represent the minimum information to create a user record, including
      *                                  'uname', 'email', 'pass', etc.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success; false otherwise.
