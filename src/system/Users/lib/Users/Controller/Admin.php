@@ -389,9 +389,9 @@ class Users_Controller_Admin extends Zikula_AbstractController
         );
 
         if ($callbackFunc == 'mailUsers') {
-              $processEditEvent = $this->eventManager->notify('users.mailuserssearch.process_edit', null, array(), $findUsersArgs);
+              $processEditEvent = $this->eventManager->notify(new Zikula_Event('users.mailuserssearch.process_edit', null, array(), $findUsersArgs));
         } else {
-            $processEditEvent = $this->eventManager->notify('users.search.process_edit', null, array(), $findUsersArgs);
+            $processEditEvent = $this->eventManager->notify(new Zikula_Event('users.search.process_edit', null, array(), $findUsersArgs));
         }
 
         $findUsersArgs = $processEditEvent->getData();
@@ -596,7 +596,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             } else {
                 $errorFields = $formData->getErrorMessages();
             }
- 
+
             $event = new Zikula_Event('users.user.validate_edit', $user, array(), new Zikula_Hook_ValidationProviders());
             $validators = $this->eventManager->notify($event)->getData();
 
