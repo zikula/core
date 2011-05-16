@@ -76,22 +76,20 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         $this->generateRuntimeHandlers();
     }
 
-    public function registerProvider($name, $owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId=null)
+    public function registerProvider($owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId=null)
     {
-        $areaId = $this->registerArea($areaName, self::PROVIDER, $owner, $subOwner, $category);
+        $pareaId = $this->registerArea($areaName, self::PROVIDER, $owner, $subOwner, $category);
 
         $provider = new Zikula_Doctrine_Model_HookProvider();
         $provider->merge(array(
-                'name' => $name,
                 'owner' => $owner,
                 'subowner' => $subOwner,
-                'pareaid' => $areaId,
+                'pareaid' => $pareaId,
                 'hooktype' => $hookType,
                 'category' => $category,
                 'classname' => $className,
                 'method' => $method,
                 'serviceid' => $serviceId,
-                'priority' => 10, // obsolete
         ));
         $provider->save();
     }
@@ -205,7 +203,6 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
                         'sareaid' => $subscriberAreaId,
                         'pareaid' => $providerAreaId,
                         'eventname' => $subscriber['eventname'],
-                        'handlername' => $provider['name'],
                         'classname' => $provider['classname'],
                         'method' => $provider['method'],
                         'serviceid' => $provider['serviceid'],

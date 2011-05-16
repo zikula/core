@@ -36,16 +36,6 @@ class Zikula_Doctrine_Model_HookProvider extends Doctrine_Record
              'autoincrement' => true,
              ));
 
-        $this->hasColumn('name', 'string', 60, array(
-             'type' => 'string',
-             'length' => 60,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
-
         $this->hasColumn('owner', 'string', 40, array(
              'type' => 'string',
              'length' => 40,
@@ -86,7 +76,7 @@ class Zikula_Doctrine_Model_HookProvider extends Doctrine_Record
              'autoincrement' => false,
              ));
 
-        $this->hasColumn('category', 'string', 10, array(
+        $this->hasColumn('category', 'string', 20, array(
              'type' => 'string',
              'length' => 10,
              'fixed' => false,
@@ -95,7 +85,7 @@ class Zikula_Doctrine_Model_HookProvider extends Doctrine_Record
              'notnull' => true,
              'autoincrement' => false,
              ));
-        
+
         $this->hasColumn('classname', 'string', 60, array(
              'type' => 'string',
              'length' => 60,
@@ -126,21 +116,9 @@ class Zikula_Doctrine_Model_HookProvider extends Doctrine_Record
              'autoincrement' => false,
              ));
 
-        $this->hasColumn('priority', 'integer', 4, array(
-             'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
-
         $this->index('nameidx', array(
                 'fields' => array(
-                    'name' => array(
-                        'sorting' => 'ASC',
-                        'length'  => 60),
+                    'pareaid', 'hooktype',
                     ),
                 'type' => 'unique'));
     }
