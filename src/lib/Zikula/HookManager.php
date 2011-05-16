@@ -39,15 +39,24 @@ class Zikula_HookManager
     private $loaded;
 
     /**
+     * Service Factory.
+     *
+     * @var Zikula_HookManager_ServiceFactory
+     */
+    private $factory;
+
+    /**
      * Constructor.
      *
      * @param Zikula_HookManager_StorageInterface $storage
-     * @param Zikula_EventManager $eventManager
+     * @param Zikula_EventManager                 $eventManager
+     * @param Zikula_HookManager_ServiceFactory   $factory
      */
-    public function __construct(Zikula_HookManager_StorageInterface $storage, Zikula_EventManager $eventManager)
+    public function __construct(Zikula_HookManager_StorageInterface $storage, Zikula_EventManager $eventManager, Zikula_HookManager_ServiceFactory $factory)
     {
         $this->storage = $storage;
         $this->eventManager = $eventManager;
+        $this->factory = $factory;
     }
 
     /**
@@ -115,8 +124,8 @@ class Zikula_HookManager
      */
     public function registerProviderBundle(Zikula_HookManager_ProviderBundle $bundle)
     {
-        foreach ($bundle->getHooks() as $name => $hook) {
-            $this->storage->registerProvider($name, $bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $hook['hooktype'], $bundle->getCategory(), $hook['classname'], $hook['method'], $hook['serviceid']);
+        foreach ($bundle->getHooks() as $hook) {
+            $this->storage->registerProvider($bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $hook['hooktype'], $bundle->getCategory(), $hook['classname'], $hook['method'], $hook['serviceid']);
         }
         $this->reload();
     }
@@ -281,36 +290,19 @@ class Zikula_HookManager
     {
         $handlers = $this->storage->getRuntimeHandlers();
         foreach ($handlers as $handler) {
-            if ($handler['serviceid'] && !$this->eventManager->getServiceManager()->hasService($handler['serviceid'])) {
-                $definition = new Zikula_ServiceManager_Definition($handler['classname'], array(new Zikula_ServiceManager_Reference('zikula.servicemanager')));
-                $this->eventManager->getServiceManager()->registerService($handler['serviceid'], $definition);
+            if ($handler['serviceid']) {
+                $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
+            } else {
+                $callable = array($handler['classname'], $handler['method']);
             }
-            $callable = $this->resolveCallable($handler);
+
             try {
                 $this->eventManager->attach($handler['eventname'], $callable); //, $handler['priority']);
             } catch (InvalidArgumentException $e) {
-                throw new RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                throw new Zikula_HookManager_Exception_RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
             }
         }
         return $this;
-    }
-
-    /**
-     * Resolve callable.
-     *
-     * @param array $handler
-     *
-     * @return array|Zikula_ServiceHandler
-     */
-    private function resolveCallable(array $handler)
-    {
-        if ($handler['serviceid']) {
-            $callable = new Zikula_ServiceHandler($handler['serviceid'], $handler['method']);
-        } else {
-            $callable = array($handler['classname'], $handler['method']);
-        }
-
-        return $callable;
     }
 
     /**

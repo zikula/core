@@ -26,13 +26,6 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     protected $eventManager;
 
     /**
-     * ServiceManager instance.
-     *
-     * @var Zikula_ServiceManager
-     */
-    protected $serviceManager;
-
-    /**
      * Translation domain.
      *
      * @var string
@@ -63,14 +56,13 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param Zikula_ServiceManager $eventManager ServiceManager.
      *
      * @throws InvalidArgumentException If $this->eventNames is invalid.
      */
-    public function __construct(Zikula_ServiceManager $serviceManager)
+    public function __construct(Zikula_EventManager $eventManager)
     {
-        $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        $this->eventManager = $eventManager;
         $this->setup();
     }
 
@@ -95,16 +87,6 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     public function getEventManager()
     {
         return $this->eventManager;
-    }
-
-    /**
-     * Get servicemanager.
-     *
-     * @return Zikula_ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager;
     }
 
     /**
