@@ -65,7 +65,7 @@ class Users_Version extends Zikula_AbstractVersion
         // Subscriber bundles
 
         // Bundle for forms that create and edit user account records (both by admin and by user).
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.ui_hooks.users.user', 'ui_hooks', $this->__('User and registration management hooks'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.user', 'ui_hooks', $this->__('User and registration management hooks'));
         $bundle->addEvent('display_view',    'users.ui_hooks.user.display_view');
         $bundle->addEvent('form_edit',       'users.ui_hooks.user.form_edit');
         $bundle->addEvent('form_delete',     'users.ui_hooks.user.form_delete');
@@ -76,14 +76,14 @@ class Users_Version extends Zikula_AbstractVersion
         $this->registerHookSubscriberBundle($bundle);
 
         // Bundle for the login form (both the block and the login).
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.ui_hooks.users.login', 'ui_hooks', $this->__('Login form and block hooks'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.login', 'ui_hooks', $this->__('Login form and block hooks'));
         $bundle->addEvent('form_edit',     'users.ui_hooks.login.form_edit');
         $bundle->addEvent('validate_edit', 'users.ui_hooks.login.validate_edit');
         $bundle->addEvent('process_edit',  'users.ui_hooks.login.process_edit');
         $this->registerHookSubscriberBundle($bundle);
 
         // Bundle for the list of authentication methods on the login block and the login.
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.ui_hooks.users.authentication_method_selectors', 'ui_hooks', $this->__('Pre-login authentication method selector hooks'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.authentication_method_selectors', 'ui_hooks', $this->__('Pre-login authentication method selector hooks'));
         $bundle->addEvent('display_view', 'users.ui_hooks.authentication_method_selectors.display_view');
         $this->registerHookSubscriberBundle($bundle);
     }

@@ -50,7 +50,7 @@ Type can be 'subscriber' or 'provider'
 For example:
 
     provider.ratings.ui_hooks.rating (the provider area in 'ui_hooks' category)
-    subscriber.ratings.blog.ui_hooks.articles  (the subscriber area in 'ui_hooks' category)
+    subscriber.blog.ui_hooks.articles  (the subscriber area in 'ui_hooks' category)
 
     provider.ratings.filter_hooks.rating (the provider area in 'filter_hooks' category)
     subscriber.blog.filter_hooks.articles  (the subscriber area in 'filter_hooks' category)
