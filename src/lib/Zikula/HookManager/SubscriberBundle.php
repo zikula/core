@@ -32,11 +32,11 @@ class Zikula_HookManager_SubscriberBundle
     private $subOwner;
 
     /**
-     * Hook types.
+     * Hook events.
      *
      * @var array
      */
-    private $hookTypes = array();
+    private $events = array();
 
     /**
      * Title.
@@ -76,13 +76,13 @@ class Zikula_HookManager_SubscriberBundle
     }
 
     /**
-     * Get hooktypes property.
+     * Get events.
      *
      * @return array
      */
-    public function getHookTypes()
+    public function getEvents()
     {
-        return $this->hookTypes;
+        return $this->events;
     }
 
     /**
@@ -149,16 +149,16 @@ class Zikula_HookManager_SubscriberBundle
     }
 
     /**
-     * Add a subscriber to this bundle.
+     * Add a subscriber hook type event to this bundle.
      *
      * @param string $type      Hook type.
      * @param string $eventName Event name.
      *
      * @return Zikula_HookManager_SubscriberBundle
      */
-    public function addType($type, $eventName)
+    public function addEvent($type, $eventName)
     {
-        $this->hookTypes[$type] = $eventName;
+        $this->events[$type] = $eventName;
         return $this;
     }
 }
