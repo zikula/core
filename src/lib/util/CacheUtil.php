@@ -18,6 +18,23 @@
 class CacheUtil
 {
     /**
+     * Get a unique string for a user, depending on this group memberships.
+     *
+     * String ready to be used as part of the CacheID of the output views.
+     * Useful when there aren't another user-based access privilegies, just group permissions.
+     *
+     * @param integer $uid User ID to get the group memberships from. Default: current user.
+     *
+     * @return string Cache string to use on Zikula_View.
+     */
+    public static function getUserString($uid = null)
+    {
+        $str = UserUtil::getGroupListForUser($uid, '_');
+
+        return $str == '-1' ? 'guest' : 'groups_'.$str;
+    }
+
+    /**
      * Get the location of the local cache directory.
      *
      * @param string $dir The name of the directory to get.
@@ -87,5 +104,4 @@ class CacheUtil
         self::removeLocalDir($dir);
         self::createLocalDir($dir);
     }
-
 }
