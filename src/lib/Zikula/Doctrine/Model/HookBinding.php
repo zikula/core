@@ -95,7 +95,7 @@ class Zikula_Doctrine_Model_HookBinding extends Doctrine_Record
                 'autoincrement' => false,
         ));
 
-        $this->hasColumn('category', 'string', 10, array(
+        $this->hasColumn('category', 'string', 20, array(
              'type' => 'string',
              'length' => 10,
              'fixed' => false,

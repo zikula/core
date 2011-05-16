@@ -105,15 +105,6 @@ class Zikula_Doctrine_Model_HookRuntime extends Doctrine_Record
                 'autoincrement' => false,
         ));
 
-        $this->hasColumn('handlername', 'string', null, array(
-                'type' => 'string',
-                'fixed' => false,
-                'unsigned' => false,
-                'primary' => false,
-                'notnull' => true,
-                'autoincrement' => false,
-        ));
-
         $this->hasColumn('classname', 'string', 60, array(
                 'type' => 'string',
                 'length' => 60,

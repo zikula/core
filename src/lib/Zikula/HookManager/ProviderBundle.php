@@ -150,9 +150,37 @@ class Zikula_HookManager_ProviderBundle
     }
 
     /**
+     * Add a static class::method() handler to this hundle.
+     *
+     * @param string $hookType  Hook type.
+     * @param string $className Class Name.
+     * @param string $method    Static method name.
+     *
+     * @return Zikula_HookManager_ProviderBundle
+     */
+    public function addStaticHandler($hookType, $className, $method)
+    {
+        return $this->addHandler($hookType, $className, $method);
+    }
+
+    /**
+     * Add servicehandler as hook handler to this bundle.
+     *
+     * @param string $hookType  Hook type.
+     * @param string $className Class name.
+     * @param string $method    Method name.
+     * @param string $serviceId Service Id.
+     *
+     * @return Zikula_HookManager_ProviderBundle
+     */
+    public function addServiceHandler($hookType, $className, $method, $serviceId)
+    {
+        return $this->addHandler($hookType, $className, $method, $serviceId);
+    }
+
+    /**
      * Add a hook handler with this bundle.
      *
-     * @param string  $name      Name of the hook handler.
      * @param string  $hookType  Hook type.
      * @param string  $className Class.
      * @param string  $method    Method name.
@@ -160,9 +188,9 @@ class Zikula_HookManager_ProviderBundle
      *
      * @return Zikula_HookManager_ProviderBundle
      */
-    public function addHook($name, $hookType, $className, $method, $serviceId=null)
+    private function addHandler($hookType, $className, $method, $serviceId=null)
     {
-        $this->hooks[$name] = array(
+        $this->hooks[$hookType] = array(
                 'hooktype' => $hookType,
                 'classname' => $className,
                 'method' => $method,

@@ -20,7 +20,7 @@ interface Zikula_HookManager_StorageInterface
 {
     public function registerSubscriber($owner, $subOwner, $areaName, $areaType, $category, $eventName);
     public function unregisterSubscriberByArea($areaName);
-    public function registerProvider($name, $owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId=null);
+    public function registerProvider($owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId=null);
     public function unregisterProviderByArea($areaName);
     public function bindSubscriber($subscriberArea, $providerArea);
     public function unbindSubscriber($subscriberArea, $providerArea);
