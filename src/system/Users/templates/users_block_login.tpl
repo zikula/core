@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            {notifydisplayhooks eventname='users.hook.login.ui.edit' form_type='loginblock'}
+            {notifydisplayhooks eventname='users.ui_hooks.login.form_edit' form_type='loginblock'}
 
             {/if}
             <div class="z-buttons z-right">

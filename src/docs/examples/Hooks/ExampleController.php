@@ -31,7 +31,7 @@ class Example_Controller_User extends Zikula_AbstractController
         $this->view->fetch('example_user_view.tpl');
 
         // note the called template should execute
-        // {notifydisplayhooks eventname='example.hook.general.ui.view' id=$article[id]}
+        // {notifydisplayhooks eventname='example.ui_hooks.general.display_view' id=$article[id]}
     }
 
     public function edit()
@@ -60,7 +60,7 @@ class Example_Controller_User extends Zikula_AbstractController
 
             // validate any hooks
             $validators = new Zikula_Collection_HookValidationProviders();
-            $hook = new Zikula_ValidationHook('example.hook.general.validate.edit', $article['id'], $this, $validators);
+            $hook = new Zikula_ValidationHook('example.ui_hooks.general.validate_edit', $article['id'], $this, $validators);
             $this->notifyHooks($hook);
             if (!$validators->hasErrors() && !$articleValid) {
                 // commit to the database
@@ -68,7 +68,7 @@ class Example_Controller_User extends Zikula_AbstractController
 
                 $url = new Zikula_ModUrl('Example', 'user', 'edit', 'en', array('id' => $id));
                 // notify any hooks they may now commit the as the original form has been committed.
-                $hook = new Zikula_ProcessHook('example.hook.general.process.edit', $id, $url);
+                $hook = new Zikula_ProcessHook('example.ui_hooks.general.process_edit', $id, $url);
                 $this->notifyHooks($hook);
             }
         }
@@ -77,7 +77,7 @@ class Example_Controller_User extends Zikula_AbstractController
         $this->view->fetch('example_user_edit.tpl');
 
         // note the called template should execute
-        // {notifydisplayhooks eventname='example.hook.general.ui.edit' subject=$article id=$article[id]}
+        // {notifydisplayhooks eventname='example.ui_hooks.general.form_edit' subject=$article id=$article[id]}
     }
 
     public function delete()
@@ -88,7 +88,7 @@ class Example_Controller_User extends Zikula_AbstractController
         $article = db_get("select where id = $id");
         $article->delete();
 
-        $this->notifyHooks('example.hook.general.process.delete', $article, $id);
+        $this->notifyHooks('example.ui_hooks.general.process_delete', $article, $id);
     }
 
 }

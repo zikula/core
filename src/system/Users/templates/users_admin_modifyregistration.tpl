@@ -75,7 +75,7 @@
                 </div>
             </fieldset>
 
-            {notifydisplayhooks eventname='users.hook.user.ui.edit' subject=$formData->toUserArray() id=$formData->getFieldData('uid')}
+            {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' subject=$formData->toUserArray() id=$formData->getFieldData('uid')}
 
             <fieldset>
                 <legend>{gt text="Check your entries and submit your updates"}</legend>

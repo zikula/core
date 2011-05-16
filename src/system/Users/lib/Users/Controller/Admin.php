@@ -284,7 +284,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $errorFields = $formData->getErrorMessages();
             }
 
-            $hook = new Zikula_ValidationHook('users.hook.user.validate.edit', new Zikula_Hook_ValidationProviders());
+            $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', new Zikula_Hook_ValidationProviders());
             $validators = $this->notifyHooks($hook)->getValidators();
 
             if (empty($errorFields) && !$validators->hasErrors()) {
@@ -301,7 +301,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 ));
 
                 if (isset($registeredObj) && $registeredObj) {
-                    $this->notifyHooks('users.hook.user.process.edit', $registeredObj, $registeredObj['uid']);
+                    $this->notifyHooks('users.ui_hook.users.process_edit', $registeredObj, $registeredObj['uid']);
 
                     if ($registeredObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) {
                         $this->registerStatus($this->__('Done! Created new registration application.'));
@@ -388,9 +388,10 @@ class Users_Controller_Admin extends Zikula_AbstractController
         );
 
         if ($callbackFunc == 'mailUsers') {
-            $processEditEvent = $this->notifyHooks('users.hook.mailuserssearch.process.edit', null, null, array(), $findUsersArgs);
+  /********* TODO: THIS CODE LOOKS WRONG - possibly not hooks but events? *****************/
+            $processEditEvent = $this->notifyHooks('users.ui_hooks.mailuserssearch.process_edit', null, null, array(), $findUsersArgs);
         } else {
-            $processEditEvent = $this->notifyHooks('users.hook.search.process.edit', null, null, array(), $findUsersArgs);
+            $processEditEvent = $this->notifyHooks('users.ui_hooks.search.process_edit', null, null, array(), $findUsersArgs);
         }
 
         $findUsersArgs = $processEditEvent->getData();
@@ -596,7 +597,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $errorFields = $formData->getErrorMessages();
             }
 
-            $hook = new Zikula_ValidationHook('users.hook.user.validate.edit', new Zikula_Hook_ValidationProviders());
+            $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', new Zikula_Hook_ValidationProviders());
             $validators = $this->notifyHooks($hook)->getValidators();
 
             if (!$errorFields && !$validators->hasErrors()) {
@@ -672,7 +673,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     }
                 }
 
-                $this->notifyHooks(new Zikula_ProcessHook('users.hook.user.process.edit', $user['uid']));
+                $this->notifyHooks(new Zikula_ProcessHook('users.ui_hooks.user.process_edit', $user['uid']));
                 $this->registerStatus($this->__("Done! Saved user's account information."));
 
                 $proceedToForm = false;
@@ -968,7 +969,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if ($processDelete) {
             $valid = true;
             foreach ($userid as $uid) {
-                $validators = $this->notifyHooks('users.hook.user.validate.delete', null, $uid, array(), new Zikula_Hook_ValidationProviders())->getData();
+                $validators = $this->notifyHooks('users.ui_hooks.user.validate_delete', null, $uid, array(), new Zikula_Hook_ValidationProviders())->getData();
                 if ($validators->hasErrors()) {
                     $valid = false;
                 }
@@ -981,7 +982,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
                 if ($deleted) {
                     foreach ($userid as $uid) {
-                        $this->notifyHooks('users.hook.user.process.delete', UserUtil::getVars($uid), $uid);
+                        $this->notifyHooks('users.ui_hooks.user.process_delete', UserUtil::getVars($uid), $uid);
                     }
                     $count = count($userid);
                     $this->registerStatus($this->_fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', $count, array($count)));
@@ -1351,7 +1352,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $errorFields = $formData->getErrorMessages();
             }
 
-            $validators = $this->notifyHooks('users.hook.user.validate.edit', $registration, $registration['uid'], array(), new Zikula_Hook_ValidationProviders())->getData();
+            $validators = $this->notifyHooks('users.ui_hooks.user.validate_edit', $registration, $registration['uid'], array(), new Zikula_Hook_ValidationProviders())->getData();
 
             if (!$errorFields && !$validators->hasErrors()) {
                 $emailUpdated = false;
@@ -1394,7 +1395,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     }
                 }
 
-                $this->notifyHooks('users.hook.user.process.edit', $registration, $registration['uid']);
+                $this->notifyHooks('users.ui_hooks.user.process_edit', $registration, $registration['uid']);
                 $this->registerStatus($this->__("Done! Saved user's account information."));
 
                 $proceedToForm = false;
@@ -1789,7 +1790,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $this->registerError($this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']));
                 $this->redirect($cancelUrl);
             } else {
-                $this->notifyHooks('users.hook.user.process.delete', null, $uid); // null for subject?
+                $this->notifyHooks('users.ui_hooks.user.process_delete', null, $uid); // null for subject?
                 if ($sendNotification) {
                     $siteurl   = System::getBaseUrl();
                     $rendererArgs = array(

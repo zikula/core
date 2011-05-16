@@ -168,7 +168,7 @@
                 </div>
             </fieldset>
 
-            {notifydisplayhooks eventname='users.hook.user.ui.edit' subject=null id=null}
+            {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' subject=null id=null}
 
             <fieldset>
                 <legend>{gt text="Check your entries and submit your registration"}</legend>
