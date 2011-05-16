@@ -100,7 +100,7 @@ class Zikula_HookManager
      */
     public function registerSubscriberBundle(Zikula_HookManager_SubscriberBundle $bundle)
     {
-        foreach ($bundle->getHookTypes() as $areaType => $eventName) {
+        foreach ($bundle->getEvents() as $areaType => $eventName) {
             $this->storage->registerSubscriber($bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $areaType, $bundle->getCategory(), $eventName);
         }
         $this->reload();
