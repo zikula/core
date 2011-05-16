@@ -148,11 +148,12 @@ class Zikula_Form_View extends Zikula_View
         // override behaviour of anonymous sessions
         SessionUtil::requireSession();
 
-        // Construct and make normal Smarty use possible
+        // construct and use the available methods
         parent::__construct($serviceManager, $module, false);
-        $this->addPluginDir('lib/viewplugins/formplugins');
+        $this->addPluginDir('lib/viewplugins/formplugins', false);
+        $this->setCaching(Zikula_View::CACHE_DISABLED);
 
-        // Setup
+        // custom Form setup
         $this->idCount = 1;
         $this->errorMsgSet = false;
         $this->plugins = array();

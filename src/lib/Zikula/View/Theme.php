@@ -110,13 +110,6 @@ class Zikula_View_Theme extends Zikula_View
     public $uid;
 
     /**
-     * Group membership IDs.
-     *
-     * @var array
-     */
-    protected $gids = array();
-
-    /**
      * Whether or not the user is logged in.
      *
      * @var boolean.
@@ -520,10 +513,6 @@ class Zikula_View_Theme extends Zikula_View
         // set some basic class variables from Zikula
         $this->isloggedin = UserUtil::isLoggedIn();
         $this->uid = UserUtil::getVar('uid');
-        if (UserUtil::isLoggedIn()) {
-            $this->gids = UserUtil::getGroupsForUser($this->uid);
-            sort($this->gids);
-        }
 
         // assign the query string
         $this->qstring = System::serverGetVar('QUERY_STRING', '');
@@ -536,7 +525,7 @@ class Zikula_View_Theme extends Zikula_View
             // mod / homepage_?type_func / gids or guest / customargs
             $this->cache_id = $this->toplevelmodule
                             . '/' . ($this->homepage ? 'homepage_' : '') . $this->type . '_' . $this->func
-                            . '/' . ($this->isloggedin ? 'g_'.$this->getGidsString() : 'guest')
+                            . '/' . CacheUtil::getUserString()
                             . (!$this->homepage ? $this->_get_customargs() : '/' . str_replace(',', '/', System::getVar('startargs')));
         }
 
@@ -895,26 +884,6 @@ class Zikula_View_Theme extends Zikula_View
     public function getUid()
     {
         return $this->uid;
-    }
-
-    /**
-     * Retrieve the current user's memberships.
-     *
-     * @return array The current user's group memberships.
-     */
-    public function getGids()
-    {
-        return $this->gids;
-    }
-
-    /**
-     * Retrieve the current user's memberships string ID.
-     *
-     * @return string The groups string identifier.
-     */
-    public function getGidsString()
-    {
-        return implode('_', $this->gids);
     }
 
     /**

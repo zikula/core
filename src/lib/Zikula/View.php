@@ -753,10 +753,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $path .= FileUtil::getFilebase($auto_source);
             // add the variable stuff only if $auto_source is present
             // to allow a easy flush cache for all the themes/languages
-            $path .= '--t' . $this->themeinfo['directory'] . '-l';
-            if (System::getVar('multilingual') == 1) {
-                $path .= $this->language;
-            }
+            $path .= '--t_'.$this->themeinfo['directory'].'-l_' . $this->language;
             // end with a suffix convention of filename--Themename-lang.ext
             $path .= ($extension ? ".$extension" : '');
         }
@@ -909,13 +906,18 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return Zikula_View This instance.
      */
-    public function addPluginDir($dir)
+    public function addPluginDir($dir, $push=true)
     {
         if (in_array($dir, $this->plugins_dir) || !@is_dir($dir)) {
             return $this;
         }
 
-        array_push($this->plugins_dir, $dir);
+        if ($push) {
+            array_push($this->plugins_dir, $dir);
+        } else {
+            $this->plugins_dir = array_merge(array($dir), $this->plugins_dir);
+        }
+
         return $this;
     }
 
