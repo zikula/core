@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package XXXX
- * @subpackage XXXX
+ * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -106,17 +105,32 @@ class Zikula_AbstractHook implements Zikula_HookInterface
         return $this;
     }
 
+    /**
+     * Stop futher notification.
+     *
+     * @return Zikula_AbstractHook
+     */
     public function stop()
     {
         $this->stopped = true;
         return $this;
     }
 
+    /**
+     * Has event stopped.
+     *
+     * @return boolean
+     */
     public function isStopped()
     {
         return $this->stopped;
     }
 
+    /**
+     * Get event name.
+     *
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
