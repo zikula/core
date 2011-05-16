@@ -121,7 +121,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
             }
         }
 
-        $hook = new Zikula_ValidationHook('users.hook.user.validate.edit', new Zikula_Hook_ValidationProviders());
+        $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', new Zikula_Hook_ValidationProviders());
         $validators = $this->notifyHooks($hook)->getValidators();
         if ($validators->hasErrors()) {
             $areaErrorCollections = $validators->getCollection();

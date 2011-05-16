@@ -131,7 +131,7 @@ class Example_HookHandler extends Zikula_HookHandler
             $this->validation->addError('name', 'Name must be at least 3 characters long.');
         }
 
-        $hook->setValidator('hookhandler.comments.ui.edit', $this->validation);
+        $hook->setValidator('hookhandler.comments.form_edit', $this->validation);
     }
 
     /**

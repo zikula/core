@@ -331,7 +331,7 @@ class Users_Controller_User extends Zikula_AbstractController
                         $errorFields = $formData->getErrorMessages();
                     }
 
-                    $hook = new Zikula_ValidationHook('users.hook.user.validate.edit', new Zikula_Hook_ValidationProviders());
+                    $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', new Zikula_Hook_ValidationProviders());
                     $validators = $this->notifyHooks($hook)->getValidators();
 
                     if (empty($errorFields) && !$validators->hasErrors()) {
@@ -370,7 +370,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                 );
                             }
 
-                            $this->notifyHooks(new Zikula_ProcessHook('users.hook.user.process.edit', $registeredObj['uid']));
+                            $this->notifyHooks(new Zikula_ProcessHook('users.ui_hooks.user.process_edit', $registeredObj['uid']));
 
                             if (!empty($registeredObj['regErrors'])) {
                                 $this->view->assign('regErrors', $registeredObj['regErrors']);
@@ -1133,14 +1133,14 @@ class Users_Controller_User extends Zikula_AbstractController
 
                         // Did we get a good user? If so, then we can proceed to hook validation.
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
-                            $hook = new Zikula_ValidationHook('users.hook.login.validate.edit', new Zikula_Hook_ValidationProviders());
+                            $hook = new Zikula_ValidationHook('users.ui_hooks.login.validate_edit', new Zikula_Hook_ValidationProviders());
                             $this->notifyHooks($hook);
                             $validators = $hook->getValidators();
 
                             if (!$validators->hasErrors()) {
                                 // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check
                                 // the user's ability to log in. If we don't do this, then user.login.veto might trap and cancel the login attempt again.
-                                $this->notifyHooks(new Zikula_ProcessHook('users.hook.login.process.edit', $user['uid']));
+                                $this->notifyHooks(new Zikula_ProcessHook('users.ui_hooks.login.process_edit', $user['uid']));
 
                                 if (!isset($user['lastlogin']) || empty($user['lastlogin']) || ($user['lastlogin'] == '1970-01-01 00:00:00')) {
                                     $isFirstLogin = true;

@@ -26,8 +26,8 @@
  * - all remaining parameters are passed to the hook via the args param in the event.
  *
  * Example:
- *  {notifydisplayhooks eventname='news.hook.item.ui.view' id=$id urlobject=$urlObject}
- *  {notifydisplayhooks eventname='news.hook.item.ui.view' id=$id urlobject=$urlObject assign='displayhooks'}
+ *  {notifydisplayhooks eventname='news.ui_hooks.item.display_view' id=$id urlobject=$urlObject}
+ *  {notifydisplayhooks eventname='news.ui_hooks.item.display_view' id=$id urlobject=$urlObject assign='displayhooks'}
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
