@@ -65,10 +65,6 @@ function smarty_insert_pageaddvar($params, $view)
         return false;
     }
 
-    if ($name != 'header') {
-        $value = explode(',', $value);
-    }
-
     PageUtil::addVar($var, $value);
     return;
 }
