@@ -11,13 +11,11 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 /**
  * Event handler to override templates.
  */
 class SystemListeners extends Zikula_AbstractEventHandler
 {
-
     /**
      * Setup handler definitions.
      *
@@ -49,6 +47,50 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.preinit', 'setupHookManager');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
+        $this->addHandlerDefinition('frontcontroller.predispatch', 'sessionExpired');
+        $this->addHandlerDefinition('frontcontroller.predispatch', 'siteOff');
+    }
+
+    /**
+     * Event: 'frontcontroller.predispatch'.
+     *
+     * @param Zikula_Event $event
+     *
+     * @return void
+     */
+    public function sessionExpired(Zikula_Event $event)
+    {
+        if (SessionUtil::hasExpired()) {
+            // Session has expired, display warning
+            header('HTTP/1.0 403 Access Denied');
+            echo ModUtil::apiFunc('Users', 'user', 'expiredsession');
+            Zikula_View_Theme::getInstance()->themefooter();
+            System::shutdown();
+        }
+    }
+
+    /**
+     * Listens for 'frontcontroller.predispatch'.
+     *
+     * @param Zikula_Event $event
+     *
+     * @return void
+     */
+    public function siteOff(Zikula_Event $event)
+    {
+        // Get variables
+        $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
+        $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
+
+        // Check for site closed
+        if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula_Core::VERSION_NUM != System::getVar('Version_Num'))) {
+            if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
+                UserUtil::logout();
+            }
+            header('HTTP/1.1 503 Service Unavailable');
+            require_once System::getSystemErrorTemplate('siteoff.tpl');
+            System::shutdown();
+        }
     }
 
     /**
@@ -64,7 +106,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $smRef = new Zikula_ServiceManager_Reference('zikula.servicemanager');
         $eventManagerDef = new Zikula_ServiceManager_Definition('Zikula_EventManager', array($smRef));
         $hookFactoryDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_ServiceFactory', array($smRef, 'zikula.eventmanager'));
-        $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula_HookManager',  array($storageDef, $eventManagerDef, $hookFactoryDef));
+        $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula_HookManager', array($storageDef, $eventManagerDef, $hookFactoryDef));
         $this->serviceManager->registerService('zikula.hookmanager', $hookManagerDef);
     }
 
@@ -685,7 +727,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         $die = false;
 
-        if (get_magic_quotes_runtime ()) {
+        if (get_magic_quotes_runtime()) {
             echo __('Error! Zikula does not support PHP magic_quotes_runtime - please disable this feature in php.ini.');
             $die = true;
         }
@@ -727,7 +769,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if (System::isDevelopmentMode() || System::isInstalling()) {
             $temp = $this->serviceManager->getArgument('temp');
             if (!is_dir($temp) && !is_writable($temp)) {
-               die(__f('The temporary directory "%s" and all subfolders must be writable', $temp));
+                die(__f('The temporary directory "%s" and all subfolders must be writable', $temp));
             }
 
             $folders = array(
