@@ -47,8 +47,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.preinit', 'setupHookManager');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
-        $this->addHandlerDefinition('frontcontroller.predispatch', 'sessionExpired');
-        $this->addHandlerDefinition('frontcontroller.predispatch', 'siteOff');
+        $this->addHandlerDefinition('frontcontroller.predispatch', 'sessionExpired', 3);
+        $this->addHandlerDefinition('frontcontroller.predispatch', 'siteOff', 7);
     }
 
     /**
