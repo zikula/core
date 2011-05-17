@@ -27,7 +27,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-        return array('module'          => 'Blocks',
+        return array('module'          => $this->name,
                      'text_type'       => $this->__('Menutree'),
                      'text_type_long'  => $this->__('Tree-like menu (menutree)'),
                      'allow_multiple'  => true,
@@ -50,23 +50,26 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         // Get variables from content block
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
-        // template to use
-        if (!isset($vars['menutree_tpl']) || empty($vars['menutree_tpl']) || !$this->view->template_exists($vars['menutree_tpl'])) {
-            $vars['menutree_tpl'] = 'menutree/blocks_block_menutree_default.tpl';
-        }
-
         // stylesheet
         if (file_exists($vars['menutree_stylesheet'])) {
             PageUtil::addVar('stylesheet', $vars['menutree_stylesheet']);
         }
 
-        // set the cache id
-        $this->view->setCacheId($blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.CacheUtil::getUserString());
+        // template to use
+        if (!isset($vars['menutree_tpl']) || empty($vars['menutree_tpl']) || !$this->view->template_exists($vars['menutree_tpl'])) {
+            $vars['menutree_tpl'] = 'menutree/blocks_block_menutree_default.tpl';
+        }
 
-        // check if block is cached, if so - fetch cached tpl to avoid further proceedeing
-        if ($this->view->is_cached($vars['menutree_tpl'])) {
-            $blockinfo['content'] = $this->view->fetch($vars['menutree_tpl']);
-            return BlockUtil::themeBlock($blockinfo);
+        // if cache is enabled, checks for a cached output
+        if ($this->view->getCaching()) {
+            // set the cache id
+            $this->view->setCacheId($blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.CacheUtil::getUserString());
+
+            // check out if the contents are cached
+            if ($this->view->is_cached($vars['menutree_tpl'])) {
+                $blockinfo['content'] = $this->view->fetch($vars['menutree_tpl']);
+                return BlockUtil::themeBlock($blockinfo);
+            }
         }
 
         // set default block vars
@@ -384,7 +387,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $this->view->clear_cache($blockinfo['bkey'].'/bid'.$blockinfo['bid']);
+        $this->view->clear_cache(null, $blockinfo['bkey'].'/bid'.$blockinfo['bid']);
 
         return $blockinfo;
     }

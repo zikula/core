@@ -11,12 +11,12 @@
     {gt text='%1$s and %2$s online.' tag1=$nummeb tag2=$numanon domain='zikula'}
     {/if}
 </p>
-{if $loggedin eq 1}
+{if $coredata.logged_in eq 1}
     {if $msgmodule}
     {modurl modname=$msgmodule type='user' func="inbox" assign="messageslink"}
     <p>{if $messages.unread eq 0}{gt text="You have no new messages." domain='zikula'}{else}{gt text='You have <a href="%1$s">%2$s</a> new message.' plural='You have <a href="%1$s">%2$s</a> new messages.' count=$messages.unread tag1=$messageslink tag2=$messages.unread domain='zikula'}{/if}</p>
     {/if}
-    <p>{gt text="You are logged-in as <strong>%s</strong>." tag1=$username|profilelinkbyuname domain='zikula'}</p>
+    <p>{gt text="You are logged-in as <strong>%s</strong>." tag1=$coredata.user.uname|profilelinkbyuname domain='zikula'}</p>
 
 {else}
     {modurl modname='Users' type='user' func='register' assign='url'}

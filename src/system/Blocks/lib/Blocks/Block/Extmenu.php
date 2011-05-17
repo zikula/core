@@ -29,7 +29,7 @@ class Blocks_Block_Extmenu extends Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-        return array('module'          => 'Blocks',
+        return array('module'          => $this->name,
                      'text_type'       => $this->__('Extended menu'),
                      'text_type_long'  => $this->__('Extended menu block'),
                      'allow_multiple'  => true,
@@ -52,9 +52,6 @@ class Blocks_Block_Extmenu extends Zikula_Controller_AbstractBlock
             return;
         }
 
-        // Set the cache id
-        $this->view->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
-
         // Break out options from our content field
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
@@ -70,13 +67,19 @@ class Blocks_Block_Extmenu extends Zikula_Controller_AbstractBlock
         // add the stylesheet to the header
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Blocks', $vars['stylesheet']));
 
-        // check out if the contents are cached.
-        if ($this->view->is_cached($vars['template'])) {
-            // Populate block info and pass to theme
-            $blockinfo['content'] = $this->view->fetch($vars['template']);
-            return BlockUtil::themeBlock($blockinfo);
+        // if cache is enabled, checks for a cached output
+        if ($this->view->getCaching()) {
+            // set the cache id
+            $this->view->setCacheId($blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.CacheUtil::getUserString());
+
+            // check out if the contents are cached
+            if ($this->view->is_cached($vars['template'])) {
+                $blockinfo['content'] = $this->view->fetch($vars['template']);
+                return BlockUtil::themeBlock($blockinfo);
+            }
         }
 
+        
         // create default block variables
         if (!isset($vars['blocktitles'])) {
             $vars['blocktitles'] = array();
@@ -382,7 +385,7 @@ class Blocks_Block_Extmenu extends Zikula_Controller_AbstractBlock
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $this->view->clear_cache('blocks_block_extmenu.tpl');
+        $this->view->clear_cache(null, $blockinfo['bkey'].'/bid'.$blockinfo['bid']);
 
         return $blockinfo;
     }

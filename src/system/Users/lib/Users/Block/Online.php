@@ -27,7 +27,7 @@ class Users_Block_Online extends Zikula_Controller_AbstractBlock
      */
     public function init()
     {
-        SecurityUtil::registerPermissionSchema('Onlineblock::', 'Block title::');
+        SecurityUtil::registerPermissionSchema('Onlineblock::', 'Block ID::');
     }
 
     /**
@@ -51,27 +51,32 @@ class Users_Block_Online extends Zikula_Controller_AbstractBlock
     /**
      * Display the output of the online block.
      *
-     * @param array $blockInfo A blockinfo structure.
+     * @param array $blockinfo A blockinfo structure.
      *
      * @todo Move sql queries to calls to relevant API's.
      *
      * @return string|void The output.
      */
-    public function display($blockInfo)
+    public function display($blockinfo)
     {
-        if (!SecurityUtil::checkPermission('Onlineblock::', $blockInfo['title'].'::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Onlineblock::', $blockinfo['bid'].'::', ACCESS_READ)) {
             return;
         }
 
-        // Here we use the user id as the cache id since the block shows user based
-        // information; username and number of private messages
-        $this->view->cache_id = UserUtil::getVar('uid');
+        if ($this->view->getCaching()) {
+            // We use an individual cache with a lifetime specified on the block configuration.
+            // Here we use the user id as the cache id since the block shows user based
+            // information; username and number of private messages.
+            $this->view->setCaching(Zikula_View::CACHE_INDIVIDUAL)
+                       ->setCacheLifetime($blockinfo['refresh'])
+                       ->setCacheId($blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.UserUtil::getVar('uid'));
 
-        // check out if the contents are cached.
-        // If this is the case, we do not need to make DB queries.
-        if ($this->view->is_cached('users_block_online.tpl')) {
-            $blockInfo['content'] = $this->view->fetch('users_block_online.tpl');
-            return BlockUtil::themeBlock($blockInfo);
+            // check out if the contents are cached.
+            // If this is the case, we do not need to make DB queries.
+            if ($this->view->is_cached('users_block_online.tpl')) {
+                $blockinfo['content'] = $this->view->fetch('users_block_online.tpl');
+                return BlockUtil::themeBlock($blockinfo);
+            }
         }
 
         $table = DBUtil::getTables();
@@ -87,13 +92,6 @@ class Users_Block_Online extends Zikula_Controller_AbstractBlock
 
         $msgmodule = System::getVar('messagemodule', '');
 
-        $this->view->assign('registerallowed', $this->getVar('reg_allowreg'))
-                ->assign('loggedin', UserUtil::isLoggedIn())
-                ->assign('userscount', $numusers )
-                ->assign('guestcount', $numguests )
-                ->assign('username', UserUtil::getVar('uname'))
-                ->assign('msgmodule', $msgmodule);
-        
         if ($msgmodule && SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
             // check if message module is available and add the necessary info
             if (ModUtil::available($msgmodule)) {
@@ -103,8 +101,13 @@ class Users_Block_Online extends Zikula_Controller_AbstractBlock
             }
         }
 
-        $blockInfo['content'] = $this->view->fetch('users_block_online.tpl');
+        $this->view->assign('registerallowed', $this->getVar('reg_allowreg'))
+                   ->assign('userscount', $numusers)
+                   ->assign('guestcount', $numguests)
+                   ->assign('msgmodule', $msgmodule);
 
-        return BlockUtil::themeBlock($blockInfo);
+        $blockinfo['content'] = $this->view->fetch('users_block_online.tpl');
+
+        return BlockUtil::themeBlock($blockinfo);
     }
 }
