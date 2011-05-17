@@ -63,6 +63,10 @@ Modify `$event->data` and `$event->stop()`
 #### `dbobject.pre/post*`
 Takes subject of $this.
 
+FRONT CONTROLLER
+----------------
+
+#### `frontcontroller.predispatch` runs before the front controller does any work.
 
 MODULE
 ------
