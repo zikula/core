@@ -15,28 +15,12 @@
 include 'lib/bootstrap.php';
 $core->init();
 
-if (SessionUtil::hasExpired()) {
-    // Session has expired, display warning
-    header('HTTP/1.0 403 Access Denied');
-    echo ModUtil::apiFunc('Users', 'user', 'expiredsession');
-    Zikula_View_Theme::getInstance()->themefooter();
-    System::shutdown();
-}
+$core->getEventManager()->notify(new Zikula_Event('frontcontroller.predispatch'));
 
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
 $type   = FormUtil::getPassedValue('type', '', 'GETPOST', FILTER_SANITIZE_STRING);
 $func   = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
-
-// Check for site closed
-if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula_Core::VERSION_NUM != System::getVar('Version_Num'))) {
-    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
-        UserUtil::logout();
-    }
-    header('HTTP/1.1 503 Service Unavailable');
-    require_once System::getSystemErrorTemplate('siteoff.tpl');
-    System::shutdown();
-}
 
 // check requested module and set to start module if not present
 $startPage = System::getVar('startpage');
