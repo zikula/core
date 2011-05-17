@@ -459,6 +459,9 @@ class Zikula_View_Theme extends Zikula_View
      */
     function _get_auto_filename($path, $auto_source = null, $auto_id = null)
     {
+        // enables a flags to detect when is treating compiled templates
+        $tocompile = ($path == $this->compile_dir) ? true : false;
+
         // format auto_source for os to make sure that id does not contain 'ugly' characters
         $auto_source = DataUtil::formatForOS($auto_source);
 
@@ -471,25 +474,29 @@ class Zikula_View_Theme extends Zikula_View
         // takes in account the source subdirectory
         $path .= strpos($auto_source, '/') !== false ? '/' . dirname($auto_source) : '';
 
+        // make sure the path exists to write the compiled/cached template there
         if (!file_exists($path)) {
             mkdir($path, $this->serviceManager['system.chmod_dir'], true);
         }
 
-        $path .= '/';
-
         // if there's a explicit source, it
         if ($auto_source) {
+            $path .= '/';
+
             $extension = FileUtil::getExtension($auto_source);
             // isolates the filename on the source path passed
             $path .= FileUtil::getFilebase($auto_source);
-            // add the variable stuff only if $auto_source is present
-            // to allow a easy flush cache for all the languages (if needed)
-            $path .= '-l';
-            if (System::getVar('multilingual') == 1) {
-                $path .= $this->language;
+            // if we are compiling we do not include cache variables
+            if (!$tocompile) {
+                // add the variable stuff only if $auto_source is present
+                // to allow a easy flush cache for all the languages (if needed)
+                $path .= '-l';
+                if (System::getVar('multilingual') == 1) {
+                    $path .= $this->language;
+                }
+                // end with a suffix convention of filename--Themename-lang.ext
+                $path .= ($extension ? ".$extension" : '');
             }
-            // end with a suffix convention of filename--Themename-lang.ext
-            $path .= ($extension ? ".$extension" : '');
         }
 
         return $path;
