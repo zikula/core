@@ -188,6 +188,8 @@ class  Blocks_MenutreeTree extends Zikula_Tree
         }
         $links = $indent.implode("\n{$indent}", $links);
 
+        $itemid  = $indent.'<span class="z-sub">'.$translated['id'].'.</span>';
+
         $liId    = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
         $liClass = array();
         $liClass[] = $isDynamic ?  $this->config['dynamicClass'] : '';
@@ -200,6 +202,6 @@ class  Blocks_MenutreeTree extends Zikula_Tree
 
         $indent = str_repeat(' ', $indentLevel*4);
 
-        return "{$indent}<li{$liId}{$liClass}>\n{$toggle}\n{$icon}\n{$links}\n{$nodeSub}{$indent}</li>";
+        return "{$indent}<li{$liId}{$liClass}>\n{$toggle}\n{$icon}\n{$itemid}\n{$links}\n{$nodeSub}{$indent}</li>";
     }
 }
