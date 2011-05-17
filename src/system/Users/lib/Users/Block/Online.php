@@ -64,12 +64,14 @@ class Users_Block_Online extends Zikula_Controller_AbstractBlock
         }
 
         if ($this->view->getCaching()) {
-            // We use an individual cache with a lifetime specified on the block configuration.
             // Here we use the user id as the cache id since the block shows user based
             // information; username and number of private messages.
+            $uid = UserUtil::getVar('uid');
+            $cacheid = $blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.($uid ? $uid : 'guest');
+            // We use an individual cache with a lifetime specified on the block configuration.
             $this->view->setCaching(Zikula_View::CACHE_INDIVIDUAL)
                        ->setCacheLifetime($blockinfo['refresh'])
-                       ->setCacheId($blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.UserUtil::getVar('uid'));
+                       ->setCacheId($cacheid);
 
             // check out if the contents are cached.
             // If this is the case, we do not need to make DB queries.
