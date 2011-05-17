@@ -677,7 +677,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return string|null The auto_id, or null if neither $cache_id nor $compile_id are set.
      */
-    function _get_auto_id($cache_id=null, $compile_id=null)
+    public function _get_auto_id($cache_id=null, $compile_id=null)
     {
         if (!empty($cache_id)) {
             $this->_filter_auto_id($cache_id);
@@ -716,14 +716,18 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get a concrete filename for automagically created content.
      *
-     * @param string $auto_base   The base path.
-     * @param string $auto_source The file name (optional).
-     * @param string $auto_id     The ID (optional).
+     * @param string  $auto_base   The base path.
+     * @param string  $auto_source The file name (optional).
+     * @param string  $auto_id     The ID (optional).
+     * @param boolean $toclear     Flag to know if we are clearing the cache (default: false).
      *
      * @return string The concrete path and file name to the content.
      */
-    function _get_auto_filename($path, $auto_source = null, $auto_id = null)
+    public function _get_auto_filename($path, $auto_source = null, $auto_id = null)
     {
+        // enables a flags to detect when is treating compiled templates
+        $tocompile = ($path == $this->compile_dir) ? true : false;
+
         // format auto_source for os to make sure that id does not contain 'ugly' characters
         $auto_source = DataUtil::formatForOS($auto_source);
 
@@ -740,22 +744,27 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // takes in account the source subdirectory
         $path .= strpos($auto_source, '/') !== false ? '/' . dirname($auto_source) : '';
 
+        // make sure the path exists to write the compiled/cached template there
         if (!file_exists($path)) {
             mkdir($path, $this->serviceManager['system.chmod_dir'], true);
         }
 
-        $path .= '/';
-
         // if there's a explicit source, it
         if ($auto_source) {
+            $path .= '/';
+
             $extension = FileUtil::getExtension($auto_source);
             // isolates the filename on the source path passed
             $path .= FileUtil::getFilebase($auto_source);
-            // add the variable stuff only if $auto_source is present
-            // to allow a easy flush cache for all the themes/languages
-            $path .= '--t_'.$this->themeinfo['directory'].'-l_' . $this->language;
-            // end with a suffix convention of filename--Themename-lang.ext
-            $path .= ($extension ? ".$extension" : '');
+
+            // if we are compiling we do not include cache variables
+            if (!$tocompile) {
+                // add the variable stuff only if $auto_source is present
+                // to allow a easy flush cache for all the themes/languages
+                $path .= '--t_'.$this->themeinfo['directory'].'-l_' . $this->language;
+                // end with a suffix convention of filename--Themename-lang.ext
+                $path .= ($extension ? ".$extension" : '');
+            }
         }
 
         return $path;
@@ -765,9 +774,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * Finds out if a template is already cached.
      *
      * This returns true if there is a valid cache for this template.
-     * Right now, we are just passing it to the original Smarty function.
-     * We might introduce a function to decide if the cache is in need
-     * to be refreshed...
      *
      * @param string $template   The name of the template.
      * @param string $cache_id   The cache ID (optional).
@@ -777,11 +783,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      */
     public function is_cached($template, $cache_id = null, $compile_id = null)
     {
-        if (!$cache_id) {
+        if (is_null($cache_id)) {
             $cache_id = $this->cache_id;
         }
 
-        if (!$compile_id) {
+        if (is_null($compile_id)) {
             $compile_id = $this->compile_id;
         }
 
@@ -789,12 +795,86 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     }
 
     /**
-     * Clears the cache for a specific template.
+     * Internal function to delete cache of templates.
      *
-     * This returns true if there is a valid cache for this template.
-     * Right now, we are just passing it to the original Smarty function.
-     * We might introduce a function to decide if the cache is in need
-     * to be refreshed...
+     * @param string  $tplpath  Relative template path
+     * @param string  $template Template partial filename
+     * @param integer $expire   Expire limit of the cached templates
+     *
+     * @return boolean True on success, false otherwise
+     */
+    private function rmtpl($tplpath, $template, $expire = null)
+    {
+       if (!$template || !is_dir($tplpath) || !is_readable($tplpath)) {
+           return false;
+       }
+
+       $filebase = FileUtil::getFilebase($template);
+
+       $dh = opendir($tplpath);
+       while (($entry = readdir($dh)) !== false) {
+           if ($entry != '.' && $entry != '..') {
+               $path = $tplpath . DIRECTORY_SEPARATOR . $entry;
+
+               if (is_dir($path)) {
+                   // search recusively
+                   $this->rmtpl($path, $template, $expire);
+               } elseif (strpos($entry, $filebase) === 0) {
+                   // delete the files that matches the template base filename
+                   $this->_unlink($path, $expire);
+               }
+           }
+       }
+       closedir($dh);
+
+       return true;
+    }
+
+    /**
+     * Internal function to delete cache directories and files.
+     *
+     * @param string  $dirname Relative cache directory path.
+     * @param integer $expire  Expire limit of the cached templates.
+     * @param boolean $rmbase  Remove the passed directory too (default: true).
+     *
+     * @return boolean True on success, false otherwise.
+     */
+    private function rmdir($dirname, $expire = null, $rmbase = true)
+    {
+       if (!is_dir($dirname) || !is_readable($dirname)) {
+           return false;
+       }
+
+       $dh = opendir($dirname);
+       while (($entry = readdir($dh)) !== false) {
+           if ($entry != '.' && $entry != '..') {
+               $path = $dirname . DIRECTORY_SEPARATOR . $entry;
+
+               if (is_dir($path)) {
+                   // remove recursively
+                   $this->rmdir($path, $expire, true);
+               } elseif ($expire !== false) {
+                   // check expiration time of cached templates
+                   $this->_unlink($path, $expire);
+               } else {
+                   // delete compiled templates directly
+                   unlink($path);
+               }
+           }
+       }
+       closedir($dh);
+
+       if ($rmbase) {
+           return rmdir($dirname);
+       }
+
+       return true;
+    }
+
+    /**
+     * Clears a temporary folder for a auto_id and/or template.
+     *
+     * This returns true if the operation was successful.
      *
      * @param string $template   The name of the template.
      * @param string $cache_id   The cache ID (optional).
@@ -803,80 +883,65 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return  boolean
      */
-    public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null)
+    private function clear_folder($tmpdir, $auto_id = null, $template = null, $expire = null)
     {
-        $cache_dir = $this->cache_dir;
+        if (!$auto_id && !$template) {
+            $result = $this->rmdir($tmpdir, $expire, false);
 
-        $cached_files = FileUtil::getFiles($cache_dir, true, false, array('tpl'), null, false);
-
-        if ($template == null) {
-            if ($expire == null) {
-                foreach ($cached_files as $cf) {
-                    unlink(realpath($cf));
-                }
-            } else {
-                // actions for when $exp_time is not null
-            }
         } else {
-            if ($expire == null) {
-                $auto_id = self::_get_auto_id($cache_id, $compile_id);
-                $auto_filename = self::_get_auto_filename($cache_dir, $template, $auto_id);
+            $autofolder = $this->_get_auto_filename($tmpdir, null, $auto_id);
 
-                // FIX ME complete rework
-                if (!empty($auto_id)) {
-                    if (file_exists($auto_filename)) {
-                        unlink($auto_filename);
-                    }
-                } else {
-                    $template_filebase = FileUtil::getFilebase($template);
-                    foreach ($cached_files as $cf) {
-                        if (strpos($cf, $template_filebase) !== false) {
-                            unlink(realpath($cf));
-                        }
-                    }
-                }
+            if ($template) {
+                $result = $this->rmtpl($autofolder, $template, $expire);
             } else {
-                // actions for when $expire is not null
+                $result = $this->rmdir($autofolder, $expire);
             }
         }
 
-        return true;
+        return $result;
     }
 
     /**
-     * Clear all cached templates.
+     * Clears the cache for a specific template or cache_id.
      *
-     * @param string $exp_time Expire time.
+     * @param string $template   The name of the template.
+     * @param string $cache_id   The cache ID (optional).
+     * @param string $compile_id The compile ID (optional).
+     * @param string $expire     Minimum age in sec. the cache file must be before it will get cleared (optional).
      *
-     * @return boolean Results of {@link smarty_core_rm_auto()}.
+     * @return boolean True on success, false otherwise.
      */
-    public function clear_all_cache($exp_time = null)
+    public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null)
     {
-        return $this->clear_cache(null, null, null, $exp_time);
+        if (is_null($compile_id) && $template) {
+            $compile_id = $this->compile_id;
+        }
+
+        $auto_id = $this->_get_auto_id($cache_id, $compile_id);
+
+        return $this->clear_folder($this->cache_dir, $auto_id, $template, $expire);
     }
 
     /**
      * Clear all compiled templates.
      *
-     * @param string $exp_time Expire time.
-     *
-     * @return boolean Results of {@link smarty_core_rm_auto()}.
+     * @return boolean True if success, false otherwise.
      */
-    public function clear_compiled($exp_time = null)
+    public function clear_compiled()
     {
-        $compile_dir = $this->compile_dir;
+        return $this->clear_folder($this->compile_dir, null, null, false);
+    }
 
-        $compiled_files = FileUtil::getFiles($compile_dir, true, false, array('php', 'inc'), null, false);
-
-        if ($exp_time == null) {
-            foreach ($compiled_files as $cf) {
-                unlink(realpath($cf));
-            }
-        } else {
-            // actions for when $exp_time is not null
-        }
-
-        return true;
+    /**
+     * Clear all cached templates.
+     *
+     * @param string $expire Expire time.
+     *
+     * @return boolean Results of clear_cache with null parameters.
+     */
+    public function clear_all_cache($expire = null)
+    {
+        return $this->clear_cache(null, null, null, $expire);
     }
 
     /**
