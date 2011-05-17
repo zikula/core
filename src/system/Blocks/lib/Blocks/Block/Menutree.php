@@ -19,7 +19,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
      */
     public function init()
     {
-        SecurityUtil::registerPermissionSchema('Menutree:menutreeblock:', 'Block ID:Link name:');
+        SecurityUtil::registerPermissionSchema('Menutree:menutreeblock:', 'Block ID:Link Name:Link ID');
     }
 
     /**
@@ -50,9 +50,6 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         // Get variables from content block
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
-        // set cache id with user id (due to user oriented permissions)
-        $this->view->cache_id = $blockinfo['bkey'].$blockinfo['bid'].'u'.UserUtil::getVar('uid');
-
         // template to use
         if (!isset($vars['menutree_tpl']) || empty($vars['menutree_tpl']) || !$this->view->template_exists($vars['menutree_tpl'])) {
             $vars['menutree_tpl'] = 'menutree/blocks_block_menutree_default.tpl';
@@ -63,17 +60,20 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
             PageUtil::addVar('stylesheet', $vars['menutree_stylesheet']);
         }
 
-        //check if block is cached, if so - fetch cached tpl to aviod further proceedeing
+        // set the cache id
+        $this->view->setCacheId($blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.CacheUtil::getUserString());
+
+        // check if block is cached, if so - fetch cached tpl to avoid further proceedeing
         if ($this->view->is_cached($vars['menutree_tpl'])) {
             $blockinfo['content'] = $this->view->fetch($vars['menutree_tpl']);
             return BlockUtil::themeBlock($blockinfo);
         }
 
         // set default block vars
-        $vars['menutree_content'] = isset($vars['menutree_content']) ? $vars['menutree_content'] : array();
-        $vars['menutree_titles'] = isset($vars['menutree_titles']) ? $vars['menutree_titles'] : array();
+        $vars['menutree_content']    = isset($vars['menutree_content']) ? $vars['menutree_content'] : array();
+        $vars['menutree_titles']     = isset($vars['menutree_titles']) ? $vars['menutree_titles'] : array();
         $vars['menutree_stylesheet'] = isset($vars['menutree_stylesheet']) ? $vars['menutree_stylesheet'] : '';
-        $vars['menutree_editlinks'] = isset($vars['menutree_editlinks']) ? $vars['menutree_editlinks'] : false;
+        $vars['menutree_editlinks']  = isset($vars['menutree_editlinks']) ? $vars['menutree_editlinks'] : false;
 
         // set current user lang
         $lang = ZLanguage::getLanguageCode();
@@ -87,13 +87,12 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
             // select current lang, check permissions for each item and exclude unactive nodes
             $newTree = array();
             $blocked = array();
-            foreach ($vars['menutree_content'] as $item) {
+            foreach ($vars['menutree_content'] as $id => $item) {
                 $item = $item[$lang];
-                // due to bug #9 we have to check two possible perms syntax
-                $perms = !Securityutil::checkPermission('Menutree:menutreeblock:',"$blockinfo[title]::$item[name]",ACCESS_READ) || !Securityutil::checkPermission('Menutree:menutreeblock:',"$blockinfo[title]:$item[name]:",ACCESS_READ);
-                if ($perms || in_array($item['parent'], $blocked)) {
-                    $blocked[] = $item['id'];
-                } elseif ($item['state'] != 1) {
+                // check the permission access to the current link
+                $hasperms = Securityutil::checkPermission('Menutree:menutreeblock:',"$blockinfo[bid]:$item[name]:$item[id]", ACCESS_READ);
+                // checks if has no access to it or the link is not active
+                if (!$hasperms || in_array($item['parent'], $blocked) || $item['state'] != 1) {
                     $blocked[] = $item['id'];
                 } else {
                     // dynamic components
@@ -142,7 +141,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
             $blockinfo['title'] = $vars['menutree_titles'][$lang];
         }
 
-        $this->view->assign('menutree_editlinks', $vars['menutree_editlinks'] && Securityutil::checkPermission('Blocks::', 'Menutree:'.$blockinfo['title'].':'.$blockinfo['bid'], ACCESS_EDIT))
+        $this->view->assign('menutree_editlinks', $vars['menutree_editlinks'] && Securityutil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_EDIT))
                    ->assign('menutree_content', $newTree)
                    ->assign('blockinfo', $blockinfo);
 
@@ -191,7 +190,8 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         }
 
         $langs = array('list' => array_keys($vars['languages']),
-               'flat' => false);
+                       'flat' => false);
+
         // check if there is allredy content
         if (empty($vars['menutree_content'])) {
             // no content - get list of menus to allow import
@@ -218,18 +218,15 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         }
         // decode tree array
         $tree = new Blocks_MenutreeTree();
-        $tree->setOption('id','adm-menutree'.$blockinfo['bid']);
-        $tree->setOption('sortable',true);
-        if(isset($langs)) {
-            $tree->setOption('langs',$langs['list']);
+        $tree->setOption('id', 'adm-menutree'.$blockinfo['bid']);
+        $tree->setOption('sortable', true);
+        if (isset($langs)) {
+            $tree->setOption('langs', $langs['list']);
         }
-        $tree->setOption('stripbaseurl',$vars['menutree_stripbaseurl']);
-        $tree->setOption('maxDepth',$vars['menutree_maxdepth']);
+        $tree->setOption('stripbaseurl', $vars['menutree_stripbaseurl']);
+        $tree->setOption('maxDepth', $vars['menutree_maxdepth']);
         $tree->loadArrayData($vars['menutree_content']);
         $vars['menutree_content'] = $tree->getHTML();
-
-        // Create output object
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // get all templates and stylesheets.
         $vars['tpls'] = Blocks_MenutreeUtil::getTemplates();
@@ -253,8 +250,8 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         $vars['permlevels']  = $this->_permlevels();
 
         // check if saved permlevels are correct
-        $vars['menutree_titlesperms'] = !empty($vars['menutree_titlesperms']) ? $vars['menutree_titlesperms'] : 'ACCESS_EDIT';
-        $vars['menutree_displayperms'] = !empty($vars['menutree_displayperms']) ? $vars['menutree_displayperms'] : 'ACCESS_EDIT';
+        $vars['menutree_titlesperms']   = !empty($vars['menutree_titlesperms']) ? $vars['menutree_titlesperms'] : 'ACCESS_EDIT';
+        $vars['menutree_displayperms']  = !empty($vars['menutree_displayperms']) ? $vars['menutree_displayperms'] : 'ACCESS_EDIT';
         $vars['menutree_settingsperms'] = !empty($vars['menutree_settingsperms']) ? $vars['menutree_settingsperms'] : 'ACCESS_EDIT';
 
         // check user permissions for settings sections
@@ -286,6 +283,9 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
             $vars['redirect'] = urlencode(System::serverGetVar('HTTP_REFERER'));
         }
 
+        // Create output object
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+
         // assign all block variables
         $this->view->assign($vars)
                    ->assign('blockinfo', $blockinfo);
@@ -301,8 +301,6 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
     {
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         // check if import old menu
         $menutree_menus = FormUtil::getPassedValue('menutree_menus', 'null');
@@ -352,12 +350,12 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
             }
         }
 
-        $vars['menutree_maxdepth'] = isset($menutree_data['maxdepth']) ? (int)$menutree_data['maxdepth'] : 0;
-        $vars['menutree_editlinks'] = isset($menutree_data['editlinks']) ? (bool)$menutree_data['editlinks'] : false;
+        $vars['menutree_maxdepth']     = isset($menutree_data['maxdepth']) ? (int)$menutree_data['maxdepth'] : 0;
+        $vars['menutree_editlinks']    = isset($menutree_data['editlinks']) ? (bool)$menutree_data['editlinks'] : false;
         $vars['menutree_stripbaseurl'] = isset($menutree_data['stripbaseurl']) ? (bool)$menutree_data['stripbaseurl'] : false;
 
-        $vars['menutree_titlesperms'] = isset($menutree_data['titlesperms']) && array_key_exists($menutree_data['titlesperms'],$this->_permlevels()) ? $menutree_data['titlesperms'] : 'ACCESS_EDIT';
-        $vars['menutree_displayperms'] = isset($menutree_data['displayperms']) && array_key_exists($menutree_data['displayperms'],$this->_permlevels()) ? $menutree_data['displayperms'] : 'ACCESS_EDIT';
+        $vars['menutree_titlesperms']   = isset($menutree_data['titlesperms']) && array_key_exists($menutree_data['titlesperms'],$this->_permlevels()) ? $menutree_data['titlesperms'] : 'ACCESS_EDIT';
+        $vars['menutree_displayperms']  = isset($menutree_data['displayperms']) && array_key_exists($menutree_data['displayperms'],$this->_permlevels()) ? $menutree_data['displayperms'] : 'ACCESS_EDIT';
         $vars['menutree_settingsperms'] = isset($menutree_data['settingsperms']) && array_key_exists($menutree_data['settingsperms'],$this->_permlevels()) ? $menutree_data['settingsperms'] : 'ACCESS_EDIT';
 
         if (empty($vars['menutree_content'])) {
@@ -374,7 +372,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
                 foreach ($vars['menutree_content'] as $itemid => $item) {
                     foreach ($item as $lang => $_item) {
                         // strip base url only when it occurs at the beginning of url and only once
-                        if (strpos($_item['href'],$baseurl) === 0) {
+                        if (strpos($_item['href'], $baseurl) === 0) {
                             $vars['menutree_content'][$itemid][$lang]['href'] = substr_replace($_item['href'], '', 0, strlen($baseurl));
                         }
                     }
@@ -386,8 +384,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        // due to cache id containing user id we have to clear all block cache
-        $this->view->clear_all_cache();
+        $this->view->clear_cache($blockinfo['bkey'].'/bid'.$blockinfo['bid']);
 
         return $blockinfo;
     }
@@ -435,7 +432,8 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         $userlanguage = ZLanguage::getLanguageCode();
 
         $menuType = strtolower($menu['bkey']);
-        switch($menuType) {
+        switch ($menuType)
+        {
             case 'menutree':
                 $data = isset($menuVars['menutree_content']) ? $menuVars['menutree_content'] : array();
                 break;
@@ -529,17 +527,17 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
          *     )
          * )
          */
-        if(!is_array($array)) {
+        if (!is_array($array)) {
             return false;
         }
         $ids = array_keys($array);
         $ids[] = 0;
-        foreach($array as $id => $node) {
-            if(!is_numeric($id) || !is_array($node)) {
+        foreach ($array as $id => $node) {
+            if (!is_numeric($id) || !is_array($node)) {
                 return false;
             }
-            foreach($node as $lang => $data) {
-                if(!ZLanguage::isLangParam($lang)
+            foreach ($node as $lang => $data) {
+                if (!ZLanguage::isLangParam($lang)
                         || !is_array($data)
                         || empty($data['name'])
                         || !ZLanguage::isLangParam($data['lang'])
