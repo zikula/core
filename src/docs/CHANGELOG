@@ -174,4 +174,5 @@ CHANGELOG - ZIKULA 1.3.0
 * Added a new template block function {pageaddvarblock}...{/pageaddvarblock} to allow inline scripts, styles, etc. to be placed in the page's head section or near the closing body tag.
 * Renamed the page variable 'rawtext' to 'header' (Used with PageUtil, {pageaddvar}, {pagesetvar}, etc.). If operating in legacy mode, 'rawtext' will map to 'header', if not then 'rawtext' will be treated as just another page variable name, and will NOT render to the page.
 * Enabled support of persistent data on Zikula_Form_View to let Form Handlers store data through the process. (issue #3023).
-* Theme config .ini files now can handle their own variables, overriding the themevariables.ini general ones. (issue #3034).
+* Theme Admin Panel fixed. Theme config .ini files now can handle their own variables, overriding the themevariables.ini general ones. (issue #3034).
+* Theme and Render cache fixed. (issue #3030).
