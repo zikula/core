@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-04 20:36-0400\n"
+"POT-Creation-Date: 2011-05-17 09:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,44 +16,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: system/Mailer/lib/Mailer/Controller/Admin.php:45
+#: system/Mailer/lib/Mailer/Controller/Admin.php:55
 msgid "Internal PHP `mail()` function"
 msgstr ""
 
-#: system/Mailer/lib/Mailer/Controller/Admin.php:46
+#: system/Mailer/lib/Mailer/Controller/Admin.php:56
 msgid "Sendmail message transfer agent"
 msgstr ""
 
-#: system/Mailer/lib/Mailer/Controller/Admin.php:47
+#: system/Mailer/lib/Mailer/Controller/Admin.php:57
 msgid "QMail message transfer agent"
 msgstr ""
 
-#: system/Mailer/lib/Mailer/Controller/Admin.php:48
+#: system/Mailer/lib/Mailer/Controller/Admin.php:58
 msgid "SMTP mail transfer protocol"
 msgstr ""
 
-#: system/Mailer/lib/Mailer/Controller/Admin.php:127
-#: system/Blocks/lib/Blocks/Controller/Admin.php:826
-#: system/Permissions/lib/Permissions/Controller/Admin.php:689
-#: system/Groups/lib/Groups/Controller/Admin.php:828
-#: system/Theme/lib/Theme/Controller/Admin.php:169
-#: system/Theme/lib/Theme/Controller/Admin.php:1064
-#: system/Settings/lib/Settings/Controller/Admin.php:119
-#: system/Search/lib/Search/Controller/Admin.php:113
+#: system/Mailer/lib/Mailer/Controller/Admin.php:137
+#: system/Blocks/lib/Blocks/Controller/Admin.php:838
+#: system/Permissions/lib/Permissions/Controller/Admin.php:690
+#: system/Groups/lib/Groups/Controller/Admin.php:823
+#: system/Theme/lib/Theme/Controller/Admin.php:198
+#: system/Theme/lib/Theme/Controller/Admin.php:1183
+#: system/Settings/lib/Settings/Controller/Admin.php:116
+#: system/Search/lib/Search/Controller/Admin.php:121
 #: system/Categories/lib/Categories/Controller/Adminform.php:321
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1038
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:315
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:828
-#: system/Admin/lib/Admin/Controller/Admin.php:493
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1045
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:323
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:825
+#: system/Admin/lib/Admin/Controller/Admin.php:483
 msgid "Done! Saved module configuration."
 msgstr ""
 
-#: system/Mailer/lib/Mailer/Controller/Admin.php:186
+#: system/Mailer/lib/Mailer/Controller/Admin.php:194
 msgid "Done! Message sent."
 msgstr ""
 
-#: system/Mailer/lib/Mailer/Controller/Admin.php:189
-#: system/Mailer/lib/Mailer/Controller/Admin.php:192
+#: system/Mailer/lib/Mailer/Controller/Admin.php:197
+#: system/Mailer/lib/Mailer/Controller/Admin.php:200
 #, php-format
 msgid "Error! Could not send message. %s"
 msgstr ""
@@ -64,7 +64,7 @@ msgid "Test current settings"
 msgstr ""
 
 #: system/Mailer/lib/Mailer/Api/Admin.php:33
-#: system/Blocks/lib/Blocks/Api/Admin.php:446
+#: system/Blocks/lib/Blocks/Api/Admin.php:445
 #: system/Permissions/lib/Permissions/Api/Admin.php:508
 #: system/Groups/lib/Groups/Api/Admin.php:503
 #: system/Theme/lib/Theme/Api/Admin.php:42
@@ -150,19 +150,21 @@ msgstr ""
 #: lib/viewplugins/function.img.php:72 lib/viewplugins/function.img.php:86
 #: lib/viewplugins/function.array_field_pop.php:56
 #: lib/viewplugins/function.array_field_pop.php:66
-#: lib/viewplugins/insert.setpagevar.php:47
-#: lib/viewplugins/insert.setpagevar.php:51
 #: lib/viewplugins/function.calendarinput.php:47
 #: lib/viewplugins/function.calendarinput.php:51
 #: lib/viewplugins/function.calendarinput.php:55
 #: lib/viewplugins/function.html_select_languages.php:39
+#: lib/viewplugins/function.sessionsetvar.php:47
+#: lib/viewplugins/function.sessionsetvar.php:52
+#: lib/viewplugins/function.themesetvar.php:40
 #: lib/viewplugins/function.array_field_isset.php:66
 #: lib/viewplugins/function.array_field_isset.php:71
 #: lib/viewplugins/function.usergetvar.php:46
 #: lib/viewplugins/block.checkgroup.php:47
-#: lib/viewplugins/function.themegetvar.php:41
+#: lib/viewplugins/function.themegetvar.php:42
 #: lib/viewplugins/function.pageregistervar.php:55
 #: lib/viewplugins/block.switch.php:52 lib/viewplugins/function.block.php:74
+#: lib/viewplugins/function.sessiongetvar.php:46
 #: lib/viewplugins/function.checkpermission.php:52
 #: lib/viewplugins/function.checkpermission.php:57
 #: lib/viewplugins/function.checkpermission.php:62
@@ -178,6 +180,9 @@ msgstr ""
 #: lib/viewplugins/function.workflow_getactionsbystate.php:27
 #: lib/viewplugins/function.workflow_getactionsbystate.php:32
 #: lib/viewplugins/function.workflow_getactionsbystate.php:37
+#: lib/viewplugins/function.sessiondelvar.php:43
+#: lib/viewplugins/insert.pageaddvar.php:60
+#: lib/viewplugins/insert.pageaddvar.php:64
 #: lib/viewplugins/function.usergetidfromname.php:36
 #: lib/viewplugins/function.html_select_locales.php:38
 #: lib/viewplugins/function.button.php:86
@@ -196,14 +201,10 @@ msgstr ""
 #: lib/legacy/plugins/function.secauthaction.php:37
 #: lib/legacy/plugins/function.secauthaction.php:42
 #: lib/legacy/plugins/function.secauthaction.php:47
-#: lib/legacy/plugins/function.sessionsetvar.php:47
-#: lib/legacy/plugins/function.sessionsetvar.php:52
-#: lib/legacy/plugins/function.sessiongetvar.php:50
 #: lib/legacy/plugins/function.modishooked.php:50
 #: lib/legacy/plugins/function.modishooked.php:55
 #: lib/legacy/plugins/function.modcallhooks.php:61
 #: lib/legacy/plugins/function.modcallhooks.php:65
-#: lib/legacy/plugins/function.sessiondelvar.php:44
 #: lib/legacy/plugins/function.configgetvar.php:54
 #: lib/legacy/plugins/block.secauthaction_block.php:50
 #: lib/legacy/plugins/block.secauthaction_block.php:54
@@ -220,7 +221,7 @@ msgstr ""
 msgid "Error! in %1$s: the %2$s parameter must be specified."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:100
+#: system/Blocks/lib/Blocks/Controller/Admin.php:108
 #: system/Extensions/lib/Extensions/Api/Admin.php:1187
 #: system/Extensions/lib/Extensions/Api/Admin.php:1207
 #: system/Extensions/lib/Extensions/Api/Admin.php:1221
@@ -237,158 +238,171 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:119
+#: system/Blocks/lib/Blocks/Controller/Admin.php:127
 #, php-format
 msgid "Deactivate '%s'"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:125
-#: system/Extensions/lib/Extensions/Controller/Admin.php:275
+#: system/Blocks/lib/Blocks/Controller/Admin.php:133
+#: system/Extensions/lib/Extensions/Controller/Admin.php:282
 #, php-format
 msgid "Activate '%s'"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:131
-#: system/Extensions/lib/Extensions/Controller/Admin.php:374
+#: system/Blocks/lib/Blocks/Controller/Admin.php:139
+#: system/Extensions/lib/Extensions/Controller/Admin.php:381
 #: system/Users/templates/users_admin_view.tpl:127
 #, php-format
 msgid "Edit '%s'"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:135
+#: system/Blocks/lib/Blocks/Controller/Admin.php:143
 #: system/Users/templates/users_admin_view.tpl:137
 #, php-format
 msgid "Delete '%s'"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:152
+#: system/Blocks/lib/Blocks/Controller/Admin.php:160
 #, php-format
 msgid "Edit blockposition '%s'"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:156
+#: system/Blocks/lib/Blocks/Controller/Admin.php:164
 #, php-format
 msgid "Delete blockposition '%s'"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:193
+#: system/Blocks/lib/Blocks/Controller/Admin.php:201
 msgid "Done! Block now inactive."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:217
+#: system/Blocks/lib/Blocks/Controller/Admin.php:225
 msgid "Done! Block now active."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:246
-#: system/Blocks/lib/Blocks/Controller/Admin.php:261
-#: system/Blocks/lib/Blocks/Controller/Admin.php:409
-#: system/Blocks/lib/Blocks/Controller/Admin.php:565
+#: system/Blocks/lib/Blocks/Controller/Admin.php:254
+#: system/Blocks/lib/Blocks/Controller/Admin.php:269
+#: system/Blocks/lib/Blocks/Controller/Admin.php:421
+#: system/Blocks/lib/Blocks/Controller/Admin.php:582
 msgid "Sorry! No such block found."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:320
-msgid "One minute"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:321
-msgid "Two minutes"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:322
-msgid "Five minutes"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:323
-msgid "Ten minutes"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:324
-msgid "Fifteen minutes"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:325
-msgid "Half an hour"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:326
-msgid "One hour"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:327
-msgid "Two hours"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:328
-msgid "Four hours"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:329
-msgid "Twelve hours"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:330
-msgid "One day"
-msgstr ""
-
-#: system/Blocks/lib/Blocks/Controller/Admin.php:331
-msgid "Two days"
+#: system/Blocks/lib/Blocks/Controller/Admin.php:285
+#: system/Theme/lib/Theme/Controller/Admin.php:476
+#: system/Theme/lib/Theme/Controller/Admin.php:759
+msgid "Homepage"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:332
-msgid "Three days"
+msgid "One minute"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:333
-msgid "Four days"
+msgid "Two minutes"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:334
-msgid "Five days"
+msgid "Five minutes"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:335
-msgid "Six days"
+msgid "Ten minutes"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Admin.php:336
+msgid "Fifteen minutes"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:337
+msgid "Half an hour"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:338
+msgid "One hour"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:339
+msgid "Two hours"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:340
+msgid "Four hours"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:341
+msgid "Twelve hours"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:342
+msgid "One day"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:343
+msgid "Two days"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:344
+msgid "Three days"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:345
+msgid "Four days"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:346
+msgid "Five days"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:347
+msgid "Six days"
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:348
 msgid "Seven days"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:430
-msgid "Done! Saved blocks."
+#: system/Blocks/lib/Blocks/Controller/Admin.php:442
+msgid "Done! Block saved."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:465
+#: system/Blocks/lib/Blocks/Controller/Admin.php:483
 msgid "Error! Could not load blocks."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:535
-#: system/Blocks/lib/Blocks/Controller/Admin.php:643
-msgid "Done! Created block."
+#: system/Blocks/lib/Blocks/Controller/Admin.php:532
+msgid "You must choose a block."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:595
-msgid "Done! Deleted block."
+#: system/Blocks/lib/Blocks/Controller/Admin.php:552
+msgid "Done! Block created."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:728
-msgid "Done! Saved block."
+#: system/Blocks/lib/Blocks/Controller/Admin.php:610
+msgid "Done! Block deleted."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:755
+#: system/Blocks/lib/Blocks/Controller/Admin.php:661
+msgid "Done! Block position created."
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:744
+msgid "Done! Block position saved."
+msgstr ""
+
+#: system/Blocks/lib/Blocks/Controller/Admin.php:771
 msgid "Error! No such block position found."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Controller/Admin.php:776
-msgid "Done! Deleted block position."
+#: system/Blocks/lib/Blocks/Controller/Admin.php:790
+msgid "Done! Block position deleted."
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Controller/Ajax.php:39
 #: system/Blocks/lib/Blocks/Controller/Ajax.php:51
-#: system/Blocks/lib/Blocks/Block/Menutree.php:318
-#: system/Blocks/lib/Blocks/Api/Admin.php:80
-#: system/Blocks/lib/Blocks/Api/Admin.php:112
-#: system/Blocks/lib/Blocks/Api/Admin.php:373
+#: system/Blocks/lib/Blocks/Block/Menutree.php:319
+#: system/Blocks/lib/Blocks/Api/Admin.php:79
+#: system/Blocks/lib/Blocks/Api/Admin.php:111
+#: system/Blocks/lib/Blocks/Api/Admin.php:372
 #: system/Groups/lib/Groups/Api/Admin.php:193
 #: system/Theme/lib/Theme/Api/Admin.php:66
 #: system/Extensions/lib/Extensions/Api/Admin.php:83
@@ -429,12 +443,12 @@ msgstr ""
 msgid "Extended menu block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Extmenu.php:150
+#: system/Blocks/lib/Blocks/Block/Extmenu.php:153
 msgid "--Installed modules--"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Extmenu.php:272
-#: system/Blocks/lib/Blocks/Block/Extmenu.php:274
+#: system/Blocks/lib/Blocks/Block/Extmenu.php:275
+#: system/Blocks/lib/Blocks/Block/Extmenu.php:277
 msgid "--New link--"
 msgstr ""
 
@@ -472,7 +486,7 @@ msgstr ""
 msgid "Admin access"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Menutree.php:474
+#: system/Blocks/lib/Blocks/Block/Menutree.php:475
 msgid "no name"
 msgstr ""
 
@@ -483,11 +497,11 @@ msgid ""
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Block/Lang.php:41
-#: system/Blocks/templates/blocks_admin_modify.tpl:48
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:215
+#: system/Blocks/templates/blocks_admin_modify.tpl:29
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:212
 #: system/Blocks/templates/blocks_admin_view.tpl:34
 #: system/Blocks/templates/blocks_admin_view.tpl:72
-#: system/Blocks/templates/blocks_admin_newblock.tpl:25
+#: system/Blocks/templates/blocks_admin_newblock.tpl:26
 msgid "Language"
 msgstr ""
 
@@ -495,7 +509,7 @@ msgstr ""
 msgid "Language selector block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Lang.php:105 upgrade.php:186
+#: system/Blocks/lib/Blocks/Block/Lang.php:105 upgrade.php:187
 #: install/templates/installer_lang.tpl:16
 msgid "Choose a language"
 msgstr ""
@@ -701,51 +715,51 @@ msgstr ""
 msgid "Theme navigation"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:103
+#: system/Blocks/lib/Blocks/Api/Admin.php:102
 msgid "Error! Could not perform the insertion."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:176
-#: system/Blocks/lib/Blocks/Api/Admin.php:188
-#: system/Blocks/lib/Blocks/Api/Admin.php:332
+#: system/Blocks/lib/Blocks/Api/Admin.php:175
+#: system/Blocks/lib/Blocks/Api/Admin.php:187
+#: system/Blocks/lib/Blocks/Api/Admin.php:331
 #: system/Groups/lib/Groups/Api/Admin.php:58
 #: system/Groups/lib/Groups/Api/Admin.php:239
 #: system/Groups/lib/Groups/Api/User.php:384
 #: system/Groups/lib/Groups/Api/User.php:580
 #: system/Groups/lib/Groups/Api/User.php:629
-#: system/Theme/lib/Theme/Api/Admin.php:376
-#: system/Theme/lib/Theme/Api/Admin.php:397
+#: system/Theme/lib/Theme/Api/Admin.php:377
+#: system/Theme/lib/Theme/Api/Admin.php:398
 #: system/Admin/lib/Admin/Api/Admin.php:41
 msgid "Error! Could not create the new item."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:237
+#: system/Blocks/lib/Blocks/Api/Admin.php:236
 msgid "Error! Could not deactivate the block."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:256
+#: system/Blocks/lib/Blocks/Api/Admin.php:255
 msgid "Error! Could not activate the block."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:286
-#: system/Blocks/lib/Blocks/Api/Admin.php:292
-#: system/Blocks/lib/Blocks/Api/Admin.php:405
+#: system/Blocks/lib/Blocks/Api/Admin.php:285
+#: system/Blocks/lib/Blocks/Api/Admin.php:291
+#: system/Blocks/lib/Blocks/Api/Admin.php:404
 #: system/Groups/lib/Groups/Api/Admin.php:124
 #: system/Groups/lib/Groups/Api/Admin.php:440
 #: system/Groups/lib/Groups/Api/User.php:417
-#: system/Theme/lib/Theme/Api/Admin.php:186
+#: system/Theme/lib/Theme/Api/Admin.php:188
 #: system/Admin/lib/Admin/Controller/Ajax.php:122
 #: system/Admin/lib/Admin/Api/Admin.php:92
 #: system/Admin/lib/Admin/Api/Admin.php:97
 msgid "Error! Could not perform the deletion."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:324
+#: system/Blocks/lib/Blocks/Api/Admin.php:323
 msgid "Error! There is already a block position with the name you entered."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:361
-#: system/Blocks/lib/Blocks/Api/Admin.php:396
+#: system/Blocks/lib/Blocks/Api/Admin.php:360
+#: system/Blocks/lib/Blocks/Api/Admin.php:395
 #: system/Groups/lib/Groups/Api/Admin.php:93
 #: system/Groups/lib/Groups/Api/Admin.php:157
 #: system/Groups/lib/Groups/Api/Admin.php:224
@@ -753,10 +767,10 @@ msgstr ""
 #: system/Groups/lib/Groups/Api/User.php:362
 #: system/Groups/lib/Groups/Api/User.php:555
 #: system/Groups/lib/Groups/Api/User.php:610
-#: system/Theme/lib/Theme/Controller/Admin.php:769
-#: system/Theme/lib/Theme/Api/Admin.php:170
-#: system/Theme/lib/Theme/Api/Admin.php:330
-#: system/Categories/lib/Categories/Controller/Admin.php:89
+#: system/Theme/lib/Theme/Controller/Admin.php:903
+#: system/Theme/lib/Theme/Api/Admin.php:172
+#: system/Theme/lib/Theme/Api/Admin.php:331
+#: system/Categories/lib/Categories/Controller/Admin.php:96
 #: system/Categories/lib/Categories/Controller/Ajax.php:74
 #: system/Admin/lib/Admin/Api/Admin.php:62
 #: system/Admin/lib/Admin/Api/Admin.php:126
@@ -765,35 +779,35 @@ msgstr ""
 msgid "Sorry! No such item found."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:429
+#: system/Blocks/lib/Blocks/Api/Admin.php:428
 #, php-format
 msgid "Position \\\"%s\\\" "
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:434
+#: system/Blocks/lib/Blocks/Api/Admin.php:433
 #: system/Blocks/templates/blocks_admin_view.tpl:18
 msgid "Blocks list"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:440
+#: system/Blocks/lib/Blocks/Api/Admin.php:439
 #: system/Blocks/templates/blocks_admin_newblock.tpl:4
 msgid "Create new block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Api/Admin.php:443
+#: system/Blocks/lib/Blocks/Api/Admin.php:442
 #: system/Blocks/templates/blocks_admin_newposition.tpl:4
 msgid "Create new block position"
 msgstr ""
 
 #: system/Blocks/lib/Blocks/Api/Menutree.php:244
 #: system/Categories/lib/Categories/Installer.php:396
-#: system/Blocks/templates/blocks_admin_modify.tpl:40
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:225
+#: system/Blocks/templates/blocks_admin_modify.tpl:21
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:222
 #: system/Blocks/templates/blocks_admin_view.tpl:59
 #: system/Blocks/templates/blocks_admin_newblock.tpl:11
 #: system/Blocks/templates/blocks_block_extmenu_modify.tpl:66
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:37
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:66
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:38
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:67
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:16
 msgid "Title"
 msgstr ""
@@ -868,46 +882,46 @@ msgstr ""
 msgid "blocks"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:67
+#: system/Permissions/lib/Permissions/Controller/Admin.php:76
 #: system/Permissions/lib/Permissions/Controller/Ajax.php:192
 msgid "permission granted."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:69
+#: system/Permissions/lib/Permissions/Controller/Admin.php:78
 #: system/Permissions/lib/Permissions/Controller/Ajax.php:194
 msgid "permission not granted."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:72
+#: system/Permissions/lib/Permissions/Controller/Admin.php:81
 #: system/Permissions/lib/Permissions/Controller/Ajax.php:189
 msgid "unknown user."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:132
+#: system/Permissions/lib/Permissions/Controller/Admin.php:141
 msgid "All components"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:144
+#: system/Permissions/lib/Permissions/Controller/Admin.php:153
 #: system/Categories/templates/categories_user_list.tpl:15
 #: system/Categories/templates/categories_user_list.tpl:47
 msgid "Up"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:149
+#: system/Permissions/lib/Permissions/Controller/Admin.php:158
 #: system/Categories/templates/categories_user_list.tpl:14
 #: system/Categories/templates/categories_user_list.tpl:38
 msgid "Down"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:251
+#: system/Permissions/lib/Permissions/Controller/Admin.php:260
 msgid "Done! Incremented permission rule."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:292
+#: system/Permissions/lib/Permissions/Controller/Admin.php:301
 msgid "Done! Decremented permission rule."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:330
+#: system/Permissions/lib/Permissions/Controller/Admin.php:337
 #: lib/util/HtmlUtil.php:537 lib/util/HtmlUtil.php:560
 #: system/Permissions/templates/permissions_admin_view.tpl:50
 #: system/Permissions/templates/permissions_admin_view.tpl:211
@@ -915,61 +929,61 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:331
+#: system/Permissions/lib/Permissions/Controller/Admin.php:338
 msgid "Modify permission rule"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:331
-#: system/Permissions/lib/Permissions/Controller/Admin.php:366
-#: system/Permissions/lib/Permissions/Controller/Admin.php:375
+#: system/Permissions/lib/Permissions/Controller/Admin.php:338
+#: system/Permissions/lib/Permissions/Controller/Admin.php:373
+#: system/Permissions/lib/Permissions/Controller/Admin.php:382
 #: system/Permissions/lib/Permissions/Api/Admin.php:505
 #: system/Permissions/templates/permissions_admin_view.tpl:41
 msgid "Create new permission rule"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:337
+#: system/Permissions/lib/Permissions/Controller/Admin.php:344
 msgid ""
 "Error! No permission rules of this kind were found. Please add some first."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:358
+#: system/Permissions/lib/Permissions/Controller/Admin.php:365
 msgid "Edit permission rule"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:438
-#: system/Permissions/lib/Permissions/Controller/Admin.php:499
+#: system/Permissions/lib/Permissions/Controller/Admin.php:445
+#: system/Permissions/lib/Permissions/Controller/Admin.php:506
 msgid "[Illegal input in component!]"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:443
-#: system/Permissions/lib/Permissions/Controller/Admin.php:504
+#: system/Permissions/lib/Permissions/Controller/Admin.php:450
+#: system/Permissions/lib/Permissions/Controller/Admin.php:511
 msgid "[Illegal input in instance!]"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:458
+#: system/Permissions/lib/Permissions/Controller/Admin.php:465
 msgid "Done! Saved permission rule."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:517
+#: system/Permissions/lib/Permissions/Controller/Admin.php:524
 msgid "Done! Created permission rule."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:567
+#: system/Permissions/lib/Permissions/Controller/Admin.php:572
 msgid "Done! Deleted permission rule."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:589
+#: system/Permissions/lib/Permissions/Controller/Admin.php:594
 #: system/Permissions/lib/Permissions/Controller/Ajax.php:67
 msgid "All groups"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:590
+#: system/Permissions/lib/Permissions/Controller/Admin.php:595
 #: system/Permissions/lib/Permissions/Controller/Ajax.php:70
 #: system/Permissions/lib/Permissions/Controller/Ajax.php:131
 msgid "Unregistered"
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Controller/Admin.php:686
+#: system/Permissions/lib/Permissions/Controller/Admin.php:687
 msgid "Error! Could not save configuration: unknown permission rule ID."
 msgstr ""
 
@@ -1069,8 +1083,8 @@ msgstr ""
 msgid "pagelock"
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:98
-#: system/Admin/lib/Admin/Controller/Admin.php:235
+#: system/Groups/lib/Groups/Controller/Admin.php:107
+#: system/Admin/lib/Admin/Controller/Admin.php:229
 #: lib/Zikula/Form/Plugin/CategorySelector.php:188
 #: lib/Zikula/Form/Plugin/CategoryCheckboxList.php:77
 #: system/Permissions/templates/permissions_admin_view.tpl:103
@@ -1080,8 +1094,8 @@ msgstr ""
 #: system/Groups/templates/groups_admin_view.tpl:105
 #: system/Groups/templates/groups_admin_view.tpl:179
 #: system/Theme/templates/theme_admin_view.tpl:47
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:20
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:41
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:22
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:44
 #: system/Users/templates/users_admin_displayregistration.tpl:29
 #: system/Users/templates/users_admin_search_results.tpl:61
 #: system/Users/templates/users_admin_view.tpl:20
@@ -1093,11 +1107,11 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:105
-#: system/Admin/lib/Admin/Controller/Admin.php:240
-#: system/Blocks/templates/blocks_admin_modify.tpl:74
-#: system/Blocks/templates/blocks_admin_modify.tpl:91
-#: system/Blocks/templates/blocks_admin_modify.tpl:115
+#: system/Groups/lib/Groups/Controller/Admin.php:114
+#: system/Admin/lib/Admin/Controller/Admin.php:234
+#: system/Blocks/templates/blocks_admin_modify.tpl:55
+#: system/Blocks/templates/blocks_admin_modify.tpl:72
+#: system/Blocks/templates/blocks_admin_modify.tpl:96
 #: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:124
 #: system/Blocks/templates/blocks_admin_deleteposition.tpl:15
 #: system/Blocks/templates/blocks_block_extmenu_modify.tpl:92
@@ -1115,7 +1129,7 @@ msgstr ""
 #: system/Groups/templates/groups_admin_view.tpl:183
 #: system/Theme/templates/theme_admin_deletepageconfigurationassignment.tpl:16
 #: system/Theme/templates/theme_admin_view.tpl:49
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:21
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:23
 #: system/Theme/templates/theme_admin_delete.tpl:20
 #: system/Users/templates/users_admin_modify.tpl:218
 #: system/Users/templates/users_admin_search_results.tpl:62
@@ -1135,7 +1149,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:109
+#: system/Groups/lib/Groups/Controller/Admin.php:118
 #: system/Groups/templates/groups_admin_view.tpl:107
 #: system/Groups/templates/groups_admin_groupmembership.tpl:2
 #: system/Users/templates/users_admin_modify.tpl:179
@@ -1143,108 +1157,108 @@ msgstr ""
 msgid "Group membership"
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:212
+#: system/Groups/lib/Groups/Controller/Admin.php:218
 #: system/Groups/lib/Groups/Api/Admin.php:170
 msgid "Error! There is already a group with that name."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:224
+#: system/Groups/lib/Groups/Controller/Admin.php:230
 msgid "Done! Created the group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:259
-#: system/Groups/lib/Groups/Controller/Admin.php:364
+#: system/Groups/lib/Groups/Controller/Admin.php:265
+#: system/Groups/lib/Groups/Controller/Admin.php:369
 msgid "Sorry! No such group found."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:322
+#: system/Groups/lib/Groups/Controller/Admin.php:327
 msgid "Done! Saved group changes."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:374
+#: system/Groups/lib/Groups/Controller/Admin.php:379
 #: system/Groups/lib/Groups/Controller/Ajax.php:161
 msgid "Error! You cannot delete the default user group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:401
+#: system/Groups/lib/Groups/Controller/Admin.php:404
 msgid "Done! Deleted the group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:473
+#: system/Groups/lib/Groups/Controller/Admin.php:475
 #: system/Groups/templates/groups_admin_removeuser.tpl:5
 msgid "Remove user from group"
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:579
+#: system/Groups/lib/Groups/Controller/Admin.php:581
 msgid "Error! A problem occurred and the user was not added to the group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:587
-#: system/Groups/lib/Groups/Controller/Admin.php:753
+#: system/Groups/lib/Groups/Controller/Admin.php:589
+#: system/Groups/lib/Groups/Controller/Admin.php:750
 msgid "Done! The user was added to the group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:636
+#: system/Groups/lib/Groups/Controller/Admin.php:635
 msgid "Done! The user was removed from the group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:638
+#: system/Groups/lib/Groups/Controller/Admin.php:637
 #: system/Groups/lib/Groups/Controller/Ajax.php:181
 msgid ""
 "Error! A problem occurred while attempting to remove the user. The user has "
 "not been removed from the group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:669
-#: system/Groups/lib/Groups/Controller/Admin.php:674
+#: system/Groups/lib/Groups/Controller/Admin.php:668
+#: system/Groups/lib/Groups/Controller/Admin.php:673
 msgid "None"
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:670
+#: system/Groups/lib/Groups/Controller/Admin.php:669
 msgid "Private message"
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:671
-#: system/Groups/lib/Groups/Controller/Admin.php:675
+#: system/Groups/lib/Groups/Controller/Admin.php:670
+#: system/Groups/lib/Groups/Controller/Admin.php:674
 msgid "E-mail"
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:717
+#: system/Groups/lib/Groups/Controller/Admin.php:714
 #, php-format
 msgid "Concerning your %s group membership application"
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:721
+#: system/Groups/lib/Groups/Controller/Admin.php:718
 #: system/Groups/templates/groups_admin_userpending.tpl:30
 msgid ""
 "Sorry! This is a message to inform you with regret that your application for "
 "membership of the aforementioned private group has been rejected."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:726
+#: system/Groups/lib/Groups/Controller/Admin.php:723
 #, php-format
 msgid "Done! The user has been added to the %s group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:730
+#: system/Groups/lib/Groups/Controller/Admin.php:727
 msgid ""
 "Done! Your application has been accepted. You have been granted all the "
 "privileges assigned to the group of which you are now member."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:745
+#: system/Groups/lib/Groups/Controller/Admin.php:742
 msgid "Error! Could not execute 'Reject' action."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:747
+#: system/Groups/lib/Groups/Controller/Admin.php:744
 msgid "Error! Could not execute 'Accept' action."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:755
+#: system/Groups/lib/Groups/Controller/Admin.php:752
 msgid "Done! The user's application for group membership has been rejected."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/Admin.php:816
+#: system/Groups/lib/Groups/Controller/Admin.php:811
 msgid "Error! Could not save the module configuration."
 msgstr ""
 
@@ -1266,43 +1280,43 @@ msgstr ""
 msgid "Error! Could not delete the '%s' group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:129
+#: system/Groups/lib/Groups/Controller/User.php:127
 #: system/Groups/lib/Groups/Api/User.php:473
 msgid ""
 "Error! You must register for a user account on this site before you can "
 "apply for membership of a group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:138
+#: system/Groups/lib/Groups/Controller/User.php:136
 msgid "Error! That group does not exist."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:146
+#: system/Groups/lib/Groups/Controller/User.php:144
 #: system/Groups/lib/Groups/Api/User.php:575
 msgid "Error! You are already a member of this group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:150
+#: system/Groups/lib/Groups/Controller/User.php:148
 msgid "Sorry! You cannot apply for membership of that group."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:155
+#: system/Groups/lib/Groups/Controller/User.php:153
 msgid "Sorry! That group has reached full membership."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:160
+#: system/Groups/lib/Groups/Controller/User.php:158
 msgid "Sorry! That group is closed."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:193
+#: system/Groups/lib/Groups/Controller/User.php:189
 msgid "Error! You must click on the checkbox to confirm your action."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:207
+#: system/Groups/lib/Groups/Controller/User.php:203
 msgid "Done! Saved the action."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:237
+#: system/Groups/lib/Groups/Controller/User.php:233
 #: system/Groups/lib/Groups/Api/Admin.php:364
 #: system/Groups/lib/Groups/Api/Admin.php:407
 #: system/Groups/lib/Groups/Api/User.php:61
@@ -1317,18 +1331,18 @@ msgstr ""
 #: system/Extensions/lib/Extensions/Api/Admin.php:604
 #: system/Extensions/lib/Extensions/Api/Admin.php:705
 #: system/Extensions/lib/Extensions/Api/Admin.php:1162
-#: lib/util/UserUtil.php:1239
+#: lib/util/UserUtil.php:1229
 #: system/Groups/templates/groups_admin_userpending.tpl:8
 #: system/Groups/templates/groups_user_membership.tpl:11
 msgid "Error! Could not load data."
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:275
+#: system/Groups/lib/Groups/Controller/User.php:269
 #: lib/viewplugins/modifier.onlineoffline.php:32
 msgid "on-line"
 msgstr ""
 
-#: system/Groups/lib/Groups/Controller/User.php:278
+#: system/Groups/lib/Groups/Controller/User.php:272
 #: lib/viewplugins/modifier.onlineoffline.php:34
 msgid "off-line"
 msgstr ""
@@ -1358,8 +1372,8 @@ msgstr ""
 #: system/Groups/lib/Groups/Installer.php:110
 #: system/Users/lib/Users/Version.php:34
 #: system/Categories/lib/Categories/Installer.php:568
-#: system/Admin/lib/Admin/Installer.php:131 install/lib.php:432
-#: install/lib.php:433 install/lib.php:435
+#: system/Admin/lib/Admin/Installer.php:131 install/lib.php:435
+#: install/lib.php:436 install/lib.php:438
 msgid "Users"
 msgstr ""
 
@@ -1455,78 +1469,129 @@ msgstr ""
 msgid "groups"
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:263
-#: system/Theme/lib/Theme/Controller/Admin.php:368
-#: system/Theme/lib/Theme/Controller/Admin.php:577
-#: system/Theme/lib/Theme/Controller/Admin.php:749
+#: system/Theme/lib/Theme/Controller/Admin.php:120
+#, php-format
+msgid ""
+"Notice: The changes made via Admin Panel will be saved on '%1$s' because it "
+"seems that the .ini files on '%2$s' are not writable."
+msgstr ""
+
+#: system/Theme/lib/Theme/Controller/Admin.php:123
+#, php-format
+msgid ""
+"Error! Cannot write any configuration changes. Make sure that the .ini files "
+"on '%1$s' or '%2$s', and the folder itself, are writable."
+msgstr ""
+
+#: system/Theme/lib/Theme/Controller/Admin.php:126
+#, php-format
+msgid ""
+"Notice: Seems that your %1$s's .ini files are writable. Be sure that there "
+"are no .ini files on '%2$s' because if so, the Theme Engime will consider "
+"them and not your %1$s's ones."
+msgstr ""
+
+#: system/Theme/lib/Theme/Controller/Admin.php:129
+#, php-format
+msgid ""
+"If the system cannot write on any .ini file, the changes will be saved on '%"
+"s' and the Theme Engine will use it."
+msgstr ""
+
+#: system/Theme/lib/Theme/Controller/Admin.php:327
+#: system/Theme/lib/Theme/Controller/Admin.php:433
+#: system/Theme/lib/Theme/Controller/Admin.php:679
+#: system/Theme/lib/Theme/Controller/Admin.php:883
 msgid "Done! Saved your changes."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:360
+#: system/Theme/lib/Theme/Controller/Admin.php:425
 msgid ""
 "Notice: Please make sure you type an entry in every field. Your palette "
 "cannot be saved if you do not."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:608
+#: system/Theme/lib/Theme/Controller/Admin.php:475
+#: system/Theme/lib/Theme/Controller/Admin.php:758
+msgid "Master"
+msgstr ""
+
+#: system/Theme/lib/Theme/Controller/Admin.php:477
+#: system/Theme/lib/Theme/Controller/Admin.php:760
+msgid "Admin panel pages"
+msgstr ""
+
+#: system/Theme/lib/Theme/Controller/Admin.php:478
+#: system/Theme/lib/Theme/Controller/Admin.php:761
+msgid "Editor panel pages"
+msgstr ""
+
+#. ! Pages inside a specific Controller type (editor, moderator, user)
+#: system/Theme/lib/Theme/Controller/Admin.php:487
+#: system/Theme/lib/Theme/Controller/Admin.php:768
+#, php-format
+msgid "%s type pages"
+msgstr ""
+
+#: system/Theme/lib/Theme/Controller/Admin.php:711
 #, php-format
 msgid "Error! Removed unknown '%1$s': '%2$s'."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:656
+#: system/Theme/lib/Theme/Controller/Admin.php:752
 msgid "Error! No such page configuration assignment found."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:799
-#: system/Theme/lib/Theme/Controller/Admin.php:930
+#: system/Theme/lib/Theme/Controller/Admin.php:931
+#: system/Theme/lib/Theme/Controller/Admin.php:1056
 msgid "Done! Deleted it."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:876
+#: system/Theme/lib/Theme/Controller/Admin.php:1004
 msgid "Done! Changed default theme."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:900
+#: system/Theme/lib/Theme/Controller/Admin.php:1028
 msgid "Sorry! No such theme found."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1089
+#: system/Theme/lib/Theme/Controller/Admin.php:1208
 msgid "Done! Deleted theme engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1091
+#: system/Theme/lib/Theme/Controller/Admin.php:1210
 msgid "Error! Failed to clear theme engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1117
+#: system/Theme/lib/Theme/Controller/Admin.php:1236
 msgid "Done! Deleted theme engine cached templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1119
+#: system/Theme/lib/Theme/Controller/Admin.php:1238
 msgid "Error! Failed to clear theme engine cached templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1144
+#: system/Theme/lib/Theme/Controller/Admin.php:1263
 msgid "Done! Deleted CSS/JS combination cached files."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1167
+#: system/Theme/lib/Theme/Controller/Admin.php:1286
 msgid "Done! Deleted rendering engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1169
+#: system/Theme/lib/Theme/Controller/Admin.php:1288
 msgid "Error! Failed to clear rendering engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1194
+#: system/Theme/lib/Theme/Controller/Admin.php:1313
 msgid "Done! Deleted rendering engine cached pages."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1196
+#: system/Theme/lib/Theme/Controller/Admin.php:1315
 msgid "Error! Failed to clear rendering engine cached pages."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1217
+#: system/Theme/lib/Theme/Controller/Admin.php:1336
 msgid "Done! Cleared all cache and compile directories."
 msgstr ""
 
@@ -1535,7 +1600,7 @@ msgid "No event handlers responded."
 msgstr ""
 
 #: system/Theme/lib/Theme/Controller/User.php:24
-#: system/Theme/lib/Theme/Api/User.php:264
+#: system/Theme/lib/Theme/Api/User.php:375
 msgid "Notice: Theme switching is currently disabled."
 msgstr ""
 
@@ -1543,21 +1608,38 @@ msgstr ""
 msgid "Done! Theme has been reset to the default site theme."
 msgstr ""
 
-#: system/Theme/lib/Theme/Block/Render.php:34
+#: system/Theme/lib/Theme/Block/Render.php:65
 msgid "Rendering engine"
 msgstr ""
 
-#: system/Theme/lib/Theme/Block/Render.php:35
+#: system/Theme/lib/Theme/Block/Render.php:66
 msgid "Custom rendering engine block"
 msgstr ""
 
-#: system/Theme/lib/Theme/Block/Render.php:59
-#: system/Theme/lib/Theme/Block/Render.php:66
-msgid "Misconfigured block"
+#: system/Theme/lib/Theme/Block/Render.php:100
+#, php-format
+msgid "Misconfigured block. ID: %s"
 msgstr ""
 
-#: system/Theme/lib/Theme/Block/Render.php:66
-msgid "No module."
+#: system/Theme/lib/Theme/Block/Render.php:111
+#, php-format
+msgid ""
+"The specified template for the render block doesn't exists for the '%1$s' "
+"module. Block ID: %2$s"
+msgstr ""
+
+#: system/Theme/lib/Theme/Block/Render.php:159
+#, php-format
+msgid "The specified template does not exist on the '%s' module."
+msgstr ""
+
+#: system/Theme/lib/Theme/Block/Render.php:165
+#, php-format
+msgid "The module '%s' is not available."
+msgstr ""
+
+#: system/Theme/lib/Theme/Block/Render.php:170
+msgid "With the current setup the block is disabled."
 msgstr ""
 
 #: system/Theme/lib/Theme/Block/Themeswitcher.php:35
@@ -1581,38 +1663,46 @@ msgstr ""
 msgid "Themes list"
 msgstr ""
 
-#: system/Theme/lib/Theme/Api/Admin.php:236
+#: system/Theme/lib/Theme/Api/Admin.php:238
 msgid "Done! Removed theme files from the file system."
 msgstr ""
 
-#: system/Theme/lib/Theme/Api/Admin.php:239
+#: system/Theme/lib/Theme/Api/Admin.php:240
 msgid ""
 "Error! Could not delete theme files from the file system. Please remove them "
 "by another means (FTP, SSH, ...)."
 msgstr ""
 
-#: system/Theme/lib/Theme/Api/Admin.php:242
+#: system/Theme/lib/Theme/Api/Admin.php:243
 #, php-format
 msgid ""
 "Notice: Theme files cannot be deleted because Zikula does not have write "
 "permissions for the themes folder and/or themes/%s folder."
 msgstr ""
 
-#: system/Theme/lib/Theme/Api/Admin.php:358
+#: system/Theme/lib/Theme/Api/Admin.php:359
 msgid "Error: You must enter at least the theme name."
 msgstr ""
 
-#: system/Theme/lib/Theme/Api/Admin.php:427
-#: system/Theme/lib/Theme/Api/User.php:187
-#: system/Theme/lib/Theme/Api/User.php:191
+#: system/Theme/lib/Theme/Api/Admin.php:428
+#: system/Theme/lib/Theme/Api/User.php:314
 #, php-format
 msgid "Error! Could not open file so that it could be written to: %s"
 msgstr ""
 
-#: system/Theme/lib/Theme/Api/Admin.php:431
-#: system/Theme/lib/Theme/Api/User.php:195
+#: system/Theme/lib/Theme/Api/Admin.php:432
 #, php-format
 msgid "Error! could not write to file: %s"
+msgstr ""
+
+#: system/Theme/lib/Theme/Api/User.php:308
+#, php-format
+msgid "Error! Cannot write in '%s' or '%s' to store the contents of '%s'."
+msgstr ""
+
+#: system/Theme/lib/Theme/Api/User.php:319
+#, php-format
+msgid "Error! Could not write to file: %s"
 msgstr ""
 
 #: system/Theme/lib/Theme/Version.php:20
@@ -1633,18 +1723,18 @@ msgstr ""
 msgid "Error! Could not include theme version file: %s"
 msgstr ""
 
-#: system/Settings/lib/Settings/Controller/Admin.php:73
+#: system/Settings/lib/Settings/Controller/Admin.php:70
 msgid ""
 "Error! Either you entered an invalid entry point, or else the file specified "
 "as being the entry point was not found in the Zikula root directory."
 msgstr ""
 
-#: system/Settings/lib/Settings/Controller/Admin.php:81
+#: system/Settings/lib/Settings/Controller/Admin.php:78
 msgid ""
 "Error! In your permalink settings, strings cannot be terminated with a comma."
 msgstr ""
 
-#: system/Settings/lib/Settings/Controller/Admin.php:98
+#: system/Settings/lib/Settings/Controller/Admin.php:95
 msgid ""
 "Error! In your permalink settings, the search list and the replacement list "
 "for permalink cleansing have a different number of comma-separated elements. "
@@ -1652,13 +1742,13 @@ msgid ""
 "the replacement list."
 msgstr ""
 
-#: system/Settings/lib/Settings/Controller/Admin.php:173
+#: system/Settings/lib/Settings/Controller/Admin.php:168
 msgid ""
 "Notice: Language detection is automatically disabled when multi-lingual "
 "features are disabled."
 msgstr ""
 
-#: system/Settings/lib/Settings/Controller/Admin.php:199
+#: system/Settings/lib/Settings/Controller/Admin.php:194
 msgid "Done! Saved localisation settings."
 msgstr ""
 
@@ -1716,7 +1806,7 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_modifyconfig.tpl:9
 #: system/Groups/templates/groups_admin_modifyconfig.tpl:11
 #: system/Groups/templates/groups_admin_modify.tpl:11
-#: system/Theme/templates/theme_admin_modify.tpl:11
+#: system/Theme/templates/theme_admin_modify.tpl:13
 #: system/Theme/templates/theme_admin_modifyconfig.tpl:10
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:87
 #: system/Settings/templates/settings_admin_menu.tpl:4
@@ -1822,133 +1912,133 @@ msgstr ""
 msgid "(Password provided by site administrator)"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:306
+#: system/Users/lib/Users/Controller/Admin.php:308
 msgid "Done! Created new registration application."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:308
+#: system/Users/lib/Users/Controller/Admin.php:310
 msgid "Done! Created new user account."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:310
+#: system/Users/lib/Users/Controller/Admin.php:312
 msgid ""
 "Warning! New user information has been saved, however there may have been an "
 "issue saving it properly."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:315
+#: system/Users/lib/Users/Controller/Admin.php:317
 msgid ""
 "Error! Could not create the new user account or registration application."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:451
-#: system/Users/lib/Users/Controller/Admin.php:505
+#: system/Users/lib/Users/Controller/Admin.php:453
+#: system/Users/lib/Users/Controller/Admin.php:507
 msgid "Sorry! No matching users found."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:516
+#: system/Users/lib/Users/Controller/Admin.php:518
 #, php-format
 msgid "An unknown form type was received by %1$s."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:531
+#: system/Users/lib/Users/Controller/Admin.php:533
 #, php-format
 msgid "The %1$s function has entered an unknown state."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:674
-#: system/Users/lib/Users/Controller/Admin.php:1394
+#: system/Users/lib/Users/Controller/Admin.php:678
+#: system/Users/lib/Users/Controller/Admin.php:1404
 msgid "Done! Saved user's account information."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:695
+#: system/Users/lib/Users/Controller/Admin.php:699
 msgid "Error! You can't edit the guest account."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:702
-#: system/Users/lib/Users/Controller/Admin.php:930
-#: system/Users/lib/Users/Controller/Admin.php:957
+#: system/Users/lib/Users/Controller/Admin.php:706
+#: system/Users/lib/Users/Controller/Admin.php:937
+#: system/Users/lib/Users/Controller/Admin.php:964
 msgid "Sorry! No such user found."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:802
-#: system/Users/lib/Users/Controller/Admin.php:861
+#: system/Users/lib/Users/Controller/Admin.php:809
+#: system/Users/lib/Users/Controller/Admin.php:868
 msgid "Sorry! Unable to retrieve information for that user id."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:817
+#: system/Users/lib/Users/Controller/Admin.php:824
 #, php-format
 msgid "Done! The user name for '%s' has been sent via e-mail."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:820
+#: system/Users/lib/Users/Controller/Admin.php:827
 #, php-format
 msgid ""
 "Sorry! There was an unknown error while trying to send the user name for '%"
 "s'."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:876
+#: system/Users/lib/Users/Controller/Admin.php:883
 #, php-format
 msgid ""
 "Done! The password recovery verification code for %s has been sent via e-"
 "mail."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:941
+#: system/Users/lib/Users/Controller/Admin.php:948
 msgid "Error! You can't delete the guest account."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:945
+#: system/Users/lib/Users/Controller/Admin.php:952
 msgid "Error! You can't delete the primary administrator account."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:949
+#: system/Users/lib/Users/Controller/Admin.php:956
 msgid "Error! You can't delete the account you are currently logged into."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:982
+#: system/Users/lib/Users/Controller/Admin.php:991
 #, php-format
 msgid "Done! Deleted %1$d user account."
 msgid_plural "Done! Deleted %1$d user accounts."
 msgstr[0] ""
 msgstr[1] ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1193
+#: system/Users/lib/Users/Controller/Admin.php:1202
 msgid "An error occurred while trying to retrieve the registration records."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1259
+#: system/Users/lib/Users/Controller/Admin.php:1267
 msgid ""
 "Unable to retrieve registration record. The record with the specified id "
 "might not exist, or you might not have permission to access that record."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1274
-#: system/Users/lib/Users/Controller/Admin.php:1540
-#: system/Users/lib/Users/Controller/Admin.php:1658
-#: system/Users/lib/Users/Controller/Admin.php:1771
+#: system/Users/lib/Users/Controller/Admin.php:1282
+#: system/Users/lib/Users/Controller/Admin.php:1550
+#: system/Users/lib/Users/Controller/Admin.php:1668
+#: system/Users/lib/Users/Controller/Admin.php:1781
 msgid "%m-%d-%Y %H:%M"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1404
+#: system/Users/lib/Users/Controller/Admin.php:1414
 msgid "Error! Invalid registration uid."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1412
+#: system/Users/lib/Users/Controller/Admin.php:1422
 msgid "Error! Unable to load registration record."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1509
-#: system/Users/lib/Users/Controller/Admin.php:1619
-#: system/Users/lib/Users/Controller/Admin.php:1747
+#: system/Users/lib/Users/Controller/Admin.php:1519
+#: system/Users/lib/Users/Controller/Admin.php:1629
+#: system/Users/lib/Users/Controller/Admin.php:1757
 #: system/Users/lib/Users/Api/Registration.php:1389
 #: system/Users/lib/Users/Api/Registration.php:1540
 #, php-format
 msgid "Error! Unable to retrieve registration record with uid '%1$s'"
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1522
+#: system/Users/lib/Users/Controller/Admin.php:1532
 #: system/Users/lib/Users/Api/Registration.php:1414
 #, php-format
 msgid ""
@@ -1956,7 +2046,7 @@ msgid ""
 "$s'. It is already verified."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1525
+#: system/Users/lib/Users/Controller/Admin.php:1535
 #: system/Users/lib/Users/Api/Registration.php:1417
 #, php-format
 msgid ""
@@ -1964,71 +2054,71 @@ msgid ""
 "$s'. It must first be approved."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1556
+#: system/Users/lib/Users/Controller/Admin.php:1566
 #, php-format
 msgid "Sorry! There was a problem sending a verification code to '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1559
+#: system/Users/lib/Users/Controller/Admin.php:1569
 #, php-format
 msgid "Done! Verification code sent to '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1632
+#: system/Users/lib/Users/Controller/Admin.php:1642
 #, php-format
 msgid ""
 "Warning! Nothing to do! The registration record with uid '%1$s' is already "
 "approved."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1636
+#: system/Users/lib/Users/Controller/Admin.php:1646
 #, php-format
 msgid ""
 "Error! The registration record with uid '%1$s' cannot be approved. The "
 "registration's e-mail address must first be verified."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1639
+#: system/Users/lib/Users/Controller/Admin.php:1649
 #, php-format
 msgid ""
 "Error! E-mail verification cannot be skipped for '%1$s'. The user must "
 "establish a password as part of the verification process."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1676
+#: system/Users/lib/Users/Controller/Admin.php:1686
 #, php-format
 msgid "Sorry! There was a problem approving the registration for '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1680
+#: system/Users/lib/Users/Controller/Admin.php:1690
 #, php-format
 msgid ""
 "Done! The registration for '%1$s' has been approved and a new user account "
 "has been created."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1683
+#: system/Users/lib/Users/Controller/Admin.php:1693
 #, php-format
 msgid ""
 "Done! The registration for '%1$s' has been approved and is awaiting e-mail "
 "verification."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1785
+#: system/Users/lib/Users/Controller/Admin.php:1795
 #, php-format
 msgid "Sorry! There was a problem deleting the registration for '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1804
+#: system/Users/lib/Users/Controller/Admin.php:1815
 #, php-format
 msgid "Done! The registration for '%1$s' has been denied and deleted."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1849
+#: system/Users/lib/Users/Controller/Admin.php:1860
 msgid "Done! Users module settings have been saved."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1855
+#: system/Users/lib/Users/Controller/Admin.php:1866
 #, php-format
 msgid ""
 "There was a problem with one of the module settings. Please review the "
@@ -2039,157 +2129,157 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: system/Users/lib/Users/Controller/Admin.php:1932
+#: system/Users/lib/Users/Controller/Admin.php:1943
 msgid "Done! Users imported successfully."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2233
+#: system/Users/lib/Users/Controller/Admin.php:2244
 msgid "Error! You have not chosen any file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2238
+#: system/Users/lib/Users/Controller/Admin.php:2249
 msgid ""
 "Error! The file extension is incorrect. The only allowed extension is csv."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2243
+#: system/Users/lib/Users/Controller/Admin.php:2254
 msgid "Error! It has not been possible to read the import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2256
+#: system/Users/lib/Users/Controller/Admin.php:2267
 #, php-format
 msgid ""
 "Error! The import file does not have the expected field %s in the first row. "
 "Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2268
+#: system/Users/lib/Users/Controller/Admin.php:2279
 #, php-format
 msgid ""
 "Error! The number of parameters in line %s is not correct. Please check your "
 "import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2276
+#: system/Users/lib/Users/Controller/Admin.php:2287
 #, php-format
 msgid ""
 "Sorry! The user name is not valid in line %s. The user name is mandatory and "
 "the maximum length is 25 characters. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2285
+#: system/Users/lib/Users/Controller/Admin.php:2296
 #, php-format
 msgid ""
 "Sorry! The user name %1$s is reserved and cannot be registered in line %2$s. "
 "Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2291
+#: system/Users/lib/Users/Controller/Admin.php:2302
 #, php-format
 msgid ""
 "Sorry! The user name %1$s cannot contain spaces in line %2$s. Please check "
 "your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2296
+#: system/Users/lib/Users/Controller/Admin.php:2307
 #, php-format
 msgid ""
 "Sorry! The user name %1$s is repeated in line %2$s, and it cannot be used "
 "twice for creating accounts. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2304
+#: system/Users/lib/Users/Controller/Admin.php:2315
 #, php-format
 msgid ""
 "Sorry! You did not provide a password in line %s. Please check your import "
 "file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2309
+#: system/Users/lib/Users/Controller/Admin.php:2320
 #, php-format
 msgid ""
 "Sorry! The password must be at least %1$s characters long in line %2$s. "
 "Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2315
+#: system/Users/lib/Users/Controller/Admin.php:2326
 #, php-format
 msgid ""
 "Sorry! You did not provide a email in line %s. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2320
+#: system/Users/lib/Users/Controller/Admin.php:2331
 #, php-format
 msgid ""
 "Sorry! The e-mail address you entered was incorrectly formatted or is "
 "unacceptable for other reasons in line %s. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2326
+#: system/Users/lib/Users/Controller/Admin.php:2337
 #, php-format
 msgid ""
 "Sorry! The %1$s e-mail address is repeated in line %2$s, and it cannot be "
 "used twice for creating accounts. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2336
+#: system/Users/lib/Users/Controller/Admin.php:2347
 msgid ""
 "Error! The CSV is not valid: the \"activated\" column must contain 0 or 1 "
 "only."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2342
+#: system/Users/lib/Users/Controller/Admin.php:2353
 msgid ""
 "Error! The CSV is not valid: the \"sendmail\" column must contain 0 or 1 "
 "only."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2354
+#: system/Users/lib/Users/Controller/Admin.php:2365
 #, php-format
 msgid ""
 "Sorry! The identity of the group %1$s is not not valid in line %2$s. Perhaps "
 "it do not exist. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2363
+#: system/Users/lib/Users/Controller/Admin.php:2374
 msgid "Error! The import file does not have values."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2371
+#: system/Users/lib/Users/Controller/Admin.php:2382
 msgid "Error! Trying to read the existing user names in database."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2374
+#: system/Users/lib/Users/Controller/Admin.php:2385
 msgid ""
 "Sorry! One or more user names really exist in database. The user names must "
 "be uniques."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2384
+#: system/Users/lib/Users/Controller/Admin.php:2395
 msgid "Error! Trying to read the existing users' email addressess in database."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2387
+#: system/Users/lib/Users/Controller/Admin.php:2398
 msgid ""
 "Sorry! One or more users' email addresses exist in the database. Each user's "
 "e-mail address must be unique."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2394
+#: system/Users/lib/Users/Controller/Admin.php:2405
 msgid "Error! The creation of users has failed."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2474
+#: system/Users/lib/Users/Controller/Admin.php:2485
 #, php-format
 msgid "Done! A password change will be required the next time %1$s logs in."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Admin.php:2482
+#: system/Users/lib/Users/Controller/Admin.php:2493
 #, php-format
 msgid "Done! A password change will no longer be required for %1$s."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Ajax.php:140
+#: system/Users/lib/Users/Controller/Ajax.php:141
 #, php-format
 msgid ""
 "There was an error with one of the fields, below. Please review the message, "
@@ -2200,16 +2290,16 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: system/Users/lib/Users/Controller/Ajax.php:170
+#: system/Users/lib/Users/Controller/Ajax.php:171
 msgid "An invalid authentication module name was received."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Ajax.php:172
+#: system/Users/lib/Users/Controller/Ajax.php:173
 #, php-format
 msgid "The '%1$s' module is not in an available state."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/Ajax.php:174
+#: system/Users/lib/Users/Controller/Ajax.php:175
 #, php-format
 msgid "The '%1$s' module is not an authentication module."
 msgstr ""
@@ -2252,6 +2342,66 @@ msgstr ""
 msgid ""
 "An authentication method selector template was not found for method '%1$s' "
 "using form type '%2$s'."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:188
+msgid ""
+"The authentication module name was not specified during an attempt to "
+"validate user authentication information."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:190
+#, php-format
+msgid ""
+"Attempt to validate authentication information with incorrect authentication "
+"module. Credentials should be validated with the '%1$s' module instead."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:194
+msgid ""
+"The authentication method name was not specified during an attempt to "
+"validate user authentication information."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:196
+#, php-format
+msgid ""
+"Unknown authentication method ('%1$s') while attempting to validate user "
+"authentication information in the Users module."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:204
+msgid "A user name was not specified, or the user name provided was invalid."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:206
+msgid ""
+"An e-mail address was not specified, or the e-mail address provided was "
+"invalid."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:212
+msgid "A password was not specified, or the password provided was invalid."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:222
+msgid "Please provide a password."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:226
+msgid "Please provide a user name and password."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:228
+msgid "Please provide an e-mail address and password."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:232
+msgid "Please provide a user name."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/Authentication.php:234
+msgid "Please provide an e-mail address."
 msgstr ""
 
 #: system/Users/lib/Users/Controller/FormData/ConfigForm.php:41
@@ -2596,32 +2746,32 @@ msgstr ""
 msgid "Error! No account links available."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:134
+#: system/Users/lib/Users/Controller/User.php:132
 msgid ""
 "An internal error occurred. Failed to retrieve stored registration state."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:189
+#: system/Users/lib/Users/Controller/User.php:187
 msgid ""
 "Sorry! The user agent you are using (the browser or other software you are "
 "using to access this site) is banned from the registration process."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:222
+#: system/Users/lib/Users/Controller/User.php:220
 msgid "An invalid authentication method was selected."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:299
+#: system/Users/lib/Users/Controller/User.php:297
 msgid ""
 "The credentials you provided are already associated with an existing user "
 "account or registration request."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:305
+#: system/Users/lib/Users/Controller/User.php:303
 msgid "We were unable to confirm your credentials with the selected service."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:358
+#: system/Users/lib/Users/Controller/User.php:357
 msgid ""
 "There was a problem associating your log-in information with your account. "
 "Please contact the site administrator."
@@ -2858,185 +3008,207 @@ msgstr ""
 msgid "Warning! %1$s is deprecated."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1139
-#: system/Users/lib/Users/Controller/User.php:1157
+#: system/Users/lib/Users/Controller/User.php:1084
+msgid "Error! Invalid authentication method information."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/User.php:1161
+#: system/Users/lib/Users/Controller/User.php:1179
 msgid "Your log-in request was not completed."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1175
+#: system/Users/lib/Users/Controller/User.php:1197
 msgid ""
 "There is no user account matching that information, or the password you gave "
 "does not match the password on file for that account."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1192
+#: system/Users/lib/Users/Controller/User.php:1215
+msgid ""
+"The credentials you entered were not valid. Please reenter the requested "
+"information and try again."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/User.php:1220
+msgid ""
+"The selected log-in method is not currently available. Please contact the "
+"site administrator for assistance."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/User.php:1222
+msgid ""
+"The selected log-in method is not currently available. Please choose another "
+"or contact the site administrator for assistance."
+msgstr ""
+
+#: system/Users/lib/Users/Controller/User.php:1226
 msgid "Error! Invalid authentication information received."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1269
+#: system/Users/lib/Users/Controller/User.php:1288
 msgid "You are being logged-in. Please wait..."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1302
+#: system/Users/lib/Users/Controller/User.php:1321
 msgid "Done! You have been logged out."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1305
+#: system/Users/lib/Users/Controller/User.php:1324
 msgid "Error! You have not been logged out."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1346
+#: system/Users/lib/Users/Controller/User.php:1365
 msgid "Sorry! An account cannot be verified while you are logged in."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1390
-#: system/Users/lib/Users/Controller/User.php:1397
+#: system/Users/lib/Users/Controller/User.php:1409
+#: system/Users/lib/Users/Controller/User.php:1416
 msgid ""
 "Sorry! There was an error while trying to save your new password and "
 "reminder."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1419
+#: system/Users/lib/Users/Controller/User.php:1438
 msgid ""
 "There were some problems detected during the verification process. Please "
 "contact the site administrator regarding the status of your verification."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1426
+#: system/Users/lib/Users/Controller/User.php:1445
 msgid ""
 "Done! Your account has been verified, and is awaiting administrator approval."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1428
+#: system/Users/lib/Users/Controller/User.php:1447
 msgid ""
 "Done! Your account has been verified. Your registration request is still "
 "pending completion. Please contact the site administrator for more "
 "information."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1437
+#: system/Users/lib/Users/Controller/User.php:1456
 msgid ""
 "Done! Your account has been verified. You may now log in with your user name "
 "and password."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1446
+#: system/Users/lib/Users/Controller/User.php:1465
 msgid "Done! Your account has been verified."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1447
+#: system/Users/lib/Users/Controller/User.php:1466
 msgid ""
 "Your new account is not active yet. Please contact the site administrator "
 "for more information."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1456
+#: system/Users/lib/Users/Controller/User.php:1475
 msgid ""
 "Sorry! There was an error while marking your registration as verifed. Please "
 "contact an administrator."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1463
+#: system/Users/lib/Users/Controller/User.php:1482
 msgid ""
 "Sorry! The verification code you provided does not match our records. Please "
 "check the code, and also check your e-mail for a newer verification code "
 "that might have been sent."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1466
+#: system/Users/lib/Users/Controller/User.php:1485
 msgid ""
 "Error! There was a problem retrieving the verification code for comparison."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1469
+#: system/Users/lib/Users/Controller/User.php:1488
 #, php-format
 msgid ""
 "Error! There is no pending verification code for '%1$s'. Please contact the "
 "site administrator."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1475
+#: system/Users/lib/Users/Controller/User.php:1494
 msgid ""
 "Sorry! A registration does not exist for the user name you provided. Maybe "
 "your request has expired? Please check the user name, or contact an "
 "administrator."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1534
-#: system/Users/lib/Users/Controller/User.php:1556
+#: system/Users/lib/Users/Controller/User.php:1552
+#: system/Users/lib/Users/Controller/User.php:1574
 msgid ""
 "Error! Could not activate your account. Please contact the site "
 "administrator."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1559
+#: system/Users/lib/Users/Controller/User.php:1577
 msgid "Done! Account activated."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1562
+#: system/Users/lib/Users/Controller/User.php:1580
 msgid ""
 "Sorry! You entered an invalid confirmation code. Please correct your entry "
 "and try again."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1595
+#: system/Users/lib/Users/Controller/User.php:1613
 msgid "If you are not automatically re-directed then please click here."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1756
+#: system/Users/lib/Users/Controller/User.php:1774
 msgid "Done! Saved custom block."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1920
+#: system/Users/lib/Users/Controller/User.php:1937
 msgid ""
 "The current password you entered is not correct. Please correct your entry "
 "and try again."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1930
+#: system/Users/lib/Users/Controller/User.php:1947
 msgid "Your new password cannot match your current password."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1944
+#: system/Users/lib/Users/Controller/User.php:1961
 msgid ""
 "Warning! Your new password was saved, however there was a problem saving "
 "your new password reminder."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1946
+#: system/Users/lib/Users/Controller/User.php:1963
 msgid "Done! Saved your new password."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:1959
+#: system/Users/lib/Users/Controller/User.php:1976
 msgid "Sorry! There was a problem saving your new password."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:2054
+#: system/Users/lib/Users/Controller/User.php:2070
 msgid ""
 "Error! There was a problem saving your new e-mail address or sending you a "
 "verification message."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:2058
+#: system/Users/lib/Users/Controller/User.php:2074
 msgid ""
 "Done! You will receive an e-mail to your new e-mail address to confirm the "
 "change. You must follow the instructions in that message in order to verify "
 "your new address."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:2110
+#: system/Users/lib/Users/Controller/User.php:2126
 msgid ""
 "Please log into your account in order to confirm your change of e-mail "
 "address."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:2120
+#: system/Users/lib/Users/Controller/User.php:2136
 msgid ""
 "Error! Your e-mail has not been found. After your request you have five days "
 "to confirm the new e-mail address."
 msgstr ""
 
-#: system/Users/lib/Users/Controller/User.php:2133
+#: system/Users/lib/Users/Controller/User.php:2149
 msgid "Done! Changed your e-mail address."
 msgstr ""
 
@@ -3119,10 +3291,10 @@ msgstr ""
 
 #: system/Users/lib/Users/Helper/AuthenticationMethodList.php:88
 #: system/Users/lib/Users/Api/Authentication.php:44
-#: system/Users/lib/Users/Api/Authentication.php:630
-#: system/Users/lib/Users/Api/Authentication.php:631
+#: system/Users/lib/Users/Api/Authentication.php:628
+#: system/Users/lib/Users/Api/Authentication.php:629
 #: lib/viewplugins/function.userlogin.php:52
-#: lib/viewplugins/function.userlogin.php:53 upgrade.php:235
+#: lib/viewplugins/function.userlogin.php:53 upgrade.php:236
 #: install/templates/installer_dbinformation.tpl:36
 #: install/templates/installer_createadmin.tpl:24
 #: system/Permissions/templates/permissions_admin_view.tpl:168
@@ -3140,6 +3312,7 @@ msgstr ""
 #: system/Users/templates/users_email_welcome_html.tpl:10
 #: system/Users/templates/users_admin_search.tpl:20
 #: system/Users/templates/users_email_welcome_txt.tpl:10
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:75
 #: system/Users/templates/users_admin_newuser.tpl:75
 #: system/Users/templates/users_admin_viewregistrations.tpl:19
 #: system/Users/templates/users_user_lostpassword.tpl:12
@@ -3152,6 +3325,8 @@ msgstr ""
 #: system/Users/templates/users_user_lostpasswordcode.tpl:13
 #: system/Users/templates/users_user_verifyregistration.tpl:42
 #: system/Users/templates/users_admin_modifyregistration.tpl:48
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:75
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:75
 msgid "User name"
 msgstr ""
 
@@ -3221,7 +3396,7 @@ msgstr ""
 msgid "User account links"
 msgstr ""
 
-#: system/Users/lib/Users/Block/Login.php:59 upgrade.php:234
+#: system/Users/lib/Users/Block/Login.php:59 upgrade.php:235
 #: system/Errors/templates/errors_user_403.tpl:15
 msgid "Log-in"
 msgstr ""
@@ -3549,6 +3724,7 @@ msgstr ""
 #: system/Users/templates/users_admin_modify.tpl:91
 #: system/Users/templates/users_admin_config.tpl:151
 #: system/Users/templates/users_admin_search.tpl:24
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:124
 #: system/Users/templates/users_admin_newuser.tpl:82
 #: system/Users/templates/users_admin_viewregistrations.tpl:20
 #: system/Users/templates/users_user_lostpassword.tpl:19
@@ -3558,6 +3734,8 @@ msgstr ""
 #: system/Users/templates/users_user_lostpasswordcode.tpl:20
 #: system/Users/templates/users_user_lostuname.tpl:11
 #: system/Users/templates/users_admin_modifyregistration.tpl:55
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:124
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:124
 msgid "E-mail address"
 msgstr ""
 
@@ -3600,73 +3778,73 @@ msgstr ""
 msgid "Invalid '%1$s' parameter received in a call to %2$s"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:292
+#: system/Users/lib/Users/Api/Authentication.php:290
 msgid "Error! A password must be provided."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:308
+#: system/Users/lib/Users/Api/Authentication.php:306
 #, php-format
 msgid ""
 "A user id was located, but the user account record could not be retrieved in "
 "a call to %1$s."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:334
+#: system/Users/lib/Users/Api/Authentication.php:332
 msgid "Invalid account password state."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:363
+#: system/Users/lib/Users/Api/Authentication.php:361
 msgid ""
 "Internal Error! Unable to update the user's password with the new hashing "
 "method and/or salt."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:378
-#: system/Users/lib/Users/Api/Authentication.php:561
+#: system/Users/lib/Users/Api/Authentication.php:376
+#: system/Users/lib/Users/Api/Authentication.php:559
 msgid "Sorry! The e-mail address or password you entered was incorrect."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:380
-#: system/Users/lib/Users/Api/Authentication.php:563
+#: system/Users/lib/Users/Api/Authentication.php:378
+#: system/Users/lib/Users/Api/Authentication.php:561
 msgid "Sorry! The user name or password you entered was incorrect."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:415
+#: system/Users/lib/Users/Api/Authentication.php:413
 #, php-format
 msgid "Invalied '%1$s' parameter received in a call to %2$s"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:474
-#: system/Users/lib/Users/Api/Authentication.php:480
+#: system/Users/lib/Users/Api/Authentication.php:472
+#: system/Users/lib/Users/Api/Authentication.php:478
 #, php-format
 msgid "Invalid '%1$s' parameter provided in a call to %2$s."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:491
+#: system/Users/lib/Users/Api/Authentication.php:489
 #, php-format
 msgid "An e-mail address was not provided in a call to %1$s."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:493
+#: system/Users/lib/Users/Api/Authentication.php:491
 #, php-format
 msgid "A user name was not provided in a call to %1$s."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:497
+#: system/Users/lib/Users/Api/Authentication.php:495
 #, php-format
 msgid "Invalid type for '%1$s' parameter in a call to %2$s."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:612
+#: system/Users/lib/Users/Api/Authentication.php:610
 msgid "An invalid parameter array was received."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:617
+#: system/Users/lib/Users/Api/Authentication.php:615
 msgid "An invalid user id was received."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Authentication.php:640
-#: system/Users/lib/Users/Api/Authentication.php:641
+#: system/Users/lib/Users/Api/Authentication.php:638
+#: system/Users/lib/Users/Api/Authentication.php:639
 msgid "E-mail Address"
 msgstr ""
 
@@ -3779,19 +3957,7 @@ msgstr ""
 msgid "users"
 msgstr ""
 
-#: system/Users/lib/Users/Version.php:68
-msgid "User and registration management hooks"
-msgstr ""
-
-#: system/Users/lib/Users/Version.php:79
-msgid "Login form and block hooks"
-msgstr ""
-
-#: system/Users/lib/Users/Version.php:86
-msgid "Pre-login authentication method selector hooks"
-msgstr ""
-
-#: system/Categories/lib/Categories/Controller/Admin.php:83
+#: system/Categories/lib/Categories/Controller/Admin.php:90
 #: system/Categories/lib/Categories/Controller/Ajax.php:70
 msgid ""
 "Error! Cannot determine valid 'cid' for edit mode in 'Categories_admin_edit'."
@@ -4027,8 +4193,8 @@ msgid "Activity status"
 msgstr ""
 
 #: system/Categories/lib/Categories/Installer.php:494
-#: system/Extensions/lib/Extensions/Controller/Admin.php:384
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1150
+#: system/Extensions/lib/Extensions/Controller/Admin.php:391
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1157
 #: system/Extensions/lib/Extensions/Api/Admin.php:1193
 #: system/Extensions/lib/Extensions/Api/Admin.php:1213
 #: system/Extensions/lib/Extensions/Api/Admin.php:1227
@@ -4039,14 +4205,14 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_view.tpl:93
 #: system/Blocks/templates/blocks_admin_view.tpl:94
 #: system/Blocks/templates/blocks_block_extmenu_modify.tpl:67
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:49
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:50
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:51
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:54
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:78
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:52
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:55
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:79
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:80
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:82
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:81
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:83
 #: system/Users/templates/users_admin_modify.tpl:109
 #: system/Users/templates/users_admin_view.tpl:74
 #: system/Categories/templates/categories_adminajax_edit.tpl:41
@@ -4059,8 +4225,8 @@ msgid "Active"
 msgstr ""
 
 #: system/Categories/lib/Categories/Installer.php:509
-#: system/Extensions/lib/Extensions/Controller/Admin.php:380
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1191
+#: system/Extensions/lib/Extensions/Controller/Admin.php:387
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1198
 #: system/Extensions/lib/Extensions/Api/Admin.php:1191
 #: system/Extensions/lib/Extensions/Api/Admin.php:1211
 #: system/Extensions/lib/Extensions/Api/Admin.php:1225
@@ -4069,14 +4235,14 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_view.tpl:42
 #: system/Blocks/templates/blocks_admin_view.tpl:97
 #: system/Blocks/templates/blocks_admin_view.tpl:98
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:49
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:54
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:50
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:55
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:56
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:78
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:82
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:57
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:79
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:83
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:84
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:85
 #: system/Users/templates/users_admin_modify.tpl:108
 #: system/Users/templates/users_admin_view.tpl:77
 #: system/Extensions/templates/extensions_admin_viewPlugins.tpl:53
@@ -4203,11 +4369,11 @@ msgid ""
 "new parent ID"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:49
-#: system/Extensions/lib/Extensions/Controller/Admin.php:759
-#: system/Extensions/lib/Extensions/Controller/Admin.php:931
-#: system/Extensions/lib/Extensions/Controller/Admin.php:972
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1066
+#: system/Extensions/lib/Extensions/Controller/Admin.php:56
+#: system/Extensions/lib/Extensions/Controller/Admin.php:766
+#: system/Extensions/lib/Extensions/Controller/Admin.php:938
+#: system/Extensions/lib/Extensions/Controller/Admin.php:979
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1073
 #: system/Extensions/lib/Extensions/Api/Admin.php:285
 #: system/Extensions/lib/Extensions/Api/Admin.php:801
 #: system/Extensions/lib/Extensions/Api/Admin.php:933
@@ -4216,84 +4382,84 @@ msgstr ""
 msgid "Error! No such module ID exists."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:107
-#: system/Extensions/lib/Extensions/Controller/Admin.php:132
-#: system/Extensions/lib/Extensions/Controller/Admin.php:155
+#: system/Extensions/lib/Extensions/Controller/Admin.php:114
+#: system/Extensions/lib/Extensions/Controller/Admin.php:139
+#: system/Extensions/lib/Extensions/Controller/Admin.php:162
 msgid "Done! Saved module information."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:209
+#: system/Extensions/lib/Extensions/Controller/Admin.php:216
 msgid "Errors were detected regenerating the modules list from file system."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:247
+#: system/Extensions/lib/Extensions/Controller/Admin.php:254
 #, php-format
 msgid "Deactivate '%s' module"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:255
+#: system/Extensions/lib/Extensions/Controller/Admin.php:262
 #, php-format
 msgid "Legacy hook settings for '%s'"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:263
+#: system/Extensions/lib/Extensions/Controller/Admin.php:270
 #, php-format
 msgid "Plugins for '%s'"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:284
-#: system/Extensions/lib/Extensions/Controller/Admin.php:295
-#: system/Extensions/lib/Extensions/Controller/Admin.php:331
+#: system/Extensions/lib/Extensions/Controller/Admin.php:291
+#: system/Extensions/lib/Extensions/Controller/Admin.php:302
+#: system/Extensions/lib/Extensions/Controller/Admin.php:338
 #, php-format
 msgid "Remove '%s' module"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:306
+#: system/Extensions/lib/Extensions/Controller/Admin.php:313
 #, php-format
 msgid "Upgrade '%s'"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:344
+#: system/Extensions/lib/Extensions/Controller/Admin.php:351
 #, php-format
 msgid "Install '%s'"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:364
+#: system/Extensions/lib/Extensions/Controller/Admin.php:371
 #, php-format
 msgid "Incompatible version: '%s'"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:388
+#: system/Extensions/lib/Extensions/Controller/Admin.php:395
 #: system/Extensions/lib/Extensions/Api/Admin.php:1195
 #: system/Extensions/templates/extensions_admin_view.tpl:36
 msgid "Files missing"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:392
-#: system/Extensions/lib/Extensions/Controller/Admin.php:705
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1223
+#: system/Extensions/lib/Extensions/Controller/Admin.php:399
+#: system/Extensions/lib/Extensions/Controller/Admin.php:712
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1230
 msgid "New version"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:396
+#: system/Extensions/lib/Extensions/Controller/Admin.php:403
 #: system/Extensions/lib/Extensions/Api/Admin.php:1199
 #: system/Extensions/templates/extensions_admin_view.tpl:42
 msgid "Invalid structure"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:400
+#: system/Extensions/lib/Extensions/Controller/Admin.php:407
 #: system/Extensions/templates/extensions_admin_view.tpl:39
 #: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:35
 msgid "Not allowed"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:406
+#: system/Extensions/lib/Extensions/Controller/Admin.php:413
 #: system/Extensions/templates/extensions_admin_view.tpl:41
 msgid "Incompatible"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:409
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1135
+#: system/Extensions/lib/Extensions/Controller/Admin.php:416
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1142
 #: system/Extensions/lib/Extensions/Api/Admin.php:1189
 #: system/Extensions/lib/Extensions/Api/Admin.php:1209
 #: system/Extensions/lib/Extensions/Api/Admin.php:1223
@@ -4302,162 +4468,162 @@ msgstr ""
 msgid "Not installed"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:559
-#: system/Extensions/lib/Extensions/Controller/Admin.php:634
-#: system/Extensions/lib/Extensions/Controller/Admin.php:690
-#: system/Extensions/lib/Extensions/Controller/Admin.php:753
-#: system/Extensions/lib/Extensions/Controller/Admin.php:820
+#: system/Extensions/lib/Extensions/Controller/Admin.php:566
+#: system/Extensions/lib/Extensions/Controller/Admin.php:641
+#: system/Extensions/lib/Extensions/Controller/Admin.php:697
+#: system/Extensions/lib/Extensions/Controller/Admin.php:760
+#: system/Extensions/lib/Extensions/Controller/Admin.php:827
 msgid "Error! No module ID provided."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:595
+#: system/Extensions/lib/Extensions/Controller/Admin.php:602
 msgid "Done! Installed module."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:602
-#: system/Extensions/lib/Extensions/Controller/Admin.php:651
+#: system/Extensions/lib/Extensions/Controller/Admin.php:609
+#: system/Extensions/lib/Extensions/Controller/Admin.php:658
 msgid "Done! Activated module."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:639
+#: system/Extensions/lib/Extensions/Controller/Admin.php:646
 msgid "Error! Module not allowed."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:711
+#: system/Extensions/lib/Extensions/Controller/Admin.php:718
 msgid "Activated"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:763
+#: system/Extensions/lib/Extensions/Controller/Admin.php:770
 msgid ""
 "Error! This module is currently set as the site's home page. You must choose "
 "another module for the home page before you can deactivate this one."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:767
+#: system/Extensions/lib/Extensions/Controller/Admin.php:774
 msgid ""
 "Error! You cannot deactivate this module. It is a mandatory core module, and "
 "is needed by the system."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:775
+#: system/Extensions/lib/Extensions/Controller/Admin.php:782
 msgid "Done! Deactivated module."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:876
+#: system/Extensions/lib/Extensions/Controller/Admin.php:883
 #, php-format
 msgid "Error! Deleting the block %s ."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:895
+#: system/Extensions/lib/Extensions/Controller/Admin.php:902
 msgid "Done! Uninstalled module."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1028
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1035
 msgid ""
 "Warning! The 'Items per page' setting must be a positive integer. The value "
 "you entered was corrected."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1147
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1154
 #: system/Extensions/templates/extensions_admin_initialise.tpl:3
 #: system/Extensions/templates/extensions_admin_initialise.tpl:4
 #: system/Extensions/templates/extensions_admin_initialise.tpl:20
 msgid "Install"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1162
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1169
 msgid "Configure plugin"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1176
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1183
 msgid "Deactivate"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1187
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1214
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1247
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1194
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1221
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1254
 msgid "Remove plugin"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1203
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1210
 #: system/Extensions/templates/extensions_admin_hooks.tpl:20
 #: system/Extensions/templates/extensions_admin_extendedhooks.tpl:21
 msgid "Activate"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1236
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1243
 msgid "Upgrade"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1320
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1356
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1391
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1427
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1463
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1327
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1363
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1398
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1434
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1470
 msgid "Error! No plugin class provided."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1325
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1332
 msgid "Done! Installed plugin."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1361
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1368
 msgid "Done! Deactivated plugin."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1396
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1403
 msgid "Done! Activated plugin."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1432
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1439
 msgid "Done! De-installed plugin."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Admin.php:1468
+#: system/Extensions/lib/Extensions/Controller/Admin.php:1475
 msgid "Done! Upgraded plugin."
 msgstr ""
 
 #: system/Extensions/lib/Extensions/Controller/Ajax.php:32
-#: system/Extensions/lib/Extensions/Controller/Ajax.php:89
+#: system/Extensions/lib/Extensions/Controller/Ajax.php:97
 msgid "No subscriber area passed."
 msgstr ""
 
 #: system/Extensions/lib/Extensions/Controller/Ajax.php:38
-#: system/Extensions/lib/Extensions/Controller/Ajax.php:95
+#: system/Extensions/lib/Extensions/Controller/Ajax.php:103
 #, php-format
 msgid "Module \"%s\" is not a valid subscriber."
 msgstr ""
 
 #: system/Extensions/lib/Extensions/Controller/Ajax.php:41
-#: system/Extensions/lib/Extensions/Controller/Ajax.php:98
+#: system/Extensions/lib/Extensions/Controller/Ajax.php:106
 #, php-format
 msgid "Subscriber module \"%s\" is not available."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Ajax.php:49
+#: system/Extensions/lib/Extensions/Controller/Ajax.php:48
 msgid "No provider area passed."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Ajax.php:55
+#: system/Extensions/lib/Extensions/Controller/Ajax.php:54
 #, php-format
 msgid "Module \"%s\" is not a valid provider."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Ajax.php:58
+#: system/Extensions/lib/Extensions/Controller/Ajax.php:57
 #, php-format
 msgid "Provider module \"%s\" is not available."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/Ajax.php:105
+#: system/Extensions/lib/Extensions/Controller/Ajax.php:113
 msgid "Providers' areas order is not an array."
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/AdminPlugin.php:70
+#: system/Extensions/lib/Extensions/Controller/AdminPlugin.php:80
 #, php-format
 msgid "Plugin \"%s\" is not installed"
 msgstr ""
 
-#: system/Extensions/lib/Extensions/Controller/AdminPlugin.php:71
+#: system/Extensions/lib/Extensions/Controller/AdminPlugin.php:81
 #, php-format
 msgid "Plugin \"%s\" is not configurable"
 msgstr ""
@@ -4596,39 +4762,39 @@ msgstr ""
 msgid "Error! Could not load the file '%s'."
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:176
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:184
 msgid "Error! Session path not writeable!"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:258
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:266
 #, php-format
 msgid "Error! PHPIDS rule file %s does not exist or is not readable."
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:321
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:329
 msgid "Session handling variables have changed. You must log in again."
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:351
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:357
 msgid ""
 "Default values for HTML Purifier were successfully loaded. Please store them "
 "using the \"Save\" button at the bottom of this page"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:564
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:570
 msgid "Done! Saved HTMLPurifier configuration."
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:672
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:676
 #: lib/util/CategoryUtil.php:949
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:221
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:218
 #: system/Blocks/templates/blocks_admin_view.tpl:68
 #: system/Blocks/templates/blocks_admin_view.tpl:120
 #: system/Blocks/templates/blocks_block_extmenu_modify.tpl:64
-#: system/Blocks/templates/blocks_admin_newposition.tpl:11
+#: system/Blocks/templates/blocks_admin_newposition.tpl:12
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:18
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:39
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:68
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:40
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:69
 #: system/Groups/templates/groups_admin_new.tpl:12
 #: system/Groups/templates/groups_user_view.tpl:9
 #: system/Groups/templates/groups_user_memberslist.tpl:7
@@ -4640,8 +4806,8 @@ msgstr ""
 #: system/Theme/templates/theme_admin_palettes.tpl:45
 #: system/Theme/templates/theme_admin_credits.tpl:14
 #: system/Theme/templates/theme_admin_pageconfigurations.tpl:9
-#: system/Theme/templates/theme_admin_variables.tpl:13
-#: system/Theme/templates/theme_admin_variables.tpl:51
+#: system/Theme/templates/theme_admin_variables.tpl:17
+#: system/Theme/templates/theme_admin_variables.tpl:61
 #: system/Categories/templates/categories_adminajax_edit.tpl:16
 #: system/Categories/templates/categories_adminajax_edit.tpl:50
 #: system/Categories/templates/categories_user_edit.tpl:49
@@ -4662,18 +4828,18 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:673
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:677
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:26
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:47
 #: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:33
 msgid "Tag"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:674
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:678
 #: lib/util/CategoryUtil.php:952
 #: system/Theme/templates/theme_admin_palettes.tpl:19
-#: system/Theme/templates/theme_admin_variables.tpl:14
-#: system/Theme/templates/theme_admin_variables.tpl:55
+#: system/Theme/templates/theme_admin_variables.tpl:18
+#: system/Theme/templates/theme_admin_variables.tpl:65
 #: system/Categories/templates/categories_adminajax_edit.tpl:36
 #: system/Categories/templates/categories_user_edit.tpl:63
 #: system/Categories/templates/categories_user_list.tpl:8
@@ -4684,50 +4850,50 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:675
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:679
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:30
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:49
 msgid "Page"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:676
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:680
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:22
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:50
 msgid "User Name"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:677
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:681
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:51
 msgid "IP"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:678
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:682
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:34
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:52
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:73
 msgid "Impact"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:679
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:683
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:53
 msgid "PHPIDS filters used"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:680
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:684
 #: system/SecurityCenter/templates/securitycenter_admin_viewidslog.tpl:54
 msgid "Date"
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:760
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Admin.php:759
 msgid "Done! Purged IDS Log."
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Adminform.php:36
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Adminform.php:46
 #, php-format
 msgid "Error! Received a non-numeric object ID '%s'."
 msgstr ""
 
-#: system/SecurityCenter/lib/SecurityCenter/Controller/Adminform.php:45
+#: system/SecurityCenter/lib/SecurityCenter/Controller/Adminform.php:55
 #, php-format
 msgid "Error! Invalid %s received."
 msgstr ""
@@ -4889,52 +5055,52 @@ msgstr ""
 msgid "errors"
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:81
+#: system/Admin/lib/Admin/Controller/Admin.php:79
 msgid "Done! Created new category."
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:107
-#: system/Admin/lib/Admin/Controller/Admin.php:179
+#: system/Admin/lib/Admin/Controller/Admin.php:105
+#: system/Admin/lib/Admin/Controller/Admin.php:176
 #: system/Admin/lib/Admin/Controller/Ajax.php:111
 #: system/Admin/lib/Admin/Controller/Ajax.php:163
 #: system/Admin/lib/Admin/Controller/Ajax.php:192
 msgid "Error! No such category found."
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:144
+#: system/Admin/lib/Admin/Controller/Admin.php:141
 msgid "Done! Saved category."
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:199
+#: system/Admin/lib/Admin/Controller/Admin.php:195
 msgid "Done! Category deleted."
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:455
+#: system/Admin/lib/Admin/Controller/Admin.php:445
 msgid "Error! You must enter a number for the 'Modules per row' setting."
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:461
+#: system/Admin/lib/Admin/Controller/Admin.php:451
 msgid "Error! You must enter a number for the 'Modules per page' setting."
 msgstr ""
 
-#: system/Admin/lib/Admin/Controller/Admin.php:486
+#: system/Admin/lib/Admin/Controller/Admin.php:476
 #: system/Admin/lib/Admin/Controller/Ajax.php:45
 msgid "Error! Could not add module to module category."
 msgstr ""
 
+#: system/Admin/lib/Admin/Controller/Admin.php:710
 #: system/Admin/lib/Admin/Controller/Admin.php:722
-#: system/Admin/lib/Admin/Controller/Admin.php:734
 #: system/Theme/templates/zdebug.tpl:24
 msgid "Compile check"
 msgstr ""
 
+#: system/Admin/lib/Admin/Controller/Admin.php:714
 #: system/Admin/lib/Admin/Controller/Admin.php:726
-#: system/Admin/lib/Admin/Controller/Admin.php:738
 msgid "Force compile"
 msgstr ""
 
+#: system/Admin/lib/Admin/Controller/Admin.php:718
 #: system/Admin/lib/Admin/Controller/Admin.php:730
-#: system/Admin/lib/Admin/Controller/Admin.php:742
 #: system/Theme/templates/theme_admin_modifyconfig.tpl:46
 msgid "Caching"
 msgstr ""
@@ -4966,17 +5132,17 @@ msgstr ""
 msgid "Error! Could not make this category default."
 msgstr ""
 
-#: system/Admin/lib/Admin/Block/Adminnav.php:32
+#: system/Admin/lib/Admin/Block/Adminnav.php:43
 msgid "Administration panel manager"
 msgstr ""
 
-#: system/Admin/lib/Admin/Block/Adminnav.php:33
+#: system/Admin/lib/Admin/Block/Adminnav.php:44
 msgid "Display administration categories and modules"
 msgstr ""
 
-#: system/Admin/lib/Admin/Installer.php:127 install/lib.php:431
-#: install/lib.php:437 install/lib.php:438 install/lib.php:465
-#: install/lib.php:467
+#: system/Admin/lib/Admin/Installer.php:127 install/lib.php:434
+#: install/lib.php:440 install/lib.php:441 install/lib.php:468
+#: install/lib.php:470
 msgid "System"
 msgstr ""
 
@@ -4984,8 +5150,8 @@ msgstr ""
 msgid "Core modules at the heart of operation of the site."
 msgstr ""
 
-#: system/Admin/lib/Admin/Installer.php:129 install/lib.php:434
-#: install/lib.php:436 install/lib.php:469
+#: system/Admin/lib/Admin/Installer.php:129 install/lib.php:437
+#: install/lib.php:439 install/lib.php:472
 msgid "Layout"
 msgstr ""
 
@@ -4997,9 +5163,9 @@ msgstr ""
 msgid "Modules for controlling user membership, access rights and profiles."
 msgstr ""
 
-#: system/Admin/lib/Admin/Installer.php:133 install/lib.php:459
-#: install/lib.php:461 install/lib.php:463 install/lib.php:471
-#: system/Blocks/templates/blocks_admin_modify.tpl:147
+#: system/Admin/lib/Admin/Installer.php:133 install/lib.php:462
+#: install/lib.php:464 install/lib.php:466 install/lib.php:474
+#: system/Blocks/templates/blocks_admin_modify.tpl:128
 #: system/Blocks/templates/blocks_block_extmenu_modify.tpl:51
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:12
 msgid "Content"
@@ -5017,7 +5183,7 @@ msgstr ""
 msgid "Newly-installed or uncategorized modules."
 msgstr ""
 
-#: system/Admin/lib/Admin/Installer.php:137 install/lib.php:457
+#: system/Admin/lib/Admin/Installer.php:137 install/lib.php:460
 msgid "Security"
 msgstr ""
 
@@ -5115,7 +5281,7 @@ msgstr ""
 msgid "browserhack block: condition param is required, non specified."
 msgstr ""
 
-#: install/lib.php:277
+#: install/lib.php:279
 msgid "Congratulations! Zikula has been successfullly installed."
 msgstr ""
 
@@ -5207,13 +5373,17 @@ msgid ""
 "$s"
 msgstr ""
 
+#: lib/viewplugins/function.notifyevent.php:46
+msgid "eventname is a required param for {notifyevent} plugin."
+msgstr ""
+
 #: lib/viewplugins/function.modulejavascript.php:70
 #, php-format
 msgid ""
 "Error! in %1$s: parameter '%2$s' only supported together with '%3$s' set."
 msgstr ""
 
-#: lib/viewplugins/function.userlogin.php:73 upgrade.php:236
+#: lib/viewplugins/function.userlogin.php:73 upgrade.php:237
 #: install/templates/installer_dbinformation.tpl:40
 #: install/templates/installer_createadmin.tpl:28
 #: system/Theme/templates/system/siteoff.tpl:176
@@ -5221,10 +5391,13 @@ msgstr ""
 #: system/Users/templates/users_user_passwordreminder.tpl:44
 #: system/Users/templates/users_email_welcome_html.tpl:11
 #: system/Users/templates/users_email_welcome_txt.tpl:11
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:91
 #: system/Users/templates/users_admin_newuser.tpl:118
 #: system/Users/templates/users_user_register.tpl:91
 #: system/Users/templates/users_auth_loginformfields_default_default.tpl:36
 #: system/Users/templates/users_user_verifyregistration.tpl:55
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:91
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:91
 msgid "Password"
 msgstr ""
 
@@ -5263,9 +5436,11 @@ msgstr ""
 #: lib/viewplugins/modifier.yesno.php:41 lib/viewplugins/modifier.yesno.php:44
 #: lib/util/HtmlUtil.php:478 lib/util/HtmlUtil.php:494
 #: system/Blocks/templates/blocks_block_thelang_modify.tpl:13
-#: system/Blocks/templates/blocks_admin_modify.tpl:129
-#: system/Blocks/templates/blocks_admin_newblock.tpl:46
-#: system/Theme/templates/theme_admin_variables.tpl:34
+#: system/Blocks/templates/blocks_admin_modify.tpl:110
+#: system/Blocks/templates/blocks_admin_newblock.tpl:47
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:49
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:62
+#: system/Theme/templates/theme_admin_variables.tpl:38
 #: system/Settings/templates/settings_admin_multilingual.tpl:16
 #: system/Settings/templates/settings_admin_multilingual.tpl:37
 #: system/Settings/templates/settings_admin_multilingual.tpl:72
@@ -5302,9 +5477,11 @@ msgstr ""
 #: lib/viewplugins/modifier.yesno.php:49 lib/viewplugins/modifier.yesno.php:52
 #: lib/util/HtmlUtil.php:477 lib/util/HtmlUtil.php:493
 #: system/Blocks/templates/blocks_block_thelang_modify.tpl:12
-#: system/Blocks/templates/blocks_admin_modify.tpl:130
-#: system/Blocks/templates/blocks_admin_newblock.tpl:47
-#: system/Theme/templates/theme_admin_variables.tpl:35
+#: system/Blocks/templates/blocks_admin_modify.tpl:111
+#: system/Blocks/templates/blocks_admin_newblock.tpl:49
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:51
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:64
+#: system/Theme/templates/theme_admin_variables.tpl:39
 #: system/Settings/templates/settings_admin_multilingual.tpl:18
 #: system/Settings/templates/settings_admin_multilingual.tpl:39
 #: system/Settings/templates/settings_admin_multilingual.tpl:74
@@ -5415,8 +5592,7 @@ msgstr ""
 
 #: lib/viewplugins/function.sortlink.php:46
 #: lib/viewplugins/function.sortlink.php:49
-#: lib/viewplugins/function.notifydisplayhooks.php:46
-#: lib/viewplugins/function.notifydisplayhooks.php:51
+#: lib/viewplugins/function.notifydisplayhooks.php:42
 #, php-format
 msgid "Error! \"%1$s\" must be set in %2$s"
 msgstr ""
@@ -5442,6 +5618,11 @@ msgstr ""
 #: lib/Zikula/Form/Plugin/DropdownRelationList.php:287
 #, php-format
 msgid "Unable to load class [%s] for module [%s]"
+msgstr ""
+
+#: lib/viewplugins/function.notifydisplayhooks.php:48
+#, php-format
+msgid "Error! \"%1$s\" must be an instance of %2$s"
 msgstr ""
 
 #: lib/viewplugins/modifier.themetype.php:33
@@ -5489,11 +5670,9 @@ msgid "Error! Category [%1$s] does not have the field [%2$s] set."
 msgstr ""
 
 #: lib/legacy/plugins/function.modulestylesheet.php:32
-#: lib/legacy/plugins/function.sessiongetvar.php:40
 #: lib/legacy/plugins/function.modishooked.php:43
 #: lib/legacy/plugins/function.manuallink.php:41
 #: lib/legacy/plugins/function.adminonlinemanual.php:28
-#: lib/legacy/plugins/function.sessiondelvar.php:36
 #: lib/legacy/plugins/function.configgetvar.php:46
 #: lib/legacy/plugins/function.keywords.php:46
 #, php-format
@@ -5531,7 +5710,6 @@ msgid ""
 msgstr ""
 
 #: lib/legacy/plugins/function.sqldebug.php:18
-#: lib/legacy/plugins/function.sessionsetvar.php:40
 #: lib/legacy/plugins/function.allowedhtml.php:34
 #, php-format
 msgid "Warning! Template plugin {%s} is deprecated."
@@ -5633,7 +5811,7 @@ msgstr ""
 #: lib/legacy/Compat.php:3847 lib/legacy/Compat.php:3865
 #: lib/legacy/Compat.php:3881 lib/legacy/Compat.php:3895
 #: lib/legacy/Compat.php:3902 lib/legacy/Compat.php:3909
-#: lib/util/UserUtil.php:527 lib/util/DataUtil.php:528
+#: lib/util/UserUtil.php:513 lib/util/DataUtil.php:528
 #: lib/util/DataUtil.php:744
 #, php-format
 msgid "Warning! Function %1$s is deprecated. Please use %2$s instead."
@@ -5902,35 +6080,35 @@ msgstr ""
 msgid "Error! A database error occurred: '%1$s: %2$s'."
 msgstr ""
 
-#: lib/util/ModUtil.php:1044
+#: lib/util/ModUtil.php:1043
 msgid ""
 "Warning! \"Modules\" module has been renamed to \"Extensions\".  Please "
 "update your ModUtil::func() and ModUtil::apiFunc() calls."
 msgstr ""
 
-#: lib/util/ModUtil.php:1061
+#: lib/util/ModUtil.php:1060
 #, php-format
 msgid "%1$s must be an instance of $2$s"
 msgstr ""
 
-#: lib/util/ModUtil.php:1150
+#: lib/util/ModUtil.php:1149
 #, php-format
 msgid ""
 "The requested controller action %s_Controller_%s::%s() could not be found"
 msgstr ""
 
-#: lib/util/ModUtil.php:1248
+#: lib/util/ModUtil.php:1247
 msgid ""
 "Warning! \"Modules\" module has been renamed to \"Extensions\".  Please "
 "update your ModUtil::url() or {modurl} calls with $module = \"Extensions\"."
 msgstr ""
 
-#: lib/util/ModUtil.php:1485
+#: lib/util/ModUtil.php:1503
 #, php-format
 msgid "%1$s::%2$s is not available in without legacy mode"
 msgstr ""
 
-#: lib/util/ModUtil.php:1498 lib/util/ModUtil.php:1581
+#: lib/util/ModUtil.php:1516 lib/util/ModUtil.php:1599
 msgid "OO module types may not make use of this legacy API"
 msgstr ""
 
@@ -6008,26 +6186,26 @@ msgid "Root category"
 msgstr ""
 
 #: lib/util/CategoryUtil.php:948
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:51
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:58
 msgid "ID"
 msgstr ""
 
 #: lib/util/CategoryUtil.php:950
-#: system/Theme/templates/theme_admin_modify.tpl:13
+#: system/Theme/templates/theme_admin_modify.tpl:15
 #: system/Theme/templates/theme_admin_credits.tpl:16
 #: system/Extensions/templates/extensions_admin_regenerate_errors.tpl:34
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:52
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:59
 #: system/Extensions/templates/extensions_admin_view.tpl:22
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:37
 msgid "Display name"
 msgstr ""
 
 #: lib/util/CategoryUtil.php:951
-#: system/Blocks/templates/blocks_admin_modify.tpl:44
+#: system/Blocks/templates/blocks_admin_modify.tpl:25
 #: system/Blocks/templates/blocks_admin_view.tpl:62
 #: system/Blocks/templates/blocks_admin_view.tpl:121
 #: system/Blocks/templates/blocks_admin_newblock.tpl:15
-#: system/Blocks/templates/blocks_admin_newposition.tpl:16
+#: system/Blocks/templates/blocks_admin_newposition.tpl:17
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:23
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:18
 #: system/Groups/templates/groups_admin_new.tpl:32
@@ -6591,119 +6769,119 @@ msgid ""
 "the LogUtil API to manipulate status messages and error messages."
 msgstr ""
 
-#: lib/util/UserUtil.php:34 lib/util/UserUtil.php:51 lib/util/UserUtil.php:70
-#: lib/util/UserUtil.php:104 lib/util/UserUtil.php:137
-#: lib/util/UserUtil.php:171 lib/util/UserUtil.php:221
-#: lib/util/UserUtil.php:381
+#: lib/util/UserUtil.php:33 lib/util/UserUtil.php:50 lib/util/UserUtil.php:69
+#: lib/util/UserUtil.php:103 lib/util/UserUtil.php:136
+#: lib/util/UserUtil.php:170 lib/util/UserUtil.php:211
+#: lib/util/UserUtil.php:367
 #, php-format
 msgid "Warning! %1$s is deprecated. Please use %1$s::%3$s instead."
 msgstr ""
 
-#: lib/util/UserUtil.php:556 lib/util/UserUtil.php:560
-#: lib/util/UserUtil.php:570
+#: lib/util/UserUtil.php:545 lib/util/UserUtil.php:549
+#: lib/util/UserUtil.php:559
 #, php-format
 msgid "An invalid %1$s parameter was received."
 msgstr ""
 
-#: lib/util/UserUtil.php:562
+#: lib/util/UserUtil.php:551
 #, php-format
 msgid "The authentication module '%1$s' could not be found."
 msgstr ""
 
-#: lib/util/UserUtil.php:564
+#: lib/util/UserUtil.php:553
 #, php-format
 msgid "The authentication module '%1$s' is not available."
 msgstr ""
 
-#: lib/util/UserUtil.php:566
+#: lib/util/UserUtil.php:555
 #, php-format
 msgid "The authentication module '%1$s' could not be loaded."
 msgstr ""
 
-#: lib/util/UserUtil.php:572
+#: lib/util/UserUtil.php:561
 #, php-format
 msgid ""
 "The authentication method '%1$s' is not supported by the authentication "
 "module '%2$s'."
 msgstr ""
 
-#: lib/util/UserUtil.php:576
+#: lib/util/UserUtil.php:565
 #, php-format
 msgid "The authentication module '%1$s' is reentrant. A %2$s is required."
 msgstr ""
 
-#: lib/util/UserUtil.php:687
+#: lib/util/UserUtil.php:677
 msgid "Sorry! Login failed. The information you provided was incorrect."
 msgstr ""
 
-#: lib/util/UserUtil.php:710
+#: lib/util/UserUtil.php:700
 #, php-format
 msgid ""
 "A %1$s (%2$s) was returned by the authenticating module, but a user account "
 "record (or registration request record) could not be found."
 msgstr ""
 
-#: lib/util/UserUtil.php:729
+#: lib/util/UserUtil.php:719
 msgid ""
 "Your request to register with this site is still waiting for verification of "
 "your e-mail address. Please check your inbox for a message from us."
 msgstr ""
 
-#: lib/util/UserUtil.php:734
+#: lib/util/UserUtil.php:724
 msgid ""
 "Your request to register with this site is still waiting for approval from a "
 "site administrator."
 msgstr ""
 
-#: lib/util/UserUtil.php:743
+#: lib/util/UserUtil.php:733
 msgid ""
 "Your account has been disabled. Please contact a site administrator for more "
 "information."
 msgstr ""
 
-#: lib/util/UserUtil.php:745
+#: lib/util/UserUtil.php:735
 msgid ""
 "Your account has been disabled and is scheduled for removal. Please contact "
 "a site administrator for more information."
 msgstr ""
 
-#: lib/util/UserUtil.php:747
+#: lib/util/UserUtil.php:737
 msgid ""
 "Sorry! Either there is no active user in our system with that information, "
 "or the information you provided does not match the information for your "
 "account."
 msgstr ""
 
-#: lib/util/UserUtil.php:944
+#: lib/util/UserUtil.php:934
 msgid "Attempt to set the current user with an invalid uname."
 msgstr ""
 
-#: lib/util/UserUtil.php:973
+#: lib/util/UserUtil.php:963
 msgid "Attempt to set the current user with an invalid uid."
 msgstr ""
 
-#: lib/util/UserUtil.php:978
+#: lib/util/UserUtil.php:968
 msgid "Attempt to set the current user with an unknown uid."
 msgstr ""
 
-#: lib/util/UserUtil.php:989
+#: lib/util/UserUtil.php:979
 msgid "Attempt to set the current user with an invalid authentication method."
 msgstr ""
 
-#: lib/util/UserUtil.php:996
+#: lib/util/UserUtil.php:986
 msgid "Error! Could not save the log-in date."
 msgstr ""
 
-#: lib/util/UserUtil.php:1438 lib/util/UserUtil.php:1778
+#: lib/util/UserUtil.php:1428 lib/util/UserUtil.php:1774
 #, php-format
 msgid "Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead."
 msgstr ""
 
-#: lib/util/UserUtil.php:1901
+#: lib/util/UserUtil.php:1898
 msgid "UserUtil::getTheme() is unable to calculate theme name."
 msgstr ""
 
-#: lib/util/UserUtil.php:2056
+#: lib/util/UserUtil.php:2055
 msgid "An invalid uid was provided."
 msgstr ""
 
@@ -6831,16 +7009,17 @@ msgid "Class %s cannot be found."
 msgstr ""
 
 #: lib/Zikula/Controller/AbstractAjax.php:53
+#: lib/Zikula/Controller/AbstractAjax_1.php:53
 msgid "Ajax security checks failed."
 msgstr ""
 
 #: lib/Zikula/Controller/AbstractBlock.php:86
-#: lib/Zikula/AbstractController.php:126
+#: lib/Zikula/AbstractController.php:103
 #, php-format
 msgid "%1$s::%2$s() does not exist."
 msgstr ""
 
-#: lib/Zikula/Controller/AbstractInteractiveInstaller.php:61
+#: lib/Zikula/Controller/AbstractInteractiveInstaller.php:60
 msgid "This doesnt appear to be an interactive session."
 msgstr ""
 
@@ -6921,7 +7100,7 @@ msgstr ""
 #: system/Groups/templates/groups_admin_view.tpl:220
 #: system/Groups/templates/groups_admin_groupmembership.tpl:31
 #: system/Theme/templates/theme_admin_view.tpl:58
-#: system/Theme/templates/theme_admin_variables.tpl:44
+#: system/Theme/templates/theme_admin_variables.tpl:48
 #: system/Search/templates/search_user_recent.tpl:21
 #: system/Extensions/templates/extensions_admin_viewPlugins.tpl:96
 #: system/Extensions/templates/extensions_admin_view.tpl:80
@@ -7009,12 +7188,12 @@ msgid ""
 "array(version => string, ... => ... in %s"
 msgstr ""
 
-#: lib/Zikula/AbstractVersion.php:729
+#: lib/Zikula/AbstractVersion.php:727
 #, php-format
 msgid "Hook subscriber area %s does not exist"
 msgstr ""
 
-#: lib/Zikula/AbstractVersion.php:747
+#: lib/Zikula/AbstractVersion.php:745
 #, php-format
 msgid "Hook provider area %s does not exist"
 msgstr ""
@@ -7025,14 +7204,6 @@ msgstr ""
 
 #: lib/Zikula/Response/Ajax/Error.php:47
 msgid "An unknown error occurred"
-msgstr ""
-
-#: lib/Zikula/AbstractController.php:101
-#: lib/Zikula/Form/AbstractHandler.php:245
-#, php-format
-msgid ""
-"%s is not an instance of Zikula_AbstractController, the $args['controller'] "
-"argument must be the controller who is notifying these hooks"
 msgstr ""
 
 #: lib/Zikula/Form/Plugin/DropdownList.php:385
@@ -7119,21 +7290,36 @@ msgstr ""
 msgid "Error! Input text must be no longer than %s characters."
 msgstr ""
 
-#: lib/Zikula/Form/View.php:319
+#: lib/Zikula/Form/View.php:320
 #, php-format
 msgid "Plugin %s must be an instance of Zikula_Form_AbstractPlugin"
 msgstr ""
 
-#: lib/Zikula/Form/View.php:1092
+#: lib/Zikula/Form/View.php:1093
 #, php-format
 msgid ""
 "Cannot restore Zikula_Form_View plugin of type '%s' since stored and actual "
 "number of member vars differ"
 msgstr ""
 
-#: lib/Zikula/View/Theme.php:968
+#: lib/Zikula/View/Theme.php:671
 #, php-format
 msgid "Empty 'page' specified in your theme page configuration on file %s."
+msgstr ""
+
+#: lib/Zikula/View/Resource.php:52
+#, php-format
+msgid "Error! The template [%1$s] is not available in the [%2$s] module."
+msgstr ""
+
+#: lib/Zikula/View/Resource.php:81
+#, php-format
+msgid "[insert] '%s' is not implemented"
+msgstr ""
+
+#: lib/Zikula/View/Resource.php:91
+#, php-format
+msgid "Error! The insert [%1$s] is not available in the [%2$s] module."
 msgstr ""
 
 #: lib/Zikula/AbstractBase.php:705
@@ -7145,47 +7331,42 @@ msgid ""
 "Registration authentication is not supported by this authentication method."
 msgstr ""
 
-#: lib/Zikula/View.php:1077
-#, php-format
-msgid "%s is a protected template variable and may not be assigned"
-msgstr ""
-
-#: lib/Zikula/View.php:2214
-#, php-format
-msgid "%s does not exist as as assigned variable"
-msgstr ""
-
-#: lib/Zikula/View.php:2459
+#: lib/Zikula/View.php:1037
 #, php-format
 msgid "zikula_view.template_override returned a non-existent template path %s"
 msgstr ""
 
-#: lib/Zikula/View.php:2520
+#: lib/Zikula/View.php:1100
 #, php-format
-msgid "Error! The template [%1$s] is not available in the [%2$s] module."
+msgid "%s is a protected template variable and may not be assigned"
 msgstr ""
 
-#: lib/Zikula/Workflow.php:159
+#: lib/Zikula/View.php:1408
+#, php-format
+msgid "%s does not exist as as assigned variable"
+msgstr ""
+
+#: lib/Zikula/Workflow.php:160
 #, php-format
 msgid "Action: %1$s not available in this State: %2$s"
 msgstr ""
 
-#: lib/Zikula/Workflow.php:166
+#: lib/Zikula/Workflow.php:167
 #, php-format
 msgid "No permission to execute action: %s [permission]"
 msgstr ""
 
-#: lib/Zikula/Workflow.php:233
+#: lib/Zikula/Workflow.php:235
 #, php-format
 msgid "Operation file [%s] does not exist"
 msgstr ""
 
-#: lib/Zikula/Workflow.php:240
+#: lib/Zikula/Workflow.php:242
 #, php-format
 msgid "Operation function [%s] is not defined"
 msgstr ""
 
-#: lib/Zikula/Workflow.php:249
+#: lib/Zikula/Workflow.php:251
 #, php-format
 msgid ""
 "Invalid next-state value [%1$s] retrieved by the '%2$s' operation for the "
@@ -9481,71 +9662,71 @@ msgstr ""
 msgid "Connection failed to database"
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:348
+#: lib/EventHandlers/SystemListeners.php:365
 #, php-format
 msgid ""
 "PHP issued an error at line 0, so reporting entire trace to be more helpful: "
 "%1$s: %2$s"
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:356
+#: lib/EventHandlers/SystemListeners.php:373
 #, php-format
 msgid "traced in %1$s line %2$s"
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:360
+#: lib/EventHandlers/SystemListeners.php:377
 #, php-format
 msgid "%1$s: %2$s in %3$s line %4$s"
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:401
+#: lib/EventHandlers/SystemListeners.php:418
 #, php-format
 msgid "SQL Query: %s took %s sec"
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:594
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:30
+#: lib/EventHandlers/SystemListeners.php:611
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:32
 msgid "Hooks"
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:624
+#: lib/EventHandlers/SystemListeners.php:641
 msgid "Services"
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:672
+#: lib/EventHandlers/SystemListeners.php:689
 msgid ""
 "Error! Zikula does not support PHP magic_quotes_runtime - please disable "
 "this feature in php.ini."
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:677
+#: lib/EventHandlers/SystemListeners.php:694
 msgid ""
 "Error! Zikula does not support PHP magic_quotes_gpc = On - please disable "
 "this feature in your php.ini file."
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:682
+#: lib/EventHandlers/SystemListeners.php:699
 msgid ""
 "Error! Zikula does not support PHP register_globals = On - please disable "
 "this feature in your php.ini or .htaccess file."
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:688
+#: lib/EventHandlers/SystemListeners.php:706
 #, php-format
 msgid ""
 "Error! Zikula requires PHP version 5.3.2+. Your server seems to be using "
 "version %s."
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:694
+#: lib/EventHandlers/SystemListeners.php:712
 msgid "Error! PHP 'token_get_all()' is required but unavailable."
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:700
+#: lib/EventHandlers/SystemListeners.php:718
 msgid "Error! PHP must have the mbstring extension loaded."
 msgstr ""
 
-#: lib/EventHandlers/SystemListeners.php:705
+#: lib/EventHandlers/SystemListeners.php:723
 msgid ""
 "Error! The PHP function 'fsockopen()' is needed within the Zikula mailer "
 "module, but is not available."
@@ -9553,7 +9734,12 @@ msgstr ""
 
 #: lib/EventHandlers/SystemListeners.php:730
 #, php-format
-msgid "Error! Folder '%s' was not found."
+msgid "The temporary directory \"%s\" and all subfolders must be writable"
+msgstr ""
+
+#: lib/EventHandlers/SystemListeners.php:751
+#, php-format
+msgid "System error! Folder '%s' was not found or is not writable."
 msgstr ""
 
 #: themes/Printer/version.php:16
@@ -9632,33 +9818,33 @@ msgstr ""
 msgid "The '%1$s' module returned an error in '%2$s'. %3$s"
 msgstr ""
 
-#: upgrade.php:122
+#: upgrade.php:123
 msgid "Zikula Upgrade script"
 msgstr ""
 
-#: upgrade.php:132 install/templates/installer_alreadyinstalled.tpl:12
+#: upgrade.php:133 install/templates/installer_alreadyinstalled.tpl:12
 #: install/templates/installer_page.tpl:18
 #: install/templates/notinstalled.tpl:12
 msgid "Zikula Application Framework"
 msgstr ""
 
-#: upgrade.php:133
+#: upgrade.php:134
 msgid "Upgrade script"
 msgstr ""
 
-#: upgrade.php:136
+#: upgrade.php:137
 #, php-format
 msgid "Zikula Upgrade script (for Zikula version %s and up)"
 msgstr ""
 
-#: upgrade.php:137
+#: upgrade.php:138
 #, php-format
 msgid ""
 "This script will upgrade any Zikula v%1$s+ installation. Upgrades from less "
 "than Zikula v%1$s are not supported by this script."
 msgstr ""
 
-#: upgrade.php:153
+#: upgrade.php:154
 #, php-format
 msgid ""
 "For more information about the upgrade process, please read the <a href="
@@ -9667,19 +9853,19 @@ msgid ""
 "community.zikula.org/module-Forum.htm\">support forum</a>."
 msgstr ""
 
-#: upgrade.php:173
+#: upgrade.php:174
 msgid "FATAL ERROR!"
 msgstr ""
 
-#: upgrade.php:174
+#: upgrade.php:175
 msgid "Zikula does not appear to be installed."
 msgstr ""
 
-#: upgrade.php:184
+#: upgrade.php:185
 msgid "Please select your language"
 msgstr ""
 
-#: upgrade.php:194 upgrade.php:243
+#: upgrade.php:195 upgrade.php:244
 #: system/Users/templates/users_user_passwordreminder.tpl:58
 #: system/Users/templates/users_user_lostpassword.tpl:24
 #: system/Users/templates/users_user_lostpasswordcode.tpl:31
@@ -9688,88 +9874,88 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: upgrade.php:210
+#: upgrade.php:211
 msgid "BEFORE proceeding you should backup your database!"
 msgstr ""
 
-#: upgrade.php:230
+#: upgrade.php:231
 msgid "Failed to login to your site"
 msgstr ""
 
-#: upgrade.php:232
+#: upgrade.php:233
 msgid ""
 "For the next upgrade steps you need to be logged in. Please provide your "
 "admin account credentials"
 msgstr ""
 
-#: upgrade.php:275
+#: upgrade.php:276
 msgid "Starting upgrade"
 msgstr ""
 
-#: upgrade.php:285
+#: upgrade.php:286
 msgid "upgraded"
 msgstr ""
 
-#: upgrade.php:287
+#: upgrade.php:288
 msgid "not upgraded"
 msgstr ""
 
-#: upgrade.php:293
+#: upgrade.php:294
 msgid "No modules required upgrading"
 msgstr ""
 
-#: upgrade.php:311
+#: upgrade.php:312
 msgid "Finished upgrade"
 msgstr ""
 
-#: upgrade.php:324
+#: upgrade.php:325
 #, php-format
 msgid "Go to the startpage for %s"
 msgstr ""
 
-#: upgrade.php:328
+#: upgrade.php:329
 #, php-format
 msgid "Go to the admin panel for %s"
 msgstr ""
 
-#: upgrade.php:381
+#: upgrade.php:382
 msgid "Already up to date"
 msgstr ""
 
-#: upgrade.php:382
+#: upgrade.php:383
 #, php-format
 msgid ""
 "It seems that you have already installed version %s. Please remove this "
 "upgrade script, you do not need it anymore."
 msgstr ""
 
-#: upgrade.php:386
+#: upgrade.php:387
 msgid "Possible incompatible version found."
 msgstr ""
 
-#: upgrade.php:387
+#: upgrade.php:388
 #, php-format
 msgid ""
 "The current installed version of Zikula is reporting (%1$s). You must "
 "upgrade to version (%2$s) before you can use this upgrade."
 msgstr ""
 
-#: upgrade.php:390
+#: upgrade.php:391
 msgid ""
 "date.timezone is currently not set. Since PHP 5.3.0, it needs to be set to a "
 "valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/"
 "Berlin."
 msgstr ""
 
-#: upgrade.php:391 install/templates/installer_requirements.tpl:97
+#: upgrade.php:392 install/templates/installer_requirements.tpl:97
 msgid "Check again"
 msgstr ""
 
-#: upgrade.php:401
+#: upgrade.php:402
 msgid "PCRE Unicode Property Support Needed."
 msgstr ""
 
-#: upgrade.php:402
+#: upgrade.php:403
 msgid ""
 "The PCRE (Perl Compatible Regular Expression) library being used with your "
 "PHP installation does not support Unicode properties. This is required to "
@@ -9777,18 +9963,18 @@ msgid ""
 "used must be compiled with the '--enable-unicode-properties' option."
 msgstr ""
 
-#: upgrade.php:418
+#: upgrade.php:419
 msgid "Theme Check Failed"
 msgstr ""
 
-#: upgrade.php:420
+#: upgrade.php:421
 #, php-format
 msgid ""
 "Your configuration specifies a theme called '%s' that doesn't exist.  Please "
 "ensure that theme exists in themes/%s"
 msgstr ""
 
-#: upgrade.php:423
+#: upgrade.php:424
 #, php-format
 msgid ""
 "Your configuration specifies a theme called '%s' which begins with a lower "
@@ -9797,7 +9983,7 @@ msgid ""
 "attempting this upgrade again."
 msgstr ""
 
-#: upgrade.php:426
+#: upgrade.php:427
 #, php-format
 msgid ""
 "Your theme called '%s' contains an underscore, this is now deprecated.  You "
@@ -9806,15 +9992,15 @@ msgid ""
 "this upgrade again."
 msgstr ""
 
-#: upgrade.php:437
+#: upgrade.php:438
 msgid "Proceed to upgrade (click once and wait)"
 msgstr ""
 
-#: upgrade.php:488 upgrade.php:506
+#: upgrade.php:489 upgrade.php:507
 msgid "FATAL ERROR: Cannot start, unable to determine installed Core version."
 msgstr ""
 
-#: upgrade.php:528
+#: upgrade.php:529
 msgid "FATAL ERROR: Cannot start, unable access database."
 msgstr ""
 
@@ -10066,7 +10252,7 @@ msgstr ""
 #, php-format
 msgid ""
 "You have got a problem! Your PHP version is %s, which does not satisfy the "
-"Zikula system requirement of version 5.2.6 or later."
+"Zikula system requirement of version 5.3.2 or later."
 msgstr ""
 
 #: install/templates/installer_requirements.tpl:18
@@ -10242,10 +10428,10 @@ msgid "SMTP password"
 msgstr ""
 
 #: system/Mailer/templates/mailer_admin_modifyconfig.tpl:97
-#: system/Blocks/templates/blocks_admin_modify.tpl:182
+#: system/Blocks/templates/blocks_admin_modify.tpl:163
 #: system/Blocks/templates/blocks_admin_modifyconfig.tpl:21
-#: system/Blocks/templates/blocks_admin_newblock.tpl:61
-#: system/Blocks/templates/blocks_admin_newposition.tpl:21
+#: system/Blocks/templates/blocks_admin_newblock.tpl:66
+#: system/Blocks/templates/blocks_admin_newposition.tpl:22
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:27
 #: system/Permissions/templates/permissions_admin_modifyconfig.tpl:54
 #: system/Permissions/templates/permissions_admin_view.tpl:109
@@ -10257,12 +10443,12 @@ msgstr ""
 #: system/Groups/templates/groups_admin_view.tpl:182
 #: system/Groups/templates/groups_user_membership.tpl:38
 #: system/Theme/templates/theme_admin_palettes.tpl:110
-#: system/Theme/templates/theme_admin_modify.tpl:39
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:39
+#: system/Theme/templates/theme_admin_modify.tpl:41
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:52
 #: system/Theme/templates/theme_admin_modifyconfig.tpl:140
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:81
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:114
-#: system/Theme/templates/theme_admin_variables.tpl:59
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:95
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:177
+#: system/Theme/templates/theme_admin_variables.tpl:70
 #: system/Settings/templates/settings_admin_multilingual.tpl:80
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:171
 #: system/Search/templates/search_admin_modifyconfig.tpl:33
@@ -10298,11 +10484,11 @@ msgstr ""
 
 #: system/Mailer/templates/mailer_admin_modifyconfig.tpl:98
 #: system/Mailer/templates/mailer_admin_testconfig.tpl:54
-#: system/Blocks/templates/blocks_admin_modify.tpl:183
+#: system/Blocks/templates/blocks_admin_modify.tpl:164
 #: system/Blocks/templates/blocks_admin_deleteposition.tpl:16
 #: system/Blocks/templates/blocks_admin_modifyconfig.tpl:22
-#: system/Blocks/templates/blocks_admin_newblock.tpl:62
-#: system/Blocks/templates/blocks_admin_newposition.tpl:22
+#: system/Blocks/templates/blocks_admin_newblock.tpl:67
+#: system/Blocks/templates/blocks_admin_newposition.tpl:23
 #: system/Blocks/templates/blocks_admin_delete.tpl:15
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:28
 #: system/Permissions/templates/permissions_admin_modifyconfig.tpl:55
@@ -10322,12 +10508,12 @@ msgstr ""
 #: system/Theme/templates/theme_admin_deletepageconfigurationassignment.tpl:17
 #: system/Theme/templates/theme_admin_palettes.tpl:111
 #: system/Theme/templates/theme_admin_setasdefault.tpl:21
-#: system/Theme/templates/theme_admin_modify.tpl:40
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:40
+#: system/Theme/templates/theme_admin_modify.tpl:42
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:53
 #: system/Theme/templates/theme_admin_modifyconfig.tpl:141
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:82
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:115
-#: system/Theme/templates/theme_admin_variables.tpl:60
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:96
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:178
+#: system/Theme/templates/theme_admin_variables.tpl:71
 #: system/Theme/templates/theme_admin_delete.tpl:21
 #: system/Settings/templates/settings_admin_multilingual.tpl:81
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:172
@@ -10450,30 +10636,30 @@ msgstr ""
 msgid "Translate options"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:27
+#: system/Blocks/templates/blocks_admin_modify.tpl:8
 msgid "Edit block"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:53
-#: system/Blocks/templates/blocks_admin_newblock.tpl:30
+#: system/Blocks/templates/blocks_admin_modify.tpl:34
+#: system/Blocks/templates/blocks_admin_newblock.tpl:31
 msgid "Block placement filtering"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:55
+#: system/Blocks/templates/blocks_admin_modify.tpl:36
 #: system/Blocks/templates/blocks_admin_view.tpl:70
-#: system/Blocks/templates/blocks_admin_newblock.tpl:32
+#: system/Blocks/templates/blocks_admin_newblock.tpl:33
 msgid "Position(s)"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:61
+#: system/Blocks/templates/blocks_admin_modify.tpl:42
 msgid "Advanced placement options"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:61
+#: system/Blocks/templates/blocks_admin_modify.tpl:42
 msgid "Show/hide advanced placement options"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:65
+#: system/Blocks/templates/blocks_admin_modify.tpl:46
 msgid ""
 "To restrict the block's visibility to certain modules and module functions, "
 "you can create filter(s) and select the module, function type, function name "
@@ -10481,17 +10667,18 @@ msgid ""
 "optional. If you omit a field, it will act as an *. "
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:66
+#: system/Blocks/templates/blocks_admin_modify.tpl:47
 msgid "Create new filter"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:70
+#: system/Blocks/templates/blocks_admin_modify.tpl:51
 #: system/Blocks/templates/blocks_admin_view.tpl:30
 #: system/Blocks/templates/blocks_admin_view.tpl:65
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:38
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:67
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:12
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:54
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:39
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:68
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:18
+#: system/Theme/templates/theme_block_render_modify.tpl:8
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:61
 #: system/Categories/templates/categories_admin_registry_edit.tpl:21
 #: system/Categories/templates/categories_admin_registry_delete.tpl:8
 #: system/Extensions/templates/extensions_admin_viewPlugins.tpl:29
@@ -10499,55 +10686,55 @@ msgstr ""
 msgid "Module"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:71
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:22
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:64
+#: system/Blocks/templates/blocks_admin_modify.tpl:52
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:28
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:71
 msgid "Function type"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:72
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:26
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:68
+#: system/Blocks/templates/blocks_admin_modify.tpl:53
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:32
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:75
 msgid "Function name"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:73
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:30
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:72
+#: system/Blocks/templates/blocks_admin_modify.tpl:54
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:36
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:79
 msgid "Function arguments"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:125
-#: system/Blocks/templates/blocks_admin_newblock.tpl:42
+#: system/Blocks/templates/blocks_admin_modify.tpl:106
+#: system/Blocks/templates/blocks_admin_newblock.tpl:43
 msgid "Collapsibility"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:127
-#: system/Blocks/templates/blocks_admin_newblock.tpl:44
+#: system/Blocks/templates/blocks_admin_modify.tpl:108
+#: system/Blocks/templates/blocks_admin_newblock.tpl:45
 msgid "Collapsible"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:134
-#: system/Blocks/templates/blocks_admin_newblock.tpl:51
+#: system/Blocks/templates/blocks_admin_modify.tpl:115
+#: system/Blocks/templates/blocks_admin_newblock.tpl:54
 msgid "Default state"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:136
-#: system/Blocks/templates/blocks_admin_newblock.tpl:53
+#: system/Blocks/templates/blocks_admin_modify.tpl:117
+#: system/Blocks/templates/blocks_admin_newblock.tpl:56
 msgid "Expanded"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:137
-#: system/Blocks/templates/blocks_admin_newblock.tpl:54
+#: system/Blocks/templates/blocks_admin_modify.tpl:118
+#: system/Blocks/templates/blocks_admin_newblock.tpl:58
 msgid "Collapsed"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:145
-#: system/Blocks/templates/blocks_admin_modify.tpl:155
+#: system/Blocks/templates/blocks_admin_modify.tpl:126
+#: system/Blocks/templates/blocks_admin_modify.tpl:136
 msgid "Customisation"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modify.tpl:168
+#: system/Blocks/templates/blocks_admin_modify.tpl:149
 msgid "Block refresh interval"
 msgstr ""
 
@@ -10574,152 +10761,6 @@ msgstr ""
 #: system/Blocks/templates/menutree/blocks_block_menutree_vertical_left.tpl:6
 #: system/Blocks/templates/blocks_block_extmenu.tpl:20
 msgid "Edit this block"
-msgstr ""
-
-#: system/Blocks/templates/menutree/blocks_block_menutree_include_help.tpl:1
-msgid ""
-"\r\n"
-"<p>Block \"Tree-like menu (menutree)\" allows you to create the extended "
-"menu with nested structure. Below you will find some basic information.</p>"
-"\r\n"
-"\r\n"
-"<h4>How to start?</h4>\r\n"
-"<p>To <strong>add the first item</strong> to the menu, click link "
-"\"<strong>Add</strong>\". You will get a form in which you must enter the "
-"name of the item and possibly other parameters (title, address, css class). "
-"At the top of the form you can find drop-down list with installed languages, "
-"which allows to switch between languages.</p>\r\n"
-"<p>While adding a new block, you can <strong>import</strong> an existing "
-"menu (supported blocks: \"menu\", \"extmenu\", \"menutree\" and \"dynamenu"
-"\"). To this purpose choose a block from the drop-down list.</p>\r\n"
-"\r\n"
-"<h4>The basic options</h4>\r\n"
-"<p>To <strong>move</strong> an item, simply <strong>grab a folder icon</"
-"strong> and drop it on desired position.</p>\r\n"
-"<p><strong>Click the name</strong> of an item, to view a <strong>context "
-"menu</strong>, which includes the following options:</p>\r\n"
-"<ul>\r\n"
-"    <li><strong>Edit</strong>: opens the edit form</li>\r\n"
-"    <li><strong>Delete</strong>: removes the selected element and all its "
-"subelements</li>\r\n"
-"    <li><strong>Add new...</strong>\r\n"
-"        <ul>\r\n"
-"            <li><strong>before</strong>: opens a create form and adds the "
-"new item before the selected element</li>\r\n"
-"            <li><strong>after</strong>: opens a create form and adds the new "
-"item after the selected element</li>\r\n"
-"            <li><strong>as child</strong>: opens a create form and adds the "
-"new item as a child of the selected element</li>\r\n"
-"        </ul>\r\n"
-"    </li>\r\n"
-"    <li><strong>Expand/Collapse this node</strong>: expands or collapses the "
-"selected node</li>\r\n"
-"    <li><strong>Deactivate/Activate</strong>: turns on or off the selected "
-"element (and all its subitems) for the current language</li>\r\n"
-"    <li><strong>State</strong>\r\n"
-"        <ul>\r\n"
-"            <li><strong>Activate for all languages</strong>: turns on the "
-"selected element (and all its subitems) for all the languages</li>\r\n"
-"            <li><strong>Deactivate for all languages</strong>: turns off the "
-"selected element (and all its subitems) for all the languages</li>\r\n"
-"        </ul>\r\n"
-"    </li>\r\n"
-"</ul>\r\n"
-"\r\n"
-"<h4>Multilingual options</h4>\r\n"
-"<p>If the site has many languages installed - the menu will include all "
-"language versions. Each menu element can a have separated name and title for "
-"each language. The URL address and css class may (but not need) be common "
-"for all languages.</p>\r\n"
-"<p>The list of available languages is displayed above the menu (current "
-"language is marked). By clicking any language name you can change the "
-"displayed language.</p>\r\n"
-"\r\n"
-"<h4>Dynamic elements</h4>\r\n"
-"<p>Dynamic elements are menutree plugins that allows the use of "
-"automatically generated list in the menu. It may be a list of all modules, "
-"the list of categories, etc.</p>\r\n"
-"<p>Dynamic elements are inserted in the same way as any other element of the "
-"menu. The only difference is that the url must use proper syntax, which "
-"looks like: (ext:Modulename:PluginName:AdditionalParams). The list generated "
-"by the plugin replaces the original menu item.</p>\r\n"
-"\r\n"
-"<h5>Adminlinks</h5>\r\n"
-"<p>This plugin generates a list of admin modules - similar to adminnav block."
-"</p>\r\n"
-"<pre>literalext:blocks:adminlinks[:[flat,category]]/literal</pre>\r\n"
-"<ul>\r\n"
-"    <li>Last parameter is optional. It can be flat and/or category separated "
-"by a comma.\r\n"
-"        <ul>\r\n"
-"            <li><strong>flat</strong> - will add the admin links in the "
-"current menu. Without flat the links are grouped one level down.</li>\r\n"
-"            <li><strong>category</strong> - additionally groups the admin "
-"links by their category.</li>\r\n"
-"        </ul>\r\n"
-"    </li>\r\n"
-"    <li>You can combine <strong>flat</strong> and <strong>category</strong> "
-"to have the category links added in the current menu.</li>\r\n"
-"</ul>\r\n"
-"\r\n"
-"<h5>Content pages</h5>\r\n"
-"<p>Plugin for Content module. This plugin generates a list of Content pages."
-"</p>\r\n"
-"<pre>literalext:blocks:content:[groupby=page&amp;parent=1]/literal</pre>\r\n"
-"<ul>\r\n"
-"    <li>Parameters in square brackets are optional:\r\n"
-"        <ul>\r\n"
-"            <li><strong>Groupby</strong> - allows to choose grouping method, "
-"allow values are menuitem (default) or page.</li>\r\n"
-"            <li><strong>Parent</strong> - id of parent node - this allows to "
-"get specified node of content pages.</li>\r\n"
-"        </ul>\r\n"
-"    </li>\r\n"
-"</ul>\r\n"
-"<p>Note that this plugin considers if pages are enabled for display in menu. "
-"So if you wonder why certain items do not appear, look if you enabled this "
-"option at corresponding Content pages.</p>\r\n"
-"\r\n"
-"<h5>Modules list</h5>\r\n"
-"<p>This plugin generates a list of installed modules - similar to adequate "
-"option in standard menu.</p>\r\n"
-"<pre>literalext:blocks:modules:[flat]/literal</pre>\r\n"
-"\r\n"
-"<p>Parameter <strong>flat</strong> is optional and allows you to disable "
-"links grouping.</p>\r\n"
-"\r\n"
-"<h5>News module</h5>\r\n"
-"<p>Plugin for News module, generates a list of useful links to module and a "
-"list of categories.</p>\r\n"
-"<pre>literalext:blocks:news:[flat=bool&amp;links=view,add,cat,arch|all]/"
-"literal</pre>\r\n"
-"\r\n"
-"<ul>\r\n"
-"    <li>Parameters in square brackets are optional:</li>\r\n"
-"    <li><strong>Flat</strong> - true or false, default is false, the "
-"parameter allows you to disable links grouping</li>\r\n"
-"    <li><strong>Links</strong> - a list of items to be displayed - default "
-"is all (ALL), available components are:\r\n"
-"        <ul>\r\n"
-"            <li><strong>View</strong> - link to main News view</li>\r\n"
-"            <li><strong>Add</strong> - link to Submit News form</li>\r\n"
-"            <li><strong>Cat</strong> - list of News categories</li>\r\n"
-"            <li><strong>Arch</strong> - link to archive</li>\r\n"
-"        </ul>\r\n"
-"    </li>\r\n"
-"    <li>Links given in the <strong>links</strong> parameter are displayed in "
-"the order in which they are provided.</li>\r\n"
-"</ul>\r\n"
-"\r\n"
-"<h5>Userlinks</h5>\r\n"
-"<p>This plugin generates basic links for users.</p>\r\n"
-"<p>For logged-in users: Your Account, Profile, Private messages, Logout.</p>"
-"\r\n"
-"<p>For not logged users: Your Account, Login, Register, Lost password.</p>"
-"\r\n"
-"<pre>literalext:blocks:userlinks:[flat]/literal</pre>\r\n"
-"<p>Parameter <strong>flat</strong> is optional and allows you to disable "
-"links grouping.</p>\r\n"
 msgstr ""
 
 #: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:14
@@ -10779,7 +10820,7 @@ msgid "Stylesheet"
 msgstr ""
 
 #: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:76
-msgid "choose stylesheet"
+msgid "Choose stylesheet"
 msgstr ""
 
 #: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:79
@@ -10887,55 +10928,55 @@ msgstr ""
 msgid "Choose menu"
 msgstr ""
 
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:206
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:203
 msgid "Edit menu item"
 msgstr ""
 
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:207
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:204
 msgid "Field Name is required."
 msgstr ""
 
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:208
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:205
 msgid "Please fill required fields"
 msgstr ""
 
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:212
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:209
 msgid "Menu item data"
 msgstr ""
 
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:229
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:226
 #: system/Blocks/templates/blocks_block_extmenu_modify.tpl:65
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:17
 #: system/Theme/templates/zdebug.tpl:30
 msgid "URL"
 msgstr ""
 
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:234
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:253
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:231
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:250
 msgid "Use one for all languages"
 msgstr ""
 
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:239
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:236
 msgid "CSS class"
 msgstr ""
 
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:242
-msgid "choose class"
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:239
+msgid "Choose class"
 msgstr ""
 
-#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:258
+#: system/Blocks/templates/menutree/blocks_block_menutree_modify.tpl:255
 msgid "Active?"
 msgstr ""
 
 #: system/Blocks/templates/blocks_admin_view.tpl:12
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:54
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:82
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:55
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:83
 msgid "Click to activate this block"
 msgstr ""
 
 #: system/Blocks/templates/blocks_admin_view.tpl:13
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:49
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:78
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:50
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:79
 msgid "Click to deactivate this block"
 msgstr ""
 
@@ -10975,8 +11016,8 @@ msgid "Block ID"
 msgstr ""
 
 #: system/Blocks/templates/blocks_admin_view.tpl:75
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:40
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:69
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:41
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:70
 #: system/Groups/templates/groups_admin_new.tpl:22
 #: system/Groups/templates/groups_user_view.tpl:12
 #: system/Groups/templates/groups_user_memberslist.tpl:10
@@ -10995,8 +11036,8 @@ msgstr ""
 #: system/Groups/templates/groups_admin_view.tpl:204
 #: system/Groups/templates/groups_admin_groupmembership.tpl:13
 #: system/Theme/templates/theme_admin_view.tpl:20
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:11
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:33
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:12
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:35
 #: system/Users/templates/users_admin_viewregistrations.tpl:23
 #: system/Users/templates/users_admin_search_results.tpl:42
 #: system/Users/templates/users_admin_view.tpl:53
@@ -11063,6 +11104,10 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_newblock.tpl:19
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:222
 msgid "Block"
+msgstr ""
+
+#: system/Blocks/templates/blocks_admin_newblock.tpl:21
+msgid "Choose one"
 msgstr ""
 
 #: system/Blocks/templates/blocks_block_extmenu_modify.tpl:24
@@ -11165,11 +11210,17 @@ msgstr ""
 msgid "Preferred language"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_newposition.tpl:9
+#: system/Blocks/templates/blocks_admin_newposition.tpl:5
+msgid ""
+"After create this block position, you will be able to assign some blocks for "
+"it, and adjust the order you want them to be displayed."
+msgstr ""
+
+#: system/Blocks/templates/blocks_admin_newposition.tpl:10
 msgid "New block position"
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_newposition.tpl:13
+#: system/Blocks/templates/blocks_admin_newposition.tpl:14
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:20
 msgid "Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_)."
 msgstr ""
@@ -11191,16 +11242,16 @@ msgid "Block assignments"
 msgstr ""
 
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:33
-msgid "Blocks assigned to this position"
-msgstr ""
-
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:34
 msgid ""
 "Notice: Use drag and drop to arrange the blocks in this position into your "
 "desired order. The new block order will be saved automatically."
 msgstr ""
 
-#: system/Blocks/templates/blocks_admin_modifyposition.tpl:63
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:35
+msgid "Blocks assigned to this position"
+msgstr ""
+
+#: system/Blocks/templates/blocks_admin_modifyposition.tpl:64
 msgid "Blocks not assigned to this position"
 msgstr ""
 
@@ -11622,6 +11673,13 @@ msgstr ""
 #: system/Users/templates/users_admin_config.tpl:381
 #: system/Users/templates/users_admin_config.tpl:394
 #: system/Users/templates/users_admin_config.tpl:407
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:75
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:91
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:100
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:106
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:124
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:133
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:158
 #: system/Users/templates/users_admin_newuser.tpl:75
 #: system/Users/templates/users_admin_newuser.tpl:82
 #: system/Users/templates/users_admin_newuser.tpl:88
@@ -11637,6 +11695,20 @@ msgstr ""
 #: system/Users/templates/users_admin_modifyregistration.tpl:48
 #: system/Users/templates/users_admin_modifyregistration.tpl:55
 #: system/Users/templates/users_admin_modifyregistration.tpl:61
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:75
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:91
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:100
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:106
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:124
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:133
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:158
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:75
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:91
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:100
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:106
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:124
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:133
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:158
 msgid "*"
 msgstr ""
 
@@ -11879,38 +11951,39 @@ msgstr ""
 msgid "Use theme"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modify.tpl:5
-msgid "Settings for"
+#: system/Theme/templates/theme_admin_modify.tpl:6
+#, php-format
+msgid "Settings for %s"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modify.tpl:17
+#: system/Theme/templates/theme_admin_modify.tpl:19
 #: system/Theme/templates/theme_admin_credits.tpl:25
 msgid "User theme"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modify.tpl:20
+#: system/Theme/templates/theme_admin_modify.tpl:22
 msgid ""
 "Notice: This category is for 'browser-oriented' themes that can be selected "
 "by users for their sessions on the site."
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modify.tpl:24
+#: system/Theme/templates/theme_admin_modify.tpl:26
 #: system/Theme/templates/theme_admin_credits.tpl:26
 msgid "System theme"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modify.tpl:27
+#: system/Theme/templates/theme_admin_modify.tpl:29
 msgid ""
 "Notice: This category is for themes used to deliver back-end services (such "
 "as RSS feeds, etc.)."
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modify.tpl:31
+#: system/Theme/templates/theme_admin_modify.tpl:33
 #: system/Theme/templates/theme_admin_credits.tpl:24
 msgid "Admin panel theme"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modify.tpl:34
+#: system/Theme/templates/theme_admin_modify.tpl:36
 msgid ""
 "Notice: This category is for themes used to display the site admin panel."
 msgstr ""
@@ -11919,32 +11992,36 @@ msgstr ""
 msgid "Edit page configuration assignment"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:15
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:57
-msgid "Home page"
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:13
+#, php-format
+msgid ""
+"The module specified on this assignment [%s] seems to not be available on "
+"the system."
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:16
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:58
-msgid "Admin panel pages"
-msgstr ""
-
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:17
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:59
-msgid "Master"
-msgstr ""
-
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:32
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:74
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:38
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:81
 msgid ""
 "Notice: This is a list of arguments found in the page URL, separated by '/'."
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:35
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:41
 #: system/Theme/templates/theme_admin_pageconfigurations.tpl:10
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:31
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:77
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:33
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:84
 msgid "Configuration file"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:47
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:11
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:90
+msgid "Important"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:49
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:92
+msgid ""
+"Any match with this assignment will be consider over the following others."
 msgstr ""
 
 #: system/Theme/templates/theme_admin_credits.tpl:4
@@ -12217,11 +12294,11 @@ msgid "Edit theme"
 msgstr ""
 
 #: system/Theme/templates/theme_admin_modifymenu.tpl:6
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:27
 msgid "Page configurations"
 msgstr ""
 
 #: system/Theme/templates/theme_admin_modifymenu.tpl:8
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:45
 #: system/Theme/templates/theme_admin_variables.tpl:5
 msgid "Variables"
 msgstr ""
@@ -12231,103 +12308,170 @@ msgstr ""
 msgid "Themes manager"
 msgstr ""
 
+#: system/Theme/templates/theme_block_render_modify.tpl:2
+msgid ""
+"Notice: The template file will be sought on all the template paths of the "
+"specified module."
+msgstr ""
+
+#: system/Theme/templates/theme_block_render_modify.tpl:12
+msgid "Template file"
+msgstr ""
+
+#: system/Theme/templates/theme_block_render_modify.tpl:16
+msgid "Parameters"
+msgstr ""
+
+#: system/Theme/templates/theme_block_render_modify.tpl:18
+msgid "Format: parameter1=value1;parameter2=value2..."
+msgstr ""
+
 #: system/Theme/templates/theme_admin_pageconfigurations.tpl:5
 msgid "Page configuration assignments"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:32
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:29
+msgid "Page configurations in use"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:34
 msgid "Configuration file found"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:46
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:52
 #, php-format
 msgid ""
 "Notice: Any configuration files that Zikula cannot find must be created in "
 "'themes/%s/templates/config'."
 msgstr ""
 
-#: system/Theme/templates/theme_admin_pageconfigurations.tpl:47
+#: system/Theme/templates/theme_admin_pageconfigurations.tpl:54
 msgid "Create new page configuration assignment"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:5
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:9
 msgid "Edit page configuration"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:12
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:18
 msgid "Page settings"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:14
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:21
 msgid "Page template"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:21
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:27
 msgid "Block template"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:23
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:57
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:87
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:29
 #: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:107
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:142
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:168
 msgid "Default template"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:28
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:34
 msgid "Palette"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:36
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:43
+msgid "Wrappers settings"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:46
+msgid "Enable main content wrapper"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:54
+msgid "This will add a wrapper for the main content, like:"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:59
+msgid "Enable block wrappers"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:67
+msgid "This will add a wrapper for each block content, like:"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:74
 msgid "Filter settings"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:37
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:76
 msgid ""
 "Comma separated list of filters, eg. myfilter (for outputfilters) represents "
 "outputfilter.myfilter.php file, see <a href=\"http://www.smarty.net/manual/"
-"en/advanced.features.php\">the Smarty documentation</a> for more information "
-"about filters."
+"en/advanced.features.php\">the documentation</a> for more information about "
+"filters."
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:39
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:78
 msgid "Output filters"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:43
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:82
 msgid "Pre-filters"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:47
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:86
 msgid "Post-filters"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:52
-msgid "Block position templates"
-msgstr ""
-
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:76
-#, php-format
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:91
 msgid ""
-"The following block positions are used in this page configuration, but they "
-"have not been defined within the Blocks module;</p>%s<p>Click on a block "
-"position to go create that position."
+"The theme engine will consider the more specific setup; in that order, a "
+"block instance template, is used over a block type template, and a block "
+"position one."
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:80
-msgid "Block type templates"
-msgstr ""
-
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:95
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:94
 msgid "Block instance templates"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:102
-#, php-format
-msgid "Untitled block of type %1$s, ID %2$s"
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:95
+msgid "Block type templates"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_variables.tpl:49
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:96
+msgid "Block position templates"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:101
+msgid "Existing block positions"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:126
+#, php-format
+msgid ""
+"<p>The following block positions are used in this page configuration, but "
+"they have not been defined within the Blocks module;</p>%s<p>Click on a "
+"block position to go create that position.</p>"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:155
+msgid "Existing block instances"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_modifypageconfigtemplates.tpl:163
+#, php-format
+msgid "Untitled block of type %1$s"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_variables.tpl:7
+msgid ""
+"You can handle plain variables <var>name &rarr; value</var>, but also setup "
+"arrays in the format <var>name[key] &rarr; value</var>."
+msgstr ""
+
+#: system/Theme/templates/theme_admin_variables.tpl:55
 msgid "Add new theme variable"
+msgstr ""
+
+#: system/Theme/templates/theme_admin_variables.tpl:57
+msgid "Add new page variable"
 msgstr ""
 
 #: system/Theme/templates/pagercss2.tpl:13
@@ -12355,26 +12499,6 @@ msgstr ""
 msgid ""
 "Please delete the Theme folder before pressing OK or the Theme will not be "
 "deleted."
-msgstr ""
-
-#: system/Theme/templates/theme_block_render.tpl:3
-#: system/Extensions/templates/extensions_admin_remove.tpl:28
-#: system/Extensions/templates/extensions_admin_initialise.tpl:18
-msgid "Module name"
-msgstr ""
-
-#: system/Theme/templates/theme_block_render.tpl:11
-msgid "Template file"
-msgstr ""
-
-#: system/Theme/templates/theme_block_render.tpl:19
-msgid ""
-"Notice: The template file must be placed in the '/templates' subdirectory of "
-"the specified module."
-msgstr ""
-
-#: system/Theme/templates/theme_block_render.tpl:24
-msgid "Parameters (format: assign=value;assign2=value2...)"
 msgstr ""
 
 #: system/Settings/templates/settings_admin_multilingual.tpl:11
@@ -12938,9 +13062,12 @@ msgid "Edit user account of %s"
 msgstr ""
 
 #: system/Users/templates/users_admin_modify.tpl:69
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:62
 #: system/Users/templates/users_admin_newuser.tpl:65
 #: system/Users/templates/users_user_register.tpl:62
 #: system/Users/templates/users_admin_modifyregistration.tpl:36
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:62
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:62
 msgid "The items that are marked with an asterisk ('*') are required entries."
 msgstr ""
 
@@ -13067,9 +13194,12 @@ msgid ""
 msgstr ""
 
 #: system/Users/templates/users_admin_modify.tpl:208
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:173
 #: system/Users/templates/users_admin_newuser.tpl:175
 #: system/Users/templates/users_user_register.tpl:173
 #: system/Users/templates/users_admin_modifyregistration.tpl:85
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:173
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:173
 msgid "Check your entries"
 msgstr ""
 
@@ -13604,8 +13734,11 @@ msgstr ""
 #: system/Users/templates/users_user_passwordreminder.tpl:52
 #: system/Users/templates/users_email_welcome_html.tpl:11
 #: system/Users/templates/users_email_welcome_txt.tpl:11
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:106
 #: system/Users/templates/users_user_register.tpl:106
 #: system/Users/templates/users_user_verifyregistration.tpl:67
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:106
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:106
 msgid "Password reminder"
 msgstr ""
 
@@ -13633,17 +13766,23 @@ msgstr ""
 
 #: system/Users/templates/users_user_passwordreminder.tpl:54
 #: system/Users/templates/users_user_changepassword.tpl:87
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:108
 #: system/Users/templates/users_user_register.tpl:108
 #: system/Users/templates/users_auth_loginformfields_default_default.tpl:58
 #: system/Users/templates/users_user_verifyregistration.tpl:69
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:108
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:108
 msgid "Enter a word or a phrase that will remind you of your password."
 msgstr ""
 
 #: system/Users/templates/users_user_passwordreminder.tpl:55
 #: system/Users/templates/users_user_changepassword.tpl:88
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:109
 #: system/Users/templates/users_user_register.tpl:109
 #: system/Users/templates/users_auth_loginformfields_default_default.tpl:59
 #: system/Users/templates/users_user_verifyregistration.tpl:70
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:109
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:109
 msgid ""
 "Notice: Do not use a word or phrase that will allow others to guess your "
 "password! Do not include your password or any part of your password here!"
@@ -14165,18 +14304,210 @@ msgstr ""
 msgid "Recover lost user name or password"
 msgstr ""
 
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:2
+#: system/Users/templates/users_user_registration_method.tpl:1
+#: system/Users/templates/users_user_register.tpl:2
+#: system/Users/templates/users_user_registration_disabled.tpl:1
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:2
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:2
+msgid "New account registration"
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:37
+#: system/Users/templates/users_user_register.tpl:37
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:37
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:37
+msgid ""
+"Registering for a user account is easy. Registration can give you access to "
+"content and to features of this site that are not available to unregistered "
+"guests."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:38
+#: system/Users/templates/users_user_register.tpl:38
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:38
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:38
+msgid ""
+"During your visits, we recommended that you set your browser to accept "
+"cookies from this site. Various features of the site use cookies, and may "
+"not function properly (or may not function at all) if cookies are disabled."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:43
+#: system/Users/templates/users_user_register.tpl:43
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:43
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:43
+msgid ""
+"Before you will be able to log in, an administrator must approve your "
+"registration request and you must verify your e-mail address. You will "
+"receive an e-mail asking to verify your e-mail address after an "
+"administrator has approved your request."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:45
+#: system/Users/templates/users_user_register.tpl:45
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:45
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:45
+msgid ""
+"Before you will be able to log in, you must verify your e-mail address and "
+"an administrator must approve your registration request. You will receive an "
+"e-mail asking to verify your e-mail address after submitting the information "
+"below."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:45
+#: system/Users/templates/users_user_register.tpl:45
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:45
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:45
+msgid ""
+"You must verify your e-mail address before an administrator will approve "
+"your registration request."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:48
+#: system/Users/templates/users_user_register.tpl:48
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:48
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:48
+msgid ""
+"Before you will be able to log in, an administrator must approve your "
+"registration request. You will receive an e-mail after an administrator has "
+"reviewed the information you submit below."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:50
+#: system/Users/templates/users_user_register.tpl:50
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:50
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:50
+msgid ""
+"Before you will be able to log in, you must verify your e-mail address. You "
+"will receive an e-mail asking to verify your e-mail address after submitting "
+"the information below."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:72
+#: system/Users/templates/users_user_register.tpl:72
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:72
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:72
+msgid "Choose a user name"
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:77
+#: system/Users/templates/users_user_register.tpl:77
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:77
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:77
+msgid ""
+"User names can contain letters, numbers, underscores, periods and/or dashes."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:79
+#: system/Users/templates/users_user_register.tpl:79
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:79
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:79
+msgid ""
+"Your user name is used to identify you to other users on the site. You still "
+"need to set one up, even though you will not be using it to log in."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:88
+#: system/Users/templates/users_user_register.tpl:88
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:88
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:88
+msgid "Set a password"
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:93
+#: system/Users/templates/users_user_register.tpl:93
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:93
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:93
+#, php-format
+msgid "The minimum length for user passwords is %s characters."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:100
+#: system/Users/templates/users_user_register.tpl:100
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:100
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:100
+msgid "Repeat your Password for verification"
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:121
+#: system/Users/templates/users_user_register.tpl:121
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:121
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:121
+msgid "Enter your e-mail address"
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:127
+#: system/Users/templates/users_user_register.tpl:127
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:127
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:127
+msgid "You will use your e-mail address to identify yourself when you log in."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:133
+#: system/Users/templates/users_user_register.tpl:133
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:133
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:133
+msgid "Repeat your E-mail address for verification"
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:155
+#: system/Users/templates/users_user_register.tpl:155
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:155
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:155
+msgid "Answer the security question"
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:160
+#: system/Users/templates/users_user_register.tpl:160
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:160
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:160
+msgid ""
+"Asking this question helps us prevent automated scripts from accessing "
+"private areas of the site."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:167
+#: system/Users/templates/users_admin_newuser.tpl:169
+#: system/Users/templates/users_user_register.tpl:167
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:167
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:167
+msgid "Check your entries and submit your registration"
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:168
+#: system/Users/templates/users_user_register.tpl:168
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:168
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:168
+msgid ""
+"Notice: When you are ready, click on 'Check your entries' to have your "
+"entries checked. When your entries are OK, click on 'Submit registration' to "
+"continue."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:169
+#: system/Users/templates/users_admin_newuser.tpl:171
+#: system/Users/templates/users_user_register.tpl:169
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:169
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:169
+msgid ""
+"Your entries seem to be OK. Please click on 'Submit registration' when you "
+"are ready to continue."
+msgstr ""
+
+#: system/Users/templates/users_user_register.tpl.REMOTE.tpl:172
+#: system/Users/templates/users_user_register.tpl:172
+#: system/Users/templates/users_user_register.tpl.BASE.tpl:172
+#: system/Users/templates/users_user_register.tpl.LOCAL.tpl:172
+msgid "Submit registration"
+msgstr ""
+
 #: system/Users/templates/users_user_changelang.tpl:6
 msgid "Change language"
 msgstr ""
 
 #: system/Users/templates/users_user_changelang.tpl:8
 msgid "New language"
-msgstr ""
-
-#: system/Users/templates/users_user_registration_method.tpl:1
-#: system/Users/templates/users_user_register.tpl:2
-#: system/Users/templates/users_user_registration_disabled.tpl:1
-msgid "New account registration"
 msgstr ""
 
 #: system/Users/templates/users_user_registration_method.tpl:14
@@ -14265,23 +14596,11 @@ msgid ""
 "setting in 'Settings'."
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:169
-#: system/Users/templates/users_user_register.tpl:167
-msgid "Check your entries and submit your registration"
-msgstr ""
-
 #: system/Users/templates/users_admin_newuser.tpl:170
 msgid ""
 "Notice: When you are ready, click on 'Check your entries' to have your "
 "entries checked. When your entries are OK, click on 'Submit new user' to "
 "continue."
-msgstr ""
-
-#: system/Users/templates/users_admin_newuser.tpl:171
-#: system/Users/templates/users_user_register.tpl:169
-msgid ""
-"Your entries seem to be OK. Please click on 'Submit registration' when you "
-"are ready to continue."
 msgstr ""
 
 #: system/Users/templates/users_admin_newuser.tpl:174
@@ -14420,117 +14739,6 @@ msgstr ""
 msgid ""
 "For your security, this session has expired because you have been inactive "
 "for too long. Please <a href=\"%s\">log in</a> again to access services."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:37
-msgid ""
-"Registering for a user account is easy. Registration can give you access to "
-"content and to features of this site that are not available to unregistered "
-"guests."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:38
-msgid ""
-"During your visits, we recommended that you set your browser to accept "
-"cookies from this site. Various features of the site use cookies, and may "
-"not function properly (or may not function at all) if cookies are disabled."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:43
-msgid ""
-"Before you will be able to log in, an administrator must approve your "
-"registration request and you must verify your e-mail address. You will "
-"receive an e-mail asking to verify your e-mail address after an "
-"administrator has approved your request."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:45
-msgid ""
-"Before you will be able to log in, you must verify your e-mail address and "
-"an administrator must approve your registration request. You will receive an "
-"e-mail asking to verify your e-mail address after submitting the information "
-"below."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:45
-msgid ""
-"You must verify your e-mail address before an administrator will approve "
-"your registration request."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:48
-msgid ""
-"Before you will be able to log in, an administrator must approve your "
-"registration request. You will receive an e-mail after an administrator has "
-"reviewed the information you submit below."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:50
-msgid ""
-"Before you will be able to log in, you must verify your e-mail address. You "
-"will receive an e-mail asking to verify your e-mail address after submitting "
-"the information below."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:72
-msgid "Choose a user name"
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:77
-msgid ""
-"User names can contain letters, numbers, underscores, periods and/or dashes."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:79
-msgid ""
-"Your user name is used to identify you to other users on the site. You still "
-"need to set one up, even though you will not be using it to log in."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:88
-msgid "Set a password"
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:93
-#, php-format
-msgid "The minimum length for user passwords is %s characters."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:100
-msgid "Repeat your Password for verification"
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:121
-msgid "Enter your e-mail address"
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:127
-msgid "You will use your e-mail address to identify yourself when you log in."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:133
-msgid "Repeat your E-mail address for verification"
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:155
-msgid "Answer the security question"
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:160
-msgid ""
-"Asking this question helps us prevent automated scripts from accessing "
-"private areas of the site."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:168
-msgid ""
-"Notice: When you are ready, click on 'Check your entries' to have your "
-"entries checked. When your entries are OK, click on 'Submit registration' to "
-"continue."
-msgstr ""
-
-#: system/Users/templates/users_user_register.tpl:172
-msgid "Submit registration"
 msgstr ""
 
 #: system/Users/templates/users_admin_search_results.tpl:76
@@ -15308,41 +15516,53 @@ msgstr ""
 msgid "Plugin display name"
 msgstr ""
 
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:36
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:38
 #, php-format
 msgid "Connect %s to other modules"
 msgstr ""
 
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:39
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:41
 #, php-format
 msgid "%s module provides the following area:"
 msgid_plural "%s module provides the following areas:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:45
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:47
 #, php-format
 msgid ""
 "To connect %s to one of the modules from the list below, click on the "
 "checkbox(es) next to the corresponding area."
 msgstr ""
 
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:53
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:51
+#, php-format
+msgid ""
+"If you attach/detach %s to/from itself, the page will refresh in order to "
+"reload the attached/detached areas."
+msgstr ""
+
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:60
 msgid "Connections"
 msgstr ""
 
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:122
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:87
+#, php-format
+msgid "%s module can't connect to %s module. No connections are supported"
+msgstr ""
+
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:131
 msgid "Reorder attached areas"
 msgstr ""
 
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:126
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:135
 #, php-format
 msgid "%s module subscribes with the following area:"
 msgid_plural "%s module subscribes with the following areas:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:132
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:141
 #, php-format
 msgid ""
 "To reorder the attached areas from the list below, drag the area that you "
@@ -15350,12 +15570,12 @@ msgid ""
 "to %s module, please visit the module that provides it."
 msgstr ""
 
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:145
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:154
 #, php-format
 msgid "(eg %s)"
 msgstr ""
 
-#: system/Extensions/templates/extensions_hookui_hooks.tpl:166
+#: system/Extensions/templates/extensions_hookui_hooks.tpl:178
 msgid "There aren't any areas attached here"
 msgstr ""
 
@@ -15480,6 +15700,11 @@ msgid ""
 "Warning! Other modules present in your system are dependent on this module. "
 "If you remove this module then all modules that require it will also be "
 "removed."
+msgstr ""
+
+#: system/Extensions/templates/extensions_admin_remove.tpl:28
+#: system/Extensions/templates/extensions_admin_initialise.tpl:18
+msgid "Module name"
 msgstr ""
 
 #: system/Extensions/templates/extensions_admin_remove.tpl:29
