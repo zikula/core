@@ -329,7 +329,7 @@ function smarty_function_pager($params, Zikula_View $view)
     $modview = $params['owner'] && ModUtil::available($params['owner']) ? $params['owner'] : 'Theme';
 
     $renderer = Zikula_View::getInstance($modview);
-    $renderer->cache_id = md5($template.'-'.$pager['module'].'-'.$pager['type'].'-'.$pager['func'].'-'.$pager['total'].'-'.$pager['perpage'].'-'.$pager['posvar'].'-'.$pager['maxPages']);
+    $renderer->setCaching(Zikula_View::CACHE_DISABLED);
 
     $renderer->assign('pagerPluginArray', $pager);
     $renderer->assign('hiddenPageBoxOpened', 0);

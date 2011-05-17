@@ -29,13 +29,13 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-        return array('module' => 'Blocks',
-                     'text_type' => $this->__('Menu'),
-                     'text_type_long' => $this->__('Menu block'),
-                     'allow_multiple' => true,
-                     'form_content' => false,
-                     'form_refresh' => false,
-                     'show_preview' => true,
+        return array('module'          => $this->name,
+                     'text_type'       => $this->__('Menu'),
+                     'text_type_long'  => $this->__('Menu block'),
+                     'allow_multiple'  => true,
+                     'form_content'    => false,
+                     'form_refresh'    => false,
+                     'show_preview'    => true,
                      'admin_tableless' => true);
     }
 
@@ -52,9 +52,6 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
             return;
         }
 
-        // Set the cache id
-        $this->view->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
-
         // Break out options from our content field
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
@@ -63,11 +60,16 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
             PageUtil::addVar('stylesheet', ThemeUtil::getModuleStyleSheet('Blocks', $vars['stylesheet']));
         }
 
-        // check out if the contents are cached.
-        if ($this->view->is_cached('blocks_block_menu.tpl')) {
-            // Populate block info and pass to theme
-            $blockinfo['content'] = $this->view->fetch('blocks_block_menu.tpl');
-            return BlockUtil::themeBlock($blockinfo);
+        // if cache is enabled, checks for a cached output
+        if ($this->view->getCaching()) {
+            // set the cache id
+            $this->view->setCacheId($blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.CacheUtil::getUserString());
+
+            // check out if the contents are cached
+            if ($this->view->is_cached('blocks_block_menu.tpl')) {
+                $blockinfo['content'] = $this->view->fetch('blocks_block_menu.tpl');
+                return BlockUtil::themeBlock($blockinfo);
+            }
         }
 
         // Styling - this is deprecated and is only to support old menu for now
