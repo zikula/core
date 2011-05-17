@@ -15,7 +15,7 @@
     {if $menutree_anysettingsaccess}
     <li class="tab"><a href="#menutree_tabsettings" id="menutree_tabsettings_control" class="menutree_tabcontrol">{gt text="Block settings"}</a></li>
     {/if}
-    <li class="tab"><a href="#menutree_tabhelp" id="menutree_tabhelp_control" class="menutree_tabcontrol">{gt text="Help"}</a></li>
+    <li class="tab">{helplink filename='Menutree/Adminhelp.txt' popup=1 __title='Help'|gt:$zikula_view}</li>
 </ul>
 
 {if $menutree_anysettingsaccess}
@@ -186,12 +186,9 @@
         </div>
     </div>
 </div>
-<div id="menutree_tabhelp" class="menutree_tabcontent">
-    {include file="menutree/blocks_block_menutree_include_help.tpl"}
-</div>
 
 <script type="text/javascript">
-    var tabs = new Zikula.UI.Tabs('menutree_tabs');
+    var tabs = new Zikula.UI.Tabs('menutree_tabs',{linkSelector:'li a.menutree_tabcontrol'});
 
     //add this url
     {{if $menutree_newurl}}
