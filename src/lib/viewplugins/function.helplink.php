@@ -50,6 +50,7 @@ function smarty_function_helplink($params, Zikula_View $view)
     $height = (isset($params['height'])) ? $params['height'] : 400;
     $popup = (isset($params['popup'])) ? true : false;
     $modname = $view->getModuleName();
+    $linkID = (isset($params['linkid'])) ? $params['linkid'] : DataUtil::formatForDisplay(strtolower('manuallink_' . $modname . '_' . hash('md5', serialize($params))));
 
     $base = ModUtil::getModuleBaseDir($modname) . "/$modname/docs";
     $paths = array(
@@ -73,7 +74,6 @@ function smarty_function_helplink($params, Zikula_View $view)
         return;
     }
 
-    $linkID = DataUtil::formatForDisplay(strtolower('manuallink_' . $modname));
     $class = !empty($class) ? "class=\"$class\"" : '';
 
     if ($popup) {
