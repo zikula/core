@@ -63,7 +63,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
         }
 
         // validate the entry point
-        $falseEntryPoints = array('admin.php', 'ajax.php',  'install.php', 'upgrade.php', 'user.php', 'mo2json.php', 'jcss.php');
+        $falseEntryPoints = array('admin.php', 'ajax.php', 'install.php', 'upgrade.php', 'user.php', 'mo2json.php', 'jcss.php');
         $entryPointExt = pathinfo($settings['entrypoint'], PATHINFO_EXTENSION);
 
         if (in_array($settings['entrypoint'], $falseEntryPoints) || !file_exists($settings['entrypoint']) || strtolower($entryPointExt) != 'php') {
@@ -96,6 +96,15 @@ class Settings_Controller_Admin extends Zikula_AbstractController
             $permachecks = false;
         }
 
+        if ($settings['startpage']) {
+            if (empty($settings['starttype']) || empty($settings['startfunc'])) {
+                LogUtil::registerError($this->__("Error! When setting a startpage, starttype and startfunc are required fields."));
+                unset($settings['startpage']);
+                unset($settings['starttype']);
+                unset($settings['startfunc']);
+            }
+        }
+
         if (!$permachecks) {
             unset($settings['permasearch']);
             unset($settings['permareplace']);
@@ -103,7 +112,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
 
         // Write the vars
         $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
-        foreach($settings as $key => $value) {
+        foreach ($settings as $key => $value) {
             $oldvalue = System::getVar($key);
             if ($value != $oldvalue) {
                 System::setVar($key, $value);
@@ -153,12 +162,12 @@ class Settings_Controller_Admin extends Zikula_AbstractController
 
         $url = ModUtil::url('Settings', 'admin', 'multilingual');
 
-        $settings = array('mlsettings_language_i18n'   => 'language_i18n',
+        $settings = array('mlsettings_language_i18n' => 'language_i18n',
                 'mlsettings_timezone_offset' => 'timezone_offset',
                 'mlsettings_timezone_server' => 'timezone_server',
-                'mlsettings_multilingual'    => 'multilingual',
+                'mlsettings_multilingual' => 'multilingual',
                 'mlsettings_language_detect' => 'language_detect',
-                'mlsettings_languageurl'     => 'languageurl');
+                'mlsettings_languageurl' => 'languageurl');
 
         // we can't detect language if multilingual feature is off so reset this to false
         if (FormUtil::getPassedValue('mlsettings_multilingual', null, 'POST') == 0) {
@@ -179,7 +188,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
 
         // Write the vars
         $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
-        foreach($settings as $formname => $varname) {
+        foreach ($settings as $formname => $varname) {
             $newvalue = FormUtil::getPassedValue($formname, null, 'POST');
             $oldvalue = System::getVar($varname);
             if ($newvalue != $oldvalue) {
@@ -195,4 +204,5 @@ class Settings_Controller_Admin extends Zikula_AbstractController
 
         $this->redirect($url);
     }
+
 }
