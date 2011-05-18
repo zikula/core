@@ -21,7 +21,7 @@
     {array_size assign="max" array=$allCats}
     {foreach from=$allCats item=cat name=loop}
     {counter print=false assign="cnt"}
-    {array_field_isset assign="displayname" array=$cat.display_name field=$userlanguage returnValue=1}
+    {array_field assign='displayname' array=$cat.display_name field=$userlanguage}
     <tbody>
         <tr class="{cycle values="z-odd,z-even"}">
             <td style="text-align:left">{$cat.id|safetext}</td>

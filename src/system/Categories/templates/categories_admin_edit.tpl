@@ -13,14 +13,14 @@
             {/if}
             <fieldset>
                 <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-                {array_field_isset assign="catID" array=$category field="id" returnValue="1"}
-                {if ($catID)}
+                {array_field assign='catID' array='category' field='id'}
+                {if $catID}
                 <input type="hidden" id="category_id" name="category[id]" value="{$category.id}" />
                 {/if}
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">
                     <label for="category_name">{gt text="Name"}{formutil_getfieldmarker objectType="category" field="name" validation=$validation}</label>
-                    {array_field_isset assign="catName" array=$category field="name" returnValue=1}
+                    {array_field assign='catName' array='category' field='name'}
                     <input id="category_name" name="category[name]" value="{$catName|safetext}" type="text" size="32" maxlength="255" />
                     {formutil_getvalidationerror objectType="category" field="name"}
                 </div>
@@ -35,22 +35,22 @@
                 </div>
                 <div class="z-formrow">
                     <label for="category_is_locked">{gt text="Category is locked"}</label>
-                    {array_field_isset assign="catIsLocked" array=$category field="is_locked" returnValue=1}
+                    {array_field assign='catIsLocked' array='category' field='is_locked'}
                     <input type="checkbox" id="category_is_locked" name="category[is_locked]" value="1"{if ($catIsLocked)} checked="checked"{/if} />
                 </div>
                 <div class="z-formrow">
                     <label for="category_is_leaf">{gt text="Category is a leaf node"}</label>
-                    {array_field_isset assign="catIsLeaf" array=$category field="is_leaf" returnValue=1}
+                    {array_field assign='catIsLeaf' array='category' field='is_leaf'}
                     <input type="checkbox" id="category_is_leaf" name="category[is_leaf]" value="1"{if ($catIsLeaf)} checked="checked"{/if} />
                 </div>
                 <div class="z-formrow">
                     <label for="category_value">{gt text="Value"}</label>
-                    {array_field_isset assign="catValue" array=$category field="value" returnValue=1}
+                    {array_field assign='catValue' array='category' field='value'}
                     <input id="category_value" name="category[value]" value="{$catValue|safetext}" type="text" size="16" maxlength="255" />
                 </div>
                 <div class="z-formrow">
                     <label for="category_status">{gt text="Active"}</label>
-                    {array_field_isset assign="catStatus" array=$category field="status" returnValue=1}
+                    {array_field assign='catStatus' array='category' field='status'}
                     {if $mode != "edit"} {assign var="catStatus" value="A"}{/if}
                     <input id="category_status" name="category[status]" value="A" type="checkbox" {if ($catStatus == 'A')} checked="checked"{/if} />&nbsp;&nbsp;
                 </div>
@@ -59,9 +59,9 @@
                 <legend>{gt text="Localised output"}</legend>
                 <div class="z-formrow">
                     <label>{gt text="Name"}<span class="z-form-mandatory-flag">*</span></label>
-                    {array_field_isset assign="displayNames" array=$category field="display_name" returnValue=1}
+                    {array_field assign='displayNames' array='category' field='display_name'}
                     {foreach item=language from=$languages}
-                    {array_field_isset assign="displayName" array=$displayNames field=$language returnValue=1}
+                    {array_field assign='displayName' array='displayNames' field=$language}
                     <div class="z-formlist">
                         <input id="category_display_name_{$language}" name="category[display_name][{$language}]" value="{$displayName}" type="text" size="50" maxlength="255" />
                         <label for="category_display_name_{$language}">({$language})</label>
@@ -70,9 +70,9 @@
                 </div>
                 <div class="z-formrow">
                     <label>{gt text="Description"}</label>
-                    {array_field_isset assign="displayDescs" array=$category field="display_desc" returnValue=1}
+                    {array_field assign='displayDescs' array='category' field='display_desc'}
                     {foreach item=language from=$languages}
-                    {array_field_isset assign="displayDesc" array=$displayDescs field=$language returnValue=1}
+                    {array_field assign='displayDesc' array='displayDescs' field=$language}
                     <div class="z-formlist">
                         <textarea id="category_display_desc_{$language}" name="category[display_desc][{$language}]" rows="4" cols="56">{$displayDesc}</textarea>
                         <label for="category_display_desc_{$language}">({$language})</label>

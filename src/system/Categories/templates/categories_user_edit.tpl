@@ -34,8 +34,8 @@
             <input type="hidden" name="category[parent_id]" value="{$rootCat.id|safetext}" />
             <input type="hidden" name="category[is_locked]" value="0" />
             <input type="hidden" name="category[is_leaf]" value="1" />
-            {array_field_isset assign="catID" array=$category field="id" returnValue=1}
-            {if ($catID)}
+            {array_field assign='catID' array='category' field='id'}
+            {if $catID}
             <input type="hidden" name="category[id]"              value="{$category.id|safetext}" />
             <input type="hidden" name="category[path]"            value="{$category.path|safetext}" />
             <input type="hidden" name="category[ipath]"           value="{$category.ipath|safetext}" />
@@ -47,7 +47,7 @@
             {/if}
             <div class="z-formrow">
                 <label for="category_name">{gt text="Name"}</label>
-                {array_field_isset assign="catName" array=$category field="name" returnValue=1}
+                {array_field assign='catName' array='category' field='name'}
                 <input id="category_name" name="category[name]" value="{$catName|safetext}" type="text" size="32" maxlength="255" />
                 {php}
                 $tplVars =& $this->_tpl_vars;
@@ -62,12 +62,12 @@
             </div>
             <div class="z-formrow">
                 <label for="category_value">{gt text="Value"}</label>
-                {array_field_isset assign="catValue" array=$category field="value" returnValue=1}
+                {array_field assign='catValue' array='category' field='value'}
                 <input id="category_value" name="category[value]" value="{$catValue|safetext}" type="text" size="16" maxlength="255" />
             </div>
             <div class="z-formrow">
                 <label for="category_status">{gt text="Active"}</label>
-                {array_field_isset assign="catStatus" array=$category field="status" returnValue=1}
+                {array_field assign='catStatus' array='category' field='status'}
 
                 <input id="category_status" name="category[status]" value="A" type="checkbox"{if ($catStatus=='A')} checked="checked"{/if} />
             </div>
@@ -76,10 +76,10 @@
             <legend>{gt text="Localised output"}</legend>
             <div class="z-formrow">
                 <label>{gt text="Name"}<span class="z-form-mandatory-flag">*</span></label>
-                {array_field_isset assign="displayNames" array=$category field="display_name" returnValue=1}
+                {array_field assign='displayNames' array='category' field='display_name'}
                 {if ($displayNames || !$catID)}
                 {foreach item=language from=$languages}
-                {array_field_isset assign="displayName" array=$displayNames field=$language returnValue=1}
+                {array_field assign='displayName' array='displayNames' field=$language}
                 <div class="z-formlist">
                     <input id="category_display_name_{$language}" name="category[display_name][{$language}]" value="{$displayName}" type="text" size="50" maxlength="255" />
                     <label for="category_display_name_{$language}">({$language})</label>
@@ -89,10 +89,10 @@
             </div>
             <div class="z-formrow">
                 <label>{gt text="Description"}</label>
-                {array_field_isset assign="displayDescs" array=$category field="display_desc" returnValue=1}
+                {array_field assign='displayDescs' array='category' field='display_desc'}
                 {if ($displayDescs || !$catID)}
                 {foreach item=language from=$languages}
-                {array_field_isset assign="displayDesc" array=$displayDescs field=$language returnValue=1}
+                {array_field assign='displayDesc' array='displayDescs' field=$language}
                 <div class="z-formlist">
                     <textarea id="category_display_desc_{$language}" name="category[display_desc][{$language}]" rows="4" cols="56">{$displayDesc}</textarea>
                     <label for="category_display_desc_{$language}">({$language})</label>
@@ -105,7 +105,7 @@
             <legend>{gt text="Attributes"}</legend>
             {include file=categories_include_editattributes.tpl}
         </fieldset>
-        {if ($catID)}
+        {if $catID}
         <fieldset>
             <legend>{gt text="Category system information"}</legend>
             <div class="z-formrow">
