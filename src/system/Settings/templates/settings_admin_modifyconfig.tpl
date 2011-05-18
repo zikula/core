@@ -63,7 +63,7 @@
                     </select>
                     <em class="z-formnote">{gt text="('index.php' points to this)"}</em>
                 </div>
-                <div id="settings_startpage_container">
+                <div id="settings_startpage_container" style="overflow: none;">
                     <div class="z-formrow">
                         <label for="settings_starttype">{gt text="Start function type (required)"}</label>
                         <input id="settings_starttype" type="text" name="settings[starttype]" value="{$modvars.ZConfig.starttype|safetext}" size="10" maxlength="10" />
@@ -77,12 +77,12 @@
                         <input id="settings_startargs" type="text" name="settings[startargs]" value="{$modvars.ZConfig.startargs|safetext}" size="20" maxlength="60" />
                         <em class="z-formnote">{gt text="(Comma-separated)"}</em>
                     </div>
-                    <div class="z-formrow">
-                        <label for="settings_entrypoint">{gt text="Site entry point"}</label>
-                        <input id="settings_entrypoint" type="text" name="settings[entrypoint]" value="{$modvars.ZConfig.entrypoint|safetext}" size="20" maxlength="60" />
-                        <em class="z-formnote">{gt text="(Default: index.php)"}</em>
-                        <p class="z-formnote z-informationmsg">{gt text="Notice: The entry point file must be present in the Zikula root directory before you set it here as your site's start page."}</p>
-                    </div>
+                </div>
+                <div class="z-formrow">
+                    <label for="settings_entrypoint">{gt text="Site entry point"}</label>
+                    <input id="settings_entrypoint" type="text" name="settings[entrypoint]" value="{$modvars.ZConfig.entrypoint|safetext}" size="20" maxlength="60" />
+                    <em class="z-formnote">{gt text="(Default: index.php)"}</em>
+                    <p class="z-formnote z-informationmsg">{gt text="Notice: The entry point file must be present in the Zikula root directory before you set it here as your site's start page."}</p>
                 </div>
             </fieldset>
             <fieldset>

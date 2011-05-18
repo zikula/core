@@ -10,7 +10,6 @@ function settings_modifyconfig_init()
     $('settings_shorturls_yes').observe('click', settings_shorturls_onchange);
     $('settings_shorturls_no').observe('click', settings_shorturls_onchange);
 
-
     if ($F('settings_startpage') == '') {
         $('settings_startpage_container').hide();
     }
@@ -25,10 +24,20 @@ function settings_modifyconfig_init()
 
 function settings_startpage_nostartpage()
 {
-    if ($F('settings_startpage') == '') {
-        $('settings_startpage_container').hide();
-    } else {
-        $('settings_startpage_container').show();
+    var tmpobj = $('settings_startpage_container');
+
+    if ($F('settings_startpage') == '' && tmpobj.getStyle('display') == 'block') {
+        if (typeof(Effect) != "undefined") {
+            Effect.BlindUp(tmpobj);
+        } else {
+            tmpobj.hide();
+        }
+    } else if (tmpobj.getStyle('display') == 'none') {
+        if (typeof(Effect) != "undefined") {
+            Effect.BlindDown(tmpobj);
+        } else {
+            tmpobj.show();
+        }
     }
 }
 
