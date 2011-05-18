@@ -323,7 +323,7 @@ class System
         // check the use of friendly url setup
         $shorturls = self::getVar('shorturls', false);
         $dirBased = (self::getVar('shorturlstype') == 0 ? true : false);
-        $langRequired = ZLanguage::isRequiredLangParam();
+        $langRequired = ZLanguage::getLangUrlRule();
 
         if ($shorturls && $dirBased) {
             $result = self::getBaseUrl();
@@ -655,17 +655,15 @@ class System
 
         // check if we need to decode the url
         if ((self::getVar('shorturls') && self::getVar('shorturlstype') == 0 && (empty($module) && empty($type) && empty($func)))) {
-            // define our site entry points
+            // remove entry point from the path (otherwise they are part of the module name)
             $customentrypoint = self::getVar('entrypoint');
             $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
-            $tobestripped = array(
-                    "/$root",
-                    self::getBaseUri());
 
             // get base path to work out our current url
             $parsedURL = parse_url(self::getCurrentUri());
 
             // strip any unwanted content from the provided URL
+            $tobestripped = array(self::getBaseUri().'/', "$root");
             $path = str_replace($tobestripped, '', $parsedURL['path']);
 
             // split the path into a set of argument strings
@@ -675,45 +673,77 @@ class System
             foreach ($args as $k => $v) {
                 $args[$k] = urldecode($v);
             }
-            // the module is the first argument string
-            if (isset($args[1]) && !empty($args[1])) {
-                if (ZLanguage::isLangParam($args[1]) && in_array($args[1], ZLanguage::getInstalledLanguages())) {
-                    self::queryStringSetVar('lang', $args[1]);
+
+            $modinfo = null;
+
+            // if no arguments present
+            if (!$args[0]) {
+                if (ZLanguage::getLangUrlRule()) {
+                    // if we are in homepage and there should be a language param
+                    $lang = System::getVar('language_i18n', '');
+                    if ($lang) {
+                        System::redirect(System::getCurrentUrl().$lang);
+                        System::shutDown();
+                    }
+                }
+            } else {
+                // check the existing shortURL parameters
+                // language check first
+                if (ZLanguage::isLangParam($args[0]) && in_array($args[0], ZLanguage::getInstalledLanguages())) {
+                    self::queryStringSetVar('lang', $args[0]);
                     array_shift($args);
                 }
 
-                $name = isset($args[1]) ? $args[1] : false;
-                // first try the first argument as a module
-                $modinfo = ($name) ? ModUtil::getInfoFromName($name) : false;
-                // if that fails it's a theme
-                if (!$modinfo) {
-                    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($name));
+                // check if there are remaining arguments
+                if ($args) {
+                    // try the first argument as a module
+                    $modinfo = ModUtil::getInfoFromName($args[0]);
+                }
+
+                // if that fails maybe it's a theme
+                if ($args && !$modinfo) {
+                    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args[0]));
+
                     if ($themeinfo) {
                         self::queryStringSetVar('theme', $themeinfo['name']);
                         // now shift the vars and continue as before
                         array_shift($args);
-                        $modinfo = isset($args[1]) ? ModUtil::getInfoFromName($args[1]) : false;
-                    } else {
-                        // add the default module handler into the code
-                        $modinfo = ModUtil::getInfoFromName(self::getVar('shorturlsdefaultmodule'));
-                        array_unshift($args, $modinfo['url']);
+                        if ($args) {
+                            $modinfo = ModUtil::getInfoFromName($args[0]);
+                        }
                     }
                 }
-                self::queryStringSetVar('module', $modinfo['name']);
-                // the function name is the second argument string
-                isset($args[2]) ? self::queryStringSetVar('func', $args[2]) : null;
-                $modname = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+
+                // if there are parameters (not homepage)
+                // try to see if there's a default shortURLs module
+                if ($args && !$modinfo) {
+                    // add the default module handler into the code
+                    $modinfo = ModUtil::getInfoFromName(self::getVar('shorturlsdefaultmodule'));
+                }
             }
 
-            // check if there is a custom url handler for this module
+            // check if there is a module and a custom url handler for it
             // if not decode the url using the default handler
-            if (isset($modinfo) && $modinfo['type'] != 0 && !ModUtil::apiFunc($modname, 'user', 'decodeurl', array(
-                            'vars' => $args))) {
-                // any remaining arguments are specific to the module
-                $argscount = count($args);
-                for ($i = 3; $i < $argscount; $i = $i + 2) {
-                    if (isset($args[$i]))
-                        self::queryStringSetVar($args[$i], urldecode($args[$i + 1]));
+            if ($modinfo && $modinfo['type'] != 0) {
+                // prepare the arguments to the module handler
+                array_unshift($args, ''); // support for 1.2- empty parameter due the initial explode
+                array_unshift($args, $modinfo['url']);
+                // set the REQUEST parameters
+                self::queryStringSetVar('module', $modinfo['name']);
+                // the user.function name can be the second argument string, set it by default
+                // later the custom module handler (if exists) must setup a new one
+                if (isset($args[2])) {
+                    self::queryStringSetVar('type', 'user');
+                    self::queryStringSetVar('func', $args[2]);
+                }
+                if (!ModUtil::apiFunc($modinfo['name'], 'user', 'decodeurl', array('vars' => $args))) {
+                    // any remaining arguments are specific to the module
+                    $argscount = count($args);
+                    for ($i = 3; $i < $argscount; $i = $i + 2) {
+                        if (isset($args[$i]) && isset($args[$i + 1])) {
+                            self::queryStringSetVar($args[$i], urldecode($args[$i + 1]));
+                        }
+                    }
                 }
             }
         }
