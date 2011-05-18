@@ -38,11 +38,6 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
      */
     public function initialize()
     {
-        if (version_compare(phpversion(), '5.3.2', '<')) {
-            // Bail out if not PHP 5.3.2+
-            return;
-        }
-
         // register namespace
         // Because the standard kernel classloader already has Doctrine registered as a namespace
         // we have to add a new loader onto the spl stack.
@@ -58,8 +53,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $dbConfig = array('host' => $config['host'], 'user' => $config['user'], 'password' => $config['password'], 'dbname' => $config['dbname'], 'driver' => 'pdo_' . $config['dbdriver']);
         $r = new ReflectionClass('Doctrine\Common\Cache\\' . $serviceManager['dbcache.type'] . 'Cache');
         $dbCache = $r->newInstance();
-        $r = new ReflectionClass('Doctrine\ORM\Configuration');
-        $ORMConfig = $r->newInstance();
+        $ORMConfig = new \Doctrine\ORM\Configuration;
         $ORMConfig->setMetadataCacheImpl($dbCache);
         $driverImpl = $ORMConfig->newDefaultAnnotationDriver();
         $ORMConfig->setMetadataDriverImpl($driverImpl);
@@ -68,9 +62,8 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $ORMConfig->setProxyNamespace('DoctrineProxy');
         $ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
 
-        // PHP 5.2 workaround - remove from 1.3.1
-        $emReflection = new ReflectionClass('Doctrine\Common\EventManager');
-        $entityManager = call_user_func_array(array('Doctrine\ORM\EntityManager', 'create'), array($dbConfig, $ORMConfig, $emReflection->newInstance()));
+        $eventManager = new \Doctrine\Common\EventManager;
+        $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
         $serviceManager->attachService('doctrine.entitymanager', $entityManager);
     }
 }

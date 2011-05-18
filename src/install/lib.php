@@ -538,14 +538,7 @@ function validateMail($mail)
 function _check_requirements()
 {
     $results = array();
-    // todo: this skip_versioncheck check goes after release of 1.3.0 - drak
-    if (isset($GLOBALS['ZConfig']['System']['skip_version_check'])) {
-        $results['phpsatisfied'] = true;
-    } else {
-        $x = explode('.', str_replace('-', '.', phpversion()));
-        $phpVersion = "$x[0].$x[1].$x[2]";
-        $results['phpsatisfied'] = version_compare($phpVersion, '5.3.2', ">=");
-    }
+    $results['phpsatisfied'] = version_compare($phpVersion, '5.3.2', ">=");
     $results['datetimezone'] = ini_get('date.timezone');
 
     $results['pdo'] = extension_loaded('pdo');
