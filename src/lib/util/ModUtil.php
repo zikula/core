@@ -762,7 +762,7 @@ class ModUtil
         $available = self::available($modname, $force);
 
         // check the modules state
-        if (!$force && !$available && $modname != 'Extensions') {
+        if (!$force && !$available) {
             return false;
         }
 
@@ -859,8 +859,8 @@ class ModUtil
     {
         if (!System::isInstalling() && !$api) {
             PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
-            if ($type == 'admin') {
-                // load special admin.css for administrator backend
+            if (strpos($type, 'admin') === 0) {
+                // load special admin.css for administrator controllers
                 PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin', 'admin.css'));
             }
         }
@@ -905,7 +905,7 @@ class ModUtil
         }
 
         // check the modules state
-        if (!$force && !self::available($modname) && $modname != 'Extensions') {
+        if (!$force && !self::available($modname)) {
             return false;
         }
 
@@ -1439,13 +1439,8 @@ class ModUtil
             }
         }
 
-        if ($force == true) {
-            self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
-        }
-
-        if ((isset(self::$cache['modstate'][$modname]) &&
-                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $modname) &&
-                (isset(self::$cache['modstate'][$modname]) && (self::$cache['modstate'][$modname] == self::STATE_UPGRADED || self::$cache['modstate'][$modname] == self::STATE_INACTIVE)))) {
+        if ($force == true || (isset(self::$cache['modstate'][$modname]) && self::$cache['modstate'][$modname] == self::STATE_ACTIVE) ||
+            preg_match('/^(extensions|admin|block|categories|errors|groups|permissions|securitycenter|settings|theme|users)$/i', $modname)) {
             self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
             return true;
         }
