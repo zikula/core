@@ -23,76 +23,81 @@ class Zikula_View_Resource
     static $cache = array();
 
     /**
+     * Dynamic loader of plugins under cache.
+     */
+    public function  __call($method, $arguments)
+    {
+        if (preg_match('/^load_([^_]*?)_(.*?)$/', $method, $matches)) {
+            $type = $matches[1];
+            $name = $matches[2];
+            $func = "smarty_{$type}_{$name}";
+
+            switch ($type)
+            {
+                case 'function':
+                    if (self::load($arguments[1], $type, $name)) {
+                        return $func($arguments[0], $arguments[1]);
+                    }
+                    break;
+
+                case 'block':
+                    if (self::load($arguments[2], $type, $name)) {
+                        return $func($arguments[0], $arguments[1], $arguments[2]);
+                    }
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Get an instance of this class.
+     *
+     * @return Zikula_View_Resource This instance.
+     */
+    public static function getInstance()
+    {
+        $serviceManager = ServiceUtil::getManager();
+        $serviceId = 'zikula.viewresource';
+        if (!$serviceManager->hasService($serviceId)) {
+            $obj = new self();
+            $serviceManager->attachService($serviceId, $obj);
+        } else {
+            $obj = $serviceManager->getService($serviceId);
+        }
+
+        return $obj;
+    }
+
+    /**
      * Smarty resource function to determine correct path for template inclusion.
      *
      * For more information about parameters see http://smarty.php.net/manual/en/template.resources.php.
      *
-     * @param string      $tpl_name    Template name.
+     * @param string      $resource    Template name.
      * @param string      &$tpl_source Template source.
      * @param Zikula_View $view        Reference to Smarty instance.
      *
      * @access private
      * @return boolean
      */
-    static function z_get_template($tpl_name, &$tpl_source, $view)
+    static function z_get_template($resource, &$tpl_source, &$view)
     {
-        if (strpos($tpl_name, 'insert.') === 0) {
-            return self::z_get_insert($tpl_name, $tpl_source, $view);
+        // check if the z resource sent by Smarty is a cached insert
+        if (strpos($resource, 'insert.') === 0) {
+            return self::z_get_insert($resource, $tpl_source, $view);
         }
 
+        // it is a template
         // determine the template path and store the template source
-        // checks also if tpl_name file_exists and is_readable
-        $tpl_path = $view->get_template_path($tpl_name);
+        $tpl_path = $view->get_template_path($resource);
 
         if ($tpl_path !== false) {
-            $tpl_source = file_get_contents(DataUtil::formatForOS($tpl_path . '/' . $tpl_name));
+            $tpl_source = file_get_contents(DataUtil::formatForOS($tpl_path . '/' . $resource));
             return true;
         }
 
         return LogUtil::registerError(__f('Error! The template [%1$s] is not available in the [%2$s] module.',
                                       array($tpl_name, $view->toplevelmodule)));
-    }
-
-    /**
-     * Resource function to determine correct path for insert inclusion.
-     *
-     * @param string      $tpl_name    Template name.
-     * @param string      &$tpl_source Template source.
-     * @param Zikula_View $view        Reference to Smarty instance.
-     *
-     * @access private
-     * @return boolean
-     */
-    static function z_get_insert($tpl_name, &$tpl_source, $view)
-    {
-        if (!isset(self::$cache['inserts'][$tpl_name])) {
-            self::$cache['inserts'][$tpl_name] = false;
-
-            foreach ((array)$view->plugins_dir as $_plugin_dir) {
-                $filepath = "$_plugin_dir/$tpl_name";
-
-                if (@is_readable($filepath)) {
-                    include_once $filepath;
-
-                    $name = str_replace(strrchr($tpl_name, '.'), '', substr($tpl_name, strpos($tpl_name, '.')+1));
-                    $insert_func = 'smarty_insert_' . $name;
-
-                    if (!function_exists($insert_func)) {
-                        $view->_trigger_fatal_error(__f("[insert] '%s' is not implemented", $name), null, null, __FILE__, __LINE__);
-                    }
-                    $view->_plugins['insert'][$name] = array($insert_func, null, null, false, true);
-
-                    self::$cache['inserts'][$tpl_name] = true;
-                }
-            }
-        }
-
-        if (!self::$cache['inserts'][$tpl_name]) {
-            return LogUtil::registerError(__f('Error! The insert [%1$s] is not available in the [%2$s] module.',
-                                          array($tpl_name, $view->toplevelmodule)));
-        }
-
-        return true;
     }
 
     /**
@@ -160,5 +165,92 @@ class Zikula_View_Resource
         if (isset($content)) {
             return $content;
         }
+    }
+
+    /**
+     * Resource function to determine correct path for insert inclusion.
+     *
+     * @param string      $insert      Template name.
+     * @param string      &$tpl_source Template source.
+     * @param Zikula_View $view        Reference to Smarty instance.
+     *
+     * @access private
+     * @return boolean
+     */
+    static function z_get_insert($insert, &$tpl_source, &$view)
+    {
+        $name = str_replace(strrchr($insert, '.'), '', substr($insert, strpos($insert, '.')+1));
+
+        if (!isset(self::$cache['insert'][$name])) {
+            self::register($view, 'insert', $name, false);
+        }
+
+        if (!self::$cache['insert'][$name]) {
+            return LogUtil::registerError(__f('Error! The insert [%1$s] is not available in the [%2$s] module.',
+                                          array($insert, $view->toplevelmodule)));
+        }
+
+        return true;
+    }
+
+    /**
+     * Resource function to register a resource.
+     *
+     * @param Zikula_View &$view       Reference to Smarty instance.
+     * @param string      $type        Type of the resource.
+     * @param string      $name        Name of the resource.
+     * @param boolean     $cacheable   Flag to register the resource as cacheable (default: false).
+     * @param mixed       $cache_attrs Array of parameters to be cached with the plugin/block call.
+     *
+     * @access private
+     * @return boolean
+     */
+    static function register(&$view, $type, $name, $delayed_load = true, $cacheable = true, $cache_attrs = null)
+    {
+        if ($delayed_load || self::load($view, $type, $name)) {
+            $callable = ($type != 'insert') ? array(self::getInstance(), "load_{$type}_{$name}") : "smarty_{$type}_{$name}";
+
+            $view->_plugins[$type][$name] = array($callable, null, null, $delayed_load, $cacheable, $cache_attrs);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Resource function to load a resource located inside the plugins folders.
+     *
+     * @param Zikula_View &$view       Reference to Smarty instance.
+     * @param string      $type        Type of the resource.
+     * @param string      $name        Name of the resource.
+     *
+     * @access private
+     * @return boolean
+     */
+    static function load(&$view, $type, $name)
+    {
+        if (isset(self::$cache[$type][$name])) {
+            return self::$cache[$type][$name];
+        }
+
+        self::$cache[$type][$name] = false;
+
+        foreach ((array)$view->plugins_dir as $_plugin_dir) {
+            $filepath = "$_plugin_dir/$type.$name.php";
+
+            if (@is_readable($filepath)) {
+                include_once $filepath;
+
+                if (!function_exists("smarty_{$type}_{$name}")) {
+                    $view->_trigger_fatal_error(__f('[View %1$s] \'%2$s\' is not implemented', array($type, $name)), null, null, __FILE__, __LINE__);
+                    return false;
+                }
+
+                self::$cache[$type][$name] = true;
+                break;
+            }
+        }
+
+        return self::$cache[$type][$name];
     }
 }
