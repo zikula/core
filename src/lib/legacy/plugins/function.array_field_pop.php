@@ -47,6 +47,8 @@
  */
 function smarty_function_array_field_pop($params, Zikula_View $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('array_field_pop', 'array_pop')), E_USER_DEPRECATED);
+
     $array       = isset($view->_tpl_vars[$params['array']]);
     $field       = isset($params['field'])   ? $params['field']   : null;
     $unset       = isset($params['unset'])   ? $params['unset']   : false;
