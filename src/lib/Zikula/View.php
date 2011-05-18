@@ -184,7 +184,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $func   = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
 
         // set vars based on the module structures
-        $this->homepage = (empty($module)) ? true : false;
+        if (empty($module) || System::getHomepageUrl() == rtrim(System::getCurrentUrl(), '/')) {
+            $this->homepage = true;
+        } else {
+            $this->homepage = false;
+        }
+
         $this->type = strtolower(!$this->homepage ? $type : System::getVar('starttype'));
         $this->func = strtolower(!$this->homepage ? $func : System::getVar('startfunc'));
 
