@@ -63,7 +63,7 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
         // if cache is enabled, checks for a cached output
         if ($this->view->getCaching()) {
             // set the cache id
-            $this->view->setCacheId($blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.CacheUtil::getUserString());
+            $this->view->setCacheId($blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.UserUtil::getGidCacheString());
 
             // check out if the contents are cached
             if ($this->view->is_cached('blocks_block_menu.tpl')) {

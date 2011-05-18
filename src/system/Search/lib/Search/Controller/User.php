@@ -181,7 +181,7 @@ class Search_Controller_User extends Zikula_AbstractController
         $lifetime = ModUtil::getVar('Theme', 'render_lifetime');
         $lifetime = $lifetime ? $lifetime : 3600;
 
-        $cacheid = md5($vars['q'].'-'.$vars['searchtype'].'-'.$vars['searchorder']).'/'.CacheUtil::getUserString().'/page'.$vars['page'];
+        $cacheid = md5($vars['q'].'-'.$vars['searchtype'].'-'.$vars['searchorder']).'/'.UserUtil::getGidCacheString().'/page'.$vars['page'];
 
         $this->view->setCaching(Zikula_View::CACHE_INDIVIDUAL)
                    ->setCacheLifetime($lifetime)

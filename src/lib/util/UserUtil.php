@@ -309,6 +309,40 @@ class UserUtil
     }
 
     /**
+     * Get a unique string for a user, depending on this group memberships.
+     *
+     * String ready to be used as part of the CacheID of the output views.
+     * Useful when there aren't another user-based access privilegies, just group permissions.
+     *
+     * @param integer $uid User ID to get the group memberships from. Default: current user.
+     *
+     * @return string Cache GIDs string to use on Zikula_View.
+     */
+    public static function getGidCacheString($uid = null)
+    {
+        $str = UserUtil::getGroupListForUser($uid, '_');
+
+        return $str == '-1' ? 'guest' : 'groups_'.$str;
+    }
+
+    /**
+     * Get a unique string for a user, based on the uid.
+     *
+     * String ready to be used as part of the CacheID of the output views.
+     * Useful for user-based access privilegies.
+     *
+     * @param integer $uid User ID to get string from. Default: current user.
+     *
+     * @return string Cache UID string to use on Zikula_View.
+     */
+    public static function getUidCacheString($uid = null)
+    {
+        $uid = $uid ? (int)$uid : self::getVar('uid');
+
+        return !$uid ? 'guest' : 'uid_'.$uid;
+    }
+
+    /**
      * Return the defined dynamic user data fields.
      *
      * @return array An array of dynamic data field definitions.

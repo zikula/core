@@ -528,12 +528,11 @@ class Zikula_View_Theme extends Zikula_View
         $this->requesturi = System::getCurrentUri();
 
         // define the cache_id if not set yet
-        if (!$this->cache_id) {
-            // mod / homepage_?type_func / gids or guest / customargs
-            $this->cache_id = $this->toplevelmodule
-                            . '/' . ($this->homepage ? 'homepage_' : '') . $this->type . '_' . $this->func
-                            . '/' . CacheUtil::getUserString()
-                            . (!$this->homepage ? $this->_get_customargs() : '/' . str_replace(',', '/', System::getVar('startargs')));
+        if ($this->caching && !$this->cache_id) {
+            // module / type / function / uid_X|guest / customargs|homepage/startpageargs
+            $this->cache_id = $this->toplevelmodule . '/' . $this->type . '/' . $this->func
+                            . '/' . UserUtil::getUidCacheString()
+                            . (!$this->homepage ? $this->_get_customargs() : '/homepage/' . str_replace(',', '/', System::getVar('startargs')));
         }
 
         // assign some basic paths for the engine
