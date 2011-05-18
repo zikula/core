@@ -43,14 +43,19 @@
  */
 function smarty_function_assign_concat($params, Zikula_View $view)
 {
-    if (!$params['name']) {
+    if (!isset($params['name']) || $params['name']) {
         $view->trigger_error(__f('Invalid %1$s passed to %2$s.', array('name', 'assign_concat')));
         return false;
     }
 
     $txt = '';
-    for ($i=1; $i<10; $i++) {
-        $txt .= isset($params[$i]) ? $params[$i] : '';
+
+    $i = 1;
+    if (isset($params[$i])) {
+        do {
+            $txt .= "{$params[$i]}";
+            $i++;
+        } while (isset($params[$i]));
     }
 
     if (isset($params['html']) && $params['html']) {
@@ -58,5 +63,4 @@ function smarty_function_assign_concat($params, Zikula_View $view)
     } else {
         $view->assign($params['name'], $txt);
     }
-    return;
 }
