@@ -268,7 +268,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->cache_id    = '';
 
         // template compilation
-        $this->compile_dir = CacheUtil::getLocalDir() . '/view_compiled';
+        $this->compile_dir    = CacheUtil::getLocalDir() . '/view_compiled';
         $this->compile_check  = ModUtil::getVar('Theme', 'render_compile_check');
         $this->force_compile  = ModUtil::getVar('Theme', 'render_force_compile');
         // template caching
