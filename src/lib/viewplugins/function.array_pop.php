@@ -19,6 +19,7 @@
  * Available attributes:
  *  - array  (string) Name of the template array variable to process
  *  - field  (string) Name of the array field to assign then unset
+ *  - unset  (bool)   Flag to specify if the field must be unset or not (default: true)
  *  - assign (string) Name of the assign variable to setup (optional)
  *
  * Example:
@@ -30,7 +31,8 @@
  *  For instance, the $hooks array resulted of notify the 'display_view' hooks, can be
  *  processed individually using this plugin:
  *
- *  <samp>{assign_unset array='hooks' field='EZComments'}</samp>
+ *  <samp>{array_pop array='hooks' field='EZComments'}</samp>
+ *  <samp>{array_pop array='hooks' field='EZComments' assign='comments'}</samp>
  *
  *  And display later the remaining ones with a foreach.
  *
@@ -39,7 +41,7 @@
  *
  * @return Void
  */
-function smarty_function_assign_unset($params, Zikula_View $view)
+function smarty_function_array_pop($params, Zikula_View $view)
 {
     if (!isset($params['array'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assign_cache', 'var')));
@@ -51,6 +53,7 @@ function smarty_function_assign_unset($params, Zikula_View $view)
         return false;
     }
 
+    $unset = isset($params['unset']) ? (bool)$params['unset'] : true;
     $value = null;
 
     $array = $view->getTplVar($params['array']);
@@ -58,7 +61,9 @@ function smarty_function_assign_unset($params, Zikula_View $view)
     if ($array && isset($array[$params['field']])) {
         $value = $array[$params['field']];
 
-        unset($array[$params['field']]);
+        if ($unset) {
+            unset($array[$params['field']]);
+        }
 
         $view->assign($params['array'], $array);
     }

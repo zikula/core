@@ -49,6 +49,8 @@
  */
 function smarty_function_getstatusmsg($params, Zikula_View $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('getstatusmsg', 'insert name="getstatusmsg"')), E_USER_DEPRECATED);
+
     $assign = isset($params['assign'])  ? $params['assign']  : null;
     $class  = isset($params['class'])   ? $params['class']   : null;
     $style  = isset($params['style'])   ? $params['style']   : null;

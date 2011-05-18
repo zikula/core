@@ -33,11 +33,13 @@
  *
  * @return string The base URL of the site.
  */
-function smarty_function_getbaseurl($params, Zikula_View $view)
+function smarty_function_getbaseuri($params, Zikula_View $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('getbaseuri', '$baseuri')), E_USER_DEPRECATED);
+
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
-    $result = htmlspecialchars(System::getBaseUrl());
+    $result = htmlspecialchars(System::getBaseUri());
 
     if ($assign) {
         $view->assign($assign, $result);
