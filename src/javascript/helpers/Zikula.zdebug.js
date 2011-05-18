@@ -6,9 +6,9 @@ if (typeof(Zikula) == 'undefined')
 Zikula.zdebug = Class.create({
     initialize: function(title, debugoutput) {
         if (title && (title != '')) {
-            this.title = 'Zikula Console - ' + title;
+            this.title = Zikula.__('Zikula Console') + ' - ' + title;
         } else {
-            this.title = 'Zikula Console';
+            this.title = Zikula.__('Zikula Console');
         }
         
         this.debugoutput = debugoutput;
