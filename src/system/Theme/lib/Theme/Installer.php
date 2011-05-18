@@ -38,7 +38,7 @@ class Theme_Installer extends Zikula_AbstractInstaller
         $this->setVar('modulesnocache', '');
         $this->setVar('enablecache', false);
         $this->setVar('compile_check', true);
-        $this->setVar('cache_lifetime', 3600);
+        $this->setVar('cache_lifetime', 60);
         $this->setVar('force_compile', false);
         $this->setVar('trimwhitespace', false);
         $this->setVar('maxsizeforlinks', 30);
