@@ -323,7 +323,7 @@ class System
         // check the use of friendly url setup
         $shorturls = self::getVar('shorturls', false);
         $dirBased = (self::getVar('shorturlstype') == 0 ? true : false);
-        $langRequired = ZLanguage::getLangUrlRule();
+        $langRequired = ZLanguage::isRequiredLangParam();
 
         if ($shorturls && $dirBased) {
             $result = self::getBaseUrl();
