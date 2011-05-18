@@ -675,16 +675,15 @@ class System
             }
 
             $modinfo = null;
+            // user language is not set at this stage
+            $lang = System::getVar('language_i18n', '');
 
             // if no arguments present
             if (!$args[0]) {
-                if (ZLanguage::getLangUrlRule()) {
+                if (ZLanguage::getLangUrlRule() && $lang) {
                     // if we are in homepage and there should be a language param
-                    $lang = System::getVar('language_i18n', '');
-                    if ($lang) {
-                        System::redirect(System::getCurrentUrl().$lang);
-                        System::shutDown();
-                    }
+                    System::redirect(self::getCurrentUrl().$lang);
+                    System::shutDown();
                 }
             } else {
                 // check the existing shortURL parameters
@@ -692,6 +691,13 @@ class System
                 if (ZLanguage::isLangParam($args[0]) && in_array($args[0], ZLanguage::getInstalledLanguages())) {
                     self::queryStringSetVar('lang', $args[0]);
                     array_shift($args);
+                } elseif (ZLanguage::getLangUrlRule()) {
+                    // redirects the passed argumens plus the lang
+                    foreach ($args as $k => $v) {
+                        $args[$k] = urlencode($v);
+                    }
+                    System::redirect(self::getBaseUrl().$lang.'/'.implode('/', $args));
+                    System::shutDown();
                 }
 
                 // check if there are remaining arguments
