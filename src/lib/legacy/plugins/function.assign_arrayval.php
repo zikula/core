@@ -45,6 +45,8 @@
  */
 function smarty_function_assign_arrayval($params, Zikula_View $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('assign_arrayval key="X" ...', 'array_field field="X" ...')), E_USER_DEPRECATED);
+
     $array = isset($params['array']) ? $params['array'] : array();
     $key = isset($params['key']) ? $params['key'] : '';
     $assign = isset($params['assign']) ? $params['assign'] : $key;

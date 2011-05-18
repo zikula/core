@@ -53,11 +53,11 @@
 
                     {if (!$id)}
                     <tr class="{cycle values=z-odd,z-even}" valign="middle">
-                        {array_field_isset assign="newModname" array=$newobj field="modname" returnValue=1}
+                        {array_field assign='newModname' array='newobj' field='modname'}
                         <td>{formutil_getfieldmarker objectType="category_registry" field="modname" validation=$validation}{selector_module name="category_registry[modname]" defaultValue="0" defaultText=$chooseModule selectedValue=$newModname submit="1"}{formutil_getvalidationerror objectType="category_registry" field="modname"}</td>
-                        {array_field_isset assign="newTable" array=$newobj field="table" returnValue=1}
+                        {array_field assign='newTable' array='newobj' field='table'}
                         <td>{if $newModname}{formutil_getfieldmarker objectType="category_registry" field="table" validation=$validation}{selector_module_tables modname=$newobj.modname name="category_registry[table]" displayField="name" selectedValue=$newTable defaultValue="0" defaultText=$chooseTable}{formutil_getvalidationerror objectType="category_registry" field="table"}{else}----------{/if}</td>
-                        {array_field_isset assign="newProperty" array=$newobj field="property" returnValue=1}
+                        {array_field assign='newProperty' array='newobj' field='property'}
                         <td>{formutil_getfieldmarker objectType="category_registry" field="property" validation=$validation}<input id="category_registry_property" name="category_registry[property]" value="{$newProperty|default:'Main'}" type="text" size="20" maxlength="32" />{formutil_getvalidationerror objectType="category_registry" field="property"}</td>
                         <td>{formutil_getfieldmarker objectType="category_registry" field="category_id" validation=$validation}{selector_category category=$root_id name="category_registry[category_id]" includeLeaf=0 selectedValue=newobj.category_id defaultValue=0 defaultText=$chooseCategory editLink=0}{formutil_getvalidationerror objectType="category_registry" field="category_id"}</td>
                         <td>&nbsp;</td>

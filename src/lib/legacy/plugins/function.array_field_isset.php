@@ -57,6 +57,8 @@
  */
 function smarty_function_array_field_isset($params, Zikula_View $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('array_field_isset returnValue=1 ...', 'array_field ...')), E_USER_DEPRECATED);
+
     $array       = isset($params['array'])       ? $params['array']        : null;
     $field       = isset($params['field'])       ? $params['field']        : null;
     $returnValue = isset($params['returnValue']) ? $params['returnValue']  : null;
