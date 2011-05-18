@@ -542,7 +542,9 @@ function _check_requirements()
     if (isset($GLOBALS['ZConfig']['System']['skip_version_check'])) {
         $results['phpsatisfied'] = true;
     } else {
-        $results['phpsatisfied'] = version_compare(phpversion(), '5.3.2', ">=");
+        $x = explode('.', phpversion());
+        $phpVersion = "$x[0].$x[2].$x[4]";
+        $results['phpsatisfied'] = version_compare($phpVersion, '5.3.2', ">=");
     }
     $results['datetimezone'] = ini_get('date.timezone');
 
