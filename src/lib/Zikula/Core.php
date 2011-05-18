@@ -384,7 +384,7 @@ class Zikula_Core
 
         // Check that Zikula is installed before continuing
         if (System::getVar('installed') == 0 && !System::isInstalling()) {
-            System::redirect('install.php?notinstalled');
+            System::redirect(System::getBaseUrl().'install.php?notinstalled');
             System::shutDown();
         }
 

@@ -22,25 +22,13 @@ $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRI
 $type   = FormUtil::getPassedValue('type', '', 'GETPOST', FILTER_SANITIZE_STRING);
 $func   = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
-// check requested module and set to start module if not present
-$startPage = System::getVar('startpage');
+// check requested module
 $arguments = array();
-if (!$module) {
-    if (System::getVar('shorturls')) {
-        // remove entry point from the path (otherwise they are part of the module name)
-        $customentrypoint = System::getVar('entrypoint');
-        $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
-        // REQUEST_URI contains the query string so we use parse_url to get the path without it
-        $uri = parse_url($_SERVER["REQUEST_URI"]);
-        $p = explode('/', str_replace(array(System::getBaseUri() . '/', "$root"), '', $uri['path']));
-        $module = (empty($p[0])) ? $startPage : $p[0];
-        if (ZLanguage::isLangParam($module) && in_array($module, ZLanguage::getInstalledLanguages())) {
-            $module = '';
-        }
-    } else {
-        $module = $startPage;
-    }
 
+// process the homepage
+if (!$module) {
+    // set the start parameters
+    $module = System::getVar('startpage');
     $type = System::getVar('starttype');
     $func = System::getVar('startfunc');
     $args = explode(',', System::getVar('startargs'));
@@ -49,7 +37,6 @@ if (!$module) {
         if (!empty($arg)) {
             $argument = explode('=', $arg);
             $arguments[$argument[0]] = $argument[1];
-            System::queryStringSetVar($argument[0], $argument[1]);
         }
     }
 }
@@ -79,7 +66,14 @@ if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
 }
 
 try {
-    $return = (empty($module) && empty($startPage)) ? ' ' : ModUtil::func($modinfo['name'], $type, $func, $arguments);
+    if (empty($module)) {
+        // we have a static homepage
+        $return = ' ';
+    } elseif ($modinfo) {
+        // call the requested/homepage module
+        $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+    }
+
     if (!$return) {
         // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
         throw new Zikula_Exception_NotFound(__('Page not found.'));
