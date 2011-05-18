@@ -770,7 +770,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! This module is currently set as the site\'s home page. You must choose another module for the home page before you can deactivate this one.'), null, ModUtil::url('Extensions', 'admin', 'view'));
         }
 
-        if(ModUtil::apiFunc('Extensions', 'admin', 'iscoremodule',array('modulename' => $modinfo['name']))) {
+        if (ModUtil::apiFunc('Extensions', 'admin', 'iscoremodule',array('modulename' => $modinfo['name']))) {
             return LogUtil::registerError($this->__('Error! You cannot deactivate this module. It is a mandatory core module, and is needed by the system.'), null, ModUtil::url('Extensions', 'admin', 'view'));
         }
 

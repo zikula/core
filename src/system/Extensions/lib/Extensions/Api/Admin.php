@@ -1371,6 +1371,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
     public function iscoremodule($args)
     {
         static $coreModules;
+
         if (!isset($coreModules)) {
             $coreModules = array(
                 'Admin',
@@ -1391,6 +1392,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         if (in_array($args['modulename'], $coreModules)) {
             return true;
         }
+
         return false;
     }
 
