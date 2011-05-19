@@ -210,7 +210,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
                 $cls = new ReflectionClass($var);
                 foreach ($cls->getProperties() as $prop) {
                     $prop->setAccessible(true);
-                    $html .= $this->formatVar($prop->name, $prop->getValue($var);, $level + 1);
+                    $html .= $this->formatVar($prop->name, $prop->getValue($var), $level + 1);
                 }
             }
 
