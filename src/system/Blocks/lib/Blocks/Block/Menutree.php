@@ -389,6 +389,9 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         // clear the block cache
         $this->view->clear_cache(null, $blockinfo['bkey'].'/bid'.$blockinfo['bid']);
 
+        // and clear the theme cache
+        Zikula_View_Theme::getInstance()->clear_cache();
+
         return $blockinfo;
     }
 

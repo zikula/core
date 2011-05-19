@@ -232,6 +232,9 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
         // clear the block cache
         $this->view->clear_cache('blocks_block_thelang.tpl');
 
+        // and clear the theme cache
+        Zikula_View_Theme::getInstance()->clear_cache();
+
         return $blockinfo;
     }
 

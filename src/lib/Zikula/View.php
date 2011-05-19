@@ -772,10 +772,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         $auto_id = $cache_id . (!empty($compile_id) ? '/'.$compile_id  : '');
 
-        // removes a trailing slash if present
-        if (substr($auto_id, -1) == '/') {
-            $auto_id = substr($auto_id, 0, -1);
-        }
+        $auto_id = trim($auto_id, '/');
 
         return $auto_id;
     }
