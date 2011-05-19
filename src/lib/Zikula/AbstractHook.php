@@ -79,7 +79,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
      */
     public function getId()
     {
-        return $this->areaId;
+        return $this->id;
     }
 
     /**
