@@ -931,7 +931,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
        $dh = opendir($dirname);
        while (($entry = readdir($dh)) !== false) {
-           if ($entry != '.' && $entry != '..') {
+           if ($entry != '.' && $entry != '..' && $entry != 'index.html') {
                $path = $dirname . DIRECTORY_SEPARATOR . $entry;
 
                if (is_dir($path)) {
