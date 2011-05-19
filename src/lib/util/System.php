@@ -665,6 +665,7 @@ class System
             // strip any unwanted content from the provided URL
             $tobestripped = array(self::getBaseUri().'/', "$root");
             $path = str_replace($tobestripped, '', $parsedURL['path']);
+            $path = trim($path, '/');
 
             // split the path into a set of argument strings
             $args = explode('/', rtrim($path, '/'));
