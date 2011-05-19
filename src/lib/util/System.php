@@ -680,19 +680,31 @@ class System
 
             // if no arguments present
             if (!$args[0]) {
+                // we are in the homepage, checks if language code is forced
                 if (ZLanguage::getLangUrlRule() && $lang) {
-                    // if we are in homepage and there should be a language param
+                    // and redirect then
                     System::redirect(self::getCurrentUrl().$lang);
                     System::shutDown();
                 }
             } else {
                 // check the existing shortURL parameters
-                // language check first
+                // validation of the first parameter as language code
                 if (ZLanguage::isLangParam($args[0]) && in_array($args[0], ZLanguage::getInstalledLanguages())) {
+                    // checks if the language is not enforced and this url is passing the default lang
+                    if (!ZLanguage::getLangUrlRule() && $lang == $args[0]) {
+                        // redirects the passed arguments without the default site language
+                        array_shift($args);
+                        foreach ($args as $k => $v) {
+                            $args[$k] = urlencode($v);
+                        }
+                        System::redirect(self::getBaseUrl().($args ? implode('/', $args) : ''));
+                        System::shutDown();
+                    }
                     self::queryStringSetVar('lang', $args[0]);
                     array_shift($args);
+
                 } elseif (ZLanguage::getLangUrlRule()) {
-                    // redirects the passed argumens plus the lang
+                    // if the lang is forced, redirects the passed arguments plus the lang
                     foreach ($args as $k => $v) {
                         $args[$k] = urlencode($v);
                     }
