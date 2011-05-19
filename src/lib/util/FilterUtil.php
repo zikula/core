@@ -583,7 +583,7 @@ class FilterUtil extends FilterUtil_AbstractBase
     public function enrichQuery(Doctrine_Query $query)
     {
         $object = $this->getObject();
-        $this->getConfig()->setDoctrineQuery($query);
+        $this->getConfig()->setDoctrineQuery($query, $object);
 
         $result = $this->_genDqlRecursive($object);
 

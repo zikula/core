@@ -201,13 +201,33 @@ class FilterUtil_Config
      */
     public function setDoctrineTable(Doctrine_Table $table)
     {
-        $fields = $table->getFieldNames();
-
         $this->_doctrineTable = $table;
         $this->_table         = $table->getTableName();
-        $this->_column        = array_combine($fields, $fields);
+
+        $this->_column = $this->getDoctrineTableColumns($table);
 
         return true;
+    }
+
+    /**
+     * Gets the columns of a Doctrine table.
+     *
+     * @param Doctrine_Table $table Doctrine_Table object.
+     * @param array          $dynaMap Array of dynamic aliasses.
+     *
+     * @return array Columns of the table with keys as alias and values as columns.
+     */
+    public function getDoctrineTableColumns(Doctrine_Table $table, $dynaMap = null)
+    {
+        // check if the table has a custom method to retrieve the filter columns
+        if (method_exists($table, 'getFilterColumns')) {
+            $columns = $table->getFilterColumns($dynaMap);
+        } else {
+            $fields = $table->getFieldNames();
+            $columns = array_combine($fields, $fields);
+        }
+
+        return $columns;
     }
 
     /**
@@ -230,9 +250,8 @@ class FilterUtil_Config
         // check if we're using Doctrine
         if ($this->_doctrineTable instanceof Doctrine_Table) {
 
-            $fields = $this->_doctrineTable->getFieldNames();
+            $this->setDoctrineTable($this->_doctrineTable);
 
-            $this->_column  = array_combine($fields, $fields);
         } else {
             // tables.php support
             $tables = DBUtil::getTables();
@@ -406,18 +425,79 @@ class FilterUtil_Config
      *
      * @return void
      */
-    public function setDoctrineQuery(Doctrine_Query $query)
+    public function setDoctrineQuery(Doctrine_Query $query, $filter)
     {
-        $this->_doctrineQuery = $query;
-
         $this->resetColumns();
+
+        $this->_doctrineQuery = $query;
 
         $tables   = $this->_getTableInformation();
         $aliasMap = $this->_doctrineQuery->getTableAliasMap();
 
         $tables = $this->_enrichTablesWithAlias($tables, $aliasMap);
 
-        $this->_setColumnsFromDoctrineTables($tables);
+        // FIXME assumes any dynamic relation with first table found on FROM
+        $from = $this->_doctrineQuery->getDQLPart('from');
+        $main = explode(' ', $from[0]);
+        $main = $main[1];
+
+        // adds the external relation aliases
+        // depending on the filter object to process
+        $joins = array();
+        $this->_getFilterRelations($joins, $filter);
+
+        // stores the tables => dynaalias
+        $t = array();
+        $a = 'dynajoin1';
+        foreach ($joins as $alias => $join) {
+            $jtable = substr($join, 0, strpos($join, ':'));
+            $t[$jtable] = $a;
+            // add the dynamic left join
+            $this->_doctrineQuery->leftJoin("{$main}.$alias $a");
+            $a++;
+        }
+
+        $this->_setColumnsFromDoctrineTables($tables, $t);
+    }
+
+    /**
+     * Detect which fields specified in the filter obj
+     * are defined to be a join with an ExternalTable:field
+     *
+     * @param array &$joins Empty array to store the result in.
+     * @param array $obj    Filter object to be processed to enrich the Query.
+     *
+     * @return array Columns defined as join with an external table.
+     */
+    private function _getFilterRelations(&$joins, $obj)
+    {
+        if (!is_array($obj) || count($obj) == 0) {
+            return array();
+        }
+
+        if (isset($obj['field']) && !empty($obj['field'])) {
+            if (isset($this->_column[$obj['field']])) {
+                $column = $this->_column[$obj['field']];
+                if (strpos($column, ':')) {
+                    $joins[$obj['field']] = $column;
+                }
+            }
+            return;
+
+        } else {
+            if (isset($obj[0]) && is_array($obj[0])) {
+                $this->_getFilterRelations($joins, $obj[0]);
+                unset($obj[0]);
+            }
+            foreach ($obj as $op => $tmp) {
+                $op = strtoupper(substr($op, 0, 3)) == 'AND' ? 'AND' : 'OR';
+                if (strtoupper($op) == 'AND' || strtoupper($op) == 'OR') {
+                    $j = $this->_getFilterRelations($joins, $tmp);
+                }
+            }
+        }
+
+        return $joins;
     }
 
     /**
@@ -518,27 +598,32 @@ class FilterUtil_Config
     /**
      * Set column array from Doctrine_Table object array.
      *
-     * @param array $tables Array of Doctrine_Table objects.
+     * @param array $tables  Array of Doctrine_Table objects.
+     * @param array $dynaMap Array of dynamic aliasses.
      *
      * @return void
      */
-    private function _setColumnsFromDoctrineTables($tables)
+    private function _setColumnsFromDoctrineTables($tables, $dynaMap)
     {
         $this->_column = array();
+
+        $aliasMap  = $this->_doctrineQuery->getTableAliasMap();
+
         $aliases = array();
         foreach ($tables as $alias => $table) {
-            $fields = $table['table']->getFieldNames();
+            $columns = $this->getDoctrineTableColumns($table['table'], $dynaMap);
 
             if (strpos($alias, '.') === false) {
                 // add main table aliases only
                 $aliases[] = "$alias.";
             }
-            foreach ($fields as $field) {
-                $key = $alias . '.' . $field;
+
+            foreach ($columns as $a => $c) {
+                $key = $alias . '.' . $a;
                 // strip the main table alias of the field key
                 $key = str_replace($aliases, '', $key);
 
-                $this->_column[$key] = $alias . '.' . $field;
+                $this->_column[$key] = strpos($c, '.') ? $c : $alias . '.' . $c;
             }
         }
     }
