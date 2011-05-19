@@ -19,15 +19,15 @@
 class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterface
 {
     const RECURSIVE_LIMIT = 10;
-    
+
     /**
      * These objects won't be displayed by this panel because they are to big.
      *
      * @var array
      */
-    private static $OBJECTS_TO_SKIPP = array('Zikula_ServiceManager', 'Zikula_View', 
+    private static $OBJECTS_TO_SKIPP = array('Zikula_ServiceManager', 'Zikula_View',
                                              'Zikula_EventManager', 'Doctrine_Table');
-    
+
     /**
      * Contains all executed module functions.
      *
@@ -86,14 +86,14 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             $index++;
 
             $argsShort = $this->buildArgumentsPreview($exec['args']);
-            
+
             if (strlen($argsShort) >= 100) {
                 $idArgs = $id . 'args';
                 $args = '<a href="" title="'.__('Click to show the full parameter list').'" onclick="$(\''.$idArgs.'\').toggle();return false;">' . $argsShort . '</a><div style="display:none" id="'.$idArgs.'">' . $this->formatVar('', $exec['args']) . '</div>';
             } else {
                 $args = $argsShort;
             }
-            
+
             if (!is_string($exec['data'])) {
                 $exec['data'] = $this->formatVar('', $exec['data']);
             } else {
@@ -135,35 +135,35 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
 
         return $html;
     }
-    
+
     /**
      * Builds an preview of an value.
-     * 
+     *
      * The preview won't contain any array/object contents.
-     * 
+     *
      * @param mixed $args Value to build an preview from.
-     * 
+     *
      * @return string
      */
     protected function buildArgumentsPreview($args) {
         $preview = '';
         $inArray = false;
-        
+
         if (is_array($args)) {
             $preview = 'array(';
             $inArray = true;
         }
-        
+
         $args = (array)$args;
         $isFirstIteration = true;
         foreach ($args as $key => $value) {
             $valuePrefix = ($inArray && is_string($key)? $key . ' => ' : '' );
-            
+
             if (!$isFirstIteration) {
                 $preview .= ', ';
             }
             $isFirstIteration = false;
-            
+
             if (is_numeric($value) || is_bool($value)) {
                 $preview .= $valuePrefix . $value;
             } else if (is_string($value)) {
@@ -180,14 +180,14 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
                 $preview .= $valuePrefix . '?';
             }
         }
-        
+
         if ($inArray) {
             $preview .= ')';
         }
-        
+
         return $preview;
     }
-    
+
     /**
      * Creates an ul/li list a value (recursive safe).
      *
@@ -200,7 +200,6 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
     protected function formatVar($key, $var, $level=1)
     {
         $html = '';
-        
         if ($level > self::RECURSIVE_LIMIT) {
             return '...';
         } else if (is_object($var)) {
@@ -209,11 +208,9 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
 
             if (!in_array(get_class($var), self::$OBJECTS_TO_SKIPP)) {
                 $cls = new ReflectionClass($var);
-                // workaround to access private/protected properties of an object
-                // because reflection in php 5.2 does not support private/protected properties
-                $clsData = (array)$var;
                 foreach ($cls->getProperties() as $prop) {
-                   $html .= $this->formatVar($prop->name, $clsData["\0*\0".$prop->name], $level + 1);
+                    $prop->setAccessible(true);
+                    $html .= $this->formatVar($prop->name, $prop->getValue($var);, $level + 1);
                 }
             }
 
@@ -230,19 +227,19 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             }
 
             $html .= '</ul>';
-            
+
         } else {
             $html =  '<code>' . $key . '</code> <span style="color:#666666;font-style:italic;">('.
                         gettype($var).')</span>: <pre class="DebugToolbarVarDump">' . DataUtil::formatForDisplay($var) . '</pre>';
-        } 
-        
-        
+        }
+
+
         $html = '<li>' . $html . '</li>';
-        
+
         if ($level == 1) {
             $html = '<ul>' . $html . '</ul>';
         }
-        
+
         return $html;
     }
 
