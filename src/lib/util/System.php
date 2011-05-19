@@ -716,6 +716,9 @@ class System
                 if ($args) {
                     // try the first argument as a module
                     $modinfo = ModUtil::getInfoFromName($args[0]);
+                    if ($modinfo) {
+                        array_shift($args);
+                    }
                 }
 
                 // if that fails maybe it's a theme
@@ -728,6 +731,9 @@ class System
                         array_shift($args);
                         if ($args) {
                             $modinfo = ModUtil::getInfoFromName($args[0]);
+                            if ($modinfo) {
+                                array_shift($args);
+                            }
                         }
                     }
                 }
