@@ -663,7 +663,7 @@ class System
             $parsedURL = parse_url(self::getCurrentUri());
 
             // strip any unwanted content from the provided URL
-            $tobestripped = array(self::getBaseUri().'/', "$root");
+            $tobestripped = array(self::getBaseUri(), "$root");
             $path = str_replace($tobestripped, '', $parsedURL['path']);
             $path = trim($path, '/');
 
