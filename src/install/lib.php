@@ -389,11 +389,6 @@ function installmodules($lang = 'en')
 
     // manually install the modules module
     foreach ($coremodules as $coremodule) {
-        // sanity check - check if module is already installed
-        if ($coremodule != 'Extensions' && ModUtil::available($coremodule)) {
-            continue;
-        }
-
         $modpath = 'system';
         if (is_dir("$modpath/$coremodule/lib")) {
             ZLoader::addAutoloader($coremodule, "$modpath/$coremodule/lib");
