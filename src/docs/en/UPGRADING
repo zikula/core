@@ -1,24 +1,31 @@
 ZIKULA UPGRADE INSTRUCTIONS
+===========================
 
 Support and help with upgrading to this version can be obtained from the
 forums at http://community.zikula.org/
 
+
 Server Consideration
-====================
+--------------------
+
 - If you are using PHP 5.3.0 or greater please make sure the php.ini file has
   date.timezone set to a valid timezone like UTC, GMT+5, Europe/Berlin.  If this
   is not set, you will experience problems,
 
 - Ensure your server has PCRE with unicode support enabled.
 
+
 Requirements
-============
+------------
+
 This upgrade can only be performed on a Zikula Core 1.2.x installation.  If you
 are on a lower version, you must first upgrade sucessfully before proceeding to
 this upgrade.
 
+
 Before you upgrade
-==================
+------------------
+
 There are several issues to contend with before you begin the upgrade process. These
 are things that must be performed on your working 1.2.x installation before unpacking
 the upgrade files.
@@ -46,8 +53,10 @@ Theme naming considerations
 
   - Switch back to your theme and make any adjustments to your site as necessary.
 
+
 Module considerations
 ---------------------
+
   Make sure all your modules are compatible with Zikula 1.2.x and have been completely
   converted to 'Gettext'.  Modules that are not will not function in Zikula 1.3.
 
@@ -58,8 +67,10 @@ Module considerations
 
 Make a backup of your files and database once you are ready to make the upgrade.
 
+
 Prepare your existing installation
-==================================
+----------------------------------
+
   - If you use login by email address, you must change the login method to
     login by username in the administration panel.  You will be required to
     login using your administration username.  Make sure you know it.
@@ -92,8 +103,10 @@ Prepare your existing installation
 
            $ZConfig['System']['temp']
 
+
 Run the upgrade
-===============
+---------------
+
 WARNING - the moment you run `upgrade.php`, preparitory changes will be made the
 the database for the 1.3 upgrade.  Your system will no longer function until you
 then manually complete the remaining step.
@@ -106,7 +119,8 @@ All database changes that are necessary will be done automatically.
 At the end you will be redirected to your admin panel.
 
 Post upgrade notes
-==================
+------------------
+
 If you use the Menutree module please note the following:
 The Menutree functionality has been ported into the Zikula Core, but this is not
 to be considered the same as the Menutree module because implementation in the
@@ -126,8 +140,13 @@ in UPGRADING_THEME to refactor your theme to the new standards.  There are only
 a few changes to make, but you will benefit from all the new features by doing
 so.  Until you complete this, certain things may not work as expected.
 
+If you have any startmodule settings, please visit the Settings module and make
+sure you explicitly set 'starttype' and 'startfunc'.
+
+
 Hooks
-=====
+-----
+
 There are now two kinds of module, 'legacy' meaning modules that comply with
 Zikula 1.2.x gettext standards, and those which are written specifically for
 Zikula 1.3.x, these are called 'native'.
