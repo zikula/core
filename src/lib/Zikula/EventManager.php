@@ -195,14 +195,12 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
                     $handler[0]->$handler[1]($event);
                 } else {
                     // invoke static class method.
-                    //$handler[0]::$handler[1]($event);
-                    call_user_func(array($handler[0], $handler[1]), $event); // for PHP 5.2.6, remove from 1.3.1
+                    $handler[0]::$handler[1]($event);
                 }
             } else {
-                // invoke function
+                // invoke function including anonymous functions
                 $handler($event);
             }
-            // TODO: in PHP 5.3 support lamdba
         }
     }
 
