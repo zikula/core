@@ -260,9 +260,7 @@ class EventUtil
                 if (ModUtil::available($module)) {
                     try {
                         if (isset($handler['classname'])) {
-                            foreach ($handlers as $handler) {
-                                self::attachEventHandler($handler['classname']);
-                            }
+                            self::attachEventHandler($handler['classname']);
                         } else {
                             self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
                         }
