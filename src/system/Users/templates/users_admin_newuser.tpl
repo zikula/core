@@ -168,7 +168,12 @@
                 </div>
             </fieldset>
 
-            {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' subject=null id=null}
+            {notifyevent eventname='users.user.form_edit' subject=null id=null assign="eventData"}
+            {foreach key='eventName' item='eventDisplay' from=$eventData}
+            <div class="z-formrow">
+                {$eventDisplay}
+            </div>
+        {/foreach}
 
             <fieldset>
                 <legend>{gt text="Check your entries and submit your registration"}</legend>

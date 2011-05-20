@@ -53,10 +53,16 @@
         </fieldset>
 
         {if isset($user_obj) && !empty($user_obj)}
-            {notifydisplayhooks eventname='users.ui_hooks.login.form_edit' id=$user_obj.uid subject=$user_obj form_type='loginscreen'}
+            {notifyevent eventname='users.login.form_edit' id=$user_obj.uid subject=$user_obj form_type='loginscreen' assign='eventData'}
         {else}
-            {notifydisplayhooks eventname='users.ui_hooks.login.form_edit' form_type='loginscreen'}
+            {notifyevent eventname='users.login.form_edit' form_type='loginscreen' assign='eventData'}
         {/if}
+
+        {foreach key='eventName' item='eventDisplay' from=$eventData}
+            <div class="z-formrow">
+                {$eventDisplay}
+            </div>
+        {/foreach}
 
         <div class="z-formbuttons z-buttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Log in" __title="Log in" __text="Log in"}

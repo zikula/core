@@ -23,7 +23,12 @@
 </div>
 {/if}
 
-{notifydisplayhooks eventname='users.ui_hooks.user.display_view' subject=$reginfo id=$reginfo['uid'])}
+{notifyevent eventname='users.user.display_view' subject=$reginfo id=$reginfo['uid']) assign="eventData"}
+            {foreach key='eventName' item='eventDisplay' from=$eventData}
+            <div class="z-formrow">
+                {$eventDisplay}
+            </div>
+        {/foreach}
 
 <div class="z-form">
     <fieldset>

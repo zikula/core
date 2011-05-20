@@ -152,8 +152,12 @@
             {$smarty.capture.email}
         {/if}
 
-        {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' subject=null id=null}
-
+        {notifyevent eventname='users.user.form_edit' subject=null id=null assign='eventData'}
+        {foreach key='eventName' item='eventDisplay' from=$eventData}
+            <div class="z-formrow">
+                {$eventDisplay}
+            </div>
+        {/foreach}
         {if !empty($modvars.Users.reg_question)}
         <fieldset>
             <legend>{gt text="Answer the security question"}</legend>
