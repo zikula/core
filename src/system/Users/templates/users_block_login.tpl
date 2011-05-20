@@ -38,7 +38,12 @@
                 </div>
             </div>
 
-            {notifydisplayhooks eventname='users.ui_hooks.login.form_edit' form_type='loginblock'}
+            {notifyevent eventname='users.login.form_edit' form_type='loginblock' assign="eventData"}
+            {foreach key='eventName' item='eventDisplay' from=$eventData}
+                <div class="z-formrow">
+                    {$eventDisplay}
+                </div>
+            {/foreach}
 
             {/if}
             <div class="z-buttons z-right">

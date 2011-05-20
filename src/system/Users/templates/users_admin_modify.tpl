@@ -201,7 +201,12 @@
                 <p id="{$formData->getFormId()}_groupmembership_error" class="z-formnote z-errormsg{if !isset($errorFields.groupmembership)} z-hide{/if}">{if isset($errorFields.groupmembership)}{$errorFields.groupmembership}{/if}</p>
             </fieldset>
 
-            {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' subject=$formData->toUserArray() id=$formData->getFieldData('uid') caller="Users"}
+            {notifyevent eventname='users.user.form_edit' subject=$formData->toUserArray() id=$formData->getFieldData('uid') assign="eventData"}
+            {foreach key='eventName' item='eventDisplay' from=$eventData}
+            <div class="z-formrow">
+                {$eventDisplay}
+            </div>
+        {/foreach}
 
             <fieldset>
                 <legend>{gt text="Check your entries and save your updates"}</legend>

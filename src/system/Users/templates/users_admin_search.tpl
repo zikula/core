@@ -44,10 +44,16 @@
             </fieldset>
 
             {if $callbackFunc == 'mailUsers'}
-            {notifydisplayhooks eventname='users.ui_hooks.mailuserssearch.form_edit'}
+            {notifyevent eventname='users.mailuserssearch.form_edit' assign="eventData"}
             {else}
-            {notifydisplayhooks eventname='users.ui_hooks.search.form_edit'}
+            {notifyevent eventname='users.search.form_edit' assign="eventData"}
             {/if}
+
+            {foreach key='eventName' item='eventDisplay' from=$eventData}
+            <div class="z-formrow">
+                {$eventDisplay}
+            </div>
+        {/foreach}
 
             <div class="z-formbuttons z-buttons">
                 {button src='button_ok.png' set='icons/extrasmall' __alt='Search' __title='Search' __text='Search'}
