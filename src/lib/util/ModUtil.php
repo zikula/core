@@ -1439,8 +1439,13 @@ class ModUtil
             }
         }
 
-        if ($force == true || (isset(self::$cache['modstate'][$modname]) && self::$cache['modstate'][$modname] == self::STATE_ACTIVE) ||
-            preg_match('/^(extensions|admin|block|categories|errors|groups|permissions|securitycenter|settings|theme|users)$/i', $modname)) {
+        if ($force == true) {
+            self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
+        }
+
+        if ((isset(self::$cache['modstate'][$modname]) &&
+                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $modname) &&
+                (isset(self::$cache['modstate'][$modname]) && (self::$cache['modstate'][$modname] == self::STATE_UPGRADED || self::$cache['modstate'][$modname] == self::STATE_INACTIVE)))) {
             self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
             return true;
         }
