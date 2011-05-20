@@ -394,6 +394,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         if ($oomod) {
             HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
             HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
+            EventUtil::unregisterPersistentModuleHandlers($modinfo['name']);
         }
 
         // remove the entry from the modules table
