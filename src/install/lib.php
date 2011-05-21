@@ -55,7 +55,7 @@ function install(Zikula_Core $core)
     $dbusername = FormUtil::getPassedValue('dbusername', '', 'GETPOST');
     $dbpassword = FormUtil::getPassedValue('dbpassword', '', 'GETPOST');
     $dbname = FormUtil::getPassedValue('dbname', '', 'GETPOST');
-    $dbprefix = FormUtil::getPassedValue('dbprefix', '', 'GETPOST');
+    $dbprefix = preg_replace('/([^a-zA-Z0-9])+/', '', FormUtil::getPassedValue('dbprefix', '', 'GETPOST'));
     $dbdriver = FormUtil::getPassedValue('dbdriver', '', 'GETPOST');
     $dbtabletype = FormUtil::getPassedValue('dbtabletype', '', 'GETPOST');
     $username = FormUtil::getPassedValue('username', '', 'POST');
