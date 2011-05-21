@@ -80,7 +80,7 @@ class Zikula_View_Resource
      * @access private
      * @return boolean
      */
-    public static function z_get_template($resource, &$tpl_source, &$view)
+    public static function z_get_template($resource, &$tpl_source, $view)
     {
         // check if the z resource sent by Smarty is a cached insert
         if (strpos($resource, 'insert.') === 0) {
@@ -177,7 +177,7 @@ class Zikula_View_Resource
      * @access private
      * @return boolean
      */
-    private static function z_get_insert($insert, &$tpl_source, &$view)
+    private static function z_get_insert($insert, &$tpl_source, $view)
     {
         $name = str_replace(strrchr($insert, '.'), '', substr($insert, strpos($insert, '.')+1));
 
@@ -196,7 +196,7 @@ class Zikula_View_Resource
     /**
      * Resource function to register a resource.
      *
-     * @param Zikula_View &$view       Reference to Smarty instance.
+     * @param Zikula_View $view        Reference to Smarty instance.
      * @param string      $type        Type of the resource.
      * @param string      $name        Name of the resource.
      * @param boolean     $cacheable   Flag to register the resource as cacheable (default: false).
@@ -205,7 +205,7 @@ class Zikula_View_Resource
      * @access private
      * @return boolean
      */
-    public static function register(&$view, $type, $name, $delayed_load = true, $cacheable = true, $cache_attrs = null)
+    public static function register($view, $type, $name, $delayed_load = true, $cacheable = true, $cache_attrs = null)
     {
         if ($delayed_load || self::load($view, $type, $name)) {
             $callable = ($type != 'insert') ? array(self::getInstance(), "load_{$type}_{$name}") : "smarty_{$type}_{$name}";
@@ -220,14 +220,14 @@ class Zikula_View_Resource
     /**
      * Resource function to load a resource located inside the plugins folders.
      *
-     * @param Zikula_View &$view       Reference to Smarty instance.
-     * @param string      $type        Type of the resource.
-     * @param string      $name        Name of the resource.
+     * @param Zikula_View $view Reference to Smarty instance.
+     * @param string      $type Type of the resource.
+     * @param string      $name Name of the resource.
      *
      * @access private
      * @return boolean
      */
-    public static function load(&$view, $type, $name)
+    public static function load($view, $type, $name)
     {
         if (isset(self::$cache[$type][$name])) {
             return self::$cache[$type][$name];
