@@ -18,6 +18,23 @@
 class UserUtil
 {
     /**
+     * Cache for groups.
+     *
+     * @var array
+     */
+    protected static $groupCache = array();
+
+    /**
+     * Clear group cache.
+     *
+     * @return void
+     */
+    public function clearGroupCache()
+    {
+        self::$groupCache = array();
+    }
+
+    /**
      * Return a user object.
      *
      * @param integer $uid     The userID of the user to retrieve.
@@ -266,8 +283,6 @@ class UserUtil
      */
     public static function getGroupListForUser($uid = null, $separator = ',')
     {
-        static $cache;
-
         if (!$uid) {
             $uid = self::getVar('uid');
         }
@@ -276,18 +291,18 @@ class UserUtil
             return '-1';
         }
 
-        if (!isset($cache[$uid])) {
+        if (!isset(self::$groupCache[$uid])) {
             $gidArray = self::getGroupsForUser($uid);
 
             if ($gidArray && (bool)count($gidArray)) {
                 sort($gidArray);
-                $cache[$uid] = implode((string)$separator, $gidArray);
+                self::$groupCache[$uid] = implode((string)$separator, $gidArray);
             } else {
-                $cache[$uid] = '-1';
+                self::$groupCache[$uid] = '-1';
             }
         }
 
-        return $cache[$uid];
+        return self::$groupCache[$uid];
     }
 
     /**
