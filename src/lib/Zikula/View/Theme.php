@@ -396,21 +396,43 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         // get the theme path to templates
-        $os_theme = DataUtil::formatForOS($this->directory);
-        $ostemplate = DataUtil::formatForOS($template);
+        $themeDir = DataUtil::formatForOS($this->directory);
+        $osTemplate = DataUtil::formatForOS($template);
+
+        $relativePath = "themes/$themeDir/templates";
+        $templateFile = "$relativePath/$osTemplate";
+        $override = self::getTemplateOverride($templateFile);
+        if ($override === false) {
+            if (!System::isLegacyMode()) {
+                if (is_readable($templateFile)) {
+                    $this->templateCache[$template] = $relativePath;
+                    return $relativePath;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            if (is_readable($override)) {
+                $path = substr($override, 0, strrpos($override, $osTemplate));
+                $this->templateCache[$template] = $path;
+                return $path;
+            }
+        }
+
+        // The rest of this code is scheduled for removal from 1.4.0 - drak
 
         // Define the locations in which we will look for templates
         // (in this order)
         // 1. Master template path
-        $masterpath = "themes/$os_theme/templates";
+        $masterPath = "themes/$themeDir/templates";
         // 2. The module template path
-        $modulepath = "themes/$os_theme/templates/modules";
+        $modulePath = "themes/$themeDir/templates/modules";
         // 4. The block template path
-        $blockpath = "themes/$os_theme/templates/blocks";
+        $blockPath = "themes/$themeDir/templates/blocks";
 
-        $search_path = array($masterpath, $modulepath, $blockpath);
+        $search_path = array($masterPath, $modulePath, $blockPath);
         foreach ($search_path as $path) {
-            if (is_readable("$path/$ostemplate")) {
+            if (is_readable("$path/$osTemplate")) {
                 $this->templateCache[$template] = $path;
                 return $path;
             }
