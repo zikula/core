@@ -322,10 +322,9 @@ class System
     {
         // check the use of friendly url setup
         $shorturls = self::getVar('shorturls', false);
-        $dirBased = (self::getVar('shorturlstype') == 0 ? true : false);
         $langRequired = ZLanguage::isRequiredLangParam();
 
-        if ($shorturls && $dirBased) {
+        if ($shorturls) {
             $result = self::getBaseUrl();
             if ($langRequired) {
                 $result .= ZLanguage::getLanguageCode();
@@ -654,7 +653,7 @@ class System
         $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
         // check if we need to decode the url
-        if ((self::getVar('shorturls') && self::getVar('shorturlstype') == 0 && (empty($module) && empty($type) && empty($func)))) {
+        if ((self::getVar('shorturls') && (empty($module) && empty($type) && empty($func)))) {
             // remove entry point from the path (otherwise they are part of the module name)
             $customentrypoint = self::getVar('entrypoint');
             $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
