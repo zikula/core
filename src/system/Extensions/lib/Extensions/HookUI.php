@@ -96,7 +96,7 @@ class Extensions_HookUI
             for ($i=0 ; $i < $total_hooksubscribers ; $i++) {
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
-                if ($hooksubscribers[$i]['name'] == $moduleName && !$isSubscriberSelfCapable) {
+                if ($hooksubscribers[$i]['name'] == $moduleName) {
                     unset($hooksubscribers[$i]);
                     continue;
                 }
