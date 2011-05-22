@@ -32,14 +32,10 @@ function smarty_outputfilter_shorturls($source, $view)
 
     $baseurl = System::getBaseUrl();
 
-    if (System::getVar('shorturlstype') == 0) {
-        $prefix = '[(<[^>]*?)[\'"](?:'.$baseurl.'|'.$baseurl.')?(?:[./]{0,2})'; // Match local URLs in HTML tags, removes / and ./
-        $in = array('[<([^>]+)\s(src|href|background|action)\s*=\s*((["\'])?)(?!http)(?!skype)(?!xmpp)(?!icq)(?!mailto)(?!javascript:)(?![/"\'\s#]+)]Ui');
-        $out = array('<$1 $2=$3'.$baseurl);
-    } else {
-        $in = array();
-        $out = array();
-    }
+    $prefix = '[(<[^>]*?)[\'"](?:'.$baseurl.'|'.$baseurl.')?(?:[./]{0,2})'; // Match local URLs in HTML tags, removes / and ./
+    $in = array('[<([^>]+)\s(src|href|background|action)\s*=\s*((["\'])?)(?!http)(?!skype)(?!xmpp)(?!icq)(?!mailto)(?!javascript:)(?![/"\'\s#]+)]Ui');
+    $out = array('<$1 $2=$3'.$baseurl);
+
     // perform the replacement
     $source = preg_replace($in, $out, $source);
 
