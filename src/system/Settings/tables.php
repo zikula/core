@@ -27,6 +27,7 @@ function Settings_tables()
                       );
     ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'oba_');
     $dbtables['objectdata_attributes_column'] = $columns;
+    $dbtables['objectdata_attributes_column_idx'] = array('object_type' => 'object_type', 'object_id' => 'object_id');
 
     $tabledef = array('id'             => 'I4 PRIMARY AUTO',
                       'attribute_name' => "C(80) NOTNULL DEFAULT ''",
@@ -139,7 +140,7 @@ function Settings_tables()
                                               'debug'        => 'B');
 
     // addtitional indexes
-    $dbtable['workflows_column_idx'] = array('obj_table' => 'obj_table', 'obj_idcolumn' => 'obj_idcolumn', 'obj_id' => 'obj_id', 'module' => 'module');
+    $dbtables['workflows_column_idx'] = array('obj_table' => 'obj_table', 'obj_idcolumn' => 'obj_idcolumn', 'obj_id' => 'obj_id', 'module' => 'module');
 
     return $dbtables;
 }

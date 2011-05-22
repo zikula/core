@@ -172,6 +172,7 @@ class Settings_Installer extends Zikula_AbstractInstaller
             case '2.9.5':
                 System::delVar('shorturlsext');
             case '2.9.6':
+                DBUtil::changeTable('objectdata_attributes');
                 // future upgrade routines
         }
 
