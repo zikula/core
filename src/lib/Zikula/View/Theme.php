@@ -577,12 +577,10 @@ class Zikula_View_Theme extends Zikula_View
         // already considered; These are same args defined as reserved by the MDG.
         $customargs = '';
         if ($this->pagetype != 'admin' && System::getVar('shorturls')) {
-            if (System::getVar('shorturlstype') == 0) {
-                // remove the base URI and the entrypoint from the request URI
-                $customargs = str_replace(System::getBaseUri(), '', $this->requesturi);
-                $entrypoint = System::getVar('entrypoint');
-                $customargs = str_replace("/{$entrypoint}/", '/', $customargs);
-            }
+            // remove the base URI and the entrypoint from the request URI
+            $customargs = str_replace(System::getBaseUri(), '', $this->requesturi);
+            $entrypoint = System::getVar('entrypoint');
+            $customargs = str_replace("/{$entrypoint}/", '/', $customargs);
             $customargs = ($customargs == '/') ? '' : $customargs;
         } else {
             $queryparts = explode('&', $this->qstring);
