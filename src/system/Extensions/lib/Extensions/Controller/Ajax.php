@@ -72,8 +72,12 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         // ajax response
         $response = array(
             'result' => true,
-            'isSubscriberSelfCapable' => (HookUtil::isSubscriberSelfCapable($subscriber) ? true : false),
-            'refreshURL' => ModUtil::url($provider, 'admin', 'hooks', array(), null, null, true)
+            'action' => $binding ? 'unbind' : 'bind',
+            'subscriberarea' => $subscriberArea,
+            'subscriberarea_id' => md5($subscriberArea),
+            'providerarea' => $providerArea,
+            'providerarea_id' => md5($providerArea),
+            'isSubscriberSelfCapable' => (HookUtil::isSubscriberSelfCapable($subscriber) ? true : false)
         );
 
         return new Zikula_Response_Ajax($response);
