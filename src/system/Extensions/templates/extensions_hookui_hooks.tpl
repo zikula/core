@@ -110,7 +110,8 @@
                             
                             {foreach from=$hookprovider.areasAndCategories key='category' item='areas'}
                 
-                                <h3>{$category}</h3>
+                            <fieldset>
+                                <legend>{$category}</legend>
                                 
                                 {assign var="draglist_identifier" value="`$hookprovider.name`_`$category`"}
                                 {assign var="draglist_identifier_md5" value=$draglist_identifier|md5}
@@ -131,6 +132,8 @@
                                     {/foreach}
                                     
                                 </ol>
+                                
+                            </fieldset>
                             
                             {/foreach}
                                 

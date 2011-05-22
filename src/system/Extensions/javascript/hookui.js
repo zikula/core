@@ -1,7 +1,7 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 var appendItemBeforeResponse = true;
 var removeItemBeforeResponse = true;
-var cloneDraggedItem = false;
+var cloneDraggedItem = true;
 
 /**
  * Bind a provider's area to a subscribers's area
