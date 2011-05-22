@@ -140,7 +140,7 @@ function Settings_tables()
                                               'debug'        => 'B');
 
     // addtitional indexes
-    $dbtables['workflows_column_idx'] = array('obj_table' => 'obj_table', 'obj_idcolumn' => 'obj_idcolumn', 'obj_id' => 'obj_id', 'module' => 'module');
+    $dbtables['workflows_column_idx'] = array('obj_table' => 'obj_table', 'obj_idcolumn' => 'obj_idcolumn', 'obj_id' => 'obj_id');
 
     return $dbtables;
 }
