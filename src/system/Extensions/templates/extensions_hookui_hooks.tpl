@@ -41,7 +41,7 @@
                     {gt text="%s module subscribes with the following area:" plural="%s module subscribes with the following areas:" tag1=$currentmodule|safetext count=$total_subscriber_areas}
                     <br />
                     {foreach from=$subscriberAreas item='subscriberarea' name="loop"}
-                    {if $total_subscriber_areas gt 1}{$smarty.foreach.loop.iteration}) {/if}<strong>{$subscriberAreasToTitles.$subscriberarea} ({$subscriberarea})</strong><br />
+                    {if $total_subscriber_areas gt 1}{$smarty.foreach.loop.iteration}) {/if}<strong>{$subscriberAreasToTitles.$subscriberarea}</strong> <span class="z-sub">({$subscriberarea})</span><br />
                     {/foreach}
                 </p>
                 {/if}
@@ -58,7 +58,7 @@
                         <ol id="attachedareassortlist_{$sarea_md5}" class="z-itemlist">
                             
                             <li id="attachedareassortlistheader_{$sarea_md5}" class="z-itemheader z-clearfix">
-                                <span class="z-itemcell z-w100">{$subscriberAreasToTitles.$sarea} ({$sarea})</span>
+                                <span class="z-itemcell z-w100">{$subscriberAreasToTitles.$sarea} <span class="z-sub">({$sarea})</span></span>
                                 <input type="hidden" id="attachedareassortlist_{$sarea_md5}_a" value="{$sarea}" />
                                 <input type="hidden" id="attachedareassortlist_{$sarea_md5}_c" value="{$subscriberAreasToCategories.$sarea}" />
                                 <input type="hidden" id="attachedareassortlist_{$sarea_md5}_i" value="{$sarea_md5}" />
@@ -160,15 +160,10 @@
                 {gt text="%s module provides the following area:" plural="%s module provides the following areas:" tag1=$currentmodule|safetext count=$total_provider_areas}
                 <br />
                 {foreach from=$providerAreas item='providerarea' name="loop"}
-                {if $total_provider_areas gt 1}{$smarty.foreach.loop.iteration}) {/if}<strong>{$providerAreasToTitles.$providerarea} ({$providerarea})</strong><br />
+                {if $total_provider_areas gt 1}{$smarty.foreach.loop.iteration}) {/if}<strong>{$providerAreasToTitles.$providerarea}</strong> <span class="z-sub">({$providerarea})</span><br />
                 {/foreach}
                 <br />
                 {gt text="To connect %s to one of the modules from the list below, click on the checkbox(es) next to the corresponding area." tag1=$currentmodule|safetext}
-
-                {if $isSubscriberSelfCapable}
-                <br /><br />
-                {gt text='If you attach/detach %s to/from itself, the page will refresh in order to reload the attached/detached areas.' tag1=$currentmodule|safetext}
-                {/if}
             </p>
 
             <table class="z-datatable" id="subscriberslist">
