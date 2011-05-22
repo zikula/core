@@ -71,7 +71,7 @@
                                     {assign var="parea_md5" value=$parea|md5}
                                     
                                     <li id="attachedarea_{$parea_md5}" class="{cycle name="attachedareaslist_`$sarea`" values='z-even,z-odd'} z-sortable z-clearfix">
-                                        <span class="z-itemcell z-w100">{$areasSortingTitles.$parea} ({$parea}) <a class="detachlink" style="position:absolute; right:5px; top:0;" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('{$sarea}', '{$parea}');" title="{gt text='Detach'} {$areasSortingTitles.$parea}">{img modname='core' set='icons/extrasmall' src='editdelete.png' __alt='detach'}</a></span>
+                                        <span class="z-itemcell z-w100">{$areasSortingTitles.$parea} ({$parea}) <a class="detachlink" style="position:absolute; right:5px; top:0;" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('{$sarea_md5}', '{$sarea}', '{$parea_md5}', '{$parea}');" title="{gt text='Detach'} {$areasSortingTitles.$parea}">{img modname='core' set='icons/extrasmall' src='editdelete.png' __alt='detach'}</a></span>
                                         <input type="hidden" id="attachedarea_{$parea_md5}_a" value="{$parea}" />
                                         <input type="hidden" id="attachedarea_{$parea_md5}_c" value="{$category}" />
                                         <input type="hidden" id="attachedarea_{$parea_md5}_i" value="{$parea_md5}" />
@@ -122,7 +122,7 @@
                                         {assign var="parea_md5" value=$parea|md5}
                                        
                                         <li id="availablearea_{$parea_md5}" class="{cycle name="availableareaslist_`$draglist_identifier`" values='z-even,z-odd'} z-draggable z-clearfix">
-                                            <span class="z-itemcell z-w100">{$hookprovider.areasToTitles.$parea} ({$parea}) <a class="detachlink z-hide" style="position:absolute; right:5px; top:0;" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('##', '{$parea}');" title="{gt text='Detach'} {$hookprovider.areasToTitles.$parea}">{img modname='core' set='icons/extrasmall' src='editdelete.png' __alt='detach'}</a></span>
+                                            <span class="z-itemcell z-w100">{$hookprovider.areasToTitles.$parea} ({$parea}) <a class="detachlink z-hide" style="position:absolute; right:5px; top:0;" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{$parea_md5}', '{$parea}');" title="{gt text='Detach'} {$hookprovider.areasToTitles.$parea}">{img modname='core' set='icons/extrasmall' src='editdelete.png' __alt='detach'}</a></span>
                                             <input type="hidden" id="availablearea_{$parea_md5}_a" value="{$parea}" />
                                             <input type="hidden" id="availablearea_{$parea_md5}_c" value="{$hookprovider.areasToCategories.$parea}" />
                                             <input type="hidden" id="availablearea_{$parea_md5}_i" value="{$parea_md5}" />

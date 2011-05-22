@@ -1,4 +1,7 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
+var appendItemBeforeResponse = true;
+var removeItemBeforeResponse = true;
+var cloneDraggedItem = false;
 
 /**
  * Bind a provider's area to a subscribers's area
@@ -19,8 +22,12 @@ function bindSubscriberAreaToProviderArea(sarea, parea)
  *@params providerarea;
  *@return none;
  */
-function unbindProviderAreaFromSubscriberArea(sarea, parea)
+function unbindProviderAreaFromSubscriberArea(sarea_id, sarea, parea_id, parea)
 {
+    if (removeItemBeforeResponse) {
+        removeProviderAreaFromSubscriberArea(sarea_id, parea_id);
+    }
+    
     subscriberAreaToggle(sarea, parea);
 }
 
@@ -62,65 +69,92 @@ function togglesubscriberareastatus_response(req)
     var data = req.getData();
     
     if (data.action == 'bind') {
-       
-        var area_to_attach = $('availablearea_' + data.providerarea_id);
-        var area_to_attach_to = $('attachedareassortlist_' + data.subscriberarea_id);
-        var empty_area = $('attachedarea_empty_' + data.subscriberarea_id);
-       
-        // clone the dragged item and do some modifications to it
-        var newitem = area_to_attach.cloneNode(true);
-        newitem.id = newitem.id.replace('availablearea_', 'attachedarea_');
-        newitem.innerHTML = newitem.innerHTML.replace(new RegExp('availablearea_', 'g'), 'attachedarea_');
-        newitem.innerHTML = newitem.innerHTML.replace(' z-hide', '');
-        newitem.innerHTML = newitem.innerHTML.replace('##', data.subscriberarea);
-        newitem.removeClassName('z-draggable');
-        newitem.removeClassName('z-itemdragleft');
-        newitem.addClassName('z-sortable');
-        newitem.addClassName('z-itemsort');
-        newitem.style.opacity = 1;
-        newitem.style.top = 0;
-        newitem.style.left = 0;
-        
-        // hide empty_area if is visible
-        if (!empty_area.hasClassName('z-hide')) {
-            empty_area.addClassName('z-hide');
+        if (!appendItemBeforeResponse) {
+            appendProviderAreaToSubscriberArea(data.subscriberarea_id, data.subscriberarea, data.providerarea_id);
         }
-        
-        // destroy the sortable area just to make sure (needed?)
-        //Sortable.destroy(area_to_attach_to.id);
-
-        // append dragged item to our list
-        area_to_attach_to.appendChild(newitem);
-
-        // create the sortable area
-        createSortable(area_to_attach_to.id);
-        
-        // create the dropable area
-        createDroppable(area_to_attach_to.id);
-
-        // recolor
-        Zikula.recolor(area_to_attach_to.id, 'z-itemheader');
-   
     } else if (data.action == 'unbind') {
-        
-        var area_to_detach = $('attachedarea_' + data.providerarea_id);
-        area_to_detach.remove();
-        
-        // is area now empty?
-        var total_areas_attached = 0;
-        var area_to_detach_from = $('attachedareassortlist_' + data.subscriberarea_id);
-        $$('#' + area_to_detach_from.id + ' li.z-sortable').each(function(element) {
-            total_areas_attached++;
-        });
-        
-        // if there no more areas attached, show empty_area
-        if (total_areas_attached == 0) {
-            $('attachedarea_empty_' + data.subscriberarea_id).removeClassName('z-hide');
+        if (!removeItemBeforeResponse) {
+            removeProviderAreaFromSubscriberArea(data.subscriberarea_id, data.providerarea_id)
         }
-        
-        // recolor
-        Zikula.recolor(area_to_detach_from.id, 'z-itemheader');
     }
+}
+
+/**
+ * append dragged area to our list of attached areas
+ *
+ *@params none;
+ *@return none;
+ */
+function appendProviderAreaToSubscriberArea(sarea_id, sarea_name, parea_id)
+{   
+    var area_to_attach = $('availablearea_' + parea_id);
+    var area_to_attach_to = $('attachedareassortlist_' + sarea_id);
+    var empty_area = $('attachedarea_empty_' + sarea_id);
+    
+    // if cloneDraggedItem is set to true, clone the dragged item before use. 
+    // otherwise just use the dragged item
+    if (cloneDraggedItem) {
+        var newitem = area_to_attach.cloneNode(true);
+    } else {
+        var newitem = area_to_attach;
+    }
+    
+    newitem.id = newitem.id.replace('availablearea_', 'attachedarea_');
+    newitem.innerHTML = newitem.innerHTML.replace(new RegExp('availablearea_', 'g'), 'attachedarea_');
+    newitem.innerHTML = newitem.innerHTML.replace(' z-hide', '');
+    newitem.innerHTML = newitem.innerHTML.replace('##id', sarea_id);
+    newitem.innerHTML = newitem.innerHTML.replace('##name', sarea_name);
+    newitem.removeClassName('z-draggable');
+    newitem.removeClassName('z-itemdragleft');
+    newitem.addClassName('z-sortable');
+    newitem.addClassName('z-itemsort');
+    newitem.style.opacity = 1;
+    newitem.style.top = 0;
+    newitem.style.left = 0;
+    
+    // hide empty_area if is visible
+    if (!empty_area.hasClassName('z-hide')) {
+        empty_area.addClassName('z-hide');
+    }
+    
+    // append dragged item to our list
+    area_to_attach_to.appendChild(newitem);
+
+    // create the sortable area
+    createSortable(area_to_attach_to.id);
+
+    // create the dropable area
+    createDroppable(area_to_attach_to.id);
+
+    // recolor
+    Zikula.recolor(area_to_attach_to.id, 'z-itemheader');
+}
+
+/**
+ * append dragged area to our list of attached areas
+ *
+ *@params none;
+ *@return none;
+ */
+function removeProviderAreaFromSubscriberArea(sarea_id, parea_id)
+{
+    var area_to_detach = $('attachedarea_' + parea_id);
+    area_to_detach.remove();
+    
+    // is area now empty?
+    var total_areas_attached = 0;
+    var area_to_detach_from = $('attachedareassortlist_' + sarea_id);
+    $$('#' + area_to_detach_from.id + ' li.z-sortable').each(function(element) {
+        total_areas_attached++;
+    });
+    
+    // if there no more areas attached, show empty_area
+    if (total_areas_attached == 0) {
+        $('attachedarea_empty_' + sarea_id).removeClassName('z-hide');
+    }
+
+    // recolor
+    Zikula.recolor(area_to_detach_from.id, 'z-itemheader');
 }
 
 /**
@@ -226,7 +260,8 @@ function initAreasDraggables()
         var thisavailablearea = node.id.split('_')[1];
         Element.addClassName('availablearea_' + thisavailablearea, 'z-itemdragleft');
         new Draggable('availablearea_' + thisavailablearea, {
-            revert: true
+            revert: true,
+            ghosting: false
         });
     });
 }
@@ -297,6 +332,10 @@ function createDroppable(area_id)
 
             // attach provider area to subscriber area
             bindSubscriberAreaToProviderArea(subscriber.area, provider.area);
+            
+            if (appendItemBeforeResponse) {
+                appendProviderAreaToSubscriberArea(subscriber.identifier, subscriber.area, provider.identifier);
+            }
         }
     });
 }
