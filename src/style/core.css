@@ -676,6 +676,21 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-itemlist li.z-itemsortheader {
     padding-left: 30px !important;
 }
+.z-itemlist li.z-itemdragleft {
+    background-image:url("../images/icons/extrasmall/move_left.png");
+    background-position:5px 50%;
+    background-repeat:no-repeat;
+    padding-left: 30px !important;
+    cursor: move;
+}
+.z-itemlist li.z-itemdragright {
+    background-image:url("../images/icons/extrasmall/move_right.png");
+    background-position:99% 50%;
+    background-repeat:no-repeat;
+    padding-left: 5px !important;
+    padding-right: 30px !important;
+    cursor: move;
+}
 .z-itemlist li:hover,
 .z-itemlist li.hover {
     background-color: #CFCFCF;
@@ -708,6 +723,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-w66 { width: 66%; }
 .z-w60 { width: 60%; }
 .z-w50 { width: 50%; }
+.z-w48 { width: 48%; }
 .z-w45 { width: 45%; }
 .z-w40 { width: 40%; }
 .z-w35 { width: 35%; }
