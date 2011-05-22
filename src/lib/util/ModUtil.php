@@ -1266,7 +1266,6 @@ class ModUtil
         $baseuri = System::getBaseUri();
         $https = System::serverGetVar('HTTPS');
         $shorturls = System::getVar('shorturls');
-        $shorturlstype = System::getVar('shorturlstype');
         $shorturlsstripentrypoint = System::getVar('shorturlsstripentrypoint');
         $shorturlsdefaultmodule = System::getVar('shorturlsdefaultmodule');
 
@@ -1306,7 +1305,7 @@ class ModUtil
         }
 
         // Only convert type=user. Exclude links that append a theme parameter
-        if ($shorturls && $shorturlstype == 0 && $type == 'user' && $forcelongurl == false) {
+        if ($shorturls && $type == 'user' && $forcelongurl == false) {
             if (isset($args['theme'])) {
                 $theme = $args['theme'];
                 unset($args['theme']);
