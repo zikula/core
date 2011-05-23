@@ -48,6 +48,11 @@ class Zikula_Core
      * The version sub-ID.
      */
     const VERSION_SUB = 'vai';
+    
+    /**
+     * The minimum required PHP version for this release of core.
+     */
+    const PHP_MINIMUM_VERSION = '5.3.2';
 
     const STAGE_NONE = 0;
     const STAGE_PRE = 1;
