@@ -275,19 +275,18 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // register resource type 'z' this defines the way templates are searched
         // during {include file='my_template.tpl'} this enables us to store selected module
         // templates in the theme while others can be kept in the module itself.
-        $resource = Zikula_View_Resource::getInstance();
-        $this->register_resource('z', array($resource,
-                                            'getTemplate',
-                                            'getTimestamp',
-                                            'getSecure',
-                                            'getTrusted'));
+        $this->register_resource('z', array('Zikula_View_Resource',
+                                            'z_get_template',
+                                            'z_get_timestamp',
+                                            'z_get_secure',
+                                            'z_get_trusted'));
 
         // set 'z' as default resource type
         $this->default_resource_type = 'z';
 
         // process some plugins specially when Render cache is enabled
         if (!$this instanceof Zikula_View_Theme && $this->caching) {
-            $this->registerNocachePlugins($resource);
+            $this->register_nocache_plugins();
         }
 
         // register the 'nocache' block to allow dynamic zones caching templates
@@ -464,7 +463,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return void
      */
-    private function registerNocachePlugins($resource)
+    private function register_nocache_plugins()
     {
         // disables the cache for them and do not load them yet
         // that happens later when required
@@ -473,65 +472,65 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         /* blocks */
         // checkgroup
-        $resource->register($this, 'block', 'checkgroup', $delayed_load, $cacheable, array('gid'));
+        Zikula_View_Resource::register($this, 'block', 'checkgroup', $delayed_load, $cacheable, array('gid'));
         // checkpermissionblock
-        $resource->register($this, 'block', 'checkpermissionblock', $delayed_load, $cacheable, array('component', 'instance'));
+        Zikula_View_Resource::register($this, 'block', 'checkpermissionblock', $delayed_load, $cacheable, array('component', 'instance'));
         // pageaddvarblock
-        $resource->register($this, 'block', 'pageaddvarblock', $delayed_load, $cacheable, array('name'));
+        Zikula_View_Resource::register($this, 'block', 'pageaddvarblock', $delayed_load, $cacheable, array('name'));
 
         /* plugins */
         // ajaxheader
-        $resource->register($this, 'function', 'ajaxheader', $delayed_load, $cacheable, array('modname', 'filename', 'noscriptaculous', 'validation', 'lightbox', 'imageviewer', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'ajaxheader', $delayed_load, $cacheable, array('modname', 'filename', 'noscriptaculous', 'validation', 'lightbox', 'imageviewer', 'assign'));
         // assign_cache
-        $resource->register($this, 'function', 'assign_cache', $delayed_load, $cacheable, array('var', 'value'));
+        Zikula_View_Resource::register($this, 'function', 'assign_cache', $delayed_load, $cacheable, array('var', 'value'));
         // checkpermission
-        $resource->register($this, 'function', 'checkpermission', $delayed_load, $cacheable, array('component', 'instance', 'level', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'checkpermission', $delayed_load, $cacheable, array('component', 'instance', 'level', 'assign'));
         // formutil_getfieldmarker
-        $resource->register($this, 'function', 'formutil_getfieldmarker', $delayed_load, $cacheable, array('objectType', 'validation', 'field', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'formutil_getfieldmarker', $delayed_load, $cacheable, array('objectType', 'validation', 'field', 'assign'));
         // formutil_getpassedvalue
-        $resource->register($this, 'function', 'formutil_getpassedvalue', $delayed_load, $cacheable, array('assign', 'html', 'key', 'name', 'default', 'source', 'noprocess'));
+        Zikula_View_Resource::register($this, 'function', 'formutil_getpassedvalue', $delayed_load, $cacheable, array('assign', 'html', 'key', 'name', 'default', 'source', 'noprocess'));
         // formutil_getvalidationerror
-        $resource->register($this, 'function', 'formutil_getvalidationerror', $delayed_load, $cacheable, array('objectType', 'field', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'formutil_getvalidationerror', $delayed_load, $cacheable, array('objectType', 'field', 'assign'));
         // notifydisplayhooks
-        $resource->register($this, 'function', 'notifydisplayhooks', $delayed_load, $cacheable, array('eventname', 'id', 'urlobject', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'notifydisplayhooks', $delayed_load, $cacheable, array('eventname', 'id', 'urlobject', 'assign'));
         // notifyevent
-        $resource->register($this, 'function', 'notifyevent', $delayed_load, $cacheable, array('eventname', 'eventsubject', 'eventdata', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'notifyevent', $delayed_load, $cacheable, array('eventname', 'eventsubject', 'eventdata', 'assign'));
         // pageaddvar
-        $resource->register($this, 'function', 'pageaddvar', $delayed_load, $cacheable, array('name', 'value'));
+        Zikula_View_Resource::register($this, 'function', 'pageaddvar', $delayed_load, $cacheable, array('name', 'value'));
         // pagegetvar
-        $resource->register($this, 'function', 'pagegetvar', $delayed_load, $cacheable, array('name', 'html', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'pagegetvar', $delayed_load, $cacheable, array('name', 'html', 'assign'));
         // pageregistervar
-        $resource->register($this, 'function', 'pageregistervar', $delayed_load, $cacheable, array('name'));
+        Zikula_View_Resource::register($this, 'function', 'pageregistervar', $delayed_load, $cacheable, array('name'));
         // pagesetvar
-        $resource->register($this, 'function', 'pagesetvar', $delayed_load, $cacheable, array('name', 'value'));
+        Zikula_View_Resource::register($this, 'function', 'pagesetvar', $delayed_load, $cacheable, array('name', 'value'));
         // servergetvar
-        $resource->register($this, 'function', 'servergetvar', $delayed_load, $cacheable, array('name', 'default', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'servergetvar', $delayed_load, $cacheable, array('name', 'default', 'assign'));
         // sessiondelvar
-        $resource->register($this, 'function', 'sessiondelvar', $delayed_load, $cacheable, array('name', 'path', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'sessiondelvar', $delayed_load, $cacheable, array('name', 'path', 'assign'));
         // sessiongetvar
-        $resource->register($this, 'function', 'sessiongetvar', $delayed_load, $cacheable, array('name', 'assign', 'default', 'path'));
+        Zikula_View_Resource::register($this, 'function', 'sessiongetvar', $delayed_load, $cacheable, array('name', 'assign', 'default', 'path'));
         // sessionsetvar
-        $resource->register($this, 'function', 'sessionsetvar', $delayed_load, $cacheable, array('name', 'value', 'path', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'sessionsetvar', $delayed_load, $cacheable, array('name', 'value', 'path', 'assign'));
         // setmetatag
-        $resource->register($this, 'function', 'setmetatag', $delayed_load, $cacheable, array('name', 'value'));
+        Zikula_View_Resource::register($this, 'function', 'setmetatag', $delayed_load, $cacheable, array('name', 'value'));
         // themegetvar
-        $resource->register($this, 'function', 'themegetvar', $delayed_load, $cacheable, array('name', 'default', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'themegetvar', $delayed_load, $cacheable, array('name', 'default', 'assign'));
         // themesetvar
-        $resource->register($this, 'function', 'themesetvar', $delayed_load, $cacheable, array('name', 'value'));
+        Zikula_View_Resource::register($this, 'function', 'themesetvar', $delayed_load, $cacheable, array('name', 'value'));
         // user
-        $resource->register($this, 'function', 'user', $delayed_load, $cacheable);
+        Zikula_View_Resource::register($this, 'function', 'user', $delayed_load, $cacheable);
         // useravatar - without uid caching
-        $resource->register($this, 'function', 'useravatar', $delayed_load, $cacheable);
+        Zikula_View_Resource::register($this, 'function', 'useravatar', $delayed_load, $cacheable);
         // usergetvar
-        $resource->register($this, 'function', 'usergetvar', $delayed_load, $cacheable, array('assign', 'default', 'name', 'uid'));
+        Zikula_View_Resource::register($this, 'function', 'usergetvar', $delayed_load, $cacheable, array('assign', 'default', 'name', 'uid'));
         // userlinks
-        $resource->register($this, 'function', 'userlinks', $delayed_load, $cacheable, array('start', 'end', 'seperator'));
+        Zikula_View_Resource::register($this, 'function', 'userlinks', $delayed_load, $cacheable, array('start', 'end', 'seperator'));
         // userloggedin
-        $resource->register($this, 'function', 'userloggedin', $delayed_load, $cacheable, array('assign'));
+        Zikula_View_Resource::register($this, 'function', 'userloggedin', $delayed_load, $cacheable, array('assign'));
         // userwelcome
-        $resource->register($this, 'function', 'userwelcome', $delayed_load, $cacheable);
+        Zikula_View_Resource::register($this, 'function', 'userwelcome', $delayed_load, $cacheable);
         // zdebug
-        $resource->register($this, 'function', 'zdebug', $delayed_load, $cacheable);
+        Zikula_View_Resource::register($this, 'function', 'zdebug', $delayed_load, $cacheable);
     }
 
     /**
