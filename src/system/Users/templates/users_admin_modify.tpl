@@ -202,7 +202,7 @@
             </fieldset>
 
             {notifyevent eventname='users.user.form_edit' subject=$formData->toUserArray() id=$formData->getFieldData('uid') assign="eventData"}
-            {foreach key='eventName' item='eventDisplay' from=$eventData}
+            {foreach item='eventDisplay' from=$eventData}
                 {$eventDisplay}
             {/foreach}
 

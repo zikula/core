@@ -49,7 +49,7 @@
                 {notifyevent eventname='users.search.form_edit' assign="eventData"}
             {/if}
 
-            {foreach key='eventName' item='eventDisplay' from=$eventData}
+            {foreach item='eventDisplay' from=$eventData}
                 {$eventDisplay}
             {/foreach}
 

@@ -17,7 +17,7 @@
                 </div>
             </fieldset>
             {notifyevent eventname='users.user.form_delete' subject=null id=$userid assign="eventData"}
-            {foreach key='eventName' item='eventDisplay' from=$eventData}
+            {foreach item='eventDisplay' from=$eventData}
                 {$eventDisplay}
             {/foreach}
             <div class="z-formbuttons z-buttons">
