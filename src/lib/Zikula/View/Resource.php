@@ -20,7 +20,7 @@ class Zikula_View_Resource
     /**
      * Resources cache
      */
-    private $cache = array();
+    static $cache = array();
 
     /**
      * Dynamic loader of plugins under cache.
@@ -35,13 +35,13 @@ class Zikula_View_Resource
             switch ($type)
             {
                 case 'function':
-                    if ($this->load($arguments[1], $type, $name)) {
+                    if (self::load($arguments[1], $type, $name)) {
                         return $func($arguments[0], $arguments[1]);
                     }
                     break;
 
                 case 'block':
-                    if ($this->load($arguments[2], $type, $name)) {
+                    if (self::load($arguments[2], $type, $name)) {
                         return $func($arguments[0], $arguments[1], $arguments[2]);
                     }
                     break;
@@ -80,11 +80,11 @@ class Zikula_View_Resource
      * @access private
      * @return boolean
      */
-    public function getTemplate($resource, &$tpl_source, $view)
+    public static function z_get_template($resource, &$tpl_source, $view)
     {
         // check if the z resource sent by Smarty is a cached insert
         if (strpos($resource, 'insert.') === 0) {
-            return $this->getInsert($resource, $tpl_source, $view);
+            return self::z_get_insert($resource, $tpl_source, $view);
         }
 
         // it is a template
@@ -109,7 +109,7 @@ class Zikula_View_Resource
      *
      * @return boolean
      */
-    public function getTimestamp($tpl_name, &$tpl_timestamp, $view)
+    public static function z_get_timestamp($tpl_name, &$tpl_timestamp, $view)
     {
         // get path, checks also if tpl_name file_exists and is_readable
         $tpl_path = $view->get_template_path($tpl_name);
@@ -130,7 +130,7 @@ class Zikula_View_Resource
      *
      * @return boolean
      */
-    public function getSecure($tpl_name, $view)
+    public static function z_get_secure($tpl_name, $view)
     {
         // assume all templates are secure
         return true;
@@ -144,7 +144,7 @@ class Zikula_View_Resource
      *
      * @return void
      */
-    public function getTrusted($tpl_name, $view)
+    public static function z_get_trusted($tpl_name, $view)
     {
         // not used for templates
         // used on PHP scripts requested by include_php or insert with script attr.
@@ -160,7 +160,7 @@ class Zikula_View_Resource
      *
      * @return string
      */
-    public function block_nocache($params, $content, $view)
+    public static function block_nocache($params, $content, $view)
     {
         if (isset($content)) {
             return $content;
@@ -174,17 +174,18 @@ class Zikula_View_Resource
      * @param string      &$tpl_source Template source.
      * @param Zikula_View $view        Reference to Smarty instance.
      *
+     * @access private
      * @return boolean
      */
-    private function getInsert($insert, &$tpl_source, $view)
+    private static function z_get_insert($insert, &$tpl_source, $view)
     {
         $name = str_replace(strrchr($insert, '.'), '', substr($insert, strpos($insert, '.')+1));
 
-        if (!isset($this->cache['insert'][$name])) {
-            $this->register($view, 'insert', $name, false);
+        if (!isset(self::$cache['insert'][$name])) {
+            self::register($view, 'insert', $name, false);
         }
 
-        if (!$this->cache['insert'][$name]) {
+        if (!self::$cache['insert'][$name]) {
             return LogUtil::registerError(__f('Error! The insert [%1$s] is not available in the [%2$s] module.',
                                           array($insert, $view->toplevelmodule)));
         }
@@ -201,12 +202,13 @@ class Zikula_View_Resource
      * @param boolean     $cacheable   Flag to register the resource as cacheable (default: false).
      * @param mixed       $cache_attrs Array of parameters to be cached with the plugin/block call.
      *
+     * @access private
      * @return boolean
      */
-    public function register($view, $type, $name, $delayed_load = true, $cacheable = true, $cache_attrs = null)
+    public static function register($view, $type, $name, $delayed_load = true, $cacheable = true, $cache_attrs = null)
     {
-        if ($delayed_load || $this->load($view, $type, $name)) {
-            $callable = ($type != 'insert') ? array($this, "load_{$type}_{$name}") : "smarty_{$type}_{$name}";
+        if ($delayed_load || self::load($view, $type, $name)) {
+            $callable = ($type != 'insert') ? array(self::getInstance(), "load_{$type}_{$name}") : "smarty_{$type}_{$name}";
 
             $view->_plugins[$type][$name] = array($callable, null, null, $delayed_load, $cacheable, $cache_attrs);
             return true;
@@ -222,20 +224,21 @@ class Zikula_View_Resource
      * @param string      $type Type of the resource.
      * @param string      $name Name of the resource.
      *
+     * @access private
      * @return boolean
      */
-    public function load($view, $type, $name)
+    public static function load($view, $type, $name)
     {
-        if (isset($this->cache[$type][$name])) {
-            return $this->cache[$type][$name];
+        if (isset(self::$cache[$type][$name])) {
+            return self::$cache[$type][$name];
         }
 
-        $this->cache[$type][$name] = false;
+        self::$cache[$type][$name] = false;
 
         foreach ((array)$view->plugins_dir as $_plugin_dir) {
             $filepath = "$_plugin_dir/$type.$name.php";
 
-            if (is_readable($filepath)) {
+            if (@is_readable($filepath)) {
                 include_once $filepath;
 
                 if (!function_exists("smarty_{$type}_{$name}")) {
@@ -243,11 +246,11 @@ class Zikula_View_Resource
                     return false;
                 }
 
-                $this->cache[$type][$name] = true;
+                self::$cache[$type][$name] = true;
                 break;
             }
         }
 
-        return $this->cache[$type][$name];
+        return self::$cache[$type][$name];
     }
 }
