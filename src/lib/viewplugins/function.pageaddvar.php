@@ -62,5 +62,9 @@ function smarty_function_pageaddvar($params, Zikula_View $view)
         return false;
     }
 
+    if ($name != 'header' || $name != 'footer') {
+        $value = explode(',', $value);
+    }
+
     PageUtil::addVar($name, $value);
 }
