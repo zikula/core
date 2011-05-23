@@ -745,8 +745,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         // check PHP version, shouldn't be necessary, but....
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
-        if (version_compare($phpVersion, '5.3.2', '>=') == false) {
-            echo __f('Error! Zikula requires PHP version 5.3.2+. Your server seems to be using version %s.', $phpVersion);
+        if (version_compare($phpVersion, Zikula_Core::PHP_MINIMUM_VERSION, '>=') == false) {
+            echo __f('Error! Zikula requires PHP version %1$s or greater. Your server seems to be using version %2$s.', array(Zikula_Core::PHP_MINIMUM_VERSION, $phpVersion));
             $die = true;
         }
 
