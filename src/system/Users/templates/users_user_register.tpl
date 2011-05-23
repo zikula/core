@@ -154,9 +154,7 @@
 
         {notifyevent eventname='users.user.form_edit' subject=null id=null assign='eventData'}
         {foreach key='eventName' item='eventDisplay' from=$eventData}
-            <div class="z-formrow">
-                {$eventDisplay}
-            </div>
+            {$eventDisplay}
         {/foreach}
         {if !empty($modvars.Users.reg_question)}
         <fieldset>

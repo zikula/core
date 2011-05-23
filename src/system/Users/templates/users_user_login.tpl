@@ -59,9 +59,7 @@
         {/if}
 
         {foreach key='eventName' item='eventDisplay' from=$eventData}
-            <div class="z-formrow">
-                {$eventDisplay}
-            </div>
+            {$eventDisplay}
         {/foreach}
 
         <div class="z-formbuttons z-buttons">

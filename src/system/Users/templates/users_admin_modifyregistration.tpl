@@ -77,10 +77,8 @@
 
             {notifyevent eventname='users.user.form_edit' subject=$formData->toUserArray() id=$formData->getFieldData('uid') assign="eventData"}
             {foreach key='eventName' item='eventDisplay' from=$eventData}
-            <div class="z-formrow">
                 {$eventDisplay}
-            </div>
-        {/foreach}
+            {/foreach}
 
             <fieldset>
                 <legend>{gt text="Check your entries and submit your updates"}</legend>
