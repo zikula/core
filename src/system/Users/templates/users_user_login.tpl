@@ -58,7 +58,7 @@
             {notifyevent eventname='users.login.form_edit' form_type='loginscreen' assign='eventData'}
         {/if}
 
-        {foreach key='eventName' item='eventDisplay' from=$eventData}
+        {foreach item='eventDisplay' from=$eventData}
             {$eventDisplay}
         {/foreach}
 

@@ -153,7 +153,7 @@
         {/if}
 
         {notifyevent eventname='users.user.form_edit' subject=null id=null assign='eventData'}
-        {foreach key='eventName' item='eventDisplay' from=$eventData}
+        {foreach item='eventDisplay' from=$eventData}
             {$eventDisplay}
         {/foreach}
         {if !empty($modvars.Users.reg_question)}
