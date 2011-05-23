@@ -614,7 +614,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function coreStylesheetOverride(Zikula_Event $event)
     {
-        if ($event->getSubject() == 'stylesheet' && ($key = array_search('style/core.css', $event->data)) !== false) {
+        if ($event->getSubject() == 'stylesheet' && ($key = array_search('style/core.css', (array)$event->data)) !== false) {
             if (file_exists('config/style/core.css')) {
                 $event->data[$key] = 'config/style/core.css';
             }
