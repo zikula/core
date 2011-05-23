@@ -24,9 +24,10 @@
  * - 'eventdata'    Data.
  *
  * OR:
- * - 'eventobject'  An event object.
+ * - 'eventobject'  An event object [required].
  *
- * - 'assign'       If set, the results array is assigned to the named variable instead display [optional].
+ * AND:
+ * - 'assign'       If set, the event object's data ($event->getData()) is assigned to the named variable instead displayed [optional].
  * - all remaining parameters are passed to the event via the args param in the event.
  *
  * Example:
