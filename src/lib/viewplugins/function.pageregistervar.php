@@ -49,13 +49,15 @@
  */
 function smarty_function_pageregistervar($params, Zikula_View $view)
 {
-    $name = isset($params['name']) ? $params['name'] : null;
+    $name =       isset($params['name']) ? $params['name'] : null;
+    $multivalue = isset($params['multivalue']) ? $params['multivalue'] : null;
+    $default =    isset($params['default']) ? $params['default'] : null;
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpageregistervar', 'name')));
         return false;
     }
 
-    PageUtil::registerVar($name);
+    PageUtil::registerVar($name, $multivalue, $default);
     return;
 }
