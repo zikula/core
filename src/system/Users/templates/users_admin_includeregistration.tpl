@@ -24,11 +24,9 @@
 {/if}
 
 {notifyevent eventname='users.user.display_view' subject=$reginfo id=$reginfo['uid']) assign="eventData"}
-            {foreach key='eventName' item='eventDisplay' from=$eventData}
-            <div class="z-formrow">
-                {$eventDisplay}
-            </div>
-        {/foreach}
+{foreach key='eventName' item='eventDisplay' from=$eventData}
+    {$eventDisplay}
+{/foreach}
 
 <div class="z-form">
     <fieldset>

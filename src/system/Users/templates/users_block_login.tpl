@@ -40,9 +40,7 @@
 
             {notifyevent eventname='users.login.form_edit' form_type='loginblock' assign="eventData"}
             {foreach key='eventName' item='eventDisplay' from=$eventData}
-                <div class="z-formrow">
-                    {$eventDisplay}
-                </div>
+                {$eventDisplay}
             {/foreach}
 
             {/if}
