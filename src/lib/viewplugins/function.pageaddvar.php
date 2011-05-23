@@ -21,6 +21,7 @@
  * Available parameters:
  *   - name:     The name of the page variable to set
  *   - value:    The value of the page variable to set, comma separated list is possible
+ *               for stylesheet and javascript variables
  *
  * Zikula doesn't impose any restriction on the page variable's name except for duplicate
  * and reserved names. As of this writing, the list of reserved names consists of
@@ -62,7 +63,7 @@ function smarty_function_pageaddvar($params, Zikula_View $view)
         return false;
     }
 
-    if ($name != 'header' || $name != 'footer') {
+    if (in_array($name, array('stylesheet', 'javascript'))) {
         $value = explode(',', $value);
     }
 
