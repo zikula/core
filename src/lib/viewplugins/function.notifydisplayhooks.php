@@ -50,7 +50,7 @@ function smarty_function_notifydisplayhooks($params, Zikula_View $view)
     $assign  = isset($params['assign']) ? $params['assign'] : false;
 
     // create event and notify
-    $hook = new Zikula_DisplayHook($eventname, $id, $view->getController(), $urlObject);
+    $hook = new Zikula_DisplayHook($eventname, $id, $urlObject);
     $view->getServiceManager()->getService('zikula.hookmanager')->notify($hook);
     $responses = $hook->getResponses();
 
