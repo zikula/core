@@ -645,7 +645,8 @@ class ModUtil
 
         // no need for pntables scan if using Doctrine
         $doctrineModelDir = "$modpath/$directory/lib/$directory/Model";
-        if (is_dir($doctrineModelDir)) {
+        $doctrineEntityDir = "$modpath/$directory/lib/$directory/Entity";
+        if (is_dir($doctrineModelDir) || is_dir($doctrineEntityDir)) {
             $loaded[$modname] = true;
             $serviceManager['modutil.dbinfoload.loaded'] = $loaded;
             return true;
