@@ -32,26 +32,11 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
      */
     private $url;
 
-    /**
-     * @var Zikula_AbstractController
-     */
-    private $controller;
-
-    public function __construct($name, $id, Zikula_AbstractController $controller, Zikula_ModUrl $url = null)
+    public function __construct($name, $id, Zikula_ModUrl $url = null)
     {
         $this->name = $name;
         $this->id = $id;
-        $this->controller = $controller;
         $this->url = $url;
-    }
-
-    /**
-     *
-     * @return Zikula_AbstractController
-     */
-    public function getController()
-    {
-        return $this->controller;
     }
 
     /**
