@@ -19,6 +19,7 @@ body {
 #container {
     margin: 0 auto;
     width: 65%;
+    min-width: 840px;
 }
 
 #content {
@@ -106,6 +107,10 @@ img {
     line-height: 24px;
     list-style-type: none;
     padding: 5px 12px 5px 7px;
+}
+
+.breadcrumb li.last {
+	background-image: none;
 }
 
 .breadcrumb a {

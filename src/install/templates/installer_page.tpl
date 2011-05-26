@@ -31,7 +31,7 @@
                         <li{if $action eq dbinformation} class="menu_selected"{/if}>
                             <span class="{if $step > 2}icon-ok{else}icon-nok{/if}">{gt text="Database information"}</span>
                         </li>
-                        <li{if $action eq createadmin} class="menu_selected"{/if}>
+                        <li class="last {if $action eq createadmin}menu_selected{/if}">
                             <span class="{if $step > 3}icon-ok{else}icon-nok{/if}">{gt text="Create administrator's account"}</span>
                         </li>
                     </ol>
