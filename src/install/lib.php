@@ -12,6 +12,9 @@
  * information regarding copyright and licensing.
  */
 
+ini_set('memory_limit', '84M');
+ini_set('max_execution_time', 300);
+
 /**
  * Install controller.
  *
