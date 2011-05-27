@@ -14,7 +14,7 @@
 /**
  * Installer.
  */
-class ExampleDoctrine_Installer extends Zikula_Installer
+class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
 {
 
     /**
