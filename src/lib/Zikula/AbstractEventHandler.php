@@ -33,7 +33,7 @@ abstract class Zikula_AbstractEventHandler
      *
      * @var array
      */
-    protected $eventNames;
+    protected $eventNames = array();
 
     /**
      * EventManager instance.
