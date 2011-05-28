@@ -14,7 +14,7 @@
 /**
  * Form handler for create and edit.
  */
-class ExampleDoctrine_Handler_Edit extends Zikula_Form_Handler
+class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
 {
     /**
      * User id.
