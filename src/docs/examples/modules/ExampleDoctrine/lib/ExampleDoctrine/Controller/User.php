@@ -58,7 +58,7 @@ class ExampleDoctrine_Controller_User extends Zikula_AbstractController
             return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'main'));
         }
 
-        $form = FormUtil::newForm('ExampleDoctrine');
+        $form = FormUtil::newForm('ExampleDoctrine', $this);
         return $form->execute('exampledoctrine_user_edit.tpl', new ExampleDoctrine_Handler_Edit());
     }
 }
