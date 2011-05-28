@@ -5,7 +5,7 @@
         <li>{$message|safehtml}</li>
         {/foreach}
     </ul>
-    {if isset($trace)}
+    {if $trace}
     <ul>
         <h2>{gt text="Exception Trace"}</h2>
         {foreach from=$trace item=t}
