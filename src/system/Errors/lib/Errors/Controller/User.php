@@ -14,11 +14,11 @@
  */
 class Errors_Controller_User extends Zikula_AbstractController
 {
-
     /**
      * Display an error
      * This function displays a generic error form
      * The template used is based on the error type passed
+     *
      * @param string $args['type'] error type ''404' or 'module'
      * @param string $args['message'] custom error message
      * @return string HTML string
@@ -59,16 +59,24 @@ class Errors_Controller_User extends Zikula_AbstractController
                    ->assign('reportlevel', System::getVar('reportlevel'))
                    ->assign('funtext', System::getVar('funtext'));
 
-        // assign the list of registered errors
-        $this->view->assign('messages', LogUtil::getErrorMessages());
+        $messages = LogUtil::getErrorMessages();
+        // show the detailed error message for admins only
+        if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
+            $message ? $messages[] = $message : null;
+        }
+
         $trace = array();
         if (System::isDevelopmentMode() && $exception instanceof Exception) {
             $line = $exception->getLine();
             $file = $exception->getFile();
-            $trace = explode("\n", $exception->getTraceAsString());
-            $trace[0] .= " in $file, line $line";
+            $trace = array(0 => '#0 '.$this->__f('Exception thrown in %1$s, line %2$s.', array($file, $line)));
+            $trace += explode("\n", $exception->getTraceAsString());
         }
-        $this->view->assign('trace', $trace);
+
+        // assign the list of registered errors
+        // and the trace (if development mode is enabled)
+        $this->view->assign('messages', $messages)
+                   ->assign('trace', $trace);
 
         // return the template output
         if ($this->view->template_exists($template = "errors_user_{$type}.tpl")) {
