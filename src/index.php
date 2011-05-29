@@ -135,7 +135,7 @@ switch (true)
         // there is no break here deliberately.
     case ($return === false):
         if (!LogUtil::hasErrors()) {
-            LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'. %3$s', array($modinfo['url'], $func, $message)), $httpCode, null);
+            LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($modinfo['url'], $func)), $httpCode, null);
         }
         echo ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));
         break;
@@ -143,7 +143,7 @@ switch (true)
         echo $return;
         break;
     default:
-        LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'. %3$s', array($modinfo['url'], $func, $message)), $httpCode, null);
+        LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($modinfo['url'], $func)), $httpCode, null);
         echo ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));
         break;
 }
