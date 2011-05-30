@@ -61,7 +61,7 @@ class Errors_Controller_User extends Zikula_AbstractController
 
         $messages = LogUtil::getErrorMessages();
         // show the detailed error message for admins only
-        if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
+        if (System::isDevelopmentMode() || SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
             $message ? $messages[] = $message : null;
         }
 
