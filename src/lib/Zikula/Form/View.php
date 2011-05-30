@@ -664,6 +664,36 @@ class Zikula_Form_View extends Zikula_View
     // --- Error handling ---
 
     /**
+     * Register a plugin error.
+     *
+     * Example:
+     * <code>
+     * function handleCommand(...)
+     * {
+     *   if (... plugin value error ...)
+     *     return $view->setPluginErrorMsg('title', 'Value of title not valid');
+     * }
+     * </code>
+     *
+     * @param string $id        Plugin identifier.
+     * @param string $msg       Error message.
+     * @param array  $newvalues New values to set on the plugin object (optional).
+     *
+     * @return false
+     */
+    public function setPluginErrorMsg($id, $msg, $newvalues = array())
+    {
+        $plugin = $this->getPluginById($id);
+        $plugin->setError($msg);
+
+        foreach ($newvalues as $k => $v) {
+            $plugin->$k = $v;
+        }
+
+        return false;
+    }
+
+    /**
      * Register an error.
      *
      * Example:
@@ -671,7 +701,7 @@ class Zikula_Form_View extends Zikula_View
      * function handleCommand(...)
      * {
      *   if (... it did not work ...)
-     *     return $view->registerError('Operation X failed due to Y');
+     *     return $view->setErrorMsg('Operation X failed due to Y');
      * }
      * </code>
      *
