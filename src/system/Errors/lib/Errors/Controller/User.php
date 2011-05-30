@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
@@ -19,15 +18,16 @@ class Errors_Controller_User extends Zikula_AbstractController
      * This function displays a generic error form
      * The template used is based on the error type passed
      *
-     * @param string $args['type'] error type ''404' or 'module'
+     * @param string $args['type'] error type '404' or 'module'
      * @param string $args['message'] custom error message
+     *
      * @return string HTML string
      */
     public function main($args)
     {
-        $type = FormUtil::getPassedValue('errtype', isset($args['type']) ? $args['type'] : LogUtil::getErrorType(), 'GET');
+        $type      = FormUtil::getPassedValue('errtype', isset($args['type']) ? $args['type'] : LogUtil::getErrorType(), 'GET');
         $exception = isset($args['exception']) ? $args['exception'] : null;
-        $message = isset($args['message']) ? $args['message'] : '';
+        $message   = isset($args['message']) ? $args['message'] : '';
 
         // perform any error specific tasks
         $protocol = System::serverGetVar('SERVER_PROTOCOL');
@@ -87,12 +87,12 @@ class Errors_Controller_User extends Zikula_AbstractController
     }
 
     /**
-     * display a system error
+     * Display a system error
      */
     public function system($args)
     {
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
-        $this->view->assign($args);
-        return $this->view->fetch('errors_user_system.tpl');
+        return $this->view->setCaching(Zikula_View::CACHE_DISABLED)
+                          ->assign($args)
+                          ->fetch('errors_user_system.tpl');
     }
 }
