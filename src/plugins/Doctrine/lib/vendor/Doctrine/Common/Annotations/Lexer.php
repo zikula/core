@@ -40,7 +40,7 @@ class Lexer extends \Doctrine\Common\Lexer
     const T_INTEGER             = 3;
     const T_STRING              = 4;
     const T_FLOAT               = 5;
-    
+
     const T_AT                  = 101;
     const T_CLOSE_CURLY_BRACES  = 102;
     const T_CLOSE_PARENTHESIS   = 103;
@@ -51,7 +51,8 @@ class Lexer extends \Doctrine\Common\Lexer
     const T_OPEN_CURLY_BRACES   = 108;
     const T_OPEN_PARENTHESIS    = 109;
     const T_TRUE                = 110;
-    
+    const T_NULL                = 111;
+
     /**
      * @inheritdoc
      */
@@ -60,10 +61,11 @@ class Lexer extends \Doctrine\Common\Lexer
         return array(
             '[a-z_][a-z0-9_:]*',
             '(?:[0-9]+(?:[\.][0-9]+)*)(?:e[+-]?[0-9]+)?',
-            '"(?:[^"]|"")*"'
+            '"(?:[^"]|"")*"',
+            "'(?:[^']|'')*'",
         );
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -78,80 +80,65 @@ class Lexer extends \Doctrine\Common\Lexer
     protected function getType(&$value)
     {
         $type = self::T_NONE;
-        $newVal = $this->getNumeric($value);
-        
+
         // Checking numeric value
-        if ($newVal !== false) {
-            $value = $newVal;
-            
+        if (is_numeric($value)) {
             return (strpos($value, '.') !== false || stripos($value, 'e') !== false)
                 ? self::T_FLOAT : self::T_INTEGER;
         }
-        
+
         if ($value[0] === '"') {
             $value = str_replace('""', '"', substr($value, 1, strlen($value) - 2));
-            
+
+            return self::T_STRING;
+        } else if ($value[0] === "'") {
+            $value = str_replace("''", "'", substr($value, 1, strlen($value) - 2));
+
             return self::T_STRING;
         } else {
             switch (strtolower($value)) {
-                case '@': 
+                case '@':
                     return self::T_AT;
 
-                case ',': 
+                case ',':
                     return self::T_COMMA;
 
-                case '(': 
+                case '(':
                     return self::T_OPEN_PARENTHESIS;
 
-                case ')': 
+                case ')':
                     return self::T_CLOSE_PARENTHESIS;
 
-                case '{': 
+                case '{':
                     return self::T_OPEN_CURLY_BRACES;
 
-                case '}': return self::T_CLOSE_CURLY_BRACES;
-                case '=': 
+                case '}':
+                    return self::T_CLOSE_CURLY_BRACES;
+
+                case '=':
                     return self::T_EQUALS;
 
-                case '\\': 
+                case '\\':
                     return self::T_NAMESPACE_SEPARATOR;
 
-                case 'true': 
+                case 'true':
                     return self::T_TRUE;
 
-                case 'false': 
+                case 'false':
                     return self::T_FALSE;
+
+                case 'null':
+                    return self::T_NULL;
 
                 default:
                     if (ctype_alpha($value[0]) || $value[0] === '_') {
                         return self::T_IDENTIFIER;
                     }
-                    
+
                     break;
             }
         }
 
         return $type;
-    }
-
-    /**
-     * Checks if a value is numeric or not
-     *
-     * @param mixed $value Value to be inspected
-     * @return boolean|integer|float Processed value
-     * @todo Inline
-     */
-    private function getNumeric($value)
-    {
-        if ( ! is_scalar($value)) {
-            return false;
-        }
-
-        // Checking for valid numeric numbers: 1.234, -1.234e-2
-        if (is_numeric($value)) {
-            return $value;
-        }
-
-        return false;
     }
 }

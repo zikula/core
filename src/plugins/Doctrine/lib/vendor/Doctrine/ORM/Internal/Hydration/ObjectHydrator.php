@@ -59,7 +59,10 @@ class ObjectHydrator extends AbstractHydrator
         $this->_resultPointers =
         $this->_idTemplate = array();
         $this->_resultCounter = 0;
-
+        if (!isset($this->_hints['deferEagerLoad'])) {
+            $this->_hints['deferEagerLoad'] = true;
+        }
+        
         foreach ($this->_rsm->aliasMap as $dqlAlias => $className) {
             $this->_identifierMap[$dqlAlias] = array();
             $this->_idTemplate[$dqlAlias] = '';
@@ -112,11 +115,17 @@ class ObjectHydrator extends AbstractHydrator
      */
     protected function _cleanup()
     {
+        $eagerLoad = (isset($this->_hints['deferEagerLoad'])) && $this->_hints['deferEagerLoad'] == true;
+        
         parent::_cleanup();
         $this->_identifierMap =
         $this->_initializedCollections =
         $this->_existingCollections =
         $this->_resultPointers = array();
+        
+        if ($eagerLoad) {
+            $this->_em->getUnitOfWork()->triggerEagerLoads();
+        }
     }
 
     /**
@@ -399,6 +408,10 @@ class ObjectHydrator extends AbstractHydrator
                             $result[$key] = $element;
                             $this->_identifierMap[$dqlAlias][$id[$dqlAlias]] = $key;
                         }
+
+                        if (isset($this->_hints['collection'])) {
+                            $this->_hints['collection']->hydrateSet($key, $element);
+                        }
                     } else {
                         if ($this->_rsm->isMixed) {
                             $element = array(0 => $element);
@@ -406,6 +419,10 @@ class ObjectHydrator extends AbstractHydrator
                         $result[] = $element;
                         $this->_identifierMap[$dqlAlias][$id[$dqlAlias]] = $this->_resultCounter;
                         ++$this->_resultCounter;
+
+                        if (isset($this->_hints['collection'])) {
+                            $this->_hints['collection']->hydrateAdd($element);
+                        }
                     }
 
                     // Update result pointer

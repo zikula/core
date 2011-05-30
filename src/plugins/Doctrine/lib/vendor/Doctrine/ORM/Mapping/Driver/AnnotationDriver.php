@@ -132,6 +132,10 @@ class AnnotationDriver implements Driver
         if (isset($classAnnotations['Doctrine\ORM\Mapping\Entity'])) {
             $entityAnnot = $classAnnotations['Doctrine\ORM\Mapping\Entity'];
             $metadata->setCustomRepositoryClass($entityAnnot->repositoryClass);
+
+            if ($entityAnnot->readOnly) {
+                $metadata->markReadOnly();
+            }
         } else if (isset($classAnnotations['Doctrine\ORM\Mapping\MappedSuperclass'])) {
             $metadata->isMappedSuperclass = true;
         } else {
@@ -163,6 +167,18 @@ class AnnotationDriver implements Driver
             }
 
             $metadata->setPrimaryTable($primaryTable);
+        }
+
+        // Evaluate NamedQueries annotation
+        if (isset($classAnnotations['Doctrine\ORM\Mapping\NamedQueries'])) {
+            $namedQueriesAnnot = $classAnnotations['Doctrine\ORM\Mapping\NamedQueries'];
+
+            foreach ($namedQueriesAnnot->value as $namedQuery) {
+                $metadata->addNamedQuery(array(
+                    'name'  => $namedQuery->name,
+                    'query' => $namedQuery->query
+                ));
+            }
         }
 
         // Evaluate InheritanceType annotation
@@ -288,6 +304,10 @@ class AnnotationDriver implements Driver
                     throw MappingException::tableIdGeneratorNotImplemented($className);
                 }
             } else if ($oneToOneAnnot = $this->_reader->getPropertyAnnotation($property, 'Doctrine\ORM\Mapping\OneToOne')) {
+                if ($idAnnot = $this->_reader->getPropertyAnnotation($property, 'Doctrine\ORM\Mapping\Id')) {
+                    $mapping['id'] = true;
+                }
+
                 $mapping['targetEntity'] = $oneToOneAnnot->targetEntity;
                 $mapping['joinColumns'] = $joinColumns;
                 $mapping['mappedBy'] = $oneToOneAnnot->mappedBy;
@@ -300,6 +320,7 @@ class AnnotationDriver implements Driver
                 $mapping['mappedBy'] = $oneToManyAnnot->mappedBy;
                 $mapping['targetEntity'] = $oneToManyAnnot->targetEntity;
                 $mapping['cascade'] = $oneToManyAnnot->cascade;
+                $mapping['indexBy'] = $oneToManyAnnot->indexBy;
                 $mapping['orphanRemoval'] = $oneToManyAnnot->orphanRemoval;
                 $mapping['fetch'] = constant('Doctrine\ORM\Mapping\ClassMetadata::FETCH_' . $oneToManyAnnot->fetch);
 
@@ -309,6 +330,10 @@ class AnnotationDriver implements Driver
 
                 $metadata->mapOneToMany($mapping);
             } else if ($manyToOneAnnot = $this->_reader->getPropertyAnnotation($property, 'Doctrine\ORM\Mapping\ManyToOne')) {
+                if ($idAnnot = $this->_reader->getPropertyAnnotation($property, 'Doctrine\ORM\Mapping\Id')) {
+                    $mapping['id'] = true;
+                }
+
                 $mapping['joinColumns'] = $joinColumns;
                 $mapping['cascade'] = $manyToOneAnnot->cascade;
                 $mapping['inversedBy'] = $manyToOneAnnot->inversedBy;
@@ -354,6 +379,7 @@ class AnnotationDriver implements Driver
                 $mapping['mappedBy'] = $manyToManyAnnot->mappedBy;
                 $mapping['inversedBy'] = $manyToManyAnnot->inversedBy;
                 $mapping['cascade'] = $manyToManyAnnot->cascade;
+                $mapping['indexBy'] = $manyToManyAnnot->indexBy;
                 $mapping['fetch'] = constant('Doctrine\ORM\Mapping\ClassMetadata::FETCH_' . $manyToManyAnnot->fetch);
 
                 if ($orderByAnnot = $this->_reader->getPropertyAnnotation($property, 'Doctrine\ORM\Mapping\OrderBy')) {

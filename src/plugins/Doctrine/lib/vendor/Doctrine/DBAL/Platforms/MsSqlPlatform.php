@@ -311,7 +311,7 @@ class MsSqlPlatform extends AbstractPlatform
     /**
      * @override
      */
-    public function getListTableColumnsSQL($table)
+    public function getListTableColumnsSQL($table, $database = null)
     {
         return 'exec sp_columns @table_name = ' . $table;
     }
@@ -773,5 +773,10 @@ class MsSqlPlatform extends AbstractPlatform
     public function getForUpdateSQL()
     {
         return ' ';
+    }
+    
+    protected function getReservedKeywordsClass()
+    {
+        return 'Doctrine\DBAL\Platforms\Keywords\MsSQLKeywords';
     }
 }
