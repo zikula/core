@@ -63,10 +63,10 @@ class ClassMetadata extends ClassMetadataInfo
      */
     public function __construct($entityName)
     {
-        parent::__construct($entityName);
         $this->reflClass = new ReflectionClass($entityName);
         $this->namespace = $this->reflClass->getNamespaceName();
         $this->table['name'] = $this->reflClass->getShortName();
+        parent::__construct($this->reflClass->getName()); // do not use $entityName, possible case-problems
     }
 
     /**
@@ -317,6 +317,10 @@ class ClassMetadata extends ClassMetadataInfo
             $serialized[] = 'isMappedSuperclass';
         }
 
+        if ($this->containsForeignIdentifier) {
+            $serialized[] = 'containsForeignIdentifier';
+        }
+
         if ($this->isVersioned) {
             $serialized[] = 'isVersioned';
             $serialized[] = 'versionField';
@@ -324,6 +328,14 @@ class ClassMetadata extends ClassMetadataInfo
 
         if ($this->lifecycleCallbacks) {
             $serialized[] = 'lifecycleCallbacks';
+        }
+
+        if ($this->namedQueries) {
+            $serialized[] = 'namedQueries';
+        }
+
+        if ($this->isReadOnly) {
+            $serialized[] = 'isReadOnly';
         }
 
         return $serialized;

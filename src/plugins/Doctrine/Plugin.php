@@ -25,7 +25,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
     {
         return array('displayname' => $this->__('Doctrine ORM'),
                      'description' => $this->__('Provides Doctrine ORM, DBAL and Common layers of Doctrine 2'),
-                     'version'     => '2.0.5'
+                     'version'     => '2.1.0-BETA1'
                       );
     }
 
@@ -43,6 +43,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         // we have to add a new loader onto the spl stack.
         $autoloader = new Zikula_KernelClassLoader();
         $autoloader->spl_autoload_register();
+        include 'lib/DoctrineHelper.php';
         $autoloader->register('Doctrine', dirname(__FILE__) . '/lib/vendor', '\\');
         $autoloader->register('Symfony\\Components\\Yaml', dirname(__FILE__) . '/lib/vendor', '\\');
         $autoloader->register('Symfony\\Components\\Console', dirname(__FILE__) . '/lib/vendor', '\\');
@@ -60,7 +61,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $ORMConfig->setQueryCacheImpl($dbCache);
         $ORMConfig->setProxyDir('ztemp/doctrinemodels');
         $ORMConfig->setProxyNamespace('DoctrineProxy');
-        $ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
+        //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
 
         $eventManager = new \Doctrine\Common\EventManager;
         $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
