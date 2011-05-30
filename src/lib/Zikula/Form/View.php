@@ -686,8 +686,13 @@ class Zikula_Form_View extends Zikula_View
         $plugin = $this->getPluginById($id);
         $plugin->setError($msg);
 
-        foreach ($newvalues as $k => $v) {
-            $plugin->$k = $v;
+        $objInfo = get_class_vars(get_class($plugin));
+
+        // iterate through the newvalues: place known params in member variables
+        foreach ($newvalues as $name => $value) {
+            if (array_key_exists($name, $objInfo)) {
+                $plugin->$name = $value;
+            }
         }
 
         return false;
@@ -778,7 +783,19 @@ class Zikula_Form_View extends Zikula_View
     {
         $this->redirected = true;
 
+        // FIXME this executes the redirect immediately,
+        // should the View store the url and do it in the end of its lifecycle?
         return System::redirect($url);
+    }
+
+    /**
+     * Redirect status check.
+     *
+     * @return boolean True if redirected, otherwise false.
+     */
+    public function isRedirected()
+    {
+        return $this->redirected;
     }
 
     // --- Event handling ---
