@@ -82,19 +82,28 @@ Zikula.Users.NewUser = {
             indicatorElement.removeClassName('z-hide');
         }
         
-        if (!checkMessageElement.hasClassName('z-hide')) {
-            checkMessageElement.addClassName('z-hide');
+        if (checkMessageElement.hasClassName('z-hide')) {
+            checkMessageElement.removeClassName('z-hide');
         }
+        
+        if (!checkMessageElement.hasClassName('z-invisible')) {
+            checkMessageElement.addClassName('z-invisible');
+        }
+        
         if (!validMessageElement.hasClassName('z-hide')) {
             validMessageElement.addClassName('z-hide');
         }
+        
         if (!submitElement.hasClassName('z-hide')) {
             submitElement.addClassName('z-hide');
         }
+        
         submitElement.disabled = true;
+        
         if (!checkUserElement.hasClassName('z-hide')) {
             checkUserElement.addClassName('z-hide');
         }
+        
         checkUserElement.disabled = true;
     },
 
@@ -111,6 +120,9 @@ Zikula.Users.NewUser = {
         }
         
         if (hasError) {
+            if (checkMessageElement.hasClassName('z-invisible')) {
+                checkMessageElement.removeClassName('z-invisible');
+            }
             if (checkMessageElement.hasClassName('z-hide')) {
                 checkMessageElement.removeClassName('z-hide');
             }
@@ -126,6 +138,9 @@ Zikula.Users.NewUser = {
             }
             checkUserElement.disabled = false;
         } else {
+            if (checkMessageElement.hasClassName('z-invisible')) {
+                checkMessageElement.removeClassName('z-invisible');
+            }
             if (!checkMessageElement.hasClassName('z-hide')) {
                 checkMessageElement.addClassName('z-hide');
             }
