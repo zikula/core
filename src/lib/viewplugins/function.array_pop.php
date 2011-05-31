@@ -14,7 +14,7 @@
  */
 
 /**
- * Assign a value caching its parameters if cache is enabled.
+ * Pop a field of an array and assign its value to a template variable.
  *
  * Available attributes:
  *  - array  (string) Name of the template array variable to process
@@ -39,16 +39,16 @@
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
- * @return Void
+ * @return mixed False on failure, void if the value is assigned, or the value extracted itself.
  */
 function smarty_function_array_pop($params, Zikula_View $view)
 {
-    if (!isset($params['array'])) {
+    if (!isset($params['array']) || !$params['array']) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assign_cache', 'var')));
         return false;
     }
 
-    if (!isset($params['field'])) {
+    if (!isset($params['field']) || !$params['field']) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assign_cache', 'value')));
         return false;
     }
