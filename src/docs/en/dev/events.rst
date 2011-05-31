@@ -406,6 +406,13 @@ actions such as redirects.
 
  * The subject of the event is set to the user record, with the updated values.
 
+#### `module.users.ui.form_delete`
+A hook-like event that is triggered when the delete confirmation form is displayed. It allows other modules
+to intercept and add to the delete confirmation form.
+
+ * The subject of the event is not set.
+ * The id provided is the uid of the user who will be deleted if confirmed.
+
 #### `user.account.delete`
 Occurs after a user is deleted from the system. All handlers are notified. The full user record
 deleted is available as the subject. This is a storage-level event, not a UI event. It should not be

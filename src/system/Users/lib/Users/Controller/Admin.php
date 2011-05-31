@@ -997,6 +997,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         }
 
         if ($proceedToForm) {
+            // TODO - Get the full user record for each UID and pass them to the template for use as aubject
             return $this->view->assign('userid', $userid[0])
                 ->assign('uname', $uname)
                 ->fetch('users_admin_deleteusers.tpl');

@@ -16,7 +16,7 @@
                     <span>{$uname}</span>
                 </div>
             </fieldset>
-            {notifyevent eventname='users.user.form_delete' subject=null id=$userid assign="eventData"}
+            {notifyevent eventname='module.users.ui.form_delete' subject=null id=$userid assign="eventData"}
             {foreach item='eventDisplay' from=$eventData}
                 {$eventDisplay}
             {/foreach}
