@@ -46,13 +46,14 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
         $id = FormUtil::getPassedValue('id', null, "GET", FILTER_SANITIZE_NUMBER_INT);
         if ($id) {
             // load user with id
-            $user = Doctrine_Core::getTable('ExampleDoctrine_Model_User')->find($id);
+            $em = ServiceUtil::getService('doctrine.entitymanager');
+            $user = $em->find('ExampleDoctrine_Entity_User', $id);
 
             if ($user) {
                 // switch to edit mode
                 $this->_id = $id;
                 // assign current values to form fields
-                $view->assign($user->toArray());
+                $view->assign('user', $user);
             } else {
                 return LogUtil::registerError($this->__f('User with id %s not found', $id));
             }
@@ -65,7 +66,7 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
      * Handle form submission.
      *
      * @param Zikula_Form_View $view  Current Zikula_Form_View instance.
-     * @param array     &$args Args.
+     * @param array            &$args Args.
      *
      * @return boolean
      */
@@ -80,14 +81,16 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
         $data = $view->getValues();
 
         // switch between edit and create mode
+        $em = ServiceUtil::getService('doctrine.entitymanager');
         if ($this->_id) {
-            $user = Doctrine_Core::getTable('ExampleDoctrine_Model_User')->find($this->_id);
+            $user = $em->find('ExampleDoctrine_Entity_User', $this->_id);
         } else {
-            $user = new ExampleDoctrine_Model_User();
+            $user = new ExampleDoctrine_Entity_User();
         }
 
         $user->merge($data);
-        $user->save();
+        $em->persist($user);
+        $em->flush();
 
         return $view->redirect(ModUtil::url('ExampleDoctrine', 'user','view'));
     }

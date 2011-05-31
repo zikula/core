@@ -1,114 +1,36 @@
 NOTES ON USING DOCTRINE
 -----------------------
-Zikula supports Doctrine 1.2. Please make sure you are reading the correct version
+Zikula supports Doctrine 2.1. Please make sure you are reading the correct version
 of the documentation looking on the vendor website
-http://www.doctrine-project.org/projects/orm/1.2/docs/en
 
-1.  It is not necessary to loadModels() except in specific conditions when it is
-required.  Registering the module namespace (which happens automatically) is
-enough.  This is the main advantage of using the PEAR class/file naming scheme.
-
-2.  Models are required to tell Doctrine about the structure of a table.  But they
-also allow additional behavior.
+http://www.doctrine-project.org/projects/orm/2.1/docs/en
 
 Rather than reading the entire Doctrine manual, we refer to certain things you need
 to know about.
 
-BEHAVIOURS PROVIDED BY ZIKULA
-----------------------------
-
-Categorisable:
---------------
-Categories support for records. It is similar to the old ObjectUtil categories service.
-
-How to use:
-In your record's setUp() method:
-    $this->actAs('Zikula_Doctrine_Template_Categorisable');
-
-Access assigned categories:
-    $category_id = $myRecord['Categories']['main']['category_id'];
-    $category_details = $myRecord['Categories']['main']['Category'];
-    $category_name = $category_details['name'];
-
-main is the property name set in the category registry.
-
-formcategoryselector form plugin example:
-    {formcategoryselector id="category_`$property`" category=$registryCid dataField=$property enableDoctrine=true}
-
-$registryCid is the category id set in the category registry.
-
-Doctrine_Query::create() or Doctrine_Core::getTable('MyModule_Model_MyTable')->createQuery() provide an new function:
-addWhereCategories(). Documentation available in the phpdoc of the method in the class Zikula_Doctrine_Query (file location: /lib/Zikula/Doctrine/Query.php)
-
-
-Attributable:
--------------
-This template allows you to dynamically add new key7value pairs to an single record.
-
-How to use:
-In your record's setUp() method:
-    $this->actAs('Zikula_Doctrine_Template_Attributable');
-
-Access attributes:
-    $prop1 = $myRecord['__ATTRIBUTES__']['myprop1'];
-    $myRecord['__ATTRIBUTES__']['myprop1'] = 'new value';
-
-
-MetaData:
----------
-This template allows you to store meta data along your record.
-
-How to use:
-In your record's setUp() method:
-    $this->actAs('Zikula_Doctrine_Template_MetaData');
-
-Access meta data:
-    $comment = $myRecord['__META__']['dc_comment'];
-    $myRecord['__META__']['dc_comment'] = 'new comment';
-
-To see a list of supported columns take a look at the objectdata_meta table definition in /sytem/Settings/tables.php.
-
-
-StandardFields:
----------------
-This template add five new columns to your record:
-obj_status: Object status
-cr_date: record creation date
-cr_uid: user id of the creator
-lu_date: last update date
-lu_uid: user id of the last updater
-
-
 BASICS
 ------
-Defining Models:
-http://www.doctrine-project.org/projects/orm/1.2/docs/manual/defining-models/en
-Please note the documentation often omits $this->setTableName('groups') in the
-setTableDefinition() method.  This is required.
+Basic Mapping
+http://www.doctrine-project.org/docs/orm/2.0/en/reference/basic-mapping.html
 
-Working with Models:
-http://www.doctrine-project.org/projects/orm/1.2/docs/manual/working-with-models/en
+Association Mapping
+http://www.doctrine-project.org/docs/orm/2.0/en/reference/association-mapping.html
+
+Working with Objects
+http://www.doctrine-project.org/docs/orm/2.0/en/reference/working-with-objects.html
+
+Working with Associations
+http://www.doctrine-project.org/docs/orm/2.0/en/reference/working-with-associations.html
 
 DQL
-http://www.doctrine-project.org/projects/orm/1.2/docs/manual/dql-doctrine-query-language/en
+http://www.doctrine-project.org/docs/orm/2.0/en/reference/dql-doctrine-query-language.html
+
+Annotations Mapping
+http://www.doctrine-project.org/docs/orm/2.0/en/reference/annotations-reference.html
 
 
 OPTIONAL BUT RECOMMENDED TOPICS
 -------------------------------
-Validation:
-http://www.doctrine-project.org/projects/orm/1.2/docs/manual/data-validation/en
 
-Behaviours:
-http://www.doctrine-project.org/projects/orm/1.2/docs/manual/behaviors/en
-
-Search:
-http://www.doctrine-project.org/projects/orm/1.2/docs/manual/searching/en
-
-
-ADVANCED TOPICS
----------------
-Caching:
-http://www.doctrine-project.org/projects/orm/1.2/docs/manual/caching/en
-
-Event Listeners:
-http://www.doctrine-project.org/projects/orm/1.2/docs/manual/event-listeners/en
+Events
+http://www.doctrine-project.org/docs/orm/2.0/en/reference/events.html
