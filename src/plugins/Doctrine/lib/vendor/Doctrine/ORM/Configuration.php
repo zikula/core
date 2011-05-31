@@ -20,7 +20,8 @@
 namespace Doctrine\ORM;
 
 use Doctrine\Common\Cache\Cache,
-    Doctrine\ORM\Mapping\Driver\Driver;
+    Doctrine\ORM\Mapping\Driver\Driver,
+    Doctrine\Common\Cache\ArrayCache;
 
 /**
  * Configuration container for all configuration options of Doctrine.
@@ -120,9 +121,21 @@ class Configuration extends \Doctrine\DBAL\Configuration
      */
     public function newDefaultAnnotationDriver($paths = array())
     {
-        $reader = new \Doctrine\Common\Annotations\AnnotationReader();
-        $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
-        
+        if (version_compare(\Doctrine\Common\Version::VERSION, '3.0.0-DEV', '>=')) {
+            $reader = new \Doctrine\Common\Annotations\AnnotationReader();
+            $reader = new \Doctrine\Common\Annotations\CachedReader($reader, new ArrayCache());
+        } else if (version_compare(\Doctrine\Common\Version::VERSION, '2.1.0-BETA3-DEV', '>=')) {
+            $reader = new \Doctrine\Common\Annotations\AnnotationReader();
+            $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
+            $reader->setIgnoreNotImportedAnnotations(true);
+            $reader->setEnableParsePhpImports(false);
+            $reader = new \Doctrine\Common\Annotations\CachedReader(
+                new \Doctrine\Common\Annotations\IndexedReader($reader), new ArrayCache()
+            );
+        } else {
+            $reader = new \Doctrine\Common\Annotations\AnnotationReader();
+            $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
+        }
         return new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($reader, (array)$paths);
     }
 
