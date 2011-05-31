@@ -16,40 +16,61 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
- 
-namespace Doctrine\ORM;
+
+namespace Doctrine\Common\Cache;
 
 /**
- * Class to store and retrieve the version of Doctrine
+ * Zend Data Cache cache driver.
  *
  * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link    www.doctrine-project.org
  * @since   2.0
- * @version $Revision$
- * @author  Benjamin Eberlei <kontakt@beberlei.de>
- * @author  Guilherme Blanco <guilhermeblanco@hotmail.com>
- * @author  Jonathan Wage <jonwage@gmail.com>
- * @author  Roman Borschel <roman@code-factory.org>
+ * @author  Ralph Schindler <ralph.schindler@zend.com>
  */
-class Version
+class ZendDataCache extends AbstractCache
 {
-    /**
-     * Current Doctrine Version
-     */
-    const VERSION = '2.1.0BETA2-DEV';
-
-    /**
-     * Compares a Doctrine version with the current one.
-     *
-     * @param string $version Doctrine version to compare.
-     * @return int Returns -1 if older, 0 if it is the same, 1 if version 
-     *             passed as argument is newer.
-     */
-    public static function compare($version)
+    public function __construct()
     {
-        $currentVersion = str_replace(' ', '', strtolower(self::VERSION));
-        $version = str_replace(' ', '', $version);
+        $this->setNamespace('doctrine::'); // zend data cache format for namespaces ends in ::
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getIds()
+    {
+        throw new \BadMethodCallException("getIds() is not supported by ZendDataCache");
+    }
 
-        return version_compare($version, $currentVersion);
+    /**
+     * {@inheritdoc}
+     */
+    protected function _doFetch($id)
+    {
+        return zend_shm_cache_fetch($id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _doContains($id)
+    {
+        return (zend_shm_cache_fetch($id) !== FALSE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _doSave($id, $data, $lifeTime = 0)
+    {
+        return zend_shm_cache_store($id, $data, $lifeTime);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _doDelete($id)
+    {
+        return zend_shm_cache_delete($id);
     }
 }
