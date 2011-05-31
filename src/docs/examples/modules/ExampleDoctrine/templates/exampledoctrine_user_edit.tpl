@@ -13,9 +13,9 @@
             {formlabel for="password" __text="Password"}
             {formtextinput id="password" mandatory=true maxLength=255}
         </div>
-
+<!--
         <fieldset>
-            <legend>{gt text='Meta data'}</legend>
+            <legend>{*gt text='Meta data'}</legend>
 
             <div class="z-formrow">
                 {formlabel for="metaComment" __text="Comment"}
@@ -45,10 +45,10 @@
                     {formlabel for="category_`$property`" __text="Category"}
                     {formcategoryselector id="category_`$property`" category=$registryCid dataField=$property enableDoctrine=true}
                 </div>
-            {/foreach}
+            {/foreach*}
         </fieldset>
-        
 
+-->
         <div class="z-formbuttons">
             {formimagebutton id="create" commandName="create" __text="Save" imageUrl="images/icons/small/button_ok.png"}
         </div>

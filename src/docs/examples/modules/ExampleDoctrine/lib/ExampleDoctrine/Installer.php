@@ -27,9 +27,10 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
      */
     public function install()
     {
-        // create the socialNetwork table
+        // create the table
+        $em = $this->getService('doctrine.entitymanager');
         try {
-            DoctrineUtil::createTablesFromModels('ExampleDoctrine');
+            DoctrineHelper::createSchema($em, array('ExampleDoctrine_Entity_User'));
         } catch (Exception $e) {
             return false;
         }
@@ -57,8 +58,8 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
                 // do something
             case 1.0:
                 // do something
-                // DoctrineUtil::*() for adding/dropping columns/index and so on
-                // last do DoctrineUtil::createTablesFromModels('ExampleDoctrine');
+                // $em = $this->getService('doctrine.entitymanager');
+                // DoctrineHelper::createSchema($em, array('ExampleDoctrine_Entity_User'));
                 // to create any new tables
         }
 
@@ -77,7 +78,8 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
     public function uninstall()
     {
         // drop table
-        DoctrineUtil::dropTable('exampledoctrine_users');
+        $em = $this->getService('doctrine.entitymanager');
+        DoctrineHelper::dropSchema($em, array('ExampleDoctrine_Entity_User'));
 
         // remove all module vars
         $this->delVars();
@@ -93,10 +95,10 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
      */
     protected function defaultdata()
     {
-        $user = new ExampleDoctrine_Model_User();
-        $user->username = 'drak';
-        $user->password = 'guessme';
-        // could also use $user->merge($arrayObj); where $arrayObj is index array of field => value.
-        $user->save();
+        $user = new ExampleDoctrine_Entity_User();
+        $user->setUser('drak', 'guessme');
+        $em = $this->getService('doctrine.entitymanager');
+        $em->persist($user);
+        $em->flush();
     }
 }

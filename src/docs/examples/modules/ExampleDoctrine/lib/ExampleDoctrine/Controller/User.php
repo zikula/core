@@ -41,7 +41,8 @@ class ExampleDoctrine_Controller_User extends Zikula_AbstractController
             return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'main'));
         }
 
-        $users = Doctrine_Core::getTable('ExampleDoctrine_Model_User')->findAll();
+        $em = $this->getService('doctrine.entitymanager');
+        $users = $em->getRepository('ExampleDoctrine_Entity_User')->findAll();
 
         return $this->view->assign('users', $users)
                           ->fetch('exampledoctrine_user_view.tpl');
