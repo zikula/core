@@ -2,8 +2,8 @@
 
 namespace Gedmo\Loggable\Mapping\Driver;
 
-use Gedmo\Mapping\Driver,
-    Doctrine\Common\Annotations\AnnotationReader,
+use Gedmo\Mapping\Driver\AnnotationDriverInterface,
+    Doctrine\Common\Persistence\Mapping\ClassMetadata,
     Gedmo\Exception\InvalidMappingException;
 
 /**
@@ -19,22 +19,41 @@ use Gedmo\Mapping\Driver,
  * @link http://www.gediminasm.org
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-class Annotation implements Driver
+class Annotation implements AnnotationDriverInterface
 {
     /**
      * Annotation to define that this object is loggable
      */
-    const LOGGABLE = 'Gedmo\\Loggable\\Mapping\\Loggable';
+    const LOGGABLE = 'Gedmo\\Mapping\\Annotation\\Loggable';
 
     /**
      * Annotation to define that this property is versioned
      */
-    const VERSIONED = 'Gedmo\\Loggable\\Mapping\\Versioned';
+    const VERSIONED = 'Gedmo\\Mapping\\Annotation\\Versioned';
+
+    /**
+     * Annotation reader instance
+     *
+     * @var object
+     */
+    private $reader;
+
+    /**
+     * original driver if it is available
+     */
+    protected $_originalDriver = null;
+    /**
+     * {@inheritDoc}
+     */
+    public function setAnnotationReader($reader)
+    {
+        $this->reader = $reader;
+    }
 
     /**
      * {@inheritDoc}
      */
-    public function validateFullMetadata($meta, array $config)
+    public function validateFullMetadata(ClassMetadata $meta, array $config)
     {
         if ($config && is_array($meta->identifier) && count($meta->identifier) > 1) {
             throw new InvalidMappingException("Loggable does not support composite identifiers in class - {$meta->name}");
@@ -47,18 +66,12 @@ class Annotation implements Driver
     /**
      * {@inheritDoc}
      */
-    public function readExtendedMetadata($meta, array &$config)
+    public function readExtendedMetadata(ClassMetadata $meta, array &$config)
     {
-        require_once __DIR__ . '/../Annotations.php';
-        $reader = new AnnotationReader();
-        $reader->setAnnotationNamespaceAlias('Gedmo\\Loggable\\Mapping\\', 'gedmo');
-
         $class = $meta->getReflectionClass();
         // class annotations
-        $classAnnotations = $reader->getClassAnnotations($class);
-        if (isset($classAnnotations[self::LOGGABLE])) {
+        if ($annot = $this->reader->getClassAnnotation($class, self::LOGGABLE)) {
             $config['loggable'] = true;
-            $annot = $classAnnotations[self::LOGGABLE];
             if ($annot->logEntryClass) {
                 if (!class_exists($annot->logEntryClass)) {
                     throw new InvalidMappingException("LogEntry class: {$annot->logEntryClass} does not exist.");
@@ -75,7 +88,7 @@ class Annotation implements Driver
                 continue;
             }
             // versioned property
-            if ($versioned = $reader->getPropertyAnnotation($property, self::VERSIONED)) {
+            if ($versioned = $this->reader->getPropertyAnnotation($property, self::VERSIONED)) {
                 $field = $property->getName();
                 if ($meta->isCollectionValuedAssociation($field)) {
                     throw new InvalidMappingException("Cannot versioned [{$field}] as it is collection in object - {$meta->name}");
@@ -84,5 +97,16 @@ class Annotation implements Driver
                 $config['versioned'][] = $field;
             }
         }
+    }
+
+    /**
+     * Passes in the mapping read by original driver
+     *
+     * @param $driver
+     * @return void
+     */
+    public function setOriginalDriver($driver)
+    {
+        $this->_originalDriver = $driver;
     }
 }

@@ -3,6 +3,7 @@
 namespace Gedmo\Timestampable\Mapping\Event\Adapter;
 
 use Gedmo\Mapping\Event\Adapter\ODM as BaseAdapterODM;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Gedmo\Timestampable\Mapping\Event\TimestampableAdapter;
 
 /**
@@ -20,7 +21,7 @@ final class ODM extends BaseAdapterODM implements TimestampableAdapter
     /**
      * {@inheritDoc}
      */
-    public function getDateValue($meta, $field)
+    public function getDateValue(ClassMetadata $meta, $field)
     {
         $mapping = $meta->getFieldMapping($field);
         if (isset($mapping['type']) && $mapping['type'] === 'timestamp') {

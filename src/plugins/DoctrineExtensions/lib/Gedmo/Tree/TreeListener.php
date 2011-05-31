@@ -3,8 +3,8 @@
 namespace Gedmo\Tree;
 
 use Doctrine\Common\EventArgs,
-    Gedmo\Mapping\MappedEventSubscriber;
-
+    Gedmo\Mapping\MappedEventSubscriber,
+    Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * The tree listener handles the synchronization of
@@ -56,7 +56,7 @@ class TreeListener extends MappedEventSubscriber
      * @param string $class
      * @return Strategy
      */
-    public function getStrategy($om, $class)
+    public function getStrategy(ObjectManager $om, $class)
     {
         if (!isset($this->strategies[$class])) {
             $config = $this->getConfiguration($om, $class);

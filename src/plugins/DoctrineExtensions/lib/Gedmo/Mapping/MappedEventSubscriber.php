@@ -2,8 +2,13 @@
 
 namespace Gedmo\Mapping;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\Reader;
 use Gedmo\Mapping\ExtensionMetadataFactory,
     Doctrine\Common\EventSubscriber,
+    Doctrine\Common\Persistence\ObjectManager,
+    Doctrine\Common\Persistence\Mapping\ClassMetadata,
+    Doctrine\Common\ClassLoader,
     Doctrine\Common\EventArgs;
 
 /**
@@ -46,6 +51,13 @@ abstract class MappedEventSubscriber implements EventSubscriber
     private $adapters = array();
 
     /**
+     * Custom annotation reader
+     *
+     * @var object
+     */
+    private $annotationReader;
+
+    /**
      * Get an event adapter to handle event specific
      * methods
      *
@@ -79,7 +91,7 @@ abstract class MappedEventSubscriber implements EventSubscriber
      * @param string $class
      * @return array
      */
-    public function getConfiguration($objectManager, $class) {
+    public function getConfiguration(ObjectManager $objectManager, $class) {
         $config = array();
         if (isset($this->configurations[$class])) {
             $config = $this->configurations[$class];
@@ -100,16 +112,41 @@ abstract class MappedEventSubscriber implements EventSubscriber
      * @param ObjectManager $objectManager
      * @return Gedmo\Mapping\ExtensionMetadataFactory
      */
-    public function getExtensionMetadataFactory($objectManager)
+    public function getExtensionMetadataFactory(ObjectManager $objectManager)
     {
         $oid = spl_object_hash($objectManager);
         if (!isset($this->extensionMetadataFactory[$oid])) {
+            if (is_null($this->annotationReader)) {
+                // create default annotation reader for extensions
+                $this->annotationReader = new AnnotationReader;
+                $this->annotationReader->setAutoloadAnnotations(true);
+                if (!$this->annotationReader instanceof Reader) {
+                    $this->annotationReader->setAnnotationNamespaceAlias('Gedmo\\Mapping\\Annotation\\', 'gedmo');
+                }
+            }
             $this->extensionMetadataFactory[$oid] = new ExtensionMetadataFactory(
                 $objectManager,
-                $this->getNamespace()
+                $this->getNamespace(),
+                $this->annotationReader
             );
         }
         return $this->extensionMetadataFactory[$oid];
+    }
+
+    /**
+     * Set annotation reader class
+     * since older doctrine versions do not provide an interface
+     * it must provide these methods:
+     *     getClassAnnotations([reflectionClass])
+     *     getClassAnnotation([reflectionClass], [name])
+     *     getPropertyAnnotations([reflectionProperty])
+     *     getPropertyAnnotation([reflectionProperty], [name])
+     *
+     * @param object $reader - annotation reader class
+     */
+    public function setAnnotationReader($reader)
+    {
+        $this->annotationReader = $reader;
     }
 
     /**
@@ -120,7 +157,7 @@ abstract class MappedEventSubscriber implements EventSubscriber
      * @param ClassMetadata $metadata
      * @return void
      */
-    public function loadMetadataForObjectClass($objectManager, $metadata)
+    public function loadMetadataForObjectClass(ObjectManager $objectManager, ClassMetadata $metadata)
     {
         $factory = $this->getExtensionMetadataFactory($objectManager);
         $config = $factory->getExtensionMetadata($metadata);

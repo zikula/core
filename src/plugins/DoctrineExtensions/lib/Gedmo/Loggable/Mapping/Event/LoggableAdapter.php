@@ -2,6 +2,7 @@
 
 namespace Gedmo\Loggable\Mapping\Event;
 
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Gedmo\Mapping\Event\AdapterInterface;
 
 /**
@@ -30,5 +31,5 @@ interface LoggableAdapter extends AdapterInterface
      * @param object $object
      * @return integer
      */
-    function getNewVersion($meta, $object);
+    function getNewVersion(ClassMetadata $meta, $object);
 }

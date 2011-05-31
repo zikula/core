@@ -4,6 +4,7 @@ namespace Gedmo\Sluggable\Mapping\Driver;
 
 use Gedmo\Mapping\Driver\File,
     Gedmo\Mapping\Driver,
+    Doctrine\Common\Persistence\Mapping\ClassMetadata,
     Gedmo\Exception\InvalidMappingException;
 
 /**
@@ -38,7 +39,7 @@ class Yaml extends File implements Driver
     /**
      * {@inheritDoc}
      */
-    public function validateFullMetadata($meta, array $config)
+    public function validateFullMetadata(ClassMetadata $meta, array $config)
     {
         if ($config && !isset($config['fields'])) {
             throw new InvalidMappingException("Unable to find any sluggable fields specified for Sluggable entity - {$meta->name}");
@@ -48,9 +49,9 @@ class Yaml extends File implements Driver
     /**
      * {@inheritDoc}
      */
-    public function readExtendedMetadata($meta, array &$config) {
-        $yaml = $this->_loadMappingFile($this->_findMappingFile($meta->name));
-        $mapping = $yaml[$meta->name];
+    public function readExtendedMetadata(ClassMetadata $meta, array &$config)
+    {
+        $mapping = $this->_getMapping($meta->name);
 
         if (isset($mapping['fields'])) {
             foreach ($mapping['fields'] as $field => $fieldMapping) {
@@ -104,7 +105,7 @@ class Yaml extends File implements Driver
      * @param string $field
      * @return boolean
      */
-    protected function isValidField($meta, $field)
+    protected function isValidField(ClassMetadata $meta, $field)
     {
         $mapping = $meta->getFieldMapping($field);
         return $mapping && in_array($mapping['type'], $this->validTypes);

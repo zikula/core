@@ -2,6 +2,9 @@
 
 namespace Gedmo\Mapping;
 
+
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+
 /**
  * The mapping driver abstract class, defines the
  * metadata extraction function common among
@@ -23,7 +26,7 @@ interface Driver
      * @param array $config
      * @return void
      */
-    public function readExtendedMetadata($meta, array &$config);
+    public function readExtendedMetadata(ClassMetadata $meta, array &$config);
 
     /**
      * Callback triggered from driver then metadata is
@@ -34,5 +37,13 @@ interface Driver
      * @param array $config
      * @return void
      */
-    public function validateFullMetadata($meta, array $config);
+    public function validateFullMetadata(ClassMetadata $meta, array $config);
+
+    /**
+     * Passes in the original driver
+     *
+     * @param $driver
+     * @return void
+     */
+    public function setOriginalDriver($driver);
 }
