@@ -23,9 +23,9 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
      */
     protected function getMeta()
     {
-        return array('displayname' => $this->__('Doctrine ORM'),
-                     'description' => $this->__('Provides Doctrine ORM, DBAL and Common layers of Doctrine 2'),
-                     'version'     => '2.1.0-BETA1'
+        return array('displayname' => $this->__('Doctrine'),
+                     'description' => $this->__('Provides Doctrine ORM, DBAL and Common 3.0.x layers of Doctrine'),
+                     'version'     => '2.1.0-master'
                       );
     }
 
