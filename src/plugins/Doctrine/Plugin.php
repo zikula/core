@@ -64,6 +64,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
 
         $eventManager = new \Doctrine\Common\EventManager;
+        $serviceManager->attachService('doctrine.eventmanager', $eventManager);
         $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
         $serviceManager->attachService('doctrine.entitymanager', $entityManager);
     }

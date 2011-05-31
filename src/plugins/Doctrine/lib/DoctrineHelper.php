@@ -12,12 +12,12 @@
  */
 
 use Doctrine\ORM\Tools\SchemaTool as SchemaTool;
+use Doctrine\ORM\EntityManager as EntityManager;
 
 class DoctrineHelper
 {
-    public static function createSchema(array $classes)
+    public static function createSchema(EntityManager $em, array $classes)
     {
-        $em = ServiceUtil::getService('doctrine.entitymanager');
         $tool = new SchemaTool($em);
         $metaClasses = array();
         foreach ($classes as $class) {
@@ -25,14 +25,13 @@ class DoctrineHelper
         }
         try {
             $tool->createSchema($metaClasses);
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw $e;
         }
     }
 
-    public static function dropSchema(array $classes)
+    public static function dropSchema(EntityManager $em, array $classes)
     {
-        $em = ServiceUtil::getService('doctrine.entitymanager');
         $tool = new SchemaTool($em);
         $metaClasses = array();
         foreach ($classes as $class) {
@@ -45,10 +44,8 @@ class DoctrineHelper
         }
     }
 
-    public static function updateSchema(array $classes)
+    public static function updateSchema(EntityManager $em, array $classes)
     {
-        $em = ServiceUtil::getService('doctrine.entitymanager');
-
         $tool = new SchemaTool($em);
         $metaClasses = array();
         foreach ($classes as $class) {

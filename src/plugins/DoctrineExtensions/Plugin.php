@@ -24,8 +24,8 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
     protected function getMeta()
     {
         return array('displayname' => $this->__('Doctrine Extensions'),
-                     'description' => $this->__('Provides Gedmo libraries'),
-                     'version'     => '0.0.1'
+                     'description' => $this->__('Provides Gedmo DoctrineExtensions libraries'),
+                     'version'     => '0.0.1-master'
                       );
     }
 
@@ -41,5 +41,14 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
         $autoloader = new Zikula_KernelClassLoader();
         $autoloader->spl_autoload_register();
         $autoloader->register('Gedmo', dirname(__FILE__) . '/lib', '\\');
+        include 'ExtensionsManager.php';
+        $definition = new Zikula_ServiceManager_Definition('SystemPlugins_DoctrineExtensions_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('zikula.servicemanager')));
+        $this->serviceManager->registerService('doctrine_extensions', $definition);
+
+        $types = array('Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree');
+        foreach ($types as $type) {
+            $definition = new Zikula_ServiceManager_Definition("\\Gedmo\\$type\\{$type}Listener");
+            $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.$type"), $definition);
+        }
     }
 }
