@@ -3,6 +3,7 @@
 namespace Gedmo\Translatable;
 
 use Doctrine\Common\EventArgs,
+    Doctrine\Common\Persistence\Mapping\ClassMetadata,
     Gedmo\Mapping\MappedEventSubscriber,
     Gedmo\Translatable\Mapping\Event\TranslatableAdapter;
 
@@ -222,7 +223,7 @@ class TranslationListener extends MappedEventSubscriber
      *         found in entity
      * @return string
      */
-    public function getTranslatableLocale($object, $meta)
+    public function getTranslatableLocale($object, ClassMetadata $meta)
     {
         $locale = $this->locale;
         if (isset($this->configurations[$meta->name]['locale'])) {
