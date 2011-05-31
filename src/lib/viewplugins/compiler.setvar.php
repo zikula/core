@@ -30,6 +30,10 @@
  *
  *  <samp>{setvar var='foo.bar' value=$myValue}</samp>
  *
+ *  Set a variable array field.
+ *
+ *  <samp>{setvar var="foo.$key" value=$myValue}</samp>
+ *
  *  Set an object property.
  *
  *  <samp>{setvar var='obj->bar' value=$myValue}</samp>
