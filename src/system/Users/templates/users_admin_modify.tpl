@@ -201,7 +201,7 @@
                 <p id="{$formData->getFormId()}_groupmembership_error" class="z-formnote z-errormsg{if !isset($errorFields.groupmembership)} z-hide{/if}">{if isset($errorFields.groupmembership)}{$errorFields.groupmembership}{/if}</p>
             </fieldset>
 
-            {notifyevent eventname='users.user.form_edit' subject=$formData->toUserArray() id=$formData->getFieldData('uid') assign="eventData"}
+            {notifyevent eventname='module.users.ui.form_edit.modify_user' subject=$formData->toUserArray() id=$formData->getFieldData('uid') assign="eventData"}
             {foreach item='eventDisplay' from=$eventData}
                 {$eventDisplay}
             {/foreach}

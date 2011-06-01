@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            {notifyevent eventname='users.login.form_edit' form_type='loginblock' assign="eventData"}
+            {notifyevent eventname='module.users.ui.form_edit.login_block' assign="eventData"}
             {foreach item='eventDisplay' from=$eventData}
                 {$eventDisplay}
             {/foreach}

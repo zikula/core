@@ -203,6 +203,16 @@ Filter of result of a fetch.  Receives `Zikula_View` instance as subject, args a
 USER ACCOUNTS, REGISTRATIONS, AND LOG-INS
 -----------------------------------------
 
+#### `module.users.ui.display_view`
+A hook-like UI event that is triggered when a user's account detail is viewed. This allows another module
+to intercept the display of the user account detail in order to add its own information.
+
+To add display elements to the user account detail, render output and add this as an element in the event's
+data array.
+
+ * The subject contains the user's account record.
+ * The `'id'` argument contain's the user's uid.
+
 #### `module.users.ui.login.started`
 Occurs at the beginning of the log-in process, before the registration form is displayed to the user.
 
@@ -214,6 +224,24 @@ Likewise, this event will not fire if a user begins the log-in process from the 
 plugin if the user provides valid authentication information. This event will fire, however, if invalid
 information is provided to the log-in block or log-in plugin, resulting in the user being
 redirected to the full log-in screen for corrections.
+
+This event does not have any subject, arguments, or data.
+
+#### `module.users.ui.form_edit.login_block`
+A hook-like UI event that is triggered when the login block is displayed. This allows another module to 
+intercept the display of the login form on the block to add its own form elements for submission.
+
+To add elements to the form, render the output and add this as an array element to the event's
+data array.
+
+This event does not have any subject, arguments, or data.
+
+#### `module.users.ui.form_edit.login_screen`
+A hook-like UI event that is triggered when the login screen is displayed. This allows another module to 
+intercept the display of the full-page version of the login form to add its own form elements for submission.
+
+To add elements to the form, render the output and add this as an array element to the event's
+data array.
 
 This event does not have any subject, arguments, or data.
 
@@ -399,6 +427,25 @@ not a UI event. It should not be used for UI-level actions such as redirects.
 
  * The subject of the event is set to the user record that was created.
 
+#### `module.users.ui.form_edit.new_user`
+A hook-like event triggered when the adminitstrator's new user form is displayed, which allows other 
+modules to intercept and display their own elements for submission on the new user form.
+
+To add elements to the new user form, render output and add this as an array element on the event's
+data array.
+
+There is no subject and no arguments for the event.
+
+#### `module.users.ui.form_edit.modify_user`
+A hook-like event triggered when the modify user form is displayed, which allows other 
+modules to intercept and display their own elements for submission on the new user form.
+
+To add elements to the modify user form, render output and add this as an array element on the event's
+data array.
+
+ * The subject contains the current state of the user object, possibly edited from its original state.
+ * The `'id'` argument contains the uid of the user account.
+
 #### `user.account.update`
 Occurs after a user is updated. All handlers are notified. The full updated user record is available
 as the subject. This is a storage-level event, not a UI event. It should not be used for UI-level
@@ -426,7 +473,8 @@ they injected with the corresponding `form_delete` event.
 A hook-like event that is triggered when the delete confirmation form is submitted and the submitted data
 is has validated. It allows other modules to intercept and add to the delete confirmation 
 form, and in this case to process the data entered on the portion of the delete confirmation form that
-they injected with the corresponding `form_delete` event.
+they injected with the corresponding `form_delete` event. This event will be triggered after the 
+`user.account.delete` event.
 
  * The subject of the event is not set.
  * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
@@ -440,6 +488,25 @@ used for UI-level actions such as redirects.
 
 #### `module.users.ui.registration.started`
 Occurs at the beginning of the registration process, before the registration form is displayed to the user.
+
+#### `module.users.ui.form_edit.new_registration`
+A hook-like event triggered when the registration form is displayed, which allows other modules to intercept
+and display their own elements for submission on the registration form.
+
+To add elements to the registration form, render output and add this as an array element on the event's
+data array.
+
+There is no subject and no arguments for the event.
+
+#### `module.users.ui.form_edit.modify_registration`
+A hook-like event triggered when the administrator's modify registration form is displayed, which allows other 
+modules to intercept and display their own elements for submission on the new user form.
+
+To add elements to the modify registration form, render output and add this as an array element on the event's
+data array.
+
+ * The subject contains the current state of the registration object, possibly edited from its original state.
+ * The `'id'` argument contains the uid of the registration record.
 
 #### `module.users.ui.registration.succeeded`
 Occurs after a user has successfully registered a new account in the system. It will follow either a `registration.create`
