@@ -168,7 +168,7 @@
                 </div>
             </fieldset>
 
-            {notifyevent eventname='users.user.form_edit' subject=null id=null assign="eventData"}
+            {notifyevent eventname='module.users.ui.form_edit.new_user' subject=null id=null assign="eventData"}
             {foreach item='eventDisplay' from=$eventData}
                 {$eventDisplay}
             {/foreach}

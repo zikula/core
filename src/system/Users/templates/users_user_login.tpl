@@ -53,9 +53,9 @@
         </fieldset>
 
         {if isset($user_obj) && !empty($user_obj)}
-            {notifyevent eventname='users.login.form_edit' id=$user_obj.uid subject=$user_obj form_type='loginscreen' assign='eventData'}
+            {notifyevent eventname='module.users.ui.form_edit.login_screen' id=$user_obj.uid subject=$user_obj assign='eventData'}
         {else}
-            {notifyevent eventname='users.login.form_edit' form_type='loginscreen' assign='eventData'}
+            {notifyevent eventname='module.users.ui.form_edit.login_screen' assign='eventData'}
         {/if}
 
         {foreach item='eventDisplay' from=$eventData}
@@ -63,7 +63,7 @@
         {/foreach}
 
         <div class="z-formbuttons z-buttons">
-            {button src=button_ok.png set=icons/extrasmall __alt="Log in" __title="Log in" __text="Log in"}
+            {button src='button_ok.png' set='icons/extrasmall' __alt='Log in' __title='Log in' __text='Log in'}
         </div>
     </div>
 </form>
