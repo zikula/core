@@ -411,7 +411,16 @@ A hook-like event that is triggered when the delete confirmation form is display
 to intercept and add to the delete confirmation form.
 
  * The subject of the event is not set.
- * The id provided is the uid of the user who will be deleted if confirmed.
+ * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
+
+#### `module.users.ui.validate_delete`
+A hook-like event that is triggered when the delete confirmation form is submitted and the submitted data
+is being validated prior to processing. It allows other modules to intercept and add to the delete confirmation 
+form, and in this case to validate the data entered on the portion of the delete confirmation form that
+they injected with the corresponding `form_delete` event.
+
+ * The subject of the event is not set.
+ * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
 
 #### `user.account.delete`
 Occurs after a user is deleted from the system. All handlers are notified. The full user record
