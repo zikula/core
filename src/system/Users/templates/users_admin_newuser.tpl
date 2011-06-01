@@ -72,7 +72,7 @@
     <form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='Users' type='admin' func='newUser'}" method="post">
         <div>
             <input type="hidden" id="{$formData->getFormId()}_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
-            <input id="{$formData->getFormId()}_checkmode" type="hidden" name="checkmode" value="new" />
+            <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_user" />
             <fieldset>
                 <legend>{gt text='Account information'}</legend>
                 <div class="z-formrow">

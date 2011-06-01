@@ -35,6 +35,7 @@
         <input id="users_login_selected_authentication_method" type="hidden" name="authentication_method[method]" value="{$selected_authentication_method.method|default:''}" />
         <input id="users_login_returnpage" type="hidden" name="returnpage" value="{$returnpage}" />
         <input id="users_login_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input id="users_login_event_type" type="hidden" name="event_type" value="login_screen" />
         {if ($modvars.ZConfig.seclevel|lower == 'high')}
         <input id="users_login_rememberme" type="hidden" name="rememberme" value="0" />
         {/if}

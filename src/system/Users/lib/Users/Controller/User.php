@@ -331,7 +331,7 @@ class Users_Controller_User extends Zikula_AbstractController
                         $errorFields = $formData->getErrorMessages();
                     }
 
-                    $event = new Zikula_Event('users.user.validate.edit', $reginfo, array(), new Zikula_Hook_ValidationProviders());
+                    $event = new Zikula_Event('module.users.ui.validate_edit.new_registration', $reginfo, array(), new Zikula_Hook_ValidationProviders());
                     $validators = $this->eventManager->notify($event)->getData();
 
                     if (empty($errorFields) && !$validators->hasErrors()) {
@@ -1008,10 +1008,11 @@ class Users_Controller_User extends Zikula_AbstractController
             // We are coming in or back (reentering) from someplace else via a direct call to this function. It is likely that
             // we are coming back from a user.login.veto event handler that redirected the user to a page where he had to provide
             // more information.
-            $authenticationInfo     = isset($args['authentication_info']) ? $args['authentication_info'] : array();
+            $authenticationInfo = isset($args['authentication_info']) ? $args['authentication_info'] : array();
             $selectedAuthenticationMethod = isset($args['authentication_method']) ? $args['authentication_method'] : array();
-            $rememberMe             = isset($args['rememberme']) ? $args['rememberme'] : false;
-            $returnPage             = isset($args['returnpage']) ? $args['returnpage'] : $this->request->getGet()->get('returnpage', '');
+            $rememberMe         = isset($args['rememberme']) ? $args['rememberme'] : false;
+            $returnPage         = isset($args['returnpage']) ? $args['returnpage'] : $this->request->getGet()->get('returnpage', '');
+            $eventType          = isset($args['event_type']) ? $args['event_type'] : false;
 
             $isFunctionCall = true;
         } elseif (isset($args) && !is_array($args)) {
@@ -1023,14 +1024,15 @@ class Users_Controller_User extends Zikula_AbstractController
                 $this->checkCsrfToken();
             }
 
-            $authenticationInfo     = $this->request->getPost()->get('authentication_info', array());
+            $authenticationInfo = $this->request->getPost()->get('authentication_info', array());
             $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
-            $rememberMe             = $this->request->getPost()->get('rememberme', false);
-            $returnPage             = $this->request->getPost()->get('returnpage', urldecode($this->request->getGet()->get('returnpage', '')));
+            $rememberMe         = $this->request->getPost()->get('rememberme', false);
+            $returnPage         = $this->request->getPost()->get('returnpage', urldecode($this->request->getGet()->get('returnpage', '')));
             if (empty($returnPage)) {
                 // Check if returnurl was set instead of returnpage
-                $returnPage         = $this->request->getPost()->get('returnurl', urldecode($this->request->getGet()->get('returnurl', '')));
+                $returnPage     = $this->request->getPost()->get('returnurl', urldecode($this->request->getGet()->get('returnurl', '')));
             }
+            $eventType          = $this->request->getPost()->get('event_type', false);
         } elseif ($this->request->isGet()) {
             $reentry = false;
             $reentrantTokenReceived = $this->request->getGet()->get('reentranttoken', '');
@@ -1043,19 +1045,21 @@ class Users_Controller_User extends Zikula_AbstractController
             if (!empty($reentrantTokenReceived) && ($reentrantTokenReceived == $reentrantToken)) {
                 // We are coming back (reentering) from someplace else. It is likely that we are coming back from an external
                 // authentication process initiated by an authentication module such as OpenID.
-                $authenticationInfo     = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
+                $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
                 $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
-                $rememberMe             = isset($sessionVars['rememberme']) ? $sessionVars['rememberme'] : false;
-                $returnPage             = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $this->request->getGet()->get('returnpage', '');
-                $user                   = isset($sessionVars['user_obj']) ? $sessionVars['user_obj'] : null;
+                $rememberMe         = isset($sessionVars['rememberme']) ? $sessionVars['rememberme'] : false;
+                $returnPage         = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $this->request->getGet()->get('returnpage', '');
+                $eventType          = isset($sessionVars['event_type']) ? $sessionVars['event_type'] : false;
+                $user               = isset($sessionVars['user_obj']) ? $sessionVars['user_obj'] : null;
 
                 $isReentry = true;
             } else {
-                $authenticationInfo     = array();
+                $authenticationInfo = array();
                 $selectedAuthenticationMethod = array();
-                $rememberMe             = false;
-                $returnPage             = urldecode($this->request->getGet()->get('returnpage', $this->request->getGet()->get('returnurl', '')));
-                $user                   = array();
+                $rememberMe         = false;
+                $returnPage         = urldecode($this->request->getGet()->get('returnpage', $this->request->getGet()->get('returnurl', '')));
+                $eventType          = 'login_screen';
+                $user               = array();
 
                 $event = new Zikula_Event('module.users.ui.login.started');
                 $this->eventManager->notify($event);
@@ -1104,6 +1108,7 @@ class Users_Controller_User extends Zikula_AbstractController
                         // so using sessions on the anonymous user just before logging in should be ok.
                         SessionUtil::requireSession();
                         $sessionVars = array(
+                            'event_type'            => $eventType,
                             'returnpage'            => $returnPage,
                             'authentication_info'   => $authenticationInfo,
                             'authentication_method' => $selectedAuthenticationMethod,
@@ -1135,8 +1140,10 @@ class Users_Controller_User extends Zikula_AbstractController
                         // Did we get a good user? If so, then we can proceed to hook validation.
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
                             $validators = new Zikula_Hook_ValidationProviders();
-                            $event = new Zikula_Event('users.login.validate_edit', $user, array(), $validators);
-                            $validators  = $this->eventManager->notify($event)->getData();
+                            if ($eventType) {
+                                $event = new Zikula_Event("users.login.validate_edit.{$eventType}", $user, array(), $validators);
+                                $validators  = $this->eventManager->notify($event)->getData();
+                            }
 
                             if (!$validators->hasErrors()) {
                                 // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check

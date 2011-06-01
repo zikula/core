@@ -79,7 +79,7 @@
     <form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='Users' type='admin' func='modify'}" method="post">
         <div>
             <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-            <input id="{$formData->getFormId()}_checkmode" type="hidden" name="checkmode" value="modify" />
+            <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="modify_user" />
             {assign var='fieldName' value='uid'}
             <input id="{$formData->getFieldId($fieldName)}" type="hidden" name="{$fieldName}" value="{$formData->getFieldData($fieldName)|safetext}" />
             <fieldset>

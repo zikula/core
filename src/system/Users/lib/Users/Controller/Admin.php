@@ -284,7 +284,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $errorFields = $formData->getErrorMessages();
             }
 
-            $event = new Zikula_Event('users.user.validate_edit', $registrationInfo, array(), new Zikula_Hook_ValidationProviders());
+            $event = new Zikula_Event('module.users.ui.validate_edit.new_user', $registrationInfo, array(), new Zikula_Hook_ValidationProviders());
             $validators = $this->eventManager->notify($event)->getData();
 
             if (empty($errorFields) && !$validators->hasErrors()) {
@@ -597,7 +597,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $errorFields = $formData->getErrorMessages();
             }
 
-            $event = new Zikula_Event('users.user.validate_edit', $user, array(), new Zikula_Hook_ValidationProviders());
+            $event = new Zikula_Event('module.users.ui.validate_edit.modify_user', $user, array(), new Zikula_Hook_ValidationProviders());
             $validators = $this->eventManager->notify($event)->getData();
 
             if (!$errorFields && !$validators->hasErrors()) {
@@ -1356,7 +1356,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $errorFields = $formData->getErrorMessages();
             }
 
-            $event = new Zikula_Event('users.user.validate_edit', $registration, array(), new Zikula_Hook_ValidationProviders());
+            $event = new Zikula_Event('module.users.ui.validate_edit.modify_registration', $registration, array(), new Zikula_Hook_ValidationProviders());
             $validators = $this->eventManager->notify($event)->getData();
 
             if (!$errorFields && !$validators->hasErrors()) {

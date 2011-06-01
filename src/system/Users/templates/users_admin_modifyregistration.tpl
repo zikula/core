@@ -40,7 +40,7 @@
     <form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='Users' type='admin' func='modifyRegistration'}" method="post">
         <div>
             <input type="hidden" id="{$formData->getFormId()}_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
-            <input id="{$formData->getFormId()}_checkmode" type="hidden" name="checkmode" value="modify" />
+            <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="modify_registration" />
             <input id="{$formData->getFieldId('uid')}" type="hidden" name="uid" value="{$formData->getFieldData('uid')|safetext}" />
             <input id="{$formData->getFormId()}_restoreview" type="hidden" name="restoreview" value="{$restoreview|default:'view'}" />
             <fieldset>
