@@ -984,7 +984,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
                 if ($deleted) {
                     foreach ($userid as $uid) {
-                        $event = new Zikula_Event('users.user.process_delete', UserUtil::getVars($uid), array('uid' => $uid));
+                        $event = new Zikula_Event('module.users.ui.process_delete', UserUtil::getVars($uid), array('uid' => $uid));
                         $this->eventManager->notify($event);
                     }
                     $count = count($userid);
@@ -1796,7 +1796,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $this->registerError($this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']));
                 $this->redirect($cancelUrl);
             } else {
-                $event = new Zikula_Event('users.user.process_delete', $uid);
+                $event = new Zikula_Event('module.users.ui.process_delete', $uid);
                 $this->eventManager->notify($event); // null for subject?
                 if ($sendNotification) {
                     $siteurl   = System::getBaseUrl();
