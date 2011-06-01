@@ -250,7 +250,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                         'csrftoken' => $csrftoken,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'db_remove.png',
+                                        'image' => 'button_cancel.png',
                                         'title' => $this->__f('Deactivate \'%s\' module', $mod['name']));
                             }
 
@@ -278,7 +278,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                     'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'db_add.png',
+                                    'image' => 'button_ok.png',
                                     'title' => $this->__f('Activate \'%s\'', $mod['name']));
                             $actions[] = array(
                                     'url' => ModUtil::url('Extensions', 'admin', 'remove', array(
@@ -1179,7 +1179,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'db_remove.png',
+                                       'image' => 'button_cancel.png',
                                        'title' => $this->__('Deactivate'));
 
                         $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'removePlugin',
@@ -1206,7 +1206,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'db_add.png',
+                                       'image' => 'button_ok.png',
                                        'title' => $this->__('Activate'));
 
                     $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'removePlugin',
