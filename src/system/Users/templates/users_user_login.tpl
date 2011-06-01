@@ -62,6 +62,12 @@
         {foreach item='eventDisplay' from=$eventData}
             {$eventDisplay}
         {/foreach}
+            
+        {if isset($user_obj) && !empty($user_obj)}
+            {notifydisplayhooks eventname='users.ui_hooks.login_block.form_edit' id=$user_obj.uid}
+        {else}
+            {notifydisplayhooks eventname='users.ui_hooks.login_block.form_edit' id=null}
+        {/if}
 
         <div class="z-formbuttons z-buttons">
             {button src='button_ok.png' set='icons/extrasmall' __alt='Log in' __title='Log in' __text='Log in'}

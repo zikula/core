@@ -344,7 +344,7 @@ When displaying an edit form, we simply trigger a `form_edit` hook with with
 When we come to validate an edit form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a `validate_edit` event with
 
-    $hook = new Zikula_ValidationHook('...validate_edit', new Zikula_Collection_HookValidationProviders());
+    $hook = new Zikula_ValidationHook('...validate_edit', new Zikula_Hook_ValidationProviders());
     $this->notifyHooks($hook);
     $validators = $hook->getValidators();
 

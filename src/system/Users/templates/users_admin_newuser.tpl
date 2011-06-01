@@ -172,6 +172,8 @@
             {foreach item='eventDisplay' from=$eventData}
                 {$eventDisplay}
             {/foreach}
+            
+            {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=null}
 
             <fieldset>
                 <legend>{gt text="Check your entries and submit your registration"}</legend>
