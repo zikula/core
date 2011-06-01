@@ -984,7 +984,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
                 if ($deleted) {
                     foreach ($userid as $uid) {
-                        $event = new Zikula_Event('module.users.ui.process_delete', UserUtil::getVars($uid), array('uid' => $uid));
+                        $event = new Zikula_Event('module.users.ui.process_delete', null, array('id' => $uid));
                         $this->eventManager->notify($event);
                     }
                     $count = count($userid);
