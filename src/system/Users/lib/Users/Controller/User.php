@@ -370,7 +370,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                 );
                             }
 
-                            $event = new Zikula_Event('users.user.process_edit', $registeredObj);
+                            $event = new Zikula_Event('module.users.ui.process_edit.new_registration', $registeredObj);
                             $this->eventManager->notify($event);
 
                             if (!empty($registeredObj['regErrors'])) {
@@ -1148,8 +1148,10 @@ class Users_Controller_User extends Zikula_AbstractController
                             if (!$validators->hasErrors()) {
                                 // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check
                                 // the user's ability to log in. If we don't do this, then user.login.veto might trap and cancel the login attempt again.
-                                $event = new Zikula_Event('users.login.process_edit', $user, array('form_type' => 'loginscreen'));
-                                $this->eventManager->notify($event);
+                                if ($eventType) {
+                                    $event = new Zikula_Event("users.login.process_edit.{$eventType}", $user, array());
+                                    $this->eventManager->notify($event);
+                                }
 
                                 if (!isset($user['lastlogin']) || empty($user['lastlogin']) || ($user['lastlogin'] == '1970-01-01 00:00:00')) {
                                     $isFirstLogin = true;

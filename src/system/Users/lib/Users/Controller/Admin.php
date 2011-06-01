@@ -301,7 +301,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 ));
 
                 if (isset($registeredObj) && $registeredObj) {
-                    $event = new Zikula_Event('users.user.process_edit', $registeredObj);
+                    $event = new Zikula_Event('module.users.ui.process_edit.new_user', $registeredObj);
                     $this->eventManager->notify($event);
 
                     if ($registeredObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) {
@@ -673,7 +673,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     }
                 }
 
-                $event = new Zikula_Event('users.user.process.edit', $user);
+                $event = new Zikula_Event('module.users.ui.process_edit.modify_user', $user);
                 $this->eventManager->notify($event);
                 $this->registerStatus($this->__("Done! Saved user's account information."));
 
@@ -1400,7 +1400,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     }
                 }
 
-                $event = new Zikula_Event('users.user.process_edit', $registration);
+                $event = new Zikula_Event('module.users.ui.process_edit.modify_registration', $registration);
                 $this->eventManager->notify($event);
                 $this->registerStatus($this->__("Done! Saved user's account information."));
 
