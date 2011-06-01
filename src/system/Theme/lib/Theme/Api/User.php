@@ -224,12 +224,13 @@ class Theme_Api_User extends Zikula_AbstractApi
         $templatedir = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates';
 
         if ($args['type'] == 'modules') {
-            $templatelist = FileUtil::getFiles($templatedir, false, true, '.tpl', 'f');
+            // for module templates also search on the theme/templates folder
+            $templatelist = FileUtil::getFiles($templatedir, false, true, array('.tpl', '.htm'), 'f');
         } else {
             $templatelist = array();
         }
 
-        $templatelist = array_merge($templatelist, FileUtil::getFiles($templatedir.'/'.$args['type'], false, $args['type'], '.tpl', 'f'));
+        $templatelist = array_merge($templatelist, FileUtil::getFiles($templatedir.'/'.$args['type'], false, $args['type'], array('.tpl', '.htm'), 'f'));
 
         return $templatelist;
     }
