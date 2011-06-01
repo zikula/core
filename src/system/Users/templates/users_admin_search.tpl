@@ -44,9 +44,9 @@
             </fieldset>
 
             {if $callbackFunc == 'mailUsers'}
-                {notifyevent eventname='users.mailuserssearch.form_edit' assign="eventData"}
+                {notifyevent eventname='module.users.ui.form_edit.mail_users_search' assign="eventData"}
             {else}
-                {notifyevent eventname='users.search.form_edit' assign="eventData"}
+                {notifyevent eventname='module.users.ui.form_edit.search' assign="eventData"}
             {/if}
 
             {foreach item='eventDisplay' from=$eventData}
