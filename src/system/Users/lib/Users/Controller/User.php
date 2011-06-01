@@ -1148,7 +1148,7 @@ class Users_Controller_User extends Zikula_AbstractController
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
                             $validators = new Zikula_Hook_ValidationProviders();
                             if ($eventType) {
-                                $event = new Zikula_Event("users.login.validate_edit.{$eventType}", $user, array(), $validators);
+                                $event = new Zikula_Event("module.users.ui.validate_edit.{$eventType}", $user, array(), $validators);
                                 $validators  = $this->eventManager->notify($event)->getData();
 
                                 $hook = new Zikula_ValidationHook("users.ui_hooks.{$eventType}.validate_edit", $validators);
@@ -1160,7 +1160,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                 // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check
                                 // the user's ability to log in. If we don't do this, then user.login.veto might trap and cancel the login attempt again.
                                 if ($eventType) {
-                                    $event = new Zikula_Event("users.login.process_edit.{$eventType}", $user, array());
+                                    $event = new Zikula_Event("module.users.ui.process_edit.{$eventType}", $user, array());
                                     $this->eventManager->notify($event);
 
                                     $hook = new Zikula_ProcessHook("users.ui_hooks.{$eventType}.process_edit", $user['uid']);
