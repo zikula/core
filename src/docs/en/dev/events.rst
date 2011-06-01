@@ -611,6 +611,26 @@ event will fire. This is a storage-level event, not a UI event. It should not be
 
  * The subject of the event is set to the registration record begin deleted.
 
+#### `module.users.ui.form_edit.mail_users_search`
+
+A hook-like UI event triggered when the search form is displayed for sending e-mail messages to users. Allows other
+modules to intercept and insert their own elements for submission to the search form.
+
+To add elements to the search form, render the output and then add this as an array element to the event's
+data array.
+
+This event does not have a subject or arguments.
+
+#### `module.users.ui.form_edit.search`
+
+A hook-like UI event triggered when the users search form is displayed. Allows other
+modules to intercept and insert their own elements for submission to the search form.
+
+To add elements to the search form, render the output and then add this as an array element to the event's
+data array.
+
+This event does not have a subject or arguments.
+
 USERS MODULE
 ------------
 #### `module.users.config.updated`
