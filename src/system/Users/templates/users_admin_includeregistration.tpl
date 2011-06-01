@@ -23,7 +23,7 @@
 </div>
 {/if}
 
-{notifyevent eventname='module.users.ui.display_view' subject=$reginfo id=$reginfo['uid']) assign="eventData"}
+{notifyevent eventname='module.users.ui.display_view' eventsubject=$reginfo id=$reginfo['uid']) assign="eventData"}
 {foreach item='eventDisplay' from=$eventData}
     {$eventDisplay}
 {/foreach}

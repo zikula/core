@@ -153,7 +153,7 @@
             {$smarty.capture.email}
         {/if}
 
-        {notifyevent eventname='module.users.ui.form_edit.new_registration' subject=null id=null assign='eventData'}
+        {notifyevent eventname='module.users.ui.form_edit.new_registration' eventsubject=null id=null assign='eventData'}
         {foreach item='eventDisplay' from=$eventData}
             {$eventDisplay}
         {/foreach}

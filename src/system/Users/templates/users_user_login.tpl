@@ -54,7 +54,7 @@
         </fieldset>
 
         {if isset($user_obj) && !empty($user_obj)}
-            {notifyevent eventname='module.users.ui.form_edit.login_screen' id=$user_obj.uid subject=$user_obj assign='eventData'}
+            {notifyevent eventname='module.users.ui.form_edit.login_screen' id=$user_obj.uid eventsubject=$user_obj assign='eventData'}
         {else}
             {notifyevent eventname='module.users.ui.form_edit.login_screen' assign='eventData'}
         {/if}

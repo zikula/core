@@ -75,7 +75,7 @@
                 </div>
             </fieldset>
 
-            {notifyevent eventname='module.users.ui.form_edit.modify_registration' subject=$formData->toUserArray() id=$formData->getFieldData('uid') assign="eventData"}
+            {notifyevent eventname='module.users.ui.form_edit.modify_registration' eventsubject=$formData->toUserArray() id=$formData->getFieldData('uid') assign="eventData"}
             {foreach item='eventDisplay' from=$eventData}
                 {$eventDisplay}
             {/foreach}
