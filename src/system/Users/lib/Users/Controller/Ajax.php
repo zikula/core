@@ -80,11 +80,15 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'email'         => $this->request->getPost()->get('email', null),
         );
 
-        $checkMode = $this->request->getPost()->get('checkmode', 'new');
-        $isRegistration = ($checkMode == 'new') || !isset($userOrRegistration['uid']) || empty($userOrRegistration['uid']);
+        $eventType = $this->request->getPost()->get('event_type', 'new_registration');
+        if (($eventType == 'new_registration') || ($eventType == 'new_new_user')) {
+            $checkMode = 'new';
+        } else {
+            $checkMode = 'modify';
+        }
 
         // Check if registration is disabled and the user is not an admin.
-        if ($isRegistration && !$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+        if (($eventType == 'new_registration') && !$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             throw new Zikula_Exception_Forbidden($this->__('Sorry! New user registration is currently disabled.'));
         }
 
@@ -121,7 +125,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
             }
         }
 
-        $event = new Zikula_Event('users.user.validate_edit', $userOrRegistration, array(), new Zikula_Hook_ValidationProviders());
+        $event = new Zikula_Event("module.users.ui.validate_edit.{$eventType}", $userOrRegistration, array(), new Zikula_Hook_ValidationProviders());
         $validators = $this->eventManager->notify($event)->getData();
 
         if ($validators->hasErrors()) {
