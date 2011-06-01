@@ -157,6 +157,9 @@
         {foreach item='eventDisplay' from=$eventData}
             {$eventDisplay}
         {/foreach}
+            
+        {notifydisplayhooks eventname='users.ui_hooks.registration.form_edit' id=null}
+            
         {if !empty($modvars.Users.reg_question)}
         <fieldset>
             <legend>{gt text="Answer the security question"}</legend>

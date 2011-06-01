@@ -333,6 +333,10 @@ class Users_Controller_User extends Zikula_AbstractController
 
                     $event = new Zikula_Event('module.users.ui.validate_edit.new_registration', $reginfo, array(), new Zikula_Hook_ValidationProviders());
                     $validators = $this->eventManager->notify($event)->getData();
+            
+                    $hook = new Zikula_ValidationHook('users.ui_hooks.registration.validate_edit', $validators);
+                    $this->notifyHooks($hook);
+                    $validators = $hook->getValidators();
 
                     if (empty($errorFields) && !$validators->hasErrors()) {
                         $currentUserEmail = UserUtil::getVar('email');
@@ -372,6 +376,9 @@ class Users_Controller_User extends Zikula_AbstractController
 
                             $event = new Zikula_Event('module.users.ui.process_edit.new_registration', $registeredObj);
                             $this->eventManager->notify($event);
+
+                            $hook = new Zikula_ProcessHook('users.ui_hooks.registration.process_edit', $registeredObj['uid']);
+                            $this->notifyHooks($hook);
 
                             if (!empty($registeredObj['regErrors'])) {
                                 $this->view->assign('regErrors', $registeredObj['regErrors']);
@@ -1143,6 +1150,10 @@ class Users_Controller_User extends Zikula_AbstractController
                             if ($eventType) {
                                 $event = new Zikula_Event("users.login.validate_edit.{$eventType}", $user, array(), $validators);
                                 $validators  = $this->eventManager->notify($event)->getData();
+
+                                $hook = new Zikula_ValidationHook("users.ui_hooks.{$eventType}.validate_edit", $validators);
+                                $this->notifyHooks($hook);
+                                $validators = $hook->getValidators();
                             }
 
                             if (!$validators->hasErrors()) {
@@ -1151,6 +1162,9 @@ class Users_Controller_User extends Zikula_AbstractController
                                 if ($eventType) {
                                     $event = new Zikula_Event("users.login.process_edit.{$eventType}", $user, array());
                                     $this->eventManager->notify($event);
+
+                                    $hook = new Zikula_ProcessHook("users.ui_hooks.{$eventType}.process_edit", $user['uid']);
+                                    $this->notifyHooks($hook);
                                 }
 
                                 if (!isset($user['lastlogin']) || empty($user['lastlogin']) || ($user['lastlogin'] == '1970-01-01 00:00:00')) {

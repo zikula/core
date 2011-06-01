@@ -62,29 +62,44 @@ class Users_Version extends Zikula_AbstractVersion
      */
     protected function setupHookBundles()
     {
-//        // Subscriber bundles
-//
-//        // Bundle for forms that create and edit user account records (both by admin and by user).
-//        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.user', 'ui_hooks', $this->__('User and registration management hooks'));
-//        $bundle->addEvent('display_view',    'users.ui_hooks.user.display_view');
-//        $bundle->addEvent('form_edit',       'users.ui_hooks.user.form_edit');
-//        $bundle->addEvent('form_delete',     'users.ui_hooks.user.form_delete');
-//        $bundle->addEvent('validate_edit',   'users.ui_hooks.user.validate_edit');
-//        $bundle->addEvent('validate_delete', 'users.ui_hooks.user.validate_delete');
-//        $bundle->addEvent('process_edit',    'users.ui_hooks.user.process_edit');
-//        $bundle->addEvent('process_delete',  'users.ui_hooks.user.process_delete');
-//        $this->registerHookSubscriberBundle($bundle);
-//
-//        // Bundle for the login form (both the block and the login).
-//        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.login', 'ui_hooks', $this->__('Login form and block hooks'));
-//        $bundle->addEvent('form_edit',     'users.ui_hooks.login.form_edit');
-//        $bundle->addEvent('validate_edit', 'users.ui_hooks.login.validate_edit');
-//        $bundle->addEvent('process_edit',  'users.ui_hooks.login.process_edit');
-//        $this->registerHookSubscriberBundle($bundle);
-//
-//        // Bundle for the list of authentication methods on the login block and the login.
-//        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.authentication_method_selectors', 'ui_hooks', $this->__('Pre-login authentication method selector hooks'));
-//        $bundle->addEvent('display_view', 'users.ui_hooks.authentication_method_selectors.display_view');
-//        $this->registerHookSubscriberBundle($bundle);
+        // Subscriber bundles
+
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.user', 'ui_hooks', $this->__('User management hooks'));
+        $bundle->addEvent('display_view',    'users.ui_hooks.user.display_view');
+        
+        $bundle->addEvent('form_edit',       'users.ui_hooks.user.form_edit');
+        $bundle->addEvent('validate_edit',   'users.ui_hooks.user.validate_edit');
+        $bundle->addEvent('process_edit',    'users.ui_hooks.user.process_edit');
+        
+        $bundle->addEvent('form_delete',     'users.ui_hooks.user.form_delete');
+        $bundle->addEvent('validate_delete', 'users.ui_hooks.user.validate_delete');
+        $bundle->addEvent('process_delete',  'users.ui_hooks.user.process_delete');
+        $this->registerHookSubscriberBundle($bundle);
+        
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.registration', 'ui_hooks', $this->__('Registration management hooks'));
+        $bundle->addEvent('display_view',    'users.ui_hooks.registration.display_view');
+        
+        $bundle->addEvent('form_edit',       'users.ui_hooks.registration.form_edit');
+        $bundle->addEvent('validate_edit',   'users.ui_hooks.registration.validate_edit');
+        $bundle->addEvent('process_edit',    'users.ui_hooks.registration.process_edit');
+        
+        $bundle->addEvent('form_delete',     'users.ui_hooks.registration.form_delete');
+        $bundle->addEvent('validate_delete', 'users.ui_hooks.registration.validate_delete');
+        $bundle->addEvent('process_delete',  'users.ui_hooks.registration.process_delete');
+        $this->registerHookSubscriberBundle($bundle);
+        
+        // Bundle for the login form
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.login_screen', 'ui_hooks', $this->__('Login form and block hooks'));
+        $bundle->addEvent('form_edit',     'users.ui_hooks.login_screen.form_edit');
+        $bundle->addEvent('validate_edit', 'users.ui_hooks.login_screen.validate_edit');
+        $bundle->addEvent('process_edit',  'users.ui_hooks.login_screen.process_edit');
+        $this->registerHookSubscriberBundle($bundle);
+
+        // Bundle for the login block
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.login_block', 'ui_hooks', $this->__('Login form and block hooks'));
+        $bundle->addEvent('form_edit',     'users.ui_hooks.login_block.form_edit');
+        $bundle->addEvent('validate_edit', 'users.ui_hooks.login_block.validate_edit');
+        $bundle->addEvent('process_edit',  'users.ui_hooks.login_block.process_edit');
+        $this->registerHookSubscriberBundle($bundle);
     }
 }
