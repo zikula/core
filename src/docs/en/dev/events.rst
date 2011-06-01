@@ -422,6 +422,15 @@ they injected with the corresponding `form_delete` event.
  * The subject of the event is not set.
  * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
 
+#### `module.users.ui.process_delete`
+A hook-like event that is triggered when the delete confirmation form is submitted and the submitted data
+is has validated. It allows other modules to intercept and add to the delete confirmation 
+form, and in this case to process the data entered on the portion of the delete confirmation form that
+they injected with the corresponding `form_delete` event.
+
+ * The subject of the event is not set.
+ * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
+
 #### `user.account.delete`
 Occurs after a user is deleted from the system. All handlers are notified. The full user record
 deleted is available as the subject. This is a storage-level event, not a UI event. It should not be
