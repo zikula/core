@@ -102,8 +102,8 @@
 
                     {foreach from=$blockpositions key='position' item='description'}
                     <div class="z-formrow">
-                        <label for="theme_blocktemplate_{$position|safetext}" title="{$description|safetext}">{$position}</label>
-                        <select id="theme_blocktemplate_{$position|safetext}" name="blockpositiontemplates[{$position|safetext}]">
+                        <label for="theme_blockpositiontemplate_{$position|safetext}" title="{$description|safetext}">{$position}</label>
+                        <select id="theme_blockpositiontemplate_{$position|safetext}" name="blockpositiontemplates[{$position|safetext}]">
                             <option value="">{gt text="Default template"}</option>
                             {html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blockpositions.$position}
                         </select>
@@ -136,9 +136,9 @@
                     <legend>{$block.module|safetext}</legend>
                     {/if}
                     <div class="z-formrow">
-                        <label for="theme_blocktemplate_{$block.bkey|safetext}" title="{$block.text_type_long|safetext}">{$block.text_type|safetext}</label>
+                        <label for="theme_blocktypetemplate_{$block.module|safetext}_{$block.bkey|safetext}" title="{$block.text_type_long|safetext}">{$block.text_type|safetext}</label>
                         {assign var=bkey value=$block.bkey}
-                        <select id="theme_blocktemplate_{$block.bkey|safetext}" name="blocktypetemplates[{$block.bkey|safetext}]">
+                        <select id="theme_blocktypetemplate_{$block.module|safetext}_{$block.bkey|safetext}" name="blocktypetemplates[{$block.bkey|safetext}]">
                             <option value="">{gt text="Default template"}</option>
                             {html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blocktypes.$bkey}
                         </select>
@@ -156,7 +156,7 @@
 
                     {foreach from=$blocks item='block'}
                     <div class="z-formrow">
-                        <label for="theme_blocktemplate_{$block.bid|safetext}" title="{$block.description|safetext}">
+                        <label for="theme_blockinstancetemplate_{$block.bid|safetext}" title="{$block.description|safetext}">
                             {if $block.title neq ''}
                                 {$block.title|safetext}
                             {else}
@@ -164,7 +164,7 @@
                             {/if}
                             <span class="z-sub">({$block.bid})</span>
                         </label>
-                        <select id="theme_blocktemplate_{$block.bid|safetext}" name="blockinstancetemplates[{$block.bid|safetext}]">
+                        <select id="theme_blockinstancetemplate_{$block.bid|safetext}" name="blockinstancetemplates[{$block.bid|safetext}]">
                             <option value="">{gt text="Default template"}</option>
                             {html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blockinstances[$block.bid]}
                         </select>
