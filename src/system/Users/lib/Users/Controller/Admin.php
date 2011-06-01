@@ -970,7 +970,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if ($processDelete) {
             $valid = true;
             foreach ($userid as $uid) {
-                $event = new Zikula_Event('module.users.ui.validate_delete', $uid, array(), new Zikula_Hook_ValidationProviders());
+                $event = new Zikula_Event('module.users.ui.validate_delete', null, array('id' => $uid), new Zikula_Hook_ValidationProviders());
                 $validators = $this->eventManager->notify($event)->getData();
                 if ($validators->hasErrors()) {
                     $valid = false;
