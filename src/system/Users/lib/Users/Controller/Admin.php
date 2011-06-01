@@ -1796,8 +1796,6 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $this->registerError($this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']));
                 $this->redirect($cancelUrl);
             } else {
-                $event = new Zikula_Event('module.users.ui.process_delete', $uid);
-                $this->eventManager->notify($event); // null for subject?
                 if ($sendNotification) {
                     $siteurl   = System::getBaseUrl();
                     $rendererArgs = array(
