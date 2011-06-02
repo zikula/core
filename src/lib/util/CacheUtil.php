@@ -64,11 +64,11 @@ class CacheUtil
      *
      * @return boolean true if successful, false otherwise.
      */
-    public static function removeLocalDir($dir)
+    public static function removeLocalDir($dir, $absolute = false)
     {
         $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
 
-        return FileUtil::deldir($path);
+        return FileUtil::deldir($path, $absolute);
     }
 
     /**
@@ -84,7 +84,7 @@ class CacheUtil
      */
     public static function clearLocalDir($dir)
     {
-        self::removeLocalDir($dir);
-        self::createLocalDir($dir);
+        self::removeLocalDir($dir, true);
+        self::createLocalDir($dir, null, true);
     }
 }
