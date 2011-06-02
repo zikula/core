@@ -590,7 +590,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         // remove generated category models for this record
         $dir = 'doctrinemodels/GeneratedDoctrineModel/' . $moduleName;
         if (file_exists(CacheUtil::getLocalDir($dir))) {
-            CacheUtil::removeLocalDir($dir);
+            CacheUtil::removeLocalDir($dir, true);
         }
 
         // remove saved data about the record
