@@ -948,7 +948,7 @@ class Zikula_Form_View extends Zikula_View
      *
      * @return mixed One or all the persistent data.
      */
-    public function getStateData($key=null)
+    public function getStateData($key = null)
     {
         if ($key) {
             return isset($this->data[$key]) ? $this->data[$key] : null;
@@ -963,13 +963,15 @@ class Zikula_Form_View extends Zikula_View
      * @param string $key   ID of the value to set in the state data array.
      * @param mixed  $value Data to set.
      *
-     * @return void.
+     * @return $this
      */
     public function setStateData($key, $value)
     {
         if ($key) {
             $this->data[$key] = $value;
         }
+
+        return $this;
     }
 
     /**
