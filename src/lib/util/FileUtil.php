@@ -271,7 +271,7 @@ class FileUtil
         if ($dh = opendir($path)) {
             while (($file = readdir($dh)) !== false) {
                 if (is_dir("$path/$file") && ($file != '.' && $file != '..')) {
-                    self::deldir("$path/$file");
+                    self::deldir("$path/$file", $absolute);
                 } else if ($file != '.' && $file != '..') {
                     unlink("$path/$file");
                 }
