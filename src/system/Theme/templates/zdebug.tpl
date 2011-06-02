@@ -79,6 +79,7 @@
         </td>
     </tr>
     {section name=vars loop=$_ZSession_keys}
+        {if $_ZSession_keys[vars] neq '__forms'}
         <tr bgcolor="{cycle values='#eeeeee,#fafafa'}">
             <td style="vertical-align: top; color: blue;">
                 <tt>{ldelim}${$_ZSession_keys[vars]}{rdelim}</tt>
@@ -87,6 +88,7 @@
                 <tt style="white-space:pre;"><!--raw-->{$_ZSession_vals[vars]|@debug_print_var:0:1000}<!--/raw--></tt>
             </td>
         </tr>
+        {/if}
     {sectionelse}
         <tr bgcolor="{cycle values='#eeeeee,#fafafa'}" colspan="2">
             <td style="vertical-align: top; font-style: italic;">
