@@ -134,7 +134,9 @@ Zikula.showajaxerror = function(errortext) {
     } else if (typeof(errortext) == 'object') {
         errortext = Object.values(errortext).join("\n");
     }
-    alert(errortext);
+    if (errortext) {
+        alert(errortext);
+    }
     return;
 };
 
@@ -396,6 +398,7 @@ Ajax.Responders.register({
             function() {
                 // If we have hit the timeout and the AJAX request is active, abort it and let the user know
                 if (Zikula.callInProgress(request.transport)) {
+                    request.transport.isAborted = true;
                     request.transport.abort();
                     if ($('ajax_indicator') && $('ajax_indicator').tagName == 'IMG') {
                         $('ajax_indicator').src = Zikula.Config.baseURL + 'images/icons/extrasmall/error.png';
@@ -1413,7 +1416,7 @@ Zikula.Ajax.Response = /** @lends Zikula.Ajax.Response */{
      */
     isSuccess: function() {
         var status = this.getStatus();
-        return !status || (status >= 200 && status < 300);
+        return !this.transport.isAborted && (!status || (status >= 200 && status < 300) || status == 304);
     },
     /**
      * Decodes responseText
