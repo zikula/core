@@ -43,17 +43,6 @@ class Users_Controller_Admin extends Zikula_AbstractController
     }
 
     /**
-     * Determines if the user currently logged in has add access for the Users module.
-     *
-     * @return bool True if the current user is logged in and has administrative permission for the Users
-     *                  module; otherwise false.
-     */
-    private function currentUserIsAdminOrSubAdmin()
-    {
-        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD);
-    }
-
-    /**
      * Redirects users to the "view" page.
      *
      * @return string HTML string containing the rendered view template.
