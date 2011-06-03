@@ -32,7 +32,7 @@
                 </div>
             </fieldset>
             <div class="z-formbuttons z-buttons">
-                {button src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
+                {button src='button_ok.png' set='icons/extrasmall' __alt='Import' __title='Import' __text='Import'}
                 <a href="{modurl modname='Users' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </div>
