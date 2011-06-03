@@ -250,7 +250,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                         'csrftoken' => $csrftoken,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'button_cancel.png',
+                                        'image' => 'folder_red.png',
                                         'title' => $this->__f('Deactivate \'%s\' module', $mod['name']));
                             }
 
@@ -278,7 +278,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                     'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'button_ok.png',
+                                    'image' => 'folder_green.png',
                                     'title' => $this->__f('Activate \'%s\'', $mod['name']));
                             $actions[] = array(
                                     'url' => ModUtil::url('Extensions', 'admin', 'remove', array(
@@ -309,7 +309,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                     'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'db_update.png',
+                                    'image' => 'folder_favorites.png',
                                     'title' => $this->__f('Upgrade \'%s\'', $mod['name']));
                             break;
                         case ModUtil::STATE_INVALID:
@@ -347,7 +347,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                         'csrftoken' => $csrftoken,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'agt_update_misc.png',
+                                        'image' => 'folder_new.png',
                                         'title' => $this->__f('Install \'%s\'', $mod['name']));
 //                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
 //                                    $actions[] = array(
@@ -405,13 +405,13 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                         break;
                     case ModUtil::STATE_NOTALLOWED:
                         $status = $this->__('Not allowed');
-                        $statusimage = 'button_cancel.png';
+                        $statusimage = 'folder_red.png';
                         break;
                     case ModUtil::STATE_UNINITIALISED:
                     default:
                         if ($mod['state'] > 10) {
                             $status = $this->__('Incompatible');
-                            $statusimage = 'button_cancel.png';
+                            $statusimage = 'folder_red.png';
                         } else {
                             $status = $this->__('Not installed');
                             $statusimage = 'redled.png';
@@ -1150,7 +1150,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'agt_update_misc.png',
+                                       'image' => 'folder_new.png',
                                        'title' => $this->__('Install'));
                     break;
                 case PluginUtil::ENABLED:
@@ -1179,7 +1179,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'button_cancel.png',
+                                       'image' => 'folder_red.png',
                                        'title' => $this->__('Deactivate'));
 
                         $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'removePlugin',
@@ -1206,7 +1206,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'button_ok.png',
+                                       'image' => 'folder_green.png',
                                        'title' => $this->__('Activate'));
 
                     $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'removePlugin',
@@ -1239,7 +1239,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                       'systemplugins' => $systemplugins,
                                                       'csrftoken' => $csrfToken)
                                             ),
-                                       'image' => 'db_update.png',
+                                       'image' => 'folder_favorites.png',
                                        'title' => $this->__('Upgrade'));
 
                 $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'removePlugin',
