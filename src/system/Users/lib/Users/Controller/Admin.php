@@ -899,12 +899,12 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * Parameters passed via POST:
      * ---------------------------
-     * numeric userid The user id of the user to be deleted.
+     * array userid The array of user ids of the users to be deleted.
      *
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     *
+     * 
      * @return string HTML string containing the rendered template.
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have delete access, or if the method of accessing this function is improper.
@@ -927,8 +927,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $uname  = $this->request->getGet()->get('uname', null);
 
             // retreive userid from uname
-            if (is_null($userid) && !empty($uname)) {
-                $userid = UserUtil::getIdFromName($uname);
+            if (empty($userid) && !empty($uname)) {
+                $userid = UserUtil::getIdFromName($users);
             }
 
             $proceedToForm = true;
@@ -936,7 +936,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        if (is_null($userid) && is_null($uname)) {
+        if (empty($userid)) {
             $this->registerError($this->__('Sorry! No such user found.'));
             $proceedToForm = false;
         }
@@ -946,7 +946,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
         }
 
         $currentUser = UserUtil::getVar('uid');
-        foreach ($userid as $uid) {
+        $users = array();
+        foreach ($userid as $key => $uid) {
             if ($uid == 1) {
                 $this->registerError($this->__("Error! You can't delete the guest account."));
                 $proceedToForm = false;
@@ -962,8 +963,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
             }
 
             // get the user vars
-            $uname = UserUtil::getVar('uname', $uid);
-            if ($uname == false) {
+            $users[$key] = UserUtil::getVars($uid);
+            if ($users[$key] == false) {
                 $this->registerError($this->__('Sorry! No such user found.'));
                 $proceedToForm = false;
                 $processDelete = false;
@@ -985,9 +986,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 }
             }
 
-            if (!$valid) {
-                $proceedToForm = (count($userid) == 1);
-            } else {
+            $proceedToForm = false;
+            if ($valid) {
                 $deleted = ModUtil::apiFunc($this->name, 'admin', 'deleteUser', array('uid' => $userid));
 
                 if ($deleted) {
@@ -1000,17 +1000,12 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     }
                     $count = count($userid);
                     $this->registerStatus($this->_fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', $count, array($count)));
-                    $proceedToForm = false;
-                } else {
-                    $proceedToForm = (count($userid) == 1);
                 }
             }
         }
 
         if ($proceedToForm) {
-            // TODO - Get the full user record for each UID and pass them to the template for use as aubject
-            return $this->view->assign('userid', $userid[0])
-                ->assign('uname', $uname)
+            return $this->view->assign('users', $users)
                 ->fetch('users_admin_deleteusers.tpl');
         } else {
             $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
