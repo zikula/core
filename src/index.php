@@ -46,12 +46,16 @@ $modinfo = ModUtil::getInfoFromName($module);
 
 // we need to force the mod load if we want to call a modules interactive init
 // function because the modules is not active right now
-if (System::isLegacyMode()) {
-    $type = (empty($type)) ? $type = 'user' : $type;
-    $func = (empty($func)) ? $func = 'main' : $func;
-}
-if ($type == 'init' || $type == 'interactiveinstaller') {
-    ModUtil::load($modinfo['name'], $type, true);
+if ($modinfo) {
+    $module = $modinfo['url'];
+
+    if (System::isLegacyMode()) {
+        $type = (empty($type)) ? $type = 'user' : $type;
+        $func = (empty($func)) ? $func = 'main' : $func;
+    }
+    if ($type == 'init' || $type == 'interactiveinstaller') {
+        ModUtil::load($modinfo['name'], $type, true);
+    }
 }
 
 $httpCode = 404;
@@ -83,9 +87,11 @@ try {
     if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
         $dbConn->commit();
     }
+
 } catch (Exception $e) {
     $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
     $core->getEventManager()->notify($event);
+
     if ($event->isStopped()) {
         $httpCode = $event['httpcode'];
         $message = $event['message'];
@@ -119,13 +125,13 @@ try {
     }
 }
 
-
 switch (true)
 {
     case ($return === true):
         // prevent rendering of the theme.
         System::shutDown();
         break;
+
     case ($httpCode == 403):
         if (!UserUtil::isLoggedIn()) {
             $url = ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
@@ -135,15 +141,17 @@ switch (true)
         // there is no break here deliberately.
     case ($return === false):
         if (!LogUtil::hasErrors()) {
-            LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($modinfo['url'], $func)), $httpCode, null);
+            LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), $httpCode, null);
         }
         echo ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));
         break;
+
     case ($httpCode == 200):
         echo $return;
         break;
+
     default:
-        LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($modinfo['url'], $func)), $httpCode, null);
+        LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), $httpCode, null);
         echo ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));
         break;
 }
