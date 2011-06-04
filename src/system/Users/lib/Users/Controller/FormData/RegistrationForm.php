@@ -85,7 +85,11 @@ class Users_Controller_FormData_RegistrationForm extends Users_Controller_FormDa
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
                 $this->serviceManager,
-                $this->__('The value must be a string.')));
+                $this->__('The value must be a string.')))
+            ->addValidator(new Users_Controller_FormData_Validator_StringMinimumLength(
+                $this->serviceManager,
+                1,
+                $this->__('A password reminder is required, and cannot be left blank.')));
         
         $this->addField(new Users_Controller_FormData_Field(
                 $this,
