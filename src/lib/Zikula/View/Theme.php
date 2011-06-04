@@ -209,6 +209,10 @@ class Zikula_View_Theme extends Zikula_View
         if (isset($_POST) && count($_POST) != 0) {
             $this->caching = Zikula_View::CACHE_DISABLED;
         }
+        // and also for GET operations with csrftoken/authkey
+        if (isset($_GET['csrftoken']) || isset($_GET['authkey'])) {
+            $this->caching = Zikula_View::CACHE_DISABLED;
+        }
 
         $this->cache_lifetime = ModUtil::getVar('Theme', 'cache_lifetime');
 
