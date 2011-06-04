@@ -603,7 +603,6 @@ class Users_Controller_User extends Zikula_AbstractController
                 default:
                     // An unknown processing state.
                     $state = 'stop';
-                    throw new Zikula_Exception_Fatal($this->__('The registration process has entered an unknown state.'));
                     break;
             }
         }
