@@ -37,6 +37,13 @@
 abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterface
 {
     /**
+     * EntityManager.
+     *
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $entityManager;
+    
+    /**
      * Translation domain.
      *
      * @var string
@@ -149,6 +156,26 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     public function setRequest($request)
     {
         $this->request = $request;
+    }
+
+    /**
+     * Return entitymanager.
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * Set entitymanager.
+     *
+     * @param object $entityManager
+     */
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
     }
 
     /**
