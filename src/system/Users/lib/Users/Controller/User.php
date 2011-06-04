@@ -2235,4 +2235,14 @@ class Users_Controller_User extends Zikula_AbstractController
         $this->registerStatus($this->__('Done! Changed your e-mail address.'))
                 ->redirect(ModUtil::url($this->name, 'user', 'main'));
     }
+
+    /**
+     * @see Users_Controller_User::login
+     *
+     * @deprecated
+     */
+    public function loginscreen($args)
+    {
+        return $this->redirect(ModUtil::url('Users', 'user', 'login'), 301);
+    }
 }
