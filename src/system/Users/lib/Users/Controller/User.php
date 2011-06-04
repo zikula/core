@@ -417,10 +417,6 @@ class Users_Controller_User extends Zikula_AbstractController
                     $canLogIn = false;
                     $redirectUrl = '';
 
-                    $currentUserEmail = UserUtil::getVar('email');
-                    $adminNotifyEmail = $this->getVar('reg_notifyemail', '');
-                    $adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
-
                     $registeredObj = ModUtil::apiFunc($this->name, 'registration', 'registerNewUser', array(
                         'reginfo'           => $reginfo,
                         'usernotification'  => true,
