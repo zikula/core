@@ -28,9 +28,8 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
     public function install()
     {
         // create the table
-        $em = $this->getService('doctrine.entitymanager');
         try {
-            DoctrineHelper::createSchema($em, array('ExampleDoctrine_Entity_User'));
+            DoctrineHelper::createSchema($this->entityManager, array('ExampleDoctrine_Entity_User'));
         } catch (Exception $e) {
             return false;
         }
@@ -58,8 +57,7 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
                 // do something
             case 1.0:
                 // do something
-                // $em = $this->getService('doctrine.entitymanager');
-                // DoctrineHelper::createSchema($em, array('ExampleDoctrine_Entity_User'));
+                // DoctrineHelper::createSchema($this->entityManager, array('ExampleDoctrine_Entity_User'));
                 // to create any new tables
         }
 
@@ -78,8 +76,7 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
     public function uninstall()
     {
         // drop table
-        $em = $this->getService('doctrine.entitymanager');
-        DoctrineHelper::dropSchema($em, array('ExampleDoctrine_Entity_User'));
+        DoctrineHelper::dropSchema($this->entityManager, array('ExampleDoctrine_Entity_User'));
 
         // remove all module vars
         $this->delVars();
@@ -97,8 +94,7 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
     {
         $user = new ExampleDoctrine_Entity_User();
         $user->setUser('drak', 'guessme');
-        $em = $this->getService('doctrine.entitymanager');
-        $em->persist($user);
-        $em->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 }
