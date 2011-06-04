@@ -110,15 +110,21 @@ class Users_Controller_User extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
+        // Check if registration is enabled
         if (!$this->getVar(Users_Constant::MODVAR_REGISTRATION_ENABLED, Users_Constant::DEFAULT_REGISTRATION_ENABLED)) {
             return $this->view->fetch('users_user_registration_disabled.tpl');
         }
 
+        // Initialize state for the state machine later on.
         $state = 'error';
         $processState = 'error';
+        
         if ($this->request->isGet()) {
+            // An HTTP GET, meaning either we are reentering the function from an external authenticator,
+            // or we are entering the function for the very first time.
             $reentrantTokenReceived = $this->request->getGet()->get('reentranttoken', false);
             if ($reentrantTokenReceived) {
+                // We got here by reentering from an external authenticator. Grab the data we stored in session variables.
                 $sessionVars = $this->request->getSession()->get('Users_Controller_User_register', false, 'Zikula_Users');
                 if ($sessionVars) {
                     $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
@@ -135,6 +141,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $state = 'process';
                 $processState = 'authenticate';
             } else {
+                // We are entering this function for the very first time.
                 $selectedAuthenticationMethod = array();
                 $authenticationInfo = array();
 
@@ -142,15 +149,22 @@ class Users_Controller_User extends Zikula_AbstractController
                 $processState = 'start';
             }
         } elseif ($this->request->isPost()) {
+            // An HTTP POST, so a form was submitted in order to get into the function. There are three possibilities.
+            // It could be that the user selected an authentication method, and we need to switch to that method.
+            // It could be that the user supplied authentication info to send to an authentication method, and we need to do that.
+            // It could be that the user submitted the actual registration form.
+            
             $this->checkCsrfToken();
 
             if ($this->request->getPost()->get('authentication_method_selector', false)) {
+                // The user selected an authentication method, so we need to switch to it.
                 $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', false);
                 $authenticationInfo = array();
 
                 $state = 'process';
                 $processState = 'authentication_method_selector';
             } elseif ($this->request->getPost()->get('registration_authentication_info', false)) {
+                // The user submitted authentication information that needs to be processed by the authentication module.
                 $authenticationInfo           = $this->request->getPost()->get('authentication_info', array());
                 $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
 
@@ -159,6 +173,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $state = 'process';
                 $processState = 'authenticate';
             } elseif ($this->request->getPost()->get('registration_info', false)) {
+                // The user submitted the acutal registration form, so we need to register him.
                 $formData = new Users_Controller_FormData_RegistrationForm('users_register', $this->serviceManager);
                 $formData->setFromRequestCollection($this->request->getPost());
                 $selectedAuthenticationMethod = unserialize($this->request->getPost()->get('authentication_method_ser', false));
@@ -168,13 +183,15 @@ class Users_Controller_User extends Zikula_AbstractController
                 $processState = 'register';
             }
         } else {
+            // Neither a POST nor a GET, so a fatal error.
             throw new Zikula_Exception_Forbidden();
         }
 
+        // The state machine that handles the processing of the data from the initialization above.
         while ($state == 'process') {
             switch ($processState) {
-                // Initial starting point for registration - a GET request without a reentrant token
                 case 'start':
+                    // Initial starting point for registration - a GET request without a reentrant token
                     // Check for illegal user agents trying to register.
                     $userAgent = $this->request->getServer()->get('HTTP_USER_AGENT', '');
                     $illegalUserAgents = $this->getVar(Users_Constant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, '');
@@ -211,8 +228,8 @@ class Users_Controller_User extends Zikula_AbstractController
                     }
                     break;
 
-                // One of the authentication method selectors on the registration methods page was clicked.
                 case 'authentication_method_selector':
+                    // One of the authentication method selectors on the registration methods page was clicked.
                     if (!$selectedAuthenticationMethod || !is_array($selectedAuthenticationMethod) || empty($selectedAuthenticationMethod)
                             || !isset($selectedAuthenticationMethod['modname']) || !is_string($selectedAuthenticationMethod['modname']) || empty($selectedAuthenticationMethod['modname'])
                             || !isset($selectedAuthenticationMethod['method']) || !is_string($selectedAuthenticationMethod['method']) || empty($selectedAuthenticationMethod['method'])
@@ -229,11 +246,12 @@ class Users_Controller_User extends Zikula_AbstractController
                     }
                     break;
 
-                // The user provided and submitted the authentication information form on the registration methods page in order
-                // to authenticate his credentials with the authentication method in order to proceed to the main registration page,
-                // OR the user is reentering the registration process after exiting to the external authentication service to
-                // authenticate his credentials.
                 case 'authenticate':
+                    // The user provided and submitted the authentication information form on the registration methods page in order
+                    // to authenticate his credentials with the authentication method in order to proceed to the main registration page,
+                    // OR the user is reentering the registration process after exiting to the external authentication service to
+                    // authenticate his credentials.
+                    
                     // Save the submitted information in case the authentication method is external and reentrant.
                     // We're using sessions here, even though anonymous sessions might be turned off for anonymous users.
                     // If the user is trying to regiuster, then he's going to get a session if he's successful and logs in,
@@ -267,7 +285,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     // anymore).
                     $this->request->getSession()->del('Users_Controller_User_register', 'Zikula_Users');
 
-                    // Did we get a good user? If so, then we can proceed to hook validation.
+                    // Did we get a good user? If so, then we can proceed to hook-like event and hook validation.
                     if (isset($checkPasswordResult) && $checkPasswordResult && is_array($checkPasswordResult)) {
                         if (isset($checkPasswordResult['authentication_info'])) {
                             $authenticationApiArgs['authentication_info'] = $checkPasswordResult['authentication_info'];
@@ -307,14 +325,16 @@ class Users_Controller_User extends Zikula_AbstractController
                     }
                     break;
 
-                // The user filled in and submitted the main registration form.
                 case 'register':
+                    // The user filled in and submitted the main registration form.
                     $canLogIn = false;
                     $redirectUrl = '';
 
+                    // Get the form data
                     $formData->getField('uname')->setData(mb_strtolower($formData->getField('uname')->getData()));
                     $formData->getField('email')->setData(mb_strtolower($formData->getField('email')->getData()));
 
+                    // Set up the parameters for a call to Users_Api_Registration#getRegistrationErrors()
                     $antispamAnswer = $formData->getFieldData('antispamanswer');
                     $reginfo = $formData->toUserArray();
                     $registrationArgs = array(
@@ -331,14 +351,17 @@ class Users_Controller_User extends Zikula_AbstractController
                         $errorFields = $formData->getErrorMessages();
                     }
 
+                    // Validate the hook-like event.
                     $event = new Zikula_Event('module.users.ui.validate_edit.new_registration', $reginfo, array(), new Zikula_Hook_ValidationProviders());
                     $validators = $this->eventManager->notify($event)->getData();
             
+                    // Validate the hook
                     $hook = new Zikula_ValidationHook('users.ui_hooks.registration.validate_edit', $validators);
                     $this->notifyHooks($hook);
                     $validators = $hook->getValidators();
 
                     if (empty($errorFields) && !$validators->hasErrors()) {
+                        // No errors from validation, so do the actual registration.
                         $currentUserEmail = UserUtil::getVar('email');
                         $adminNotifyEmail = $this->getVar('reg_notifyemail', '');
                         $adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
@@ -350,7 +373,10 @@ class Users_Controller_User extends Zikula_AbstractController
                         ));
 
                         if (isset($registeredObj) && $registeredObj) {
+                            // The main registration completed successfully.
                             if ($selectedAuthenticationMethod['modname'] != $this->name) {
+                                // The selected authentication module is NOT the Users module, so make sure the user is registered
+                                // with the authentication module (associate the Users module record uid with the login information).
                                 $authenticationRegisterArgs = array(
                                     'authentication_method' => $selectedAuthenticationMethod,
                                     'authentication_info'   => $authenticationInfo,
@@ -361,12 +387,16 @@ class Users_Controller_User extends Zikula_AbstractController
                                     $this->registerError($this->__('There was a problem associating your log-in information with your account. Please contact the site administrator.'));
                                 }
                             } elseif ($this->getVar(Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::LOGIN_METHOD_UNAME) == Users_Constant::LOGIN_METHOD_EMAIL) {
+                                // The authentication method IS the Users module, prepare for auto-login.
+                                // The log-in user ID is the user's e-mail address.
                                 $authenticationInfo = array(
                                     'login_id' => $registeredObj['email'],
                                     // Need the unhashed password here for auto-login
                                     'pass'     => $reginfo['pass'],
                                 );
                             } else {
+                                // The authentication method IS the Users module, prepare for auto-login.
+                                // The log-in user ID is the user's user name.
                                 $authenticationInfo = array(
                                     'login_id' => $registeredObj['uname'],
                                     // Need the unhashed password here for auto-login
@@ -374,46 +404,65 @@ class Users_Controller_User extends Zikula_AbstractController
                                 );
                             }
 
+                            // Allow hook-like events to process the registration...
                             $event = new Zikula_Event('module.users.ui.process_edit.new_registration', $registeredObj);
                             $this->eventManager->notify($event);
 
+                            // ...and hooks to process the registration.
                             $hook = new Zikula_ProcessHook('users.ui_hooks.registration.process_edit', $registeredObj['uid']);
                             $this->notifyHooks($hook);
 
+                            // If there were errors after the main registration, then make sure they can be displayed.
+                            // TODO - Would this even happen?
                             if (!empty($registeredObj['regErrors'])) {
                                 $this->view->assign('regErrors', $registeredObj['regErrors']);
                             }
 
+                            // Register the appropriate status or error to be displayed to the user, depending on the account's
+                            // activated status, whether registrations are moderated, whether e-mail addresses need to be verified,
+                            // and other sundry conditions.
                             if ($registeredObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) {
+                                // The account is saved and is pending either moderator approval, e-mail verification, or both.
                                 $moderation = $this->getVar(Users_Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, Users_Constant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
                                 $moderationOrder = $this->getVar(Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, Users_Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
                                 $verifyEmail = $this->getVar(Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE, Users_Constant::DEFAULT_REGISTRATION_VERIFICATION_MODE);
 
                                 if (!empty($registeredObj['regErrors'])) {
+                                    // There were errors. This message takes precedence.
                                     $this->registerError($this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
                                 } elseif ($moderation && ($verifyEmail != Users_Constant::VERIFY_NO)) {
+                                    // Pending both moderator approval, and e-mail verification. Set the appropriate message
+                                    // based on the order of approval/verification set.
                                     if ($moderationOrder == Users_Constant::APPROVAL_AFTER) {
+                                        // Verification then approval.
                                         $this->registerStatus($this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message. Your account will not be approved until after the verification process is completed.'));
                                     } elseif ($moderationOrder == Users_Constant::APPROVAL_BEFORE) {
+                                        // Approval then verification.
                                         $this->registerStatus($this->__('Done! Your registration request has been saved. Remember that your request must be approved and your e-mail address must be verified before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
                                     } else {
+                                        // Approval and verification in any order.
                                         $this->registerStatus($this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
                                     }
                                 } elseif ($moderation) {
+                                    // Pending moderator approval only.
                                     $this->registerStatus($this->__('Done! Your registration request has been saved. Remember that your request must be approved before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
                                 } elseif ($verifyEmail != Users_Constant::VERIFY_NO) {
+                                    // Pending e-mail address verification only.
                                     $this->registerStatus($this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
                                 } else {
                                     // Some unknown state! Should never get here, but just in case...
                                     $this->registerError($this->__('Your registration request has been saved, however your current registration status could not be determined. Please contact the site administrator regarding the status of your request.'));
                                 }
                             } elseif ($registeredObj['activated'] == Users_Constant::ACTIVATED_ACTIVE) {
-                                // The user has a status that allows him to log in
+                                // The account is saved, and is active (no moderator approval, no e-mail verification, and the user can log in now).
                                 if (!empty($registeredObj['regErrors'])) {
+                                    // Errors. This message takes precedence.
                                     $this->registerError($this->__('Your account has been created and you may now log in, however the problems listed below were detected during the registration process. Please contact the site administrator for more information.'));
                                 } elseif ($this->getVar(Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN, Users_Constant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
+                                    // No errors and auto-login is turned on. A simple post-log-in message.
                                     $this->registerStatus($this->__('Done! Your account has been created.'));
                                 } else {
+                                    // No errors, and no auto-login. A simple message telling the user he may log in.
                                     $this->registerStatus($this->__('Done! Your account has been created and you may now log in.'));
                                 }
                                 $canLogIn = true;
@@ -431,24 +480,32 @@ class Users_Controller_User extends Zikula_AbstractController
                             $event = $this->eventManager->notify($event);
                             $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
 
+                            // Set up the next state to follow this one, along with any data needed.
                             if ($canLogIn && $this->getVar(Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN, Users_Constant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
+                                // Next is auto-login. Make sure redirectUrl has a value so we know where to send the user.
                                 if (empty($redirectUrl)) {
                                     $redirectUrl = System::getHomepageUrl();
                                 }
                                 $state = 'auto_login';
                                 $processState = 'error';
                             } elseif (!empty($redirectUrl)) {
+                                // No auto-login, but a redirect URL, so send the user there next.
                                 $state = 'redirect';
                                 $processState = 'error';
                             } elseif (!$registeredObj || !empty($registeredObj['regErrors']) || !$canLogIn) {
+                                // Either some sort of error, or the user cannot yet log in. Send him to a page to display
+                                // the current status message or error message.
                                 $state = 'display_status';
                                 $processState = 'error';
                             } else {
+                                // No auto-login, no redirect URL, no errors, and the user can log in at this point.
+                                // Send him to the login screen.
                                 $redirectUrl = ModUtil::url($this->name, 'user', 'login');
                                 $state = 'redirect';
                                 $processState = 'error';
                             }
                         } else {
+                            // The main registration process failed.
                             $this->registerError($this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
 
                             // Notify that we are completing a registration session.
@@ -459,10 +516,13 @@ class Users_Controller_User extends Zikula_AbstractController
                             $event = $this->eventManager->notify($event);
                             $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
 
+                            // Set the next state to folllow this one.
                             if (!empty($redirectUrl)) {
+                                // A redirect URL, so send the user there.
                                 $state = 'redirect';
                                 $processState = 'error';
                             } else {
+                                // No redirect, so send the user to a page to show the current error message.
                                 $state = 'display_status';
                                 $processState = 'error';
                             }
@@ -470,8 +530,8 @@ class Users_Controller_User extends Zikula_AbstractController
                     }
                     break;
 
-                // An unknown processing state.
                 default:
+                    // An unknown processing state.
                     throw new Zikula_Exception_Fatal($this->__('The registration process has entered an unknown processing state.'));
                     break;
             }
@@ -479,6 +539,8 @@ class Users_Controller_User extends Zikula_AbstractController
 
         switch ($state) {
             case 'display_method_selector':
+                // An authentication method to use with the user's registration has not been selected. 
+                // Present the choices to the user.
                 $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this, array(), Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
 
                 // TODO - The order and availability should be set by configuration
@@ -509,6 +571,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 break;
 
             case 'display_registration':
+                // An authentication method has been selected (or defaulted). Display the registration form to the user.
                 if (!isset($formData)) {
                     $formData = new Users_Controller_FormData_RegistrationForm('users_register', $this->serviceManager);
                 }
@@ -527,14 +590,19 @@ class Users_Controller_User extends Zikula_AbstractController
                 break;
 
             case 'display_status':
+                // At the end of the registration process with no where else to go. 
+                // Show the user the current status message(s) or error message(s).
                 return $this->view->fetch('users_user_displaystatusmsg.tpl');
                 break;
 
             case 'redirect':
+                // At the end of the registration process with a redirect URL. Send the user there.
                 $this->redirect($redirectUrl);
                 break;
 
             case 'auto_login':
+                // At the end of the registration process that was successful with the user in a state where
+                // he can log in, and auto-login enabled. Log the user in, sending him to the page specified.
                 $loginArgs = array(
                     'authentication_method' => $selectedAuthenticationMethod,
                     'authentication_info'   => $authenticationInfo,
@@ -545,6 +613,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 break;
 
             default:
+                // An unknown state.
                 throw new Zikula_Exception_Fatal($this->__('The registration process has entered an unknown state.'));
         }
     }
