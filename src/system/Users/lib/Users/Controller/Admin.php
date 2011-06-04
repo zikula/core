@@ -899,7 +899,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * Parameters passed via POST:
      * ---------------------------
-     * array userid The array of user ids of the users to be deleted.
+     * array   userid         The array of user ids of the users to be deleted.
+     * boolean process_delete True to process the posted userid list, and delete the corresponding accounts; false or null to confirm first.
      *
      * Parameters passed via SESSION:
      * ------------------------------
@@ -921,7 +922,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         if ($this->request->isPost()) {
             $userid = $this->request->getPost()->get('userid', null);
-            $processDelete = true;
+            $processDelete = $this->request->getPost()->get('process_delete', false);
+            $proceedToForm = !$processDelete;
         } elseif ($this->request->isGet()) {
             $userid = $this->request->getGet()->get('userid', null);
             $uname  = $this->request->getGet()->get('uname', null);
