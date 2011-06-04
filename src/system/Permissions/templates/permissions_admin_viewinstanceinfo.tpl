@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{$stylepath}/print.css" media="print" />
 </head>
 <body>
-    <h1 class="z-center" style="margin: 1em 0;">{gt text="Permission rule information"}</h1>
+    <h1 class="z-center" style="font-size: 1em; margin: 0;">{gt text="Permission rule information"}</h1>
     <table class="z-datatable">
         <thead>
         <tr>
