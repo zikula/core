@@ -223,7 +223,9 @@ class Users_Controller_User extends Zikula_AbstractController
                     break;
 
                 case 'display_registration':
-                    // An authentication method has been selected (or defaulted). Display the registration form to the user.
+                    // An authentication method has been selected (or defaulted), or there were errors with the last
+                    // submission of the registration form.
+                    // Display the registration form to the user.
                     if (!isset($formData)) {
                         $formData = new Users_Controller_FormData_RegistrationForm('users_register', $this->serviceManager);
                     }
@@ -234,8 +236,8 @@ class Users_Controller_User extends Zikula_AbstractController
                         'authentication_method' => $selectedAuthenticationMethod,
                         'authentication_info'   => $authenticationInfo,
                         'registration_info'     => isset($registrationInfo) ? $registrationInfo : array(),
-                        'error_fields'          => isset($errorFields) ? $errorFields : array(),
-                        'error_messages'        => isset($errorMessages) ? $errorMessages : array(),
+                        'errorFields'          => isset($errorFields) ? $errorFields : array(),
+                        'errorMessages'        => isset($errorMessages) ? $errorMessages : array(),
                     );
 
                     return $this->view->assign_by_ref('formData', $formData)
@@ -565,6 +567,9 @@ class Users_Controller_User extends Zikula_AbstractController
                                 $state = 'display_status';
                             }
                         }
+                    } else {
+                        // There were errors with the entries on the registration form. Redisplay it.
+                        $state = 'display_registration';
                     }
                     break;
 
