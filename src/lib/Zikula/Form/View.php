@@ -112,6 +112,13 @@ class Zikula_Form_View extends Zikula_View
     public $eventHandler;
 
     /**
+     * EntityManager.
+     *
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $entityManager;
+
+    /**
      * Error message has been set.
      *
      * @var boolean
@@ -129,7 +136,7 @@ class Zikula_Form_View extends Zikula_View
 
     /**
      * Unique form ID.
-     * 
+     *
      * @var string
      */
     protected $formId;
@@ -192,6 +199,26 @@ class Zikula_Form_View extends Zikula_View
     }
 
     /**
+     * Return entitymanager.
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * Set entitymanager.
+     *
+     * @param object $entityManager
+     */
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
      * Main event loop handler.
      *
      * This is the function to call instead of the normal $view->fetch(...).
@@ -210,6 +237,7 @@ class Zikula_Form_View extends Zikula_View
         // Save handler for later use
         $this->eventHandler = $eventHandler;
         $this->eventHandler->setView($this);
+        $this->eventHandler->setEntityManager($this->entityManager);
         $this->eventHandler->setRequest($this->request);
         $this->eventHandler->setDomain($this->domain);
         $this->eventHandler->setName($this->getModuleName());

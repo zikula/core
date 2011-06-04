@@ -75,12 +75,19 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     protected $eventManager;
 
     /**
+     * Doctrine EntityManager.
+     *
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $entityManager;
+
+    /**
      * Request.
      *
      * @var Zikula_Request_Http
      */
     protected $request;
-    
+
     /**
      * This object's reflection.
      *
@@ -96,9 +103,13 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        $this->eventManager = $this->getService('zikula.eventmanager');
 
-        $this->request = $this->serviceManager->getService('request');
+        $this->request = $this->getService('request');
+        if ($this->hasService('doctrine.entitymanager')) {
+            // todo: remove this check post 1.3.0 release - drak
+            $this->entityManager = $this->getService('doctrine.entitymanager');
+        }
         $this->_configureBase();
         $this->initialize();
         $this->postInitialize();
@@ -157,6 +168,16 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
             $this->reflection = new ReflectionObject($this);
         }
         return $this->reflection;
+    }
+
+    /**
+     * Get entitymanager.
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
     }
 
     /**
@@ -507,7 +528,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
         if ($condition) {
             return $this->registerStatus($message);
         }
-        
+
         return $this;
     }
 
@@ -528,7 +549,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
         if (!$condition) {
             return $this->registerStatus($message);
         }
-        
+
         return $this;
     }
 
@@ -575,7 +596,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
         if ($condition) {
             return $this->registerError($message, $type, $debug);
         }
-        
+
         return $this;
     }
 
@@ -598,7 +619,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
         if (!$condition) {
             return $this->registerError($message, $type, $debug);
         }
-        
+
         return $this;
     }
 

@@ -363,15 +363,17 @@ class FormUtil
      */
     public static function newForm($name, Zikula_AbstractController $controller = null, $className=null)
     {
-        $serviceManager = ServiceUtil::getManager();
+        $serviceManager = $controller->getServiceManager();
         if ($className && !class_exists($className)) {
             throw new RuntimeException(__f('%s does not exist', $className));
         }
-        
+
         $form = $className ? new $className($serviceManager, $name) : new Zikula_Form_View($serviceManager, $name);
         if ($className && !$form instanceof Zikula_Form_View) {
             throw new RuntimeException(__f('%s is not an instance of Zikula_Form_View', $className));
         }
+
+        $form->setEntityManager($controller->getEntityManager());
 
         if ($controller) {
             $form->setController($controller);
@@ -379,7 +381,7 @@ class FormUtil
         } else {
             LogUtil::log(__('FormUtil::newForm should also include the Zikula_AbstractController as the second argument to enable hooks to work.'), Zikula_AbstractErrorHandler::NOTICE);
         }
-        
+
         return $form;
     }
 
