@@ -611,15 +611,13 @@ class ModUtil
         // define input, all numbers and booleans to strings
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
 
-        // default return value
-        $data = false;
-
         // validate
         if (!System::varValidate($modname, 'mod')) {
-            return $data;
+            return false;
         }
 
         $serviceManager = ServiceUtil::getManager();
+
         if (!isset($serviceManager['modutil.dbinfoload.loaded'])) {
             $serviceManager['modutil.dbinfoload.loaded'] = array();
         }
@@ -628,9 +626,12 @@ class ModUtil
 
         // check to ensure we aren't doing this twice
         if (isset($loaded[$modname]) && !$force) {
-            $data = true;
-            return $data;
+            return $loaded[$modname];
         }
+
+        // from here the module dbinfo will be loaded no doubt
+        $loaded[$modname] = true;
+        $serviceManager['modutil.dbinfoload.loaded'] = $loaded;
 
         // get the directory if we don't already have it
         if (empty($directory)) {
@@ -643,23 +644,20 @@ class ModUtil
             $modpath = is_dir("system/$directory") ? 'system' : 'modules';
         }
 
-        // no need for pntables scan if using Doctrine
-        $doctrineModelDir = "$modpath/$directory/lib/$directory/Model";
+        // no need for tables.php scan if using Doctrine
+        $doctrineModelDir  = "$modpath/$directory/lib/$directory/Model";
         $doctrineEntityDir = "$modpath/$directory/lib/$directory/Entity";
         if (is_dir($doctrineModelDir) || is_dir($doctrineEntityDir)) {
-            $loaded[$modname] = true;
-            $serviceManager['modutil.dbinfoload.loaded'] = $loaded;
             return true;
         }
 
         // Load the database definition if required
         $files = array();
-        //$files[] = "config/functions/$directory/tables.php";
         $files[] = "$modpath/$directory/tables.php";
-        //$files[] = "config/functions/$directory/pntables.php";
         $files[] = "$modpath/$directory/pntables.php";
 
         if (Loader::loadOneFile($files)) {
+            // If not gets here, the module has no tables to load
             $tablefunc = $modname . '_tables';
             $tablefuncOld = $modname . '_pntables';
             if (function_exists($tablefunc)) {
@@ -684,12 +682,15 @@ class ModUtil
 
             $dbtables = $serviceManager['dbtables'];
             $serviceManager['dbtables'] = array_merge($dbtables, (array)$data);
-            $loaded[$modname] = true;
+        } else {
+            // marks the module as tableless
+            $loaded[$modname] = false;
         }
 
-        // return data so we know which tables were loaded by this module
+        // update the loaded status
         $serviceManager['modutil.dbinfoload.loaded'] = $loaded;
-        return $data;
+
+        return $loaded[$modname];
     }
 
     /**
