@@ -219,7 +219,7 @@ class DBUtil
      *
      * @param string $table Optional, string with table name.
      * If $table param is set and there is a set of options configured
-     * for this table via pntables.php then we return these options,
+     * for this table via tables.php then we return these options,
      * the default options are returned otherwise.
      *
      * @return array Return the table options.
@@ -2879,7 +2879,7 @@ class DBUtil
         $tablecol = $table . '_column';
         $tabledef = $table . '_column_def';
         if (array_key_exists($tabledef, $tables) && is_array($tables[$tabledef])) {
-            // we have a {$tablename}_column_def array as defined in pntables.php. This is a real array, not a string.
+            // we have a {$tablename}_column_def array as defined in tables.php. This is a real array, not a string.
             // The format is like "C(24) NOTNULL DEFAULT ''" which means we have to prepend the field name now
             foreach ($tables[$tablecol] as $id => $val) {
                 if (!array_key_exists($id, $tables[$tabledef])) {
