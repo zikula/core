@@ -117,7 +117,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
         // Initialize state for the state machine later on.
         $state = 'error';
-        
+
         if ($this->request->isGet()) {
             // An HTTP GET, meaning either we are reentering the function from an external authenticator,
             // or we are entering the function for the very first time.
@@ -150,7 +150,7 @@ class Users_Controller_User extends Zikula_AbstractController
             // It could be that the user selected an authentication method, and we need to switch to that method.
             // It could be that the user supplied authentication info to send to an authentication method, and we need to do that.
             // It could be that the user submitted the actual registration form.
-            
+
             $this->checkCsrfToken();
 
             if ($this->request->getPost()->get('authentication_method_selector', false)) {
@@ -231,7 +231,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     }
 
                     $state = 'stop';
-                    
+
                     $arguments = array(
                         'authentication_method' => $selectedAuthenticationMethod,
                         'authentication_info'   => $authenticationInfo,
@@ -246,7 +246,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     break;
 
                 case 'display_method_selector':
-                    // An authentication method to use with the user's registration has not been selected. 
+                    // An authentication method to use with the user's registration has not been selected.
                     // Present the choices to the user.
                     $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this, array(), Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
 
@@ -267,14 +267,14 @@ class Users_Controller_User extends Zikula_AbstractController
                     );
 
                     $state = 'stop';
-                    
+
                     $arguments = array(
                         'authentication_info'                   => isset($authenticationInfo) ? $authenticationInfo : array(),
                         'selected_authentication_method'        => $selectedAuthenticationMethod,
                         'users_authentication_method'           => $usersAuthenticationMethod,
                         'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
                     );
-                    
+
                     return $this->view->assign($arguments)
                             ->fetch('users_user_registration_method.tpl');
                     break;
@@ -300,7 +300,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     // to authenticate his credentials with the authentication method in order to proceed to the main registration page,
                     // OR the user is reentering the registration process after exiting to the external authentication service to
                     // authenticate his credentials.
-                    
+
                     // Save the submitted information in case the authentication method is external and reentrant.
                     // We're using sessions here, even though anonymous sessions might be turned off for anonymous users.
                     // If the user is trying to regiuster, then he's going to get a session if he's successful and logs in,
@@ -397,7 +397,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     // Validate the hook-like event.
                     $event = new Zikula_Event('module.users.ui.validate_edit.new_registration', $reginfo, array(), new Zikula_Hook_ValidationProviders());
                     $validators = $this->eventManager->notify($event)->getData();
-            
+
                     // Validate the hook
                     $hook = new Zikula_ValidationHook('users.ui_hooks.registration.validate_edit', $validators);
                     $this->notifyHooks($hook);
@@ -575,7 +575,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     break;
 
                 case 'display_status':
-                    // At the end of the registration process with no where else to go. 
+                    // At the end of the registration process with no where else to go.
                     // Show the user the current status message(s) or error message(s).
                     $state = 'stop';
                     return $this->view->fetch('users_user_displaystatusmsg.tpl');
@@ -1000,21 +1000,6 @@ class Users_Controller_User extends Zikula_AbstractController
         } else {
             $this->redirect(ModUtil::url($this->name, 'user', 'lostPwdUname'));
         }
-    }
-
-    /**
-     * Display the login form.
-     *
-     * @deprecated Since 1.3.0
-     *
-     * @param array $args All parameters passed to this function.
-     *
-     * @return string The rendered template.
-     */
-    public function loginScreen($args)
-    {
-        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
-        return $this->new_login($args);
     }
 
     /**
@@ -2241,8 +2226,9 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @deprecated
      */
-    public function loginscreen($args)
+    public function loginScreen($args)
     {
+        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
         return $this->redirect(ModUtil::url('Users', 'user', 'login'), 301);
     }
 }
