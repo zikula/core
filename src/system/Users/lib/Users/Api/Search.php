@@ -104,14 +104,11 @@ class Users_Api_Search extends Zikula_AbstractApi
             $uids = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata',
                                  array('dynadata' => array('all' => $q)));
 
+            $tmp = $unameClause;
             if (is_array($uids) && !empty($uids)) {
-                $tmp = $unameClause . " OR $userscolumn[uid] IN (";
-                foreach ($uids as $uid) {
-                    $tmp .= DataUtil::formatForStore($uid) . ',';
-                }
-                $tmp .= '0))';
-                $where[] = $tmp;
+                $tmp .= " OR {$userscolumn['uid']} IN (" . implode(', ', $uids) . ')';
             }
+            $where[] = "({$tmp}) ";
         } else {
             $where[] = $unameClause;
         }
