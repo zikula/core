@@ -2228,7 +2228,8 @@ class Users_Controller_User extends Zikula_AbstractController
      */
     public function loginScreen($args)
     {
-        LogUtil::log(__('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return $this->redirect(ModUtil::url('Users', 'user', 'login'), 301);
     }
 }
