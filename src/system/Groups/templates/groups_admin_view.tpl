@@ -72,8 +72,7 @@
                     {* Hidden until called *}
                     <span id="editgroupgtype_{$group.gid}" class="z-itemcell z-w10 z-hide">
                         <select id="gtype_{$group.gid}" name="gtype_{$group.gid}">
-                            {*html_options options=$grouptype selected=$gtype*}
-                            {html_options options=$grouptypes}
+                            {html_options options=$grouptypes selected=$group.gtype}
                         </select>
                     </span>
                     {* *}
@@ -147,8 +146,7 @@
                     {* Hidden until called *}
                     <span id="editgroupgtype_1" class="z-itemcell z-w15">
                         <select id="gtype_1" name="gtype_1">
-                            {*html_options options=$grouptype selected=$gtype*}
-                            {html_options options=$grouptypes}
+                            {html_options options=$grouptypes selected=$group.gtype}
                         </select>
                     </span>
                     {* *}
