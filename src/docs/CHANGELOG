@@ -208,6 +208,9 @@ system.
 - Fixed problem with deleting group via ajax with insufficient permissions
 (issue #1568).
 
+- Fixed an issue where an incorrect group type was displayed when editing a 
+group through the administration panel (issue #2993).
+
 - Allow module to specify core version requirements.
 
 - Added missing icons for blocks collapsible function. (issue #1847).
