@@ -241,7 +241,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                 if (SecurityUtil::checkPermission('Extensions::', "$mod[name]::$mod[id]", ACCESS_ADMIN)) {
                     switch ($mod['state']) {
                         case ModUtil::STATE_ACTIVE:
-                            if(!ModUtil::apiFunc('Extensions', 'admin', 'iscoremodule',array('modulename' => $mod['name'])))
+                            if (!ModUtil::apiFunc('Extensions', 'admin', 'iscoremodule', array('modulename' => $mod['name'])))
                             {
                                 $actions[] = array(
                                         'url' => ModUtil::url('Extensions', 'admin', 'deactivate', array(
@@ -270,6 +270,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                         'title' => $this->__f('Plugins for \'%s\'', $mod['name']));
                             }
                             break;
+
                         case ModUtil::STATE_INACTIVE:
                             $actions[] = array(
                                     'url' => ModUtil::url('Extensions', 'admin', 'activate', array(
@@ -284,18 +285,17 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                     'url' => ModUtil::url('Extensions', 'admin', 'remove', array(
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
-                                    'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => '14_layer_deletelayer.png',
-                                    'title' => $this->__f('Remove \'%s\' module', $mod['name']));
+                                    'title' => $this->__f('Uninstall \'%s\' module', $mod['name']));
                             break;
+
                         case ModUtil::STATE_MISSING:
                             $actions[] = array(
                                     'url' => ModUtil::url('Extensions', 'admin', 'remove', array(
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
-                                    'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => '14_layer_deletelayer.png',
@@ -312,6 +312,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                     'image' => 'folder_favorites.png',
                                     'title' => $this->__f('Upgrade \'%s\'', $mod['name']));
                             break;
+
                         case ModUtil::STATE_INVALID:
                         // nothing to do, remove manually
                         // future wish list, allow removal if FS is writable
@@ -326,6 +327,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                             'image' => '14_layer_deletelayer.png',
                             'title' => $this->__('Remove module')); */
                             break;
+
                         case ModUtil::STATE_NOTALLOWED:
                             $actions[] = array(
                                     'url' => ModUtil::url('Extensions', 'admin', 'remove', array(
@@ -337,6 +339,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                     'image' => '14_layer_deletelayer.png',
                                     'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
+
                         case ModUtil::STATE_UNINITIALISED:
                         default:
                             if ($mod['state'] < 10) {
@@ -372,13 +375,15 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                             }
                             break;
                     }
+
                     // RNG: can't edit an invalid module
-                    if ($mod['state'] != ModUtil::STATE_INVALID)
+                    if ($mod['state'] != ModUtil::STATE_INVALID) {
                         $actions[] = array(
                                 'url' => ModUtil::url('Extensions', 'admin', 'modify', array(
                                 'id' => $mod['id'])),
                                 'image' => 'xedit.png',
                                 'title' => $this->__f('Edit \'%s\'', $mod['name']));
+                    }
                 }
 
                 // Translate state
@@ -387,26 +392,32 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                         $status = $this->__('Inactive');
                         $statusimage = 'yellowled.png';
                         break;
+
                     case ModUtil::STATE_ACTIVE:
                         $status = $this->__('Active');
                         $statusimage = 'greenled.png';
                         break;
+
                     case ModUtil::STATE_MISSING:
                         $status = $this->__('Files missing');
                         $statusimage = 'redled.png';
                         break;
+
                     case ModUtil::STATE_UPGRADED:
                         $status = $this->__('New version');
                         $statusimage = 'redled.png';
                         break;
+
                     case ModUtil::STATE_INVALID:
                         $status = $this->__('Invalid structure');
                         $statusimage = 'redled.png';
                         break;
+
                     case ModUtil::STATE_NOTALLOWED:
                         $status = $this->__('Not allowed');
                         $statusimage = 'folder_red.png';
                         break;
+
                     case ModUtil::STATE_UNINITIALISED:
                     default:
                         if ($mod['state'] > 10) {
@@ -420,7 +431,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                 }
 
                 // get new version number for ModUtil::STATE_UPGRADED
-                if($mod['state'] == ModUtil::STATE_UPGRADED) {
+                if ($mod['state'] == ModUtil::STATE_UPGRADED) {
                     $mod['newversion'] = $filemodules[$mod['directory']]['version'];
                 }
 
@@ -429,7 +440,6 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                         'status' => $status,
                         'statusimage' => $statusimage,
                         'options' => $actions);
-
             }
         }
 
