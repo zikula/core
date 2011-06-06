@@ -26,7 +26,7 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
         return array(
                 'displayname' => $this->__('SwiftMailer'),
                 'description' => $this->__('Provides SwiftMailer'),
-                'version' => '4.0.6'
+                'version' => '4.1.0-DEV'
         );
     }
 
@@ -34,13 +34,16 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
      * Initialise.
      *
      * Runs ar plugin init time.
-     * 
+     *
      * @throws InvalidArgumentException If invalid configuration given.
      *
      * @return void
      */
     public function initialize()
     {
+        define('SWIFT_REQUIRED_LOADED', true);
+        define('SWIFT_INIT_LOADED', true);
+
         // register namespace
         ZLoader::addAutoloader('Swift', dirname(__FILE__) . '/lib/vendor/SwiftMailer/classes');
 
@@ -50,7 +53,7 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
         require_once dirname(__FILE__) . '/lib/vendor/SwiftMailer/dependency_maps/cache_deps.php';
         require_once dirname(__FILE__) . '/lib/vendor/SwiftMailer/dependency_maps/mime_deps.php';
         require_once dirname(__FILE__) . '/lib/vendor/SwiftMailer/dependency_maps/transport_deps.php';
-        
+
         // load configuration (todo: move this to persistence).
         include dirname(__FILE__) . '/configuration/config.php';
 
@@ -96,7 +99,7 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
                 $this->serviceManager['swiftmailer.transport.mail.command'] = $args['command'];
                 $definition = new Zikula_ServiceManager_Definition('Swift_SendmailTransport', array(new Zikula_ServiceManager_Argument('swiftmailer.transport.mail.command')));
                 break;
-            
+
             default:
                 // error
                 throw new InvalidArgumentException('Invalid transport type, must be mail, smtp or sendmail');
