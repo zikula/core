@@ -102,8 +102,8 @@ function groupappend_response(req)
     $('editgroupnbumax_' + data.gid).value = data.nbumax;
     $('members_'         + data.gid).href  = data.membersurl;
 
-    Zikula.setselectoption('groupstate_' + data.gid, data.statelbl);
-    Zikula.setselectoption('groupgtype_' + data.gid, data.gtypelbl);
+    Zikula.setselectoption('state_' + data.gid, data.statelbl);
+    Zikula.setselectoption('gtype_' + data.gid, data.gtypelbl);
 
     // hide cancel icon for new groups
     // $('groupeditcancel_' + json.gid).addClassName('z-hide');
@@ -150,7 +150,7 @@ function groupappend_response(req)
 function groupmodifyinit(groupid)
 {
     if (getmodifystatus(groupid) == 0) {
-        Zikula.setselectoption('gtype_' + groupid, $F('gtypeid_' + groupid));
+        Zikula.setselectoption('gtype_' + groupid, $F('gtype_' + groupid));
         Zikula.setselectoption('state_' + groupid, $F('state_' + groupid));
 
         if ((groupid == defaultgroup) || (groupid == admingroup)) {
