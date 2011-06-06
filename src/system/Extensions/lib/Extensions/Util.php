@@ -43,8 +43,10 @@ class Extensions_Util
             // pre 1.3 modules
             $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
             if (!file_exists($legacyVersionPath)) {
-                LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), Zikula_AbstractErrorHandler::CRIT);
-                LogUtil::registerError(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
+                if (!System::isUpgrading()) {
+                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), Zikula_AbstractErrorHandler::CRIT);
+                    LogUtil::registerError(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
+                }
                 $modversion = array(
                     'name' => $moduleName,
                     'description' => '',
