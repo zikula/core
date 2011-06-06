@@ -26,7 +26,8 @@
  *   - fragment: The fragement to target within the URL
  *   - ssl:      See below
  *   - fqurl:    Make a fully qualified URL
- *   - forcelongurl:    Do not reate a short URL (forced)
+ *   - forcelongurl: Do not create a short URL (forced)
+ *   - forcelang (boolean|string) Force the inclusion of the $forcelang or default system language in the generated url
  *   - append:   (optional) A string to be appended to the URL
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *   - all remaining parameters are passed to the module function

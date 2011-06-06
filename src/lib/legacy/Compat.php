@@ -3099,14 +3099,14 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
  * @param string       $fragment     The framgment to target within the URL.
  * @param boolean|null $fqurl        Fully Qualified URL. True to get full URL, eg for redirect, else gets root-relative path unless SSL.
  * @param boolean      $forcelongurl Force pnModURL to not create a short url even if the system is configured to do so.
- * @param boolean      $forcelang    Forcelang.
+ * @param string       $forcelang    Force the inclusion of the $forcelang or default system language in the generated url.
  *
- * @return sting Absolute URL for call
+ * @return string Absolute URL for call
  */
 function pnModURL($modname, $type = 'user', $func = 'main', $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::url()')), E_USER_DEPRECATED);
-    return ModUtil::url($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang, $forcelang);
+    return ModUtil::url($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelongurl, $forcelang);
 }
 
 /**
