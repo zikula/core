@@ -1201,18 +1201,18 @@ class ModUtil
      * a) $func is ignored.
      * b) $type=admin will generate admin.php?module=... and $type=user will generate index.php?name=...
      *
-     * @param string       $modname      The name of the module.
-     * @param string       $type         The type of function to run.
-     * @param string       $func         The specific function to run.
-     * @param array        $args         The array of arguments to put on the URL.
-     * @param boolean|null $ssl          Set to constant null,true,false $ssl = true not $ssl = 'true'  null - leave the current status untouched,
-     *                                   true - create a ssl url, false - create a non-ssl url.
-     * @param string       $fragment     The framgment to target within the URL.
-     * @param boolean|null $fqurl        Fully Qualified URL. True to get full URL, eg for Redirect, else gets root-relative path unless SSL.
-     * @param boolean      $forcelongurl Force ModUtil::url to not create a short url even if the system is configured to do so.
-     * @param boolean      $forcelang    Forcelang.
+     * @param string         $modname      The name of the module.
+     * @param string         $type         The type of function to run.
+     * @param string         $func         The specific function to run.
+     * @param array          $args         The array of arguments to put on the URL.
+     * @param boolean|null   $ssl          Set to constant null,true,false $ssl = true not $ssl = 'true'  null - leave the current status untouched,
+     *                                     true - create a ssl url, false - create a non-ssl url.
+     * @param string         $fragment     The framgment to target within the URL.
+     * @param boolean|null   $fqurl        Fully Qualified URL. True to get full URL, eg for Redirect, else gets root-relative path unless SSL.
+     * @param boolean        $forcelongurl Force ModUtil::url to not create a short url even if the system is configured to do so.
+     * @param boolean|string $forcelang    Force the inclusion of the $forcelang or default system language in the generated url.
      *
-     * @return sting Absolute URL for call
+     * @return string Absolute URL for call.
      */
     public static function url($modname, $type = null, $func = null, $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
     {
@@ -1296,7 +1296,18 @@ class ModUtil
             }
         }
 
-        $language = ($forcelang ? $forcelang : ZLanguage::getLanguageCode());
+        // Setup the language code to use
+        if (is_array($args) && isset($args['lang'])) {
+            if (in_array($args['lang'], ZLanguage::getInstalledLanguages())) {
+                $language = $args['lang'];
+            }
+            unset($args['lang']);
+        }
+        if (!isset($language)) {
+            $language = ZLanguage::getLanguageCode();
+        }
+
+        $language = ($forcelang && in_array($forcelang, ZLanguage::getInstalledLanguages()) ? $forcelang : $language);
 
         // Only produce full URL when HTTPS is on or $ssl is set
         $siteRoot = '';
@@ -1396,11 +1407,6 @@ class ModUtil
                         $url .= "&$key=$value";
                     }
                 }
-            }
-
-            // add lang param to URL
-            if (ZLanguage::isRequiredLangParam() || $forcelang) {
-                $urlargs .= "&lang=$language";
             }
         }
 
