@@ -97,7 +97,7 @@ class Zikula_View_Resource
         }
 
         return LogUtil::registerError(__f('Error! The template [%1$s] is not available in the [%2$s] module.',
-                                      array($tpl_name, $view->toplevelmodule)));
+                                      array($resource, $view->toplevelmodule)));
     }
 
     /**
