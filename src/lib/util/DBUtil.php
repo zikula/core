@@ -2242,10 +2242,12 @@ class DBUtil
      * @param boolean $distinct         Whether or not to add a 'DISTINCT' clause (optional) (default=false).
      * @param string  $assocKey         The key field to use to build the associative index (optional) (default='').
      * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null).
+     * @param integer $limitOffset      The lower limit bound (optional) (default=-1).
+     * @param integer $limitNumRows     The upper limit bound (optional) (default=-1).
      *
      * @return The resulting field array.
      */
-    public static function selectExpandedFieldArray($table, $joinInfo, $field, $where = '', $orderby = '', $distinct = false, $assocKey = '', $permissionFilter = null)
+    public static function selectExpandedFieldArray($table, $joinInfo, $field, $where = '', $orderby = '', $distinct = false, $assocKey = '', $permissionFilter = null, $limitOffset = -1, $limitNumRows = -1)
     {
         $key = $field . $where . $orderby . $distinct . $assocKey . serialize($joinInfo) . serialize($permissionFilter);
         $objects = self::getCache($table, $key);
@@ -2272,7 +2274,9 @@ class DBUtil
         $sqlFrom = "FROM $tableName AS tbl ";
 
         $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $orderby";
-        $res = self::executeSQL($sql);
+        
+        $res = self::executeSQL($sql, $limitOffset, $limitNumRows);
+        
         if ($res === false) {
             return $res;
         }
