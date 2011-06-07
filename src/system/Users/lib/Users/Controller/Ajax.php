@@ -81,7 +81,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
         );
 
         $eventType = $this->request->getPost()->get('event_type', 'new_registration');
-        if (($eventType == 'new_registration') || ($eventType == 'new_new_user')) {
+        if (($eventType == 'new_registration') || ($eventType == 'new_user')) {
             $checkMode = 'new';
         } else {
             $checkMode = 'modify';
