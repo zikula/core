@@ -15,7 +15,7 @@
 /**
  * Extensions_Plugin controller.
  */
-class Extensions_Controller_AdminPlugin extends Zikula_AbstractController
+class Extensions_Controller_Adminplugin extends Zikula_AbstractController
 {
     /**
      * Plugin instance.
