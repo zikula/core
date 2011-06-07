@@ -2478,18 +2478,18 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
             $q = $rel->getAssociationTable()
                 ->createQuery()
                 ->delete()
-                ->where($rel->getLocal() . ' = ?', array_values($this->identifier()));
+                ->where($rel->getLocalFieldName() . ' = ?', array_values($this->identifier()));
 
             if (count($ids) > 0) {
-                $q->whereIn($rel->getForeign(), $ids);
+                $q->whereIn($rel->getForeignFieldName(), $ids);
             }
 
             $q->execute();
         } else if ($rel instanceof Doctrine_Relation_ForeignKey) {
             $q = $rel->getTable()->createQuery()
                 ->update()
-                ->set($rel->getForeign(), '?', array(null))
-                ->addWhere($rel->getForeign() . ' = ?', array_values($this->identifier()));
+                ->set($rel->getForeignFieldName(), '?', array(null))
+                ->addWhere($rel->getForeignFieldName() . ' = ?', array_values($this->identifier()));
 
             if (count($ids) > 0) {
                 $q->whereIn($rel->getTable()->getIdentifier(), $ids);

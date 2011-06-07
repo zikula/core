@@ -33,9 +33,11 @@ Smarty 2.6.26
 Doctrine 1.2.4
 
     Vendor website: http://www.doctrine-project.org/
-    Downloaded from: http://www.doctrine-project.org/projects/orm/download/
+    Downloaded from: http://www.doctrine-project.org/projects/orm/1.2/download/1.2.4
     License: LGPL
     Location in Zikula: lib/vendor/Doctrine
+    Patch details:
+    - Fix on Doctrine_Record::unlinkInDb field names causing exceptions https://gist.github.com/1011438
 
 Doctrine 2.0.5
 
