@@ -68,6 +68,12 @@ function install(Zikula_Core $core)
     $action = FormUtil::getPassedValue('action', '', 'GETPOST');
 
     $notinstalled = isset($_GET['notinstalled']);
+    $installedState = (isset($GLOBALS['ZConfig']['System']['installed']) ? $GLOBALS['ZConfig']['System']['installed'] : 0);
+
+    // If somehow we are browsing the not installed page but installed, redirect back to homepage
+    if ($installedState && $notinstalled) {
+        return System::redirect(System::getHomepageUrl());
+    }
 
     // see if the language was already selected
     $languageAlreadySelected = ($lang) ? true : false;
