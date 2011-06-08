@@ -1114,13 +1114,20 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
+        // check if the theme cache was disabled and clean it if so
+        $enablecache = (bool)FormUtil::getPassedValue('enablecache', isset($args['enablecache']) ? $args['enablecache'] : false, 'POST');
+
+        if ($this->getVar('enablecache') && !$enablecache) {
+            $theme = Zikula_View_Theme::getInstance();
+            $theme->clear_all_cache();
+        }
+
         // set our module variables
+        $this->setVar('enablecache', $enablecache);
+
         $modulesnocache = FormUtil::getPassedValue('modulesnocache', isset($args['modulesnocache']) ? $args['modulesnocache'] : array(), 'POST');
         $modulesnocache = implode(',', $modulesnocache);
         $this->setVar('modulesnocache', $modulesnocache);
-
-        $enablecache = (bool)FormUtil::getPassedValue('enablecache', isset($args['enablecache']) ? $args['enablecache'] : false, 'POST');
-        $this->setVar('enablecache', $enablecache);
 
         $compile_check = (bool)FormUtil::getPassedValue('compile_check', isset($args['compile_check']) ? $args['compile_check'] : false, 'POST');
         $this->setVar('compile_check', $compile_check);
