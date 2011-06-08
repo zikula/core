@@ -53,6 +53,8 @@
  */
 function smarty_insert_pageaddvar($params, $view)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('insert name="pageaddvar" var="stylesheet" value="path/to/file.css"', 'pageaddvar name="stylesheet" value="path/to/file.css"')), E_USER_DEPRECATED);
+
     $var   = isset($params['var'])  ? $params['var']  : null;
     $value = isset($params['value']) ? $params['value'] : null;
 
@@ -65,7 +67,7 @@ function smarty_insert_pageaddvar($params, $view)
         return false;
     }
 
-    if (in_array($name, array('stylesheet', 'javascript'))) {
+    if (in_array($var, array('stylesheet', 'javascript'))) {
         $value = explode(',', $value);
     }
 
