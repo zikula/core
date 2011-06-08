@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-17 09:12-0400\n"
+"POT-Creation-Date: 2011-06-08 09:34-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,6 +36,11 @@ msgstr ""
 
 #: javascript/helpers/Zikula.UI.js:1093
 msgid "Select multiple"
+msgstr ""
+
+#: javascript/helpers/Zikula.zdebug.js:9
+#: javascript/helpers/Zikula.zdebug.js:11
+msgid "Zikula Console"
 msgstr ""
 
 #: javascript/helpers/Zikula.itemlist.js:236
@@ -69,31 +74,41 @@ msgstr ""
 msgid "illegal JSON response: \\n%1$s in\\n%2$s"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:403
+#: javascript/helpers/Zikula.js:406
 msgid "Ajax connection time out!"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:686 javascript/helpers/Zikula.js:778
+#: javascript/helpers/Zikula.js:689 javascript/helpers/Zikula.js:781
 msgid "hello"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:687 javascript/helpers/Zikula.js:792
+#: javascript/helpers/Zikula.js:690 javascript/helpers/Zikula.js:795
 #, php-format
 msgid "hello %s"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:688 javascript/helpers/Zikula.js:807
+#: javascript/helpers/Zikula.js:691 javascript/helpers/Zikula.js:810
 msgid "hello my friend"
 msgid_plural "hello my friends"
 msgstr[0] ""
 msgstr[1] ""
 
-#: javascript/helpers/Zikula.js:689 javascript/helpers/Zikula.js:830
+#: javascript/helpers/Zikula.js:692 javascript/helpers/Zikula.js:833
 #, php-format
 msgid "hello my friend %s"
 msgid_plural "hello my friends %s"
 msgstr[0] ""
 msgstr[1] ""
+
+#: modules/FileManager/javascript/Zikula.js:140
+#, php-format
+msgid "Are you sure you want to delete folder '%s'?"
+msgstr ""
+
+#: modules/FileManager/javascript/Zikula.js:186
+#, php-format
+msgid "Are you sure you want to delete file '%s'?"
+msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:20
 msgid "Do you really want to delete this node and all of it child nodes?"
