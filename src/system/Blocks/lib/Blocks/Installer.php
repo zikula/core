@@ -194,8 +194,11 @@ class Blocks_Installer extends Zikula_AbstractInstaller
     protected function migrateMessages()
     {
         // Migrate any Admin_Messages to blocks
-        $table = DBUtil::getLimitedTablename('message');
-        $result = DBUtil::executeSQL("SELECT * FROM $table");
+        $messageTable = DBUtil::getLimitedTablename('message');
+        $blocksTable = DBUtil::getLimitedTablename('blocks');
+        $messageBlocks = DBUtil::executeSQL("SELECT * FROM $blocksTable WHERE z_bkey = 'messages'")->fetchAll(Doctrine::FETCH_ASSOC);
+
+        $result = DBUtil::executeSQL("SELECT * FROM $messageTable");
         $data = $result->fetchAll(Doctrine::FETCH_ASSOC);
         if ($data) {
             foreach ($data as $key => $value) {
@@ -208,6 +211,9 @@ class Blocks_Installer extends Zikula_AbstractInstaller
                 unset($data[$key]['expire']);
                 unset($data[$key]['view']);
                 unset($data[$key]['mid']);
+                if (!$messageBlocks) {
+                    $data[$key]['active'] = '0';
+                }
                 $data[$key]['bkey'] = 'html';
                 $data[$key]['position'] = 'center';
                 $data[$key]['refresh'] = '3600';
@@ -219,11 +225,10 @@ class Blocks_Installer extends Zikula_AbstractInstaller
         }
 
         // Remove Admin_Message table.
-        DBUtil::executeSQL("DROP TABLE $table");
+        DBUtil::executeSQL("DROP TABLE $messageTable");
 
         // Remove any Admin_Message blocks
-        $table = DBUtil::getLimitedTablename('blocks');
-        $sql = "DELETE FROM $table WHERE z_bkey = 'messages'";
+        $sql = "DELETE FROM $blocksTable WHERE z_bkey = 'messages'";
         DBUtil::executeSQL($sql);
     }
 
@@ -304,7 +309,7 @@ class Blocks_Installer extends Zikula_AbstractInstaller
                 $topnavcontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{Users}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
                 $topnavcontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{Search}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
             }
-    
+
             ZLanguage::setLocale($saveLanguage);
             $topnavcontent = serialize($topnavcontent);
             $topnavblock = array('bkey' => 'Extmenu', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Blocks'), 'title' => $this->__('Top navigation'), 'description' => '', 'content' => $topnavcontent, 'positions' => array($topnav));
