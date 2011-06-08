@@ -130,7 +130,7 @@
                     <label for="settings_permareplace">{gt text="List to replace with"}</label>
                     <input id="settings_permareplace" name="settings[permareplace]" value="{$modvars.ZConfig.permareplace}" size="60" /><br />
                     <label for="settings_permareplace_default">{gt text="Default"}</label>
-                    <input id="settings_permareplace_default" type="text" readonly="readonly" class="z-form-readonly" value="{gt text="A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U"}" />
+                    <input id="settings_permareplace_default" type="text" readonly="readonly" class="z-form-readonly" value="{gt text="A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue"}" />
                 </div>
             </fieldset>
             <fieldset>
