@@ -235,7 +235,7 @@ class Blocks_Api_User extends Zikula_AbstractApi
         }
 
         if (!preg_match('#\{(.*)\}#', $url, $matches)) {
-            return __f('Extmenu block link "%s" invalid', $matches[0]);
+            return $url;
         }
 
         $url = explode(':', $matches[1]);
@@ -251,7 +251,7 @@ class Blocks_Api_User extends Zikula_AbstractApi
         if (isset($url[2])) {
             $func = $url[2];
         } else {
-            // defaults allowed here for usability 
+            // defaults allowed here for usability
             $func = 'main';
         }
 
