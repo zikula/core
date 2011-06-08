@@ -66,10 +66,9 @@ INSERT INTO `z_admin_module` VALUES (7,3,2,1);
 INSERT INTO `z_admin_module` VALUES (8,14,3,2);
 INSERT INTO `z_admin_module` VALUES (9,11,6,0);
 INSERT INTO `z_admin_module` VALUES (10,4,4,0);
-INSERT INTO `z_admin_module` VALUES (11,20,4,1);
-INSERT INTO `z_admin_module` VALUES (12,7,1,3);
-INSERT INTO `z_admin_module` VALUES (13,5,1,4);
-INSERT INTO `z_admin_module` VALUES (14,10,4,2);
+INSERT INTO `z_admin_module` VALUES (11,7,1,3);
+INSERT INTO `z_admin_module` VALUES (12,5,1,4);
+INSERT INTO `z_admin_module` VALUES (13,10,4,1);
 
 --
 -- Table structure for table `z_block_placements`
@@ -153,11 +152,11 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_blocks`
 --
 
-INSERT INTO `z_blocks` VALUES (1,'Extmenu','Main menu','Main menu','a:5:{s:14:\"displaymodules\";s:1:\"0\";s:10:\"stylesheet\";s:11:\"extmenu.css\";s:8:\"template\";s:24:\"blocks_block_extmenu.tpl\";s:11:\"blocktitles\";a:1:{s:2:\"en\";s:9:\"Main menu\";}s:5:\"links\";a:1:{s:2:\"en\";a:5:{i:0;a:7:{s:4:\"name\";s:4:\"Home\";s:3:\"url\";s:10:\"{homepage}\";s:5:\"title\";s:19:\"Go to the home page\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:1;a:7:{s:4:\"name\";s:14:\"Administration\";s:3:\"url\";s:24:\"{Admin:admin:adminpanel}\";s:5:\"title\";s:29:\"Go to the site administration\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:2;a:7:{s:4:\"name\";s:10:\"My Account\";s:3:\"url\";s:7:\"{Users}\";s:5:\"title\";s:24:\"Go to your account panel\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:3;a:7:{s:4:\"name\";s:7:\"Log out\";s:3:\"url\";s:19:\"{Users:user:logout}\";s:5:\"title\";s:20:\"Log out of this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:4;a:7:{s:4:\"name\";s:11:\"Site search\";s:3:\"url\";s:8:\"{Search}\";s:5:\"title\";s:16:\"Search this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}}}}','',3,'',1,1,1,3600,'2011-05-17 09:30:45','');
-INSERT INTO `z_blocks` VALUES (2,'Search','Search box','Search block','a:2:{s:16:\"displaySearchBtn\";i:1;s:6:\"active\";a:1:{s:5:\"Users\";i:1;}}','',10,'',1,1,1,3600,'2011-05-17 09:30:45','');
-INSERT INTO `z_blocks` VALUES (3,'Html','This site is powered by Zikula!','HTML block','<p><a href=\"http://zikula.org/\">Zikula</a> is a content management system (CMS) and application framework. It is secure and stable, and is a good choice for sites with a large volume of traffic.</p><p>With Zikula:</p><ul><li>you can customise all aspects of the site\'s appearance through themes, with support for CSS style sheets, JavaScript, Flash and all other modern web development technologies;</li><li>you can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation and internationalisation of your site;</li><li>you can be sure that your pages will display properly in all browsers, thanks to Zikula\'s full compliance with W3C HTML standards;</li><li>you get a standard application-programming interface (API) that lets you easily augment your site\'s functionality through modules, blocks and other extensions;</li><li>you can get help and support from the Zikula community of webmasters and developers at <a href=\"http://www.zikula.org\">zikula.org</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>','',3,'',1,1,1,3600,'2011-05-17 09:30:45','');
-INSERT INTO `z_blocks` VALUES (4,'Login','User log-in','Login block','','',14,'',1,1,1,3600,'2011-05-17 09:30:45','');
-INSERT INTO `z_blocks` VALUES (5,'Extmenu','Top navigation','Theme navigation','a:5:{s:14:\"displaymodules\";s:1:\"0\";s:10:\"stylesheet\";s:11:\"extmenu.css\";s:8:\"template\";s:31:\"blocks_block_extmenu_topnav.tpl\";s:11:\"blocktitles\";a:1:{s:2:\"en\";s:14:\"Top navigation\";}s:5:\"links\";a:1:{s:2:\"en\";a:3:{i:0;a:7:{s:4:\"name\";s:4:\"Home\";s:3:\"url\";s:10:\"{homepage}\";s:5:\"title\";s:26:\"Go to the site\'s home page\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:1;a:7:{s:4:\"name\";s:10:\"My Account\";s:3:\"url\";s:7:\"{Users}\";s:5:\"title\";s:24:\"Go to your account panel\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:2;a:7:{s:4:\"name\";s:11:\"Site search\";s:3:\"url\";s:8:\"{Search}\";s:5:\"title\";s:16:\"Search this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}}}}','',3,'',1,1,1,3600,'2011-05-17 09:30:45','');
+INSERT INTO `z_blocks` VALUES (1,'Extmenu','Main menu','Main menu','a:5:{s:14:\"displaymodules\";s:1:\"0\";s:10:\"stylesheet\";s:11:\"extmenu.css\";s:8:\"template\";s:24:\"blocks_block_extmenu.tpl\";s:11:\"blocktitles\";a:1:{s:2:\"en\";s:9:\"Main menu\";}s:5:\"links\";a:1:{s:2:\"en\";a:5:{i:0;a:7:{s:4:\"name\";s:4:\"Home\";s:3:\"url\";s:10:\"{homepage}\";s:5:\"title\";s:19:\"Go to the home page\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:1;a:7:{s:4:\"name\";s:14:\"Administration\";s:3:\"url\";s:24:\"{Admin:admin:adminpanel}\";s:5:\"title\";s:29:\"Go to the site administration\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:2;a:7:{s:4:\"name\";s:10:\"My Account\";s:3:\"url\";s:7:\"{Users}\";s:5:\"title\";s:24:\"Go to your account panel\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:3;a:7:{s:4:\"name\";s:7:\"Log out\";s:3:\"url\";s:19:\"{Users:user:logout}\";s:5:\"title\";s:20:\"Log out of this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:4;a:7:{s:4:\"name\";s:11:\"Site search\";s:3:\"url\";s:8:\"{Search}\";s:5:\"title\";s:16:\"Search this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}}}}','',3,'',1,1,1,3600,'2011-06-08 09:51:17','');
+INSERT INTO `z_blocks` VALUES (2,'Search','Search box','Search block','a:2:{s:16:\"displaySearchBtn\";i:1;s:6:\"active\";a:1:{s:5:\"Users\";i:1;}}','',10,'',1,1,1,3600,'2011-06-08 09:51:17','');
+INSERT INTO `z_blocks` VALUES (3,'Html','This site is powered by Zikula!','HTML block','<p><a href=\"http://zikula.org/\">Zikula</a> is a content management system (CMS) and application framework. It is secure and stable, and is a good choice for sites with a large volume of traffic.</p><p>With Zikula:</p><ul><li>you can customise all aspects of the site\'s appearance through themes, with support for CSS style sheets, JavaScript, Flash and all other modern web development technologies;</li><li>you can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation and internationalisation of your site;</li><li>you can be sure that your pages will display properly in all browsers, thanks to Zikula\'s full compliance with W3C HTML standards;</li><li>you get a standard application-programming interface (API) that lets you easily augment your site\'s functionality through modules, blocks and other extensions;</li><li>you can get help and support from the Zikula community of webmasters and developers at <a href=\"http://www.zikula.org\">zikula.org</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>','',3,'',1,1,1,3600,'2011-06-08 09:51:17','');
+INSERT INTO `z_blocks` VALUES (4,'Login','User log-in','Login block','','',14,'',1,1,1,3600,'2011-06-08 09:51:17','');
+INSERT INTO `z_blocks` VALUES (5,'Extmenu','Top navigation','Theme navigation','a:5:{s:14:\"displaymodules\";s:1:\"0\";s:10:\"stylesheet\";s:11:\"extmenu.css\";s:8:\"template\";s:31:\"blocks_block_extmenu_topnav.tpl\";s:11:\"blocktitles\";a:1:{s:2:\"en\";s:14:\"Top navigation\";}s:5:\"links\";a:1:{s:2:\"en\";a:3:{i:0;a:7:{s:4:\"name\";s:4:\"Home\";s:3:\"url\";s:10:\"{homepage}\";s:5:\"title\";s:26:\"Go to the site\'s home page\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:1;a:7:{s:4:\"name\";s:10:\"My Account\";s:3:\"url\";s:7:\"{Users}\";s:5:\"title\";s:24:\"Go to your account panel\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}i:2;a:7:{s:4:\"name\";s:11:\"Site search\";s:3:\"url\";s:8:\"{Search}\";s:5:\"title\";s:16:\"Search this site\";s:5:\"level\";i:0;s:8:\"parentid\";N;s:5:\"image\";s:0:\"\";s:6:\"active\";s:1:\"1\";}}}}','',3,'',1,1,1,3600,'2011-06-08 09:51:17','');
 
 --
 -- Table structure for table `z_categories_category`
@@ -197,44 +196,44 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_categories_category`
 --
 
-INSERT INTO `z_categories_category` VALUES (1,0,1,0,'__SYSTEM__','',1,'b:0;','b:0;','/__SYSTEM__','/1','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (2,1,0,0,'Modules','',2,'a:1:{s:2:\"en\";s:7:\"Modules\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules','/1/2','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (3,1,0,0,'General','',3,'a:1:{s:2:\"en\";s:7:\"General\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General','/1/3','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (4,3,0,0,'YesNo','',4,'a:1:{s:2:\"en\";s:6:\"Yes/No\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/YesNo','/1/3/4','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (5,4,0,1,'1 - Yes','Y',5,'b:0;','b:0;','/__SYSTEM__/General/YesNo/1 - Yes','/1/3/4/5','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (6,4,0,1,'2 - No','N',6,'b:0;','b:0;','/__SYSTEM__/General/YesNo/2 - No','/1/3/4/6','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (10,3,0,0,'Publication Status (extended)','',10,'a:1:{s:2:\"en\";s:29:\"Publication status (extended)\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended','/1/3/10','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (11,10,0,1,'Pending','P',11,'a:1:{s:2:\"en\";s:7:\"Pending\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Pending','/1/3/10/11','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (12,10,0,1,'Checked','C',12,'a:1:{s:2:\"en\";s:7:\"Checked\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Checked','/1/3/10/12','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (13,10,0,1,'Approved','A',13,'a:1:{s:2:\"en\";s:8:\"Approved\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Approved','/1/3/10/13','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (14,10,0,1,'On-line','O',14,'a:1:{s:2:\"en\";s:7:\"On-line\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Online','/1/3/10/14','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (15,10,0,1,'Rejected','R',15,'a:1:{s:2:\"en\";s:8:\"Rejected\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Rejected','/1/3/10/15','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (16,3,0,0,'Gender','',16,'a:1:{s:2:\"en\";s:6:\"Gender\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender','/1/3/16','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (17,16,0,1,'Male','M',17,'a:1:{s:2:\"en\";s:4:\"Male\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender/Male','/1/3/16/17','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (18,16,0,1,'Female','F',18,'a:1:{s:2:\"en\";s:6:\"Female\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender/Female','/1/3/16/18','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (19,3,0,0,'Title','',19,'a:1:{s:2:\"en\";s:5:\"Title\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title','/1/3/19','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (20,19,0,1,'Mr','Mr',20,'a:1:{s:2:\"en\";s:3:\"Mr.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Mr','/1/3/19/20','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (21,19,0,1,'Mrs','Mrs',21,'a:1:{s:2:\"en\";s:4:\"Mrs.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Mrs','/1/3/19/21','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (22,19,0,1,'Ms','Ms',22,'a:1:{s:2:\"en\";s:3:\"Ms.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Ms','/1/3/19/22','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (23,19,0,1,'Miss','Miss',23,'a:1:{s:2:\"en\";s:4:\"Miss\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Miss','/1/3/19/23','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (24,19,0,1,'Dr','Dr',24,'a:1:{s:2:\"en\";s:3:\"Dr.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Dr','/1/3/19/24','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (25,3,0,0,'ActiveStatus','',25,'a:1:{s:2:\"en\";s:15:\"Activity status\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus','/1/3/25','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (26,25,0,1,'Active','A',26,'a:1:{s:2:\"en\";s:6:\"Active\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus/Active','/1/3/25/26','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (27,25,0,1,'Inactive','I',27,'a:1:{s:2:\"en\";s:8:\"Inactive\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus/Inactive','/1/3/25/27','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (28,3,0,0,'Publication status (basic)','',28,'a:1:{s:2:\"en\";s:26:\"Publication status (basic)\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic','/1/3/28','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (29,28,0,1,'Pending','P',29,'a:1:{s:2:\"en\";s:7:\"Pending\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic/Pending','/1/3/28/29','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (30,28,0,1,'Approved','A',30,'a:1:{s:2:\"en\";s:8:\"Approved\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic/Approved','/1/3/28/30','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (31,1,0,0,'Users','',31,'a:1:{s:2:\"en\";s:5:\"Users\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Users','/1/31','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (32,2,0,0,'Global','',32,'a:1:{s:2:\"en\";s:6:\"Global\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global','/1/2/32','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (33,32,0,1,'Blogging','',33,'a:1:{s:2:\"en\";s:8:\"Blogging\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/Blogging','/1/2/32/33','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (34,32,0,1,'Music and audio','',34,'a:1:{s:2:\"en\";s:15:\"Music and audio\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/MusicAndAudio','/1/2/32/34','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (35,32,0,1,'Art and photography','',35,'a:1:{s:2:\"en\";s:19:\"Art and photography\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/ArtAndPhotography','/1/2/32/35','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (36,32,0,1,'Writing and thinking','',36,'a:1:{s:2:\"en\";s:20:\"Writing and thinking\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/WritingAndThinking','/1/2/32/36','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (37,32,0,1,'Communications and media','',37,'a:1:{s:2:\"en\";s:24:\"Communications and media\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/CommunicationsAndMedia','/1/2/32/37','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (38,32,0,1,'Travel and culture','',38,'a:1:{s:2:\"en\";s:18:\"Travel and culture\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/TravelAndCulture','/1/2/32/38','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (39,32,0,1,'Science and technology','',39,'a:1:{s:2:\"en\";s:22:\"Science and technology\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/ScienceAndTechnology','/1/2/32/39','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (40,32,0,1,'Sport and activities','',40,'a:1:{s:2:\"en\";s:20:\"Sport and activities\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/SportAndActivities','/1/2/32/40','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_categories_category` VALUES (41,32,0,1,'Business and work','',41,'a:1:{s:2:\"en\";s:17:\"Business and work\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/BusinessAndWork','/1/2/32/41','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
+INSERT INTO `z_categories_category` VALUES (1,0,1,0,'__SYSTEM__','',1,'b:0;','b:0;','/__SYSTEM__','/1','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (2,1,0,0,'Modules','',2,'a:1:{s:2:\"en\";s:7:\"Modules\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules','/1/2','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (3,1,0,0,'General','',3,'a:1:{s:2:\"en\";s:7:\"General\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General','/1/3','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (4,3,0,0,'YesNo','',4,'a:1:{s:2:\"en\";s:6:\"Yes/No\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/YesNo','/1/3/4','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (5,4,0,1,'1 - Yes','Y',5,'b:0;','b:0;','/__SYSTEM__/General/YesNo/1 - Yes','/1/3/4/5','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (6,4,0,1,'2 - No','N',6,'b:0;','b:0;','/__SYSTEM__/General/YesNo/2 - No','/1/3/4/6','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (10,3,0,0,'Publication Status (extended)','',10,'a:1:{s:2:\"en\";s:29:\"Publication status (extended)\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended','/1/3/10','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (11,10,0,1,'Pending','P',11,'a:1:{s:2:\"en\";s:7:\"Pending\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Pending','/1/3/10/11','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (12,10,0,1,'Checked','C',12,'a:1:{s:2:\"en\";s:7:\"Checked\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Checked','/1/3/10/12','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (13,10,0,1,'Approved','A',13,'a:1:{s:2:\"en\";s:8:\"Approved\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Approved','/1/3/10/13','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (14,10,0,1,'On-line','O',14,'a:1:{s:2:\"en\";s:7:\"On-line\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Online','/1/3/10/14','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (15,10,0,1,'Rejected','R',15,'a:1:{s:2:\"en\";s:8:\"Rejected\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Extended/Rejected','/1/3/10/15','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (16,3,0,0,'Gender','',16,'a:1:{s:2:\"en\";s:6:\"Gender\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender','/1/3/16','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (17,16,0,1,'Male','M',17,'a:1:{s:2:\"en\";s:4:\"Male\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender/Male','/1/3/16/17','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (18,16,0,1,'Female','F',18,'a:1:{s:2:\"en\";s:6:\"Female\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Gender/Female','/1/3/16/18','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (19,3,0,0,'Title','',19,'a:1:{s:2:\"en\";s:5:\"Title\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title','/1/3/19','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (20,19,0,1,'Mr','Mr',20,'a:1:{s:2:\"en\";s:3:\"Mr.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Mr','/1/3/19/20','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (21,19,0,1,'Mrs','Mrs',21,'a:1:{s:2:\"en\";s:4:\"Mrs.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Mrs','/1/3/19/21','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (22,19,0,1,'Ms','Ms',22,'a:1:{s:2:\"en\";s:3:\"Ms.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Ms','/1/3/19/22','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (23,19,0,1,'Miss','Miss',23,'a:1:{s:2:\"en\";s:4:\"Miss\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Miss','/1/3/19/23','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (24,19,0,1,'Dr','Dr',24,'a:1:{s:2:\"en\";s:3:\"Dr.\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Title/Dr','/1/3/19/24','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (25,3,0,0,'ActiveStatus','',25,'a:1:{s:2:\"en\";s:15:\"Activity status\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus','/1/3/25','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (26,25,0,1,'Active','A',26,'a:1:{s:2:\"en\";s:6:\"Active\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus/Active','/1/3/25/26','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (27,25,0,1,'Inactive','I',27,'a:1:{s:2:\"en\";s:8:\"Inactive\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/ActiveStatus/Inactive','/1/3/25/27','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (28,3,0,0,'Publication status (basic)','',28,'a:1:{s:2:\"en\";s:26:\"Publication status (basic)\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic','/1/3/28','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (29,28,0,1,'Pending','P',29,'a:1:{s:2:\"en\";s:7:\"Pending\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic/Pending','/1/3/28/29','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (30,28,0,1,'Approved','A',30,'a:1:{s:2:\"en\";s:8:\"Approved\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/General/Publication Status Basic/Approved','/1/3/28/30','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (31,1,0,0,'Users','',31,'a:1:{s:2:\"en\";s:5:\"Users\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Users','/1/31','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (32,2,0,0,'Global','',32,'a:1:{s:2:\"en\";s:6:\"Global\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global','/1/2/32','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (33,32,0,1,'Blogging','',33,'a:1:{s:2:\"en\";s:8:\"Blogging\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/Blogging','/1/2/32/33','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (34,32,0,1,'Music and audio','',34,'a:1:{s:2:\"en\";s:15:\"Music and audio\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/MusicAndAudio','/1/2/32/34','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (35,32,0,1,'Art and photography','',35,'a:1:{s:2:\"en\";s:19:\"Art and photography\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/ArtAndPhotography','/1/2/32/35','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (36,32,0,1,'Writing and thinking','',36,'a:1:{s:2:\"en\";s:20:\"Writing and thinking\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/WritingAndThinking','/1/2/32/36','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (37,32,0,1,'Communications and media','',37,'a:1:{s:2:\"en\";s:24:\"Communications and media\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/CommunicationsAndMedia','/1/2/32/37','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (38,32,0,1,'Travel and culture','',38,'a:1:{s:2:\"en\";s:18:\"Travel and culture\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/TravelAndCulture','/1/2/32/38','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (39,32,0,1,'Science and technology','',39,'a:1:{s:2:\"en\";s:22:\"Science and technology\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/ScienceAndTechnology','/1/2/32/39','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (40,32,0,1,'Sport and activities','',40,'a:1:{s:2:\"en\";s:20:\"Sport and activities\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/SportAndActivities','/1/2/32/40','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_categories_category` VALUES (41,32,0,1,'Business and work','',41,'a:1:{s:2:\"en\";s:17:\"Business and work\";}','a:1:{s:2:\"en\";s:0:\"\";}','/__SYSTEM__/Modules/Global/BusinessAndWork','/1/2/32/41','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
 
 --
 -- Table structure for table `z_categories_mapmeta`
@@ -439,6 +438,10 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_hook_area`
 --
 
+INSERT INTO `z_hook_area` VALUES (1,'Users',NULL,'s','ui_hooks','subscriber.users.ui_hooks.user');
+INSERT INTO `z_hook_area` VALUES (2,'Users',NULL,'s','ui_hooks','subscriber.users.ui_hooks.registration');
+INSERT INTO `z_hook_area` VALUES (3,'Users',NULL,'s','ui_hooks','subscriber.users.ui_hooks.login_screen');
+INSERT INTO `z_hook_area` VALUES (4,'Users',NULL,'s','ui_hooks','subscriber.users.ui_hooks.login_block');
 
 --
 -- Table structure for table `z_hook_binding`
@@ -543,6 +546,26 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_hook_subscriber`
 --
 
+INSERT INTO `z_hook_subscriber` VALUES (1,'Users',NULL,1,'display_view','ui_hooks','users.ui_hooks.user.display_view');
+INSERT INTO `z_hook_subscriber` VALUES (2,'Users',NULL,1,'form_edit','ui_hooks','users.ui_hooks.user.form_edit');
+INSERT INTO `z_hook_subscriber` VALUES (3,'Users',NULL,1,'validate_edit','ui_hooks','users.ui_hooks.user.validate_edit');
+INSERT INTO `z_hook_subscriber` VALUES (4,'Users',NULL,1,'process_edit','ui_hooks','users.ui_hooks.user.process_edit');
+INSERT INTO `z_hook_subscriber` VALUES (5,'Users',NULL,1,'form_delete','ui_hooks','users.ui_hooks.user.form_delete');
+INSERT INTO `z_hook_subscriber` VALUES (6,'Users',NULL,1,'validate_delete','ui_hooks','users.ui_hooks.user.validate_delete');
+INSERT INTO `z_hook_subscriber` VALUES (7,'Users',NULL,1,'process_delete','ui_hooks','users.ui_hooks.user.process_delete');
+INSERT INTO `z_hook_subscriber` VALUES (8,'Users',NULL,2,'display_view','ui_hooks','users.ui_hooks.registration.display_view');
+INSERT INTO `z_hook_subscriber` VALUES (9,'Users',NULL,2,'form_edit','ui_hooks','users.ui_hooks.registration.form_edit');
+INSERT INTO `z_hook_subscriber` VALUES (10,'Users',NULL,2,'validate_edit','ui_hooks','users.ui_hooks.registration.validate_edit');
+INSERT INTO `z_hook_subscriber` VALUES (11,'Users',NULL,2,'process_edit','ui_hooks','users.ui_hooks.registration.process_edit');
+INSERT INTO `z_hook_subscriber` VALUES (12,'Users',NULL,2,'form_delete','ui_hooks','users.ui_hooks.registration.form_delete');
+INSERT INTO `z_hook_subscriber` VALUES (13,'Users',NULL,2,'validate_delete','ui_hooks','users.ui_hooks.registration.validate_delete');
+INSERT INTO `z_hook_subscriber` VALUES (14,'Users',NULL,2,'process_delete','ui_hooks','users.ui_hooks.registration.process_delete');
+INSERT INTO `z_hook_subscriber` VALUES (15,'Users',NULL,3,'form_edit','ui_hooks','users.ui_hooks.login_screen.form_edit');
+INSERT INTO `z_hook_subscriber` VALUES (16,'Users',NULL,3,'validate_edit','ui_hooks','users.ui_hooks.login_screen.validate_edit');
+INSERT INTO `z_hook_subscriber` VALUES (17,'Users',NULL,3,'process_edit','ui_hooks','users.ui_hooks.login_screen.process_edit');
+INSERT INTO `z_hook_subscriber` VALUES (18,'Users',NULL,4,'form_edit','ui_hooks','users.ui_hooks.login_block.form_edit');
+INSERT INTO `z_hook_subscriber` VALUES (19,'Users',NULL,4,'validate_edit','ui_hooks','users.ui_hooks.login_block.validate_edit');
+INSERT INTO `z_hook_subscriber` VALUES (20,'Users',NULL,4,'process_edit','ui_hooks','users.ui_hooks.login_block.process_edit');
 
 --
 -- Table structure for table `z_hooks`
@@ -622,7 +645,7 @@ INSERT INTO `z_module_vars` VALUES (5,'ZConfig','slogan','s:16:\"Site descriptio
 INSERT INTO `z_module_vars` VALUES (6,'ZConfig','metakeywords','s:237:\"zikula, portal, portal web, open source, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework\";');
 INSERT INTO `z_module_vars` VALUES (7,'ZConfig','defaultpagetitle','s:9:\"Site name\";');
 INSERT INTO `z_module_vars` VALUES (8,'ZConfig','defaultmetadescription','s:16:\"Site description\";');
-INSERT INTO `z_module_vars` VALUES (9,'ZConfig','startdate','s:7:\"05/2011\";');
+INSERT INTO `z_module_vars` VALUES (9,'ZConfig','startdate','s:7:\"06/2011\";');
 INSERT INTO `z_module_vars` VALUES (10,'ZConfig','adminmail','s:19:\"example@example.com\";');
 INSERT INTO `z_module_vars` VALUES (11,'ZConfig','Default_Theme','s:9:\"Andreas08\";');
 INSERT INTO `z_module_vars` VALUES (12,'ZConfig','timezone_offset','s:1:\"0\";');
@@ -655,7 +678,7 @@ INSERT INTO `z_module_vars` VALUES (38,'ZConfig','messagemodule','s:0:\"\";');
 INSERT INTO `z_module_vars` VALUES (39,'ZConfig','languageurl','i:0;');
 INSERT INTO `z_module_vars` VALUES (40,'ZConfig','ajaxtimeout','i:5000;');
 INSERT INTO `z_module_vars` VALUES (41,'ZConfig','permasearch','s:161:\"À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü\";');
-INSERT INTO `z_module_vars` VALUES (42,'ZConfig','permareplace','s:107:\"A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U\";');
+INSERT INTO `z_module_vars` VALUES (42,'ZConfig','permareplace','s:114:\"A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue\";');
 INSERT INTO `z_module_vars` VALUES (43,'ZConfig','language','s:3:\"eng\";');
 INSERT INTO `z_module_vars` VALUES (44,'ZConfig','locale','s:2:\"en\";');
 INSERT INTO `z_module_vars` VALUES (45,'ZConfig','language_i18n','s:2:\"en\";');
@@ -663,7 +686,7 @@ INSERT INTO `z_module_vars` VALUES (46,'ZConfig','idnnames','i:1;');
 INSERT INTO `z_module_vars` VALUES (47,'Theme','modulesnocache','s:0:\"\";');
 INSERT INTO `z_module_vars` VALUES (48,'Theme','enablecache','b:0;');
 INSERT INTO `z_module_vars` VALUES (49,'Theme','compile_check','b:1;');
-INSERT INTO `z_module_vars` VALUES (50,'Theme','cache_lifetime','i:3600;');
+INSERT INTO `z_module_vars` VALUES (50,'Theme','cache_lifetime','i:1800;');
 INSERT INTO `z_module_vars` VALUES (51,'Theme','force_compile','b:0;');
 INSERT INTO `z_module_vars` VALUES (52,'Theme','trimwhitespace','b:0;');
 INSERT INTO `z_module_vars` VALUES (53,'Theme','maxsizeforlinks','i:30;');
@@ -737,13 +760,13 @@ INSERT INTO `z_module_vars` VALUES (120,'/EventHandlers','Users','a:4:{i:0;a:3:{
 INSERT INTO `z_module_vars` VALUES (121,'SecurityCenter','itemsperpage','i:10;');
 INSERT INTO `z_module_vars` VALUES (122,'ZConfig','updatecheck','i:1;');
 INSERT INTO `z_module_vars` VALUES (123,'ZConfig','updatefrequency','i:7;');
-INSERT INTO `z_module_vars` VALUES (124,'ZConfig','updatelastchecked','i:1305617452;');
+INSERT INTO `z_module_vars` VALUES (124,'ZConfig','updatelastchecked','i:1307519483;');
 INSERT INTO `z_module_vars` VALUES (125,'ZConfig','updateversion','s:234:\"<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL /cgi-bin/engine/checkcoreversion13.cgi was not found on this server.</p>\n</body></html>\";');
 INSERT INTO `z_module_vars` VALUES (126,'ZConfig','keyexpiry','i:0;');
 INSERT INTO `z_module_vars` VALUES (127,'ZConfig','sessionauthkeyua','b:0;');
 INSERT INTO `z_module_vars` VALUES (128,'ZConfig','secure_domain','s:0:\"\";');
 INSERT INTO `z_module_vars` VALUES (129,'ZConfig','signcookies','i:1;');
-INSERT INTO `z_module_vars` VALUES (130,'ZConfig','signingkey','s:40:\"fdd62dd96d0222b543f4cd446ea139acde8114f3\";');
+INSERT INTO `z_module_vars` VALUES (130,'ZConfig','signingkey','s:40:\"493944916c4b07a0ee15bc98482c88ca1509e824\";');
 INSERT INTO `z_module_vars` VALUES (131,'ZConfig','seclevel','s:6:\"Medium\";');
 INSERT INTO `z_module_vars` VALUES (132,'ZConfig','secmeddays','i:7;');
 INSERT INTO `z_module_vars` VALUES (133,'ZConfig','secinactivemins','i:20;');
@@ -776,8 +799,8 @@ INSERT INTO `z_module_vars` VALUES (159,'ZConfig','idsimpactmode','i:1;');
 INSERT INTO `z_module_vars` VALUES (160,'ZConfig','idshtmlfields','a:1:{i:0;s:14:\"POST.__wysiwyg\";}');
 INSERT INTO `z_module_vars` VALUES (161,'ZConfig','idsjsonfields','a:1:{i:0;s:15:\"POST.__jsondata\";}');
 INSERT INTO `z_module_vars` VALUES (162,'ZConfig','idsexceptions','a:12:{i:0;s:10:\"GET.__utmz\";i:1;s:10:\"GET.__utmc\";i:2;s:18:\"REQUEST.linksorder\";i:3;s:15:\"POST.linksorder\";i:4;s:19:\"REQUEST.fullcontent\";i:5;s:16:\"POST.fullcontent\";i:6;s:22:\"REQUEST.summarycontent\";i:7;s:19:\"POST.summarycontent\";i:8;s:19:\"REQUEST.filter.page\";i:9;s:16:\"POST.filter.page\";i:10;s:20:\"REQUEST.filter.value\";i:11;s:17:\"POST.filter.value\";}');
-INSERT INTO `z_module_vars` VALUES (163,'ZConfig','summarycontent','s:1130:\"For the attention of %sitename% administration staff:\n\nOn %date% at %time%, Zikula detected that somebody tried to interact with the site in a way that may have been intended compromise its security. This is not necessarily the case: it could have been caused by work you were doing on the site, or may have been due to some other reason. In any case, it was detected and blocked. \n\nThe suspicious activity was recognised in \'%filename%\' at line %linenumber%.\n\nType: %type%. \n\nAdditional information: %additionalinfo%.\n\nBelow is logged information that may help you identify what happened and who was responsible.\n\n=====================================\nInformation about the user:\n=====================================\nUser name:  %username%\nUser\'s e-mail address: %useremail%\nUser\'s real name: %userrealname%\n\n=====================================\nIP numbers (if this was a cracker, the IP numbers may not be the true point of origin)\n=====================================\nIP according to HTTP_CLIENT_IP: %httpclientip%\nIP according to REMOTE_ADDR: %remoteaddr%\nIP according to GetHostByName($REMOTE_ADDR): %gethostbyremoteaddr%\n\";');
-INSERT INTO `z_module_vars` VALUES (164,'ZConfig','fullcontent','s:1289:\"=====================================\nInformation in the $_REQUEST array\n=====================================\n%requestarray%\n\n=====================================\nInformation in the $_GET array\n(variables that may have been in the URL string or in a \'GET\'-type form)\n=====================================\n%getarray%\n\n=====================================\nInformation in the $_POST array\n(visible and invisible form elements)\n=====================================\n%postarray%\n\n=====================================\nBrowser information\n=====================================\n%browserinfo%\n\n=====================================\nInformation in the $_SERVER array\n=====================================\n%serverarray%\n\n=====================================\nInformation in the $_ENV array\n=====================================\n%envarray%\n\n=====================================\nInformation in the $_COOKIE array\n=====================================\n%cookiearray%\n\n=====================================\nInformation in the $_FILES array\n=====================================\n%filearray%\n\n=====================================\nInformation in the $_SESSION array\n(session information -- variables starting with PNSV are Zikula session variables)\n=====================================\n%sessionarray%\n\";');
+INSERT INTO `z_module_vars` VALUES (163,'ZConfig','summarycontent','s:1155:\"For the attention of %sitename% administration staff:\r\n\r\nOn %date% at %time%, Zikula detected that somebody tried to interact with the site in a way that may have been intended compromise its security. This is not necessarily the case: it could have been caused by work you were doing on the site, or may have been due to some other reason. In any case, it was detected and blocked. \r\n\r\nThe suspicious activity was recognised in \'%filename%\' at line %linenumber%.\r\n\r\nType: %type%. \r\n\r\nAdditional information: %additionalinfo%.\r\n\r\nBelow is logged information that may help you identify what happened and who was responsible.\r\n\r\n=====================================\r\nInformation about the user:\r\n=====================================\r\nUser name:  %username%\r\nUser\'s e-mail address: %useremail%\r\nUser\'s real name: %userrealname%\r\n\r\n=====================================\r\nIP numbers (if this was a cracker, the IP numbers may not be the true point of origin)\r\n=====================================\r\nIP according to HTTP_CLIENT_IP: %httpclientip%\r\nIP according to REMOTE_ADDR: %remoteaddr%\r\nIP according to GetHostByName($REMOTE_ADDR): %gethostbyremoteaddr%\r\n\";');
+INSERT INTO `z_module_vars` VALUES (164,'ZConfig','fullcontent','s:1336:\"=====================================\r\nInformation in the $_REQUEST array\r\n=====================================\r\n%requestarray%\r\n\r\n=====================================\r\nInformation in the $_GET array\r\n(variables that may have been in the URL string or in a \'GET\'-type form)\r\n=====================================\r\n%getarray%\r\n\r\n=====================================\r\nInformation in the $_POST array\r\n(visible and invisible form elements)\r\n=====================================\r\n%postarray%\r\n\r\n=====================================\r\nBrowser information\r\n=====================================\r\n%browserinfo%\r\n\r\n=====================================\r\nInformation in the $_SERVER array\r\n=====================================\r\n%serverarray%\r\n\r\n=====================================\r\nInformation in the $_ENV array\r\n=====================================\r\n%envarray%\r\n\r\n=====================================\r\nInformation in the $_COOKIE array\r\n=====================================\r\n%cookiearray%\r\n\r\n=====================================\r\nInformation in the $_FILES array\r\n=====================================\r\n%filearray%\r\n\r\n=====================================\r\nInformation in the $_SESSION array\r\n(session information -- variables starting with PNSV are Zikula session variables)\r\n=====================================\r\n%sessionarray%\r\n\";');
 INSERT INTO `z_module_vars` VALUES (165,'ZConfig','usehtaccessbans','i:0;');
 INSERT INTO `z_module_vars` VALUES (166,'ZConfig','extrapostprotection','i:0;');
 INSERT INTO `z_module_vars` VALUES (167,'ZConfig','extragetprotection','i:0;');
@@ -802,28 +825,23 @@ INSERT INTO `z_module_vars` VALUES (185,'Categories','allowusercatedit','i:0;');
 INSERT INTO `z_module_vars` VALUES (186,'Categories','autocreateusercat','i:0;');
 INSERT INTO `z_module_vars` VALUES (187,'Categories','autocreateuserdefaultcat','i:0;');
 INSERT INTO `z_module_vars` VALUES (188,'Categories','userdefaultcatname','s:7:\"Default\";');
-INSERT INTO `z_module_vars` VALUES (189,'Legal','termsOfUseActive','b:1;');
-INSERT INTO `z_module_vars` VALUES (190,'Legal','privacyPolicyActive','b:1;');
-INSERT INTO `z_module_vars` VALUES (191,'Legal','accessibilityStatementActive','b:1;');
-INSERT INTO `z_module_vars` VALUES (192,'Legal','minimumAge','i:13;');
-INSERT INTO `z_module_vars` VALUES (193,'/EventHandlers','Legal','a:1:{i:0;a:3:{s:9:\"eventname\";s:15:\"user.login.veto\";s:8:\"callable\";a:2:{i:0;s:29:\"Legal_Listener_UsersLoginVeto\";i:1;s:22:\"acceptPoliciesListener\";}s:6:\"weight\";i:10;}}');
-INSERT INTO `z_module_vars` VALUES (194,'Mailer','mailertype','i:1;');
-INSERT INTO `z_module_vars` VALUES (195,'Mailer','charset','s:5:\"utf-8\";');
-INSERT INTO `z_module_vars` VALUES (196,'Mailer','encoding','s:4:\"8bit\";');
-INSERT INTO `z_module_vars` VALUES (197,'Mailer','html','b:0;');
-INSERT INTO `z_module_vars` VALUES (198,'Mailer','wordwrap','i:50;');
-INSERT INTO `z_module_vars` VALUES (199,'Mailer','msmailheaders','b:0;');
-INSERT INTO `z_module_vars` VALUES (200,'Mailer','sendmailpath','s:18:\"/usr/sbin/sendmail\";');
-INSERT INTO `z_module_vars` VALUES (201,'Mailer','smtpauth','b:0;');
-INSERT INTO `z_module_vars` VALUES (202,'Mailer','smtpserver','s:9:\"localhost\";');
-INSERT INTO `z_module_vars` VALUES (203,'Mailer','smtpport','i:25;');
-INSERT INTO `z_module_vars` VALUES (204,'Mailer','smtptimeout','i:10;');
-INSERT INTO `z_module_vars` VALUES (205,'Mailer','smtpusername','s:0:\"\";');
-INSERT INTO `z_module_vars` VALUES (206,'Mailer','smtppassword','s:0:\"\";');
-INSERT INTO `z_module_vars` VALUES (207,'Mailer','smtpsecuremethod','s:3:\"ssl\";');
-INSERT INTO `z_module_vars` VALUES (208,'Search','itemsperpage','i:10;');
-INSERT INTO `z_module_vars` VALUES (209,'Search','limitsummary','i:255;');
-INSERT INTO `z_module_vars` VALUES (210,'/EventHandlers','Search','a:1:{i:0;a:3:{s:9:\"eventname\";s:26:\"installer.module.installed\";s:8:\"callable\";a:2:{i:0;s:20:\"Search_EventHandlers\";i:1;s:13:\"moduleInstall\";}s:6:\"weight\";i:10;}}');
+INSERT INTO `z_module_vars` VALUES (189,'Mailer','mailertype','i:1;');
+INSERT INTO `z_module_vars` VALUES (190,'Mailer','charset','s:5:\"utf-8\";');
+INSERT INTO `z_module_vars` VALUES (191,'Mailer','encoding','s:4:\"8bit\";');
+INSERT INTO `z_module_vars` VALUES (192,'Mailer','html','b:0;');
+INSERT INTO `z_module_vars` VALUES (193,'Mailer','wordwrap','i:50;');
+INSERT INTO `z_module_vars` VALUES (194,'Mailer','msmailheaders','b:0;');
+INSERT INTO `z_module_vars` VALUES (195,'Mailer','sendmailpath','s:18:\"/usr/sbin/sendmail\";');
+INSERT INTO `z_module_vars` VALUES (196,'Mailer','smtpauth','b:0;');
+INSERT INTO `z_module_vars` VALUES (197,'Mailer','smtpserver','s:9:\"localhost\";');
+INSERT INTO `z_module_vars` VALUES (198,'Mailer','smtpport','i:25;');
+INSERT INTO `z_module_vars` VALUES (199,'Mailer','smtptimeout','i:10;');
+INSERT INTO `z_module_vars` VALUES (200,'Mailer','smtpusername','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (201,'Mailer','smtppassword','s:0:\"\";');
+INSERT INTO `z_module_vars` VALUES (202,'Mailer','smtpsecuremethod','s:3:\"ssl\";');
+INSERT INTO `z_module_vars` VALUES (203,'Search','itemsperpage','i:10;');
+INSERT INTO `z_module_vars` VALUES (204,'Search','limitsummary','i:255;');
+INSERT INTO `z_module_vars` VALUES (205,'/EventHandlers','Search','a:1:{i:0;a:3:{s:9:\"eventname\";s:26:\"installer.module.installed\";s:8:\"callable\";a:2:{i:0;s:20:\"Search_EventHandlers\";i:1;s:13:\"moduleInstall\";}s:6:\"weight\";i:10;}}');
 
 --
 -- Table structure for table `z_modules`
@@ -866,9 +884,9 @@ INSERT INTO `z_modules` VALUES (8,'PageLock',3,'Page lock','pagelock','Provides 
 INSERT INTO `z_modules` VALUES (9,'Permissions',3,'Permissions','permissions','User permissions manager.','Permissions','1.1.1','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:13:\"Permissions::\";s:2:\"::\";}','','');
 INSERT INTO `z_modules` VALUES (10,'Search',3,'Site search','search','Site search module.','Search','1.5.2','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:8:\"Search::\";s:13:\"Module name::\";}','','');
 INSERT INTO `z_modules` VALUES (11,'SecurityCenter',3,'Security Center','securitycenter','Manage site security and settings.','SecurityCenter','1.4.4','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:16:\"SecurityCenter::\";s:2:\"::\";}','','');
-INSERT INTO `z_modules` VALUES (12,'Settings',3,'General settings','settings','General site configuration interface.','Settings','2.9.6','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:10:\"Settings::\";s:2:\"::\";}','','');
+INSERT INTO `z_modules` VALUES (12,'Settings',3,'General settings','settings','General site configuration interface.','Settings','2.9.7','a:1:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:10:\"Settings::\";s:2:\"::\";}','','');
 INSERT INTO `z_modules` VALUES (13,'Theme',3,'Themes','theme','Themes module to manage site layout, render and cache settings.','Theme','3.4.1','a:2:{s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:1:{s:7:\"Theme::\";s:12:\"Theme name::\";}','','');
-INSERT INTO `z_modules` VALUES (14,'Users',3,'Users','users','Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.','Users','2.2.0','a:5:{s:14:\"authentication\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:15:\"hook_subscriber\";a:1:{s:7:\"enabled\";b:1;}s:13:\"hook_provider\";a:1:{s:7:\"enabled\";b:1;}s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:2:{s:7:\"Users::\";s:14:\"Uname::User ID\";s:16:\"Users::MailUsers\";s:2:\"::\";}','1.3.0','');
+INSERT INTO `z_modules` VALUES (14,'Users',3,'Users','users','Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.','Users','2.2.0','a:4:{s:14:\"authentication\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:15:\"hook_subscriber\";a:1:{s:7:\"enabled\";b:1;}s:5:\"admin\";a:1:{s:7:\"version\";s:3:\"1.0\";}s:4:\"user\";a:1:{s:7:\"version\";s:3:\"1.0\";}}',3,'a:2:{s:7:\"Users::\";s:14:\"Uname::User ID\";s:16:\"Users::MailUsers\";s:2:\"::\";}','1.3.0','');
 
 --
 -- Table structure for table `z_objectdata_attributes`
@@ -887,7 +905,9 @@ CREATE TABLE `z_objectdata_attributes` (
   `oba_cr_uid` int(11) NOT NULL DEFAULT '0',
   `oba_lu_date` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
   `oba_lu_uid` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`oba_id`)
+  PRIMARY KEY (`oba_id`),
+  KEY `object_type` (`oba_object_type`),
+  KEY `object_id` (`oba_object_id`)
 );
 SET character_set_client = @saved_cs_client;
 
@@ -895,19 +915,19 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `z_objectdata_attributes`
 --
 
-INSERT INTO `z_objectdata_attributes` VALUES (1,'code',5,'categories_category','Y','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (2,'code',6,'categories_category','N','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (3,'code',11,'categories_category','P','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (4,'code',12,'categories_category','C','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (5,'code',13,'categories_category','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (6,'code',14,'categories_category','O','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (7,'code',15,'categories_category','R','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (8,'code',17,'categories_category','M','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (9,'code',18,'categories_category','F','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (10,'code',26,'categories_category','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (11,'code',27,'categories_category','I','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (12,'code',29,'categories_category','P','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
-INSERT INTO `z_objectdata_attributes` VALUES (13,'code',30,'categories_category','A','A','2011-05-17 09:30:46',0,'2011-05-17 09:30:46',0);
+INSERT INTO `z_objectdata_attributes` VALUES (1,'code',5,'categories_category','Y','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (2,'code',6,'categories_category','N','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (3,'code',11,'categories_category','P','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (4,'code',12,'categories_category','C','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (5,'code',13,'categories_category','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (6,'code',14,'categories_category','O','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (7,'code',15,'categories_category','R','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (8,'code',17,'categories_category','M','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (9,'code',18,'categories_category','F','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (10,'code',26,'categories_category','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (11,'code',27,'categories_category','I','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (12,'code',29,'categories_category','P','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
+INSERT INTO `z_objectdata_attributes` VALUES (13,'code',30,'categories_category','A','A','2011-06-08 09:51:18',0,'2011-06-08 09:51:18',0);
 
 --
 -- Table structure for table `z_objectdata_log`
@@ -1162,7 +1182,7 @@ SET character_set_client = @saved_cs_client;
 --
 
 INSERT INTO `z_users` VALUES (1,'guest','','','',1,'1970-01-01 00:00:00',0,'1970-01-01 00:00:00','1970-01-01 00:00:00','',0,'','','');
-INSERT INTO `z_users` VALUES (2,'admin','example@example.com','8$s|+KL$8fbd35e61dd8ad728e29ad76a1b3783f4e454e0f7153e57ad5d9e06254cd7ada','',1,'2011-05-17 07:30:43',2,'2011-05-17 07:30:47','2011-05-17 07:30:47','',0,'','','');
+INSERT INTO `z_users` VALUES (2,'admin','example@example.com','8$jskFU$ff96c3ec8e3c1bed32dc097a8ccea2e311f874ff5a93a3da8fea5754f65181d9','',1,'2011-06-08 07:51:15',2,'2011-06-08 07:51:19','2011-06-08 07:51:19','',0,'','','');
 
 --
 -- Table structure for table `z_users_verifychg`
@@ -1204,7 +1224,10 @@ CREATE TABLE `z_workflows` (
   `obj_id` int(11) NOT NULL DEFAULT '0',
   `busy` int(11) NOT NULL DEFAULT '0',
   `debug` longblob,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `obj_table` (`obj_table`),
+  KEY `obj_idcolumn` (`obj_idcolumn`),
+  KEY `obj_id` (`obj_id`)
 );
 SET character_set_client = @saved_cs_client;
 
@@ -1219,4 +1242,4 @@ SET character_set_client = @saved_cs_client;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-05-17 13:22:53
+-- Dump completed on 2011-06-08 13:37:12
