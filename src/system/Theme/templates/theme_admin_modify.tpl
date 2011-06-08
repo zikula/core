@@ -19,21 +19,21 @@
                     <label for="theme_usertheme">{gt text="User theme"}</label>
                     <div>
                         <input id="theme_usertheme" type="checkbox" name="themeinfo[user]" value="1"{if $themeinfo.user} checked="checked"{/if} />
-                        <span class="z-sub">{gt text="Notice: This category is for 'browser-oriented' themes that can be selected by users for their sessions on the site."}</span>
+                        <span class="z-sub z-formnote">{gt text="Notice: This category is for 'browser-oriented' themes that can be selected by users for their sessions on the site."}</span>
                     </div>
                 </div>
                 <div class="z-formrow">
                     <label for="theme_systemtheme">{gt text="System theme"}</label>
                     <div>
                         <input id="theme_systemtheme" type="checkbox" name="themeinfo[system]" value="1"{if $themeinfo.system} checked="checked"{/if} />
-                        <span class="z-sub">{gt text="Notice: This category is for themes used to deliver back-end services (such as RSS feeds, etc.)."}</span>
+                        <span class="z-sub z-formnote">{gt text="Notice: This category is for themes used to deliver back-end services (such as RSS feeds, etc.)."}</span>
                     </div>
                 </div>
                 <div class="z-formrow">
                     <label for="theme_admintheme">{gt text="Admin panel theme"}</label>
                     <div>
                         <input id="theme_admintheme" type="checkbox" name="themeinfo[admin]" value="1"{if $themeinfo.admin} checked="checked"{/if} />
-                        <span class="z-sub">{gt text="Notice: This category is for themes used to display the site admin panel."}</span>
+                        <span class="z-sub z-formnote">{gt text="Notice: This category is for themes used to display the site admin panel."}</span>
                     </div>
                 </div>
             </fieldset>
