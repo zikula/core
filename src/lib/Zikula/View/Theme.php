@@ -780,6 +780,23 @@ class Zikula_View_Theme extends Zikula_View
     }
 
     /**
+     * Clears the configuration located on the temporary directory.
+     *
+     * @param string $template   The name of the template.
+     * @param string $cache_id   The cache ID (optional).
+     * @param string $compile_id The compile ID (optional).
+     * @param string $expire     Minimum age in sec. the cache file must be before it will get cleared (optional).
+     *
+     * @return boolean True on success, false otherwise.
+     */
+    public function clear_config()
+    {
+        $configdir = CacheUtil::getLocalDir() . '/Theme_Config';
+
+        return $this->clear_folder($configdir, null, null, null);
+    }
+
+    /**
      * Retrieve the name of the theme.
      *
      * @return string The name.
