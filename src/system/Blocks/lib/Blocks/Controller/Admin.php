@@ -469,6 +469,10 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
 
         // Get parameters if exists
         $default = array(
+            'title' => '',
+            'description' => '',
+            'language' => ZLanguage::getLanguageCode(),
+            'blockid' => null,
             'positions' => array(),
             'collapsable' => 0,
             'defaultstate' => 1
