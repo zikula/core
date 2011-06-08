@@ -120,6 +120,13 @@
                 </div>
             </fieldset>
             <fieldset>
+                <legend>{gt text="Themes configurations"}</legend>
+                <p class="z-formnote z-informationmsg">{gt text="Notice: When edit the configuration of a Theme, the Theme Engine creates copies of its configuration files inside the Temporary folder when it cannot write on them directly. If you changed your mind and want to have your configuration inside your theme, make its .ini files writable and clear the temporary copies with the following link."}</p>
+                <div class="z-formrow">
+                    <a class="z-formnote" href="{modurl modname="Theme" type="admin" func="clear_config" csrftoken=$csrftoken}">{gt text="Delete theme configurations"}</a>
+                </div>
+            </fieldset>
+            <fieldset>
                 <legend>{gt text="Filters"}</legend>
                 <p class="z-formnote z-informationmsg">{gt text="Notice: The 'trimwhitespace' output filter trims leading white space and blank lines from the template source code after it is interpreted, which cleans-up the code and saves bandwidth."}</p>
                 <div class="z-formrow">

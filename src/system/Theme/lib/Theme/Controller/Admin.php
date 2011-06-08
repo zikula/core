@@ -1272,6 +1272,34 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     }
 
     /**
+     * Clear theme engine configurations
+     *
+     * Using this function, the admin can clear all theme engine configuration
+     * copies created inside the temporary directory.
+     */
+    public function clear_config()
+    {
+        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $this->checkCsrfToken($csrftoken);
+
+        // Security check
+        if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $theme = Zikula_View_Theme::getInstance();
+        $res   = $theme->clear_config();
+
+        if ($res) {
+            LogUtil::registerStatus($this->__('Done! Deleted theme engine configurations.'));
+        } else {
+            LogUtil::registerError($this->__('Error! Failed to clear theme engine configurations.'));
+        }
+
+        $this->redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+    }
+
+    /**
      * Clear render compiled templates
      *
      * Using this function, the admin can clear all render compiled templates

@@ -463,7 +463,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return void
      */
-    private function register_nocache_plugins()
+    protected function register_nocache_plugins()
     {
         // disables the cache for them and do not load them yet
         // that happens later when required
@@ -784,7 +784,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return void
      */
-    private function _filter_auto_id(&$id)
+    protected function _filter_auto_id(&$id)
     {
         // convert some chars used as separators
         $id = str_replace(array(':', '=', ','), '_', $id);
@@ -884,7 +884,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return boolean True on success, false otherwise
      */
-    private function rmtpl($tplpath, $template, $expire = null)
+    protected function rmtpl($tplpath, $template, $expire = null)
     {
        if (!$template || !is_dir($tplpath) || !is_readable($tplpath)) {
            return false;
@@ -920,7 +920,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return boolean True on success, false otherwise.
      */
-    private function rmdir($dirname, $expire = null, $rmbase = true)
+    protected function rmdir($dirname, $expire = null, $rmbase = true)
     {
        if (!is_dir($dirname) || !is_readable($dirname)) {
            return false;
@@ -964,7 +964,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return  boolean
      */
-    private function clear_folder($tmpdir, $auto_id = null, $template = null, $expire = null)
+    protected function clear_folder($tmpdir, $auto_id = null, $template = null, $expire = null)
     {
         if (!$auto_id && !$template) {
             $result = $this->rmdir($tmpdir, $expire, false);
@@ -1083,7 +1083,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return void
      */
-    private function _add_plugins_dir($module)
+    protected function _add_plugins_dir($module)
     {
         if (empty($module)) {
             return;
@@ -2660,7 +2660,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * @param string $compile_id
      * @param boolean $display
      */
-    private function _fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
+    protected function _fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {
         static $_cache_info = array();
 
