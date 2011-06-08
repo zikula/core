@@ -1006,7 +1006,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Clear all compiled templates.
      *
-     * needs to clear the cache too as some cached information is stored in the compiled dir.
+     * Needs to clear the cache too as non cached plugins information will need regeneration too.
      *
      * @return boolean True if success, false otherwise.
      */
