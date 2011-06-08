@@ -769,8 +769,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         if (System::isDevelopmentMode() || System::isInstalling()) {
             $temp = $this->serviceManager->getArgument('temp');
-            if (!is_dir($temp) && !is_writable($temp)) {
-                die(__f('The temporary directory "%s" and all subfolders must be writable', $temp));
+            if (!is_dir($temp) || !is_writable($temp)) {
+                echo __f('The temporary directory "%s" and all its subfolders must be writable.', $temp) . '<br />';
+                die(__('Please ensure that the permissions are set correctly on your server.'));
             }
 
             $folders = array(
@@ -792,11 +793,17 @@ class SystemListeners extends Zikula_AbstractEventHandler
                 }
                 if (!is_writable($folder)) {
                     echo __f("System error! Folder '%s' was not found or is not writable.", $folder) . '<br />';
-                    $die = true;
+                    $die = 1;
                 }
             }
         }
-        if ($die == true) {
+
+        if ($die === true) {
+            echo __("Please configure your server to meet the Zikula system requirements.");
+            exit;
+        }
+        if ($die) {
+            echo __('Please ensure that the permissions are set correctly for the mentioned folders.');
             exit;
         }
     }
