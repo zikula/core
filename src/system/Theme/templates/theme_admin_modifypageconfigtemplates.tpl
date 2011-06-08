@@ -123,7 +123,7 @@
                     {/strip}
                     {/capture}
                     {if $undefinedblockposition eq true}
-                    <p class="z-warningmsg z-formnote" id="theme_undefinedblockpositions">{gt text="The following block positions are used in this page configuration, but they have not been defined within the Blocks module;</p>%s<p>Click on a block position to go create that position." tag1=$undefinedblockpositions}</p>
+                    <div class="z-warningmsg z-formnote" id="theme_undefinedblockpositions">{gt text="<p>The following block positions are used in this page configuration, but they have not been defined within the Blocks module;</p>%s<p>Click on a block position to go create that position.</p>" tag1=$undefinedblockpositions}</div>
                     {/if}
                 </fieldset>
             </div>
