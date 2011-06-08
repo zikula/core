@@ -239,6 +239,29 @@ class Blocks_Installer extends Zikula_AbstractInstaller
             if ($block['bkey'] == 'Extmenu') {
                 $content = unserialize($block['content']);
                 $content['template'] = str_replace('blocks_block_extmenu.htm', 'blocks_block_extmenu.tpl', $content['template']);
+
+                // Update {} style links to new parameter order
+                // Module:type:func instead of Module:func:type
+                foreach ($content['links'] as &$lang) {    // Loop through all languages
+                    foreach ($lang as &$item) {             // And each item in each language
+                        if ( preg_match('#\{(.*)\}#', $item['url'], $matches) ) {
+                            $parts = explode(':', $matches[1]);
+                            $c = count($parts);
+                            if ($c > 1) {           // Need to fix if more than a module is given
+                                if ($c == 2) {      // Add type if it was left out
+                                    $tmp = 'user';
+                                } else {
+                                    $tmp = $parts[2];
+                                }
+                                $parts[2] = $parts[1];
+                                $parts[1] = $tmp;
+                                $item['url'] = '{' . implode(':', $parts) . '}';    // And put it back together
+                            }
+                            
+                        }
+                    }
+                }
+
                 $block['content'] = serialize($content);
                 DBUtil::updateObject($block, 'blocks', '', 'bid');
             }
