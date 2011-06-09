@@ -43,6 +43,11 @@
  *     {
  *         return 'HTML-Code of the content panel here';
  *     }
+ *
+ *     public function getPanelData()
+ *     {
+ *         return 'Plain panel data here';
+ *     }
  * }
  * </code>
  */
@@ -115,6 +120,29 @@ class Zikula_DebugToolbar
      * 
      * @return string
      */
+    public function getContent()
+    {
+        // check which output type should be returned
+        $sm = $this->eventManager->getServiceManager();
+        $logtype = isset($sm['log.to_debug_toolbar_output']) ? $sm['log.to_debug_toolbar_output'] : 0;
+
+        switch ($logtype) {
+            case 0:
+                // normal toolbar
+                return $this->asHTML();
+            case 1:
+                // only data in json format
+                return $this->asJSON();
+            case 2:
+                // toolbar and data in json format
+                return $this->asHTML().$this->asJSON();
+        }
+    }
+    /**
+     * Returns the HTML code for this debug toolbar.
+     * 
+     * @return string
+     */
     public function asHTML()
     {
         $links         = array();
@@ -155,5 +183,28 @@ class Zikula_DebugToolbar
 
                     '.implode(' ', $panelContents).'
                 </div>';
+    }
+
+    /**
+     * Returns the toolbar data in json format
+     * 
+     * @return string
+     */
+    public function asJSON()
+    {
+        $data = array();
+        foreach ($this->_panels as $name => $panel) {
+            $title = $panel->getPanelTitle();
+
+            $data[$name] = array(
+                'title' => $title ? $title : $name,
+                'content' => $panel->getPaneldata()
+            );
+        }
+        // need to suppress errors due to recursion warrnings
+        $data = @json_encode($data);
+
+        $html = "<script type=\"text/javascript\">Zikula.DebugToolbarData = {$data}</script>";
+        return $html;
     }
 }
