@@ -51,4 +51,11 @@ interface Zikula_DebugToolbar_PanelInterface
      * @return string
      */
     public function getPanelContent();
+
+    /**
+     * Returns the panel data in raw format.
+     * 
+     * @return mixed
+     */
+    public function getPanelData();
 }
