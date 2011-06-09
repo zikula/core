@@ -123,8 +123,8 @@ class Zikula_DebugToolbar
     public function getContent()
     {
         // check which output type should be returned
-        global $ZConfig;
-        $logtype = isset($ZConfig['Log']['log.to_debug_toolbar_output']) ? $ZConfig['Log']['log.to_debug_toolbar_output'] : 0;
+        $sm = $this->eventManager->getServiceManager();
+        $logtype = isset($sm['log.to_debug_toolbar_output']) ? $sm['log.to_debug_toolbar_output'] : 0;
 
         switch ($logtype) {
             case 0:
