@@ -123,7 +123,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
                 LogUtil::registerError($this->__f('Error! Cannot write any configuration changes. Make sure that the .ini files on \'%1$s\' or \'%2$s\', and the folder itself, are writable.', array($tpath, $zpath)));
             }
         } else {
-            LogUtil::registerStatus($this->__f('Notice: Seems that your %1$s\'s .ini files are writable. Be sure that there are no .ini files on \'%2$s\' because if so, the Theme Engime will consider them and not your %1$s\'s ones.', array($themeinfo['name'], $zpath)));
+            LogUtil::registerStatus($this->__f('Notice: Seems that your %1$s\'s .ini files are writable. Be sure that there are no .ini files on \'%2$s\' because if so, the Theme Engine will consider them and not your %1$s\'s ones.', array($themeinfo['name'], $zpath)));
         }
 
         LogUtil::registerStatus($this->__f("If the system cannot write on any .ini file, the changes will be saved on '%s' and the Theme Engine will use it.", $zpath));

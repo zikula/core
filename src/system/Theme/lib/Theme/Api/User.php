@@ -306,7 +306,7 @@ class Theme_Api_User extends Zikula_AbstractApi
             if (!file_exists($zpath.'/'.$osfile) || is_writable($zpath.'/'.$osfile)) {
                 $handle = fopen($zpath.'/'.$osfile, 'w+');
             } else {
-                return LogUtil::registerError($this->__f("Error! Cannot write in '%s' or '%s' to store the contents of '%s'.", array($tpath, $zpath, $osfile)));
+                return LogUtil::registerError($this->__f("Error! Cannot write in '%1$s' or '%2$s' to store the contents of '%3$s'.", array($tpath, $zpath, $osfile)));
             }
         }
 

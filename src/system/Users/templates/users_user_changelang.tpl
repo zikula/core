@@ -7,14 +7,14 @@
         <div class="z-formrow">
             <label for="user_changelang">{gt text="New language"}</label>
             <select id="user_changelang" name="setsessionlanguage">
-            {foreach key='code' item='language' from=$languages}
-            {if $code eq $usrlang}
-            <option value="{$code}" selected="selected">{$language|safetext}</option>
-            {else}
-            <option value="{$code}">{$language|safetext}</option>
-            {/if}
-            {/foreach}
-        </select>
+                {foreach key='code' item='language' from=$languages}
+                {if $code eq $usrlang}
+                <option value="{$code}" selected="selected">{$language|safetext}</option>
+                {else}
+                <option value="{$code}">{$language|safetext}</option>
+                {/if}
+                {/foreach}
+            </select>
         </div>
     </fieldset>
     <div class="z-formbuttons z-buttons">

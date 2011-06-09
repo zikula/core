@@ -1656,7 +1656,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 
 .z-tabs li > a:hover,
 .z-tabs li > a.hover {
-    background: #fff !important;
+    background: #e3e3e3 !important;
     color: #000;
     text-decoration: none;
 }
