@@ -757,7 +757,7 @@ class Zikula_Form_View extends Zikula_View
     public function getErrorMsg()
     {
         if ($this->errorMsgSet) {
-            include_once ('lib/viewplugins/function.getstatusmsg.php');
+            include_once ('lib/viewplugins/insert.getstatusmsg.php');
             $args = array();
             return smarty_function_getstatusmsg($args, $this);
         } else {
