@@ -299,4 +299,14 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
         $this->_executions[$lastExecPos]['level'] = count($this->_stack);
         $this->_executions[$lastExecPos]['data'] = $event->getData();
     }
+
+    /**
+     * Returns the panel data in raw format.
+     * 
+     * @return array
+     */
+    public function getPanelData()
+    {
+        return $this->_executions;
+    }
 }

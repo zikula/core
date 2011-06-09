@@ -35,12 +35,7 @@ class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_PanelI
      */
     public function getTitle()
     {
-        $start = ServiceUtil::getManager()->getArgument('debug.toolbar.panel.rendertime.start');
-        $end =  microtime(true);
-
-        $diff = $end - $start;
-
-        return round($diff*1000, 3).' ms';
+        return round($this->getTimeDiff()*1000, 3).' ms';
     }
 
     /**
@@ -61,5 +56,29 @@ class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_PanelI
     public function getPanelContent()
     {
         return null;
+    }
+
+    /**
+     *  Returns the page render time.
+     *
+     * @return number
+     */
+    public function getTimeDiff()
+    {
+        $start = ServiceUtil::getManager()->getArgument('debug.toolbar.panel.rendertime.start');
+        $end =  microtime(true);
+
+        $diff = $end - $start;
+        return $diff;
+    }
+
+    /**
+     * Returns the panel data in raw format.
+     * 
+     * @return number
+     */
+    public function getPanelData()
+    {
+        return $this->getTimeDiff();
     }
 }

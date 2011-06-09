@@ -57,4 +57,14 @@ class Zikula_DebugToolbar_Panel_Version implements Zikula_DebugToolbar_PanelInte
     {
         return null;
     }
+
+    /**
+     * Returns the panel data in raw format.
+     * 
+     * @return string
+     */
+    public function getPanelData()
+    {
+        return Zikula_Core::VERSION_NUM;
+    }
 }

@@ -61,4 +61,14 @@ class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_PanelInter
     {
         return null;
     }
+
+    /**
+     * Returns the panel data in raw format.
+     * 
+     * @return number
+     */
+    public function getPanelData()
+    {
+        return memory_get_usage();
+    }
 }
