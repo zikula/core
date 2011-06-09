@@ -117,4 +117,31 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
             return $html;
         }
     }
+
+    /**
+     * Returns the panel data in raw format.
+     * 
+     * @return array
+     */
+    public function getPanelData()
+    {
+        $data = array();
+        
+        // zikula config
+        $data['global'] = array(
+            'title' => __('Zikula configuration'),
+            'content' => array('ZConfig' => $GLOBALS['ZConfig'])
+        );
+
+        // current top level module
+        $module = ModUtil::getName();
+        if ($module) {
+            $data[$module] = array(
+                'title' => __f('Module %s', $module),
+                'content' => ModUtil::getVar($module)
+            );
+        }
+
+        return $data;
+    }
 }

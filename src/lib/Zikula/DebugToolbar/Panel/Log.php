@@ -209,4 +209,14 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_PanelInterfac
         $this->_log[] = array('type'   =>  Zikula_AbstractErrorHandler::EMERG,
                               'errstr' => 'Execute Controller API method failed: Method not found '.get_class($event->getSubject()).'->'.$event['method']);
     }
+
+    /**
+     * Returns the panel data in raw format.
+     * 
+     * @return array
+     */
+    public function getPanelData()
+    {
+        return $this->_log;
+    }
 }
