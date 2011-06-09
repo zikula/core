@@ -153,4 +153,14 @@ class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_PanelInterfac
     {
         $this->_queries[] = $event->getArgs();
     }
+
+    /**
+     * Returns the panel data in raw format.
+     * 
+     * @return array
+     */
+    public function getPanelData()
+    {
+        return $this->_queries;
+    }
 }

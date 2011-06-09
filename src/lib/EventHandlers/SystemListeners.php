@@ -552,7 +552,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
                 $this->serviceManager->getService('debug.toolbar');
             } else {
                 $toolbar = $this->serviceManager->getService('debug.toolbar');
-                $html = $toolbar->asHTML() . "\n</body>";
+                $html = $toolbar->getContent() . "\n</body>";
                 $event->setData(str_replace('</body>', $html, $event->getData()));
             }
         }
