@@ -488,3 +488,4 @@ the themevariables.ini general ones (issue #3034).
 
 - Added indexes to object_attribution (issue #3048).
 
+- Clear theme cache automatically when it gets disabled (issue #2743).
