@@ -1,0 +1,8 @@
+# ----------------------------------------------------------------------
+# Purpose of file: block any web access other than images
+# ----------------------------------------------------------------------
+deny from all
+<FilesMatch "\.(jpg|gif|png|tif)$">
+order allow,deny
+allow from all
+</filesmatch>
