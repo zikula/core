@@ -5,7 +5,7 @@
 </div>
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="hook" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="hook" size="small"}</div>
     <h3>{gt text='Module Services'}</h3>
 
     <p class="z-informationmsg">{gt text='Module Services are functions provided by the core or other modules for this module.'}</p>

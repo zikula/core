@@ -10,7 +10,7 @@
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"http://community.zikula.org/module-Extensions-view.htm\">`$extdbtitle`</a></strong>" var=extdblink}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="view" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="view" size="small"}</div>
     <h3>{gt text="Modules list"}</h3>
 
     <p class="z-informationmsg">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>

@@ -2,9 +2,9 @@
 {include file="componentinstance.js"}
 <div class="z-admincontainer">
     {if $action eq "add"}
-    <div class="z-adminpageicon">{icon type="new" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="new" size="small"}</div>
     {else}
-    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
     {/if}
     <h3>{$title|safetext}</h3>
 

@@ -2,7 +2,7 @@
 {include file="permissions_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="config" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="config" size="small"}</div>
     <h3>{$templatetitle}</h3>
 
     <form class="z-form" action="{modurl modname="Permissions" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">

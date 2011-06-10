@@ -3,7 +3,7 @@
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="group" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="group" size="small"}</div>
     <h3>{$templatetitle} ({$name|safetext})</h3>
 
     <table class="z-datatable">

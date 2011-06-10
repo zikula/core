@@ -1,7 +1,7 @@
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="delete" size="small"}</div>
     <h3>{gt text="Delete"}</h3>
 
     <p class="z-warningmsg">{gt text="Do you really want to delete this group?"}</p>

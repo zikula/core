@@ -4,7 +4,7 @@
 {include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="display" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="display" size="small"}</div>
 
     <h3>{$templatetitle}</h3>
 

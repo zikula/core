@@ -3,12 +3,12 @@
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer" id="top">
     {if $mode == "edit"}
-    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
     <h3>{gt text="Edit category"}</h3>
 
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
     {else}
-    <div class="z-adminpageicon">{icon type="new" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="new" size="small"}</div>
     <h3>{gt text="Create new category"}</h3>
 
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">

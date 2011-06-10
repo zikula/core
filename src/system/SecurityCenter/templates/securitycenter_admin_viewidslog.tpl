@@ -11,7 +11,7 @@
 {/pageaddvarblock}
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="log" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="log" size="small"}</div>
     <h3>{gt text="View IDS Log"}</h3>
 
     <ul class="z-menulinks">

@@ -1,6 +1,6 @@
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="config" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="config" size="small"}</div>
     <h3>{gt text="Settings"}</h3>
 
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="preferences"}" method="post" enctype="application/x-www-form-urlencoded">

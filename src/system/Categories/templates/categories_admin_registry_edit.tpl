@@ -9,7 +9,7 @@
 {gt text="Category registry" assign=templatetitle}
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer" id="top">
-    <div class="z-adminpageicon">{icon type="cubes" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="cubes" size="small"}</div>
     <h3>{$templatetitle}</h3>
 
     {gt text="Choose category" assign=chooseCategory}

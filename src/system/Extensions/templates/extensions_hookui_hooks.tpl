@@ -26,7 +26,7 @@
 </div>
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="hook" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="hook" size="small"}</div>
     <h3>{gt text='Hooks'}</h3>
 
     <div class="z-form z-clearfix">

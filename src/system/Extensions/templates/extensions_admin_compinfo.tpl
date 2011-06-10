@@ -1,6 +1,6 @@
 {include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="info" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="info" size="small"}</div>
     <h3>{gt text="Incompatible version with the core"} - {modgetinfo modid=$id info=displayname}</h3>
 
     <div>{gt text="The version of this module is incompatible with the version of the core."}</div>

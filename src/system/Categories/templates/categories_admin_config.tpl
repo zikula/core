@@ -1,7 +1,7 @@
 {gt text="Rebuild paths" assign=templatetitle}
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="regenerate" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="regenerate" size="small"}</div>
     <h3>{$templatetitle}</h3>
 
     <p class="z-warningmsg">{gt text="Are you sure you want to rebuild all the internal paths for categories?"}&nbsp;{gt text="Warning! If you have a large number of categories then this action may time out, or may exceed the memory limit configured within your PHP installation."}</p>

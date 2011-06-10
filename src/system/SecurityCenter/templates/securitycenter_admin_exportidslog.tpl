@@ -1,6 +1,6 @@
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="export" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="export" size="small"}</div>
     <h3>{gt text="Export IDS Log"}</h3>
 
     <ul class="z-menulinks">

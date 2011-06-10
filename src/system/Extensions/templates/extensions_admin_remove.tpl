@@ -1,6 +1,6 @@
 {include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="delete" size="small"}</div>
     <h3>{gt text="Uninstall module"} - {modgetinfo modid=$id info=displayname}</h3>
 
     <p class="z-warningmsg">{gt text="Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>

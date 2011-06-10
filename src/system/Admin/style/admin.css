@@ -65,7 +65,7 @@ div.z-admincategorydescription {
 
 #z-maincontent div.z-adminbox img {
     float: left;
-    margin-right: 1em;
+    margin-right: 7px;
 }
 
 #z-maincontent div.z-adminbox h1:after { /* clearfix */
@@ -92,8 +92,8 @@ div.z-admincategorydescription {
 }
 
 #z-maincontent div.z-adminpageicon+h3 {
-    margin-bottom: 20px;
-    padding-top: 20px;
+    margin-bottom: 7px;
+    padding-top: 5px;
 }
 
 #z-maincontent div.z-adminpageicon {
@@ -101,8 +101,9 @@ div.z-admincategorydescription {
 }
 
 #z-maincontent div.z-adminpageicon img {
-    float: right;
-    padding-top: 5px;
+    float: left;
+    margin-right: 7px;
+    padding-top: 9px;
 }
 
 /* styling for core version */

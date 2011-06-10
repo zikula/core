@@ -68,7 +68,7 @@
 </div>
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
     <h3>{$templatetitle}</h3>
 
     <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
@@ -222,7 +222,7 @@
         </div>
     </form>
 
-    <div class="z-adminpageicon">{icon type="utilities" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="utilities" size="small"}</div>
     <h3>{gt text='Other actions for %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname')}</h3>
     <div class="z-center z-buttons">
         {if !$editingSelf}<a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$formData->getFieldData('uid')}">{img modname='core' set='icons/extrasmall' src="delete_user.png" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}

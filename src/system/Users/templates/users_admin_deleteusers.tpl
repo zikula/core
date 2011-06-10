@@ -1,7 +1,7 @@
 {include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="delete" size="small"}</div>
     <h3>{gt text='Delete user account' plural='Delete user accounts' count=$users|@count}</h3>
 
     <p class="z-warningmsg">{gt text='Do you really want to delete this user account?' plural='Do you really want to delete these user accounts?' count=$users|@count}</p>
