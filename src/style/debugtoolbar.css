@@ -1,4 +1,10 @@
-#DebugToolbarContainer {
+/**
+ * Copyright Zikula Foundation 2011 - Zikula Application Framework
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ */
+
+ #DebugToolbarContainer {
     left:0;
     position:static;
     top:0;

@@ -2660,7 +2660,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * @param string $compile_id
      * @param boolean $display
      */
-    protected function _fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
+    public function _fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {
         static $_cache_info = array();
 
