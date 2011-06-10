@@ -62,3 +62,5 @@
     <p class="z-bold z-center">{gt text="There are currently no modules in this category."}</p>
     {/if}
 </div>
+
+<div class="z-admin-coreversion z-right">Zikula {$coredata.version_num}</div>

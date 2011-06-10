@@ -24,16 +24,15 @@ div.z-adminbox {
     background: #fff;
     color: #333;
     width: auto;
-    border-top: 0px solid #ccc;
+    border: none;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
-    border-bottom: 0px solid #ccc;
     padding: 10px 1% 5px 1%;
 }
 
 #z-maincontent div.z-adminbox .z-menulinks,
 #z-maincontent div.z-adminbox .z-menu {
-    margin-bottom: 0;
+    margin: 0.5em 0 0;
 }
 
 /* style for Immediate template under the admin menu */
@@ -42,23 +41,22 @@ div.z-admincontainer {
     color: #333;
     width: auto;
     margin-bottom: 1.25em;
-    border-top: 0px solid #ccc;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    border: 1px solid #ccc;
+    border-top: none;
     padding: 0px 1% 5px 1%;
 }
 
 /* admin category description */
 div.z-admincategorydescription {
-    text-align: center;
-    margin-bottom: 10px;
+    text-align: left;
+    margin-bottom: 12px;
 }
 
 /* Style for module title and module's admin icon */
-#z-maincontent div.z-adminbox h1 {
+#z-maincontent div.z-adminbox h2 {
     background: none;
     color: #333333;
+    font-size: 28px;
     line-height: 36px;
     margin: 0;
     padding: 0;
@@ -100,6 +98,13 @@ div.z-admincategorydescription {
 #z-maincontent div.z-adminpageicon+h2 {
     margin-bottom: 20px;
     padding-top: 20px;
+}
+
+/* styling for core version */
+#z-maincontent .z-admin-coreversion {
+    color: #999;
+    font-size: 0.9em;
+    margin: -1em 0 1.25em;
 }
 
 /* disabled admin function links */
