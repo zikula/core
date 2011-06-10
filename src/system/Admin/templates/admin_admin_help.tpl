@@ -9,7 +9,7 @@
 {/pageaddvarblock}
 {include file="admin_admin_menu.tpl"}
 <div class="z-admincontainer z-form">
-    <div class="z-adminpageicon">{icon type="help" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="help" size="small"}</div>
     <h3>{gt text="Help"}</h3>
 
     <div id="adminhelp">

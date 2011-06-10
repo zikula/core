@@ -3,7 +3,7 @@
 
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="options" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="options" size="small"}</div>
     <h3>{gt text="Allowed HTML settings"}</h3>
 
     <p>{gt text='Filtering of allowed HTML occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>

@@ -1,7 +1,7 @@
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.tpl"}
-    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
     <h3>{gt text="Variables"}{if $filename} &raquo; {$filename}{/if}</h3>
 
     <div class="z-informationmsg">{gt text='You can handle plain variables <var>name &rarr; value</var>, but also setup arrays in the format <var>name[key] &rarr; value</var>.'}</div>

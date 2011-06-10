@@ -4,7 +4,7 @@
 
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.tpl"}
-    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
 
     <h3>{gt text="Edit page configuration"} - {$filename|safetext}</h3>
 

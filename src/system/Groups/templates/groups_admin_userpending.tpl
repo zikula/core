@@ -2,7 +2,7 @@
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="new" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="new" size="small"}</div>
     <h3>{$templatetitle}</h3>
 
     {if $action != "deny" and $action != "accept"}

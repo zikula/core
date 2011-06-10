@@ -11,7 +11,7 @@
 {/strip}
 {include file="users_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="view" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="view" size="small"}</div>
     <h3>{gt text="Users list"}</h3>
 
     <div id="liveusersearch" class="z-hide z-form">

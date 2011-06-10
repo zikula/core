@@ -18,7 +18,7 @@
 {include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="mail" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="mail" size="small"}</div>
     <h3>{$templatetitle}</h3>
 
     <form id="users_mailusers" class="z-form" method="post" action="{modurl modname="Users" type="admin" func="mailUsers"}">

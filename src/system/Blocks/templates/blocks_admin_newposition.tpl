@@ -1,6 +1,6 @@
 {include file="blocks_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="new" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="new" size="small"}</div>
     <h3>{gt text="Create new block position"}</h3>
 
     <p class="z-informationmsg">{gt text="After create this block position, you will be able to assign some blocks for it, and adjust the order you want them to be displayed."}</p>

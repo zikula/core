@@ -1,7 +1,7 @@
 {include file='settings_admin_menu.tpl'}
 {ajaxheader modname=Settings filename=settings_admin_modifyconfig.js noscriptaculous=true effects=true}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="options" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="options" size="small"}</div>
     <h3>{gt text="Main settings"}</h3>
 
     <form class="z-form" action="{modurl modname="Settings" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">

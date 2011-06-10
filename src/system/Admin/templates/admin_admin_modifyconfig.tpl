@@ -2,7 +2,7 @@
 {ajaxheader modname=Admin filename=admin_admin_modifyconfig.js noscriptaculous=true effects=true}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="config" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="config" size="small"}</div>
     <h3>{gt text="Settings"}</h3>
 
     <form class="z-form" action="{modurl modname="Admin" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">

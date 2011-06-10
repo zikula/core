@@ -2,7 +2,7 @@
 {include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="remove" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="remove" size="small"}</div>
     <h3>{$templatetitle}</h3>
 
     <p class="z-warningmsg">{gt text="Warning! This will delete the registration from the database. It cannot be undone."}</p>

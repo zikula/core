@@ -1,6 +1,6 @@
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="info" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="info" size="small"}</div>
     <h3>{gt text="Theme credits"}</h3>
 
     {if $themeinfo.system neq 1}

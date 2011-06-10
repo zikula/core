@@ -2,7 +2,7 @@
 {include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="user" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="user" size="small"}</div>
     <h3>{$templatetitle}</h3>
 
     {include file='users_admin_includeregistration.tpl'}

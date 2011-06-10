@@ -9,7 +9,7 @@
 {include file="extensions_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="gears" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="gears" size="small"}</div>
     {if $systemplugins}
     <h3>{gt text="System plugins"}</h3>
     {else}

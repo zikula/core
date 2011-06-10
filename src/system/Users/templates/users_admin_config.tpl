@@ -49,7 +49,7 @@
     
 {include file='users_admin_menu.tpl'}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="config" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="config" size="small"}</div>
     <h3>{gt text="Settings"}</h3>
 
     <form class="z-form" id="{$configData->getFormId()}" action="{modurl modname='Users' type='admin' func='config'}" method="post">

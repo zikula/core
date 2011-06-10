@@ -1,7 +1,7 @@
 {include file="admin_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="new" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="new" size="small"}</div>
     <h3>{gt text="Create new module category"}</h3>
 
     <form class="z-form" action="{modurl modname="Admin" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">

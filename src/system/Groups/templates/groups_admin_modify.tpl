@@ -1,7 +1,7 @@
 {include file="groups_admin_menu.tpl"}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
     <h3>{gt text="Edit group"}</h3>
 
     <form class="z-form" action="{modurl modname="Groups" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">

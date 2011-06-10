@@ -1,7 +1,7 @@
 {include file='theme_admin_menu.tpl'}
 {gt text="Delete page configuration assignment" assign=templatetitle}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="delete" size="small"}</div>
     <h3>{$templatetitle} - {$name|safetext} - {$pcname|safetext}</h3>
 
     <p class="z-warningmsg">{gt text="Do you really want to delete this page configuration assignment?"}</p>

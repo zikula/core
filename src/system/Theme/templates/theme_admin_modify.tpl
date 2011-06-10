@@ -1,6 +1,6 @@
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
     {include file="theme_admin_modifymenu.tpl"}
 
     <h4>{gt text="Settings for %s" tag1=$themename}</h4>

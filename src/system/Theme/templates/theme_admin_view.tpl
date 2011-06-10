@@ -10,7 +10,7 @@
 {assign value="<strong><a href=\"http://community.zikula.org/module-Extensions.htm\">`$extdbtitle`</a></strong>" var=extdblink}
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{icon type="view" size="large"}</div>
+    <div class="z-adminpageicon">{icon type="view" size="small"}</div>
     <h3>{gt text="Themes list"}</h3>
 
     <p class="z-informationmsg">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
