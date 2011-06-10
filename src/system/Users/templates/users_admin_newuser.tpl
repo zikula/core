@@ -54,9 +54,8 @@
 {include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-
     <div class="z-adminpageicon">{icon type="new" size="large"}</div>
-    <h2>{gt text='Create new user'}</h2>
+    <h3>{gt text='Create new user'}</h3>
 
     <div id="{$formData->getFormId()}_errormsgs" class="z-errormsg{if empty($errorMessages)} z-hide{/if}">
         {if isset($errorMessages)}

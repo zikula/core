@@ -2,7 +2,8 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
-    <h2>{gt text="Edit module category"}</h2>
+    <h3>{gt text="Edit module category"}</h3>
+
     <form class="z-form" action="{modurl modname="Admin" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />

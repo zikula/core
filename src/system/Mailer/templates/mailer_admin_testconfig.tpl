@@ -2,7 +2,8 @@
 {ajaxheader modname=Mailer filename=mailer_admin_testconfig.js noscriptaculous=true effects=true}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="mail" size="large"}</div>
-    <h2>{gt text="Test current settings"}</h2>
+    <h3>{gt text="Test current settings"}</h3>
+
     <form class="z-form" action="{modurl modname="Mailer" type="admin" func="sendmessage"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />

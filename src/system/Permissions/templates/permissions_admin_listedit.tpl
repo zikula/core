@@ -6,7 +6,7 @@
     {else}
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
     {/if}
-    <h2>{$title|safetext}</h2>
+    <h3>{$title|safetext}</h3>
 
     {if $action eq "insert" or $action eq "modify" or $action eq "add"}
     <form class="z-form" action="{$formurl|safetext}" method="post" enctype="application/x-www-form-urlencoded">

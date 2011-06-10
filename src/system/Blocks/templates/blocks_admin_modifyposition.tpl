@@ -7,7 +7,8 @@
 {include file="blocks_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
-    <h2>{gt text="Edit block position"}</h2>
+    <h3>{gt text="Edit block position"}</h3>
+
     <form id="blockpositionform" class="z-form" action="{modurl modname="Blocks" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -29,10 +30,10 @@
                 </div>
             </fieldset>
 
-            <h2>{gt text="Block assignments"}</h2>
+            <h3>{gt text="Block assignments"}</h3>
             <p class="z-informationmsg">{gt text="Notice: Use drag and drop to arrange the blocks in this position into your desired order. The new block order will be saved automatically."}</p>
 
-            <h3>{gt text="Blocks assigned to this position"}</h3>
+            <h4>{gt text="Blocks assigned to this position"}</h4>
             <ol id="assignedblocklist" class="z-itemlist">
                 <li id="assignedblocklistheader" class="z-itemheader z-itemsortheader z-clearfix">
                     <span class="z-itemcell z-w25">{gt text="Title"}</span>
@@ -61,7 +62,7 @@
                 {/foreach}
             </ol>
 
-            <h3>{gt text="Blocks not assigned to this position"}</h3>
+            <h4>{gt text="Blocks not assigned to this position"}</h4>
             <ol id="unassignedblocklist" class="z-itemlist">
                 <li id="unassignedblocklistheader" class="z-itemheader z-itemsortheader z-clearfix">
                     <span class="z-itemcell z-w25">{gt text="Title"}</span>

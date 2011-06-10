@@ -1,7 +1,8 @@
 {include file="blocks_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="new" size="large"}</div>
-    <h2>{gt text="Create new block"}</h2>
+    <h3>{gt text="Create new block"}</h3>
+
     <form class="z-form" action="{modurl modname="Blocks" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />

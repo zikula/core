@@ -1,7 +1,7 @@
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
-    <h2>{gt text="Purge IDS Log"}</h2>
+    <h3>{gt text="Purge IDS Log"}</h3>
 
     <ul class="z-menulinks">
         <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="z-icon-es-export">{gt text="Export IDS Log"}</a></li>

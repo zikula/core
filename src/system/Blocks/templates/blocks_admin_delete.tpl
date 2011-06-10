@@ -1,7 +1,8 @@
 {include file="blocks_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
-    <h2>{$blockname|safetext}</h2>
+    <h3>{$blockname|safetext}</h3>
+
     <p class="z-warningmsg">{gt text="Do you really want to delete this block?"}</p>
     <form class="z-form" action="{modurl modname="Blocks" type="admin" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

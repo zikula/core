@@ -2,7 +2,8 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
-    <h2>{gt text='Delete user account' plural='Delete user accounts' count=$users|@count}</h2>
+    <h3>{gt text='Delete user account' plural='Delete user accounts' count=$users|@count}</h3>
+
     <p class="z-warningmsg">{gt text='Do you really want to delete this user account?' plural='Do you really want to delete these user accounts?' count=$users|@count}</p>
 
     <form class="z-form" action="{modurl modname='Users' type='admin' func='deleteUsers'}" method="post" enctype="application/x-www-form-urlencoded">

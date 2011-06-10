@@ -12,7 +12,7 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="user" size="large"}</div>
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
 
     {if count($reglist) > 0}
     <table class="z-datatable">

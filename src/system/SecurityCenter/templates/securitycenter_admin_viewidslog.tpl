@@ -12,12 +12,14 @@
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="log" size="large"}</div>
-    {gt text="All" assign=lblAll}
-    <h2>{gt text="View IDS Log"}</h2>
+    <h3>{gt text="View IDS Log"}</h3>
+
     <ul class="z-menulinks">
         <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="z-icon-es-export">{gt text="Export IDS Log"}</a></li>
         <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="z-icon-es-delete">{gt text="Purge IDS Log"}</a></li>
     </ul>
+
+    {gt text="All" assign=lblAll}
     <form id="securitycenter_logfilter" class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset>
             <legend>{gt text="Filter"}</legend>

@@ -11,7 +11,8 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="view" size="large"}</div>
-    <h2>{gt text="Module categories list"}</h2>
+    <h3>{gt text="Module categories list"}</h3>
+
     <table class="z-datatable">
         <thead>
             <tr>

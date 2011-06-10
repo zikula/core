@@ -10,7 +10,7 @@
     {gt text='New user activated: %s' tag1=$reginfo.uname assign='subject'}
 {/if}
 {assign var='sitelink' value='<a href="%1$s">%2$s</a>'|sprintf:$siteurl:$sitename}
-{/strip}<h2>{$heading}</h2>
+{/strip}<h3>{$heading}</h3>
 
 <p>{gt text='A new user account has been activated on %1$s.' tag1=$sitelink}
 {if $adminCreated}{gt text='It was created by an administrator or sub-administrator logged in as \'%1$s\'.' tag1=$adminUname}

@@ -2,7 +2,8 @@
 {gt text="Delete page configuration assignment" assign=templatetitle}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
-    <h2>{$templatetitle} - {$name|safetext} - {$pcname|safetext}</h2>
+    <h3>{$templatetitle} - {$name|safetext} - {$pcname|safetext}</h3>
+
     <p class="z-warningmsg">{gt text="Do you really want to delete this page configuration assignment?"}</p>
     <form class="z-form" action="{modurl modname=Theme type=admin func=deletepageconfigurationassignment}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

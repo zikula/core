@@ -3,7 +3,8 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="new" size="large"}</div>
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
+
     {if $action != "deny" and $action != "accept"}
     {gt text="Error! Could not load data."}
     {else}

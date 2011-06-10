@@ -8,7 +8,7 @@
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{if ($callbackFunc == 'composeMail')}{icon type='mail' size='large'}{/if}{icon type='search' size='large'}</div>
 
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
 
     <form id="users_search" class="z-form" method="post" action="{modurl modname='Users' type='admin'  func=$callbackFunc|default:'search'}">
         <div>

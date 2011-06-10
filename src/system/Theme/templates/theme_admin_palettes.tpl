@@ -2,7 +2,9 @@
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
     {include file="theme_admin_modifymenu.tpl"}
-    <h2>{gt text="Colour palettes"}</h2>
+
+    <h3>{gt text="Colour palettes"}</h3>
+
     {pageaddvar name="javascript" value="javascript/picky_color/picky_color.js"}
     {pageaddvar name="stylesheet" value="javascript/picky_color/picky_color.css"}
     <form class="z-form" id="theme_modify_palette" action="{modurl modname="Theme" type="admin" func="updatepalettes"}" method="post" enctype="application/x-www-form-urlencoded">

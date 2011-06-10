@@ -1,7 +1,8 @@
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
-    <h2>{gt text="Theme confirmation prompt"}</h2>
+    <h3>{gt text="Theme confirmation prompt"}</h3>
+
     <p class="z-warningmsg">{gt text="Do you really want to set '%s' as the active theme for all site users?" tag1=$themename}</p>
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="setasdefault"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

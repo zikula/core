@@ -4,7 +4,7 @@
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="add" size="large"}</div>
 
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
 
     {if !$reginfo.isverified}
     {if $force}

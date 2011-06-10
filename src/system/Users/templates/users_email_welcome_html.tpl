@@ -1,6 +1,6 @@
 {gt text='Welcome to %1$s, %2$s!' tag1=$sitename tag2=$reginfo.uname assign='subject'}
 
-<h2>{gt text='Welcome to %1$s!' tag1=$sitename}</h2>
+<h3>{gt text='Welcome to %1$s!' tag1=$sitename}</h3>
 
 <p>{gt text='Hello!'}</p>
 

@@ -2,7 +2,8 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="new" size="large"}</div>
-    <h2>{gt text="Create new group"}</h2>
+    <h3>{gt text="Create new group"}</h3>
+
     <form class="z-form" action="{modurl modname="Groups" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />

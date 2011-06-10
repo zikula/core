@@ -1,5 +1,5 @@
 <div id="z-adminwarning">
-    <h3>{gt text="Stop!" domain="zikula"}</h3>
+    <h2>{gt text="Stop!" domain="zikula"}</h2>
     <ul>
         {if $zrcexists}
         <li>{gt text="The Zikula recovery console tool (file 'zrc.php') is present in the site webroot, but must be removed before you can access the site admin panel."}</li>

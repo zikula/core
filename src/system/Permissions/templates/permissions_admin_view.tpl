@@ -26,7 +26,7 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="view" size="large"}</div>
-    <h2>{gt text="Permission rules list"}</h2>
+    <h3>{gt text="Permission rules list"}</h3>
 
     <p class="z-informationmsg z-hide" id="permissiondraganddrophint">
         {gt text="Notice: Arrange your permission rules in the desired order of evaluation, using drag and drop. The sort order will be saved immediately and automatically."}

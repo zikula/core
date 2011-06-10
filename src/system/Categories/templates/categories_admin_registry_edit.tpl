@@ -10,7 +10,8 @@
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer" id="top">
     <div class="z-adminpageicon">{icon type="cubes" size="large"}</div>
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
+
     {gt text="Choose category" assign=chooseCategory}
     {gt text="Choose module" assign=chooseModule}
     {gt text="Choose table" assign=chooseTable}
