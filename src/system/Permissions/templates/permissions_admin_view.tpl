@@ -37,6 +37,36 @@
         {/if}
     </p>
 
+    {if $enablefilter eq true}
+    <form class="z-form" id="permgroupfilterform" action="{modurl modname=Permissions type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
+        <div>
+            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+            <fieldset>
+                <legend>{gt text="Filter permission rules list"}</legend>
+                <span class="z-nowrap">
+                    <label for="permgrp">{gt text="Choose filter"}</label>
+                    <select id="permgrp" name="permgrp">
+                        <optgroup label="{gt text="Group"}">
+                            {foreach item=groupname from=$permgrps key=groupid}
+                            <option value="g+{$groupid}">{$groupname}</option>
+                            {/foreach}
+                        </optgroup>
+                        <optgroup label="{gt text="Component"}">
+                            {foreach item=component from=$components key=compkey}
+                            <option value="c+{$compkey}">{$component}</option>
+                            {/foreach}
+                        </optgroup>
+                    </select>
+                </span>
+                <span class="z-nowrap z-buttons">
+                    <button id="permgroupfiltersubmit" class="z-button" name="permgroupfiltersubmit" type="submit">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
+                    <button id="permgroupfiltersubmitajax" class="z-button z-hide" onclick="javascript:permgroupfilter();">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
+                </span>
+            </fieldset>
+        </div>
+    </form>
+    {/if}
+
     <div id="permissions-header" class="z-clearfix">
         <a id="appendajax" onclick="javascript:permappend();" class="z-floatleft z-icon-es-new z-hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
         <strong id="filterwarning" class="z-floatright z-icon-es-warning" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
@@ -198,34 +228,4 @@
             </div>
         </fieldset>
     </form>
-
-    {if $enablefilter eq true}
-    <form class="z-form" id="permgroupfilterform" action="{modurl modname=Permissions type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
-        <div>
-            <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-            <fieldset>
-                <legend>{gt text="Filter permission rules list"}</legend>
-                <div class="z-formrow">
-                    <label for="permgrp">{gt text="Choose filter"}</label>
-                    <select id="permgrp" name="permgrp">
-                        <optgroup label="{gt text="Group"}">
-                            {foreach item=groupname from=$permgrps key=groupid}
-                            <option value="g+{$groupid}">{$groupname}</option>
-                            {/foreach}
-                        </optgroup>
-                        <optgroup label="{gt text="Component"}">
-                            {foreach item=component from=$components key=compkey}
-                            <option value="c+{$compkey}">{$component}</option>
-                            {/foreach}
-                        </optgroup>
-                    </select>
-                </div>
-                <div class="z-buttons z-formbuttons">
-                    <button id="permgroupfiltersubmit" class="z-button" name="permgroupfiltersubmit" type="submit">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
-                    <button id="permgroupfiltersubmitajax" class="z-button z-hide" onclick="javascript:permgroupfilter();">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
-                </div>
-            </fieldset>
-        </div>
-    </form>
-    {/if}
 </div>
