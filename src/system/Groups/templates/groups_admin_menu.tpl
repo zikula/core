@@ -9,6 +9,6 @@
 {admincategorymenu}
 <div class="z-adminbox">
     {img modname='Groups' src='admin.png' height='36'}
-    <h1>{gt text="Groups manager"}</h1>
+    <h2>{gt text="Groups manager"}</h2>
     {modulelinks modname='Groups' type='admin'}
 </div>
