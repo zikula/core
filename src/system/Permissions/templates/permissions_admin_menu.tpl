@@ -12,7 +12,7 @@
 {/pageaddvarblock}
 {admincategorymenu}
 <div class="z-adminbox">
-    {img modname='Permissions' src='admin.png'}
+    {img modname='Permissions' src='admin.png' height='36'}
     <h1>{gt text="Permission rules manager"}</h1>
     {modulelinks modname='Permissions' type='admin'}
 </div>

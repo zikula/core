@@ -8,7 +8,7 @@
 {/pageaddvarblock}
 {admincategorymenu}
 <div class="z-adminbox">
-    {img modname='Groups' src='admin.png'}
+    {img modname='Groups' src='admin.png' height='36'}
     <h1>{gt text="Groups manager"}</h1>
     {modulelinks modname='Groups' type='admin'}
 </div>
