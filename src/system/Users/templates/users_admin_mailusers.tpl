@@ -19,7 +19,7 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="mail" size="large"}</div>
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
 
     <form id="users_mailusers" class="z-form" method="post" action="{modurl modname="Users" type="admin" func="mailUsers"}">
         <div>

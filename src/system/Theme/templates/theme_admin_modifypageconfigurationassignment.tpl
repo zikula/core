@@ -2,7 +2,9 @@
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.tpl"}
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
-    <h2>{gt text="Edit page configuration assignment"}</h2>
+
+    <h3>{gt text="Edit page configuration assignment"}</h3>
+
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />

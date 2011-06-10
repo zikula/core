@@ -1,6 +1,7 @@
 {include file="securitycenter_admin_menu.tpl"}
+
 <div class="z-admincontainer">
-    <h2>{$title|safetext}</h2>
+    <h3>{$title|safetext}</h3>
     <table class="z-datatable">
         <thead>
             <tr>

@@ -2,7 +2,8 @@
 {include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="copy" size="large"}</div>
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
+
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="copy"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="cid" value="{$category.id}" />

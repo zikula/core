@@ -6,7 +6,7 @@
     {include file="theme_admin_modifymenu.tpl"}
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
 
-    <h2>{gt text="Edit page configuration"} - {$filename|safetext}</h2>
+    <h3>{gt text="Edit page configuration"} - {$filename|safetext}</h3>
 
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigtemplates"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

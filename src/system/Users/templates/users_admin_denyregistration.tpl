@@ -3,7 +3,7 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="remove" size="large"}</div>
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
 
     <p class="z-warningmsg">{gt text="Warning! This will delete the registration from the database. It cannot be undone."}</p>
 

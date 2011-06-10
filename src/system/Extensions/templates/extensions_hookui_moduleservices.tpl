@@ -1,12 +1,12 @@
 {admincategorymenu}
 <div class="z-adminbox">
-    <h1>{$currentmodule}</h1>
+    <h2>{$currentmodule}</h2>
     {modulelinks modname=$currentmodule type='admin'}
 </div>
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="hook" size="large"}</div>
-    <h2>{gt text='Module Services'}</h2>
+    <h3>{gt text='Module Services'}</h3>
 
     <p class="z-informationmsg">{gt text='Module Services are functions provided by the core or other modules for this module.'}</p>
 

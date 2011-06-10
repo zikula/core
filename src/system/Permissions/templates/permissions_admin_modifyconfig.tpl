@@ -3,7 +3,8 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="config" size="large"}</div>
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
+
     <form class="z-form" action="{modurl modname="Permissions" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />

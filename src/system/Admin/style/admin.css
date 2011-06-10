@@ -76,7 +76,8 @@ div.z-admincategorydescription {
     visibility: hidden;
 }
 
-#z-maincontent div.z-admincontainer h2 {
+#z-maincontent div.z-admincontainer h2,
+#z-maincontent div.z-admincontainer h3 {
     background: none;
     color: #333;
     text-align: left;
@@ -85,7 +86,16 @@ div.z-admincategorydescription {
     padding-top: 0.5em;
 }
 
-/* styling for a page icon */
+/* styling for a page title and icon */
+#z-maincontent div.z-admincontainer h3 {
+    font-size: 24px;
+}
+
+#z-maincontent div.z-adminpageicon+h3 {
+    margin-bottom: 20px;
+    padding-top: 20px;
+}
+
 #z-maincontent div.z-adminpageicon {
     padding: 0;
 }
@@ -93,11 +103,6 @@ div.z-admincategorydescription {
 #z-maincontent div.z-adminpageicon img {
     float: right;
     padding-top: 5px;
-}
-
-#z-maincontent div.z-adminpageicon+h2 {
-    margin-bottom: 20px;
-    padding-top: 20px;
 }
 
 /* styling for core version */

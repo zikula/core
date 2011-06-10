@@ -4,7 +4,8 @@
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="export" size="large"}</div>
 
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
+
     <form class="z-form" action="{modurl modname='Users' type='admin' func='exporter'}" method="post" enctype="multipart/form-data">
         <div>
             <input type="hidden" name="confirmed" value="1" />

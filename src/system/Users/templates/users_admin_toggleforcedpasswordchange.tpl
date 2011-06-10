@@ -7,7 +7,8 @@
 {/if}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='core' set='icons/large' src='password_expire.png' alt=$templatetitle}</div>
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
+
     {if $user_must_change_password}
     <p class="z-warningmsg">{gt text='Do you want to cancel the forced password change for %1$s?' tag1=$user_obj.uname|safetext}</p>
     {else}

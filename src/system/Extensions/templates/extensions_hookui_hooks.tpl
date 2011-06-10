@@ -21,13 +21,13 @@
 
 {admincategorymenu}
 <div class="z-adminbox">
-    <h1>{$currentmodule}</h1>
+    <h2>{$currentmodule}</h2>
     {modulelinks modname=$currentmodule type='admin'}
 </div>
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="hook" size="large"}</div>
-    <h2>{gt text='Hooks'}</h2>
+    <h3>{gt text='Hooks'}</h3>
 
     <div class="z-form z-clearfix">
         
@@ -49,7 +49,7 @@
                 {if $isSubscriber && !empty($subscriberAreasAndCategories)}
                 {foreach from=$subscriberAreasAndCategories key='category' item='areas'}
                 
-                    <h3>{$category}</h3>
+                    <h4>{$category}</h4>
                     
                     {foreach from=$areas item='sarea'}
                         
@@ -104,7 +104,7 @@
                 
                     {if !empty($hookprovider.areas)}
                         
-                        <h3 class="z-acc-header">{$hookprovider.name}</h3>
+                        <h4 class="z-acc-header">{$hookprovider.name}</h4>
                        
                         <div class="z-acc-content">
                             

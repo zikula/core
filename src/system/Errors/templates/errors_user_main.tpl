@@ -1,5 +1,5 @@
 <div class="z-fullerror">
-    <h1>{gt text="Error on %s" tag1=$modvars.ZConfig.sitename}</h1>
+    <h2>{gt text="Error on %s" tag1=$modvars.ZConfig.sitename}</h2>
     <ul>
         {foreach from=$messages item=message}
         <li>{$message|safehtml}</li>
@@ -7,7 +7,7 @@
     </ul>
     {if $trace}
     <ul>
-        <h2>{gt text="Exception Trace"}</h2>
+        <h3>{gt text="Exception Trace"}</h3>
         {foreach from=$trace item=t}
             <li>{$t|safehtml}</li>
         {/foreach}

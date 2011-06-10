@@ -1,7 +1,8 @@
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="delete" size="large"}</div>
-    <h2>{gt text="Delete theme %s" tag1=$name|safetext}</h2>
+    <h3>{gt text="Delete theme %s" tag1=$name|safetext}</h3>
+
     <p class="z-warningmsg">{gt text="Do you really want to delete this theme?"}</p>
     <form class="z-form" action="{modurl modname=Theme type=admin func=delete}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

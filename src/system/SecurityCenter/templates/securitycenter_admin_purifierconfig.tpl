@@ -4,10 +4,12 @@
 {include file='securitycenter_admin_menu.tpl'}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="options" size="large"}</div>
-    <h2>{gt text='HTMLPurifier Settings'}</h2>
+    <h3>{gt text='HTMLPurifier Settings'}</h3>
+
     <p>{gt text='HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
+
     <div class="z-warningmsg">
-        <h3>{gt text="Warning"}</h3>
+        <h4>{gt text="Warning"}</h4>
         <p>{gt text="Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier."}</p>
         <p><a href="{modurl modname='SecurityCenter' type='admin' func='allowedhtml'}">{gt text="Allowed HTML settings"}</a> {gt text="will be applied after HTMLPurifier processing is completed."}</p>
     </div>

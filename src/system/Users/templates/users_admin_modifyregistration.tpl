@@ -33,7 +33,7 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="new" size="large"}</div>
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
 
     <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 

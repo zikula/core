@@ -11,9 +11,9 @@
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="gears" size="large"}</div>
     {if $systemplugins}
-    <h2>{gt text="System plugins"}</h2>
+    <h3>{gt text="System plugins"}</h3>
     {else}
-    <h2>{gt text="Plugins list"}</h2>
+    <h3>{gt text="Plugins list"}</h3>
     {/if}
 
     <table class="z-datatable">

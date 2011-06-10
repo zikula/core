@@ -2,7 +2,8 @@
 {include file="extensions_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="config" size="large"}</div>
-    <h2>{gt text="Settings"}</h2>
+    <h3>{gt text="Settings"}</h3>
+
     <form class="z-form" action="{modurl modname="Extensions" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             {insert name='csrftoken' assign='csrftoken'}

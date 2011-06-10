@@ -1,7 +1,7 @@
 {include file='categories_admin_menu.tpl'}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type='delete' size='large'}</div>
-    <h2>{gt text='Delete registry entry'}</h2>
+    <h3>{gt text='Delete registry entry'}</h3>
 
     <p class="z-warningmsg">
         {gt text='Do you really want to delete this registry entry?'}<br />

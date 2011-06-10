@@ -3,7 +3,7 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="import" size="large"}</div>
-    <h2>{$templatetitle}</h2>
+    <h3>{$templatetitle}</h3>
 
     {if $importResults neq ''}
     <div class="z-errormsg">
@@ -38,7 +38,7 @@
         </div>
     </form>
     <div class="z-informationmsg">
-        <h3>{gt text="About the CSV file"}</h3>
+        <h4>{gt text="About the CSV file"}</h4>
         <dl>
             <dt>{gt text="The first row of the CSV file must contain the field names. It must be like this:"}</dt>
             <dd>uname,pass,email,activated,sendmail,groups</dd>

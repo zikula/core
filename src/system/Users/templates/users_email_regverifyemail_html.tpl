@@ -1,6 +1,6 @@
 {gt text="Verify your e-mail address for %s." tag1=$sitename assign='subject'}
 {modurl modname='Users' type='user' func='verifyRegistration' uname=$reginfo.uname verifycode=$verifycode|urlencode fqurl=true assign='verificationurl'}
-<h2>{gt text='Welcome to %1$s!' tag1=$sitename}</h2>
+<h3>{gt text='Welcome to %1$s!' tag1=$sitename}</h3>
 
 <p>{gt text='Hello! This e-mail address (\'%1$s\') has been used to register an account on \'%2$s\' (%3$s).' tag1=$reginfo.email tag2=$sitename  tag3=$siteurl}</p>
 

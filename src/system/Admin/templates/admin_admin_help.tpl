@@ -10,7 +10,8 @@
 {include file="admin_admin_menu.tpl"}
 <div class="z-admincontainer z-form">
     <div class="z-adminpageicon">{icon type="help" size="large"}</div>
-    <h2>{gt text="Help"}</h2>
+    <h3>{gt text="Help"}</h3>
+
     <div id="adminhelp">
         <h4 id="view" class="z-acc-header">{gt text="Module categories list"}</h4>
         <div class="z-acc-content">

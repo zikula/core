@@ -2,7 +2,8 @@
 {ajaxheader modname=Theme filename=theme_admin_modifyconfig.js noscriptaculous=true effects=true}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="config" size="large"}</div>
-    <h2>{gt text="Settings"}</h2>
+    <h3>{gt text="Settings"}</h3>
+
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />

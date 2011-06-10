@@ -2,7 +2,8 @@
 {ajaxheader modname="Extensions" filename="hooks.js"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type="hook" size="large"}</div>
-    <h2>{gt text="Basic legacy hook settings for"} {modgetinfo modid=$id info=displayname}</h2>
+    <h3>{gt text="Basic legacy hook settings for"} {modgetinfo modid=$id info=displayname}</h3>
+
     <p class="z-warningmsg">{gt text="Please note that only legacy module types appear in this list."}</p>
     <ul id="extendedhookslinks" class="z-hide z-menulinks">
         <li><a href="{modurl modname=Extensions type=admin func=legacyhooks id=$id}" title="{gt text="Basic hook settings"}">{gt text="Basic legacy hook settings"}</a></li>

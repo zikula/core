@@ -2,7 +2,8 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{icon type='delete' size='large'}</div>
-    <h2>{gt text='Remove user from group'}</h2>
+    <h3>{gt text='Remove user from group'}</h3>
+
     <p class="z-warningmsg">{gt text='Do you really want to remove user "%1$s" from group "%2$s"?' tag1=$uname tag2=$group.name}</p>
     <form class="z-form" action="{modurl modname='Groups' type='admin' func='removeuser'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

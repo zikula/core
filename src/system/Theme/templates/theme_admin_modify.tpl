@@ -1,9 +1,9 @@
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
-    {include file="theme_admin_modifymenu.tpl"}
     <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+    {include file="theme_admin_modifymenu.tpl"}
 
-    <h2>{gt text="Settings for %s" tag1=$themename}</h2>
+    <h4>{gt text="Settings for %s" tag1=$themename}</h4>
 
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatesettings"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
