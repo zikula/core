@@ -113,7 +113,8 @@
         </tbody>
     </table>
 
-    <h2 id="blockpositions">{gt text="Block positions list"}</h2>
+    <h3 id="blockpositions">{gt text="Block positions list"}</h3>
+
     <p class="z-informationmsg">{gt text="This is the list of block positions currently existing for your site's pages. You can create a new block position by clicking 'Create block position' in the menu. To edit the settings for a block position, or to reorder the blocks within a block position, click on the 'Edit' icon beside that particular position. To delete a block position, click on the 'Delete' icon and confirm the action in the confirmation prompt that will display."}</p>
     <table class="z-datatable">
         <thead>

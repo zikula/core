@@ -25,7 +25,7 @@ class Settings_Api_Admin extends Zikula_AbstractApi
 
         $domain = ZLanguage::getModuleDomain('settings');
         if (SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('Settings', 'admin', 'modifyconfig'), 'text' => $this->__('Main settings'), 'class' => 'z-icon-es-options');
+            $links[] = array('url' => ModUtil::url('Settings', 'admin', 'modifyconfig'), 'text' => $this->__('Main settings'), 'class' => 'z-icon-es-config');
             $links[] = array('url' => ModUtil::url('Settings', 'admin', 'multilingual'), 'text' => $this->__('Localisation settings'), 'class' => 'z-icon-es-locale');
         }
 

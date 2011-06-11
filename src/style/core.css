@@ -241,7 +241,7 @@ table.z-admintable {
     border:1px solid #CCCCCC;
     border-spacing:1px 0;
     color:inherit;
-    margin:1em 0;
+    margin:0 0 1em;
     padding:0;
     width:100%;
     -webkit-border-radius: 5px;
@@ -352,7 +352,12 @@ table.z-admintable ul {
 
 .z-form .z-formrow input,
 .z-form .z-formrow textarea,
-.z-form .z-formrow select {
+.z-form .z-formrow select,
+.z-form fieldset input[type="text"],
+.z-form fieldset select,
+.z-form .z-datatable input[type="text"],
+.z-form .z-datatable textarea,
+.z-form .z-datatable select {
     font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
     border: 1px solid #ddd;
     font-size: 1em;
@@ -537,6 +542,20 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     width: auto;
 }
 
+.z-form fieldset select {
+    padding: 0.2em 1px;
+}
+
+.z-form fieldset input[type="text"],
+.z-form .z-datatable input[type="text"],
+.z-form .z-datatable textarea {
+    padding: 0.3em 0.3em;
+}
+
+.z-form .z-datatable select {
+    padding: 0.3em 2px 0.3em 1px;
+}
+
 /******************************************************************************
 * Form styles (linearize elements / use additional class 'z-linear')
 *******************************************************************************/
@@ -581,18 +600,18 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 * Special styles for the Zikula Form Handler
 *******************************************************************************/
 
-.z-form div.z-formrow input[type=text].z-form-mandatory,
-.z-form div.z-formrow select.z-form-mandatory,
-.z-form div.z-formrow textarea.z-form-mandatory {
-    width: 66%;
-}
-
 .z-form .z-formrow .z-mandatorysym, /* mandatorysym will be removed in future version */
-.z-form .z-formrow .z-form-mandatory-flag {
+.z-form-mandatory-flag {
     color: #f00;
     font-weight: bold;
     padding-left: 3px;
     display: inline;
+}
+
+.z-form div.z-formrow input[type=text].z-form-mandatory,
+.z-form div.z-formrow select.z-form-mandatory,
+.z-form div.z-formrow textarea.z-form-mandatory {
+    width: 66%;
 }
 
 .z-form .z-formrow input.z-form-float,
@@ -1805,7 +1824,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-pager {
     color: #999;
     line-height: 2.2em;
-    padding: 5px 4px;
+    padding: 0 4px 5px;
     text-align: center;
 }
 /* style for the selected item of the pager abc plugin */

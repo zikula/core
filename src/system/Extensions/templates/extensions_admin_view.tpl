@@ -15,7 +15,8 @@
 
     <p class="z-informationmsg">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>
 
-    <div style="padding:1em 0;"><strong>[{pagerabc posvar="letter" forwardvars="module,type,func"}]</strong></div>
+    <div style="padding:0 0 1em;"><strong>[{pagerabc posvar="letter" forwardvars="module,type,func"}]</strong></div>
+
     <table class="z-datatable">
         <thead>
             <tr>
