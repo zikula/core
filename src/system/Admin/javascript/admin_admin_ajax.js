@@ -134,7 +134,7 @@ Admin.Module = {};
  */
 Admin.Context.Add = function(nid)
 {
-context_menu.push(new Control.ContextMenu(nid, {animation: false}));
+    context_menu.push(new Control.ContextMenu(nid, {animation: false}));
     context_menu[context_menu.length - 1].addItem( {
         label : lblEdit,
         callback : function(nid) {
@@ -174,7 +174,7 @@ context_menu.push(new Control.ContextMenu(nid, {animation: false}));
  */
 Admin.Editor.Add = function(nid)
 {
-var nelement = $(nid);
+    var nelement = $(nid);
     var tLength = nelement.innerHTML.length;
     var editor = new Ajax.InPlaceEditor(nid,"ajax.php?module=Admin&type=ajax&func=editCategory",{
         clickToEditText: lblclickToEdit,
@@ -383,7 +383,7 @@ Admin.Category.New = function(cat)
     old = parent.innerHTML;
     var innerhtml = $('ajaxNewCatHidden').innerHTML;
     parent.innerHTML = innerhtml;
-    parent.setAttribute("class", "newCat");
+    parent.addClassName("newCat");
     return false;
 }
 
@@ -423,7 +423,7 @@ Admin.Category.Cancel = function()
 {
     var parent = $('addcat');
     parent.innerHTML = old;
-    parent.setAttribute("class", "");
+    parent.removeClassName("newCat");
     return false;
 }
 
@@ -435,7 +435,6 @@ Admin.Category.Cancel = function()
  */
 Admin.Category.addResponse = function(req)
 {
-
     if (!req.isSuccess()) {
     	Zikula.showajaxerror(req.getMessage());
     	Admin.Category.Cancel();
