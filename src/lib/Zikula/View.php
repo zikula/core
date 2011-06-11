@@ -1496,7 +1496,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     public function getTplVar($key)
     {
         if (!array_key_exists($key, $this->_tpl_vars)) {
-            throw new InvalidArgumentException(__f('%s does not exist as as assigned variable', $key));
+            return null;
         }
 
         return $this->_tpl_vars[$key];
