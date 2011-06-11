@@ -6,7 +6,7 @@
     <div class="z-adminpageicon">{icon type="options" size="small"}</div>
     <h3>{gt text="Allowed HTML settings"}</h3>
 
-    <p>{gt text='Filtering of allowed HTML occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
+    <p class="z-informationmsg">{gt text='Filtering of allowed HTML occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
     <form class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="updateallowedhtml"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />

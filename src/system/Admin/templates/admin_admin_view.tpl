@@ -10,6 +10,10 @@
 {include file="admin_admin_menu.tpl"}
 
 <div class="z-admincontainer">
+    <div class="z-adminviewbuttons">
+        <a href="{modurl modname=Admin type=admin func=help fragment=view fqurl=true}">{img modname=core src=agt_support.png set=icons/small __alt="Help" __title="Help"}</a>
+    </div>
+
     <div class="z-adminpageicon">{icon type="view" size="small"}</div>
     <h3>{gt text="Module categories list"}</h3>
 
@@ -36,8 +40,5 @@
             {/section}
         </tbody>
     </table>
-    <div class="z-adminviewbuttons">
-        <a href="{modurl modname=Admin type=admin func=help fragment=view fqurl=true}">{img modname=core src=agt_support.png set=icons/small __alt="Help" __title="Help"}</a>
-    </div>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>

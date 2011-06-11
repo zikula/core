@@ -6,7 +6,7 @@
     <div class="z-adminpageicon">{icon type="options" size="small"}</div>
     <h3>{gt text='HTMLPurifier Settings'}</h3>
 
-    <p>{gt text='HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
+    <p class="z-informationmsg">{gt text='HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
 
     <div class="z-warningmsg">
         <h4>{gt text="Warning"}</h4>
