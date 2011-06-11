@@ -3,7 +3,7 @@
     <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
     {include file="theme_admin_modifymenu.tpl"}
 
-    <h3>{gt text="Colour palettes"}</h3>
+    <h4>{gt text="Colour palettes"}</h4>
 
     {pageaddvar name="javascript" value="javascript/picky_color/picky_color.js"}
     {pageaddvar name="stylesheet" value="javascript/picky_color/picky_color.css"}

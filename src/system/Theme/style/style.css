@@ -1,6 +1,10 @@
 
 #theme_modifymenu.minitabs {
     padding-left: 10px !important;
+    width: auto !important;
+}
+#theme_modifymenu.minitabs+h4 {
+    margin-top: 0.7em;
 }
 
 .theme_preview {
