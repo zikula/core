@@ -2,7 +2,7 @@
 {modurl modname=Theme type=admin func=modifyconfig assign=themeurl}
 {if $notices.developer.devmode}
 <div id="z-developernotices">
-    <h3>{gt text="Developer notices (development mode on)" domain="zikula"}</h3>
+    <strong>{gt text="Developer notices (development mode on)" domain="zikula"}</strong>
     <ul>
         {if isset($notices.developer.render)}
         <li>
