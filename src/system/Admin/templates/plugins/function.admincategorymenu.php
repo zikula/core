@@ -18,14 +18,16 @@
  *
  * @see          function.admincategorymenu.php::smarty_function_admincategoreymenu()
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      $smarty     Reference to the Smarty object
+ * @param        object      $view        Reference to the Zikula_View object
  * @return       string      the results of the module function
  */
-function smarty_function_admincategorymenu($params, $smarty)
+function smarty_function_admincategorymenu($params, $view)
 {
     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin'));
 
-    $acid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $smarty->modinfo['id']));
+    $modinfo = ModUtil::getInfoFromName($view->getTplVar('toplevelmodule'));
+
+    $acid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $modinfo['id']));
     
     return ModUtil::func('Admin', 'admin', 'categorymenu', array('acid' => $acid));
 }
