@@ -140,7 +140,7 @@ class Zikula_Session
      */
     public function getMessages($type, $default = array())
     {
-        if (array_key_exists($type, $_SESSION['_zikula_messages'])) {
+        if (isset($_SESSION) && array_key_exists($type, $_SESSION['_zikula_messages'])) {
             return $_SESSION['_zikula_messages'][$type];
         }
 
@@ -156,7 +156,7 @@ class Zikula_Session
      */
     public function hasMessages($type)
     {
-        return array_key_exists($type, $_SESSION['_zikula_messages']) && !empty($_SESSION['_zikula_messages'][$type]);
+        return isset($_SESSION) && array_key_exists($type, $_SESSION['_zikula_messages']) && !empty($_SESSION['_zikula_messages'][$type]);
     }
 
     /**
