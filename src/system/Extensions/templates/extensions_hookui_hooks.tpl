@@ -15,13 +15,17 @@
         initAreasDroppables();
         
         new Zikula.UI.Accordion('accordion_available_provider_areas');
+
+        new Zikula.UI.Panels('registered_subscriber_areas',{
+            headerSelector: 'legend'
+        });
     });
     </script>
 {/pageaddvarblock}
 
 {admincategorymenu}
 <div class="z-adminbox">
-    <h2>{$currentmodule}</h2>
+    <h2>{modgetinfo modname=$currentmodule info='displayname'}</h2>
     {modulelinks modname=$currentmodule type='admin'}
 </div>
 
@@ -29,130 +33,112 @@
     <div class="z-adminpageicon">{icon type="hook" size="small"}</div>
     <h3>{gt text='Hooks'}</h3>
 
+    {if $isSubscriber && !empty($subscriberAreas)}
+    <div id="registered_subscriber_areas" class="z-form">
+        <fieldset>
+            {assign var="total_subscriber_areas" value=$subscriberAreas|@count}
+            <legend><a href="#" onclick="return false">{gt text="%s module subscribes with the following area:" plural="%s module subscribes with the following areas:" tag1=$currentmodule|safetext count=$total_subscriber_areas}</a></legend>
+            <div>
+                <ol>
+                {foreach from=$subscriberAreas item='subscriberarea' name="loop"}
+                    <li><strong>{$subscriberAreasToTitles.$subscriberarea}</strong> <span class="z-sub">({$subscriberarea})</span></li>
+                {/foreach}
+                </ol>
+            </div>
+        </fieldset>
+    </div>
+    {/if}
+
     <div class="z-form z-clearfix">
-        
+
         <div class="z-floatleft z-w48">
             <fieldset>
                 <legend>{gt text="Attached areas"}</legend>
-                
-                {if $isSubscriber && !empty($subscriberAreas)}
-                <p class="z-informationmsg">
-                    {assign var="total_subscriber_areas" value=$subscriberAreas|@count}
-                    {gt text="%s module subscribes with the following area:" plural="%s module subscribes with the following areas:" tag1=$currentmodule|safetext count=$total_subscriber_areas}
-                    <br />
-                    {foreach from=$subscriberAreas item='subscriberarea' name="loop"}
-                    {if $total_subscriber_areas gt 1}{$smarty.foreach.loop.iteration}) {/if}<strong>{$subscriberAreasToTitles.$subscriberarea}</strong> <span class="z-sub">({$subscriberarea})</span><br />
-                    {/foreach}
-                </p>
-                {/if}
-                
+
                 {if $isSubscriber && !empty($subscriberAreasAndCategories)}
                 {foreach from=$subscriberAreasAndCategories key='category' item='areas'}
-                
+
                     <h4>{$category}</h4>
-                    
                     {foreach from=$areas item='sarea'}
-                        
                         {assign var="sarea_md5" value=$sarea|md5}
 
                         <ol id="attachedareassortlist_{$sarea_md5}" class="z-itemlist">
-                            
+
                             <li id="attachedareassortlistheader_{$sarea_md5}" class="z-itemheader z-clearfix">
                                 <span class="z-itemcell z-w100">{$subscriberAreasToTitles.$sarea} <span class="z-sub">({$sarea})</span></span>
                                 <input type="hidden" id="attachedareassortlist_{$sarea_md5}_a" value="{$sarea}" />
                                 <input type="hidden" id="attachedareassortlist_{$sarea_md5}_c" value="{$subscriberAreasToCategories.$sarea}" />
                                 <input type="hidden" id="attachedareassortlist_{$sarea_md5}_i" value="{$sarea_md5}" />
                             </li>
-                            
+
                             {if isset($areasSorting.$category.$sarea)}    
-                                
                                 {foreach from=$areasSorting.$category.$sarea item='parea'}
-                                    
                                     {assign var="parea_md5" value=$parea|md5}
-                                    
+
                                     <li id="attachedarea_{$parea_md5}" class="{cycle name="attachedareaslist_`$sarea`" values='z-even,z-odd'} z-sortable z-clearfix">
                                         <span class="z-itemcell z-w100">{$areasSortingTitles.$parea} <span class="z-sub">({$parea})</span> <a class="detachlink" style="position:absolute; right:5px; top:1px;" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('{$sarea_md5}', '{$sarea}', '{$parea_md5}', '{$parea}');" title="{gt text='Detach'} {$areasSortingTitles.$parea}">{img modname='core' set='icons/extrasmall' src='editdelete.png' __alt='detach'}</a></span>
                                         <input type="hidden" id="attachedarea_{$parea_md5}_a" value="{$parea}" />
                                         <input type="hidden" id="attachedarea_{$parea_md5}_c" value="{$category}" />
                                         <input type="hidden" id="attachedarea_{$parea_md5}_i" value="{$parea_md5}" />
                                     </li>
-                                    
+
                                 {/foreach}
-                                    
                             {/if}  
                             
                             <li id="attachedarea_empty_{$sarea_md5}" class="z-clearfix {if isset($areasSorting.$category.$sarea)}z-hide{/if}"><span class="z-itemcell z-w100">{gt text="There aren't any areas attached here. Drag an area from the right and drop it here to attach it."}</span></li>
-                            
                         </ol>
-                    
                     {/foreach}
-                
                 {/foreach}
                 {/if}
-                
             </fieldset>
         </div>
-        
-        <div class="z-floatleft z-w04 z-nowrap">&nbsp;</div>
-        
-        <div id="accordion_available_provider_areas" class="z-floatleft z-w48">
+
+        <div id="accordion_available_provider_areas" class="z-floatright z-w48">
             <fieldset>
                 <legend>{gt text="Available areas"}</legend>
-                
+
                 {if $isSubscriber && !empty($hookproviders)}
                 {foreach from=$hookproviders item='hookprovider'}
-                
+
                     {if !empty($hookprovider.areas)}
-                        
+
                         <h4 class="z-acc-header">{$hookprovider.name}</h4>
-                       
+
                         <div class="z-acc-content">
-                            
                             {foreach from=$hookprovider.areasAndCategories key='category' item='areas'}
-                
                             <fieldset>
                                 <legend>{$category}</legend>
-                                
+
                                 {assign var="draglist_identifier" value="`$hookprovider.name`_`$category`"}
                                 {assign var="draglist_identifier_md5" value=$draglist_identifier|md5}
-                                
+
                                 <ol id="availableareasdraglist_{$draglist_identifier_md5}" class="z-itemlist">
-                                    
                                     {foreach from=$areas item='parea'}
-                                    
                                         {assign var="parea_md5" value=$parea|md5}
-                                       
+
                                         <li id="availablearea_{$parea_md5}" class="{cycle name="availableareaslist_`$draglist_identifier`" values='z-even,z-odd'} z-draggable z-clearfix">
                                             <span class="z-itemcell z-w100">{$hookprovider.areasToTitles.$parea} <span class="z-sub">({$parea})</span> <a class="detachlink z-hide" style="position:absolute; right:5px; top:1px;" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{$parea_md5}', '{$parea}');" title="{gt text='Detach'} {$hookprovider.areasToTitles.$parea}">{img modname='core' set='icons/extrasmall' src='editdelete.png' __alt='detach'}</a></span>
                                             <input type="hidden" id="availablearea_{$parea_md5}_a" value="{$parea}" />
                                             <input type="hidden" id="availablearea_{$parea_md5}_c" value="{$hookprovider.areasToCategories.$parea}" />
                                             <input type="hidden" id="availablearea_{$parea_md5}_i" value="{$parea_md5}" />
                                         </li>
-                                    
+
                                     {/foreach}
-                                    
                                 </ol>
-                                
                             </fieldset>
-                            
                             {/foreach}
-                                
                         </div>
-                        
                     {/if}
-                
                 {/foreach}
                 {/if}
-                
             </fieldset>
         </div>
-        
     </div>
 
-        
+
     {if $isProvider && !empty($providerAreas) && $total_available_subscriber_areas gt 0}
     <div class="z-form">
-        
+
         <fieldset>
             <legend>{gt text="Connect %s to other modules" tag1=$currentmodule|safetext}</legend>
             <p class="z-informationmsg">
@@ -229,17 +215,14 @@
                         </div>
 
                         {/foreach}
-
                     </td>
-
                 </tr>
+
                 {/foreach}
                 </tbody>
             </table>
 
         </fieldset>
-
     </div>
     {/if}
-
 </div>
