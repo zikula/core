@@ -235,9 +235,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         // check if the 'type' parameter in the URL is admin and if yes,
         // include system/Admin/templates/plugins to the plugins_dir array
-        if (!$this instanceof Zikula_View_Theme && $type === 'admin') {
-            $this->addPluginDir('system/Admin/templates/plugins');
-            $this->load_filter('output', 'admintitle');
+        if ($type === 'admin') {
+            if (!$this instanceof Zikula_View_Theme) {
+                $this->addPluginDir('system/Admin/templates/plugins');
+            } else {
+                $this->load_filter('output', 'admintitle');
+            }
         }
 
         // adds legacy plugin paths if needed

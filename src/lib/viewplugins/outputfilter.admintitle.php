@@ -16,8 +16,8 @@
 /**
  * Zikula_View outputfilter to add a title to all admin pages
  *
- * @param string      $source Output source.
- * @param Zikula_View $view   Reference to Zikula_View instance.
+ * @param string            $source Output source.
+ * @param Zikula_View_Theme $view   Reference to Zikula_View_Theme instance.
  *
  * @return string
  */
@@ -50,9 +50,10 @@ function smarty_outputfilter_admintitle($source, $view)
         $titleargs[] = __('Administration');
         $titleargs[] = System::getVar('sitename');
 
-        PageUtil::setVar('title', implode(' - ', $titleargs));
+        $title  = implode(' - ', $titleargs);
+        $source = preg_replace('/<title>(.*?)<\/title>/', '<title>'.$title.'</title>', $source, 1);
     }
 
-    // return the modified source
+    // return the modified page source
     return $source;
 }
