@@ -113,6 +113,9 @@
         zdebug_console.openHandler();
 
         // create the accordions
+        basic_panel = new Zikula.UI.Panels('zdebug_window',{
+            headerSelector: 'h4'
+        });
         zdebug_accordions.push(new Zikula.UI.Accordion('zdebug_tplvars', {activeClassName: 'zdebug-active', headerSelector: '.zdebug-label'}));
         zdebug_accordions.push(new Zikula.UI.Accordion('zdebug_sessionvars', {activeClassName: 'zdebug-active', headerSelector: '.zdebug-label'}));
         zdebug_accordions.push(new Zikula.UI.Accordion('zdebug_configvars', {activeClassName: 'zdebug-active', headerSelector: '.zdebug-label'}));
