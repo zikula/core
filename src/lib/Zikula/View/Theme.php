@@ -185,11 +185,11 @@ class Zikula_View_Theme extends Zikula_View
 
         // change some base settings from our parent class
         // template compilation
-        $this->compile_dir   = CacheUtil::getLocalDir() . '/Theme_compiled';
+        $this->compile_dir   = CacheUtil::getLocalDir('Theme_compiled');
         $this->compile_check = ModUtil::getVar('Theme', 'compile_check');
         $this->force_compile = ModUtil::getVar('Theme', 'force_compile');
         // template caching
-        $this->cache_dir = CacheUtil::getLocalDir() . '/Theme_cache';
+        $this->cache_dir = CacheUtil::getLocalDir('Theme_cache');
         $this->caching   = (int)ModUtil::getVar('Theme', 'enablecache');
         /*if ($this->caching) {
             $this->cache_modified_check = true;
@@ -784,7 +784,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return boolean True on success, false otherwise.
      */
-    public function clear_config($var = null)
+    public function clear_theme_config()
     {
         $configdir = CacheUtil::getLocalDir('Theme_Config');
 

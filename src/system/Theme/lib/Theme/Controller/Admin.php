@@ -1288,7 +1288,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
 
         $theme = Zikula_View_Theme::getInstance();
-        $res   = $theme->clear_config();
+        $res   = $theme->clear_theme_config();
 
         if ($res) {
             LogUtil::registerStatus($this->__('Done! Deleted theme engine configurations.'));
