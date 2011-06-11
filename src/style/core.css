@@ -1680,10 +1680,11 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 }
 
 /******************************************************************************
-* Accordion
+* Accordion, Panels
 *******************************************************************************/
 
-.z-accordion .z-acc-header {
+.z-accordion .z-acc-header,
+.z-panels .z-panel-header {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -1700,7 +1701,9 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 }
 
 .z-accordion .z-acc-header:hover,
-.z-accordion .z-acc-header.hover {
+.z-accordion .z-acc-header.hover,
+.z-panels .z-panel-header:hover,
+.z-panels .z-panel-header.hover {
     background: #cfcfcf; /*non-CSS3 browsers*/
     background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cfcfcf)); /*webkit*/
     background: -moz-linear-gradient(top, #fafafa, #cfcfcf); /*gecko*/
@@ -1708,7 +1711,8 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#CFCFCF'); /*IE*/
 }
 
-.z-accordion .z-acc-content {
+.z-accordion .z-acc-content,
+.z-panels .z-panel-content {
     -webkit-border-radius: 0 0 3px 3px;
     -moz-border-radius: 0 0 3px 3px;
     border-radius: 0 0 3px 3px;
@@ -1719,7 +1723,8 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 0.5em;
 }
 
-.z-accordion .z-acc-header.z-acc-active {
+.z-accordion .z-acc-header.z-acc-active,
+.z-panels .z-panel-header.z-panel-active {
     -webkit-border-radius: 3px 3px 0 0;
     -moz-border-radius: 3px 3px 0 0;
     border-radius: 3px 3px 0 0;
