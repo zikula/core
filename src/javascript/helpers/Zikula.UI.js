@@ -1250,7 +1250,7 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
      * @param {HTMLElement|String} element HTMLElement or id element containing accordion content
      * @param {Object} [options] Config object
      * @param {Boolean} [options.equal=false] Should all accordion panels have equal height
-     * @param {Boolean} [options.height=null] Height for all panels
+     * @param {Number} [options.height=null] Height for all panels
      * @param {String} [options.containerClass='z-accordion'] Class to add for accordion container
      * @param {String} [options.activeClassName='z-acc-active'] Class to mark active panel header and content
      * @param {String} [options.headerSelector='.z-acc-header'] Selector to match panel headers
@@ -1436,6 +1436,242 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
      */
     last: function(){
         this.setActivePanel(this.headers.last());
+    },
+    /**
+     * Align panels hight.
+     *
+     * @return void
+     */
+    alignPanels: function() {
+        if(!this.options.height) {
+            this.options.height = this.contents.invoke('getHeight').max();
+        }
+        $A(this.contents).invoke('setStyle',{
+            height: this.options.height.toUnits(),
+            overflow: 'auto'
+        });
+    }
+});
+
+Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
+    /**
+     * Panels script.
+     * Panels are simillar concept to Accordion with the exception that you can
+     * open/close them - not just switch active one.
+     * Markup for panels container needs pairs of headers and content panels.
+     * Each pair is identyfied by panel header.
+     *
+     * @example
+     * var panels =  new Zikula.UI.Panels('panels_container',{equal: true});
+     *
+     * @class Zikula.UI.Panels
+     * @constructs
+     *
+     * @param {HTMLElement|String} element HTMLElement or id element containing accordion content
+     * @param {Object} [options] Config object
+     * @param {Boolean} [options.equal=false] Should all accordion panels have equal height
+     * @param {Number} [options.height=null] Height for all panels
+     * @param {String} [options.containerClass='z-panels'] Class to add for panels container
+     * @param {String} [options.activeClassName='z-panels-active'] Class to mark active panel header and content
+     * @param {String} [options.headerSelector='.z-panels-header'] Selector to match panel headers
+     * @param {String|Number} [options.active=null] Id of index of panel to open; when id is given it should point to panel header, not content
+     * @param {Boolean} [options.saveToCookie=false] If true - panel status will be saved to cookie and loaded on page refresh
+     *
+     * @return {Zikula.UI.Panels} New Zikula.UI.Accordion instance
+     */
+    initialize: function(element, options) {
+        this.options = Object.extend({
+            equal: false,
+            height: null,
+            containerClass: 'z-panels',
+            activeClassName: 'z-panel-active',
+            headerSelector: '.z-panel-header',
+            active: [],
+            saveToCookie: false
+        }, options || { });
+        this.panels = $(element);
+        if(this.options.saveToCookie) {
+            this.cookie = 'z-panels:'+this.panels.identify()
+        }
+        if (!Object.isArray(this.options.active)) {
+            this.options.active = [this.options.active].flatten();
+        }
+        this.panels.addClassName(this.options.containerClass);
+        this.activePanels = [];
+        this.animating = [];
+        this.initPanels();
+    },
+    /**
+     * Prepares accordion for display
+     * 
+     * @private
+     * @return void
+     */
+    initPanels: function() {
+        this.headers = this.panels.select(this.options.headerSelector);
+        if (!this.headers || this.headers.length === 0) return;
+        this.contents = this.headers.map(function(h) {
+            return h.next();
+        });
+        if(!this.options.active && this.options.saveToCookie) {
+            this.options.active = Zikula.Cookie.get(this.cookie);
+        }
+        if(this.options.equal || this.options.height) {
+            this.alignPanels();
+        }
+        this.headers.each(function(h,i){
+            this.contents[i].hide();
+            if(this.options.height) {
+                this.contents[i].setStyle({height: this.options.height.toUnits(),overflow: 'auto'});
+            }
+            h.observe('click',this.click.bindAsEventListener(this));
+        }.bind(this));
+        if(this.options.active.size()) {
+            this.options.active.each(function(panel){
+                this.expand(panel, true);
+            }.bind(this));
+        }
+    },
+    /**
+     * Retruns panel index.
+     * 
+     * @private
+     * @return void
+     */
+    getPanelIndex: function(panel) {
+        var panelIndex;
+        if (Object.isElement(panel) && this.headers.include(panel)) {
+            panelIndex = this.headers.indexOf(panel);
+        } else if (Object.isElement(this.headers[panel])) {
+            panelIndex = panel;
+        } else {
+            panelIndex = null;
+        }
+        return panelIndex;
+    },
+    /**
+     * Handler for click event on panel headers.
+     *
+     * @private
+     * @param {Event} event Click event
+     * @return void
+     */
+    click: function(event) {
+      var header = event.findElement(this.options.headerSelector);
+      if (!header || !this.headers.include(header)) return;
+      this.toggle(header);
+    },
+    /**
+     * Toggle given panel state.
+     *
+     * @param {String|Number} panel Panel to activate, it may be panel header id or index
+     * @param {Boolean} [skipAnimation=false] Should activation be made without animation
+     *
+     * @return void
+     */
+    toggle: function(panel, skipAnimation) {
+        panel = this.getPanelIndex(panel)
+        if (this.activePanels.include(panel)) {
+            this.collapse(panel, skipAnimation);
+        } else {
+            this.expand(panel, skipAnimation);
+        }
+    },
+    /**
+     * Expand given panel
+     *
+     * @param {String|Number} panel Panel to activate, it may be panel header id or index
+     * @param {Boolean} [skipAnimation=false] Should activation be made without animation
+     *
+     * @return void
+     */
+    expand: function(panel, skipAnimation) {
+        var panelIndex = this.getPanelIndex(panel);
+        if (this.animating[panelIndex] == true) return;
+        panel = this.headers[panelIndex];
+        if (this.activePanels.include(panelIndex)) return;
+        this.activePanels.push(panelIndex);
+        if(this.options.saveToCookie) {
+            Zikula.Cookie.set(this.cookie,this.activePanels);
+        }
+        if (skipAnimation) {
+            [panel, panel.next().show()].invoke('addClassName',this.options.activeClassName);
+            return;
+        }
+        this.animate(panelIndex, true);
+    },
+    /**
+     * Collapse given panel
+     *
+     * @param {String|Number} panel Panel to activate, it may be panel header id or index
+     * @param {Boolean} [skipAnimation=false] Should activation be made without animation
+     *
+     * @return void
+     */
+    collapse: function(panel, skipAnimation) {
+        var panelIndex = this.getPanelIndex(panel);
+        if (this.animating[panelIndex] == true) return;
+        panel = this.headers[panelIndex];
+        if (!this.activePanels.include(panelIndex)) return;
+        this.activePanels = this.activePanels.without(panelIndex);
+        if(this.options.saveToCookie) {
+            Zikula.Cookie.set(this.cookie,this.activePanels);
+        }
+        if (skipAnimation) {
+            [panel, panel.next().hide()].invoke('removeClassName',this.options.activeClassName);
+            return;
+        }
+        this.animate(panelIndex, false);
+    },
+    /**
+     * Internal animation method
+     *
+     * @private
+     * @param {Number} show Index of panel to show
+     * @param {Boolean} True to open, false to close
+     * @return void
+     */
+    animate: function(element,hide) {
+        this.effects = [];
+        var options = {
+            scaleContent: false,
+            beforeStart: function() {
+                this.animating[element] = true;
+            }.bind(this),
+            afterFinish: function() {
+                this.animating[element] = false;
+                var method = hide ? 'removeClassName' : 'addClassName';
+                [this.headers[element],this.contents[element]].invoke(method,this.options.activeClassName);
+                if(this.options.height) {
+                    this.contents[element].setStyle({height: this.options.height.toUnits(),overflow: 'auto'});
+                }
+            }.bind(this)
+        };
+        if (hide) {
+            new Effect.BlindDown(this.contents[element], options);
+        } else {
+            new Effect.BlindUp(this.contents[element], options);
+        }
+    },
+    /**
+     * Expand all panels.
+     *
+     * @return void
+     */
+    expandAll: function(){
+        this.headers.each(function(panel) {
+            this.expand(panel);
+        }.bind(this))
+    },
+    /**
+     * Collapse all panels.
+     *
+     * @return void
+     */
+    collapseAll: function(){
+        this.headers.each(function(panel) {
+            this.collapse(panel);
+        }.bind(this))
     },
     /**
      * Align panels hight.
