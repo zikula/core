@@ -200,25 +200,34 @@ div.property_selector_noscript {
 /* Styling for status security analyzer, update checker and more
 /*****************************************************************************/
 
+/* common styling */
+#z-maincontent div#z-securityanalyzer,
+#z-maincontent div#z-updatechecker,
+#z-maincontent div#z-adminwarning,
+#z-maincontent div#z-developernotices {
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+    text-align: left;
+    padding: 0.5em 20px 0.5em 80px;
+    margin: 0 auto 1em auto;
+    min-height: 1em;
+    width: 75%;
+    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: #444;
+}
+
+/* styling for security checks */
 #z-maincontent div#z-securityanalyzer {
     background: url("../../../images/icons/large/bell.png") #FFF6BF 15px 50% no-repeat; /*non-CSS3 browsers*/
     background: url("../../../images/icons/large/bell.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/large/bell.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/large/bell.png") 15px 50% no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-    text-align: left;
-    padding: 1em 20px 1em 90px;
     border: 2px solid #ffd324;
     min-height: 2.5em;
-    margin: 1em auto 2em auto;
-    width: 75%;
-    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    color: #444;
 }
 
 /* styling for status update checker */
@@ -227,20 +236,7 @@ div.property_selector_noscript {
     background: url("../../../images/icons/large/agt_update-product.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/large/agt_update-product.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/large/agt_update-product.png") 15px 50% no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-    text-align: left;
-    padding: 1em 20px 1em 90px;
     border: 2px solid #3E9533;
-    min-height: 1em;
-    margin: 1em auto 2em auto;
-    width: 75%;
-    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    color: #444;
 }
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
@@ -249,51 +245,28 @@ div.property_selector_noscript {
     background: url("../../../images/icons/large/error.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/large/error.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/large/error.png") 15px 50% no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-    text-align: left;
-    padding: 1em 20px 1em 90px;
     border: 2px solid #990000;
-    min-height: 1em;
-    margin: 1em auto 2em auto;
-    width: 75%;
-    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    color: #444;
 }
 
+/* styling for developer notices */
 #z-maincontent div#z-developernotices {
     background: url("../../../images/icons/large/run.png") #C5E8F1 15px 50% no-repeat; /*non-CSS3 browsers*/
     background: url("../../../images/icons/large/run.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/large/run.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/large/run.png") 15px 50% no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-    text-align: left;
-    padding: 1em 20px 1em 90px;
     border: 2px solid #95C9EF;
-    min-height: 1em;
-    margin: 1em auto 2em auto;
-    width: 75%;
-    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    color: #444;
+}
+
+div#z-developernotices strong,
+div#z-securityanalyzer strong {
+    font-size: 16px;
+    font-weight: normal;
 }
 
 div#z-developernotices a,
-div#z-developernotices h3,
 div#z-adminwarning a,
-div#z-adminwarning h3,
 div#z-updatechecker a,
-div#z-updatechecker h3,
-div#z-securityanalyzer a,
-div#z-securityanalyzer h3 {
+div#z-securityanalyzer a {
     color: #444;
     padding: 0;
     margin: 0;
@@ -313,7 +286,7 @@ div#z-updatechecker ul,
 div#z-securityanalyzer ul {
     list-style-position: outside;
     list-style-type: disc;
-    margin: 0.5em 1em 0;
+    margin: 0.2em 1em 0;
 }
 
 /* Used to style the cancel delete button when asking for a confirmation */
