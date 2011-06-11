@@ -19,6 +19,22 @@ themes being templated in the Header_Footer module.
 /* Container for admin icons in main admin panel
 /******************************************************************************/
 
+/* style for admin breadcrumbs*/
+#z-maincontent .z-admin-breadcrumbs {
+    color: #777;
+    font-size: 0.95em;
+    margin-bottom: 1em;
+}
+#z-maincontent .z-admin-breadcrumbs a {
+    color: #555;
+}
+#z-maincontent .z-admin-breadcrumbs .z-sub {
+    color: #999;
+}
+#z-maincontent .z-admin-breadcrumbs .z-breadcrumb {
+    padding: 0 0.2em;
+}
+
 /* style for Immediate template under the tab menu */
 div.z-adminbox {
     background: #fff;

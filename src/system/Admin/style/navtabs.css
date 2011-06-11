@@ -1,7 +1,3 @@
-.admintabs-container {
-    margin-top:1em;
-}
-
 ul#admintabs {
     background:url("../images/tab_bottom.gif") repeat-x scroll center bottom transparent;
     margin:0 !important;

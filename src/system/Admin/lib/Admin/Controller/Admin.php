@@ -213,8 +213,8 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         $startnum = FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GET');
 
         $categoryArray = ModUtil::apiFunc('Admin', 'admin', 'getall',
-                array('startnum' => $startnum,
-                'numitems' => $this->getVar('itemsperpage')));
+                                          array('startnum' => $startnum,
+                                                'numitems' => $this->getVar('itemsperpage')));
 
         $categories = array();
         foreach ($categoryArray as $category)
@@ -508,7 +508,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             if (SecurityUtil::checkPermission("$adminmodule[name]::", '::', ACCESS_EDIT)) {
                 $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $adminmodule['id']));
                 $order = ModUtil::apiFunc('Admin', 'admin', 'getSortOrder',
-                        array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
+                                          array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
                 $menutexturl = ModUtil::url($adminmodule['name'], 'admin', 'main');
                 $menutext = $adminmodule['displayname'];
                 $menutexttitle = $adminmodule['description'];
@@ -545,8 +545,9 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                     } else {
                         $menuoption['items'] = array();
                     }
-                    $menuoptions[] = $menuoption;
+                    $menuoptions[$category['cid']] = $menuoption;
                     $possible_cids[] = $category['cid'];
+
                     if ($acid == $category['cid']) {
                         $permission =true;
                     }
