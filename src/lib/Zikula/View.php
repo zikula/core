@@ -311,6 +311,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->assign('homepage', $this->homepage)
              ->assign('modinfo', $this->modinfo)
              ->assign('module', $moduleName)
+             ->assign('toplevelmodule', $this->toplevelmodule)
              ->assign('type', $this->type)
              ->assign('func', $this->func)
              ->assign('lang', $this->language)
