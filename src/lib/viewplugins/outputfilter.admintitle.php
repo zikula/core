@@ -23,43 +23,34 @@
  */
 function smarty_outputfilter_admintitle($source, $view)
 {
-    // get all the matching H1 tags
-    $regex = "/<h1>[^<]*<\/h1>/";
-    preg_match_all($regex, $source, $h1);
-    $regex = "/<h2>[^<]*<\/h2>/";
-    preg_match_all($regex, $source, $h2);
-    $regex = "/<h3>[^<]*<\/h3>/";
-    preg_match_all($regex, $source, $h3);
+    // get the first heading tags
+    // module - usually display module
+    preg_match("/<h2>([^<]*)<\/h2>/", $source, $header2);
+    // function pagetitle
+    preg_match("/<h3>([^<]*)<\/h3>/", $source, $header3);
 
-    // init vars
+    // init the args
     $titleargs = array();
-    $header1 = $header2 = $header3 = '';
 
-    // set the title
-    // header level 1
-    if (isset($h1[0]) && isset($h1[0][1])) {
-        $header1 = $h1[0][1];
+    // checks for header level 3
+    if ($header3 && isset($header3[1]) && $header3[1]) {
+        $titleargs[] = $header = strip_tags($header3[1]);
+        // put its value on any z-adminpage-func element
+        $source = preg_replace('/z-admin-pagefunc">(.*?)</', 'z-adminpage-func">'.$header.'<', $source, 1);
     }
-    if (isset($header1) && !empty($header1)) {
-        $titleargs[] = $header1;
-    }
-    // header level 2
-    if (isset($h2[0][0])) {
-        $header2 = $h2[0][0];
-    }
-    if (isset($header2) && !empty($header2)) {
-        $titleargs[] = $header2;
-    }
-    // header level 3
-    if (isset($h3[0]) && isset($h3[0][1])) {
-        $header3 = $h3[0][1];
-    }
-    if (isset($header3) && !empty($header3)) {
-        $titleargs[] = $header3;
+
+    // checks for header level 2
+    if ($header2 && isset($header2[1]) && $header2[1]) {
+        $titleargs[] = $header = strip_tags($header2[1]);
+        // put its value on any z-adminpage-func element
+        $source = preg_replace('/z-admin-pagemodule">(.*?)</', 'z-admin-pagemodule">'.$header.'<', $source, 1);
     }
 
     if (!empty($titleargs)) {
-        PageUtil::setVar('title', System::getVar('sitename') . ' - ' . strip_tags(implode(' / ', $titleargs)));
+        $titleargs[] = __('Administration');
+        $titleargs[] = System::getVar('sitename');
+
+        PageUtil::setVar('title', implode(' - ', $titleargs));
     }
 
     // return the modified source
