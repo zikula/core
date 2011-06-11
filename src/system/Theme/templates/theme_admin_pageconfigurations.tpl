@@ -1,9 +1,9 @@
 {include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
-    {include file="theme_admin_modifymenu.tpl"}
     <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
+    {include file="theme_admin_modifymenu.tpl"}
 
-    <h3>{gt text="Page configuration assignments"}</h3>
+    <h4>{gt text="Page configuration assignments"}</h4>
 
     <table class="z-datatable">
         <thead>
@@ -29,7 +29,7 @@
         </tbody>
     </table>
 
-    <h3>{gt text="Page configurations in use"}</h3>
+    <h4>{gt text="Page configurations in use"}</h4>
 
     <table class="z-datatable">
         <thead>
@@ -55,7 +55,7 @@
 
     <p class="z-informationmsg">{gt text="Notice: Any configuration files that Zikula cannot find must be created in 'themes/%s/templates/config'." tag1=$themename}</p>
 
-    <h3>{gt text="Create new page configuration assignment"}</h3>
+    <h4>{gt text="Create new page configuration assignment"}</h4>
 
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

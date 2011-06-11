@@ -3,7 +3,7 @@
     {include file="theme_admin_modifymenu.tpl"}
     <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
 
-    <h3>{gt text="Edit page configuration assignment"}</h3>
+    <h4>{gt text="Edit page configuration assignment"}</h4>
 
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

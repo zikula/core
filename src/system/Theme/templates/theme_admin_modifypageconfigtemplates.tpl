@@ -3,10 +3,10 @@
 {include file='theme_admin_menu.tpl'}
 
 <div class="z-admincontainer">
-    {include file="theme_admin_modifymenu.tpl"}
     <div class="z-adminpageicon">{icon type="edit" size="small"}</div>
+    {include file="theme_admin_modifymenu.tpl"}
 
-    <h3>{gt text="Edit page configuration"} - {$filename|safetext}</h3>
+    <h4>{gt text="Edit page configuration"} - {$filename|safetext}</h4>
 
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigtemplates"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

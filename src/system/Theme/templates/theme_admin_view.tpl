@@ -15,7 +15,7 @@
 
     <p class="z-informationmsg">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
 
-    <div id="themes-alphafilter" style="padding:1em 0;"><strong>[{pagerabc posvar="startlet" forwardvars=''}]</strong></div>
+    <div id="themes-alphafilter" style="padding:0 0 1em;"><strong>[{pagerabc posvar="startlet" forwardvars=''}]</strong></div>
 
     <table class="z-datatable">
         <thead>
@@ -27,14 +27,17 @@
         </thead>
         <tbody>
             {foreach from=$themes item=theme}
+            {if $theme.admin eq true}
+                {modurl modname=Admin type=admin func=adminpanel theme=$theme.name assign='themeurl'}
+            {else}
+                {assign var='themeurl' value="`$modvars.ZConfig.entrypoint`?theme=`$theme.name`"}
+            {/if}
             <tr class="{cycle values="z-odd,z-even}{if $theme.name|strtolower eq $currenttheme|strtolower} z-defaulttablerow{/if}">
                 <td>
-                    {if $theme.admin eq true}
-                    <a href="{modurl modname=Admin type=admin func=adminpanel theme=$theme.name}" title="{$theme.displayname|safetext}"><span title="#title_{$theme.name}" class="tooltips marktooltip">{$theme.displayname|safetext}</span></a>&nbsp;
-                    {else}
-                    <a href="{entrypoint}?theme={$theme.name}" title="{$theme.displayname|safetext}"><span title="#title_{$theme.name}" class="tooltips marktooltip">{$theme.displayname|safetext}</span></a>&nbsp;
-                    {/if}
-                    {if $theme.name|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips"> (*) </span>{/if}
+                    <a href="{$themeurl}" title="{$theme.displayname|safetext}">
+                        <span title="#title_{$theme.name}" class="tooltips marktooltip">{$theme.displayname|safetext}</span>
+                    </a>
+                    {if $theme.name|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips z-form-mandatory-flag">*</span>{/if}
                     <div id="title_{$theme.name}" class="theme_preview z-center" style="display: none;">
                         <h4>{$theme.displayname}</h4>
                         {if $themeinfo.system neq 1}
@@ -44,11 +47,7 @@
                 </td>
                 <td>{$theme.description|default:$theme.displayname}</td>
                 <td class="z-right z-nowrap">
-                    {if $theme.admin eq true}
-                    <a href="{modurl modname=Admin type=admin func=adminpanel theme=$theme.name}" title="{$theme.displayname|safetext}">{icon type="preview" size="extrasmall" __alt="Preview" __title="Preview: `$theme.displayname`" class="tooltips"}</a>
-                    {else}
-                    <a href="{entrypoint}?theme={$theme.name}" title="{$theme.displayname|safetext}">{icon type="preview" size="extrasmall" __alt="Preview" __title="Preview: `$theme.displayname`" class="tooltips"}</a>
-                    {/if}
+                    <a href="{$themeurl}" title="{$theme.displayname|safetext}">{icon type="preview" size="extrasmall" __alt="Preview" __title="Preview: `$theme.displayname`" class="tooltips"}</a>
                     <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{icon type="edit" size="extrasmall" __alt="Edit" __title="Edit: `$theme.displayname` " class="tooltips"}</a>
                     {if $theme.name neq $currenttheme and $theme.state neq 2}
                     <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{icon type="delete" size="extrasmall" __alt="Delete" __title="Delete: `$theme.displayname`" class="tooltips"}</a>
@@ -64,6 +63,6 @@
             {/foreach}
         </tbody>
     </table>
-    <em>(*) = {gt text="Default theme"}</em>
+    <em><span class="z-form-mandatory-flag">*</span> = {gt text="Default theme"}</em>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
