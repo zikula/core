@@ -5,7 +5,7 @@
             Element.addClassName('permissions_new', 'z-hide');
 
             $$('.showinstanceinformation').each(function(element) {
-                new Zikula.UI.Window(element,{width: 600, iframe: true, modal:true, resizable: true});
+                new Zikula.UI.Window(element,{width: 600, iframe: true, resizable: true});
             });
         });
     </script>
