@@ -94,10 +94,10 @@ img.z-floatright {
     border: 1px solid #ccc;
     color: #aaa;
     height: auto;
-    line-height: 23px;
+    line-height: 22px;
     list-style: none outside none;
     margin: 1em 0;
-    min-height: 23px;
+    min-height: 22px;
     padding:0 5px;
 }
 
@@ -105,7 +105,7 @@ img.z-floatright {
     background: none;
     border-right:1px solid #aaa;
     display:inline;
-    line-height: 23px;
+    line-height: 22px;
     padding:0 10px;
     margin:0;
 }
@@ -140,8 +140,8 @@ img.z-floatright {
     border: 1px solid #ccc;
     display: block;
     height: auto !important;
-    line-height: 23px;
-    min-height: 23px;
+    line-height: 22px;
+    min-height: 22px;
     padding:0 5px;
 }
 
