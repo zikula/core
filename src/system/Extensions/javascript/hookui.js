@@ -87,7 +87,7 @@ function togglesubscriberareastatus_response(req)
  */
 function appendProviderAreaToSubscriberArea(sarea_id, sarea_name, parea_id)
 {   
-    var area_to_attach = $('availablearea_' + parea_id);
+    var area_to_attach = $('availablearea_' + parea_id + '-::sarea_identifier::');
     var area_to_attach_to = $('attachedareassortlist_' + sarea_id);
     var empty_area = $('attachedarea_empty_' + sarea_id);
     
@@ -98,16 +98,21 @@ function appendProviderAreaToSubscriberArea(sarea_id, sarea_name, parea_id)
     } else {
         var newitem = area_to_attach;
     }
-    
+
     newitem.id = newitem.id.replace('availablearea_', 'attachedarea_');
+    newitem.id = newitem.id.replace('::sarea_identifier::', sarea_id);
+   
     newitem.innerHTML = newitem.innerHTML.replace(new RegExp('availablearea_', 'g'), 'attachedarea_');
+    newitem.innerHTML = newitem.innerHTML.replace(new RegExp('::sarea_identifier::', 'g'), sarea_id);
     newitem.innerHTML = newitem.innerHTML.replace(' z-hide', '');
     newitem.innerHTML = newitem.innerHTML.replace('##id', sarea_id);
     newitem.innerHTML = newitem.innerHTML.replace('##name', sarea_name);
+
     newitem.removeClassName('z-draggable');
     newitem.removeClassName('z-itemdragleft');
     newitem.addClassName('z-sortable');
     newitem.addClassName('z-itemsort');
+    
     newitem.style.opacity = 1;
     newitem.style.top = 0;
     newitem.style.left = 0;
@@ -138,7 +143,7 @@ function appendProviderAreaToSubscriberArea(sarea_id, sarea_name, parea_id)
  */
 function removeProviderAreaFromSubscriberArea(sarea_id, parea_id)
 {
-    var area_to_detach = $('attachedarea_' + parea_id);
+    var area_to_detach = $('attachedarea_' + parea_id + '-' + sarea_id);
     area_to_detach.remove();
     
     // is area now empty?
@@ -168,15 +173,13 @@ function initAreasSortables()
     // add class 'z-itemsort' to all items with class 'z-sortable'
     $A(document.getElementsByClassName('z-sortable')).each(
         function(node) {
-            var thisattachedarea = node.id.split('_')[1];
-            Element.addClassName('attachedarea_' + thisattachedarea, 'z-itemsort');
+            Element.addClassName(node.id, 'z-itemsort');
         }
     )
-    
+
     // loop through module's subscriber areas and create sortables
     for (var i=0; i < subscriber_areas.length; i++) {
-        var area_id = 'attachedareassortlist_'+subscriber_areas[i];
-        createSortable(area_id);
+        createSortable(subscriber_areas[i]);
     }
 }
 
@@ -256,14 +259,16 @@ function changeproviderareaorder_response(req)
  */
 function initAreasDraggables()
 {
-    $$('ol li.z-draggable').each(function(node) {
-        var thisavailablearea = node.id.split('_')[1];
-        Element.addClassName('availablearea_' + thisavailablearea, 'z-itemdragleft');
-        new Draggable('availablearea_' + thisavailablearea, {
-            revert: true,
-            ghosting: false
-        });
-    });
+    $$('ol li.z-draggable').each(
+        function(node) {
+            Element.addClassName(node.id, 'z-itemdragleft');
+
+            new Draggable(node.id, {
+                revert: true,
+                ghosting: false
+            });
+        }
+    );
 }
 
 /**
@@ -276,9 +281,7 @@ function initAreasDroppables()
 {   
     // loop through module's subscriber areas and create droppables
     for (var i=0; i < subscriber_areas.length; i++) {
-        
-        var area_id = 'attachedareassortlist_'+subscriber_areas[i];
-        createDroppable(area_id);
+        createDroppable(subscriber_areas[i]);
     }
 }
 
@@ -319,13 +322,13 @@ function createDroppable(area_id)
             // is the provider area already attached?
             // loop though all attached areas of the subscriber area to find out
             var already_attached = false;
-            var subscriber_area_ol_id = 'attachedareassortlist_' + subscriber.identifier;
-            $$('#' + subscriber_area_ol_id + ' li.z-sortable').each(function(element) {
-                if (element.id.split('_')[1] == provider.identifier) {
+            $$('#' + dropped.id + ' li.z-sortable').each(function(element) {
+                if (element.id.split('_')[1].split('-')[0] == provider.identifier) {
                     already_attached = true;
                     throw $break;
                 }
             });
+
             if (already_attached) {
                 return;
             }
