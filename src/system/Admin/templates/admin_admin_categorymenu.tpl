@@ -34,7 +34,7 @@
 
         {if $func neq 'main'}
             <span class="z-sub">&raquo;</span>
-            <span class="z-breadcrumb" class="z-admin-pagefunc">{$func|safetext}</span>
+            <span class="z-breadcrumb z-admin-pagefunc">{$func|safetext}</span>
         {/if}
     {/if}
 </div>
