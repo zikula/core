@@ -275,8 +275,10 @@ div.property_selector_noscript {
 
 div#z-developernotices strong,
 div#z-securityanalyzer strong {
-    font-size: 16px;
-    font-weight: normal;
+    display: block;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 0.2em 1em 0.5em;
 }
 
 div#z-developernotices a,
