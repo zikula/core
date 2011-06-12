@@ -11,7 +11,6 @@ PageLock.UnlockedPage = function()
     PageLock.Timer = setTimeout(PageLock.RefreshLock, PageLock.PingTime*1000);
 };
 
-
 // Called on window load for locked page
 PageLock.LockedPage = function()
 {
@@ -20,19 +19,20 @@ PageLock.LockedPage = function()
     PageLock.Timer = setTimeout(PageLock.CheckLock, PageLock.PingTime*1000);
 };
 
-
 // Button event handler for "break lock"
 PageLock.BreakLock = function()
 {
-    Zikula.UI.Confirm(Zikula.__('Are you sure you want to break this lock?'),Zikula.__('Confirmation prompt'),function(res){
-        if (res) {
-            PageLock.StopLocking(false);
-            PageLock.LockBroken = true;
-            PageLock.HideOverlay();
+    Zikula.UI.Confirm(
+        Zikula.__('Are you sure you want to break this lock?'),
+        Zikula.__('Confirmation prompt'), function(res) {
+            if (res) {
+                PageLock.StopLocking(false);
+                PageLock.LockBroken = true;
+                PageLock.HideOverlay();
+            }
         }
-    });
+    );
 };
-
 
 // Button event handler for "back"
 PageLock.Cancel = function()
@@ -42,22 +42,21 @@ PageLock.Cancel = function()
     return true;
 };
 
-
 // Ajax method for refreshing existing lock
 PageLock.RefreshLock = function()
 {
     var pars = {
         lockname: PageLock.LockName
     }
-    
-    new Zikula.Ajax.Request(
-      Zikula.Config.baseURL + "ajax.php?module=PageLock&func=refreshpagelock",
-      {
-          parameters: pars,
-          onComplete: PageLock.RefreshLockComplete
-      });
-};
 
+    new Zikula.Ajax.Request(
+        Zikula.Config.baseURL + "ajax.php?module=PageLock&func=refreshpagelock",
+        {
+            parameters: pars,
+            onComplete: PageLock.RefreshLockComplete
+        }
+    );
+};
 
 PageLock.RefreshLockComplete = function(req)
 {
@@ -68,15 +67,13 @@ PageLock.RefreshLockComplete = function(req)
 
     var data = req.getData();
 
-    if (!data.hasLock)
-    {
+    if (!data.hasLock) {
         alert(data.message);
     }
 
     clearTimeout(PageLock.Timer);
     PageLock.Timer = setTimeout(PageLock.RefreshLock, PageLock.PingTime*1000);
 };
-
 
 // Ajax method for trying to fetch lock (waiting for a lock)
 PageLock.CheckLock = function()
@@ -86,15 +83,15 @@ PageLock.CheckLock = function()
     var pars = {
         lockname: PageLock.LockName
     }
-    
-    new Zikula.Ajax.Request(
-      Zikula.Config.baseURL + "ajax.php?module=PageLock&func=checkpagelock",
-      {
-          parameters: pars,
-          onComplete: PageLock.CheckLockComplete
-      });
-};
 
+    new Zikula.Ajax.Request(
+        Zikula.Config.baseURL + "ajax.php?module=PageLock&func=checkpagelock",
+        {
+            parameters: pars,
+            onComplete: PageLock.CheckLockComplete
+        }
+    );
+};
 
 PageLock.CheckLockComplete = function(req)
 {
@@ -105,30 +102,21 @@ PageLock.CheckLockComplete = function(req)
 
     var data = req.getData();
 
-    if (data.hasLock)
-    {
-      //alert("Got lock!");
+    if (data.hasLock) {
       PageLock.StopLocking(true);
-    }
-    else
-    {
-      //alert("Still waiting ...");
+    } else {
       clearTimeout(PageLock.Timer);
       PageLock.Timer = setTimeout(PageLock.CheckLock, PageLock.PingTime*1000);
     }
 };
 
-
 // Function to stop showing locked window overlay and form
 PageLock.StopLocking = function(doReload)
 {
-    if (doReload)
-    {
+    if (doReload) {
         // Reload in order to refresh data
         window.location = window.location;
-    }
-    else
-    {
+    } else {
         PageLock.HideOverlay();
     }
 };
@@ -148,14 +136,18 @@ PageLock.ShowOverlay = function()
     PageLock.Dialog.open();
 };
 
-PageLock.DialogCallback = function(res) {
-    switch (res.value) {
+PageLock.DialogCallback = function(res)
+{
+    switch (res.value)
+    {
         case 'BreakLock':
             PageLock.BreakLock();
             break;
+
         case 'CheckLock':
             PageLock.CheckLock();
             break;
+
         case 'Cancel':
         default:
             if (!PageLock.LockBroken) {
