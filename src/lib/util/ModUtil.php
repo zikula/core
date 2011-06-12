@@ -1343,12 +1343,8 @@ class ModUtil
                         $vars .= "/$k/$v"; // &$k=$v
                     }
                 }
+                $func = "/$func/";
                 $vars = substr($vars, 1);
-                if ((!empty($func) && $func != 'main') || $vars != '') {
-                    $func = "/$func/";
-                } else {
-                    $func = '/';
-                }
                 $url = $modname . $func . $vars;
                 $url = rtrim($url, '/');
             }
