@@ -59,8 +59,8 @@
                     </select>
                 </span>
                 <span class="z-nowrap z-buttons">
-                    <button id="permgroupfiltersubmit" class="z-button" name="permgroupfiltersubmit" type="submit">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
-                    <button id="permgroupfiltersubmitajax" class="z-button z-hide" onclick="javascript:permgroupfilter();">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
+                    <button id="permgroupfiltersubmit" class="z-button z-bt-small" name="permgroupfiltersubmit" type="submit">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
+                    <button id="permgroupfiltersubmitajax" class="z-button z-bt-small z-hide" onclick="javascript:permgroupfilter();">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
                 </span>
             </fieldset>
         </div>
