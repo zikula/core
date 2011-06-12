@@ -420,9 +420,7 @@
 
             <div class="z-formbuttons z-buttons">
                 {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                {icon type='help' size='extrasmall' __alt='Help' __title='Help' assign='help_link_icon'}
-                {gt text='Help' assign='help_link_text'}
-                {helplink filename='Help/Admin/config.txt' popup=1 __title='Help' link_contents=$help_link_icon.imgtag|cat:' '|cat:$help_link_text}
+                {helplink filename='Help/Admin/config.txt' popup=1 __title='Help' icon_type='help' icon_size='extrasmall' __icon_alt='Help' __icon_title='Help'}
                 <a href="{modurl modname='Users' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
             </div>
         </div>
