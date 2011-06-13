@@ -69,10 +69,15 @@ img.z-floatright {
     font-size: 0.9em;
 }
 
+.z-pointer {
+    cursor: pointer !important;
+}
+
 .z-calendarimg { background-color: transparent; }
 .z-calendarimg:hover,
-.z-calendarimg.hover
-{ background-color: blue; }
+.z-calendarimg.hover {
+    background-color: blue;
+}
 
 /******************************************************************************
 * Class to show a sortable li or div. Has to be set in the js code to avoid
