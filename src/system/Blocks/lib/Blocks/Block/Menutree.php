@@ -555,15 +555,23 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         return true;
     }
 
+    /**
+     * Callback function for uasort() which allows a MenuTree array to be sorted by line number.
+     *
+     * @param array $a The first element to be compared, an array containing a MenuTree item definition (indexed by language).
+     * @param array $b The second element to be compared, an array containing a MenuTree item definition (indexed by language).
+     * 
+     * @return int 0 if the two operands are equal, -1 if $a's line number is less than $b's, 1 if $a's line number is greater than $b's.
+     */
     private function sort_menu($a, $b)
     {
-        $alang = key($a);
-        $va = $a[$alang]['lineno'] ? $a[$alang]['lineno'] : 0;
-        $blang = key($b);
-        $vb = $b[$blang]['lineno'] ? $b[$blang]['lineno'] : 0;
-        if ($va == $vb) {
+        $aLang = key($a);
+        $aLineNo = $a[$aLang]['lineno'] ? $a[$aLang]['lineno'] : 0;
+        $bLang = key($b);
+        $bLineNo = $b[$bLang]['lineno'] ? $b[$bLang]['lineno'] : 0;
+        if ($aLineNo == $bLineNo) {
             return 0;
         }
-        return ($va < $vb) ? -1 : 1;
+        return ($aLineNo < $bLineNo) ? -1 : 1;
     }
 }
