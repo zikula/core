@@ -21,7 +21,8 @@ class Theme_Controller_User extends Zikula_AbstractController
     {
         // check if theme switching is allowed
         if (!System::getVar('theme_change')) {
-            return LogUtil::registerError($this->__('Notice: Theme switching is currently disabled.'));
+            LogUtil::registerError($this->__('Notice: Theme switching is currently disabled.'));
+            $this->redirect(ModUtil::url('Users', 'user', 'main'));
         }
 
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_COMMENT)) {
