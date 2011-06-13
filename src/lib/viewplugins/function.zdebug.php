@@ -23,10 +23,13 @@
  *
  * This plugin is basing on the original debug plugin written by Monte Ohrt <monte@ispi.net>
  *
- * Example
+ * Examples
  *   { zdebug }
+ *   { zdebug width='400' }
  *
  * Parameters:
+ *  width:      Width of the console UI.Window (default: 580)
+ *  height:     Height of the console UI.Window (default: 600)
  *  checkpermission: If false, then a security check is not performed, allowing debug information to
  *              be displayed, for example, when there is no user logged in. Development mode
  *              must also be enabled. Defaults to true;
@@ -64,8 +67,13 @@ function smarty_function_zdebug($params, Zikula_View $view)
             $view->debug_tpl = 'zdebug.tpl';
         }
 
+        $width  = isset($params['width']) && is_integer($params['width']) ? $params['width'] : 580;
+        $height = isset($params['height']) && is_integer($params['height']) ? $params['height'] : 600;
+
         // get the zdebug output
-        $zdebug = $view->_fetch($view->debug_tpl);
+        $zdebug = $view->assign('consolewidth', $width)
+                       ->assign('consoleheight', $height)
+                       ->_fetch($view->debug_tpl);
 
         // restore original values
         $view->_compile_id = $_compile_id_orig;
