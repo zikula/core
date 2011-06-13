@@ -110,8 +110,8 @@
                                                 resizable: true,
                                                 destroyOnClose: true,
                                                 position: [function() { return document.viewport.getWidth() - zdebug_console.window.container.getWidth() - 5; }, 5],
-                                                width: 580,
-                                                height: 600});
+                                                width: {{$consolewidth}},
+                                                height: {{$consoleheight}}});
         zdebug_console.open();
 
         // scroll the console with the window
