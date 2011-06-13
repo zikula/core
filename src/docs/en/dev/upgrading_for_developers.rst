@@ -323,7 +323,13 @@ Please update all templates that generate URLs via ModUtil::url() or in template
 so that full URLs are generated.  Assuming that type will default to 'user' and func will
 default to 'main' are now no longer valid.
 
-Custom API functions for `encodeurl()` should not remove the func parameter.
+Custom API functions for `encodeurl()` should not remove the func parameter, unless a
+custom `decodeurl()` function subsequently restores it. The execution of a custom 
+`decodeurl()` function should always result in a URL that explicitly includes the
+module name, type, and func components. If the URL encoded by a custom `encodeurl()`
+function is to be decoded partially or fully by standard core functions, then only 
+URLs having a type equal to 'user' should be encoded, and the func parameter should 
+not be removed, even if it is equal to 'main'.
 
 CSRF PROTECTION
 ===============
