@@ -5,10 +5,17 @@
  * menus and inplace editors.
  */
 Event.observe(window, 'load', function() {
+    // make the system checks a Panel
+    new Zikula.UI.Panels('admin-systemnotices', {
+        headerSelector: 'strong',
+        headerClassName: 'z-systemnoticeheader',
+        effectDuration: 0.5
+    });
+
     context_menu = Array();
     editors = Array();
     droppables = Array();
-    
+
     //make the admin tabs (categories) sortable
     make_tabs_sortable = function() {
         Sortable.create('admintabs',{
@@ -51,7 +58,7 @@ Event.observe(window, 'load', function() {
         });
     };
     make_tabs_sortable();
-    
+
     //make the modules sortable
     make_modules_sortable = function() {
         Sortable.create('modules',{
@@ -79,7 +86,7 @@ Event.observe(window, 'load', function() {
     if ( $$("#modules div").size() > 0) {
         make_modules_sortable();
     }
-    
+
     //add context menus to tabs, as well as make them droppable
     var list = $('admintabs');
     if (list.hasChildNodes) {
