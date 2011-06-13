@@ -354,3 +354,49 @@ div.z-adminviewbuttons img {
     margin: 5px;
     float: right;
 }
+
+/*****************************************************************************/
+/* Core's Hooks UI styles
+/*****************************************************************************/
+
+.attachedareas_category ol,
+.availableareas_category ol,
+.attachedareas_category ol li,
+.availableareas_category ol li {
+    border-bottom: none;
+    margin: 0 !important;
+}
+.attachedareas_category ol:last-child,
+.availableareas_category ol:last-child {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.5em !important;
+}
+.attachedareas_category ol.z-itemlist li,
+.availableareas_category ol.z-itemlist li {
+    border: none;
+}
+
+.attachedareas_category ol.z-itemlist li.attachedarea-header {
+    background: #ddd;
+}
+.attachedareas_category ol.z-itemlist li.attachedarea-header.z-panel-active {
+    border-bottom: 1px solid #ccc;
+}
+
+.availableareas_category ol li {
+    line-height: 1.2em;
+}
+#accordion_available_provider_areas.z-accordion .z-acc-header,
+#accordion_available_provider_areas.z-accordion .z-acc-header.z-acc-active {
+    border: none;
+    padding: 0.2em !important;
+}
+#accordion_available_provider_areas.z-accordion .z-acc-content {
+    border: none;
+    overflow: hidden;
+    padding: 0 0.7em;
+}
+
+.registered_provider_areas ol {
+    margin-bottom: 0;
+}
