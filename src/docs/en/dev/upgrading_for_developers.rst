@@ -318,10 +318,12 @@ MODULES
 URL STANDARDS
 =============
 
-All direct "non-short" URLs must explicitly include module, type, and func in the GET request.
+All URLs must explicitly include module, type, and func in the GET request.
 Please update all templates that generate URLs via ModUtil::url() or in templates {modurl ..}
 so that full URLs are generated.  Assuming that type will default to 'user' and func will
 default to 'main' are now no longer valid.
+
+Custom API functions for `encodeurl()` should not remove the func parameter.
 
 CSRF PROTECTION
 ===============
