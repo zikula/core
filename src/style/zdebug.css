@@ -4,6 +4,13 @@
  * @license GNU/LGPLv3 (or at your option, any later version).
  */
 
+.zdebug .z-window-header {
+  height: 25px;
+  line-height: 25px;
+}
+.zdebug .z-window-title {
+  font-size: 15px;
+}
 .zdebug .z-window-body {
   background: #f3f3f3;
   padding: 7px;
@@ -24,7 +31,7 @@
 #zdebug_window p {
   background: #eee;
   margin: 0 0 0.25em;
-  padding: 0;
+  padding: 0.2em;
 }
 #zdebug_window dl,
 #zdebug_window ul {
@@ -71,23 +78,22 @@
 }
 #zdebug_window .zdebug-vars .zdebug-label {
   color: blue;
+  cursor: default;
   float: left;
   font-weight: normal;
   overflow: hidden;
   padding: 0.25em 0 0.25em 1%;
   width: 25%;
 }
-#zdebug_window .zdebug-vars .zdebug-label:hover {
-  cursor: pointer;
-}
-#zdebug_window .zdebug-vars .zdebug-label.zdebug-active:hover {
-  cursor: default;
-}
 #zdebug_window .zdebug-vars .zdebug-content {
   color: green;
   margin-left: 26% !important;
-  overflow-x: auto;
+  overflow: hidden;
   padding: 0.25em 0;
+}
+#zdebug_window .zdebug-vars .zdebug-content.zdebug-active {
+  overflow-x: auto;
+  padding-bottom: 1em; /* avoid x-scrollbar to hide content */
 }
 #zdebug_window .zdebug-vars .zdebug-content tt {
   white-space: pre;

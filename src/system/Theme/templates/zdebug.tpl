@@ -100,7 +100,7 @@
 {pageaddvarblock}
 <script type="text/javascript">
     var zdebug_console = null;
-    var zdebug_accordions = []
+    var zdebug_panels = []
 
     document.observe("dom:loaded", function() {
         // create the debug window
@@ -108,19 +108,27 @@
                                                {title: Zikula.__('Zikula Debug Console'),
                                                 className: 'z-window zdebug',
                                                 resizable: true,
-                                                width: 680,
+                                                destroyOnClose: true,
+                                                position: [function() { return document.viewport.getWidth() - zdebug_console.window.container.getWidth() - 5; }, 5],
+                                                width: 580,
                                                 height: 600});
-        zdebug_console.openHandler();
+        zdebug_console.open();
 
-        // create the accordions
-        basic_panel = new Zikula.UI.Panels('zdebug_window',{
-            headerSelector: 'h4'
+        // scroll the console with the window
+        Event.observe(window, 'scroll', function() {
+            zdebug_console.ensureInBounds();
         });
-        zdebug_accordions.push(new Zikula.UI.Accordion('zdebug_tplvars', {activeClassName: 'zdebug-active', headerSelector: '.zdebug-label'}));
-        zdebug_accordions.push(new Zikula.UI.Accordion('zdebug_sessionvars', {activeClassName: 'zdebug-active', headerSelector: '.zdebug-label'}));
-        zdebug_accordions.push(new Zikula.UI.Accordion('zdebug_configvars', {activeClassName: 'zdebug-active', headerSelector: '.zdebug-label'}));
-        // hide $/ session vars
-        zdebug_accordions[1].next();
+
+        // create the panels
+        var zdebug_options = {
+            activeClassName: 'zdebug-active',
+            headerClassName: 'zdebug-dataheader',
+            headerSelector: '.zdebug-label',
+            minheight: ($$('#zdebug_tplvars .zdebug-label:first-child')[0]).getContentHeight()
+        };
+        zdebug_panels.push(new Zikula.UI.Panels('zdebug_tplvars', zdebug_options));
+        zdebug_panels.push(new Zikula.UI.Panels('zdebug_sessionvars', zdebug_options));
+        zdebug_panels.push(new Zikula.UI.Panels('zdebug_configvars', zdebug_options));
     });
 </script>
 {/pageaddvarblock}
