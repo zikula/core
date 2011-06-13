@@ -266,8 +266,14 @@ class Search_Api_User extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        if (!isset($args['type'])) {
+        if (!isset($args['type']) || empty($args['type'])) {
             $args['type'] = 'user';
+        } elseif (!is_string($args['type']) || ($args['type'] != 'user')) {
+            return LogUtil::registerArgsError();
+        }
+
+        if (empty($args['func'])) {
+            $args['func'] = 'main';
         }
 
         // rename the search function to avoid conflicts
@@ -288,11 +294,7 @@ class Search_Api_User extends Zikula_AbstractApi
         }
 
         // construct the custom url part
-        if (empty($args['func']) && empty($vars)) {
-            return $args['modname'] . '/';
-        } elseif (empty($args['func'])) {
-            return $args['modname'] . '/' . $vars . '/';
-        } elseif (empty($vars) && isset($args['args']['startnum']) && !empty($args['args']['startnum'])) {
+        if (empty($vars) && isset($args['args']['startnum']) && !empty($args['args']['startnum'])) {
             return $args['modname'] . '/' . $args['func'] . '/' . $args['args']['startnum'];
         } elseif (empty($vars)) {
             return $args['modname'] . '/' . $args['func'];
@@ -312,11 +314,14 @@ class Search_Api_User extends Zikula_AbstractApi
         if (!isset($args['vars'])) {
             return LogUtil::registerArgsError();
         }
+        
+        System::queryStringSetVar('type', 'user');
 
         // define the available user functions
         $funcs = array('main', 'form', 'search', 'process', 'recent');
         // set the correct function name based on our input
         if (empty($args['vars'][2])) {
+            // Retain this for BC for older URLs that might be stored
             System::queryStringSetVar('func', 'main');
         } elseif (!in_array($args['vars'][2], $funcs)) {
             System::queryStringSetVar('func', 'main');
