@@ -434,7 +434,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
     },
     genNextId: function() {
         var maxId = this.tree.select('li').max(function(node) {
-            return this.getNodeId(node);
+            return parseInt(this.getNodeId(node));
         }.bind(this));
         maxId = isNaN(maxId) ? 0 : maxId;
         return ++maxId;
