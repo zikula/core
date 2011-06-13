@@ -1,6 +1,4 @@
-{pageaddvar name="javascript" value="javascript/ajax/prototype.js,javascript/ajax/scriptaculous.js"}
-{pageaddvar name="javascript" value="javascript/livepipe/livepipe.js,javascript/livepipe/contextmenu.js"}
-{ajaxheader modname=Admin filename=admin_admin_ajax.js}
+{ajaxheader modname='Admin' filename='admin_admin_ajax.js' ui=true}
 
 <script type="text/javascript">
     /* <![CDATA[ */
@@ -39,9 +37,12 @@
     {/if}
 </div>
 
+<div id="admin-systemnotices">
 {include file='admin_admin_securityanalyzer.tpl'}
 {include file='admin_admin_developernotices.tpl'}
-{nocache}{include file='admin_admin_updatechecker.tpl'}{/nocache}
+{include file='admin_admin_updatechecker.tpl'}
+</div>
+
 {insert name="getstatusmsg"}
 
 <div class="admintabs-container" id="admintabs-container">

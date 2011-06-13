@@ -217,14 +217,29 @@ div.property_selector_noscript {
 /*****************************************************************************/
 
 /* common styling */
+#z-maincontent #admin-systemnotices div:first-child {
+    margin-top: 0;
+}
+#z-maincontent #admin-systemnotices div:last-child {
+    margin-bottom: 1em;
+}
+#z-maincontent #admin-systemnotices div:last-child strong,
+#z-maincontent #admin-systemnotices div:last-child p,
+#z-maincontent #admin-systemnotices div:last-child ul {
+    margin-bottom: 0;
+}
+#z-maincontent #admin-systemnotices div strong.z-panel-active {
+    margin-bottom: 0.3em;
+}
+
 #z-maincontent div#z-securityanalyzer,
 #z-maincontent div#z-updatechecker,
 #z-maincontent div#z-adminwarning,
 #z-maincontent div#z-developernotices {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
-    padding: 0.5em 20px 0.5em 80px;
-    margin: 0 auto 1em auto;
+    padding: 0.5em 20px 0.5em 30px;
+    margin: -1em auto 0;
     min-height: 1em;
     width: 75%;
     -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
@@ -238,47 +253,48 @@ div.property_selector_noscript {
 
 /* styling for security checks */
 #z-maincontent div#z-securityanalyzer {
-    background: url("../../../images/icons/large/bell.png") #FFF6BF 15px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/large/bell.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/large/bell.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/large/bell.png") 15px 50% no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/bell.png") #FFF6BF 15px 0.6em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, -moz-linear-gradient(top,  #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
     border: 2px solid #ffd324;
     min-height: 2.5em;
 }
 
 /* styling for status update checker */
 #z-maincontent div#z-updatechecker {
-    background: url("../../../images/icons/large/agt_update-product.png") #C4E6BD 15px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/large/agt_update-product.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/large/agt_update-product.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/large/agt_update-product.png") 15px 50% no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
-    border: 2px solid #3E9533;
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") #C4E6BD 15px 0.6em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") 15px 0.6em no-repeat, -moz-linear-gradient(top,  #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") 15px 0.6em no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
+    border: 2px solid #7Ec573;
 }
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
 #z-maincontent div#z-adminwarning {
-    background: url("../../../images/icons/large/error.png") #FFCBCA 15px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/large/error.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/large/error.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/large/error.png") 15px 50% no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/error.png") #FFCBCA 15px 0.6em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/error.png") 15px 0.6em no-repeat, -moz-linear-gradient(top,  #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/error.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/error.png") 15px 0.6em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
     border: 2px solid #990000;
 }
 
 /* styling for developer notices */
 #z-maincontent div#z-developernotices {
-    background: url("../../../images/icons/large/run.png") #C5E8F1 15px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/large/run.png") 15px 50% no-repeat, -moz-linear-gradient(top,  #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/large/run.png") 15px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/large/run.png") 15px 50% no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/run.png") #C5E8F1 15px 0.6em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/run.png") 15px 0.6em no-repeat, -moz-linear-gradient(top,  #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/run.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/run.png") 15px 0.6em no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
     border: 2px solid #95C9EF;
 }
 
 div#z-developernotices strong,
-div#z-securityanalyzer strong {
+div#z-securityanalyzer strong,
+div#z-updatechecker strong {
     display: block;
-    font-size: 1.3em;
+    font-size: 1.2em;
     font-weight: bold;
-    margin: 0.2em 1em 0.5em;
+    margin: 0 1em 0.8em;
 }
 
 div#z-developernotices a,
@@ -301,10 +317,11 @@ div#z-securityanalyzer a:hover {
 div#z-developernotices ul,
 div#z-adminwarning ul,
 div#z-updatechecker ul,
-div#z-securityanalyzer ul {
+div#z-securityanalyzer ul,
+div#z-updatechecker p {
     list-style-position: outside;
     list-style-type: disc;
-    margin: 0.2em 1em 0;
+    margin: 0 1em 1em;
 }
 
 /* Used to style the cancel delete button when asking for a confirmation */
