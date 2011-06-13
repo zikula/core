@@ -1330,9 +1330,9 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
      * @return void
      */
     click: function(event) {
-      var header = event.findElement(this.options.headerSelector);
-      if (!header || !this.headers.include(header)) return;
-      this.setActivePanel(header);
+        var header = event.findElement(this.options.headerSelector);
+        if (!header || !this.headers.include(header)) return;
+        this.setActivePanel(header);
     },
     /**
      * Activate given panel
@@ -1467,15 +1467,18 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
      * @class Zikula.UI.Panels
      * @constructs
      *
-     * @param {HTMLElement|String} element HTMLElement or id element containing accordion content
+     * @param {HTMLElement|String} element HTMLElement or id element containing panel
      * @param {Object} [options] Config object
-     * @param {Boolean} [options.equal=false] Should all accordion panels have equal height
-     * @param {Number} [options.height=null] Height for all panels
+     * @param {Boolean} [options.equal=false] Should all panels headers have equal height
+     * @param {Number} [options.height=null] Default height for all panels contents
+     * @param {Number} [options.minheight=null] Minimum height for all panels contents, which means they will be always visible
      * @param {String} [options.containerClass='z-panels'] Class to add for panels container
      * @param {String} [options.activeClassName='z-panels-active'] Class to mark active panel header and content
+     * @param {String} [options.headerClassName='z-panels-header'] Class to mark the panel headers
      * @param {String} [options.headerSelector='.z-panels-header'] Selector to match panel headers
      * @param {String|Number} [options.active=null] Id of index of panel to open; when id is given it should point to panel header, not content
      * @param {Boolean} [options.saveToCookie=false] If true - panel status will be saved to cookie and loaded on page refresh
+     * @param {Float} [options.effectDuration=1.0] Duration of the content toggle effect
      *
      * @return {Zikula.UI.Panels} New Zikula.UI.Accordion instance
      */
@@ -1483,14 +1486,17 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
         this.options = Object.extend({
             equal: false,
             height: null,
+            minheight: null,
             containerClass: 'z-panels',
             activeClassName: 'z-panel-active',
+            headerClassName: 'z-panel-header',
             headerSelector: '.z-panel-header',
             active: [],
-            saveToCookie: false
+            saveToCookie: false,
+            effectDuration: 1.0
         }, options || { });
         this.panels = $(element);
-        if(this.options.saveToCookie) {
+        if (this.options.saveToCookie) {
             this.cookie = 'z-panels:'+this.panels.identify()
         }
         if (!Object.isArray(this.options.active)) {
@@ -1513,20 +1519,29 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
         this.contents = this.headers.map(function(h) {
             return h.next();
         });
-        if(!this.options.active && this.options.saveToCookie) {
+        if (!this.options.active && this.options.saveToCookie) {
             this.options.active = Zikula.Cookie.get(this.cookie);
         }
-        if(this.options.equal || this.options.height) {
+        if (this.options.equal || this.options.height) {
             this.alignPanels();
         }
         this.headers.each(function(h,i){
-            this.contents[i].hide();
-            if(this.options.height) {
-                this.contents[i].setStyle({height: this.options.height.toUnits(),overflow: 'auto'});
+            if (this.options.minheight) {
+                var originalheight = this.contents[i].getContentHeight();
+                this.contents[i].setStyle({height: this.options.minheight.toUnits()});
+                if (originalheight <= this.options.minheight) {
+                    // do not add it as a valid panel if the content equal or smaller than the minheight
+                    return;
+                }
+                this.contents[i].store('fullheight', originalheight);
+            } else {
+                this.contents[i].hide();
             }
-            h.observe('click',this.click.bindAsEventListener(this));
+            h.addClassName(this.options.headerClassName);
+            h.addClassName('z-pointer');
+            h.observe('click', this.click.bindAsEventListener(this));
         }.bind(this));
-        if(this.options.active.size()) {
+        if (this.options.active.size()) {
             this.options.active.each(function(panel){
                 this.expand(panel, true);
             }.bind(this));
@@ -1557,9 +1572,9 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
      * @return void
      */
     click: function(event) {
-      var header = event.findElement(this.options.headerSelector);
-      if (!header || !this.headers.include(header)) return;
-      this.toggle(header);
+        var header = event.findElement(this.options.headerSelector);
+        if (!header || !this.headers.include(header)) return;
+        this.toggle(header);
     },
     /**
      * Toggle given panel state.
@@ -1591,14 +1606,17 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
         panel = this.headers[panelIndex];
         if (this.activePanels.include(panelIndex)) return;
         this.activePanels.push(panelIndex);
-        if(this.options.saveToCookie) {
+        if (this.options.saveToCookie) {
             Zikula.Cookie.set(this.cookie,this.activePanels);
         }
         if (skipAnimation) {
-            [panel, panel.next().show()].invoke('addClassName',this.options.activeClassName);
+            if (this.options.minheight) {
+                panel.next().setStyle({height: 'auto'});
+            }
+            [panel, panel.next().show()].invoke('addClassName', this.options.activeClassName);
             return;
         }
-        this.animate(panelIndex, true);
+        this.animate(panelIndex, false);
     },
     /**
      * Collapse given panel
@@ -1614,14 +1632,17 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
         panel = this.headers[panelIndex];
         if (!this.activePanels.include(panelIndex)) return;
         this.activePanels = this.activePanels.without(panelIndex);
-        if(this.options.saveToCookie) {
+        if (this.options.saveToCookie) {
             Zikula.Cookie.set(this.cookie,this.activePanels);
         }
         if (skipAnimation) {
+            if (this.options.minheight) {
+                panel.next().setStyle({height: this.options.minheight.toUnits()});
+            }
             [panel, panel.next().hide()].invoke('removeClassName',this.options.activeClassName);
             return;
         }
-        this.animate(panelIndex, false);
+        this.animate(panelIndex, true);
     },
     /**
      * Internal animation method
@@ -1634,23 +1655,47 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
     animate: function(element,hide) {
         this.effects = [];
         var options = {
+            duration: this.options.effectDuration,
             scaleContent: false,
             beforeStart: function() {
                 this.animating[element] = true;
+                if (!hide) {
+                    [this.headers[element],this.contents[element]].invoke('addClassName', this.options.activeClassName);
+                    if (this.options.height) {
+                        this.contents[element].setStyle({height: this.options.height.toUnits(), overflow: 'auto'});
+                    }
+                }
             }.bind(this),
             afterFinish: function() {
                 this.animating[element] = false;
-                var method = hide ? 'removeClassName' : 'addClassName';
-                [this.headers[element],this.contents[element]].invoke(method,this.options.activeClassName);
-                if(this.options.height) {
-                    this.contents[element].setStyle({height: this.options.height.toUnits(),overflow: 'auto'});
+                if (hide) {
+                    [this.headers[element],this.contents[element]].invoke('removeClassName', this.options.activeClassName);
+                    if (this.options.minheight) {
+                        this.contents[element].setStyle({height: this.options.minheight.toUnits()}).show();
+                    }
                 }
             }.bind(this)
         };
+        if (this.options.minheight) {
+            var panelcontent = this.contents[element];
+            if (hide) {
+                options['scaleFrom'] = 100;
+                options['scaleTo']   = Math.round(this.options.minheight*100/panelcontent.retrieve('fullheight'));
+            } else {
+                options['scaleFrom'] = Math.round(panelcontent.getContentHeight()*100/panelcontent.retrieve('fullheight'));
+                options['scaleTo']   = 100;
+            }
+            panelcontent.setStyle({height: panelcontent.retrieve('fullheight').toUnits()});
+            // avoid lapsus between height changes
+            if (!hide) {
+                panelcontent.hide();
+            }
+        }
+        //var fullheight =
         if (hide) {
-            new Effect.BlindDown(this.contents[element], options);
-        } else {
             new Effect.BlindUp(this.contents[element], options);
+        } else {
+            new Effect.BlindDown(this.contents[element], options);
         }
     },
     /**
@@ -1674,12 +1719,14 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
         }.bind(this))
     },
     /**
-     * Align panels hight.
+     * Align panels height.
+     *
+     * Enabled when configured to be equal or a height is specified.
      *
      * @return void
      */
     alignPanels: function() {
-        if(!this.options.height) {
+        if (!this.options.height) {
             this.options.height = this.contents.invoke('getHeight').max();
         }
         $A(this.contents).invoke('setStyle',{
