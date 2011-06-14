@@ -1,0 +1,102 @@
+/*****************************************************************************/
+/* Hooks UI styles
+/*****************************************************************************/
+
+#hooks_subscriber,
+#hooks_provider {
+    margin-bottom: 1%;
+    padding: 1%;
+}
+
+/* COMMON */
+.sarea_wrapper ol,
+.sarea_wrapper ol li,
+.pareas_category ol,
+.pareas_category ol li {
+    border: none;
+    margin: 0 !important;
+}
+
+
+/* SUBSCRIPTION */
+
+/* subscriber areas */
+.sareas_category {
+    padding-bottom: 1em !important;
+}
+.sareas_category .sarea_wrapper {
+    border: 1px solid #ccc;
+    border-bottom: none;
+}
+.sareas_category .sarea_wrapper:last-child {
+    border-bottom: 1px solid #ccc;
+}
+.sarea_wrapper h4 {
+    background: #ddd url("../../../images/icons/extrasmall/14_layer_lowerlayer.png") no-repeat scroll 3px 50%;
+    font-size: 1.2em;
+    margin: 0;
+    padding: 0.3em 3px 0.3em 23px;
+}
+.sarea_wrapper h4.z-panel-active {
+    background: #ddd url("../../../images/icons/extrasmall/14_layer_raiselayer.png") no-repeat scroll 3px 50%;
+    border-bottom: 1px solid #ccc;
+}
+.sarea_wrapper ol.z-itemlist li {
+    background: #fff;
+    line-height: 1.2em;
+    padding: 0.3em;
+}
+.sarea_wrapper ol.z-itemlist li.sarea_empty {
+    padding: 0.5em 1em !important;
+}
+.sarea_wrapper ol li:hover {
+    background-color: #f9f9f9;
+}
+.sarea_wrapper ol li a.detachlink {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+.sarea_wrapper ol li.attachedarea_detach,
+.sarea_wrapper ol li.attachedarea_detach span {
+    background-color: #F7CBCA;
+    color: #880000;
+}
+
+/* droppable active*/
+.sarea_wrapper.z-hook-droppable-active h4,
+.sarea_wrapper.z-hook-droppable-active span,
+.sarea_wrapper.z-hook-droppable-active ol li {
+    background-color: #DFF2BF;
+    color: #264409 !important;
+}
+
+
+/* provider areas */
+#hooks_provider_areas.z-panels .z-panel-header,
+#hooks_provider_areas.z-panels .z-panel-header.z-panel-active {
+    background: #ddd url("../../../images/icons/extrasmall/14_layer_lowerlayer.png") no-repeat scroll 3px 50%;
+    border: none;
+    padding: 0.2em 0.2em 0.2em 23px !important;
+}
+#hooks_provider_areas.z-panels .z-panel-header.z-panel-active {
+    background: #ddd url("../../../images/icons/extrasmall/14_layer_raiselayer.png") no-repeat scroll 3px 50%;
+}
+#hooks_provider_areas.z-panels .z-panel-content {
+    border: none;
+    padding: 0.3em 0.7em 0.1em;
+}
+.pareas_category ol.z-itemlist li {
+    border: 1px solid #ddd;
+    border-bottom: none;
+    line-height: 1.4em;
+}
+.pareas_category ol.z-itemlist li:last-child {
+    border-bottom: 1px solid #ddd;
+}
+
+/* PROVISION */
+
+.registered_provider_areas ol {
+    margin-bottom: 0;
+}

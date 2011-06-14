@@ -86,10 +86,10 @@ function togglesubscriberareastatus_response(req)
  *@return none;
  */
 function appendProviderAreaToSubscriberArea(sarea_id, sarea_name, parea_id)
-{   
+{
     var area_to_attach = $('availablearea_' + parea_id + '-::sarea_identifier::');
-    var area_to_attach_to = $('attachedareassortlist_' + sarea_id);
-    var empty_area = $('attachedarea_empty_' + sarea_id);
+    var area_to_attach_to = $('sarea_' + sarea_id + '_list');
+    var empty_area = $('sarea_empty_' + sarea_id);
     
     // if cloneDraggedItem is set to true, clone the dragged item before use. 
     // otherwise just use the dragged item
@@ -126,10 +126,10 @@ function appendProviderAreaToSubscriberArea(sarea_id, sarea_name, parea_id)
     area_to_attach_to.appendChild(newitem);
 
     // create the sortable area
-    createSortable(area_to_attach_to.id);
+    createSortable('sarea_' + sarea_id);
 
     // create the dropable area
-    createDroppable(area_to_attach_to.id);
+    createDroppable('sarea_' + sarea_id);
 
     // recolor
     Zikula.recolor(area_to_attach_to.id, 'z-itemheader');
@@ -145,17 +145,17 @@ function removeProviderAreaFromSubscriberArea(sarea_id, parea_id)
 {
     var area_to_detach = $('attachedarea_' + parea_id + '-' + sarea_id);
     area_to_detach.remove();
-    
+
     // is area now empty?
     var total_areas_attached = 0;
-    var area_to_detach_from = $('attachedareassortlist_' + sarea_id);
+    var area_to_detach_from = $('sarea_' + sarea_id);
     $$('#' + area_to_detach_from.id + ' li.z-sortable').each(function(element) {
         total_areas_attached++;
     });
     
     // if there no more areas attached, show empty_area
     if (total_areas_attached == 0) {
-        $('attachedarea_empty_' + sarea_id).removeClassName('z-hide');
+        $('sarea_empty_' + sarea_id).removeClassName('z-hide');
     }
 
     // recolor
@@ -191,11 +191,13 @@ function initAreasSortables()
  */
 function createSortable(area_id)
 {
-    Sortable.create(area_id,
+    var list_id = area_id+'_list';
+
+    Sortable.create(list_id,
     {
         dropOnEmpty: true,
         only: 'z-sortable',
-        containment:[area_id],
+        containment:[list_id],
         onUpdate: changeAttachedAreaOrder
     });
 }
@@ -210,18 +212,18 @@ function createSortable(area_id)
 function changeAttachedAreaOrder()
 {
     // this will be the id of the ol
-    var ol_id = this.element.id;
+    var list_id = this.element.id;
 
     // the area of our subscriber
-    var subscriber_area = $(ol_id+'_a').value;
+    var subscriber_area = $(list_id.replace('_list', '_a')).value;
 
     // the areas of the providers that are attached to the area of our subscriber
     var providers_areas = '';
-    $$('#' + ol_id + ' li.z-sortable').each(function(el) {
+    $$('#' + list_id + ' li.z-sortable').each(function(el) {
         providers_areas += '&providerarea[]=' + $(el.id + '_a').value;
     });
 
-    var pars = 'ol_id=' + ol_id +
+    var pars = 'ol_id=' + list_id +
                '&subscriberarea=' + subscriber_area +
                providers_areas;
 
@@ -296,8 +298,11 @@ function createDroppable(area_id)
     Droppables.add(area_id,
     {
         accept: 'z-draggable',
+        hoverclass: 'z-hook-droppable-active',
+        onHover: function(dragged, dropped, event) {
+            subscriber_panel.expand(dropped.retrieve('panelIndex'), false);
+        },
         onDrop: function(dragged, dropped, event) {
-
             //alert('Dragged: ' + dragged.id + ' - Dropped onto: ' + dropped.id);
 
             // gather some info about the subscriber

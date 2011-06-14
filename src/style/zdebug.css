@@ -93,7 +93,7 @@
 }
 #zdebug_window .zdebug-vars .zdebug-content.zdebug-active {
   overflow-x: auto;
-  padding-bottom: 1em; /* avoid x-scrollbar to hide content */
+  padding-bottom: 1.5em; /* avoid x-scrollbar to hide content */
 }
 #zdebug_window .zdebug-vars .zdebug-content tt {
   white-space: pre;
