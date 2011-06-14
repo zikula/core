@@ -14,11 +14,11 @@
  */
 
 /**
- * Zikula_View function to display a Zikula specific debug window
+ * Zikula_View function to display a Zikula specific debug Zikula.UI.Window
  *
  * This function shows a Zikula debug window if the user has sufficient access rights
  *
- * You need the followinf permission to see this:
+ * You need the following permission to see this:
  *   ModuleName::debug | .* | ACCESS_ADMIN
  *
  * This plugin is basing on the original debug plugin written by Monte Ohrt <monte@ispi.net>
@@ -58,21 +58,23 @@ function smarty_function_zdebug($params, Zikula_View $view)
         $view->_plugins['outputfilter'] = null;
         $view->_compile_id  = null;
 
+        $width  = isset($params['width']) && is_integer($params['width']) ? $params['width'] : 580;
+        $height = isset($params['height']) && is_integer($params['height']) ? $params['height'] : 600;
+        $popup  = isset($params['popup']) ? (bool)$params['popup'] : false;
+
         // figure out the template to use
         if (isset($params['template']) && !empty($params['template'])) {
             if (is_readable($view->template_dir . '/' . $params['template'])) {
                 $view->debug_tpl = $params['template'];
             }
         } else {
-            $view->debug_tpl = 'zdebug.tpl';
+            $view->debug_tpl = $popup ? 'zpopup.tpl' : 'zdebug.tpl';
         }
 
-        $width  = isset($params['width']) && is_integer($params['width']) ? $params['width'] : 580;
-        $height = isset($params['height']) && is_integer($params['height']) ? $params['height'] : 600;
-
         // get the zdebug output
-        $zdebug = $view->assign('consolewidth', $width)
-                       ->assign('consoleheight', $height)
+        $zdebug = $view->assign('zdebugwidth', $width)
+                       ->assign('zdebugheight', $height)
+                       ->assign('zdebugpopup', $popup)
                        ->_fetch($view->debug_tpl);
 
         // restore original values
