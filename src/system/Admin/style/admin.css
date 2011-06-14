@@ -102,6 +102,10 @@ div.z-admincategorydescription {
     padding-top: 0.5em;
 }
 
+#z-maincontent div.z-admincontainer h2+* {
+   clear: both; /* Backwards compatibility */
+}
+
 /* styling for a page title and icon */
 #z-maincontent div.z-admincontainer h3 {
     font-size: 20px;
@@ -258,7 +262,6 @@ div.property_selector_noscript {
     background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
     border: 2px solid #ffd324;
-    min-height: 2.5em;
 }
 
 /* styling for status update checker */
@@ -295,6 +298,7 @@ div#z-updatechecker strong {
     font-size: 1.2em;
     font-weight: bold;
     margin: 0 1em 0.8em;
+    text-decoration: underline;
 }
 
 div#z-developernotices a,
@@ -353,50 +357,4 @@ div.z-adminviewbuttons {
 div.z-adminviewbuttons img {
     margin: 5px;
     float: right;
-}
-
-/*****************************************************************************/
-/* Core's Hooks UI styles
-/*****************************************************************************/
-
-.attachedareas_category ol,
-.availableareas_category ol,
-.attachedareas_category ol li,
-.availableareas_category ol li {
-    border-bottom: none;
-    margin: 0 !important;
-}
-.attachedareas_category ol:last-child,
-.availableareas_category ol:last-child {
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 0.5em !important;
-}
-.attachedareas_category ol.z-itemlist li,
-.availableareas_category ol.z-itemlist li {
-    border: none;
-}
-
-.attachedareas_category ol.z-itemlist li.attachedarea-header {
-    background: #ddd;
-}
-.attachedareas_category ol.z-itemlist li.attachedarea-header.z-panel-active {
-    border-bottom: 1px solid #ccc;
-}
-
-.availableareas_category ol li {
-    line-height: 1.2em;
-}
-#accordion_available_provider_areas.z-accordion .z-acc-header,
-#accordion_available_provider_areas.z-accordion .z-acc-header.z-acc-active {
-    border: none;
-    padding: 0.2em !important;
-}
-#accordion_available_provider_areas.z-accordion .z-acc-content {
-    border: none;
-    overflow: hidden;
-    padding: 0 0.7em;
-}
-
-.registered_provider_areas ol {
-    margin-bottom: 0;
 }

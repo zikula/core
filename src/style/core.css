@@ -747,7 +747,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-w66 { width: 66%; }
 .z-w60 { width: 60%; }
 .z-w50 { width: 50%; }
-.z-w48 { width: 48%; }
+.z-w49 { width: 49%; }
 .z-w45 { width: 45%; }
 .z-w40 { width: 40%; }
 .z-w35 { width: 35%; }
@@ -1693,6 +1693,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 
 .z-tabs li.active a:hover,
 .z-tabs li.active a.hover {
+    background-color: #fff !important;
     border-right: 1px solid transparent;
 }
 
