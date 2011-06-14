@@ -42,7 +42,9 @@ function smarty_function_debugenvironment($params, Zikula_View $view)
     $view->assign('_baseurl', System::getBaseUrl());
     $view->assign('_baseuri', System::getBaseUri());
 
-    $view->assign('_template', $view->_plugins['function']['zdebug'][1]);
-    $view->assign('_path',    $view->get_template_path($view->_plugins['function']['zdebug'][1]));
-    $view->assign('_line',    $view->_plugins['function']['zdebug'][2]);
+    $plugininfo = isset($view->_plugins['function']['zdebug']) ? $view->_plugins['function']['zdebug'] : $view->_plugins['function']['zpopup'];
+
+    $view->assign('_template', $plugininfo[1]);
+    $view->assign('_path',     $view->get_template_path($plugininfo[1]));
+    $view->assign('_line',     $plugininfo[2]);
 }

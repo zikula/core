@@ -102,3 +102,14 @@
 #zdebug_window #zdebug_configvars .zdebug-label {
   color: maroon;
 }
+
+/* for popup */
+body#zpopup {
+  background: #f3f3f3;
+  font-size: 75%;
+  margin: 0;
+  padding: 7px;
+}
+body#zpopup .zdebug-vars {
+  font-size: 1.3em;
+}
