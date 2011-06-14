@@ -1251,9 +1251,10 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
      * @param {Object} [options] Config object
      * @param {Boolean} [options.equal=false] Should all accordion panels have equal height
      * @param {Number} [options.height=null] Height for all panels
+     * @param {String} [options.headerSelector='.z-acc-header'] Selector to match panel headers
      * @param {String} [options.containerClass='z-accordion'] Class to add for accordion container
      * @param {String} [options.activeClassName='z-acc-active'] Class to mark active panel header and content
-     * @param {String} [options.headerSelector='.z-acc-header'] Selector to match panel headers
+     * @param {String} [options.contentClassName=null] Class to mark the panel contents
      * @param {String|Number} [options.active=null] Id of index of panel to open; when id is given it should point to panel header, not content
      * @param {Boolean} [options.activateOnHash=false] If true - script will try to open panel pointed via url hash (it may be panel index or id)
      * @param {Boolean} [options.saveToCookie=false] If true - panel status will be saved to cookie and loaded on page refresh
@@ -1264,9 +1265,10 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
         this.options = Object.extend({
             equal: false,
             height: null,
+            headerSelector: '.z-acc-header',
             containerClass: 'z-accordion',
             activeClassName: 'z-acc-active',
-            headerSelector: '.z-acc-header',
+            contentClassName: null,
             active: null,
             activateOnHash: false,
             saveToCookie: false
@@ -1290,24 +1292,27 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
         this.contents = this.headers.map(function(h) {
             return h.next();
         });
-        if(!this.options.active && this.options.saveToCookie) {
+        if (!this.options.active && this.options.saveToCookie) {
             this.options.active = Zikula.Cookie.get(this.cookie);
         }
-        if(this.options.activateOnHash && window.location.hash) {
+        if (this.options.activateOnHash && window.location.hash) {
             var hash = window.location.hash.replace('#','');
-            if(this.headers.include($(hash))) {
+            if (this.headers.include($(hash))) {
                 this.options.active = this.headers.indexOf($(hash));
             } else if(this.headers[hash]) {
                 this.options.active = hash;
             }
         }
-        if(this.options.equal || this.options.height) {
+        if (this.options.equal || this.options.height) {
             this.alignPanels();
         }
         this.headers.each(function(h,i){
             this.contents[i].hide();
-            if(this.options.height) {
+            if (this.options.height) {
                 this.contents[i].setStyle({height: this.options.height.toUnits(),overflow: 'auto'});
+            }
+            if (this.options.contentClassName) {
+                this.contents[i].addClassName(this.options.contentClassName);
             }
             h.observe('click',this.click.bindAsEventListener(this));
         }.bind(this));
@@ -1472,10 +1477,11 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
      * @param {Boolean} [options.equal=false] Should all panels headers have equal height
      * @param {Number} [options.height=null] Default height for all panels contents
      * @param {Number} [options.minheight=null] Minimum height for all panels contents, which means they will be always visible
+     * @param {String} [options.headerSelector='.z-panels-header'] Selector to match panel headers
      * @param {String} [options.containerClass='z-panels'] Class to add for panels container
      * @param {String} [options.activeClassName='z-panels-active'] Class to mark active panel header and content
      * @param {String} [options.headerClassName='z-panels-header'] Class to mark the panel headers
-     * @param {String} [options.headerSelector='.z-panels-header'] Selector to match panel headers
+     * @param {String} [options.contentClassName=null] Class to mark the panel contents
      * @param {String|Number} [options.active=null] Id of index of panel to open; when id is given it should point to panel header, not content
      * @param {Boolean} [options.saveToCookie=false] If true - panel status will be saved to cookie and loaded on page refresh
      * @param {Float} [options.effectDuration=1.0] Duration of the content toggle effect
@@ -1487,10 +1493,11 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
             equal: false,
             height: null,
             minheight: null,
+            headerSelector: '.z-panel-header',
             containerClass: 'z-panels',
             activeClassName: 'z-panel-active',
             headerClassName: 'z-panel-header',
-            headerSelector: '.z-panel-header',
+            contentClassName: null,
             active: [],
             saveToCookie: false,
             effectDuration: 1.0
@@ -1536,6 +1543,9 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
                 this.contents[i].store('fullheight', originalheight);
             } else {
                 this.contents[i].hide();
+            }
+            if (this.options.contentClassName) {
+                this.contents[i].addClassName(this.options.contentClassName);
             }
             h.addClassName(this.options.headerClassName);
             h.addClassName('z-pointer');
