@@ -2485,6 +2485,7 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
             }
 
             $q->execute();
+
         } else if ($rel instanceof Doctrine_Relation_ForeignKey) {
             $q = $rel->getTable()->createQuery()
                 ->update()
@@ -2496,7 +2497,20 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
             }
 
             $q->execute();
+
+        } else if ($rel instanceof Doctrine_Relation_LocalKey) {
+            $q = $rel->getTable()->createQuery()
+                ->update()
+                ->set($rel->getLocalFieldName(), '?', array(null))
+                ->addWhere($rel->getTable()->getIdentifier() . ' = ?', array_values($this->identifier()));
+
+            if (count($ids) > 0) {
+                $q->whereIn($rel->getLocalFieldName(), $ids);
+            }
+
+            $q->execute();
         }
+
         return $this;
     }
 
