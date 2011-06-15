@@ -25,12 +25,15 @@ themes being templated in the Header_Footer module.
     font-size: 0.95em;
     margin-bottom: 1em;
 }
+
 #z-maincontent .z-admin-breadcrumbs a {
     color: #555;
 }
+
 #z-maincontent .z-admin-breadcrumbs .z-sub {
     color: #999;
 }
+
 #z-maincontent .z-admin-breadcrumbs .z-breadcrumb {
     padding: 0 0.2em;
 }
@@ -84,7 +87,8 @@ div.z-admincategorydescription {
     margin-right: 7px;
 }
 
-#z-maincontent div.z-adminbox h1:after { /* clearfix */
+#z-maincontent div.z-adminbox h1:after {
+    /* clearfix */
     content: ".";
     display: block;
     height: 0;
@@ -103,7 +107,7 @@ div.z-admincategorydescription {
 }
 
 #z-maincontent div.z-admincontainer h2+* {
-   clear: both; /* Backwards compatibility */
+    clear: both; /* Backwards compatibility */
 }
 
 /* styling for a page title and icon */
@@ -145,7 +149,6 @@ div.z-adminbox a.z-disabledadminlink {
 div.property_selector_noscript {
     display: inline;
 }
-
 
 /******************************************************************************/
 /* Styling for module icon list in the admin panel
@@ -224,14 +227,17 @@ div.property_selector_noscript {
 #z-maincontent #admin-systemnotices div:first-child {
     margin-top: 0;
 }
+
 #z-maincontent #admin-systemnotices div:last-child {
     margin-bottom: 1em;
 }
+
 #z-maincontent #admin-systemnotices div:last-child strong,
 #z-maincontent #admin-systemnotices div:last-child p,
 #z-maincontent #admin-systemnotices div:last-child ul {
     margin-bottom: 0;
 }
+
 #z-maincontent #admin-systemnotices div strong.z-panel-active {
     margin-bottom: 0.3em;
 }
@@ -258,7 +264,7 @@ div.property_selector_noscript {
 /* styling for security checks */
 #z-maincontent div#z-securityanalyzer {
     background: url("../../../images/icons/extrasmall/bell.png") #FFF6BF 15px 0.6em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, -moz-linear-gradient(top,  #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, -moz-linear-gradient(top, #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
     border: 2px solid #ffd324;
@@ -267,7 +273,7 @@ div.property_selector_noscript {
 /* styling for status update checker */
 #z-maincontent div#z-updatechecker {
     background: url("../../../images/icons/extrasmall/agt_update-product.png") #C4E6BD 15px 0.6em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") 15px 0.6em no-repeat, -moz-linear-gradient(top,  #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") 15px 0.6em no-repeat, -moz-linear-gradient(top, #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/extrasmall/agt_update-product.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/extrasmall/agt_update-product.png") 15px 0.6em no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
     border: 2px solid #7Ec573;
@@ -276,7 +282,7 @@ div.property_selector_noscript {
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
 #z-maincontent div#z-adminwarning {
     background: url("../../../images/icons/extrasmall/error.png") #FFCBCA 15px 0.6em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/error.png") 15px 0.6em no-repeat, -moz-linear-gradient(top,  #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/error.png") 15px 0.6em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/extrasmall/error.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/extrasmall/error.png") 15px 0.6em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
     border: 2px solid #990000;
@@ -285,7 +291,7 @@ div.property_selector_noscript {
 /* styling for developer notices */
 #z-maincontent div#z-developernotices {
     background: url("../../../images/icons/extrasmall/run.png") #C5E8F1 15px 0.6em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/run.png") 15px 0.6em no-repeat, -moz-linear-gradient(top,  #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/run.png") 15px 0.6em no-repeat, -moz-linear-gradient(top, #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../../../images/icons/extrasmall/run.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../images/icons/extrasmall/run.png") 15px 0.6em no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
     border: 2px solid #95C9EF;

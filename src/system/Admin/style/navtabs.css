@@ -1,90 +1,90 @@
 ul#admintabs {
-    background:url("../images/tab_bottom.gif") repeat-x scroll center bottom transparent;
-    margin:0 !important;
-    padding:0 !important;
-    width:100%;
+    background: url("../images/tab_bottom.gif") repeat-x scroll center bottom transparent;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
 }
 
 ul#admintabs li {
-    background:none repeat scroll 0 0 #F3F3F3 !important;
-    border:1px solid #CCCCCC;
-    float:left;
-    list-style:none;
-    margin:0 5px 0 0;
-    padding:0;
-    z-index:1000;
+    background: none repeat scroll 0 0 #F3F3F3 !important;
+    border: 1px solid #CCCCCC;
+    float: left;
+    list-style: none;
+    margin: 0 5px 0 0;
+    padding: 0;
+    z-index: 1000;
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
 }
 
 ul#admintabs li > a {
-    border-right:1px solid transparent;
-    color:#666666;
-    float:left;
-    font-weight:bold;
-    padding:5px;
-    position:relative;
-    text-decoration:none !important;
+    border-right: 1px solid transparent;
+    color: #666666;
+    float: left;
+    font-weight: bold;
+    padding: 5px;
+    position: relative;
+    text-decoration: none !important;
 }
 
 ul#admintabs li > a:hover {
-    background:#FFFFFF !important;
-    border-right:1px solid #ccc;
-    color:#000;
-    text-decoration:none !important;
+    background: #FFFFFF !important;
+    border-right: 1px solid #ccc;
+    color: #000;
+    text-decoration: none !important;
     -webkit-border-radius: 5px 0 0 0;
     -moz-border-radius: 5px 0 0 0;
     border-radius: 5px 0 0 0;
 }
 
 ul#admintabs li.active {
-    background:none repeat scroll 0 0 #fff !important;
-    border-bottom:1px solid #fff;
-    z-index:2000;
+    background: none repeat scroll 0 0 #fff !important;
+    border-bottom: 1px solid #fff;
+    z-index: 2000;
 }
 
 ul#admintabs li.active a:hover {
-    border-right:1px solid transparent;
+    border-right: 1px solid transparent;
 }
 
 ul#admintabs li#addcat > a:hover {
-    border-right:1px solid transparent;
+    border-right: 1px solid transparent;
 }
 
 ul#admintabs li#addcat #addcatlink {
-    background:url("../../../images/icons/extrasmall/edit_add.png") no-repeat scroll 50% 50% transparent;
-    width:20px;
+    background: url("../../../images/icons/extrasmall/edit_add.png") no-repeat scroll 50% 50% transparent;
+    width: 20px;
 }
 
 ul#admintabs li#addcat a#addcatlink:hover {
-    background:url("../../../images/icons/extrasmall/edit_add.png") no-repeat scroll 50% 50% #FFF !important;
+    background: url("../../../images/icons/extrasmall/edit_add.png") no-repeat scroll 50% 50% #FFF !important;
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
 }
 
 ul#admintabs li > .z-admindrop {
-    background:url("../../../images/global/arrow_down_grey.png") no-repeat scroll 50% 50% transparent;
-    border-left:1px solid transparent;
-    cursor:pointer;
-    float:left;
-    padding:5px 4px;
-    position:relative;
-    width:7px;
+    background: url("../../../images/global/arrow_down_grey.png") no-repeat scroll 50% 50% transparent;
+    border-left: 1px solid transparent;
+    cursor: pointer;
+    float: left;
+    padding: 5px 4px;
+    position: relative;
+    width: 7px;
 }
 
 ul#admintabs li > .z-admindrop:hover {
-    background:url("../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% #FFFFFF;
-    border-left:1px solid #CCCCCC;
+    background: url("../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% #FFFFFF;
+    border-left: 1px solid #CCCCCC;
     -webkit-border-radius: 0 5px 0 0;
     -moz-border-radius: 0 5px 0 0;
     border-radius: 0 5px 0 0;
 }
 
 ul#admintabs li.active > .z-admindrop:hover {
-    background:url("../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% transparent;
-    border-left:1px solid transparent;
+    background: url("../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% transparent;
+    border-left: 1px solid transparent;
     -webkit-border-radius: 0 5px 0 0;
     -moz-border-radius: 0 5px 0 0;
     border-radius: 0 5px 0 0;
@@ -92,57 +92,57 @@ ul#admintabs li.active > .z-admindrop:hover {
 
 ul#admintabs li a.ajaxhover {
     background: #FFFFB2 !important;
-    border-right:1px solid #ccc;
-    color:#000;
+    border-right: 1px solid #ccc;
+    color: #000;
     -webkit-border-radius: 5px 0 0 0;
     -moz-border-radius: 5px 0 0 0;
     border-radius: 5px 0 0 0;
 }
 
 ul#admintabs #ajaxNewCatForm {
-    background-color:#FFFFB2;
-    display:block;
-    float:left;
-    font-weight:bold;
-    padding:5px;
-    position:relative;
-    text-decoration:none;
-    z-index:1000;
+    background-color: #FFFFB2;
+    display: block;
+    float: left;
+    font-weight: bold;
+    padding: 5px;
+    position: relative;
+    text-decoration: none;
+    z-index: 1000;
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
 }
 
 ul#admintabs #ajaxNewCatForm input.ajaxNewCat {
-    background-color:#fff;
-    border:none;
-    color:#333;
-    float:left;
-    font-weight:bold;
-    margin:0;
-    max-width:8em;
-    padding:0;
+    background-color: #fff;
+    border: none;
+    color: #333;
+    float: left;
+    font-weight: bold;
+    margin: 0;
+    max-width: 8em;
+    padding: 0;
 }
 
 ul#admintabs #ajaxNewCatForm a.ajaxCatImage {
-    background-color:transparent;
-    border:medium none;
-    margin:0;
-    padding:0;
-    text-decoration:none;
+    background-color: transparent;
+    border: medium none;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
 }
 
 ul#admintabs #ajaxNewCatForm a.ajaxCatImage img {
-    background-color:transparent;
-    border:medium none;
-    margin-left:3px;
-    padding:0;
-    text-decoration:none;
+    background-color: transparent;
+    border: medium none;
+    margin-left: 3px;
+    padding: 0;
+    text-decoration: none;
 }
 
 form.inplaceeditor-form {
     background-color: #FFFFB2;
-    border-right:1px solid #ccc;
+    border-right: 1px solid #ccc;
     color: #666666;
     display: block;
     float: left;
