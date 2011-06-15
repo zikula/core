@@ -85,7 +85,7 @@
                             <input type="hidden" id="sarea_{$sarea_md5}_c" value="{$subscriberAreasToCategories.$sarea}" />
                             <input type="hidden" id="sarea_{$sarea_md5}_i" value="{$sarea_md5}" />
 
-                            <h4>{$subscriberAreasToTitles.$sarea}<br /><span class="z-sub">({$sarea})</span></h4>
+                            <h4>{$subscriberAreasToTitles.$sarea}<span class="z-sub">({$sarea})</span></h4>
                             <ol id="sarea_{$sarea_md5}_list" class="z-itemlist">
                                 {if isset($areasSorting.$category.$sarea)}
                                     {foreach from=$areasSorting.$category.$sarea item='parea'}
@@ -125,32 +125,34 @@
                 {foreach from=$hookproviders item='hookprovider'}
 
                     {if !empty($hookprovider.areas)}
-                        <h4 class="z-panel-header">{$hookprovider.name}</h4>
-
-                        <div class="z-panel-content">
-                            {foreach from=$hookprovider.areasAndCategories key='category' item='areas'}
-                            <fieldset class="pareas_category">
-                                <legend>{$category}</legend>
-
-                                {assign var="draglist_identifier" value="`$hookprovider.name`_`$category`"}
-                                {assign var="draglist_identifier_md5" value=$draglist_identifier|md5}
-
-                                <ol id="availableareasdraglist_{$draglist_identifier_md5}" class="z-itemlist">
-                                    {foreach from=$areas item='parea'}
-                                        {assign var="parea_md5" value=$parea|md5}
-                                        {assign var="available_area_identifier" value="`$parea_md5`-::sarea_identifier::"}
-
-                                        <li id="availablearea_{$available_area_identifier}" class="{cycle name="availableareaslist_`$draglist_identifier`" values='z-even,z-odd'} z-draggable z-clearfix">
-                                            <span class="z-itemcell">{$hookprovider.areasToTitles.$parea} <span class="z-sub">({$parea})</span> <a class="detachlink z-hide" style="position:absolute; right:3px; top:3px;" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{$parea_md5}', '{$parea}');" title="{gt text='Detach'} {$hookprovider.areasToTitles.$parea}">{img modname='core' set='icons/extrasmall' src='button_cancel.png' width='10' height='10' __alt='detach'}</a></span>
-                                            <input type="hidden" id="availablearea_{$available_area_identifier}_a" value="{$parea}" />
-                                            <input type="hidden" id="availablearea_{$available_area_identifier}_c" value="{$hookprovider.areasToCategories.$parea}" />
-                                            <input type="hidden" id="availablearea_{$available_area_identifier}_i" value="{$parea_md5}" />
-                                        </li>
-
-                                    {/foreach}
-                                </ol>
-                            </fieldset>
-                            {/foreach}
+                        <div class="parea_wrapper">
+                            <h4 class="z-panel-header">{$hookprovider.name}</h4>
+    
+                            <div class="z-panel-content">
+                                {foreach from=$hookprovider.areasAndCategories key='category' item='areas'}
+                                <fieldset class="pareas_category">
+                                    <legend>{$category}</legend>
+    
+                                    {assign var="draglist_identifier" value="`$hookprovider.name`_`$category`"}
+                                    {assign var="draglist_identifier_md5" value=$draglist_identifier|md5}
+    
+                                    <ol id="availableareasdraglist_{$draglist_identifier_md5}" class="z-itemlist">
+                                        {foreach from=$areas item='parea'}
+                                            {assign var="parea_md5" value=$parea|md5}
+                                            {assign var="available_area_identifier" value="`$parea_md5`-::sarea_identifier::"}
+    
+                                            <li id="availablearea_{$available_area_identifier}" class="{cycle name="availableareaslist_`$draglist_identifier`" values='z-even,z-odd'} z-draggable z-clearfix">
+                                                <span class="z-itemcell">{$hookprovider.areasToTitles.$parea} <span class="z-sub">({$parea})</span> <a class="detachlink z-hide" style="position:absolute; right:3px; top:3px;" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{$parea_md5}', '{$parea}');" title="{gt text='Detach'} {$hookprovider.areasToTitles.$parea}">{img modname='core' set='icons/extrasmall' src='button_cancel.png' width='10' height='10' __alt='detach'}</a></span>
+                                                <input type="hidden" id="availablearea_{$available_area_identifier}_a" value="{$parea}" />
+                                                <input type="hidden" id="availablearea_{$available_area_identifier}_c" value="{$hookprovider.areasToCategories.$parea}" />
+                                                <input type="hidden" id="availablearea_{$available_area_identifier}_i" value="{$parea_md5}" />
+                                            </li>
+    
+                                        {/foreach}
+                                    </ol>
+                                </fieldset>
+                                {/foreach}
+                            </div>
                         </div>
                     {/if}
                 {foreachelse}
