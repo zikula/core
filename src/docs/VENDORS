@@ -37,7 +37,7 @@ Doctrine 1.2.4
     License: LGPL
     Location in Zikula: lib/vendor/Doctrine
     Patch details:
-    - Fix on Doctrine_Record::unlinkInDb field names causing exceptions and local unlinking https://github.com/doctrine/doctrine1/pull/35
+    - Fix on Doctrine_Record::unlinkInDb field names causing exceptions https://gist.github.com/1011438
 
 Doctrine 2.0.5
 
