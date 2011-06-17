@@ -24,7 +24,7 @@ class SystemPlugin_Configurable_Plugin extends Zikula_AbstractPlugin implements 
     protected function getMeta()
     {
         return array('displayname' => $this->__('Configurable Example'),
-                'description' => $this->__('Exmaple of configrable plugin'),
+                'description' => $this->__('Example of a configurable plugin'),
                 'version' => '1.0.0'
         );
     }
