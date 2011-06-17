@@ -13,7 +13,7 @@
  */
 
 /**
- * SimplePieFeedn class.
+ * SimplePieFeed class.
  */
 class SimplePieFeed extends SimplePie
 {
@@ -23,10 +23,20 @@ class SimplePieFeed extends SimplePie
      * @param string  $feed_url       The URL to the feed (optional).
      * @param integer $cache_duration The duration (in seconds) that the feed contents will be retained in cache.
      */
-    public function __construct($feed_url = null, $cache_duration = null)
+    public function __construct($feed_url = null, $cache_duration = null, $cache_dir = null)
     {
-        $cache_dir = CacheUtil::getLocalDir() . '/feeds';
-        $this->SimplePie($feed_url, $cache_dir, $cache_duration);
+        parent::__construct();
+        if (isset($cache_dir)) { 
+            $this->set_cache_location($cache_dir);
+        } else {
+            $this->set_cache_location(CacheUtil::getLocalDir('feeds'));
+        }
+        if (isset($cache_duration)) {
+            $this->set_cache_duration($cache_duration);
+        }
+        if (isset($feed_url)) {
+            $this->set_feed_url($feed_url);
+        }
     }
 }
 
