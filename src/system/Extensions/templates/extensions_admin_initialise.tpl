@@ -51,9 +51,9 @@
             </div>
             {/if}
             {if !$fataldependency}
-                <p class="z-informationmsg">{gt text="Do you really want to initialise this module?"}</p>
+                <p class="z-informationmsg">{gt text="Do you really want to install this module?"}</p>
             {else}
-                <p class="z-errormsg">{gt text="Error! Required dependencies are not present.  To install this module, please upload the dependencies."}</p>
+                <p class="z-errormsg">{gt text="Error! Required dependencies are not present. To install this module, please upload the dependencies."}</p>
             {/if}
             
             <div class="z-buttons z-formbuttons">

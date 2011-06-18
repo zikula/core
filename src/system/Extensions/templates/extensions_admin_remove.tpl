@@ -56,12 +56,12 @@
                     </table>
                 </div>
                 {/if}
-            </fieldset>
 
-            <div class="z-buttons z-formbuttons">
-                {button src='14_layer_deletelayer.png' set='icons/extrasmall' __alt='Uninstall' __title='Uninstall' __text='Uninstall'}
-                <a class="z-btred" href="{modurl modname='Extensions' type='admin' func='view'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
-            </div>
+                <div class="z-buttons z-formbuttons">
+                    {button src='14_layer_deletelayer.png' set='icons/extrasmall' __alt='Uninstall' __title='Uninstall' __text='Uninstall'}
+                    <a class="z-btred" href="{modurl modname='Extensions' type='admin' func='view'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                </div>
+            </fieldset>
         </div>
     </form>
 </div>
