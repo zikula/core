@@ -204,6 +204,17 @@ class Zikula_HookManager
     }
 
     /**
+     * Get area name
+     *
+     * @param integer $areaId
+     *
+     * @return string
+     */
+    public function getAreaName($areaId)
+    {
+        return $this->storage->getAreaName($areaId);
+    }
+    /**
      * Set the bind order of hooks.
      *
      * Used to resort the order providers are invoked for a given
