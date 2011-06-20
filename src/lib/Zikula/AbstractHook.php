@@ -24,7 +24,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     protected $name;
 
     /**
-     * Subscriber area id.
+     * Subscriber object id.
      *
      * @var integer
      */
@@ -73,7 +73,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     }
 
     /**
-     * Get subscriber area id.
+     * Get subscriber object id.
      *
      * @return integer
      */
