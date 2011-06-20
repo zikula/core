@@ -16,40 +16,32 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
- 
-namespace Doctrine\ORM;
+
+namespace Doctrine\ORM\Query\AST;
 
 /**
- * Class to store and retrieve the version of Doctrine
+ * CoalesceExpression ::= "COALESCE" "(" ScalarExpression {"," ScalarExpression}* ")"
  *
+ * @since   2.1
  * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link    www.doctrine-project.org
- * @since   2.0
- * @version $Revision$
  * @author  Benjamin Eberlei <kontakt@beberlei.de>
  * @author  Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author  Jonathan Wage <jonwage@gmail.com>
  * @author  Roman Borschel <roman@code-factory.org>
  */
-class Version
+class CoalesceExpression extends Node
 {
-    /**
-     * Current Doctrine Version
-     */
-    const VERSION = '2.1.0RC2-DEV';
+    public $scalarExpressions = array();
+    
 
-    /**
-     * Compares a Doctrine version with the current one.
-     *
-     * @param string $version Doctrine version to compare.
-     * @return int Returns -1 if older, 0 if it is the same, 1 if version 
-     *             passed as argument is newer.
-     */
-    public static function compare($version)
+    public function __construct(array $scalarExpressions)
     {
-        $currentVersion = str_replace(' ', '', strtolower(self::VERSION));
-        $version = str_replace(' ', '', $version);
-
-        return version_compare($version, $currentVersion);
+        $this->scalarExpressions  = $scalarExpressions;
+    }    
+    
+    public function dispatch($sqlWalker)
+    {
+        return $sqlWalker->walkCoalesceExpression($this);
     }
 }

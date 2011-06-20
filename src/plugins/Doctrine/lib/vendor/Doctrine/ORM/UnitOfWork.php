@@ -455,7 +455,7 @@ class UnitOfWork implements PropertyChangedListener
             // and we have a copy of the original data
             $originalData = $this->originalEntityData[$oid];
             $isChangeTrackingNotify = $class->isChangeTrackingNotify();
-            $changeSet = $isChangeTrackingNotify ? $this->entityChangeSets[$oid] : array();
+            $changeSet = ($isChangeTrackingNotify && isset($this->entityChangeSets[$oid])) ? $this->entityChangeSets[$oid] : array();
 
             foreach ($actualData as $propName => $actualValue) {
                 $orgValue = isset($originalData[$propName]) ? $originalData[$propName] : null;
@@ -573,10 +573,12 @@ class UnitOfWork implements PropertyChangedListener
             $oid = spl_object_hash($entry);
             if ($state == self::STATE_NEW) {
                 if ( ! $assoc['isCascadePersist']) {
-                    throw new InvalidArgumentException("A new entity was found through a relationship that was not"
-                            . " configured to cascade persist operations: " . self::objToStr($entry) . "."
+                    throw new InvalidArgumentException("A new entity was found through the relationship '"
+                            . $assoc['sourceEntity'] . "#" . $assoc['fieldName'] . "' that was not"
+                            . " configured to cascade persist operations for entity: " . self::objToStr($entry) . "."
                             . " Explicitly persist the new entity or configure cascading persist operations"
-                            . " on the relationship.");
+                            . " on the relationship. If you cannot find out which entity casues the problem"
+                            . " implement '" . $assoc['targetEntity'] . "#__toString()' to get a clue.");
                 }
                 $this->persistNew($targetClass, $entry);
                 $this->computeChangeSet($targetClass, $entry);
