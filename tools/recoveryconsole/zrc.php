@@ -177,26 +177,21 @@ class RecoveryConsole
     public function initZikula()
     {
         // Assign path/System file.
-        $file = 'lib/ZLoader.php';
+        $file = 'lib/bootstrap.php';
+
         // Before inclusion, ensure the API file can be accessed.
         if (!file_exists($file) && !is_readable($file)) {
             $this->fatalError('<strong>THIS APPLICTATION WAS IMPROPERLY UPLOADED</strong><br />Please ensure that you have uploaded this file to<br />the <em>root directory</em> of your site and try again.');
         }
-        // Include the API file.
-        require_once 'lib/ZLoader.php';
-        ZLoader::register();
-        // Before init, avoid error; ensure the function exists.
-        if (!is_callable(array('System', 'init'))) {
-            $this->fatalError('<strong>Zikula COULD NOT BE INITIALIZED</strong><br />No further information is available.');
-        }
-        // Initialize Zikula.
 
-        System::init();
+        include $file;
+        $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_DECODEURLS/* & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_THEME*/);
+
         // Setting various site properties.
         $this->dbEnabled        = $this->initDatabase();
         $this->siteLang         = ZLanguage::getLanguageCode();
-        $this->siteVersion      = System::VERSION_NUM;
-        $this->siteCodebase     = System::VERSION_ID;
+        $this->siteVersion      = Zikula_Core::VERSION_NUM;
+        $this->siteCodebase     = Zikula_Core::VERSION_ID;
         $this->siteInactive     = System::getVar('siteoff');
         $this->siteTheme        = System::getVar('Default_Theme');
         $this->operation        = null;
@@ -286,7 +281,7 @@ class RecoveryConsole
     public function appCompatible()
     {
         // Return false if site version is not from Zikula 1.x series.
-        return ((int)substr(System::VERSION_NUM, 0, 1) == 1);
+        return ((int)substr(Zikula_Core::VERSION_NUM, 0, 1) == 1);
     }
 
     // Check if application is expired, thus warranting lockdown.
@@ -1212,6 +1207,9 @@ class RecoveryConsole
     // Get inputs for theme recovery.
     public function getUtilityInputsTheme()
     {
+        // regenerate the database
+        ModUtil::apiFunc('Theme', 'admin', 'regenerate');
+
         // First, create a dynamic selector.
         $selector = '<select name="theme" id="theme" size="1">'."\n";
         // Loop through all themes.
@@ -1229,18 +1227,18 @@ class RecoveryConsole
             $selector .= '<optgroup label="'.$label.'">'."\n";
             // Loop through the themes of this type.
             foreach ($themes as $theme) {
-                if($theme['state'] == 1) {
-                    // Check if form was submitted.
-                    if (!$this->INPUT['submit']) {
-                        // Default; for selecting the currently set theme in the list.
-                        $selected = ($theme['name'] == $this->siteTheme) ? 'selected="selected"' : null;
-                    } else {
-                        // When submitted, for selecting the selected theme in the list.
-                        $selected = ($theme['name'] == $this->INPUT['theme']) ? 'selected="selected"' : null;
-                    }
-                    // Add option to selector.
-                    $selector .= '<option label="'.$theme['name'].'" value="'.$theme['name'].'" '.$selected.'>'.$theme['name'].'</option>'."\n";
-                }
+				if ($theme['state'] == 1) {
+					// Check if form was submitted.
+					if (!$this->INPUT['submit']) {
+						// Default; for selecting the currently set theme in the list.
+						$selected = ($theme['name'] == $this->siteTheme) ? 'selected="selected"' : null;
+					} else {
+						// When submitted, for selecting the selected theme in the list.
+						$selected = ($theme['name'] == $this->INPUT['theme']) ? 'selected="selected"' : null;
+					}
+					// Add option to selector.
+					$selector .= '<option label="'.$theme['name'].'" value="'.$theme['name'].'" '.$selected.'>'.$theme['name'].'</option>'."\n";
+				}
             }
             // Ending the optgroup.
             $selector .= '</optgroup>'."\n";
@@ -1602,6 +1600,7 @@ class RecoveryConsole
             // Reset user themes.
             $this->resetUserThemes();
         }
+        ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
         // If any errors, recovery failed.
         if ($this->getErrors()) {
             return false;
