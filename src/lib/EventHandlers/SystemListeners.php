@@ -303,7 +303,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if ($event['stage'] & Zikula_Core::STAGE_LANGS) {
             if (!System::isInstalling()) {
                 ServiceUtil::loadPersistentServices();
-                PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");
+                PluginUtil::loadPlugins(realpath(realpath('.').'/plugins'), "SystemPlugin");
                 EventUtil::loadPersistentEvents();
             }
         }

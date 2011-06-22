@@ -375,7 +375,12 @@ abstract class Zikula_AbstractErrorHandler
     {
         // Remove full path information if not in development mode.
         if (!System::isDevelopmentMode()) {
-            $errfile = str_replace(realpath(dirname(__FILE__) . '/../..') . DIRECTORY_SEPARATOR, '', $errfile);
+            $rootpath = realpath('.') . DIRECTORY_SEPARATOR;
+            if (strpos($errfile, $rootpath)) {
+                $errfile = str_replace($rootpath, '', $errfile);
+            } else {
+                $errfile = basename($errfile);
+            }
         }
         return $errfile;
     }

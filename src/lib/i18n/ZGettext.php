@@ -50,7 +50,7 @@ class ZGettext
      *
      * @var string
      */
-    public $defaultDomain;
+    public $defaultDomain = 'zikula';
 
     /**
      * Text domains.
@@ -95,7 +95,7 @@ class ZGettext
         $this->locale = $locale;
         // The following is a hack because LC_* constants appear to have different
         // values on different systems #2952
-        $this->category = 'LC_MESSAGES';//$this->translateCategory($category);
+        $this->category = LC_MESSAGES;//$this->translateCategory($category);
         return $locale;
     }
 
@@ -161,6 +161,7 @@ class ZGettext
     public function bindTextDomainCodeset($domain, $codeset = null)
     {
         $codeset = ini_get('mbstring.internal_encoding');
+
         $this->textDomains[$this->getLocale()][$this->getCategory()][$domain]['codeset'] = $codeset;
     }
 
@@ -191,12 +192,18 @@ class ZGettext
     {
         $_this = self::getInstance();
         $domain = (isset($domain) ? $domain : $_this->defaultDomain);
-        $category = (isset($category) ? $_this->translateCategory($category) : $_this->getCategory());
+        $category = isset($category) ? $category : $_this->getCategory();
+        $categorypath = $_this->translateCategory($category);
         $locale = $_this->getLocale();
+
+        if (!isset($_this->textDomains[$locale][$category][$domain])) {
+            $codeset = ini_get('mbstring.internal_encoding');
+            $_this->textDomains[$locale][$category][$domain] = array('path' => "locale/", 'codeset' => $codeset, 'reader' => null);
+        }
         $textDomain = & $_this->textDomains[$locale][$category][$domain];
 
         if (!$textDomain['reader']) {
-            $path = realpath($textDomain['path']."$locale/$category/$domain.mo");
+            $path = realpath($textDomain['path']."$locale/$categorypath/$domain.mo");
             $reader = new StreamReader_CachedFile($path);
             $textDomain['reader'] = new ZMO($reader, $cache);
             $codeset = (isset($textDomain['codeset']) ? $textDomain['codeset'] : ini_get('mbstring.internal_encoding'));

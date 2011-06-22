@@ -58,6 +58,7 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
      */
     protected function _configureBase()
     {
+        $this->systemBaseDir = realpath('.');
         $parts = explode('_', get_class($this));
         $this->name = $parts[0];
         $this->baseDir = $this->plugin->getBaseDir();
@@ -65,15 +66,12 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
         $this->moduleName = $this->plugin->getModuleName();
         $this->modinfo = $this->plugin->getModInfo();
         if ($this->plugin->getPluginType() == Zikula_AbstractPlugin::TYPE_SYSTEM) {
-            $this->systemBaseDir = realpath("{$this->baseDir}/../..");
             $this->libBaseDir = realpath("{$this->baseDir}/plugins/{$this->pluginName}/lib/{$this->pluginName}");
         } else {
             $modbase = ($this->modinfo['type'] == Zikula_AbstractPlugin::TYPE_MODULE) ? 'modules' : 'system';
-            $this->systemBaseDir = realpath("{$this->baseDir}/$modbase/..");
             $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/{$this->moduleName}/plugins/{$this->pluginName}");
             $this->libBaseDir = realpath("{$this->baseDir}/lib/{$this->pluginName}");
         }
-
         $this->domain = $this->plugin->getDomain();
     }
 

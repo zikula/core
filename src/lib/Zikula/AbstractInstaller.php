@@ -32,15 +32,15 @@ abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
      */
     protected function _configureBase()
     {
+        $this->systemBaseDir = realpath('.');
         $parts = explode('_', $this->getReflection()->getName());
         $this->name = $parts[0];
-        $this->baseDir = dirname(realpath($this->reflection->getFileName()));
-        $this->modinfo = array();
-        $p = explode(DIRECTORY_SEPARATOR, $this->baseDir);
-        $this->modinfo['directory'] = end($p);
-        $this->modinfo['type'] = prev($p);
-        $this->systemBaseDir = realpath("{$this->baseDir}/../..");
-        $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
+        $this->baseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
+        $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
+        $this->modinfo = array(
+            'directory' => $this->name,
+            'type'      => ModUtil::getModuleBaseDir($this->name) == 'system' ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE
+        );
         $versionClass = "{$this->name}_Version";
         $this->version = new $versionClass;
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {

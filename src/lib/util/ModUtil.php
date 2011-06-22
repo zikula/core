@@ -1822,7 +1822,7 @@ class ModUtil
         }
 
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-        $osdir = DataUtil::formatForOS($modinfo['directory']);
+        $osdir   = DataUtil::formatForOS($modinfo['directory']);
         ZLoader::addAutoloader($moduleName, realpath("$modpath/$osdir/lib"));
         // load optional bootstrap
         $bootstrap = "$modpath/$osdir/bootstrap.php";
