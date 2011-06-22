@@ -1343,10 +1343,9 @@ class ModUtil
                         $vars .= "/$k/$v"; // &$k=$v
                     }
                 }
-                $func = "/$func/";
+                $func = "/$func";
                 $vars = substr($vars, 1);
-                $url = $modname . $func . $vars;
-                $url = rtrim($url, '/');
+                $url = $modname . ($vars || $func != '/main' ? $func . $vars : '');
             }
 
             if ($shorturlsdefaultmodule == $modinfo['name'] && $url != "{$modinfo['url']}/") {
