@@ -5,7 +5,7 @@
 <form id="themeform" action="" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         {foreach from=$themes item=theme}
-        <input type="hidden" id="previmg_{$theme.directory}" name="previmg_{$theme.directory}" value="{getbaseurl}{$theme.previewImage}" />
+        <input type="hidden" id="previmg_{$theme.directory}" name="previmg_{$theme.directory}" value="{$baseurl}{$theme.previewImage}" />
         {/foreach}
         <select id="newtheme" name="newtheme" onchange="showthemeimage()">
             {foreach from=$themes item=theme}
