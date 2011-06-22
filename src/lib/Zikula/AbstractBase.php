@@ -122,10 +122,10 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      */
     protected function _configureBase()
     {
+        $this->systemBaseDir = realpath('.');
         $parts = explode('_', get_class($this));
         $this->name = $parts[0];
         $baseDir = ModUtil::getModuleBaseDir($this->name);
-        $this->systemBaseDir = realpath("$baseDir/..");
         $this->baseDir = realpath("{$this->systemBaseDir}/$baseDir/" . $this->name);
         $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
         if ($baseDir == 'modules') {

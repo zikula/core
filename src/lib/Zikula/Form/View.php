@@ -938,8 +938,8 @@ class Zikula_Form_View extends Zikula_View
 
         // Load the third party plugins only
         foreach ($this->includes as $includeFilename => $dummy) {
-            if (strpos($includeFilename, 'config' . DIRECTORY_SEPARATOR)
-             || strpos($includeFilename, 'modules' . DIRECTORY_SEPARATOR)) {
+            if (strpos($includeFilename, 'config/' . DIRECTORY_SEPARATOR)
+             || strpos($includeFilename, 'modules/' . DIRECTORY_SEPARATOR)) {
                 require_once $includeFilename;
             }
         }

@@ -187,15 +187,14 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      */
     public function __construct()
     {
+        $this->systemBaseDir = realpath('.');
         $this->reflection = new ReflectionObject($this);
         $p = explode('_', get_class($this));
         $this->name = $p[0];
         $this->directory = $this->name; // legacy handling
-        $path = str_replace('Version.php', '', $this->reflection->getFileName());
-        $this->baseDir = realpath("$path/../../") ;
-        $this->libBaseDir = realpath($this->baseDir . '/lib');
-        $this->systemBaseDir = realpath($this->baseDir . '/../..');
-        $this->type = (strrpos($this->baseDir, 'modules')) ? ModUtil::TYPE_MODULE : ModUtil::TYPE_SYSTEM;
+        $this->baseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
+        $this->libBaseDir = realpath($this->baseDir . '/lib/' . $this->name);
+        $this->type = ModUtil::getModuleBaseDir($this->name) == 'system' ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE;
         if ($this->type == ModUtil::TYPE_MODULE) {
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }

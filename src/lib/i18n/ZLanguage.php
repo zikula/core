@@ -483,9 +483,9 @@ class ZLanguage
     private function searchOverrides($domain, $path)
     {
         $lang = self::transformFS($this->languageCode);
-        $prefix = realpath(realpath(dirname(__FILE__)) . '/../..');
-        $override = realpath("$prefix/config/locale/$lang/LC_MESSAGES/$domain.mo");
-        return (is_readable($override)) ? realpath("$prefix/config/locale") : realpath("$prefix/$path");
+        //$basedir = realpath('.') . DIRECTORY_SEPARATOR;
+        $override = realpath(/*$basedir.*/"config/locale/$lang/LC_MESSAGES/$domain.mo");
+        return $override ? realpath(/*$basedir.*/'config/locale') : realpath($path);
     }
 
 
