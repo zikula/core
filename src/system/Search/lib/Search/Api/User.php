@@ -286,8 +286,8 @@ class Search_Api_User extends Zikula_AbstractApi
         $vars = '';
 
         // for the display function use either the title (if present) or the page id
-        if ($args['func'] == 'process' && isset($args['args']['q'])) {
-            $vars = $args['args']['q'];
+        if ($args['func'] == 'process' && isset($args['args']['q']) && !empty($args['args']['q'])) {
+            $vars = '/' . $args['args']['q'];
             if (isset($args['args']['page']) && $args['args']['page'] != 1) {
                 $vars .= '/page/' . $args['args']['page'];
             }
@@ -296,10 +296,8 @@ class Search_Api_User extends Zikula_AbstractApi
         // construct the custom url part
         if (empty($vars) && isset($args['args']['startnum']) && !empty($args['args']['startnum'])) {
             return $args['modname'] . '/' . $args['func'] . '/' . $args['args']['startnum'];
-        } elseif (empty($vars)) {
-            return $args['modname'] . '/' . $args['func'];
         } else {
-            return $args['modname'] . '/' . $args['func'] . '/' . $vars . '/';
+            return $args['modname'] . (!empty($vars) || $args['func'] != 'main' ? '/' . $args['func'] . $vars : '');
         }
     }
 

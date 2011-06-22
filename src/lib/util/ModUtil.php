@@ -1343,13 +1343,12 @@ class ModUtil
                         $vars .= "/$k/$v"; // &$k=$v
                     }
                 }
-                $func = "/$func";
-                $vars = substr($vars, 1);
-                $url = $modname . ($vars || $func != '/main' ? $func . $vars : '');
+                $url = $modname . ($vars || $func != 'main' ? "/$func$vars" : '');
             }
 
-            if ($shorturlsdefaultmodule == $modinfo['name'] && $url != "{$modinfo['url']}/") {
-                $url = str_replace("{$modinfo['url']}/", '', $url);
+            if ($modinfo && $shorturlsdefaultmodule && $shorturlsdefaultmodule == $modinfo['name']) {
+                $pattern = '/^'.preg_quote($modinfo['url'], '/').'\//';
+                $url = preg_replace($pattern, '', $url);
             }
             if (isset($theme)) {
                 $url = rawurlencode($theme) . '/' . $url;
