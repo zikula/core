@@ -1914,7 +1914,7 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), array('admin', 'blocks', 'categories', 'errors', 'extensions', 'groups', 'mailer', 'pagelock', 'permissions', 'search', 'securitycenter', 'settings', 'themes', 'users'))) {
+        if (in_array(strtolower($moduleName), array('admin', 'blocks', 'categories', 'errors', 'extensions', 'groups', 'mailer', 'pagelock', 'permissions', 'search', 'securitycenter', 'settings', 'theme', 'users'))) {
             $directory = 'system';
         } else {
             $directory = 'modules';
