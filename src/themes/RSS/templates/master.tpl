@@ -3,14 +3,14 @@
 <channel>
 <atom:link href="{getcurrenturl}" rel="self" type="application/rss+xml" />
 <title>{pagegetvar name='title'}</title>
-<link>{getbaseurl}</link>
+<link>{$baseurl}</link>
 <description>{$metatags.description}</description>
 <language>{lang}</language>
 {* here you can add your image if you want to *}
 {* <image>
  <title>{$modvars.ZConfig.sitename}</title>
- <url>{getbaseurl}images/logo.gif</url>
- <link>{getbaseurl}</link>
+ <url>{$baseurl}images/logo.gif</url>
+ <link>{$baseurl}</link>
 </image> *}
 <managingEditor>{gt text="Administrator"} {$modvars.ZConfig.adminmail} ({$modvars.ZConfig.sitename})</managingEditor>
 <webMaster>{gt text="Administrator"} {$modvars.ZConfig.adminmail} ({$modvars.ZConfig.sitename})</webMaster>
