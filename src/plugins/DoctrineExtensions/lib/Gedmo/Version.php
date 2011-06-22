@@ -20,7 +20,7 @@ final class Version
     /**
      * Current version of extensions
      */
-    const VERSION = '2.1.0-DEV';
+    const VERSION = '2.0.x';
 
     /**
      * Checks the dependent ORM library components
@@ -35,7 +35,7 @@ final class Version
         if (!class_exists('Doctrine\\Common\\Version')) {
             throw new DependentComponentNotFoundException("Doctrine\\Common library is either not registered by autoloader or not installed");
         }
-        if (\Doctrine\Common\Version::compare(self::VERSION) > 0) {
+        if (\Doctrine\Common\Version::compare('2.0.1') > 0 || \Doctrine\Common\Version::compare('3.0') < 0) {
             throw new IncompatibleComponentVersionException("Doctrine\\Common library is older than expected for these extensions");
         }
 
@@ -43,7 +43,7 @@ final class Version
         if (!class_exists('Doctrine\\DBAL\\Version')) {
             throw new DependentComponentNotFoundException("Doctrine\\DBAL library is either not registered by autoloader or not installed");
         }
-        if (\Doctrine\DBAL\Version::compare(self::VERSION) > 0) {
+        if (\Doctrine\DBAL\Version::compare(self::VERSION) < 0 && \Doctrine\DBAL\Version::compare('2.1') <= 0) {
             throw new IncompatibleComponentVersionException("Doctrine\\DBAL library is older than expected for these extensions");
         }
 
@@ -51,7 +51,7 @@ final class Version
         if (!class_exists('Doctrine\\ORM\\Version')) {
             throw new DependentComponentNotFoundException("Doctrine\\ORM library is either not registered by autoloader or not installed");
         }
-        if (\Doctrine\ORM\Version::compare(self::VERSION) > 0) {
+        if (\Doctrine\ORM\Version::compare(self::VERSION) < 0 && \Doctrine\ORM\Version::compare('2.1') <= 0) {
             throw new IncompatibleComponentVersionException("Doctrine\\ORM library is older than expected for these extensions");
         }
     }
@@ -69,7 +69,8 @@ final class Version
         if (!class_exists('Doctrine\\Common\\Version')) {
             throw new DependentComponentNotFoundException("Doctrine\\Common library is either not registered by autoloader or not installed");
         }
-        if (\Doctrine\Common\Version::compare(self::VERSION) > 0) {
+
+        if (\Doctrine\Common\Version::compare('2.0.1') > 0 || \Doctrine\Common\Version::compare('3.0') < 0) {
             throw new IncompatibleComponentVersionException("Doctrine\\Common library is older than expected for these extensions");
         }
 
@@ -82,7 +83,7 @@ final class Version
         if (!class_exists('Doctrine\\ODM\\MongoDB\\Version')) {
             throw new DependentComponentNotFoundException("Doctrine\\ODM\\MongoDB library is either not registered by autoloader or not installed");
         }
-        if (\Doctrine\ODM\MongoDB\Version::compare('1.0.0BETA3-DEV') > 0) {
+        if (\Doctrine\ODM\MongoDB\Version::compare('1.0.0BETA2-DEV') > 0) {
             throw new IncompatibleComponentVersionException("Doctrine\\ODM\\MongoDB library is older than expected for these extensions");
         }
     }
