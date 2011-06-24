@@ -1,7 +1,7 @@
 {include file='settings_admin_menu.tpl'}
 {ajaxheader modname=Settings filename=settings_admin_multilingual.js noscriptaculous=true effects=true}
 <div class="z-admincontainer">
-    <div class="z-admin-moduletitle">
+    <div class="z-admin-moduleheader">
         {icon type="locale" size="small"}
         <h3>{gt text="Localisation settings"}</h3>
     </div>

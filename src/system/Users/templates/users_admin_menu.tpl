@@ -2,8 +2,10 @@
 
 {admincategorymenu}
 <div class="z-adminbox">
-    {img modname=$modinfo.name src='admin.png' height='36'}
-    <h2>{gt text="Users manager"}</h2>
+    <div class="z-admin-moduleheader">
+        {img modname=$modinfo.name src='admin.png' height='36'}
+        <h2>{gt text="Users manager"}</h2>
+    </div>
     {modulelinks modname=$modinfo.name type='admin'}
     {if !empty($modvars.ZConfig.profilemodule)}
     {modulelinks menuid='profileadminlinks' menuclass='z-hide z-menulinks' modname=$modvars.ZConfig.profilemodule type='admin'}
