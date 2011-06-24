@@ -1,5 +1,8 @@
 {pageaddvar name="stylesheet" value="system/Admin/style/minitabs.css"}
-<h3>{gt text="Edit theme"} {$themeinfo.displayname}</h3>
+<div class="z-admin-pageheader">
+    {icon type="edit" size="small"}
+    <h3>{gt text="Edit theme"} {$themeinfo.displayname}</h3>
+</div>
 {if $themeinfo.type eq 3}
 <ul id="theme_modifymenu" class="minitabs">
     <li><a {if $func eq 'modify'}class="active"{/if} href="{modurl modname=Theme type=admin func=modify themename=$themename}">{gt text="Settings"}</a></li>
