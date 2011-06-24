@@ -11,7 +11,7 @@
 {assign value="<strong><a href=\"http://community.zikula.org/module-Extensions.htm\">`$extdbtitle`</a></strong>" var=extdblink}
 
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="view" size="small"}
     <h3>{gt text="Themes list"}</h3>
 </div>

@@ -25,7 +25,7 @@
 /* This single container replaces the old 'z-adminbox' and 'z-admincontainer'
 /******************************************************************************/
 
-#z-maincontent div.z-adminarea {
+#z-maincontent div.z-admin-content {
     background: #fff;
     color: #333;
     width: auto;
@@ -34,7 +34,7 @@
     padding: 5px 1%;
 }
 
-#z-maincontent div.z-adminarea .z-menulinks {
+#z-maincontent div.z-admin-content .z-menulinks {
     margin: 0.5em 0;
 }
 
@@ -44,8 +44,8 @@
 
 #z-maincontent div.z-admincontainer h2, /* BC */
 #z-maincontent div.z-admincontainer h3, /* BC */
-#z-maincontent div.z-adminarea h2,
-#z-maincontent div.z-adminarea h3 {
+#z-maincontent div.z-admin-content h2,
+#z-maincontent div.z-admin-content h3 {
     background: none;
     color: #333;
     text-align: left;
@@ -58,12 +58,12 @@
 /* Module- and pageheaders (icon+header)
 /******************************************************************************/
 
-#z-maincontent div.z-admin-moduleheader {
+#z-maincontent div.z-admin-content-modtitle {
     padding: 5px 0;
 }
 
-#z-maincontent div.z-admin-moduleheader:after,
-#z-maincontent div.z-admin-pageheader:after {
+#z-maincontent div.z-admin-content-modtitle:after,
+#z-maincontent div.z-admin-content-pagetitle:after {
     /* clearfix */
     content: ".";
     display: block;
@@ -72,17 +72,17 @@
     visibility: hidden;
 }
 
-#z-maincontent div.z-admin-moduleheader img {
+#z-maincontent div.z-admin-content-modtitle img {
     float: left;
     margin-right: 10px;
 }
 
-#z-maincontent div.z-admin-pageheader img {
+#z-maincontent div.z-admin-content-pagetitle img {
     float: left;
     margin-right: 5px;
 }
 
-#z-maincontent div.z-admin-moduleheader h2 {
+#z-maincontent div.z-admin-content-modtitle h2 {
     background: none;
     color: #333;
     font-size: 24px;
@@ -93,11 +93,11 @@
     text-align: left;
 }
 
-#z-maincontent div.z-admin-pageheader {
+#z-maincontent div.z-admin-content-pagetitle {
     padding: 10px 0;
 }
 
-#z-maincontent div.z-admin-pageheader h3 {
+#z-maincontent div.z-admin-content-pagetitle h3 {
     background: none;
     color: #333;
     font-size: 18px;
@@ -339,7 +339,7 @@ div.z-admincategorydescription {
 
 div.z-admincontainer a.z-disabledadminlink, /* BC */
 div.z-adminbox a.z-disabledadminlink,       /* BC */
-div.z-adminarea a.z-disabledadminlink {
+div.z-admin-content a.z-disabledadminlink {
     text-decoration: line-through;
 }
 

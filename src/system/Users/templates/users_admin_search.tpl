@@ -5,7 +5,7 @@
 {/if}
 
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {if ($callbackFunc == 'composeMail')}{icon type='mail' size='small'}{/if}{icon type='search' size='small'}
     <h3>{$templatetitle}</h3>
 </div>

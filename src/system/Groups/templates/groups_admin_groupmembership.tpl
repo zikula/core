@@ -2,7 +2,7 @@
 {ajaxheader modname=Groups filename=groups.js ui=true}
 {include file="groups_admin_header.tpl"}
 
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="group" size="small"}
     <h3>{gt text="Group membership"} ({$name|safetext})</h3>
 </div>

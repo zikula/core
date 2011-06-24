@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="delete" size="small"}
     <h3>{gt text="Delete page configuration assignment"} - {$name|safetext} - {$pcname|safetext}</h3>
 </div>

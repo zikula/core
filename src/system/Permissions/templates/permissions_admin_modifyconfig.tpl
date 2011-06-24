@@ -2,7 +2,7 @@
 
 {adminheader}
 {include file="permissions_admin_header.tpl"}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}
     <h3>{$templatetitle}</h3>
 </div>

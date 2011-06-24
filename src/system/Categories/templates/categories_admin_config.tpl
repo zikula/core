@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="regenerate" size="small"}
     <h3>{gt text="Rebuild paths"}</h3>
 </div>

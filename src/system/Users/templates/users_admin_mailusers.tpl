@@ -16,7 +16,7 @@
 {/strip}
 
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="mail" size="small"}
     <h3>{gt text="E-mail Users"}</h3>
 </div>

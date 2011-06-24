@@ -1,6 +1,6 @@
 {adminheader}
 {ajaxheader modname="Extensions" filename="hooks.js"}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="hook" size="small"}
     <h3>{gt text="Basic legacy hook settings for"} {modgetinfo modid=$id info=displayname}</h3>
 </div>

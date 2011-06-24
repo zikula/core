@@ -1,7 +1,7 @@
 {ajaxheader ui=true}
 {pageaddvar name='javascript' value='javascript/helpers/Zikula.itemlist.js'}
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="edit" size="small"}
     <h3>{gt text="Edit block"}</h3>
 </div>

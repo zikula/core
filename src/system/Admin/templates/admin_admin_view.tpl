@@ -8,7 +8,7 @@
 {/pageaddvarblock}
 
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="view" size="small"}
     <h3>{gt text="Module categories list"}</h3>
 </div>

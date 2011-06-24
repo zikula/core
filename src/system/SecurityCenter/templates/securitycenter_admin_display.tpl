@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     <h3>{$title|safetext}</h3>
 </div>
 <table class="z-datatable">

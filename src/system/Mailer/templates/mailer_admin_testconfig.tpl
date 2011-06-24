@@ -1,6 +1,6 @@
 {ajaxheader modname=Mailer filename=mailer_admin_testconfig.js noscriptaculous=true effects=true}
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="mail" size="small"}
     <h3>{gt text="Test current settings"}</h3>
 </div>

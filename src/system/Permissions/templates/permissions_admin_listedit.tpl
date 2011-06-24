@@ -2,12 +2,12 @@
 {include file="permissions_admin_header.tpl"}
 
 {if $action eq "add"}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="new" size="small"}
     <h3>{$title|safetext}</h3>
 </div>
 {else}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="edit" size="small"}
     <h3>{$title|safetext}</h3>
 </div>

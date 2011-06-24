@@ -1,6 +1,6 @@
 {adminheader}
 {include file="permissions_admin_header.tpl"}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="delete" size="small"}
     <h3>{gt text="Delete permission rule"}</h3>
 </div>

@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="error" size="small"}
     <h3>{gt text="Error! Could not regenerate the modules list."}</h3>
 </div>

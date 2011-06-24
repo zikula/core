@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="cut" size="small"}
     <h3>{gt text="Move category"}</h3>
 </div>

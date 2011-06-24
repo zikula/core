@@ -1,6 +1,6 @@
 {ajaxheader modname=Mailer filename=mailer_admin_modifyconfig.js noscriptaculous=true effects=true}
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}
     <h3>{gt text="Settings"}</h3>
 </div>

@@ -2,7 +2,7 @@
 {pageaddvar name='javascript' value=$configFormJS.scriptfile}
 {adminheader}
 
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="options" size="small"}
     <h3>{gt text='HTMLPurifier Settings'}</h3>
 </div>

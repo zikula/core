@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {img modname="core" src="folder_new.png" set=icons/small __alt="Install"}
     <h3>{gt text="Install"} - {modgetinfo modid=$id info=displayname}</h3>
 </div>
