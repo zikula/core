@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="info" size="small"}
     <h3>{gt text="Theme credits"}</h3>
 </div>

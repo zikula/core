@@ -8,7 +8,7 @@
 {/pageaddvarblock}
 
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="gears" size="small"}
     {if $systemplugins}
     <h3>{gt text="System plugins"}</h3>

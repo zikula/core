@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="edit" size="small"}
     <h3>{gt text="Edit module category"}</h3>
 </div>

@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="new" size="small"}
     <h3>{gt text="Create new block"}</h3>
 </div>

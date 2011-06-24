@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="delete" size="small"}
     <h3>{gt text="Delete theme %s" tag1=$name|safetext}</h3>
 </div>

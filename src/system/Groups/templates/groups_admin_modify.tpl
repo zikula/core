@@ -1,7 +1,7 @@
 {adminheader}
 {include file="groups_admin_header.tpl"}
 
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="edit" size="small"}
     <h3>{gt text="Edit group"}</h3>
 </div>

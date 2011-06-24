@@ -6,7 +6,7 @@
 {gt text='Force a change of password for %1$s' tag1=$user_obj.uname|safetext assign='templatetitle'}
 {/if}
 
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {img modname='core' set='icons/small' src='password_expire.png' alt=$templatetitle}
     <h3>{$templatetitle}</h3>
 </div>

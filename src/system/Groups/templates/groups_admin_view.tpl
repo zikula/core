@@ -26,7 +26,7 @@
 {adminheader}
 {include file="groups_admin_header.tpl"}
 
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="view" size="small"}
     <h3>{gt text="Groups list"}</h3>
 </div>

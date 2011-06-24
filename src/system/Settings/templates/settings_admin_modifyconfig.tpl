@@ -1,6 +1,6 @@
 {ajaxheader modname=Settings filename=settings_admin_modifyconfig.js noscriptaculous=true effects=true}
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}
     <h3>{gt text="Main settings"}</h3>
 </div>

@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="export" size="small"}
     <h3>{gt text="Export IDS Log"}</h3>
 </div>

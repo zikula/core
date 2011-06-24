@@ -1,13 +1,13 @@
 {ajaxheader modname='Categories' filename='categories_admin_edit.js'}
 {adminheader}
 {if $mode == "edit"}
-    <div id="top" class="z-admin-pageheader">
+    <div id="top" class="z-admin-content-pagetitle">
         {icon type="edit" size="small"}
         <h3>{gt text="Edit category"}</h3>
     </div>
     <form class="z-form" action="{modurl modname="Categories" type="adminform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
 {else}
-    <div id="top" class="z-admin-pageheader">
+    <div id="top" class="z-admin-content-pagetitle">
         {icon type="new" size="small"}
         <h3>{gt text="Create new category"}</h3>
     </div>

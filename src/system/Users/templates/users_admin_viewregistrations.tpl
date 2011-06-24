@@ -9,7 +9,7 @@
 {/strip}
 
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="user" size="small"}
     <h3>{gt text="Registration applications list"}</h3>
 </div>

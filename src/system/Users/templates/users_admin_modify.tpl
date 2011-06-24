@@ -66,7 +66,7 @@
 </div>
 
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="edit" size="small"}
     <h3>{$templatetitle}</h3>
 </div>
@@ -222,7 +222,7 @@
     </div>
 </form>
 
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="utilities" size="small"}
     <h3>{gt text='Other actions for %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname')}</h3>
 </div>

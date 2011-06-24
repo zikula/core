@@ -1,7 +1,7 @@
 {ajaxheader filename='categories_admin_view.js' ui=true}
 {pageaddvar name='javascript' value='system/Categories/javascript/categories_admin_edit.js'}
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type='view' size='small'}
     <h3>{gt text='Categories list'}</h3>
 </div>

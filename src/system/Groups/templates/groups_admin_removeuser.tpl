@@ -1,7 +1,7 @@
 {adminheader}
 {include file='groups_admin_header.tpl'}
 
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type='delete' size='small'}
     <h3>{gt text='Remove user from group'}</h3>
 </div>

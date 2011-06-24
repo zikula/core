@@ -8,7 +8,7 @@
 {/pageaddvarblock}
 
 {adminheader}
-<div id="top" class="z-admin-pageheader">
+<div id="top" class="z-admin-content-pagetitle">
     {icon type="cubes" size="small"}
     <h3>{gt text="Category registry"}</h3>
 </div>

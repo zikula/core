@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="import" size="small"}
     <h3>{gt text='Import users'}</h3>
 </div>

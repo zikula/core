@@ -1,7 +1,7 @@
 {pageaddvar name="javascript" value="javascript/ajax/prototype.js"}
 {pageaddvar name="javascript" value="system/SecurityCenter/javascript/securitycenter_admin_allowedhtm.js"}
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="options" size="small"}
     <h3>{gt text="Allowed HTML settings"}</h3>
 </div>

@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type="add" size="small"}
     <h3>{gt text='Approve registration of \'%1$s\'' tag1=$reginfo.uname}</h3>
 </div>

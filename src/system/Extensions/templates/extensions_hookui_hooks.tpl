@@ -49,7 +49,7 @@
 {/pageaddvarblock}
 
 {adminheader}
-<div class="z-admin-pageheader">
+<div class="z-admin-content-pagetitle">
     {icon type='hook' size='small'}
     <h3>{gt text='Hooks'}</h3>
 </div>
