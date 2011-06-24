@@ -84,6 +84,7 @@
 
 #z-maincontent div.z-admin-content-modtitle h2 {
     background: none;
+    border: none;
     color: #333;
     font-size: 24px;
     font-weight: normal;
@@ -379,22 +380,29 @@ div.property_selector_noscript {
     clear: both;
     visibility: hidden;
 }
+
+#z-maincontent div.z-adminpageicon {
+    padding-bottom: 10px;
+}
+
 #z-maincontent div.z-adminpageicon img {
     float: left;
-    margin-right: 7px;
-    padding-top: 7px;
+    margin-right: 5px;
+    max-height: 22px;
+    max-width: 22px;
+    padding-top: 12px;
 }
 
 #z-maincontent div.z-adminpageicon+h2 {
     background: none;
-    color: #333;
+    border-bottom: 1px solid #EEEEEE;
+    color: #333333;
     font-size: 18px;
     font-weight: normal;
-    line-height: 48px;
-    margin: 0;
-    padding: 0;
+    line-height: 22px;
+    margin: 0 0 10px;
+    padding: 0 0 1px;
     text-align: left;
-    border-bottom: 1px solid #eee;
 }
 
 #z-maincontent div.z-admincontainer h2+* {
