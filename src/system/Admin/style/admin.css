@@ -68,15 +68,15 @@ div.z-admincontainer {
 }
 
 /******************************************************************************/
-/* Module- and pagetitles (icon+header)
+/* Module- and pageheaders (icon+header)
 /******************************************************************************/
 
-#z-maincontent div.z-admin-moduletitle {
+#z-maincontent div.z-admin-moduleheader {
     padding: 5px 0;
 }
 
-#z-maincontent div.z-admin-moduletitle:after,
-#z-maincontent div.z-admin-pagetitle:after {
+#z-maincontent div.z-admin-moduleheader:after,
+#z-maincontent div.z-admin-pageheader:after {
     /* clearfix */
     content: ".";
     display: block;
@@ -85,30 +85,32 @@ div.z-admincontainer {
     visibility: hidden;
 }
 
-#z-maincontent div.z-admin-moduletitle img,
-#z-maincontent div.z-admin-pagetitle img {
+#z-maincontent div.z-admin-moduleheader img,
+#z-maincontent div.z-admin-pageheader img {
     float: left;
     margin-right: 10px;
 }
 
-#z-maincontent div.z-admin-moduletitle h2 {
+#z-maincontent div.z-admin-moduleheader h2 {
     background: none;
     color: #333;
     font-size: 24px;
+    font-weight: normal;
     line-height: 36px;
     margin: 0;
     padding: 0;
     text-align: left;
 }
 
-#z-maincontent div.z-admin-pagetitle {
+#z-maincontent div.z-admin-pageheader {
     padding: 10px 0;
 }
 
-#z-maincontent div.z-admin-pagetitle h3 {
+#z-maincontent div.z-admin-pageheader h3 {
     background: none;
     color: #333;
     font-size: 18px;
+    font-weight: normal;
     line-height: 22px;
     margin: 0;
     padding: 0;
@@ -383,6 +385,7 @@ div.property_selector_noscript {
     background: none;
     color: #333;
     font-size: 24px;
+    font-weight: normal;
     line-height: 36px;
     margin: 0;
     padding: 0;
@@ -407,6 +410,7 @@ div.property_selector_noscript {
     background: none;
     color: #333;
     font-size: 18px;
+    font-weight: normal;
     line-height: 48px;
     margin: 0;
     padding: 0;

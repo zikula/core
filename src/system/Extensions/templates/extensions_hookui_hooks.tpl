@@ -50,7 +50,9 @@
 
 {admincategorymenu}
 <div class="z-adminbox">
-    <h2>{modgetinfo modname=$currentmodule info='displayname'}</h2>
+    <div class="z-admin-moduleheader">
+        <h2>{modgetinfo modname=$currentmodule info='displayname'}</h2>
+    </div>
     {modulelinks modname=$currentmodule type='admin'}
 </div>
 

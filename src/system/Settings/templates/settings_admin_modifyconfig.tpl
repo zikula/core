@@ -1,7 +1,7 @@
 {include file='settings_admin_menu.tpl'}
 {ajaxheader modname=Settings filename=settings_admin_modifyconfig.js noscriptaculous=true effects=true}
 <div class="z-admincontainer">
-    <div class="z-admin-pagetitle">
+    <div class="z-admin-pageheader">
         {icon type="config" size="small"}
         <h3>{gt text="Main settings"}</h3>
     </div>
