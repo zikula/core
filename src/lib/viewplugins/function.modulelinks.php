@@ -62,6 +62,15 @@ function smarty_function_modulelinks($params, Zikula_View $view)
         $menuLinks = ModUtil::apiFunc($params['modname'], $params['type'], 'getlinks', $params);
     }
 
+    // return if there are no links to print
+    if (!$menuLinks) {
+        if (isset($params['assign'])) {
+            $view->assign($params['assign'], $menuLinks);
+        } else {
+            return '';
+        }
+    }
+
     $size = count($menuLinks);
     $html = '';
 
@@ -110,7 +119,6 @@ function smarty_function_modulelinks($params, Zikula_View $view)
     } else {
         return $html;
     }
-
 }
 
 /**
