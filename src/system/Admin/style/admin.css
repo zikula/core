@@ -21,44 +21,31 @@
 }
 
 /******************************************************************************/
-/* Upper half of the admin box: For immediate template under the tab menu.
+/* Admin area (introduced in Core 1.3)
+/* This single container replaces the old 'z-adminbox' and 'z-admincontainer'
 /******************************************************************************/
 
-div.z-adminbox {
+#z-maincontent div.z-adminarea {
     background: #fff;
     color: #333;
     width: auto;
-    border: none;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    padding: 10px 1% 5px 1%;
-}
-
-#z-maincontent div.z-adminbox .z-menulinks,
-#z-maincontent div.z-adminbox .z-menu {
-    margin: 0.5em 0 0;
-}
-
-/******************************************************************************/
-/* Lower half of the admin box: For immediate template under the admin menu.
-/******************************************************************************/
-
-div.z-admincontainer {
-    background: #fff;
-    color: #333;
-    width: auto;
-    margin-bottom: 1.25em;
     border: 1px solid #ccc;
     border-top: none;
-    padding: 0px 1% 5px 1%;
+    padding: 5px 1%;
+}
+
+#z-maincontent div.z-adminarea .z-menulinks {
+    margin: 0.5em 0;
 }
 
 /******************************************************************************/
 /* Styling for all general headers in the entire admin box.
 /******************************************************************************/
 
-#z-maincontent div.z-admincontainer h2,
-#z-maincontent div.z-admincontainer h3 {
+#z-maincontent div.z-admincontainer h2, /* BC */
+#z-maincontent div.z-admincontainer h3, /* BC */
+#z-maincontent div.z-adminarea h2,
+#z-maincontent div.z-adminarea h3 {
     background: none;
     color: #333;
     text-align: left;
@@ -85,10 +72,14 @@ div.z-admincontainer {
     visibility: hidden;
 }
 
-#z-maincontent div.z-admin-moduleheader img,
-#z-maincontent div.z-admin-pageheader img {
+#z-maincontent div.z-admin-moduleheader img {
     float: left;
     margin-right: 10px;
+}
+
+#z-maincontent div.z-admin-pageheader img {
+    float: left;
+    margin-right: 5px;
 }
 
 #z-maincontent div.z-admin-moduleheader h2 {
@@ -324,19 +315,6 @@ div.canceldelete-container img {
 }
 
 /******************************************************************************/
-/* Styles for the buttons on a view table
-/******************************************************************************/
-
-div.z-adminviewbuttons {
-    text-align: right;
-}
-
-div.z-adminviewbuttons img {
-    margin: 5px;
-    float: right;
-}
-
-/******************************************************************************/
 /* Admin category description
 /******************************************************************************/
 
@@ -352,15 +330,16 @@ div.z-admincategorydescription {
 #z-maincontent .z-admin-coreversion {
     color: #999;
     font-size: 0.9em;
-    margin: -1em 0 1.25em;
+    margin: 0 0 1.25em;
 }
 
 /******************************************************************************/
 /* Disabled admin function links
 /******************************************************************************/
 
-div.z-admincontainer a.z-disabledadminlink,
-div.z-adminbox a.z-disabledadminlink {
+div.z-admincontainer a.z-disabledadminlink, /* BC */
+div.z-adminbox a.z-disabledadminlink,       /* BC */
+div.z-adminarea a.z-disabledadminlink {
     text-decoration: line-through;
 }
 
@@ -373,7 +352,7 @@ div.property_selector_noscript {
 }
 
 /*****************************************************************************/
-/* Backwards compatibility for Zikula 1.2 modules
+/* Backwards compatibility for Zikula 1.2 modules: Header area
 /*****************************************************************************/
 
 #z-maincontent div.z-adminbox>img {
@@ -420,4 +399,39 @@ div.property_selector_noscript {
 
 #z-maincontent div.z-admincontainer h2+* {
     clear: both;
+}
+
+/******************************************************************************/
+/* Backwards compatibility for Zikula 1.2 modules:
+/* Upper half of the admin box: For immediate template under the tab menu.
+/******************************************************************************/
+
+div.z-adminbox {
+    background: #fff;
+    color: #333;
+    width: auto;
+    border: none;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 10px 1% 5px 1%;
+}
+
+#z-maincontent div.z-adminbox .z-menulinks,
+#z-maincontent div.z-adminbox .z-menu {
+    margin: 0.5em 0 0;
+}
+
+/******************************************************************************/
+/* Backwards compatibility for Zikula 1.2 modules:
+/* Lower half of the admin box: For immediate template under the admin menu.
+/******************************************************************************/
+
+div.z-admincontainer {
+    background: #fff;
+    color: #333;
+    width: auto;
+    margin-bottom: 1.25em;
+    border: 1px solid #ccc;
+    border-top: none;
+    padding: 0px 1% 5px 1%;
 }
