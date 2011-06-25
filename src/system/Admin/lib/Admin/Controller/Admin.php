@@ -585,6 +585,24 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     }
 
     /**
+     * Open the admin container
+     *
+     */
+    public function adminheader()
+    {
+        return $this->view->fetch('admin_admin_header.tpl');
+    }
+
+    /**
+     * Close the admin container
+     *
+     */
+    public function adminfooter()
+    {
+        return $this->view->fetch('admin_admin_footer.tpl');
+    }
+
+    /**
      * display the module help page
      *
      */

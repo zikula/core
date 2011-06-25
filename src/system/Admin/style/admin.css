@@ -1,25 +1,7 @@
-/*
-Admin interface stylesheet
-
-This stylesheet implements a set of styles used throughout the admin interface
-of Zikula allowing the site administrator to configure via standard css
-techniques the presentation of the admin interface.
-
-Themers can create a theme specific version of this stylesheet by creating a
-copy of the file in themes/<themename>/style/Admin/admin.css. This version of
-stylesheet is kept as generic as possible to avoid many potential theme clashes.
-Re-styling this stylesheet requires a working knowledge of both CSS1 and CSS2.
-
-Legacy themes support the admin stylesheet by virtue of the header of these
-themes being templated in the Header_Footer module.
-
-*/
-
 /******************************************************************************/
-/* Container for admin icons in main admin panel
+/* Admin breadcrumbs
 /******************************************************************************/
 
-/* style for admin breadcrumbs*/
 #z-maincontent .z-admin-breadcrumbs {
     color: #777;
     font-size: 0.95em;
@@ -38,66 +20,32 @@ themes being templated in the Header_Footer module.
     padding: 0 0.2em;
 }
 
-/* style for Immediate template under the tab menu */
-div.z-adminbox {
+/******************************************************************************/
+/* Admin area (introduced in Core 1.3)
+/* This single container replaces the old 'z-adminbox' and 'z-admincontainer'
+/******************************************************************************/
+
+#z-maincontent div.z-admin-content {
     background: #fff;
     color: #333;
     width: auto;
-    border: none;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    padding: 10px 1% 5px 1%;
-}
-
-#z-maincontent div.z-adminbox .z-menulinks,
-#z-maincontent div.z-adminbox .z-menu {
-    margin: 0.5em 0 0;
-}
-
-/* style for Immediate template under the admin menu */
-div.z-admincontainer {
-    background: #fff;
-    color: #333;
-    width: auto;
-    margin-bottom: 1.25em;
     border: 1px solid #ccc;
     border-top: none;
-    padding: 0px 1% 5px 1%;
+    padding: 5px 1%;
 }
 
-/* admin category description */
-div.z-admincategorydescription {
-    text-align: left;
-    margin-bottom: 12px;
+#z-maincontent div.z-admin-content .z-menulinks {
+    margin: 0.5em 0;
 }
 
-/* Style for module title and module's admin icon */
-#z-maincontent div.z-adminbox h2 {
-    background: none;
-    color: #333333;
-    font-size: 24px;
-    line-height: 36px;
-    margin: 0;
-    padding: 0;
-    text-align: left;
-}
+/******************************************************************************/
+/* Styling for all general headers in the entire admin box.
+/******************************************************************************/
 
-#z-maincontent div.z-adminbox img {
-    float: left;
-    margin-right: 7px;
-}
-
-#z-maincontent div.z-adminbox h1:after {
-    /* clearfix */
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-}
-
-#z-maincontent div.z-admincontainer h2,
-#z-maincontent div.z-admincontainer h3 {
+#z-maincontent div.z-admincontainer h2, /* BC */
+#z-maincontent div.z-admincontainer h3, /* BC */
+#z-maincontent div.z-admin-content h2,
+#z-maincontent div.z-admin-content h3 {
     background: none;
     color: #333;
     text-align: left;
@@ -106,48 +54,60 @@ div.z-admincategorydescription {
     padding-top: 0.5em;
 }
 
-#z-maincontent div.z-admincontainer h2+* {
-    clear: both; /* Backwards compatibility */
+/******************************************************************************/
+/* Module- and pageheaders (icon+header)
+/******************************************************************************/
+
+#z-maincontent div.z-admin-content-modtitle {
+    padding: 5px 0;
 }
 
-/* styling for a page title and icon */
-#z-maincontent div.z-admincontainer h3 {
-    font-size: 20px;
-    font-weight: normal;
-    line-height: 26px;
+#z-maincontent div.z-admin-content-modtitle:after,
+#z-maincontent div.z-admin-content-pagetitle:after {
+    /* clearfix */
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
 }
 
-#z-maincontent div.z-adminpageicon+h3 {
-    margin-bottom: 7px;
-    padding-top: 5px;
-}
-
-#z-maincontent div.z-adminpageicon {
-    padding: 0;
-}
-
-#z-maincontent div.z-adminpageicon img {
+#z-maincontent div.z-admin-content-modtitle img {
     float: left;
-    margin-right: 7px;
-    padding-top: 7px;
+    margin-right: 10px;
 }
 
-/* styling for core version */
-#z-maincontent .z-admin-coreversion {
-    color: #999;
-    font-size: 0.9em;
-    margin: -1em 0 1.25em;
+#z-maincontent div.z-admin-content-pagetitle img {
+    float: left;
+    margin-right: 5px;
 }
 
-/* disabled admin function links */
-div.z-admincontainer a.z-disabledadminlink,
-div.z-adminbox a.z-disabledadminlink {
-    text-decoration: line-through;
+#z-maincontent div.z-admin-content-modtitle h2 {
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 36px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
 }
 
-/* styling for noscript category propertly selector label */
-div.property_selector_noscript {
-    display: inline;
+#z-maincontent div.z-admin-content-pagetitle {
+    padding: 10px 0;
+}
+
+#z-maincontent div.z-admin-content-pagetitle h3 {
+    background: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 22px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    border-bottom: 1px solid #eee;
 }
 
 /******************************************************************************/
@@ -248,7 +208,7 @@ div.property_selector_noscript {
 #z-maincontent div#z-developernotices {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
-    padding: 0.5em 20px 0.5em 30px;
+    padding: 0 20px 0 0;
     margin: -1em auto 0;
     min-height: 1em;
     width: 75%;
@@ -263,48 +223,55 @@ div.property_selector_noscript {
 
 /* styling for security checks */
 #z-maincontent div#z-securityanalyzer {
-    background: url("../../../images/icons/extrasmall/bell.png") #FFF6BF 15px 0.6em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, -moz-linear-gradient(top, #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/bell.png") 15px 0.6em no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/bell.png") #FFF6BF 99% 0.4em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.4em no-repeat, -moz-linear-gradient(top, #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.4em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.4em no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
     border: 2px solid #ffd324;
 }
 
 /* styling for status update checker */
 #z-maincontent div#z-updatechecker {
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") #C4E6BD 15px 0.6em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") 15px 0.6em no-repeat, -moz-linear-gradient(top, #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") 15px 0.6em no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") #C4E6BD 99% 0.4em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.4em no-repeat, -moz-linear-gradient(top, #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.4em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.4em no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
     border: 2px solid #7Ec573;
 }
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
 #z-maincontent div#z-adminwarning {
-    background: url("../../../images/icons/extrasmall/error.png") #FFCBCA 15px 0.6em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/error.png") 15px 0.6em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/error.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/error.png") 15px 0.6em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/error.png") #FFCBCA 99% 0.4em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/error.png") 99% 0.4em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/error.png") 99% 0.4em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/error.png") 99% 0.4em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
     border: 2px solid #990000;
 }
 
 /* styling for developer notices */
 #z-maincontent div#z-developernotices {
-    background: url("../../../images/icons/extrasmall/run.png") #C5E8F1 15px 0.6em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/run.png") 15px 0.6em no-repeat, -moz-linear-gradient(top, #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/run.png") 15px 0.6em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/run.png") 15px 0.6em no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/run.png") #C5E8F1 99% 0.4em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/run.png") 99% 0.4em no-repeat, -moz-linear-gradient(top, #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/run.png") 99% 0.4em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/run.png") 99% 0.4em no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
     border: 2px solid #95C9EF;
 }
 
 div#z-developernotices strong,
 div#z-securityanalyzer strong,
 div#z-updatechecker strong {
+    background: url("../../../images/global/arrow_down_black.png") no-repeat scroll 5px 0.65em;
     display: block;
     font-size: 1.2em;
     font-weight: bold;
-    margin: 0 1em 0.8em;
-    text-decoration: underline;
+    margin: 0 0 0.8em;
+    padding: 0.25em 0.25em 0.25em 15px;
+}
+
+div#z-developernotices strong:hover,
+div#z-securityanalyzer strong:hover,
+div#z-updatechecker strong:hover {
+    background: url("../../../images/global/arrow_down_grey.png") no-repeat scroll 5px 0.65em;
 }
 
 div#z-developernotices a,
@@ -355,12 +322,131 @@ div.canceldelete-container img {
     float: left;
 }
 
-/* styles for the buttons on a view table */
-div.z-adminviewbuttons {
-    text-align: right;
+/******************************************************************************/
+/* Admin category description
+/******************************************************************************/
+
+div.z-admincategorydescription {
+    text-align: left;
+    margin-bottom: 12px;
 }
 
-div.z-adminviewbuttons img {
-    margin: 5px;
-    float: right;
+/******************************************************************************/
+/* Styling for core version
+/******************************************************************************/
+
+#z-maincontent .z-admin-coreversion {
+    color: #999;
+    font-size: 0.9em;
+    margin: 0 0 1.25em;
+}
+
+/******************************************************************************/
+/* Disabled admin function links
+/******************************************************************************/
+
+div.z-admincontainer a.z-disabledadminlink, /* BC */
+div.z-adminbox a.z-disabledadminlink,       /* BC */
+div.z-admin-content a.z-disabledadminlink {
+    text-decoration: line-through;
+}
+
+/******************************************************************************/
+/* Styling for noscript category propertly selector label
+/******************************************************************************/
+
+div.property_selector_noscript {
+    display: inline;
+}
+
+/*****************************************************************************/
+/* Backwards compatibility for Zikula 1.2 modules: Header area
+/*****************************************************************************/
+
+#z-maincontent div.z-adminbox>img {
+    float: left;
+    margin-right: 10px;
+}
+
+#z-maincontent div.z-adminbox h1 {
+    background: none;
+    color: #333;
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 36px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+#z-maincontent div.z-adminbox h1:after {
+    /* clearfix */
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#z-maincontent div.z-adminpageicon {
+    padding-bottom: 10px;
+}
+
+#z-maincontent div.z-adminpageicon img {
+    float: left;
+    margin-right: 5px;
+    max-height: 22px;
+    max-width: 22px;
+    padding-top: 12px;
+}
+
+#z-maincontent div.z-adminpageicon+h2 {
+    background: none;
+    border-bottom: 1px solid #EEEEEE;
+    color: #333333;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 22px;
+    margin: 0 0 10px;
+    padding: 0 0 1px;
+    text-align: left;
+}
+
+#z-maincontent div.z-admincontainer h2+* {
+    clear: both;
+}
+
+/******************************************************************************/
+/* Backwards compatibility for Zikula 1.2 modules:
+/* Upper half of the admin box: For immediate template under the tab menu.
+/******************************************************************************/
+
+div.z-adminbox {
+    background: #fff;
+    color: #333;
+    width: auto;
+    border: none;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 10px 1% 5px 1%;
+}
+
+#z-maincontent div.z-adminbox .z-menulinks,
+#z-maincontent div.z-adminbox .z-menu {
+    margin: 0.5em 0 0;
+}
+
+/******************************************************************************/
+/* Backwards compatibility for Zikula 1.2 modules:
+/* Lower half of the admin box: For immediate template under the admin menu.
+/******************************************************************************/
+
+div.z-admincontainer {
+    background: #fff;
+    color: #333;
+    width: auto;
+    margin-bottom: 1.25em;
+    border: 1px solid #ccc;
+    border-top: none;
+    padding: 0px 1% 5px 1%;
 }
