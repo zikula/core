@@ -1,5 +1,5 @@
 {$menu}
-<div id="z-admincontainer" class="z-admincontainer">
+<div id="z-admincontainer" class="z-admin-content">
     <h2>{$category.catname|safetext}</h2>
     <div class="z-admincategorydescription">{$category.description|safetext}</div>
 

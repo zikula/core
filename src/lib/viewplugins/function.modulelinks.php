@@ -74,7 +74,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
     $size = count($menuLinks);
     $html = '';
 
-    if ($size > 0) {
+    if (!empty($menuLinks)) {
         $html = '<ul';
         $html .= !empty($menuId) ? ' id="'.$menuId.'"' : '';
         $html .= !empty($menuClass) ? ' class="'.$menuClass.'"' : '';
