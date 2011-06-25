@@ -38,7 +38,7 @@ class Zikula_EntityAccess implements ArrayAccess
     public function toArray()
     {
         $array = array();
-        foreach (get_class_vars($this) as $property) {
+        foreach (get_object_vars($this) as $property) {
             $method = "get$property";
             $array[$property] = $this->$method();
         }
