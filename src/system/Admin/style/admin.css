@@ -223,44 +223,44 @@
 
 /* styling for security checks */
 #z-maincontent div#z-securityanalyzer {
-    background: url("../../../images/icons/extrasmall/bell.png") #FFF6BF 99% 0.4em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.4em no-repeat, -moz-linear-gradient(top, #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.4em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.4em no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/bell.png") #FFF6BF 99% 0.35em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
     border: 2px solid #ffd324;
 }
 
 /* styling for status update checker */
 #z-maincontent div#z-updatechecker {
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") #C4E6BD 99% 0.4em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.4em no-repeat, -moz-linear-gradient(top, #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.4em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.4em no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") #C4E6BD 99% 0.35em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
     border: 2px solid #7Ec573;
 }
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
 #z-maincontent div#z-adminwarning {
-    background: url("../../../images/icons/extrasmall/error.png") #FFCBCA 99% 0.4em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/error.png") 99% 0.4em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/error.png") 99% 0.4em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/error.png") 99% 0.4em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/error.png") #FFCBCA 99% 0.35em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
     border: 2px solid #990000;
 }
 
 /* styling for developer notices */
 #z-maincontent div#z-developernotices {
-    background: url("../../../images/icons/extrasmall/run.png") #C5E8F1 99% 0.4em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/run.png") 99% 0.4em no-repeat, -moz-linear-gradient(top, #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/run.png") 99% 0.4em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/run.png") 99% 0.4em no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
+    background: url("../../../images/icons/extrasmall/run.png") #C5E8F1 99% 0.35em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
     border: 2px solid #95C9EF;
 }
 
 div#z-developernotices strong,
 div#z-securityanalyzer strong,
 div#z-updatechecker strong {
-    background: url("../../../images/global/arrow_down_black.png") no-repeat scroll 5px 0.65em;
+    background: url("../../../images/global/arrow_down_black.png") no-repeat scroll 5px 0.70em;
     display: block;
     font-size: 1.2em;
     font-weight: bold;
@@ -271,7 +271,20 @@ div#z-updatechecker strong {
 div#z-developernotices strong:hover,
 div#z-securityanalyzer strong:hover,
 div#z-updatechecker strong:hover {
-    background: url("../../../images/global/arrow_down_grey.png") no-repeat scroll 5px 0.65em;
+    background: url("../../../images/global/arrow_down_grey.png") no-repeat scroll 5px 0.70em;
+    text-decoration:underline;
+}
+
+div#z-developernotices strong.z-panel-active,
+div#z-securityanalyzer strong.z-panel-active,
+div#z-updatechecker strong.z-panel-active {
+    background: url("../../../images/global/arrow_right_black.png") no-repeat scroll 5px 0.70em;
+}
+
+div#z-developernotices strong.z-panel-active:hover,
+div#z-securityanalyzer strong.z-panel-active:hover,
+div#z-updatechecker strong.z-panel-active:hover {
+    background: url("../../../images/global/arrow_right_grey.png") no-repeat scroll 5px 0.70em;
 }
 
 div#z-developernotices a,
