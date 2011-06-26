@@ -41,7 +41,7 @@ class Zikula_EntityAccess implements ArrayAccess
         $properties = $r->getProperties();
         $array = array();
         foreach ($properties as $property) {
-            $method = "get$property";
+            $method = "get{$property->name}";
             $array[$property] = $this->$method();
         }
         return $array;
