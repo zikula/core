@@ -427,7 +427,7 @@ class ModUtil
      */
     public static function getInfo($modid = 0)
     {
-        // a $modid of 0 is associated with the core ( z_blocks.mid, ... ).
+        // a $modid of 0 is associated with the core ( blocks.mid, ... ).
         if (!is_numeric($modid)) {
             return false;
         }
@@ -671,7 +671,7 @@ class ModUtil
                 $table_col = substr($key, 0, -4);
                 if (substr($key, -11) == "_column_def" && !isset($data[$table_col])) {
                     foreach ($value as $fieldname => $def) {
-                        $data[$table_col][$fieldname] = 'z_' . $fieldname;
+                        $data[$table_col][$fieldname] = $fieldname;
                     }
                 }
             }

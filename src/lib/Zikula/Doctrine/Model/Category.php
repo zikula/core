@@ -27,18 +27,18 @@ class Zikula_Doctrine_Model_Category extends Doctrine_Record
     {
         $this->setTableName('categories_category');
 
-        $this->hasColumn('cat_id as id', 'integer', 4, array('primary' => true, 'autoincrement' => true));
-        $this->hasColumn('cat_parent_id as parent_id', 'integer', 4);
-        $this->hasColumn('cat_is_locked as is_locked', 'boolean');
-        $this->hasColumn('cat_is_leaf as is_leaf', 'boolean');
-        $this->hasColumn('cat_name as name', 'string', 255);
-        $this->hasColumn('cat_value as value', 'string', 255);
-        $this->hasColumn('cat_sort_value as sort_value', 'integer', 4);
-        $this->hasColumn('cat_display_name as display_name', 'array');
-        $this->hasColumn('cat_display_desc as display_desc', 'array');
-        $this->hasColumn('cat_path as path', 'string', 4000);
-        $this->hasColumn('cat_ipath as ipath', 'string', 255);
-        $this->hasColumn('cat_status as status', 'integer', 1);
+        $this->hasColumn('id as id', 'integer', 4, array('primary' => true, 'autoincrement' => true));
+        $this->hasColumn('parent_id as parent_id', 'integer', 4);
+        $this->hasColumn('is_locked as is_locked', 'boolean');
+        $this->hasColumn('is_leaf as is_leaf', 'boolean');
+        $this->hasColumn('name as name', 'string', 255);
+        $this->hasColumn('value as value', 'string', 255);
+        $this->hasColumn('sort_value as sort_value', 'integer', 4);
+        $this->hasColumn('display_name as display_name', 'array');
+        $this->hasColumn('display_desc as display_desc', 'array');
+        $this->hasColumn('path as path', 'string', 4000);
+        $this->hasColumn('ipath as ipath', 'string', 255);
+        $this->hasColumn('status as status', 'integer', 1);
     }
 }
 

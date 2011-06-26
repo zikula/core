@@ -65,15 +65,13 @@ class Blocks_Installer extends Zikula_AbstractInstaller
         {
             case '3.6':
                 // Rename 'thelang' block.
-                $table = DBUtil::getLimitedTablename('blocks');
-                $sql = "UPDATE $table SET z_bkey = 'lang' WHERE z_bkey = 'thelang'";
+                $table = 'blocks';
+                $sql = "UPDATE $table SET bkey = 'lang' WHERE bkey = 'thelang'";
                 DBUtil::executeSQL($sql);
-
                 // Optional upgrade
-                if (in_array(DBUtil::getLimitedTablename('message'), DBUtil::metaTables())) {
+                if (in_array('message', DBUtil::metaTables())) {
                     $this->migrateMessages();
                 }
-
                 $this->migrateBlockNames();
                 $this->migrateExtMenu();
 
@@ -195,8 +193,8 @@ class Blocks_Installer extends Zikula_AbstractInstaller
     {
         // Migrate any Admin_Messages to blocks
         $messageTable = DBUtil::getLimitedTablename('message');
-        $blocksTable = DBUtil::getLimitedTablename('blocks');
-        $messageBlocks = DBUtil::executeSQL("SELECT * FROM $blocksTable WHERE z_bkey = 'messages'")->fetchAll(Doctrine::FETCH_ASSOC);
+        $blocksTable = 'blocks';
+        $messageBlocks = DBUtil::executeSQL("SELECT * FROM $blocksTable WHERE bkey = 'messages'")->fetchAll(Doctrine::FETCH_ASSOC);
 
         $result = DBUtil::executeSQL("SELECT * FROM $messageTable");
         $data = $result->fetchAll(Doctrine::FETCH_ASSOC);
@@ -226,9 +224,8 @@ class Blocks_Installer extends Zikula_AbstractInstaller
 
         // Remove Admin_Message table.
         DBUtil::executeSQL("DROP TABLE $messageTable");
-
         // Remove any Admin_Message blocks
-        $sql = "DELETE FROM $blocksTable WHERE z_bkey = 'messages'";
+        $sql = "DELETE FROM $blocksTable WHERE bkey = 'messages'";
         DBUtil::executeSQL($sql);
     }
 
@@ -257,7 +254,7 @@ class Blocks_Installer extends Zikula_AbstractInstaller
                                 $parts[1] = $tmp;
                                 $item['url'] = '{' . implode(':', $parts) . '}';    // And put it back together
                             }
-                            
+
                         }
                     }
                 }

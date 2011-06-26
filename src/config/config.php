@@ -16,7 +16,7 @@ global $ZConfig;
 $ZConfig['System']['installed'] = 0;        // installer will change this during installation
 $ZConfig['System']['temp'] = 'ztemp';       // location of temporary folder
 $ZConfig['System']['datadir'] = 'userdata';     // location of site data files
-$ZConfig['System']['prefix'] = 'z';         // database prefix
+$ZConfig['System']['prefix'] = '';         // database prefix (deprecated).
 $ZConfig['System']['development'] = 0;      // development mode 1/0 for on or off.  Disable in production mode.
 $ZConfig['System']['legacy_prefilters'] = true; // enable legacy template prefilters
 $ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers
