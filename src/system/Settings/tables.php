@@ -19,13 +19,13 @@ function Settings_tables()
 
     $table = DBUtil::getLimitedTablename('objectdata_attributes');
     $dbtables['objectdata_attributes'] = $table;
-    $columns = array ('id'             => 'oba_id',
-                      'attribute_name' => 'oba_attribute_name',
-                      'object_id'      => 'oba_object_id',
-                      'object_type'    => 'oba_object_type',
-                      'value'          => 'oba_value'
+    $columns = array ('id'             => 'id',
+                      'attribute_name' => 'attribute_name',
+                      'object_id'      => 'object_id',
+                      'object_type'    => 'object_type',
+                      'value'          => 'value'
                       );
-    ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'oba_');
+    ObjectUtil::addStandardFieldsToTableDefinition ($columns);
     $dbtables['objectdata_attributes_column'] = $columns;
     $dbtables['objectdata_attributes_column_idx'] = array('object_type' => 'object_type', 'object_id' => 'object_id');
 
@@ -34,17 +34,17 @@ function Settings_tables()
                       'object_id'      => 'I4 NOTNULL DEFAULT 0',
                       'object_type'    => "C(80) NOTNULL DEFAULT ''",
                       'value'          => "X NOTNULL DEFAULT ''");
-    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'oba_');
+    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
     $dbtables['objectdata_attributes_column_def'] = $tabledef;
 
     $table = DBUtil::getLimitedTablename('objectdata_log');
     $dbtables['objectdata_log'] = $table;
-    $columns = array ('id'           => 'obl_id',
-                      'object_type'  => 'obl_object_type',
-                      'object_id'    => 'obl_object_id',
-                      'op'           => 'obl_op',
-                      'diff'         => 'obl_diff');
-    ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'obl_');
+    $columns = array ('id'           => 'id',
+                      'object_type'  => 'object_type',
+                      'object_id'    => 'object_id',
+                      'op'           => 'op',
+                      'diff'         => 'diff');
+    ObjectUtil::addStandardFieldsToTableDefinition ($columns);
     $dbtables['objectdata_log_column'] = $columns;
 
     $tabledef = array('id' => 'I4 PRIMARY AUTO',
@@ -57,32 +57,32 @@ function Settings_tables()
 
     $table = DBUtil::getLimitedTablename('objectdata_meta');
     $dbtables['objectdata_meta'] = $table;
-    $columns = array ('id'             => 'obm_id',
-                      'module'         => 'obm_module',
-                      'table'          => 'obm_table',
-                      'idcolumn'       => 'obm_idcolumn',
-                      'obj_id'         => 'obm_obj_id',
-                      'permissions'    => 'obm_permissions',
-                      'dc_title'       => 'obm_dc_title',
-                      'dc_author'      => 'obm_dc_author',
-                      'dc_subject'     => 'obm_dc_subject',
-                      'dc_keywords'    => 'obm_dc_keywords',
-                      'dc_description' => 'obm_dc_description',
-                      'dc_publisher'   => 'obm_dc_publisher',
-                      'dc_contributor' => 'obm_dc_contributor',
-                      'dc_startdate'   => 'obm_dc_startdate',
-                      'dc_enddate'     => 'obm_dc_enddate',
-                      'dc_type'        => 'obm_dc_type',
-                      'dc_format'      => 'obm_dc_format',
-                      'dc_uri'         => 'obm_dc_uri',
-                      'dc_source'      => 'obm_dc_source',
-                      'dc_language'    => 'obm_dc_language',
-                      'dc_relation'    => 'obm_dc_relation',
-                      'dc_coverage'    => 'obm_dc_coverage',
-                      'dc_entity'      => 'obm_dc_entity',
-                      'dc_comment'     => 'obm_dc_comment',
-                      'dc_extra'       => 'obm_dc_extra');
-    ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'obm_');
+    $columns = array ('id'             => 'id',
+                      'module'         => 'module',
+                      'table'          => 'table',
+                      'idcolumn'       => 'idcolumn',
+                      'obj_id'         => 'obj_id',
+                      'permissions'    => 'permissions',
+                      'dc_title'       => 'dc_title',
+                      'dc_author'      => 'dc_author',
+                      'dc_subject'     => 'dc_subject',
+                      'dc_keywords'    => 'dc_keywords',
+                      'dc_description' => 'dc_description',
+                      'dc_publisher'   => 'dc_publisher',
+                      'dc_contributor' => 'dc_contributor',
+                      'dc_startdate'   => 'dc_startdate',
+                      'dc_enddate'     => 'dc_enddate',
+                      'dc_type'        => 'dc_type',
+                      'dc_format'      => 'dc_format',
+                      'dc_uri'         => 'dc_uri',
+                      'dc_source'      => 'dc_source',
+                      'dc_language'    => 'dc_language',
+                      'dc_relation'    => 'dc_relation',
+                      'dc_coverage'    => 'dc_coverage',
+                      'dc_entity'      => 'dc_entity',
+                      'dc_comment'     => 'dc_comment',
+                      'dc_extra'       => 'dc_extra');
+    ObjectUtil::addStandardFieldsToTableDefinition ($columns);
     $dbtables['objectdata_meta_column'] = $columns;
 
     $tabledef = array('id'             => 'I4 PRIMARY AUTO',
@@ -110,7 +110,7 @@ function Settings_tables()
                       'dc_entity'      => "C(64) DEFAULT ''",
                       'dc_comment'     => "C(255) DEFAULT ''",
                       'dc_extra'       => "C(255) DEFAULT ''");
-    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'obm_');
+    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
     $dbtables['objectdata_meta_column_def'] = $tabledef;
 
     // workflow

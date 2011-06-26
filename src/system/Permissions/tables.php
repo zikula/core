@@ -38,14 +38,14 @@ function Permissions_tables()
     $dbtable['group_perms'] = $group_perms;
 
     // Set the column names.
-    $dbtable['group_perms_column'] = array ('pid'       => 'z_pid',
-                                            'gid'       => 'z_gid',
-                                            'sequence'  => 'z_sequence',
-                                            'realm'     => 'z_realm',
-                                            'component' => 'z_component',
-                                            'instance'  => 'z_instance',
-                                            'level'     => 'z_level',
-                                            'bond'      => 'z_bond');
+    $dbtable['group_perms_column'] = array ('pid'       => 'pid',
+                                            'gid'       => 'gid',
+                                            'sequence'  => 'sequence',
+                                            'realm'     => 'realm',
+                                            'component' => 'component',
+                                            'instance'  => 'instance',
+                                            'level'     => 'level',
+                                            'bond'      => 'bond');
 
     // column definitions
     $dbtable['group_perms_column_def'] = array('pid'       => "I AUTO PRIMARY",

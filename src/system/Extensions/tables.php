@@ -30,16 +30,16 @@ function Extensions_tables()
     $hooks = $prefix . '_hooks';
     $dbtable['hooks'] = $hooks;
     $dbtable['hooks_column'] = array(
-            'id' => 'z_id',
-            'object' => 'z_object',
-            'action' => 'z_action',
-            'smodule' => 'z_smodule',
-            'stype' => 'z_stype',
-            'tarea' => 'z_tarea',
-            'tmodule' => 'z_tmodule',
-            'ttype' => 'z_ttype',
-            'tfunc' => 'z_tfunc',
-            'sequence' => 'z_sequence');
+            'id' => 'id',
+            'object' => 'object',
+            'action' => 'action',
+            'smodule' => 'smodule',
+            'stype' => 'stype',
+            'tarea' => 'tarea',
+            'tmodule' => 'tmodule',
+            'ttype' => 'ttype',
+            'tfunc' => 'tfunc',
+            'sequence' => 'sequence');
 
     // column definition
     $dbtable['hooks_column_def'] = array(
@@ -61,19 +61,19 @@ function Extensions_tables()
     $modules = $prefix . '_modules';
     $dbtable['modules'] = $modules;
     $dbtable['modules_column'] = array(
-            'id' => 'z_id',
-            'name' => 'z_name',
-            'type' => 'z_type',
-            'displayname' => 'z_displayname',
-            'url' => 'z_url',
-            'description' => 'z_description',
-            'directory' => 'z_directory',
-            'version' => 'z_version',
-            'capabilities' => 'z_capabilities',
-            'state' => 'z_state',
-            'securityschema' => 'z_securityschema',
-            'core_min' => 'z_core_min',
-            'core_max' => 'z_core_max',
+            'id' => 'id',
+            'name' => 'name',
+            'type' => 'type',
+            'displayname' => 'displayname',
+            'url' => 'url',
+            'description' => 'description',
+            'directory' => 'directory',
+            'version' => 'version',
+            'capabilities' => 'capabilities',
+            'state' => 'state',
+            'securityschema' => 'securityschema',
+            'core_min' => 'core_min',
+            'core_max' => 'core_max',
     );
 
     // column definition
@@ -100,10 +100,10 @@ function Extensions_tables()
     $module_vars = $prefix . '_module_vars';
     $dbtable['module_vars'] = $module_vars;
     $dbtable['module_vars_column'] = array(
-            'id' => 'z_id',
-            'modname' => 'z_modname',
-            'name' => 'z_name',
-            'value' => 'z_value');
+            'id' => 'id',
+            'modname' => 'modname',
+            'name' => 'name',
+            'value' => 'value');
 
     // column definition
     $dbtable['module_vars_column_def'] = array(
@@ -120,12 +120,12 @@ function Extensions_tables()
     $module_deps = $prefix . '_module_deps';
     $dbtable['module_deps'] = $module_deps;
     $dbtable['module_deps_column'] = array(
-            'id' => 'z_id',
-            'modid' => 'z_modid',
-            'modname' => 'z_modname',
-            'minversion' => 'z_minversion',
-            'maxversion' => 'z_maxversion',
-            'status' => 'z_status');
+            'id' => 'id',
+            'modid' => 'modid',
+            'modname' => 'modname',
+            'minversion' => 'minversion',
+            'maxversion' => 'maxversion',
+            'status' => 'status');
 
     // column definition
     $dbtable['module_deps_column_def'] = array(

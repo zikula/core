@@ -29,13 +29,13 @@ function pagelock_tables()
   $dbtable['pagelock'] = $tableName;
 
   $dbtable['pagelock_column'] =
-    array('id'                => 'z_id',
-          'name'              => 'z_name',
-          'createdDate'       => 'z_cdate',
-          'expiresDate'       => 'z_edate',
-          'lockedBySessionId' => 'z_session',
-          'lockedByTitle'     => 'z_title',
-          'lockedByIPNo'      => 'z_ipno');
+    array('id'                => 'id',
+          'name'              => 'name',
+          'createdDate'       => 'cdate',
+          'expiresDate'       => 'edate',
+          'lockedBySessionId' => 'session',
+          'lockedByTitle'     => 'title',
+          'lockedByIPNo'      => 'ipno');
 
 
   $def =

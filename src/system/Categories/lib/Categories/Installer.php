@@ -64,7 +64,7 @@ class Categories_Installer extends Zikula_AbstractInstaller
         $this->createTables_101();
 
         // new column used in doctrine categorisable template
-        DoctrineUtil::createColumn('categories_mapobj', 'cmo_reg_property', array('type' => 'string',
+        DoctrineUtil::createColumn('categories_mapobj', 'property', array('type' => 'string',
                 'length' => 60), false);
 
         $this->setVar('userrootcat', '/__SYSTEM__/Users');
@@ -97,7 +97,7 @@ class Categories_Installer extends Zikula_AbstractInstaller
                 $this->upgrade_MigrateLanguageCodes();
             case '1.2':
                 // new column used in doctrine categorisable template
-                DoctrineUtil::createColumn('categories_mapobj', 'cmo_reg_property', array('type' => 'string',
+                DoctrineUtil::createColumn('categories_mapobj', 'reg_property', array('type' => 'string',
                         'length' => 60), false);
             case '1.2.1':
             // future upgrade routines
@@ -146,7 +146,7 @@ class Categories_Installer extends Zikula_AbstractInstaller
             return false;
         }
 
-        if (!DBUtil::createIndex('idx_categories_mapobj', 'categories_mapobj', array('modname', 'table', 'obj_id', 'obj_idcolumn'))) {
+        if (!DBUtil::createIndex('idx_categories_mapobj', 'categories_mapobj', array('modname', 'table', 'id', 'idcolumn'))) {
             return false;
         }
 

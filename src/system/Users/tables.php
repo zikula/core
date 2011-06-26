@@ -134,21 +134,21 @@ function Users_tables_for_220()
     //
     $dbinfo['users'] = DBUtil::getLimitedTablename('users');
     $dbinfo['users_column'] = array(
-        'uid'           => 'z_uid',
-        'uname'         => 'z_uname',
-        'email'         => 'z_email',
-        'pass'          => 'z_pass',
-        'passreminder'  => 'z_passreminder',
-        'activated'     => 'z_activated',
-        'approved_date' => 'z_approved_date',
-        'approved_by'   => 'z_approved_by',
-        'user_regdate'  => 'z_user_regdate',
-        'lastlogin'     => 'z_lastlogin',
-        'theme'         => 'z_theme',
-        'ublockon'      => 'z_ublockon',
-        'ublock'        => 'z_ublock',
-        'tz'            => 'z_tz',
-        'locale'        => 'z_locale',
+        'uid'           => 'uid',
+        'uname'         => 'uname',
+        'email'         => 'email',
+        'pass'          => 'pass',
+        'passreminder'  => 'passreminder',
+        'activated'     => 'activated',
+        'approved_date' => 'approved_date',
+        'approved_by'   => 'approved_by',
+        'user_regdate'  => 'user_regdate',
+        'lastlogin'     => 'lastlogin',
+        'theme'         => 'theme',
+        'ublockon'      => 'ublockon',
+        'ublock'        => 'ublock',
+        'tz'            => 'tz',
+        'locale'        => 'locale',
     );
     $dbinfo['users_column_def'] = array(
         'uid'           => "I PRIMARY AUTO",
@@ -197,12 +197,12 @@ function Users_tables_for_220()
     $dbinfo['users_verifychg'] = DBUtil::getLimitedTablename('users_verifychg');;
 
     $dbinfo['users_verifychg_column'] = array (
-        'id'            => 'z_id',
-        'changetype'    => 'z_changetype',
-        'uid'           => 'z_uid',
-        'newemail'      => 'z_newemail',
-        'verifycode'    => 'z_verifycode',
-        'created_dt'    => 'z_created_dt',
+        'id'            => 'id',
+        'changetype'    => 'changetype',
+        'uid'           => 'uid',
+        'newemail'      => 'newemail',
+        'verifycode'    => 'verifycode',
+        'created_dt'    => 'created_dt',
     );
 
     $dbinfo['users_verifychg_column_def'] = array(
@@ -234,12 +234,12 @@ function Users_tables_for_220()
     //
     $dbinfo['session_info'] = DBUtil::getLimitedTablename('session_info');
     $dbinfo['session_info_column'] = array (
-        'sessid'    => 'z_sessid',
-        'ipaddr'    => 'z_ipaddr',
-        'lastused'  => 'z_lastused',
-        'uid'       => 'z_uid',
-        'remember'  => 'z_remember',
-        'vars'      => 'z_vars'
+        'sessid'    => 'sessid',
+        'ipaddr'    => 'ipaddr',
+        'lastused'  => 'lastused',
+        'uid'       => 'uid',
+        'remember'  => 'remember',
+        'vars'      => 'vars'
     );
 
     $dbinfo['session_info_column_def'] = array(
@@ -311,23 +311,23 @@ function Users_tables_for_113()
     //                      to successfully log in!
     $dbinfo['users'] = DBUtil::getLimitedTablename('users');
     $dbinfo['users_column'] = array(
-        'uid'             => 'z_uid',
-        'uname'           => 'z_uname',
-        'email'           => 'z_email',
-        'user_regdate'    => 'z_user_regdate',
-        'user_viewemail'  => 'z_user_viewemail',
-        'user_theme'      => 'z_user_theme',
-        'pass'            => 'z_pass',
-        'storynum'        => 'z_storynum',
-        'ublockon'        => 'z_ublockon',
-        'ublock'          => 'z_ublock',
-        'theme'           => 'z_theme',
-        'counter'         => 'z_counter',
-        'activated'       => 'z_activated',
-        'lastlogin'       => 'z_lastlogin',
-        'validfrom'       => 'z_validfrom',
-        'validuntil'      => 'z_validuntil',
-        'hash_method'     => 'z_hash_method',
+        'uid'             => 'uid',
+        'uname'           => 'uname',
+        'email'           => 'email',
+        'user_regdate'    => 'user_regdate',
+        'user_viewemail'  => 'user_viewemail',
+        'user_theme'      => 'user_theme',
+        'pass'            => 'pass',
+        'storynum'        => 'storynum',
+        'ublockon'        => 'ublockon',
+        'ublock'          => 'ublock',
+        'theme'           => 'theme',
+        'counter'         => 'counter',
+        'activated'       => 'activated',
+        'lastlogin'       => 'lastlogin',
+        'validfrom'       => 'validfrom',
+        'validuntil'      => 'validuntil',
+        'hash_method'     => 'hash_method',
     );
     $dbinfo['users_column_def'] = array(
         'uid'             => "I4 PRIMARY AUTO",
@@ -400,16 +400,16 @@ function Users_tables_for_113()
     // Version 1.11 through 1.13 (inclusive)
     $dbinfo['users_temp'] = DBUtil::getLimitedTablename('users_temp');
     $dbinfo['users_temp_column'] = array(
-        'tid'          => 'z_tid',
-        'uname'        => 'z_uname',
-        'email'        => 'z_email',
-        'femail'       => 'z_femail',
-        'pass'         => 'z_pass',
-        'dynamics'     => 'z_dynamics',
-        'comment'      => 'z_comment',
-        'type'         => 'z_type',
-        'tag'          => 'z_tag',
-        'hash_method'  => 'z_hash_method'
+        'tid'          => 'tid',
+        'uname'        => 'uname',
+        'email'        => 'email',
+        'femail'       => 'femail',
+        'pass'         => 'pass',
+        'dynamics'     => 'dynamics',
+        'comment'      => 'comment',
+        'type'         => 'type',
+        'tag'          => 'tag',
+        'hash_method'  => 'hash_method'
     );
     $dbinfo['users_temp_column_def'] = array(
         'tid'          => "I4 PRIMARY AUTO",
@@ -445,12 +445,12 @@ function Users_tables_for_113()
     //
     $dbinfo['session_info'] = DBUtil::getLimitedTablename('session_info');
     $dbinfo['session_info_column'] = array (
-        'sessid'    => 'z_sessid',
-        'ipaddr'    => 'z_ipaddr',
-        'lastused'  => 'z_lastused',
-        'uid'       => 'z_uid',
-        'remember'  => 'z_remember',
-        'vars'      => 'z_vars'
+        'sessid'    => 'sessid',
+        'ipaddr'    => 'ipaddr',
+        'lastused'  => 'lastused',
+        'uid'       => 'uid',
+        'remember'  => 'remember',
+        'vars'      => 'vars'
     );
 
     $dbinfo['session_info_column_def'] = array(

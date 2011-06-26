@@ -28,20 +28,20 @@ function Blocks_tables()
 
     $blocks = DBUtil::getLimitedTablename('blocks') ;
     $dbtable['blocks'] = $blocks;
-    $dbtable['blocks_column'] = array ('bid'         => 'z_bid',
-                                       'bkey'        => 'z_bkey',
-                                       'title'       => 'z_title',
-                                       'description' => 'z_description',
-                                       'content'     => 'z_content',
-                                       'url'         => 'z_url',
-                                       'mid'         => 'z_mid',
-                                       'filter'      => 'z_filter',
-                                       'active'      => 'z_active',
-                                       'collapsable' => 'z_collapsable',
-                                       'defaultstate'=> 'z_defaultstate',
-                                       'refresh'     => 'z_refresh',
-                                       'last_update' => 'z_last_update',
-                                       'language'    => 'z_language');
+    $dbtable['blocks_column'] = array ('bid'         => 'bid',
+                                       'bkey'        => 'bkey',
+                                       'title'       => 'title',
+                                       'description' => 'description',
+                                       'content'     => 'content',
+                                       'url'         => 'url',
+                                       'mid'         => 'mid',
+                                       'filter'      => 'filter',
+                                       'active'      => 'active',
+                                       'collapsable' => 'collapsable',
+                                       'defaultstate'=> 'defaultstate',
+                                       'refresh'     => 'refresh',
+                                       'last_update' => 'last_update',
+                                       'language'    => 'language');
 
     // column definition
     $dbtable['blocks_column_def'] = array ('bid'          => "I AUTO PRIMARY",
@@ -65,10 +65,10 @@ function Blocks_tables()
     // additional indexes
     $userblocks = DBUtil::getLimitedTablename('userblocks') ;
     $dbtable['userblocks'] = $userblocks;
-    $dbtable['userblocks_column'] = array ('uid'         => 'z_uid',
-                                           'bid'         => 'z_bid',
-                                           'active'      => 'z_active',
-                                           'lastupdate'  => 'z_last_update');
+    $dbtable['userblocks_column'] = array ('uid'         => 'uid',
+                                           'bid'         => 'bid',
+                                           'active'      => 'active',
+                                           'lastupdate'  => 'last_update');
 
     // column definition
     $dbtable['userblocks_column_def'] = array ('uid'         => "I NOTNULL DEFAULT 0",
@@ -81,9 +81,9 @@ function Blocks_tables()
 
     $block_positions = DBUtil::getLimitedTablename('block_positions') ;
     $dbtable['block_positions'] = $block_positions;
-    $dbtable['block_positions_column'] = array ('pid'         => 'z_pid',
-                                                'name'        => 'z_name',
-                                                'description' => 'z_description');
+    $dbtable['block_positions_column'] = array ('pid'         => 'pid',
+                                                'name'        => 'name',
+                                                'description' => 'description');
 
     // column definitions
     $dbtable['block_positions_column_def'] = array('pid'         => "I AUTO PRIMARY",
@@ -95,9 +95,9 @@ function Blocks_tables()
 
     $block_placements = DBUtil::getLimitedTablename('block_placements') ;
     $dbtable['block_placements'] = $block_placements;
-    $dbtable['block_placements_column'] = array ('pid'   => 'z_pid',
-                                                 'bid'   => 'z_bid',
-                                                 'order' => 'z_order');
+    $dbtable['block_placements_column'] = array ('pid'   => 'pid',
+                                                 'bid'   => 'bid',
+                                                 'order' => 'sortorder');
 
     // column definitions
     $dbtable['block_placements_column_def'] = array('pid'    => "I NOTNULL DEFAULT 0",

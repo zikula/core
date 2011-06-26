@@ -25,16 +25,16 @@ function securitycenter_tables()
 
     // IDS intrusions table
     $dbtable['sc_intrusion'] = DBUtil::getLimitedTablename('sc_intrusion');
-    $dbtable['sc_intrusion_column'] = array('id'        => 'z_id',
-                                            'name'      => 'z_name',
-                                            'tag'       => 'z_tag',
-                                            'value'     => 'z_value',
-                                            'page'      => 'z_page',
-                                            'uid'       => 'z_uid',
-                                            'ip'        => 'z_ip',
-                                            'impact'    => 'z_impact',
-                                            'filters'   => 'z_filters',
-                                            'date'      => 'z_date');
+    $dbtable['sc_intrusion_column'] = array('id'        => 'id',
+                                            'name'      => 'name',
+                                            'tag'       => 'tag',
+                                            'value'     => 'value',
+                                            'page'      => 'page',
+                                            'uid'       => 'uid',
+                                            'ip'        => 'ip',
+                                            'impact'    => 'impact',
+                                            'filters'   => 'filters',
+                                            'date'      => 'date');
 
     $dbtable['sc_intrusion_column_def'] = array('id'        => 'I PRIMARY AUTO',
                                                 'name'      => 'C(128) NOTNULL DEFAULT \'\'',

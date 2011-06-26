@@ -28,19 +28,19 @@ function theme_tables()
     $dbtables = array();
 
     $dbtables['themes'] = DBUtil::getLimitedTablename('themes');
-    $dbtables['themes_column'] = array ('id'             => 'z_id',
-                                       'name'           => 'z_name',
-                                       'type'           => 'z_type',
-                                       'displayname'    => 'z_displayname',
-                                       'description'    => 'z_description',
-                                       'directory'      => 'z_directory',
-                                       'version'        => 'z_version',
-                                       'contact'        => 'z_contact',
-                                       'admin'          => 'z_admin',
-                                       'user'           => 'z_user',
-                                       'system'         => 'z_system',
-                                       'state'          => 'z_state',
-                                       'xhtml'          => 'z_xhtml');
+    $dbtables['themes_column'] = array ('id'             => 'id',
+                                       'name'           => 'name',
+                                       'type'           => 'type',
+                                       'displayname'    => 'displayname',
+                                       'description'    => 'description',
+                                       'directory'      => 'directory',
+                                       'version'        => 'version',
+                                       'contact'        => 'contact',
+                                       'admin'          => 'admin',
+                                       'user'           => 'user',
+                                       'system'         => 'system',
+                                       'state'          => 'state',
+                                       'xhtml'          => 'xhtml');
 
     $dbtables['themes_column_def'] = array('id'          => "I PRIMARY AUTO",
                                           'name'        => "C(64) NOTNULL DEFAULT ''",

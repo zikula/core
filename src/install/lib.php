@@ -360,13 +360,13 @@ function createuser($username, $password, $email)
 
     // create the admin user
     $sql = "UPDATE {$dbtables['users']}
-            SET    z_uname        = '{$username}',
-                   z_email        = '{$email}',
-                   z_pass         = '{$password}',
-                   z_activated    = 1,
-                   z_user_regdate = '{$nowUTCStr}',
-                   z_lastlogin    = '{$nowUTCStr}'
-            WHERE  z_uid   = 2";
+            SET   uname        = '{$username}',
+                  email        = '{$email}',
+                  pass         = '{$password}',
+                  activated    = 1,
+                  user_regdate = '{$nowUTCStr}',
+                  lastlogin    = '{$nowUTCStr}'
+            WHERE uid   = 2";
 
     $result = DBUtil::executeSQL($sql);
 
