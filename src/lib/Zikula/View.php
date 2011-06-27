@@ -1053,7 +1053,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->config_dir   = $this->template_dir . '/config';
 
         if (!$this instanceof Zikula_View_Theme) {
-            // change the View domain for customized templates
+            // change the domain for customized templates
             if (strpos($this->template_dir, 'config/') !== false) {
                 $this->domain = ZLanguage::getSiteDomain();
 
