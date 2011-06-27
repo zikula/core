@@ -20,8 +20,8 @@
  * Usage with fixed number of radiobuttons:
  *
  * <code>
- * <!--[formradiobutton id=yesButton dataField=ok]--> <!--[formlabel text=Yes for=yesButton]--> <br/>
- * <!--[formradiobutton id=noButton dataField=ok]--> <!--[formlabel text=No for=noButton]-->
+ * {formradiobutton id='yesButton' dataField='ok'} {formlabel __text='Yes' for='yesButton'}<br/>
+ * {formradiobutton id='noButton' dataField='ok'} {formlabel __text='No' for='noButton'}
  * </code>
  *
  * The above case sets 'ok' to either 'yesButton' or 'noButton' in the hashtable returned
@@ -31,16 +31,16 @@
  * You can also enforce a selection:
  *
  * <code>
- * <!--[formradiobutton id=yesButton dataField=ok mandatory=1]--> <!--[formlabel text=Yes for=yesButton]--> <br/>
- * <!--[formradiobutton id=noButton dataField=ok mandatory=1]--> <!--[formlabel text=No for=noButton]-->
+ * {formradiobutton id='yesButton' dataField='ok' mandatory=true} {formlabel __text='Yes' for='yesButton'}<br/>
+ * {formradiobutton id='noButton' dataField='ok' mandatory=true} {formlabel __text='No' for='noButton']-->
  * </code>
  *
  * If you have a list of radiobuttons inside a for/each loop then you can set the ID to something from the data loop
  * like here:
  * <code>
- * <!--[foreach from=$items item=item]-->
- *   <!--[formradiobutton id=$item.name dataField=item mandatory=true]--> <!--[formlabel text=$item.title for=$item.name]-->
- * <!--[/foreach]-->
+ * {foreach from=$items item=item}
+ *   {formradiobutton id=$item.name dataField='item' mandatory=true} {formlabel text=$item.title for=$item.name}
+ * {/foreach}
  * </code>
  *
  * @param array            $params Parameters passed in the block tag.

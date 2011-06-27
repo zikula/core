@@ -83,8 +83,6 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
      *
      * If you set a confirmation message then a ok/cancel dialog box pops and asks the user to confirm
      * the button click - very usefull for buttons that deletes items.
-     * You can use _XXX language defines directly as the message, no need to call <!--[pnml]--> for
-     * translation.
      *
      * @var string
      */

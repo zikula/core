@@ -20,7 +20,7 @@
  *
  * You can set the items directly like this:
  * <code>
- * <!--[formdropdownlist id="mylist" items=$items]-->
+ * {formdropdownlist id='mylist' items=$items}
  * </code>
  * with the form event handler code like this:
  * <code>
@@ -39,7 +39,7 @@
  * </code>
  * Or you can set them indirectly using the plugin's databased features:
  * <code>
- * <!--[formdropdownlist id="mylist"]-->
+ * {formdropdownlist id='mylist'}
  * </code>
  * with the form event handler code like this:
  * <code>

@@ -332,7 +332,7 @@ class Search_Api_User extends Zikula_AbstractApi
             $nextvar = 3;
         }
 
-        if (FormUtil::getPassedValue('func') == 'recent') {
+        if (FormUtil::getPassedValue('func') == 'recent' && isset($args['vars'][$nextvar])) {
             System::queryStringSetVar('startnum', $args['vars'][$nextvar]);
         }
 

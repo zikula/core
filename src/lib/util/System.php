@@ -754,11 +754,13 @@ class System
                 array_unshift($args, $modinfo['url']);
                 // set the REQUEST parameters
                 self::queryStringSetVar('module', $modinfo['name']);
-                // the user.function name can be the second argument string, set it by default
-                // later the custom module handler (if exists) must setup a new one
+                // the user.function name can be the second argument string, set a default
+                // later the custom module handler (if exists) must setup a new one if needed
+                self::queryStringSetVar('type', 'user');
                 if (isset($args[2])) {
-                    self::queryStringSetVar('type', 'user');
                     self::queryStringSetVar('func', $args[2]);
+                } else {
+                    self::queryStringSetVar('func', 'main');
                 }
                 if (!ModUtil::apiFunc($modinfo['name'], 'user', 'decodeurl', array('vars' => $args))) {
                     // any remaining arguments are specific to the module

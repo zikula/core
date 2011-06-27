@@ -18,7 +18,7 @@
  *
  * Example
  *
- *   <!--[$mythemetype|themetype]-->
+ *   {$mythemetype|themetype}
  *
  * @param array $string The contents to transform.
  *

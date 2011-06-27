@@ -42,7 +42,7 @@
  * Then X will be set to 1234 through this template declaration:
  *
  * <code>
- * <!--[MyPlugin X="1234"]-->
+ * {MyPlugin X='1234'}
  * </code>
  *
  * A registered plugin will be notified of various events that happens during it's life-cycle.

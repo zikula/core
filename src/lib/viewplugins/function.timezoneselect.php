@@ -15,7 +15,7 @@
 /**
  * Template plugin to display timezone list.
  *
- * Example <!--[timezoneselect selected="Timezone"]-->.
+ * Example {timezoneselect selected='Timezone'}.
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   The Zikula_View.

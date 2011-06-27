@@ -22,14 +22,14 @@
  * but can be improved a lot with the techniques found at www.alistapart.com.
  * Usage:
  * <code>
- * <!--[formtabbedpanelset]-->
- *   <!--[formtabbedpanel title="Tab A"]-->
+ * {formtabbedpanelset}
+ *   {formtabbedpanel title='Tab A'}
  *     ... content of first tab ...
- *   <!--[/formtabbedpanel]-->
- *   <!--[formtabbedpanel title="Tab B"]-->
+ *   {/formtabbedpanel}
+ *   {formtabbedpanel title='Tab B'}
  *     ... content of second tab ...
- *   <!--[/formtabbedpanel]-->
- * <!--[/formtabbedpanelset]-->
+ *   {/formtabbedpanel}
+ * {/formtabbedpanelset}
  * </code>
  * You can place any Zikula_Form_View plugins inside the individual panels. The tabs
  * require some special styling which is handled by the styles in system/Theme/style/form/style.css.

@@ -18,7 +18,7 @@
  *
  * Usage:
  * <code>
- * <!--[formsetinitialfocus inputId=PluginId]-->
+ * {formsetinitialfocus inputId='PluginId'}
  * </code>
  * The "PluginId" refers to the plugin that should have focus initially.
  *
