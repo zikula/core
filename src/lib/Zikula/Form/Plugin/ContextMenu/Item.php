@@ -51,7 +51,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      * contains the command argument of the formcontextmenureference plugin. In this way your script
      * can work with the menu item data you clicked. Example:
      * <code>
-     * <!--[formcontextmenuitem title=Preview imageURL="preview.png" commandScript="popupPreview(commandArgument)"]-->
+     * {formcontextmenuitem __title='Preview' imageURL='preview.png' commandScript='popupPreview(commandArgument)'}
      *
      * <script type="text/javascript">
      * function popupPreview(commandArgument)
@@ -81,8 +81,6 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      *
      * If you set a confirmation message then a ok/cancel dialog box pops and asks the user to confirm
      * the menu item click - very usefull for menu selections that deletes items.
-     * You can use _XXX language defines directly as the message, no need to call <!--[pnml]--> for
-     * translation.
      *
      * @var string
      */

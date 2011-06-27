@@ -22,7 +22,7 @@
  *   - selected: Selected value
  *
  * Example
- *   <!--[dbtypes name=dbtype selectedValue=value]-->
+ *   {dbtypes name='dbtype' selectedValue=$value}
  *
  *
  * @author       Mark West

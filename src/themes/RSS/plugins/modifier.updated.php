@@ -17,7 +17,7 @@
  *
  * Example
  *
- *   <!--[$MyVar|updated]-->
+ *   {$MyVar|updated}
  *
  * @param       array    $string     the contents to transform
  * @return       string   the updated output

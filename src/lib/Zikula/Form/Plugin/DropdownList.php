@@ -26,7 +26,7 @@
  *
  * You can set the items directly like this:
  * <code>
- * <!--[formdropdownlist id="mylist" items=$items]-->
+ * {formdropdownlist id='mylist' items=$items}
  * </code>
  * with the form event handler code like this:
  * <code>
@@ -45,7 +45,7 @@
  * </code>
  * Or you can set them indirectly using the plugin's databased features:
  * <code>
- * <!--[formdropdownlist id="mylist"]-->
+ * {formdropdownlist id='mylist'}
  * </code>
  * with the form event handler code like this:
  * <code>
@@ -100,7 +100,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * You can assign to this in your templates like:
      * <code>
-     * <!--[formdropdownlist selectedValue=B]-->
+     * {formdropdownlist selectedValue=B}
      * </code>
      * But in your code you should use {@link Zikula_Form_Plugin_DropdownList::setSelectedValue()}
      * and {@link Zikula_Form_Plugin_DropdownList::getSelectedValue()}.
@@ -116,7 +116,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * You can assign to this in your templates like:
      * <code>
-     * <!--[formdropdownlist selectedIndex=2]-->
+     * {formdropdownlist selectedIndex=2}
      * </code>
      * But in your code you should use {@link Zikula_Form_Plugin_DropdownList::setSelectedIndex()}
      * and {@link Zikula_Form_Plugin_DropdownList::getSelectedIndex()}.

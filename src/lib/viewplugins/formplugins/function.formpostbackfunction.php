@@ -21,7 +21,7 @@
  *
  * Example:
  * <code>
- * <!--[formpostbackfunction function=startMyPostBack commandName=abc]-->
+ * {formpostbackfunction function='startMyPostBack' commandName='abc'}
  * </code>
  * This generates a JavaScript function named startMyPostBack() that you can call from your own JavaScript.
  * When called it will generate a postback and fire an event to be handled by the $onCommand

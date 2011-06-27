@@ -21,7 +21,7 @@
  *
  * You can set the items directly like this:
  * <code>
- * <!--[formcheckboxlist id="mylist" items=$items]-->
+ * {formcheckboxlist id='mylist' items=$items}
  * </code>
  * with the form event handler code like this:
  * <code>
@@ -40,7 +40,7 @@
  * </code>
  * Or you can set them indirectly using the plugin's databased features:
  * <code>
- * <!--[formcheckboxlist id="mylist"]-->
+ * {formcheckboxlist id='mylist'}
  * </code>
  * with the form event handler code like this:
  * <code>
@@ -76,7 +76,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      * The selected value(s) of a checkboxlist is an array of the item values.
      * You can assign to this in your templates like:
      * <code>
-     * <!--[formcheckboxlist selectedValue=B]-->
+     * {formcheckboxlist selectedValue=B}
      * </code>
      * But in your code you should use {@link Zikula_Form_Plugin_CheckboxList::setSelectedValue()}
      * and {@link Zikula_Form_Plugin_CheckboxList::getSelectedValue()}.

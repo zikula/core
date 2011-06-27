@@ -21,7 +21,7 @@
  *
  * Typical use in template file:
  * <code>
- * <!--[formtextinput id="title" maxLength="100" width="30em"]-->
+ * {formtextinput id='title' maxLength='100' width='30em'}
  * </code>
  *
  * The Zikula_Form_Plugin_TextInput plugin supports basic CSS styling through attributes like "width", "color" and "font_weight". See

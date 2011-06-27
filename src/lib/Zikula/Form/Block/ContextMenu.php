@@ -24,14 +24,14 @@
  *
  * Example usage with two menu items:
  * <code>
- * <!--[formcontextmenu id='MyMenu' width='150px']-->
- * <!--[formcontextmenuitem commandName='edit' __title='Edit']-->
- * <!--[formcontextmenuitem commandName='new' __title='New']-->
- * <!--[/formcontextmenu]-->
+ * {formcontextmenu id='MyMenu' width='150px'}
+ *   {formcontextmenuitem commandName='edit' __title='Edit'}
+ *   {formcontextmenuitem commandName='new' __title='New'}
+ * {/formcontextmenu}
  *
- * <!--[foreach from=items item=item]-->
- * <!--[$item.title]--> <!--[formcontextmenureference menuId="MyMenu" commandArgument=$item.id]-->
- * <!--[/foreach]-->
+ * {foreach from=items item=item}
+ *   {$item.title} {formcontextmenureference menuId='MyMenu' commandArgument=$item.id}
+ * {/foreach}
  * </code>
  * As you can see it is possible to reuse the same menu more than once on a page - in the example above it is
  * used as a context menu for each of the "items" (for instance articles or webshop goods). Where ever you
