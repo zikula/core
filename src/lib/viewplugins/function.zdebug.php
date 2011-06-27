@@ -49,10 +49,12 @@ function smarty_function_zdebug($params, Zikula_View $view)
 
     if ($skipPermissionCheck || SecurityUtil::checkPermission($thismodule.'::debug', '::', ACCESS_ADMIN)) {
         // backup and modify the view attributes
+        $_view_domain = $view->domain;
         $_template_dir_orig = $view->template_dir;
         $_default_resource_type_orig = $view->default_resource_type;
         $_compile_id_orig   = $view->_compile_id;
 
+        $view->domain = ZLanguage::getCoreDomain();
         $view->template_dir = 'system/Theme/templates';
         $view->default_resource_type = 'file';
         $view->_plugins['outputfilter'] = null;
@@ -78,6 +80,7 @@ function smarty_function_zdebug($params, Zikula_View $view)
                        ->_fetch($view->debug_tpl);
 
         // restore original values
+        $view->domain = $_view_domain;
         $view->_compile_id = $_compile_id_orig;
         $view->template_dir = $_template_dir_orig;
         $view->default_resource_type = $_default_resource_type_orig;
