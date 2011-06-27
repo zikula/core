@@ -17,7 +17,7 @@
  *
  * Example
  *
- *   <id><!--[id]--></id>
+ *   <id>{id}</id>
  *
  * @return       string the atom ID
  */

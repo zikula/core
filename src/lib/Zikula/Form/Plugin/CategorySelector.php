@@ -51,10 +51,11 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
      * such that it can be used directly with DBUtils standard categorization of
      * data items. Example code:
      * <code>
-     * // Template: <!--[formcategoryselector id=myCat category=xxx enableDBUtil=1]-->
+     * // Template: {formcategoryselector id=myCat category=xxx enableDBUtil=1}
      * // Result:
-     * array('title' => 'Item title',
-     * '__CATEGORIES__' => array('myCat' => zzz)
+     * array(
+     *   'title' => 'Item title',
+     *   '__CATEGORIES__' => array('myCat' => XX)
      * )
      * </code>
      *

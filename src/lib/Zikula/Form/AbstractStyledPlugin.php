@@ -23,7 +23,7 @@
  * are converted to hyphens in the resulting output to match the correct CSS styles. When you need to use unsupported
  * CSS styles then just write them directly in the style parameter of the plugin:
  * <code>
- * <!--[Zikula_Form_Plugin_TextInput id="title" maxLength="100" width="30em" style="border-left: 1px solid red;"]-->
+ * {formtextinput id='title' maxLength='100' width='30em' style='border-left: 1px solid red;'}
  * </code>
  *
  * You can also add styling in the code by adding key/value pairs to $styleAttributes. Example:

@@ -38,7 +38,7 @@ class Users_Controller_FormData_Validator_StringInSet extends Users_Controller_F
         parent::__construct($serviceManager, $errorMessage);
         
         if (empty($validStrings)) {
-            throw new InvalidArgumentException($this->__('An invalid list of valid strings was recieved.'));
+            throw new InvalidArgumentException($this->__('An invalid list of valid strings was received.'));
         }
         
         foreach ($validStrings as $validString) {
