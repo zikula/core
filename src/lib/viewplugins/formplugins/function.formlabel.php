@@ -18,8 +18,8 @@
  *
  * Use this to create labels for your input fields in a web form. Example:
  * <code>
- *   <!--[formlabel text="Title" for="title"]-->:
- *   <!--[formtextinput id="title"]-->
+ *   {formlabel __text='Title' for='title'}
+ *   {formtextinput id='title'}
  * </code>
  * The rendered output is an HTML label element with the "for" value
  * set to the supplied id. In addition to this, the Zikula_Form_Plugin_Label plugin also sets
