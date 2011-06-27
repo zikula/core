@@ -471,10 +471,11 @@ class ZLanguage
         $coredomain = self::getCoreDomain();
         $_this->bindDomain($coredomain, $_this->searchOverrides($coredomain, 'locale')); // bind system domain
         $_this->setTextDomain($coredomain);
-
+/*
         $sitedomain = self::getSiteDomain();
         $_this->bindDomain($sitedomain, $_this->searchOverrides($sitedomain, 'locale')); // bind site domain
         $_this->setTextDomain($sitedomain);
+*/
     }
 
 
