@@ -210,19 +210,19 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         //---- Plugins handling -----------------------------------------------
         // add plugin paths
-        switch ($this->module[$moduleName]['type'])
+        switch ($this->modinfo['type'])
         {
             case ModUtil::TYPE_MODULE :
-                $mpluginPath = "modules/" . $this->module[$moduleName]['directory'] . "/templates/plugins";
-                $mpluginPathOld = "modules/" . $this->module[$moduleName]['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "modules/" . $this->modinfo['directory'] . "/templates/plugins";
+                $mpluginPathOld = "modules/" . $this->modinfo['directory'] . "/pntemplates/plugins";
                 break;
             case ModUtil::TYPE_SYSTEM :
-                $mpluginPath = "system/" . $this->module[$moduleName]['directory'] . "/templates/plugins";
-                $mpluginPathOld = "system/" . $this->module[$moduleName]['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
+                $mpluginPathOld = "system/" . $this->modinfo['directory'] . "/pntemplates/plugins";
                 break;
             default:
-                $mpluginPath = "system/" . $this->module[$moduleName]['directory'] . "/templates/plugins";
-                $mpluginPathOld = "system/" . $this->module[$moduleName]['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
+                $mpluginPathOld = "system/" . $this->modinfo['directory'] . "/pntemplates/plugins";
         }
 
         // add standard plugin search path
@@ -331,8 +331,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         }
 
         // for {gt} template plugin to detect gettext domain
-        if ($this->module[$moduleName]['type'] == ModUtil::TYPE_MODULE) {
-            $this->domain = ZLanguage::getModuleDomain($this->module[$moduleName]['name']);
+        if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
+            $this->domain = ZLanguage::getModuleDomain($this->modinfo['name']);
         }
 
         // make render object available to modifiers

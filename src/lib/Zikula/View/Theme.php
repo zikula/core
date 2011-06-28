@@ -191,9 +191,9 @@ class Zikula_View_Theme extends Zikula_View
         // template caching
         $this->cache_dir = CacheUtil::getLocalDir('Theme_cache');
         $this->caching   = (int)ModUtil::getVar('Theme', 'enablecache');
-        /*if ($this->caching) {
-            $this->cache_modified_check = true;
-        }*/
+        //if ($this->caching) {
+        //    $this->cache_modified_check = true;
+        //}
 
         // if caching and is not an admin controller
         if ($this->caching && strpos($this->type, 'admin') !== 0) {
@@ -588,7 +588,10 @@ class Zikula_View_Theme extends Zikula_View
 
     /**
      * Normalizes the current page parameters.
+     *
      * Used on the page cache_id and the pageassignments keys.
+     *
+     * @return string Custom arguments string.
      */
     private function _get_customargs()
     {

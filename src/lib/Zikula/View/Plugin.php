@@ -35,15 +35,16 @@ class Zikula_View_Plugin extends Zikula_View
     public function __construct(Zikula_ServiceManager $serviceManager, $module = 'zikula', $pluginName, $caching = null)
     {
         parent::__construct($serviceManager, $module, $caching);
+
         $this->pluginName = $pluginName;
-        $modinfo = $this->module[$module];
-        if ($modinfo['type'] == ModUtil::TYPE_CORE) {
+
+        if ($this->modinfo['type'] == ModUtil::TYPE_CORE) {
             $path = "plugins/{$pluginName}/templates/plugins";
         } else {
-            $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'module' : 'system';
-            $modPath = $modinfo['name'];
-            $path = "$base/$modPath/plugins/{$pluginName}/templates/plugins";
+            $base = ModUtil::getBaseDir($this->modinfo['name']);
+            $path = "$base/{$this->modinfo['directory']}/plugins/{$pluginName}/templates/plugins";
         }
+
         $this->addPluginDir($path);
     }
 
@@ -129,10 +130,10 @@ class Zikula_View_Plugin extends Zikula_View
         switch ($modinfo['type'])
         {
             case ModUtil::TYPE_SYSTEM:
-                $pluginsDir = "system/$modinfo[directory]/plugins/$plugin/templates/plugins";
+                $pluginsDir = "system/{$modinfo['directory']}/plugins/$plugin/templates/plugins";
                 break;
             case ModUtil::TYPE_MODULE:
-                $pluginsDir = "modules/$modinfo[directory]/plugins/$plugin/templates/plugins";
+                $pluginsDir = "modules/{$modinfo['directory']}/plugins/$plugin/templates/plugins";
                 break;
             case ModUtil::TYPE_CORE:
                 $pluginsDir = "plugins/$plugin/templates/plugins";
