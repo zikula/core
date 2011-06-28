@@ -25,6 +25,13 @@ class ZLanguage
     private static $instance;
 
     /**
+     * Site domain.
+     *
+     * @var ZLanguage
+     */
+    private static $siteDomain;
+
+    /**
      * Language for this request.
      *
      * @var string
@@ -157,6 +164,7 @@ class ZLanguage
         $this->fixLanguageToSession();
         $this->setLocale($this->languageCode);
         $this->bindCoreDomain();
+        $this->bindSiteDomain();
         $this->processErrors();
     }
 
@@ -471,11 +479,48 @@ class ZLanguage
         $coredomain = self::getCoreDomain();
         $_this->bindDomain($coredomain, $_this->searchOverrides($coredomain, 'locale')); // bind system domain
         $_this->setTextDomain($coredomain);
-/*
+    }
+
+    /**
+     * Bind site domain
+     *
+     * @return void
+     */
+    public static function bindSiteDomain()
+    {
+        $_this = self::getInstance();
+
+        if (!isset(self::$siteDomain)) {
+            // and event here to customize the domain maybe useful for multisites?
+            self::$siteDomain = 'site';
+        }
+
         $sitedomain = self::getSiteDomain();
-        $_this->bindDomain($sitedomain, $_this->searchOverrides($sitedomain, 'locale')); // bind site domain
+        if ($_this->translationExists($sitedomain, 'locale')) {
+            $path = $_this->searchOverrides($sitedomain, 'locale');
+        } else {
+            // this installation has no site domain, should use the default domain
+            $path = self::$siteDomain = '';
+        }
+
+        $_this->bindDomain($sitedomain, $path); // bind site domain
         $_this->setTextDomain($sitedomain);
-*/
+    }
+
+
+    /**
+     * Checks if a translation exists.
+     *
+     * @param string $domain Gettext domain name.
+     * @param string $path   Domain path.
+     *
+     * @return bool
+     */
+    private function translationExists($domain, $path)
+    {
+        $lang = self::transformFS($this->languageCode);
+        $path = $this->searchOverrides($domain, $path);
+        return (bool)realpath("$path/$lang/LC_MESSAGES/$domain.mo");
     }
 
 
@@ -490,9 +535,10 @@ class ZLanguage
     private function searchOverrides($domain, $path)
     {
         $lang = self::transformFS($this->languageCode);
-        //$basedir = realpath('.') . DIRECTORY_SEPARATOR;
-        $override = realpath(/*$basedir.*/"config/locale/$lang/LC_MESSAGES/$domain.mo");
-        return $override ? realpath(/*$basedir.*/'config/locale') : realpath($path);
+        // detects if the path exists and is readable
+        $override = realpath("config/locale/$lang/LC_MESSAGES/$domain.mo");
+        // realpath processing goes in the reader instance creation
+        return $override ? 'config/locale' : $path;
     }
 
 
@@ -507,13 +553,13 @@ class ZLanguage
     }
 
     /**
-     * Get website custom domain.
+     * Get site custom domain.
      *
      * @return string
      */
     public static function getSiteDomain()
     {
-        return 'site';
+        return self::$siteDomain;
     }
 
     /**
