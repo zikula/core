@@ -23,7 +23,6 @@ abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_AbstractM
      *
      * @param mixed $message Response status/error message, may be string or array.
      * @param mixed $payload Payload.
-     * @param array $options Options.
      */
     public function __construct($message, $payload=null)
     {

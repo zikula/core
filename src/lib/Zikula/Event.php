@@ -197,7 +197,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     /**
      * Set event name.
      *
-     * @param type $name Event Name
+     * @param type $name Event Name.
      *
      * @return Zikula_Event
      */

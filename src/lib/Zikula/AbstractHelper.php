@@ -82,10 +82,13 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
      * will accept most Zikula classes, and override this method.
      *
      * @param object $object Zikula_AbstractBase, Zikula_ServiceManager, Zikula_EventManager, Zikula_AbstractEventHandler, Zikula_Hook_AbstractHandler, or other.
+     *
+     * @return void
      */
     private function _setup($object)
     {
         $this->object = $object;
+
         if ($object instanceof Zikula_AbstractBase || $object instanceof Zikula_AbstractEventHandler || $object instanceof Zikula_Hook_AbstractHandler || $object instanceof Zikula_AbstractPlugin) {
             $this->serviceManager = $object->getServiceManager();
             $this->eventManager = $object->getEventManager();

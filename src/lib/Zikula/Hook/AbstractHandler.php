@@ -56,7 +56,7 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $eventManager ServiceManager.
+     * @param Zikula_EventManager $eventManager ServiceManager.
      *
      * @throws InvalidArgumentException If $this->eventNames is invalid.
      */

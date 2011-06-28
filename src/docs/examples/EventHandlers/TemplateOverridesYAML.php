@@ -6,6 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license MIT
+ * @package ZikulaExamples
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.

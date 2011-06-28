@@ -6,6 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license MIT
+ * @package ZikulaExamples_Hooks
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,7 +21,11 @@
  */
 class Example_Controller_User extends Zikula_AbstractController
 {
-
+    /**
+     * View action.
+     *
+     * @return string Action output.
+     */
     public function view()
     {
         $id = FormUtil::getPassedValue('id', null, 'GET');
@@ -34,6 +39,11 @@ class Example_Controller_User extends Zikula_AbstractController
         // {notifydisplayhooks eventname='example.ui_hooks.general.display_view' id=$article[id]}
     }
 
+    /**
+     * Edit action.
+     *
+     * @return string Edit form output.
+     */
     public function edit()
     {
         $article = FormUtil::getPassedValue('article', array(), 'POST');
@@ -80,6 +90,11 @@ class Example_Controller_User extends Zikula_AbstractController
         // {notifydisplayhooks eventname='example.ui_hooks.general.form_edit' subject=$article id=$article[id]}
     }
 
+    /**
+     * Delete action.
+     *
+     * @return void
+     */
     public function delete()
     {
         $id = FormUtil::getPassedValue('id', null, 'GET');

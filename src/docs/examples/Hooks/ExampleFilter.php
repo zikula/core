@@ -6,6 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license MIT
+ * @package ZikulaExamples_Hooks
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -48,7 +49,7 @@ class Example_HookFilters
      */
     public function filter(Zikula_FilterHook $hook)
     {
-        if (somecontition) {
+        if ($this->data == 'somecondition') {
             return;
         }
 

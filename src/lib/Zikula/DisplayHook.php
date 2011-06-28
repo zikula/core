@@ -52,8 +52,6 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
     /**
      * Set data.
      *
-     * @param mixed $data Data to be saved.
-     *
      * @return Zikula_DisplayHook
      */
     public function getResponses()
@@ -62,6 +60,7 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
     }
 
     /**
+     * Url getter.
      *
      * @return Zikula_ModUrl
      */

@@ -474,7 +474,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $delayed_load = true;
         $cacheable    = false;
 
-        /* blocks */
+        //// blocks
         // checkgroup
         Zikula_View_Resource::register($this, 'block', 'checkgroup', $delayed_load, $cacheable, array('gid'));
         // checkpermissionblock
@@ -482,7 +482,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // pageaddvarblock
         Zikula_View_Resource::register($this, 'block', 'pageaddvarblock', $delayed_load, $cacheable, array('name'));
 
-        /* plugins */
+        //// plugins
         // ajaxheader
         Zikula_View_Resource::register($this, 'function', 'ajaxheader', $delayed_load, $cacheable, array('modname', 'filename', 'noscriptaculous', 'validation', 'lightbox', 'imageviewer', 'assign'));
         // assign_cache
@@ -784,7 +784,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * utility method to filter the IDs of not desired chars.
      *
-     * @param string $id Cache or compile ID to filter.
+     * @param string &$id Cache or compile ID to filter.
      *
      * @return void
      */
@@ -801,10 +801,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get a concrete filename for automagically created content.
      *
-     * @param string  $auto_base   The base path.
+     * @param string  $path        The base path.
      * @param string  $auto_source The file name (optional).
      * @param string  $auto_id     The ID (optional).
-     * @param boolean $toclear     Flag to know if we are clearing the cache (default: false).
      *
      * @return string The concrete path and file name to the content.
      */
@@ -882,9 +881,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Internal function to delete cache of templates.
      *
-     * @param string  $tplpath  Relative template path
-     * @param string  $template Template partial filename
-     * @param integer $expire   Expire limit of the cached templates
+     * @param string  $tplpath  Relative template path.
+     * @param string  $template Template partial filename.
+     * @param integer $expire   Expire limit of the cached templates.
      *
      * @return boolean True on success, false otherwise
      */
@@ -961,12 +960,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * This returns true if the operation was successful.
      *
-     * @param string $template   The name of the template.
-     * @param string $cache_id   The cache ID (optional).
-     * @param string $compile_id The compile ID (optional).
-     * @param string $expire     Minimum age in sec. the cache file must be before it will get cleared (optional).
+     * @param string $tmpdir   Name of the temporary folder to clear.
+     * @param string $auto_id  The cache and compile ID.
+     * @param string $template The name of the template.
+     * @param string $expire   Minimum age in sec. the cache file must be before it will get cleared (optional).
      *
-     * @return  boolean
+     * @return boolean
      */
     protected function clear_folder($tmpdir, $auto_id = null, $template = null, $expire = null)
     {
@@ -1088,7 +1087,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * Avoids adding duplicates.
      *
-     * @param string $dir The directory to add.
+     * @param string  $dir  The directory to add.
+     * @param boolean $push Whether to push the new dir to the bottom of the stack (default: true).
      *
      * @return Zikula_View This instance.
      */
@@ -1373,6 +1373,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the theme info array for the current theme.
      *
+     * @param string $key Field to retrieve of the theme info.
+     *
      * @return array The theme info array.
      */
     public function getThemeInfo($key=null)
@@ -1386,6 +1388,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
     /**
      * Set a value or all the theme info array.
+     *
+     * @param mixed  $value Value to assign.
+     * @param string $key   Field to set on the theme info.
      *
      * @return void
      */
@@ -1644,13 +1649,14 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set Caching.
      *
+     * Possible value:
      * <ul>
      *  <li>0 = no caching</li>
      *  <li>1 = use class cache_lifetime value</li>
      *  <li>2 = use cache_lifetime in cache file</li>
      * </ul>
      *
-     * @param integer $caching 0.
+     * @param integer $caching Cache value to set.
      *
      * @return $this
      */
@@ -2689,10 +2695,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Smarty override to customize the core.process_cached_inserts
      *
-     * @param string $resource_name
-     * @param string $cache_id
-     * @param string $compile_id
-     * @param boolean $display
+     * @param string  $template   The name of the template.
+     * @param string  $cache_id   The cache ID (optional).
+     * @param string  $compile_id The compile ID (optional).
+     * @param boolean $display    Whether or not to display directly (optional).
+     *
+     * @return string The template output.
      */
     public function _fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {
@@ -2769,8 +2777,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
 
                 if ($display) {
-                    if ($this->debugging)
-                    {
+                    if ($this->debugging) {
                         // capture time for debugging info
                         $_params = array();
                         require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
@@ -2831,16 +2838,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $_cache_including = $this->_cache_including;
         $this->_cache_including = false;
         if ($display && !$this->caching && count($this->_plugins['outputfilter']) == 0) {
-            if ($this->_is_compiled($resource_name, $_smarty_compile_path)
-                    || $this->_compile_resource($resource_name, $_smarty_compile_path))
-            {
+            if ($this->_is_compiled($resource_name, $_smarty_compile_path) || $this->_compile_resource($resource_name, $_smarty_compile_path)) {
                 include($_smarty_compile_path);
             }
         } else {
             ob_start();
-            if ($this->_is_compiled($resource_name, $_smarty_compile_path)
-                    || $this->_compile_resource($resource_name, $_smarty_compile_path))
-            {
+            if ($this->_is_compiled($resource_name, $_smarty_compile_path) || $this->_compile_resource($resource_name, $_smarty_compile_path)) {
                 include($_smarty_compile_path);
             }
             $_smarty_results = ob_get_contents();
@@ -2874,7 +2877,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->_cache_including = $_cache_including;
 
         if ($display) {
-            if (isset($_smarty_results)) { echo $_smarty_results; }
+            if (isset($_smarty_results)) {
+                echo $_smarty_results;
+            }
             if ($this->debugging) {
                 // capture time for debugging info
                 $_params = array();
@@ -2887,7 +2892,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             return;
         } else {
             error_reporting($_smarty_old_error_level);
-            if (isset($_smarty_results)) { return $_smarty_results; }
+            if (isset($_smarty_results)) {
+                return $_smarty_results;
+            }
         }
     }
 }

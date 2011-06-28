@@ -6,6 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license MIT
+ * @package ZikulaExamples_Hooks
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -30,7 +31,6 @@
  */
 class Example_HookHandler extends Zikula_HookHandler
 {
-
     /**
      * Display hook for view.
      *
@@ -38,7 +38,7 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the id of the object.
      * args[caller] the module who notified of this event.
      *
-     * @param Zikula_Hook $hook The hookable event.
+     * @param Zikula_DisplayHook $hook The hookable event.
      *
      * @return void
      */
@@ -68,7 +68,7 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the ID of the subject.
      * args[caller] the module who notified of this event.
      *
-     * @param Zikula_Hook $hook The hookable event.
+     * @param Zikula_DisplayHook $hook The hookable event.
      *
      * @return void
      */
@@ -118,7 +118,7 @@ class Example_HookHandler extends Zikula_HookHandler
      *
      * This handler works for create and edit actions equally.
      *
-     * @param Zikula_Hook $hook The hookable event.
+     * @param Zikula_ValidationHook $hook The hookable event.
      *
      * @return void
      */
@@ -145,7 +145,7 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the ID of the subject.
      * args[caller] the module who notified of this event.
      *
-     * @param Zikula_Hook $hook The hookable event.
+     * @param Zikula_ProcessHook $hook The hookable event.
      *
      * @return void
      */
@@ -173,7 +173,7 @@ class Example_HookHandler extends Zikula_HookHandler
      * args[id] Is the is of the object
      * args[caller] is the name of who notified this event.
      *
-     * @param Zikula_Hook $hook The hookable event.
+     * @param Zikula_ProcessHook $hook The hookable event.
      *
      * @return void
      */
@@ -202,7 +202,7 @@ class Example_HookHandler extends Zikula_HookHandler
      * run then it should just alter the $hook->data property of the
      * event.
      *
-     * @param Zikula_Hook $hook The hookable event.
+     * @param Zikula_FilterHook $hook The hookable event.
      *
      * @return void
      */

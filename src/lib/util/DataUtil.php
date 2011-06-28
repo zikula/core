@@ -335,7 +335,7 @@ class DataUtil
      *
      * @access private
      *
-     * @return void|string The formatted string, or null on empty.
+     * @return mixed The formatted string, or null on empty.
      */
     public static function formatForDisplayHTML_callback($m)
     {
