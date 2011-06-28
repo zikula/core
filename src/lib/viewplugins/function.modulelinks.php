@@ -71,7 +71,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
         }
     }
 
-    $size = count($menuLinks);
+    
     $html = '';
 
     if (!empty($menuLinks)) {
@@ -81,6 +81,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
         $html .= '>';
 
         $i = 1;
+        $size = count($menuLinks);
         foreach ($menuLinks as $menuitem) {
             $class = array();
             $class[] = $size == 1 ? 'z-ml-single' : '';
