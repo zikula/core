@@ -731,7 +731,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      *
      * @param string $id Service Name.
      *
-     * @return void
+     * @return mixed Service or null.
      */
     protected function getService($id)
     {

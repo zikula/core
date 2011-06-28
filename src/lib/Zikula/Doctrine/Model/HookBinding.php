@@ -12,6 +12,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 /**
  * Zikula_Doctrine_Model_HookBinding model class.
  */

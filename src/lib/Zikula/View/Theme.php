@@ -477,7 +477,7 @@ class Zikula_View_Theme extends Zikula_View
      * Generates a filename path like: Theme / auto_id [/ source_dir / filename-l{lang}.ext]
      * the final part gets generated only if $auto_source is specified.
      *
-     * @param string $auto_base   The base path.
+     * @param string $path        The base path.
      * @param string $auto_source The file name (optional).
      * @param string $auto_id     The ID (optional).
      *
@@ -974,7 +974,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Set the current cache ID.
      *
-     * @param string $cacheid Cache ID to set.
+     * @param string $cache_id Cache ID to set.
      *
      * @return void
      */
@@ -984,9 +984,9 @@ class Zikula_View_Theme extends Zikula_View
     }
 
     /**
-     * Set the current cache ID.
+     * Set the theme configuration.
      *
-     * @param string $cacheid Cache ID to set.
+     * @param array $themeconfig Theme configuration array to set.
      *
      * @return void
      */

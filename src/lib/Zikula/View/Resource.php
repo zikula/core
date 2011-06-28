@@ -18,12 +18,17 @@
 class Zikula_View_Resource
 {
     /**
-     * Resources cache
+     * Resources cache.
+     *
+     * @var array
      */
     static $cache = array();
 
     /**
      * Dynamic loader of plugins under cache.
+     *
+     * @param string $method    Method called.
+     * @param array  $arguments Array of arguments.
      */
     public function __call($method, $arguments)
     {
@@ -154,7 +159,7 @@ class Zikula_View_Resource
     /**
      * Smarty block function to prevent template parts from being cached
      *
-     * @param array       $param   Tag parameters.
+     * @param array       $params  Tag parameters.
      * @param string      $content Block content.
      * @param Zikula_View $view    Reference to smarty instance.
      *
@@ -196,11 +201,12 @@ class Zikula_View_Resource
     /**
      * Resource function to register a resource.
      *
-     * @param Zikula_View $view        Reference to Smarty instance.
-     * @param string      $type        Type of the resource.
-     * @param string      $name        Name of the resource.
-     * @param boolean     $cacheable   Flag to register the resource as cacheable (default: false).
-     * @param mixed       $cache_attrs Array of parameters to be cached with the plugin/block call.
+     * @param Zikula_View $view         Reference to Smarty instance.
+     * @param string      $type         Type of the resource.
+     * @param string      $name         Name of the resource.
+     * @param boolean     $delayed_load Whether to register the plugin with lazy load or not (default: true).
+     * @param boolean     $cacheable    Flag to register the resource as cacheable (default: false).
+     * @param mixed       $cache_attrs  Array of parameters to be cached with the plugin/block call.
      *
      * @access private
      * @return boolean

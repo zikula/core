@@ -171,7 +171,9 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Set entitymanager.
      *
-     * @param object $entityManager
+     * @param object $entityManager Entity manager to set.
+     *
+     * @return void
      */
     public function setEntityManager($entityManager)
     {
@@ -250,6 +252,10 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
 
     /**
      * Notify any hookable events.
+     *
+     * @param Zikula_HookInterface $hook Hook interface.
+     *
+     * @return mixed Notification result.
      */
     public function notifyHooks(Zikula_HookInterface $hook)
     {

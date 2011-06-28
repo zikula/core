@@ -212,7 +212,7 @@ class FilterUtil_Config
     /**
      * Gets the columns of a Doctrine table.
      *
-     * @param Doctrine_Table $table Doctrine_Table object.
+     * @param Doctrine_Table $table   Doctrine_Table object.
      * @param array          $dynaMap Array of dynamic aliasses.
      *
      * @return array Columns of the table with keys as alias and values as columns.
@@ -421,7 +421,8 @@ class FilterUtil_Config
      *
      * Set the Doctrine Query Object and expand configuration with it's information.
      *
-     * @param Doctrine_Query $query Doctrine Query Object.
+     * @param Doctrine_Query $query  Doctrine Query Object.
+     * @param array          $filter Filter object to be processed to enrich the Query.
      *
      * @return void
      */
@@ -461,8 +462,9 @@ class FilterUtil_Config
     }
 
     /**
-     * Detect which fields specified in the filter obj
-     * are defined to be a join with an ExternalTable:field
+     * Detect the join fields specified in the filter obj.
+     *
+     * Defined to be a join with an ExternalTable:field.
      *
      * @param array &$joins Empty array to store the result in.
      * @param array $obj    Filter object to be processed to enrich the Query.

@@ -468,7 +468,7 @@ class ZLanguage
     }
 
     /**
-     * Bind core domain
+     * Bind core domain.
      *
      * @return void
      */
@@ -482,7 +482,7 @@ class ZLanguage
     }
 
     /**
-     * Bind site domain
+     * Bind site domain.
      *
      * @return void
      */
@@ -514,7 +514,7 @@ class ZLanguage
      * @param string $domain Gettext domain name.
      * @param string $path   Domain path.
      *
-     * @return bool
+     * @return boolean
      */
     private function translationExists($domain, $path)
     {

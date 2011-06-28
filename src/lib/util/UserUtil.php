@@ -971,9 +971,9 @@ class UserUtil
      * 
      * No events are fired from this function. To receive events, use {@link loginUsing()}.
      *
-     * @param string  $uname                The user name of the user who should be logged into the system; required.
-     * @param boolean $rememberMe           If the user's login should be maintained on the computer from which the user is logging in, set this to true;
-     *                                          optional, defaults to false.
+     * @param string  $uname      The user name of the user who should be logged into the system; required.
+     * @param boolean $rememberMe If the user's login should be maintained on the computer from which the user is logging in, set this to true;
+     *                                optional, defaults to false.
      * 
      * @return void
      */

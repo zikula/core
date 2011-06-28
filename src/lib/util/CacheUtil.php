@@ -41,8 +41,9 @@ class CacheUtil
     /**
      * Create a directory below zikula's local cache directory.
      *
-     * @param string $dir  The name of the directory to create.
-     * @param string $mode The (UNIX) mode we wish to create the files with.
+     * @param string $dir      The name of the directory to create.
+     * @param mixed  $mode     The (UNIX) mode we wish to create the files with.
+     * @param bool   $absolute Whether to process the passed dir as an absolute path or not.
      *
      * @return boolean true if successful, false otherwise.
      */
@@ -62,7 +63,8 @@ class CacheUtil
     /**
      * Remove a directory from zikula's local cache directory.
      *
-     * @param string $dir The name of the directory to remove.
+     * @param string $dir      The name of the directory to remove.
+     * @param bool   $absolute Whether to process the passed dir as an absolute path or not.
      *
      * @return boolean true if successful, false otherwise.
      */

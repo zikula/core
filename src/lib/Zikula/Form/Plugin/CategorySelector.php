@@ -83,7 +83,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
     /**
      * Load the parameters.
      *
-     * this method is static because it is also called by the
+     * This method is static because it is also called by the
      * CategoryCheckboxList plugin
      *
      * @param object  &$list               The list object (here: $this).

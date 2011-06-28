@@ -211,7 +211,9 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Set entitymanager.
      *
-     * @param object $entityManager
+     * @param object $entityManager Entity manager to set.
+     *
+     * @return void
      */
     public function setEntityManager($entityManager)
     {
@@ -973,6 +975,8 @@ class Zikula_Form_View extends Zikula_View
 
     /**
      * Get a data field or all the persistent data.
+     *
+     * @param string $key Key field to be retrieved.
      *
      * @return mixed One or all the persistent data.
      */

@@ -20,7 +20,7 @@ class SessionUtil
     /**
      * Initialise session.
      *
-     * @return boolean
+     * @return void
      */
     public static function initialize()
     {

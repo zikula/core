@@ -11,6 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 /**
  * AbstractHook class.
  */
@@ -64,6 +65,8 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     /**
      * Set caller.
      *
+     * @param string $caller Caller name.
+     *
      * @return Zikula_AbstractHook
      */
     public function setCaller($caller)
@@ -95,7 +98,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     /**
      * Set subscriber area id.
      *
-     * @param type $areaId
+     * @param string $areaId ID of the area.
      *
      * @return Zikula_DisplayHook
      */
@@ -139,7 +142,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     /**
      * Set event name.
      *
-     * @param type $name Hook event Name
+     * @param string $name Hook event name.
      *
      * @return Zikula_AbstractHook
      */
