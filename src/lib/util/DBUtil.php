@@ -1809,20 +1809,20 @@ class DBUtil
             if (is_array($category)) {
                 $wherecat = array();
                 foreach ($category as $cat) {
-                    $wherecat[] = "{$prefix}cmo_category_id='" . DataUtil::formatForStore($cat) . "'";
+                    $wherecat[] = "{$prefix}category_id='" . DataUtil::formatForStore($cat) . "'";
                 }
                 $wherecat = '(' . implode(' OR ', $wherecat) . ')';
 
             // if there's only one category ID
             } else {
-                $wherecat = "{$prefix}cmo_category_id='" . DataUtil::formatForStore($category) . "'";
+                $wherecat = "{$prefix}category_id='" . DataUtil::formatForStore($category) . "'";
             }
 
             // process the where depending of the operator
             if ($op == 'AND') {
-                $where[] = "cmo_obj_id IN (SELECT {$prefix}cmo_obj_id FROM $catmapobjtbl table$n WHERE {$prefix}cmo_reg_id = '".DataUtil::formatForStore($propids[$property])."' AND $wherecat)";
+                $where[] = "obj_id IN (SELECT {$prefix}obj_id FROM $catmapobjtbl table$n WHERE {$prefix}reg_id = '".DataUtil::formatForStore($propids[$property])."' AND $wherecat)";
             } else {
-                $where[] = "(cmo_reg_id='" . DataUtil::formatForStore($propids[$property]) . "' AND $wherecat)";
+                $where[] = "(reg_id='" . DataUtil::formatForStore($propids[$property]) . "' AND $wherecat)";
             }
             $n++;
         }
