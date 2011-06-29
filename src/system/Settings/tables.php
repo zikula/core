@@ -137,7 +137,7 @@ function Settings_tables()
                                               'obj_idcolumn' => "C(40) NOTNULL DEFAULT ''",
                                               'obj_id'       => 'I4 NOTNULL DEFAULT 0',
                                               'busy'         => 'I NOTNULL DEFAULT 0',
-                                              'debug'        => 'B');
+                                              'debug'        => 'XL');
 
     // addtitional indexes
     $dbtables['workflows_column_idx'] = array('obj_table' => 'obj_table', 'obj_idcolumn' => 'obj_idcolumn', 'obj_id' => 'obj_id');

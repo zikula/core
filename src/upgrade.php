@@ -726,6 +726,10 @@ CHANGE pn_language z_language VARCHAR(30) NOT NULL DEFAULT  ''";
     $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_session z_session VARCHAR(50) NOT NULL";
     $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_title z_title VARCHAR(100) NOT NULL";
     $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_ipno z_ipno VARCHAR(30) NOT NULL";
+    
+    // LONGBLOB is not supported by Doctrine 2
+    $silentCommands[] = "ALTER TABLE {$prefix}_workflows CHANGE debug debug LONGTEXT NULL DEFAULT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_group_applications CHANGE z_application z_application LONGTEXT NOT NULL";
 
     foreach ($commands as $sql) {
         $stmt = $connection->prepare($sql);
