@@ -166,6 +166,13 @@ class Zikula_KernelClassLoader
      */
     public function autoload($class)
     {
+        if ($class[0] == '\\') {
+            // This is a workaround for a bug that exists in PHP 5.3.2 where class names
+            // are not passed consistently (sometimes \Foo and sometimes Foo).  This is
+            // fixed since PHP 5.3.3
+            $class == substr($class, 1, strlen($class));
+        }
+
         foreach ($this->namespaces as $namespace => $array) {
             $file = $this->getClassIncludePath($namespace, $array, $class);
             if ($file) {
