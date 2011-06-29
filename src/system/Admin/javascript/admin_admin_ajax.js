@@ -4,14 +4,20 @@
  * Onload function adds droppable locations to all the tabs as well as context
  * menus and inplace editors.
  */
-Event.observe(window, 'load', function() {
+document.observe('dom:loaded', function() {
     // make the system checks a Panel
-    new Zikula.UI.Panels('admin-systemnotices', {
+    var options = {
         headerSelector: 'strong',
-        headerClassName: 'z-systemnoticeheader',
+        headerClassName: 'z-systemnoticeheader z-panel-indicator',
         effectDuration: 0.5
-    });
+    };
+    if ($('z-securityanalyzer')) {
+        options.active = [0];
+    }
+    new Zikula.UI.Panels('admin-systemnotices', options);
+});
 
+Event.observe(window, 'load', function() {
     context_menu = Array();
     editors = Array();
     droppables = Array();
