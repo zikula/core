@@ -2767,12 +2767,12 @@ class DBUtil
                 $clean = preg_replace('/\s\s+/', ' ', $tables[$tabledef][$id]);
                 $fields = explode(' ', $clean);
 
-                if (preg_match('#(B|C2|X2)(?:\()(\d+)(?:\))|(N)(?:\()(\d+|\d+\.\d+)(?:\))|I)#', $fields[0], $matches)) {
+                if (preg_match('#B|C2|X2#', $fields[0])) {
                     LogUtil::log(__('Warning! Table defintion type longblob [B, C2 and X2] is deprecated from Zikula 1.4.0.'), E_USER_DEPRECATED);
                 }
 
                 // parse type and length
-                preg_match('#(B|D|C2|I1|I2|I4|I8|F|L|T|TS|X|X2|XL|(C|I)(?:\()(\d+)(?:\))|(N)(?:\()(\d+|\d+\.\d+)(?:\))|I)#', $fields[0], $matches);
+                preg_match('#(B|D|C2|I1|I2|I4|I8|F|L|TS|T|X2|XL|X|(C|I)(?:\()(\d+)(?:\))|(N)(?:\()(\d+|\d+\.\d+)(?:\))|I)#', $fields[0], $matches);
                 if (!$matches) {
                     throw new InvalidArgumentException(__f('Error in table definition for %1$s, column %2$s', array($table, $id)));
                 }
