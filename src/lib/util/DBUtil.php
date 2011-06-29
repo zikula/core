@@ -19,7 +19,7 @@ class DBUtil
 {
     /**
      * Cache enabled.
-     * 
+     *
      * @var boolean
      */
     protected static $cache_enabled;
@@ -1040,7 +1040,7 @@ class DBUtil
         // case we don't know the object ID to map attributes to.
         // TODO D [there should be a dangling attribute cleanup function somewhere]
         self::_deletePostProcess($object, $table, $idfield);
-        
+
         return $res;
     }
 
@@ -2274,9 +2274,9 @@ class DBUtil
         $sqlFrom = "FROM $tableName AS tbl ";
 
         $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $orderby";
-        
+
         $res = self::executeSQL($sql, $limitOffset, $limitNumRows);
-        
+
         if ($res === false) {
             return $res;
         }
@@ -2715,9 +2715,9 @@ class DBUtil
             // we have a {$tablename}_column_def array as defined in tables.php. This is a real array, not a string.
             // The format is like "C(24) NOTNULL DEFAULT ''" which means we have to prepend the field name now
             $typemap = array(
-                    'B' => 'blob',
+                    'B' => 'blob',    // NOTE: not supported in Doctrine 2
                     'C' => 'string',
-                    'C2' => 'blob',
+                    'C2' => 'blob',   // NOTE: not supported in Doctrine 2
                     'D' => 'date',
                     'F' => 'float',
                     'I' => 'integer',
@@ -2730,7 +2730,7 @@ class DBUtil
                     'T' => 'timestamp',
                     'TS' => 'timestamp',
                     'X' => 'clob',
-                    'X2' => 'blob',
+                    'X2' => 'blob', // NOTE: not supported in Doctrine 2
                     'XL' => 'clob');
             $iLengthMap = array(
                     'I' => 4, // maps to I4
@@ -2766,6 +2766,10 @@ class DBUtil
 
                 $clean = preg_replace('/\s\s+/', ' ', $tables[$tabledef][$id]);
                 $fields = explode(' ', $clean);
+
+                if (preg_match('#(B|C2|X2)(?:\()(\d+)(?:\))|(N)(?:\()(\d+|\d+\.\d+)(?:\))|I)#', $fields[0], $matches)) {
+                    LogUtil::log(__('Warning! Table defintion type longblob [B, C2 and X2] is deprecated from Zikula 1.4.0.'), E_USER_DEPRECATED);
+                }
 
                 // parse type and length
                 preg_match('#(B|D|C2|I1|I2|I4|I8|F|L|T|TS|X|X2|XL|(C|I)(?:\()(\d+)(?:\))|(N)(?:\()(\d+|\d+\.\d+)(?:\))|I)#', $fields[0], $matches);
@@ -3496,7 +3500,7 @@ class DBUtil
 
         return $rows;
     }
-    
+
     /**
      * Get a list of indexes for a table.
      *
