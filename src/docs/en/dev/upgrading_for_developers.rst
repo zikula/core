@@ -88,6 +88,28 @@ TEMPLATES
 - The core icon set has been recoded to PNG format.  Refactor your templates to use .png
   the images.
 
+- You can remove several lines in the admin templates. We don't need {admincategorymenu},
+  the <div class="z-adminbox">...</div> header part as well as the "z-admincontainer".
+  Just open the admin wrapper with {adminheader} and close it with {adminfooter} in the
+  last line of your template.
+  In most cases, files like "modname_admin_menu.tpl" are omitted because the header is 
+  generated automatically now.
+  
+- The previous "z-adminpageicon" was restructured now:
+  
+  Instead of ...
+  
+  <div class="z-adminpageicon">{icon type="edit" size="large"}</div>
+  <h2>{gt text='Edit'}</h2> 
+  
+  ... you should use the following markup:
+
+  <div class="z-admin-content-pagetitle">
+    {icon type="edit" size="small"}
+    <h3>{gt text="Edit"}</h3>
+  </div>
+   
+
 THEMES
 ======
 - While it's not compulsory, it is more efficient to update the block configuration
