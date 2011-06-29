@@ -136,11 +136,12 @@ class Blocks_Installer extends Zikula_AbstractInstaller
         // build the menu content
         $languages = ZLanguage::getInstalledLanguages();
         $saveLanguage = ZLanguage::getLanguageCode();
+        $menucontent = array();
+        $topnavcontent = array();
         foreach ($languages as $lang)
         {
             ZLanguage::setLocale($lang);
             ZLanguage::bindCoreDomain();
-            $menucontent = array();
             $menucontent['displaymodules'] = '0';
             $menucontent['stylesheet'] = 'extmenu.css';
             $menucontent['template'] = 'blocks_block_extmenu.tpl';
@@ -152,7 +153,6 @@ class Blocks_Installer extends Zikula_AbstractInstaller
             $menucontent['links'][$lang][] = array('name' => $this->__('Log out'), 'url' => '{Users:user:logout}', 'title' => $this->__('Log out of this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
             $menucontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{Search}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
 
-            $topnavcontent = array();
             $topnavcontent['displaymodules'] = '0';
             $topnavcontent['stylesheet'] = 'extmenu.css';
             $topnavcontent['template'] = 'blocks_block_extmenu_topnav.tpl';
