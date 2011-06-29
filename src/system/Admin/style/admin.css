@@ -260,31 +260,17 @@
 div#z-developernotices strong,
 div#z-securityanalyzer strong,
 div#z-updatechecker strong {
-    background: url("../../../images/global/arrow_down_black.png") no-repeat scroll 5px 0.70em;
     display: block;
     font-size: 1.2em;
     font-weight: bold;
     margin: 0 0 0.8em;
-    padding: 0.25em 0.25em 0.25em 15px;
+    padding: 0.25em;
 }
 
 div#z-developernotices strong:hover,
 div#z-securityanalyzer strong:hover,
 div#z-updatechecker strong:hover {
-    background: url("../../../images/global/arrow_down_grey.png") no-repeat scroll 5px 0.70em;
-    text-decoration:underline;
-}
-
-div#z-developernotices strong.z-panel-active,
-div#z-securityanalyzer strong.z-panel-active,
-div#z-updatechecker strong.z-panel-active {
-    background: url("../../../images/global/arrow_right_black.png") no-repeat scroll 5px 0.70em;
-}
-
-div#z-developernotices strong.z-panel-active:hover,
-div#z-securityanalyzer strong.z-panel-active:hover,
-div#z-updatechecker strong.z-panel-active:hover {
-    background: url("../../../images/global/arrow_right_grey.png") no-repeat scroll 5px 0.70em;
+    text-decoration: underline;
 }
 
 div#z-developernotices a,
@@ -311,7 +297,8 @@ div#z-securityanalyzer ul,
 div#z-updatechecker p {
     list-style-position: outside;
     list-style-type: disc;
-    margin: 0 1em 1em;
+    margin: 0 1em 0.7em;
+    padding: 0 1em 1em;
 }
 
 /* Used to style the cancel delete button when asking for a confirmation */
