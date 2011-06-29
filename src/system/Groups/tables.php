@@ -72,7 +72,7 @@ function Groups_tables()
     $dbtable['group_applications_column_def'] = array ('app_id'      => 'I4 NOTNULL AUTO PRIMARY',
                                                        'uid'         => 'I4 NOTNULL DEFAULT 0',
                                                        'gid'         => 'I4 NOTNULL DEFAULT 0',
-                                                       'application' => ($dbdriver=='oracle') ? 'XL NOTNULL' : 'B NOTNULL',
+                                                       'application' => 'XL NOTNULL',
                                                        'status'      => 'I1 NOTNULL DEFAULT 0');
 
     return $dbtable;
