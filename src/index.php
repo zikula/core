@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-// dommy test for git lesson no 27 :)
 include 'lib/bootstrap.php';
 $core->init();
 
