@@ -1050,22 +1050,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->template_dir = $this->get_template_path($template);
         $this->templatePath = $this->template_dir . '/' . $template;
         $this->config_dir   = $this->template_dir . '/config';
-
-        if (!$this instanceof Zikula_View_Theme) {
-            // change the View domain for customized templates
-            if (strpos($this->template_dir, 'config/') !== false) {
-                $this->domain = ZLanguage::getSiteDomain();
-
-            } elseif (strpos($this->template_dir, 'themes/') !== false) {
-                $this->domain = ZLanguage::getThemeDomain($this->theme);
-
-            } elseif ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
-                $this->domain = ZLanguage::getModuleDomain($this->modinfo['name']);
-
-            } else {
-                $this->domain = ZLanguage::getCoreDomain();
-            }
-        }
     }
 
     /**
