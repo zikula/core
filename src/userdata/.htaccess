@@ -1,9 +1,2 @@
-# ----------------------------------------------------------------------
-# Purpose of file: block any web access to not allowed files
-#                  stored under the userdata/ directory
-# ----------------------------------------------------------------------
+Order deny,allow
 deny from all
-<FilesMatch "\.(css|js|rss|png|gif|jpg|psd|svg|txt|rtf|xml|pdf|sdt|odt|doc|docx|pps|ppt|pptx|xls|xlsx|mp3|wav|wma|avi|flv|mov|mp4|rm|vob|wmv|gz|rar|tar.gz|zip)$">
-order allow,deny
-allow from all
-</filesmatch>

@@ -1,6 +1,7 @@
+# File: $Id$
 # ----------------------------------------------------------------------
-# Purpose of file: block web access to not allowed files
-#                  stored under the system/ directory
+# Purpose of file: block any web access to files stored under
+#                  the system/ directory
 # ----------------------------------------------------------------------
 deny from all
 <FilesMatch "\.(css|js|jpg|gif|png)$">
