@@ -107,8 +107,8 @@ function Categories_tables()
     $columns = array('id'           => 'id',
                      'modname'      => 'modname',
                      'table'        => 'tablename',
-                     'property'     => 'crg_property',
-                     'category_id'  => 'crg_category_id');
+                     'property'     => 'property',
+                     'category_id'  => 'category_id');
     ObjectUtil::addStandardFieldsToTableDefinition ($columns);
     $dbtable['categories_registry_column'] = $columns;
 

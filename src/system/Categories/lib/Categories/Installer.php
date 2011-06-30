@@ -134,6 +134,14 @@ class Categories_Installer extends Zikula_AbstractInstaller
      */
     public function createTables_101()
     {
+        if (!DBUtil::createTable('categories_registry')) {
+            return false;
+        }
+
+        if (!DBUtil::createIndex('idx_categories_registry', 'categories_registry', array('modname', 'table', 'property'))) {
+            return false;
+        }
+        
         if (!DBUtil::createTable('categories_mapmeta')) {
             return false;
         }
@@ -147,14 +155,6 @@ class Categories_Installer extends Zikula_AbstractInstaller
         }
 
         if (!DBUtil::createIndex('idx_categories_mapobj', 'categories_mapobj', array('modname', 'table', 'id', 'idcolumn'))) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('categories_registry')) {
-            return false;
-        }
-
-        if (!DBUtil::createIndex('idx_categories_registry', 'categories_registry', array('modname', 'table', 'property'))) {
             return false;
         }
 
