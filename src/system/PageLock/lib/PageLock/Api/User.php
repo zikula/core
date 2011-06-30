@@ -54,9 +54,9 @@ class PageLock_Api_User extends Zikula_AbstractApi
 
         if (!empty($lockName)) {
             if ($hasLock) {
-                $html .= "Event.observe(window, 'load', PageLock.UnlockedPage);\n";
+                $html .= "document.observe('dom:loaded', PageLock.UnlockedPage);\n";
             } else {
-                $html .= "Event.observe(window, 'load', PageLock.LockedPage);\n";
+                $html .= "document.observe('dom:loaded', PageLock.LockedPage);\n";
             }
         }
 
