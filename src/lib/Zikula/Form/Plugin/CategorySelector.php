@@ -105,6 +105,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
         $recurse        = isset($params['recurse'])     ? $params['recurse']     : true;
         $relative       = isset($params['relative'])    ? $params['relative']    : true;
         $sortField      = isset($params['sortField'])   ? $params['sortField']   : 'sort_value';
+        $field          = isset($params['field'])       ? $params['field']       : 'id';
 
         $allCats = array();
 
@@ -133,7 +134,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
         }
 
         if ($list->mandatory) {
-            $list->addItem('- - -', null);
+            $list->addItem(__('Choose one'), null);
         }
 
         $line = '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -';
@@ -150,7 +151,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             }
 
             $catName = html_entity_decode((isset($cat['display_name'][$lang]) ? $cat['display_name'][$lang] : $cat['name']));
-            $list->addItem($indent . ' ' . $catName, $cat['id']);
+            $list->addItem($indent . ' ' . $catName, isset($cat[$field]) ? $cat[$field] : $cat['id']);
         }
     }
 
