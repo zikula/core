@@ -111,7 +111,7 @@ class Groups_Installer extends Zikula_AbstractInstaller
                     'description' => $this->__('By default, all users are made members of this group.'),
                     'prefix'      => $this->__('usr')),
             array(  'name'        => $this->__('Administrators'),
-                    'description' => $this->__('By default, all administrators are made members of this group.'),
+                    'description' => $this->__('Group of administrators of this site.'),
                     'prefix'      => $this->__('adm'))
         );
 
