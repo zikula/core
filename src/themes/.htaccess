@@ -2,7 +2,6 @@
 # Purpose of file: block web access to not allowed files
 #                  stored under the themes/ directory
 # ----------------------------------------------------------------------
-deny from all
 <FilesMatch "\.(php|ini|yml|tpl)$">
 order allow,deny
 deny from all
