@@ -21,11 +21,9 @@
 function pagelock_tables()
 {
   $dbtable = array();
-  $prefix = System::getVar('prefix');
 
-    // Lock table setup
-
-  $tableName = DBUtil::getLimitedTablename('pagelock');
+  // Lock table setup
+  $tableName = 'pagelock';
   $dbtable['pagelock'] = $tableName;
 
   $dbtable['pagelock_column'] =

@@ -24,7 +24,7 @@ function securitycenter_tables()
     $dbtable = array();
 
     // IDS intrusions table
-    $dbtable['sc_intrusion'] = DBUtil::getLimitedTablename('sc_intrusion');
+    $dbtable['sc_intrusion'] = 'sc_intrusion';
     $dbtable['sc_intrusion_column'] = array('id'        => 'id',
                                             'name'      => 'name',
                                             'tag'       => 'tag',

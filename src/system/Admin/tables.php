@@ -25,7 +25,7 @@ function Admin_tables()
 
     // Set the column names.  Note that the array has been formatted
     // on-screen to be very easy to read by a user.
-    $dbtable['admin_category'] = DBUtil::getLimitedTablename('admin_category');
+    $dbtable['admin_category'] = 'admin_category';
     $dbtable['admin_category_column'] = array('cid'         => 'cid',
                                               'catname'     => 'name',
                                               'description' => 'description',
@@ -40,7 +40,7 @@ function Admin_tables()
 
     // Set the column names.  Note that the array has been formatted
     // on-screen to be very easy to read by a user.
-    $admin_category = DBUtil::getLimitedTablename('admin_module');
+    $admin_category = 'admin_module';
     $dbtable['admin_module'] = $admin_category;
     $dbtable['admin_module_column'] = array('id'    => 'amid',
                                             'mid'   => 'mid',

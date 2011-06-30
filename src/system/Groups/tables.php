@@ -22,7 +22,7 @@ function Groups_tables()
     // get the db driver
     $dbdriver = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
 
-    $group_membership = DBUtil::getLimitedTablename('group_membership') ;
+    $group_membership = 'group_membership';
     $dbtable['group_membership'] = $group_membership;
     $dbtable['group_membership_column'] = array ('gid' => 'gid',
                                                  'uid' => 'uid');
@@ -34,7 +34,7 @@ function Groups_tables()
     // addtitional indexes
     $dbtable['group_membership_column_idx'] = array ('gid_uid' => array('uid', 'gid'));
 
-    $groups = DBUtil::getLimitedTablename('groups') ;
+    $groups = 'groups';
     $dbtable['groups'] = $groups;
     $dbtable['groups_column'] = array ('gid'          => 'gid',
                                        'name'         => 'name',
@@ -60,7 +60,7 @@ function Groups_tables()
                                           'uidmaster'   => "I4 NOTNULL DEFAULT 0");
 
     // limit table name, see DBUtil::limitTablename() for more information about this
-    $group_applications = DBUtil::getLimitedTablename('group_applications') ;
+    $group_applications = 'group_applications';
     $dbtable['group_applications'] = $group_applications;
     $dbtable['group_applications_column'] = array ('app_id'      => 'app_id',
                                                    'uid'         => 'uid',

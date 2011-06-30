@@ -27,7 +27,7 @@ function theme_tables()
     // Initialise table array
     $dbtables = array();
 
-    $dbtables['themes'] = DBUtil::getLimitedTablename('themes');
+    $dbtables['themes'] = 'themes';
     $dbtables['themes_column'] = array ('id'             => 'id',
                                        'name'           => 'name',
                                        'type'           => 'type',

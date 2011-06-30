@@ -132,7 +132,7 @@ function Users_tables_for_220()
     // locale           - The user's chosen locale for i18n purposes, as defined by gettext, POSIX, and the Common Locale Data Repository;
     //                      optional, if blank then the system default locale should be used. [FUTURE USE]
     //
-    $dbinfo['users'] = DBUtil::getLimitedTablename('users');
+    $dbinfo['users'] = 'users';
     $dbinfo['users_column'] = array(
         'uid'           => 'uid',
         'uname'         => 'uname',
@@ -194,7 +194,7 @@ function Users_tables_for_220()
     //                      as a salted hash of the value sent.
     // created_dt       - Date/Time created: The date and time the verification record was created, as a UTC date/time,
     //                      used to expire the record.
-    $dbinfo['users_verifychg'] = DBUtil::getLimitedTablename('users_verifychg');;
+    $dbinfo['users_verifychg'] = 'users_verifychg';
 
     $dbinfo['users_verifychg_column'] = array (
         'id'            => 'id',
@@ -232,7 +232,7 @@ function Users_tables_for_220()
     //                      me" option to remain logged in between visits.
     // vars             - Session Variables: Per-user/per-session variables. (Serialized)
     //
-    $dbinfo['session_info'] = DBUtil::getLimitedTablename('session_info');
+    $dbinfo['session_info'] = 'session_info';
     $dbinfo['session_info_column'] = array (
         'sessid'    => 'sessid',
         'ipaddr'    => 'ipaddr',
@@ -309,7 +309,7 @@ function Users_tables_for_113()
     //                      updated, then the diligent programmer will ensure that this field is updated (if appropriate) as well!
     //                      Failure to maintain consistency between the pass field and this field will prevent users from being able
     //                      to successfully log in!
-    $dbinfo['users'] = DBUtil::getLimitedTablename('users');
+    $dbinfo['users'] = 'users';
     $dbinfo['users_column'] = array(
         'uid'             => 'uid',
         'uname'           => 'uname',
@@ -398,7 +398,7 @@ function Users_tables_for_113()
     // hash_method      - NOT USED
 
     // Version 1.11 through 1.13 (inclusive)
-    $dbinfo['users_temp'] = DBUtil::getLimitedTablename('users_temp');
+    $dbinfo['users_temp'] = 'users_temp';
     $dbinfo['users_temp_column'] = array(
         'tid'          => 'tid',
         'uname'        => 'uname',
@@ -443,7 +443,7 @@ function Users_tables_for_113()
     //                      me" option to remain logged in between visits.
     // vars             - Session Variables: Per-user/per-session variables. (Serialized)
     //
-    $dbinfo['session_info'] = DBUtil::getLimitedTablename('session_info');
+    $dbinfo['session_info'] = 'session_info';
     $dbinfo['session_info_column'] = array (
         'sessid'    => 'sessid',
         'ipaddr'    => 'ipaddr',

@@ -48,11 +48,6 @@
                 </p>
             </div>
 
-            <div class="z-formrow">
-                <label for="dbprefix">{gt text="Table prefix"}</label>
-                <input type="text" name="dbprefix" id="dbprefix" maxlength="40" value="{$dbprefix|default:'z'}" />
-            </div>
-            
         </fieldset>
         <div class="z-buttons z-center">
             <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />

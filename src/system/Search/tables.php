@@ -20,7 +20,7 @@
  */
 function Search_tables()
 {
-    $search_stat = DBUtil::getLimitedTablename('search_stat');
+    $search_stat = 'search_stat';
 
     $dbtable = array();
     $dbtable['search_stat'] = $search_stat;
@@ -35,7 +35,7 @@ function Search_tables()
                                                 'count'  => 'I4    NOTNULL DEFAULT "0"',
                                                 'date'   => 'D     DEFDATE');
 
-    $search_result = DBUtil::getLimitedTablename('search_result');
+    $search_result = 'search_result';
     $dbtable['search_result'] = $search_result;
     $dbtable['search_result_column'] = array ('id'      => 'id',
                                               'title'   => 'title',

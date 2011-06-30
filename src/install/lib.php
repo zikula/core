@@ -58,7 +58,7 @@ function install(Zikula_Core $core)
     $dbusername = FormUtil::getPassedValue('dbusername', '', 'GETPOST');
     $dbpassword = FormUtil::getPassedValue('dbpassword', '', 'GETPOST');
     $dbname = FormUtil::getPassedValue('dbname', '', 'GETPOST');
-    $dbprefix = FormUtil::getPassedValue('dbprefix', '', 'GETPOST');
+    $dbprefix = '';
     $dbdriver = FormUtil::getPassedValue('dbdriver', '', 'GETPOST');
     $dbtabletype = FormUtil::getPassedValue('dbtabletype', '', 'GETPOST');
     $username = FormUtil::getPassedValue('username', '', 'POST');
@@ -148,15 +148,12 @@ function install(Zikula_Core $core)
             if (empty($dbname) || empty($dbusername)) {
                 $action = 'dbinformation';
                 $smarty->assign('dbconnectmissing', true);
-            } elseif (preg_match('/\W/', $dbprefix)) {
-                $action = 'dbinformation';
-                $smarty->assign('dbinvalidprefix', true);
             } elseif (!preg_match('/^[\w-]*$/', $dbname) ||
                     strlen($dbname) > 64) {
                 $action = 'dbinformation';
                 $smarty->assign('dbinvalidname', true);
             } else {
-                update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbdriver, $dbtabletype);
+                update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver, $dbtabletype);
                 update_installed_status(0);
                 try {
                     $dbh = new PDO("$dbdriver:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
@@ -210,8 +207,8 @@ function install(Zikula_Core $core)
                     // checks if exists a previous installation with the same prefix
                     $proceed = true;
                     $exec = ($dbdriver == 'mysql' || $dbdriver == 'mysqli') ?
-                            "SHOW TABLES FROM `$dbname` LIKE '" . $dbprefix . "_%'" :
-                            "SHOW TABLES FROM $dbname LIKE '" . $dbprefix . "_%'";
+                            "SHOW TABLES FROM `$dbname` LIKE '%'" :
+                            "SHOW TABLES FROM $dbname LIKE '%'";
                     $tables = DBUtil::executeSQL($exec);
                     if ($tables->rowCount() > 0) {
                         $proceed = false;
@@ -235,7 +232,7 @@ function install(Zikula_Core $core)
                                         continue;
                                 $exec .= $line;
                                 if (strrpos($line, ';') === strlen($line) - 1) {
-                                    if (!DBUtil::executeSQL(str_replace('z_', $dbprefix . '_', $exec))) {
+                                    if (!DBUtil::executeSQL($exec)) {
                                         $action = 'dbinformation';
                                         $smarty->assign('dbdumpfailed', true);
                                         break;
@@ -576,10 +573,9 @@ function _installer_replace_keys($searchKey, $replaceWith, $string)
     return preg_replace($search, $replace, $string);
 }
 
-function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbdriver, $dbtabletype)
+function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver, $dbtabletype)
 {
     $file = file_get_contents('config/config.php');
-    $file = _installer_replace_keys('prefix', $dbprefix, $file);
     $file = _installer_replace_keys('dbname', $dbname, $file);
     $file = _installer_replace_keys('dbdriver', $dbdriver, $file);
     $file = _installer_replace_keys('dbtabletype', $dbtabletype, $file);

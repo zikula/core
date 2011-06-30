@@ -17,7 +17,7 @@ function Settings_tables()
     // Initialise table array
     $dbtables = array();
 
-    $table = DBUtil::getLimitedTablename('objectdata_attributes');
+    $table = 'objectdata_attributes';
     $dbtables['objectdata_attributes'] = $table;
     $columns = array ('id'             => 'id',
                       'attribute_name' => 'attribute_name',
@@ -37,7 +37,7 @@ function Settings_tables()
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
     $dbtables['objectdata_attributes_column_def'] = $tabledef;
 
-    $table = DBUtil::getLimitedTablename('objectdata_log');
+    $table = 'objectdata_log';
     $dbtables['objectdata_log'] = $table;
     $columns = array ('id'           => 'id',
                       'object_type'  => 'object_type',
@@ -55,11 +55,11 @@ function Settings_tables()
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'obl_');
     $dbtables['objectdata_log_column_def'] = $tabledef;
 
-    $table = DBUtil::getLimitedTablename('objectdata_meta');
+    $table = 'objectdata_meta';
     $dbtables['objectdata_meta'] = $table;
     $columns = array ('id'             => 'id',
                       'module'         => 'module',
-                      'table'          => 'table',
+                      'table'          => 'tablename',
                       'idcolumn'       => 'idcolumn',
                       'obj_id'         => 'obj_id',
                       'permissions'    => 'permissions',
@@ -114,7 +114,7 @@ function Settings_tables()
     $dbtables['objectdata_meta_column_def'] = $tabledef;
 
     // workflow
-    $dbtables['workflows'] = DBUtil::getLimitedTablename('workflows');
+    $dbtables['workflows'] = 'workflows';
     $dbtables['workflows_column'] = array('id'           => 'id',
                                           'metaid'       => 'metaid',
                                           'module'       => 'module',

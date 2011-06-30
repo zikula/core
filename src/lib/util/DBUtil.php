@@ -3578,7 +3578,7 @@ class DBUtil
         }
 
         // finally build the tablename
-        $tablename = $prefix . '_' . $table;
+        $tablename = $prefix ? $prefix . '_' . $table : $table;
         return $tablename;
     }
 

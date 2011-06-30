@@ -32,7 +32,7 @@ function Permissions_tables()
     $dbtable = array();
 
     // Get the name for the Permissions item table.
-    $group_perms = DBUtil::getLimitedTablename('group_perms');
+    $group_perms = 'group_perms';
 
     // Set the table name
     $dbtable['group_perms'] = $group_perms;

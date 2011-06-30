@@ -22,9 +22,8 @@ function Categories_tables()
 {
     // Initialise table array
     $dbtable = array();
-    $prefix = System::getVar('prefix');
 
-    $table = DBUtil::getLimitedTablename('categories_category');
+    $table = 'categories_category';
     $dbtable['categories_category'] = $table;
     $columns = array('id'              => 'id',
                      'parent_id'       => 'parent_id',
@@ -67,7 +66,7 @@ function Categories_tables()
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
     $dbtable['categories_category_column_def'] = $tabledef;
 
-    $table = DBUtil::getLimitedTablename('categories_mapmeta');
+    $table = 'categories_mapmeta';
     $dbtable['categories_mapmeta'] = $table;
     $columns = array('id'          => 'id',
                      'meta_id'     => 'meta_id',
@@ -81,7 +80,7 @@ function Categories_tables()
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
     $dbtable['categories_mapmeta_column_def'] = $tabledef;
 
-    $table = DBUtil::getLimitedTablename('categories_mapobj');
+    $table = 'categories_mapobj';
     $dbtable['categories_mapobj'] = $table;
     $columns = array('id'           => 'id',
                      'modname'      => 'modname',
@@ -103,7 +102,7 @@ function Categories_tables()
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
     $dbtable['categories_mapobj_column_def'] = $tabledef;
 
-    $table = DBUtil::getLimitedTablename('categories_registry');
+    $table = 'categories_registry';
     $dbtable['categories_registry'] = $table;
     $columns = array('id'           => 'id',
                      'modname'      => 'modname',

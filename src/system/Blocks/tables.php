@@ -26,7 +26,7 @@ function Blocks_tables()
     // Initialise table array
     $dbtable = array();
 
-    $blocks = DBUtil::getLimitedTablename('blocks') ;
+    $blocks = 'blocks';
     $dbtable['blocks'] = $blocks;
     $dbtable['blocks_column'] = array ('bid'         => 'bid',
                                        'bkey'        => 'bkey',
@@ -63,7 +63,7 @@ function Blocks_tables()
     $dbtable['blocks_column_idx'] = array ('active_idx' => 'active');
 
     // additional indexes
-    $userblocks = DBUtil::getLimitedTablename('userblocks') ;
+    $userblocks = 'userblocks';
     $dbtable['userblocks'] = $userblocks;
     $dbtable['userblocks_column'] = array ('uid'         => 'uid',
                                            'bid'         => 'bid',
@@ -79,7 +79,7 @@ function Blocks_tables()
     // additional indexes
     $dbtable['userblocks_column_idx'] = array ('bid_uid_idx'    => array('uid', 'bid'));
 
-    $block_positions = DBUtil::getLimitedTablename('block_positions') ;
+    $block_positions = 'block_positions';
     $dbtable['block_positions'] = $block_positions;
     $dbtable['block_positions_column'] = array ('pid'         => 'pid',
                                                 'name'        => 'name',
@@ -93,7 +93,7 @@ function Blocks_tables()
     // additional indexes
     $dbtable['block_positions_column_idx'] = array ('name_idx' => 'name');
 
-    $block_placements = DBUtil::getLimitedTablename('block_placements') ;
+    $block_placements = 'block_placements';
     $dbtable['block_placements'] = $block_placements;
     $dbtable['block_placements_column'] = array ('pid'   => 'pid',
                                                  'bid'   => 'bid',

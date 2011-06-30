@@ -24,10 +24,9 @@ function Extensions_tables()
 {
     // Initialise table array
     $dbtable = array();
-    $prefix = System::getVar('prefix');
 
     // modules module
-    $hooks = $prefix . '_hooks';
+    $hooks = 'hooks';
     $dbtable['hooks'] = $hooks;
     $dbtable['hooks_column'] = array(
             'id' => 'id',
@@ -58,7 +57,7 @@ function Extensions_tables()
     $dbtable['hooks_column_idx'] = array('smodule' => 'smodule',
             'smodule_tmodule' => array('smodule', 'tmodule'));
 
-    $modules = $prefix . '_modules';
+    $modules = 'modules';
     $dbtable['modules'] = $modules;
     $dbtable['modules_column'] = array(
             'id' => 'id',
@@ -97,7 +96,7 @@ function Extensions_tables()
     $dbtable['modules_column_idx'] = array('state' => 'state',
             'mod_state' => array('name', 'state'));
 
-    $module_vars = $prefix . '_module_vars';
+    $module_vars = 'module_vars';
     $dbtable['module_vars'] = $module_vars;
     $dbtable['module_vars_column'] = array(
             'id' => 'id',
@@ -117,7 +116,7 @@ function Extensions_tables()
 
 
     //$module_dependencies = DBUtil::getLimitedTablename('module_deps');
-    $module_deps = $prefix . '_module_deps';
+    $module_deps = 'module_deps';
     $dbtable['module_deps'] = $module_deps;
     $dbtable['module_deps_column'] = array(
             'id' => 'id',
