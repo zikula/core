@@ -134,7 +134,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
         }
 
         if ($list->mandatory) {
-            $list->addItem('- - -', null);
+            $list->addItem(__('Choose one'), null);
         }
 
         $line = '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -';
