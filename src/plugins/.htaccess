@@ -1,9 +1,0 @@
-# ----------------------------------------------------------------------
-# Purpose of file: block any web access to not allowed files
-#                  stored under the plugins/ directory
-# ----------------------------------------------------------------------
-deny from all
-<FilesMatch "\.(css|js|png|gif|jpg|swf|flv)$">
-order allow,deny
-allow from all
-</filesmatch>

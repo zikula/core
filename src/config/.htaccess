@@ -1,9 +1,10 @@
+# File: $Id$
 # ----------------------------------------------------------------------
 # Purpose of file: block any web access to files stored under
 #                  the config/ directory
 # ----------------------------------------------------------------------
 deny from all
-<FilesMatch "\.(css|js|png|gif|jpg|bmp)$">
+<FilesMatch "\.(css|js)$">
 order allow,deny
 allow from all
 </filesmatch>
