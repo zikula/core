@@ -1826,7 +1826,7 @@ class DBUtil
             }
             $n++;
         }
-        $where = "cmo_table='" . DataUtil::formatForStore($tablename) . "' AND (" . implode(" $op ", $where) . ')';
+        $where = "tablename='" . DataUtil::formatForStore($tablename) . "' AND (" . implode(" $op ", $where) . ')';
 
         // perform the query
         $objIds = DBUtil::selectFieldArray('categories_mapobj', 'obj_id', $where);

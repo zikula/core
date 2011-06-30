@@ -32,7 +32,7 @@ class Zikula_Doctrine_Template_Listener_Categorisable extends Doctrine_Record_Li
 
         // aliases must be specific to entities
         $aliasCategories = $params['alias'] . 'Catmapobj';
-        $dql = $params['alias'].'.Categories '.$aliasCategories.' INDEXBY '.$aliasCategories.'.reg_property';
+        $dql = $params['alias'].'.Categories '.$aliasCategories.' INDEXBY '.$aliasCategories.'.property';
 
         if (!$query->contains($dql)) {
             $query->leftJoin($dql)

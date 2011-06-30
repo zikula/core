@@ -124,7 +124,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
         // search for existring object
         $mapobjFound = null;
         foreach ($rec['Categories'] as $mapobj) {
-            if ($mapobj['reg_property'] == $prop) {
+            if ($mapobj['property'] == $prop) {
                 $mapobjFound = $mapobj;
                 break;
             }
@@ -142,7 +142,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
         } else {
             $rec['Categories'][]['Registry'] = $registry;
             $newmapobj = $rec['Categories']->getLast();
-            $newmapobj['reg_property'] = $prop;
+            $newmapobj['property'] = $prop;
             if (is_object($category) && $category instanceof Zikula_Doctrine_Model_Category) {
                 $newmapobj['Category'] = $category;
             } else {

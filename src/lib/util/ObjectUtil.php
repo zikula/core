@@ -1020,7 +1020,7 @@ class ObjectUtil
             return false;
         }
 
-        $where = "cmo_table='" . DataUtil::formatForStore($tablename) . "' AND cmo_obj_id='" . DataUtil::formatForStore($obj[$idcolumn]) . "' AND cmo_obj_idcolumn='" . DataUtil::formatForStore($idcolumn) . "'";
+        $where = "tablename='" . DataUtil::formatForStore($tablename) . "' AND obj_id='" . DataUtil::formatForStore($obj[$idcolumn]) . "' AND obj_idcolumn='" . DataUtil::formatForStore($idcolumn) . "'";
         $categoriesDeleted = (boolean)DBUtil::deleteWhere('categories_mapobj', $where);
 
         $dbtables = DBUtil::getTables();
