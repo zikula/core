@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-Event.observe(window, 'load', mailer_modifyconfig_init);
+document.observe('dom:loaded', mailer_modifyconfig_init);
 
 function mailer_modifyconfig_init()
 {

@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation 2010 - license GNU/LGPLv2.1 (or at your option, any later version).
 
-Event.observe(window, 'load', securitycenter_modifyconfig_init);
+document.observe('dom:loaded', securitycenter_modifyconfig_init);
 
 function securitycenter_modifyconfig_init()
 {

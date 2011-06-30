@@ -178,7 +178,7 @@
 {adminfooter}
 
 <script type="text/javascript">
-    Event.observe(window, 'load', function() {
+    document.observe('dom:loaded', function() {
         Zikula.UI.Tooltips($$('label'));
         tabstest = new Zikula.UI.Tabs('blocktemplates');
     });
