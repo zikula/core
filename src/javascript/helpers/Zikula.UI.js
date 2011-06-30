@@ -1526,7 +1526,7 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
         this.contents = this.headers.map(function(h) {
             return h.next();
         });
-        if (!this.options.active && this.options.saveToCookie) {
+        if (!this.options.active.size() && this.options.saveToCookie) {
             this.options.active = Zikula.Cookie.get(this.cookie);
         }
         if (this.options.equal || this.options.height) {
