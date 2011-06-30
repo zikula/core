@@ -297,8 +297,8 @@ div#z-securityanalyzer ul,
 div#z-updatechecker p {
     list-style-position: outside;
     list-style-type: disc;
-    margin: 0 1em 0.7em;
-    padding: 0 1em 1em;
+    margin: 0 1em 1.3em;
+    padding: 0 1em;
 }
 
 /* Used to style the cancel delete button when asking for a confirmation */
