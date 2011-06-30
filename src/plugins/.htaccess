@@ -1,9 +1,9 @@
 # ----------------------------------------------------------------------
 # Purpose of file: block any web access to not allowed files
-#                  stored under the userdata/ directory
+#                  stored under the plugins/ directory
 # ----------------------------------------------------------------------
 deny from all
-<FilesMatch "\.(css|js|rss|png|gif|jpg|psd|svg|txt|rtf|xml|pdf|sdt|odt|doc|docx|pps|ppt|pptx|xls|xlsx|mp3|wav|wma|avi|flv|mov|mp4|rm|vob|wmv|gz|rar|tar.gz|zip)$">
+<FilesMatch "\.(css|js|png|gif|jpg|swf)$">
 order allow,deny
 allow from all
 </filesmatch>

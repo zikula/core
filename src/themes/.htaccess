@@ -1,9 +1,8 @@
 # ----------------------------------------------------------------------
-# Purpose of file: block any web access to files stored under
-#                  the config/ directory
+# Purpose of file: block web access to not allowed files
+#                  stored under the themes/ directory
 # ----------------------------------------------------------------------
-deny from all
-<FilesMatch "\.(css|js|png|gif|jpg|bmp)$">
+<FilesMatch "\.(php|ini|yml|tpl)$">
 order allow,deny
-allow from all
+deny from all
 </filesmatch>
