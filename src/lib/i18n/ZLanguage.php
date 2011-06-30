@@ -467,14 +467,8 @@ class ZLanguage
     public static function bindCoreDomain()
     {
         $_this = self::getInstance();
-
-        $coredomain = self::getCoreDomain();
-        $_this->bindDomain($coredomain, $_this->searchOverrides($coredomain, 'locale')); // bind system domain
-        $_this->setTextDomain($coredomain);
-
-        $sitedomain = self::getSiteDomain();
-        $_this->bindDomain($sitedomain, $_this->searchOverrides($sitedomain, 'locale')); // bind site domain
-        $_this->setTextDomain($sitedomain);
+        $_this->bindDomain('zikula', $_this->searchOverrides('zikula', 'locale')); // bind system domain
+        $_this->setTextDomain('zikula');
     }
 
 
@@ -494,26 +488,6 @@ class ZLanguage
         return $override ? realpath(/*$basedir.*/'config/locale') : realpath($path);
     }
 
-
-    /**
-     * Get core's domain.
-     *
-     * @return string
-     */
-    public static function getCoreDomain()
-    {
-        return 'zikula';
-    }
-
-    /**
-     * Get website custom domain.
-     *
-     * @return string
-     */
-    public static function getSiteDomain()
-    {
-        return 'site';
-    }
 
     /**
      * Get module domain.
