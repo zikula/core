@@ -16,7 +16,7 @@ global $ZConfig;
 $ZConfig['System']['installed'] = 0;        // installer will change this during installation
 $ZConfig['System']['temp'] = 'ztemp';       // location of temporary folder
 $ZConfig['System']['datadir'] = 'userdata';     // location of site data files
-$ZConfig['System']['prefix'] = 'z';         // database prefix
+$ZConfig['System']['prefix'] = '';         // database prefix (deprecated).
 $ZConfig['System']['development'] = 0;      // development mode 1/0 for on or off.  Disable in production mode.
 $ZConfig['System']['legacy_prefilters'] = true; // enable legacy template prefilters
 $ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers
@@ -62,13 +62,13 @@ $ZConfig['Log']['log.apache_uname'] = 0;          // log username to apache logs
 
 $ZConfig['Log']['log.enabled'] = 1;                 // Enable to allow Zikula to handle errors, 0 passes everything to PHP directly.
 $ZConfig['Log']['log.to_display'] = 1;              // Display errors.
-$ZConfig['Log']['log.display_level'] = 4;           // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
+$ZConfig['Log']['log.display_level'] = 5;           // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
 $ZConfig['Log']['log.display_ajax_level'] = 4;      // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
 $ZConfig['Log']['log.to_file'] = 0;                 // Log to file 1 yes, 0 no.
 $ZConfig['Log']['log.file_level'] = 5;              // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
 
 
-$ZConfig['Log']['log.show_php_errorhandler'] = 0;   // Allow PHP error handlers to display additionally? Set this to 1 if you want to see PHP's error handler
+$ZConfig['Log']['log.show_php_errorhandler'] = 1;   // Allow PHP error handlers to display additionally? Set this to 1 if you want to see PHP's error handler
                                                     // If you have XDebug installed, setting this will allow XDebug to output.
                                                     // If log.display_template set, PHP's handlers will not show!
 
