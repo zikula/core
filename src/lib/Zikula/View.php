@@ -1052,31 +1052,17 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->config_dir   = $this->template_dir . '/config';
 
         if (!$this instanceof Zikula_View_Theme) {
-            // resolves the gettext domain for customized templates
-
-            if (ZLanguage::getSiteDomain() && strpos($this->template_dir, 'config/') === 0) {
-                // site domain
+            // change the domain for customized templates
+            /*if (strpos($this->template_dir, 'config/') !== false) {
                 $this->domain = ZLanguage::getSiteDomain();
 
-            } elseif (strpos($this->template_dir, 'themes/') === 0) {
-                // theme domain
+            } else*/if (strpos($this->template_dir, 'themes/') !== false) {
                 $this->domain = ZLanguage::getThemeDomain($this->theme);
 
-            } elseif ($this instanceof Zikula_View_Plugin) {
-                // default plugin domain
-                if ($this->modinfo['type'] == ModUtil::TYPE_MODULE || $this->modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-                    $this->domain = ZLanguage::getModulePluginDomain($this->modinfo['name'],  $this->pluginName);
-
-                } elseif ($this->modinfo['type'] == ModUtil::TYPE_CORE) {
-                    $this->domain = ZLanguage::getSystemPluginDomain($this->pluginName);
-                }
-
             } elseif ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
-                // default third party module domain
                 $this->domain = ZLanguage::getModuleDomain($this->modinfo['name']);
 
             } else {
-                // defaults to core domain
                 $this->domain = ZLanguage::getCoreDomain();
             }
         }
