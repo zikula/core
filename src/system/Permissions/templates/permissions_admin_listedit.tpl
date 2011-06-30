@@ -116,5 +116,4 @@
     </div>
 </form>
 {/if}
-{$pager}
 {adminfooter}
