@@ -177,7 +177,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
         }
 
         $where = '';
-        $sort = 'crg_modname, crg_property';
+        $sort = 'modname, property';
         $objArray = new $arrayClass ();
         $dataA = $objArray->get($where, $sort);
 
