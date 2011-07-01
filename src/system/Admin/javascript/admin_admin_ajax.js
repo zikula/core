@@ -15,6 +15,7 @@ document.observe('dom:loaded', function() {
         options.active = [0];
     }
     new Zikula.UI.Panels('admin-systemnotices', options);
+    $$('#z-developernotices ul:first')[0].removeClassName('z-hide');
 });
 
 Event.observe(window, 'load', function() {
