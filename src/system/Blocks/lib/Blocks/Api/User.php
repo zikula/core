@@ -60,7 +60,7 @@ class Blocks_Api_User extends Zikula_AbstractApi
 
         // filter by block position
         if (isset($args['blockposition_id']) && is_numeric($args['blockposition_id']) && $args['blockposition_id']) {
-            $where = "z_pid = $args[blockposition_id]";
+            $where = "pid = $args[blockposition_id]";
             $bids = DBUtil::selectFieldArray('block_placements', 'bid', $where);
             $bidList = $bids ? implode(',', $bids) : -1;
             $whereargs[] = "$blockscolumn[bid] IN ($bidList)";
@@ -199,8 +199,8 @@ class Blocks_Api_User extends Zikula_AbstractApi
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
             return LogUtil::registerArgsError();
         }
-        $where = "WHERE z_pid = '" . DataUtil::formatForStore($args['pid']) . '\'';
-        return DBUtil::selectObjectArray('block_placements', $where, 'z_order');
+        $where = "WHERE pid = '" . DataUtil::formatForStore($args['pid']) . '\'';
+        return DBUtil::selectObjectArray('block_placements', $where, 'sortorder');
     }
 
     /**
@@ -216,8 +216,8 @@ class Blocks_Api_User extends Zikula_AbstractApi
         if (!isset($args['bid']) || !is_numeric($args['bid'])) {
             return LogUtil::registerArgsError();
         }
-        $where = "WHERE z_bid = '" . DataUtil::formatForStore($args['bid']) . '\'';
-        return DBUtil::selectObjectArray('block_placements', $where, 'z_order');
+        $where = "WHERE bid = '" . DataUtil::formatForStore($args['bid']) . '\'';
+        return DBUtil::selectObjectArray('block_placements', $where, 'sortorder');
     }
 
     /**

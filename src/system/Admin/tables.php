@@ -25,11 +25,11 @@ function Admin_tables()
 
     // Set the column names.  Note that the array has been formatted
     // on-screen to be very easy to read by a user.
-    $dbtable['admin_category'] = DBUtil::getLimitedTablename('admin_category');
-    $dbtable['admin_category_column'] = array('cid'         => 'z_cid',
-                                              'catname'     => 'z_name',
-                                              'description' => 'z_description',
-                                              'order'       => 'z_order');
+    $dbtable['admin_category'] = 'admin_category';
+    $dbtable['admin_category_column'] = array('cid'         => 'cid',
+                                              'catname'     => 'name',
+                                              'description' => 'description',
+                                              'order'       => 'sortorder');
 
     $dbtable['admin_category_column_def'] = array('cid'         => "I NOTNULL AUTO PRIMARY",
                                                   'catname'     => "C(32) NOTNULL DEFAULT ''",
@@ -40,12 +40,12 @@ function Admin_tables()
 
     // Set the column names.  Note that the array has been formatted
     // on-screen to be very easy to read by a user.
-    $admin_category = DBUtil::getLimitedTablename('admin_module');
+    $admin_category = 'admin_module';
     $dbtable['admin_module'] = $admin_category;
-    $dbtable['admin_module_column'] = array('id'    => 'z_amid',
-                                            'mid'   => 'z_mid',
-                                            'cid'   => 'z_cid',
-                                            'order' => 'z_order');
+    $dbtable['admin_module_column'] = array('id'    => 'amid',
+                                            'mid'   => 'mid',
+                                            'cid'   => 'cid',
+                                            'order' => 'sortorder');
 
     $dbtable['admin_module_column_def'] = array('id'    => "I NOTNULL AUTO PRIMARY",
                                                 'mid'   => "I NOTNULL DEFAULT 0",

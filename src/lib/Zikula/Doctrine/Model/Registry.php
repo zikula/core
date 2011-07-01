@@ -27,11 +27,11 @@ class Zikula_Doctrine_Model_Registry extends Doctrine_Record
     {
         $this->setTableName('categories_registry');
 
-        $this->hasColumn('crg_id as id', 'integer', 4, array('primary' => true, 'autoincrement' => true));
-        $this->hasColumn('crg_modname as module', 'string', 255);
-        $this->hasColumn('crg_table as table', 'string', 255);
-        $this->hasColumn('crg_property as property', 'string', 255);
-        $this->hasColumn('crg_category_id as categoryId', 'integer', 4);
+        $this->hasColumn('id as id', 'integer', 4, array('primary' => true, 'autoincrement' => true));
+        $this->hasColumn('modname as module', 'string', 255);
+        $this->hasColumn('tablename as tablename', 'string', 255);
+        $this->hasColumn('property as property', 'string', 255);
+        $this->hasColumn('category_id as categoryId', 'integer', 4);
     }
 }
 
