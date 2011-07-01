@@ -2269,7 +2269,7 @@ class DBUtil
         $where = self::_checkWhereClause($where);
         $orderby = self::_checkOrderByClause($orderby, $table);
 
-        $dSql = ($distinct ? "DISTINCT($fieldName)" : $fieldName);
+        $dSql = ($distinct ? "DISTINCT(a.$fieldName)" : "a.$fieldName");
         $sqlStart = "SELECT $dSql ";
         $sqlFrom = "FROM $tableName AS tbl ";
 
