@@ -27,13 +27,13 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
     {
         $this->setTableName('categories_mapobj');
         
-        $this->hasColumn('cmo_table as table', 'string', 60, array('primary' => true));
-        $this->hasColumn('cmo_obj_id as obj_id', 'integer', 4, array('primary' => true));
-        $this->hasColumn('cmo_category_id as category_id', 'integer', 4, array('primary' => true));
-        $this->hasColumn('cmo_reg_id as reg_id','integer', 4, array('primary' => true));
+        $this->hasColumn('tablename as table', 'string', 60, array('primary' => true));
+        $this->hasColumn('obj_id as obj_id', 'integer', 4, array('primary' => true));
+        $this->hasColumn('category_id as category_id', 'integer', 4, array('primary' => true));
+        $this->hasColumn('reg_id as reg_id','integer', 4, array('primary' => true));
 
-        $this->hasColumn('cmo_reg_property as reg_property', 'string', 60);
-        $this->hasColumn('cmo_modname as module', 'string', 60);
+        $this->hasColumn('reg_property as reg_property', 'string', 60);
+        $this->hasColumn('modname as module', 'string', 60);
         
         $this->setSubclasses(ModUtil::getVar('Categories', 'EntityCategorySubclasses', array()));
     }
@@ -45,7 +45,7 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
      */
     public function setUp()
     {
-        $this->actAs('Zikula_Doctrine_Template_StandardFields', array('oldColumnPrefix' => 'cmo_'));
+        $this->actAs('Zikula_Doctrine_Template_StandardFields');
 
         $this->hasOne('Zikula_Doctrine_Model_Registry as Registry', array(
             'local' => 'reg_id',

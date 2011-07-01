@@ -1274,7 +1274,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $where = "z_modid = '" . DataUtil::formatForStore($args['modid']) . "'";
+        $where = "modid = '" . DataUtil::formatForStore($args['modid']) . "'";
 
         return DBUtil::selectObjectArray('module_deps', $where, 'modname');
     }
@@ -1295,7 +1295,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         $modinfo = ModUtil::getInfo($args['modid']);
-        $where = "z_modname = '" . DataUtil::formatForStore($modinfo['name']) . "'";
+        $where = "modname = '" . DataUtil::formatForStore($modinfo['name']) . "'";
 
         return DBUtil::selectObjectArray('module_deps', $where, 'modid');
     }

@@ -31,9 +31,9 @@ class CategoryRegistryUtil
             return z_exit(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
 
-        $where = "crg_modname='$modname'";
+        $where = "modname='$modname'";
         if ($entryID) {
-            $where .= " AND crg_id=$entryID";
+            $where .= " AND id=$entryID";
         }
 
         return (boolean)DBUtil::deleteWhere('categories_registry', $where);

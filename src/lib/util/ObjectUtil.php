@@ -20,12 +20,12 @@ class ObjectUtil
     /**
      * Add standard PN architecture fields to the table definition.
      *
-     * @param array  &$columns   The column list from the PNTables structure for the current table.
-     * @param string $col_prefix The column prefix.
+     * @param array  &$columns   The column list from the tables structure for the current table.
+     * @param string $col_prefix Colum prefix (deprecated). Default ''.
      *
      * @return void
      */
-    public static function addStandardFieldsToTableDefinition(&$columns, $col_prefix)
+    public static function addStandardFieldsToTableDefinition(&$columns, $col_prefix='')
     {
         // ensure correct handling of prefix with and without underscore
         if ($col_prefix) {
@@ -184,25 +184,25 @@ class ObjectUtil
      *
      * @return The create object (success) or false (failure)
      */
-    public static function createEmptyObject ($tablename) 
-    { 
+    public static function createEmptyObject ($tablename)
+    {
         if (!$tablename) {
             return LogUtil::registerError ('Invalid [tablename] received');
-        } 
+        }
 
         $dbtables = DBUtil::getTables();
         if (!isset($dbtables[$tablename])) {
             return LogUtil::registerError ("Tablename [$tablename] not set in pntables array");
-        } 
+        }
         if (!isset($dbtables["${tablename}_column"])) {
             return LogUtil::registerError ("Columns [${tablename}_column] not set in pntables array");
-        } 
+        }
 
         $cols = $dbtables["${tablename}_column"];
         $data = array();
         foreach ($cols as $k=>$v) {
             $data[$k] = null;
-        } 
+        }
 
         return $data;
     }
@@ -1021,7 +1021,7 @@ class ObjectUtil
             return false;
         }
 
-        $where = "cmo_table='" . DataUtil::formatForStore($tablename) . "' AND cmo_obj_id='" . DataUtil::formatForStore($obj[$idcolumn]) . "' AND cmo_obj_idcolumn='" . DataUtil::formatForStore($idcolumn) . "'";
+        $where = "tablename='" . DataUtil::formatForStore($tablename) . "' AND obj_id='" . DataUtil::formatForStore($obj[$idcolumn]) . "' AND obj_idcolumn='" . DataUtil::formatForStore($idcolumn) . "'";
         $categoriesDeleted = (boolean)DBUtil::deleteWhere('categories_mapobj', $where);
 
         $dbtables = DBUtil::getTables();
@@ -1087,7 +1087,7 @@ class ObjectUtil
         }
 
         $cats = implode(',', array_values($catlist));
-        $where = "WHERE cat_id IN ($cats)";
+        $where = "WHERE id IN ($cats)";
         $catsdata = CategoryUtil::getCategories($where, '', 'id', $enablePermissionCheck);
 
         $result = array();
@@ -1164,7 +1164,7 @@ class ObjectUtil
         }
 
         // now retrieve the full category data
-        $where = 'WHERE cat_id IN (' . implode(',', $catlist) . ')';
+        $where = 'WHERE id IN (' . implode(',', $catlist) . ')';
 
         $catArray = new Categories_DBObject_CategoryArray();
         $data = $catArray->get($where, '', -1, -1, 'id');
