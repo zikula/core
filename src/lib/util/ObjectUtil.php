@@ -1087,7 +1087,7 @@ class ObjectUtil
         }
 
         $cats = implode(',', array_values($catlist));
-        $where = "WHERE cat_id IN ($cats)";
+        $where = "WHERE id IN ($cats)";
         $catsdata = CategoryUtil::getCategories($where, '', 'id', $enablePermissionCheck);
 
         $result = array();
@@ -1164,7 +1164,7 @@ class ObjectUtil
         }
 
         // now retrieve the full category data
-        $where = 'WHERE cat_id IN (' . implode(',', $catlist) . ')';
+        $where = 'WHERE id IN (' . implode(',', $catlist) . ')';
 
         $catArray = new Categories_DBObject_CategoryArray();
         $data = $catArray->get($where, '', -1, -1, 'id');
