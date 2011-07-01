@@ -218,13 +218,13 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
         } else if ($this->enableDoctrine && $this->dataBased) {
             if ($this->group == null) {
                 $data['Categories'][$this->dataField] = array('category_id' => $this->getSelectedValue(),
-                                                              'reg_property' => $this->dataField);
+                                                              'property' => $this->dataField);
             } else {
                 if (!array_key_exists($this->group, $data)) {
                     $data[$this->group] = array();
                 }
                 $data[$this->group]['Categories'][$this->dataField] = array('category_id' => $this->getSelectedValue(),
-                                                                            'reg_property' => $this->dataField);
+                                                                            'property' => $this->dataField);
             }
         } else {
             parent::saveValue($view, $data);

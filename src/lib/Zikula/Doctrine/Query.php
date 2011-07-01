@@ -79,7 +79,7 @@ class Zikula_Doctrine_Query extends Doctrine_Query
                     $inDQL = array_fill(0, count($categories), '?');
                     $this->addWhere($dqlId . ' in (SELECT subtbl' . $tableId . '.obj_id
                                                    FROM ' . $mapObjTableName . ' AS subtbl' . $tableId . '
-                                                   WHERE subtbl' . $tableId . '.reg_property = ?
+                                                   WHERE subtbl' . $tableId . '.property = ?
                                                    AND subtbl' . $tableId . '.category_id IN (' . implode(',', $inDQL) . '))', $params);
 
                     $tableId++;
@@ -94,7 +94,7 @@ class Zikula_Doctrine_Query extends Doctrine_Query
                     $params = array_merge($params, $categories);
 
                     $inDQL = array_fill(0, count($categories), '?');
-                    $where[] = '(' . $rootAlias . '.Categories.reg_property = ?
+                    $where[] = '(' . $rootAlias . '.Categories.property = ?
                                     AND ' . $rootAlias . '.Categories.category_id IN (' . implode(',', $inDQL) . '))';
                 }
 

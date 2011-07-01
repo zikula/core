@@ -88,12 +88,12 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
             foreach ($allblockspositions as $positionid => $blockposition) {
                 if (in_array($positionid, $args['positions'])) {
                     // position name is present in the array submitted from the user
-                    $where = "WHERE z_pid = '" . DataUtil::formatForStore($positionid) . '\'';
-                    $blocksinposition = DBUtil::selectObjectArray('block_placements', $where, 'z_order', -1, -1, 'bid');
+                    $where = "WHERE pid = '" . DataUtil::formatForStore($positionid) . '\'';
+                    $blocksinposition = DBUtil::selectObjectArray('block_placements', $where, 'sortorder', -1, -1, 'bid');
                     if (array_key_exists($item['bid'], $blocksinposition)) {
                         // block is already in this position, placement did not change, this means we do nothing
                     } else {
-                        // add the block to the given position as last entry (max(z_order) +1
+                        // add the block to the given position as last entry (max(sortorder) +1
                         $newplacement = array('pid' => $blockposition['pid'],
                                 'bid' => $item['bid'],
                                 'order' => count($blocksinpositions));
@@ -105,7 +105,7 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
                 } else {
                     // position name is NOT present in the array submitted from the user
                     // delete the block id from the placements table for this position
-                    $where = '(z_bid = \'' . DataUtil::formatForStore($item['bid']) . '\' AND z_pid = \'' . DataUtil::formatForStore($blockposition['pid']) . '\')';
+                    $where = '(bid = \'' . DataUtil::formatForStore($item['bid']) . '\' AND pid = \'' . DataUtil::formatForStore($blockposition['pid']) . '\')';
                     $res = DBUtil::deleteWhere('block_placements', $where);
                     if (!$res) {
                         return LogUtil::registerError($this->__('Error! Could not save your changes.'));
