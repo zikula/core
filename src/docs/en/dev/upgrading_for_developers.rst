@@ -5,6 +5,64 @@ GENERAL
   and everything must be in plain text (this is because base64 encoding is not
   actually an encryption).
 
+DATABASE
+========
+
+Support for both column and database table prefixes has been dropped.  Existing 
+modules should continue to work but module authors need to make some efforts to
+migrate their modules away from using prefixes.
+
+When you upgrade from 1.2 the core tables will be renamed without any prefix and
+field names will be altered to remove the prefixes.
+
+Module authors need to do the following:
+
+  - tables.php should remove the use of DBUtil::getLimitedTablename() and just specify
+the table name directly.
+
+  - tables.php definitions should be updated to remove the column prefixes, e.g.
+
+        $columns = array('id'        => 'z_id',
+                         'parent_id' => 'z_parent_id',
+
+    would become: 
+
+        $columns = array('id'        => 'id',
+                         'parent_id' => 'parent_id',
+
+  - You will need will need to execute manual SQL to rename the columns and tables.  You can generally
+    get the code you need from PHPMyAdmin by editing the table structure and then reading the SQL
+    it generates.  Here is a sample (taken from snips in the upgrade.php)
+
+        $commands[] = "RENAME TABLE {$prefix}_pagelock TO pagelock";
+        $commands[] = "ALTER TABLE {$prefix}_message CHANGE pn_mid mid INT(11) NOT NULL AUTO_INCREMENT ,
+                       CHANGE pn_title title VARCHAR(100) NOT NULL DEFAULT  '',
+                       CHANGE pn_content content LONGTEXT NOT NULL ,
+                       CHANGE pn_date date INT(11) NOT NULL DEFAULT  '0',
+                       CHANGE pn_expire expire INT(11) NOT NULL DEFAULT  '0',
+                       CHANGE pn_active active INT(11) NOT NULL DEFAULT  '1',
+                       CHANGE pn_view view INT(11) NOT NULL DEFAULT  '1',
+                       CHANGE pn_language language VARCHAR(30) NOT NULL DEFAULT  ''";
+
+        $connection = Doctrine_Core::getCurrentConnection();
+        foreach ($commands as $sql) {
+            $stmt = $connection->prepare($sql);
+            try {
+                $stmt->execute();
+            } catch (Exception $e) {
+                // trap and toss exceptions if you need to.
+            }
+        }
+
+LONGBLOB support
+----------------
+
+Support for LONGBLOB has been dropped.  You must choose another column type and 
+alter it manually with SQL, e.g.
+
+    ALTER TABLE workflows CHANGE debug debug LONGTEXT NULL DEFAULT NULL
+
+
 TEMPLATES
 =========
 - Change all module templates plugin delimiters to { and }.  For any template

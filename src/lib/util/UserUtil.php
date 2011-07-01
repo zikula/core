@@ -267,7 +267,7 @@ class UserUtil
 
         $where = '';
         if ($uid != -1) {
-            $where = "WHERE z_uid = '" . DataUtil::formatForStore($uid) . "'";
+            $where = "WHERE uid = '" . DataUtil::formatForStore($uid) . "'";
         }
 
         return DBUtil::selectFieldArray('group_membership', 'gid', $where);
@@ -318,7 +318,7 @@ class UserUtil
             return array();
         }
 
-        $where = "WHERE z_gid = '" . DataUtil::formatForStore($gid) . "'";
+        $where = "WHERE gid = '" . DataUtil::formatForStore($gid) . "'";
 
         return DBUtil::selectFieldArray('group_membership', 'uid', $where);
     }
@@ -436,7 +436,7 @@ class UserUtil
             $dropdown[] = array('id' => $defaultValue, 'name' => $defaultText);
         }
 
-        $groupdata = self::getGroups('', 'ORDER BY z_name');
+        $groupdata = self::getGroups('', 'ORDER BY name');
 
         if (!$groupdata || !count($groupdata)) {
             return $dropdown;
@@ -480,10 +480,10 @@ class UserUtil
 
         $where = '';
         if ($exclude) {
-            $where = "WHERE z_uid NOT IN (" . DataUtil::formatForStore($exclude) . ")";
+            $where = "WHERE uid NOT IN (" . DataUtil::formatForStore($exclude) . ")";
         }
 
-        $userdata = self::getUsers($where, 'ORDER BY z_uname');
+        $userdata = self::getUsers($where, 'ORDER BY uname');
 
         if (!$userdata || !count($userdata)) {
             return $dropdown;
@@ -508,11 +508,11 @@ class UserUtil
     /**
      * Retrieve the account recovery information for a user from the various authentication modules.
      *
-     * @param numeric $uid The user id of the user for which account recovery information should be retrieved; optional, defaults to the 
+     * @param numeric $uid The user id of the user for which account recovery information should be retrieved; optional, defaults to the
      *                          currently logged in user (an exception occurs if the current user is not logged in).
-     * 
+     *
      * @return array An array of account recovery information.
-     * 
+     *
      * @throws Zikula_Exception_Fatal If the $uid parameter is not valid.
      */
     public static function getUserAccountRecoveryInfo($uid = -1)
@@ -968,13 +968,13 @@ class UserUtil
 
     /**
      * Sets the currently logged in active user to the user account for the given Users module uname.
-     * 
+     *
      * No events are fired from this function. To receive events, use {@link loginUsing()}.
      *
      * @param string  $uname      The user name of the user who should be logged into the system; required.
      * @param boolean $rememberMe If the user's login should be maintained on the computer from which the user is logging in, set this to true;
      *                                optional, defaults to false.
-     * 
+     *
      * @return void
      */
     public static function setUserByUname($uname, $rememberMe = false)
@@ -995,7 +995,7 @@ class UserUtil
 
     /**
      * Sets the currently logged in active user to the user account for the given uid.
-     * 
+     *
      * No events are fired from this function. To receive events, use {@link loginUsing()}.
      *
      * @param numeric $uid                  The user id of the user who should be logged into the system; required.
@@ -1003,7 +1003,7 @@ class UserUtil
      *                                          optional, defaults to false.
      * @param array   $authenticationMethod An array containing the authentication method used to log the user in; optional,
      *                                          defaults to the 'Users' module 'uname' method.
-     * 
+     *
      * @return void
      */
     public static function setUserByUid($uid, $rememberMe = false, array $authenticationMethod = null)
@@ -2086,14 +2086,14 @@ class UserUtil
     {
         return !SessionUtil::getVar('uid', 0);
     }
-    
+
     /**
      * Determine if the record represented by the $uid is a registration or not.
-     * 
+     *
      * @param numeric $uid The uid of the record in question.
-     * 
+     *
      * @throws InvalidArgumentException If the uid is not valid.
-     * 
+     *
      * @return boolean True if it is a registration record, otherwise false;
      */
     public static function isRegistration($uid)

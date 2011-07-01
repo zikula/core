@@ -625,7 +625,7 @@ class HtmlUtil
     public static function getSelector_Group($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
         $data = array();
-        $grouplist = UserUtil::getGroups('', 'ORDER BY z_name');
+        $grouplist = UserUtil::getGroups('', 'ORDER BY name');
         foreach ($grouplist as $k => $v) {
             $id = $v['gid'];
             $disp = $v['name'];
@@ -683,19 +683,19 @@ class HtmlUtil
     {
         $where = '';
         if ($excludeList) {
-            $where = "WHERE z_uid NOT IN ($excludeList)";
+            $where = "WHERE uid NOT IN ($excludeList)";
         }
 
         if ($gid) {
             $users = UserUtil::getUsersForGroup($gid);
             if ($users) {
                 $and = $where ? ' AND ' : '';
-                $where .= $and . 'z_uid IN (' . implode(',', $users) . ')';
+                $where .= $and . 'uid IN (' . implode(',', $users) . ')';
             }
         }
 
         $data = array();
-        $userlist = UserUtil::getUsers($where, 'ORDER BY z_uname');
+        $userlist = UserUtil::getUsers($where, 'ORDER BY uname');
         foreach ($userlist as $k => $v) {
             $data[$k] = $v['uname'];
         }
