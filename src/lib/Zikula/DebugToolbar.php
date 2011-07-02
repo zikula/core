@@ -192,6 +192,20 @@ class Zikula_DebugToolbar
      */
     public function asJSON()
     {
+        $serviceManager = $this->eventManager->getServiceManager();
+        $request = $serviceManager->getService('request');
+
+        // check if security key is defined
+        $secKey = isset($serviceManager['log.to_debug_toolbar_seckey']) ? $serviceManager['log.to_debug_toolbar_seckey'] : false;
+        // if so - get client seckey from http header
+        if (!empty($secKey)) {
+            $requestSecKey =$request->getServer()->get('HTTP_X_ZIKULA_DEBUGTOOLBAR');
+            // if client seckey is not valid - do not return data
+            if ($secKey != $requestSecKey) {
+                return '';
+            }
+        }
+
         $data = array();
 
         foreach ($this->_panels as $name => $panel) {
