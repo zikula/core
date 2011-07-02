@@ -208,6 +208,20 @@ class Zikula_DebugToolbar
 
         $data = array();
 
+        $data['__meta'] = array(
+            'realpath' => realpath('.')
+        );
+
+        $data['http_request'] = array(
+            'method' => $request->getMethod(),
+            'get' => (array)$request->getGet()->getCollection(),
+            'post' => (array)$request->getPost()->getCollection(),
+            'files' => (array)$request->getFiles()->getCollection(),
+            'cookie' => (array)$request->getCookie()->getCollection(),
+            'server' => (array)$request->getServer()->getCollection(),
+            'env' => (array)$request->getEnv()->getCollection(),
+        );
+
         foreach ($this->_panels as $name => $panel) {
             $title = $panel->getPanelTitle();
 
