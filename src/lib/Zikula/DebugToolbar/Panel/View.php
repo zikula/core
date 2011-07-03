@@ -234,6 +234,13 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterfa
      */
     public function getPanelData()
     {
-        return $this->_templates;
+        $data = array();
+        foreach ($this->_templates as $k => $v) {
+            foreach ($v['vars'] as $kv => $vv) {
+                $v['vars'][$kv] = Zikula_DebugToolbar::prepareData($v['vars'][$kv]);
+            }
+            $data[$k] = $v;
+        }
+        return $data;
     }
 }
