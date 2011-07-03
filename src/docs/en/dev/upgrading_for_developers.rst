@@ -54,6 +54,28 @@ the table name directly.
             }
         }
 
+A further example taken from Profile module is:
+
+        $connection = DBConnectionStack::getConnection();
+        $sqlStatements = array();
+        // N.B. statements generated with PHPMyAdmin
+        $sqlStatements[] = 'RENAME TABLE ' . DBUtil::getLimitedTablename('user_property') . " TO user_property";
+        $sqlStatements[] = "ALTER TABLE `user_property` CHANGE `pn_prop_id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT ,
+           CHANGE `pn_prop_label` `label` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+           CHANGE `pn_prop_dtype` `dtype` INT( 11 ) NOT NULL DEFAULT '0',
+           CHANGE `pn_prop_modname` `modname` VARCHAR( 64 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+           CHANGE `pn_prop_weight` `weight` INT( 11 ) NOT NULL DEFAULT '0',
+           CHANGE `pn_prop_validation` `validation` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+           CHANGE `pn_prop_attribute_name` `attributename` VARCHAR( 80 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL";
+         foreach ($sqlStatements as $sql) {
+         $stmt = $connection->prepare($sql);
+             try {
+                 $stmt->execute();
+             } catch (Exception $e) {
+
+             }   
+         }
+
 LONGBLOB support
 ----------------
 
