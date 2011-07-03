@@ -217,6 +217,19 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_PanelInterfac
      */
     public function getPanelData()
     {
-        return $this->_log;
+        $data = array();
+        foreach ($this->_log as $k => $v) {
+            if (isset($v['trace'])) {
+                foreach ($v['trace'] as $kt => $vt) {
+                    if (isset($vt['object'])) {
+                        // need to truncate object entry in trace items because it's generating enormous amount of data 
+                        $v['trace'][$kt]['object'] = Zikula_DebugToolbar::prepareData($vt['object'], -1);
+                    }
+                    $v['trace'][$kt]['args'] = Zikula_DebugToolbar::prepareData($vt['args']);
+                }
+            }
+            $data[$k] = $v;
+        }
+        return $data;
     }
 }
