@@ -69,7 +69,7 @@ class Blocks_Installer extends Zikula_AbstractInstaller
                 $sql = "UPDATE $table SET bkey = 'lang' WHERE bkey = 'thelang'";
                 DBUtil::executeSQL($sql);
                 // Optional upgrade
-                if (in_array('message', DBUtil::metaTables())) {
+                if (in_array(DBUtil::getLimitedTablename('message'), DBUtil::metaTables())) {
                     $this->migrateMessages();
                 }
                 $this->migrateBlockNames();
