@@ -123,10 +123,10 @@ class Zikula_DebugToolbar
     public function getContent()
     {
         // check which output type should be returned
-        $sm = $this->eventManager->getServiceManager();
-        $logtype = isset($sm['log.to_debug_toolbar_output']) ? $sm['log.to_debug_toolbar_output'] : 0;
+        $serviceManager = $this->eventManager->getServiceManager();
+        $logType = isset($serviceManager['log.to_debug_toolbar_output']) ? $serviceManager['log.to_debug_toolbar_output'] : 0;
 
-        switch ($logtype) {
+        switch ($logType) {
             case 0:
                 // normal toolbar
                 return $this->asHTML();
@@ -135,7 +135,7 @@ class Zikula_DebugToolbar
                 return $this->asJSON();
             case 2:
                 // toolbar and data in json format
-                return $this->asHTML().$this->asJSON();
+                return $this->asHTML() . $this->asJSON();
         }
     }
     /**
@@ -192,7 +192,36 @@ class Zikula_DebugToolbar
      */
     public function asJSON()
     {
+        $serviceManager = $this->eventManager->getServiceManager();
+        $request = $serviceManager->getService('request');
+
+        // check if security key is defined
+        $secKey = isset($serviceManager['log.to_debug_toolbar_seckey']) ? $serviceManager['log.to_debug_toolbar_seckey'] : false;
+        // if so - get client seckey from http header
+        if (!empty($secKey)) {
+            $requestSecKey =$request->getServer()->get('HTTP_X_ZIKULA_DEBUGTOOLBAR');
+            // if client seckey is not valid - do not return data
+            if ($secKey != $requestSecKey) {
+                return '';
+            }
+        }
+
         $data = array();
+
+        $data['__meta'] = array(
+            'realpath' => realpath('.')
+        );
+
+        $data['http_request'] = array(
+            'method' => $request->getMethod(),
+            'get' => (array)$request->getGet()->getCollection(),
+            'post' => (array)$request->getPost()->getCollection(),
+            'files' => (array)$request->getFiles()->getCollection(),
+            'cookie' => (array)$request->getCookie()->getCollection(),
+            'server' => (array)$request->getServer()->getCollection(),
+            'env' => (array)$request->getEnv()->getCollection(),
+        );
+
         foreach ($this->_panels as $name => $panel) {
             $title = $panel->getPanelTitle();
 
@@ -207,4 +236,82 @@ class Zikula_DebugToolbar
         $html = "<script type=\"text/javascript\">Zikula.DebugToolbarData = {$data}</script>";
         return $html;
     }
+
+    /**
+     * Parse data and prepare objects for json encode.
+     * 
+     * This method loops through data and prepares php objects for json encode.
+     * First each object is converted to array with additional entry:
+     * '__phpClassName', which contains object name.
+     * Next, depending on maxLvl param, it reads objects properties and saves them
+     * in array.
+     *
+     * @param mixed   $data   Data to parse.
+     * @param integer $maxLvl Maximum data deepth for objects (default 0).
+     * @param integer $lvl    Current level, for internal use in recursive loops.
+     *
+     * @return mixed processed data
+     */
+    public static function prepareData($data, $maxLvl = 0, $lvl = 0)
+    {
+        $return = array();
+        if (is_object($data) || is_array($data)) {
+            if ($lvl > $maxLvl && is_object($data)) {
+                $return = array(
+                    '__phpClassName' => get_class($data)
+                );
+            } elseif (is_object($data)) {
+                $obj = array();
+                $class = get_class($data);
+                $obj['__phpClassName'] = $class;
+
+                $reflectionClass = new ReflectionClass($class);
+                $properties = array();
+                foreach ($reflectionClass->getProperties() as $property) {
+                    $properties[$property->getName()] = $property;
+                }
+
+                $members = (array)$data;
+
+                foreach ($properties as $raw_name => $property) {
+                    $name = $raw_name;
+                    if ($property->isStatic()) {
+                        $name = 'static:'.$name;
+                    }
+                    if ($property->isPublic()) {
+                        $name = 'public:'.$name;
+                    } elseif ($property->isPrivate()) {
+                        $name = 'private:'.$name;
+                        $raw_name = "\0".$class."\0".$raw_name;
+                    } elseif ($property->isProtected()) {
+                        $name = 'protected:'.$name;
+                        $raw_name = "\0".'*'."\0".$raw_name;
+                    }
+                    if (array_key_exists($raw_name, $members) && !$property->isStatic()) {
+                        $obj[$name] = self::prepareData($members[$raw_name], $maxLvl, $lvl + 1);
+                    } else {
+                        if (method_exists($property, 'setAccessible')) {
+                            $property->setAccessible(true);
+                            $obj[$name] = self::prepareData($property->getValue($data), $maxLvl, $lvl + 1);
+                        } elseif($property->isPublic()) {
+                            $obj[$name] = self::prepareData($property->getValue($data), $maxLvl, $lvl + 1);
+                        }
+                    }
+                }
+
+                $return = $obj;
+
+            } elseif (is_array($data)) {
+                foreach ($data as $k => $v) {
+                    $return[$k] = self::prepareData($v, $maxLvl, $lvl);
+                }
+            }
+        } else {
+            $return = $data;
+        }
+
+        return $return;
+    }
+
+
 }
