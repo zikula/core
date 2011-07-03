@@ -49,10 +49,7 @@ if (in_array('pn_id', array_keys($columns))) {
 }
 
 if (!isset($columns['capabilities'])) {
-    $savePrefix = $connection->getAttribute(Doctrine_Core::ATTR_TBLNAME_FORMAT);
-    $connection->setAttribute(Doctrine_Core::ATTR_TBLNAME_FORMAT, "%s");
     Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
-    $connection->setAttribute(Doctrine_Core::ATTR_TBLNAME_FORMAT, $savePrefix);
     ModUtil::dbInfoLoad('Extensions', 'Extensions');
     DBUtil::changeTable('modules');
     ModUtil::dbInfoLoad('Blocks', 'Blocks');
@@ -92,27 +89,15 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
 
 switch ($action) {
     case 'upgradeinit':
-        $GLOBALS['ZConfig']['System']['prefix'] = '';
-        ModUtil::flushCache();
-        ModUtil::initCoreVars();
         _upg_upgradeinit();
         break;
     case 'login':
-        $GLOBALS['ZConfig']['System']['prefix'] = '';
-        ModUtil::flushCache();
-        ModUtil::initCoreVars();
         _upg_login(true);
         break;
     case 'sanitycheck':
-        $GLOBALS['ZConfig']['System']['prefix'] = '';
-        ModUtil::flushCache();
-        ModUtil::initCoreVars();
         _upg_sanity_check($username, $password);
         break;
     case 'upgrademodules':
-        $GLOBALS['ZConfig']['System']['prefix'] = '';
-        ModUtil::flushCache();
-        ModUtil::initCoreVars();
         _upg_upgrademodules($username, $password);
         break;
     default:
@@ -813,8 +798,6 @@ CHANGE pn_language language VARCHAR(30) NOT NULL DEFAULT  ''";
     $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE title title VARCHAR(100) NOT NULL";
     $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE ipno ipno VARCHAR(30) NOT NULL";
     $silentCommands[] = "RENAME TABLE {$prefix}_pagelock TO pagelock";
-    
-    $silentCommands[] = "RENAME TABLE {$prefix}_message TO message";
 
     // LONGBLOB is not supported by Doctrine 2
     $silentCommands[] = "ALTER TABLE {$prefix}_workflows CHANGE debug debug LONGTEXT NULL DEFAULT NULL";
