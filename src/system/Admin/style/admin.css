@@ -183,23 +183,8 @@
 /* Styling for status security analyzer, update checker and more
 /*****************************************************************************/
 
-/* common styling */
-#z-maincontent #admin-systemnotices div:first-child {
-    margin-top: 0;
-}
-
-#z-maincontent #admin-systemnotices div:last-child {
-    margin-bottom: 1em;
-}
-
-#z-maincontent #admin-systemnotices div:last-child strong,
-#z-maincontent #admin-systemnotices div:last-child p,
-#z-maincontent #admin-systemnotices div:last-child ul {
-    margin-bottom: 0;
-}
-
-#z-maincontent #admin-systemnotices div strong.z-panel-active {
-    margin-bottom: 0.3em;
+#z-maincontent #admin-systemnotices div+div {
+    margin-top: -1.1em;
 }
 
 #z-maincontent div#z-securityanalyzer,
@@ -209,7 +194,7 @@
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
     text-align: left;
     padding: 0 20px 0 0;
-    margin: -1em auto 0;
+    margin: 1em auto;
     min-height: 1em;
     width: 75%;
     -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
@@ -263,7 +248,7 @@ div#z-updatechecker strong {
     display: block;
     font-size: 1.2em;
     font-weight: bold;
-    margin: 0 0 0.8em;
+    margin: 0;
     padding: 0.25em;
 }
 
@@ -297,7 +282,7 @@ div#z-securityanalyzer ul,
 div#z-updatechecker p {
     list-style-position: outside;
     list-style-type: disc;
-    margin: 0 1em 1.3em;
+    margin: 0 1em;
     padding: 0 1em;
 }
 
