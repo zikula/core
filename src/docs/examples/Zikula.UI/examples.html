@@ -73,6 +73,12 @@
             #zikula-ui-tests li.delayed {
                 font-style: italic;
             }
+            #previewimages img {
+                background: none repeat scroll 0 0 #FFFFFF;
+                border: 1px solid #ABABAB;
+                margin: 5px;
+                padding: 2px;
+            }
         </style>
         <script type="text/javascript">
             document.observe('dom:loaded',showCode);
@@ -123,6 +129,7 @@
                 <li><a href="#link_tabs">Tabs</a></li>
                 <li><a href="#link_accordion">Accordion</a></li>
                 <li><a href="#link_panels">Panels</a></li>
+                <li><a href="#link_imageviewer">ImageViewer</a></li>
             </ul>
 
             <div class="zikula-ui-box">
@@ -617,7 +624,8 @@
             <div class="zikula-ui-box">
                 <h2 id="link_panels">Panels</h2>
                 <fieldset>
-                    <legend>Panel example</legend>
+                    <legend>Example</legend>
+                    <p>Panels are similar concept to Accordion with the exception that you can open/close them - not just switch active one. Markup for panels container needs pairs of headers and content panels. Each pair is identyfied by panel header.</p>
                     <div class="code">
                         <div id="panel" class="z-panels">
                             <h3>Lorem Ipsum</h3>
@@ -658,6 +666,25 @@
                     </fieldset>
                 </div>
 
+                <div class="zikula-ui-box">
+                    <h2 id="link_imageviewer">Image Viewer</h2>
+                    <div class="z-informationmsg">
+                        You can use the ImageViewer with the following ajaxheader plugin call:
+                        <pre>{ajaxheader imageviewer="true"}</pre>
+                    </div>
+                    <fieldset>
+                        <legend>Example</legend>
+                        <p>Custom implementation for image zooming. It was designed as Lightbox replacement and it works quite the same. It's also backward compatible with Lightbox. While initialization Zikula.ImageViewerUtil collects all links to images with "rel" attribute containing "imageviewer" or "lightbox" value. It also works for image galleries - "imageviewer[galleryname]" or  "imageviewer[lightbox]".</p>
+                        <div id="previewimages" class="z-center">
+                            <a rel="imageviewer[gallery]" title="Preview Andreas08" href="../../../themes/Andreas08/images/preview_large.png">
+                                <img title="Theme preview" alt="Andreas08" src="../../../themes/Andreas08/images/preview_medium.png">
+                            </a>
+                            <a rel="imageviewer[gallery]" title="Preview SeaBreeze" href="../../../themes/SeaBreeze/images/preview_large.png">
+                                <img title="Theme preview" alt="SeaBreeze" src="../../../themes/SeaBreeze/images/preview_medium.png">
+                            </a>
+                        </div>
+                    </fieldset>
+                </div>
                 <div class="zikula-ui-box">
                     <p>
                         Just dummy text to move demos up from bottom browser edge. Lorem ipsum dolor sit amet nibh. Donec est. Vivamus sit amet dui. Sed sagittis luctus non, posuere quis, vestibulum vel, metus. Phasellus tempor diam vestibulum tincidunt wisi, eget velit. Nullam wisi nibh massa mattis egestas, nunc odio sagittis nec, sagittis libero. Cras non urna ligula ut justo ipsum dolor dictum ut, tempus enim urna, placerat porttitor. Maecenas id felis. Nullam at orci luctus mauris rhoncus a, aliquet elit. Aliquam sed dui. Nulla vitae erat. Integer id nunc. Donec ullamcorper, augue ac lectus. Ut sagittis leo, pretium magna. Praesent rhoncus interdum, lacus. Ut eu ante. Vestibulum ligula. Phasellus hendrerit wisi. Praesent.
