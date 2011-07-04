@@ -184,7 +184,7 @@
 /*****************************************************************************/
 
 #z-maincontent #admin-systemnotices div+div {
-    margin-top: -1.1em;
+    margin-top: -1.15em;
 }
 
 #z-maincontent div#z-securityanalyzer,
@@ -278,12 +278,16 @@ div#z-securityanalyzer a:hover {
 div#z-developernotices ul,
 div#z-adminwarning ul,
 div#z-updatechecker ul,
-div#z-securityanalyzer ul,
-div#z-updatechecker p {
+div#z-securityanalyzer ul {
     list-style-position: outside;
     list-style-type: disc;
     margin: 0 1em;
     padding: 0 1em;
+}
+
+div#z-updatechecker p {
+    margin: 0 1em 0.5em;
+    padding: 0 0 0 1em;
 }
 
 /* Used to style the cancel delete button when asking for a confirmation */
