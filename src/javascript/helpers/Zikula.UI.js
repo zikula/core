@@ -1461,7 +1461,7 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
 Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
     /**
      * Panels script.
-     * Panels are simillar concept to Accordion with the exception that you can
+     * Panels are similar concept to Accordion with the exception that you can
      * open/close them - not just switch active one.
      * Markup for panels container needs pairs of headers and content panels.
      * Each pair is identyfied by panel header.

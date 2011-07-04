@@ -122,6 +122,7 @@
                 <li><a href="#link_select">Multiple select</a></li>
                 <li><a href="#link_tabs">Tabs</a></li>
                 <li><a href="#link_accordion">Accordion</a></li>
+                <li><a href="#link_panels">Panels</a></li>
             </ul>
 
             <div class="zikula-ui-box">
@@ -608,6 +609,50 @@
                             &lt;div class=&quot;z-acc-content&quot;&gt;&lt;p&gt;Sed sit amet magna. Donec porta, turpis nec augue commodo odio non nunc. Suspendisse semper auctor. Maecenas semper quis, lorem. Vivamus ullamcorper eleifend lectus nec scelerisque justo a auctor non, ultrices et, eros. Donec interdum wisi vulputate molestie. Nulla dignissim. Etiam vel nibh. Fusce porttitor, lacus nonummy faucibus orci fermentum ultrices posuere, nibh placerat porttitor. Maecenas pellentesque non, ipsum. Nunc ut nibh. Fusce aliquam purus. Sed sagittis libero. Nam eu lectus. Nullam rutrum ac, felis. Mauris mattis sem. Quisque nec dui. Etiam mollis luctus. Aenean scelerisque lorem velit magna, scelerisque ligula, ornare vel, accumsan augue quis euismod orci blandit risus.&lt;/p&gt;&lt;/div&gt;                        &lt;/div&gt;
                             &lt;script type=&quot;text/javascript&quot;&gt;
                             var accordion = new Zikula.UI.Accordion('basic_accordion');
+                            &lt;/script&gt;
+                        </pre>
+                    </fieldset>
+                </div>
+
+            <div class="zikula-ui-box">
+                <h2 id="link_panels">Panels</h2>
+                <fieldset>
+                    <legend>Panel example</legend>
+                    <div class="code">
+                        <div id="panel" class="z-panels">
+                            <h3>Lorem Ipsum</h3>
+                            <div class="z-panel-content"><p>Lorem ipsum dolor sit amet nibh. Donec est. Vivamus sit amet dui. Sed sagittis luctus non, posuere quis, vestibulum vel, metus. Phasellus tempor diam vestibulum tincidunt wisi, eget velit. Nullam wisi nibh massa mattis egestas, nunc odio sagittis nec, sagittis libero. Cras non urna ligula ut justo ipsum dolor dictum ut, tempus enim urna, placerat porttitor. Maecenas id felis. Nullam at orci luctus mauris rhoncus a, aliquet elit. Aliquam sed dui. Nulla vitae erat. Integer id nunc. Donec ullamcorper, augue ac lectus. Ut sagittis leo, pretium magna. Praesent rhoncus interdum, lacus. Ut eu ante. Vestibulum ligula. Phasellus hendrerit wisi. Praesent.</p></div>
+                            <h3>Fusce eu magna</h3>
+                            <div class="z-panel-content"><p>Fusce eu magna nec tortor libero, egestas dignissim, imperdiet tempor, pulvinar felis, consequat pharetra. Morbi placerat pharetra varius. In quis justo. Vivamus justo. Nulla in wisi. Proin in ultricies eu, neque. Pellentesque dolor. Vestibulum tempus nulla. Morbi mattis. Nunc elementum. Nam rhoncus, dui sodales nibh nulla in consequat ipsum primis in magna iaculis odio et dui. Vivamus posuere quis, libero. Aliquam erat vel leo. Donec interdum vitae, cursus mauris ac sapien. Praesent justo. Vivamus diam mollis nunc sit amet, elementum vitae, ligula. Aliquam erat blandit eros, sagittis luctus nibh, interdum faucibus, fermentum nec, sem. Cras non neque dui, porta ligula.</p><p>Donec vitae fringilla aliquet. Aliquam erat consectetuer vulputate in, volutpat a, tortor. Vestibulum ante ipsum non tincidunt leo sed adipiscing elit. Aliquam gravida sollicitudin, odio eu mi. Aliquam posuere cubilia Curae, In hac habitasse platea dictumst. Vestibulum laoreet, purus et netus et arcu. Suspendisse fermentum, enim porttitor lacus pretium eu, tortor. Etiam in faucibus quis, convallis varius. Quisque iaculis, turpis risus arcu sed quam enim, ac nulla ac turpis a venenatis in, consequat tortor, a nunc. Donec suscipit quis, feugiat dui, in neque. Nunc velit non urna. Nulla interdum dapibus quam felis sit amet ipsum primis in felis facilisis nunc.</p></div>
+                            <h3>Donec vitae fringilla aliquet</h3>
+                            <div class="z-panel-content"><p>Donec vitae fringilla aliquet. Aliquam erat consectetuer vulputate in, volutpat a, tortor. Vestibulum ante ipsum non tincidunt leo sed adipiscing elit. Aliquam gravida sollicitudin, odio eu mi. Aliquam posuere cubilia Curae, In hac habitasse platea dictumst. Vestibulum laoreet, purus et netus et arcu. Suspendisse fermentum, enim porttitor lacus pretium eu, tortor. Etiam in faucibus quis, convallis varius. Quisque iaculis, turpis risus arcu sed quam enim, ac nulla ac turpis a venenatis in, consequat tortor, a nunc. Donec suscipit quis, feugiat dui, in neque. Nunc velit non urna. Nulla interdum dapibus quam felis sit amet ipsum primis in felis facilisis nunc.</p></div>
+                            <h3>Nullam pharetra sem vitae ornare risus</h3>
+                            <div class="z-panel-content"><p>Nullam pharetra sem vitae ornare risus. Vivamus justo. Sed porttitor, lacus feugiat leo. Sed tristique senectus et rhoncus pede semper erat, molestie vitae, vulputate mi, eu mollis nibh orci luctus augue a sapien. Cras suscipit, risus ornare lacus nonummy nunc tempus vitae, quam. Proin dui nunc, tempus purus fringilla sit amet sapien facilisis libero. Duis neque magna orci blandit iaculis, turpis viverra elit. In nonummy. Phasellus pulvinar augue. Praesent pretium. Praesent magna suscipit id, dolor. Vivamus ornare, odio et magnis dis parturient montes, nascetur ridiculus mus. Nunc consectetuer ut, eros. Maecenas mi quam, a purus. Phasellus sit amet magna. Aliquam.</p></div>
+                        </div>
+                        <script type="text/javascript">
+                            var panel = new Zikula.UI.Panels('panel', {
+                                            headerSelector: 'h3',
+                                            headerClassName: 'z-panel-header z-panel-indicator',
+                                            contentClassName: 'z-panel-content'
+                                            });
+                        </script>
+                        </div><!-- /code --><pre>
+                            &lt;div class=&quot;z-panels&quot; id=&quot;panel&quot;&gt;
+                                &lt;h3 class=&quot;z-panel-header z-panel-indicator z-pointer z-panel-active&quot;&gt;Lorem Ipsum&lt;/h3&gt;
+                                &lt;div class=&quot;z-panel-content z-panel-active&quot; style=&quot;overflow: visible;&quot;&gt;&lt;p&gt;Lorem ipsum dolor sit amet nibh. Donec est. Vivamus sit amet dui. Sed sagittis luctus non, posuere quis, vestibulum vel, metus. Phasellus tempor diam vestibulum tincidunt wisi, eget velit. Nullam wisi nibh massa mattis egestas, nunc odio sagittis nec, sagittis libero. Cras non urna ligula ut justo ipsum dolor dictum ut, tempus enim urna, placerat porttitor. Maecenas id felis. Nullam at orci luctus mauris rhoncus a, aliquet elit. Aliquam sed dui. Nulla vitae erat. Integer id nunc. Donec ullamcorper, augue ac lectus. Ut sagittis leo, pretium magna. Praesent rhoncus interdum, lacus. Ut eu ante. Vestibulum ligula. Phasellus hendrerit wisi. Praesent.&lt;/p&gt;&lt;/div&gt;
+                                &lt;h3 class=&quot;z-panel-header z-panel-indicator z-pointer&quot;&gt;Fusce eu magna&lt;/h3&gt;
+                                &lt;div class=&quot;z-panel-content&quot; style=&quot;display: none;&quot;&gt;&lt;p&gt;Fusce eu magna nec tortor libero, egestas dignissim, imperdiet tempor, pulvinar felis, consequat pharetra. Morbi placerat pharetra varius. In quis justo. Vivamus justo. Nulla in wisi. Proin in ultricies eu, neque. Pellentesque dolor. Vestibulum tempus nulla. Morbi mattis. Nunc elementum. Nam rhoncus, dui sodales nibh nulla in consequat ipsum primis in magna iaculis odio et dui. Vivamus posuere quis, libero. Aliquam erat vel leo. Donec interdum vitae, cursus mauris ac sapien. Praesent justo. Vivamus diam mollis nunc sit amet, elementum vitae, ligula. Aliquam erat blandit eros, sagittis luctus nibh, interdum faucibus, fermentum nec, sem. Cras non neque dui, porta ligula.&lt;/p&gt;&lt;p&gt;Donec vitae fringilla aliquet. Aliquam erat consectetuer vulputate in, volutpat a, tortor. Vestibulum ante ipsum non tincidunt leo sed adipiscing elit. Aliquam gravida sollicitudin, odio eu mi. Aliquam posuere cubilia Curae, In hac habitasse platea dictumst. Vestibulum laoreet, purus et netus et arcu. Suspendisse fermentum, enim porttitor lacus pretium eu, tortor. Etiam in faucibus quis, convallis varius. Quisque iaculis, turpis risus arcu sed quam enim, ac nulla ac turpis a venenatis in, consequat tortor, a nunc. Donec suscipit quis, feugiat dui, in neque. Nunc velit non urna. Nulla interdum dapibus quam felis sit amet ipsum primis in felis facilisis nunc.&lt;/p&gt;&lt;/div&gt;
+                                &lt;h3 class=&quot;z-panel-header z-panel-indicator z-pointer&quot;&gt;Donec vitae fringilla aliquet&lt;/h3&gt;
+                                &lt;div class=&quot;z-panel-content&quot; style=&quot;display: none;&quot;&gt;&lt;p&gt;Donec vitae fringilla aliquet. Aliquam erat consectetuer vulputate in, volutpat a, tortor. Vestibulum ante ipsum non tincidunt leo sed adipiscing elit. Aliquam gravida sollicitudin, odio eu mi. Aliquam posuere cubilia Curae, In hac habitasse platea dictumst. Vestibulum laoreet, purus et netus et arcu. Suspendisse fermentum, enim porttitor lacus pretium eu, tortor. Etiam in faucibus quis, convallis varius. Quisque iaculis, turpis risus arcu sed quam enim, ac nulla ac turpis a venenatis in, consequat tortor, a nunc. Donec suscipit quis, feugiat dui, in neque. Nunc velit non urna. Nulla interdum dapibus quam felis sit amet ipsum primis in felis facilisis nunc.&lt;/p&gt;&lt;/div&gt;
+                                &lt;h3 class=&quot;z-panel-header z-panel-indicator z-pointer&quot;&gt;Nullam pharetra sem vitae ornare risus&lt;/h3&gt;
+                                &lt;div class=&quot;z-panel-content&quot; style=&quot;display: none;&quot;&gt;&lt;p&gt;Nullam pharetra sem vitae ornare risus. Vivamus justo. Sed porttitor, lacus feugiat leo. Sed tristique senectus et rhoncus pede semper erat, molestie vitae, vulputate mi, eu mollis nibh orci luctus augue a sapien. Cras suscipit, risus ornare lacus nonummy nunc tempus vitae, quam. Proin dui nunc, tempus purus fringilla sit amet sapien facilisis libero. Duis neque magna orci blandit iaculis, turpis viverra elit. In nonummy. Phasellus pulvinar augue. Praesent pretium. Praesent magna suscipit id, dolor. Vivamus ornare, odio et magnis dis parturient montes, nascetur ridiculus mus. Nunc consectetuer ut, eros. Maecenas mi quam, a purus. Phasellus sit amet magna. Aliquam.&lt;/p&gt;&lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;script type=&quot;text/javascript&quot;&gt;
+                                var panel = new Zikula.UI.Panels('panel', {
+                                                headerSelector: 'h3',
+                                                headerClassName: 'z-panel-header z-panel-indicator',
+                                                contentClassName: 'z-panel-content'
+                                                });
                             &lt;/script&gt;
                         </pre>
                     </fieldset>
