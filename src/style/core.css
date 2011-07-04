@@ -1717,7 +1717,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)); /*webkit*/
     background: -moz-linear-gradient(top, #ffffff, #dfdfdf); /*gecko*/
     background: linear-gradient(#FFFFFF, #dfdfdf); /*CSS3*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#dfdfdf'); /*IE*/
     border: 1px solid #CCCCCC;
     cursor: pointer;
     margin: 0.2em 0 0;
@@ -1733,7 +1732,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cfcfcf)); /*webkit*/
     background: -moz-linear-gradient(top, #fafafa, #cfcfcf); /*gecko*/
     background: linear-gradient(#fafafa, #cfcfcf); /*CSS3*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#CFCFCF'); /*IE*/
 }
 
 .z-accordion .z-acc-content,
@@ -1757,7 +1755,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#CFCFCF)); /*webkit*/
     background: -moz-linear-gradient(top, #fafafa, #CFCFCF); /*gecko*/
     background: linear-gradient(#fafafa, #CFCFCF); /*CSS3*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#CFCFCF'); /*IE*/
 }
 
 .z-panels .z-panel-indicator {
