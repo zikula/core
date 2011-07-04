@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-02 09:49-0400\n"
+"POT-Creation-Date: 2011-07-04 09:32-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -518,7 +518,7 @@ msgstr ""
 msgid "Language selector block"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Block/Lang.php:105 upgrade.php:202
+#: system/Blocks/lib/Blocks/Block/Lang.php:105 upgrade.php:187
 #: install/templates/installer_lang.tpl:16
 msgid "Choose a language"
 msgstr ""
@@ -3304,7 +3304,7 @@ msgstr ""
 #: system/Users/lib/Users/Api/Authentication.php:628
 #: system/Users/lib/Users/Api/Authentication.php:629
 #: lib/viewplugins/function.userlogin.php:52
-#: lib/viewplugins/function.userlogin.php:53 upgrade.php:251
+#: lib/viewplugins/function.userlogin.php:53 upgrade.php:236
 #: install/templates/installer_dbinformation.tpl:36
 #: install/templates/installer_createadmin.tpl:24
 #: system/Permissions/templates/permissions_admin_view.tpl:200
@@ -3403,7 +3403,7 @@ msgstr ""
 msgid "User account links"
 msgstr ""
 
-#: system/Users/lib/Users/Block/Login.php:59 upgrade.php:250
+#: system/Users/lib/Users/Block/Login.php:59 upgrade.php:235
 #: system/Errors/templates/errors_user_403.tpl:15
 msgid "Log-in"
 msgstr ""
@@ -5411,7 +5411,7 @@ msgid ""
 "Error! in %1$s: parameter '%2$s' only supported together with '%3$s' set."
 msgstr ""
 
-#: lib/viewplugins/function.userlogin.php:73 upgrade.php:252
+#: lib/viewplugins/function.userlogin.php:73 upgrade.php:237
 #: install/templates/installer_dbinformation.tpl:40
 #: install/templates/installer_createadmin.tpl:28
 #: system/Theme/templates/system/siteoff.tpl:176
@@ -6298,12 +6298,12 @@ msgstr ""
 #: lib/util/DBUtil.php:473 lib/util/DBUtil.php:515 lib/util/DBUtil.php:519
 #: lib/util/DBUtil.php:561 lib/util/DBUtil.php:565 lib/util/DBUtil.php:1388
 #: lib/util/DBUtil.php:1424 lib/util/DBUtil.php:1428 lib/util/DBUtil.php:1965
-#: lib/util/DBUtil.php:2213 lib/util/DBUtil.php:2702 lib/util/DBUtil.php:2879
-#: lib/util/DBUtil.php:2919 lib/util/DBUtil.php:2985 lib/util/DBUtil.php:3056
-#: lib/util/DBUtil.php:3129 lib/util/DBUtil.php:3243 lib/util/DBUtil.php:3277
-#: lib/util/DBUtil.php:3280 lib/util/DBUtil.php:3317 lib/util/DBUtil.php:3353
-#: lib/util/DBUtil.php:3357 lib/util/DBUtil.php:3361 lib/util/DBUtil.php:3425
-#: lib/util/DBUtil.php:3429 lib/util/DBUtil.php:3482 lib/util/DBUtil.php:3516
+#: lib/util/DBUtil.php:2213 lib/util/DBUtil.php:2703 lib/util/DBUtil.php:2880
+#: lib/util/DBUtil.php:2920 lib/util/DBUtil.php:2986 lib/util/DBUtil.php:3057
+#: lib/util/DBUtil.php:3130 lib/util/DBUtil.php:3244 lib/util/DBUtil.php:3278
+#: lib/util/DBUtil.php:3281 lib/util/DBUtil.php:3318 lib/util/DBUtil.php:3354
+#: lib/util/DBUtil.php:3358 lib/util/DBUtil.php:3362 lib/util/DBUtil.php:3426
+#: lib/util/DBUtil.php:3430 lib/util/DBUtil.php:3483 lib/util/DBUtil.php:3517
 #, php-format
 msgid "The parameter %s must not be empty"
 msgstr ""
@@ -6331,7 +6331,7 @@ msgstr ""
 msgid "Invalid join information retrieved (alias %s already exists)"
 msgstr ""
 
-#: lib/util/DBUtil.php:486 lib/util/DBUtil.php:3070 lib/util/DBUtil.php:3143
+#: lib/util/DBUtil.php:486 lib/util/DBUtil.php:3071 lib/util/DBUtil.php:3144
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table array contain the dictionary "
@@ -6404,7 +6404,7 @@ msgstr ""
 msgid "Unable to find assocKey [%1$s] in objectColumns for resultset."
 msgstr ""
 
-#: lib/util/DBUtil.php:1461 lib/util/DBUtil.php:3365
+#: lib/util/DBUtil.php:1461 lib/util/DBUtil.php:3366
 #, php-format
 msgid "The parameter %s must be an array"
 msgstr ""
@@ -6433,130 +6433,130 @@ msgstr ""
 msgid "The parameter %s must be numeric"
 msgstr ""
 
-#: lib/util/DBUtil.php:2666 lib/util/DBUtil.php:2926 lib/util/DBUtil.php:3083
-#: lib/util/DBUtil.php:3156 lib/util/DBUtil.php:3250 lib/util/DBUtil.php:3288
-#: lib/util/DBUtil.php:3292 lib/util/DBUtil.php:3324 lib/util/DBUtil.php:3436
-#: lib/util/DBUtil.php:3489 lib/util/DBUtil.php:3523
+#: lib/util/DBUtil.php:2667 lib/util/DBUtil.php:2927 lib/util/DBUtil.php:3084
+#: lib/util/DBUtil.php:3157 lib/util/DBUtil.php:3251 lib/util/DBUtil.php:3289
+#: lib/util/DBUtil.php:3293 lib/util/DBUtil.php:3325 lib/util/DBUtil.php:3437
+#: lib/util/DBUtil.php:3490 lib/util/DBUtil.php:3524
 #, php-format
 msgid "%s does not point to a valid table definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:2670
+#: lib/util/DBUtil.php:2671
 #, php-format
 msgid "%s does not point to a valid field definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:2677
+#: lib/util/DBUtil.php:2678
 msgid "Exiting after SQL-error"
 msgstr ""
 
-#: lib/util/DBUtil.php:2753 lib/util/DBUtil.php:2894
+#: lib/util/DBUtil.php:2754 lib/util/DBUtil.php:2895
 #, php-format
 msgid "Invalid field pattern detected in table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2771
+#: lib/util/DBUtil.php:2772
 msgid ""
 "Warning! Table defintion type longblob [B, C2 and X2] is deprecated from "
 "Zikula 1.4.0."
 msgstr ""
 
-#: lib/util/DBUtil.php:2777
+#: lib/util/DBUtil.php:2778
 #, php-format
 msgid "Error in table definition for %1$s, column %2$s"
 msgstr ""
 
-#: lib/util/DBUtil.php:2825
+#: lib/util/DBUtil.php:2826
 #, php-format
 msgid "Missing default value in field datadict specification for %1$s.%2$s"
 msgstr ""
 
-#: lib/util/DBUtil.php:2864
+#: lib/util/DBUtil.php:2865
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table structure contain the data "
 "dictionary representation of table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2904
+#: lib/util/DBUtil.php:2905
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table structure contain the ADODB "
 "dictionary representation of table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2995
+#: lib/util/DBUtil.php:2996
 #, php-format
 msgid "Unable to retrieve table definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:3000
+#: lib/util/DBUtil.php:3001
 #, php-format
 msgid "Unable to retrieve table columns definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:3005
+#: lib/util/DBUtil.php:3006
 #, php-format
 msgid "Unable to retrieve table columns_def definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:3023
+#: lib/util/DBUtil.php:3024
 #, php-format
 msgid ""
 "Inconsistent table definition detected for table [%1$s]: column [%2$s] has "
 "no counterpart in column_def structure"
 msgstr ""
 
-#: lib/util/DBUtil.php:3032
+#: lib/util/DBUtil.php:3033
 #, php-format
 msgid ""
 "Inconsistent table definition detected for table [%1$s]: column_def [%2$s] "
 "has no counterpart in column structure"
 msgstr ""
 
-#: lib/util/DBUtil.php:3061 lib/util/DBUtil.php:3134
+#: lib/util/DBUtil.php:3062 lib/util/DBUtil.php:3135
 #, php-format
 msgid "Table consistency check failed for %s"
 msgstr ""
 
-#: lib/util/DBUtil.php:3089
+#: lib/util/DBUtil.php:3090
 #, php-format
 msgid "Error! Table creation failed for %s"
 msgstr ""
 
-#: lib/util/DBUtil.php:3170 lib/util/DBUtil.php:3180 lib/util/DBUtil.php:3194
-#: lib/util/DBUtil.php:3205 lib/util/DoctrineUtil.php:390
+#: lib/util/DBUtil.php:3171 lib/util/DBUtil.php:3181 lib/util/DBUtil.php:3195
+#: lib/util/DBUtil.php:3206 lib/util/DoctrineUtil.php:390
 #: lib/util/DoctrineUtil.php:400 lib/util/DoctrineUtil.php:414
 #: lib/util/DoctrineUtil.php:425
 msgid "Error! Table update failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3298
+#: lib/util/DBUtil.php:3299
 msgid "Error! Table rename failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3331
+#: lib/util/DBUtil.php:3332
 msgid "Error! Table drop failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3373
+#: lib/util/DBUtil.php:3374
 #, php-format
 msgid "%s does not point to a valid column definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:3409
+#: lib/util/DBUtil.php:3410
 msgid "Error! Index creation failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3443
+#: lib/util/DBUtil.php:3444
 msgid "Error! Index deletion failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3530
+#: lib/util/DBUtil.php:3531
 msgid "Error! Fetching table index list failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3570
+#: lib/util/DBUtil.php:3571
 #, php-format
 msgid ""
 "%1$s: unable to limit tablename [%2$s] because database prefix is too long "
@@ -9859,21 +9859,6 @@ msgstr ""
 msgid "An unknown error occurred in module %s, controller %s, action %s"
 msgstr ""
 
-#: backforum.php:48
-#, php-format
-msgid "Error! In 'backforum.php', an invalid forum ID %s was encountered."
-msgstr ""
-
-#: backforum.php:51
-#, php-format
-msgid "Error! In 'backforum.php', an invalid category ID %s was encountered."
-msgstr ""
-
-#: backforum.php:65
-#, php-format
-msgid "Error! Could not find a template for an %s-type feed."
-msgstr ""
-
 #: index.php:83
 msgid "Page not found."
 msgstr ""
@@ -9896,33 +9881,33 @@ msgstr ""
 msgid "The '%1$s' module returned an error in '%2$s'."
 msgstr ""
 
-#: upgrade.php:138
+#: upgrade.php:123
 msgid "Zikula Upgrade script"
 msgstr ""
 
-#: upgrade.php:148 install/templates/installer_alreadyinstalled.tpl:12
+#: upgrade.php:133 install/templates/installer_alreadyinstalled.tpl:12
 #: install/templates/installer_page.tpl:18
 #: install/templates/notinstalled.tpl:12
 msgid "Zikula Application Framework"
 msgstr ""
 
-#: upgrade.php:149
+#: upgrade.php:134
 msgid "Upgrade script"
 msgstr ""
 
-#: upgrade.php:152
+#: upgrade.php:137
 #, php-format
 msgid "Zikula Upgrade script (for Zikula version %s and up)"
 msgstr ""
 
-#: upgrade.php:153
+#: upgrade.php:138
 #, php-format
 msgid ""
 "This script will upgrade any Zikula v%1$s+ installation. Upgrades from less "
 "than Zikula v%1$s are not supported by this script."
 msgstr ""
 
-#: upgrade.php:169
+#: upgrade.php:154
 #, php-format
 msgid ""
 "For more information about the upgrade process, please read the <a href="
@@ -9931,19 +9916,19 @@ msgid ""
 "community.zikula.org/module-Forum.htm\">support forum</a>."
 msgstr ""
 
-#: upgrade.php:189
+#: upgrade.php:174
 msgid "FATAL ERROR!"
 msgstr ""
 
-#: upgrade.php:190
+#: upgrade.php:175
 msgid "Zikula does not appear to be installed."
 msgstr ""
 
-#: upgrade.php:200
+#: upgrade.php:185
 msgid "Please select your language"
 msgstr ""
 
-#: upgrade.php:210 upgrade.php:259
+#: upgrade.php:195 upgrade.php:244
 #: system/Users/templates/users_user_passwordreminder.tpl:58
 #: system/Users/templates/users_user_lostpassword.tpl:24
 #: system/Users/templates/users_user_lostpasswordcode.tpl:31
@@ -9952,88 +9937,88 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: upgrade.php:226
+#: upgrade.php:211
 msgid "BEFORE proceeding you should backup your database!"
 msgstr ""
 
-#: upgrade.php:246
+#: upgrade.php:231
 msgid "Failed to login to your site"
 msgstr ""
 
-#: upgrade.php:248
+#: upgrade.php:233
 msgid ""
 "For the next upgrade steps you need to be logged in. Please provide your "
 "admin account credentials"
 msgstr ""
 
-#: upgrade.php:291
+#: upgrade.php:276
 msgid "Starting upgrade"
 msgstr ""
 
-#: upgrade.php:301
+#: upgrade.php:286
 msgid "upgraded"
 msgstr ""
 
-#: upgrade.php:303
+#: upgrade.php:288
 msgid "not upgraded"
 msgstr ""
 
-#: upgrade.php:309
+#: upgrade.php:294
 msgid "No modules required upgrading"
 msgstr ""
 
-#: upgrade.php:327
+#: upgrade.php:312
 msgid "Finished upgrade"
 msgstr ""
 
-#: upgrade.php:340
+#: upgrade.php:325
 #, php-format
 msgid "Go to the startpage for %s"
 msgstr ""
 
-#: upgrade.php:344
+#: upgrade.php:329
 #, php-format
 msgid "Go to the admin panel for %s"
 msgstr ""
 
-#: upgrade.php:397
+#: upgrade.php:382
 msgid "Already up to date"
 msgstr ""
 
-#: upgrade.php:398
+#: upgrade.php:383
 #, php-format
 msgid ""
 "It seems that you have already installed version %s. Please remove this "
 "upgrade script, you do not need it anymore."
 msgstr ""
 
-#: upgrade.php:402
+#: upgrade.php:387
 msgid "Possible incompatible version found."
 msgstr ""
 
-#: upgrade.php:403
+#: upgrade.php:388
 #, php-format
 msgid ""
 "The current installed version of Zikula is reporting (%1$s). You must "
 "upgrade to version (%2$s) before you can use this upgrade."
 msgstr ""
 
-#: upgrade.php:406
+#: upgrade.php:391
 msgid ""
 "date.timezone is currently not set. Since PHP 5.3.0, it needs to be set to a "
 "valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/"
 "Berlin."
 msgstr ""
 
-#: upgrade.php:407 install/templates/installer_requirements.tpl:97
+#: upgrade.php:392 install/templates/installer_requirements.tpl:97
 msgid "Check again"
 msgstr ""
 
-#: upgrade.php:417
+#: upgrade.php:402
 msgid "PCRE Unicode Property Support Needed."
 msgstr ""
 
-#: upgrade.php:418
+#: upgrade.php:403
 msgid ""
 "The PCRE (Perl Compatible Regular Expression) library being used with your "
 "PHP installation does not support Unicode properties. This is required to "
@@ -10041,18 +10026,18 @@ msgid ""
 "used must be compiled with the '--enable-unicode-properties' option."
 msgstr ""
 
-#: upgrade.php:434
+#: upgrade.php:419
 msgid "Theme Check Failed"
 msgstr ""
 
-#: upgrade.php:436
+#: upgrade.php:421
 #, php-format
 msgid ""
 "Your configuration specifies a theme called '%s' that doesn't exist.  Please "
 "ensure that theme exists in themes/%s"
 msgstr ""
 
-#: upgrade.php:439
+#: upgrade.php:424
 #, php-format
 msgid ""
 "Your configuration specifies a theme called '%s' which begins with a lower "
@@ -10061,7 +10046,7 @@ msgid ""
 "attempting this upgrade again."
 msgstr ""
 
-#: upgrade.php:442
+#: upgrade.php:427
 #, php-format
 msgid ""
 "Your theme called '%s' contains an underscore, this is now deprecated.  You "
@@ -10070,15 +10055,15 @@ msgid ""
 "this upgrade again."
 msgstr ""
 
-#: upgrade.php:453
+#: upgrade.php:438
 msgid "Proceed to upgrade (click once and wait)"
 msgstr ""
 
-#: upgrade.php:503 upgrade.php:521
+#: upgrade.php:488 upgrade.php:506
 msgid "FATAL ERROR: Cannot start, unable to determine installed Core version."
 msgstr ""
 
-#: upgrade.php:543
+#: upgrade.php:528
 msgid "FATAL ERROR: Cannot start, unable access database."
 msgstr ""
 
