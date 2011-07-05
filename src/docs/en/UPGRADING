@@ -75,6 +75,9 @@ Prepare your existing installation
     login by username in the administration panel.  You will be required to
     login using your administration username.  Make sure you know it.
 
+  - config.php has introduced legacy modes, please make sure this is not disabled
+    before you attempt the upgrade.
+
   - Before unpacking *any* files, delete the following directories:
 
       - system/
