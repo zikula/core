@@ -26,7 +26,7 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
         return array(
                 'displayname' => $this->__('SwiftMailer'),
                 'description' => $this->__('Provides SwiftMailer'),
-                'version' => '4.1.0'
+                'version' => '4.1.1'
         );
     }
 
