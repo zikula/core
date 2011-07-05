@@ -5,18 +5,17 @@ namespace Gedmo\Mapping\Annotation;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
- * Translatable annotation for Translatable behavioral extension
+ * Group annotation for Sortable extension
  *
- * @Annotation
- *
- * @author Gediminas Morkevicius <gediminas.morkevicius@gmail.com>
+ * @author Lukas Botsch <lukas.botsch@gmail.com>
  * @package Gedmo.Mapping.Annotation
- * @subpackage Translatable
+ * @subpackage SortableGroup
  * @link http://www.gediminasm.org
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * 
+ * @Annotation
  */
-final class Translatable extends Annotation
+final class SortableGroup extends Annotation
 {
 
 }
-
