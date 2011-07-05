@@ -790,13 +790,13 @@ CHANGE pn_expire expire INT(11) NOT NULL DEFAULT  '0',
 CHANGE pn_active active INT(11) NOT NULL DEFAULT  '1',
 CHANGE pn_view view INT(11) NOT NULL DEFAULT  '1',
 CHANGE pn_language language VARCHAR(30) NOT NULL DEFAULT  ''";
-    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE id id INT(11) NOT NULL AUTO_INCREMENT";
-    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE name name VARCHAR(100) NOT NULL";
-    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE cdate cdate DATETIME NOT NULL";
-    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE edate edate DATETIME NOT NULL";
-    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE session session VARCHAR(50) NOT NULL";
-    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE title title VARCHAR(100) NOT NULL";
-    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE ipno ipno VARCHAR(30) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_id id INT(11) NOT NULL AUTO_INCREMENT";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_name name VARCHAR(100) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_cdate cdate DATETIME NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_edate edate DATETIME NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_session session VARCHAR(50) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_title title VARCHAR(100) NOT NULL";
+    $silentCommands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_ipno ipno VARCHAR(30) NOT NULL";
     $silentCommands[] = "RENAME TABLE {$prefix}_pagelock TO pagelock";
 
     // LONGBLOB is not supported by Doctrine 2
