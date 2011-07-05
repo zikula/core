@@ -124,8 +124,8 @@ Zikula.UI.Tooltip = Class.create(Control.ToolTip,/** @lends Zikula.UI.Tooltip.pr
             vSize = document.viewport.getDimensions(),
             vtOffset = document.viewport.getScrollOffsets(),
             offset = {v: $value(this.options.offsetTop), h: $value(this.options.offsetLeft)},
-            x= Event.pointerX(event),
-            y = Event.pointerY(event),
+            x= event ? Event.pointerX(event): this.sourceContainer.getLayout().get('left'),
+            y = event ? Event.pointerY(event): this.sourceContainer.getLayout().get('top'),
             pos = {left:'auto',right:'auto',top:'auto',bottom:'auto'};
         if (x + dim.width + (offset.h * 2) < vSize.width || dim.width + offset.h > vSize.width) {
             pos.left = (x + offset.h + vtOffset.left).toUnits();
