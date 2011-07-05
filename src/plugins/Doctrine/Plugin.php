@@ -52,12 +52,24 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $serviceManager = $this->eventManager->getServiceManager();
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
         $dbConfig = array('host' => $config['host'], 'user' => $config['user'], 'password' => $config['password'], 'dbname' => $config['dbname'], 'driver' => 'pdo_' . $config['dbdriver']);
-        $r = new ReflectionClass('Doctrine\Common\Cache\\' . $serviceManager['dbcache.type'] . 'Cache');
+        $r = new \ReflectionClass('Doctrine\Common\Cache\\' . $serviceManager['dbcache.type'] . 'Cache');
         $dbCache = $r->newInstance();
         $ORMConfig = new \Doctrine\ORM\Configuration;
+        $serviceManager->attachService('doctrine.configuration', $ORMConfig);
         $ORMConfig->setMetadataCacheImpl($dbCache);
-        $driverImpl = $ORMConfig->newDefaultAnnotationDriver();
-        $ORMConfig->setMetadataDriverImpl($driverImpl);
+        require_once 'lib/vendor/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
+        $reader = new \Doctrine\Common\Annotations\AnnotationReader();
+        $cacheReader = new \Doctrine\Common\Annotations\CachedReader($reader, new \Doctrine\Common\Cache\ArrayCache());
+        
+        $serviceManager->attachService('doctrine.annotationreader', $cacheReader);
+        
+        $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($cacheReader);
+        $serviceManager->attachService('doctrine.annotationdriver', $annotationDriver);
+        
+        $driverChain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
+        $serviceManager->attachService('doctrine.driverchain', $driverChain);
+        
+        $ORMConfig->setMetadataDriverImpl($annotationDriver);
         $ORMConfig->setQueryCacheImpl($dbCache);
         $ORMConfig->setProxyDir('ztemp/doctrinemodels');
         $ORMConfig->setProxyNamespace('DoctrineProxy');
