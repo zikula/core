@@ -2,7 +2,7 @@
 --
 -- Host: 192.168.137.1    Database: zikula130
 -- ------------------------------------------------------
--- Server version	5.5.8
+-- Server version   5.5.8
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -652,7 +652,7 @@ INSERT INTO `module_vars` VALUES (13,'ZConfig','timezone_server','s:1:\"0\";');
 INSERT INTO `module_vars` VALUES (14,'ZConfig','funtext','s:1:\"1\";');
 INSERT INTO `module_vars` VALUES (15,'ZConfig','reportlevel','s:1:\"0\";');
 INSERT INTO `module_vars` VALUES (16,'ZConfig','startpage','s:0:\"\";');
-INSERT INTO `module_vars` VALUES (17,'ZConfig','Version_Num','s:9:\"1.3.0-dev\";');
+INSERT INTO `module_vars` VALUES (17,'ZConfig','Version_Num','s:5:\"1.3.0\";');
 INSERT INTO `module_vars` VALUES (18,'ZConfig','Version_ID','s:6:\"Zikula\";');
 INSERT INTO `module_vars` VALUES (19,'ZConfig','Version_Sub','s:3:\"vai\";');
 INSERT INTO `module_vars` VALUES (20,'ZConfig','debug_sql','s:1:\"0\";');
