@@ -803,6 +803,10 @@ CHANGE pn_language language VARCHAR(30) NOT NULL DEFAULT  ''";
     $silentCommands[] = "ALTER TABLE {$prefix}_workflows CHANGE debug debug LONGTEXT NULL DEFAULT NULL";
     $silentCommands[] = "RENAME TABLE {$prefix}_workflows TO workflows";
     $silentCommands[] = "ALTER TABLE group_applications CHANGE application application LONGTEXT NOT NULL";
+    
+    // Handle case of andreas08 themes on linux environments.
+    $silentCommands[] = "UPDATE themes SET name = 'Andreas08' WHERE name = 'andreas08'";
+    $silentCommands[] = "UPDATE module_vars SET value = 's:9:\"Andreas08\";' WHERE modname = '/PNConfig' AND value ='s:9:\"andreas08\";'";
 
     foreach ($commands as $sql) {
         $stmt = $connection->prepare($sql);
