@@ -805,7 +805,7 @@ CHANGE pn_language language VARCHAR(30) NOT NULL DEFAULT  ''";
     $silentCommands[] = "ALTER TABLE group_applications CHANGE application application LONGTEXT NOT NULL";
     
     // Handle case of andreas08 themes on linux environments.
-    $silentCommands[] = "UPDATE themes SET name = 'Andreas08' WHERE name = 'andreas08'";
+    $silentCommands[] = "UPDATE themes SET name = 'Andreas08', directory = 'Andreas08' WHERE name = 'andreas08'";
     $silentCommands[] = "UPDATE module_vars SET value = 's:9:\"Andreas08\";' WHERE modname = 'ZConfig' AND value ='s:9:\"andreas08\";'";
 
     foreach ($commands as $sql) {
