@@ -181,12 +181,14 @@ img {
     padding: 2px 0 2px 18px;
 }
 
-ul.systemrequirements  {
+ul#upgradelist,
+ul.systemrequirements {
     margin-left: 0;
     padding-left: 0;
     list-style: none;
 }
 
+ul#upgradelist li,
 ul.systemrequirements li {
   background-position: left 2px;
   background-repeat: no-repeat;
@@ -194,14 +196,17 @@ ul.systemrequirements li {
   padding-left: 25px;
 }
 
+ul#upgradelist li.passed,
 ul.systemrequirements li.passed {
     background-image: url(../../images/icons/extrasmall/button_ok.png);
 }
 
+ul#upgradelist li.failed,
 ul.systemrequirements li.failed {
     background-image: url(../../images/icons/extrasmall/button_cancel.png);
 }
 
+ul#upgradelist li.warning ,
 ul.systemrequirements li.warning {
     background-image: url(../../images/icons/extrasmall/info.png);
 }
