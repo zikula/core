@@ -231,6 +231,7 @@ class FileUtil
         }
 
         closedir($dh);
+        sort($files);
         return $files;
     }
 
