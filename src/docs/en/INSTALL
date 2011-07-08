@@ -25,7 +25,9 @@ Before you begin, there are some requirements and guidelines you should consider
 to make installing, running, and securing Zikula easier. Please read the Zikula
 software recommendations document.
 
-It is not recommended to install Zikula with MySQL STRICT mode enabled.
+Zikula requires PHP 5.3.2 or greater and that `date.timezone` be set in the 
+php.ini configuration file.  The minimum MySQL version is 5.1 and it is not 
+recommended to install Zikula with MySQL STRICT mode enabled.
 
 3. New Installation
 ===================
