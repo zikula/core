@@ -8,9 +8,11 @@ forums at http://community.zikula.org/
 Server Consideration
 --------------------
 
-- If you are using PHP 5.3.0 or greater please make sure the php.ini file has
-  date.timezone set to a valid timezone like UTC, GMT+5, Europe/Berlin.  If this
-  is not set, you will experience problems,
+- Zikula requires PHP 5.3.2 or greater.
+
+- Please make sure the php.ini file has date.timezone set to a valid timezone 
+  like UTC, GMT+5, Europe/Berlin.  If this is not set, Zikula will not function
+  correctly.
 
 - Ensure your server has PCRE with unicode support enabled.
 
