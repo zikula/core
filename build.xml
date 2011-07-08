@@ -77,7 +77,7 @@
         <chmod file="${packagepath}/ztemp/Theme_cache" mode="0777" />
         <chmod file="${packagepath}/ztemp/Theme_compiled" mode="0777" />
         <chmod file="${packagepath}/ztemp/Theme_Config" mode="0777" />
-        <chmod file="${packagepath}/ztemp/idsTemp" mode="0777" />
+        <chmod file="${packagepath}/ztemp/idsTmp" mode="0777" />
         <chmod file="${packagepath}/ztemp/purifierCache" mode="0777" />
 
         <echo msg="Creating archive..." />
