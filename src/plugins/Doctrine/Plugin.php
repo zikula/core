@@ -12,7 +12,7 @@
  */
 
 /**
- * SwiftMailer plugin definition.
+ * Doctrine plugin definition.
  */
 class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
 {
@@ -88,5 +88,10 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         // setup the doctrine entitymanager
         $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
         $serviceManager->attachService('doctrine.entitymanager', $entityManager);
+        
+        // setup MySQL Storage engine listener
+        if ($config['dbdriver'] == 'mysql') {
+            $mysqlStorageEvent = new SystemPlugin_Doctrine_MySqlStorageEngineListener($eventManager);
+        }
     }
 }
