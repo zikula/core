@@ -23,7 +23,7 @@ class SystemPlugin_Doctrine_MySqlStorageEngineListener
         $evm->addEventListener(array(self::postGenerateSchemaTable), $this);
     }
     
-    public function postGenerateSchemaTable(\Doctrine\ORM\Tools\ToolEvents $event) 
+    public function postGenerateSchemaTable(\Doctrine\ORM\Tools\Event\GenerateSchemaTableEventArgs $event) 
     {
         $event->getClassTable()->addOption('engine', $GLOBALS['ZConfig']['DBInfo']['databases']['default']['dbtabletype']);
     }
