@@ -80,6 +80,10 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $ORMConfig->setProxyDir('ztemp/doctrinemodels');
         $ORMConfig->setProxyNamespace('DoctrineProxy');
         //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
+        
+        if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
+            $ORMConfig->setSQLLogger(new SystemPlugin_Doctrine_ZikulaSqlLogger());
+        }
 
         // setup doctrine eventmanager
         $eventManager = new \Doctrine\Common\EventManager;
