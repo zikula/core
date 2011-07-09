@@ -16,16 +16,18 @@
  */
 class SystemPlugin_Doctrine_MySqlStorageEngineListener
 {
-    const postGenerateSchemaTable = 'postGenerateSchemaTable';
+    const postGenerateSchemaTable = 'postGenerateSchema';
     
     public function __construct(\Doctrine\Common\EventManager $evm)
     {
         $evm->addEventListener(array(self::postGenerateSchemaTable), $this);
     }
     
-    public function postGenerateSchemaTable(\Doctrine\ORM\Tools\Event\GenerateSchemaTableEventArgs $event) 
+    public function postGenerateSchema(\Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs $event) 
     {
-        $event->getClassTable()->addOption('engine', $GLOBALS['ZConfig']['DBInfo']['databases']['default']['dbtabletype']);
+        foreach($event->getSchema()->getTables() as $table) {
+            $table->addOption('engine', $GLOBALS['ZConfig']['DBInfo']['databases']['default']['dbtabletype']);
+        }
     }
 }
 
