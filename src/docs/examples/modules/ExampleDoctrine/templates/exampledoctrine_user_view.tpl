@@ -23,7 +23,7 @@
                 <td>{$u->getPassword()|safetext}</td>
                 <td>
                     {foreach from=$u.categories item='c'}
-                        {$c.category.name|safetext}
+                        {$c.category.name|safetext}, 
                     {/foreach}
                 </td>
 <!--                 <td>{*$u.__META__.dc_comment|default:''|safehtml}</td>

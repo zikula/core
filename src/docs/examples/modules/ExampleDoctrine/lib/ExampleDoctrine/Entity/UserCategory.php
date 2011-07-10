@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 class ExampleDoctrine_Entity_UserCategory extends Zikula_Doctrine2_Entity_EntityCategory
 {
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="ExampleDoctrine_Entity_User", inversedBy="categories")
      * @ORM\JoinColumn(name="entityId", referencedColumnName="id")
      * @var ExampleDoctrine_Entity_User

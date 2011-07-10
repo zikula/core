@@ -16,7 +16,7 @@ class Zikula_EntityAccess implements ArrayAccess
 {
     public function offsetExists($key)
     {
-        method_exists($this, "get" . ucfirst($key));
+        return method_exists($this, "get" . ucfirst($key));
     }
 
     public function offsetGet($key)

@@ -38,12 +38,7 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
     public function initialize(Zikula_Form_View $view)
     {
         // load and assign registred categories
-        $registryCategories  = CategoryRegistryUtil::getRegisteredModuleCategories('ExampleDoctrine', 'exampledoctrine_users', 'id');
-        $categories = array();
-        foreach ($registryCategories as $property => $cid) {
-            $categories[(int)$property] = (int)$cid;
-        }
-
+        $categories  = CategoryRegistryUtil::getRegisteredModuleCategories('ExampleDoctrine', 'User', 'id');
         $view->assign('registries', $categories);
 
         $id = FormUtil::getPassedValue('id', null, "GET", FILTER_SANITIZE_NUMBER_INT);

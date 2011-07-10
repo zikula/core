@@ -23,13 +23,19 @@ abstract class Zikula_Doctrine2_Entity_EntityCategory extends Zikula_EntityAcces
 {
     /**
      * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     * @var integer
+     */
+    private $id;
+    
+    /**
      * @ORM\Column(type="integer", name="registryId")
      * @var integer 
      */
     private $categoryRegistryId;
     
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Zikula_Doctrine2_Entity_Category")
      * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
      * @var Zikula_Doctrine2_Entity_Category
@@ -43,6 +49,16 @@ abstract class Zikula_Doctrine2_Entity_EntityCategory extends Zikula_EntityAcces
         $this->categoryRegistryId = $registryId;
         $this->category = $category;
         $this->setEntity($entity);
+    }
+    
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    public function setId($id)
+    {
+        $this->id = $id;
     }
     
     public function getCategoryRegistryId()
