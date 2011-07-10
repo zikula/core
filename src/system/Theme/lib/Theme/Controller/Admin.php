@@ -1184,6 +1184,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->setVar('render_expose_template', $render_expose_template);
 
         // The configuration has been changed, so we clear all caches for this module.
+        $this->view->clear_compiled();
         $this->view->clear_all_cache();
 
         // the module configuration has been updated successfuly
