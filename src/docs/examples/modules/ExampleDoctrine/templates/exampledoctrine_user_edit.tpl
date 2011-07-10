@@ -33,22 +33,24 @@
 
             <div class="z-formrow">
                 {formlabel for="attributesField2" __text="Field 2"}
-                {formtextinput id="attributesField2" group="__ATTRIBUTES__" dataField="field2" maxLength=255}
+                {formtextinput id="attributesField2" group="__ATTRIBUTES__" dataField="field2" maxLength=255*}
             </div>
         </fieldset>
+-->
 
         <fieldset>
             <legend>{gt text='Categories'}</legend>
 
-            {foreach from=$registries item="registryCid" key="property"}
+            {foreach from=$registries item="registryCid" key="registryId"}
                 <div class="z-formrow">
-                    {formlabel for="category_`$property`" __text="Category"}
-                    {formcategoryselector id="category_`$property`" category=$registryCid dataField=$property enableDoctrine=true}
+                    {formlabel for="category_`$registryId`" __text="Category"}
+                    {formcategoryselector id="category_`$registryId`" category=$registryCid 
+                                          dataField="categories" group="user" registryId=$registryId doctrine2=true}
                 </div>
-            {/foreach*}
+            {/foreach}
         </fieldset>
 
--->
+
         <div class="z-formbuttons">
             {formimagebutton id="create" commandName="create" __text="Save" imageUrl="images/icons/small/button_ok.png"}
         </div>

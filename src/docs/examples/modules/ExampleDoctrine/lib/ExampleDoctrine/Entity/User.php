@@ -55,7 +55,19 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
      * @ORM\Column(length=64, unique=true)
      */
     private $slug;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="ExampleDoctrine_Entity_UserCategory", 
+     *                mappedBy="entity", cascade={"all"}, 
+     *                orphanRemoval=true, indexBy="categoryRegistryId")
+     */
+    private $categories;
 
+    public function __construct()
+    {
+        $this->categories = new Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     public function setUsername($username)
     {
         $this->username = $username;
@@ -85,5 +97,25 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
     {
         $this->setUsername($username);
         $this->setPassword($password);
+    }
+    
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+    
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+    }
+    
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+    
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }
