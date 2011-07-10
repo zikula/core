@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @ORM\MappedSuperclass
  */
-abstract class Zikula_Doctrine2_Entity_EntityCategory
+abstract class Zikula_Doctrine2_Entity_EntityCategory extends Zikula_EntityAccess
 {
     /**
      * @ORM\Id
