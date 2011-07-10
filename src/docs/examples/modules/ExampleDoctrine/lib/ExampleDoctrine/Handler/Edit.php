@@ -81,8 +81,13 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
 
         // load form values
         $data = $view->getValues();
-        
         $user = $this->_user;
+        
+        foreach($data['attributes'] as $name => $value) {
+            $user->setAttribute($name, $value);
+        }
+        unset($data['attributes']);
+        
         $user->merge($data);
         $this->entityManager->persist($user);
         $this->entityManager->flush();

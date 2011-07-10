@@ -62,10 +62,18 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
      *                orphanRemoval=true, indexBy="categoryRegistryId")
      */
     private $categories;
+    
+     /**
+     * @ORM\OneToMany(targetEntity="ExampleDoctrine_Entity_UserAttribute", 
+     *                mappedBy="entity", cascade={"all"}, 
+     *                orphanRemoval=true, indexBy="name")
+     */
+    private $attributes;
 
     public function __construct()
     {
         $this->categories = new Doctrine\Common\Collections\ArrayCollection();
+        $this->attributes = new Doctrine\Common\Collections\ArrayCollection();
     }
     
     public function setUsername($username)
@@ -107,6 +115,24 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
     public function setCategories($categories)
     {
         $this->categories = $categories;
+    }
+    
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+    
+    public function setAttribute($name, $value)
+    {
+        if(isset($this->attributes[$name])) {
+            if($value == null) {
+                $this->attributes[$name]->remove($name);
+            } else {
+                $this->attributes[$name]->setValue($value);
+            }
+        } else {
+            $this->attributes[$name] = new ExampleDoctrine_Entity_UserAttribute($name, $value, $this);
+        }
     }
     
     public function setSlug($slug)

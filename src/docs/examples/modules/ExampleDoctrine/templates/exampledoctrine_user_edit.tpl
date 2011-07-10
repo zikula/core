@@ -13,30 +13,21 @@
             {formlabel for="password" __text="Password"}
             {formtextinput id="password" mandatory=true maxLength=255}
         </div>
-<!--
-        <fieldset>
-            <legend>{*gt text='Meta data'}</legend>
-
-            <div class="z-formrow">
-                {formlabel for="metaComment" __text="Comment"}
-                {formtextinput id="metaComment" group="__META__" dataField="dc_comment" maxLength=255}
-            </div>
-        </fieldset>
 
         <fieldset>
             <legend>{gt text='Attributes'}</legend>
 
             <div class="z-formrow">
                 {formlabel for="attributesField1" __text="Field 1"}
-                {formtextinput id="attributesField1" group="__ATTRIBUTES__" dataField="field1" maxLength=255}
+                {formtextinput id="attributesField1" group="attributes" dataField="field1" maxLength=255}
             </div>
 
             <div class="z-formrow">
                 {formlabel for="attributesField2" __text="Field 2"}
-                {formtextinput id="attributesField2" group="__ATTRIBUTES__" dataField="field2" maxLength=255*}
+                {formtextinput id="attributesField2" group="attributes" dataField="field2" maxLength=255}
             </div>
         </fieldset>
--->
+
 
         <fieldset>
             <legend>{gt text='Categories'}</legend>
