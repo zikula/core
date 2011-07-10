@@ -86,6 +86,8 @@ Prepare your existing installation
       - themes/
       - includes/
       - pnTemp/
+      - modules/Profile (if it exists)
+      - modules/legal   (if it exists)
 
     saving the stuff that you may have inside pnTemp like file uploads.
 
