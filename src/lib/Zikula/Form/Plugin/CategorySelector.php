@@ -328,9 +328,15 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
 
             $this->setSelectedValue($value);
         } else if($this->doctrine2) {
-            if(isset($value[$this->group][$this->dataField])) {
-                $value = $value[$this->group][$this->dataField]->getCategory()->getId();
-                $this->setSelectedValue($value);
+            if(isset($values[$this->group])) {
+                $entity = $values[$this->group];
+                if(isset($entity[$this->dataField])) {
+                    $collection = $entity[$this->dataField];
+                    if(isset($collection[$this->registryId])) {
+                        $value = $collection[$this->registryId]->getCategory()->getId();
+                        $this->setSelectedValue($value);
+                    }
+                }
             }
         } else {
             parent::loadValue($view, $values);
