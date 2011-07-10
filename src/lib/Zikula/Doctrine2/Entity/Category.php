@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="categories_category")
  */
-class Zikula_Doctrine2_Entity_Category {
+class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
