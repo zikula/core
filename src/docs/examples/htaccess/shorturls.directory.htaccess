@@ -9,6 +9,9 @@
 # turn the rewriting engine on
 RewriteEngine On
 
+# For rewriting to work you might need allow overrides, e.g.:
+#AllowOverride All
+
 # Enable RewriteBase if Zikula is installed to a sub-directory
 # RewriteBase /your/path/to/Zikula
 
