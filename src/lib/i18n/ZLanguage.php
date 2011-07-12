@@ -136,6 +136,7 @@ class ZLanguage
     {
         $this->langSession = SessionUtil::getVar('language', null);
         $this->langSystemDefault = System::getVar('language_i18n', 'en');
+        $this->languageCode = $this->langSystemDefault;
         $this->langFixSession = preg_replace('#[^a-z-].#', '', FormUtil::getPassedValue('setsessionlanguage', null, 'POST'));
         $this->multiLingualCapable = System::getVar('multilingual');
         $this->langUrlRule = System::getVar('languageurl', 0);
