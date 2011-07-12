@@ -323,11 +323,16 @@ class System
         // check the use of friendly url setup
         $shorturls = self::getVar('shorturls', false);
         $langRequired = ZLanguage::isRequiredLangParam();
+        $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
+        $entryPoint = self::getVar('entrypoint');
 
         if ($shorturls) {
             $result = self::getBaseUrl();
+            if ($expectEntrypoint) {
+                $result .= "$entryPoint";
+            }
             if ($langRequired) {
-                $result .= ZLanguage::getLanguageCode();
+                $result .= (preg_match('#/$#', $result) ? '' : '/') . ZLanguage::getLanguageCode();
             }
         } else {
             $result = self::getVar('entrypoint', 'index.php');
@@ -654,9 +659,39 @@ class System
 
         // check if we need to decode the url
         if ((self::getVar('shorturls') && (empty($module) && empty($type) && empty($func)))) {
-            // remove entry point from the path (otherwise they are part of the module name)
+            // user language is not set at this stage
+            $lang = System::getVar('language_i18n', '');
             $customentrypoint = self::getVar('entrypoint');
             $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
+            
+            // check if we hit baseurl, e.g. domain.com/ and if we require the language URL
+            // then we should redirect to the language URL.
+            if (ZLanguage::isRequiredLangParam() && self::getCurrentUrl() == self::getBaseUrl()) {
+                self::redirect(self::getBaseUrl() . "$root/$lang");
+                self::shutDown();
+            }
+            
+            // check if entry point is part of the URL expectation.  If so throw error if it's not present
+            // since this URL is technically invalid.
+            $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
+            if ($expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
+                $protocol = System::serverGetVar('SERVER_PROTOCOL');
+                header("{$protocol} 301 Moved Permanently");
+                echo __('The requested URL cannot be found');
+                system::shutDown();
+            }
+            
+            if (!$expectEntrypoint && self::getCurrentUrl() == self::getBaseUrl() . $root) {
+                self::redirect(self::getHomepageUrl());
+                self::shutDown();
+            }
+            
+            if (!$expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) === 0) {
+                $protocol = System::serverGetVar('SERVER_PROTOCOL');
+                header("{$protocol} 301 Moved Permanently");
+                echo __('The requested URL cannot be found');
+                system::shutDown();
+            }
 
             // get base path to work out our current url
             $parsedURL = parse_url(self::getCurrentUri());
@@ -675,15 +710,14 @@ class System
             }
 
             $modinfo = null;
-            // user language is not set at this stage
-            $lang = System::getVar('language_i18n', '');
+            $frontController = $expectEntrypoint ? "$root/" : '';
 
             // if no arguments present
-            if (!$args[0]) {
+            if (!$args[0] && !isset($_GET['lang'])) {
                 // we are in the homepage, checks if language code is forced
                 if (ZLanguage::getLangUrlRule() && $lang) {
                     // and redirect then
-                    System::redirect(self::getCurrentUrl().$lang);
+                    System::redirect(self::getCurrentUrl()."/$lang");
                     System::shutDown();
                 }
             } else {
@@ -697,7 +731,7 @@ class System
                         foreach ($args as $k => $v) {
                             $args[$k] = urlencode($v);
                         }
-                        System::redirect(self::getBaseUrl().($args ? implode('/', $args) : ''));
+                        System::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''));
                         System::shutDown();
                     }
                     self::queryStringSetVar('lang', $args[0]);
@@ -708,7 +742,7 @@ class System
                     foreach ($args as $k => $v) {
                         $args[$k] = urlencode($v);
                     }
-                    System::redirect(self::getBaseUrl().$lang.'/'.implode('/', $args));
+                    System::redirect(self::getBaseUrl().$frontController.$lang.'/'.implode('/', $args));
                     System::shutDown();
                 }
 
