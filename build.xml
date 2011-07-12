@@ -71,6 +71,7 @@
         <echo msg="Prepare permissions..." />
         <chmod file="${packagepath}/config/config.php" mode="0666" />
         <chmod file="${packagepath}/userdata" mode="0777" />
+        <chmod file="${packagepath}/ztemp" mode="0777" />
         <chmod file="${packagepath}/ztemp/error_logs" mode="0777" />
         <chmod file="${packagepath}/ztemp/view_cache" mode="0777" />
         <chmod file="${packagepath}/ztemp/view_compiled" mode="0777" />
