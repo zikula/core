@@ -662,21 +662,22 @@ class System
             // user language is not set at this stage
             $lang = System::getVar('language_i18n', '');
             $customentrypoint = self::getVar('entrypoint');
+            $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
             $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
             
             // check if we hit baseurl, e.g. domain.com/ and if we require the language URL
             // then we should redirect to the language URL.
             if (ZLanguage::isRequiredLangParam() && self::getCurrentUrl() == self::getBaseUrl()) {
-                self::redirect(self::getBaseUrl() . "$root/$lang");
+                $uri = $expectEntrypoint ? "$root/$lang" : "$lang";
+                self::redirect(self::getBaseUrl() . $uri);
                 self::shutDown();
             }
             
             // check if entry point is part of the URL expectation.  If so throw error if it's not present
             // since this URL is technically invalid.
-            $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
             if ($expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
                 $protocol = System::serverGetVar('SERVER_PROTOCOL');
-                header("{$protocol} 301 Moved Permanently");
+                header("{$protocol} 404 Not Found");
                 echo __('The requested URL cannot be found');
                 system::shutDown();
             }
@@ -688,7 +689,7 @@ class System
             
             if (!$expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) === 0) {
                 $protocol = System::serverGetVar('SERVER_PROTOCOL');
-                header("{$protocol} 301 Moved Permanently");
+                header("{$protocol} 404 Not Found");
                 echo __('The requested URL cannot be found');
                 system::shutDown();
             }
@@ -713,7 +714,7 @@ class System
             $frontController = $expectEntrypoint ? "$root/" : '';
 
             // if no arguments present
-            if (!$args[0] && !isset($_GET['lang'])) {
+            if (!$args[0] && !isset($_GET['lang']) && !isset($_GET['theme'])) {
                 // we are in the homepage, checks if language code is forced
                 if (ZLanguage::getLangUrlRule() && $lang) {
                     // and redirect then
@@ -742,7 +743,8 @@ class System
                     foreach ($args as $k => $v) {
                         $args[$k] = urlencode($v);
                     }
-                    System::redirect(self::getBaseUrl().$frontController.$lang.'/'.implode('/', $args));
+                    $langTheme = isset($_GET['theme']) ? "$lang/$_GET[theme]" : $lang;
+                    System::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args));
                     System::shutDown();
                 }
 
