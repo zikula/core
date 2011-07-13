@@ -12,9 +12,9 @@
  */
 
 /**
- * StorageEngineListener
+ * MySqlGenerateSchemaListener
  */
-class SystemPlugin_Doctrine_MySqlStorageEngineListener
+class SystemPlugin_Doctrine_MySqlGenerateSchemaListener
 {
     const postGenerateSchemaTable = 'postGenerateSchema';
     
@@ -27,6 +27,8 @@ class SystemPlugin_Doctrine_MySqlStorageEngineListener
     {
         foreach($event->getSchema()->getTables() as $table) {
             $table->addOption('engine', $GLOBALS['ZConfig']['DBInfo']['databases']['default']['dbtabletype']);
+            $table->addOption('charset', $GLOBALS['ZConfig']['DBInfo']['databases']['default']['charset']);
+            $table->addOption('collate', $GLOBALS['ZConfig']['DBInfo']['databases']['default']['collate']);
         }
     }
 }
