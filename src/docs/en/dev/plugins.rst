@@ -56,7 +56,7 @@ Uses for plugins
 Providing php, js, css or image libraries.
 Extending functionality of the zikula core system wide or of modules individually.
 
-Archetecture
+Architecture
 ------------
 Plugins provide a rather free system.  You only need what you need.  The only
 compulsory aspect is the Plugin.php which is the heart of the plugin.
