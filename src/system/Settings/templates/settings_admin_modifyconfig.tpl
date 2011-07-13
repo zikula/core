@@ -152,7 +152,7 @@
                     <label for="settings_shorturlsstripentrypoint">{gt text="Strip entry point from directory-based URLs"}</label>
                     <div id="settings_shorturlsstripentrypoint">
                         <input id="shorturlsstripentrypoint1" type="radio" name="settings[shorturlsstripentrypoint]" value="1" {if $modvars.ZConfig.shorturlsstripentrypoint eq 1}checked="checked"{/if} />
-                        <label for="shorturlsstripentrypoint1">{gt text="Yes"}</label>
+                        <label for="shorturlsstripentrypoint1">{gt text="Yes (recommended)"}</label>
                         <input id="shorturlsstripentrypoint0" type="radio" name="settings[shorturlsstripentrypoint]" value="0" {if $modvars.ZConfig.shorturlsstripentrypoint eq 0}checked="checked"{/if} />
                         <label for="shorturlsstripentrypoint0">{gt text="No"}</label>
                     </div>
