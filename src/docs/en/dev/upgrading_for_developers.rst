@@ -32,31 +32,9 @@ the table name directly.
 
   - You will need will need to execute manual SQL to rename the columns and tables.  You can generally
     get the code you need from PHPMyAdmin by editing the table structure and then reading the SQL
-    it generates.  Here is a sample (taken from snips in the upgrade.php)
+    it generates.  Here is a sample taken from the Profile module:
 
-        $commands[] = "RENAME TABLE {$prefix}_pagelock TO pagelock";
-        $commands[] = "ALTER TABLE {$prefix}_message CHANGE pn_mid mid INT(11) NOT NULL AUTO_INCREMENT ,
-                       CHANGE pn_title title VARCHAR(100) NOT NULL DEFAULT  '',
-                       CHANGE pn_content content LONGTEXT NOT NULL ,
-                       CHANGE pn_date date INT(11) NOT NULL DEFAULT  '0',
-                       CHANGE pn_expire expire INT(11) NOT NULL DEFAULT  '0',
-                       CHANGE pn_active active INT(11) NOT NULL DEFAULT  '1',
-                       CHANGE pn_view view INT(11) NOT NULL DEFAULT  '1',
-                       CHANGE pn_language language VARCHAR(30) NOT NULL DEFAULT  ''";
-
-        $connection = Doctrine_Core::getCurrentConnection();
-        foreach ($commands as $sql) {
-            $stmt = $connection->prepare($sql);
-            try {
-                $stmt->execute();
-            } catch (Exception $e) {
-                // trap and toss exceptions if you need to.
-            }
-        }
-
-A further example taken from Profile module is:
-
-        $connection = DBConnectionStack::getConnection();
+        $connection = Doctrine_Manager::getInstance()->getConnection('default');
         $sqlStatements = array();
         // N.B. statements generated with PHPMyAdmin
         $sqlStatements[] = 'RENAME TABLE ' . DBUtil::getLimitedTablename('user_property') . " TO user_property";
@@ -67,14 +45,16 @@ A further example taken from Profile module is:
            CHANGE `pn_prop_weight` `weight` INT( 11 ) NOT NULL DEFAULT '0',
            CHANGE `pn_prop_validation` `validation` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
            CHANGE `pn_prop_attribute_name` `attributename` VARCHAR( 80 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL";
+
          foreach ($sqlStatements as $sql) {
          $stmt = $connection->prepare($sql);
              try {
                  $stmt->execute();
              } catch (Exception $e) {
-
+                 // trap and toss exceptions if you need to.
              }   
          }
+
 
 LONGBLOB support
 ----------------

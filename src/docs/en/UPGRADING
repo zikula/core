@@ -67,7 +67,7 @@ Module considerations
   If you use 'menutree', please delete the module files entirely as the functionality
   is now available in the Core as standard.
 
-Make a backup of your files and database once you are ready to make the upgrade.
+  Make a backup of your files and database once you are ready to make the upgrade.
 
 
 Prepare your existing installation
@@ -109,6 +109,16 @@ Prepare your existing installation
     Do not change the following lines.
 
            $ZConfig['System']['temp']
+
+  - As an optional consideration, because of the many changes between 1.2 and 1.3
+    the upgrade process might be easier if you temporarily remove all the modules
+    except Legal and Profile from modules/ before you run the upgrade.php. After 
+    the upgrade you can add the modules back and then upgrade each module as 
+    required from inside the Zikula Administration -> Extensions Manager.
+
+    Please note the Legal and Profile modules must be the new versions, you must
+    definitely delete the old Profile and Legal modules before you copy over the 
+    new versions (same goes for any 1.3 compliant module).
 
 
 Run the upgrade
