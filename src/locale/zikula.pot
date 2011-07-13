@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-04 09:32-0400\n"
+"POT-Creation-Date: 2011-07-13 08:15-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr ""
 #: system/Permissions/lib/Permissions/Controller/Admin.php:690
 #: system/Groups/lib/Groups/Controller/Admin.php:823
 #: system/Theme/lib/Theme/Controller/Admin.php:198
-#: system/Theme/lib/Theme/Controller/Admin.php:1190
+#: system/Theme/lib/Theme/Controller/Admin.php:1191
 #: system/Settings/lib/Settings/Controller/Admin.php:125
 #: system/Search/lib/Search/Controller/Admin.php:121
 #: system/Categories/lib/Categories/Controller/Adminform.php:321
@@ -1558,51 +1558,51 @@ msgstr ""
 msgid "Sorry! No such theme found."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1215
+#: system/Theme/lib/Theme/Controller/Admin.php:1216
 msgid "Done! Deleted theme engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1217
+#: system/Theme/lib/Theme/Controller/Admin.php:1218
 msgid "Error! Failed to clear theme engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1243
+#: system/Theme/lib/Theme/Controller/Admin.php:1244
 msgid "Done! Deleted theme engine cached templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1245
+#: system/Theme/lib/Theme/Controller/Admin.php:1246
 msgid "Error! Failed to clear theme engine cached templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1270
+#: system/Theme/lib/Theme/Controller/Admin.php:1271
 msgid "Done! Deleted CSS/JS combination cached files."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1294
+#: system/Theme/lib/Theme/Controller/Admin.php:1295
 msgid "Done! Deleted theme engine configurations."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1296
+#: system/Theme/lib/Theme/Controller/Admin.php:1297
 msgid "Error! Failed to clear theme engine configurations."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1321
+#: system/Theme/lib/Theme/Controller/Admin.php:1322
 msgid "Done! Deleted rendering engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1323
+#: system/Theme/lib/Theme/Controller/Admin.php:1324
 msgid "Error! Failed to clear rendering engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1348
+#: system/Theme/lib/Theme/Controller/Admin.php:1349
 msgid "Done! Deleted rendering engine cached pages."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1350
+#: system/Theme/lib/Theme/Controller/Admin.php:1351
 msgid "Error! Failed to clear rendering engine cached pages."
 msgstr ""
 
-#: system/Theme/lib/Theme/Controller/Admin.php:1371
+#: system/Theme/lib/Theme/Controller/Admin.php:1372
 msgid "Done! Cleared all cache and compile directories."
 msgstr ""
 
@@ -5472,7 +5472,6 @@ msgstr ""
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:29
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:96
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:145
-#: system/Settings/templates/settings_admin_modifyconfig.tpl:155
 #: system/Users/templates/users_admin_modify.tpl:140
 #: system/Users/templates/users_admin_config.tpl:85
 #: system/Users/templates/users_admin_config.tpl:106
@@ -5990,8 +5989,8 @@ msgid ""
 msgstr ""
 
 #: lib/util/FileUtil.php:31 lib/util/FileUtil.php:57 lib/util/FileUtil.php:74
-#: lib/util/FileUtil.php:100 lib/util/FileUtil.php:296
-#: lib/util/FileUtil.php:381 lib/util/FileUtil.php:504
+#: lib/util/FileUtil.php:100 lib/util/FileUtil.php:297
+#: lib/util/FileUtil.php:382 lib/util/FileUtil.php:505
 #, php-format
 msgid "%1$s: %2$s is empty"
 msgstr ""
@@ -6001,43 +6000,43 @@ msgstr ""
 msgid "Error! Invalid type of object [%s] received."
 msgstr ""
 
-#: lib/util/FileUtil.php:415 lib/util/FileUtil.php:419
+#: lib/util/FileUtil.php:416 lib/util/FileUtil.php:420
 #, php-format
 msgid "%s: called with invalid %s."
 msgstr ""
 
-#: lib/util/FileUtil.php:425
+#: lib/util/FileUtil.php:426
 #, php-format
 msgid "The destination path [%s] does not exist or is not writable"
 msgstr ""
 
-#: lib/util/FileUtil.php:427
+#: lib/util/FileUtil.php:428
 msgid "The destination path does not exist or is not writable"
 msgstr ""
 
-#: lib/util/FileUtil.php:465
+#: lib/util/FileUtil.php:466
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
 msgstr ""
 
-#: lib/util/FileUtil.php:468
+#: lib/util/FileUtil.php:469
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the html form."
 msgstr ""
 
-#: lib/util/FileUtil.php:471
+#: lib/util/FileUtil.php:472
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
 
-#: lib/util/FileUtil.php:474
+#: lib/util/FileUtil.php:475
 msgid "No file was uploaded."
 msgstr ""
 
-#: lib/util/FileUtil.php:477
+#: lib/util/FileUtil.php:478
 msgid "Uploaded file size 0 bytes."
 msgstr ""
 
-#: lib/util/FileUtil.php:499
+#: lib/util/FileUtil.php:500
 #, php-format
 msgid "%1$s: %2$s is not an array"
 msgstr ""
@@ -6932,6 +6931,10 @@ msgstr ""
 msgid "An invalid uid was provided."
 msgstr ""
 
+#: lib/util/System.php:681 lib/util/System.php:693
+msgid "The requested URL cannot be found"
+msgstr ""
+
 #: lib/util/ObjectUtil.php:117 lib/util/ObjectUtil.php:148
 #, php-format
 msgid "%s called on a non-object"
@@ -7545,2165 +7548,2165 @@ msgstr ""
 msgid "$domain cannot be an array."
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:205
+#: lib/i18n/ZLanguage.php:206
 #, php-format
 msgid ""
 "Error! Multi-lingual functionality is not enabled. This page cannot be "
 "displayed in %s language."
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:238
+#: lib/i18n/ZLanguage.php:239
 #, php-format
 msgid "Error! The requested language %s is not available."
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:645
+#: lib/i18n/ZLanguage.php:646
 #, php-format
 msgid "Error! Could not set encoding based on database character set '%s'."
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:807
+#: lib/i18n/ZLanguage.php:808
 msgid "Afar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:808
+#: lib/i18n/ZLanguage.php:809
 msgid "Abkhazian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:809
+#: lib/i18n/ZLanguage.php:810
 msgid "Avestan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:810 lib/i18n/ZLanguage.php:1255
+#: lib/i18n/ZLanguage.php:811 lib/i18n/ZLanguage.php:1256
 msgid "Afrikaans"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:811
+#: lib/i18n/ZLanguage.php:812
 msgid "Akan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:812
+#: lib/i18n/ZLanguage.php:813
 msgid "Amharic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:813
+#: lib/i18n/ZLanguage.php:814
 msgid "Aragonese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:814 lib/i18n/ZLanguage.php:1256
+#: lib/i18n/ZLanguage.php:815 lib/i18n/ZLanguage.php:1257
 msgid "Arabic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:815
+#: lib/i18n/ZLanguage.php:816
 msgid "Assamese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:816
+#: lib/i18n/ZLanguage.php:817
 msgid "Avaric"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:817
+#: lib/i18n/ZLanguage.php:818
 msgid "Aymara"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:818
+#: lib/i18n/ZLanguage.php:819
 msgid "Azerbaijani"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:819
+#: lib/i18n/ZLanguage.php:820
 msgid "Bashkir"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:820 lib/i18n/ZLanguage.php:1274
+#: lib/i18n/ZLanguage.php:821 lib/i18n/ZLanguage.php:1275
 msgid "Belarusian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:821 lib/i18n/ZLanguage.php:1276
+#: lib/i18n/ZLanguage.php:822 lib/i18n/ZLanguage.php:1277
 msgid "Bulgarian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:822
+#: lib/i18n/ZLanguage.php:823
 msgid "Bihari"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:823
+#: lib/i18n/ZLanguage.php:824
 msgid "Bislama"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:824
+#: lib/i18n/ZLanguage.php:825
 msgid "Bambara"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:825
+#: lib/i18n/ZLanguage.php:826
 msgid "Bengali"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:826
+#: lib/i18n/ZLanguage.php:827
 msgid "Tibetan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:827
+#: lib/i18n/ZLanguage.php:828
 msgid "Breton"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:828
+#: lib/i18n/ZLanguage.php:829
 msgid "Bosnian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:829 lib/i18n/ZLanguage.php:1279
+#: lib/i18n/ZLanguage.php:830 lib/i18n/ZLanguage.php:1280
 msgid "Catalan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:830
+#: lib/i18n/ZLanguage.php:831
 msgid "Chechen"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:831
+#: lib/i18n/ZLanguage.php:832
 msgid "Chamorro"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:832
+#: lib/i18n/ZLanguage.php:833
 msgid "Corsican"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:833
+#: lib/i18n/ZLanguage.php:834
 msgid "Cree"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:834 lib/i18n/ZLanguage.php:1281
+#: lib/i18n/ZLanguage.php:835 lib/i18n/ZLanguage.php:1282
 msgid "Czech"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:835
+#: lib/i18n/ZLanguage.php:836
 msgid "Church Slavic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:836
+#: lib/i18n/ZLanguage.php:837
 msgid "Chuvash"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:837
+#: lib/i18n/ZLanguage.php:838
 msgid "Welsh"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:838 lib/i18n/ZLanguage.php:1283
+#: lib/i18n/ZLanguage.php:839 lib/i18n/ZLanguage.php:1284
 msgid "Danish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:839 lib/i18n/ZLanguage.php:1285
+#: lib/i18n/ZLanguage.php:840 lib/i18n/ZLanguage.php:1286
 msgid "German"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:840
+#: lib/i18n/ZLanguage.php:841
 msgid "Divehi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:841
+#: lib/i18n/ZLanguage.php:842
 msgid "Dzongkha"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:842
+#: lib/i18n/ZLanguage.php:843
 msgid "Ewe"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:843 lib/i18n/ZLanguage.php:1290
+#: lib/i18n/ZLanguage.php:844 lib/i18n/ZLanguage.php:1291
 msgid "Greek"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:844 lib/i18n/ZLanguage.php:1293
+#: lib/i18n/ZLanguage.php:845 lib/i18n/ZLanguage.php:1294
 msgid "English"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:845
+#: lib/i18n/ZLanguage.php:846
 msgid "Esperanto"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:846 lib/i18n/ZLanguage.php:1305
+#: lib/i18n/ZLanguage.php:847 lib/i18n/ZLanguage.php:1306
 msgid "Spanish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:847 lib/i18n/ZLanguage.php:1326
+#: lib/i18n/ZLanguage.php:848 lib/i18n/ZLanguage.php:1327
 msgid "Estonian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:848 lib/i18n/ZLanguage.php:1328
+#: lib/i18n/ZLanguage.php:849 lib/i18n/ZLanguage.php:1329
 msgid "Basque"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:849 lib/i18n/ZLanguage.php:1329
+#: lib/i18n/ZLanguage.php:850 lib/i18n/ZLanguage.php:1330
 msgid "Persian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:850
+#: lib/i18n/ZLanguage.php:851
 msgid "Fulah"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:851 lib/i18n/ZLanguage.php:1330
+#: lib/i18n/ZLanguage.php:852 lib/i18n/ZLanguage.php:1331
 msgid "Finnish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:852
+#: lib/i18n/ZLanguage.php:853
 msgid "Fijian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:853
+#: lib/i18n/ZLanguage.php:854
 msgid "Faroese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:854 lib/i18n/ZLanguage.php:1332
+#: lib/i18n/ZLanguage.php:855 lib/i18n/ZLanguage.php:1333
 msgid "French"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:855
+#: lib/i18n/ZLanguage.php:856
 msgid "Frisian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:856 lib/i18n/ZLanguage.php:1339
+#: lib/i18n/ZLanguage.php:857 lib/i18n/ZLanguage.php:1340
 msgid "Irish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:857
+#: lib/i18n/ZLanguage.php:858
 msgid "Scottish Gaelic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:858 lib/i18n/ZLanguage.php:1341
+#: lib/i18n/ZLanguage.php:859 lib/i18n/ZLanguage.php:1342
 msgid "Galician"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:859
+#: lib/i18n/ZLanguage.php:860
 msgid "Guarani"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:860
+#: lib/i18n/ZLanguage.php:861
 msgid "Gujarati"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:861
+#: lib/i18n/ZLanguage.php:862
 msgid "Manx"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:862
+#: lib/i18n/ZLanguage.php:863
 msgid "Hausa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:863
+#: lib/i18n/ZLanguage.php:864
 msgid "Hawaiian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:864 lib/i18n/ZLanguage.php:1356
+#: lib/i18n/ZLanguage.php:865 lib/i18n/ZLanguage.php:1357
 msgid "Hebrew"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:865 lib/i18n/ZLanguage.php:1342
+#: lib/i18n/ZLanguage.php:866 lib/i18n/ZLanguage.php:1343
 msgid "Hindi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:866
+#: lib/i18n/ZLanguage.php:867
 msgid "Hiri Motu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:867 lib/i18n/ZLanguage.php:1344
+#: lib/i18n/ZLanguage.php:868 lib/i18n/ZLanguage.php:1345
 msgid "Croatian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:868
+#: lib/i18n/ZLanguage.php:869
 msgid "Haitian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:869 lib/i18n/ZLanguage.php:1346
+#: lib/i18n/ZLanguage.php:870 lib/i18n/ZLanguage.php:1347
 msgid "Hungarian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:870
+#: lib/i18n/ZLanguage.php:871
 msgid "Armenian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:871
+#: lib/i18n/ZLanguage.php:872
 msgid "Herero"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:872
+#: lib/i18n/ZLanguage.php:873
 msgid "Interlingua"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:873 lib/i18n/ZLanguage.php:1348
-#: lib/i18n/ZLanguage.php:1349
+#: lib/i18n/ZLanguage.php:874 lib/i18n/ZLanguage.php:1349
+#: lib/i18n/ZLanguage.php:1350
 msgid "Indonesian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:874
+#: lib/i18n/ZLanguage.php:875
 msgid "Interlingue"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:875
+#: lib/i18n/ZLanguage.php:876
 msgid "Igbo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:876
+#: lib/i18n/ZLanguage.php:877
 msgid "Sichuan Yi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:877
+#: lib/i18n/ZLanguage.php:878
 msgid "Inupiaq"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:878
+#: lib/i18n/ZLanguage.php:879
 msgid "Ido"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:879 lib/i18n/ZLanguage.php:1351
+#: lib/i18n/ZLanguage.php:880 lib/i18n/ZLanguage.php:1352
 msgid "Icelandic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:880 lib/i18n/ZLanguage.php:1353
+#: lib/i18n/ZLanguage.php:881 lib/i18n/ZLanguage.php:1354
 msgid "Italian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:881
+#: lib/i18n/ZLanguage.php:882
 msgid "Inuktitut"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:882
+#: lib/i18n/ZLanguage.php:883
 msgid "Javanese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:883 lib/i18n/ZLanguage.php:1358
+#: lib/i18n/ZLanguage.php:884 lib/i18n/ZLanguage.php:1359
 msgid "Japanese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:884 lib/i18n/ZLanguage.php:1360
+#: lib/i18n/ZLanguage.php:885 lib/i18n/ZLanguage.php:1361
 msgid "Georgian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:885
+#: lib/i18n/ZLanguage.php:886
 msgid "Kongo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:886
+#: lib/i18n/ZLanguage.php:887
 msgid "Kikuyu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:887
+#: lib/i18n/ZLanguage.php:888
 msgid "Kwanyama"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:888
+#: lib/i18n/ZLanguage.php:889
 msgid "Kazakh"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:889
+#: lib/i18n/ZLanguage.php:890
 msgid "Kalaallisut"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:890
+#: lib/i18n/ZLanguage.php:891
 msgid "Khmer"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:891
+#: lib/i18n/ZLanguage.php:892
 msgid "Kannada"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:892 lib/i18n/ZLanguage.php:1361
+#: lib/i18n/ZLanguage.php:893 lib/i18n/ZLanguage.php:1362
 msgid "Korean"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:893
+#: lib/i18n/ZLanguage.php:894
 msgid "Kanuri"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:894
+#: lib/i18n/ZLanguage.php:895
 msgid "Kashmiri"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:895
+#: lib/i18n/ZLanguage.php:896
 msgid "Kurdish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:896
+#: lib/i18n/ZLanguage.php:897
 msgid "Komi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:897
+#: lib/i18n/ZLanguage.php:898
 msgid "Cornish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:898
+#: lib/i18n/ZLanguage.php:899
 msgid "Kirghiz"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:899
+#: lib/i18n/ZLanguage.php:900
 msgid "Latin"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:900
+#: lib/i18n/ZLanguage.php:901
 msgid "Luxembourgish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:901
+#: lib/i18n/ZLanguage.php:902
 msgid "Ganda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:902
+#: lib/i18n/ZLanguage.php:903
 msgid "Limburgish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:903
+#: lib/i18n/ZLanguage.php:904
 msgid "Lingala"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:904
+#: lib/i18n/ZLanguage.php:905
 msgid "Lao"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:905 lib/i18n/ZLanguage.php:1363
+#: lib/i18n/ZLanguage.php:906 lib/i18n/ZLanguage.php:1364
 msgid "Lithuanian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:906
+#: lib/i18n/ZLanguage.php:907
 msgid "Luba-Katanga"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:907 lib/i18n/ZLanguage.php:1365
+#: lib/i18n/ZLanguage.php:908 lib/i18n/ZLanguage.php:1366
 msgid "Latvian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:908
+#: lib/i18n/ZLanguage.php:909
 msgid "Malagasy"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:909
+#: lib/i18n/ZLanguage.php:910
 msgid "Marshallese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:910
+#: lib/i18n/ZLanguage.php:911
 msgid "Maori"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:911 lib/i18n/ZLanguage.php:1367
+#: lib/i18n/ZLanguage.php:912 lib/i18n/ZLanguage.php:1368
 msgid "Macedonian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:912 lib/i18n/ZLanguage.php:1369
+#: lib/i18n/ZLanguage.php:913 lib/i18n/ZLanguage.php:1370
 msgid "Malayalam"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:913
+#: lib/i18n/ZLanguage.php:914
 msgid "Mongolian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:914
+#: lib/i18n/ZLanguage.php:915
 msgid "Marathi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:915 lib/i18n/ZLanguage.php:1370
+#: lib/i18n/ZLanguage.php:916 lib/i18n/ZLanguage.php:1371
 msgid "Malay"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:916 lib/i18n/ZLanguage.php:1372
+#: lib/i18n/ZLanguage.php:917 lib/i18n/ZLanguage.php:1373
 msgid "Maltese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:917
+#: lib/i18n/ZLanguage.php:918
 msgid "Burmese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:918 lib/i18n/ZLanguage.php:1165
+#: lib/i18n/ZLanguage.php:919 lib/i18n/ZLanguage.php:1166
 msgid "Nauru"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:919
+#: lib/i18n/ZLanguage.php:920
 msgid "Norwegian Bokmal"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:920
+#: lib/i18n/ZLanguage.php:921
 msgid "North Ndebele"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:921 lib/i18n/ZLanguage.php:1375
+#: lib/i18n/ZLanguage.php:922 lib/i18n/ZLanguage.php:1376
 msgid "Nepali"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:922
+#: lib/i18n/ZLanguage.php:923
 msgid "Ndonga"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:923 lib/i18n/ZLanguage.php:1376
+#: lib/i18n/ZLanguage.php:924 lib/i18n/ZLanguage.php:1377
 msgid "Dutch"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:924
+#: lib/i18n/ZLanguage.php:925
 msgid "Norwegian Nynorsk"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:925 lib/i18n/ZLanguage.php:1379
+#: lib/i18n/ZLanguage.php:926 lib/i18n/ZLanguage.php:1380
 msgid "Norwegian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:926
+#: lib/i18n/ZLanguage.php:927
 msgid "South Ndebele"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:927
+#: lib/i18n/ZLanguage.php:928
 msgid "Navajo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:928
+#: lib/i18n/ZLanguage.php:929
 msgid "Chichewa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:929
+#: lib/i18n/ZLanguage.php:930
 msgid "Occitan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:930
+#: lib/i18n/ZLanguage.php:931
 msgid "Ojibwa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:931
+#: lib/i18n/ZLanguage.php:932
 msgid "Oromo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:932
+#: lib/i18n/ZLanguage.php:933
 msgid "Oriya"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:933
+#: lib/i18n/ZLanguage.php:934
 msgid "Ossetian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:934
+#: lib/i18n/ZLanguage.php:935
 msgid "Panjabi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:935
+#: lib/i18n/ZLanguage.php:936
 msgid "Pali"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:936 lib/i18n/ZLanguage.php:1382
+#: lib/i18n/ZLanguage.php:937 lib/i18n/ZLanguage.php:1383
 msgid "Polish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:937
+#: lib/i18n/ZLanguage.php:938
 msgid "Pushto"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:938 lib/i18n/ZLanguage.php:1384
+#: lib/i18n/ZLanguage.php:939 lib/i18n/ZLanguage.php:1385
 msgid "Portuguese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:939
+#: lib/i18n/ZLanguage.php:940
 msgid "Quechua"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:940
+#: lib/i18n/ZLanguage.php:941
 msgid "Raeto-Romance"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:941
+#: lib/i18n/ZLanguage.php:942
 msgid "Rundi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:942 lib/i18n/ZLanguage.php:1387
+#: lib/i18n/ZLanguage.php:943 lib/i18n/ZLanguage.php:1388
 msgid "Romanian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:943 lib/i18n/ZLanguage.php:1389
+#: lib/i18n/ZLanguage.php:944 lib/i18n/ZLanguage.php:1390
 msgid "Russian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:944
+#: lib/i18n/ZLanguage.php:945
 msgid "Kinyarwanda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:945
+#: lib/i18n/ZLanguage.php:946
 msgid "Sanskrit"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:946
+#: lib/i18n/ZLanguage.php:947
 msgid "Sardinian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:947
+#: lib/i18n/ZLanguage.php:948
 msgid "Sindhi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:948
+#: lib/i18n/ZLanguage.php:949
 msgid "Northern Sami"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:949
+#: lib/i18n/ZLanguage.php:950
 msgid "Sango"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:950
+#: lib/i18n/ZLanguage.php:951
 msgid "Sinhalese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:951 lib/i18n/ZLanguage.php:1391
+#: lib/i18n/ZLanguage.php:952 lib/i18n/ZLanguage.php:1392
 msgid "Slovak"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:952 lib/i18n/ZLanguage.php:1393
+#: lib/i18n/ZLanguage.php:953 lib/i18n/ZLanguage.php:1394
 msgid "Slovenian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:953
+#: lib/i18n/ZLanguage.php:954
 msgid "Samoan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:954
+#: lib/i18n/ZLanguage.php:955
 msgid "Shona"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:955
+#: lib/i18n/ZLanguage.php:956
 msgid "Somali"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:956 lib/i18n/ZLanguage.php:1395
+#: lib/i18n/ZLanguage.php:957 lib/i18n/ZLanguage.php:1396
 msgid "Albanian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:957 lib/i18n/ZLanguage.php:1397
+#: lib/i18n/ZLanguage.php:958 lib/i18n/ZLanguage.php:1398
 msgid "Serbian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:958
+#: lib/i18n/ZLanguage.php:959
 msgid "Swati"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:959
+#: lib/i18n/ZLanguage.php:960
 msgid "Southern Sotho"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:960
+#: lib/i18n/ZLanguage.php:961
 msgid "Sundanese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:961 lib/i18n/ZLanguage.php:1403
+#: lib/i18n/ZLanguage.php:962 lib/i18n/ZLanguage.php:1404
 msgid "Swedish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:962
+#: lib/i18n/ZLanguage.php:963
 msgid "Swahili"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:963
+#: lib/i18n/ZLanguage.php:964
 msgid "Tamil"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:964
+#: lib/i18n/ZLanguage.php:965
 msgid "Telugu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:965
+#: lib/i18n/ZLanguage.php:966
 msgid "Tajik"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:966 lib/i18n/ZLanguage.php:1405
+#: lib/i18n/ZLanguage.php:967 lib/i18n/ZLanguage.php:1406
 msgid "Thai"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:967
+#: lib/i18n/ZLanguage.php:968
 msgid "Tigrinya"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:968
+#: lib/i18n/ZLanguage.php:969
 msgid "Turkmen"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:969
+#: lib/i18n/ZLanguage.php:970
 msgid "Tagalog"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:970
+#: lib/i18n/ZLanguage.php:971
 msgid "Tswana"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:971 lib/i18n/ZLanguage.php:1215
+#: lib/i18n/ZLanguage.php:972 lib/i18n/ZLanguage.php:1216
 msgid "Tonga"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:972 lib/i18n/ZLanguage.php:1408
+#: lib/i18n/ZLanguage.php:973 lib/i18n/ZLanguage.php:1409
 msgid "Turkish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:973
+#: lib/i18n/ZLanguage.php:974
 msgid "Tsonga"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:974
+#: lib/i18n/ZLanguage.php:975
 msgid "Tatar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:975
+#: lib/i18n/ZLanguage.php:976
 msgid "Twi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:976
+#: lib/i18n/ZLanguage.php:977
 msgid "Tahitian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:977
+#: lib/i18n/ZLanguage.php:978
 msgid "Uighur"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:978 lib/i18n/ZLanguage.php:1410
+#: lib/i18n/ZLanguage.php:979 lib/i18n/ZLanguage.php:1411
 msgid "Ukrainian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:979
+#: lib/i18n/ZLanguage.php:980
 msgid "Urdu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:980
+#: lib/i18n/ZLanguage.php:981
 msgid "Uzbek"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:981
+#: lib/i18n/ZLanguage.php:982
 msgid "Venda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:982 lib/i18n/ZLanguage.php:1412
+#: lib/i18n/ZLanguage.php:983 lib/i18n/ZLanguage.php:1413
 msgid "Vietnamese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:983
+#: lib/i18n/ZLanguage.php:984
 msgid "Volapuk"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:984
+#: lib/i18n/ZLanguage.php:985
 msgid "Walloon"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:985 lib/i18n/ZLanguage.php:1414
+#: lib/i18n/ZLanguage.php:986 lib/i18n/ZLanguage.php:1415
 msgid "Wolof"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:986
+#: lib/i18n/ZLanguage.php:987
 msgid "Xhosa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:987
+#: lib/i18n/ZLanguage.php:988
 msgid "Yiddish"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:988
+#: lib/i18n/ZLanguage.php:989
 msgid "Yoruba"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:989
+#: lib/i18n/ZLanguage.php:990
 msgid "Zhuang"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:990 lib/i18n/ZLanguage.php:1415
+#: lib/i18n/ZLanguage.php:991 lib/i18n/ZLanguage.php:1416
 msgid "Chinese"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:991
+#: lib/i18n/ZLanguage.php:992
 msgid "Zulu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1002
+#: lib/i18n/ZLanguage.php:1003
 msgid "Andorra"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1003
+#: lib/i18n/ZLanguage.php:1004
 msgid "United Arab Emirates"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1004
+#: lib/i18n/ZLanguage.php:1005
 msgid "Afghanistan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1005
+#: lib/i18n/ZLanguage.php:1006
 msgid "Antigua & Barbuda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1006
+#: lib/i18n/ZLanguage.php:1007
 msgid "Anguilla"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1007
+#: lib/i18n/ZLanguage.php:1008
 msgid "Albania"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1008
+#: lib/i18n/ZLanguage.php:1009
 msgid "Armenia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1009
+#: lib/i18n/ZLanguage.php:1010
 msgid "Netherlands Antilles"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1010
+#: lib/i18n/ZLanguage.php:1011
 msgid "Angola"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1011
+#: lib/i18n/ZLanguage.php:1012
 msgid "Antarctica"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1012
+#: lib/i18n/ZLanguage.php:1013
 msgid "Argentina"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1013
+#: lib/i18n/ZLanguage.php:1014
 msgid "American Samoa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1014
+#: lib/i18n/ZLanguage.php:1015
 msgid "Austria"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1015
+#: lib/i18n/ZLanguage.php:1016
 msgid "Australia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1016
+#: lib/i18n/ZLanguage.php:1017
 msgid "Aruba"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1017
+#: lib/i18n/ZLanguage.php:1018
 msgid "Aland Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1018
+#: lib/i18n/ZLanguage.php:1019
 msgid "Azerbaijan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1019
+#: lib/i18n/ZLanguage.php:1020
 msgid "Bosnia and Herzegovina"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1020
+#: lib/i18n/ZLanguage.php:1021
 msgid "Barbados"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1021
+#: lib/i18n/ZLanguage.php:1022
 msgid "Bangladesh"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1022
+#: lib/i18n/ZLanguage.php:1023
 msgid "Belgium"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1023
+#: lib/i18n/ZLanguage.php:1024
 msgid "Burkina Faso"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1024
+#: lib/i18n/ZLanguage.php:1025
 msgid "Bulgaria"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1025
+#: lib/i18n/ZLanguage.php:1026
 msgid "Bahrain"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1026
+#: lib/i18n/ZLanguage.php:1027
 msgid "Burundi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1027
+#: lib/i18n/ZLanguage.php:1028
 msgid "Benin"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1028
+#: lib/i18n/ZLanguage.php:1029
 msgid "Bermuda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1029
+#: lib/i18n/ZLanguage.php:1030
 msgid "Brunei Darussalam"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1030
+#: lib/i18n/ZLanguage.php:1031
 msgid "Bolivia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1031
+#: lib/i18n/ZLanguage.php:1032
 msgid "Brazil"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1032
+#: lib/i18n/ZLanguage.php:1033
 msgid "Bahama"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1033
+#: lib/i18n/ZLanguage.php:1034
 msgid "Bhutan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1034
+#: lib/i18n/ZLanguage.php:1035
 msgid "Bouvet Island"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1035
+#: lib/i18n/ZLanguage.php:1036
 msgid "Botswana"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1036
+#: lib/i18n/ZLanguage.php:1037
 msgid "Belarus"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1037
+#: lib/i18n/ZLanguage.php:1038
 msgid "Belize"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1038
+#: lib/i18n/ZLanguage.php:1039
 msgid "Canada"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1039
+#: lib/i18n/ZLanguage.php:1040
 msgid "Cocos (Keeling) Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1040
+#: lib/i18n/ZLanguage.php:1041
 msgid "Central African Republic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1041
+#: lib/i18n/ZLanguage.php:1042
 msgid "Congo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1042
+#: lib/i18n/ZLanguage.php:1043
 msgid "Switzerland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1043
+#: lib/i18n/ZLanguage.php:1044
 msgid "Cote d'Ivoire (Ivory Coast)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1044
+#: lib/i18n/ZLanguage.php:1045
 msgid "Cook Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1045
+#: lib/i18n/ZLanguage.php:1046
 msgid "Chile"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1046
+#: lib/i18n/ZLanguage.php:1047
 msgid "Cameroon"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1047
+#: lib/i18n/ZLanguage.php:1048
 msgid "China"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1048
+#: lib/i18n/ZLanguage.php:1049
 msgid "Colombia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1049
+#: lib/i18n/ZLanguage.php:1050
 msgid "Costa Rica"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1050
+#: lib/i18n/ZLanguage.php:1051
 msgid "Cuba"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1051
+#: lib/i18n/ZLanguage.php:1052
 msgid "Cape Verde"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1052
+#: lib/i18n/ZLanguage.php:1053
 msgid "Christmas Island"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1053
+#: lib/i18n/ZLanguage.php:1054
 msgid "Cyprus"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1054
+#: lib/i18n/ZLanguage.php:1055
 msgid "Czech Republic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1055
+#: lib/i18n/ZLanguage.php:1056
 msgid "Germany"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1056
+#: lib/i18n/ZLanguage.php:1057
 msgid "Djibouti"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1057
+#: lib/i18n/ZLanguage.php:1058
 msgid "Denmark"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1058
+#: lib/i18n/ZLanguage.php:1059
 msgid "Dominica"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1059
+#: lib/i18n/ZLanguage.php:1060
 msgid "Dominican Republic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1060
+#: lib/i18n/ZLanguage.php:1061
 msgid "Algeria"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1061
+#: lib/i18n/ZLanguage.php:1062
 msgid "Ecuador"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1062
+#: lib/i18n/ZLanguage.php:1063
 msgid "Estonia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1063
+#: lib/i18n/ZLanguage.php:1064
 msgid "Egypt"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1064
+#: lib/i18n/ZLanguage.php:1065
 msgid "Western Sahara"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1065
+#: lib/i18n/ZLanguage.php:1066
 msgid "Eritrea"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1066
+#: lib/i18n/ZLanguage.php:1067
 msgid "Spain"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1067
+#: lib/i18n/ZLanguage.php:1068
 msgid "Ethiopia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1068
+#: lib/i18n/ZLanguage.php:1069
 msgid "Finland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1069
+#: lib/i18n/ZLanguage.php:1070
 msgid "Fiji"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1070
+#: lib/i18n/ZLanguage.php:1071
 msgid "Falkland Islands (Malvinas)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1071
+#: lib/i18n/ZLanguage.php:1072
 msgid "Micronesia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1072
+#: lib/i18n/ZLanguage.php:1073
 msgid "Faroe Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1073
+#: lib/i18n/ZLanguage.php:1074
 msgid "France"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1074
+#: lib/i18n/ZLanguage.php:1075
 msgid "France, Metropolitan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1075
+#: lib/i18n/ZLanguage.php:1076
 msgid "Gabon"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1076
+#: lib/i18n/ZLanguage.php:1077
 msgid "United Kingdom (Great Britain)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1077
+#: lib/i18n/ZLanguage.php:1078
 msgid "Grenada"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1078
+#: lib/i18n/ZLanguage.php:1079
 msgid "Georgia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1079
+#: lib/i18n/ZLanguage.php:1080
 msgid "French Guiana"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1080
+#: lib/i18n/ZLanguage.php:1081
 msgid "Ghana"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1081
+#: lib/i18n/ZLanguage.php:1082
 msgid "Gibraltar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1082
+#: lib/i18n/ZLanguage.php:1083
 msgid "Greenland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1083
+#: lib/i18n/ZLanguage.php:1084
 msgid "Gambia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1084
+#: lib/i18n/ZLanguage.php:1085
 msgid "Guinea"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1085
+#: lib/i18n/ZLanguage.php:1086
 msgid "Guadeloupe"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1086
+#: lib/i18n/ZLanguage.php:1087
 msgid "Equatorial Guinea"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1087
+#: lib/i18n/ZLanguage.php:1088
 msgid "Greece"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1088
+#: lib/i18n/ZLanguage.php:1089
 msgid "South Georgia and the South Sandwich Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1089
+#: lib/i18n/ZLanguage.php:1090
 msgid "Guatemala"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1090
+#: lib/i18n/ZLanguage.php:1091
 msgid "Guam"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1091
+#: lib/i18n/ZLanguage.php:1092
 msgid "Guinea-Bissau"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1092
+#: lib/i18n/ZLanguage.php:1093
 msgid "Guyana"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1093
+#: lib/i18n/ZLanguage.php:1094
 msgid "Hong Kong"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1094
+#: lib/i18n/ZLanguage.php:1095
 msgid "Heard & McDonald Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1095
+#: lib/i18n/ZLanguage.php:1096
 msgid "Honduras"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1096
+#: lib/i18n/ZLanguage.php:1097
 msgid "Croatia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1097
+#: lib/i18n/ZLanguage.php:1098
 msgid "Haiti"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1098
+#: lib/i18n/ZLanguage.php:1099
 msgid "Hungary"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1099
+#: lib/i18n/ZLanguage.php:1100
 msgid "Indonesia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1100
+#: lib/i18n/ZLanguage.php:1101
 msgid "Ireland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1101
+#: lib/i18n/ZLanguage.php:1102
 msgid "Israel"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1102
+#: lib/i18n/ZLanguage.php:1103
 msgid "Isle of Man"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1103
+#: lib/i18n/ZLanguage.php:1104
 msgid "India"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1104
+#: lib/i18n/ZLanguage.php:1105
 msgid "British Indian Ocean Territory"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1105
+#: lib/i18n/ZLanguage.php:1106
 msgid "Iraq"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1106
+#: lib/i18n/ZLanguage.php:1107
 msgid "Islamic Republic of Iran"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1107
+#: lib/i18n/ZLanguage.php:1108
 msgid "Iceland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1108
+#: lib/i18n/ZLanguage.php:1109
 msgid "Italy"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1109
+#: lib/i18n/ZLanguage.php:1110
 msgid "Jamaica"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1110
+#: lib/i18n/ZLanguage.php:1111
 msgid "Jordan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1111
+#: lib/i18n/ZLanguage.php:1112
 msgid "Japan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1112
+#: lib/i18n/ZLanguage.php:1113
 msgid "Kenya"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1113
+#: lib/i18n/ZLanguage.php:1114
 msgid "Kyrgyzstan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1114
+#: lib/i18n/ZLanguage.php:1115
 msgid "Cambodia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1115
+#: lib/i18n/ZLanguage.php:1116
 msgid "Kiribati"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1116
+#: lib/i18n/ZLanguage.php:1117
 msgid "Comoros"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1117
+#: lib/i18n/ZLanguage.php:1118
 msgid "St. Kitts and Nevis"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1118
+#: lib/i18n/ZLanguage.php:1119
 msgid "Kosovo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1119
+#: lib/i18n/ZLanguage.php:1120
 msgid "Korea, Democratic People's Republic of"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1120
+#: lib/i18n/ZLanguage.php:1121
 msgid "Korea, Republic of"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1121
+#: lib/i18n/ZLanguage.php:1122
 msgid "Kuwait"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1122
+#: lib/i18n/ZLanguage.php:1123
 msgid "Cayman Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1123
+#: lib/i18n/ZLanguage.php:1124
 msgid "Kazakhstan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1124
+#: lib/i18n/ZLanguage.php:1125
 msgid "Lao People's Democratic Republic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1125
+#: lib/i18n/ZLanguage.php:1126
 msgid "Lebanon"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1126
+#: lib/i18n/ZLanguage.php:1127
 msgid "Saint Lucia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1127
+#: lib/i18n/ZLanguage.php:1128
 msgid "Liechtenstein"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1128
+#: lib/i18n/ZLanguage.php:1129
 msgid "Sri Lanka"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1129
+#: lib/i18n/ZLanguage.php:1130
 msgid "Liberia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1130
+#: lib/i18n/ZLanguage.php:1131
 msgid "Lesotho"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1131
+#: lib/i18n/ZLanguage.php:1132
 msgid "Lithuania"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1132
+#: lib/i18n/ZLanguage.php:1133
 msgid "Luxembourg"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1133
+#: lib/i18n/ZLanguage.php:1134
 msgid "Latvia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1134
+#: lib/i18n/ZLanguage.php:1135
 msgid "Libyan Arab Jamahiriya"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1135
+#: lib/i18n/ZLanguage.php:1136
 msgid "Morocco"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1136
+#: lib/i18n/ZLanguage.php:1137
 msgid "Monaco"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1137
+#: lib/i18n/ZLanguage.php:1138
 msgid "Moldova, Republic of"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1138
+#: lib/i18n/ZLanguage.php:1139
 msgid "Madagascar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1139
+#: lib/i18n/ZLanguage.php:1140
 msgid "Marshall Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1140
+#: lib/i18n/ZLanguage.php:1141
 msgid "Macedonia, the form Republic of"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1141
+#: lib/i18n/ZLanguage.php:1142
 msgid "Mali"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1142
+#: lib/i18n/ZLanguage.php:1143
 msgid "Mongolia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1143
+#: lib/i18n/ZLanguage.php:1144
 msgid "Myanmar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1144
+#: lib/i18n/ZLanguage.php:1145
 msgid "Macau"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1145
+#: lib/i18n/ZLanguage.php:1146
 msgid "Northern Mariana Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1146
+#: lib/i18n/ZLanguage.php:1147
 msgid "Martinique"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1147
+#: lib/i18n/ZLanguage.php:1148
 msgid "Mauritania"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1148
+#: lib/i18n/ZLanguage.php:1149
 msgid "Monserrat"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1149
+#: lib/i18n/ZLanguage.php:1150
 msgid "Malta"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1150
+#: lib/i18n/ZLanguage.php:1151
 msgid "Mauritius"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1151
+#: lib/i18n/ZLanguage.php:1152
 msgid "Maldives"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1152
+#: lib/i18n/ZLanguage.php:1153
 msgid "Malawi"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1153
+#: lib/i18n/ZLanguage.php:1154
 msgid "Mexico"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1154
+#: lib/i18n/ZLanguage.php:1155
 msgid "Malaysia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1155
+#: lib/i18n/ZLanguage.php:1156
 msgid "Mozambique"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1156
+#: lib/i18n/ZLanguage.php:1157
 msgid "Namibia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1157
+#: lib/i18n/ZLanguage.php:1158
 msgid "New Caledonia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1158
+#: lib/i18n/ZLanguage.php:1159
 msgid "Niger"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1159
+#: lib/i18n/ZLanguage.php:1160
 msgid "Norfolk Island"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1160
+#: lib/i18n/ZLanguage.php:1161
 msgid "Nigeria"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1161
+#: lib/i18n/ZLanguage.php:1162
 msgid "Nicaragua"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1162
+#: lib/i18n/ZLanguage.php:1163
 msgid "Netherlands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1163
+#: lib/i18n/ZLanguage.php:1164
 msgid "Norway"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1164
+#: lib/i18n/ZLanguage.php:1165
 msgid "Nepal"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1166
+#: lib/i18n/ZLanguage.php:1167
 msgid "Niue"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1167
+#: lib/i18n/ZLanguage.php:1168
 msgid "New Zealand"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1168
+#: lib/i18n/ZLanguage.php:1169
 msgid "Oman"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1169
+#: lib/i18n/ZLanguage.php:1170
 msgid "Panama"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1170
+#: lib/i18n/ZLanguage.php:1171
 msgid "Peru"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1171
+#: lib/i18n/ZLanguage.php:1172
 msgid "French Polynesia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1172
+#: lib/i18n/ZLanguage.php:1173
 msgid "Papua New Guinea"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1173
+#: lib/i18n/ZLanguage.php:1174
 msgid "Philippines"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1174
+#: lib/i18n/ZLanguage.php:1175
 msgid "Pakistan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1175
+#: lib/i18n/ZLanguage.php:1176
 msgid "Poland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1176
+#: lib/i18n/ZLanguage.php:1177
 msgid "St. Pierre & Miquelon"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1177
+#: lib/i18n/ZLanguage.php:1178
 msgid "Pitcairn"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1178
+#: lib/i18n/ZLanguage.php:1179
 msgid "Puerto Rico"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1179
+#: lib/i18n/ZLanguage.php:1180
 msgid "Portugal"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1180
+#: lib/i18n/ZLanguage.php:1181
 msgid "Palau"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1181
+#: lib/i18n/ZLanguage.php:1182
 msgid "Paraguay"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1182
+#: lib/i18n/ZLanguage.php:1183
 msgid "Qatar"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1183
+#: lib/i18n/ZLanguage.php:1184
 msgid "Reunion"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1184
+#: lib/i18n/ZLanguage.php:1185
 msgid "Romania"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1185
+#: lib/i18n/ZLanguage.php:1186
 msgid "Serbia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1186
+#: lib/i18n/ZLanguage.php:1187
 msgid "Russian Federation"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1187
+#: lib/i18n/ZLanguage.php:1188
 msgid "Rwanda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1188
+#: lib/i18n/ZLanguage.php:1189
 msgid "Saudi Arabia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1189
+#: lib/i18n/ZLanguage.php:1190
 msgid "Solomon Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1190
+#: lib/i18n/ZLanguage.php:1191
 msgid "Seychelles"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1191
+#: lib/i18n/ZLanguage.php:1192
 msgid "Sudan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1192
+#: lib/i18n/ZLanguage.php:1193
 msgid "Sweden"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1193
+#: lib/i18n/ZLanguage.php:1194
 msgid "Singapore"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1194
+#: lib/i18n/ZLanguage.php:1195
 msgid "St. Helena"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1195
+#: lib/i18n/ZLanguage.php:1196
 msgid "Slovenia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1196
+#: lib/i18n/ZLanguage.php:1197
 msgid "Svalbard & Jan Mayen Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1197
+#: lib/i18n/ZLanguage.php:1198
 msgid "Slovakia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1198
+#: lib/i18n/ZLanguage.php:1199
 msgid "Sierra Leone"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1199
+#: lib/i18n/ZLanguage.php:1200
 msgid "San Marino"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1200
+#: lib/i18n/ZLanguage.php:1201
 msgid "Senegal"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1201
+#: lib/i18n/ZLanguage.php:1202
 msgid "Somalia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1202
+#: lib/i18n/ZLanguage.php:1203
 msgid "Suriname"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1203
+#: lib/i18n/ZLanguage.php:1204
 msgid "Sao Tome & Principe"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1204
+#: lib/i18n/ZLanguage.php:1205
 msgid "Syrian Arab Republic"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1205
+#: lib/i18n/ZLanguage.php:1206
 msgid "Swaziland"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1206
+#: lib/i18n/ZLanguage.php:1207
 msgid "Turks & Caicos Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1207
+#: lib/i18n/ZLanguage.php:1208
 msgid "Chad"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1208
+#: lib/i18n/ZLanguage.php:1209
 msgid "French Southern Territories"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1209
+#: lib/i18n/ZLanguage.php:1210
 msgid "Togo"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1210
+#: lib/i18n/ZLanguage.php:1211
 msgid "Thailand"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1211
+#: lib/i18n/ZLanguage.php:1212
 msgid "Tajikistan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1212
+#: lib/i18n/ZLanguage.php:1213
 msgid "Tokelau"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1213
+#: lib/i18n/ZLanguage.php:1214
 msgid "Turkmenistan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1214
+#: lib/i18n/ZLanguage.php:1215
 msgid "Tunisia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1216
+#: lib/i18n/ZLanguage.php:1217
 msgid "East Timor"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1217
+#: lib/i18n/ZLanguage.php:1218
 msgid "Turkey"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1218
+#: lib/i18n/ZLanguage.php:1219
 msgid "Trinidad & Tobago"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1219
+#: lib/i18n/ZLanguage.php:1220
 msgid "Tuvalu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1220
+#: lib/i18n/ZLanguage.php:1221
 msgid "Taiwan, Province of China"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1221
+#: lib/i18n/ZLanguage.php:1222
 msgid "Tanzania, United Republic of"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1222
+#: lib/i18n/ZLanguage.php:1223
 msgid "Ukraine"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1223
+#: lib/i18n/ZLanguage.php:1224
 msgid "Uganda"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1224
+#: lib/i18n/ZLanguage.php:1225
 msgid "United States Minor Outlying Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1225
+#: lib/i18n/ZLanguage.php:1226
 msgid "United States of America"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1226
+#: lib/i18n/ZLanguage.php:1227
 msgid "Uruguay"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1227
+#: lib/i18n/ZLanguage.php:1228
 msgid "Uzbekistan"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1228
+#: lib/i18n/ZLanguage.php:1229
 msgid "Vatican City State (Holy See)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1229
+#: lib/i18n/ZLanguage.php:1230
 msgid "St. Vincent & the Grenadines"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1230
+#: lib/i18n/ZLanguage.php:1231
 msgid "Venezuela"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1231
+#: lib/i18n/ZLanguage.php:1232
 msgid "British Virgin Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1232
+#: lib/i18n/ZLanguage.php:1233
 msgid "United States Virgin Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1233
+#: lib/i18n/ZLanguage.php:1234
 msgid "Vietnam"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1234
+#: lib/i18n/ZLanguage.php:1235
 msgid "Vanuatu"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1235
+#: lib/i18n/ZLanguage.php:1236
 msgid "Wallis & Futuna Islands"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1236
+#: lib/i18n/ZLanguage.php:1237
 msgid "Samoa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1237
+#: lib/i18n/ZLanguage.php:1238
 msgid "Yemen"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1238
+#: lib/i18n/ZLanguage.php:1239
 msgid "Mayotte"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1239
+#: lib/i18n/ZLanguage.php:1240
 msgid "South Africa"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1240
+#: lib/i18n/ZLanguage.php:1241
 msgid "Zambia"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1241
+#: lib/i18n/ZLanguage.php:1242
 msgid "Zaire"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1242
+#: lib/i18n/ZLanguage.php:1243
 msgid "Zimbabwe"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1243
+#: lib/i18n/ZLanguage.php:1244
 msgid "Unknown or unspecified country"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1257
+#: lib/i18n/ZLanguage.php:1258
 msgid "Arabic (United Arab Emirates)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1258
+#: lib/i18n/ZLanguage.php:1259
 msgid "Arabic (Bahrain)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1259
+#: lib/i18n/ZLanguage.php:1260
 msgid "Arabic (Algeria)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1260
+#: lib/i18n/ZLanguage.php:1261
 msgid "Arabic (Egypt)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1261
+#: lib/i18n/ZLanguage.php:1262
 msgid "Arabic (Iraq)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1262
+#: lib/i18n/ZLanguage.php:1263
 msgid "Arabic (Jordan)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1263
+#: lib/i18n/ZLanguage.php:1264
 msgid "Arabic (Kuwait)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1264
+#: lib/i18n/ZLanguage.php:1265
 msgid "Arabic (Lebanon)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1265
+#: lib/i18n/ZLanguage.php:1266
 msgid "Arabic (Libya)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1266
+#: lib/i18n/ZLanguage.php:1267
 msgid "Arabic (Morocco)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1267
+#: lib/i18n/ZLanguage.php:1268
 msgid "Arabic (Oman)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1268
+#: lib/i18n/ZLanguage.php:1269
 msgid "Arabic (Qatar)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1269
+#: lib/i18n/ZLanguage.php:1270
 msgid "Arabic (Saudi Arabia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1270
+#: lib/i18n/ZLanguage.php:1271
 msgid "Arabic (Sudan)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1271
+#: lib/i18n/ZLanguage.php:1272
 msgid "Arabic (Syria)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1272
+#: lib/i18n/ZLanguage.php:1273
 msgid "Arabic (Tunisia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1273
+#: lib/i18n/ZLanguage.php:1274
 msgid "Arabic (Yemen)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1275
+#: lib/i18n/ZLanguage.php:1276
 msgid "Belarusian (Belarus)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1277
+#: lib/i18n/ZLanguage.php:1278
 msgid "Bulgarian (Bulgaria)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1278
+#: lib/i18n/ZLanguage.php:1279
 msgid "Bengali (India)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1280
+#: lib/i18n/ZLanguage.php:1281
 msgid "Catalan (Spain)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1282
+#: lib/i18n/ZLanguage.php:1283
 msgid "Czech (Czech Republic)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1284
+#: lib/i18n/ZLanguage.php:1285
 msgid "Danish (Denmark)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1286
+#: lib/i18n/ZLanguage.php:1287
 msgid "German (Austria)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1287
+#: lib/i18n/ZLanguage.php:1288
 msgid "German (Switzerland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1288
+#: lib/i18n/ZLanguage.php:1289
 msgid "German (Germany)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1289 lib/i18n/ZLanguage.php:1374
+#: lib/i18n/ZLanguage.php:1290 lib/i18n/ZLanguage.php:1375
 msgid "German (Luxembourg)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1291
+#: lib/i18n/ZLanguage.php:1292
 msgid "Greek (Cyprus)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1292
+#: lib/i18n/ZLanguage.php:1293
 msgid "Greek (Greece)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1294
+#: lib/i18n/ZLanguage.php:1295
 msgid "English (Australia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1295
+#: lib/i18n/ZLanguage.php:1296
 msgid "English (Canada)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1296
+#: lib/i18n/ZLanguage.php:1297
 msgid "English (United Kingdom)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1297
+#: lib/i18n/ZLanguage.php:1298
 msgid "English (Ireland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1298
+#: lib/i18n/ZLanguage.php:1299
 msgid "English (India)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1299
+#: lib/i18n/ZLanguage.php:1300
 msgid "English (Malta)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1300
+#: lib/i18n/ZLanguage.php:1301
 msgid "English (New Zealand)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1301
+#: lib/i18n/ZLanguage.php:1302
 msgid "English (Philippines)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1302
+#: lib/i18n/ZLanguage.php:1303
 msgid "English (Singapore)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1303
+#: lib/i18n/ZLanguage.php:1304
 msgid "English (United States)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1304
+#: lib/i18n/ZLanguage.php:1305
 msgid "English (South Africa)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1306
+#: lib/i18n/ZLanguage.php:1307
 msgid "Spanish (Argentina)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1307
+#: lib/i18n/ZLanguage.php:1308
 msgid "Spanish (Bolivia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1308
+#: lib/i18n/ZLanguage.php:1309
 msgid "Spanish (Chile)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1309
+#: lib/i18n/ZLanguage.php:1310
 msgid "Spanish (Colombia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1310
+#: lib/i18n/ZLanguage.php:1311
 msgid "Spanish (Costa Rica)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1311
+#: lib/i18n/ZLanguage.php:1312
 msgid "Spanish (Dominican Republic)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1312
+#: lib/i18n/ZLanguage.php:1313
 msgid "Spanish (Ecuador)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1313
+#: lib/i18n/ZLanguage.php:1314
 msgid "Spanish (Spain)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1314
+#: lib/i18n/ZLanguage.php:1315
 msgid "Spanish (Guatemala)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1315
+#: lib/i18n/ZLanguage.php:1316
 msgid "Spanish (Honduras)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1316
+#: lib/i18n/ZLanguage.php:1317
 msgid "Spanish (Mexico)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1317
+#: lib/i18n/ZLanguage.php:1318
 msgid "Spanish (Nicaragua)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1318
+#: lib/i18n/ZLanguage.php:1319
 msgid "Spanish (Panama)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1319
+#: lib/i18n/ZLanguage.php:1320
 msgid "Spanish (Peru)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1320
+#: lib/i18n/ZLanguage.php:1321
 msgid "Spanish (Puerto Rico)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1321
+#: lib/i18n/ZLanguage.php:1322
 msgid "Spanish (Paraguay)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1322
+#: lib/i18n/ZLanguage.php:1323
 msgid "Spanish (El Salvador)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1323
+#: lib/i18n/ZLanguage.php:1324
 msgid "Spanish (United States)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1324
+#: lib/i18n/ZLanguage.php:1325
 msgid "Spanish (Uruguay)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1325
+#: lib/i18n/ZLanguage.php:1326
 msgid "Spanish (Venezuela)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1327
+#: lib/i18n/ZLanguage.php:1328
 msgid "Estonian (Estonia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1331
+#: lib/i18n/ZLanguage.php:1332
 msgid "Finnish (Finland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1333
+#: lib/i18n/ZLanguage.php:1334
 msgid "French (Belgium)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1334
+#: lib/i18n/ZLanguage.php:1335
 msgid "French (Canada)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1335
+#: lib/i18n/ZLanguage.php:1336
 msgid "French (Switzerland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1336
+#: lib/i18n/ZLanguage.php:1337
 msgid "French (France)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1337
+#: lib/i18n/ZLanguage.php:1338
 msgid "French (Luxembourg)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1338
+#: lib/i18n/ZLanguage.php:1339
 msgid "Friulian"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1340
+#: lib/i18n/ZLanguage.php:1341
 msgid "Irish (Ireland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1343
+#: lib/i18n/ZLanguage.php:1344
 msgid "Hindi (India)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1345
+#: lib/i18n/ZLanguage.php:1346
 msgid "Croatian (Croatia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1347
+#: lib/i18n/ZLanguage.php:1348
 msgid "Hungarian (Hungary)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1350
+#: lib/i18n/ZLanguage.php:1351
 msgid "Indonesian (Indonesia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1352
+#: lib/i18n/ZLanguage.php:1353
 msgid "Icelandic (Iceland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1354
+#: lib/i18n/ZLanguage.php:1355
 msgid "Italian (Switzerland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1355
+#: lib/i18n/ZLanguage.php:1356
 msgid "Italian (Italy)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1357
+#: lib/i18n/ZLanguage.php:1358
 msgid "Hebrew (Israel)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1359
+#: lib/i18n/ZLanguage.php:1360
 msgid "Japanese (Japan)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1362
+#: lib/i18n/ZLanguage.php:1363
 msgid "Korean (South Korea)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1364
+#: lib/i18n/ZLanguage.php:1365
 msgid "Lithuanian (Lithuania)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1366
+#: lib/i18n/ZLanguage.php:1367
 msgid "Latvian (Latvia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1368
+#: lib/i18n/ZLanguage.php:1369
 msgid "Macedonian (Macedonia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1371
+#: lib/i18n/ZLanguage.php:1372
 msgid "Malay (Malaysia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1373
+#: lib/i18n/ZLanguage.php:1374
 msgid "Maltese (Malta)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1377
+#: lib/i18n/ZLanguage.php:1378
 msgid "Dutch (Belgium)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1378
+#: lib/i18n/ZLanguage.php:1379
 msgid "Dutch (Netherlands)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1380
+#: lib/i18n/ZLanguage.php:1381
 msgid "Norwegian (Norway)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1381
+#: lib/i18n/ZLanguage.php:1382
 msgid "Norwegian (Norway, Nynorsk)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1383
+#: lib/i18n/ZLanguage.php:1384
 msgid "Polish (Poland)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1385
+#: lib/i18n/ZLanguage.php:1386
 msgid "Portuguese (Brazil)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1386
+#: lib/i18n/ZLanguage.php:1387
 msgid "Portuguese (Portugal)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1388
+#: lib/i18n/ZLanguage.php:1389
 msgid "Romanian (Romania)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1390
+#: lib/i18n/ZLanguage.php:1391
 msgid "Russian (Russia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1392
+#: lib/i18n/ZLanguage.php:1393
 msgid "Slovak (Slovakia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1394
+#: lib/i18n/ZLanguage.php:1395
 msgid "Slovenian (Slovenia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1396
+#: lib/i18n/ZLanguage.php:1397
 msgid "Albanian (Albania)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1398
+#: lib/i18n/ZLanguage.php:1399
 msgid "Serbian (Bosnia and Herzegovina)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1399
+#: lib/i18n/ZLanguage.php:1400
 msgid "Serbian (Serbia and Montenegro)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1400
+#: lib/i18n/ZLanguage.php:1401
 msgid "Serbian (Montenegro)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1401
+#: lib/i18n/ZLanguage.php:1402
 msgid "Serbian (Serbia)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1402
+#: lib/i18n/ZLanguage.php:1403
 msgid "Sotho, Southern"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1404
+#: lib/i18n/ZLanguage.php:1405
 msgid "Swedish (Sweden)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1406
+#: lib/i18n/ZLanguage.php:1407
 msgid "Thai (Thailand)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1407
+#: lib/i18n/ZLanguage.php:1408
 msgid "Thai (Thailand, TH)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1409
+#: lib/i18n/ZLanguage.php:1410
 msgid "Turkish (Turkey)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1411
+#: lib/i18n/ZLanguage.php:1412
 msgid "Ukrainian (Ukraine)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1413
+#: lib/i18n/ZLanguage.php:1414
 msgid "Vietnamese (Vietnam)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1416
+#: lib/i18n/ZLanguage.php:1417
 msgid "Chinese (China)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1417
+#: lib/i18n/ZLanguage.php:1418
 msgid "Chinese (Hong Kong)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1418
+#: lib/i18n/ZLanguage.php:1419
 msgid "Chinese (Singapore)"
 msgstr ""
 
-#: lib/i18n/ZLanguage.php:1419
+#: lib/i18n/ZLanguage.php:1420
 msgid "Chinese (Taiwan)"
 msgstr ""
 
@@ -10274,7 +10277,7 @@ msgstr ""
 msgid ""
 "You are seeing this message because Zikula is not yet installed.  You can "
 "install Zikula by clicking on the install button, but before doing so please "
-"read the <a href=\"docs/en/README\">installation instructions</a>. Further "
+"read the <a href=\"docs/en/INSTALL\">installation instructions</a>. Further "
 "information can be found in the <a href=\"http://community.zikula.org/Wiki-"
 "UserDocs.htm\">online documentation</a>."
 msgstr ""
@@ -12689,6 +12692,11 @@ msgstr ""
 msgid "Strip entry point from directory-based URLs"
 msgstr ""
 
+#: system/Settings/templates/settings_admin_modifyconfig.tpl:155
+#: system/Users/templates/users_admin_newuser.tpl:156
+msgid "Yes (recommended)"
+msgstr ""
+
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:161
 msgid "Separator for permalink titles"
 msgstr ""
@@ -14403,10 +14411,6 @@ msgstr ""
 
 #: system/Users/templates/users_admin_newuser.tpl:153
 msgid "Verify user's e-mail address?"
-msgstr ""
-
-#: system/Users/templates/users_admin_newuser.tpl:156
-msgid "Yes (recommended)"
 msgstr ""
 
 #: system/Users/templates/users_admin_newuser.tpl:160
