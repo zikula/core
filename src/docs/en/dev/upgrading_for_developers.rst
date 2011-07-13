@@ -44,7 +44,7 @@ the table name directly.
                        CHANGE pn_view view INT(11) NOT NULL DEFAULT  '1',
                        CHANGE pn_language language VARCHAR(30) NOT NULL DEFAULT  ''";
 
-        $connection = Doctrine_Manager::getCurrentConnection();
+        $connection = Doctrine_Core::getCurrentConnection();
         foreach ($commands as $sql) {
             $stmt = $connection->prepare($sql);
             try {
@@ -56,7 +56,7 @@ the table name directly.
 
 A further example taken from Profile module is:
 
-        $connection = Doctrine_Manager::getCurrentConnection();
+        $connection = DBConnectionStack::getConnection();
         $sqlStatements = array();
         // N.B. statements generated with PHPMyAdmin
         $sqlStatements[] = 'RENAME TABLE ' . DBUtil::getLimitedTablename('user_property') . " TO user_property";
@@ -75,7 +75,6 @@ A further example taken from Profile module is:
 
              }   
          }
-
 
 LONGBLOB support
 ----------------
