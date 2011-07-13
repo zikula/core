@@ -51,7 +51,12 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
 
         $serviceManager = $this->eventManager->getServiceManager();
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
-        $dbConfig = array('host' => $config['host'], 'user' => $config['user'], 'password' => $config['password'], 'dbname' => $config['dbname'], 'driver' => 'pdo_' . $config['dbdriver']);
+        $dbConfig = array('host' => $config['host'], 
+                          'user' => $config['user'], 
+                          'password' => $config['password'], 
+                          'dbname' => $config['dbname'], 
+                          'driver' => 'pdo_' . $config['dbdriver'],
+                          );
         $r = new \ReflectionClass('Doctrine\Common\Cache\\' . $serviceManager['dbcache.type'] . 'Cache');
         $dbCache = $r->newInstance();
         $ORMConfig = new \Doctrine\ORM\Configuration;
@@ -89,13 +94,16 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $eventManager = new \Doctrine\Common\EventManager;
         $serviceManager->attachService('doctrine.eventmanager', $eventManager);
         
+         // setup MySQL specific listener (storage engine and encoding)
+        if ($config['dbdriver'] == 'mysql') {
+            $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
+            $eventManager->addEventSubscriber($mysqlSessionInit);
+            
+            $mysqlStorageEvent = new SystemPlugin_Doctrine_MySqlGenerateSchemaListener($eventManager);
+        }
+        
         // setup the doctrine entitymanager
         $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
         $serviceManager->attachService('doctrine.entitymanager', $entityManager);
-        
-        // setup MySQL Storage engine listener
-        if ($config['dbdriver'] == 'mysql') {
-            $mysqlStorageEvent = new SystemPlugin_Doctrine_MySqlStorageEngineListener($eventManager);
-        }
     }
 }
