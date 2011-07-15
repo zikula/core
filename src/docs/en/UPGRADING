@@ -150,7 +150,7 @@ You need to recreate all the menu blocks links too, because the standard changed
 
 to
 
-    {module:TYPE:function&param1=value1&param2=value2}
+    {module:TYPE:function:param1=value1&param2=value2}
 
 Please note that once you have successfully upgraded, you should follow the steps
 in UPGRADING_THEME to refactor your theme to the new standards.  There are only
