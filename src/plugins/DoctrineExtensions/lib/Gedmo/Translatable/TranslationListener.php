@@ -210,6 +210,16 @@ class TranslationListener extends MappedEventSubscriber
     }
 
     /**
+     * Gets the default locale
+     *
+     * @return string
+     */
+    public function getDefaultLocale()
+    {
+        return $this->defaultLocale;
+    }
+
+    /**
      * Get currently set global locale, used
      * extensively during query execution
      *
@@ -492,7 +502,7 @@ class TranslationListener extends MappedEventSubscriber
                 foreach ($modifiedChangeSet as $field => $changes) {
                     $ea->setOriginalObjectProperty($uow, $oid, $field, $changes[0]);
                 }
-                $uow->computeChangeSet($meta, $object);
+                $ea->recomputeSingleObjectChangeset($uow, $meta, $object);
             }
         }
     }
