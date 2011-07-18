@@ -60,7 +60,7 @@
             <th><a class="{if $sort eq 'ip'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="ip"}">{gt text="IP"}</a></th>
             <th><a class="{if $sort eq 'impact'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="impact"}">{gt text="Impact"}</a></th>
             <th>{gt text="PHPIDS filters used"}</th>
-            <th><a class="{if empty($sort) || $sort eq 'date DESC'}z-order-desc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="date DESC"}">{gt text="Date"}</a></th>
+            <th><a class="{if empty($sort) || $sort eq 'date DESC'}z-order-desc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="date+DESC"}">{gt text="Date"}</a></th>
             <th class="z-right">{gt text="Actions"}</th>
         </tr>
     </thead>
