@@ -1,13 +1,13 @@
 /* CSS navtabs technique from http://www.simplebits.com/bits/css_tabs.html */
-.minitabs-container {
+.admintabs-container {
     width: 100%;
     padding: 0px;
     margin-top: 1em;
     border: 0px solid #ccc;
 }
 
-ul#minitabs,
-ul.minitabs {
+ul#admintabs,
+ul.admintabs {
     width: 100%;
     height: 20px;
     margin: 0 !important;
@@ -15,18 +15,18 @@ ul.minitabs {
     background: url(../images/tab_bottom.gif) repeat-x bottom;
 }
 
-ul#minitabs li,
-ul.minitabs li {
+ul#admintabs li,
+ul.admintabs li {
     margin: 0;
     padding: 0;
     display: inline;
     list-style-type: none;
 }
 
-ul#minitabs a:link,
-ul#minitabs a:visited,
-ul.minitabs a:link,
-ul.minitabs a:visited {
+ul#admintabs a:link,
+ul#admintabs a:visited,
+ul.admintabs a:link,
+ul.admintabs a:visited {
     float: left;
     background: #f3f3f3;
     font-size: 10px;
@@ -39,16 +39,16 @@ ul.minitabs a:visited {
     color: #666;
 }
 
-ul#minitabs a:link.active,
-ul#minitabs a:visited.active,
-ul.minitabs a:link.active,
-ul.minitabs a:visited.active {
+ul#admintabs a:link.active,
+ul#admintabs a:visited.active,
+ul.admintabs a:link.active,
+ul.admintabs a:visited.active {
     border-bottom: 1px solid #fff;
     background: #fff;
     color: #000;
 }
 
-ul#minitabs a:hover,
-ul.minitabs a:hover {
+ul#admintabs a:hover,
+ul.admintabs a:hover {
     background: #fff;
 }
