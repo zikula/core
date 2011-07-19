@@ -713,6 +713,34 @@ class ObjectUtil
     }
 
     /**
+     * Delete all instances of the specified attribute for the given object type.
+     * 
+     * This can be used to remove an attribute from the object attributes table when it is no longer defined by the object type.
+     *
+     * @param string $type          The type/tablename that defines the given attribute.
+     * @param string $attributeName The name of the attribute to delete for all users.
+     *
+     * @return the SQL result of the delete operation
+     */
+    public static function deleteObjectTypeAttribute($type, $attributeName)
+    {
+        $dbtables = DBUtil::getTables();
+        $table = $dbtables['objectdata_attributes'];
+        $column = $dbtables['objectdata_attributes_column'];
+
+        $sql = "DELETE FROM $table WHERE $column[object_type] = '" . DataUtil::formatForStore($type) . "' ";
+        $sql .= "AND $column[attribute_name] = '" . DataUtil::formatForStore($attributeName) . "' ";
+        $res = DBUtil::executeSQL($sql);
+
+        DBUtil::flushCache('objectdata_attributes');
+        if (isset($dbtables[$type])) {
+            DBUtil::flushCache($type);
+        }
+
+        return $res;
+    }
+
+    /**
      * Retrieve a list of attributes defined in the system.
      *
      * @param string $sort The column to sort by (optional) (default='attribute_name').
