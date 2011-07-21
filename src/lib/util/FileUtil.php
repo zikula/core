@@ -231,7 +231,9 @@ class FileUtil
         }
 
         closedir($dh);
-        sort($files);
+        if (!$nestedData) {
+            sort($files);
+        }
         return $files;
     }
 
