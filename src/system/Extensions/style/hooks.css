@@ -30,13 +30,8 @@
 
 #hooks_provider_areas .parea_wrapper,
 #hooks_subscriber .sareas_category .sarea_wrapper {
-    border: 1px solid #ccc;
-    border-bottom: none;
-}
-
-#hooks_provider_areas .parea_wrapper:last-child,
-#hooks_subscriber .sareas_category .sarea_wrapper:last-child {
-    border-bottom: 1px solid #ccc;
+    border: 1px solid #CCCCCC;
+    margin-top: -1px;
 }
 
 #hooks_subscriber .sarea_wrapper h4 {
@@ -124,13 +119,9 @@
 }
 
 #hooks_subscriber .pareas_category ol.z-itemlist li {
-    border: 1px solid #ddd;
-    border-bottom: none;
+    border: 1px solid #DDDDDD;
     line-height: 1.4em;
-}
-
-#hooks_subscriber .pareas_category ol.z-itemlist li:last-child {
-    border-bottom: 1px solid #ddd;
+    margin-top: -1px !important;
 }
 
 /* PROVISION */

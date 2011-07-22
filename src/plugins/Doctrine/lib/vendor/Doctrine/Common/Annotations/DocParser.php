@@ -95,9 +95,10 @@ final class DocParser
     private $context = '';
 
     /**
-     * @var boolean
+     * Hash-map for caching annotation classes to avoid reparsing their doc-blocks
+     * @var array
      */
-    private $autoloadAnnotations = true;
+    private $isAnnotation = array();
 
     /**
      * Constructs a new DocParser.
@@ -118,30 +119,6 @@ final class DocParser
     public function setIgnoredAnnotationNames(array $names)
     {
         $this->ignoredAnnotationNames = $names;
-    }
-
-    /**
-     * Sets a flag whether to auto-load annotation classes or not.
-     *
-     * NOTE: It is recommend to turn auto-loading on if your auto-loader supports
-     *       silent failing.
-     *
-     * @param boolean $bool Boolean flag.
-     */
-    public function setAutoloadAnnotations($bool)
-    {
-        $this->autoloadAnnotations = $bool;
-    }
-
-    /**
-     * Gets a flag whether to try to autoload annotation classes.
-     *
-     * @see setAutoloadAnnotations
-     * @return boolean
-     */
-    public function isAutoloadAnnotations()
-    {
-        return $this->autoloadAnnotations;
     }
 
     public function setImports(array $imports)
@@ -244,8 +221,8 @@ final class DocParser
     }
 
     /**
-     * This will prevent going through the auto-loader on each occurence of the
-     * annotation.
+     * Attempt to check if a class exists or not. This never goes through the PHP autoloading mechanism
+     * but uses the {@link AnnotationRegistry} to load classes.
      *
      * @param string $fqcn
      * @return boolean
@@ -256,8 +233,15 @@ final class DocParser
             return $this->classExists[$fqcn];
         }
 
-        return $this->classExists[$fqcn] = class_exists($fqcn, $this->autoloadAnnotations);
+        // first check if the class already exists, maybe loaded through another AnnotationReader
+        if (class_exists($fqcn, false)) {
+            return $this->classExists[$fqcn] = true;
+        }
+
+        // final check, does this class exist?
+        return $this->classExists[$fqcn] = AnnotationRegistry::loadAnnotationClass($fqcn);
     }
+
 
     /**
      * Annotations ::= Annotation {[ "*" ]* [Annotation]}*
@@ -328,6 +312,7 @@ final class DocParser
         }
 
         // only process names which are not fully qualified, yet
+        $originalName = $name;
         if ('\\' !== $name[0] && !$this->classExists($name)) {
             $alias = (false === $pos = strpos($name, '\\'))? $name : substr($name, 0, $pos);
 
@@ -355,6 +340,20 @@ final class DocParser
         // at this point, $name contains the fully qualified class name of the
         // annotation, and it is also guaranteed that this class exists, and
         // that it is loaded
+
+        // verify that the class is really meant to be an annotation and not just any ordinary class
+        if (!isset($this->isAnnotation[$name])) {
+            $ref = new \ReflectionClass($name);
+
+            if (false === strpos($ref->getDocComment(), '@Annotation')) {
+                if (isset($this->ignoredAnnotationNames[$originalName])) {
+                    return false;
+                }
+
+                throw AnnotationException::semanticalError(sprintf('The class "%s" is not annotated with @Annotation. Are you sure this class can be used as annotation? If so, then you need to add @Annotation to the _class_ doc comment of "%s". If it is indeed no annotation, then you need to add @IgnoreAnnotation("%s") to the _class_ doc comment of %s.', $name, $name, $originalName, $this->context));
+            }
+            $this->isAnnotation[$name] = true;
+        }
 
         // Next will be nested
         $this->isNestedAnnotation = true;
@@ -503,7 +502,7 @@ final class DocParser
     }
 
     /**
-     * Array ::= "{" ArrayEntry {"," ArrayEntry}* "}"
+     * Array ::= "{" ArrayEntry {"," ArrayEntry}* [","] "}"
      *
      * @return array
      */
@@ -516,6 +515,12 @@ final class DocParser
 
         while ($this->lexer->isNextToken(DocLexer::T_COMMA)) {
             $this->match(DocLexer::T_COMMA);
+
+            // optional trailing comma
+            if ($this->lexer->isNextToken(DocLexer::T_CLOSE_CURLY_BRACES)) {
+                break;
+            }
+
             $values[] = $this->ArrayEntry();
         }
 

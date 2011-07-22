@@ -201,10 +201,6 @@ class DoctrineListener extends Zikula_AbstractEventHandler
             // Database names
             // $object->setAttribute(Doctrine_Core::ATTR_DBNAME_FORMAT, 'myframework_%s');
 
-            // Table name prefixes
-            $tablePrefix = System::getVar('prefix');
-            $object->setAttribute(Doctrine_Core::ATTR_TBLNAME_FORMAT, "{$tablePrefix}_%s");
-
             // Allow overriding of accessors
             $object->setAttribute(Doctrine_Core::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
 

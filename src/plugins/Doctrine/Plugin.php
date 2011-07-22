@@ -12,7 +12,7 @@
  */
 
 /**
- * SwiftMailer plugin definition.
+ * Doctrine plugin definition.
  */
 class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
 {
@@ -25,7 +25,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
     {
         return array('displayname' => $this->__('Doctrine'),
                      'description' => $this->__('Provides Doctrine ORM, DBAL and Common 3.0.x layers of Doctrine'),
-                     'version'     => '2.1.0-master'
+                     'version'     => '2.1.0'
                       );
     }
 
@@ -51,20 +51,58 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
 
         $serviceManager = $this->eventManager->getServiceManager();
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
-        $dbConfig = array('host' => $config['host'], 'user' => $config['user'], 'password' => $config['password'], 'dbname' => $config['dbname'], 'driver' => 'pdo_' . $config['dbdriver']);
-        $r = new ReflectionClass('Doctrine\Common\Cache\\' . $serviceManager['dbcache.type'] . 'Cache');
+        $dbConfig = array('host' => $config['host'], 
+                          'user' => $config['user'], 
+                          'password' => $config['password'], 
+                          'dbname' => $config['dbname'], 
+                          'driver' => 'pdo_' . $config['dbdriver'],
+                          );
+        $r = new \ReflectionClass('Doctrine\Common\Cache\\' . $serviceManager['dbcache.type'] . 'Cache');
         $dbCache = $r->newInstance();
         $ORMConfig = new \Doctrine\ORM\Configuration;
+        $serviceManager->attachService('doctrine.configuration', $ORMConfig);
         $ORMConfig->setMetadataCacheImpl($dbCache);
-        $driverImpl = $ORMConfig->newDefaultAnnotationDriver();
-        $ORMConfig->setMetadataDriverImpl($driverImpl);
+
+        // setup annotations base
+        include_once 'lib/vendor/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
+
+        // setup annotation reader
+        $reader = new \Doctrine\Common\Annotations\AnnotationReader();
+        $cacheReader = new \Doctrine\Common\Annotations\CachedReader($reader, new \Doctrine\Common\Cache\ArrayCache());
+        $serviceManager->attachService('doctrine.annotationreader', $cacheReader);
+        
+        // setup annotation driver
+        $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($cacheReader);
+        $serviceManager->attachService('doctrine.annotationdriver', $annotationDriver);
+        
+        // setup driver chains
+        $driverChain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
+        $serviceManager->attachService('doctrine.driverchain', $driverChain);
+        
+        // configure Doctrine ORM
+        $ORMConfig->setMetadataDriverImpl($annotationDriver);
         $ORMConfig->setQueryCacheImpl($dbCache);
         $ORMConfig->setProxyDir('ztemp/doctrinemodels');
         $ORMConfig->setProxyNamespace('DoctrineProxy');
         //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
+        
+        if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
+            $ORMConfig->setSQLLogger(new SystemPlugin_Doctrine_ZikulaSqlLogger());
+        }
 
+        // setup doctrine eventmanager
         $eventManager = new \Doctrine\Common\EventManager;
         $serviceManager->attachService('doctrine.eventmanager', $eventManager);
+        
+         // setup MySQL specific listener (storage engine and encoding)
+        if ($config['dbdriver'] == 'mysql') {
+            $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
+            $eventManager->addEventSubscriber($mysqlSessionInit);
+            
+            $mysqlStorageEvent = new SystemPlugin_Doctrine_MySqlGenerateSchemaListener($eventManager);
+        }
+        
+        // setup the doctrine entitymanager
         $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
         $serviceManager->attachService('doctrine.entitymanager', $entityManager);
     }

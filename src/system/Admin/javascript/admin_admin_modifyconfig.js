@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-Event.observe(window, 'load', admin_modifyconfig_init);
+document.observe('dom:loaded', admin_modifyconfig_init);
 
 function admin_modifyconfig_init()
 {

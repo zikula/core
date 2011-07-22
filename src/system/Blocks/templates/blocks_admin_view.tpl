@@ -28,7 +28,7 @@
         <legend>{$lblFilter}</legend>
         <span class="z-nowrap">
             <label for="filter_blockposition_id_">{gt text="Block Position"}</label>
-            {selector_field_array name="filter[blockposition_id]" modname="Blocks" table="block_positions" field="name" assocKey="pid" sort="z_name" allText=$lblAll allValue=0 selectedValue=$filter.blockposition_id|default:0}
+            {selector_field_array name="filter[blockposition_id]" modname="Blocks" table="block_positions" field="name" assocKey="pid" sort="name" allText=$lblAll allValue=0 selectedValue=$filter.blockposition_id|default:0}
         </span>
         <span class="z-nowrap">
             <label for="filter_modid_">{gt text="Module"}</label>
@@ -133,7 +133,7 @@
         <tr class="{cycle values="z-odd,z-even" name=blockpositions}">
             <td>{$position.name|safehtml}</td>
             <td>{$position.description|truncate:25|safehtml}</td>
-            <td><pre style="margin:0;padding:0;">&#123blockposition name={$position.name|safehtml}&#125</pre></td>
+            <td><pre style="margin:0;padding:0;">&#123;blockposition name={$position.name|safehtml}&#125;</pre></td>
             <td class="z-right">
                 {foreach item=option from=$position.options}
                 <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title class='tooltips'}</a>

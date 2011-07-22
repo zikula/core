@@ -4,7 +4,7 @@
  * create the onload function to enable the drag&drop for sequencing
  *
  */
-Event.observe(window, 'load', function() 
+document.observe('dom:loaded', function() 
     {
         // show link to extended hook settings 
         $('extendedhookslinks').removeClassName('z-hide');

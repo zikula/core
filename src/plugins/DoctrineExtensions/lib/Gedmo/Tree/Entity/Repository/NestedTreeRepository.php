@@ -87,6 +87,7 @@ class NestedTreeRepository extends AbstractTreeRepository
                 $wrapped->setPropertyValue($config['parent'], $parent);
                 $position = substr($position, 0, -2);
             }
+            $wrapped->setPropertyValue($config['left'], 0); // simulate changeset
             $oid = spl_object_hash($node);
             $this->listener
                 ->getStrategy($this->_em, $meta->name)
@@ -354,17 +355,21 @@ class NestedTreeRepository extends AbstractTreeRepository
 
         $config = $this->listener->getConfiguration($this->_em, $meta->name);
         $parent = $wrapped->getPropertyValue($config['parent']);
-        if (!$parent) {
+        if (isset($config['root']) && !$parent) {
             throw new InvalidArgumentException("Cannot get siblings from tree root node");
         }
-        $wrappedParent = new EntityWrapper($parent, $this->_em);
-        $parentId = $wrappedParent->getIdentifier();
 
         $left = $wrapped->getPropertyValue($config['left']);
         $sign = $includeSelf ? '>=' : '>';
 
         $dql = "SELECT node FROM {$config['useObjectClass']} node";
-        $dql .= " WHERE node.{$config['parent']} = {$parentId}";
+        if ($parent) {
+            $wrappedParent = new EntityWrapper($parent, $this->_em);
+            $parentId = $wrappedParent->getIdentifier();
+            $dql .= " WHERE node.{$config['parent']} = {$parentId}";
+        } else {
+            $dql .= " WHERE node.{$config['parent']} IS NULL";
+        }
         $dql .= " AND node.{$config['left']} {$sign} {$left}";
         $dql .= " ORDER BY node.{$config['left']} ASC";
         return $this->_em->createQuery($dql);
@@ -403,17 +408,21 @@ class NestedTreeRepository extends AbstractTreeRepository
 
         $config = $this->listener->getConfiguration($this->_em, $meta->name);
         $parent = $wrapped->getPropertyValue($config['parent']);
-        if (!$parent) {
+        if (isset($config['root']) && !$parent) {
             throw new InvalidArgumentException("Cannot get siblings from tree root node");
         }
-        $wrappedParent = new EntityWrapper($parent, $this->_em);
-        $parentId = $wrappedParent->getIdentifier();
 
         $left = $wrapped->getPropertyValue($config['left']);
         $sign = $includeSelf ? '<=' : '<';
 
         $dql = "SELECT node FROM {$config['useObjectClass']} node";
-        $dql .= " WHERE node.{$config['parent']} = {$parentId}";
+        if ($parent) {
+            $wrappedParent = new EntityWrapper($parent, $this->_em);
+            $parentId = $wrappedParent->getIdentifier();
+            $dql .= " WHERE node.{$config['parent']} = {$parentId}";
+        } else {
+            $dql .= " WHERE node.{$config['parent']} IS NULL";
+        }
         $dql .= " AND node.{$config['left']} {$sign} {$left}";
         $dql .= " ORDER BY node.{$config['left']} ASC";
         return $this->_em->createQuery($dql);

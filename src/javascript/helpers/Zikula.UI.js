@@ -124,8 +124,8 @@ Zikula.UI.Tooltip = Class.create(Control.ToolTip,/** @lends Zikula.UI.Tooltip.pr
             vSize = document.viewport.getDimensions(),
             vtOffset = document.viewport.getScrollOffsets(),
             offset = {v: $value(this.options.offsetTop), h: $value(this.options.offsetLeft)},
-            x= Event.pointerX(event),
-            y = Event.pointerY(event),
+            x= event ? Event.pointerX(event): this.sourceContainer.getLayout().get('left'),
+            y = event ? Event.pointerY(event): this.sourceContainer.getLayout().get('top'),
             pos = {left:'auto',right:'auto',top:'auto',bottom:'auto'};
         if (x + dim.width + (offset.h * 2) < vSize.width || dim.width + offset.h > vSize.width) {
             pos.left = (x + offset.h + vtOffset.left).toUnits();
@@ -1461,7 +1461,7 @@ Zikula.UI.Accordion = Class.create(/** @lends Zikula.UI.Accordion.prototype */{
 Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
     /**
      * Panels script.
-     * Panels are simillar concept to Accordion with the exception that you can
+     * Panels are similar concept to Accordion with the exception that you can
      * open/close them - not just switch active one.
      * Markup for panels container needs pairs of headers and content panels.
      * Each pair is identyfied by panel header.
@@ -1526,7 +1526,7 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
         this.contents = this.headers.map(function(h) {
             return h.next();
         });
-        if (!this.options.active && this.options.saveToCookie) {
+        if (!this.options.active.size() && this.options.saveToCookie) {
             this.options.active = Zikula.Cookie.get(this.cookie);
         }
         if (this.options.equal || this.options.height) {

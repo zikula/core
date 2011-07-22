@@ -7,6 +7,8 @@ use Doctrine\Common\Annotations\Annotation;
 /**
  * Sluggable annotation for Sluggable behavioral extension
  *
+ * @Annotation
+ *
  * @author Gediminas Morkevicius <gediminas.morkevicius@gmail.com>
  * @package Gedmo.Mapping.Annotation
  * @subpackage Sluggable
@@ -16,5 +18,6 @@ use Doctrine\Common\Annotations\Annotation;
 final class Sluggable extends Annotation
 {
     public $position = 0;
+    public $slugField = 'slug';
 }
 

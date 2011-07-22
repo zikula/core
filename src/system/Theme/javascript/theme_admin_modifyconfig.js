@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-Event.observe(window, 'load', theme_modifyconfig_init);
+document.observe('dom:loaded', theme_modifyconfig_init);
 
 function theme_modifyconfig_init()
 {

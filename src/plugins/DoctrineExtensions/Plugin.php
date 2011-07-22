@@ -41,11 +41,12 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
         $autoloader = new Zikula_KernelClassLoader();
         $autoloader->spl_autoload_register();
         $autoloader->register('Gedmo', dirname(__FILE__) . '/lib', '\\');
+        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', dirname(__FILE__) . '/lib');
         include 'ExtensionsManager.php';
         $definition = new Zikula_ServiceManager_Definition('SystemPlugins_DoctrineExtensions_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('zikula.servicemanager')));
         $this->serviceManager->registerService('doctrine_extensions', $definition);
 
-        $types = array('Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree');
+        $types = array('Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
         foreach ($types as $type) {
             $definition = new Zikula_ServiceManager_Definition("Gedmo\\$type\\{$type}Listener");
             $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.$type"), $definition);

@@ -71,12 +71,15 @@
         <echo msg="Prepare permissions..." />
         <chmod file="${packagepath}/config/config.php" mode="0666" />
         <chmod file="${packagepath}/userdata" mode="0777" />
+        <chmod file="${packagepath}/ztemp" mode="0777" />
         <chmod file="${packagepath}/ztemp/error_logs" mode="0777" />
         <chmod file="${packagepath}/ztemp/view_cache" mode="0777" />
         <chmod file="${packagepath}/ztemp/view_compiled" mode="0777" />
         <chmod file="${packagepath}/ztemp/Theme_cache" mode="0777" />
         <chmod file="${packagepath}/ztemp/Theme_compiled" mode="0777" />
         <chmod file="${packagepath}/ztemp/Theme_Config" mode="0777" />
+        <chmod file="${packagepath}/ztemp/idsTmp" mode="0777" />
+        <chmod file="${packagepath}/ztemp/purifierCache" mode="0777" />
 
         <echo msg="Creating archive..." />
         <!-- zip's don't play nicely in Phing - using direct command -->

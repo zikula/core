@@ -3,7 +3,7 @@
 {if $notices.developer.devmode}
 <div id="z-developernotices">
     <strong>{gt text="Developer notices (development mode on)" domain="zikula"}</strong>
-    <ul>
+    <ul class="z-hide">
         {if isset($notices.developer.render)}
         <li>
             <a href="{$themeurl|safetext}">{gt text="Enabled Template settings" domain="zikula"}:</a>

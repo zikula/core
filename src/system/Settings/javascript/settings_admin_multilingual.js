@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-Event.observe(window, 'load', settings_multilingual_init);
+document.observe('dom:loaded', settings_multilingual_init);
 
 function settings_multilingual_init()
 {

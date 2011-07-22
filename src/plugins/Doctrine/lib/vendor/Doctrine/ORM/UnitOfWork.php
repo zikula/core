@@ -577,7 +577,7 @@ class UnitOfWork implements PropertyChangedListener
                             . $assoc['sourceEntity'] . "#" . $assoc['fieldName'] . "' that was not"
                             . " configured to cascade persist operations for entity: " . self::objToStr($entry) . "."
                             . " Explicitly persist the new entity or configure cascading persist operations"
-                            . " on the relationship. If you cannot find out which entity casues the problem"
+                            . " on the relationship. If you cannot find out which entity causes the problem"
                             . " implement '" . $assoc['targetEntity'] . "#__toString()' to get a clue.");
                 }
                 $this->persistNew($targetClass, $entry);
@@ -984,7 +984,7 @@ class UnitOfWork implements PropertyChangedListener
             if ($this->isInIdentityMap($entity)) {
                 $this->removeFromIdentityMap($entity);
             }
-            unset($this->entityInsertions[$oid]);
+            unset($this->entityInsertions[$oid], $this->entityStates[$oid]);
             return; // entity has not been persisted yet, so nothing more to do.
         }
 
@@ -999,6 +999,7 @@ class UnitOfWork implements PropertyChangedListener
         }
         if ( ! isset($this->entityDeletions[$oid])) {
             $this->entityDeletions[$oid] = $entity;
+            $this->entityStates[$oid] = self::STATE_REMOVED;
         }
     }
 
@@ -1884,12 +1885,15 @@ class UnitOfWork implements PropertyChangedListener
             if ($entity instanceof Proxy && ! $entity->__isInitialized__) {
                 $entity->__isInitialized__ = true;
                 $overrideLocalValues = true;
-                $this->originalEntityData[$oid] = $data;
                 if ($entity instanceof NotifyPropertyChanged) {
                     $entity->addPropertyChangedListener($this);
                 }
             } else {
                 $overrideLocalValues = isset($hints[Query::HINT_REFRESH]);
+            }
+
+            if ($overrideLocalValues) {
+                $this->originalEntityData[$oid] = $data;
             }
         } else {
             $entity = $class->newInstance();

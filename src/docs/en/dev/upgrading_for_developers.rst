@@ -5,6 +5,66 @@ GENERAL
   and everything must be in plain text (this is because base64 encoding is not
   actually an encryption).
 
+DATABASE
+========
+
+Support for both column and database table prefixes has been dropped.  Existing 
+modules should continue to work but module authors need to make some efforts to
+migrate their modules away from using prefixes.
+
+When you upgrade from 1.2 the core tables will be renamed without any prefix and
+field names will be altered to remove the prefixes.
+
+Module authors need to do the following:
+
+  - tables.php should remove the use of DBUtil::getLimitedTablename() and just specify
+the table name directly.
+
+  - tables.php definitions should be updated to remove the column prefixes, e.g.
+
+        $columns = array('id'        => 'z_id',
+                         'parent_id' => 'z_parent_id',
+
+    would become: 
+
+        $columns = array('id'        => 'id',
+                         'parent_id' => 'parent_id',
+
+  - You will need will need to execute manual SQL to rename the columns and tables.  You can generally
+    get the code you need from PHPMyAdmin by editing the table structure and then reading the SQL
+    it generates.  Here is a sample taken from the Profile module:
+
+        $connection = Doctrine_Manager::getInstance()->getConnection('default');
+        $sqlStatements = array();
+        // N.B. statements generated with PHPMyAdmin
+        $sqlStatements[] = 'RENAME TABLE ' . DBUtil::getLimitedTablename('user_property') . " TO user_property";
+        $sqlStatements[] = "ALTER TABLE `user_property` CHANGE `pn_prop_id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT ,
+           CHANGE `pn_prop_label` `label` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+           CHANGE `pn_prop_dtype` `dtype` INT( 11 ) NOT NULL DEFAULT '0',
+           CHANGE `pn_prop_modname` `modname` VARCHAR( 64 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+           CHANGE `pn_prop_weight` `weight` INT( 11 ) NOT NULL DEFAULT '0',
+           CHANGE `pn_prop_validation` `validation` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+           CHANGE `pn_prop_attribute_name` `attributename` VARCHAR( 80 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL";
+
+         foreach ($sqlStatements as $sql) {
+         $stmt = $connection->prepare($sql);
+             try {
+                 $stmt->execute();
+             } catch (Exception $e) {
+                 // trap and toss exceptions if you need to.
+             }   
+         }
+
+
+LONGBLOB support
+----------------
+
+Support for LONGBLOB has been dropped.  You must choose another column type and 
+alter it manually with SQL, e.g.
+
+    ALTER TABLE workflows CHANGE debug debug LONGTEXT NULL DEFAULT NULL
+
+
 TEMPLATES
 =========
 - Change all module templates plugin delimiters to { and }.  For any template

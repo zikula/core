@@ -37,7 +37,7 @@ class Zikula_Core
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = '1.3.0-dev';
+    const VERSION_NUM = '1.3.1-dev';
 
     /**
      * The version ID.
@@ -48,7 +48,7 @@ class Zikula_Core
      * The version sub-ID.
      */
     const VERSION_SUB = 'vai';
-    
+
     /**
      * The minimum required PHP version for this release of core.
      */
@@ -162,7 +162,7 @@ class Zikula_Core
 
     /**
      * Constructor.
-     * 
+     *
      * @param string $handlerDir Directory where handlers are located.
      */
     public function __construct($handlerDir = 'lib/EventHandlers')
@@ -228,7 +228,7 @@ class Zikula_Core
 
     /**
      * Get base memory.
-     * 
+     *
      * @return integer
      */
     public function getBaseMemory()

@@ -97,7 +97,7 @@ class PluginUtil
         }
 
         $it = FileUtil::getFiles($path, false, false, null, 'd');
-
+       
         foreach ($it as $dir) {
             $file = $dir . DIRECTORY_SEPARATOR . 'Plugin.php';
             if (!file_exists($file)) {

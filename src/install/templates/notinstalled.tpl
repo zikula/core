@@ -12,7 +12,7 @@
                     <h1>{gt text="Zikula Application Framework"}</h1>
                     <h2>{gt text="System is not installed!"}</h2>
                     <p>
-                        {gt text='You are seeing this message because Zikula is not yet installed.  You can install Zikula by clicking on the install button, but before doing so please read the <a href="docs/en/README">installation instructions</a>. Further information can be found in the <a href="http://community.zikula.org/Wiki-UserDocs.htm">online documentation</a>.'}
+                        {gt text='You are seeing this message because Zikula is not yet installed.  You can install Zikula by clicking on the install button, but before doing so please read the <a href="docs/en/INSTALL">installation instructions</a>. Further information can be found in the <a href="http://community.zikula.org/Wiki-UserDocs.htm">online documentation</a>.'}
                     </p>
                     <p>
                         <a href="install.php?lang={$lang}" class="button-install">

@@ -8,9 +8,11 @@ forums at http://community.zikula.org/
 Server Consideration
 --------------------
 
-- If you are using PHP 5.3.0 or greater please make sure the php.ini file has
-  date.timezone set to a valid timezone like UTC, GMT+5, Europe/Berlin.  If this
-  is not set, you will experience problems,
+- Zikula requires PHP 5.3.2 or greater.
+
+- Please make sure the php.ini file has date.timezone set to a valid timezone 
+  like UTC, GMT+5, Europe/Berlin.  If this is not set, Zikula will not function
+  correctly.
 
 - Ensure your server has PCRE with unicode support enabled.
 
@@ -65,7 +67,7 @@ Module considerations
   If you use 'menutree', please delete the module files entirely as the functionality
   is now available in the Core as standard.
 
-Make a backup of your files and database once you are ready to make the upgrade.
+  Make a backup of your files and database once you are ready to make the upgrade.
 
 
 Prepare your existing installation
@@ -75,12 +77,17 @@ Prepare your existing installation
     login by username in the administration panel.  You will be required to
     login using your administration username.  Make sure you know it.
 
+  - config.php has introduced legacy modes, please make sure this is not disabled
+    before you attempt the upgrade.
+
   - Before unpacking *any* files, delete the following directories:
 
       - system/
       - themes/
       - includes/
       - pnTemp/
+      - modules/Profile (if it exists)
+      - modules/legal   (if it exists)
 
     saving the stuff that you may have inside pnTemp like file uploads.
 
@@ -102,6 +109,16 @@ Prepare your existing installation
     Do not change the following lines.
 
            $ZConfig['System']['temp']
+
+  - As an optional consideration, because of the many changes between 1.2 and 1.3
+    the upgrade process might be easier if you temporarily remove all the modules
+    except Legal and Profile from modules/ before you run the upgrade.php. After 
+    the upgrade you can add the modules back and then upgrade each module as 
+    required from inside the Zikula Administration -> Extensions Manager.
+
+    Please note the Legal and Profile modules must be the new versions, you must
+    definitely delete the old Profile and Legal modules before you copy over the 
+    new versions (same goes for any 1.3 compliant module).
 
 
 Run the upgrade
@@ -133,7 +150,7 @@ You need to recreate all the menu blocks links too, because the standard changed
 
 to
 
-    {module:TYPE:function&param1=value1&param2=value2}
+    {module:TYPE:function:param1=value1&param2=value2}
 
 Please note that once you have successfully upgraded, you should follow the steps
 in UPGRADING_THEME to refactor your theme to the new standards.  There are only

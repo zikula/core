@@ -1717,7 +1717,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)); /*webkit*/
     background: -moz-linear-gradient(top, #ffffff, #dfdfdf); /*gecko*/
     background: linear-gradient(#FFFFFF, #dfdfdf); /*CSS3*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#dfdfdf'); /*IE*/
     border: 1px solid #CCCCCC;
     cursor: pointer;
     margin: 0.2em 0 0;
@@ -1733,7 +1732,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cfcfcf)); /*webkit*/
     background: -moz-linear-gradient(top, #fafafa, #cfcfcf); /*gecko*/
     background: linear-gradient(#fafafa, #cfcfcf); /*CSS3*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#CFCFCF'); /*IE*/
 }
 
 .z-accordion .z-acc-content,
@@ -1757,21 +1755,20 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#CFCFCF)); /*webkit*/
     background: -moz-linear-gradient(top, #fafafa, #CFCFCF); /*gecko*/
     background: linear-gradient(#fafafa, #CFCFCF); /*CSS3*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#CFCFCF'); /*IE*/
 }
 
 .z-panels .z-panel-indicator {
-    background: url("../images/global/arrow_down_black.png") no-repeat scroll 7px 50%;
+    background: url("../images/global/arrow_right_black.png") no-repeat scroll 7px 50%;
     padding-left: 20px !important;
 }
 .z-panels .z-panel-indicator:hover {
-    background: url("../images/global/arrow_down_grey.png") no-repeat scroll 7px 50%;
+    background: url("../images/global/arrow_right_grey.png") no-repeat scroll 7px 50%;
 }
 .z-panels .z-panel-indicator.z-panel-active {
-    background: url("../images/global/arrow_right_black.png") no-repeat scroll 9px 50%;
+    background: url("../images/global/arrow_down_black.png") no-repeat scroll 6px 50%;
 }
 .z-panels .z-panel-indicator.z-panel-active:hover {
-    background: url("../images/global/arrow_right_grey.png") no-repeat scroll 9px 50%;
+    background: url("../images/global/arrow_down_grey.png") no-repeat scroll 6px 50%;
 }
 
 /******************************************************************************

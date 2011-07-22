@@ -1094,7 +1094,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED));
 
             // Sort upgrade order according to this list.
-            $priorities = array('Extensions', 'Users' , 'Groups', 'Permissions', 'Admin', 'Blocks', 'Themes', 'Settings', 'Categories', 'SecurityCenter', 'Errors');
+            $priorities = array('Extensions', 'Users' , 'Groups', 'Permissions', 'Admin', 'Blocks', 'Theme', 'Settings', 'Categories', 'SecurityCenter', 'Errors');
             $sortedList = array();
             foreach ($priorities as $priority) {
                 foreach ($newmods as $key => $modinfo) {
@@ -1274,7 +1274,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $where = "z_modid = '" . DataUtil::formatForStore($args['modid']) . "'";
+        $where = "modid = '" . DataUtil::formatForStore($args['modid']) . "'";
 
         return DBUtil::selectObjectArray('module_deps', $where, 'modname');
     }
@@ -1295,7 +1295,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         $modinfo = ModUtil::getInfo($args['modid']);
-        $where = "z_modname = '" . DataUtil::formatForStore($modinfo['name']) . "'";
+        $where = "modname = '" . DataUtil::formatForStore($modinfo['name']) . "'";
 
         return DBUtil::selectObjectArray('module_deps', $where, 'modid');
     }

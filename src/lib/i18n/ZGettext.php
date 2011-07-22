@@ -203,7 +203,9 @@ class ZGettext
         $textDomain = & $_this->textDomains[$locale][$category][$domain];
 
         if (!$textDomain['reader']) {
-            $path = realpath($textDomain['path']."$locale/$categorypath/$domain.mo");
+            //$path = realpath($textDomain['path']."$locale/$categorypath/$domain.mo");
+            // hard coding the LC type due to strange differences on various platforms
+            $path = realpath($textDomain['path']."$locale/LC_MESSAGES/$domain.mo");
             $reader = new StreamReader_CachedFile($path);
             $textDomain['reader'] = new ZMO($reader, $cache);
             $codeset = (isset($textDomain['codeset']) ? $textDomain['codeset'] : ini_get('mbstring.internal_encoding'));

@@ -4,7 +4,7 @@
  * create the onload function to enable the drag&drop for sequencing
  *
  */
-Event.observe(window, 'load', function()
+document.observe('dom:loaded', function()
      {
         $A(document.getElementsByClassName('z-sortable')).each(
         function(node) 

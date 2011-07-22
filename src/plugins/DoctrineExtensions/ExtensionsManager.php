@@ -34,8 +34,19 @@ class SystemPlugins_DoctrineExtensions_ExtensionsManager
             throw new InvalidArgumentException(sprintf('No such behaviour %s', $type));
         }
 
+        $annotationReader = $this->serviceManager->getService('doctrine.annotationreader');
+        $annotationDriver = $this->serviceManager->getService('doctrine.annotationdriver');
+        
+        $chain = $this->serviceManager->getService('doctrine.driverchain');
+        $entityName = 'Gedmo\\' . ucfirst($type) . '\\Entity';
+        if (class_exists($entityName)) {
+            $chain->addDriver($annotationDriver, $entityName);
+        }
+
         $this->listeners[$type] = $this->serviceManager->getService($id);
+        $this->listeners[$type]->setAnnotationReader($annotationReader);
         $this->eventManager->addEventSubscriber($this->listeners[$type]);
+                
         return $this->listeners[$type];
     }
 

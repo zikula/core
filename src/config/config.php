@@ -16,7 +16,7 @@ global $ZConfig;
 $ZConfig['System']['installed'] = 0;        // installer will change this during installation
 $ZConfig['System']['temp'] = 'ztemp';       // location of temporary folder
 $ZConfig['System']['datadir'] = 'userdata';     // location of site data files
-$ZConfig['System']['prefix'] = 'z';         // database prefix
+$ZConfig['System']['prefix'] = '';         // database prefix (deprecated).
 $ZConfig['System']['development'] = 0;      // development mode 1/0 for on or off.  Disable in production mode.
 $ZConfig['System']['legacy_prefilters'] = true; // enable legacy template prefilters
 $ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers
@@ -77,6 +77,9 @@ $ZConfig['Log']['log.display_template'] = 0;        // Overrides PHP's output ha
 
 $ZConfig['Log']['log.to_debug_toolbar'] = 0;        // 1 to show the debug toolbar (reqires development 1), 0 to disable
 $ZConfig['Log']['log.to_debug_toolbar_output'] = 0; // Debug toolbar output type: 0 - normal toolbar, 1 - json output, 2 - both
+$ZConfig['Log']['log.to_debug_toolbar_seckey'] = ''; // Security key for debug toolbar output of json type
+                                                     // If defined - it's required that http request contains custom header
+                                                     // "HTTP_X_ZIKULA_DEBUGTOOLBAR" equal to this key, otherwise no data is returned.
 $ZConfig['Log']['log.sql.to_display'] = 0;          // Display sql queries.
 $ZConfig['Log']['log.sql.to_file'] = 0;             // Log sql queries to file.
 

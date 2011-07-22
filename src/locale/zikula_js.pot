@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-08 09:34-0400\n"
+"POT-Creation-Date: 2011-07-13 08:15-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: javascript/helpers/Zikula.UI.js:848 javascript/helpers/Zikula.UI.js:931
-#: javascript/helpers/Zikula.UI.js:1095
+#: javascript/helpers/Zikula.UI.js:850 javascript/helpers/Zikula.UI.js:933
+#: javascript/helpers/Zikula.UI.js:1097
 msgid "Ok"
 msgstr ""
 
-#: javascript/helpers/Zikula.UI.js:932 javascript/helpers/Zikula.UI.js:1051
+#: javascript/helpers/Zikula.UI.js:934 javascript/helpers/Zikula.UI.js:1053
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:42
 #: system/Categories/javascript/categories_admin_view.js:93
 #: system/Categories/javascript/categories_admin_view.js:104
@@ -29,18 +29,13 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: javascript/helpers/Zikula.UI.js:1050
+#: javascript/helpers/Zikula.UI.js:1052
 #: system/Categories/javascript/categories_admin_view.js:248
 msgid "Submit"
 msgstr ""
 
-#: javascript/helpers/Zikula.UI.js:1093
+#: javascript/helpers/Zikula.UI.js:1095
 msgid "Select multiple"
-msgstr ""
-
-#: javascript/helpers/Zikula.zdebug.js:9
-#: javascript/helpers/Zikula.zdebug.js:11
-msgid "Zikula Console"
 msgstr ""
 
 #: javascript/helpers/Zikula.itemlist.js:236
@@ -99,16 +94,6 @@ msgid "hello my friend %s"
 msgid_plural "hello my friends %s"
 msgstr[0] ""
 msgstr[1] ""
-
-#: modules/FileManager/javascript/Zikula.js:140
-#, php-format
-msgid "Are you sure you want to delete folder '%s'?"
-msgstr ""
-
-#: modules/FileManager/javascript/Zikula.js:186
-#, php-format
-msgid "Are you sure you want to delete file '%s'?"
-msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:20
 msgid "Do you really want to delete this node and all of it child nodes?"
@@ -215,7 +200,7 @@ msgstr ""
 msgid "Marked fields are required"
 msgstr ""
 
-#: system/PageLock/javascript/pagelock.js:27
+#: system/PageLock/javascript/pagelock.js:26
 msgid "Are you sure you want to break this lock?"
 msgstr ""
 
@@ -224,15 +209,15 @@ msgstr ""
 msgid "Confirmation prompt"
 msgstr ""
 
-#: system/PageLock/javascript/pagelock.js:142
+#: system/PageLock/javascript/pagelock.js:130
 msgid "Back"
 msgstr ""
 
-#: system/PageLock/javascript/pagelock.js:143
+#: system/PageLock/javascript/pagelock.js:131
 msgid "Check again"
 msgstr ""
 
-#: system/PageLock/javascript/pagelock.js:144
+#: system/PageLock/javascript/pagelock.js:132
 msgid "Ignore Lock"
 msgstr ""
 
@@ -294,6 +279,6 @@ msgstr ""
 msgid "Move all sub-categories"
 msgstr ""
 
-#: system/Admin/javascript/admin_admin_ajax.js:401
+#: system/Admin/javascript/admin_admin_ajax.js:415
 msgid "You must enter a name for the new category"
 msgstr ""
