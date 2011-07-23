@@ -48,7 +48,12 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
 
         $types = array('Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
         foreach ($types as $type) {
-            $definition = new Zikula_ServiceManager_Definition("Gedmo\\$type\\{$type}Listener");
+            // The listener for Translatable is incorrectly named TranslationListener
+            if ($type != "Translatable") {
+                $definition = new Zikula_ServiceManager_Definition("Gedmo\\$type\\{$type}Listener");
+            } else {
+                $definition = new Zikula_ServiceManager_Definition("Gedmo\\Translatable\\TranslationListener");
+            }
             $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.$type"), $definition);
         }
     }
