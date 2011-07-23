@@ -28,8 +28,8 @@ class SystemPlugins_DoctrineExtensions_ExtensionsManager
         if (isset($this->listeners[$type])) {
             return $this->listeners[$type];
         }
-
-        $id = 'doctrine_extensions.listener.' . strtolower($type);
+        
+        $id = 'doctrine_extensions.listener.' . $type;
         if (!$this->serviceManager->hasService($id)) {
             throw new InvalidArgumentException(sprintf('No such behaviour %s', $type));
         }
@@ -38,8 +38,19 @@ class SystemPlugins_DoctrineExtensions_ExtensionsManager
         $annotationDriver = $this->serviceManager->getService('doctrine.annotationdriver');
         
         $chain = $this->serviceManager->getService('doctrine.driverchain');
-        $entityName = 'Gedmo\\' . ucfirst($type) . '\\Entity';
-        if (class_exists($entityName)) {
+        
+        // specific behaviour required for certain drivers.
+        $entityName = null;
+        switch ($type) {
+            case 'translatable':
+                $entityName = 'Gedmo\\Translatable\\Entity\\Translation';
+                break;
+            case 'loggable':
+                $entityName = 'Loggable\\Entity\\LogEntry';
+                break;
+        }
+        
+        if ($entityName) {
             $chain->addDriver($annotationDriver, $entityName);
         }
 
