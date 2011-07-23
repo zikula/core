@@ -39,12 +39,18 @@ class Zikula_EntityAccess implements ArrayAccess
     public function toArray()
     {
         $r = new ReflectionObject($this);
-        $properties = $r->getProperties();
         $array = array();
-        foreach ($properties as $property) {
-            $method = "get" . ucfirst($property->name);
-            $array[$property->name] = $this->$method();
+        
+        while($r !== false) {
+            $properties = $r->getProperties();
+            $r = $r->getParentClass();
+            
+            foreach ($properties as $property) {
+                $method = "get" . ucfirst($property->name);
+                $array[$property->name] = $this->$method();
+            }
         }
+        
         return $array;
     }
 

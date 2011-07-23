@@ -40,6 +40,15 @@
                 </div>
             {/foreach}
         </fieldset>
+        
+        <fieldset>
+            <legend>{gt text='Metadata'}</legend>
+
+            <div class="z-formrow">
+                {formlabel for="metadataComment" __text="Comment"}
+                {formtextinput id="metadataComment" group="meta" dataField="comment" maxLength=255}
+            </div>
+        </fieldset>
 
 
         <div class="z-formbuttons">

@@ -56,9 +56,19 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
             $user = new ExampleDoctrine_Entity_User();
         }
 
+        $userData = $user->toArray();
+        
+        // overwrite attributes array entry with a form compitable format
+        $field1 = $user->getAttributes()->get('field1')? $user->getAttributes()->get('field1')->getValue() : '';
+        $field2 = $user->getAttributes()->get('field2')? $user->getAttributes()->get('field2')->getValue() : '';
+        $userData['attributes'] = array('field1' => $field1,
+                                        'field2' => $field2);
+        
         // assign current values to form fields
-        $view->assign('user', $user);
-        $view->assign($user->toArray());
+        $view->assign('user', $user)
+             ->assign('meta', $user->getMetadata() != null? $user->getMetadata()->toArray() : array())
+             ->assign($userData);
+        
         $this->_user = $user;
         
         return true;
@@ -83,11 +93,24 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
         $data = $view->getValues();
         $user = $this->_user;
         
+        // merge attributes
         foreach($data['attributes'] as $name => $value) {
             $user->setAttribute($name, $value);
         }
-        unset($data['attributes']);
         
+        // merge metadata
+        $metadata = $user->getMetadata();
+        
+        if($metadata == null) {
+            $metadata = new ExampleDoctrine_Entity_UserMetadata($user);
+            $user->setMetadata($metadata);
+        }
+        
+        $metadata->merge($data['meta']);
+        
+        unset($data['attributes'], $data['meta']);
+        
+        // merge user and save everything
         $user->merge($data);
         $this->entityManager->persist($user);
         $this->entityManager->flush();

@@ -63,12 +63,20 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
      */
     private $categories;
     
-     /**
+    /**
      * @ORM\OneToMany(targetEntity="ExampleDoctrine_Entity_UserAttribute", 
      *                mappedBy="entity", cascade={"all"}, 
      *                orphanRemoval=true, indexBy="name")
      */
     private $attributes;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="ExampleDoctrine_Entity_UserMetadata", 
+     *               mappedBy="entity", cascade={"all"},
+     *               orphanRemoval=true)
+     * @var ExampleDoctrine_Entity_UserMetadata
+     */
+    private $metadata;
 
     public function __construct()
     {
@@ -143,5 +151,15 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
     public function getSlug()
     {
         return $this->slug;
+    }
+    
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
+    
+    public function setMetadata(ExampleDoctrine_Entity_UserMetadata $metadata)
+    {
+        $this->metadata = $metadata;
     }
 }

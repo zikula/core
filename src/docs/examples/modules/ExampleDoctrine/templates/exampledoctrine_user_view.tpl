@@ -12,6 +12,7 @@
             <td>{gt text='Categories'}</td>
             <td>{gt text='Attributes: Field1'}</td>
             <td>{gt text='Attributes: Field2'}</td>
+            <td>{gt text='Metadata: Comment'}</td>
             <td>{gt text='Options'}</td>
         </tr>
     </thead>
@@ -27,6 +28,7 @@
                 </td>
                 <td>{$u.attributes.field1.value|default:''|safetext}</td>
                 <td>{$u.attributes.field2.value|default:''|safetext}</td>
+                <td>{$u.metadata.comment|default:''|safetext}</td>
                 <td><a href="{modurl modname="ExampleDoctrine" type="user" func="edit" id=$u->getId()}">{gt text='Edit'}</a></td>
             </tr>
         {/foreach}
