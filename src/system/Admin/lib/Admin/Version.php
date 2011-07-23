@@ -18,7 +18,7 @@ class Admin_Version extends Zikula_AbstractVersion
     {
         $meta = array();
         $meta['displayname']    = $this->__('Administration panel');
-        $meta['description']    = $this->__('Backed system administration interface.');
+        $meta['description']    = $this->__('Backend administration interface.');
         //! module name that appears in URL
         $meta['url']            = $this->__('adminpanel');
         $meta['version']        = '1.9.0';
