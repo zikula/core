@@ -14,6 +14,7 @@
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; // Add a behavous
+use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 
 
 /**
@@ -55,6 +56,18 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
      * @ORM\Column(length=64, unique=true)
      */
     private $slug;
+    
+    /**
+     * @ORM\Column(type="integer")
+     * @ZK\StandardFields(type="userid", on="create")
+     */
+    private $createdUserId;
+    
+    /**
+     * @ORM\Column(type="integer")
+     * @ZK\StandardFields(type="userid", on="update")
+     */
+    private $updatedUserId;
     
     /**
      * @ORM\OneToMany(targetEntity="ExampleDoctrine_Entity_UserCategory", 
@@ -134,7 +147,7 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
     {
         if(isset($this->attributes[$name])) {
             if($value == null) {
-                $this->attributes[$name]->remove($name);
+                $this->attributes->remove($name);
             } else {
                 $this->attributes[$name]->setValue($value);
             }
@@ -161,5 +174,25 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
     public function setMetadata(ExampleDoctrine_Entity_UserMetadata $metadata)
     {
         $this->metadata = $metadata;
+    }
+    
+    public function getCreatedUserId()
+    {
+        return $this->createdUserId;
+    }
+    
+    public function setCreatedUserId($createdUserId)
+    {
+        $this->createdUserId = $createdUserId;
+    }
+    
+    public function getUpdatedUserId()
+    {
+        return $this->updatedUserId;
+    }
+    
+    public function setSpdatedUserId($updatedUserId)
+    {
+        $this->updatedUserId = $updatedUserId;
     }
 }
