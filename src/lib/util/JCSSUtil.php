@@ -376,6 +376,9 @@ class JCSSUtil
                             'require' => array('zikula', 'scriptaculous', 'builder', 'controls', 'dragdrop', 'effects', 'slider', 'sound'),
                             'aliases' => array('prototype', 'scriptaculous'),
                     ),
+                    'scriptaculous' => array(
+                            'path' => 'javascript/ajax/original_uncompressed/scriptaculous.js',
+                    ),
                     'effects' => array(
                             'path' => 'javascript/ajax/original_uncompressed/effects.js',
                     ),
