@@ -168,7 +168,7 @@ class CategoryRegistryUtil
      *
      * @return array The associative field array of registered categories for the specified module.
      */
-    public static function getRegisteredModuleCategories($modname, $tablename)
+    public static function getRegisteredModuleCategories($modname, $tablename, $arraykey='property')
     {
         if (!$modname || !$tablename) {
             return z_exit(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
@@ -186,7 +186,7 @@ class CategoryRegistryUtil
         $wheres[] = "$col[table]='" . DataUtil::formatForStore($tablename) . "'";
         $where = implode(' AND ', $wheres);
         $sort = "$col[id] ASC";
-        $fArr = DBUtil::selectFieldArray('categories_registry', 'category_id', $where, $sort, false, 'property');
+        $fArr = DBUtil::selectFieldArray('categories_registry', 'category_id', $where, $sort, false, $arraykey);
 
         $cache[$modname][$tablename] = $fArr;
         return $fArr;

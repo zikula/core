@@ -41,7 +41,11 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
         $autoloader = new Zikula_KernelClassLoader();
         $autoloader->spl_autoload_register();
         $autoloader->register('Gedmo', dirname(__FILE__) . '/lib', '\\');
+        $autoloader->register('DoctrineExtensions\\StandardFields', __DIR__ . '/lib', '\\');
+        
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', dirname(__FILE__) . '/lib');
+        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
+        
         include 'ExtensionsManager.php';
         $definition = new Zikula_ServiceManager_Definition('SystemPlugins_DoctrineExtensions_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('zikula.servicemanager')));
         $this->serviceManager->registerService('doctrine_extensions', $definition);
@@ -56,5 +60,8 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
             }
             $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.$type"), $definition);
         }
+        
+        $definition = new Zikula_ServiceManager_Definition("DoctrineExtensions\\StandardFields\\StandardFieldsListener");
+        $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.standardfields"), $definition);
     }
 }
