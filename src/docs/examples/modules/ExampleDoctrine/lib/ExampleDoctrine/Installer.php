@@ -30,7 +30,10 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('ExampleDoctrine_Entity_User'));
+            DoctrineHelper::createSchema($this->entityManager, array('ExampleDoctrine_Entity_User', 
+                                                                     'ExampleDoctrine_Entity_UserCategory',
+                                                                     'ExampleDoctrine_Entity_UserAttribute',
+                                                                     'ExampleDoctrine_Entity_UserMetadata'));
         } catch (Exception $e) {
             return false;
         }
@@ -77,7 +80,10 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
     public function uninstall()
     {
         // drop table
-        DoctrineHelper::dropSchema($this->entityManager, array('ExampleDoctrine_Entity_User'));
+        DoctrineHelper::dropSchema($this->entityManager, array('ExampleDoctrine_Entity_User', 
+                                                               'ExampleDoctrine_Entity_UserCategory',
+                                                               'ExampleDoctrine_Entity_UserAttribute',
+                                                               'ExampleDoctrine_Entity_UserMetadata'));
 
         // remove all module vars
         $this->delVars();

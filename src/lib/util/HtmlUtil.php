@@ -397,6 +397,39 @@ class HtmlUtil
 
             $data[$tableName] = $tableName;
         }
+        
+        // Doctrine2 models
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
+        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $osdir   = DataUtil::formatForOS($modinfo['directory']);
+        $entityDir = "$modpath/$osdir/lib/$osdir/Entity/";
+        
+        $entities = array();
+        if(file_exists($entityDir)) {
+            $entities = scandir($entityDir);
+        }
+
+        foreach ($entities as $entity) {
+            if(!($entity[0] != '.' && substr($entity, -4) === '.php')) {
+                continue;
+            }
+            
+            $class = $modname . '_Entity_' . substr($entity, 0, strlen($entity) - 4);
+            if(class_exists($class) && !in_array('Doctrine_Record', class_parents($class))) {
+                $tableName = substr($entity, 0, strlen($entity) - 4);
+
+                if ($remove) {
+                    $tableName = str_replace($remove, '', $tableName);
+                }
+
+                if ($nStripChars) {
+                    $tableName = ucfirst(substr($tableName, $nStripChars));
+                }
+
+                $data[$tableName] = $tableName;
+            }
+        }
+
 
 
         return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
