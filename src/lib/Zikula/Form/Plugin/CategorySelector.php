@@ -69,6 +69,11 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
      * @var boolean (default false)
      */
     public $enableDoctrine;
+    
+    public $doctrine2;
+    
+    public $registryId;
+    
 
     /**
      * Get filename of this file.
@@ -226,6 +231,28 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                 $data[$this->group]['Categories'][$this->dataField] = array('category_id' => $this->getSelectedValue(),
                                                                             'reg_property' => $this->dataField);
             }
+        } else if($this->doctrine2) {
+            $entity = $view->get_template_vars($this->group);
+            
+            // load category from db
+            $em = ServiceUtil::getService('doctrine.entitymanager');
+            $category = $em->find('Zikula_Doctrine2_Entity_Category', $this->getSelectedValue());
+            
+            $collection = $em->getClassMetadata(get_class($entity))
+                             ->getFieldValue($entity, $this->dataField);
+            
+            if(!$collection) {
+                $collection = new \Doctrine\Common\Collections\ArrayCollection();
+                $em->getClassMetadata(get_class($entity))
+                   ->setFieldValue($entity, $this->dataField, $collection);
+            }
+
+            if($collection->containsKey($this->registryId)) {
+                $collection->get($this->registryId)->setCategory($category);
+            } else {
+                $class = $em->getClassMetadata(get_class($entity))->getAssociationTargetClass($this->dataField);
+                $collection->set($this->registryId, new $class($this->registryId, $category, $entity));
+            }
         } else {
             parent::saveValue($view, $data);
         }
@@ -294,12 +321,23 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                     }
                 }
             }
-
+            
             if ($items != null) {
                 $this->setItems($items);
             }
 
             $this->setSelectedValue($value);
+        } else if($this->doctrine2) {
+            if(isset($values[$this->group])) {
+                $entity = $values[$this->group];
+                if(isset($entity[$this->dataField])) {
+                    $collection = $entity[$this->dataField];
+                    if(isset($collection[$this->registryId])) {
+                        $value = $collection[$this->registryId]->getCategory()->getId();
+                        $this->setSelectedValue($value);
+                    }
+                }
+            }
         } else {
             parent::loadValue($view, $values);
         }

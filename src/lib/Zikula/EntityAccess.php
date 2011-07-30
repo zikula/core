@@ -16,17 +16,18 @@ class Zikula_EntityAccess implements ArrayAccess
 {
     public function offsetExists($key)
     {
-        method_exists($this, "get{$key}");
+        return method_exists($this, "get" . ucfirst($key));
     }
 
     public function offsetGet($key)
     {
-        return $this->$key;
+        $method = "get" . ucfirst($key);
+        return $this->$method();
     }
 
     public function offsetSet($key, $value)
     {
-        $method = "set$key";
+        $method = "set" . ucfirst($key);
         $this->$method($value);
     }
 
@@ -38,19 +39,25 @@ class Zikula_EntityAccess implements ArrayAccess
     public function toArray()
     {
         $r = new ReflectionObject($this);
-        $properties = $r->getProperties();
         $array = array();
-        foreach ($properties as $property) {
-            $method = "get{$property->name}";
-            $array[$property->name] = $this->$method();
+        
+        while($r !== false) {
+            $properties = $r->getProperties();
+            $r = $r->getParentClass();
+            
+            foreach ($properties as $property) {
+                $method = "get" . ucfirst($property->name);
+                $array[$property->name] = $this->$method();
+            }
         }
+        
         return $array;
     }
 
     public function merge(array $array)
     {
         foreach ($array as $key => $value) {
-            $method = "set$key";
+            $method = "set" . ucfirst($key);
             $this->$method($value);
         }
     }
