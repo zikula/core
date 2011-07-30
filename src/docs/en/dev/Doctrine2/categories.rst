@@ -8,7 +8,7 @@ Getting started
 Preconditions
 -------------
 
-You need a existing doctrine2 entity to which you would like to add categories support.
+You need a existing doctrine2 entity to which you would like add categories support to.
 In this guide we will use a *User* entity::
 
     use Doctrine\ORM\Mapping as ORM;
@@ -116,7 +116,7 @@ Working with the entities
 Assign an category to the **Main** property::
 
     $user = // ...
-    $registry = getRegisteredModuleCategory('YourModule', 'MyEntity', 'Main');
+    $registry = CategoryRegistryUtil::getRegisteredModuleCategory('YourModule', 'MyEntity', 'Main');
     $category = $entityManager->find('Zikula_Doctrine2_Entity_Category', $categoryId);
     $user->getCategories()->set($this->registryId, new YourModule_Entity_UserCategory($registry['id'], $category, $user));
 
@@ -125,7 +125,8 @@ Assign an category to the **Main** property::
 
 Change category of the **Main** property::
 
-    $registry = getRegisteredModuleCategory('YourModule', 'MyEntity', 'Main');
+    $user = // ...
+    $registry = CategoryRegistryUtil::getRegisteredModuleCategory('YourModule', 'MyEntity', 'Main');
     $category = $entityManager->find('Zikula_Doctrine2_Entity_Category', $categoryId);
     $user->getCategories()->get($registry['id'])->setCategory($category);
     
@@ -133,13 +134,15 @@ Change category of the **Main** property::
 
 Unassign the category of the **Main** property::
 
+    $user = // ...
     $user->getCategories()->remove($registry['id']);
     
     $entityManager->persist($user);
   
 Access category data of the **Main** property::
-
-    $registry = getRegisteredModuleCategory('YourModule', 'MyEntity', 'Main');
+    
+    $user = // ...
+    $registry = CategoryRegistryUtil::getRegisteredModuleCategory('YourModule', 'MyEntity', 'Main');
     $categoryName = $user->getCategories()->get($registry['id'])->getCategory()->getName();
     // see Zikula_Doctrine2_Entity_Category class 
 
@@ -148,7 +151,7 @@ Database Tables
 
 DBUtil based categories uses a single table to store every category of every row of every table.
 
-Doctrine2 based categories every entity gets its own table.
+In Doctrine2 based categories every entity gets its own table.
 
 
 Form Framework integration
@@ -182,6 +185,11 @@ Upgrade of old DBUtil based categories
 ======================================
 Use an SQL like this to move the data to the new table::
 
-    INSERT INTO mymodule_user_category (entityId, registryId, categoryId) SELECT o.obj_id, o.reg_id, o.category_id FROM categories_mapobj o WHERE o.modname = 'YourModule' o.tablename = 'yourmodule_oldtable' 
+    INSERT INTO yourmodule_user_category (entityId, registryId, categoryId) SELECT o.obj_id, o.reg_id, o.category_id FROM categories_mapobj o WHERE o.modname = 'YourModule' o.tablename = 'yourmodule_oldtable' 
 
 Do not forgot to delete old data in the categories_mapobj table!
+
+Example
+=======
+The ExampleDoctrine module located in /src/docs/examples/modules/ExampleDoctrine/ 
+uses this doctrine extension in one of his entities.
