@@ -191,7 +191,7 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
         return $this->updatedUserId;
     }
     
-    public function setSpdatedUserId($updatedUserId)
+    public function setUpdatedUserId($updatedUserId)
     {
         $this->updatedUserId = $updatedUserId;
     }
