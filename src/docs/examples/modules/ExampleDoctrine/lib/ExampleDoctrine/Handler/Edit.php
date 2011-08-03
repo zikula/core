@@ -25,6 +25,8 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
      * @var integer
      */
     private $_id;
+    
+    private $_user;
 
     /**
      * Setup form.
@@ -36,12 +38,7 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
     public function initialize(Zikula_Form_View $view)
     {
         // load and assign registred categories
-        $registryCategories  = CategoryRegistryUtil::getRegisteredModuleCategories('ExampleDoctrine', 'exampledoctrine_users');
-        $categories = array();
-        foreach ($registryCategories as $property => $cid) {
-            $categories[$property] = (int)$cid;
-        }
-
+        $categories  = CategoryRegistryUtil::getRegisteredModuleCategories('ExampleDoctrine', 'User', 'id');
         $view->assign('registries', $categories);
 
         $id = FormUtil::getPassedValue('id', null, "GET", FILTER_SANITIZE_NUMBER_INT);
@@ -52,13 +49,28 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
             if ($user) {
                 // switch to edit mode
                 $this->_id = $id;
-                // assign current values to form fields
-                $view->assign('user', $user);
             } else {
                 return LogUtil::registerError($this->__f('User with id %s not found', $id));
             }
+        } else {
+            $user = new ExampleDoctrine_Entity_User();
         }
 
+        $userData = $user->toArray();
+        
+        // overwrite attributes array entry with a form compitable format
+        $field1 = $user->getAttributes()->get('field1')? $user->getAttributes()->get('field1')->getValue() : '';
+        $field2 = $user->getAttributes()->get('field2')? $user->getAttributes()->get('field2')->getValue() : '';
+        $userData['attributes'] = array('field1' => $field1,
+                                        'field2' => $field2);
+        
+        // assign current values to form fields
+        $view->assign('user', $user)
+             ->assign('meta', $user->getMetadata() != null? $user->getMetadata()->toArray() : array())
+             ->assign($userData);
+        
+        $this->_user = $user;
+        
         return true;
     }
 
@@ -79,14 +91,26 @@ class ExampleDoctrine_Handler_Edit extends Zikula_Form_AbstractHandler
 
         // load form values
         $data = $view->getValues();
-
-        // switch between edit and create mode
-        if ($this->_id) {
-            $user = $this->entityManager->find('ExampleDoctrine_Entity_User', $this->_id);
-        } else {
-            $user = new ExampleDoctrine_Entity_User();
+        $user = $this->_user;
+        
+        // merge attributes
+        foreach($data['attributes'] as $name => $value) {
+            $user->setAttribute($name, $value);
         }
-
+        
+        // merge metadata
+        $metadata = $user->getMetadata();
+        
+        if($metadata == null) {
+            $metadata = new ExampleDoctrine_Entity_UserMetadata($user);
+            $user->setMetadata($metadata);
+        }
+        
+        $metadata->merge($data['meta']);
+        
+        unset($data['attributes'], $data['meta']);
+        
+        // merge user and save everything
         $user->merge($data);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
