@@ -236,8 +236,21 @@ class DoctrineUtil
         $tableName = self::decorateTableName($tableName);
         $columnList = Doctrine_Manager::connection()->import->listTableColumns($tableName);
         if (isset($columnList[$oldColumnName])) {
+            $coldef = $columnList[$oldColumnName];
+
+            if ($coldef['type'] == 'string' && in_array('clob', $coldef['alltypes'])) {
+                // fix detection for TEXT fields
+                $coldef['type'] = 'clob';
+                $coldef['length'] = 65532;
+
+            } elseif ($coldef['type'] == 'integer' && in_array('boolean', $coldef['alltypes'])) {
+                // fix detection for BOOLEAN fields
+                $coldef['type'] = 'boolean';
+                $coldef['length'] = null;
+            }
+
             Doctrine_Manager::connection()->export->alterTable($tableName,
-                    array('rename' => array($oldColumnName => array('name' => $newColumnName, 'definition' => $columnList[$oldColumnName]))), $check);
+                    array('rename' => array($oldColumnName => array('name' => $newColumnName, 'definition' => $coldef))), $check);
         }
     }
 
@@ -251,7 +264,7 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function alterColumn($tableName, $columnName, array $options=array(), $check=false)
+    public static function alterColumn($tableName, $columnName, $column=array(), $check=false)
     {
         $options = array();
         $options = $column['options'];
