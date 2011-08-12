@@ -123,7 +123,11 @@ class DateUtil
         }
 
         if (!empty($datetime)) {
-            $time = self::makeTimestamp($datetime);
+            if ($datetime instanceof DateTime) {
+                $time = $datetime->getTimestamp();
+            } else {
+                $time = self::makeTimestamp($datetime);
+            }
             //$time = self::parseUIDate($datetime);
         } else {
             $time = time();
