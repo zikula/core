@@ -895,30 +895,26 @@ class System
 
     /**
      * Legacy mode enabled check.
+     * 
+     * @deprecated since 1.4.0
      *
      * @return boolean
      */
     public static function isLegacyMode()
     {
-        if (!isset($GLOBALS['ZConfig']['System']['compat_layer'])) {
-            return false;
-        }
-
-        return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
+        return false;
     }
 
     /**
      * Legacy prefilters check.
+     * 
+     * @deprecated since 1.4.0
      *
      * @return boolean
      */
     public static function hasLegacyTemplates()
     {
-        if (!isset($GLOBALS['ZConfig']['System']['legacy_prefilters'])) {
-            return false;
-        }
-
-        return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
+        return false;
     }
 
     /**
@@ -947,8 +943,6 @@ class System
         $override = Zikula_View::getTemplateOverride($templatePath);
         if ($override !== false) {
             return $override;
-        } else if (self::isLegacyMode() && file_exists("config/templates/$templateFile")) {
-            return "config/templates/$templateFile";
         } else {
             return $templatePath;
         }

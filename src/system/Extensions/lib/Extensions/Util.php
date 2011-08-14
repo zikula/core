@@ -39,22 +39,6 @@ class Extensions_Util
             }
         } elseif (is_dir("$rootdir/$moduleName/lib")) {
             LogUtil::registerError(__f('Could not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));
-        } else {
-            // pre 1.3 modules
-            $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
-            if (!file_exists($legacyVersionPath)) {
-                if (!System::isUpgrading()) {
-                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), Zikula_AbstractErrorHandler::CRIT);
-                    LogUtil::registerError(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
-                }
-                $modversion = array(
-                    'name' => $moduleName,
-                    'description' => '',
-                    'version' => 0
-                );
-            } else {
-                include $legacyVersionPath;
-            }
         }
 
         return $modversion;
