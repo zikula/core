@@ -80,19 +80,6 @@ class PageUtil
     {
         global $_pageVars;
 
-        if (System::isLegacyMode()) {
-            switch ($varname) {
-                case 'description':
-                case 'keywords':
-                    return true;
-                    break;
-                case 'rawtext':
-                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
-                    $varname = 'header';
-                    break;
-            }
-        }
-
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
             $_pageVars = array();
@@ -128,19 +115,6 @@ class PageUtil
     public static function resetVar($varname)
     {
         global $_pageVars;
-
-        if (System::isLegacyMode()) {
-            switch ($varname) {
-                case 'description':
-                case 'keywords':
-                    return true;
-                    break;
-                case 'rawtext':
-                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
-                    $varname = 'header';
-                    break;
-            }
-        }
 
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
@@ -186,22 +160,6 @@ class PageUtil
     {
         global $_pageVars;
 
-        if (System::isLegacyMode()) {
-            $sm = ServiceUtil::getManager();
-            switch ($varname) {
-                case 'description':
-                    return $sm['zikula_view.metatags']['description'];
-                    break;
-                case 'keywords':
-                    return $sm['zikula_view.metatags']['keywords'];
-                    break;
-                case 'rawtext':
-                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
-                    $varname = 'header';
-                    break;
-            }
-        }
-
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
             $_pageVars = array();
@@ -236,24 +194,6 @@ class PageUtil
     public static function setVar($varname, $value)
     {
         global $_pageVars;
-
-        if (System::isLegacyMode()) {
-            $sm = ServiceUtil::getManager();
-            switch ($varname) {
-                case 'description':
-                    $sm['zikula_view.metatags']['description'] = $value;
-                    return true;
-                    break;
-                case 'keywords':
-                    $sm['zikula_view.metatags']['keywords'] = $value;
-                    return true;
-                    break;
-                case 'rawtext':
-                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
-                    $varname = 'header';
-                    break;
-            }
-        }
 
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
@@ -291,15 +231,6 @@ class PageUtil
     {
         global $_pageVars;
 
-        if (System::isLegacyMode()) {
-            switch ($varname) {
-                case 'rawtext':
-                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
-                    $varname = 'header';
-                    break;
-            }
-        }
-        
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
             $_pageVars = array();
