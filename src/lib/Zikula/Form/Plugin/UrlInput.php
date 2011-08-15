@@ -23,7 +23,7 @@
  *
  * A valid URL must contain a protocol prefix ("http:" for instance)
  */
-class Zikula_Form_Plugin_URLInput extends Zikula_Form_Plugin_TextInput
+class Zikula_Form_Plugin_UrlInput extends Zikula_Form_Plugin_TextInput
 {
     /**
      * Default text to display instead of empty.
