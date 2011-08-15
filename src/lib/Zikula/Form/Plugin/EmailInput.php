@@ -21,7 +21,7 @@
  * You can also use all of the features from the Zikula_Form_Plugin_TextInput plugin since the e-mail input
  * inherits from it.
  */
-class Zikula_Form_Plugin_EMailInput extends Zikula_Form_Plugin_TextInput
+class Zikula_Form_Plugin_EmailInput extends Zikula_Form_Plugin_TextInput
 {
     /**
      * Get filename of this file.
