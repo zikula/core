@@ -25,5 +25,5 @@
  */
 function smarty_function_formurlinput($params, $view)
 {
-    return $view->registerPlugin('Zikula_Form_Plugin_URLInput', $params);
+    return $view->registerPlugin('Zikula_Form_Plugin_UrlInput', $params);
 }
