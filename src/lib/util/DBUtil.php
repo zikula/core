@@ -1792,7 +1792,7 @@ class DBUtil
 
         // build the where clause
         $n = 1; // subquery counter
-        $catmapobjtbl = DBUtil::getLimitedTablename('categories_mapobj');
+        $catmapobjtbl = 'categories_mapobj';
 
         $where = array();
         foreach ($categoryFilter as $property => $category) {
