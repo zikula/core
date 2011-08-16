@@ -338,21 +338,6 @@ class FormUtil
     }
 
     /**
-     * Return a newly created pnFormRender instance with the given name
-     *
-     * @param string $name Module name.
-     *
-     * @deprecated
-     * @see    FormUtil::newForm()
-     * @return pnFormRender The newly created Form_Render instance.
-     */
-    public static function newPNForm($name)
-    {
-        // This MUST call new pnForm and cannot be chained to self::newForm()
-        return new pnFormRender($name);
-    }
-
-    /**
      * Return a newly created pormRender instance with the given name.
      *
      * @param string                    $name       Module name.

@@ -128,8 +128,6 @@ function smarty_function_img($params, Zikula_View $view)
     } else {
         $modlangpath    = "$moduleDir/$osmoddir/images/$lang";
         $modpath        = "$moduleDir/$osmoddir/images";
-        $modlangpathOld = "$moduleDir/$osmoddir/pnimages/$lang";
-        $modpathOld     = "$moduleDir/$osmoddir/pnimages";
     }
     $ossrc = DataUtil::formatForOS($params['src']);
 
@@ -137,7 +135,7 @@ function smarty_function_img($params, Zikula_View $view)
     if ($modname == 'core') {
         $paths = array($themepath, $corethemepath, $modpath);
     } else {
-        $paths = array($themelangpath, $themepath, $corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld);
+        $paths = array($themelangpath, $themepath, $corethemepath, $modlangpath, $modpath);
     }
 
     // search for the image
@@ -170,7 +168,7 @@ function smarty_function_img($params, Zikula_View $view)
     // This way it is easy to scale the image to a certain dimension.
     if (!isset($params['width']) && !isset($params['height'])) {
         if (!($_image_data = @getimagesize($imgsrc))) {
-            $view->trigger_error(__f("%s: Image '%s' is not a valid image file", array('pnimg', DataUtil::formatForDisplay($params['src']))));
+            $view->trigger_error(__f("%s: Image '%s' is not a valid image file", array('img', DataUtil::formatForDisplay($params['src']))));
             if ($nostoponerror == true) {
                 return;
             } else {

@@ -93,7 +93,7 @@ function smarty_function_ajaxheader($params, Zikula_View $view)
         $osfilename = DataUtil::formatForOS($filename);
 
         $base = $modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules';
-        if (file_exists($file = "$base/$osdirectory/javascript/$osfilename") || file_exists($file = "$base/$osdirectory/pnjavascript/$osfilename")) {
+        if (file_exists($file = "$base/$osdirectory/javascript/$osfilename")) {
             $scripts[] = DataUtil::formatForDisplay($file);
         }
     }

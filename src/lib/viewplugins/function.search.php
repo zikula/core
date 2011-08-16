@@ -36,7 +36,7 @@
  * {search}
  *
  * {ml name="_SEARCH" assign="search_label"}
- * {search active="faqs, stories" label=$search_label class="pnsearchform"}
+ * {search active="faqs, stories" label=$search_label class="searchform"}
  *
  * Note
  * IE (incorrectly) treats a form as a block element rather than an inline

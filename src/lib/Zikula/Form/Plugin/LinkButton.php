@@ -131,10 +131,10 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
             if (!isset($this->attributes['imgset']) || empty($this->attributes['imgset'])) {
                 $this->attributes['imgset'] = 'icons/extrasmall';
             }
-            // we're going to make use of pnimg for path searching
+            // we're going to make use of img for path searching
             require_once $view->_get_plugin_filepath('function', 'img');
 
-            // call the pnimg plugin and work out the src from the assigned template vars
+            // call the img plugin and work out the src from the assigned template vars
             $args = array('src' => $this->attributes['imgsrc'],
                           'set' => $this->attributes['imgset'],
                           'title' => $text,

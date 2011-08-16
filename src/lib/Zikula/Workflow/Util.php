@@ -454,7 +454,7 @@ class Zikula_Workflow_Util
     }
 
     /**
-     * translates workflow permission to pn permission define
+     * translates workflow permission to permission define
      *
      * @param string $permission Permission string.
      *

@@ -405,9 +405,6 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
     /**
      * Extensions_admin_view - list modules and current settings
      *
-     * This function is an alias to extensions_admin_view as pnphpbb calls this
-     * function name directly on the install
-     *
      * @see extensions_admin_view
      * @return string HTML output string
      */

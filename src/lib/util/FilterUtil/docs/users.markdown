@@ -11,7 +11,7 @@ By default the filter string is read out from the argument "filter" in URL.
 Several filters can used by arguments "filter1" to "filterN". These filters will be connected by "OR".
 
 A single statement is a set of field name, operator and value connected by `:`.
-Thereby the field name is the name from Doctrine model or the pntables definition,
+Thereby the field name is the name from Doctrine model or the tables definition,
 while the operator defines the condition type (equal, lower than, aso.).
 
 - `name:eq:Peter` The name is Peter

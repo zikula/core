@@ -3,7 +3,7 @@
 
     To build a Profile Manager module able to handle dynamic fields connected with the Users module,
     it needs some specific methods functions explained below. It's recommended to hable the Users properties
-    as attributes, because the Core handles them automatically with the pnUserGet/Set* functions.
+    as attributes, because the Core handles them automatically with the userGet/Set* functions.
     The module should support the following methods:
 
     * form.edit:

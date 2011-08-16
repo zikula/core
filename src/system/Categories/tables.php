@@ -14,7 +14,7 @@
 
 
 /**
- * Populate pntables array for Categories module.
+ * Populate tables array for Categories module.
  *
  * @return array Array of informations related to the Categories module tables.
  */

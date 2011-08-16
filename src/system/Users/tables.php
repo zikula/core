@@ -14,7 +14,7 @@
  */
 
 /**
- * Populate pntables array for Users module.
+ * Populate tables array for Users module.
  *
  * This function is called internally by the core whenever the module is
  * loaded. It delivers the table information to the core.
@@ -50,7 +50,7 @@ function Users_tables($forVersion = null)
 }
 
 /**
- * Populate pntables array for Users module.
+ * Populate tables array for Users module.
  *
  * This function is called internally by the core whenever the module is
  * loaded. It delivers the table information to the core.
@@ -256,7 +256,7 @@ function Users_tables_for_220()
 }
 
 /**
- * Populate pntables array for Users module.
+ * Populate tables array for Users module.
  *
  * This function is called internally by the core whenever the module is
  * loaded. It delivers the table information to the core.

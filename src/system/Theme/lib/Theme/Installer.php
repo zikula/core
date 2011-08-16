@@ -17,11 +17,7 @@ class Theme_Installer extends Zikula_AbstractInstaller
     /**
      * initialise the theme module
      *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance.
-     * This function MUST exist in the pninit file for a module
-     *
-     * @return       bool       true on success, false otherwise
+     * @return bool
      */
     public function install()
     {

@@ -424,7 +424,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
                     // loads the gettext domain for 3rd party modules
                     if ($rootdir == 'modules' && is_dir("modules/$dir/locale")) {
-                        // This is required here since including pnversion automatically executes the pnversion code
+                        // This is required here since including version automatically executes the version code
                         // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
                         // since loading is self contained in each zOO application.
                         ZLanguage::bindModuleDomain($dir);

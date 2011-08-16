@@ -79,7 +79,7 @@
  */
 function smarty_function_button($params, Zikula_View $view)
 {
-    // we're going to make use of pnimg for path searching
+    // we're going to make use of img for path searching
     require_once $view->_get_plugin_filepath('function', 'img');
 
     if (!isset($params['src'])) {
