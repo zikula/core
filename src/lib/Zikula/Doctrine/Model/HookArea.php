@@ -76,9 +76,9 @@ class Zikula_Doctrine_Model_HookArea extends Doctrine_Record
              'autoincrement' => false,
              ));
 
-        $this->hasColumn('areaname', 'string', 60, array(
+        $this->hasColumn('areaname', 'string', 100, array(
              'type' => 'string',
-             'length' => 60,
+             'length' => 100,
              'fixed' => false,
              'unsigned' => false,
              'primary' => false,
@@ -90,7 +90,7 @@ class Zikula_Doctrine_Model_HookArea extends Doctrine_Record
                 'fields' => array(
                     'areaname' => array(
                         'sorting' => 'ASC',
-                        'length'  => 60),
+                        'length'  => 100),
                     ),
                 'type' => 'unique'));
     }
