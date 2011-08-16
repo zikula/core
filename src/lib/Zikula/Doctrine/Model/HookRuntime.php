@@ -96,9 +96,9 @@ class Zikula_Doctrine_Model_HookRuntime extends Doctrine_Record
                 'autoincrement' => false,
         ));
 
-        $this->hasColumn('eventname', 'string', 60, array(
+        $this->hasColumn('eventname', 'string', 100, array(
                 'type' => 'string',
-                'length' => 60,
+                'length' => 100,
                 'fixed' => false,
                 'unsigned' => false,
                 'primary' => false,
