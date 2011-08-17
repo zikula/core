@@ -135,7 +135,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function modify($args)
     {
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
+        $themename = $this->request->getGet()->filter('themename', isset($args['themename']) ? $args['themename'] : null, FILTER_SANITIZE_STRING);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -169,7 +169,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         // get our input
         $themeinfo = FormUtil::getPassedValue('themeinfo', isset($args['themeinfo']) ? $args['themeinfo'] : null, 'POST');
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
+        $themename = $this->request->getPost()->filter('themename', isset($args['themename']) ? $args['themename'] : null, FILTER_SANITIZE_STRING);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -968,7 +968,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function setasdefault($args)
     {
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'REQUEST');
+        $themename = $this->request->getGet()->filter('themename', isset($args['themename']) ? $args['themename'] : null, FILTER_SANITIZE_STRING);
         $confirmation = (int)FormUtil::getPassedValue ('confirmation', false, 'REQUEST');
         $resetuserselected = FormUtil::getPassedValue('resetuserselected', isset($args['resetuserselected']) ? $args['resetuserselected'] : null, 'POST');
 
@@ -1014,7 +1014,8 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      */
     public function delete($args)
     {
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'REQUEST');
+        $themename = $this->request->getGet()->filter('themename', isset($args['themename']) ? $args['themename'] : null, FILTER_SANITIZE_STRING);
+        
         $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
         $confirmation = FormUtil::getPassedValue('confirmation', null, 'POST');
         if (!empty($objectid)) {
