@@ -83,6 +83,22 @@ class Extensions_Installer extends Zikula_AbstractInstaller
                 EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
                 EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
             case '3.7.9':
+                // increase length of some hook table fields from 60 to 100
+                $commands = array();
+                $commands[] = "ALTER TABLE hook_area CHANGE areaname areaname VARCHAR(100) NOT NULL";
+                $commands[] = "ALTER TABLE hook_runtime CHANGE eventname eventname VARCHAR(100) NOT NULL";
+                $commands[] = "ALTER TABLE hook_subscriber CHANGE eventname eventname VARCHAR(100) NOT NULL";
+
+                // Load DB connection
+                $dbEvent = new Zikula_Event('doctrine.init_connection');
+                $connection = $this->eventManager->notify($dbEvent)->getData();
+
+                foreach ($commands as $sql) {
+                    $stmt = $connection->prepare($sql);
+                    $stmt->execute();
+                }
+
+            case '3.7.10':
                 // future upgrade routines
 
         }

@@ -62,6 +62,9 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $ORMConfig = new \Doctrine\ORM\Configuration;
         $serviceManager->attachService('doctrine.configuration', $ORMConfig);
         $ORMConfig->setMetadataCacheImpl($dbCache);
+        
+        // create proxy cache dir
+        CacheUtil::createLocalDir('doctrinemodels');
 
         // setup annotations base
         include_once 'lib/vendor/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
@@ -82,7 +85,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         // configure Doctrine ORM
         $ORMConfig->setMetadataDriverImpl($annotationDriver);
         $ORMConfig->setQueryCacheImpl($dbCache);
-        $ORMConfig->setProxyDir('ztemp/doctrinemodels');
+        $ORMConfig->setProxyDir(CacheUtil::getLocalDir('doctrinemodels'));
         $ORMConfig->setProxyNamespace('DoctrineProxy');
         //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
         
