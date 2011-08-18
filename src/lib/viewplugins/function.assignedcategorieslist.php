@@ -17,13 +17,18 @@
  * Retrieve an HTML unordered list of the categories assigned to a specified item.
  *
  * The assigned categories are retrieved from $item['__CATEGORIES__'] (DBUtil) or  $item['Categories'] (Doctrine).
+ * However, if we are using Doctrine 2, the categories are passed as param.
  *
  * Available attributes:
  *  - item  (array) The item from which to retrieve the assigned categories.
+ * or
+ *  - categories  (object) The item's categories.
+ *  - doctrine2   (boolean) true or false if using doctrine2 or not.
  *
  * Example:
  *
  * <samp>{assignedcategorieslist item=$myVar}</samp>
+ * <samp>{assignedcategorieslist categories=$myCategories doctrine2=true}</samp>
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
@@ -35,38 +40,60 @@
  */
 function smarty_function_assignedcategorieslist($params, Zikula_View $view)
 {
-    if (!isset($params['item'])) {
+    if (isset($params['doctrine2']) && (boolean)$params['doctrine2'] == true) {
+        if (!isset($params['categories'])) {
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'categories')));
+            return false;
+        }
+    } else if (!isset($params['item'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'item')));
         return false;
     }
 
     $lang = ZLanguage::getLanguageCode();
-
-    if (isset($params['item']['Categories']) && !empty($params['item']['Categories'])) {
-        $categories = $params['item']['Categories'];
-    } elseif (isset($params['item']['__CATEGORIES__']) && !empty($params['item']['__CATEGORIES__'])) {
-        $categories = $params['item']['__CATEGORIES__'];
-    } else {
-        $categories = array();
-    }
-
+    
     $result = "<ul>\n";
-    if (!empty($categories)) {
-        foreach ($categories as $property => $category) {
-            if (isset($category['Category'])) {
-                $category = $category['Category'];
-            }
+    
+    if (isset($params['doctrine2']) && (boolean)$params['doctrine2'] == true) {
+        foreach ($params['categories'] as $category) {
+            $name = $category->getCategory()->getName();
+            $display_name = $category->getCategory()->getDisplayName();
+            
             $result .= "<li>\n";
-            if (isset($category['display_name'][$lang])) {
-                $result .= $category['display_name'][$lang];
-            } else if (isset($category['name'])) {
-                $result .= $category['name'];
+            if (isset($display_name[$lang]) && !empty($display_name[$lang])) {
+                $result .= $display_name[$lang];
+            } else if (isset($name) && !empty($name)) {
+                $result .= $name;
             }
             $result .= "</li>\n";
         }
     } else {
-        $result .= '<li>' . DataUtil::formatForDisplay(__('No assigned categories.')) . '</li>';
+        if (isset($params['item']['Categories']) && !empty($params['item']['Categories'])) {
+            $categories = $params['item']['Categories'];
+        } elseif (isset($params['item']['__CATEGORIES__']) && !empty($params['item']['__CATEGORIES__'])) {
+            $categories = $params['item']['__CATEGORIES__'];
+        } else {
+            $categories = array();
+        }
+        
+        if (!empty($categories)) {
+            foreach ($categories as $property => $category) {
+                if (isset($category['Category'])) {
+                    $category = $category['Category'];
+                }
+                $result .= "<li>\n";
+                if (isset($category['display_name'][$lang])) {
+                    $result .= $category['display_name'][$lang];
+                } else if (isset($category['name'])) {
+                    $result .= $category['name'];
+                }
+                $result .= "</li>\n";
+            }
+        } else {
+            $result .= '<li>' . DataUtil::formatForDisplay(__('No assigned categories.')) . '</li>';
+        }
     }
+    
     $result .= "</ul>\n";
 
     return $result;
