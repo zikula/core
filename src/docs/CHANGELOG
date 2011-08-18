@@ -1,7 +1,23 @@
 CHANGELOG - ZIKULA 1.3.1
 ------------------------
 
-- Fixed issue with FileUtil::getFiles() not respecting nestedData arg (issue #3139)
+- Fixed issue with FileUtil::getFiles() not respecting nestedData arg (issue #3139).
+
+- Updated DoctrineExtensions.
+
+- Added Imagine image manipulation library - https://github.com/avalanche123/Imagine
+
+- Added standard-fields, attributable, category and metadata extensions for Doctrine 2.
+
+- Fixed DoctineUtil::renameColumn() - was corrupting TEXT to VARCHAR(255) and TINYINT(1) for TINYINT(4) when renaming.
+
+- Added support for DateTime objects to DateUtil.
+
+- Fixed XSS issues in Theme module.
+
+- Clean up remaining table prefix reference closes #77
+
+- Increased hook name field lengths from 60 to 100 characters.
 
 
 CHANGELOG - ZIKULA 1.3.0
