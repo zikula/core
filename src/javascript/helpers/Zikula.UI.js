@@ -317,6 +317,101 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
         return height;
     },
     /**
+     * Open the window
+     * @private
+     * @param {Event} event Event which fired window opening
+     * @return {Boolean}
+     */
+    open: function(event){
+        if(this.isOpen){
+            this.bringToFront();
+            return false;
+        }
+        if(this.notify('beforeOpen') === false)
+            return false;
+        //closeOnClick
+        if(this.options.closeOnClick){
+            if(this.options.closeOnClick === true)
+                this.closeOnClickContainer = $(document.body);
+            else if(this.options.closeOnClick == 'container')
+                this.closeOnClickContainer = this.container;
+            else if (this.options.closeOnClick == 'overlay'){
+                Control.Overlay.load();
+                this.closeOnClickContainer = Control.Overlay.container;
+            }else
+                this.closeOnClickContainer = $(this.options.closeOnClick);
+            this.closeOnClickContainer.observe('click',this.closeHandler);
+        }
+        if(this.href && !this.options.iframe && !this.remoteContentLoaded){
+            //link to image
+            this.remoteContentLoaded = true;
+            if(this.href.match(/\.(jpe?g|gif|png|tiff?)$/i)){
+                var img = new Element('img');
+                img.observe('load',function(img){
+                    this.getRemoteContentInsertionTarget().insert(img);
+                    this.position();
+                    if(this.notify('onRemoteContentLoaded') !== false){
+                        if(this.options.indicator)
+                            this.hideIndicator();
+                        this.finishOpen();
+                    }
+                }.bind(this,img));
+                img.writeAttribute('src',this.href);
+            }else{
+                //if this is an ajax window it will only open if the request is successful
+                if(!this.ajaxRequest){
+                    if(this.options.indicator)
+                        this.showIndicator();
+                    this.ajaxRequest = new Zikula.Ajax.Request(this.href,{
+                        method: this.options.method,
+                        parameters: this.options.parameters,
+                        onComplete: function(request){
+                            this.notify('onComplete',request);
+                            this.ajaxRequest = false;
+                        }.bind(this),
+                        onSuccess: function(request){
+                            this.getRemoteContentInsertionTarget().insert(request.responseText);
+                            this.notify('onSuccess',request);
+                            if(this.notify('onRemoteContentLoaded') !== false){
+                                if(this.options.indicator)
+                                    this.hideIndicator();
+                                this.finishOpen();
+                            }
+                        }.bind(this),
+                        onFailure: function(request){
+                            this.notify('onFailure',request);
+                            if(this.options.indicator)
+                                this.hideIndicator();
+                        }.bind(this),
+                        onException: function(request,e){
+                            this.notify('onException',request,e);
+                            if(this.options.indicator)
+                                this.hideIndicator();
+                        }.bind(this)
+                    });
+                }
+            }
+            return true;
+        }else if(this.options.iframe && !this.remoteContentLoaded){
+            //iframe
+            this.remoteContentLoaded = true;
+            if(this.options.indicator)
+                this.showIndicator();
+            this.getRemoteContentInsertionTarget().insert(Control.Window.iframeTemplate.evaluate({
+                href: this.href
+            }));
+            var iframe = this.container.down('iframe');
+            iframe.onload = function(){
+                this.notify('onRemoteContentLoaded');
+                if(this.options.indicator)
+                    this.hideIndicator();
+                iframe.onload = null;
+            }.bind(this);
+        }
+        this.finishOpen(event);
+        return true
+    },
+    /**
      * Finishing window opening process and take care about window size
      * @private
      * @param {Function} $super Reference to overridden method, private.
