@@ -50,7 +50,7 @@
     </tbody>
 </table>
 
-<p class="z-informationmsg">{gt text="Notice: Any configuration files that Zikula cannot find must be created in 'themes/%s/templates/config'." tag1=$themename}</p>
+<p class="z-informationmsg">{gt text="Notice: Any configuration files that Zikula cannot find must be created in 'themes/%s/templates/config'." tag1=$themename|safetext}</p>
 
 <h4>{gt text="Create new page configuration assignment"}</h4>
 
