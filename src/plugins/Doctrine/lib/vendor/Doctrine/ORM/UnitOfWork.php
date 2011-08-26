@@ -1406,7 +1406,7 @@ class UnitOfWork implements PropertyChangedListener
                 $entityVersion = $class->reflFields[$class->versionField]->getValue($entity);
                 // Throw exception if versions dont match.
                 if ($managedCopyVersion != $entityVersion) {
-                    throw OptimisticLockException::lockFailedVersionMissmatch($entityVersion, $managedCopyVersion);
+                    throw OptimisticLockException::lockFailedVersionMissmatch($entity, $entityVersion, $managedCopyVersion);
                 }
             }
 
@@ -1456,7 +1456,8 @@ class UnitOfWork implements PropertyChangedListener
                         }
                         if ($assoc2['isCascadeMerge']) {
                             $managedCol->initialize();
-                            if (!$managedCol->isEmpty()) {
+                            // clear and set dirty a managed collection if its not also the same collection to merge from.
+                            if (!$managedCol->isEmpty() && $managedCol != $mergeCol) {
                                 $managedCol->unwrap()->clear();
                                 $managedCol->setDirty(true);
                                 if ($assoc2['isOwningSide'] && $assoc2['type'] == ClassMetadata::MANY_TO_MANY && $class->isChangeTrackingNotify()) {
@@ -1655,6 +1656,10 @@ class UnitOfWork implements PropertyChangedListener
             }
             $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
             if ($relatedEntities instanceof Collection) {
+                if ($relatedEntities === $class->reflFields[$assoc['fieldName']]->getValue($managedCopy)) {
+                    continue;
+                }
+
                 if ($relatedEntities instanceof PersistentCollection) {
                     // Unwrap so that foreach() does not initialize
                     $relatedEntities = $relatedEntities->unwrap();
@@ -1976,7 +1981,7 @@ class UnitOfWork implements PropertyChangedListener
                                         // a way to solve this with deferred eager loading, which means putting
                                         // an entity with subclasses at a *-to-one location is really bad! (performance-wise)
                                         $newValue = $this->getEntityPersister($assoc['targetEntity'])
-                                                ->loadOneToOneEntity($assoc, $entity, null, $associatedId);
+                                                ->loadOneToOneEntity($assoc, $entity, $associatedId);
                                     } else {
                                         // Deferred eager load only works for single identifier classes
 
@@ -2012,7 +2017,7 @@ class UnitOfWork implements PropertyChangedListener
                         } else {
                             // Inverse side of x-to-one can never be lazy
                             $class->reflFields[$field]->setValue($entity, $this->getEntityPersister($assoc['targetEntity'])
-                                    ->loadOneToOneEntity($assoc, $entity, null));
+                                    ->loadOneToOneEntity($assoc, $entity));
                         }
                     } else {
                         // Inject collection
@@ -2143,7 +2148,7 @@ class UnitOfWork implements PropertyChangedListener
      * @return array The identifier values.
      */
     public function getEntityIdentifier($entity)
-    {
+    {        
         return $this->entityIdentifiers[spl_object_hash($entity)];
     }
 

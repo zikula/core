@@ -570,6 +570,7 @@ class BasicEntityPersister
         
         if ($entity !== null) {
             $hints[Query::HINT_REFRESH] = true;
+            $hints[Query::HINT_REFRESH_ENTITY] = $entity;
         }
 
         if ($this->_selectJoinSql) {
@@ -587,13 +588,12 @@ class BasicEntityPersister
      *
      * @param array $assoc The association to load.
      * @param object $sourceEntity The entity that owns the association (not necessarily the "owning side").
-     * @param object $targetEntity The existing ghost entity (proxy) to load, if any.
      * @param array $identifier The identifier of the entity to load. Must be provided if
      *                          the association to load represents the owning side, otherwise
      *                          the identifier is derived from the $sourceEntity.
      * @return object The loaded and managed entity instance or NULL if the entity can not be found.
      */
-    public function loadOneToOneEntity(array $assoc, $sourceEntity, $targetEntity, array $identifier = array())
+    public function loadOneToOneEntity(array $assoc, $sourceEntity, array $identifier = array())
     {
         if ($foundEntity = $this->_em->getUnitOfWork()->tryGetById($identifier, $assoc['targetEntity'])) {
             return $foundEntity;
@@ -621,7 +621,7 @@ class BasicEntityPersister
             }
             */
 
-            $targetEntity = $this->load($identifier, $targetEntity, $assoc, $hints);
+            $targetEntity = $this->load($identifier, null, $assoc, $hints);
 
             // Complete bidirectional association, if necessary
             if ($targetEntity !== null && $isInverseSingleValued) {
@@ -633,7 +633,11 @@ class BasicEntityPersister
             // TRICKY: since the association is specular source and target are flipped
             foreach ($owningAssoc['targetToSourceKeyColumns'] as $sourceKeyColumn => $targetKeyColumn) {
                 if (isset($sourceClass->fieldNames[$sourceKeyColumn])) {
-                    $identifier[$targetKeyColumn] = $sourceClass->reflFields[$sourceClass->fieldNames[$sourceKeyColumn]]->getValue($sourceEntity);
+                    // unset the old value and set the new sql aliased value here. By definition
+                    // unset($identifier[$targetKeyColumn] works here with how UnitOfWork::createEntity() calls this method.
+                    $identifier[$this->_getSQLTableAlias($targetClass->name) . "." . $targetKeyColumn] =
+                        $sourceClass->reflFields[$sourceClass->fieldNames[$sourceKeyColumn]]->getValue($sourceEntity);
+                    unset($identifier[$targetKeyColumn]);
                 } else {
                     throw MappingException::joinColumnMustPointToMappedField(
                         $sourceClass->name, $sourceKeyColumn
@@ -641,7 +645,7 @@ class BasicEntityPersister
                 }
             }
 
-            $targetEntity = $this->load($identifier, $targetEntity, $assoc);
+            $targetEntity = $this->load($identifier, null, $assoc);
 
             if ($targetEntity !== null) {
                 $targetClass->setFieldValue($targetEntity, $assoc['mappedBy'], $sourceEntity);
@@ -1214,7 +1218,7 @@ class BasicEntityPersister
             } else if ($assoc !== null && strpos($field, " ") === false && strpos($field, "(") === false) {
                 // very careless developers could potentially open up this normally hidden api for userland attacks,
                 // therefore checking for spaces and function calls which are not allowed.
-                
+
                 // found a join column condition, not really a "field"
                 $conditionSql .= $field;
             } else {
