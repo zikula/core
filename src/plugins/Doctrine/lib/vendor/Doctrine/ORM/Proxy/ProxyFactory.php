@@ -172,7 +172,7 @@ class ProxyFactory
             }
 
             if ($method->isPublic() && ! $method->isFinal() && ! $method->isStatic()) {
-                $methods .= PHP_EOL . '    public function ';
+                $methods .= "\n" . '    public function ';
                 if ($method->returnsReference()) {
                     $methods .= '&';
                 }
@@ -208,10 +208,10 @@ class ProxyFactory
                 }
 
                 $methods .= $parameterString . ')';
-                $methods .= PHP_EOL . '    {' . PHP_EOL;
-                $methods .= '        $this->__load();' . PHP_EOL;
+                $methods .= "\n" . '    {' . "\n";
+                $methods .= '        $this->__load();' . "\n";
                 $methods .= '        return parent::' . $method->getName() . '(' . $argumentString . ');';
-                $methods .= PHP_EOL . '    }' . PHP_EOL;
+                $methods .= "\n" . '    }' . "\n";
             }
         }
 
@@ -274,6 +274,14 @@ class <proxyClassName> extends \<className> implements \Doctrine\ORM\Proxy\Proxy
     {
         if (!$this->__isInitialized__ && $this->_entityPersister) {
             $this->__isInitialized__ = true;
+
+            if (method_exists($this, "__wakeup")) {
+                // call this after __isInitialized__to avoid infinite recursion
+                // but before loading to emulate what ClassMetadata::newInstance()
+                // provides.
+                $this->__wakeup();
+            }
+
             if ($this->_entityPersister->load($this->_identifier, $this) === null) {
                 throw new \Doctrine\ORM\EntityNotFoundException();
             }
