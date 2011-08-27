@@ -1,0 +1,39 @@
+<h1>Module list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Class</th>
+            <th>State</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('module_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.class }}</td>
+            <td>{{ entity.state }}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('module_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('module_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul>
+    <li>
+        <a href="{{ path('module_new') }}">
+            Create a new entry
+        </a>
+    </li>
+</ul>
