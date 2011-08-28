@@ -4,7 +4,7 @@
     <h3>{gt text="Theme confirmation prompt"}</h3>
 </div>
 
-<p class="z-warningmsg">{gt text="Do you really want to set '%s' as the active theme for all site users?" tag1=$themename}</p>
+<p class="z-warningmsg">{gt text="Do you really want to set '%s' as the active theme for all site users?" tag1=$themename|safetext}</p>
 <form class="z-form" action="{modurl modname="Theme" type="admin" func="setasdefault"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
