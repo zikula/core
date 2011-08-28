@@ -8,7 +8,11 @@ abstract class ZikulaKernel extends Kernel{
     private $moduleBundles;
     
     public function boot() {
-        $modules = $this->loadModulesViaDoctrine();
+        $modules = array();
+        
+        if(!$this->isCli()) {
+            $modules = $this->loadModulesViaDoctrine();
+        }
         
         $this->moduleBundles = array();
         foreach($modules as $module) {
@@ -60,5 +64,13 @@ abstract class ZikulaKernel extends Kernel{
         
         
         return $em->getRepository('Zikula\ModulesBundle\Entity\Module')->findBy(array('state' => 1));
+    }
+    
+    function isCli() {
+        if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
+          return true;
+        } else {
+          return false;
+        }
     }
 }
