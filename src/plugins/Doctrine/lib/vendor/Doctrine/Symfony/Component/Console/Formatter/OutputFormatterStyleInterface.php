@@ -62,11 +62,16 @@ interface OutputFormatterStyleInterface
     function setOptions(array $options);
 
     /**
-     * Applies the style to a given text.
+     * Returns begin style code.
      *
-     * @param string $text The text to style
-     *
-     * @return string
+     * @return  string
      */
-    function apply($text);
+    function getBeginStyle();
+
+    /**
+     * Returns end style code.
+     *
+     * @return  string
+     */
+    function getEndStyle();
 }
