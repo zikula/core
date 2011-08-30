@@ -39,7 +39,7 @@ Doctrine 1.2.4
     Patch details:
     - Fix on Doctrine_Record::unlinkInDb field names causing exceptions and local unlinking https://github.com/doctrine/doctrine1/pull/35
 
-Doctrine 2.0.5
+Doctrine 2.1.1
 
     Vendor website: http://www.doctrine-project.org/
     Downloaded from: http://www.doctrine-project.org/projects/orm/download/
