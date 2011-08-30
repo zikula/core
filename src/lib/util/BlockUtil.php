@@ -132,7 +132,7 @@ class BlockUtil
             if ($echo) {
                 echo self::show($modinfo['name'], $blockinfo['bkey'], $blockinfo);
             } else {
-                $blockoutput[] = self::show($modinfo['name'], $blockinfo['bkey'], $blockinfo);
+                $blockoutput[$blockinfo['bid']] = self::show($modinfo['name'], $blockinfo['bkey'], $blockinfo);
             }
         }
 
