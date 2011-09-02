@@ -55,17 +55,21 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
     $result = "<ul>\n";
     
     if (isset($params['doctrine2']) && (boolean)$params['doctrine2'] == true) {
-        foreach ($params['categories'] as $category) {
-            $name = $category->getCategory()->getName();
-            $display_name = $category->getCategory()->getDisplayName();
-            
-            $result .= "<li>\n";
-            if (isset($display_name[$lang]) && !empty($display_name[$lang])) {
-                $result .= $display_name[$lang];
-            } else if (isset($name) && !empty($name)) {
-                $result .= $name;
+        if (count($params['categories']) > 0) {
+            foreach ($params['categories'] as $category) {
+                $name = $category->getCategory()->getName();
+                $display_name = $category->getCategory()->getDisplayName();
+
+                $result .= "<li>\n";
+                if (isset($display_name[$lang]) && !empty($display_name[$lang])) {
+                    $result .= $display_name[$lang];
+                } else if (isset($name) && !empty($name)) {
+                    $result .= $name;
+                }
+                $result .= "</li>\n";
             }
-            $result .= "</li>\n";
+        } else {
+            $result .= '<li>' . DataUtil::formatForDisplay(__('No assigned categories.')) . '</li>';
         }
     } else {
         if (isset($params['item']['Categories']) && !empty($params['item']['Categories'])) {
