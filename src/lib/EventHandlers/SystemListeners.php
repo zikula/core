@@ -267,7 +267,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Load system plugins.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_LANGS.
+     * Implements 'core.init' event when Zikula_Core::STAGE_TABLES.
      *
      * @param Zikula_Event $event The event handler.
      *
@@ -275,7 +275,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function systemPlugins(Zikula_Event $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_LANGS) {
+        if ($event['stage'] & Zikula_Core::STAGE_TABLES) {
             if (!System::isInstalling()) {
                 ServiceUtil::loadPersistentServices();
                 PluginUtil::loadPlugins(realpath(realpath('.').'/plugins'), "SystemPlugin");
