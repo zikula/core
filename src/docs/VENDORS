@@ -39,7 +39,7 @@ Doctrine 1.2.4
     Patch details:
     - Fix on Doctrine_Record::unlinkInDb field names causing exceptions and local unlinking https://github.com/doctrine/doctrine1/pull/35
 
-Doctrine 2.1.1
+Doctrine 2.1.2
 
     Vendor website: http://www.doctrine-project.org/
     Downloaded from: http://www.doctrine-project.org/projects/orm/download/
@@ -124,7 +124,7 @@ Validation 1.5.4.1
     Location in Zikula: javascript/ajax/validation.min.js
     Patch details: none
 
-jQuery v1.6.2
+jQuery v1.6.3
 
     Vendor website: http://jquery.com/
     Downloaded from: http://jquery.com/

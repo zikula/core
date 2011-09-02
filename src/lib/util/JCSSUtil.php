@@ -375,7 +375,7 @@ class JCSSUtil
             );
             $jQueryUncompressed = array(
                     'jquery' => array(
-                            'path' => 'javascript/jquery/jquery-1.6.2.js',
+                            'path' => 'javascript/jquery/jquery-1.6.3.js',
                             'require' => array('noconflict'),
                     ),
                     'noconflict' => array(
