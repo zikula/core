@@ -335,7 +335,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
                 break;
 
             case 'hidden':
-                $result = "<input type=\"hidden\"{$idHtml}{$nameHtml}{$maxLengthHtml} value=\"{$text}\" />";
+                $result = "<input type=\"hidden\"{$idHtml}{$nameHtml} class=\"{$class}\" value=\"{$text}\" />";
                 break;
 
             default:
