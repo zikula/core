@@ -6,17 +6,27 @@ use Symfony\Component\HttpKernel\Kernel;
 
 abstract class ZikulaKernel extends Kernel{
     private $moduleBundles;
+    private $runtimeBundleMap = array();
+    private $loadModules;
+    
+    
+    public function __construct($environment, $debug, $loadModules=false)
+    {
+        parent::__construct($environment, $debug);
+        
+        $this->loadModules = $loadModules;
+    }
     
     public function boot() {
         $modules = array();
         
-        if(!$this->isCli()) {
+        if($this->loadModules) {
             $modules = $this->loadModulesViaDoctrine();
         }
         
         $this->moduleBundles = array();
         foreach($modules as $module) {
-            $class = $module->getClass();
+            $class = $module->getName() . '\\' . $module->getName() . 'Module';
             $this->moduleBundles[] = new $class();
         }
         
@@ -65,12 +75,17 @@ abstract class ZikulaKernel extends Kernel{
         
         return $em->getRepository('Zikula\ModulesBundle\Entity\Module')->findBy(array('state' => 1));
     }
-    
-    function isCli() {
-        if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
-          return true;
+
+    public function getBundle($name, $first = true)
+    {
+        $bundleProviders = $this->container->get('zikula.runtimebundleproviders');
+        
+        if(isset($this->runtimeBundleMap[$name])) {
+            return array($this->runtimeBundleMap[$name]);
+        } else if($bundleProviders->hasBundle($name)) {
+            return array($bundleProviders->getBundle($name));
         } else {
-          return false;
+            return parent::getBundle($name, $first);
         }
     }
 }

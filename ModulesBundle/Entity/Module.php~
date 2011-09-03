@@ -1,0 +1,46 @@
+<?php
+
+namespace Zikula\ModulesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Zikula\ModulesBundle\Entity\Module
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ */
+class Module
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string $class
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var smallint $state
+     *
+     * @ORM\Column(name="state", type="smallint")
+     */
+    private $state;
+    
+    /**
+     * @var string $class
+     *
+     * @ORM\Column(name="version", type="string", length=10)
+     */
+    private $version;
+
+
+}

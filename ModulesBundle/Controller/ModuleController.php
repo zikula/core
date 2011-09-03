@@ -24,9 +24,8 @@ class ModuleController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $entities = $em->getRepository('ZikulaModulesBundle:Module')->findAll();
+        $this->get('zikula.modules')->regenerateModuleList();
+        $entities = $this->get('zikula.modules')->getAllModules();
 
         return array('entities' => $entities);
     }
@@ -52,52 +51,6 @@ class ModuleController extends Controller
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),        );
-    }
-
-    /**
-     * Displays a form to create a new Module entity.
-     *
-     * @Route("/new", name="module_new")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Module();
-        $form   = $this->createForm(new ModuleType(), $entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView()
-        );
-    }
-
-    /**
-     * Creates a new Module entity.
-     *
-     * @Route("/create", name="module_create")
-     * @Method("post")
-     * @Template("ZikulaModulesBundle:Module:new.html.twig")
-     */
-    public function createAction()
-    {
-        $entity  = new Module();
-        $request = $this->getRequest();
-        $form    = $this->createForm(new ModuleType(), $entity);
-        $form->bindRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('module_show', array('id' => $entity->getId())));
-            
-        }
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView()
-        );
     }
 
     /**
@@ -151,8 +104,7 @@ class ModuleController extends Controller
         $editForm->bindRequest($request);
 
         if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
+            $this->get('zikula.modules')->update($entity);
 
             return $this->redirect($this->generateUrl('module_edit', array('id' => $id)));
         }

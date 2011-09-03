@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Module
 {
+    const STATE_NEW = 0;
+    const STATE_ACTIVE = 1;
+    const STATE_INACTIVE = 2;
+    const STATE_NEED_UPGRADE = 3;
+    
     /**
      * @var integer $id
      *
@@ -24,9 +29,9 @@ class Module
     /**
      * @var string $class
      *
-     * @ORM\Column(name="class", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    private $class;
+    private $name;
 
     /**
      * @var smallint $state
@@ -34,6 +39,14 @@ class Module
      * @ORM\Column(name="state", type="smallint")
      */
     private $state;
+    
+    /**
+     * @var string $class
+     *
+     * @ORM\Column(name="version", type="string", length=10)
+     */
+    private $version;
+
 
 
     /**
@@ -47,23 +60,23 @@ class Module
     }
 
     /**
-     * Set class
+     * Set name
      *
-     * @param string $class
+     * @param string $name
      */
-    public function setClass($class)
+    public function setName($name)
     {
-        $this->class = $class;
+        $this->name = $name;
     }
 
     /**
-     * Get class
+     * Get name
      *
      * @return string 
      */
-    public function getClass()
+    public function getName()
     {
-        return $this->class;
+        return $this->name;
     }
 
     /**
@@ -84,5 +97,25 @@ class Module
     public function getState()
     {
         return $this->state;
+    }
+
+    /**
+     * Set version
+     *
+     * @param string $version
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string 
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 }
