@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="zikula.themes.listener" class="Zikula\ThemesBundle\EventListener\ThemeRenderer">
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" priority="255"  />
+            <argument type="service" id="templating" />
+        </service>
+        
+        <service id="zikula.themes.runtimebundleprovider" class="Zikula\ThemesBundle\RuntimeBundle\ThemeRuntimeBundleProvider" public="false">
+            <tag name="zikula.kernel.dynamicbundles" />
+            <argument type="string">%kernel.root_dir%</argument>
+        </service>
+    </services>
+</container>

@@ -9,5 +9,17 @@
             <tag name="routing.loader" />
             <argument type="service" id="kernel" />
         </service>
+        
+        <service id="zikula.modules.storage" class="Zikula\ModulesBundle\ModuleService\DoctrineStorage" public="false">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+        
+        <service id="zikula.modules" class="Zikula\ModulesBundle\DefaultModuleService">
+            <argument type="service" id="zikula.modules.storage" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+        
+        <service id="zikula.runtimebundleproviders" class="Zikula\ModulesBundle\Bundle\RuntimeBundleProviders">
+        </service>
     </services>
 </container>
