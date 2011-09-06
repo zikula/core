@@ -777,7 +777,7 @@ class ModUtil
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // if class is loadable or has been loaded exit here.
-        if (self::isIntialized($modname)) {
+        if (self::isInitialized($modname)) {
             self::_loadStyleSheets($modname, $api, $type);
             return $modname;
         }
@@ -1543,7 +1543,7 @@ class ModUtil
      */
     public static function initOOModule($moduleName)
     {
-        if (self::isIntialized($moduleName)) {
+        if (self::isInitialized($moduleName)) {
             return true;
         }
 
@@ -1581,7 +1581,7 @@ class ModUtil
      *
      * @return boolean
      */
-    public static function isIntialized($moduleName)
+    public static function isInitialized($moduleName)
     {
         return (bool)(self::$ooModules[$moduleName]['initialized']);
     }
