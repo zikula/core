@@ -14,14 +14,27 @@ namespace Imagine\Filter\Basic;
 use Imagine\Filter\FilterInterface;
 use Imagine\Image\ImageInterface;
 
-class Copy implements FilterInterface
+class ApplyMask implements FilterInterface
 {
+    /**
+     * @var Imagine\Image\ImageInterface
+     */
+    private $mask;
+
+    /**
+     * @param Imagine\Image\ImageInterface $mask
+     */
+    public function __construct(ImageInterface $mask)
+    {
+        $this->mask = $mask;
+    }
+
     /**
      * (non-PHPdoc)
      * @see Imagine\Filter\FilterInterface::apply()
      */
     public function apply(ImageInterface $image)
     {
-        return $image->copy();
+        return $image->applyMask($this->mask);
     }
 }
