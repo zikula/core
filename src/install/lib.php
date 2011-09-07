@@ -23,7 +23,6 @@ ini_set('max_execution_time', 300);
 function install(Zikula_Core $core)
 {
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
-    $installbySQL = (file_exists('install/sql/custom.sql') ? true : false);
 
     $serviceManager = $core->getServiceManager();
     $eventManager = $core->getEventManager();
@@ -111,6 +110,8 @@ function install(Zikula_Core $core)
     $_lang->setup();
 
     $lang = ZLanguage::getLanguageCode();
+
+    $installbySQL = (file_exists("install/sql/custom-$lang.sql") ? "install/sql/custom-$lang.sql" : false);
 
     $smarty->assign('lang', $lang);
     $smarty->assign('installbySQL', $installbySQL);
@@ -215,15 +216,13 @@ function install(Zikula_Core $core)
                         $smarty->assign('dbexists', true);
                     }
                     if ($proceed) {
-                        // set sql dump file path
-                        $fileurl = 'install/sql/custom.sql';
                         // checks if file exists
-                        if (!file_exists($fileurl)) {
+                        if (!file_exists($installbySQL)) {
                             $action = 'dbinformation';
                             $smarty->assign('dbdumpfailed', true);
                         } else {
                             // execute the SQL dump
-                            $lines = file($fileurl);
+                            $lines = file($installbySQL);
                             $exec = '';
                             foreach ($lines as $line_num => $line) {
                                 $line = trim($line);
