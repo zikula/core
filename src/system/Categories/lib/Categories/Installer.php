@@ -150,7 +150,7 @@ class Categories_Installer extends Zikula_AbstractInstaller
             return false;
         }
 
-        if (!DBUtil::createIndex('idx_categories_mapobj', 'categories_mapobj', array('modname', 'table', 'id', 'idcolumn'))) {
+        if (!DBUtil::createIndex('idx_categories_mapobj', 'categories_mapobj', array('modname', 'table', 'obj_id', 'obj_idcolumn'))) {
             return false;
         }
 

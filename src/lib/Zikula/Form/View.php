@@ -259,7 +259,7 @@ class Zikula_Form_View extends Zikula_View
             $this->decodeStateData();
             $this->decodeState();
 
-            if ($eventHandler->initialize($this) === false) {
+            if ($this->eventHandler->initialize($this) === false) {
                 return $this->getErrorMsg();
             }
 
@@ -274,7 +274,7 @@ class Zikula_Form_View extends Zikula_View
             $this->decodePostBackEvent(); // Execute optional postback after plugins have read their values
         } else {
             $this->setFormId(uniqid('f'));
-            if ($eventHandler->initialize($this) === false) {
+            if ($this->eventHandler->initialize($this) === false) {
                 return $this->getErrorMsg();
             }
             $this->eventHandler->postInitialize();
