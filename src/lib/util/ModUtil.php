@@ -91,7 +91,7 @@ class ModUtil
      *
      * @return void
      */
-    public static function initCoreVars()
+    public static function initCoreVars($force=false)
     {
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
         self::$modvars = new ArrayObject(array(
@@ -101,7 +101,7 @@ class ModUtil
         ));
 
         // don't init vars during the installer or upgrader
-        if (System::isInstalling()) {
+        if (!$force && System::isInstalling()) {
             return;
         }
 

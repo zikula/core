@@ -203,13 +203,15 @@ function install(Zikula_Core $core)
                         'repeatpassword' => $repeatpassword,
                         'email' => $email));
             } else {
+                $installedOk = false;
                 // if it is the distribution and the process have not failed in a previous step
                 if ($installbySQL) {
                     // checks if exists a previous installation with the same prefix
                     $proceed = true;
+                    $dbnameConfig = $GLOBALS['ZConfig']['DBInfo']['databases']['default']['dbname'];
                     $exec = ($dbdriver == 'mysql' || $dbdriver == 'mysqli') ?
-                            "SHOW TABLES FROM `$dbname` LIKE '%'" :
-                            "SHOW TABLES FROM $dbname LIKE '%'";
+                            "SHOW TABLES FROM `$dbnameConfig` LIKE '%'" :
+                            "SHOW TABLES FROM $dbnameConfig LIKE '%'";
                     $tables = DBUtil::executeSQL($exec);
                     if ($tables->rowCount() > 0) {
                         $proceed = false;
@@ -239,14 +241,23 @@ function install(Zikula_Core $core)
                                     $exec = '';
                                 }
                             }
+                            ModUtil::dbInfoLoad('Users', 'Users');
+                            ModUtil::dbInfoLoad('Extensions', 'Extensions');
+                            ModUtil::initCoreVars(true);
+                            createuser($username, $password, $email);
+                            $installedOk = true;
                         }
                     }
                 } else {
                     installmodules($lang);
+                    createuser($username, $password, $email);
+                    $installedOk = true;
+                }
+
+                if ($installedOk) {
 
                     // create our new site admin
                     // TODO: Email username/password to administrator email address.  Cannot use ModUtil::apiFunc for this.
-                    createuser($username, $password, $email);
                     $serviceManager->getService('session')->start();
 
                     $authenticationInfo = array(
@@ -336,6 +347,9 @@ function install(Zikula_Core $core)
  */
 function createuser($username, $password, $email)
 {
+    if (!class_exists('Users_Constant')) {
+        require_once 'system/Users/lib/Users/Constant.php';
+    }
     $connection = Doctrine_Manager::connection();
 
     // get the database connection
