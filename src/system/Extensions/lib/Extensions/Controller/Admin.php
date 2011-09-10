@@ -66,6 +66,15 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         if ($restore) {
             // load the version array
             $baseDir = ($obj['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+            
+            // load gettext domain for 3rd party modules
+            if ($baseDir == 'modules' && is_dir("modules/$obj[directory]/locale")) {
+                // This is required here since including pnversion automatically executes the pnversion code
+                // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
+                // since loading is self contained in each zOO application.
+                ZLanguage::bindModuleDomain($obj['directory']);
+            }
+            
             $modversion = Extensions_Util::getVersionMeta($obj['directory'], $baseDir);
 
             // load defaults
