@@ -13,8 +13,11 @@ class ThemeRenderer {
      */
     private $templating;
     
+    private $activeTheme;
+    
     public function __construct(EngineInterface $templating) {
         $this->templating = $templating;
+        $this->activeTheme = 'BlueprintTheme';
     }
     
     public function onKernelResponse(\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) {
@@ -27,8 +30,7 @@ class ThemeRenderer {
                     && !$response->isRedirection()
                     && 'html' === $request->getRequestFormat()
                     && (($response->headers->has('Content-Type') && false !== strpos($response->headers->get('Content-Type'), 'html'))  || !$response->headers->has('Content-Type') )) {
-                $template = new \Symfony\Component\Templating\TemplateReference(__DIR__ . '/../../../../themes/Blueprint/Resources/views/base.html.twig');
-                $content = $this->templating->render($template, array('content' => $response->getContent()));
+                $content = $this->templating->render($this->activeTheme . '::base.html.twig', array('content' => $response->getContent()));
                 $response->setContent($content);
             }
         }

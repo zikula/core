@@ -9,6 +9,6 @@ class ZikulaModulesBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new DependencyInjection\Compiler\RuntimeBundlesPass());
+        $container->addCompilerPass(new DependencyInjection\Compiler\ControllerResolverCompilerPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION);
     }
 }
