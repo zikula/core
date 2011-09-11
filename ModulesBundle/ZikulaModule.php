@@ -2,15 +2,19 @@
 
 namespace Zikula\ModulesBundle;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 /**
  *
  */
 abstract class ZikulaModule extends \Symfony\Component\HttpKernel\Bundle\Bundle {
     
+    private $serviceIds = array();
+    
     public function __construct() {
         $name = get_class($this);
         $posNamespaceSeperator = strrpos($name, '\\');
-        $this->name = str_replace('Module', '', substr($name, $posNamespaceSeperator + 1));
+        $this->name = substr($name, $posNamespaceSeperator + 1);
     }
     
     public abstract function getVersion();
@@ -19,4 +23,24 @@ abstract class ZikulaModule extends \Symfony\Component\HttpKernel\Bundle\Bundle 
      * @return ModuleInstallerInterface
      */
     public abstract function createInstaller();
+    
+    final public function build(ContainerBuilder $container)
+    {
+        // modules have to use DI Extensions
+    }
+    
+    final public function getContainerExtension()
+    {
+        $ex = parent::getContainerExtension();
+        
+        if($ex != null) {
+            $ex = new DependencyInjection\SandboxContainerExtension($ex, $this->serviceIds);
+        }
+        
+        return $ex;
+    }
+    
+    public function getServiceIds() {
+        return $this->serviceIds;
+    }
 }

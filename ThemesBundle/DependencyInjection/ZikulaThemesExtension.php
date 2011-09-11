@@ -24,24 +24,5 @@ class ZikulaThemesExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-        
-        
-        $dir = new \DirectoryIterator($container->getParameter('kernel.root_dir') . '/../themes');
-        
-        $modules = array();
-        foreach($dir as $fileInfo) {
-            /* @var $fileInfo \SplFileInfo */
-            
-            if($fileInfo->isDir() && !$fileInfo->isDot()) {
-                $themeName = $fileInfo->getFilename();
-                
-                $container->setDefinition(
-                    'assetic.theme_directory_resource.' . $themeName,
-                    new \Symfony\Bundle\AsseticBundle\DependencyInjection\DirectoryResourceDefinition('Themes'.$themeName, 'twig', array(
-                        $container->getParameter('kernel.root_dir').'/../themes/'.$themeName.'/Resources/views'
-                    ))
-                );
-            }
-        }
     }
 }
