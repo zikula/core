@@ -47,7 +47,7 @@ class UserUtil
      */
     public static function getPNUser($uid, $getVars = false)
     {
-        LogUtil::log(__f('Warning! %1$s is deprecated. Please use %1$s::%3$s instead.', array(__METHOD__, 'UserUtil::getVars')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getVars')), E_USER_DEPRECATED);
         return self::getVars($uid);
     }
 
@@ -64,7 +64,7 @@ class UserUtil
      */
     public static function getPNUserField($id, $field)
     {
-        LogUtil::log(__f('Warning! %1$s is deprecated. Please use %1$s::%3$s instead.', array(__METHOD__, 'UserUtil::getVar')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getVar')), E_USER_DEPRECATED);
         return self::getVar($field, $id);
     }
 
@@ -83,7 +83,7 @@ class UserUtil
      */
     public static function getPNUsers($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'uid')
     {
-        LogUtil::log(__f('Warning! %1$s is deprecated. Please use %1$s::%3$s instead.', array(__METHOD__, 'UserUtil::getUsers')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUsers')), E_USER_DEPRECATED);
         return self::getUsers($where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
 
@@ -117,7 +117,7 @@ class UserUtil
      */
     public static function getPNGroup($gid)
     {
-        LogUtil::log(__f('Warning! %1$s is deprecated. Please use %1$s::%3$s instead.', array(__METHOD__, 'UserUtil::getGroup')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroup')), E_USER_DEPRECATED);
         return self::getGroup($gid);
     }
 
@@ -150,7 +150,7 @@ class UserUtil
      */
     public static function getPNGroups($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'gid')
     {
-        LogUtil::log(__f('Warning! %1$s is deprecated. Please use %1$s::%3$s instead.', array(__METHOD__, 'UserUtil::getGroups')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroups')), E_USER_DEPRECATED);
         return self::getGroups();
     }
 
@@ -184,7 +184,7 @@ class UserUtil
      */
     public static function getPNUserIdList($where = '', $orderBy = '', $separator = ',')
     {
-        LogUtil::log(__f('Warning! %1$s is deprecated. Please use %1$s::%3$s instead.', array(__METHOD__, 'UserUtil::getUserIdList')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUserIdList')), E_USER_DEPRECATED);
         return self::getUserIdList($where, $orderBy, $separator);
     }
 
@@ -225,7 +225,7 @@ class UserUtil
      */
     public static function getPNGroupIdList($where = '', $orderBy = '', $separator = ',')
     {
-        LogUtil::log(__f('Warning! %1$s is deprecated. Please use %1$s::%3$s instead.', array(__METHOD__, 'UserUtil::getGroupIdList')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroupIdList')), E_USER_DEPRECATED);
         return self::getGroupIdList($where, $orderBy, $separator);
     }
 
@@ -413,7 +413,7 @@ class UserUtil
      */
     public static function getSelectorData_PNGroup($defaultValue = 0, $defaultText = '', $ignore = array(), $includeAll = 0, $allText = '')
     {
-        LogUtil::log(__f('Warning! %1$s is deprecated. Please use %1$s::%3$s instead.', array(__METHOD__, 'UserUtil::getSelectorData_Group')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getSelectorData_Group')), E_USER_DEPRECATED);
         return self::getSelectorData_Group($defaultValue, $defaultText, $ignore, $includeAll, $allText);
     }
 
