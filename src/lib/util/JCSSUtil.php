@@ -253,7 +253,7 @@ class JCSSUtil
     {
         $scripts = array(
                 'jquery' => array(
-                        'path' => 'javascript/jquery/jquery-1.6.2.min.js',
+                        'path' => 'javascript/jquery/jquery-1.6.4.min.js',
                         'require' => array('noconflict'),
                 ),
                 'noconflict' => array(
@@ -375,7 +375,7 @@ class JCSSUtil
             );
             $jQueryUncompressed = array(
                     'jquery' => array(
-                            'path' => 'javascript/jquery/jquery-1.6.3.js',
+                            'path' => 'javascript/jquery/jquery-1.6.4.js',
                             'require' => array('noconflict'),
                     ),
                     'noconflict' => array(
