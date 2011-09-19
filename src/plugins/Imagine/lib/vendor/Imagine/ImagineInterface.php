@@ -9,10 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Imagine\Image;
+namespace Imagine;
 
 use Imagine\Exception\InvalidArgumentException;
 use Imagine\Exception\RuntimeException;
+use Imagine\Image\BoxInterface;
+use Imagine\Image\Color;
 
 interface ImagineInterface
 {
@@ -25,7 +27,7 @@ interface ImagineInterface
      * @throws Imagine\Exception\InvalidArgumentException
      * @throws Imagine\Exception\RuntimeException
      *
-     * @return Imagine\Image\ImageInterface
+     * @return Imagine\ImageInterface
      */
     function create(BoxInterface $size, Color $color = null);
 
@@ -36,7 +38,7 @@ interface ImagineInterface
      *
      * @throws Imagine\Exception\RuntimeException
      *
-     * @return Imagine\Image\ImageInterface
+     * @return Imagine\ImageInterface
      */
     function open($path);
 
@@ -47,7 +49,7 @@ interface ImagineInterface
      *
      * @throws Imagine\Exception\RuntimeException
      *
-     * @return Imagine\Image\ImageInterface
+     * @return Imagine\ImageInterface
      */
     function load($string);
 

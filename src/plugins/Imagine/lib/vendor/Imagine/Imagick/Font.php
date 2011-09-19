@@ -37,7 +37,7 @@ final class Font extends AbstractFont
 
     /**
      * (non-PHPdoc)
-     * @see Imagine\Image\FontInterface::box()
+     * @see Imagine\Image\AbstractFont::box()
      */
     public function box($string, $angle = 0)
     {
@@ -45,6 +45,7 @@ final class Font extends AbstractFont
 
         $text->setFont($this->file);
         $text->setFontSize($this->size);
+        $text->setFontStyle(\Imagick::STYLE_OBLIQUE);
 
         $info = $this->imagick->queryFontMetrics($text, $string);
 

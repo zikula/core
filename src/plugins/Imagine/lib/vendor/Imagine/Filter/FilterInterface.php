@@ -11,7 +11,7 @@
 
 namespace Imagine\Filter;
 
-use Imagine\Image\ImageInterface;
+use Imagine\ImageInterface;
 
 interface FilterInterface
 {
@@ -19,9 +19,9 @@ interface FilterInterface
      * Applies scheduled transformation to ImageInterface instance
      * Returns processed ImageInterface instance
      *
-     * @param Imagine\Image\ImageInterface $image
+     * @param Imagine\ImageInterface $image
      *
-     * @return Imagine\Image\ImageInterface
+     * @return Imagine\ImageInterface
      */
     function apply(ImageInterface $image);
 }
