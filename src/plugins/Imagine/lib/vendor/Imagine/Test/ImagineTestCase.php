@@ -11,6 +11,7 @@
 
 namespace Imagine\Test;
 
+use Imagine\ImageInterface;
 use Imagine\Test\Constraint\IsImageEqual;
 
 class ImagineTestCase extends \PHPUnit_Framework_TestCase
@@ -18,8 +19,8 @@ class ImagineTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Asserts that two images are equal using color histogram comparison method
      *
-     * @param Imagine\Image\ImageInterface $expected
-     * @param Imagine\Image\ImageInterface $actual
+     * @param Imagine\ImageInterface $expected
+     * @param Imagine\ImageInterface $actual
      * @param string                 $message
      * @param float                  $delta
      * @param integer                $buckets

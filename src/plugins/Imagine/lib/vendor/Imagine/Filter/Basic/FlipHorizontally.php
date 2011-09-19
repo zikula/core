@@ -11,7 +11,7 @@
 
 namespace Imagine\Filter\Basic;
 
-use Imagine\Image\ImageInterface;
+use Imagine\ImageInterface;
 use Imagine\Filter\FilterInterface;
 
 class FlipHorizontally implements FilterInterface

@@ -13,7 +13,7 @@ namespace Imagine\Gmagick;
 
 use Imagine\Image\BoxInterface;
 use Imagine\Image\Color;
-use Imagine\Image\ImagineInterface;
+use Imagine\ImagineInterface;
 use Imagine\Exception\InvalidArgumentException;
 use Imagine\Exception\RuntimeException;
 
@@ -31,7 +31,7 @@ class Imagine implements ImagineInterface
 
     /**
      * (non-PHPdoc)
-     * @see Imagine\Image\ImagineInterface::open()
+     * @see Imagine\ImagineInterface::open()
      */
     public function open($path)
     {
@@ -46,7 +46,7 @@ class Imagine implements ImagineInterface
 
     /**
      * (non-PHPdoc)
-     * @see Imagine\Image\ImagineInterface::create()
+     * @see Imagine\ImagineInterface::create()
      */
     public function create(BoxInterface $size, Color $color = null)
     {
@@ -71,7 +71,7 @@ class Imagine implements ImagineInterface
 
     /**
      * (non-PHPdoc)
-     * @see Imagine\Image\ImagineInterface::load()
+     * @see Imagine\ImagineInterface::load()
      */
     public function load($string)
     {
@@ -82,7 +82,7 @@ class Imagine implements ImagineInterface
 
     /**
      * (non-PHPdoc)
-     * @see Imagine\Image\ImagineInterface::font()
+     * @see Imagine\ImagineInterface::font()
      */
     public function font($file, $size, Color $color)
     {
