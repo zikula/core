@@ -15,7 +15,8 @@ use Imagine\Image\BoxInterface;
 use Imagine\Image\Color;
 use Imagine\Exception\InvalidArgumentException;
 use Imagine\Exception\RuntimeException;
-use Imagine\Image\ImagineInterface;
+use Imagine\ImageInterface;
+use Imagine\ImagineInterface;
 
 final class Imagine implements ImagineInterface
 {
@@ -27,19 +28,11 @@ final class Imagine implements ImagineInterface
         if (!class_exists('Imagick')) {
             throw new RuntimeException('Imagick not installed');
         }
-
-        $imagick = new \Imagick();
-        $v = $imagick->getVersion();
-        list($version, $year, $month, $day, $q, $website) = sscanf($v['versionString'], 'ImageMagick %s %04d-%02d-%02d %s %s');
-
-        if (version_compare('6.2.9', $version) > 0) {
-            throw new RuntimeException('Imagick version 6.2.9 or higher is required');
-        }
     }
 
     /**
      * (non-PHPdoc)
-     * @see Imagine\Image\ImagineInterface::open()
+     * @see Imagine\ImagineInterface::open()
      */
     public function open($path)
     {
@@ -64,7 +57,7 @@ final class Imagine implements ImagineInterface
 
     /**
      * (non-PHPdoc)
-     * @see Imagine\Image\ImagineInterface::create()
+     * @see Imagine\ImagineInterface::create()
      */
     public function create(BoxInterface $size, Color $color = null)
     {
@@ -98,7 +91,7 @@ final class Imagine implements ImagineInterface
 
     /**
      * (non-PHPdoc)
-     * @see Imagine\Image\ImagineInterface::load()
+     * @see Imagine\ImagineInterface::load()
      */
     public function load($string)
     {
@@ -118,7 +111,7 @@ final class Imagine implements ImagineInterface
 
     /**
      * (non-PHPdoc)
-     * @see Imagine\Image\ImagineInterface::font()
+     * @see Imagine\ImagineInterface::font()
      */
     public function font($file, $size, Color $color)
     {

@@ -48,7 +48,7 @@ abstract class AbstractFont implements FontInterface
      * (non-PHPdoc)
      * @see Imagine\Image\FontInterface::getFile()
      */
-    final public function getFile()
+    public function getFile()
     {
         return $this->file;
     }
@@ -57,7 +57,7 @@ abstract class AbstractFont implements FontInterface
      * (non-PHPdoc)
      * @see Imagine\Image\FontInterface::getSize()
      */
-    final public function getSize()
+    public function getSize()
     {
         return $this->size;
     }
@@ -66,7 +66,7 @@ abstract class AbstractFont implements FontInterface
      * (non-PHPdoc)
      * @see Imagine\Image\FontInterface::getColor()
      */
-    final public function getColor()
+    public function getColor()
     {
         return $this->color;
     }

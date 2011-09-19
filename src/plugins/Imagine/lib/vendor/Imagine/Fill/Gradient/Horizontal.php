@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Imagine\Image\Fill\Gradient;
+namespace Imagine\Fill\Gradient;
 
 use Imagine\Image\PointInterface;
 
