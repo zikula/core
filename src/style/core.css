@@ -1662,8 +1662,8 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     border: 1px solid #ccc;
     float: left;
     list-style-type: none;
-    margin: 0 5px 0 0;
-    padding: 0;
+    margin: 0 5px 0 0 !important;
+    padding: 0 !important;
     z-index: 1000;
 }
 
