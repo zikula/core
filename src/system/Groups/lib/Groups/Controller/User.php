@@ -159,7 +159,7 @@ class Groups_Controller_User extends Zikula_AbstractController
             }
         }
 
-        $this->view->assign('mainpage',     true)
+        $this->view->assign('mainpage',     false)
                    ->assign('gid',          $gid)
                    ->assign('gname',        $group['name'])
                    ->assign('gtype',        $group['gtype']) // Can't use type as it is a reserved word.
