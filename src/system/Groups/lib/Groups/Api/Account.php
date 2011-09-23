@@ -28,7 +28,7 @@ class Groups_Api_Account extends Zikula_AbstractApi
 
         if ($result <> false) {
             // create an array of links to return
-            $items['0'] = array('url'    => ModUtil::url('Groups', 'user'),
+            $items['0'] = array('url'    => ModUtil::url('Groups', 'user', 'main'),
                     'module' => 'Groups',
                     'title'  => $this->__('Groups manager'),
                     'icon'   => 'admin.png');
