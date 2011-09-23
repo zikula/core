@@ -702,7 +702,6 @@ INSERT INTO `module_vars` VALUES (63,'Theme','render_lifetime','i:3600;');
 INSERT INTO `module_vars` VALUES (64,'Admin','modulesperrow','i:3;');
 INSERT INTO `module_vars` VALUES (65,'Admin','itemsperpage','i:15;');
 INSERT INTO `module_vars` VALUES (66,'Admin','defaultcategory','i:5;');
-INSERT INTO `module_vars` VALUES (67,'Admin','modulestylesheet','s:11:\"navtabs.css\";');
 INSERT INTO `module_vars` VALUES (68,'Admin','admingraphic','i:1;');
 INSERT INTO `module_vars` VALUES (69,'Admin','startcategory','i:1;');
 INSERT INTO `module_vars` VALUES (70,'Admin','ignoreinstallercheck','i:0;');

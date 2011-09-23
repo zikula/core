@@ -862,8 +862,8 @@ class ModUtil
         if (!System::isInstalling() && !$api) {
             PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
             if (strpos($type, 'admin') === 0) {
-                // load special admin.css for administrator controllers
-                PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin', 'admin.css'));
+                // load special admin stylesheets for administrator controllers
+                PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin'));
             }
         }
     }
