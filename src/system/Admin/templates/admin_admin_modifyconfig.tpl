@@ -56,10 +56,6 @@
                 </select>
             </div>
             <div class="z-formrow">
-                <label for="admin_skin">{gt text="Style sheet to use"}</label>
-                {html_select_modulestylesheets name=modvars[modulestylesheet] modname=Admin selected=$modvars.Admin.modulestylesheet id=admin_skin exclude="admin.css"}
-            </div>
-            <div class="z-formrow">
                 <label for="admin_startcategory">{gt text="Category initially selected"}</label>
                 <select id="admin_startcategory" name="modvars[startcategory]">
                     {section name=category loop=$categories}
