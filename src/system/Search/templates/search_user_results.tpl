@@ -19,7 +19,7 @@
 
     </dt>
     <dd>
-        {$result.text|google_highlight:$q:$limitsummary}
+        {$result.text|google_highlight:$q:$limitsummary|strip_tags|truncate:$limitsummary:'&hellip;'}
         {if !empty($result.created)}
         <div class="search_created">{gt text="Created on %s." tag1=$result.created|dateformat:'datelong' domain='zikula'}</div>
         {/if}
