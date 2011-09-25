@@ -40,10 +40,11 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
     {
         $autoloader = new Zikula_KernelClassLoader();
         $autoloader->spl_autoload_register();
-        $autoloader->register('Gedmo', dirname(__FILE__) . '/lib', '\\');
+        $autoloader->register('Gedmo', dirname(__FILE__) . '/lib/vendor/l3pp4ard/DoctrineExtensions/lib', '\\');
         $autoloader->register('DoctrineExtensions\\StandardFields', __DIR__ . '/lib', '\\');
+        $autoloader->register('DoctrineExtensions', __DIR__ . '/lib/vendor/beberlei/DoctrineExtensions/lib', '\\');
         
-        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', dirname(__FILE__) . '/lib');
+        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', dirname(__FILE__) . '/lib/vendor/l3pp4ard/DoctrineExtensions/lib');
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
         
         include 'ExtensionsManager.php';
