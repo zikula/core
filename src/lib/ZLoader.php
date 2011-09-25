@@ -65,6 +65,7 @@ class ZLoader
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
         self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
+        self::addAutoloader('Symfony', ZLOADER_PATH . '/vendor', '\\');
     }
 
     /**
