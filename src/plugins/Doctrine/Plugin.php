@@ -45,8 +45,6 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $autoloader->spl_autoload_register();
         include 'lib/DoctrineHelper.php';
         $autoloader->register('Doctrine', dirname(__FILE__) . '/lib/vendor', '\\');
-        $autoloader->register('Symfony\\Components\\Yaml', dirname(__FILE__) . '/lib/vendor', '\\');
-        $autoloader->register('Symfony\\Components\\Console', dirname(__FILE__) . '/lib/vendor', '\\');
         $autoloader->register('DoctrineProxy', 'ztemp/doctrinemodels', '\\');
 
         $serviceManager = $this->eventManager->getServiceManager();
