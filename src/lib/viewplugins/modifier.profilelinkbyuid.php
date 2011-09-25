@@ -56,7 +56,7 @@ function smarty_modifier_profilelinkbyuid($uid, $class = '', $image = '', $maxLe
 
         if (!empty($image)) {
             if (is_array($image)) {
-                // if it is an array we assume that it is an pnimg array
+                // if it is an array we assume that it is an img array
                 $show = '<img src="' . DataUtil::formatForDisplay($image['src']) . '" alt="' . DataUtil::formatForDisplay($image['alt']) . '" width="' . DataUtil::formatForDisplay($image['width']) . '" height="' . DataUtil::formatForDisplay($image['height']) . '" />';
             } else {
                 $show = '<img src="' . DataUtil::formatForDisplay($image) . '" alt="' . DataUtil::formatForDisplay($uname) . '" />';
@@ -66,16 +66,14 @@ function smarty_modifier_profilelinkbyuid($uid, $class = '', $image = '', $maxLe
             $length   = strlen($uname);
             $truncEnd = ($maxLength > $length) ? $length : $maxLength;
             $uname    = substr($uname, 0, $truncEnd);
-            $show     = DataUtil::formatForDisplay($uname);
         }
+        $showUname = DataUtil::formatForDisplay($uname);
 
-        $uname = DataUtil::formatForDisplay($uname);
-
-        $profileLink = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $uname . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $show . '</a>';
+        $profileLink = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $showUname . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $showUname . '</a>';
     } elseif (!empty($image)) {
         $profileLink = ''; // image for anonymous user should be "empty"
     } else {
-        $profileLink = $uname;
+        $profileLink = DataUtil::formatForDisplay($uname);
     }
 
     return $profileLink;

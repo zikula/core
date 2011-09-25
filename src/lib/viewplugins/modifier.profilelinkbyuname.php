@@ -65,16 +65,14 @@ function smarty_modifier_profilelinkbyuname($uname, $class = '', $image = '', $m
             $length   = strlen($uname);
             $truncEnd = ($maxLength > $length) ? $length : $maxLength;
             $uname    = substr($uname, 0, $truncEnd);
-            $show     = DataUtil::formatForDisplay($uname);
         }
+        $showUname = DataUtil::formatForDisplay($uname);
 
-        $uname = DataUtil::formatForDisplay($uname);
-
-        $profileLink = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $uname . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $show . '</a>';
+        $profileLink = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $showUname . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $showUname . '</a>';
     } elseif (!empty($image)) {
         $profileLink = ''; // image for anonymous user should be "empty"
     } else {
-        $profileLink = $uname;
+        $profileLink = DataUtil::formatForDisplay($uname);
     }
 
     return $profileLink;
