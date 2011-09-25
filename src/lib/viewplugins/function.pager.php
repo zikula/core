@@ -197,7 +197,14 @@ function smarty_function_pager($params, Zikula_View $view)
                         foreach ($v as $kk => $vv) {
                             if (is_array($vv)) {
                                 foreach ($vv as $kkk => $vvv) {
-                                    if (strlen($vvv)) {
+                                    if (is_array($vvv)) {
+                                        foreach ($vvv as $kkkk => $vvvv) {
+                                            if (strlen($vvvv)) {
+                                                $tkey = $k . '[' . $kk . '][' . $kkk . '][' . $kkkk . ']';
+                                                $pager['args'][$tkey] = $vvvv;
+                                            }
+                                        }
+                                    } elseif (strlen($vvv)) {
                                         $tkey = $k . '[' . $kk . '][' . $kkk . ']';
                                         $pager['args'][$tkey] = $vvv;
                                     }
