@@ -1,23 +1,8 @@
-# Doctrine2 behavioral extensions
+# Doctrine 2 behavioral extensions
 
-**Version 2.2-DEV**
-
-### Latest updates
-
-**Note:** Use 2.1.x tag in order to use extensions based on Doctrine2.1.x versions. Currently
-master branch is based on 2.2.x versions and may not work with 2.1.x components
-
-**2011-09-24**
-
-- Sluggable was refactored with a **BC break** for the sake of simplicity it now uses a single @Slug annotation.
-Also there were slug handlers introduced for extended sluggable functionality, like path based
-or relation based slugs. See the [documentation](https://github.com/l3pp4rd/DoctrineExtensions/blob/master/doc/sluggable.md)
-
-### Summary and features
-
-This package contains extensions for Doctrine2 that hook into the facilities of Doctrine and
-offer new functionality or tools to use Doctrine2 more efficently. This package contains mostly
-used behaviors which can be easily attached to your event system of Doctrine2 and handle the
+This package contains extensions for Doctrine 2 that hook into the facilities of Doctrine and
+offer new functionality or tools to use Doctrine 2 more efficently. This package contains mostly
+used behaviors which can be easily attached to your event system of Doctrine 2 and handle the
 records being flushed in the behavioral way. List of extensions:
 
 - Tree - this extension automates the tree handling process and adds some tree specific functions on repository. (closure or nestedset)
@@ -30,12 +15,15 @@ records being flushed in the behavioral way. List of extensions:
 Currently these extensions support **Yaml**, **Annotation**  and **Xml** mapping. Additional mapping drivers
 can be easily implemented using Mapping extension to handle the additional metadata mapping.
 
+**Note:** doctrine2.0.x branch is no longer being supported and all new features
+and fixes are on master branch, which currently supports 2.1.x versions of doctrine2
+
+**Note:** from now on there is only one listener per extension which supports ODM and ORM adapters to deal with objects. Only one instance of listener is 
+required, and can be attached to many different type object managers, currently supported (ORM or ODM)
+
 **Note:** Please note, that xml mapping needs to be in a different namespace, the declared namespace for
 Doctrine extensions is http://gediminasm.org/schemas/orm/doctrine-extensions-mapping
 So root node now looks like this:
-
-**Note:** Use 2.1.x tag in order to use extensions based on Doctrine2.1.x versions. Currently
-master branch is based on 2.2.x versions and may not work with 2.1.x
 
 ```
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
@@ -43,6 +31,22 @@ master branch is based on 2.2.x versions and may not work with 2.1.x
 ...
 </doctrine-mapping>
 ```
+
+### Latest updates
+
+**2011-08-08**
+
+- Sluggable listener now has extension points to extend the default behavior of sluggable. 
+By default there is TreeSlug, RelativeSlug handlers. Which can build a tree path like slug
+example: **category/shoes/nike**. Using relative slug handler it is possible to have related slug
+for example, user is related to company by ManyToOne relation in result slug is: **company/user-name**
+
+**2011-07-14**
+
+- Sluggable can handle multiple slug fields, now on Sluggable annotation you will need
+to provide slugField property it should belong to
+- Translatable query hint will use **default locale** translations in case if it does not
+have a translation in currently used locale
 
 ### ODM MongoDB support
 
@@ -76,7 +80,6 @@ To setup and run tests follow these steps:
 
 ### Contributors:
 
-- Lukas Botsch [lbotsch](http://github.com/lbotsch)
 - Daniel Gomes [danielcsgomes](http://github.com/danielcsgomes)
 - megabite [oscarballadares](http://github.com/oscarballadares)
 - DinoWeb [dinoweb](http://github.com/dinoweb)

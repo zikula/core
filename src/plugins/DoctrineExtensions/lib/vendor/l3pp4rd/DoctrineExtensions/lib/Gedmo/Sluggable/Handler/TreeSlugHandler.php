@@ -22,8 +22,6 @@ use Gedmo\Exception\InvalidMappingException;
 */
 class TreeSlugHandler implements SlugHandlerInterface
 {
-    const SEPARATOR = '/';
-
     /**
      * @var Doctrine\Common\Persistence\ObjectManager
      */
@@ -33,6 +31,14 @@ class TreeSlugHandler implements SlugHandlerInterface
      * @var Gedmo\Sluggable\SluggableListener
      */
     protected $sluggable;
+
+    /**
+     * Options for relative slug handler object
+     * classes
+     *
+     * @var array
+     */
+    private $options;
 
     /**
      * Callable of original transliterator
@@ -57,13 +63,6 @@ class TreeSlugHandler implements SlugHandlerInterface
     private $parentSlug;
 
     /**
-     * Used path separator
-     *
-     * @var string
-     */
-    private $usedPathSeparator;
-
-    /**
      * {@inheritDoc}
      */
     public function __construct(SluggableListener $sluggable)
@@ -72,16 +71,36 @@ class TreeSlugHandler implements SlugHandlerInterface
     }
 
     /**
+     * $options = array(
+     *     'separator' => '/',
+     *     'parentRelationField' => 'parent'
+     * )
      * {@inheritDoc}
      */
-    public function onChangeDecision(SluggableAdapter $ea, $config, $object, &$slug, &$needToChangeSlug)
+    public function getOptions($object)
+    {
+        $meta = $this->om->getClassMetadata(get_class($object));
+        if (!isset($this->options[$meta->name])) {
+            $config = $this->sluggable->getConfiguration($this->om, $meta->name);
+            $options = $config['handlers'][get_called_class()];
+            $default = array(
+                'separator' => '/'
+            );
+            $this->options[$meta->name] = array_merge($default, $options);
+        }
+        return $this->options[$meta->name];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function onChangeDecision(SluggableAdapter $ea, $slugFieldConfig, $object, &$slug, &$needToChangeSlug)
     {
         $this->om = $ea->getObjectManager();
         $this->isInsert = $this->om->getUnitOfWork()->isScheduledForInsert($object);
-        $options = $config['handlers'][get_called_class()];
-        $this->usedPathSeparator = isset($options['separator']) ? $options['separator'] : self::SEPARATOR;
         if (!$this->isInsert && !$needToChangeSlug) {
             $changeSet = $ea->getObjectChangeSet($this->om->getUnitOfWork(), $object);
+            $options = $this->getOptions($object);
             if (isset($changeSet[$options['parentRelationField']])) {
                 $needToChangeSlug = true;
             }
@@ -93,7 +112,7 @@ class TreeSlugHandler implements SlugHandlerInterface
      */
     public function postSlugBuild(SluggableAdapter $ea, array &$config, $object, &$slug)
     {
-        $options = $config['handlers'][get_called_class()];
+        $options = $this->getOptions($object);
         $this->originalTransliterator = $this->sluggable->getTransliterator();
         $this->sluggable->setTransliterator(array($this, 'transliterate'));
         $this->parentSlug = '';
@@ -121,12 +140,14 @@ class TreeSlugHandler implements SlugHandlerInterface
     public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug)
     {
         if (!$this->isInsert) {
-            $options = $config['handlers'][get_called_class()];
+            $options = $this->getOptions($object);
             $wrapped = AbstractWrapper::wrapp($object, $this->om);
             $meta = $wrapped->getMetadata();
+            $extConfig = $this->sluggable->getConfiguration($this->om, $meta->name);
+            $config['useObjectClass'] = $extConfig['useObjectClass'];
             $target = $wrapped->getPropertyValue($config['slug']);
-            $config['pathSeparator'] = $this->usedPathSeparator;
-            $ea->replaceRelative($object, $config, $target.$config['pathSeparator'], $slug);
+            $config['pathSeparator'] = $options['separator'];
+            $ea->replaceRelative($object, $config, $target.$options['separator'], $slug);
             $uow = $this->om->getUnitOfWork();
             // update in memory objects
             foreach ($uow->getIdentityMap() as $className => $objects) {
@@ -140,7 +161,7 @@ class TreeSlugHandler implements SlugHandlerInterface
                     }
                     $oid = spl_object_hash($object);
                     $objectSlug = $meta->getReflectionProperty($config['slug'])->getValue($object);
-                    if (preg_match("@^{$target}{$config['pathSeparator']}@smi", $objectSlug)) {
+                    if (preg_match("@^{$target}{$options['separator']}@smi", $objectSlug)) {
                         $objectSlug = str_replace($target, $slug, $objectSlug);
                         $meta->getReflectionProperty($config['slug'])->setValue($object, $objectSlug);
                         $ea->setOriginalObjectProperty($uow, $oid, $config['slug'], $objectSlug);
@@ -166,7 +187,8 @@ class TreeSlugHandler implements SlugHandlerInterface
             array($text, $separator, $object)
         );
         if (strlen($this->parentSlug)) {
-            $slug = $this->parentSlug . $this->usedPathSeparator . $slug;
+            $options = $this->getOptions($object);
+            $slug = $this->parentSlug . $options['separator'] . $slug;
         }
         $this->sluggable->setTransliterator($this->originalTransliterator);
         return $slug;
