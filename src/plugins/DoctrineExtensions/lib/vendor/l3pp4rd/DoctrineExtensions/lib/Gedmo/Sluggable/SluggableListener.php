@@ -124,7 +124,7 @@ class SluggableListener extends MappedEventSubscriber
             if ($config = $this->getConfiguration($om, $meta->name)) {
                 // generate first to exclude this object from similar persisted slugs result
                 $this->generateSlug($ea, $object);
-                foreach ($config['slugs'] as $slugField => $options) {
+                foreach ($config['fields'] as $slugField => $fieldsForSlugField) {
                     $slug = $meta->getReflectionProperty($slugField)->getValue($object);
                     $this->persistedSlugs[$config['useObjectClass']][$slugField][] = $slug;
                 }
@@ -135,8 +135,8 @@ class SluggableListener extends MappedEventSubscriber
         foreach ($ea->getScheduledObjectUpdates($uow) as $object) {
             $meta = $om->getClassMetadata(get_class($object));
             if ($config = $this->getConfiguration($om, $meta->name)) {
-                foreach ($config['slugs'] as $slugField => $options) {
-                    if ($options['updatable']) {
+                foreach ($config['slugFields'] as $slugField) {
+                    if ($slugField['updatable']) {
                         $this->generateSlug($ea, $object);
                     }
                 }
@@ -182,42 +182,48 @@ class SluggableListener extends MappedEventSubscriber
         $uow = $om->getUnitOfWork();
         $changeSet = $ea->getObjectChangeSet($uow, $object);
         $config = $this->getConfiguration($om, $meta->name);
-        foreach ($config['slugs'] as $slugField => $options) {
-            $hasHandlers = count($options['handlers']);
-            $options['useObjectClass'] = $config['useObjectClass'];
-            $fields = $options['fields'];
-            //$slugFieldConfig = $config['slugFields'][$slugField];
+        foreach ($config['fields'] as $slugField => $fieldsForSlugField) {
+            // sort sluggable fields by position
+            $fields = $fieldsForSlugField;
+            usort($fields, function($a, $b) {
+                if ($a['position'] == $b['position']) {
+                    return 1;
+                }
+                return ($a['position'] < $b['position']) ? -1 : 1;
+            });
+
+            $slugFieldConfig = $config['slugFields'][$slugField];
             // collect the slug from fields
             $slug = '';
             $needToChangeSlug = false;
-            foreach ($options['fields'] as $sluggableField) {
-                if (isset($changeSet[$sluggableField])) {
+            foreach ($fields as $sluggableField) {
+                if (isset($changeSet[$sluggableField['field']])) {
                     $needToChangeSlug = true;
                 }
-                $slug .= $meta->getReflectionProperty($sluggableField)->getValue($object) . ' ';
+                $slug .= $meta->getReflectionProperty($sluggableField['field'])->getValue($object) . ' ';
             }
             // notify slug handlers --> onChangeDecision
-            if ($hasHandlers) {
-                foreach ($options['handlers'] as $class => $handlerOptions) {
+            if (isset($config['handlers'])) {
+                foreach ($config['handlers'] as $class => $options) {
                     $this
                         ->getHandler($class)
-                        ->onChangeDecision($ea, $options, $object, $slug, $needToChangeSlug)
+                        ->onChangeDecision($ea, $slugFieldConfig, $object, $slug, $needToChangeSlug)
                     ;
                 }
             }
             // if slug is changed, do further processing
             if ($needToChangeSlug) {
-                $mapping = $meta->getFieldMapping($slugField);
-                if (!strlen(trim($slug)) && (!isset($mapping['nullable']) || !$mapping['nullable'])) {
+                $mapping = $meta->getFieldMapping($slugFieldConfig['slug']);
+                if (!strlen(trim($slug)) && !$mapping['nullable']) {
                     throw new \Gedmo\Exception\UnexpectedValueException("Unable to find any non empty sluggable fields for slug [{$slugField}] , make sure they have something at least.");
                 }
 
                 // notify slug handlers --> postSlugBuild
-                if ($hasHandlers) {
-                    foreach ($options['handlers'] as $class => $handlerOptions) {
+                if (isset($config['handlers'])) {
+                    foreach ($config['handlers'] as $class => $options) {
                         $this
                             ->getHandler($class)
-                            ->postSlugBuild($ea, $options, $object, $slug)
+                            ->postSlugBuild($ea, $slugFieldConfig, $object, $slug)
                         ;
                     }
                 }
@@ -225,13 +231,13 @@ class SluggableListener extends MappedEventSubscriber
                 // build the slug
                 $slug = call_user_func_array(
                     $this->transliterator,
-                    array($slug, $options['separator'], $object)
+                    array($slug, $slugFieldConfig['separator'], $object)
                 );
                 // stylize the slug
-                switch ($options['style']) {
+                switch ($slugFieldConfig['style']) {
                     case 'camel':
                         $slug = preg_replace_callback(
-                            '@^[a-z]|' . $options['separator'] . '[a-z]@smi',
+                            '@^[a-z]|' . $slugFieldConfig['separator'] . '[a-z]@smi',
                             create_function('$m', 'return strtoupper($m[0]);'),
                             $slug
                         );
@@ -251,21 +257,23 @@ class SluggableListener extends MappedEventSubscriber
                     $slug = null;
                 }
                 // make unique slug if requested
-                if ($options['unique'] && !is_null($slug)) {
+                if ($slugFieldConfig['unique'] && !is_null($slug)) {
                     $this->exponent = 0;
-                    $slug = $this->makeUniqueSlug($ea, $object, $slug, false, $options);
+                    $arrayConfig = $slugFieldConfig;
+                    $arrayConfig['useObjectClass'] = $config['useObjectClass'];
+                    $slug = $this->makeUniqueSlug($ea, $object, $slug, false, $arrayConfig);
                 }
                 // notify slug handlers --> onSlugCompletion
-                if ($hasHandlers) {
-                    foreach ($options['handlers'] as $class => $handlerOptions) {
+                if (isset($config['handlers'])) {
+                    foreach ($config['handlers'] as $class => $options) {
                         $this
                             ->getHandler($class)
-                            ->onSlugCompletion($ea, $options, $object, $slug)
+                            ->onSlugCompletion($ea, $slugFieldConfig, $object, $slug)
                         ;
                     }
                 }
                 // set the final slug
-                $meta->getReflectionProperty($slugField)->setValue($object, $slug);
+                $meta->getReflectionProperty($slugFieldConfig['slug'])->setValue($object, $slug);
                 // recompute changeset
                 $ea->recomputeSingleObjectChangeSet($uow, $meta, $object);
             }
@@ -285,6 +293,10 @@ class SluggableListener extends MappedEventSubscriber
     {
         $om = $ea->getObjectManager();
         $meta = $om->getClassMetadata(get_class($object));
+        if (count ($config) == 0)
+        {
+            $config = $this->getConfiguration($om, $meta->name);
+        }
         // search for similar slug
         $result = $ea->getSimilarSlugs($object, $meta, $config, $preferedSlug);
         // add similar persisted slugs into account

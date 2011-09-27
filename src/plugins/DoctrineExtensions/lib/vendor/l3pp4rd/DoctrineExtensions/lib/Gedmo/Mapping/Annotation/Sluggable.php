@@ -5,22 +5,19 @@ namespace Gedmo\Mapping\Annotation;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
- * Slug annotation for Sluggable behavioral extension
+ * Sluggable annotation for Sluggable behavioral extension
  *
  * @Annotation
  *
  * @author Gediminas Morkevicius <gediminas.morkevicius@gmail.com>
  * @package Gedmo.Mapping.Annotation
- * @subpackage Slug
+ * @subpackage Sluggable
  * @link http://www.gediminasm.org
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-final class Slug extends Annotation
+final class Sluggable extends Annotation
 {
-    public $updatable = true;
-    public $style = 'default'; // or "camel"
-    public $unique = true;
-    public $separator = '-';
-    public $handlers = array();
+    public $position = 0;
+    public $slugField = 'slug';
 }
 

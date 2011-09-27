@@ -195,8 +195,7 @@ abstract class MappedEventSubscriber implements EventSubscriber
     {
         if (null === $this->defaultAnnotationReader) {
             if (version_compare(\Doctrine\Common\Version::VERSION, '2.2.0-DEV', '>=')) {
-                $reader = new \Doctrine\Common\Annotations\SimpleAnnotationReader();
-                $reader->addNamespace('Doctrine\ORM\Mapping');
+                $reader = new \Doctrine\Common\Annotations\AnnotationReader();
                 \Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace(
                     'Gedmo\\Mapping\\Annotation',
                     __DIR__ . '/../../'
