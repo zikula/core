@@ -24,8 +24,8 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
     protected function getMeta()
     {
         return array('displayname' => $this->__('Doctrine Extensions'),
-                     'description' => $this->__('Provides Gedmo DoctrineExtensions libraries'),
-                     'version'     => '0.0.1-master'
+                     'description' => $this->__('Provides various Doctrine Extensions libraries'),
+                     'version'     => '0.0.2'
                       );
     }
 
@@ -40,11 +40,11 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
     {
         $autoloader = new Zikula_KernelClassLoader();
         $autoloader->spl_autoload_register();
-        $autoloader->register('Gedmo', dirname(__FILE__) . '/lib/vendor/l3pp4ard/DoctrineExtensions/lib', '\\');
+        $autoloader->register('Gedmo', __DIR__ . '/lib/vendor/l3pp4rd/DoctrineExtensions/lib', '\\');
         $autoloader->register('DoctrineExtensions\\StandardFields', __DIR__ . '/lib', '\\');
         $autoloader->register('DoctrineExtensions', __DIR__ . '/lib/vendor/beberlei/DoctrineExtensions/lib', '\\');
         
-        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', dirname(__FILE__) . '/lib/vendor/l3pp4ard/DoctrineExtensions/lib');
+        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', __DIR__ . '/lib/vendor/l3pp4rd/DoctrineExtensions/lib');
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
         
         include 'ExtensionsManager.php';
