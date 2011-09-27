@@ -205,7 +205,7 @@ class TranslationListener extends MappedEventSubscriber
      */
     public function setDefaultLocale($locale)
     {
-        $this->defaultLocale = strtolower($locale);
+        $this->defaultLocale = $locale;
         return $this;
     }
 
