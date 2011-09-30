@@ -43,7 +43,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
     public function display($blockinfo)
     {
         // Security check
-        if (!Securityutil::checkPermission('Menutree:menutreeblock:', $blockinfo['bid'] . '::' , ACCESS_READ)) {
+        if (!Securityutil::checkPermission('Menutree:menutreeblock:', "{$blockinfo['bid']}::", ACCESS_READ)) {
             return false;
         }
 
@@ -93,7 +93,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
             foreach ($vars['menutree_content'] as $id => $item) {
                 $item = $item[$lang];
                 // check the permission access to the current link
-                $hasperms = Securityutil::checkPermission('Menutree:menutreeblock:', $blockinfo[bid] . ':' . $item[name] . ':' . $item[id] , ACCESS_READ);
+                $hasperms = Securityutil::checkPermission('Menutree:menutreeblock:',"$blockinfo[bid]:$item[name]:$item[id]", ACCESS_READ);
                 // checks if has no access to it or the link is not active
                 if (!$hasperms || in_array($item['parent'], $blocked) || $item['state'] != 1) {
                     $blocked[] = $item['id'];
