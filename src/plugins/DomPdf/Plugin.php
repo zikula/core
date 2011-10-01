@@ -14,7 +14,7 @@
 /**
  * Doctrine plugin definition.
  */
-class SystemPlugin_DomPDF_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
+class SystemPlugin_DomPdf_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
 {
     /**
      * Get plugin meta data.
@@ -39,10 +39,10 @@ class SystemPlugin_DomPDF_Plugin extends Zikula_AbstractPlugin implements Zikula
     public function initialize()
     {
         // include dom pdf classes
-        $pdfConfigFile = 'plugins/DomPDF/lib/vendor/dompdf/dompdf_config.inc.php';
+        $pdfConfigFile = 'plugins/DomPdf/lib/vendor/dompdf/dompdf_config.inc.php';
         if (!file_exists($pdfConfigFile)) {
             return false;
         }
-        require_once($pdfConfigFile);
+        require_once $pdfConfigFile;
     }
 }
