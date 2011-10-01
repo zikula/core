@@ -68,6 +68,8 @@ function smarty_modifier_profilelinkbyuid($uid, $class = '', $image = '', $maxLe
             $truncEnd   = ($maxLength > $length) ? $length : $maxLength;
             $showUname  = DataUtil::formatForDisplay(substr($uname, 0, $truncEnd));
             $show       = $showUname;
+        } else {
+            $show = $showUname;
         }
 
         $profileLink = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $showUname . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $show . '</a>';
