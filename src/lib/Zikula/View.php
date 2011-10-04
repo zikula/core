@@ -726,15 +726,15 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $path .= '/';
 
             $extension = FileUtil::getExtension($auto_source);
+            
             // isolates the filename on the source path passed
             $path .= FileUtil::getFilebase($auto_source);
-
-            // if we are compiling we do not include cache variables
+            
+            // add theme and language to our path
+            $path .= '--t_'.$this->themeinfo['directory'].'-l_' . $this->language;
+            
+            // if we are not compiling, end with a suffix
             if (!$tocompile) {
-                // add the variable stuff only if $auto_source is present
-                // to allow a easy flush cache for all the themes/languages
-                $path .= '--t_'.$this->themeinfo['directory'].'-l_' . $this->language;
-                // end with a suffix convention of filename--Themename-lang.ext
                 $path .= ($extension ? ".$extension" : '');
             }
         }
