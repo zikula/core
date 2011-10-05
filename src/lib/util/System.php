@@ -832,15 +832,30 @@ class System
         $res = preg_match('/(.*)\[(.*)\]/i', $name, $match);
 
         if ($res != 0) {
-            // possibly an array entry in the form a[0] or b[c]
-            // $match[0] = a[0]
-            // $match[1] = a
-            // $match[2] = 0
-            // this is everything we need to continue to build an array
-            if (!isset($_REQUEST[$match[1]])) {
-                $_REQUEST[$match[1]] = $_GET[$match[1]] = array();
+            // possibly an array entry in the form a[0] or a[0][1] or a[0][1][2]
+            parse_str($match[0], $data);
+            
+            foreach ($data as $k => $v) {
+                if (is_array($v)) {
+                    foreach ($v as $kk => $vv) {
+                        if (is_array($vv)) {
+                            foreach ($vv as $kkk => $vvv) {
+                                if (is_array($vvv)) {
+                                    foreach ($vvv as $kkkk => $vvvv) {
+                                        $_REQUEST[$k][$kk][$kkk][$kkkk] = $_GET[$k][$kk][$kkk][$kkkk] = $value;
+                                    }
+                                } else {
+                                    $_REQUEST[$k][$kk][$kkk] = $_GET[$k][$kk][$kkk] = $value;
+                                }
+                            }
+                        } else {
+                            $_REQUEST[$k][$kk] = $_GET[$k][$kk] = $value;
+                        }
+                    }
+                } else {
+                    $_REQUEST[$k] = $_GET[$k] = $value;
+                }
             }
-            $_REQUEST[$match[1]][$match[2]] = $_GET[$match[1]][$match[2]] = $value;
         } else {
             $_REQUEST[$name] = $_GET[$name] = $value;
         }
