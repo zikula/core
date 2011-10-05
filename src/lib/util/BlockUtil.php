@@ -70,8 +70,18 @@ class BlockUtil
             $customargs = array();
             $filtervars = array('module', 'name', 'type', 'func', 'theme', 'authid', 'csrftoken');
             foreach ($_GET as $var => $value) {
-                if (!in_array($var, $filtervars)) {
-                    $customargs[] = DataUtil::formatForOS(strip_tags($var)) . '=' . DataUtil::formatForOS(strip_tags($value));
+                if (is_array($value)) {
+                    $arguments = explode('&', urldecode(http_build_query(array($var => $value))));
+                    foreach ($arguments as $argument) {
+                        $args = explode('=', $argument);
+                        if (!in_array($args[0], $filtervars)) {
+                            $customargs[] = DataUtil::formatForOS(strip_tags($args[0])) . '=' . DataUtil::formatForOS(strip_tags($args[1]));
+                        }
+                    }
+                } else {
+                    if (!in_array($var, $filtervars)) {
+                        $customargs[] = DataUtil::formatForOS(strip_tags($var)) . '=' . DataUtil::formatForOS(strip_tags($value));
+                    }
                 }
             }
         }
