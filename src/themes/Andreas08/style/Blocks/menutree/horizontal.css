@@ -34,13 +34,13 @@
 
 #theme_navigation_bar ul.menutree_horizontal li.parent > a,
 #theme_navigation_bar ul.menutree_horizontal li.parent > span {
-    background: url("/images/global/arrow_down_white.png") no-repeat scroll 95% 50% transparent;
+    background: url("../../../../../images/global/arrow_down_white.png") no-repeat scroll 95% 50% transparent;
     padding-right: 18px;
 }
 
 #theme_navigation_bar ul.menutree_horizontal li.parent > a:hover,
 #theme_navigation_bar ul.menutree_horizontal li.parent > span:hover {
-    background: url("/images/global/arrow_down_black.png") no-repeat scroll 95% 50% transparent;
+    background: url("../../../../../images/global/arrow_down_black.png") no-repeat scroll 95% 50% transparent;
 }
 
 #theme_navigation_bar ul.menutree_horizontal li ul {
@@ -64,13 +64,13 @@
 
 #theme_navigation_bar ul.menutree_horizontal li li.parent > a,
 #theme_navigation_bar ul.menutree_horizontal li li.parent > span {
-    background: url("/images/global/arrow_right_white.png") no-repeat scroll 95% 50% transparent;
+    background: url("../../../../../images/global/arrow_right_white.png") no-repeat scroll 95% 50% transparent;
     padding-right: 18px;
 }
 
 #theme_navigation_bar ul.menutree_horizontal li li.parent > a:hover,
 #theme_navigation_bar ul.menutree_horizontal li li.parent > span:hover {
-    background: url("/images/global/arrow_right_black.png") no-repeat scroll 95% 50% transparent;
+    background: url("../../../../../images/global/arrow_right_black.png") no-repeat scroll 95% 50% transparent;
 }
 
 #theme_navigation_bar ul.menutree_horizontal li ul ul {
