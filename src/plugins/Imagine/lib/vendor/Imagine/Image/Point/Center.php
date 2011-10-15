@@ -12,6 +12,7 @@
 namespace Imagine\Image\Point;
 
 use Imagine\Image\BoxInterface;
+use Imagine\Image\Point as OriginalPoint;
 use Imagine\Image\PointInterface;
 
 final class Center implements PointInterface
@@ -22,7 +23,7 @@ final class Center implements PointInterface
     private $box;
 
     /**
-     * Constructs coordinate with size instantce, it needs to be relative to
+     * Constructs coordinate with size instance, it needs to be relative to
      *
      * @param Imagine\Image\BoxInterface $size
      */
@@ -56,6 +57,15 @@ final class Center implements PointInterface
     public function in(BoxInterface $box)
     {
         return $this->getX() < $box->getWidth() && $this->getY() < $box->getHeight();
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Imagine\Image\PointInterface::move()
+     */
+    public function move($amount)
+    {
+        return new OriginalPoint($this->getX() + $amount, $this->getX() + $amount);
     }
 
     /**

@@ -37,7 +37,7 @@ final class Point implements PointInterface
     {
         if ($x < 0 || $y < 0) {
             throw new InvalidArgumentException(
-                'A coordinate cannot be positioned ouside of a bounding box'
+                'A coordinate cannot be positioned outside of a bounding box'
             );
         }
 
@@ -70,6 +70,15 @@ final class Point implements PointInterface
     public function in(BoxInterface $box)
     {
         return $this->x < $box->getWidth() && $this->y < $box->getHeight();
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Imagine\Image\PointInterface::move()
+     */
+    public function move($amount)
+    {
+        return new Point($this->x + $amount, $this->y + $amount);
     }
 
     /**
