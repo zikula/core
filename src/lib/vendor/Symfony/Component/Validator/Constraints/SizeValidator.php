@@ -13,12 +13,11 @@ namespace Symfony\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * @api
  */
-class MinLengthValidator extends ConstraintValidator
+class SizeValidator extends ConstraintValidator
 {
     /**
      * Checks if the passed value is valid.
@@ -32,28 +31,31 @@ class MinLengthValidator extends ConstraintValidator
      */
     public function isValid($value, Constraint $constraint)
     {
-        if (null === $value || '' === $value) {
+        if (null === $value) {
             return true;
         }
 
-        if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
-            throw new UnexpectedTypeException($value, 'string');
-        }
-
-        $value = (string) $value;
-
-        if (function_exists('grapheme_strlen') && 'UTF-8' === $constraint->charset) {
-            $length = grapheme_strlen($value);
-        } elseif (function_exists('mb_strlen')) {
-            $length = mb_strlen($value, $constraint->charset);
-        } else {
-            $length = strlen($value);
-        }
-
-        if ($length < $constraint->limit) {
-            $this->setMessage($constraint->message, array(
+        if (!is_numeric($value)) {
+            $this->setMessage($constraint->invalidMessage, array(
                 '{{ value }}' => $value,
-                '{{ limit }}' => $constraint->limit,
+            ));
+
+            return false;
+        }
+
+        if ($value > $constraint->max) {
+            $this->setMessage($constraint->maxMessage, array(
+                '{{ value }}' => $value,
+                '{{ limit }}' => $constraint->max,
+            ));
+
+            return false;
+        }
+
+        if ($value < $constraint->min) {
+            $this->setMessage($constraint->minMessage, array(
+                '{{ value }}' => $value,
+                '{{ limit }}' => $constraint->min,
             ));
 
             return false;

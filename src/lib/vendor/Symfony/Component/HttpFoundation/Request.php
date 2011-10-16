@@ -44,14 +44,14 @@ class Request
     public $query;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\ParameterBag
+     * @var \Symfony\Component\HttpFoundation\ServerBag
      *
      * @api
      */
     public $server;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\ParameterBag
+     * @var \Symfony\Component\HttpFoundation\FileBag
      *
      * @api
      */
@@ -82,6 +82,8 @@ class Request
     protected $method;
     protected $format;
     protected $session;
+    protected $locale;
+    protected $defaultLocale = 'en';
 
     static protected $formats;
 
@@ -102,77 +104,7 @@ class Request
     {
         $this->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
     }
-    
-    /**
-     * Get attributes.
-     * 
-     * @return \Symfony\Component\HttpFoundation\ParameterBag 
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
 
-    /**
-     * Get attributes.
-     * 
-     * @return \Symfony\Component\HttpFoundation\ParameterBag 
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * Get attributes.
-     * 
-     * @return \Symfony\Component\HttpFoundation\ParameterBag 
-     */
-    public function getQuery()
-    {
-        return $this->query;
-    }
-
-    /**
-     * Get attributes.
-     * 
-     * @return \Symfony\Component\HttpFoundation\ParameterBag 
-     */
-    public function getServer()
-    {
-        return $this->server;
-    }
-
-    /**
-     * Get attributes.
-     * 
-     * @return \Symfony\Component\HttpFoundation\ParameterBag 
-     */
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    /**
-     * Get attributes.
-     * 
-     * @return \Symfony\Component\HttpFoundation\ParameterBag 
-     */
-    public function getCookies()
-    {
-        return $this->cookies;
-    }
-
-    /**
-     * Get headers.
-     * 
-     * @return \Symfony\Component\HttpFoundation\HeaderBag 
-     */
-    public function getHeaders()
-    {
-        return $this->headers;
-    }
-    
     /**
      * Sets the parameters for this request.
      *
@@ -962,6 +894,21 @@ class Request
         $this->format = $format;
     }
 
+    public function setDefaultLocale($locale)
+    {
+        $this->setPhpDefaultLocale($this->defaultLocale = $locale);
+    }
+
+    public function setLocale($locale)
+    {
+        $this->setPhpDefaultLocale($this->locale = $locale);
+    }
+
+    public function getLocale()
+    {
+        return null === $this->locale ? $this->defaultLocale : $this->locale;
+    }
+
     /**
      * Checks whether the method is safe or not.
      *
@@ -1174,7 +1121,7 @@ class Request
     {
         $requestUri = '';
 
-        if ($this->headers->has('X_REWRITE_URL')) {
+        if ($this->headers->has('X_REWRITE_URL') && false !== stripos(PHP_OS, 'WIN')) {
             // check this first so IIS will catch
             $requestUri = $this->headers->get('X_REWRITE_URL');
         } elseif ($this->server->get('IIS_WasUrlRewritten') == '1' && $this->server->get('UNENCODED_URL') != '') {
@@ -1305,7 +1252,7 @@ class Request
             $requestUri = substr($requestUri, 0, $pos);
         }
 
-        if ((null !== $baseUrl) && (false === ($pathInfo = substr($requestUri, strlen($baseUrl))))) {
+        if ((null !== $baseUrl) && (false === ($pathInfo = substr(urldecode($requestUri), strlen(urldecode($baseUrl)))))) {
             // If substr() returns false then PATH_INFO is set to an empty string
             return '/';
         } elseif (null === $baseUrl) {
@@ -1331,5 +1278,18 @@ class Request
             'atom' => array('application/atom+xml'),
             'rss'  => array('application/rss+xml'),
         );
+    }
+
+    private function setPhpDefaultLocale($locale)
+    {
+        // if either the class Locale doesn't exist, or an exception is thrown when
+        // setting the default locale, the intl module is not installed, and
+        // the call can be ignored:
+        try {
+            if (class_exists('Locale', false)) {
+                \Locale::setDefault($locale);
+            }
+        } catch (\Exception $e) {
+        }
     }
 }
