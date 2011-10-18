@@ -101,6 +101,8 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
     {
         $this->includeTime = (array_key_exists('includeTime', $params) ? $params['includeTime'] : 0);
         $this->daFormat = (array_key_exists('daFormat', $params) ? $params['daFormat'] : ($this->includeTime ? __('%A, %B %d, %Y - %I:%M %p') : __('%A, %B %d, %Y')));
+        $this->ifFormat = (array_key_exists('ifFormat', $params) ? $params['ifFormat'] : ($this->includeTime ? __('%A, %B %d, %Y - %I:%M %p') : __('%A, %B %d, %Y')));
+
         $this->defaultValue = (array_key_exists('defaultValue', $params) ? $params['defaultValue'] : null);
         $this->initDate = (array_key_exists('initDate', $params) ? $params['initDate'] : 0);
         $this->useSelectionMode = (array_key_exists('useSelectionMode', $params) ? $params['useSelectionMode'] : 0);
@@ -235,13 +237,13 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
         if ($this->includeTime) {
             $this->initDate = str_replace('-', ',', $this->initDate);
             $result .= "
-                    ifFormat : \"" . __('%Y-%m-%d %H:%M') . "\",
+                    ifFormat : \"" . $this->ifFormat . "\",
                     showsTime      :    true,
                     timeFormat     :    \"" . $i18n->locale->getTimeformat() . "\",
                     singleClick    :    false,";
         } else {
             $result .= "
-                    ifFormat : \"" . __('%Y-%m-%d') . "\",";
+                    ifFormat : \"" . $this->ifFormat . "\",";
         }
 
         if ($this->useSelectionMode) {
@@ -323,6 +325,6 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      */
     function formatValue(Zikula_Form_View $view, $value)
     {
-        return DateUtil::formatDatetime($value, ($this->includeTime ? __('%Y-%m-%d %H:%M') : __('%Y-%m-%d')), false);
+        return DateUtil::formatDatetime($value, $this->ifFormat, false);
     }
 }
