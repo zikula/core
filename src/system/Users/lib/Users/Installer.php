@@ -22,7 +22,7 @@ class Users_Installer extends Zikula_AbstractInstaller
      * Initialise the users module.
      *
      * This function is only ever called once during the lifetime of a particular
-     * module instance. This function MUST exist in the pninit file for a module.
+     * module instance. This function MUST exist in the install file for a module.
      *
      * @return bool True on success, false otherwise.
      */
@@ -167,7 +167,7 @@ class Users_Installer extends Zikula_AbstractInstaller
      * Delete the users module.
      *
      * This function is only ever called once during the lifetime of a particular
-     * module instance. This function MUST exist in the pninit file for a module.
+     * module instance. This function MUST exist in the install file for a module.
      *
      * Since the users module should never be deleted we'all always return false here.
      *

@@ -3,7 +3,7 @@
 #                  stored under the themes/ directory
 # ----------------------------------------------------------------------
 deny from all
-<FilesMatch "\.(css|js|png|gif|jpg|swf|flv)$">
+<FilesMatch "\.(css|js|png|gif|jpg|ico|swf|flv|eot|woff|ttf|svg)$">
 order allow,deny
 allow from all
 </filesmatch>

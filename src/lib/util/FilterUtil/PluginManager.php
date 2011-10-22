@@ -167,61 +167,9 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
             $this->_loaded[$name] = $key;
 
             return key(end($this->_plg));
-        } elseif (System::isLegacyMode()) {
-            return $this->loadPluginLegacy();
         }
 
         return false;
-    }
-
-    /**
-     * Loads a single plugin.
-     *
-     * @param string $name   Plugin's name.
-     * @param array  $config Plugin's config.
-     *
-     * @return integer The plugin's id.
-     */
-    public function loadPluginLegacy($name, $config = array())
-    {
-        $module = $this->getConfig()->getModule();
-        if (strpos($name, '@')) {
-            list ($module, $name) = explode('@', $name, 2);
-        }
-
-        if ($this->isLoaded("$module@$name")) {
-            return true;
-        }
-
-        $class = 'FilterUtil_Filter_' . $name;
-        $file  = 'filter.' . $name . '.class.php';
-
-        // Load hierarchy
-        $dest = array();
-        if ($module != 'core' && ModUtil::available($module)) {
-            $modinfo = ModUtil::getInfoFromName($module);
-            $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-            $directory = $modinfo['directory'];
-            $dest[] = "config/filter/$directory/$file";
-            $dest[] = "$modpath/$directory/filter/$file";
-        }
-        $dest[] = "config/filter/$file";
-        Loader::loadOneFile($dest);
-
-        $config = array();
-        $this->addCommon($config);
-        $obj = new $class($config);
-
-        $this->_plg[] = $obj;
-        end($this->_plg);
-        $key = key($this->_plg);
-        $obj = & $this->_plg[$key];
-
-        $obj->setID($key);
-        $this->_registerPlugin($key);
-        $this->_loaded["$module@$name"] = $key;
-
-        return key(end($this->_plg));
     }
 
     /**

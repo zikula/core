@@ -65,6 +65,7 @@ class ZLoader
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
         self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
+        self::addAutoloader('Symfony', ZLOADER_PATH . '/vendor', '\\');
     }
 
     /**
@@ -203,7 +204,6 @@ class ZLoader
                 'ThemeUtil' => 'util',
                 'UserUtil' => 'util',
                 'ValidationUtil' => 'util',
-                'Loader' => 'legacy',
                 'sfYaml' => 'vendor/Doctrine/Doctrine/Parser/sfYaml', // needed to use Doctrine_Parser since we dont use Doctrine's autoloader
         );
     }

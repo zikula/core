@@ -14,7 +14,7 @@
  */
 
 /**
- * selector_module_tables: generate a PN Module table selector
+ * selector_module_tables: generate a module table selector
  *
  * Parameter:
  *  modname       The module name we wish to get tables for
@@ -23,7 +23,7 @@
  *  defaultValue  The default value (only used if no selectedValue is supplied)
  *  defaultText   Text to go with the default value
  *  remove        Text to go with the default value
- *  nStripChars   Number of characters to remove (to remove pn database table prefix)
+ *  nStripChars   Number of characters to remove (to remove database table prefix)
  *  submit        Wether or not to auto-submit after selection
  *  disabled      Wether or not disable the selector
  *  multipleSize  The size of the selector to create (default=1)

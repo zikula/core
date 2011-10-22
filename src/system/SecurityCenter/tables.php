@@ -14,9 +14,9 @@
 
 
 /**
- * Populate pntables array for securitycenter module.
+ * Populate tables array for securitycenter module.
  *
- * @return array pntables array.
+ * @return array tables array.
  */
 function securitycenter_tables()
 {

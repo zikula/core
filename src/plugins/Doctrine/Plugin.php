@@ -24,7 +24,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
     protected function getMeta()
     {
         return array('displayname' => $this->__('Doctrine'),
-                     'description' => $this->__('Provides Doctrine ORM, DBAL and Common layers of Doctrine'),
+                     'description' => $this->__('Provides Doctrine ORM, DBAL (2.1.3) and Common layers of Doctrine'),
                      'version'     => '2.1.2'
                       );
     }
@@ -45,8 +45,6 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $autoloader->spl_autoload_register();
         include 'lib/DoctrineHelper.php';
         $autoloader->register('Doctrine', dirname(__FILE__) . '/lib/vendor', '\\');
-        $autoloader->register('Symfony\\Components\\Yaml', dirname(__FILE__) . '/lib/vendor', '\\');
-        $autoloader->register('Symfony\\Components\\Console', dirname(__FILE__) . '/lib/vendor', '\\');
         $autoloader->register('DoctrineProxy', 'ztemp/doctrinemodels', '\\');
 
         $serviceManager = $this->eventManager->getServiceManager();

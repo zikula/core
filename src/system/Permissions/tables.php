@@ -18,7 +18,7 @@
 
 
 /**
- * Populate pntables array for Permissions module.
+ * Populate tables array for Permissions module.
  *
  * This function is called internally by the core whenever the module is
  * loaded. It delivers the table information to the core.

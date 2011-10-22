@@ -235,7 +235,7 @@ class ThemeUtil
      * @param string $modname    The modules name (optional, defaults to top level module).
      * @param string $stylesheet The stylesheet file (optional).
      *
-     * @return string Path of the stylesheet file, relative to PN root folder.
+     * @return string Path of the stylesheet file, relative to root folder.
      */
     public static function getModuleStylesheet($modname = '', $stylesheet = '')
     {
@@ -268,12 +268,10 @@ class ThemeUtil
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = "modules/$osmoddir/style";
         $syspath = "system/$osmoddir/style";
-        $modpathOld = "modules/$osmoddir/pnstyle";
-        $syspathOld = "system/$osmoddir/pnstyle";
 
         // search for the style sheet
         $csssrc = '';
-        foreach (array($configpath, $themepath, $modpath, $syspath, $modpathOld, $syspathOld) as $path) {
+        foreach (array($configpath, $themepath, $modpath, $syspath) as $path) {
             if (is_readable("$path/$osstylesheet")) {
                 $csssrc = "$path/$osstylesheet";
                 break;

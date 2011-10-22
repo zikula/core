@@ -34,7 +34,6 @@ class Admin_Installer extends Zikula_AbstractInstaller
         $this->setVar('modulesperrow', 3);
         $this->setVar('itemsperpage', 15);
         $this->setVar('defaultcategory', 5);
-        $this->setVar('modulestylesheet', 'navtabs.css');
         $this->setVar('admingraphic', 1);
         $this->setVar('startcategory', 1);
         // change below to 0 before release - just makes it easier doing development meantime - drak
@@ -84,7 +83,11 @@ class Admin_Installer extends Zikula_AbstractInstaller
                 if (!DBUtil::changeTable('admin_module')) {
                     return '1.8.1';
                 }
+
             case '1.9.0':
+                $this->delVar('modulestylesheet');
+
+            case '1.9.1':
             // future upgrade routines
         }
 

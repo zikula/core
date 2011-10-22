@@ -21,7 +21,7 @@ class Users_Block_Online extends Zikula_Controller_AbstractBlock
     /**
      * Initialise the block.
      *
-     * Adds the blocks security schema to the PN environment.
+     * Adds the blocks security schema to the environment.
      *
      * @return void
      */

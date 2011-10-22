@@ -14,6 +14,26 @@
 
 class Zikula_EntityAccess implements ArrayAccess
 {
+    /**
+     * @var ReflectionObject
+     */
+    protected $reflection;
+    
+    /**
+     * Get this reflection.
+     *
+     * @return ReflectionObject
+     */
+    public function getReflection()
+    {
+        if (!is_null($this->reflection)) {
+            return $this->reflection;
+        }
+
+        $this->reflection = new ReflectionObject($this);
+        return $this->reflection;
+    }
+    
     public function offsetExists($key)
     {
         return method_exists($this, "get" . ucfirst($key));
@@ -38,7 +58,7 @@ class Zikula_EntityAccess implements ArrayAccess
 
     public function toArray()
     {
-        $r = new ReflectionObject($this);
+        $r = $this->getReflection();
         $array = array();
         
         while($r !== false) {

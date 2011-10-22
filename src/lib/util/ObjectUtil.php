@@ -18,7 +18,7 @@
 class ObjectUtil
 {
     /**
-     * Add standard PN architecture fields to the table definition.
+     * Add standard architecture fields to the table definition.
      *
      * @param array  &$columns   The column list from the tables structure for the current table.
      * @param string $col_prefix Colum prefix (deprecated). Default ''.
@@ -46,9 +46,9 @@ class ObjectUtil
     }
 
     /**
-     * Generate the SQL to create the standard PN architecture fields.
+     * Generate the SQL to create the standard architecture fields.
      *
-     * @param array $columns The column list from the PNTables structure for the current table.
+     * @param array $columns The column list from the tables structure for the current table.
      *
      * @return The generated SQL string
      */
@@ -64,9 +64,9 @@ class ObjectUtil
     }
 
     /**
-     * Generate the ADODB DD field descruptors for the standard PN architecture fields.
+     * Generate the ADODB DD field descruptors for the standard architecture fields.
      *
-     * @param array &$columns The column list from the PNTables structure for the current table.
+     * @param array &$columns The column list from the tables structure for the current table.
      *
      * @return void
      */
@@ -82,7 +82,7 @@ class ObjectUtil
     }
 
     /**
-     * Generate the ADODB datadict entries to create the standard PN architecture fields.
+     * Generate the ADODB datadict entries to create the standard architecture fields.
      *
      * @param string $table The table to add standard fields using ADODB dictionary method.
      *
@@ -103,7 +103,7 @@ class ObjectUtil
     }
 
     /**
-     * Set the standard PN architecture fields for object creation/insert.
+     * Set the standard architecture fields for object creation/insert.
      *
      * @param array   &$obj           The object we need to set the standard fields on.
      * @param boolean $preserveValues Whether or not to preserve value fields which have a valid value set (optional) (default=false).
@@ -135,7 +135,7 @@ class ObjectUtil
     }
 
     /**
-     * Set the standard PN architecture fields to sane values for an object update.
+     * Set the standard architecture fields to sane values for an object update.
      *
      * @param array   &$obj           The object we need to set the standard fields on.
      * @param boolean $preserveValues Whether or not to preserve value fields which have a valid value set (optional) (default=false).
@@ -178,7 +178,7 @@ class ObjectUtil
     }
 
     /**
-     * Create an empty object: all fields known via pntables are set to null
+     * Create an empty object: all fields known via tables are set to null
      *
      * @param array $tablename The system tablename registered in the dbtables array.
      *
@@ -192,10 +192,10 @@ class ObjectUtil
 
         $dbtables = DBUtil::getTables();
         if (!isset($dbtables[$tablename])) {
-            return LogUtil::registerError ("Tablename [$tablename] not set in pntables array");
+            return LogUtil::registerError ("Tablename [$tablename] not set in tables array");
         }
         if (!isset($dbtables["${tablename}_column"])) {
-            return LogUtil::registerError ("Columns [${tablename}_column] not set in pntables array");
+            return LogUtil::registerError ("Columns [${tablename}_column] not set in tables array");
         }
 
         $cols = $dbtables["${tablename}_column"];
@@ -324,7 +324,7 @@ class ObjectUtil
      * If exists, it swaps the sequence of the field above or down.
      *
      * @param array  $obj       The object we wish to increment or decrement.
-     * @param string $tablename The tablename key for the PNTables structure.
+     * @param string $tablename The tablename key for the tables structure.
      * @param string $direction Whether we want to increment or decrement the position of the object. Possible values are 'up' (default) and 'down'.
      * @param string $field     The name of the field we wish to resequence.
      * @param string $idcolumn  The column which contains the unique ID.
@@ -1082,8 +1082,8 @@ class ObjectUtil
             return false;
         }
 
-        $pntabs = DBUtil::getTables();
-        $cat = $pntabs['categories_mapobj_column'];
+        $tabs = DBUtil::getTables();
+        $cat = $tabs['categories_mapobj_column'];
 
         $where = "WHERE tbl.$cat[table]='" . DataUtil::formatForStore($tablename) . "'
                     AND tbl.$cat[obj_idcolumn]='" . DataUtil::formatForStore($idcolumn) . "'
@@ -1149,9 +1149,9 @@ class ObjectUtil
             return false;
         }
 
-        $pntabs = DBUtil::getTables();
-        $tab = $pntabs['categories_mapobj'];
-        $col = $pntabs['categories_mapobj_column'];
+        $tabs = DBUtil::getTables();
+        $tab = $tabs['categories_mapobj'];
+        $col = $tabs['categories_mapobj_column'];
 
         $w1 = array();
         $w2 = array();

@@ -37,11 +37,6 @@ class JCSSUtil
         );
         $config = DataUtil::formatForDisplay($config);
         $return .= "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
-        if (System::isLegacyMode()) {
-            $return .= 'document.location.entrypoint="' . $config['entrypoint'] . '";';
-            $return .= 'document.location.pnbaseURL="' . $config['baseURL'] . '"; ';
-            $return .= 'document.location.ajaxtimeout=' . $config['ajaxtimeout'] . ";\n";
-        }
         $return .= "if (typeof(Zikula) == 'undefined') {var Zikula = {};}\n";
         $return .= "Zikula.Config = " . json_encode($config) . "\n";
         $return .= ' /* ]]> */</script>' . "\n";
@@ -69,25 +64,6 @@ class JCSSUtil
         $javascripts = PageUtil::getVar('javascript');
         $stylesheets = PageUtil::getVar('stylesheet');
 
-        if (System::isLegacyMode()) {
-            $replaceLightbox = false;
-            // check if we need to perform ligthbox replacement -- javascript
-            if (is_array($javascripts) && !empty($javascripts)) {
-                $key = array_search('javascript/ajax/lightbox.js', $javascripts);
-                if ($key && !is_readable('javascript/ajax/lightbox.js')) {
-                    $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
-                    $replaceLightbox = true;
-                }
-            }
-
-            // check if we need to perform ligthbox replacement -- css
-            if ($replaceLightbox) {
-                $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets);
-                if ($key) {
-                    $stylesheets[$key] = 'javascript/helpers/ImageViewer/ImageViewer.css';
-                }
-            }
-        }
         $javascripts = self::prepareJavascripts($javascripts, $combine);
         // update stylesheets as there might be some additions for js
         $stylesheets = array_merge((array)$stylesheets, (array)PageUtil::getVar('stylesheet'));
@@ -236,7 +212,6 @@ class JCSSUtil
      * Checks the given script name (alias or path).
      *
      * If this is the core script is returning it's alias.
-     * This method also hanldes all legacy for script paths.
      *
      * @param string $script Script path or alias to verify.
      *
@@ -244,7 +219,6 @@ class JCSSUtil
      */
     public static function getScriptName($script)
     {
-        $script = self::handleLegacy($script);
         $coreScripts = self::scriptsMap();
         $_script = strtolower($script);
         if (array_key_exists($_script, $coreScripts)) {
@@ -255,50 +229,6 @@ class JCSSUtil
                 return $name;
             } elseif (isset($meta['path']) && $meta['path'] == $script) {
                 return $name;
-            }
-        }
-        return $script;
-    }
-
-    /**
-     * Internal procedure for managing legacy script paths.
-     *
-     * @param string $script Script path to check.
-     * 
-     * @return string Verified script path
-     */
-    private static function handleLegacy($script)
-    {
-        // Handle legacy references to non-minimised scripts.
-        if (strpos($script, 'javascript/livepipe/') === 0) {
-            $script = 'livepipe';
-        } else if (strpos($script, 'javascript/ajax/') === 0) {
-            switch ($script) {
-                case 'javascript/ajax/validation.js':
-                    $script = 'validation';
-                    break;
-                case 'javascript/ajax/unittest.js':
-                    $script = 'javascript/ajax/unittest.min.js';
-                    break;
-                case 'javascript/ajax/prototype.js':
-                case 'javascript/ajax/builder.js':
-                case 'javascript/ajax/controls.js':
-                case 'javascript/ajax/dragdrop.js':
-                case 'javascript/ajax/effects.js':
-                case 'javascript/ajax/slider.js':
-                case 'javascript/ajax/sound.js':
-                    $script = 'prototype';
-                    break;
-            }
-            if (strpos($script, 'javascript/ajax/scriptaculous') === 0) {
-                $script = 'prototype';
-            }
-        } else if (System::isLegacyMode() && (strpos($script, 'system/') === 0 || strpos($script, 'modules/') === 0)) {
-            // check for customized javascripts
-            $custom = str_replace(array('javascript/', 'pnjavascript/'), '', $script);
-            $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
-            if (file_exists($custom)) {
-                $script = $custom;
             }
         }
         return $script;
@@ -323,7 +253,7 @@ class JCSSUtil
     {
         $scripts = array(
                 'jquery' => array(
-                        'path' => 'javascript/jquery/jquery-1.6.2.min.js',
+                        'path' => 'javascript/jquery/jquery-1.6.4.min.js',
                         'require' => array('noconflict'),
                 ),
                 'noconflict' => array(
@@ -445,7 +375,7 @@ class JCSSUtil
             );
             $jQueryUncompressed = array(
                     'jquery' => array(
-                            'path' => 'javascript/jquery/jquery-1.6.3.js',
+                            'path' => 'javascript/jquery/jquery-1.6.4.js',
                             'require' => array('noconflict'),
                     ),
                     'noconflict' => array(

@@ -260,7 +260,7 @@ class DBObjectArray
                     return z_exit(__f("Error! An invalid initialization directive '%s' found in 'DBObjectArray::init()'.", $init));
             }
         } else
-            return z_exit(__f("Error! An unexpected parameter type initialization '%s' was encountered in 'PNObject::init()'.", $init));
+            return z_exit(__f("Error! An unexpected parameter type initialization '%s' was encountered in 'DBObject::init()'.", $init));
     }
 
     /**

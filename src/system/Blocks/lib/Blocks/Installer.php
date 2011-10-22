@@ -106,7 +106,7 @@ class Blocks_Installer extends Zikula_AbstractInstaller
 
     /**
      * Add default block data for new installs
-     * This is called after a complete pn installation since the blocks
+     * This is called after a complete installation since the blocks
      * need to be populated with module id's which are only available
      * once the install has been completed
      */

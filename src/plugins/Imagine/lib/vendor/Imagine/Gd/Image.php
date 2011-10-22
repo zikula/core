@@ -483,6 +483,7 @@ final class Image implements ImageInterface
         }
 
         $save = 'image'.$format;
+        $args = array(&$this->resource, $filename);
 
         if (($format === 'jpeg' || $format === 'png') &&
             isset($options['quality'])) {
@@ -558,8 +559,6 @@ final class Image implements ImageInterface
             $args[] = $options['foreground'];
         }
 
-        $args = array($this->resource, $filename);
-
         if (false === call_user_func_array($save, $args)) {
             throw new RuntimeException('Save operation failed');
         }
@@ -624,11 +623,18 @@ final class Image implements ImageInterface
      */
     private function getColor(Color $color)
     {
-        $index = imagecolorallocatealpha(
-            $this->resource, $color->getRed(), $color->getGreen(),
-            $color->getBlue(), round(127 * $color->getAlpha() / 100)
-        );
-        if (false === $index) {
+        static $cache = array();
+
+        $key = (string) $color . "-" . $color->getAlpha();
+
+        if (!isset($cache[$key])) {
+            $cache[$key] = imagecolorallocatealpha(
+                $this->resource, $color->getRed(), $color->getGreen(),
+                $color->getBlue(), round(127 * $color->getAlpha() / 100)
+            );
+        }
+
+        if (false === $cache[$key]) {
             throw new RuntimeException(sprintf(
                 'Unable to allocate color "RGB(%s, %s, %s)" with transparency '.
                 'of %d percent', $color->getRed(), $color->getGreen(),
@@ -636,7 +642,7 @@ final class Image implements ImageInterface
             ));
         }
 
-        return $index;
+        return $cache[$key];
     }
 
     /**
@@ -658,7 +664,7 @@ final class Image implements ImageInterface
 
         $format  = strtolower($format);
 
-        if ('jpg' === $format) {
+        if ('jpg' === $format || 'pjpeg' === $format) {
             $format = 'jpeg';
         }
 

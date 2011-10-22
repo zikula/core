@@ -281,11 +281,7 @@ class DBUtil
             }
 
             if ($result) {
-                if (System::isLegacyMode()) {
-                    return new Zikula_Adapter_AdodbStatement($result);
-                } else {
-                    return $result;
-                }
+                return $result;
             }
         } catch (Exception $e) {
             echo 'Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />';
@@ -455,7 +451,7 @@ class DBUtil
      *
      * @param string $table      The treated table reference.
      * @param string $oldcolumn  The existing name of the column (full database name of column).
-     * @param string $newcolumn  The new name of the column from the pntables array.
+     * @param string $newcolumn  The new name of the column from the tables array.
      * @param string $definition Field specific options (optional) (default=null).
      *
      * @return boolean
@@ -3116,7 +3112,7 @@ class DBUtil
      * can then be copied to the new columns, before calling the method again with
      * $dropColumns = true to cleanup the old columns.
      *
-     * @param string  $table       Table key in pntables.
+     * @param string  $table       Table key in tables.
      * @param array   $definition  Table definition (default = null).
      * @param array   $tabopt      Table options.
      * @param booleam $dropColumns Drop columns if they don't exist in new schema (default = false).
@@ -3380,7 +3376,7 @@ class DBUtil
         } else {
             foreach ($flds as $fld) {
                 if (is_array($fld)) {
-                    // this adds support to specifying index lengths in your pntables. So you can say
+                    // this adds support to specifying index lengths in your tables. So you can say
                     // $flds[] = array('path', 100);
                     // $flds[] = array('name', 10);
                     // $idxoptarray['UNIQUE'] = true;
@@ -3584,7 +3580,7 @@ class DBUtil
     }
 
     /**
-     * Build a Doctrine Model class dynamically to allow pntable based modules to use DQL
+     * Build a Doctrine Model class dynamically to allow table based modules to use DQL
      *
      * @param string $table     Table to use.
      * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord).

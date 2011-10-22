@@ -37,7 +37,7 @@ class Zikula_Core
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = '1.3.1-dev';
+    const VERSION_NUM = '1.4.0-dev';
 
     /**
      * The version ID.
@@ -371,10 +371,6 @@ class Zikula_Core
 
         // Initialise and load configuration
         if ($stage & self::STAGE_CONFIG) {
-            if (System::isLegacyMode()) {
-                require_once 'lib/legacy/Compat.php';
-            }
-
             // error reporting
             if (!System::isInstalling()) {
                 // this is here because it depends on the config.php loading.

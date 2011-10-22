@@ -8,7 +8,7 @@
 {/if}
 <td>{$nbumax}</td>
 {if $coredata.logged_in eq true}
-<td>Private</td>
+<td>{gt text='Private'}</td>
 {else}
 <td><a href="{modurl modname='Users' type='user' func='view'}" title="{gt text="Sorry! You must register for a user account on this site before you can apply for membership of a group."}"> {gt text="Log in or register"}</a></td>
 {/if}

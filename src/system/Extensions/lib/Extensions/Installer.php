@@ -31,11 +31,6 @@ class Extensions_Installer extends Zikula_AbstractInstaller
             return false;
         }
 
-        // hooks
-        if (!DBUtil::createTable('hooks')) {
-            return false;
-        }
-
         // module_deps
         if (!DBUtil::createTable('module_deps')) {
             return false;

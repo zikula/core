@@ -60,7 +60,7 @@ function smarty_function_blockgetinfo($params, Zikula_View $view)
         if ($assign) {
             $view->assign($assign, $blockinfo);
         } else {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified to get the full block information.', array('pnblockgetinfo', 'assign')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified to get the full block information.', array('blockgetinfo', 'assign')));
         }
     }
 

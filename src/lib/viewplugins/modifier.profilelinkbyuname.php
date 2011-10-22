@@ -44,7 +44,8 @@ function smarty_modifier_profilelinkbyuname($uname, $class = '', $image = '', $m
         return $uname;
     }
 
-    $uid = UserUtil::getIdFromName($uname);
+    $uid        = UserUtil::getIdFromName($uname);
+    $showUname  = DataUtil::formatForDisplay($uname);
 
     $profileModule = System::getVar('profilemodule', '');
 
@@ -55,24 +56,26 @@ function smarty_modifier_profilelinkbyuname($uname, $class = '', $image = '', $m
 
         if (!empty($image)) {
             if (is_array($image)) {
-                // if it is an array we assume that it is an pnimg array
+                // if it is an array we assume that it is an img array
                 $show = '<img src="' . DataUtil::formatForDisplay($image['src']) . '" alt="' . DataUtil::formatForDisplay($image['alt']) . '" width="' . DataUtil::formatForDisplay($image['width']) . '" height="' . DataUtil::formatForDisplay($image['height']) . '" />';
             } else {
-                $show = '<img src="' . DataUtil::formatForDisplay($image) . '" alt="' . DataUtil::formatForDisplay($uname) . '" />';
+                $show = '<img src="' . DataUtil::formatForDisplay($image) . '" alt="' . $showUname . '" />';
             }
         } elseif ($maxLength > 0) {
             // truncate the user name to $maxLength chars
-            $length   = strlen($uname);
-            $truncEnd = ($maxLength > $length) ? $length : $maxLength;
-            $uname    = substr($uname, 0, $truncEnd);
+            $length     = strlen($uname);
+            $truncEnd   = ($maxLength > $length) ? $length : $maxLength;
+            $showUname  = DataUtil::formatForDisplay(substr($uname, 0, $truncEnd));
+            $show       = $showUname;
+        } else {
+            $show = $showUname;
         }
-        $showUname = DataUtil::formatForDisplay($uname);
 
-        $profileLink = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $showUname . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $showUname . '</a>';
+        $profileLink = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $showUname . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $show . '</a>';
     } elseif (!empty($image)) {
         $profileLink = ''; // image for anonymous user should be "empty"
     } else {
-        $profileLink = DataUtil::formatForDisplay($uname);
+        $profileLink = $showUname;
     }
 
     return $profileLink;
