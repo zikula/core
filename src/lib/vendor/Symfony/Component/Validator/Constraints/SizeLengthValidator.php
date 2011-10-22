@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 /**
  * @api
  */
-class MinLengthValidator extends ConstraintValidator
+class SizeLengthValidator extends ConstraintValidator
 {
     /**
      * Checks if the passed value is valid.
@@ -50,10 +50,28 @@ class MinLengthValidator extends ConstraintValidator
             $length = strlen($value);
         }
 
-        if ($length < $constraint->limit) {
-            $this->setMessage($constraint->message, array(
+        if ($constraint->min == $constraint->max && $length != $constraint->max) {
+            $this->setMessage($constraint->exactMessage, array(
                 '{{ value }}' => $value,
-                '{{ limit }}' => $constraint->limit,
+                '{{ limit }}' => $constraint->max,
+            ));
+
+            return false;
+        }
+
+        if ($length > $constraint->max) {
+            $this->setMessage($constraint->maxMessage, array(
+                '{{ value }}' => $value,
+                '{{ limit }}' => $constraint->max,
+            ));
+
+            return false;
+        }
+
+        if ($length < $constraint->min) {
+            $this->setMessage($constraint->minMessage, array(
+                '{{ value }}' => $value,
+                '{{ limit }}' => $constraint->min,
             ));
 
             return false;

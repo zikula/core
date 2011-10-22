@@ -170,6 +170,13 @@ class Application
             $input->setInteractive(false);
         }
 
+        if (function_exists('posix_isatty') && $this->getHelperSet()->has('dialog')) {
+            $inputStream = $this->getHelperSet()->get('dialog')->getInputStream();
+            if (!posix_isatty($inputStream)) {
+                $input->setInteractive(false);
+            }
+        }
+
         if (true === $input->hasParameterOption(array('--quiet', '-q'))) {
             $output->setVerbosity(OutputInterface::VERBOSITY_QUIET);
         } elseif (true === $input->hasParameterOption(array('--verbose', '-v'))) {
@@ -388,6 +395,11 @@ class Application
     {
         $command->setApplication($this);
 
+        if (!$command->isEnabled()) {
+            $command->setApplication(null);
+            return;
+        }
+
         $this->commands[$command->getName()] = $command;
 
         foreach ($command->getAliases() as $alias) {
@@ -488,7 +500,7 @@ class Application
             }
 
             if (count($abbrevs[$part]) > 1) {
-                throw new \InvalidArgumentException(sprintf('The namespace "%s" is ambiguous (%s).', $namespace, $this->getAbbreviationSuggestions($abbrevs[$namespace])));
+                throw new \InvalidArgumentException(sprintf('The namespace "%s" is ambiguous (%s).', $namespace, $this->getAbbreviationSuggestions($abbrevs[$part])));
             }
 
             $found[] = $abbrevs[$part][0];
@@ -581,7 +593,7 @@ class Application
 
         $commands = array();
         foreach ($this->commands as $name => $command) {
-            if ($namespace === $this->extractNamespace($name)) {
+            if ($namespace === $this->extractNamespace($name, substr_count($namespace, ':') + 1)) {
                 $commands[$name] = $command;
             }
         }
