@@ -19,18 +19,22 @@
             <legend>{gt text="Database information"}</legend>
             <div class="z-formrow">
                 <label for="dbdriver">{gt text="Database type"}</label>
-                {dbtypes name=dbdriver selectedValue=$dbdriver id=dbdriver}
+                {dbtypes name="dbdriver" selectedValue=$dbdriver id="dbdriver"}
             </div>
             <div class="z-formrow">
                 <label for="dbtabletype">{gt text="Database table type (MySQL only)"}</label>
                 <select name="dbtabletype" id="dbtabletype">
-                    <option value="myisam"{if $dbtabletype eq myisam} selected="selected"{/if}>MyISAM</option>
-                    <option value="innodb"{if $dbtabletype eq innodb} selected="selected"{/if}>InnoDB</option>
+                    <option value="myisam"{if ($dbtabletype == 'myisam')} selected="selected"{/if}>{gt text="MyISAM"}</option>
+                    <option value="innodb"{if ($dbtabletype == 'innodb')} selected="selected"{/if}>{gt text="InnoDB"}</option>
                 </select>
             </div>
             <div class="z-formrow">
                 <label for="dbhost">{gt text="Host"}</label>
                 <input type="text" name="dbhost" id="dbhost" maxlength="80" value="{$dbhost|default:'localhost'}" />
+            </div>
+            <div class="z-formrow">
+                <label for="port">{gt text="Port"}</label>
+                <input type="text" name="port" id="port" maxlength="5" value="{$port}" />
             </div>
             <div class="z-formrow">
                 <label for="dbusername">{gt text="User name"}</label>
@@ -47,7 +51,6 @@
                     <strong>{gt text="Please ensure the database is in UTF8 format."}</strong>
                 </p>
             </div>
-
         </fieldset>
         <div class="z-buttons z-center">
             <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />
