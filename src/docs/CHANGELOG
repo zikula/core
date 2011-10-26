@@ -27,7 +27,7 @@ CHANGELOG - ZIKULA 1.3.1
 
 - Upgraded PHPIDS to 0.7.0.
 
-- Fixed issue where restoring defauls for a module, the localization wasn't used (issue #71)
+- Fixed issue where restoring defaults for a module, the localization wasn't used (issue #71)
 
 - Fixed issue where pager wasn't able to parse array with three dimensions (issue #111)
 
@@ -41,7 +41,7 @@ CHANGELOG - ZIKULA 1.3.0
 
 - Created new OO MVC module format.
 
-- Introduced event notification system and added various events through out the core execution cycle for easy customisation and extension.
+- Introduced event notification system and added various events through out the core execution cycle for easy customization and extension.
 
 - Added system-wide and module specific event based plugin system (called 'system plugins' and 'module plugins'.
 
@@ -77,7 +77,7 @@ CHANGELOG - ZIKULA 1.3.0
 delete installation/upgrade scripts and less post install/upgrade steps like the requirement to delete install- and upgrade.php to access
 administration.
 
-- Merged all templating and rendering control to Theme module and overhauled caching.
+- Merged all template and rendering control to Theme module and overhauled caching.
 
 Users Module
 ------------
@@ -94,7 +94,7 @@ There has been a significant overhaul of Users module:
 
   - Removed old Authentication API.
 
-  - Changed old password checker js sytem to "passwordchecker" library (issue #1841).
+  - Changed old password checker js system to "passwordchecker" library (issue #1841).
 
   - Introduced new Authentication API capable of dealing with modern
 authentication (login) methods.
