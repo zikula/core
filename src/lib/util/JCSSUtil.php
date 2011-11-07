@@ -21,7 +21,7 @@ class JCSSUtil
 
     /**
      * Generate a configuration for javascript and return script tag to embed in HTML HEAD.
-     * 
+     *
      * @return string HTML code with script tag
      */
     public static function getJSConfig()
@@ -235,8 +235,52 @@ class JCSSUtil
     }
 
     /**
+     * Internal procedure for managing legacy script paths.
+     *
+     * @param string $script Script path to check.
+     *
+     * @return string Verified script path
+     */
+    private static function handleLegacy($script)
+    {
+        // Handle legacy references to non-minimised scripts.
+        if (strpos($script, 'javascript/livepipe/') === 0) {
+            $script = 'livepipe';
+        } else if (strpos($script, 'javascript/ajax/') === 0) {
+            switch ($script) {
+                case 'javascript/ajax/validation.js':
+                    $script = 'validation';
+                    break;
+                case 'javascript/ajax/unittest.js':
+                    $script = 'javascript/ajax/unittest.min.js';
+                    break;
+                case 'javascript/ajax/prototype.js':
+                case 'javascript/ajax/builder.js':
+                case 'javascript/ajax/controls.js':
+                case 'javascript/ajax/dragdrop.js':
+                case 'javascript/ajax/effects.js':
+                case 'javascript/ajax/slider.js':
+                case 'javascript/ajax/sound.js':
+                    $script = 'prototype';
+                    break;
+            }
+            if (strpos($script, 'javascript/ajax/scriptaculous') === 0) {
+                $script = 'prototype';
+            }
+        } else if (System::isLegacyMode() && (strpos($script, 'system/') === 0 || strpos($script, 'modules/') === 0)) {
+            // check for customized javascripts
+            $custom = str_replace(array('javascript/', 'pnjavascript/'), '', $script);
+            $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
+            if (file_exists($custom)) {
+                $script = $custom;
+            }
+        }
+        return $script;
+    }
+
+    /**
      * An array with a list of core scripts.
-     * 
+     *
      * For each script can be defined:
      * - path: the true path to the file
      * - require: other scripts to be loaded along with the file (aliases for core, paths for other)
@@ -253,7 +297,7 @@ class JCSSUtil
     {
         $scripts = array(
                 'jquery' => array(
-                        'path' => 'javascript/jquery/jquery-1.6.4.min.js',
+                        'path' => 'javascript/jquery/jquery-1.7.0.min.js',
                         'require' => array('noconflict'),
                 ),
                 'noconflict' => array(
@@ -375,7 +419,7 @@ class JCSSUtil
             );
             $jQueryUncompressed = array(
                     'jquery' => array(
-                            'path' => 'javascript/jquery/jquery-1.6.4.js',
+                            'path' => 'javascript/jquery/jquery-1.7.0.js',
                             'require' => array('noconflict'),
                     ),
                     'noconflict' => array(

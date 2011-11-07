@@ -13,22 +13,22 @@
                 <a href="{modurl modname='Settings' type='admin' func='main'}"><span>{gt text="Settings"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Extensions' type='admin' func='main'}"><span>{gt text="Extensions manager"}</span></a>
+                <a href="{modurl modname='Extensions' type='admin' func='main'}"><span>{gt text="Extensions"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Blocks' type='admin' func='main'}"><span>{gt text="Blocks manager"}</span></a>
+                <a href="{modurl modname='Blocks' type='admin' func='main'}"><span>{gt text="Blocks"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Users' type='admin' func='main'}"><span>{gt text="User administration"}</span></a>
+                <a href="{modurl modname='Users' type='admin' func='main'}"><span>{gt text="Users"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Groups' type='admin' func='main'}"><span>{gt text="Groups manager"}</span></a>
+                <a href="{modurl modname='Groups' type='admin' func='main'}"><span>{gt text="Groups"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Permissions' type=admin func='main'}"><span>{gt text="Permission rules manager"}</span></a>
+                <a href="{modurl modname='Permissions' type=admin func='main'}"><span>{gt text="Permission rules"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Theme' type='admin' func='main'}"><span>{gt text="Themes manager"}</span></a>
+                <a href="{modurl modname='Theme' type='admin' func='main'}"><span>{gt text="Themes"}</span></a>
             </li>
             <li class="page_item">
                 <a href="{modurl modname='Categories' type='admin' func='main'}"><span>{gt text="Categories"}</span></a>
