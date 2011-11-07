@@ -21,7 +21,7 @@ class JCSSUtil
 
     /**
      * Generate a configuration for javascript and return script tag to embed in HTML HEAD.
-     * 
+     *
      * @return string HTML code with script tag
      */
     public static function getJSConfig()
@@ -264,7 +264,7 @@ class JCSSUtil
      * Internal procedure for managing legacy script paths.
      *
      * @param string $script Script path to check.
-     * 
+     *
      * @return string Verified script path
      */
     private static function handleLegacy($script)
@@ -306,7 +306,7 @@ class JCSSUtil
 
     /**
      * An array with a list of core scripts.
-     * 
+     *
      * For each script can be defined:
      * - path: the true path to the file
      * - require: other scripts to be loaded along with the file (aliases for core, paths for other)
@@ -323,7 +323,7 @@ class JCSSUtil
     {
         $scripts = array(
                 'jquery' => array(
-                        'path' => 'javascript/jquery/jquery-1.6.4.min.js',
+                        'path' => 'javascript/jquery/jquery-1.7.0.min.js',
                         'require' => array('noconflict'),
                 ),
                 'noconflict' => array(
@@ -445,7 +445,7 @@ class JCSSUtil
             );
             $jQueryUncompressed = array(
                     'jquery' => array(
-                            'path' => 'javascript/jquery/jquery-1.6.4.js',
+                            'path' => 'javascript/jquery/jquery-1.7.0.js',
                             'require' => array('noconflict'),
                     ),
                     'noconflict' => array(
