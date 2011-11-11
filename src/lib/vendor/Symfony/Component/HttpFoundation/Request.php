@@ -71,20 +71,74 @@ class Request
      */
     public $headers;
 
+    /**
+     * @var string
+     */
     protected $content;
+    
+    /**
+     * @var string
+     */
     protected $languages;
+    
+    /**
+     * @var string
+     */
     protected $charsets;
+    
+    /**
+     * @var string
+     */
     protected $acceptableContentTypes;
+    
+    /**
+     * @var string
+     */
     protected $pathInfo;
+    
+    /**
+     * @var string
+     */
     protected $requestUri;
+    
+    /**
+     * @var string
+     */
     protected $baseUrl;
+    
+    /**
+     * @var string
+     */
     protected $basePath;
+    
+    /**
+     * @var string
+     */
     protected $method;
+    
+    /**
+     * @var string
+     */
     protected $format;
+    
+    /**
+     * @var \Symfony\Component\HttpFoundation\Session
+     */
     protected $session;
+    
+    /**
+     * @var string
+     */
     protected $locale;
+    
+    /**
+     * @var string
+     */
     protected $defaultLocale = 'en';
 
+    /**
+     * @var string
+     */
     static protected $formats;
 
     /**
@@ -894,16 +948,47 @@ class Request
         $this->format = $format;
     }
 
+    /**
+     * Gets the format associated with the request.
+     *
+     * @return string The format (null if no content type is present)
+     *
+     * @api
+     */
+    public function getContentType() 
+    {
+        return $this->getFormat($this->server->get('CONTENT_TYPE'));
+    }
+
+    /**
+     * Sets the default locale.
+     * 
+     * @param string $locale 
+     * 
+     * @api
+     */
     public function setDefaultLocale($locale)
     {
         $this->setPhpDefaultLocale($this->defaultLocale = $locale);
     }
 
+    /**
+     * Sets the locale.
+     * 
+     * @param string $locale 
+     * 
+     * @api
+     */
     public function setLocale($locale)
     {
         $this->setPhpDefaultLocale($this->locale = $locale);
     }
 
+    /**
+     * Get the locale.
+     * 
+     * @return string
+     */
     public function getLocale()
     {
         return null === $this->locale ? $this->defaultLocale : $this->locale;
@@ -1091,9 +1176,9 @@ class Request
         $values = array();
         foreach (array_filter(explode(',', $header)) as $value) {
             // Cut off any q-value that might come after a semi-colon
-            if ($pos = strpos($value, ';')) {
-                $q     = (float) trim(substr($value, strpos($value, '=') + 1));
-                $value = trim(substr($value, 0, $pos));
+            if (preg_match('/;\s*(q=.*$)/', $value, $match)) {
+                $q     = (float) substr(trim($match[1]), 2);
+                $value = trim(substr($value, 0, -strlen($match[0])));
             } else {
                 $q = 1;
             }
@@ -1145,6 +1230,11 @@ class Request
         return $requestUri;
     }
 
+    /**
+     * Prepares the base URL.
+     * 
+     * @return string 
+     */
     protected function prepareBaseUrl()
     {
         $filename = basename($this->server->get('SCRIPT_FILENAME'));
@@ -1207,7 +1297,7 @@ class Request
     }
 
     /**
-     * Prepares base path.
+     * Prepares the base path.
      *
      * @return string base path
      */
@@ -1233,7 +1323,7 @@ class Request
     }
 
     /**
-     * Prepares path info.
+     * Prepares the path info.
      *
      * @return string path info
      */
@@ -1280,6 +1370,11 @@ class Request
         );
     }
 
+    /**
+     * Sets the default PHP locale.
+     * 
+     * @param string $locale 
+     */
     private function setPhpDefaultLocale($locale)
     {
         // if either the class Locale doesn't exist, or an exception is thrown when
