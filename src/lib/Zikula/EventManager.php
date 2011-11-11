@@ -125,10 +125,11 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
      *
      * @param Zikula_EventInterface $event Event.
      *
-     * @return object Event object $event.
+     * @return Zikula_EventInterface
      */
     public function notify(Zikula_EventInterface $event)
     {
+        $event->setEventManager($this);
         $handlers = $this->getHandlers($event->getName());
         foreach ($handlers as $handler) {
             $this->invoke($handler, $event);
