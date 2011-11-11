@@ -51,6 +51,13 @@ class Zikula_AbstractHook implements Zikula_HookInterface
      * @var boolean
      */
     protected $stopped = false;
+    
+    /**
+     * EventManager instance.
+     * 
+     * @var Zikula_EventManagerInterface
+     */
+    protected $eventManager;
 
     /**
      * Get caller.
@@ -150,5 +157,27 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     {
         $this->name = $name;
         return $this;
+    }
+    
+    /**
+     * Sets the EventManager property.
+     * 
+     * @param Zikula_EventManagerInterface $eventManager
+     * 
+     * @return void
+     */
+    public function setEventManager(Zikula_EventManagerInterface $eventManager)
+    {
+        $this->eventManager = $eventManager;
+    }
+    
+    /**
+     * Gets the EventManager.
+     * 
+     * @return Zikula_EventManager
+     */
+    public function getEventManager()
+    {
+        return $this->eventManager;
     }
 }
