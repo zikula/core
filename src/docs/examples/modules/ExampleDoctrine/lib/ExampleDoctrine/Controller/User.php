@@ -63,4 +63,26 @@ class ExampleDoctrine_Controller_User extends Zikula_AbstractController
         $form = FormUtil::newForm('ExampleDoctrine', $this);
         return $form->execute('exampledoctrine_user_edit.tpl', new ExampleDoctrine_Handler_Edit());
     }
+    
+    public function form() {
+        /* @var $form Symfony\Component\Form\Form */
+        $form = $this->serviceManager->getService('symfony.formfactory')
+                     ->create(new ExampleDoctrine_Form_ContactType(), 
+                              $this->entityManager->find('ExampleDoctrine_Entity_User', 9));
+        
+        if($this->request->isPost()) {
+            $form->bind($this->request->getPost()->get($form->getName()));
+            
+            if($form->isValid()) {
+                $data = $form->getData();
+                var_dump($data->getCategories()->get(1)->getCategory()->getName());
+                var_dump($data->getCategories()->get(1)->getId());
+//                $this->entityManager->persist($data);
+//                $this->entityManager->flush();
+            }
+        }
+
+        return $this->view->assign('form', $form->createView())
+                    ->fetch('exampledoctrine_user_form.tpl');
+    }
 }
