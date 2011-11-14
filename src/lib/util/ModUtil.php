@@ -1464,6 +1464,10 @@ class ModUtil
         if (!isset(self::$cache['modgetname'])) {
             self::$cache['modgetname'] = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
+            if (empty(self::$cache['modgetname']) && System::getVar('shorturls', 0) == 1) {
+                self::$cache['modgetname'] = System::getVar('shorturlsdefaultmodule');
+            }
+
             if (empty(self::$cache['modgetname'])) {
                 self::$cache['modgetname'] = System::getVar('startpage');
             }
