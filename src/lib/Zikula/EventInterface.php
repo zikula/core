@@ -19,6 +19,8 @@
 interface Zikula_EventInterface
 {
     public function getName();
+    public function getEventManager();
+    public function setEventManager(Zikula_EventManagerInterface $eventManager);
     public function stop();
     public function isStopped();
 }

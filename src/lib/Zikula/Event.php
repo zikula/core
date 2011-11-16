@@ -62,6 +62,13 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      * @var Exception
      */
     protected $exception;
+    
+    /**
+     * EventManager instance.
+     * 
+     * @var Zikula_EventManagerInterface
+     */
+    protected $eventManager;
 
     /**
      * Encapsulate an event called $name with $subject.
@@ -268,6 +275,28 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     public function hasException()
     {
         return (bool)$this->exception;
+    }
+    
+    /**
+     * Sets the EventManager property.
+     * 
+     * @param Zikula_EventManagerInterface $eventManager
+     * 
+     * @return void
+     */
+    public function setEventManager(Zikula_EventManagerInterface $eventManager)
+    {
+        $this->eventManager = $eventManager;
+    }
+    
+    /**
+     * Gets the EventManager.
+     * 
+     * @return Zikula_EventManager
+     */
+    public function getEventManager()
+    {
+        return $this->eventManager;
     }
 
     /**
