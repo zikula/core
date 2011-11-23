@@ -165,11 +165,13 @@ class ProxyFactory
     {
         $methods = '';
 
+        $methodNames = array();
         foreach ($class->reflClass->getMethods() as $method) {
             /* @var $method ReflectionMethod */
-            if ($method->isConstructor() || in_array(strtolower($method->getName()), array("__sleep", "__clone"))) {
+            if ($method->isConstructor() || in_array(strtolower($method->getName()), array("__sleep", "__clone")) || isset($methodNames[$method->getName()])) {
                 continue;
             }
+            $methodNames[$method->getName()] = true;
 
             if ($method->isPublic() && ! $method->isFinal() && ! $method->isStatic()) {
                 $methods .= "\n" . '    public function ';
