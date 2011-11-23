@@ -91,7 +91,7 @@ class BasicEntityPersister
 
     /**
      * The database platform.
-     * 
+     *
      * @var Doctrine\DBAL\Platforms\AbstractPlatform
      */
     protected $_platform;
@@ -109,12 +109,12 @@ class BasicEntityPersister
      * @var array
      */
     protected $_queuedInserts = array();
-    
+
     /**
      * ResultSetMapping that is used for all queries. Is generated lazily once per request.
-     * 
+     *
      * TODO: Evaluate Caching in combination with the other cached SQL snippets.
-     * 
+     *
      * @var Query\ResultSetMapping
      */
     protected $_rsm;
@@ -122,7 +122,7 @@ class BasicEntityPersister
     /**
      * The map of column names to DBAL mapping types of all prepared columns used
      * when INSERTing or UPDATEing an entity.
-     * 
+     *
      * @var array
      * @see _prepareInsertData($entity)
      * @see _prepareUpdateData($entity)
@@ -132,7 +132,7 @@ class BasicEntityPersister
     /**
      * The INSERT SQL statement used for entities handled by this persister.
      * This SQL is only generated once per request, if at all.
-     * 
+     *
      * @var string
      */
     private $_insertSql;
@@ -140,29 +140,29 @@ class BasicEntityPersister
     /**
      * The SELECT column list SQL fragment used for querying entities by this persister.
      * This SQL fragment is only generated once per request, if at all.
-     * 
+     *
      * @var string
      */
     protected $_selectColumnListSql;
-    
+
     /**
      * The JOIN SQL fragement used to eagerly load all many-to-one and one-to-one
      * associations configured as FETCH_EAGER, aswell as all inverse one-to-one associations.
-     * 
+     *
      * @var string
      */
     protected $_selectJoinSql;
 
     /**
      * Counter for creating unique SQL table and column aliases.
-     * 
+     *
      * @var integer
      */
     protected $_sqlAliasCounter = 0;
 
     /**
      * Map from class names (FQCN) to the corresponding generated SQL table aliases.
-     * 
+     *
      * @var array
      */
     protected $_sqlTableAliases = array();
@@ -170,7 +170,7 @@ class BasicEntityPersister
     /**
      * Initializes a new <tt>BasicEntityPersister</tt> that uses the given EntityManager
      * and persists instances of the class described by the given ClassMetadata descriptor.
-     * 
+     *
      * @param Doctrine\ORM\EntityManager $em
      * @param Doctrine\ORM\Mapping\ClassMetadata $class
      */
@@ -204,7 +204,7 @@ class BasicEntityPersister
     /**
      * Executes all queued entity insertions and returns any generated post-insert
      * identifiers that were created as a result of the insertions.
-     * 
+     *
      * If no inserts are queued, invoking this method is a NOOP.
      *
      * @return array An array of any generated post-insert IDs. This will be an empty array
@@ -228,6 +228,7 @@ class BasicEntityPersister
 
             if (isset($insertData[$tableName])) {
                 $paramIndex = 1;
+                
                 foreach ($insertData[$tableName] as $column => $value) {
                     $stmt->bindValue($paramIndex++, $value, $this->_columnTypes[$column]);
                 }
@@ -255,7 +256,7 @@ class BasicEntityPersister
 
     /**
      * Retrieves the default version value which was created
-     * by the preceding INSERT statement and assigns it back in to the 
+     * by the preceding INSERT statement and assigns it back in to the
      * entities version field.
      *
      * @param object $entity
@@ -269,7 +270,7 @@ class BasicEntityPersister
 
     /**
      * Fetch the current version value of a versioned entity.
-     * 
+     *
      * @param Doctrine\ORM\Mapping\ClassMetadata $versionedClass
      * @param mixed $id
      * @return mixed
@@ -294,7 +295,7 @@ class BasicEntityPersister
      * The data to update is retrieved through {@link _prepareUpdateData}.
      * Subclasses that override this method are supposed to obtain the update data
      * in the same way, through {@link _prepareUpdateData}.
-     * 
+     *
      * Subclasses are also supposed to take care of versioning when overriding this method,
      * if necessary. The {@link _updateTable} method can be used to apply the data retrieved
      * from {@_prepareUpdateData} on the target tables, thereby optionally applying versioning.
@@ -392,7 +393,7 @@ class BasicEntityPersister
                 // @Todo this only covers scenarios with no inheritance or of the same level. Is there something
                 // like self-referential relationship between different levels of an inheritance hierachy? I hope not!
                 $selfReferential = ($mapping['targetEntity'] == $mapping['sourceEntity']);
-                
+
                 if ( ! $mapping['isOwningSide']) {
                     $relatedClass = $this->_em->getClassMetadata($mapping['targetEntity']);
                     $mapping = $relatedClass->associationMappings[$mapping['mappedBy']];
@@ -441,7 +442,7 @@ class BasicEntityPersister
      * Prepares the changeset of an entity for database insertion (UPDATE).
      *
      * The changeset is obtained from the currently running UnitOfWork.
-     * 
+     *
      * During this preparation the array that is passed as the second parameter is filled with
      * <columnName> => <value> pairs, grouped by table name.
      *
@@ -567,7 +568,7 @@ class BasicEntityPersister
         $sql = $this->_getSelectEntitiesSQL($criteria, $assoc, $lockMode);
         list($params, $types) = $this->expandParameters($criteria);
         $stmt = $this->_conn->executeQuery($sql, $params, $types);
-        
+
         if ($entity !== null) {
             $hints[Query::HINT_REFRESH] = true;
             $hints[Query::HINT_REFRESH_ENTITY] = $entity;
@@ -657,7 +658,7 @@ class BasicEntityPersister
 
     /**
      * Refreshes a managed entity.
-     * 
+     *
      * @param array $id The identifier of the entity as an associative array from
      *                  column or field names to values.
      * @param object $entity The entity to refresh.
@@ -667,7 +668,7 @@ class BasicEntityPersister
         $sql = $this->_getSelectEntitiesSQL($id);
         list($params, $types) = $this->expandParameters($id);
         $stmt = $this->_conn->executeQuery($sql, $params, $types);
-        
+
         $hydrator = $this->_em->newHydrator(Query::HYDRATE_OBJECT);
         $hydrator->hydrateAll($stmt, $this->_rsm, array(Query::HINT_REFRESH => true));
 
@@ -682,7 +683,7 @@ class BasicEntityPersister
 
     /**
      * Loads a list of entities by a list of field criteria.
-     * 
+     *
      * @param array $criteria
      * @param array $orderBy
      * @param int $limit
@@ -706,7 +707,7 @@ class BasicEntityPersister
 
     /**
      * Get (sliced or full) elements of the given collection.
-     * 
+     *
      * @param array $assoc
      * @param object $sourceEntity
      * @param int|null $offset
@@ -721,7 +722,7 @@ class BasicEntityPersister
 
     /**
      * Load an array of entities from a given dbal statement.
-     * 
+     *
      * @param array $assoc
      * @param Doctrine\DBAL\Statement $stmt
      * @return array
@@ -743,13 +744,13 @@ class BasicEntityPersister
 
     /**
      * Hydrate a collection from a given dbal statement.
-     * 
+     *
      * @param array $assoc
      * @param Doctrine\DBAL\Statement $stmt
      * @param PersistentCollection $coll
      */
     private function loadCollectionFromStatement($assoc, $stmt, $coll)
-    {        
+    {
         $hints = array('deferEagerLoads' => true, 'collection' => $coll);
 
         if (isset($assoc['indexBy'])) {
@@ -791,7 +792,7 @@ class BasicEntityPersister
                     $value = $sourceClass->reflFields[$field]->getValue($sourceEntity);
                     if (isset($sourceClass->associationMappings[$field])) {
                         $value = $this->_em->getUnitOfWork()->getEntityIdentifier($value);
-                        $value = $value[$this->_em->getClassMetadata($assoc['targetEntity'])->identifier[0]];
+                        $value = $value[$this->_em->getClassMetadata($sourceClass->associationMappings[$field]['targetEntity'])->identifier[0]];
                     }
 
                     $criteria[$quotedJoinTable . "." . $relationKeyColumn] = $value;
@@ -813,7 +814,7 @@ class BasicEntityPersister
                     $value = $sourceClass->reflFields[$field]->getValue($sourceEntity);
                     if (isset($sourceClass->associationMappings[$field])) {
                         $value = $this->_em->getUnitOfWork()->getEntityIdentifier($value);
-                        $value = $value[$this->_em->getClassMetadata($assoc['targetEntity'])->identifier[0]];
+                        $value = $value[$this->_em->getClassMetadata($sourceClass->associationMappings[$field]['targetEntity'])->identifier[0]];
                     }
                     $criteria[$quotedJoinTable . "." . $relationKeyColumn] = $value;
                 } else if (isset($sourceClass->fieldNames[$sourceKeyColumn])) {
@@ -872,11 +873,10 @@ class BasicEntityPersister
 
     /**
      * Gets the ORDER BY SQL snippet for ordered collections.
-     * 
+     *
      * @param array $orderBy
      * @param string $baseTableAlias
      * @return string
-     * @todo Rename: _getOrderBySQL
      */
     protected final function _getOrderBySQL(array $orderBy, $baseTableAlias)
     {
@@ -884,6 +884,11 @@ class BasicEntityPersister
         foreach ($orderBy as $fieldName => $orientation) {
             if ( ! isset($this->_class->fieldMappings[$fieldName])) {
                 throw ORMException::unrecognizedField($fieldName);
+            }
+
+            $orientation = strtoupper(trim($orientation));
+            if ($orientation != 'ASC' && $orientation != 'DESC') {
+                throw ORMException::invalidOrientation($this->_class->name, $fieldName);
             }
 
             $tableAlias = isset($this->_class->fieldMappings[$fieldName]['inherited']) ?
@@ -906,7 +911,7 @@ class BasicEntityPersister
      * list SQL fragment. Note that in the implementation of BasicEntityPersister
      * the resulting SQL fragment is generated only once and cached in {@link _selectColumnListSql}.
      * Subclasses may or may not do the same.
-     * 
+     *
      * @return string The SQL fragment.
      * @todo Rename: _getSelectColumnsSQL()
      */
@@ -934,21 +939,21 @@ class BasicEntityPersister
                 if ($columnList) $columnList .= ', ';
                 $columnList .= $assocColumnSQL;
             }
-            
+
             if ($assoc['type'] & ClassMetadata::TO_ONE && ($assoc['fetch'] == ClassMetadata::FETCH_EAGER || !$assoc['isOwningSide'])) {
                 $eagerEntity = $this->_em->getClassMetadata($assoc['targetEntity']);
                 if ($eagerEntity->inheritanceType != ClassMetadata::INHERITANCE_TYPE_NONE) {
                     continue; // now this is why you shouldn't use inheritance
                 }
-                
+
                 $assocAlias = 'e' . ($eagerAliasCounter++);
                 $this->_rsm->addJoinedEntityResult($assoc['targetEntity'], $assocAlias, 'r', $assocField);
-                
+
                 foreach ($eagerEntity->fieldNames AS $field) {
                     if ($columnList) $columnList .= ', ';
                     $columnList .= $this->_getSelectColumnSQL($field, $eagerEntity, $assocAlias);
                 }
-                
+
                 foreach ($eagerEntity->associationMappings as $assoc2Field => $assoc2) {
                     $assoc2ColumnSQL = $this->_getSelectColumnAssociationSQL($assoc2Field, $assoc2, $eagerEntity, $assocAlias);
                     if ($assoc2ColumnSQL) {
@@ -960,7 +965,7 @@ class BasicEntityPersister
                 $first = true;
                 if ($assoc['isOwningSide']) {
                     $this->_selectJoinSql .= ' ' . $eagerEntity->table['name'] . ' ' . $this->_getSQLTableAlias($eagerEntity->name, $assocAlias) .' ON ';
-                    
+
                     foreach ($assoc['sourceToTargetKeyColumns'] AS $sourceCol => $targetCol) {
                         if (!$first) {
                             $this->_selectJoinSql .= ' AND ';
@@ -972,7 +977,7 @@ class BasicEntityPersister
                 } else {
                     $eagerEntity = $this->_em->getClassMetadata($assoc['targetEntity']);
                     $owningAssoc = $eagerEntity->getAssociationMapping($assoc['mappedBy']);
-                    
+
                     $this->_selectJoinSql .= ' ' . $eagerEntity->table['name'] . ' ' . $this->_getSQLTableAlias($eagerEntity->name, $assocAlias) .' ON ';
 
                     foreach ($owningAssoc['sourceToTargetKeyColumns'] AS $sourceCol => $targetCol) {
@@ -991,7 +996,7 @@ class BasicEntityPersister
 
         return $this->_selectColumnListSql;
     }
-    
+
     protected function _getSelectColumnAssociationSQL($field, $assoc, ClassMetadata $class, $alias = 'r')
     {
         $columnList = '';
@@ -1000,9 +1005,10 @@ class BasicEntityPersister
                 if ($columnList) $columnList .= ', ';
 
                 $columnAlias = $srcColumn . $this->_sqlAliasCounter++;
-                $columnList .= $this->_getSQLTableAlias($class->name, ($alias == 'r' ? '' : $alias) )  . ".$srcColumn AS $columnAlias";
                 $resultColumnName = $this->_platform->getSQLResultCasing($columnAlias);
-                $this->_rsm->addMetaResult($alias, $this->_platform->getSQLResultCasing($columnAlias), $srcColumn, isset($assoc['id']) && $assoc['id'] === true);
+                $columnList .= $this->_getSQLTableAlias($class->name, ($alias == 'r' ? '' : $alias) )
+                             . '.' . $srcColumn . ' AS ' . $resultColumnName;
+                $this->_rsm->addMetaResult($alias, $resultColumnName, $srcColumn, isset($assoc['id']) && $assoc['id'] === true);
             }
         }
         return $columnList;
@@ -1024,9 +1030,9 @@ class BasicEntityPersister
             $owningAssoc = $this->_em->getClassMetadata($manyToMany['targetEntity'])->associationMappings[$manyToMany['mappedBy']];
             $joinClauses = $owningAssoc['relationToSourceKeyColumns'];
         }
-        
+
         $joinTableName = $this->_class->getQuotedJoinTableName($owningAssoc, $this->_platform);
-        
+
         $joinSql = '';
         foreach ($joinClauses as $joinTableColumn => $sourceColumn) {
             if ($joinSql != '') $joinSql .= ' AND ';
@@ -1047,7 +1053,7 @@ class BasicEntityPersister
 
     /**
      * Gets the INSERT SQL used by the persister to persist a new entity.
-     * 
+     *
      * @return string
      */
     protected function _getInsertSQL()
@@ -1124,7 +1130,7 @@ class BasicEntityPersister
 
     /**
      * Gets the SQL table alias for the given class name.
-     * 
+     *
      * @param string $className
      * @return string The SQL table alias.
      * @todo Reconsider. Binding table aliases to class names is not such a good idea.
@@ -1134,7 +1140,7 @@ class BasicEntityPersister
         if ($assocName) {
             $className .= '#'.$assocName;
         }
-        
+
         if (isset($this->_sqlTableAliases[$className])) {
             return $this->_sqlTableAliases[$className];
         }
@@ -1284,7 +1290,7 @@ class BasicEntityPersister
                 $value = $sourceClass->reflFields[$field]->getValue($sourceEntity);
                 if (isset($sourceClass->associationMappings[$field])) {
                     $value = $this->_em->getUnitOfWork()->getEntityIdentifier($value);
-                    $value = $value[$this->_em->getClassMetadata($assoc['targetEntity'])->identifier[0]];
+                    $value = $value[$this->_em->getClassMetadata($sourceClass->associationMappings[$field]['targetEntity'])->identifier[0]];
                 }
                 $criteria[$tableAlias . "." . $targetKeyColumn] = $value;
             } else {
@@ -1320,7 +1326,7 @@ class BasicEntityPersister
             if (is_array($value)) {
                 $type += Connection::ARRAY_PARAM_OFFSET;
             }
-            
+
             $params[] = $value;
             $types[] = $type;
         }
@@ -1340,8 +1346,7 @@ class BasicEntityPersister
             $criteria = array_merge($criteria, $extraConditions);
         }
 
-        $sql = 'SELECT 1 FROM ' . $this->_class->getQuotedTableName($this->_platform)
-                . ' ' . $this->_getSQLTableAlias($this->_class->name)
+        $sql = 'SELECT 1 ' . $this->getLockTablesSql()
                 . ' WHERE ' . $this->_getSelectConditionSQL($criteria);
 
         return (bool) $this->_conn->fetchColumn($sql, array_values($criteria));
