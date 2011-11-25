@@ -100,7 +100,7 @@ img.z-floatright {
     color: #aaa;
     height: auto;
     line-height: 22px;
-    list-style: none outside none;
+    list-style: none;
     margin: 1em 0;
     min-height: 22px;
     padding:0 5px;
@@ -174,6 +174,7 @@ img.z-floatright {
     padding:0 !important;
 }
 .z-errormsg ul {
+    list-style: none;
     margin:0 !important;
     padding:0 !important;
 }
@@ -319,7 +320,15 @@ table.z-datatable tbody tr.hover {
 
 table.z-datatable ul,
 table.z-admintable ul {
+    list-style: disc inside none;
     margin: 0;
+    padding: 0;
+}
+
+table.z-datatable ul li,
+table.z-admintable ul li {
+    margin: 0;
+    padding: 0;
 }
 
 /******************************************************************************
@@ -1653,6 +1662,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background: url("../images/ui/tab_bottom.png") repeat-x scroll center bottom transparent;
     margin:0 !important;
     padding:0 !important;
+    list-style: none;
     width: 100%;
     overflow: hidden;
 }
@@ -1661,7 +1671,6 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     background-color: #F3F3F3;
     border: 1px solid #ccc;
     float: left;
-    list-style-type: none;
     margin: 0 5px 0 0 !important;
     padding: 0 !important;
     z-index: 1000;
@@ -1900,7 +1909,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     list-style: none !important;
     font-size: 0.9em;
     text-align: left;
-    padding: 2px 10px 2px 10px !important;
+    padding: 0.5em !important;
     margin: 0 !important;
     cursor: pointer;
     text-decoration: none;
