@@ -449,13 +449,13 @@ ul#admintabs {
     margin: 0 !important;
     padding: 0 !important;
     width: 100%;
+    list-style: none outside none !important;
 }
 
 ul#admintabs li {
     background: none repeat scroll 0 0 #F3F3F3 !important;
     border: 1px solid #CCCCCC;
     float: left;
-    list-style: none;
     margin: 0 5px 0 0;
     padding: 0;
     z-index: 1000;
