@@ -59,7 +59,7 @@ class PropertyPath implements \IteratorAggregate
             throw new InvalidPropertyPathException('The property path must not be empty');
         }
 
-        $this->string = (string)$propertyPath;
+        $this->string = (string) $propertyPath;
         $position = 0;
         $remaining = $propertyPath;
 
@@ -191,7 +191,7 @@ class PropertyPath implements \IteratorAggregate
                 $value = $this->readProperty($objectOrArray, $i);
             // arrays need to be treated separately (due to PHP bug?)
             // http://bugs.php.net/bug.php?id=52133
-            } else if (is_array($objectOrArray)){
+            } else if (is_array($objectOrArray)) {
                 $property = $this->elements[$i];
                 if (!array_key_exists($property, $objectOrArray)) {
                     $objectOrArray[$property] = $i + 1 < $this->length ? array() : null;
@@ -279,7 +279,9 @@ class PropertyPath implements \IteratorAggregate
                 throw new InvalidPropertyException(sprintf('Index "%s" cannot be read from object of type "%s" because it doesn\'t implement \ArrayAccess', $property, get_class($object)));
             }
 
-            return $object[$property];
+            if (isset($object[$property])) {
+                return $object[$property];
+            }
         } else {
             $camelProp = $this->camelize($property);
             $reflClass = new \ReflectionClass($object);
