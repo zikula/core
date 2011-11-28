@@ -121,7 +121,7 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
     /**
      * Tests ServiceManager->getService()
      *
-     * @expectdException InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function testGetServiceException()
     {
