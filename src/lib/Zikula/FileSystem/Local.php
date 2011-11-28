@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -17,6 +18,7 @@
  */
 class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
 {
+
     /**
      * Resource handle.
      *
@@ -35,7 +37,8 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return bool True.
      */
-    public function connect() {
+    public function connect()
+    {
         $this->_resource = stream_context_create();
         if ($this->configuration->getDir() == '') {
             return true;
@@ -56,7 +59,8 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return boolean True on success false on failure.
      */
-    public function put($local, $remote) {
+    public function put($local, $remote)
+    {
         return $this->cp($local, $remote);
     }
 
@@ -71,7 +75,8 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return mixed Number of bytes written on success, false on failure.
      */
-    public function fput($stream, $remote) {
+    public function fput($stream, $remote)
+    {
         $this->errorHandler->start();
         if (($bytes = $this->driver->putContents($remote, $stream, 0, $this->_resource)) !== false) {
             fclose($stream);
@@ -93,7 +98,8 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return boolean True on success false on failure.
      */
-    public function get($local, $remote) {
+    public function get($local, $remote)
+    {
         return $this->cp($remote, $local);
     }
 
@@ -117,7 +123,8 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return mixed File resource handle or false on failure.
      */
-    public function fget($remote) {
+    public function fget($remote)
+    {
         $this->errorHandler->start();
         if (($handle = $this->driver->fileOpen($remote, 'r+', false, $this->_resource)) !== false) {
             rewind($handle);
@@ -136,11 +143,12 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return mixed The new permission or false if failed.
      */
-    public function chmod($perm, $file) {
+    public function chmod($perm, $file)
+    {
         $this->errorHandler->start();
-        $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
+        $perm = (int) octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
         if (($perm = $this->driver->chmod($file, $perm)) !== false) {
-            $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
+            $perm = (int) decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->errorHandler->stop();
             return $perm;
         }
@@ -155,7 +163,8 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return mixed An array of the contents of $dir or false if fail.
      */
-    public function ls($dir = '') {
+    public function ls($dir = '')
+    {
         $dir = ($dir == '' ? getcwd() : $dir);
         $this->errorHandler->start();
         if (($files = $this->driver->scandir($dir, 0, $this->_resource)) !== false) {
@@ -172,7 +181,8 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return boolean True if changed dir, false otherwise.
      */
-    public function cd($dir = '') {
+    public function cd($dir = '')
+    {
         $this->errorHandler->start();
         if ($this->driver->chdir($dir)) {
             $this->errorHandler->stop();
@@ -192,7 +202,8 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return boolean True on success, false on failure.
      */
-    public function mv($sourcepath, $destpath) {
+    public function mv($sourcepath, $destpath)
+    {
         $this->errorHandler->start();
         if ($this->driver->rename($sourcepath, $destpath, $this->_resource)) {
             $this->errorHandler->stop();
@@ -212,7 +223,8 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return boolean True on success, false on failure.
      */
-    public function cp($sourcepath, $destpath) {
+    public function cp($sourcepath, $destpath)
+    {
         $this->errorHandler->start();
         if ($this->driver->copy($sourcepath, $destpath, $this->_resource)) {
             $this->errorHandler->stop();
@@ -229,7 +241,8 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
      *
      * @return boolean True if file removed, false if not.
      */
-    public function rm($sourcepath) {
+    public function rm($sourcepath)
+    {
         $this->errorHandler->start();
         if ($this->driver->delete($sourcepath, $this->_resource)) {
             $this->errorHandler->stop();
@@ -238,4 +251,5 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->stop();
         return false;
     }
+
 }

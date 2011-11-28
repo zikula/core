@@ -1,9 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../bootstrap.php';
 
-// exclude the following file from code coverage reports.
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(dirname(__FILE__). '/../../../../../src/lib/Zikula/FileSystem/Facade/Local.php');
-
 /**
  * Zikula_FileSystem_Local test case.
  */

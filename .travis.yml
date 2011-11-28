@@ -7,6 +7,7 @@ php:
 before_install:
   - pyrus install -o pear/PHP_CodeSniffer
   - pyrus install -o phpunit/PHP_CodeCoverage
+  - pyrus install -o PHP_CodeCoverage
   - phpenv rehash
 
 before_script: php vendors.php

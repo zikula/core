@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -15,10 +16,11 @@
 /**
  * Zikula_FileSystem_SFtp is the standard driver for SFTP connections.
  *
- * This class extends Zikula_FileSystem_AbstractDriver.
+ * @codeCoverageIgnore
  */
 class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
 {
+
     /**
      * Resource.
      *
@@ -68,15 +70,9 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
             //connected
             if ($this->configuration->getAuthType() !== 'pass') {
                 $auth = $this->driver->authPubkey(
-                    $this->_ssh_resource,
-                    $this->configuration->getUser(),
-                    $this->configuration->getPubKey(),
-                    $this->configuration->getPrivKey(),
-                    $this->configuration->getPassphrase());
+                    $this->_ssh_resource, $this->configuration->getUser(), $this->configuration->getPubKey(), $this->configuration->getPrivKey(), $this->configuration->getPassphrase());
             } else {
-                $auth = $this->driver->authPassword($this->_ssh_resource,
-                    $this->configuration->getUser(),
-                    $this->configuration->getPass());
+                $auth = $this->driver->authPassword($this->_ssh_resource, $this->configuration->getUser(), $this->configuration->getPass());
             }
             if ($auth !== false) {
                 //logged in
@@ -233,9 +229,9 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         $matches = array();
         preg_match("/:::\d:::/", $resp, $matches);
         if (sizeof($matches) > 0) {
-            switch (intval(str_replace(':','',$matches[0]))) {
+            switch (intval(str_replace(':', '', $matches[0]))) {
                 case 1:
-                    $this->errorHandler->register('Chmod returned with Code 1: failure.',0);
+                    $this->errorHandler->register('Chmod returned with Code 1: failure.', 0);
                     $this->errorHandler->stop();
                     return false;
                 case 0:
@@ -277,7 +273,7 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         }
 
         //if IsDir fails that means its either not a directory or doesnt exist
-        if (!$this->driver->sftpFileExists($this->_resource,$dir)) {
+        if (!$this->driver->sftpFileExists($this->_resource, $dir)) {
             $this->errorHandler->register("$dir does not exist.", 0);
             return false;
         }
@@ -375,7 +371,7 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         $matches = array();
         preg_match("/:::\d:::/", $resp, $matches);
         if (sizeof($matches) > 0) {
-            switch (str_replace(':','',$matches[0])) {
+            switch (str_replace(':', '', $matches[0])) {
                 case 1:
                     $this->errorHandler->register('cp returned with Code 1: failure.', 0);
                     $this->errorHandler->stop();
@@ -420,4 +416,5 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->register("Could not delete: $sourcepath", 0);
         return false;
     }
+
 }
