@@ -81,16 +81,15 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
         $this->serviceManager->attachService('test.stdclass2', $class2);
         $this->assertSame($class1, $this->serviceManager->getService('test.stdclass1'));
         $this->assertSame($class2, $this->serviceManager->getService('test.stdclass2'));
-        $this->setExpectedException('InvalidArgumentException');
-        $this->serviceManager->attachService('test.stdclass1', $class1);
     }
 
     /**
      * Tests ServiceManager->attachService()
+     *
+     * @expectException InvalidArgumentException
      */
     public function testAttachServiceException()
     {
-        $this->setExpectedException('InvalidArgumentException');
         $class1 = new StdClass();
         $this->serviceManager->attachService('test.stdclass1', $class1);
         $this->serviceManager->attachService('test.stdclass1', $class1);
@@ -121,10 +120,11 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
 
     /**
      * Tests ServiceManager->getService()
+     *
+     * @expectException InvalidArgumentException
      */
     public function testGetServiceException()
     {
-        $this->setExpectedException('InvalidArgumentException');
         $this->serviceManager->getService('test.stdclass');
     }
 
