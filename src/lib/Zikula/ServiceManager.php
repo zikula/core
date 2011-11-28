@@ -50,16 +50,16 @@ class Zikula_ServiceManager implements ArrayAccess
      * @param object  $service An already existing object.
      * @param boolean $shared  True if this is a single instance (default).
      *
-     * @throws Exception If the service is already registered.
+     * @throws InvalidArgumentException If the service is already registered.
      *
      * @return object $service.
      */
     public function attachService($id, $service, $shared = true)
     {
         if ($this->hasService($id)) {
-            throw new Exception(sprintf('Service %s is already attached', $id));
+            throw new InvalidArgumentException(sprintf('Service %s is already attached', $id));
         }
-        
+
         $this->services[$id] = new Zikula_ServiceManager_Service($id, null, $shared);
         $this->services[$id]->setService($service);
         return $service;
