@@ -5,8 +5,8 @@ php:
   - 5.4
 
 before_install:
-  - pyrus install --alldeps pear/PHP_CodeSniffer
-  - pyrus install --alldeps phpunit/PHP_CodeCoverage
+  - pyrus install -o pear/PHP_CodeSniffer
+  - pyrus install -o phpunit/PHP_CodeCoverage
   - phpenv rehash
 
 before_script: php vendors.php
