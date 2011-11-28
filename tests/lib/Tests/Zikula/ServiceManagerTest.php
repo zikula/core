@@ -86,7 +86,7 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
     /**
      * Tests ServiceManager->attachService()
      *
-     * @expectException InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function testAttachServiceException()
     {
@@ -121,7 +121,7 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
     /**
      * Tests ServiceManager->getService()
      *
-     * @expectException InvalidArgumentException
+     * @expectdException InvalidArgumentException
      */
     public function testGetServiceException()
     {
