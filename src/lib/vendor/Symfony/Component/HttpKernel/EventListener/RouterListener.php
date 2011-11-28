@@ -38,20 +38,13 @@ class RouterListener implements EventSubscriberInterface
         $this->logger = $logger;
     }
 
-    public function onEarlyKernelRequest(GetResponseEvent $event)
-    {
-        if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
-            return;
-        }
-
-        // set the context even if the parsing does not need to be done
-        // to have correct link generation
-        $this->urlMatcher->getContext()->fromRequest($event->getRequest());
-    }
-
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
+
+        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+            $this->urlMatcher->getContext()->fromRequest($request);
+        }
 
         if ($request->attributes->has('_controller')) {
             // routing is already done
@@ -93,7 +86,7 @@ class RouterListener implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST => array(array('onEarlyKernelRequest', 255), array('onKernelRequest', 10)),
+            KernelEvents::REQUEST => array(array('onKernelRequest', 32)),
         );
     }
 }
