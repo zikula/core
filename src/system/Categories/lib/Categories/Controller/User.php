@@ -235,7 +235,7 @@ class Categories_Controller_User extends Zikula_AbstractController
      */
     public function getusercategories()
     {
-        $this->redirect(ModUtil::url('Categories', 'user', 'getusercategories'));
+        return ModUtil::apiFunc('Categories', 'user', 'getusercategories');
     }
 
     /**
@@ -243,6 +243,6 @@ class Categories_Controller_User extends Zikula_AbstractController
      */
     public function getusercategoryname()
     {
-        $this->redirect(ModUtil::url('Categories', 'user', 'getusercategoryname'));
+        return ModUtil::apiFunc('Categories', 'user', 'getusercategoryname');
     }
 }
