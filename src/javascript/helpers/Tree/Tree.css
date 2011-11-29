@@ -3,27 +3,29 @@ div.treewraper * {
     padding: 0;
 }
 
-div.treewraper ul ul, div.treewraper ul li {
+div.treewraper ul ul,
+div.treewraper ul li {
     zoom: 1;
     min-height: 5px;
 }
 
 div.treewraper ul {
     margin: 0 0 0 15px !important;
-    padding: 0;
-    text-indent: 0;
+    padding: 0 !important;
+    text-indent: 0 !important;
+    list-style: none !important;
 }
 div.treewraper > ul {
     margin-left: 0 !important;
 }
 
 div.treewraper ul li {
-    list-style-type: none;
+    list-style: none;
     background-image: url(pion.gif);
     background-position: left top;
     background-repeat: repeat-y;
-    margin: 0 0 0 5px;
-    padding: 0;
+    margin: 0 0 0 5px !important;
+    padding: 0 !important;
     line-height: 2em;
 }
 
