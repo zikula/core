@@ -14,6 +14,8 @@
 
 /**
  * Zikula_FileSystem_Ftp is the standard driver for FTP connections.
+ *
+ * @codeCoverageIgnore
  */
 class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
 {

@@ -1,9 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../bootstrap.php';
 
-// exclude the following file from code coverage reports.
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(dirname(__FILE__). '/../../../../../src/lib/Zikula/FileSystem/Facade/Sftp.php');
-
 /**
  * Zikula_FileSystem_Sftp test case.
  */
@@ -266,7 +263,7 @@ class Zikula_FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(':::0:::'));
         $this->Zikula_FileSystem_Sftp->setDriver($stub);
         $this->assertEquals($perm,$this->Zikula_FileSystem_Sftp->chmod($perm,2));
-        
+
         $stub = $this->getMock('Zikula_FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
