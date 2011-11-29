@@ -299,6 +299,12 @@ function _upg_upgrademodules($username, $password)
     $sql = "DELETE FROM $modTable WHERE name = 'Header_Footer' OR name = 'AuthPN' OR name = 'pnForm' OR name = 'Workflow' OR name = 'pnRender' OR name = 'Admin_Messages'";
     DBUtil::executeSQL($sql);
 
+    // store localized displayname and description for Extensions module
+    $extensionsDisplayname = __('Extensions');
+    $extensionsDescription = __('Manage your modules and plugins.');
+    $sql = "UPDATE modules SET name = 'Extensions', displayname = '{$extensionsDisplayname}', description = '{$extensionsDescription}' WHERE modules.name = 'Extensions'";
+    DBUtil::executeSQL($sql);
+
     // regenerate the themes list
     ModUtil::apiFunc('Theme', 'admin', 'regenerate');
 
@@ -645,7 +651,7 @@ function upgrade_columns($connection)
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_help help VARCHAR(255) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_license license VARCHAR(255) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_securityschema securityschema TEXT NOT NULL";
-    $commands[] = "UPDATE {$prefix}_modules SET name = 'Extensions', displayname = 'Extensions manager', url = 'extensions', description = 'Manage your modules and plugins.', directory =  'Extensions', securityschema = 'a:1:{s:9:\"Extensions::\";s:2:\"::\";}' WHERE {$prefix}_modules.name = 'Modules'";
+    $commands[] = "UPDATE {$prefix}_modules SET name = 'Extensions', displayname = 'Extensions', url = 'extensions', description = 'Manage your modules and plugins.', directory =  'Extensions', securityschema = 'a:1:{s:9:\"Extensions::\";s:2:\"::\";}' WHERE {$prefix}_modules.name = 'Modules'";
     $commands[] = "RENAME TABLE {$prefix}_modules TO modules";
 
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_id id INT(11) AUTO_INCREMENT";
