@@ -11,10 +11,13 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Plugin\AlwaysOnInterface;
+use Zikula\Framework\AbstractPlugin;
+
 /**
  * Doctrine plugin definition.
  */
-class SystemPlugin_Mapstraction_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
+class SystemPlugin_Mapstraction_Plugin extends AbstractPlugin implements AlwaysOnInterface
 {
     /**
      * Get plugin meta data.

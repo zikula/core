@@ -46,9 +46,10 @@ using the following code in Installer.php
 
 In a separate file lib/MyModule/Listeners.php you place the following code (this is what receives the $events).
 
+    use Zikula\Core\Event\GenericEvent;
     class MyModule_Listeners
     {
-        public static function getProvider(Zikula_Event $event)
+        public static function getProvider(GenericEvent $event)
         {
             $event->data = array_merge($event->data, array('MyModule_Needles_Foo'));
         }
@@ -57,7 +58,7 @@ In a separate file lib/MyModule/Listeners.php you place the following code (this
 Back to the Multihook module.  It's implementation could look something like this:
 
     // create and dispatch the event
-    $event = Zikula_Event('module.multihook.get_providers');
+    $event = new GenericEvent('module.multihook.get_providers');
     $classes = $eventManager->notify($event)->getData();
 
     // now we got back any results we can process them like this

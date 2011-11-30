@@ -1,16 +1,18 @@
 <?php
 /**
  * Copyright 2011 Zikula Foundation.
- * 
+ *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
- * 
+ *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- * 
+ *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+use Zikula\Common\ServiceManager\ServiceManager;
 
 /**
  * A form data container and validator.
@@ -26,7 +28,7 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
 
     /**
      * An array index of the field ids defined in this form container, used to prevent duplication.
-     * 
+     *
      * @var array
      */
     private $fieldIds;
@@ -41,12 +43,12 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
     /**
      * Construct a new form data container instance, initializing the id value.
      *
-     * @param string                $formId         A value for the form's id attribute.
-     * @param Zikula_ServiceManager $serviceManager The current service manager instance.
-     * 
+     * @param string         $formId         A value for the form's id attribute.
+     * @param ServiceManager $serviceManager The current service manager instance.
+     *
      * @throws InvalidArgumentException Thrown if the specified form id is not valid.
      */
-    public function __construct($formId, Zikula_ServiceManager $serviceManager = null)
+    public function __construct($formId, ServiceManager $serviceManager = null)
     {
         if (!isset($serviceManager)) {
             $serviceManager = ServiceUtil::getManager();
@@ -69,9 +71,9 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
      * Add a field to the form container.
      *
      * @param Users_Controller_FormData_Field $field The field definition.
-     * 
+     *
      * @return Users_Controller_FormData_Field A reference to the field just added, to allow for function chaining to configure the field.
-     * 
+     *
      * @throws InvalidArgumentException Thrown if the field definition is not valid, a field with the specified name is already defined, or adding the field would result in a duplicate field id.
      */
     public function addField(Users_Controller_FormData_Field $field)
@@ -91,7 +93,7 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
 
         return $this->formFields[$field->fieldName];
     }
-    
+
     /**
      * Retrieve the form id.
      *
@@ -101,14 +103,14 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
     {
         return $this->formId;
     }
-    
+
     /**
      * Retrieve a field definition with the specified name.
      *
      * @param string $fieldName The name of the field previously added to this form container.
-     * 
+     *
      * @return Users_Controller_FormData_Field The field definition for the specified name.
-     * 
+     *
      * @throws InvalidArgumentException Thrown if this form data container does not contain a field with the specified name.
      */
     public function getField($fieldName)
@@ -116,52 +118,52 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
         if (!isset($this->formFields[$fieldName])) {
             throw new InvalidArgumentException($this->__f('Invalid field name: %1$s', array($fieldName)));
         }
-        
+
         return $this->formFields[$fieldName];
     }
-    
+
     /**
      * Retrieve the value for the id attribute for the field of the specified name.
-     * 
+     *
      * This is a pass-through function to the field's getFieldId() method. This function calls {@link getField()}, which may throw an exception.
      *
      * @param string $fieldName The name of the field defintion previously added to this form data container.
-     * 
+     *
      * @return string The value for the field's id attribute.
      */
     public function getFieldId($fieldName)
     {
         return $this->getField($fieldName)->getFieldId();
     }
-    
+
     /**
      * Retrieve the value of the data for the field of the specified name.
-     * 
+     *
      * This is a pass-through function to the field's getData() method. This function calls {@link getField()}, which may throw an exception.
      *
      * @param string $fieldName The name of the field defintion previously added to this form data container.
-     * 
+     *
      * @return mixed The value for the field's data.
      */
     public function getFieldData($fieldName)
     {
         return $this->getField($fieldName)->getData();
     }
-    
+
     /**
      * Retrieve the value of error message for the field of the specified name.
-     * 
+     *
      * This is a pass-through function to the field's getErrorMessage() method. This function calls {@link getField()}, which may throw an exception.
      *
      * @param string $fieldName The name of the field defintion previously added to this form data container.
-     * 
+     *
      * @return string|boolean The value for the field's error message; false if a message is not set.
      */
     public function getFieldErrorMessage($fieldName)
     {
         return $this->getField($fieldName)->getErrorMessage();
     }
-    
+
     /**
      * Validate the contents of this form data container.
      *
@@ -170,7 +172,7 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
     public function isValid()
     {
         $isValid = true;
-        
+
         foreach ($this->formFields as $formField) {
             // Must be called this way to ensure that nothing is skipped by PHP's short-circuit boolean expression evaluation.
             // E.g., do not do $isValid = $isValid && $formField->isValid();, because if $isValid is already false, then the
@@ -180,10 +182,10 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
                 $isValid = false;
             }
         }
-        
+
         return $isValid;
     }
-    
+
     /**
      * Retreive an array list of all error messages currently set for fields in this form data container.
      *
@@ -192,20 +194,20 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
     public function getErrorMessages()
     {
         $returnValue = array();
-        
+
         foreach ($this->formFields as $formField) {
             $error = $formField->getErrorMessage();
             if ($error) {
                 $returnValue[$formField->getFieldName()] = $error;
             }
         }
-        
+
         return $returnValue;
     }
-    
+
     /**
      * Reset the validation status for the entire form data container.
-     * 
+     *
      * @return void
      */
     public function clearValidation()
@@ -217,10 +219,10 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
 
     /**
      * Set the data for one field contained by this form data container.
-     * 
+     *
      * @param string $fieldName The field name of the field to be set.
      * @param mixed  $value     The value to set.
-     * 
+     *
      * @return void
      */
     public function setField($fieldName, $value)
@@ -233,12 +235,12 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
 
     /**
      * Set the data for the field defintiions contained by this form data container from an array.
-     * 
-     * The array should be indexed by field name. Indexes that do no represent a known field definition are ignored. The validation 
+     *
+     * The array should be indexed by field name. Indexes that do no represent a known field definition are ignored. The validation
      * status of the form data container is reset by this function.
      *
      * @param array $data The field name index array of data to set.
-     * 
+     *
      * @return void
      */
     public function setFromArray(array $data)
@@ -253,13 +255,13 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
 
     /**
      * Set the data for the field definitions contained by this form data container from session variables.
-     * 
+     *
      * The session variables should be named the same as the field names. Session variables within the namespace that
      * do not represent known fields are ignored. The validation status of the form data container is reset by this function.
      *
      * @param Zikula_Session $session   The session instance.
      * @param string         $namespace The session namespace where the fields are found; optional; defaults to '/'.
-     * 
+     *
      * @return void
      */
     public function setFromSession(Zikula_Session $session, $namespace = '/')
@@ -271,15 +273,15 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
         }
         $this->clearValidation();
     }
-    
+
     /**
      * Set the data for the field definitions contained by this form data container from request (post, get, etc.) variables.
-     * 
+     *
      * The request variables should be named the same as the field names. Request variables within the namespace that
      * do not represent known fields are ignored. The validation status of the form data container is reset by this function.
      *
      * @param Zikula_Request_Collection $requestCollection The request collection (e.g. $this->request->getPost()) from which to set field data.
-     * 
+     *
      * @return void
      */
     public function setFromRequestCollection(Zikula_Request_Collection $requestCollection)
@@ -291,7 +293,7 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
         }
         $this->clearValidation();
     }
-    
+
     /**
      * Convert the form data collection to an array indexed by field name.
      *
@@ -300,11 +302,11 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
     public function toArray()
     {
         $returnValue = array();
-        
+
         foreach ($this->formFields as $formField) {
             $returnValue[$formField->getFieldName()] = $formField->getData();
         }
-        
+
         return $returnValue;
     }
 }

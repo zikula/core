@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Common\ServiceManager\ServiceManager;
+
 /**
  * Mailer class.
  */
@@ -20,13 +22,13 @@ class SystemPlugins_SwiftMailer_Mailer
     /**
      * Swift Preferences container.
      *
-     * @var Zikula_ServiceManager
+     * @var \Zikula\Common\ServiceManager\ServiceManager
      */
     protected $serviceManager;
 
     /**
      * The Mailer instance.
-     * 
+     *
      * @var Swift_Mailer
      */
     protected $mailer;
@@ -34,9 +36,9 @@ class SystemPlugins_SwiftMailer_Mailer
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param ServiceManager $serviceManager ServiceManager.
      */
-    public function __construct(Zikula_ServiceManager $serviceManager)
+    public function __construct(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
         $this->mailer = $serviceManager->getService('mailer');
@@ -72,7 +74,7 @@ class SystemPlugins_SwiftMailer_Mailer
                 $message->attach(Swift_Attachment::fromPath($attachment));
             }
         }
-        
+
         if ($cc) {
             $message->setCc($cc);
         }

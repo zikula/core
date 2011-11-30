@@ -11,6 +11,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * SystemPlugin_Example_Plugin class.
  */
@@ -42,11 +44,11 @@ class SystemPlugin_Example_Plugin extends Zikula_AbstractPlugin
     /**
      * Event handler.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function handler(Zikula_Event $event)
+    public function handler(GenericEvent $event)
     {
         // subject must be an instance of Theme class.
         $theme = $event->getSubject();

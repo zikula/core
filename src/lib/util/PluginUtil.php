@@ -97,7 +97,7 @@ class PluginUtil
         }
 
         $it = FileUtil::getFiles($path, false, false, null, 'd');
-       
+
         foreach ($it as $dir) {
             $file = $dir . DIRECTORY_SEPARATOR . 'Plugin.php';
             if (!file_exists($file)) {
@@ -136,8 +136,8 @@ class PluginUtil
         $r = new ReflectionClass($className);
         $plugin = $r->newInstanceArgs(array($sm, $sm->getService('zikula.eventmanager')));
 
-        if (!$plugin instanceof Zikula_AbstractPlugin) {
-            throw new LogicException(sprintf('Class %s must be an instance of Zikula_AbstractPlugin', $className));
+        if (!$plugin instanceof Zikula\Framework\AbstractPlugin) {
+            throw new LogicException(sprintf('Class %s must be an instance of Zikula\Framework\AbstractPlugin', $className));
         }
 
         if (!$plugin->hasBooted() && $plugin->isInstalled() && $plugin->isEnabled()) {
@@ -322,7 +322,7 @@ class PluginUtil
     public static function install($className)
     {
         $plugin = self::loadPlugin($className);
-        if ($plugin instanceof Zikula_Plugin_AlwaysOnInterface) {
+        if ($plugin instanceof Zikula\Framework\Plugin\AlwaysOnInterface) {
             // as it stands, these plugins cannot be installed since they are always on
             // and cannot be disabled (required only for really base thing).
             return true;

@@ -1,16 +1,18 @@
 <?php
 /**
  * Copyright 2011 Zikula Foundation.
- * 
+ *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
- * 
+ *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- * 
+ *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+use Zikula\Common\ServiceManager\ServiceManager;
 
 /**
  * Contains and validates the data found on the Users module's configration form.
@@ -20,13 +22,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
     /**
      * Create a new instance of the form data container, intializing the fields and validators.
      *
-     * @param string                $formId         The id value to use for the form.
-     * @param Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param string         $formId         The id value to use for the form.
+     * @param ServiceManager $serviceManager The current service manager instance.
      */
-    public function __construct($formId, Zikula_ServiceManager $serviceManager = null)
+    public function __construct($formId, ServiceManager $serviceManager = null)
     {
         parent::__construct($formId, $serviceManager);
-        
+
         $modVars = $this->getVars();
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -243,8 +245,8 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericInSet(
                 $this->serviceManager,
                 array(
-                    Users_Constant::LOGIN_METHOD_UNAME, 
-                    Users_Constant::LOGIN_METHOD_EMAIL, 
+                    Users_Constant::LOGIN_METHOD_UNAME,
+                    Users_Constant::LOGIN_METHOD_EMAIL,
                     Users_Constant::LOGIN_METHOD_ANY
                 ),
                 $this->__('The value must be a valid login method constant.')));
@@ -486,7 +488,7 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 $this->serviceManager,
                 $this->__('The value must be a boolean.')));
     }
-    
+
     /**
      * Validate the entire form data set against each field's validators, and additionally validate interdependent fields.
      *
@@ -495,21 +497,21 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
     public function isValid()
     {
         $valid = parent::isValid();
-        
+
         $antiSpamAnswerField = $this->getField(Users_Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER);
-        
+
         if (!$antiSpamAnswerField->hasErrorMessage()) {
             $antiSpamAnswer = $antiSpamAnswerField->getData();
-            
+
             $antiSpamQuestionField = $this->getField(Users_Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION);
             $antiSpamQuestion = $antiSpamQuestionField->getData();
-            
+
             if (isset($antiSpamQuestion) && !empty($antiSpamQuestion) && (!isset($antiSpamAnswer) || empty($antiSpamAnswer))) {
                 $valid = false;
                 $antiSpamAnswerField->setErrorMessage($this->__('If a spam protection question is provided, then a spam protection answer must also be provided.'));
             }
         }
-        
+
         return $valid;
     }
 }
