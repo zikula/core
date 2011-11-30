@@ -17,6 +17,11 @@ namespace Zikula\Common\HookManager\Storage;
 use Zikula\Common\HookManager\StorageInterface;
 use Doctrine_Core;
 use Doctrine_Query;
+use Zikula_Doctrine_Model_HookSubscriber;
+use Zikula_Doctrine_Model_HookProvider;
+use Zikula_Doctrine_Model_HookArea;
+use Zikula_Doctrine_Model_HookRuntime;
+use Zikula_Doctrine_Model_HookBinding;
 
 /**
  * Doctrine class.
