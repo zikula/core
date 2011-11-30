@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\ServiceManager;
+
 /**
  * ServiceManager class.
  */
-class Zikula_ServiceManager implements ArrayAccess
+class ServiceManager implements \ArrayAccess
 {
     /**
      * Storage for services.
@@ -50,17 +52,17 @@ class Zikula_ServiceManager implements ArrayAccess
      * @param object  $service An already existing object.
      * @param boolean $shared  True if this is a single instance (default).
      *
-     * @throws InvalidArgumentException If the service is already registered.
+     * @throws \InvalidArgumentException If the service is already registered.
      *
      * @return object $service.
      */
     public function attachService($id, $service, $shared = true)
     {
         if ($this->hasService($id)) {
-            throw new InvalidArgumentException(sprintf('Service %s is already attached', $id));
+            throw new \InvalidArgumentException(sprintf('Service %s is already attached', $id));
         }
 
-        $this->services[$id] = new Zikula_ServiceManager_Service($id, null, $shared);
+        $this->services[$id] = new Service($id, null, $shared);
         $this->services[$id]->setService($service);
         return $service;
     }
@@ -86,21 +88,21 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * This will register the definition as a service.
      *
-     * @param string                           $id         Service Id.
-     * @param Zikula_ServiceManager_Definition $definition Service definition.
-     * @param boolean                          $shared     Shared type.
+     * @param string     $id         Service Id.
+     * @param Definition $definition Service definition.
+     * @param boolean    $shared     Shared type.
      *
-     * @throws InvalidArgumentException If service ID is already registered.
+     * @throws \InvalidArgumentException If service ID is already registered.
      *
      * @return void
      */
-    public function registerService($id, Zikula_ServiceManager_Definition $definition, $shared = true)
+    public function registerService($id, Definition $definition, $shared = true)
     {
         if ($this->hasService($id)) {
-            throw new InvalidArgumentException(sprintf('Service %s is already registered', $id));
+            throw new \InvalidArgumentException(sprintf('Service %s is already registered', $id));
         }
 
-        $this->services[$id] = new Zikula_ServiceManager_Service($id, $definition, $shared);
+        $this->services[$id] = new Service($id, $definition, $shared);
     }
 
     /**
@@ -108,14 +110,14 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param string $id The service identifier.
      *
-     * @throws InvalidArgumentException If the $id isn't registered.
+     * @throws \InvalidArgumentException If the $id isn't registered.
      *
      * @return void
      */
     public function unregisterService($id)
     {
         if (!$this->hasService($id)) {
-            throw new InvalidArgumentException(sprintf('Service %s is not registered', $id));
+            throw new \InvalidArgumentException(sprintf('Service %s is not registered', $id));
         }
         unset($this->services[$id]);
     }
@@ -131,14 +133,14 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param string $id The service identifier.
      *
-     * @throws InvalidArgumentException If no identifier exists.
+     * @throws \InvalidArgumentException If no identifier exists.
      *
      * @return object The service.
      */
     public function getService($id)
     {
         if (!$this->hasService($id)) {
-            throw new InvalidArgumentException(sprintf('The service %s does not exist', $id));
+            throw new \InvalidArgumentException(sprintf('The service %s does not exist', $id));
         }
 
         $service = $this->services[$id];
@@ -193,13 +195,13 @@ class Zikula_ServiceManager implements ArrayAccess
     /**
      * Dynamically create the service according to the Definition class.
      *
-     * @param Zikula_ServiceManager_Definition $definition The definition class.
+     * @param Definition $definition The definition class.
      *
      * @return object The newly created service.
      */
-    private function createService(Zikula_ServiceManager_Definition $definition)
+    private function createService(Definition $definition)
     {
-        $reflection = new ReflectionClass($definition->getClassName());
+        $reflection = new \ReflectionClass($definition->getClassName());
 
         if (($reflection->hasMethod('__construct') || $reflection->hasMethod($definition->getClassName()) && $definition->hasConstructorArgs())) {
             $service = $reflection->newInstanceArgs($this->compileArguments($definition->getConstructorArgs()));
@@ -210,7 +212,7 @@ class Zikula_ServiceManager implements ArrayAccess
         if ($definition->hasMethods()) {
             foreach ($definition->getMethods() as $method => $arguments) {
                 foreach ($arguments as $args) {
-                    $reflectionMethod = new ReflectionMethod($definition->getClassName(), $method);
+                    $reflectionMethod = new \ReflectionMethod($definition->getClassName(), $method);
                     if (count($args) > 0) {
                         $reflectionMethod->invokeArgs($service, $this->compileArguments($args));
                     } else {
@@ -229,7 +231,7 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param array $arguments Non associative array of arguments.
      *
-     * @throws InvalidArgumentException If unrecognised object type.
+     * @throws \InvalidArgumentException If unrecognised object type.
      *
      * @return array Compiled arguments.
      */
@@ -242,17 +244,17 @@ class Zikula_ServiceManager implements ArrayAccess
                 case (!is_object($argument)):
                     $compiledArguments[] = $argument;
                     break;
-                case ($argument instanceof Zikula_ServiceManager_Argument):
+                case ($argument instanceof Argument):
                     $compiledArguments[] = $this->getArgument($argument->getId());
                     break;
-                case ($argument instanceof Zikula_ServiceManager_Reference):
+                case ($argument instanceof Reference):
                     $compiledArguments[] = $this->getService($argument->getId());
                     break;
-                case ($argument instanceof Zikula_ServiceManager_Definition):
+                case ($argument instanceof Definition):
                     $compiledArguments[] = $this->createService($argument);
                     break;
                 default:
-                    throw new InvalidArgumentException(sprintf('Invalid argument object %s', get_class($argument)));
+                    throw new \InvalidArgumentException(sprintf('Invalid argument object %s', get_class($argument)));
                     break;
              }
          }
@@ -312,14 +314,14 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param string $id Argument id.
      *
-     * @throws InvalidArgumentException If id is not set.
+     * @throws \InvalidArgumentException If id is not set.
      *
      * @return mixed
      */
     public function getArgument($id)
     {
         if (!$this->hasArgument($id)) {
-            throw new InvalidArgumentException(sprintf('No argument "%s" is registered with Zikula_ServiceManager', $id));
+            throw new \InvalidArgumentException(sprintf('No argument "%s" is registered with Zikula\Common\ServiceManager\ServiceManager', $id));
         }
         return $this->arguments[$id];
     }
@@ -339,7 +341,7 @@ class Zikula_ServiceManager implements ArrayAccess
     }
 
     /**
-     * Getter for ArrayAccess interface.
+     * Getter for \ArrayAccess interface.
      *
      * @param string $id Argument id.
      *
@@ -351,7 +353,7 @@ class Zikula_ServiceManager implements ArrayAccess
     }
 
     /**
-     * Setter for ArrayAccess interface.
+     * Setter for \ArrayAccess interface.
      *
      * @param string $id    Argument id.
      * @param mixed  $value Argument value.
@@ -364,7 +366,7 @@ class Zikula_ServiceManager implements ArrayAccess
     }
 
     /**
-     * Has() method on argument property for ArrayAccess interface.
+     * Has() method on argument property for \ArrayAccess interface.
      *
      * @param string $id Argument id.
      *
@@ -376,7 +378,7 @@ class Zikula_ServiceManager implements ArrayAccess
     }
 
     /**
-     * Unset argument by id, implmentation for ArrayAccess.
+     * Unset argument by id, implmentation for \ArrayAccess.
      *
      * @param string $id Id.
      *

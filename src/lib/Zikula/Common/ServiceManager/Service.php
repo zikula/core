@@ -13,13 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\ServiceManager;
+
 /**
- * Zikula_ServiceManager_Service definition configuration.
+ * Service definition configuration.
  *
  * This is a service container which describes the service.
  * INTERNAL USE ONLY.
  */
-class Zikula_ServiceManager_Service
+class Service
 {
     /**
      * Service identifier.
@@ -31,7 +33,7 @@ class Zikula_ServiceManager_Service
     /**
      * Instance of Definition class.
      *
-     * @var Zikula_ServiceManager_Definition
+     * @var Definition
      */
     protected $definition;
 
@@ -54,11 +56,11 @@ class Zikula_ServiceManager_Service
      *
      * Setup the identifier of this service.
      *
-     * @param string                           $id         Unique identifier.
-     * @param Zikula_ServiceManager_Definition $definition Optional instance of Definition class.
-     * @param boolean                          $shared     True if the service will be single instance only.
+     * @param string     $id         Unique identifier.
+     * @param Definition $definition Optional instance of Definition class.
+     * @param boolean    $shared     True if the service will be single instance only.
      */
-    public function __construct($id, Zikula_ServiceManager_Definition $definition = null, $shared = true)
+    public function __construct($id, Definition $definition = null, $shared = true)
     {
         $this->id = $id;
         $this->definition = $definition;

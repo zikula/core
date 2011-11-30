@@ -13,12 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\EventManager;
+use Zikula\Common\ServiceManager\ServiceManager;
+
 /**
- * Zikula_EventManager.
+ * EventManager.
  *
  * Manages event handlers and invokes them for notified events.
  */
-class Zikula_EventManager implements Zikula_EventManagerInterface
+class EventManager implements EventManagerInterface
 {
     /**
      * Storage for handlers.
@@ -39,9 +42,9 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
      *
      * Inject an instance of ServiceManager to enable lazy loading of event handlers.
      *
-     * @param Zikula_ServiceManager $serviceManager Optional service manager instance.
+     * @param ServiceManager $serviceManager Optional service manager instance.
      */
-    public function __construct(Zikula_ServiceManager $serviceManager = null)
+    public function __construct(ServiceManager $serviceManager = null)
     {
         $this->serviceManager = $serviceManager;
         $this->handlers = array();
@@ -54,25 +57,25 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
      * @param mixed   $handler  Callable handler or instance of ServiceHandler.
      * @param integer $priority Priotity to control notification order, (default = 10).
      *
-     * @throws InvalidArgumentException If Handler is not callable or an instance of ServiceHandler.
+     * @throws \InvalidArgumentException If Handler is not callable or an instance of ServiceHandler.
      *
      * @return void
      */
     public function attach($name, $handler, $priority=10)
     {
-        if ($handler instanceof Zikula_ServiceHandler && $this->serviceManager && !$this->serviceManager->hasService($handler->getId())) {
-            throw new InvalidArgumentException(sprintf('ServiceHandler (id:"%s") is not registered with the ServiceManager', $handler->getId()));
+        if ($handler instanceof ServiceHandler && $this->serviceManager && !$this->serviceManager->hasService($handler->getId())) {
+            throw new \InvalidArgumentException(sprintf('ServiceHandler (id:"%s") is not registered with the ServiceManager', $handler->getId()));
         }
 
         $priority = (int)$priority;
-        if (!$handler instanceof Zikula_ServiceHandler && !is_callable($handler)) {
+        if (!$handler instanceof ServiceHandler && !is_callable($handler)) {
             // an error has occurred, so we'll generate a meaningful message.
             if (is_array($handler)) {
                 $callableText = is_object($handler[0]) ? get_class($handler[0]) . "->$handler[1]()" : "$handler[0]::$handler[1]()";
             } else {
                 $callableText = "$handler()";
             }
-            throw new InvalidArgumentException(sprintf('Handler %s given is not a valid PHP callback or Zikula_ServiceHandler instance.', $callableText));
+            throw new \InvalidArgumentException(sprintf('Handler %s given is not a valid PHP callback or Zikula\Common\EventManager\ServiceHandler instance.', $callableText));
         }
 
         if (!isset($this->handlers[$name][$priority])) {
@@ -123,11 +126,11 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
     /**
      * Notify all handlers for given event name but stop if signalled.
      *
-     * @param Zikula_EventInterface $event Event.
+     * @param EventInterface $event Event.
      *
-     * @return Zikula_EventInterface
+     * @return EventInterface
      */
-    public function notify(Zikula_EventInterface $event)
+    public function notify(EventInterface $event)
     {
         $event->setEventManager($this);
         $handlers = $this->getHandlers($event->getName());
@@ -176,32 +179,20 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
     /**
      * Invoke handler.
      *
-     * @param callable              $handler Callable by PHP.
-     * @param Zikula_EventInterface $event   Event object.
+     * @param callable       $handler Callable by PHP.
+     * @param EventInterface $event   Event object.
      *
      * @return void
      */
-    private function invoke($handler, Zikula_EventInterface $event)
+    private function invoke($handler, EventInterface $event)
     {
-        if ($handler instanceof Zikula_ServiceHandler) {
-                $service = $this->serviceManager->getService($handler->getId());
-                $method = $handler->getMethodName();
-                // invoke service method
-                $service->$method($event);
+        if ($handler instanceof ServiceHandler) {
+            $service = $this->serviceManager->getService($handler->getId());
+            $method = $handler->getMethodName();
+            // invoke service method
+            $service->$method($event);
         } else {
-            if (is_array($handler)) {
-                // PHP callable format
-                if (is_object($handler[0])) {
-                    // invoke instanciated object method.
-                    $handler[0]->$handler[1]($event);
-                } else {
-                    // invoke static class method.
-                    $handler[0]::$handler[1]($event);
-                }
-            } else {
-                // invoke function including anonymous functions
-                $handler($event);
-            }
+            call_user_func($handler, $event);
         }
     }
 
@@ -220,15 +211,16 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
     /**
      * Getter for the serviceManager property.
      *
-     * @throws LogicException If no ServiceManager exists.
+     * @throws \RuntimeException If no ServiceManager exists.
      *
-     * @return Zikula_ServiceManager instance.
+     * @return ServiceManager instance.
      */
     public function getServiceManager()
     {
         if (!$this->serviceManager) {
-            throw new RuntimeException('No ServiceManager was registered with this EventManager at construction.');
+            throw new \RuntimeException('No ServiceManager was registered with this EventManager at construction.');
         }
+
         return $this->serviceManager;
     }
 

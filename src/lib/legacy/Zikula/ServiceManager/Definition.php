@@ -7,22 +7,15 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- * @subpackage EventManager
+ * @subpackage Zikula_ServiceManager
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\EventManager;
-
 /**
- * EventInterface interface.
+ * Definition configuration describes a service for ServiceManager.
  */
-interface EventInterface
+class Zikula_ServiceManager_Definition extends Zikula\Common\ServiceManager\Definition
 {
-    public function getName();
-    public function getEventManager();
-    public function setEventManager(EventManagerInterface $eventManager);
-    public function stop();
-    public function isStopped();
 }

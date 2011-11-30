@@ -13,12 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\ServiceManager;
+
 /**
- * Zikula_ServiceManager_Argument container class.
+ * Argument container class.
  *
  * This class contains an argument id which references a stored parameter.
  */
-class Zikula_ServiceManager_Argument
+class Argument
 {
     /**
      * Argument Id.

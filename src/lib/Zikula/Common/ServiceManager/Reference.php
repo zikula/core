@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\ServiceManager;
+
 /**
  * Reference class.
  */
-class Zikula_ServiceManager_Reference
+class Reference
 {
     /**
      * Service ID being referenced.
