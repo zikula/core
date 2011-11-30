@@ -13,10 +13,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\ErrorHandler;
+use Zikula\Framework\AbstractErrorHandler;
+
 /**
  * Standard class.
  */
-class Zikula_ErrorHandler_Standard extends Zikula_AbstractErrorHandler
+class Standard extends AbstractErrorHandler
 {
     /**
      * Handles an error.
@@ -30,12 +33,12 @@ class Zikula_ErrorHandler_Standard extends Zikula_AbstractErrorHandler
      * @return boolean
      */
     public function handler($errno, $errstr, $errfile='', $errline=0, $errcontext=null)
-    {        
+    {
         $this->setupHandler($errno, $errstr, $errfile, $errline, $errcontext);
 
         // Notify all loggers
         $this->eventManager->notify($this->event->setArgs(array('trace' => $this->trace, 'type' => $this->type, 'errno' => $this->errno, 'errstr' => $this->errstr, 'errfile' => $this->errfile, 'errline' => $this->errline, 'errcontext' => $this->errcontext)));
-        if ($this->isPHPError() && System::isDevelopmentMode() && $this->showPHPErrorHandler()) {
+        if ($this->isPHPError() && \System::isDevelopmentMode() && $this->showPHPErrorHandler()) {
             // allow PHP to return error
             $this->resetHandler();
             return false;
@@ -58,12 +61,12 @@ class Zikula_ErrorHandler_Standard extends Zikula_AbstractErrorHandler
         }
 
         // if we get this far, display template
-        echo ModUtil::func('Errors', 'user', 'system',
+        echo \ModUtil::func('Errors', 'user', 'system',
                            array('type' => $this->errno,
                                  'message' => $this->errstr,
                                  'file' => $this->errfile,
                                  'line' => $this->errline));
-        Zikula_View_Theme::getInstance()->themefooter();
-        System::shutDown();
+        \Zikula_View_Theme::getInstance()->themefooter();
+        \System::shutDown();
     }
 }
