@@ -7,15 +7,15 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- * @subpackage HookManager
+ * @subpackage Zikula_Core
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 /**
- * Content validation hook.
+ * AbstractHelper class.
  */
-class Zikula_ValidationHook extends Zikula\Core\Hook\ValidationHook
+abstract class Zikula_AbstractHelper extends Zikula\Framework\AbstractHelper
 {
 }

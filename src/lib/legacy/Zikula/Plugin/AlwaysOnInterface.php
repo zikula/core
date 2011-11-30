@@ -7,15 +7,15 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- * @subpackage HookManager
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 /**
- * Content validation hook.
+ * Zikula_Plugin_AlwaysOnInterface interface.
  */
-class Zikula_ValidationHook extends Zikula\Core\Hook\ValidationHook
+interface Zikula_Plugin_AlwaysOnInterface extends Zikula\Framework\Plugin\AlwaysOnInterface
 {
+
 }

@@ -81,7 +81,7 @@ class HookManager
      *
      * @param HookInterface $hook Hook instance.
      *
-     * @return Zikula_HookInterface
+     * @return HookInterface
      */
     public function notify(HookInterface $hook)
     {
@@ -291,7 +291,7 @@ class HookManager
     /**
      * Load runtime hook listeners.
      *
-     * @return Zikula_HookManager
+     * @return HookManager
      */
     public function loadRuntimeHandlers()
     {
@@ -315,9 +315,9 @@ class HookManager
     /**
      * Decorate hook with required metadata.
      *
-     * @param Zikula_HookInterface $hook
+     * @param HookInterface $hook
      */
-    private function decorateHook(Zikula_HookInterface $hook)
+    private function decorateHook(HookInterface $hook)
     {
         $owningSide = $this->storage->getRuntimeMetaByEventName($hook->getName());
         if ($owningSide) {

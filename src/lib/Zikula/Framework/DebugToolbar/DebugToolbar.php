@@ -14,7 +14,7 @@
  */
 
 namespace Zikula\Framework\DebugToolbar;
-use Zikula\Common\EventManager;
+use Zikula\Common\EventManager\EventManager;
 use Zikula_Event;
 
 /**

@@ -1350,7 +1350,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get the Zikula controller.
      *
-     * @return Zikula_AbstractController
+     * @return \Zikula\Framework\Controller\AbstractController
      */
     public function getController()
     {
@@ -1360,11 +1360,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the controller property.
      *
-     * @param Zikula_AbstractController $controller Controller to set.
+     * @param \Zikula\Framework\Controller\AbstractController $controller Controller to set.
      *
      * @return void
      */
-    public function setController(Zikula_AbstractController $controller)
+    public function setController(\Zikula\Framework\Controller\AbstractController $controller)
     {
         $this->controller = $controller;
     }
