@@ -19,7 +19,7 @@ use ArrayObject;
 /**
  * Hook validation collection
  */
-class ValidationProviders extends Zikula\Common\Collection\Container
+class ValidationProviders extends \Zikula\Common\Collection\Container
 {
     /**
      * Constructor.
