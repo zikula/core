@@ -197,7 +197,7 @@ abstract class AbstractVersion implements \ArrayAccess
         $this->directory = $this->name; // legacy handling
         $this->baseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
         $this->libBaseDir = realpath($this->baseDir . '/lib/' . $this->name);
-        $this->type = \ModUtil::getModuleBaseDir($this->name) == 'system' ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE;
+        $this->type = \ModUtil::getModuleBaseDir($this->name) == 'system' ? \ModUtil::TYPE_SYSTEM : \ModUtil::TYPE_MODULE;
         if ($this->type == \ModUtil::TYPE_MODULE) {
             $this->domain = \ZLanguage::getModuleDomain($this->name);
         }
