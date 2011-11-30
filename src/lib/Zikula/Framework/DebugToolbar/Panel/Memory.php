@@ -13,10 +13,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\DebugToolbar\Panel;
+use Zikula\Framework\DebugToolbar\PanelInterface;
+
 /**
- * This panel displays the page render time.
+ * This panel displays the current memory usage.
  */
-class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_PanelInterface
+class Memory implements PanelInterface
 {
     /**
      * Returns the id of this panel.
@@ -25,17 +28,21 @@ class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_PanelI
      */
     public function getId()
     {
-        return "rendertime";
+        return "memory";
     }
 
     /**
-     * Returns the page render time as link name.
+     * Returns the memory usage as link name.
      *
      * @return string
      */
     public function getTitle()
     {
-        return round($this->getTimeDiff()*1000, 3).' ms';
+        if (function_exists('memory_get_usage')) {
+            $totalMemory = sprintf('%.1f', (memory_get_usage() / 1024));
+
+            return $totalMemory.' KB';
+        }
     }
 
     /**
@@ -45,7 +52,7 @@ class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_PanelI
      */
     public function getPanelTitle()
     {
-        return __('Render time');
+        return __('Memory');
     }
 
     /**
@@ -59,26 +66,12 @@ class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_PanelI
     }
 
     /**
-     *  Returns the page render time.
-     *
-     * @return number
-     */
-    public function getTimeDiff()
-    {
-        $start = ServiceUtil::getManager()->getArgument('debug.toolbar.panel.rendertime.start');
-        $end =  microtime(true);
-
-        $diff = $end - $start;
-        return $diff;
-    }
-
-    /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return number
      */
     public function getPanelData()
     {
-        return $this->getTimeDiff();
+        return memory_get_usage();
     }
 }

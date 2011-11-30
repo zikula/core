@@ -13,14 +13,17 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\DebugToolbar\Panel;
+use Zikula\Framework\DebugToolbar\PanelInterface;
+
 /**
  * This panel displays the configuration of the current top level module and the zikula configuration.
  */
-class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInterface
+class Config implements PanelInterface
 {
     /**
      * Returns the id of this panel.
-     * 
+     *
      * @return string
      */
     public function getId()
@@ -30,7 +33,7 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
 
     /**
      * Returns the link name.
-     * 
+     *
      * @return string
      */
     public function getTitle()
@@ -40,7 +43,7 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
 
     /**
      * Returns the content panel title.
-     * 
+     *
      * @return string
      */
     public function getPanelTitle()
@@ -50,7 +53,7 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
 
     /**
      * Returns the the HTML code of the content panel.
-     * 
+     *
      * @return string HTML
      */
     public function getPanelContent()
@@ -61,9 +64,9 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
         $html .= $this->arrayToHTML(__('Zikula configuration'), 'ZConfig', $GLOBALS['ZConfig']);
 
         // current top level module
-        $module = ModUtil::getName();
+        $module = \ModUtil::getName();
         if ($module) {
-            $html .= $this->arrayToHTML(__f('Module %s', $module), 'Module vars', ModUtil::getVar($module));
+            $html .= $this->arrayToHTML(__f('Module %s', $module), 'Module vars', \ModUtil::getVar($module));
         }
 
         return $html;
@@ -101,7 +104,7 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
     protected function outputVar($key, $var)
     {
         if (!is_array($var)) {
-            return "<li><strong>{$key}:</strong> <pre class=\"DebugToolbarVarDump\">" . DataUtil::formatForDisplay($var) . '</pre></li>';
+            return "<li><strong>{$key}:</strong> <pre class=\"DebugToolbarVarDump\">" . \DataUtil::formatForDisplay($var) . '</pre></li>';
         } else {
             $html =  "<li><strong>" . $key . ':</strong> <ul>';
 
@@ -120,13 +123,13 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return array
      */
     public function getPanelData()
     {
         $data = array();
-        
+
         // zikula config
         $data['global'] = array(
             'title' => __('Zikula configuration'),
@@ -134,11 +137,11 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
         );
 
         // current top level module
-        $module = ModUtil::getName();
+        $module = \ModUtil::getName();
         if ($module) {
             $data[$module] = array(
                 'title' => __f('Module %s', $module),
-                'content' => ModUtil::getVar($module)
+                'content' => \ModUtil::getVar($module)
             );
         }
 

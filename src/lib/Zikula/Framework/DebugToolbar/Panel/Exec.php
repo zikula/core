@@ -13,10 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\DebugToolbar\Panel;
+use Zikula\Framework\DebugToolbar\PanelInterface;
+use Zikula_Event;
+
 /**
  * This panel displays all module & moduleapi executions.
  */
-class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterface
+class Exec implements PanelInterface
 {
     const RECURSIVE_LIMIT = 10;
 
@@ -25,8 +29,14 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
      *
      * @var array
      */
-    private static $OBJECTS_TO_SKIPP = array('Zikula_ServiceManager', 'Zikula_View',
-                                             'Zikula_EventManager', 'Doctrine_Table');
+    private static $OBJECTS_TO_SKIPP = array(
+        'Zikula_ServiceManager',
+        'Zikula\Common\ServiceManager\ServiceManager',
+        'Zikula_View',
+        'Zikula_EventManager',
+        'Zikula\Common\EventManager\EventManager',
+        'Doctrine_Table',
+        );
 
     /**
      * Contains all executed module functions.
@@ -97,7 +107,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             if (!is_string($exec['data'])) {
                 $exec['data'] = $this->formatVar('', $exec['data']);
             } else {
-                $exec['data'] = '<pre>' . DataUtil::formatForDisplay($exec['data']) . '</pre>';
+                $exec['data'] = '<pre>' . \DataUtil::formatForDisplay($exec['data']) . '</pre>';
             }
 
             $rows[] = '<tr>
@@ -167,7 +177,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             if (is_numeric($value) || is_bool($value)) {
                 $preview .= $valuePrefix . $value;
             } else if (is_string($value)) {
-                $preview .= $valuePrefix . '"' . DataUtil::formatForDisplay($value) . '"';
+                $preview .= $valuePrefix . '"' . \DataUtil::formatForDisplay($value) . '"';
             } else if (is_array($value)) {
                 $preview .= $valuePrefix . 'array(...)';
             } else if (is_object($value)) {
@@ -213,7 +223,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
                 }
 
             } elseif (!in_array(get_class($var), self::$OBJECTS_TO_SKIPP)) {
-                $cls = new ReflectionClass($var);
+                $cls = new \ReflectionClass($var);
                 foreach ($cls->getProperties() as $prop) {
                     $prop->setAccessible(true);
                     $html .= $this->formatVar($prop->name, $prop->getValue($var), $level + 1);
@@ -236,7 +246,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
 
         } else {
             $html =  '<code>' . $key . '</code> <span style="color:#666666;font-style:italic;">('.
-                        gettype($var).')</span>: <pre class="DebugToolbarVarDump">' . DataUtil::formatForDisplay($var) . '</pre>';
+                        gettype($var).')</span>: <pre class="DebugToolbarVarDump">' . \DataUtil::formatForDisplay($var) . '</pre>';
         }
 
 
@@ -308,7 +318,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return array
      */
     public function getPanelData()

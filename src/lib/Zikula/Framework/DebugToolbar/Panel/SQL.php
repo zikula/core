@@ -13,10 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\DebugToolbar\Panel;
+use Zikula\Framework\DebugToolbar\PanelInterface;
+use Zikula_Event;
+
 /**
  * This panel displays all executed SQL queries.
  */
-class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_PanelInterface
+class SQL implements PanelInterface
 {
     /**
      * SQL queries.
@@ -156,7 +160,7 @@ class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_PanelInterfac
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return array
      */
     public function getPanelData()
