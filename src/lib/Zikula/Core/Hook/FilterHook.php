@@ -13,29 +13,29 @@
  * information regarding copyright and licensing.
  */
 
-/**
- * Content validation hook.
- */
-class Zikula_ValidationHook extends Zikula_AbstractHook
-{
-    /**
-     * @var Zikula_Hook_ValidationProviders
-     */
-    private $validators;
+namespace Zikula\Core\Hook;
+use Zikula\Common\HookManager\AbstractHook;
 
-    public function __construct($name, Zikula_Hook_ValidationProviders $validators)
+/**
+ * Content filter hook.
+ */
+class FilterHook extends AbstractHook
+{
+    private $data;
+
+    public function __construct($name, $data=null)
     {
         $this->name = $name;
-        $this->validators = $validators;
+        $this->data = $data;
     }
 
-    public function setValidator($name, Zikula_Hook_ValidationResponse $response)
+    public function getData()
     {
-        $this->validators->set($name, $response);
+        return $this->data;
     }
 
-    public function getValidators()
+    public function setData($data)
     {
-        return $this->validators;
+        $this->data = $data;
     }
 }

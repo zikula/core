@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core;
+
 /**
  * Url class.
  */
-class Zikula_ModUrl
+class ModUrl
 {
     private $application;
     private $controller;

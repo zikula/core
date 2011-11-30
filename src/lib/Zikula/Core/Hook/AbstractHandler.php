@@ -13,15 +13,19 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Hook;
+use Zikula\Common\EventManager\EventManager;
+use Zikula\Common\I18n\TranslatableInterface;
+
 /**
  * Custom Hook Handler interface.
  */
-abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterface
+abstract class AbstractHandler implements TranslatableInterface
 {
     /**
      * EventManager instance.
      *
-     * @var Zikula_EventManager
+     * @var EventManager
      */
     protected $eventManager;
 
@@ -35,14 +39,14 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Display hook response object.
      *
-     * @var Zikula_Response_DisplayHook
+     * @var Response\DisplayHook
      */
     protected $display;
 
     /**
      * Validation object.
      *
-     * @var Zikula_Hook_ValidationResponse
+     * @var ValidationResponse
      */
     protected $validation;
 
@@ -56,11 +60,11 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Constructor.
      *
-     * @param Zikula_EventManager $eventManager ServiceManager.
+     * @param EventManager $eventManager ServiceManager.
      *
-     * @throws InvalidArgumentException If $this->eventNames is invalid.
+     * @throws \InvalidArgumentException If $this->eventNames is invalid.
      */
-    public function __construct(Zikula_EventManager $eventManager)
+    public function __construct(EventManager $eventManager)
     {
         $this->eventManager = $eventManager;
         $this->setup();
@@ -74,7 +78,7 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     public function getReflection()
     {
         if (!$this->reflection) {
-            $this->reflection = new ReflectionObject($this);
+            $this->reflection = new \ReflectionObject($this);
         }
         return $this->reflection;
     }
@@ -82,7 +86,7 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Get eventManager.
      *
-     * @return Zikula_EventManager
+     * @return EventManager
      */
     public function getEventManager()
     {

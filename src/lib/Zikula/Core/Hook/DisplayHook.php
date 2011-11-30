@@ -13,10 +13,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Hook;
+use Zikula\Common\HookManager\AbstractHook;
+
 /**
  * DisplayHook class.
  */
-class Zikula_DisplayHook extends Zikula_AbstractHook
+class DisplayHook extends AbstractHook
 {
     /**
      * Responses.
@@ -28,11 +31,11 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
     /**
      * The return url.
      *
-     * @var Zikula_ModUrl
+     * @var ModUrl
      */
     private $url;
 
-    public function __construct($name, $id, Zikula_ModUrl $url = null)
+    public function __construct($name, $id, ModUrl $url = null)
     {
         $this->name = $name;
         $this->id = $id;
@@ -52,7 +55,7 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
     /**
      * Set data.
      *
-     * @return Zikula_DisplayHook
+     * @return DisplayHook
      */
     public function getResponses()
     {
@@ -62,7 +65,7 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
     /**
      * Url getter.
      *
-     * @return Zikula_ModUrl
+     * @return ModUrl
      */
     public function getUrl()
     {

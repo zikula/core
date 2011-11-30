@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\I18n;
+
 /**
  * Zikula Translate interface.
  */
-interface Zikula_TranslatableInterface
+interface TranslatableInterface
 {
     /**
      * singular translation for modules.
