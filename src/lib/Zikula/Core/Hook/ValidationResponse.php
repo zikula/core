@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Hook;
+
 /**
  * Validation object for hooks.
  */
-class Zikula_Hook_ValidationResponse
+class ValidationResponse
 {
     /**
      * Object key.

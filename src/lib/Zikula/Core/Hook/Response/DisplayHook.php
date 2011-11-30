@@ -13,12 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Hook\Response;
+use Zikula_View;
+
 /**
  * Zikula display hook response class.
  *
  * Hook handlers should return one of these.
  */
-class Zikula_Response_DisplayHook
+class DisplayHook
 {
     /**
      * Name.

@@ -14,25 +14,8 @@
  */
 
 /**
- * Content filter hook.
+ * Content validation hook.
  */
-class Zikula_FilterHook extends Zikula_AbstractHook
+class Zikula_ValidationHook extends Zikula\Core\Hook\ValidationHooks
 {
-    private $data;
-
-    public function __construct($name, $data=null)
-    {
-        $this->name = $name;
-        $this->data = $data;
-    }
-
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    public function setData($data)
-    {
-        $this->data = $data;
-    }
 }

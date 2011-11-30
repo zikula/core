@@ -7,28 +7,31 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- * @subpackage Zikula_EventManager
+ * @subpackage EventManager
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Hook;
+use Zikula\Common\HookManager\AbstractHook;
+
 /**
- * Zikula_Event encapsulation class.
+ * Event encapsulation class.
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Zikula_ProcessHook extends Zikula_AbstractHook
+class ProcessHook extends AbstractHook
 {
     /**
      * Url container.
      *
-     * @var Zikula_ModUrl
+     * @var ModUrl
      */
     protected $url;
 
-    public function __construct($name, $id, Zikula_ModUrl $url=null)
+    public function __construct($name, $id, ModUrl $url=null)
     {
         $this->name = $name;
         $this->id = $id;

@@ -13,10 +13,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Hook;
+use ArrayObject;
+
 /**
  * Hook validation collection
  */
-class Zikula_Hook_ValidationProviders extends Zikula_Collection_Container
+class ValidationProviders extends Zikula\Common\Collection\Container
 {
     /**
      * Constructor.
@@ -32,15 +35,15 @@ class Zikula_Hook_ValidationProviders extends Zikula_Collection_Container
     /**
      * Set response.
      *
-     * @param string                         $name     Name.
-     * @param Zikula_Hook_ValidationResponse $response Validation response.
+     * @param string             $name     Name.
+     * @param ValidationResponse $response Validation response.
      *
      * @return void
      */
     public function set($name, $response)
     {
-        if (!$response instanceof Zikula_Hook_ValidationResponse) {
-            throw new InvalidArgumentException('$response must be an instance of Zikula_Hook_ValidationResponse');
+        if (!$response instanceof ValidationResponse) {
+            throw new \InvalidArgumentException('$response must be an instance of Zikula\Core\Hook\ValidationResponse');
         }
         $this->collection[$name] = $response;
     }
