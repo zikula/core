@@ -30,9 +30,9 @@ class SessionStorage implements StorageInterface
     /**
      * Constructor.
      *
-     * @param Zikula_Session $session Zikula_Session instance to inject.
+     * @param \Zikula_Session $session Zikula_Session instance to inject.
      */
-    public function __construct(Zikula_Session $session)
+    public function __construct(\Zikula_Session $session)
     {
         $this->session = $session;
     }
