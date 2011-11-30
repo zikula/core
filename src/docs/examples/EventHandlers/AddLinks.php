@@ -7,10 +7,12 @@
  *
  * @license MIT http://www.opensource.org/licenses/mit-license.php
  * @package ZikulaExamples
- * 
+ *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+use Zikula\Core\Event\GenericEvent;
 
 /**
  * Add a link to Users administration links Event Handler class.
@@ -31,11 +33,11 @@ class Users_EventHandlers_AddLinks extends Zikula_AbstractEventHandler
     /**
      * Event handler here.
      *
-     * @param Zikula_Event $event Event handler.
+     * @param GenericEvent $event Event handler.
      *
      * @return void
      */
-    public function handler(Zikula_Event $event)
+    public function handler(GenericEvent $event)
     {
         // check if this is for this handler
         if (!($event->getSubject() instanceof Users_Api_Admin && $event['modfunc'][1] == 'getlinks')) {

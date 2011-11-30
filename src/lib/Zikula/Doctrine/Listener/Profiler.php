@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * This doctrine event listener sends a Zikula event (name: log.sql) for every executed sql query.
  *
- * Zikula_Event args:
+ * \Zikula\Core\Event\GenericEvent args:
  *   time: execution time in secounds
  *   query: sql query
  */
@@ -42,7 +44,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      */
     public function postQuery(Doctrine_Event $event) {
         $event->end();
-        $zevent = new Zikula_Event('log.sql', null, array('time'  => $event->getElapsedSecs(),
+        $zevent = new GenericEvent('log.sql', null, array('time'  => $event->getElapsedSecs(),
                                                          'query' => $event->getQuery()));
         EventUtil::notify($zevent);
     }
@@ -57,7 +59,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     public function preExec(Doctrine_Event $event) {
         $event->start();
     }
-    
+
     /**
      * Executed following a Doctrine exec query.
      *
@@ -67,7 +69,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      */
     public function postExec(Doctrine_Event $event) {
         $event->end();
-        $zevent = new Zikula_Event('log.sql', null, array('time'  => $event->getElapsedSecs(),
+        $zevent = new GenericEvent('log.sql', null, array('time'  => $event->getElapsedSecs(),
                                                          'query' => $event->getQuery()));
         EventUtil::notify($zevent);
     }
@@ -92,7 +94,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      */
     public function postStmtExecute(Doctrine_Event $event) {
         $event->end();
-        $zevent = new Zikula_Event('log.sql', null, array('time'  => $event->getElapsedSecs(),
+        $zevent = new GenericEvent('log.sql', null, array('time'  => $event->getElapsedSecs(),
                                                          'query' => $event->getQuery()));
         EventUtil::notify($zevent);
     }

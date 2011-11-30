@@ -15,7 +15,7 @@
 
 namespace Zikula\Framework\DebugToolbar\Panel;
 use Zikula\Framework\DebugToolbar\PanelInterface;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 
 /**
  * This panel displays the assigned variables of all renderd templates.
@@ -151,11 +151,11 @@ class View implements PanelInterface
     /**
      * Listener which modifies the Theme Renderer.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function initRenderer(Zikula_Event $event)
+    public function initRenderer(GenericEvent $event)
     {
         $view = $event->getSubject();
         $view->debugging = true;

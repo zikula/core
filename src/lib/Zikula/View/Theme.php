@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Zikula_View_Theme class.
  */
@@ -180,7 +182,7 @@ class Zikula_View_Theme extends Zikula_View
             $this->_overrideMap = Doctrine_Parser::load("themes/$themeName/templates/overrides.yml", 'yml');
         }
 
-        $event = new Zikula_Event('theme.preinit', $this);
+        $event = new GenericEvent('theme.preinit', $this);
         $this->eventManager->notify($event);
 
         // change some base settings from our parent class
@@ -246,7 +248,7 @@ class Zikula_View_Theme extends Zikula_View
             $this->load_filter('output', 'trimwhitespace');
         }
 
-        $event = new Zikula_Event('theme.init', $this);
+        $event = new GenericEvent('theme.init', $this);
         $this->eventManager->notify($event);
 
         // Start the output buffering to capture module output
@@ -306,7 +308,7 @@ class Zikula_View_Theme extends Zikula_View
             $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
         }
 
-        $event = new Zikula_Event('theme.prefetch', $this, array(), $maincontent);
+        $event = new GenericEvent('theme.prefetch', $this, array(), $maincontent);
         $maincontent = $this->eventManager->notify($event)->getData();
 
         // Assign the main content area to the template engine
@@ -315,7 +317,7 @@ class Zikula_View_Theme extends Zikula_View
         // render the page using the correct template
         $output = $this->fetch($this->themeconfig['page'], $this->cache_id);
 
-        $event = new Zikula_Event('theme.postfetch', $this, array(), $output);
+        $event = new GenericEvent('theme.postfetch', $this, array(), $output);
         echo $this->eventManager->notify($event)->getData();
     }
 
@@ -720,18 +722,18 @@ class Zikula_View_Theme extends Zikula_View
             $this->assign('palette', $palette);
         }
 
-        $event = new Zikula_Event('theme.load_config', $this);
+        $event = new GenericEvent('theme.load_config', $this);
         $this->eventManager->notify($event);
     }
 
     /**
      * Template override handler for 'zikula_view.template_override'.
      *
-     * @param Zikula_Event $event Event handler.
+     * @param GenericEvent $event Event handler.
      *
      * @return void
      */
-    public function _templateOverride(Zikula_Event $event)
+    public function _templateOverride(GenericEvent $event)
     {
         if (array_key_exists($event->data, $this->_overrideMap)) {
             $event->data = $this->_overrideMap[$event->data];

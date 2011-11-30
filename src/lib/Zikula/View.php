@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Zikula_View class.
  */
@@ -335,7 +337,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         parent::assign('metatags', $this->serviceManager['zikula_view.metatags']);
 
-        $event = new Zikula_Event('view.init', $this);
+        $event = new GenericEvent('view.init', $this);
         $this->eventManager->notify($event);
     }
 
@@ -657,7 +659,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $output = "\n<!-- Start " . $this->template_dir . "/$template -->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
         }
 
-        $event = new Zikula_Event('view.postfetch', $this, array('template' => $template), $output);
+        $event = new GenericEvent('view.postfetch', $this, array('template' => $template), $output);
         return $this->eventManager->notify($event)->getData();
     }
 
@@ -1037,7 +1039,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      */
     public static function getTemplateOverride($template)
     {
-        $event = new Zikula_Event('zikula_view.template_override', null, array(), $template);
+        $event = new GenericEvent('zikula_view.template_override', null, array(), $template);
         EventUtil::getManager()->notify($event);
 
         if ($event->isStopped()) {

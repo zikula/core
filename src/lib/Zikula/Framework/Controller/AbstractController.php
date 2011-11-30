@@ -17,7 +17,7 @@ namespace Zikula\Framework\Controller;
 use Zikula\Framework\AbstractBase;
 use Zikula\Framework\Exception\NotFound;
 use Zikula\Common\HookManager\HookInterface;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 use Zikula_View;
 
 /**
@@ -103,7 +103,7 @@ abstract class AbstractController extends AbstractBase
      */
     public function __call($method, $args)
     {
-        $event = new Zikula_Event('controller.method_not_found', $this, array('method' => $method, 'args' => $args));
+        $event = new GenericEvent('controller.method_not_found', $this, array('method' => $method, 'args' => $args));
         $this->eventManager->notify($event);
         if ($event->isStopped()) {
             return $event->getData();

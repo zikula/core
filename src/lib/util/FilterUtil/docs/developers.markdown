@@ -137,20 +137,20 @@ Your module may register a persistent EventHandler on its installer:
 to add your plugins to the list with:
 
     [php]
-	class ModuleName_EventHandler_Listeners
-	{
-		public static function getFilterClasses(Zikula_Event $event)
-		{
-			$classNames = array();
-			$classNames['id1'] = 'ModuleName_Filter_Filter1';
-			$classNames['id2'] = 'ModuleName_Filter_Filter2';
+    class ModuleName_EventHandler_Listeners
+    {
+        public static function getFilterClasses(\Zikula\Core\Event\GenericEvent $event)
+        {
+            $classNames = array();
+            $classNames['id1'] = 'ModuleName_Filter_Filter1';
+            $classNames['id2'] = 'ModuleName_Filter_Filter2';
 
-			$event->setData(array_merge((array)$event->getData(), $classNames));
-		}
-	}
+            $event->setData(array_merge((array)$event->getData(), $classNames));
+        }
+    }
 
 and you will be able to filter, for instance, an *author* field with your plugin
 with an addition to your configuration array like:
 
     [php]
-	$config['plugins']['id1']['fields'][] = 'author'
+    $config['plugins']['id1']['fields'][] = 'author'

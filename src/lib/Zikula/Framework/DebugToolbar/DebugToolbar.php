@@ -15,7 +15,7 @@
 
 namespace Zikula\Framework\DebugToolbar;
 use Zikula\Common\EventManager\EventManager;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 
 /**
  * An small toolbar to help debugging zikula.
@@ -84,7 +84,7 @@ class DebugToolbar
         \PageUtil::addVar('stylesheet', 'style/debugtoolbar.css');
 
         // allow modules and plugins to extend the toolbar
-        $event = new Zikula_Event('debugtoolbar.init', $this);
+        $event = new GenericEvent('debugtoolbar.init', $this);
         $this->eventManager->notify($event);
     }
 

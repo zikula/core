@@ -11,6 +11,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Doctrine2 SQLLogger that sends sql queries to the zikula event manager.
  */
@@ -18,7 +20,7 @@ class SystemPlugin_Doctrine_ZikulaSqlLogger implements Doctrine\DBAL\Logging\SQL
 {
     private $currentQuery;
     private $start;
-    
+
     public function startQuery($sql, array $params = null, array $types = null)
     {
         $this->start = microtime(true);
@@ -29,8 +31,8 @@ class SystemPlugin_Doctrine_ZikulaSqlLogger implements Doctrine\DBAL\Logging\SQL
     {
         $query = $this->currentQuery;
         $query['time'] = microtime(true) - $this->start;
-        
-        $zevent = new Zikula_Event('log.sql', null, $query);
+
+        $zevent = new GenericEvent('log.sql', null, $query);
         EventUtil::notify($zevent);
     }
 }

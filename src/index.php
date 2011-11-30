@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 include 'lib/bootstrap.php';
 $core->init();
 
-$core->getEventManager()->notify(new Zikula_Event('frontcontroller.predispatch'));
+$core->getEventManager()->notify(new GenericEvent('frontcontroller.predispatch'));
 
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
@@ -89,7 +91,7 @@ try {
     }
 
 } catch (Exception $e) {
-    $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
+    $event = new GenericEvent('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
     $core->getEventManager()->notify($event);
 
     if ($event->isStopped()) {

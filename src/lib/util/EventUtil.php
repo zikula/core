@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * EventUtil
  */
@@ -58,11 +60,11 @@ class EventUtil
     /**
      * Notify event.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
-     * @return Zikula_Event
+     * @return GenericEvent
      */
-    static public function notify(Zikula_Event $event)
+    static public function notify(GenericEvent $event)
     {
         return self::getManager()->notify($event);
     }

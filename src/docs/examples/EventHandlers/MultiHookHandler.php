@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * MultiHook Event Handler class.
  */
@@ -30,11 +32,11 @@ class MultiHookHandler extends Zikula_AbstractEventHandler
     /**
      * Event handler here.
      *
-     * @param Zikula_Event $event Event object.
+     * @param GenericEvent $event Event object.
      *
      * @return void
      */
-    public function handler(Zikula_Event $event)
+    public function handler(GenericEvent $event)
     {
         // subject must be an instance of Theme class.
         $theme = $event->getSubject();

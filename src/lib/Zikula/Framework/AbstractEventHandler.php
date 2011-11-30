@@ -14,7 +14,7 @@
  */
 
 namespace Zikula\Framework;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 use Zikula\Common\ServiceManager\ServiceManager;
 use Zikula\Common\EventManager\EventManager;
 
@@ -29,7 +29,7 @@ use Zikula\Common\EventManager\EventManager;
  *
  * The handler methods must be implemented as followes:
  *
- * public function handler(Zikula_Event $event)
+ * public function handler(GenericEvent $event)
  */
 abstract class AbstractEventHandler
 {

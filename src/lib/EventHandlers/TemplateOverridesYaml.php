@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Event handler to override templates.
  */
@@ -19,7 +21,7 @@ class TemplateOverridesYaml extends Zikula_AbstractEventHandler
 {
     /**
      * Associative array.
-     * 
+     *
      * Maps template path to overriden path.
      *
      * @var array
@@ -52,11 +54,11 @@ class TemplateOverridesYaml extends Zikula_AbstractEventHandler
     /**
      * Listens for 'zikula_view.template_override' events.
      *
-     * @param Zikula_Event $event Event handler.
+     * @param GenericEvent $event Event handler.
      *
      * @return void
      */
-    public function handler(Zikula_Event $event)
+    public function handler(GenericEvent $event)
     {
         if (array_key_exists($event->data, $this->overrideMap)) {
             $event->data = $this->overrideMap[$event->data];
