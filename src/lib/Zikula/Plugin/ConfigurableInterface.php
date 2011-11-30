@@ -27,5 +27,5 @@ interface Zikula_Plugin_ConfigurableInterface
      *
      * @return Zikula_Controller_AbstractPlugin
      */
-    public function getConfigurationController();
+    function getConfigurationController();
 }

@@ -26,7 +26,7 @@ if (version_compare($phpVersion, '5.3.2', '>=') == false) {
 include 'lib/ZLoader.php';
 ZLoader::register();
 
-$core = new Zikula_Core();
+$core = new Zikula\Core\Core();
 $core->boot();
 
 // Load system configuration

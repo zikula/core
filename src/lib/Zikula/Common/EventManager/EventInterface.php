@@ -20,9 +20,9 @@ namespace Zikula\Common\EventManager;
  */
 interface EventInterface
 {
-    public function getName();
-    public function getEventManager();
-    public function setEventManager(EventManagerInterface $eventManager);
-    public function stop();
-    public function isStopped();
+    function getName();
+    function getEventManager();
+    function setEventManager(EventManagerInterface $eventManager);
+    function stop();
+    function isStopped();
 }

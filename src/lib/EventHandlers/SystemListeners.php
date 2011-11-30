@@ -83,7 +83,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
         // Check for site closed
-        if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula_Core::VERSION_NUM != System::getVar('Version_Num'))) {
+        if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula\Core\Core::VERSION_NUM != System::getVar('Version_Num'))) {
             if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
                 UserUtil::logout();
             }
@@ -135,7 +135,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupRequest(Zikula_Event $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_DECODEURLS) {
+        if ($event['stage'] & Zikula\Core\Core::STAGE_DECODEURLS) {
             $request = $this->serviceManager->getService('request');
             // temporary workaround: reinitialize request information after having decoded short urls
             $request->initialize();
@@ -188,7 +188,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupCsfrProtection(Zikula_Event $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_MODS) {
+        if ($event['stage'] & Zikula\Core\Core::STAGE_MODS) {
             $tokenStorageDef = new Zikula_ServiceManager_Definition('Zikula_Token_Storage_Session',
                             array(new Zikula_ServiceManager_Reference('session')));
             $this->serviceManager->registerService('token.storage', $tokenStorageDef);
@@ -206,7 +206,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * If enabled and logged in, save login name of user in Apache session variable for Apache logs.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_SESSIONS.
+     * Implements 'core.init' event when Zikula\Core\Core::STAGE_SESSIONS.
      *
      * @param Zikula_Event $event The event handler.
      *
@@ -214,7 +214,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function sessionLogging(Zikula_Event $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_SESSIONS) {
+        if ($event['stage'] & Zikula\Core\Core::STAGE_SESSIONS) {
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
             if (isset($GLOBALS['ZConfig']['Log']['log.apache_uname']) && ($GLOBALS['ZConfig']['Log']['log.apache_uname']) && UserUtil::isLoggedIn()) {
                 if (function_exists('apache_setenv')) {
@@ -251,7 +251,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Initialise DB connection.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_DB.
+     * Implements 'core.init' event when Zikula\Core\Core::STAGE_DB.
      *
      * @param Zikula_Event $event The event handler.
      *
@@ -259,7 +259,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function initDB(Zikula_Event $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_DB) {
+        if ($event['stage'] & Zikula\Core\Core::STAGE_DB) {
             $dbEvent = new Zikula_Event('doctrine.init_connection');
             $this->eventManager->notify($dbEvent);
         }
@@ -292,7 +292,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Load system plugins.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_TABLES.
+     * Implements 'core.init' event when Zikula\Core\Core::STAGE_TABLES.
      *
      * @param Zikula_Event $event The event handler.
      *
@@ -300,7 +300,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function systemPlugins(Zikula_Event $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_TABLES) {
+        if ($event['stage'] & Zikula\Core\Core::STAGE_TABLES) {
             if (!System::isInstalling()) {
                 ServiceUtil::loadPersistentServices();
                 PluginUtil::loadPlugins(realpath(realpath('.').'/plugins'), "SystemPlugin");
@@ -329,7 +329,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         $class = 'Zikula_ErrorHandler_Standard';
-        if ($event['stage'] & Zikula_Core::STAGE_AJAX) {
+        if ($event['stage'] & Zikula\Core\Core::STAGE_AJAX) {
             $class = 'Zikula_ErrorHandler_Ajax';
         }
 
@@ -342,7 +342,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Establish the necessary instances for logging.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_CONFIG.
+     * Implements 'core.init' event when Zikula\Core\Core::STAGE_CONFIG.
      *
      * @param Zikula_Event $event The event to log.
      *
@@ -350,7 +350,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupLoggers(Zikula_Event $event)
     {
-        if (!($event['stage'] & Zikula_Core::STAGE_CONFIG)) {
+        if (!($event['stage'] & Zikula\Core\Core::STAGE_CONFIG)) {
             return;
         }
 
@@ -471,7 +471,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Debug toolbar startup.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_CONFIG in development mode.
+     * Implements 'core.init' event when Zikula\Core\Core::STAGE_CONFIG in development mode.
      *
      * @param Zikula_Event $event Event.
      *
@@ -479,7 +479,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupDebugToolbar(Zikula_Event $event)
     {
-        if ($event['stage'] == Zikula_Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
+        if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
             include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
 
@@ -561,7 +561,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Adds an autoloader entry for the cached (generated) doctrine models.
      *
-     * Implements 'core.init' events when Zikula_Core::STAGE_CONFIG.
+     * Implements 'core.init' events when Zikula\Core\Core::STAGE_CONFIG.
      *
      * @param Zikula_Event $event Event.
      *
@@ -569,7 +569,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupAutoloaderForGeneratedCategoryModels(Zikula_Event $event)
     {
-        if ($event['stage'] == Zikula_Core::STAGE_CONFIG) {
+        if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG) {
             ZLoader::addAutoloader('GeneratedDoctrineModel', CacheUtil::getLocalDir('doctrinemodels'));
         }
     }
@@ -745,8 +745,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         // check PHP version, shouldn't be necessary, but....
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
-        if (version_compare($phpVersion, Zikula_Core::PHP_MINIMUM_VERSION, '>=') == false) {
-            echo __f('Error! Zikula requires PHP version %1$s or greater. Your server seems to be using version %2$s.', array(Zikula_Core::PHP_MINIMUM_VERSION, $phpVersion));
+        if (version_compare($phpVersion, Zikula\Core\Core::PHP_MINIMUM_VERSION, '>=') == false) {
+            echo __f('Error! Zikula requires PHP version %1$s or greater. Your server seems to be using version %2$s.', array(Zikula\Core\Core::PHP_MINIMUM_VERSION, $phpVersion));
             $die = true;
         }
 
