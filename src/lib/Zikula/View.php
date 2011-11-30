@@ -12,12 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+use \Zikula\Common\ServiceManager\ServiceManager;
+use \Zikula\Common\I18n\TranslatableInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Zikula_View class.
  */
-class Zikula_View extends Smarty implements Zikula_TranslatableInterface
+class Zikula_View extends Smarty implements TranslatableInterface
 {
     const CACHE_DISABLED = 0;
     const CACHE_ENABLED = 1;
@@ -110,7 +112,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * The service manager instance.
      *
-     * @var Zikula_ServiceManager
+     * @var \Zikula\Common\ServiceManager\ServiceManager
      */
     protected $serviceManager;
 
@@ -166,11 +168,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param string                $moduleName     Module name ("zikula" for system plugins).
-     * @param integer|null          $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
+     * @param ServiceManager $serviceManager ServiceManager.
+     * @param string         $moduleName     Module name ("zikula" for system plugins).
+     * @param integer|null   $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, $moduleName = '', $caching = null)
+    public function __construct(ServiceManager $serviceManager, $moduleName = '', $caching = null)
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
@@ -1322,7 +1324,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get ServiceManager.
      *
-     * @return Zikula_ServiceManager The service manager.
+     * @return \Zikula\Common\ServiceManager\ServiceManager The service manager.
      */
     public function getServiceManager()
     {

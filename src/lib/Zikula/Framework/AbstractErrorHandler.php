@@ -205,7 +205,7 @@ abstract class AbstractErrorHandler
     /**
      * Retrieve the service manager instance.
      *
-     * @return Zikula_ServiceManager The service manager instance.
+     * @return \Zikula\Common\ServiceManager\ServiceManager The service manager instance.
      */
     public function getServiceManager()
     {

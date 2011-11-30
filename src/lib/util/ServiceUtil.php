@@ -12,6 +12,10 @@
  * information regarding copyright and licensing.
  */
 
+use \Zikula\Common\ServiceManager\ServiceManager;
+use \Zikula\Common\ServiceManager\Service;
+use \Zikula\Common\ServiceManager\Definition;
+
 /**
  * ServiceUtil
  *
@@ -23,7 +27,7 @@ class ServiceUtil
     /**
      * Service manager instance.
      *
-     * @var Zikula_ServiceManager
+     * @var \Zikula\Common\ServiceManager\ServiceManager
      */
     private static $serviceManager;
 
@@ -73,13 +77,13 @@ class ServiceUtil
      *
      * This will be loaded into ServiceManager at runtime.
      *
-     * @param string                           $id         Service ID.
-     * @param Zikula_ServiceManager_Definition $definition Class definition.
-     * @param boolean                          $shared     Shared service or not.
+     * @param string     $id         Service ID.
+     * @param Definition $definition Class definition.
+     * @param boolean    $shared     Shared service or not.
      *
      * @return void
      */
-    public static function registerPersistentService($id, Zikula_ServiceManager_Definition $definition, $shared=true)
+    public static function registerPersistentService($id, Definition $definition, $shared=true)
     {
         $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', array());
         $handlers[$id] = array('definition' => $definition, 'shared' => $shared);
@@ -122,7 +126,7 @@ class ServiceUtil
         }
 
         foreach ($handlers as $id => $handler) {
-            self::$serviceManager->registerService(new Zikula_ServiceManager_Service($id, $handler['definition'], $handler['shared']));
+            self::$serviceManager->registerService(new Service($id, $handler['definition'], $handler['shared']));
         }
     }
 }

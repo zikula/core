@@ -13,6 +13,8 @@
  */
 
 use Zikula\Core\Event\GenericEvent;
+use \Zikula\Common\ServiceManager\Definition;
+use \Zikula\Common\ServiceManager\Reference;
 
 /**
  * Event handler to override templates.
@@ -105,11 +107,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupHookManager(GenericEvent $event)
     {
-        $storageDef = new Zikula_ServiceManager_Definition('Zikula\Common\HookManager\Storage\Doctrine');
-        $smRef = new Zikula_ServiceManager_Reference('zikula.servicemanager');
-        $eventManagerDef = new Zikula_ServiceManager_Definition('Zikula\Common\EventManager\EventManager', array($smRef));
-        $hookFactoryDef = new Zikula_ServiceManager_Definition('Zikula\Common\HookManager\ServiceFactory', array($smRef, 'zikula.eventmanager'));
-        $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula\Common\HookManager\HookManager', array($storageDef, $eventManagerDef, $hookFactoryDef));
+        $storageDef = new Definition('Zikula\Common\HookManager\Storage\Doctrine');
+        $smRef = new Reference('zikula.servicemanager');
+        $eventManagerDef = new Definition('Zikula\Common\EventManager\EventManager', array($smRef));
+        $hookFactoryDef = new Definition('Zikula\Common\HookManager\ServiceFactory', array($smRef, 'zikula.eventmanager'));
+        $hookManagerDef = new Definition('Zikula\Common\HookManager\HookManager', array($storageDef, $eventManagerDef, $hookFactoryDef));
         $this->serviceManager->registerService('zikula.hookmanager', $hookManagerDef);
     }
 
@@ -122,8 +124,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function request(GenericEvent $event)
     {
-        $requestDef = new Zikula_ServiceManager_Definition('Zikula_Request_Http');
-        $requestDef->addMethod('setSession', array(new Zikula_ServiceManager_Reference('session')));
+        $requestDef = new Definition('Zikula_Request_Http');
+        $requestDef->addMethod('setSession', array(new Reference('session')));
         $this->serviceManager->registerService('request', $requestDef);
     }
 
@@ -175,10 +177,10 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupSessions(GenericEvent $event)
     {
-        $storageDef = new Zikula_ServiceManager_Definition('Zikula_Session_Storage_Legacy');
+        $storageDef = new Definition('Zikula_Session_Storage_Legacy');
         $this->serviceManager->registerService('session.storage', $storageDef);
-        $storageReference = new Zikula_ServiceManager_Reference('session.storage');
-        $session = new Zikula_ServiceManager_Definition('Zikula_Session', array($storageReference));
+        $storageReference = new Reference('session.storage');
+        $session = new Definition('Zikula_Session', array($storageReference));
         $this->serviceManager->registerService('session', $session);
     }
 
@@ -192,16 +194,16 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupCsfrProtection(GenericEvent $event)
     {
         if ($event['stage'] & Zikula\Core\Core::STAGE_MODS) {
-            $tokenStorageDef = new Zikula_ServiceManager_Definition('Zikula_Token_Storage_Session',
-                            array(new Zikula_ServiceManager_Reference('session')));
+            $tokenStorageDef = new Definition('Zikula\Core\Token\Storage\SessionStorage',
+                            array(new Reference('session')));
             $this->serviceManager->registerService('token.storage', $tokenStorageDef);
 
-            $tokenGeneratorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Generator',
-                            array(new Zikula_ServiceManager_Reference('token.storage'), System::getVar('signingkey')));
+            $tokenGeneratorDef = new Definition('Zikula\Core\Token\Generator',
+                            array(new Reference('token.storage'), System::getVar('signingkey')));
             $this->serviceManager->registerService('token.generator', $tokenGeneratorDef);
 
-            $tokenValidatorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Validate',
-                            array(new Zikula_ServiceManager_Reference('token.generator')));
+            $tokenValidatorDef = new Definition('Zikula_Token_Validate',
+                            array(new Reference('token.generator')));
             $this->serviceManager->registerService('token.validator', $tokenValidatorDef);
         }
     }
@@ -487,28 +489,28 @@ class SystemListeners extends Zikula_AbstractEventHandler
             include_once 'lib/Zikula/Framework/DebugToolbar/Panel/Log.php';
 
             // create definitions
-            $toolbar = new Zikula_ServiceManager_Definition(
+            $toolbar = new Definition(
                             'Zikula\Framework\DebugToolbar\DebugToolbar',
-                            array(new Zikula_ServiceManager_Reference('zikula.eventmanager')),
+                            array(new Reference('zikula.eventmanager')),
                             array('addPanels' => array(0 => array(
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.version'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.config'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.memory'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.rendertime'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.sql'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.view'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.exec'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.logs'))))
+                                                    new Reference('debug.toolbar.panel.version'),
+                                                    new Reference('debug.toolbar.panel.config'),
+                                                    new Reference('debug.toolbar.panel.memory'),
+                                                    new Reference('debug.toolbar.panel.rendertime'),
+                                                    new Reference('debug.toolbar.panel.sql'),
+                                                    new Reference('debug.toolbar.panel.view'),
+                                                    new Reference('debug.toolbar.panel.exec'),
+                                                    new Reference('debug.toolbar.panel.logs'))))
             );
 
-            $versionPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\Version');
-            $configPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\Config');
-            $momoryPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\Memory');
-            $rendertimePanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\RenderTime');
-            $sqlPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\SQL');
-            $viewPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\View');
-            $execPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\Exec');
-            $logsPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\Log');
+            $versionPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Version');
+            $configPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Config');
+            $momoryPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Memory');
+            $rendertimePanel = new Definition('Zikula\Framework\DebugToolbar\Panel\RenderTime');
+            $sqlPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\SQL');
+            $viewPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\View');
+            $execPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Exec');
+            $logsPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Log');
 
             // save start time (required by rendertime panel)
             $this->serviceManager->setArgument('debug.toolbar.panel.rendertime.start', microtime(true));

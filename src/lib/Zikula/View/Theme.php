@@ -13,6 +13,7 @@
  */
 
 use Zikula\Core\Event\GenericEvent;
+use \Zikula\Common\ServiceManager\ServiceManager;
 
 /**
  * Zikula_View_Theme class.
@@ -152,10 +153,10 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param string                $themeName      Theme name.
+     * @param ServiceManager $serviceManager ServiceManager.
+     * @param string         $themeName      Theme name.
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, $themeName)
+    public function __construct(ServiceManager $serviceManager, $themeName)
     {
         // store our theme information
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themeName));

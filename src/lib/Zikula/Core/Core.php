@@ -14,7 +14,7 @@
 
 namespace Zikula\Core;
 
-use Zikula_ServiceManager;
+use Zikula\Common\ServiceManager\ServiceManager;
 use Zikula\Common\EventManager\EventManager;
 use Zikula\Core\Event\GenericEvent;
 use Zikula_AbstractEventHandler;
@@ -100,7 +100,7 @@ class Core
     /**
      * ServiceManager.
      *
-     * @var Zikula_ServiceManager
+     * @var \Zikula\Common\ServiceManager\ServiceManager
      */
     protected $serviceManager;
 
@@ -151,7 +151,7 @@ class Core
     /**
      * Getter for servicemanager property.
      *
-     * @return Zikula_ServiceManager
+     * @return \Zikula\Common\ServiceManager\ServiceManager
      */
     public function getServiceManager()
     {
@@ -194,7 +194,7 @@ class Core
 
         $this->bootime = microtime(true);
 
-        $this->serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
+        $this->serviceManager = new ServiceManager('zikula.servicemanager');
         $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new EventManager($this->serviceManager));
         $this->serviceManager->attachService('zikula', $this);
 
