@@ -21,7 +21,7 @@ class System
 {
     /**
      * Internals cache.
-     * 
+     *
      * @var array
      */
     static protected $cache = array();
@@ -664,7 +664,7 @@ class System
             $customentrypoint = self::getVar('entrypoint');
             $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
             $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
-            
+
             // check if we hit baseurl, e.g. domain.com/ and if we require the language URL
             // then we should redirect to the language URL.
             if (ZLanguage::isRequiredLangParam() && self::getCurrentUrl() == self::getBaseUrl()) {
@@ -672,7 +672,7 @@ class System
                 self::redirect(self::getBaseUrl() . $uri);
                 self::shutDown();
             }
-            
+
             // check if entry point is part of the URL expectation.  If so throw error if it's not present
             // since this URL is technically invalid.
             if ($expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
@@ -681,12 +681,12 @@ class System
                 echo __('The requested URL cannot be found');
                 system::shutDown();
             }
-            
+
             if (!$expectEntrypoint && self::getCurrentUrl() == self::getBaseUrl() . $root) {
                 self::redirect(self::getHomepageUrl());
                 self::shutDown();
             }
-            
+
             if (!$expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) === 0) {
                 $protocol = System::serverGetVar('SERVER_PROTOCOL');
                 header("{$protocol} 404 Not Found");
@@ -834,7 +834,7 @@ class System
         if ($res != 0) {
             // possibly an array entry in the form a[0] or a[0][1] or a[0][1][2]
             parse_str($match[0], $data);
-            
+
             foreach ($data as $k => $v) {
                 if (is_array($v)) {
                     foreach ($v as $kk => $vv) {
@@ -915,11 +915,7 @@ class System
      */
     public static function isLegacyMode()
     {
-        if (!isset($GLOBALS['ZConfig']['System']['compat_layer'])) {
-            return false;
-        }
-
-        return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
+        return false;
     }
 
     /**
@@ -929,11 +925,7 @@ class System
      */
     public static function hasLegacyTemplates()
     {
-        if (!isset($GLOBALS['ZConfig']['System']['legacy_prefilters'])) {
-            return false;
-        }
-
-        return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
+        return false;
     }
 
     /**
