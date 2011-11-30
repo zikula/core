@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\FileSystem\Configuration;
+
 /**
  * SFTP Configuration class.
  *
@@ -21,7 +23,7 @@
  * The only purpose to this class is to provide a configuration object to be used by the
  * sftp driver.
  */
-class Zikula_FileSystem_Configuration_Sftp implements Zikula_FileSystem_ConfigurationInterface
+class SftpConfiguration implements ConfigurationInterface
 {
     /**
      * SFTP host.

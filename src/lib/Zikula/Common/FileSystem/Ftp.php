@@ -12,12 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\FileSystem;
+
 /**
  * Zikula_FileSystem_Ftp is the standard driver for FTP connections.
  *
  * @codeCoverageIgnore
  */
-class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
+class Ftp extends AbstractDriver
 {
     /**
      * The php ftp resource handle.

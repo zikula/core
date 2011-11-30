@@ -12,12 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\FileSystem;
+
 /**
  * Zikula_FileSystem_SFtp is the standard driver for SFTP connections.
  *
  * @codeCoverageIgnore
  */
-class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
+class Sftp extends AbstractDriver
 {
     /**
      * Resource.

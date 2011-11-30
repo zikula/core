@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\FileSystem;
+
 /**
  * Zikula_FileSystem_Local is the standard driver for Local/Direct connections.
  */
-class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
+class Local extends AbstractDriver
 {
     /**
      * Resource handle.

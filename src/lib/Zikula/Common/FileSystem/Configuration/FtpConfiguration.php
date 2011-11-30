@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\FileSystem\Configuration;
+
 /**
  * FTP Configuration class.
  *
@@ -21,7 +23,7 @@
  * The only purpose to this class is to provide a configuration object to be used by the
  * ftp driver.
  */
-class Zikula_FileSystem_Configuration_Ftp implements Zikula_FileSystem_ConfigurationInterface
+class FtpConfiguration implements ConfigurationInterface
 {
     /**
      * FTP host.

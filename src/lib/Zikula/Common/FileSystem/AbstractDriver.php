@@ -12,15 +12,18 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\FileSystem;
+use Zikula\Common\FileSystem\Configuration\ConfigurationInterface;
+
 /**
  * Driver Abstract.
  */
-abstract class Zikula_FileSystem_AbstractDriver
+abstract class AbstractDriver
 {
     /**
      * Configuration object.
      *
-     * @var Zikula_FileSystem_Configuration
+     * @var Configuration
      */
     protected $configuration;
 
@@ -41,27 +44,27 @@ abstract class Zikula_FileSystem_AbstractDriver
     /**
      * Construct the driver with the configuration.
      *
-     * @param Zikula_FileSystem_ConfigurationInterface $configuration The configuration to be used.
+     * @param ConfigurationInterface $configuration The configuration to be used.
      *
-     * @throws InvalidArgumentException If wrong configuration class received.
+     * @throws \InvalidArgumentException If wrong configuration class received.
      */
-    public function __construct(Zikula_FileSystem_ConfigurationInterface $configuration)
+    public function __construct(ConfigurationInterface $configuration)
     {
         // validate we get correct configuration class type.
-        $type = str_ireplace('Zikula_FileSystem_', '', get_class($this));
-        $validName = "Zikula_FileSystem_Configuration_{$type}";
+        $type = (string)preg_filter('/Zikula\\\FileSystem\\\Configuration\\\(\w+)Configuration/', '$1', get_class($this));
+        $validName = "Zikula\\FileSystem\\Configuration\\{$type}Configuration";
 
         if ($validName != get_class($configuration)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 sprintf('Invalid configuration class for %1$s.  Expected %2$s but got %3$s instead.',
                 get_class($this), $validName, get_class($configuration)));
         }
 
         $this->configuration = $configuration;
 
-        $facade = "Zikula_FileSystem_Facade_{$type}";
+        $facade = "Zikula\\FileSystem\\Facade\\{$type}\\Facade";
         $this->driver = new $facade();
-        $this->errorHandler = new Zikula_FileSystem_Error();
+        $this->errorHandler = new Error();
     }
 
     /**
