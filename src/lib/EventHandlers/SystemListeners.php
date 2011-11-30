@@ -333,9 +333,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
             return;
         }
 
-        $class = 'Zikula_ErrorHandler_Standard';
+        $class = 'Zikula\\Framework\\ErrorHandler\\Standard';
         if ($event['stage'] & Zikula\Core\Core::STAGE_AJAX) {
-            $class = 'Zikula_ErrorHandler_Ajax';
+            $class = 'Zikula\\Framework\\ErrorHandler\\Ajax';
         }
 
         $errorHandler = new $class($this->serviceManager);
