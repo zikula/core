@@ -308,4 +308,17 @@ class Zikula_FileSystem_Facade_Sftp
         //@codeCoverageIgnoreEnd
     }
 
+    /**
+     * Facade for the is_writable function.
+     *
+     * @param string   $filename Path to check
+     *
+     * @return boolean True if is writable False if not.
+     */
+    public function is_writable($filename)
+    {
+        //@codeCoverageIgnoreStart
+        return is_writable("ssh2.sftp://$resource/$remote_file");
+        //@codeCoverageIgnoreEnd
+    }
 }

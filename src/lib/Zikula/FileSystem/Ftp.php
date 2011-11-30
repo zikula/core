@@ -118,6 +118,32 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
     }
 
     /**
+     * Write the contents of a string to the remote.
+     *
+     * @param string $contents The contents to put remotely.
+     * @param string $remote   The pathname to the desired remote pathname.
+     *
+     * @return boolean|integer Number of bytes written on success, false on failure.
+     */
+    public function file_put_contents($contents, $remote)
+    {
+        $stream = fopen('data://text/plain,' . $contents,'r');
+        return $this->fput($stream, $remote);
+    }
+
+	/**
+     * Get the contents of a file from the remote.
+     *
+     * @param string $remote   The pathname to the desired remote file.
+     *
+     * @return string|boolean The string containing file contents on success false on fail.
+     */
+    public function file_get_contents($remote)
+    {
+        return stream_get_contents($this->fget($remote));
+    }
+
+    /**
      * Get a remote file and save it localy, opposite of put function.
      *
      * This method should be used with caution because it undermines the purpose of the
@@ -310,5 +336,61 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
             return false;
         }
         return true;
+    }
+
+	/**
+     * Check if a file is writable.
+     *
+     * @param string $sourcepath The path to the file to check if is writable.
+     *
+     * @return boolean True if is writable False if not.
+     */
+    public function is_writable($remote_file)
+    {
+        $this->errorHandler->start();
+
+        //remove slashes at beginning and end of dir's, beginning of file
+        $dir  = substr($this->configuration->getDir(), 0, 1)  == '/' ? substr($this->configuration->getDir(), 1) : $this->configuration->getDir();
+        $dir  = substr($dir, -1, 1) == '/' ? substr($dir, 0, -1) : $dir;
+        $remote_file = substr($remote_file, 0, 1)  == '/' ? substr($remote_file, 1) : $remote_file;
+
+        //get path info setup properly.
+        $dirname = pathinfo('/'.$dir.'/'.$remote_file);
+        $dirname = $dirname['dirname'];
+
+        //get a directory listing and check that the file in question is listed (workaround for file_exists)
+        $dirlist = $this->driver->nlist($this->_resource, $dirname);
+        if (is_array($dirlist) && in_array("/$dir/$remote_file", $dirlist))
+        {
+            //file exists, check if we can open the file for appending
+            if (!$handle = $this->driver->fopen($dir . '/' . $remote_file, 'a', $this->configuration))
+            {
+                $this->errorHandler->stop();
+                return false;
+            }
+
+            //attempt to do an empty append
+            if (!fwrite($handle,'') === FALSE)
+            {
+                $this->errorHandler->stop();
+                return false;
+            }
+            $this->errorHandler->stop();
+            return true;
+        }
+        //file not found, return false
+        $this->errorHandler->stop();
+        return false;
+    }
+
+
+	/**
+     * Determine if driver is available for use.
+     *
+     * @return boolean True if available, false if not.
+     */
+    public static function available()
+    {
+        return extension_loaded('ftp');
     }
 }

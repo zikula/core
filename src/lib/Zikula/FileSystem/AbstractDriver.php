@@ -136,6 +136,25 @@ abstract class Zikula_FileSystem_AbstractDriver
     abstract public function fput($stream, $remote);
 
     /**
+     * Interface file_put_contents function.
+     *
+     * @param string $contents The contents to put remotely.
+     * @param string $remote   The pathname to the desired remote pathname.
+     *
+     * @return boolean|integer Number of bytes written on success, false on failure.
+     */
+    abstract public function file_put_contents($contents, $remote);
+
+    /**
+     * Interface file_get_contents function.
+     *
+     * @param string $remote   The pathname to the desired remote file.
+     *
+     * @return string|boolean The string containing file contents on success false on fail.
+     */
+    abstract public function file_get_contents($remote);
+
+    /**
      * Interface chmod function.
      *
      * @param integer $perm The permission to assign to the file, unix style (example: 777 for full permission).
@@ -191,4 +210,20 @@ abstract class Zikula_FileSystem_AbstractDriver
      * @return boolean
      */
     abstract public function rm($sourcepath);
+
+    /**
+     * Check if a file is writable.
+     *
+     * @param string $sourcepath The path to the file to check if is writable.
+     *
+     * @return boolean True if is writable False if not.
+     */
+    abstract public function is_writable($remote_file);
+
+    /**
+     * Interface available function.
+     *
+     * @return boolean
+     */
+    abstract public static function available();
 }

@@ -113,7 +113,7 @@ class Zikula_FileSystem_Facade_Ftp
     public function fput($ftp_stream, $remote_file, $handle, $mode = FTP_BINARY)
     {
         //@codeCoverageIgnoreStart
-        return fput($ftp_stream, $remote_file, $handle, $mode);
+        return ftp_fput($ftp_stream, $remote_file, $handle, $mode);
         //@codeCoverageIgnoreEnd
     }
 
@@ -131,7 +131,7 @@ class Zikula_FileSystem_Facade_Ftp
     public function get($ftp_stream, $local_file, $remote_file, $mode, $resumepos = 0)
     {
         //@codeCoverageIgnoreStart
-        return fget($ftp_stream, $local_file, $remote_file, $mode, $resumepos);
+        return ftp_fget($ftp_stream, $local_file, $remote_file, $mode, $resumepos);
         //@codeCoverageIgnoreEnd
     }
 
@@ -243,4 +243,16 @@ class Zikula_FileSystem_Facade_Ftp
         return ftp_systype($ftp_stream);
         //@codeCoverageIgnoreEnd
     }
+
+
+    public function fopen($remote_file, $mode, Zikula_FileSystem_Configuration_Ftp $configuration)
+    {
+        return $handle = fopen('ftp://' .
+            $configuration->getUser() . ':' .
+            $configuration->getPass() . '@' .
+            $configuration->getHost() . ':' .
+            $configuration->getPort() . '/' .
+            $remote_file, $mode);
+    }
+
 }
