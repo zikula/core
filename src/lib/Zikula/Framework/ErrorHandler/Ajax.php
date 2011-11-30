@@ -13,10 +13,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\ErrorHandler;
+use Zikula\Framework\AbstractErrorHandler;
+
 /**
  * Ajax class.
  */
-class Zikula_ErrorHandler_Ajax extends Zikula_AbstractErrorHandler
+class Ajax extends AbstractErrorHandler
 {
     /**
      * ErrorHandler for ajax front controller.
