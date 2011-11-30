@@ -7,20 +7,14 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- * @subpackage HookManager
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 /**
- * Hook interface
+ * AbstractHook class.
  */
-interface Zikula_HookInterface extends Zikula_EventInterface
+class Zikula_AbstractHook extends Zikula\Common\HookManager\AbstractHook
 {
-    public function getId();
-    public function getCaller();
-    public function setCaller($caller);
-    public function getAreaId();
-    public function setAreaId($areaId);
 }

@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\HookManager;
+
 /**
  * StorageInterface interface.
  */
-interface Zikula_HookManager_StorageInterface
+interface StorageInterface
 {
     public function registerSubscriber($owner, $subOwner, $areaName, $areaType, $category, $eventName);
     public function unregisterSubscriberByArea($areaName);
