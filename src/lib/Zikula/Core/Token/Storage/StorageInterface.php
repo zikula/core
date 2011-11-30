@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Token\Storage;
+
 /**
  * Zikula_Token_Storage class.
  */
-interface Zikula_Token_StorageInterface
+interface StorageInterface
 {
     /**
      * Get token by ID.
@@ -25,7 +27,7 @@ interface Zikula_Token_StorageInterface
      *
      * @return string
      */
-    public function get($id);
+    function get($id);
 
     /**
      * Save token.
@@ -36,7 +38,7 @@ interface Zikula_Token_StorageInterface
      *
      * @return void
      */
-    public function save($id, $token, $timestamp);
+    function save($id, $token, $timestamp);
 
     /**
      * Delete token by ID.
@@ -45,5 +47,5 @@ interface Zikula_Token_StorageInterface
      *
      * @return void
      */
-    public function delete($id);
+    function delete($id);
 }
