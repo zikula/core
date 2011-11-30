@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\EventManager;
+namespace Zikula\Core\Event;
 use Zikula\Common\EventManager\Event;
 
 /**
