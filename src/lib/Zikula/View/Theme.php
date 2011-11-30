@@ -407,13 +407,11 @@ class Zikula_View_Theme extends Zikula_View
         $templateFile = "$relativePath/$osTemplate";
         $override = self::getTemplateOverride($templateFile);
         if ($override === false) {
-            if (!System::isLegacyMode()) {
-                if (is_readable($templateFile)) {
-                    $this->templateCache[$template] = $relativePath;
-                    return $relativePath;
-                } else {
-                    return false;
-                }
+            if (is_readable($templateFile)) {
+                $this->templateCache[$template] = $relativePath;
+                return $relativePath;
+            } else {
+                return false;
             }
         } else {
             if (is_readable($override)) {
@@ -455,20 +453,6 @@ class Zikula_View_Theme extends Zikula_View
     {
         // add theme specific plugins directories, if they exist
         $this->addPluginDir('themes/' . $this->directory . '/plugins');
-
-        if (System::isLegacyMode()) {
-            // load the usemodules configuration if exists
-            $usemod_conf = 'themes/' . $this->directory . '/templates/config/usemodules.txt';
-            // load the config file
-            if (is_readable($usemod_conf) && is_file($usemod_conf)) {
-                $additionalmodules = file($usemod_conf);
-                if (is_array($additionalmodules)) {
-                    foreach ($additionalmodules as $addmod) {
-                        $this->_add_plugins_dir(trim($addmod));
-                    }
-                }
-            }
-        }
     }
 
     /**
