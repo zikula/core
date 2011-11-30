@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common;
+
 /**
  * Class Properties.
  *
@@ -30,7 +32,7 @@
  * $foo = new Foo('data' => 'Hello world);
  * </samp>
  */
-class Zikula_ClassProperties
+class ClassProperties
 {
 
     /**
@@ -47,7 +49,7 @@ class Zikula_ClassProperties
             return;
         }
 
-        $reflection = new ReflectionObject($object);
+        $reflection = new \ReflectionObject($object);
         $className = $reflection->getName();
         $methods = $reflection->getMethods();
         $methodMap = array();
@@ -58,7 +60,7 @@ class Zikula_ClassProperties
         foreach ($properties as $k => $v) {
             $lookup = 'set'.strtolower($k);
             if (isset($methodMap[$lookup])) {
-                $reflectionMethod = new ReflectionMethod($className, $methodMap[$lookup]);
+                $reflectionMethod = new \ReflectionMethod($className, $methodMap[$lookup]);
                 $reflectionMethod->invoke($object, $v);
             }
         }
