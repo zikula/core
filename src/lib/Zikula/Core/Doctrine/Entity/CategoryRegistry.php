@@ -12,41 +12,43 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Doctrine\Entity;
+use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Category registry doctrine2 entity.
- * 
+ *
  * @ORM\Entity
  * @ORM\Table(name="categories_registry")
  */
-class Zikula_Doctrine2_Entity_CategoryRegistry {
+class CategoryRegistry {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @var integer 
+     * @var integer
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string 
+     * @var string
      */
     private $property;
-    
+
     /**
      * @ORM\Column(type="integer", name="category_id")
-     * @var integer 
+     * @var integer
      */
     private $categoryId;
 
-    public function getId() 
+    public function getId()
     {
         return $this->id;
     }
-    
-    public function setId($id) 
+
+    public function setId($id)
     {
         $this->id;
     }
@@ -55,17 +57,17 @@ class Zikula_Doctrine2_Entity_CategoryRegistry {
     {
         return $this->property;
     }
-    
+
     public function setProperty($property)
     {
         $this->property = $property;
     }
-    
+
     public function getCategoryId()
     {
         return $this->categoryId;
     }
-    
+
     public function setCategoryId($categoryId)
     {
         $this->categoryId = $categoryId;

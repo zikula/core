@@ -12,14 +12,16 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Doctrine\Entity;
+use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Base class of many-to-many assocation between any entity and Category.
- * 
+ *
  * @ORM\MappedSuperclass
  */
-abstract class Zikula_Doctrine2_Entity_EntityCategory extends Zikula_EntityAccess
+abstract class EntityCategory extends EntityAccess
 {
     /**
      * @ORM\Id
@@ -28,61 +30,61 @@ abstract class Zikula_Doctrine2_Entity_EntityCategory extends Zikula_EntityAcces
      * @var integer
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="integer", name="registryId")
-     * @var integer 
+     * @var integer
      */
     private $categoryRegistryId;
-    
+
     /**
-     * @ORM\ManyToOne(targetEntity="Zikula_Doctrine2_Entity_Category")
+     * @ORM\ManyToOne(targetEntity="Zikula\\Doctrine\\Core\\Entity\\Category")
      * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
      * @var Zikula_Doctrine2_Entity_Category
      */
     private $category;
-    
+
     public function __construct($registryId,
-                                Zikula_Doctrine2_Entity_Category $category,
+                                Category $category,
                                 $entity)
     {
         $this->categoryRegistryId = $registryId;
         $this->category = $category;
         $this->setEntity($entity);
     }
-    
+
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function setId($id)
     {
         $this->id = $id;
     }
-    
+
     public function getCategoryRegistryId()
     {
         return $this->categoryRegistryId;
     }
-    
+
     public function setCategoryRegistryId($categoryRegistryId)
     {
         $this->categoryRegistryId = $categoryRegistryId;
     }
-    
+
     public function getCategory()
     {
         return $this->category;
     }
-    
-    public function setCategory(Zikula_Doctrine2_Entity_Category $category)
+
+    public function setCategory(Category $category)
     {
         $this->category = $category;
     }
-    
+
     public abstract function getEntity();
-    
+
     public abstract function setEntity($entity);
 }
 

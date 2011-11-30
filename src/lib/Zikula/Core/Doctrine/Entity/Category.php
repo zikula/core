@@ -12,221 +12,224 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Doctrine\Entity;
+use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Category doctrine2 entity.
- * 
+ *
  * @ORM\Entity
  * @ORM\Table(name="categories_category")
  */
-class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess {
+class Zikula_Doctrine2_Entity_Category extends EntityAccess
+{
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @var integer 
+     * @var integer
      */
     private $id;
-    
+
     /**
-     * @ORM\ManyToOne(targetEntity="Zikula_Doctrine2_Entity_Category", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Zikula\\Doctrine\\Core\\Entity\\Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * @var Zikula_Doctrine2_Entity_Category 
+     * @var Zikula_Doctrine2_Entity_Category
      */
     private $parent;
-    
+
     /**
-     * @ORM\OneToMany(targetEntity="Zikula_Doctrine2_Entity_Category", mappedBy="parent")
-     * @var Zikula_Doctrine2_Entity_Category[] 
+     * @ORM\OneToMany(targetEntity="Zikula\\Doctrine\\Core\\Entity\\Category", mappedBy="parent")
+     * @var \Zikula\Core\Doctrine\Entity\Category
      */
     private $children;
-    
+
     /**
      * @ORM\Column(type="boolean", name="is_locked")
-     * @var boolean 
+     * @var boolean
      */
     private $locked;
-    
+
     /**
      * @ORM\Column(type="boolean", name="is_leaf")
-     * @var boolean 
+     * @var boolean
      */
     private $leaf;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string 
+     * @var string
      */
     private $name;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string 
+     * @var string
      */
     private $value;
-    
+
     /**
      * @ORM\Column(type="integer", name="sort_value")
-     * @var integer 
+     * @var integer
      */
     private $sortValue;
-    
+
     /**
      * @ORM\Column(type="array", name="display_name")
-     * @var array 
+     * @var array
      */
     private $displayName;
-    
+
     /**
      * @ORM\Column(type="array", name="display_desc")
-     * @var array 
+     * @var array
      */
     private $displayDesc;
-    
+
     /**
      * @ORM\Column(type="text")
-     * @var string 
+     * @var string
      */
     private $path;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string 
+     * @var string
      */
     private $ipath;
-    
+
     /**
      * @ORM\Column(type="smallint")
-     * @var integer 
+     * @var integer
      */
     private $status;
-    
-    public function getId() 
+
+    public function getId()
     {
         return $this->id;
     }
-    
-    public function setId($id) 
+
+    public function setId($id)
     {
         $this->id;
     }
-    
-    public function getParent() 
+
+    public function getParent()
     {
         return $this->parent;
     }
-    
-    public function setParent(Zikula_Doctrine2_Entity_Category $parent) 
+
+    public function setParent(Category $parent)
     {
         $this->parent = $parent;
     }
-    
-    public function getChildren() 
+
+    public function getChildren()
     {
         return $this->children;
     }
-    
-    public function setChildren($children) 
+
+    public function setChildren($children)
     {
         $this->children = $children;
     }
-    
-    public function getLocked() 
+
+    public function getLocked()
     {
         return $this->locked;
     }
-    
-    public function setLocked($locked) 
+
+    public function setLocked($locked)
     {
         $this->locked = $locked;
     }
-    
-    public function getLeaf() 
+
+    public function getLeaf()
     {
         return $this->leaf;
     }
-    
-    public function setLeaf($leaf) 
+
+    public function setLeaf($leaf)
     {
         $this->leaf = $leaf;
     }
-    
+
     public function getName()
     {
         return $this->name;
     }
-    
+
     public function setName($name)
     {
         $this->name = $name;
     }
-    
+
     public function getValue()
     {
         return $this->value;
     }
-    
+
     public function setValue($value)
     {
         $this->value = $value;
     }
-    
+
     public function getSortValue()
     {
         return $this->sortValue;
     }
-    
+
     public function setSortValue($sortValue)
     {
         $this->sortValue = $sortValue;
     }
-    
+
     public function getDisplayName()
     {
         return $this->displayName;
     }
-    
+
     public function setDisplayName($displayName)
     {
         $this->displayName = $displayName;
     }
-    
+
     public function getDisplayDesc()
     {
         return $this->displayDesc;
     }
-    
+
     public function setDisplayDesc($displayDesc)
     {
         $this->displayDesc = $displayDesc;
     }
-    
+
     public function getPath()
     {
         return $this->path;
     }
-    
+
     public function setPath($path)
     {
         $this->path = $path;
     }
-    
+
     public function getIPath()
     {
         return $this->ipath;
     }
-    
+
     public function setIPath($ipath)
     {
         $this->ipath = $ipath;
     }
-    
+
     public function getStatus()
     {
         return $this->status;
     }
-    
+
     public function setStatus($status)
     {
         $this->status = $status;
