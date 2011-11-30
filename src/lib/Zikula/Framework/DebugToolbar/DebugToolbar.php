@@ -13,6 +13,10 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\DebugToolbar;
+use Zikula\Common\EventManager;
+use Zikula_Event;
+
 /**
  * An small toolbar to help debugging zikula.
  *
@@ -22,36 +26,36 @@
  *
  * Example:
  * <code>
- * class MyPanel implements Zikula_DebugToolbar_PanelInterface
+ * class MyPanel implements PanelInterface
  * {
- *     public function getId()
+ *     function getId()
  *     {
  *         return "mypan";
  *     }
- * 
- *     public function getTitle()
+ *
+ *     function getTitle()
  *     {
  *         return "MyPan';
  *     }
  *
- *     public function getPanelTitle()
+ *     function getPanelTitle()
  *     {
  *         return 'Title of the content panel';
  *     }
  *
- *     public function getPanelContent()
+ *     function getPanelContent()
  *     {
  *         return 'HTML-Code of the content panel here';
  *     }
  *
- *     public function getPanelData()
+ *     function getPanelData()
  *     {
  *         return 'Plain panel data here';
  *     }
  * }
  * </code>
  */
-class Zikula_DebugToolbar
+class DebugToolbar
 {
     /**
      * Array of all panels. The key contains the name of the panel.
@@ -63,21 +67,21 @@ class Zikula_DebugToolbar
     /**
      * Event Manager instance.
      *
-     * @var Zikula_EventManager
+     * @var EventManager
      */
     protected $eventManager;
 
     /**
      * Sends an event via the EventManager to allow other code to extend the toolbar.
      *
-     * @param Zikula_EventManager $eventManager Core event manager.
+     * @param EventManager $eventManager Core event manager.
      */
-    public function __construct(Zikula_EventManager $eventManager)
+    function __construct(EventManager $eventManager)
     {
         $this->eventManager = $eventManager;
-        PageUtil::addVar('javascript', 'prototype');
-        PageUtil::addVar('javascript', 'javascript/debugtoolbar/main.js');
-        PageUtil::addVar('stylesheet', 'style/debugtoolbar.css');
+        \PageUtil::addVar('javascript', 'prototype');
+        \PageUtil::addVar('javascript', 'javascript/debugtoolbar/main.js');
+        \PageUtil::addVar('stylesheet', 'style/debugtoolbar.css');
 
         // allow modules and plugins to extend the toolbar
         $event = new Zikula_Event('debugtoolbar.init', $this);
@@ -89,15 +93,15 @@ class Zikula_DebugToolbar
      *
      * An panel with an already used id will be overwritten
      *
-     * @param Zikula_DebugToolbar_PanelInterface $panel Panel object.
+     * @param PanelInterface $panel Panel object.
      *
      * @return void
-     * @throws InvalidArgumentException When $panel is null.
+     * @throws \InvalidArgumentException When $panel is null.
      */
-    public function addPanel(Zikula_DebugToolbar_PanelInterface $panel)
+    function addPanel(PanelInterface $panel)
     {
         if ($panel == null) {
-            throw new InvalidArgumentException(__f('Error! in %1$s: invalid value for the %2$s parameter (%3$s).', array('Zikula_DebugToolbar::addPanel', 'panel', 'null')));
+            throw new \InvalidArgumentException(__f('Error! in %1$s: invalid value for the %2$s parameter (%3$s).', array('Zikula_DebugToolbar::addPanel', 'panel', 'null')));
         }
 
         $this->_panels[$panel->getId()] = $panel;
@@ -108,7 +112,7 @@ class Zikula_DebugToolbar
      *
      * @return void
      */
-    public function addPanels()
+    function addPanels()
     {
         foreach (func_get_args() as $panel) {
             $this->addPanel($panel);
@@ -117,10 +121,10 @@ class Zikula_DebugToolbar
 
     /**
      * Returns the HTML code for this debug toolbar.
-     * 
+     *
      * @return string
      */
-    public function getContent()
+    function getContent()
     {
         // check which output type should be returned
         $serviceManager = $this->eventManager->getServiceManager();
@@ -140,10 +144,10 @@ class Zikula_DebugToolbar
     }
     /**
      * Returns the HTML code for this debug toolbar.
-     * 
+     *
      * @return string
      */
-    public function asHTML()
+    function asHTML()
     {
         $links         = array();
         $panelContents = array();
@@ -171,7 +175,7 @@ class Zikula_DebugToolbar
         // generate final html code
         return '<div id="DebugToolbarContainer">
                     <div id="DebugToolbar">
-                        <a href="#" onclick="defaultZikulaDebugToolbar.toggleBar(); return false;"><img src="'.System::getBaseUri().'/images/logo_small.png" alt="Debug toolbar" /></a>
+                        <a href="#" onclick="defaultZikulaDebugToolbar.toggleBar(); return false;"><img src="'.\System::getBaseUri().'/images/logo_small.png" alt="Debug toolbar" /></a>
 
                         <ul id="DebugToolbarLinks">
                             '.implode(' ', $links).'
@@ -187,10 +191,10 @@ class Zikula_DebugToolbar
 
     /**
      * Returns the toolbar data in json format
-     * 
+     *
      * @return string
      */
-    public function asJSON()
+    function asJSON()
     {
         $serviceManager = $this->eventManager->getServiceManager();
         $request = $serviceManager->getService('request');
@@ -239,7 +243,7 @@ class Zikula_DebugToolbar
 
     /**
      * Parse data and prepare objects for json encode.
-     * 
+     *
      * This method loops through data and prepares php objects for json encode.
      * First each object is converted to array with additional entry:
      * '__phpClassName', which contains object name.
@@ -252,7 +256,7 @@ class Zikula_DebugToolbar
      *
      * @return mixed processed data
      */
-    public static function prepareData($data, $maxLvl = 0, $lvl = 0)
+    static function prepareData($data, $maxLvl = 0, $lvl = 0)
     {
         $return = array();
         if (is_object($data) || is_array($data)) {
@@ -265,7 +269,7 @@ class Zikula_DebugToolbar
                 $class = get_class($data);
                 $obj['__phpClassName'] = $class;
 
-                $reflectionClass = new ReflectionClass($class);
+                $reflectionClass = new \ReflectionClass($class);
                 $properties = array();
                 foreach ($reflectionClass->getProperties() as $property) {
                     $properties[$property->getName()] = $property;

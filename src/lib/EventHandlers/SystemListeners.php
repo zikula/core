@@ -481,11 +481,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
-            include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
+            include_once 'lib/Zikula/Framework/DebugToolbar/Panel/Log.php';
 
             // create definitions
             $toolbar = new Zikula_ServiceManager_Definition(
-                            'Zikula_DebugToolbar',
+                            'Zikula\Framework\DebugToolbar\DebugToolbar',
                             array(new Zikula_ServiceManager_Reference('zikula.eventmanager')),
                             array('addPanels' => array(0 => array(
                                                     new Zikula_ServiceManager_Reference('debug.toolbar.panel.version'),
@@ -498,14 +498,14 @@ class SystemListeners extends Zikula_AbstractEventHandler
                                                     new Zikula_ServiceManager_Reference('debug.toolbar.panel.logs'))))
             );
 
-            $versionPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Version');
-            $configPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Config');
-            $momoryPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Memory');
-            $rendertimePanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_RenderTime');
-            $sqlPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_SQL');
-            $viewPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_View');
-            $execPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Exec');
-            $logsPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Log');
+            $versionPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\Version');
+            $configPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\Config');
+            $momoryPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\Memory');
+            $rendertimePanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\RenderTime');
+            $sqlPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\SQL');
+            $viewPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\View');
+            $execPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\Exec');
+            $logsPanel = new Zikula_ServiceManager_Definition('Zikula\Framework\DebugToolbar\Panel\Log');
 
             // save start time (required by rendertime panel)
             $this->serviceManager->setArgument('debug.toolbar.panel.rendertime.start', microtime(true));

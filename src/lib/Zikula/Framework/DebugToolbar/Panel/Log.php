@@ -13,10 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\DebugToolbar\Panel;
+use Zikula\Framework\DebugToolbar\PanelInterface;
+use Zikula_AbstractErrorHandler;
+use Zikula_Event;
+
 /**
  * This panel displays an log console.
  */
-class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_PanelInterface
+class Log implements PanelInterface
 {
     /**
      * Contains the log entries to display.
@@ -75,7 +80,7 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_PanelInterfac
             $hasFileAndLine = isset($log['errfile']) && $log['errfile'] && isset($log['errline']) &&$log['errline'];
             $rows[] = '<tr class="DebugToolbarType'.$log['type'].'">
                            <td class="DebugToolbarLogsType">'.$this->getImageForErrorType($log['type']).' '.$this->errorTypeToString($log['type']).'</td>
-                           <td class="DebugToolbarLogsMessage">'.DataUtil::formatForDisplay($log['errstr']).'</td>
+                           <td class="DebugToolbarLogsMessage">'.\DataUtil::formatForDisplay($log['errstr']).'</td>
                            <td class="DebugToolbarLogsFile">'.($hasFileAndLine? $log['errfile'].':'.$log['errline'] : '-').'</td>
                        </tr>';
         }
@@ -139,21 +144,21 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_PanelInterfac
     {
         switch ($type) {
             case Zikula_AbstractErrorHandler::EMERG:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/exit.png" alt="" />';
+                return '<img src="'.\System::getBaseUri().'/images/icons/extrasmall/exit.png" alt="" />';
             case Zikula_AbstractErrorHandler::ALERT:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.png" alt="" />';
+                return '<img src="'.\System::getBaseUri().'/images/icons/extrasmall/error.png" alt="" />';
             case Zikula_AbstractErrorHandler::CRIT:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.png" alt="" />';
+                return '<img src="'.\System::getBaseUri().'/images/icons/extrasmall/error.png" alt="" />';
             case Zikula_AbstractErrorHandler::ERR:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/error.png" alt="" />';
+                return '<img src="'.\System::getBaseUri().'/images/icons/extrasmall/error.png" alt="" />';
             case Zikula_AbstractErrorHandler::WARN:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/redled.png" alt="" />';
+                return '<img src="'.\System::getBaseUri().'/images/icons/extrasmall/redled.png" alt="" />';
             case Zikula_AbstractErrorHandler::NOTICE:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/info.png" alt="" />';
+                return '<img src="'.\System::getBaseUri().'/images/icons/extrasmall/info.png" alt="" />';
             case Zikula_AbstractErrorHandler::INFO:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/info.png" alt="" />';
+                return '<img src="'.\System::getBaseUri().'/images/icons/extrasmall/info.png" alt="" />';
             case Zikula_AbstractErrorHandler::DEBUG:
-                return '<img src="'.System::getBaseUri().'/images/icons/extrasmall/text_block.png" alt="" />';
+                return '<img src="'.\System::getBaseUri().'/images/icons/extrasmall/text_block.png" alt="" />';
             default:
                 return __('Unknown');
         }
@@ -212,7 +217,7 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_PanelInterfac
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return array
      */
     public function getPanelData()
@@ -222,10 +227,10 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_PanelInterfac
             if (isset($v['trace'])) {
                 foreach ($v['trace'] as $kt => $vt) {
                     if (isset($vt['object'])) {
-                        // need to truncate object entry in trace items because it's generating enormous amount of data 
-                        $v['trace'][$kt]['object'] = Zikula_DebugToolbar::prepareData($vt['object'], -1);
+                        // need to truncate object entry in trace items because it's generating enormous amount of data
+                        $v['trace'][$kt]['object'] = DebugToolbar::prepareData($vt['object'], -1);
                     }
-                    $v['trace'][$kt]['args'] = Zikula_DebugToolbar::prepareData($vt['args']);
+                    $v['trace'][$kt]['args'] = DebugToolbar::prepareData($vt['args']);
                 }
             }
             $data[$k] = $v;

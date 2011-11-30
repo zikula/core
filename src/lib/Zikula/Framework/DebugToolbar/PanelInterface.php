@@ -13,26 +13,28 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\DebugToolbar;
+
 /**
  * Interface for debug toolbar panels.
  */
-interface Zikula_DebugToolbar_PanelInterface
+interface PanelInterface
 {
     /**
      * Returns the id of this panel.
-     * 
+     *
      * The id will be used to create html ids and thus allow panel acces via javascript.
-     * 
+     *
      * @return string
      */
-    public function getId();
+    function getId();
 
     /**
      * Returns the name of the link.
      *
      * @return string
      */
-    public function getTitle();
+    function getTitle();
 
     /**
      * Returns the title of this panel.
@@ -41,7 +43,7 @@ interface Zikula_DebugToolbar_PanelInterface
      *
      * @return string
      */
-    public function getPanelTitle();
+    function getPanelTitle();
 
     /**
      * Returns the HTML code of this panel.
@@ -50,12 +52,12 @@ interface Zikula_DebugToolbar_PanelInterface
      *
      * @return string
      */
-    public function getPanelContent();
+    function getPanelContent();
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return mixed
      */
-    public function getPanelData();
+    function getPanelData();
 }

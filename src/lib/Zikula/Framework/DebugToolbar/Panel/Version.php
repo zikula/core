@@ -13,10 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\DebugToolbar\Panel;
+use Zikula\Framework\DebugToolbar\PanelInterface;
+use Zikula\Core\Core;
+
 /**
- * This panel displays the current memory usage.
+ * This panel displays the zikula version.
  */
-class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_PanelInterface
+class Version implements PanelInterface
 {
     /**
      * Returns the id of this panel.
@@ -25,21 +29,17 @@ class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_PanelInter
      */
     public function getId()
     {
-        return "memory";
+        return "version";
     }
 
     /**
-     * Returns the memory usage as link name.
+     * Returns the zikula version as linke name.
      *
      * @return string
      */
     public function getTitle()
     {
-        if (function_exists('memory_get_usage')) {
-            $totalMemory = sprintf('%.1f', (memory_get_usage() / 1024));
-
-            return $totalMemory.' KB';
-        }
+        return Core::VERSION_NUM;
     }
 
     /**
@@ -49,7 +49,7 @@ class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_PanelInter
      */
     public function getPanelTitle()
     {
-        return __('Memory');
+        return null;
     }
 
     /**
@@ -64,11 +64,11 @@ class Zikula_DebugToolbar_Panel_Memory implements Zikula_DebugToolbar_PanelInter
 
     /**
      * Returns the panel data in raw format.
-     * 
-     * @return number
+     *
+     * @return string
      */
     public function getPanelData()
     {
-        return memory_get_usage();
+        return Core::VERSION_NUM;
     }
 }

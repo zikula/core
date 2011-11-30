@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\I18n;
+
 /**
  * Zikula Translate helper.
  */
-class Zikula_Translate implements Zikula_TranslatableInterface
+class Translate implements TranslatableInterface
 {
     /**
      * Translation domain.

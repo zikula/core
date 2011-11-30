@@ -13,10 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\DebugToolbar\Panel;
+use Zikula\Framework\DebugToolbar\PanelInterface;
+use Zikula_Event;
+
 /**
- * This panel displays the zikula version.
+ * This panel displays the page render time.
  */
-class Zikula_DebugToolbar_Panel_Version implements Zikula_DebugToolbar_PanelInterface
+class RenderTime implements PanelInterface
 {
     /**
      * Returns the id of this panel.
@@ -25,17 +29,17 @@ class Zikula_DebugToolbar_Panel_Version implements Zikula_DebugToolbar_PanelInte
      */
     public function getId()
     {
-        return "version";
+        return "rendertime";
     }
 
     /**
-     * Returns the zikula version as linke name.
+     * Returns the page render time as link name.
      *
      * @return string
      */
     public function getTitle()
     {
-        return Zikula_Core::VERSION_NUM;
+        return round($this->getTimeDiff()*1000, 3).' ms';
     }
 
     /**
@@ -45,7 +49,7 @@ class Zikula_DebugToolbar_Panel_Version implements Zikula_DebugToolbar_PanelInte
      */
     public function getPanelTitle()
     {
-        return null;
+        return __('Render time');
     }
 
     /**
@@ -59,12 +63,26 @@ class Zikula_DebugToolbar_Panel_Version implements Zikula_DebugToolbar_PanelInte
     }
 
     /**
+     *  Returns the page render time.
+     *
+     * @return number
+     */
+    public function getTimeDiff()
+    {
+        $start = \ServiceUtil::getManager()->getArgument('debug.toolbar.panel.rendertime.start');
+        $end =  microtime(true);
+
+        $diff = $end - $start;
+        return $diff;
+    }
+
+    /**
      * Returns the panel data in raw format.
-     * 
-     * @return string
+     *
+     * @return number
      */
     public function getPanelData()
     {
-        return Zikula_Core::VERSION_NUM;
+        return $this->getTimeDiff();
     }
 }

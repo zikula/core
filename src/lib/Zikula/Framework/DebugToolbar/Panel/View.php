@@ -13,10 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\DebugToolbar\Panel;
+use Zikula\Framework\DebugToolbar\PanelInterface;
+use Zikula_Event;
+
 /**
  * This panel displays the assigned variables of all renderd templates.
  */
-class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterface
+class View implements PanelInterface
 {
     /**
      * Contains all rendert templates with its assigned template variables.
@@ -106,12 +110,12 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterfa
             $html =  "<li><strong>" . $key . '</strong>  <span style="color:#666666;font-style:italic;">('.
                        get_class($var).')</span>: <ul>';
 
-            $cls = new ReflectionClass(get_class($var));
-            foreach ($cls->getProperties(ReflectionProperty::IS_PUBLIC) as $prop) {
+            $cls = new \ReflectionClass(get_class($var));
+            foreach ($cls->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
                 $html .= $this->outputVar($prop->getName(), $prop->getValue($var));
             }
 
-            foreach ($cls->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+            foreach ($cls->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
                 $html .= '<li><strong>' . $key . '->'.$method->getName().':</strong><ul>';
             }
 
@@ -140,8 +144,8 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterfa
             return $html;
         } else {
             return '<li><code>{$' . $key . '}</code> <span style="color:#666666;font-style:italic;">('.
-                     gettype($var).')</span>: <pre class="DebugToolbarVarDump">' . DataUtil::formatForDisplay($var) . '</pre></li>';
-        } 
+                     gettype($var).')</span>: <pre class="DebugToolbarVarDump">' . \DataUtil::formatForDisplay($var) . '</pre></li>';
+        }
     }
 
     /**
@@ -199,7 +203,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterfa
     {
         unset($vars['zikula_view']); // results in endless loop
 
-        $themeVars = array_keys(ThemeUtil::getVar());
+        $themeVars = array_keys(\ThemeUtil::getVar());
         foreach ($themeVars as $var) {
             unset($vars[$var]);
         }
@@ -229,7 +233,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterfa
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return array
      */
     public function getPanelData()
@@ -237,7 +241,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterfa
         $data = array();
         foreach ($this->_templates as $k => $v) {
             foreach ($v['vars'] as $kv => $vv) {
-                $v['vars'][$kv] = Zikula_DebugToolbar::prepareData($v['vars'][$kv]);
+                $v['vars'][$kv] = DebugToolbar::prepareData($v['vars'][$kv]);
             }
             $data[$k] = $v;
         }
