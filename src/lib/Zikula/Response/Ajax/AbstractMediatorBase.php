@@ -98,7 +98,7 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
             $core['authid'] = $this->authid;
             $core['token'] = $this->csrfToken;
         }
-        $logUtilMessages = (array)LogUtil::getStatusMessages();
+        $logUtilMessages = (array)\LogUtil::getStatusMessages();
         $core['statusmsg'] = array_merge($this->messages,$logUtilMessages);
 
         return $core;
