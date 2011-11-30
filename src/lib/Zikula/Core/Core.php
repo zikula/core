@@ -379,10 +379,6 @@ class Core
 
         // Initialise and load configuration
         if ($stage & self::STAGE_CONFIG) {
-            if (\System::isLegacyMode()) {
-                require_once 'lib/legacy/Compat.php';
-            }
-
             // error reporting
             if (!\System::isInstalling()) {
                 // this is here because it depends on the config.php loading.
