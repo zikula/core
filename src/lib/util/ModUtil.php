@@ -1040,12 +1040,6 @@ class ModUtil
             return null;
         }
 
-        // Remove from 1.4
-        if (System::isLegacyMode() && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
-            $modname = 'Extensions';
-        }
-
         $modinfo = self::getInfo(self::getIDFromName($modname));
         $path = ($modinfo['type'] == self::TYPE_SYSTEM ? 'system' : 'modules');
 
@@ -1147,7 +1141,7 @@ class ModUtil
         }
 
         // Issue not found exception for controller requests
-        if (!System::isLegacyMode() && !$api) {
+        if (!$api) {
             throw new Zikula_Exception_NotFound(__f('The requested controller action %s_Controller_%s::%s() could not be found', array($modname, $type, $func)));
         }
     }
@@ -1221,33 +1215,17 @@ class ModUtil
 
         // note - when this legacy is to be removed, change method signature $type = null to $type making it a required argument.
         if (!$type) {
-            if (System::isLegacyMode()) {
-                $type = 'user';
-                LogUtil::log('ModUtil::url() - $type is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
-            } else {
-                throw new UnexpectedValueException('ModUtil::url() - $type is a required argument, you must specify it explicitly.');
-            }
+            throw new UnexpectedValueException('ModUtil::url() - $type is a required argument, you must specify it explicitly.');
         }
 
         // note - when this legacy is to be removed, change method signature $func = null to $func making it a required argument.
         if (!$func) {
-            if (System::isLegacyMode()) {
-                $func = 'main';
-                LogUtil::log('ModUtil::url() - $func is a required argument, you must specify it explicitly.', E_USER_DEPRECATED);
-            } else {
-                throw new UnexpectedValueException('ModUtil::url() - $func is a required argument, you must specify it explicitly.');
-            }
+             throw new UnexpectedValueException('ModUtil::url() - $func is a required argument, you must specify it explicitly.');
         }
 
         // validate
         if (!System::varValidate($modname, 'mod')) {
             return null;
-        }
-
-        // Remove from 1.4
-        if (System::isLegacyMode() && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::url() or {modurl} calls with $module = "Extensions".'));
-            $modname = 'Extensions';
         }
 
         //get the module info
@@ -1486,215 +1464,6 @@ class ModUtil
         }
 
         return self::$cache['modgetname'];
-    }
-
-    /**
-     * Register a hook function.
-     *
-     * @param object $hookobject The hook object.
-     * @param string $hookaction The hook action.
-     * @param string $hookarea   The area of the hook (either 'GUI' or 'API').
-     * @param string $hookmodule Name of the hook module.
-     * @param string $hooktype   Name of the hook type.
-     * @param string $hookfunc   Name of the hook function.
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return boolean True if successful, false otherwise.
-     */
-    public static function registerHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
-    {
-        if (!System::isLegacyMode()) {
-            LogUtil::log(__f('%1$s::%2$s is not available in without legacy mode', array('ModUtil', 'registerHook')), Zikula_AbstractErrorHandler::ERR);
-            return false;
-        }
-
-        // define input, all numbers and booleans to strings
-        $hookmodule = isset($hookmodule) ? ((string)$hookmodule) : '';
-
-        // validate
-        if (!System::varValidate($hookmodule, 'mod')) {
-            return false;
-        }
-
-        if (self::isOO($hookmodule)) {
-            LogUtil::log(__('OO module types may not make use of this legacy API'), Zikula_AbstractErrorHandler::ERR);
-            return false;
-        }
-
-        // Insert hook
-        $obj = array('object' => $hookobject, 'action' => $hookaction, 'tarea' => $hookarea, 'tmodule' => $hookmodule, 'ttype' => $hooktype, 'tfunc' => $hookfunc);
-
-        return (bool)DBUtil::insertObject($obj, 'hooks', 'id');
-    }
-
-    /**
-     * Unregister a hook function.
-     *
-     * @param string $hookobject The hook object.
-     * @param string $hookaction The hook action.
-     * @param string $hookarea   The area of the hook (either 'GUI' or 'API').
-     * @param string $hookmodule Name of the hook module.
-     * @param string $hooktype   Name of the hook type.
-     * @param string $hookfunc   Name of the hook function.
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return boolean True if successful, false otherwise.
-     */
-    public static function unregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
-    {
-        // define input, all numbers and booleans to strings
-        $hookmodule = isset($hookmodule) ? ((string)$hookmodule) : '';
-
-        // validate
-        if (!System::varValidate($hookmodule, 'mod')) {
-            return false;
-        }
-
-        // Get database info
-        $tables = DBUtil::getTables();
-        $hookscolumn = $tables['hooks_column'];
-
-        // Remove hook
-        $where = "WHERE $hookscolumn[object] = '" . DataUtil::formatForStore($hookobject) . "'
-                    AND $hookscolumn[action] = '" . DataUtil::formatForStore($hookaction) . "'
-                    AND $hookscolumn[tarea] = '" . DataUtil::formatForStore($hookarea) . "'
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($hookmodule) . "'
-                    AND $hookscolumn[ttype] = '" . DataUtil::formatForStore($hooktype) . "'
-                    AND $hookscolumn[tfunc] = '" . DataUtil::formatForStore($hookfunc) . "'";
-
-        return (bool)DBUtil::deleteWhere('hooks', $where);
-    }
-
-    /**
-     * Carry out hook operations for module.
-     *
-     * @param string  $hookobject The object the hook is called for - one of 'item', 'category' or 'module'.
-     * @param string  $hookaction The action the hook is called for - one of 'new', 'create', 'modify', 'update', 'delete', 'transform', 'display', 'modifyconfig', 'updateconfig'.
-     * @param integer $hookid     The id of the object the hook is called for (module-specific).
-     * @param array   $extrainfo  Extra information for the hook, dependent on hookaction.
-     * @param boolean $implode    Implode collapses all display hooks into a single string.
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return string|array String output from GUI hooks, extrainfo array for API hooks.
-     */
-    public static function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
-    {
-        if (!System::isLegacyMode()) {
-            return null;
-        }
-
-        if (!isset(self::$cache['modulehooks'])) {
-            self::$cache['modulehooks'] = array();
-        }
-
-        if (!isset($hookaction)) {
-            return null;
-        }
-
-        if (isset($extrainfo['module']) && (self::available($extrainfo['module']) || strtolower($hookobject) == 'module' || strtolower($extrainfo['module']) == 'zikula')) {
-            $modname = $extrainfo['module'];
-        } else {
-            $modname = self::getName();
-        }
-
-        if (self::isOO($modname)) {
-            LogUtil::log(__('OO module types may not make use of this legacy API'), Zikula_AbstractErrorHandler::ERR);
-            return null;
-        }
-
-        $lModname = strtolower($modname);
-        if (!isset(self::$cache['modulehooks'][$lModname])) {
-            // Get database info
-            $tables = DBUtil::getTables();
-            $cols = $tables['hooks_column'];
-            $where = "WHERE $cols[smodule] = '" . DataUtil::formatForStore($modname) . "'";
-            $orderby = "$cols[sequence] ASC";
-            $hooks = DBUtil::selectObjectArray('hooks', $where, $orderby);
-            self::$cache['modulehooks'][$lModname] = $hooks;
-        }
-
-        $gui = false;
-        $output = array();
-
-        // Call each hook
-        foreach (self::$cache['modulehooks'][$lModname] as $modulehook) {
-            if (!isset($extrainfo['tmodule']) || (isset($extrainfo['tmodule']) && $extrainfo['tmodule'] == $modulehook['tmodule'])) {
-                if (($modulehook['action'] == $hookaction) && ($modulehook['object'] == $hookobject)) {
-                    if (isset($modulehook['tarea']) && $modulehook['tarea'] == 'GUI') {
-                        $gui = true;
-                        if (self::available($modulehook['tmodule'], $modulehook['ttype']) && self::load($modulehook['tmodule'], $modulehook['ttype'])) {
-                            $hookArgs = array('objectid' => $hookid, 'extrainfo' => $extrainfo, 'modulehook' => $modulehook);
-                            $output[$modulehook['tmodule']] = self::func($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'], $hookArgs);
-                        }
-                    } else {
-                        if (isset($modulehook['tmodule']) &&
-                                self::available($modulehook['tmodule'], $modulehook['ttype']) &&
-                                self::loadApi($modulehook['tmodule'], $modulehook['ttype'])) {
-                            $hookArgs = array('objectid' => $hookid, 'extrainfo' => $extrainfo, 'modulehook' => $modulehook);
-                            $extrainfo = self::apiFunc($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'], $hookArgs);
-                        }
-                    }
-                }
-            }
-        }
-
-        // check what type of information we need to return
-        $hookaction = strtolower($hookaction);
-        if ($gui || $hookaction == 'display' || $hookaction == 'new' || $hookaction == 'modify' || $hookaction == 'modifyconfig') {
-            if ($implode || empty($output)) {
-                $output = implode("\n", $output);
-            }
-
-            return $output;
-        }
-
-        return $extrainfo;
-    }
-
-    /**
-     * Determine if a module is hooked by another module.
-     *
-     * @param string $tmodule The target module.
-     * @param string $smodule The source module - default the current top most module.
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return boolean True if the current module is hooked by the target module, false otherwise.
-     */
-    public static function isHooked($tmodule, $smodule)
-    {
-        if (!isset(self::$cache['ishooked'])) {
-            self::$cache['ishooked'] = array();
-        }
-
-        if (isset(self::$cache['ishooked'][$tmodule][$smodule])) {
-            return self::$cache['ishooked'][$tmodule][$smodule];
-        }
-
-        // define input, all numbers and booleans to strings
-        $tmodule = isset($tmodule) ? ((string)$tmodule) : '';
-        $smodule = isset($smodule) ? ((string)$smodule) : '';
-
-        // validate
-        if (!System::varValidate($tmodule, 'mod') || !System::varValidate($smodule, 'mod')) {
-            return false;
-        }
-
-        // Get database info
-        $tables = DBUtil::getTables();
-        $hookscolumn = $tables['hooks_column'];
-
-        // Get applicable hooks
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($smodule) . "'
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($tmodule) . "'";
-
-        self::$cache['ishooked'][$tmodule][$smodule] = $numitems = DBUtil::selectObjectCount('hooks', $where);
-        self::$cache['ishooked'][$tmodule][$smodule] = ($numitems > 0);
-
-        return self::$cache['ishooked'][$tmodule][$smodule];
     }
 
     /**
