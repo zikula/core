@@ -6,6 +6,9 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once __DIR__ . '/ClassLoader.php';
 
 // Loader for all Zikula namespace
+$classLoader = new ClassLoader('Zikula', __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'legacy', '\\');
+$classLoader->register();
+
 $classLoader = new ClassLoader('Zikula', __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'lib', '_');
 $classLoader->register();
 
