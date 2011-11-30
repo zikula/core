@@ -13,13 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\EventManager;
+
 /**
- * Zikula_Event encapsulation class.
+ * Event encapsulation class.
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Zikula_Event implements Zikula_EventInterface, ArrayAccess
+class Event implements EventInterface, \ArrayAccess
 {
     /**
      * Name of the event.
@@ -59,14 +61,14 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     /**
      * Exception.
      *
-     * @var Exception
+     * @var \Exception
      */
     protected $exception;
-    
+
     /**
      * EventManager instance.
-     * 
-     * @var Zikula_EventManagerInterface
+     *
+     * @var EventManagerInterface
      */
     protected $eventManager;
 
@@ -78,16 +80,16 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      * @param array  $args    Arguments to store in the event.
      * @param mixed  $data    Convenience argument of data for optional processing.
      *
-     * @throws InvalidArgumentException When name is empty.
+     * @throws \InvalidArgumentException When name is empty.
      */
     public function __construct($name, $subject = null, array $args = array(), $data = null)
     {
         // must have a name
         if (empty($name)) {
-            throw new InvalidArgumentException('Event name cannot be empty');
+            throw new \InvalidArgumentException('Event name cannot be empty');
         }
 
-        $this->name = $name;
+        $this->setName($name);
         $this->subject = $subject;
         $this->args = $args;
         $this->data = $data;
@@ -158,7 +160,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      *
      * @param string $key Key.
      *
-     * @throws InvalidArgumentException If key is not found.
+     * @throws \InvalidArgumentException If key is not found.
      *
      * @return mixed Contents of array key.
      */
@@ -168,7 +170,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
             return $this->args[$key];
         }
 
-        throw new InvalidArgumentException(sprintf('%s not found in %s', $key, $this->name));
+        throw new \InvalidArgumentException(sprintf('%s not found in %s', $key, $this->name));
     }
 
     /**
@@ -239,14 +241,14 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     /**
      * Get exception.
      *
-     * @throws RuntimeException If no exeception was set.
+     * @throws \RuntimeException If no exeception was set.
      *
-     * @return Exception
+     * @return \RuntimeException
      */
     public function getException()
     {
         if (!$this->hasException()) {
-            throw new RuntimeException('No exception was set during this event notification.');
+            throw new \RuntimeException('No exception was set during this event notification.');
         }
         return $this->exception;
     }
@@ -258,7 +260,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      * instead you can store it here then stop() execution.
      * This can then be rethrown or handled politely.
      *
-     * @param Exception $exception Exception.
+     * @param \Exception $exception Exception.
      *
      * @return void
      */
@@ -270,29 +272,29 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     /**
      * Has exception.
      *
-     * @return Exception
+     * @return \Exception
      */
     public function hasException()
     {
         return (bool)$this->exception;
     }
-    
+
     /**
      * Sets the EventManager property.
-     * 
-     * @param Zikula_EventManagerInterface $eventManager
-     * 
+     *
+     * @param EventManagerInterface $eventManager
+     *
      * @return void
      */
-    public function setEventManager(Zikula_EventManagerInterface $eventManager)
+    public function setEventManager(EventManagerInterface $eventManager)
     {
         $this->eventManager = $eventManager;
     }
-    
+
     /**
      * Gets the EventManager.
-     * 
-     * @return Zikula_EventManager
+     *
+     * @return EventManager
      */
     public function getEventManager()
     {
@@ -304,7 +306,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      *
      * @param string $key Array key.
      *
-     * @throws InvalidArgumentException If key does not exist in $this->args.
+     * @throws \InvalidArgumentException If key does not exist in $this->args.
      *
      * @return mixed
      */
@@ -314,7 +316,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
             return $this->args[$key];
         }
 
-        throw new InvalidArgumentException(sprintf('The requested key %s does not exist', $key));
+        throw new \InvalidArgumentException(sprintf('The requested key %s does not exist', $key));
     }
 
     /**
@@ -355,5 +357,4 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     {
         return $this->hasArg($key);
     }
-
 }

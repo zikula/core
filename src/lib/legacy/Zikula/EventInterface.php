@@ -13,16 +13,9 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\EventManager;
-
 /**
  * EventInterface interface.
  */
-interface EventInterface
+interface Zikula_EventInterface extends Zikula\Common\EventManager\EventInterface
 {
-    public function getName();
-    public function getEventManager();
-    public function setEventManager(EventManagerInterface $eventManager);
-    public function stop();
-    public function isStopped();
 }

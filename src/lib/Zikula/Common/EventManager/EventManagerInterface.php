@@ -13,13 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\EventManager;
+
 /**
  * EventManagerInterface interface.
  */
-interface Zikula_EventManagerInterface
+interface EventManagerInterface
 {
     public function attach($name, $handler, $priority = 10);
     public function detach($name, $handler);
-    public function notify(Zikula_EventInterface $event);
+    public function notify(EventInterface $event);
     public function flushHandlers();
 }

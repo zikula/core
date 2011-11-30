@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\ServiceManager;
+
 /**
- * Zikula_ServiceManager_Definition configuration describes a service for ServiceManager.
+ * Definition configuration describes a service for ServiceManager.
  */
-class Zikula_ServiceManager_Definition
+class Definition
 {
     /**
      * Class name.
