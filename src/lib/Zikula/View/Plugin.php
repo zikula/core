@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use \Zikula\Common\ServiceManager\ServiceManager;
+
 /**
  * Zikula_View_Plugin for plugin system.
  */
@@ -27,12 +29,12 @@ class Zikula_View_Plugin extends Zikula_View
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param string                $module         Module name ("zikula" for system plugins).
-     * @param string                $pluginName     Plugin name.
-     * @param integer|null          $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
+     * @param ServiceManager $serviceManager ServiceManager.
+     * @param string         $module         Module name ("zikula" for system plugins).
+     * @param string         $pluginName     Plugin name.
+     * @param integer|null   $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, $module = 'zikula', $pluginName, $caching = null)
+    public function __construct(ServiceManager $serviceManager, $module = 'zikula', $pluginName, $caching = null)
     {
         parent::__construct($serviceManager, $module, $caching);
 

@@ -10,13 +10,17 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+use Zikula\Common\ServiceManager\ServiceManager;
+use Doctrine\Common\EventManager as DoctrineEventManager;
+
 class SystemPlugins_DoctrineExtensions_ExtensionsManager
 {
     private $eventManager;
     private $serviceManager;
     private $listeners;
 
-    public function __construct(\Doctrine\Common\EventManager $eventManager, Zikula_ServiceManager $serviceManager)
+    public function __construct(DoctrineEventManager $eventManager, ServiceManager $serviceManager)
     {
         $this->eventManager = $eventManager;
         $this->serviceManager = $serviceManager;
@@ -28,7 +32,7 @@ class SystemPlugins_DoctrineExtensions_ExtensionsManager
         if (isset($this->listeners[$type])) {
             return $this->listeners[$type];
         }
-        
+
         $id = 'doctrine_extensions.listener.' . $type;
         if (!$this->serviceManager->hasService($id)) {
             throw new InvalidArgumentException(sprintf('No such behaviour %s', $type));
@@ -36,9 +40,9 @@ class SystemPlugins_DoctrineExtensions_ExtensionsManager
 
         $annotationReader = $this->serviceManager->getService('doctrine.annotationreader');
         $annotationDriver = $this->serviceManager->getService('doctrine.annotationdriver');
-        
+
         $chain = $this->serviceManager->getService('doctrine.driverchain');
-        
+
         // specific behaviour required for certain drivers.
         $entityName = null;
         switch ($type) {
@@ -49,7 +53,7 @@ class SystemPlugins_DoctrineExtensions_ExtensionsManager
                 $entityName = 'Loggable\\Entity\\LogEntry';
                 break;
         }
-        
+
         if ($entityName) {
             $chain->addDriver($annotationDriver, $entityName);
         }
@@ -57,7 +61,7 @@ class SystemPlugins_DoctrineExtensions_ExtensionsManager
         $this->listeners[$type] = $this->serviceManager->getService($id);
         $this->listeners[$type]->setAnnotationReader($annotationReader);
         $this->eventManager->addEventSubscriber($this->listeners[$type]);
-                
+
         return $this->listeners[$type];
     }
 

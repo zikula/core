@@ -142,7 +142,7 @@ abstract class AbstractEventHandler
     /**
      * Get servicemanager.
      *
-     * @return Zikula_ServiceManager
+     * @return \Zikula\Common\ServiceManager\ServiceManager
      */
     public function getServiceManager()
     {

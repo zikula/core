@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use \Zikula\Common\ServiceManager\ServiceManager;
+
 /**
  * User interaction handler for Form system.
  *
@@ -146,11 +148,11 @@ class Zikula_Form_View extends Zikula_View
      *
      * Use FormUtil::newForm() instead of instantiating Zikula_Form_View directly.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param ServiceManager $serviceManager ServiceManager.
      * @param string                $module         Module name.
      * @param integer               $caching        Caching flag (not used - just for e_strict).
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, $module, $caching=null)
+    public function __construct(ServiceManager $serviceManager, $module, $caching=null)
     {
         // override behaviour of anonymous sessions
         SessionUtil::requireSession();

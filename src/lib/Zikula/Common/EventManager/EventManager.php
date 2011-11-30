@@ -33,7 +33,7 @@ class EventManager implements EventManagerInterface
     /**
      * ServiceManager object.
      *
-     * @var Zikula_ServiceManager
+     * @var \Zikula\Common\ServiceManager\ServiceManager
      */
     private $serviceManager;
 
