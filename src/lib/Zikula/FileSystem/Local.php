@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -18,7 +17,6 @@
  */
 class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
 {
-
     /**
      * Resource handle.
      *
@@ -88,6 +86,32 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
     }
 
     /**
+     * Write the contents of a string to the remote.
+     *
+     * @param string $contents The contents to put remotely.
+     * @param string $remote   The pathname to the desired remote pathname.
+     *
+     * @return boolean|integer Number of bytes written on success, false on failure.
+     */
+    public function file_put_contents($contents, $remote)
+    {
+        $stream = fopen('data://text/plain,' . $contents,'r');
+        return $this->fput($stream, $remote);
+    }
+
+	/**
+     * Get the contents of a file from the remote.
+     *
+     * @param string $remote   The pathname to the desired remote file.
+     *
+     * @return string|boolean The string containing file contents on success false on fail.
+     */
+    public function file_get_contents($remote)
+    {
+        return stream_get_contents($this->fget($remote));
+    }
+
+    /**
      * Get a local file and put it to  another local target file.
      *
      * This command is an alias for the cp() or put() function,
@@ -146,9 +170,9 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
     public function chmod($perm, $file)
     {
         $this->errorHandler->start();
-        $perm = (int) octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
+        $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
         if (($perm = $this->driver->chmod($file, $perm)) !== false) {
-            $perm = (int) decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
+            $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->errorHandler->stop();
             return $perm;
         }
@@ -252,4 +276,30 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
         return false;
     }
 
+	/**
+     * Check if a file is writable.
+     *
+     * @param string $sourcepath The path to the file to check if is writable.
+     *
+     * @return boolean True if is writable False if not.
+     */
+    public function is_writable($sourcepath) {
+        $this->errorHandler->start();
+        if ($this->driver->is_writable($sourcepath)) {
+            $this->errorHandler->stop();
+            return true;
+        }
+        $this->errorHandler->stop();
+        return false;
+    }
+
+	/**
+     * Determine if driver is available for use.
+     *
+     * @return boolean True if available, false if not.
+     */
+    public static function available()
+    {
+        return true;
+    }
 }

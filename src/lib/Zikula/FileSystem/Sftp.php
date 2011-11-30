@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -20,7 +19,6 @@
  */
 class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
 {
-
     /**
      * Resource.
      *
@@ -70,9 +68,15 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
             //connected
             if ($this->configuration->getAuthType() !== 'pass') {
                 $auth = $this->driver->authPubkey(
-                    $this->_ssh_resource, $this->configuration->getUser(), $this->configuration->getPubKey(), $this->configuration->getPrivKey(), $this->configuration->getPassphrase());
+                    $this->_ssh_resource,
+                    $this->configuration->getUser(),
+                    $this->configuration->getPubKey(),
+                    $this->configuration->getPrivKey(),
+                    $this->configuration->getPassphrase());
             } else {
-                $auth = $this->driver->authPassword($this->_ssh_resource, $this->configuration->getUser(), $this->configuration->getPass());
+                $auth = $this->driver->authPassword($this->_ssh_resource,
+                    $this->configuration->getUser(),
+                    $this->configuration->getPass());
             }
             if ($auth !== false) {
                 //logged in
@@ -140,6 +144,32 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         }
         $this->errorHandler->stop();
         return false;
+    }
+
+    /**
+     * Write the contents of a string to the remote.
+     *
+     * @param string $contents The contents to put remotely.
+     * @param string $remote   The pathname to the desired remote pathname.
+     *
+     * @return boolean|integer Number of bytes written on success, false on failure.
+     */
+    public function file_put_contents($contents, $remote)
+    {
+        $stream = fopen('data://text/plain,' . $contents,'r');
+        return $this->fput($stream, $remote);
+    }
+
+	/**
+     * Get the contents of a file from the remote.
+     *
+     * @param string $remote   The pathname to the desired remote file.
+     *
+     * @return string|boolean The string containing file contents on success false on fail.
+     */
+    public function file_get_contents($remote)
+    {
+        return stream_get_contents($this->fget($remote));
     }
 
     /**
@@ -229,9 +259,9 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         $matches = array();
         preg_match("/:::\d:::/", $resp, $matches);
         if (sizeof($matches) > 0) {
-            switch (intval(str_replace(':', '', $matches[0]))) {
+            switch (intval(str_replace(':','',$matches[0]))) {
                 case 1:
-                    $this->errorHandler->register('Chmod returned with Code 1: failure.', 0);
+                    $this->errorHandler->register('Chmod returned with Code 1: failure.',0);
                     $this->errorHandler->stop();
                     return false;
                 case 0:
@@ -273,7 +303,7 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         }
 
         //if IsDir fails that means its either not a directory or doesnt exist
-        if (!$this->driver->sftpFileExists($this->_resource, $dir)) {
+        if (!$this->driver->sftpFileExists($this->_resource,$dir)) {
             $this->errorHandler->register("$dir does not exist.", 0);
             return false;
         }
@@ -371,7 +401,7 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         $matches = array();
         preg_match("/:::\d:::/", $resp, $matches);
         if (sizeof($matches) > 0) {
-            switch (str_replace(':', '', $matches[0])) {
+            switch (str_replace(':','',$matches[0])) {
                 case 1:
                     $this->errorHandler->register('cp returned with Code 1: failure.', 0);
                     $this->errorHandler->stop();
@@ -417,4 +447,32 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         return false;
     }
 
+	/**
+     * Check if a file is writable.
+     *
+     * @param string $sourcepath The path to the file to check if is writable.
+     *
+     * @return boolean True if is writable False if not.
+     */
+    public function is_writable($sourcepath)
+    {
+        $this->errorHandler->start();
+        if ($this->driver->is_writable($sourcepath)) {
+            $this->errorHandler->stop();
+            return true;
+        }
+        $this->errorHandler->stop();
+        return false;
+    }
+
+
+	/**
+     * Determine if driver is available for use.
+     *
+     * @return boolean True if available, false if not.
+     */
+    public static function available()
+    {
+        return extension_loaded('ssh2');
+    }
 }
