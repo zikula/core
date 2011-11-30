@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Provider;
+
 /**
  * Pending content aggregate.
  */
-class Zikula_Provider_AggregateItem
+class AggregateItem
 {
     /**
      * Type of aggregate.
@@ -40,11 +42,11 @@ class Zikula_Provider_AggregateItem
     protected $number;
 
     /**
-     * Controller.
+     * Controller name.
      *
      * @var string
      */
-    protected $controller;
+    protected $controllerName;
 
     /**
      * Method.
@@ -63,19 +65,19 @@ class Zikula_Provider_AggregateItem
     /**
      * Constructor.
      *
-     * @param string  $type        Type of aggregate item.
-     * @param string  $description Description of aggregate.
-     * @param integer $number      Number of items in aggregate.
-     * @param string  $controller  Name of controller (to view action).
-     * @param string  $method      Name of method in controller (to view action).
-     * @param array   $args        Arguments for method.
+     * @param string  $type           Type of aggregate item.
+     * @param string  $description    Description of aggregate.
+     * @param integer $number         Number of items in aggregate.
+     * @param string  $controllerName Name of controller (to view action).
+     * @param string  $method         Name of method in controller (to view action).
+     * @param array   $args           Arguments for method.
      */
-    public function __construct($type, $description, $number, $controller, $method, array $args = array())
+    public function __construct($type, $description, $number, $controllerName, $method, array $args = array())
     {
         $this->type = (string)$type;
         $this->description = (string)$description;
         $this->number = (int)$number;
-        $this->controller = (string)$controller;
+        $this->controllerName = (string)$controllerName;
         $this->method = (string)$method;
         $this->args = $args;
     }
@@ -117,7 +119,7 @@ class Zikula_Provider_AggregateItem
      */
     public function getController()
     {
-        return $this->controller;
+        return $this->controllerName;
     }
 
     /**
