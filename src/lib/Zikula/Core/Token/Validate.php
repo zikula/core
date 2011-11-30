@@ -13,15 +13,19 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Token;
+use Zikula\Core\Token\Generator;
+use Zikula\Core\Token\Storage\StoragInterface;
+
 /**
  * Zikula_Token_Validate class.
  */
-class Zikula_Token_Validate
+class Validate
 {
     /**
      * Token generator.
      *
-     * @var Zikula_Token_Generator
+     * @var Generator
      */
     protected $tokenGenerator;
 
@@ -41,18 +45,18 @@ class Zikula_Token_Validate
 
     /**
      * Storage driver.
-     * 
-     * @var Zikula_Token_Storage
+     *
+     * @var StorageInterface
      */
     protected $storage;
 
     /**
      * Constructor.
      *
-     * @param Zikula_Token_Generator $tokenGenerator Token generator.
-     * @param integer                $maxlifetime    Max lifetime in seconds (default = 86400).
+     * @param Generator $tokenGenerator Token generator.
+     * @param integer   $maxlifetime    Max lifetime in seconds (default = 86400).
      */
-    public function __construct(Zikula_Token_Generator $tokenGenerator, $maxlifetime = 86400)
+    public function __construct(Generator $tokenGenerator, $maxlifetime = 86400)
     {
         $this->tokenGenerator = $tokenGenerator;
         $this->storage = $tokenGenerator->getStorage();
@@ -78,7 +82,7 @@ class Zikula_Token_Validate
         if (!$token) {
             return false;
         }
-        
+
         list($id, $hash, $timestamp) = $this->tokenGenerator->decode($token);
         $decoded = array('id' => $id, 'timestamp' => $timestamp);
 
