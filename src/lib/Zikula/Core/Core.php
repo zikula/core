@@ -12,6 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core;
+
+use Zikula_ServiceManager;
+use Zikula_EventManager;
+use Zikula_Event;
+use Zikula_AbstractEventHandler;
+
+
 // Defines for access levels
 define('ACCESS_INVALID', -1);
 define('ACCESS_NONE', 0);
@@ -32,12 +40,12 @@ mb_regex_encoding('UTF-8');
  *
  * Core class with the base methods.
  */
-class Zikula_Core
+class Core
 {
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = '1.3.1-dev';
+    const VERSION_NUM = '1.4.0-dev';
 
     /**
      * The version ID.
@@ -47,7 +55,7 @@ class Zikula_Core
     /**
      * The version sub-ID.
      */
-    const VERSION_SUB = 'vai';
+    const VERSION_SUB = 'urmila';
 
     /**
      * The minimum required PHP version for this release of core.
@@ -174,14 +182,14 @@ class Zikula_Core
     /**
      * Boot Zikula.
      *
-     * @throws LogicException If already booted.
+     * @throws \LogicException If already booted.
      *
      * @return void
      */
     public function boot()
     {
         if ($this->booted) {
-            throw new LogicException('Already booted.');
+            throw new \LogicException('Already booted.');
         }
 
         $this->bootime = microtime(true);
@@ -259,14 +267,14 @@ class Zikula_Core
 
         // only ever scan a directory once at runtime (even if Core is restarted).
         if (!isset($this->scannedDirs[$dir])) {
-            $it = FileUtil::getFiles($dir, false, false, 'php', 'f');
+            $it = \FileUtil::getFiles($dir, false, false, 'php', 'f');
 
             foreach ($it as $file) {
                 $before = get_declared_classes();
                 include realpath($file);
                 $after = get_declared_classes();
 
-                $diff = new ArrayIterator(array_diff($after, $before));
+                $diff = new \ArrayIterator(array_diff($after, $before));
                 if (count($diff) > 1) {
                     while ($diff->valid()) {
                         $className = $diff->current();
@@ -299,17 +307,17 @@ class Zikula_Core
      *
      * @param string $className The name of the class.
      *
-     * @throws LogicException If class is not instance of Zikula_AbstractEventHandler.
+     * @throws \LogicException If class is not instance of Zikula_AbstractEventHandler.
      *
      * @return void
      */
     public function attachEventHandler($className)
     {
-        $r = new ReflectionClass($className);
+        $r = new \ReflectionClass($className);
         $handler = $r->newInstance($this->eventManager);
 
         if (!$handler instanceof Zikula_AbstractEventHandler) {
-            throw new LogicException(sprintf('Class %s must be an instance of Zikula_AbstractEventHandler', $className));
+            throw new \LogicException(sprintf('Class %s must be an instance of Zikula_AbstractEventHandler', $className));
         }
 
         $handler->setup();
@@ -364,19 +372,19 @@ class Zikula_Core
         $this->stage = $this->stage | $stage;
 
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
-            ModUtil::flushCache();
-            System::flushCache();
+            \ModUtil::flushCache();
+            \System::flushCache();
             $this->eventManager->notify(new Zikula_Event('core.preinit', $this));
         }
 
         // Initialise and load configuration
         if ($stage & self::STAGE_CONFIG) {
-            if (System::isLegacyMode()) {
+            if (\System::isLegacyMode()) {
                 require_once 'lib/legacy/Compat.php';
             }
 
             // error reporting
-            if (!System::isInstalling()) {
+            if (!\System::isInstalling()) {
                 // this is here because it depends on the config.php loading.
                 $event = new Zikula_Event('setup.errorreporting', null, array('stage' => $stage));
                 $this->eventManager->notify($event);
@@ -388,20 +396,20 @@ class Zikula_Core
         }
 
         // Check that Zikula is installed before continuing
-        if (System::getVar('installed') == 0 && !System::isInstalling()) {
-            System::redirect(System::getBaseUrl().'install.php?notinstalled');
-            System::shutDown();
+        if (\System::getVar('installed') == 0 && !\System::isInstalling()) {
+            \System::redirect(\System::getBaseUrl().'install.php?notinstalled');
+            \System::shutDown();
         }
 
         if ($stage & self::STAGE_DB) {
             try {
                 $dbEvent = new Zikula_Event('core.init', $this, array('stage' => self::STAGE_DB));
                 $this->eventManager->notify($dbEvent);
-            } catch (PDOException $e) {
+            } catch (\PDOException $e) {
                 if (!System::isInstalling()) {
                     header('HTTP/1.1 503 Service Unavailable');
-                    require_once System::getSystemErrorTemplate('dbconnectionerror.tpl');
-                    System::shutDown();
+                    require_once \System::getSystemErrorTemplate('dbconnectionerror.tpl');
+                    \System::shutDown();
                 } else {
                     return false;
                 }
@@ -410,24 +418,24 @@ class Zikula_Core
 
         if ($stage & self::STAGE_TABLES) {
             // Initialise dbtables
-            ModUtil::dbInfoLoad('Extensions', 'Extensions');
-            ModUtil::initCoreVars();
-            ModUtil::dbInfoLoad('Settings', 'Settings');
-            ModUtil::dbInfoLoad('Theme', 'Theme');
-            ModUtil::dbInfoLoad('Users', 'Users');
-            ModUtil::dbInfoLoad('Groups', 'Groups');
-            ModUtil::dbInfoLoad('Permissions', 'Permissions');
-            ModUtil::dbInfoLoad('Categories', 'Categories');
+            \ModUtil::dbInfoLoad('Extensions', 'Extensions');
+            \ModUtil::initCoreVars();
+            \ModUtil::dbInfoLoad('Settings', 'Settings');
+            \ModUtil::dbInfoLoad('Theme', 'Theme');
+            \ModUtil::dbInfoLoad('Users', 'Users');
+            \ModUtil::dbInfoLoad('Groups', 'Groups');
+            \ModUtil::dbInfoLoad('Permissions', 'Permissions');
+            \ModUtil::dbInfoLoad('Categories', 'Categories');
 
-            if (!System::isInstalling()) {
-                ModUtil::registerAutoloaders();
+            if (!\System::isInstalling()) {
+                \ModUtil::registerAutoloaders();
             }
             $coreInitEvent->setArg('stage', self::STAGE_TABLES);
             $this->eventManager->notify($coreInitEvent);
         }
 
         if ($stage & self::STAGE_SESSIONS) {
-            SessionUtil::requireSession();
+            \SessionUtil::requireSession();
             $coreInitEvent->setArg('stage', self::STAGE_SESSIONS);
             $this->eventManager->notify($coreInitEvent);
         }
@@ -435,11 +443,11 @@ class Zikula_Core
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
         // start block
         if ($stage & self::STAGE_LANGS) {
-            $lang = ZLanguage::getInstance();
+            $lang = \ZLanguage::getInstance();
         }
 
         if ($stage & self::STAGE_DECODEURLS) {
-            System::queryStringDecode();
+            \System::queryStringDecode();
             $coreInitEvent->setArg('stage', self::STAGE_DECODEURLS);
             $this->eventManager->notify($coreInitEvent);
         }
@@ -453,11 +461,11 @@ class Zikula_Core
 
         if ($stage & self::STAGE_MODS) {
             // Set compression on if desired
-            if (System::getVar('UseCompression') == 1) {
+            if (\System::getVar('UseCompression') == 1) {
                 //ob_start("ob_gzhandler");
             }
 
-            ModUtil::load('SecurityCenter');
+            \ModUtil::load('SecurityCenter');
 
             $coreInitEvent->setArg('stage', self::STAGE_MODS);
             $this->eventManager->notify($coreInitEvent);
@@ -465,37 +473,37 @@ class Zikula_Core
 
         if ($stage & self::STAGE_THEME) {
             // register default page vars
-            PageUtil::registerVar('title');
-            PageUtil::setVar('title', System::getVar('defaultpagetitle'));
-            PageUtil::registerVar('keywords', true);
-            PageUtil::registerVar('stylesheet', true);
-            PageUtil::registerVar('javascript', true);
-            PageUtil::registerVar('jsgettext', true);
-            PageUtil::registerVar('body', true);
-            PageUtil::registerVar('header', true);
-            PageUtil::registerVar('footer', true);
+            \PageUtil::registerVar('title');
+            \PageUtil::setVar('title', \System::getVar('defaultpagetitle'));
+            \PageUtil::registerVar('keywords', true);
+            \PageUtil::registerVar('stylesheet', true);
+            \PageUtil::registerVar('javascript', true);
+            \PageUtil::registerVar('jsgettext', true);
+            \PageUtil::registerVar('body', true);
+            \PageUtil::registerVar('header', true);
+            \PageUtil::registerVar('footer', true);
 
-            $theme = Zikula_View_Theme::getInstance();
+            $theme = \Zikula_View_Theme::getInstance();
 
             // set some defaults
             // Metadata for SEO
-            $this->serviceManager['zikula_view.metatags']['description'] = System::getVar('defaultmetadescription');
-            $this->serviceManager['zikula_view.metatags']['keywords'] = System::getVar('metakeywords');
+            $this->serviceManager['zikula_view.metatags']['description'] = \System::getVar('defaultmetadescription');
+            $this->serviceManager['zikula_view.metatags']['keywords'] = \System::getVar('metakeywords');
 
             $coreInitEvent->setArg('stage', self::STAGE_THEME);
             $this->eventManager->notify($coreInitEvent);
         }
 
         // check the users status, if not 1 then log him out
-        if (UserUtil::isLoggedIn()) {
-            $userstatus = UserUtil::getVar('activated');
-            if ($userstatus != Users_Constant::ACTIVATED_ACTIVE) {
-                UserUtil::logout();
+        if (\UserUtil::isLoggedIn()) {
+            $userstatus = \UserUtil::getVar('activated');
+            if ($userstatus != \Users_Constant::ACTIVATED_ACTIVE) {
+                \UserUtil::logout();
                 // TODO - When getting logged out this way, the existing session is destroyed and
                 //        then a new one is created on the reentry into index.php. The message
                 //        set by the registerStatus call below gets lost.
-                LogUtil::registerStatus(__('You have been logged out.'));
-                System::redirect(ModUtil::url('Users', 'user', 'login'));
+                \LogUtil::registerStatus(__('You have been logged out.'));
+                \System::redirect(ModUtil::url('Users', 'user', 'login'));
             }
         }
 

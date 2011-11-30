@@ -13,10 +13,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\Collection;
+use ArrayObject;
+
 /**
  * Generic Collection.
  */
-class Zikula_Collection_Container implements Zikula_CollectionInterface
+class Container implements CollectionInterface
 {
     /**
      * The name of the collection.
@@ -33,7 +36,7 @@ class Zikula_Collection_Container implements Zikula_CollectionInterface
     protected $collection;
 
     /**
-     * Construct a new Zikula_Collection.
+     * Construct a new Collection.
      *
      * @param string      $name       The name of the collection.
      * @param ArrayObject $collection The collection (optional).
@@ -93,7 +96,7 @@ class Zikula_Collection_Container implements Zikula_CollectionInterface
      *
      * @param mixed $key   The index of the item for which the value should be set.
      * @param mixed $value The value of the item.
-     * 
+     *
      * @return void
      */
     public function set($key, $value)

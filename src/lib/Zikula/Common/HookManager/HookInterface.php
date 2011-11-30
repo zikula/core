@@ -22,9 +22,9 @@ use Zikula\Common\EventManager\EventInterface;
  */
 interface HookInterface extends EventInterface
 {
-    public function getId();
-    public function getCaller();
-    public function setCaller($caller);
-    public function getAreaId();
-    public function setAreaId($areaId);
+    function getId();
+    function getCaller();
+    function setCaller($caller);
+    function getAreaId();
+    function setAreaId($areaId);
 }

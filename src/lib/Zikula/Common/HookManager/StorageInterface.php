@@ -20,23 +20,23 @@ namespace Zikula\Common\HookManager;
  */
 interface StorageInterface
 {
-    public function registerSubscriber($owner, $subOwner, $areaName, $areaType, $category, $eventName);
-    public function unregisterSubscriberByArea($areaName);
-    public function registerProvider($owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId=null);
-    public function unregisterProviderByArea($areaName);
-    public function bindSubscriber($subscriberArea, $providerArea);
-    public function unbindSubscriber($subscriberArea, $providerArea);
-    public function getBindingsFor($areaName);
-    public function getSubscriberAreasByOwner($owner);
-    public function getProviderAreasByOwner($owner);
-    public function getRuntimeMetaByEventName($eventName);
-    public function getRuntimeHandlers();
-    public function getSubscribersByOwner($owner);
-    public function getSubscriberByEventName($eventName);
-    public function setBindOrder($subscriberAreaName, array $providerAreas);
-    public function getBindingBetweenAreas($subscriberArea, $providerArea);
-    public function isAllowedBindingBetweenAreas($subscriberArea, $providerArea);
-    public function getOwnerByArea($areaName);
-    public function getBindingsBetweenOwners($subscriberOwner, $providerOwner);
+    function registerSubscriber($owner, $subOwner, $areaName, $areaType, $category, $eventName);
+    function unregisterSubscriberByArea($areaName);
+    function registerProvider($owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId=null);
+    function unregisterProviderByArea($areaName);
+    function bindSubscriber($subscriberArea, $providerArea);
+    function unbindSubscriber($subscriberArea, $providerArea);
+    function getBindingsFor($areaName);
+    function getSubscriberAreasByOwner($owner);
+    function getProviderAreasByOwner($owner);
+    function getRuntimeMetaByEventName($eventName);
+    function getRuntimeHandlers();
+    function getSubscribersByOwner($owner);
+    function getSubscriberByEventName($eventName);
+    function setBindOrder($subscriberAreaName, array $providerAreas);
+    function getBindingBetweenAreas($subscriberArea, $providerArea);
+    function isAllowedBindingBetweenAreas($subscriberArea, $providerArea);
+    function getOwnerByArea($areaName);
+    function getBindingsBetweenOwners($subscriberOwner, $providerOwner);
 }
 

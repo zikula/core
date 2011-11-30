@@ -42,11 +42,11 @@ class ServiceUtil
     /**
      * Get manager instance.
      *
-     * @param Zikula_Core $core Core instance (optional).
+     * @param Zikula\Core\Core $core Core instance (optional).
      *
-     * @return Zikula_ServiceManager
+     * @return \Zikula\Common\ServiceManager\ServiceManager
      */
-    public static function getManager(Zikula_Core $core = null)
+    public static function getManager(Zikula\Core\Core $core = null)
     {
         if (self::$serviceManager) {
             return self::$serviceManager;
@@ -76,7 +76,7 @@ class ServiceUtil
      * @param string                           $id         Service ID.
      * @param Zikula_ServiceManager_Definition $definition Class definition.
      * @param boolean                          $shared     Shared service or not.
-     * 
+     *
      * @return void
      */
     public static function registerPersistentService($id, Zikula_ServiceManager_Definition $definition, $shared=true)

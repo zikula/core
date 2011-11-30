@@ -13,7 +13,9 @@
  * information regarding copyright and licensing.
  */
 
-interface Zikula_CollectionInterface extends ArrayAccess, Countable, IteratorAggregate
+namespace Zikula\Common\Collection;
+
+interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
      * Add an item to the collection without a key.
