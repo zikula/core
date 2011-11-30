@@ -14,6 +14,7 @@
  */
 
 namespace Zikula\Common\EventManager;
+use Zikula\Common\EventManager\Event;
 
 /**
  * Event encapsulation class.
