@@ -132,7 +132,7 @@ abstract class AbstractEventHandler
     /**
      * Get eventManager.
      *
-     * @return Zikula_EventManager
+     * @return \Zikula\Common\EventManager\EventManager
      */
     public function getEventManager()
     {

@@ -22,7 +22,7 @@ class EventUtil
     /**
      * Singleton instance of EventManager.
      *
-     * @var Zikula_EventManager
+     * @var \Zikula\Common\EventManager\EventManager
      */
     public static $eventManager;
 
@@ -44,7 +44,7 @@ class EventUtil
      *
      * @param Zikula\Core\Core $core Core instance.
      *
-     * @return Zikula_EventManager
+     * @return \Zikula\Common\EventManager\EventManager
      */
     static public function getManager(Zikula\Core\Core $core = null)
     {
