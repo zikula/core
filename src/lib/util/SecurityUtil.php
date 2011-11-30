@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Common\ServiceManager\ServiceManager;
+
 /**
  * SecurityUtil.
  *
@@ -63,12 +65,12 @@ class SecurityUtil
     /**
      * Generate a security token.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager (default = null).
-     * @param boolean               $forceUnique    Force a unique token regardless of system settings.
+     * @param ServiceManager $serviceManager ServiceManager (default = null).
+     * @param boolean        $forceUnique    Force a unique token regardless of system settings.
      *
      * @return string
      */
-    public static function generateCsrfToken(Zikula_ServiceManager $serviceManager = null, $forceUnique = false)
+    public static function generateCsrfToken(ServiceManager $serviceManager = null, $forceUnique = false)
     {
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();
@@ -98,11 +100,11 @@ class SecurityUtil
      * Validate a given security token.
      *
      * @param string                $token          Token to be validated.
-     * @param Zikula_ServiceManager $serviceManager ServiceManager default = null.
+     * @param ServiceManager $serviceManager ServiceManager default = null.
      *
      * @return boolean
      */
-    public static function validateCsrfToken($token, Zikula_ServiceManager $serviceManager = null)
+    public static function validateCsrfToken($token, ServiceManager $serviceManager = null)
     {
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();

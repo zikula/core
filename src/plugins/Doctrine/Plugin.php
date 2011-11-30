@@ -11,10 +11,13 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Plugin\AlwaysOnInterface;
+use Zikula\Framework\AbstractPlugin;
+
 /**
  * Doctrine plugin definition.
  */
-class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
+class SystemPlugin_Doctrine_Plugin extends AbstractPlugin implements AlwaysOnInterface
 {
     /**
      * Get plugin meta data.
@@ -88,7 +91,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
 
         if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
-            $ORMConfig->setSQLLogger(new SystemPlugin_Doctrine_ZikulaSqlLogger());
+            $ORMConfig->setSQLLogger(new \SystemPlugin_Doctrine_ZikulaSqlLogger());
         }
 
         // setup doctrine eventmanager
@@ -100,7 +103,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
             $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
             $eventManager->addEventSubscriber($mysqlSessionInit);
 
-            $mysqlStorageEvent = new SystemPlugin_Doctrine_MySqlGenerateSchemaListener($eventManager);
+            $mysqlStorageEvent = new \SystemPlugin_Doctrine_MySqlGenerateSchemaListener($eventManager);
         }
 
         // setup the doctrine entitymanager

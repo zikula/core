@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * SessionUtil
  */
@@ -181,7 +183,7 @@ class SessionUtil
      */
     public static function requireSession()
     {
-        $event = new Zikula_Event('session.require');
+        $event = new GenericEvent('session.require');
         EventUtil::getManager()->notify($event);
     }
 

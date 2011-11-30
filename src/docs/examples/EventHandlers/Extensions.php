@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Add a method to the Users module using Method not found Event Handler class.
  */
@@ -30,11 +32,11 @@ class Users_EventHandlers_Extensions extends Zikula_AbstractEventHandler
     /**
      * Event handler here.
      *
-     * @param Zikula_Event $event Event handler.
+     * @param GenericEvent $event Event handler.
      *
      * @return void
      */
-    public function handler(Zikula_Event $event)
+    public function handler(GenericEvent $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();

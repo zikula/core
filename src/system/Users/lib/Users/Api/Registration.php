@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * The system-level and database-level functions for user-initiated actions related to new account registrations.
  */
@@ -53,7 +55,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
      * string $args['pass']         If not specified in $args['reginfo']['pass'], then the password to be checked.
      * string $args['passreminder'] If not specified in $args['reginfo']['passreminder'], then the password reminder to be checked.
      * string $args['passagain']    The repeated verification password entered by the user (NOTE: this is never sent in $args['reginfo']).
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return array An array of error information organized by registration form field.
@@ -129,7 +131,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
      * numeric $args['uid']        The uid of the user to be checked; optional.
      * string  $args['email']      The e-mail address to be checked.
      * string  $args['emailagain'] The repeated e-mail address entered by the user for verification.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return array An array of error information organized by registration form field.
@@ -216,18 +218,18 @@ class Users_Api_Registration extends Zikula_AbstractApi
      * string $args['emailagain']     The e-mail address repeated for verification.
      * string $args['passagain']      The passsword repeated for verification.
      * string $args['antispamanswer'] The answer to the antispam question provided by the user.
-     * string $args['checkmode']      The "mode" that should be used when checking errors. Either 'new' or 'modify' 
+     * string $args['checkmode']      The "mode" that should be used when checking errors. Either 'new' or 'modify'
      *                                      The checks that are performed depend on whether the record being checked is
      *                                      for a new record or a record being modified.
      * bool   $args['setpass']        A flag indicating whether the password is to be set on the new
      *                                      or modified record, affecting error checking.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return array An array containing errors organized by field.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the user does not have read access.
-     * 
+     *
      * @throws Zikula_Exception_Fatal If a required parameter is missing from $args.
      */
     public function getRegistrationErrors($args)
@@ -331,7 +333,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
                 }
             }
         }
-        
+
         if (isset($reginfo['theme']) && !empty($reginfo['theme'])) {
             $themeId = ThemeUtil::getIDFromName($reginfo['theme']);
             if (!$themeId) {
@@ -365,13 +367,13 @@ class Users_Api_Registration extends Zikula_AbstractApi
      * string  $args['reginfo']['pass']         The password for the registering user.
      * string  $args['reginfo']['passreminder'] The password reminder for the registering user.
      * string  $args['reginfo']['email']        The e-mail address for the registering user.
-     * 
+     *
      * @param array $args All arguments passed to this function.
      *
      * @return array|bool If the user registration information is successfully saved (either full user record was
      *                      created or a pending registration record was created in the users table), then the array containing
      *                      the information saved is returned; false on error.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the user does not have read access.
      */
     public function registerNewUser($args)
@@ -456,14 +458,14 @@ class Users_Api_Registration extends Zikula_AbstractApi
         if (!isset($obj['__ATTRIBUTES__'])) {
             $obj['__ATTRIBUTES__'] = array();
         }
-        
+
         if (isset($obj['isverified'])) {
             $obj['__ATTRIBUTES__']['_Users_isVerified'] = $obj['isverified'];
             unset($obj['isverified']);
         } else {
             $obj['__ATTRIBUTES__']['_Users_isVerified'] = 0;
         }
-        
+
         foreach ($obj as $field => $value) {
             if (substr($field, 0, 2) == '__') {
                 continue;
@@ -491,7 +493,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
      * account record. This is so that modules that do default actions on the creation
      * of a user account do not perform those actions on a pending registration, which
      * may be deleted at any point.
-     * 
+     *
      * @param array  $reginfo                Contains the data gathered about the user for the registration record.
      * @param bool   $userNotification       Whether the user should be notified of the new registration or not; however
      *                                          if the user's password was created for him, then he will receive at
@@ -500,7 +502,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
      *                                          sent notification of the new registration.
      * @param string $passwordCreatedForUser The password that was created for the user either automatically or by an
      *                                          administrator (but not by the user himself).
-     * 
+     *
      * @return array|bool The registration info, as saved in the users table; false on error.
      *
      * @see    Users_Api_Registration#registerNewUser()
@@ -546,7 +548,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
         // Finally, save it.
         // Note that we have two objects operating here, $userObj for storage, and $reginfo with original information
         $userObj = $reginfo;
-        
+
         $userObj['activated'] = Users_Constant::ACTIVATED_PENDING_REG;
         $userObj['user_regdate'] = $nowUTCStr;
         if (!isset($reginfo['isapproved']) || !$reginfo['isapproved']) {
@@ -595,11 +597,11 @@ class Users_Api_Registration extends Zikula_AbstractApi
                 );
                 DBUtil::updateObject($userUpdateObj, 'users', '', 'uid');
             }
-            
+
             // Force the reload of the user in the cache.
             $userObj = UserUtil::getVars($userObj['uid'], true, 'uid', true);
-            
-            $createEvent = new Zikula_Event('user.registration.create', $userObj);
+
+            $createEvent = new GenericEvent('user.registration.create', $userObj);
             $this->eventManager->notify($createEvent);
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
@@ -762,7 +764,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
             // Finally, save it, but first get rid of some pseudo-properties
             $userObj = $reginfo;
-            
+
             // Remove some pseudo-properties
             if (isset($userObj['isapproved'])) {
                 unset($userObj['isapproved']);
@@ -831,7 +833,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
         if ($userObj) {
             // Set appropriate activated status. Again, use DBUtil so we don't get an update event. (Create hasn't happened yet.)
-            // Need to do this here so that it happens for both the case where $reginfo is coming in new, and the case where 
+            // Need to do this here so that it happens for both the case where $reginfo is coming in new, and the case where
             // $reginfo was already in the database.
             $userUpdateObj = array(
                 'uid'       => $userObj['uid'],
@@ -839,7 +841,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             );
             DBUtil::updateObject($userUpdateObj, 'users', '', 'uid');
             $userObj['activated'] = Users_Constant::ACTIVATED_ACTIVE;
-            
+
             // Add user to default group
             $defaultGroup = ModUtil::getVar('Groups', 'defaultgroup', false);
             if (!$defaultGroup) {
@@ -849,15 +851,15 @@ class Users_Api_Registration extends Zikula_AbstractApi
             if (!$groupAdded) {
                 $this->registerError($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
-            
+
             // Force the reload of the user in the cache.
             $userObj = UserUtil::getVars($userObj['uid'], true);
 
             // ATTENTION: This is the proper place for the item-create hook, not when a pending
             // registration is created. It is not a "real" record until now, so it wasn't really
-            // "created" until now. It is way down here so that the activated state can be properly 
+            // "created" until now. It is way down here so that the activated state can be properly
             // saved before the hook is fired.
-            $createEvent = new Zikula_Event('user.account.create', $userObj);
+            $createEvent = new GenericEvent('user.account.create', $userObj);
             $this->eventManager->notify($createEvent);
 
             $regErrors = array();
@@ -942,13 +944,13 @@ class Users_Api_Registration extends Zikula_AbstractApi
      * string  $args['email'] The e-mail address of the registration record (registration request) to return;
      *                              not allowed if the system allows an e-mail address to be registered
      *                              more than once; required if id and uname are not specified, otherwise not allowed.
-     * 
+     *
      * @param array $args All parameters passed to this function; either id, uname, or email must be specified, but
      *                      no more than one of those three, and email is not allowed if the system allows an email
      *                      address to be registered more than once.
      *
      * @return array|boolean An array containing the record, or false on error.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
@@ -1083,11 +1085,11 @@ class Users_Api_Registration extends Zikula_AbstractApi
      *                                  default is by id.
      * integer $args['starnum']  The ordinal number of the first item to return.
      * integer $args['numitems'] The number (count) of items to return.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return array|bool Array of registration requests, or false on failure.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
@@ -1178,7 +1180,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
      * -------------------------------------
      * array $args['filter'] An array of field/value combinations used to filter the results. Optional, default
      *                              is to count all records.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return integer|boolean Numer of pending applications, false on error.
@@ -1242,15 +1244,15 @@ class Users_Api_Registration extends Zikula_AbstractApi
      *
      * Parameters passed in the $args array:
      * -------------------------------------
-     * numeric $args['uid']     The uid of the registration record to remove; optional; if not set then $args['reginfo'] 
+     * numeric $args['uid']     The uid of the registration record to remove; optional; if not set then $args['reginfo']
      *                                  must be set with a valid uid.
-     * array   $args['reginfo'] An array containing a registration record with a valid uid in $args['reginfo']['uid']; 
+     * array   $args['reginfo'] An array containing a registration record with a valid uid in $args['reginfo']['uid'];
      *                                  optional; if not set, then $args['uid'] must be set.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
@@ -1275,7 +1277,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
         } else {
             $uid = $args['reginfo']['uid'];
         }
-        
+
         $deleted = false;
         $registration = UserUtil::getVars($uid, true, 'uid', true);
 
@@ -1288,11 +1290,11 @@ class Users_Api_Registration extends Zikula_AbstractApi
                     'changetype' => Users_Constant::VERIFYCHGTYPE_REGEMAIL,
                 ));
 
-                $deleteEvent = new Zikula_Event('user.registration.delete', $registration);
+                $deleteEvent = new GenericEvent('user.registration.delete', $registration);
                 $this->eventManager->notify($deleteEvent);
             }
         }
-        
+
         return $deleted;
     }
 
@@ -1324,14 +1326,14 @@ class Users_Api_Registration extends Zikula_AbstractApi
             if (is_array($staleVerifyChgRecs) && !empty($staleVerifyChgRecs)) {
                 foreach ($staleVerifyChgRecs as $verifyChg) {
                     $registration = UserUtil::getVars($verifyChg['uid'], true, 'uid', true);
-                    
+
                     DBUtil::deleteObjectByID('users', $verifyChg['uid'], 'uid');
                     ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
                         'uid'       => $verifyChg['uid'],
                         'changetype'=> Users_Constant::VERIFYCHGTYPE_REGEMAIL,
                     ));
-                    
-                    $deleteEvent = new Zikula_Event('user.registration.delete', $registration);
+
+                    $deleteEvent = new GenericEvent('user.registration.delete', $registration);
                     $this->eventManager->notify($deleteEvent);
                 }
             }
@@ -1343,18 +1345,18 @@ class Users_Api_Registration extends Zikula_AbstractApi
      *
      * Parameters passed in the $args array:
      * -------------------------------------
-     * array   $args['reginfo']      An array containing a valid registration record; optional; if not set, then $args['uid'] must 
+     * array   $args['reginfo']      An array containing a valid registration record; optional; if not set, then $args['uid'] must
      *                                      be set and point to a valid registration record.
      * numeric $args['uid']          The uid of a valid registration record; optional; if not set, then $args['reginfo'] must be set and valid.
      * boolean $args['force']        Indicates that a verification code should be sent, even if the Users module configuration is
      *                                      set not to verify e-mail addresses; optional; only has an effect if the current user is
      *                                      an administrator.
      * array   $args['rendererArgs'] Optional arguments to send to the Zikula_View instance while rendering the e-mail message.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
@@ -1471,12 +1473,12 @@ class Users_Api_Registration extends Zikula_AbstractApi
      * Parameters passed in the $args array:
      * -------------------------------------
      * numeric $args['uid'] The uid of the registration for which the code should be retrieved.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return array|bool An array containing the object from the users_verifychg table; an empty array if not found;
      *                      false on error.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
@@ -1551,7 +1553,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             'uid'       => $reginfo['uid'],
             'changetype'=> Users_Constant::VERIFYCHGTYPE_REGEMAIL,
         ));
-        
+
         $reginfo = UserUtil::getVars($reginfo['uid'], true, 'uid', true);
 
         if (!empty($reginfo['approved_by'])) {
@@ -1570,17 +1572,17 @@ class Users_Api_Registration extends Zikula_AbstractApi
      *
      * Parameters passed in the $args array:
      * -------------------------------------
-     * array   $args['reginfo'] An array of registration information containing a valid uid pointing to the registration 
+     * array   $args['reginfo'] An array of registration information containing a valid uid pointing to the registration
      *                                  record to be approved; optional; if not set, then $args['uid'] should be set.
      * numeric $args['uid']     The uid of the registration record to be set; optional, used only if $args['reginfo'] not set; if not
      *                                  set then $args['reginfo'] must be set and have a valid uid.
      * boolean $args['force']   Force the approval of the registration record; optional; only effective if the current user
      *                                  is an administrator.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the user does not have add access.
      */
     public function approve($args)
@@ -1619,7 +1621,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
 
         $reginfo['approved_date'] = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
         UserUtil::setVar('approved_date', $reginfo['approved_date'], $reginfo['uid']);
-        
+
         $reginfo = UserUtil::getVars($reginfo['uid'], true, 'uid', true);
 
         if (isset($args['force']) && $args['force']) {
@@ -1654,7 +1656,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
      * -------------------------------------
      * string  $args['regdate'] An SQL date-time containing the user's original registration date-time.
      * numeric $args['uid']     The id of the user account to activate.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success, otherwise false.

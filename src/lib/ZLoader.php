@@ -11,20 +11,13 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-// For < PHP 5.3.0
-if (!defined('E_DEPRECATED')) {
-    define('E_DEPRECATED', 8192);
-}
-if (!defined('E_USER_DEPRECATED')) {
-    define('E_USER_DEPRECATED', 16384);
-}
 
 if (!extension_loaded('xdebug')) {
     set_exception_handler('exception_handler');
 }
 
 include 'lib/i18n/ZGettextFunctions.php';
-include 'lib/Zikula/KernelClassLoader.php';
+include 'lib/Zikula/Common/KernelClassLoader.php';
 
 define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
@@ -60,8 +53,9 @@ class ZLoader
     {
         self::$map = self::map();
         spl_autoload_register(array('ZLoader', 'autoload'));
-        self::$autoloaders = new Zikula_KernelClassLoader();
+        self::$autoloaders = new Zikula\Common\KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
+        self::addAutoloader('Zikula', ZLOADER_PATH . '/legacy', '_');
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
         self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');

@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 class Extensions_Installer extends Zikula_AbstractInstaller
 {
     /**
@@ -28,11 +30,6 @@ class Extensions_Installer extends Zikula_AbstractInstaller
 
         // module_vars
         if (!DBUtil::createTable('module_vars')) {
-            return false;
-        }
-
-        // hooks
-        if (!DBUtil::createTable('hooks')) {
             return false;
         }
 
@@ -90,7 +87,7 @@ class Extensions_Installer extends Zikula_AbstractInstaller
                 $commands[] = "ALTER TABLE hook_subscriber CHANGE eventname eventname VARCHAR(100) NOT NULL";
 
                 // Load DB connection
-                $dbEvent = new Zikula_Event('doctrine.init_connection');
+                $dbEvent = new GenericEvent('doctrine.init_connection');
                 $connection = $this->eventManager->notify($dbEvent)->getData();
 
                 foreach ($commands as $sql) {

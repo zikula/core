@@ -11,6 +11,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Plugin definition class.
  */
@@ -43,11 +45,11 @@ class ModulePlugin_Users_Example_Plugin extends Zikula_AbstractPlugin implements
     /**
      * Event handler here.
      *
-     * @param Zikula_Event $event Handler.
+     * @param GenericEvent $event Handler.
      *
      * @return void
      */
-    public function addLinks(Zikula_Event $event)
+    public function addLinks(GenericEvent $event)
     {
         // check if this is for this handler
         if (!($event->getSubject() instanceof Users_Api_Admin && $event['modfunc'][1] == 'getlinks')) {
@@ -62,11 +64,11 @@ class ModulePlugin_Users_Example_Plugin extends Zikula_AbstractPlugin implements
     /**
      * Add 'anotherfunction' Event handler .
      *
-     * @param Zikula_Event $event Handler.
+     * @param GenericEvent $event Handler.
      *
      * @return void
      */
-    public function anotherfunction(Zikula_Event $event)
+    public function anotherfunction(GenericEvent $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();

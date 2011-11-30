@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * HookUtil.
  *
@@ -89,7 +91,7 @@ class HookUtil
     public static function isSubscriberSelfCapable($module)
     {
         $capabilities = ModUtil::getCapabilitiesOf($module);
-        
+
         if (isset($capabilities[self::SUBSCRIBER_CAPABLE][self::SUBSCRIBE_OWN])) {
             return $capabilities[self::SUBSCRIBER_CAPABLE][self::SUBSCRIBE_OWN];
         } else {
@@ -170,7 +172,7 @@ class HookUtil
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
         foreach ($bundles as $bundle) {
             $hookManager->unregisterSubscriberBundle($bundle);
-            $event = new Zikula_Event('installer.subscriberbundle.uninstalled', $bundle, array('areaid' => $hookManager->getAreaId($bundle->getArea())));
+            $event = new GenericEvent('installer.subscriberbundle.uninstalled', $bundle, array('areaid' => $hookManager->getAreaId($bundle->getArea())));
             EventUtil::notify($event);
         }
     }
