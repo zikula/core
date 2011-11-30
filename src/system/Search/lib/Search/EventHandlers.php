@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * EventHandlers class.
  */
@@ -20,12 +22,12 @@ class Search_EventHandlers
     /**
      * Handle module install event "installer.module.installed".
      * Receives $modinfo as $args
-     * 
-     * @param Zikula_Event $event
+     *
+     * @param GenericEvent $event
      *
      * @return void
      */
-    public static function moduleInstall(Zikula_Event $event)
+    public static function moduleInstall(GenericEvent $event)
     {
         $mod = $event['name'];
 

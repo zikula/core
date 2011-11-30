@@ -16,7 +16,7 @@ namespace Zikula\Core;
 
 use Zikula_ServiceManager;
 use Zikula_EventManager;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 use Zikula_AbstractEventHandler;
 
 
@@ -210,7 +210,7 @@ class Core
      */
     public function reboot()
     {
-        $event = new Zikula_Event('shutdown', $this);
+        $event = new GenericEvent('shutdown', $this);
         $this->eventManager->notify($event);
 
         // flush handlers
@@ -366,7 +366,7 @@ class Core
      */
     public function init($stage = self::STAGE_ALL)
     {
-        $coreInitEvent = new Zikula_Event('core.init', $this);
+        $coreInitEvent = new GenericEvent('core.init', $this);
 
         // store the load stages in a global so other API's can check whats loaded
         $this->stage = $this->stage | $stage;
@@ -374,7 +374,7 @@ class Core
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
             \ModUtil::flushCache();
             \System::flushCache();
-            $this->eventManager->notify(new Zikula_Event('core.preinit', $this));
+            $this->eventManager->notify(new GenericEvent('core.preinit', $this));
         }
 
         // Initialise and load configuration
@@ -382,7 +382,7 @@ class Core
             // error reporting
             if (!\System::isInstalling()) {
                 // this is here because it depends on the config.php loading.
-                $event = new Zikula_Event('setup.errorreporting', null, array('stage' => $stage));
+                $event = new GenericEvent('setup.errorreporting', null, array('stage' => $stage));
                 $this->eventManager->notify($event);
             }
 
@@ -399,7 +399,7 @@ class Core
 
         if ($stage & self::STAGE_DB) {
             try {
-                $dbEvent = new Zikula_Event('core.init', $this, array('stage' => self::STAGE_DB));
+                $dbEvent = new GenericEvent('core.init', $this, array('stage' => self::STAGE_DB));
                 $this->eventManager->notify($dbEvent);
             } catch (\PDOException $e) {
                 if (!System::isInstalling()) {
@@ -504,7 +504,7 @@ class Core
         }
 
         if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
-            $this->eventManager->notify(new Zikula_Event('core.postinit', $this, array('stages' => $stage)));
+            $this->eventManager->notify(new GenericEvent('core.postinit', $this, array('stages' => $stage)));
         }
     }
 }

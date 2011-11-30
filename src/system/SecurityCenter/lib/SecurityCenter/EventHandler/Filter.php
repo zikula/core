@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
 {
     /**
@@ -30,7 +32,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
      *
      * @return void
      */
-    public function idsInputFilter(Zikula_Event $event)
+    public function idsInputFilter(GenericEvent $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_MODS && System::getVar('useids') == 1) {
             // Run IDS if desired
@@ -332,7 +334,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
         return;
     }
 
-    public function outputFilter(Zikula_Event $event)
+    public function outputFilter(GenericEvent $event)
     {
         if (System::getVar('outputfilter') > 1) {
             return;

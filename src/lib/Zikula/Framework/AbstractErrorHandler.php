@@ -14,7 +14,7 @@
  */
 
 namespace Zikula\Framework;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 use Zikula\Common\ServiceManager\ServiceManager;
 use Zikula\Common\EventManager\EventManager;
 
@@ -49,7 +49,7 @@ abstract class AbstractErrorHandler
     /**
      * The log event instance.
      *
-     * @var Zikula_Event
+     * @var \Zikula\Core\Event\GenericEvent
      */
     protected $event;
 
@@ -126,7 +126,7 @@ abstract class AbstractErrorHandler
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
-        $this->event = new Zikula_Event('log', $this);
+        $this->event = new GenericEvent('log', $this);
     }
 
     /**
@@ -225,7 +225,7 @@ abstract class AbstractErrorHandler
     /**
      * Retrieve the log event instance.
      *
-     * @return Zikula_Event The log event instance.
+     * @return \Zikula\Core\Event\GenericEvent The log event instance.
      */
     public function getEvent()
     {

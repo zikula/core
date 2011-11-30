@@ -15,7 +15,7 @@
 
 namespace Zikula\Framework\DebugToolbar\Panel;
 use Zikula\Framework\DebugToolbar\PanelInterface;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 
 /**
  * This panel displays all module & moduleapi executions.
@@ -262,11 +262,11 @@ class Exec implements PanelInterface
     /**
      * Event listener for module.preexecute.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function modexecPre(Zikula_Event $event)
+    public function modexecPre(GenericEvent $event)
     {
         $modfunc = $event['modfunc'];
         if (is_array($modfunc)) {
@@ -289,11 +289,11 @@ class Exec implements PanelInterface
     /**
      * Event listener for module.postexecute.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function modexecPost(Zikula_Event $event)
+    public function modexecPost(GenericEvent $event)
     {
         if (count($this->_stack) == 0) {
             return;

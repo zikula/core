@@ -15,7 +15,7 @@
 
 namespace Zikula\Framework\DebugToolbar\Panel;
 use Zikula\Framework\DebugToolbar\PanelInterface;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 
 /**
  * This panel displays the page render time.

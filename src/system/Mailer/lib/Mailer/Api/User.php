@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 class Mailer_Api_User extends Zikula_AbstractApi
 {
     /**
@@ -50,7 +52,7 @@ class Mailer_Api_User extends Zikula_AbstractApi
     function sendmessage($args)
     {
         // Check for installed advanced Mailer module
-        $event = new Zikula_Event('module.mailer.api.sendmessage', $this, $args);
+        $event = new GenericEvent('module.mailer.api.sendmessage', $this, $args);
         $this->eventManager->notify($event);
         if ($event->isStopped()) {
             return $event->getData();

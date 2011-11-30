@@ -12,11 +12,10 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Core;
+use Zikula\Core\Event\GenericEvent;
+
 // Check PHP version
-// Please note this version check must occur here and not in the internals of Zikula
-// because of syntax changes in PHP 5.3, the version checks may never be reached since
-// PHP will just bomb out with syntax errors.  There is no translation available at
-// this point either.
 $x = explode('.', str_replace('-', '.', phpversion()));
 $phpVersion = "$x[0].$x[1].$x[2]";
 if (version_compare($phpVersion, '5.3.2', '>=') == false) {
@@ -26,12 +25,12 @@ if (version_compare($phpVersion, '5.3.2', '>=') == false) {
 include 'lib/ZLoader.php';
 ZLoader::register();
 
-$core = new Zikula\Core\Core();
+$core = new Core();
 $core->boot();
 
 // Load system configuration
-$event = new Zikula_Event('bootstrap.getconfig', $core);
+$event = new GenericEvent('bootstrap.getconfig', $core);
 $core->getEventManager()->notify($event);
 
-$event = new Zikula_Event('bootstrap.custom', $core);
+$event = new GenericEvent('bootstrap.custom', $core);
 $core->getEventManager()->notify($event);

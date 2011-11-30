@@ -15,7 +15,7 @@
 
 namespace Zikula\Framework\DebugToolbar\Panel;
 use Zikula\Framework\DebugToolbar\PanelInterface;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 
 /**
  * This panel displays all executed SQL queries.
@@ -149,11 +149,11 @@ class SQL implements PanelInterface
     /**
      * Event listener for log.sql.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function logSql(Zikula_Event $event)
+    public function logSql(GenericEvent $event)
     {
         $this->_queries[] = $event->getArgs();
     }

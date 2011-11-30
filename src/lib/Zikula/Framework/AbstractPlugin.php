@@ -14,7 +14,6 @@
  */
 
 namespace Zikula\Framework;
-use Zikula_Event;
 use Zikula\Common\ServiceManager\ServiceManager;
 use Zikula\Common\EventManager\EventManager;
 use Zikula\Common\I18n\TranslatableInterface;

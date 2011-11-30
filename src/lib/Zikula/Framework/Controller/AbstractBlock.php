@@ -15,7 +15,7 @@
 
 namespace Zikula\Framework\Controller;
 use Zikula\Framework\Exception\Forbidden;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 
 /**
  * Abstract controller for blocks.
@@ -81,7 +81,7 @@ abstract class AbstractBlock extends AbstractController
      */
     public function __call($method, $args)
     {
-        $event = new Zikula_Event('block.method_not_found', $this, array('method' => $method, 'args' => $args));
+        $event = new GenericEvent('block.method_not_found', $this, array('method' => $method, 'args' => $args));
         $this->eventManager->notify($event);
         if ($event->isStopped()) {
             return $event->getData();

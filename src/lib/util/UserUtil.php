@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * UserUtil
  */
@@ -915,7 +917,7 @@ class UserUtil
                     'authentication_method' => $authenticationMethod,
                     'uid'                   => $userObj['uid'],
                 );
-                $event = new Zikula_Event('user.login.veto', $userObj, $eventArgs);
+                $event = new GenericEvent('user.login.veto', $userObj, $eventArgs);
                 $event = EventUtil::notify($event);
 
                 if ($event->isStopped()) {
@@ -1515,7 +1517,7 @@ class UserUtil
                     'old_value' => $oldValue,
                     'new_value' => $value,
                 );
-                $updateEvent = new Zikula_Event($eventName, $updatedUserObj, $eventArgs, $eventData);
+                $updateEvent = new GenericEvent($eventName, $updatedUserObj, $eventArgs, $eventData);
                 EventUtil::notify($updateEvent);
             }
         }
@@ -1853,9 +1855,9 @@ class UserUtil
                     'old_value' => $oldValue,
                 );
                 if ($isRegistration) {
-                    $updateEvent = new Zikula_Event('user.registration.update', $updatedUserObj, $eventArgs, $eventData);
+                    $updateEvent = new GenericEvent('user.registration.update', $updatedUserObj, $eventArgs, $eventData);
                 } else {
-                    $updateEvent = new Zikula_Event('user.account.update', $updatedUserObj, $eventArgs, $eventData);
+                    $updateEvent = new GenericEvent('user.account.update', $updatedUserObj, $eventArgs, $eventData);
                 }
                 EventUtil::notify($updateEvent);
             }
@@ -1958,7 +1960,7 @@ class UserUtil
      */
     private static function _getThemeFilterEvent($themeName, $type)
     {
-        $event = new Zikula_Event('user.gettheme', null, array('type' => $type), $themeName);
+        $event = new GenericEvent('user.gettheme', null, array('type' => $type), $themeName);
         return EventUtil::notify($event)->getData();
     }
 

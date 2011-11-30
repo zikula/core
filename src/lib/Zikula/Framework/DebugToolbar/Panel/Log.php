@@ -16,7 +16,7 @@
 namespace Zikula\Framework\DebugToolbar\Panel;
 use Zikula\Framework\DebugToolbar\PanelInterface;
 use Zikula_AbstractErrorHandler;
-use Zikula_Event;
+use \Zikula\Core\Event\GenericEvent;
 
 /**
  * This panel displays an log console.
@@ -167,11 +167,11 @@ class Log implements PanelInterface
     /**
      * Event listener for module.execute_not_found.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function logExecNotFound(Zikula_Event $event)
+    public function logExecNotFound(GenericEvent $event)
     {
         $this->_log[] = array('type'    =>  Zikula_AbstractErrorHandler::EMERG,
                               'errstr' => 'Execute Function failed: Function not found '.$event['modfunc']);
@@ -180,11 +180,11 @@ class Log implements PanelInterface
     /**
      * Event listener for log.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function log(Zikula_Event $event)
+    public function log(GenericEvent $event)
     {
         $this->_log[] = $event->getArgs();
     }
@@ -192,11 +192,11 @@ class Log implements PanelInterface
     /**
      * Event listener for controller.method_not_found.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function logModControllerNotFound(Zikula_Event $event)
+    public function logModControllerNotFound(GenericEvent $event)
     {
         $this->_log[] = array('type'    => Zikula_AbstractErrorHandler::EMERG,
                               'errstr' => 'Execute Controller method failed: Method not found '.get_class($event->getSubject()).'->'.$event['method']);
@@ -205,11 +205,11 @@ class Log implements PanelInterface
     /**
      * Event listener for controller_api.method_not_found.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function logModControllerAPINotFound(Zikula_Event $event)
+    public function logModControllerAPINotFound(GenericEvent $event)
     {
         $this->_log[] = array('type'   =>  Zikula_AbstractErrorHandler::EMERG,
                               'errstr' => 'Execute Controller API method failed: Method not found '.get_class($event->getSubject()).'->'.$event['method']);

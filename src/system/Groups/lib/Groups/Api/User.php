@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Groups_Api_User class.
  */
@@ -581,7 +583,7 @@ class Groups_Api_User extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have updated a group.
-        $adduserEvent = new Zikula_Event('group.adduser', $obj);
+        $adduserEvent = new GenericEvent('group.adduser', $obj);
         $this->eventManager->notify($adduserEvent);
 
         // Let the calling process know that we have finished successfully
@@ -630,7 +632,7 @@ class Groups_Api_User extends Zikula_AbstractApi
         }
 
         // Let other modules know we have updated a group
-        $removeuserEvent = new Zikula_Event('group.removeuser', array('gid' => $args['gid'],
+        $removeuserEvent = new GenericEvent('group.removeuser', array('gid' => $args['gid'],
                         'uid' => $args['uid']));
         $this->eventManager->notify($removeuserEvent);
 
