@@ -19,6 +19,6 @@
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Zikula_Event extends Zikula\Common\EventManager\Event
+class Zikula_Event extends Zikula\Common\EventManager\GenericEvent
 {
 }
