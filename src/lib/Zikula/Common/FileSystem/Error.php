@@ -12,12 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\FileSystem;
+
 /**
- * Zikula_FileSystem_Error class deals with errors which may be thrown by drivers.
- *
- * Zikula_FileSystem_Driver class extends this class.
+ * Error class deals with errors which may be thrown by drivers.
  */
-class Zikula_FileSystem_Error
+class Error
 {
     /**
      * Error level.

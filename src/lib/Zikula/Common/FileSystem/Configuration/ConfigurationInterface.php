@@ -12,9 +12,11 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\FileSystem\Configuration;
+
 /**
  * Interface for configuration classes.
  */
-interface Zikula_FileSystem_ConfigurationInterface
+interface ConfigurationInterface
 {
 }

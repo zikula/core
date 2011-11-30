@@ -13,12 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\FileSystem\Facade;
+
 /**
  * Zikula_FileSystem_Facade_Ftp is a facade interface for FTP connections.
  *
  * Created especially to allow easy unit testing.
  */
-class Zikula_FileSystem_Facade_Ftp
+class FtpFacade
 {
     /**
      * Facade for ftp_connect.

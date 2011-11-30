@@ -13,12 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\FileSystem\Facade;
+
 /**
  * Zikula_FileSystem_Facade_sFtp is a facade interface for SFTP connections.
  *
  * Created especially to allow easy unit testing.
  */
-class Zikula_FileSystem_Facade_Sftp
+class SftpFacade
 {
     /**
      * Facade for ssh2_connect.
