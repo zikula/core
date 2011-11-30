@@ -281,11 +281,7 @@ class DBUtil
             }
 
             if ($result) {
-                if (System::isLegacyMode()) {
-                    return new Zikula_Adapter_AdodbStatement($result);
-                } else {
-                    return $result;
-                }
+                return $result;
             }
         } catch (Exception $e) {
             echo 'Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />';
