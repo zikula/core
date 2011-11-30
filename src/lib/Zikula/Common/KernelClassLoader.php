@@ -13,13 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common;
+
 /**
  * ClassLoader for PHP 5.3 namespaces and PEAR style class name mapping.
  *
  * Based on Zikula\Common\ClassLoader but is an all in one class loader
  * for use with the Zikula Kernel.
  */
-class Zikula_KernelClassLoader
+class KernelClassLoader
 {
     /**
      * Flag.
