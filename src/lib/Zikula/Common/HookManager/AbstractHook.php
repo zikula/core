@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\HookManager;
+
+use Zikula\Common\EventManager\EventManagerInterface;
+
 /**
  * AbstractHook class.
  */
-class Zikula_AbstractHook implements Zikula_HookInterface
+class AbstractHook implements HookInterface
 {
     /**
      * Name.
@@ -51,11 +55,11 @@ class Zikula_AbstractHook implements Zikula_HookInterface
      * @var boolean
      */
     protected $stopped = false;
-    
+
     /**
      * EventManager instance.
-     * 
-     * @var Zikula_EventManagerInterface
+     *
+     * @var EventManagerInterface
      */
     protected $eventManager;
 
@@ -74,7 +78,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
      *
      * @param string $caller Caller name.
      *
-     * @return Zikula_AbstractHook
+     * @return AbstractHook
      */
     public function setCaller($caller)
     {
@@ -107,7 +111,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
      *
      * @param string $areaId ID of the area.
      *
-     * @return Zikula_DisplayHook
+     * @return DisplayHook
      */
     public function setAreaId($areaId)
     {
@@ -118,7 +122,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     /**
      * Stop futher notification.
      *
-     * @return Zikula_AbstractHook
+     * @return AbstractHook
      */
     public function stop()
     {
@@ -151,30 +155,30 @@ class Zikula_AbstractHook implements Zikula_HookInterface
      *
      * @param string $name Hook event name.
      *
-     * @return Zikula_AbstractHook
+     * @return AbstractHook
      */
     public function setName($name)
     {
         $this->name = $name;
         return $this;
     }
-    
+
     /**
      * Sets the EventManager property.
-     * 
-     * @param Zikula_EventManagerInterface $eventManager
-     * 
+     *
+     * @param EventManagerInterface $eventManager
+     *
      * @return void
      */
-    public function setEventManager(Zikula_EventManagerInterface $eventManager)
+    public function setEventManager(EventManagerInterface $eventManager)
     {
         $this->eventManager = $eventManager;
     }
-    
+
     /**
      * Gets the EventManager.
-     * 
-     * @return Zikula_EventManager
+     *
+     * @return EventManager
      */
     public function getEventManager()
     {

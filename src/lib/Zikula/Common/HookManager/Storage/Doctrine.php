@@ -12,10 +12,16 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+namespace Zikula\Common\HookManager\Storage;
+use Zikula\Common\HookManager\StorageInterface;
+use Doctrine_Core;
+use Doctrine_Query;
+
 /**
  * Doctrine class.
  */
-class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageInterface
+class Doctrine implements StorageInterface
 {
     const PROVIDER = 'p';
     const SUBSCRIBER = 's';
@@ -450,5 +456,4 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         }
         return $id->getFirst()->get('id');
     }
-
 }

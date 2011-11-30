@@ -13,22 +13,28 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\HookManager;
+
+use Zikula\Common\EventManager\EventManager;
+use Zikula\Common\HookManager\HookInterface;
+
+
 /**
  * HookManager class.
  */
-class Zikula_HookManager
+class HookManager
 {
     /**
      * Storage.
      *
-     * @var Zikula_HookManager_StorageInterface
+     * @var StorageInterface
      */
     private $storage;
 
     /**
      * Event Manager.
      *
-     * @var Zikula_EventManager
+     * @var EventManager
      */
     private $eventManager;
 
@@ -42,18 +48,18 @@ class Zikula_HookManager
     /**
      * Service Factory.
      *
-     * @var Zikula_HookManager_ServiceFactory
+     * @var ServiceFactory
      */
     private $factory;
 
     /**
      * Constructor.
      *
-     * @param Zikula_HookManager_StorageInterface $storage
-     * @param Zikula_EventManager                 $eventManager
-     * @param Zikula_HookManager_ServiceFactory   $factory
+     * @param StorageInterface $storage
+     * @param EventManager     $eventManager
+     * @param ServiceFactory   $factory
      */
-    public function __construct(Zikula_HookManager_StorageInterface $storage, Zikula_EventManager $eventManager, Zikula_HookManager_ServiceFactory $factory)
+    public function __construct(StorageInterface $storage, EventManager $eventManager, ServiceFactory $factory)
     {
         $this->storage = $storage;
         $this->eventManager = $eventManager;
@@ -63,7 +69,7 @@ class Zikula_HookManager
     /**
      * Get storage driver.
      *
-     * @return Zikula_HookManager_StorageInterface
+     * @return StorageInterface
      */
     public function getStorage()
     {
@@ -73,11 +79,11 @@ class Zikula_HookManager
     /**
      * Notify hook handlers.
      *
-     * @param Zikula_HookInterface $hook Hook instance.
+     * @param HookInterface $hook Hook instance.
      *
      * @return Zikula_HookInterface
      */
-    public function notify(Zikula_HookInterface $hook)
+    public function notify(HookInterface $hook)
     {
         if (!$this->loaded) {
             // lazy load handlers for the first time
@@ -97,9 +103,9 @@ class Zikula_HookManager
     /**
      * Register a subscriber bundle with persistence.
      *
-     * @param Zikula_HookManager_SubscriberBundle $bundle
+     * @param SubscriberBundle $bundle
      */
-    public function registerSubscriberBundle(Zikula_HookManager_SubscriberBundle $bundle)
+    public function registerSubscriberBundle(SubscriberBundle $bundle)
     {
         foreach ($bundle->getEvents() as $areaType => $eventName) {
             $this->storage->registerSubscriber($bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $areaType, $bundle->getCategory(), $eventName);
@@ -110,9 +116,9 @@ class Zikula_HookManager
     /**
      * Unregister a subscriber bundle from persistence.
      *
-     * @param Zikula_HookManager_SubscriberBundle $bundle
+     * @param SubscriberBundle $bundle
      */
-    public function unregisterSubscriberBundle(Zikula_HookManager_SubscriberBundle $bundle)
+    public function unregisterSubscriberBundle(SubscriberBundle $bundle)
     {
         $this->storage->unregisterSubscriberByArea($bundle->getArea());
         $this->reload();
@@ -121,9 +127,9 @@ class Zikula_HookManager
     /**
      * Register provider bundle with persistence.
      *
-     * @param Zikula_HookManager_ProviderBundle $bundle
+     * @param ProviderBundle $bundle
      */
-    public function registerProviderBundle(Zikula_HookManager_ProviderBundle $bundle)
+    public function registerProviderBundle(ProviderBundle $bundle)
     {
         foreach ($bundle->getHooks() as $hook) {
             $this->storage->registerProvider($bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $hook['hooktype'], $bundle->getCategory(), $hook['classname'], $hook['method'], $hook['serviceid']);
@@ -134,9 +140,9 @@ class Zikula_HookManager
     /**
      * Unregister a provider bundle with persistence.
      *
-     * @param Zikula_HookManager_ProviderBundle $bundle
+     * @param ProviderBundle $bundle
      */
-    public function unregisterProviderBundle(Zikula_HookManager_ProviderBundle $bundle)
+    public function unregisterProviderBundle(ProviderBundle $bundle)
     {
         $this->storage->unregisterProviderByArea($bundle->getArea());
         $this->reload();
@@ -299,8 +305,8 @@ class Zikula_HookManager
 
             try {
                 $this->eventManager->attach($handler['eventname'], $callable);
-            } catch (InvalidArgumentException $e) {
-                throw new Zikula_HookManager_Exception_RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+            } catch (\InvalidArgumentException $e) {
+                throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
             }
         }
         return $this;

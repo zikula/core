@@ -12,9 +12,12 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+namespace Zikula\Common\HookManager\Exception;
+
 /**
- * RuntimeException.
+ * InvalidArgumentException.
  */
-class Zikula_HookManager_Exception_RuntimeException extends RuntimeException
+class InvalidArgumentException extends \InvalidArgumentException
 {
 }

@@ -12,10 +12,17 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Common\HookManager;
+
+use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Common\ServiceManager\Definition;
+use Zikula\Common\ServiceManager\Reference;
+use Zikula\Common\EventManager\ServiceHandler;
+
 /**
  * Factory for hook handler services.
  */
-class Zikula_HookManager_ServiceFactory
+class ServiceFactory
 {
     /**
      * Id a service.
@@ -27,21 +34,21 @@ class Zikula_HookManager_ServiceFactory
     /**
      * ServiceManager.
      *
-     * @var Zikula_ServiceManager
+     * @var ServiceManager
      */
     private $serviceManager;
 
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param string                $serviceId      ID of service to inject.
+     * @param ServiceManager $serviceManager ServiceManager.
+     * @param string         $serviceId      ID of service to inject.
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, $serviceId)
+    public function __construct(ServiceManager $serviceManager, $serviceId)
     {
         $this->serviceManager = $serviceManager;
         if (!$serviceManager->hasService($serviceId)) {
-            throw new Zikula_HookManager_Exception_InvalidArgumentException(sprintf('Service %s is not registered in ServiceManager', $serviceId));
+            throw new Exception\InvalidArgumentException(sprintf('Service %s is not registered in ServiceManager', $serviceId));
         }
         $this->serviceId = $serviceId;
     }
@@ -56,16 +63,16 @@ class Zikula_HookManager_ServiceFactory
      * @param string $className
      * @param string $method
      *
-     * @return Zikula_ServiceHandler
+     * @return ServiceHandler
      */
     public function buildService($id, $className, $method)
     {
         if (!$this->serviceManager->hasService($id)) {
-            $definition = new Zikula_ServiceManager_Definition($className, array(new Zikula_ServiceManager_Reference($this->serviceId)));
+            $definition = new Definition($className, array(new Reference($this->serviceId)));
             $this->serviceManager->registerService($id, $definition);
         }
 
-        return new Zikula_ServiceHandler($id, $method);
+        return new ServiceHandler($id, $method);
     }
 
 }
