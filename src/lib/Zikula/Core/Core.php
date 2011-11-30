@@ -15,8 +15,8 @@
 namespace Zikula\Core;
 
 use Zikula_ServiceManager;
-use Zikula_EventManager;
-use \Zikula\Core\Event\GenericEvent;
+use Zikula\Common\EventManager\EventManager;
+use Zikula\Core\Event\GenericEvent;
 use Zikula_AbstractEventHandler;
 
 
@@ -107,7 +107,7 @@ class Core
     /**
      * EventManager.
      *
-     * @var Zikula_EventManager
+     * @var \Zikula\Common\EventManager\EventManager
      */
     protected $eventManager;
 
@@ -195,7 +195,7 @@ class Core
         $this->bootime = microtime(true);
 
         $this->serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
-        $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new Zikula_EventManager($this->serviceManager));
+        $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new EventManager($this->serviceManager));
         $this->serviceManager->attachService('zikula', $this);
 
         $this->attachHandlers($this->handlerDir);

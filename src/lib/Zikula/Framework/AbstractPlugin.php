@@ -41,7 +41,7 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
     /**
      * EventManager.
      *
-     * @var Zikula_EventManager
+     * @var \Zikula\Common\EventManager\EventManager
      */
     protected $eventManager;
 
