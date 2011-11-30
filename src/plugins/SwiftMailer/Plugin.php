@@ -11,10 +11,17 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Common\ServiceManager\Definition;
+use Zikula\Common\ServiceManager\Argument;
+use Zikula\Common\ServiceManager\Reference;
+use Zikula\Framework\Plugin\ConfigurableInterface;
+use Zikula\Framework\Plugin\AlwaysOnInterface;
+use Zikula\Framework\AbstractPlugin;
+
 /**
  * SwiftMailer plugin definition.
  */
-class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_ConfigurableInterface, Zikula_Plugin_AlwaysOnInterface
+class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements ConfigurableInterface, AlwaysOnInterface
 {
     /**
      * Get plugin meta data.
@@ -45,7 +52,7 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
         define('SWIFT_INIT_LOADED', true);
 
         // register namespace
-        ZLoader::addAutoloader('Swift', dirname(__FILE__) . '/lib/vendor/SwiftMailer/classes');
+        \ZLoader::addAutoloader('Swift', dirname(__FILE__) . '/lib/vendor/SwiftMailer/classes');
 
         // initialize Swift
         //require_once realpath($this->baseDir . '/lib/vendor/SwiftMailer/swift_init.php'); // dont use this as it fails in virtual hosting environments with open_basedir restrictions
@@ -59,7 +66,7 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
 
         $this->serviceManager['swiftmailer.preferences.sendmethod'] = $config['sendmethod'];
 
-        $preferences = Swift_Preferences::getInstance();
+        $preferences = \Swift_Preferences::getInstance();
         $this->serviceManager['swiftmailer.preferences.charset'] = $config['charset'];
         $this->serviceManager['swiftmailer.preferences.cachetype'] = $config['cachetype'];
         $this->serviceManager['swiftmailer.preferences.tempdir'] = $config['tempdir'];
@@ -73,36 +80,36 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
         switch ($type) {
             case 'mail':
                 $this->serviceManager['swiftmailer.transport.mail.extraparams'] = $args['extraparams'];
-                $definition = new Zikula_ServiceManager_Definition('Swift_MailTransport', array(new Zikula_ServiceManager_Argument('swiftmailer.transport.mail.extraparams')));
+                $definition = new Definition('Swift_MailTransport', array(new Argument('swiftmailer.transport.mail.extraparams')));
                 break;
 
             case 'smtp':
                 $this->serviceManager['swiftmailer.transport.smtp.host'] = $args['host'];
                 $this->serviceManager['swiftmailer.transport.smtp.port'] = $args['port'];
-                $definition = new Zikula_ServiceManager_Definition('Swift_SmtpTransport', array(
-                                new Zikula_ServiceManager_Argument('swiftmailer.transport.smtp.host'),
-                                new Zikula_ServiceManager_Argument('swiftmailer.transport.smtp.port')));
+                $definition = new Definition('Swift_SmtpTransport', array(
+                                new Argument('swiftmailer.transport.smtp.host'),
+                                new Argument('swiftmailer.transport.smtp.port')));
 
                 if ($args['username'] && $args['password']) {
                     $this->serviceManager['swiftmailer.transport.smtp.username'] = $args['username'];
                     $this->serviceManager['swiftmailer.transport.smtp.password'] = $args['password'];
-                    $definition->addMethod('setUserName', new Zikula_ServiceManager_Argument('swiftmailer.transport.smtp.username'));
-                    $definition->addMethod('setPassword', new Zikula_ServiceManager_Argument('swiftmailer.transport.smtp.password'));
+                    $definition->addMethod('setUserName', new Argument('swiftmailer.transport.smtp.username'));
+                    $definition->addMethod('setPassword', new Argument('swiftmailer.transport.smtp.password'));
                 }
                 if (isset($args['encryption'])) {
                     $this->serviceManager['swiftmailer.transport.smtp.encryption'] = $args['encryption'];
-                    $definition->addMethod('setEncryption', new Zikula_ServiceManager_Argument('swiftmailer.transport.smtp.encryption'));
+                    $definition->addMethod('setEncryption', new Argument('swiftmailer.transport.smtp.encryption'));
                 }
                 break;
 
             case 'sendmail':
                 $this->serviceManager['swiftmailer.transport.mail.command'] = $args['command'];
-                $definition = new Zikula_ServiceManager_Definition('Swift_SendmailTransport', array(new Zikula_ServiceManager_Argument('swiftmailer.transport.mail.command')));
+                $definition = new Definition('Swift_SendmailTransport', array(new Argument('swiftmailer.transport.mail.command')));
                 break;
 
             default:
                 // error
-                throw new InvalidArgumentException('Invalid transport type, must be mail, smtp or sendmail');
+                throw new \InvalidArgumentException('Invalid transport type, must be mail, smtp or sendmail');
                 break;
         }
 
@@ -110,11 +117,11 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
         $this->serviceManager->registerService('swiftmailer.transport', $definition);
 
         // define and register mailer using transport service
-        $definition = new Zikula_ServiceManager_Definition('Swift_Mailer', array(new Zikula_ServiceManager_Reference('swiftmailer.transport')));
+        $definition = new Definition('Swift_Mailer', array(new Reference('swiftmailer.transport')));
         $this->serviceManager->registerService('mailer', $definition, false);
 
         // register simple mailer service
-        $definition = new Zikula_ServiceManager_Definition('SystemPlugins_SwiftMailer_Mailer', array(new Zikula_ServiceManager_Reference('zikula.servicemanager')));
+        $definition = new Definition('SystemPlugins_SwiftMailer_Mailer', array(new Reference('zikula.servicemanager')));
         $this->serviceManager->registerService('mailer.simple', $definition);
     }
 

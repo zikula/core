@@ -20,7 +20,7 @@ notify the fact it executed with `$event->stop()`. An example follows
     {
         protected $eventNames = array('theme.ajax_request' => 'ajaxHandler');
 
-        public function ajaxHandler(Zikula_Event $event)
+        public function ajaxHandler(\Zikula\Core\Event\GenericEvent $event)
         {
             // check if we should execute
             if (!isset($_GET['sort'])) {

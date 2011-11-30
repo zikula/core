@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
@@ -39,7 +41,7 @@ $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
 
 // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
-$dbEvent = new Zikula_Event('doctrine.init_connection', null, array('lazy' => true));
+$dbEvent = new GenericEvent('doctrine.init_connection', null, array('lazy' => true));
 $connection = $eventManager->notify($dbEvent)->getData();
 
 $columns = upgrade_getColumnsForTable($connection, 'modules');
@@ -464,11 +466,11 @@ function upgrade_clear_caches()
 /**
  * Suppress errors event listener.
  *
- * @param Zikula_Event $event Event.
+ * @param GenericEvent $event Event.
  *
  * @return void
  */
-function upgrade_suppressErrors(Zikula_Event $event)
+function upgrade_suppressErrors(GenericEvent $event)
 {
     if (!$event['stage'] == Zikula_Core::STAGE_CONFIG) {
         return;
@@ -809,7 +811,7 @@ CHANGE pn_language language VARCHAR(30) NOT NULL DEFAULT  ''";
     $silentCommands[] = "ALTER TABLE {$prefix}_workflows CHANGE debug debug LONGTEXT NULL DEFAULT NULL";
     $silentCommands[] = "RENAME TABLE {$prefix}_workflows TO workflows";
     $silentCommands[] = "ALTER TABLE group_applications CHANGE application application LONGTEXT NOT NULL";
-    
+
     // Handle case of andreas08 themes on linux environments.
     $silentCommands[] = "UPDATE themes SET name = 'Andreas08', directory = 'Andreas08' WHERE name = 'andreas08'";
     $silentCommands[] = "UPDATE module_vars SET value = 's:9:\"Andreas08\";' WHERE modname = 'ZConfig' AND value ='s:9:\"andreas08\";'";

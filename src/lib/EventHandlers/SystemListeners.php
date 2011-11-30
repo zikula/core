@@ -11,6 +11,11 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+use Zikula\Core\Event\GenericEvent;
+use \Zikula\Common\ServiceManager\Definition;
+use \Zikula\Common\ServiceManager\Reference;
+
 /**
  * Event handler to override templates.
  */
@@ -54,11 +59,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Event: 'frontcontroller.predispatch'.
      *
-     * @param Zikula_Event $event
+     * @param GenericEvent $event
      *
      * @return void
      */
-    public function sessionExpired(Zikula_Event $event)
+    public function sessionExpired(GenericEvent $event)
     {
         if (SessionUtil::hasExpired()) {
             // Session has expired, display warning
@@ -72,18 +77,18 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Listens for 'frontcontroller.predispatch'.
      *
-     * @param Zikula_Event $event
+     * @param GenericEvent $event
      *
      * @return void
      */
-    public function siteOff(Zikula_Event $event)
+    public function siteOff(GenericEvent $event)
     {
         // Get variables
         $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
         $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
         // Check for site closed
-        if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula_Core::VERSION_NUM != System::getVar('Version_Num'))) {
+        if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula\Core\Core::VERSION_NUM != System::getVar('Version_Num'))) {
             if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
                 UserUtil::logout();
             }
@@ -98,29 +103,29 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Sets up hookmanager.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      */
-    public function setupHookManager(Zikula_Event $event)
+    public function setupHookManager(GenericEvent $event)
     {
-        $storageDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_Storage_Doctrine');
-        $smRef = new Zikula_ServiceManager_Reference('zikula.servicemanager');
-        $eventManagerDef = new Zikula_ServiceManager_Definition('Zikula_EventManager', array($smRef));
-        $hookFactoryDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_ServiceFactory', array($smRef, 'zikula.eventmanager'));
-        $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula_HookManager', array($storageDef, $eventManagerDef, $hookFactoryDef));
+        $storageDef = new Definition('Zikula\Common\HookManager\Storage\Doctrine');
+        $smRef = new Reference('zikula.servicemanager');
+        $eventManagerDef = new Definition('Zikula\Common\EventManager\EventManager', array($smRef));
+        $hookFactoryDef = new Definition('Zikula\Common\HookManager\ServiceFactory', array($smRef, 'zikula.eventmanager'));
+        $hookManagerDef = new Definition('Zikula\Common\HookManager\HookManager', array($storageDef, $eventManagerDef, $hookFactoryDef));
         $this->serviceManager->registerService('zikula.hookmanager', $hookManagerDef);
     }
 
     /**
      * Listen for the 'core.preinit' event.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function request(Zikula_Event $event)
+    public function request(GenericEvent $event)
     {
-        $requestDef = new Zikula_ServiceManager_Definition('Zikula_Request_Http');
-        $requestDef->addMethod('setSession', array(new Zikula_ServiceManager_Reference('session')));
+        $requestDef = new Definition('Zikula_Request_Http');
+        $requestDef->addMethod('setSession', array(new Reference('session')));
         $this->serviceManager->registerService('request', $requestDef);
     }
 
@@ -129,13 +134,13 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * This is basically a hack until the routing framework takes over (drak).
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function setupRequest(Zikula_Event $event)
+    public function setupRequest(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_DECODEURLS) {
+        if ($event['stage'] & Zikula\Core\Core::STAGE_DECODEURLS) {
             $request = $this->serviceManager->getService('request');
             // temporary workaround: reinitialize request information after having decoded short urls
             $request->initialize();
@@ -149,11 +154,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Listens for 'bootstrap.getconfig' event.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function initialHandlerScan(Zikula_Event $event)
+    public function initialHandlerScan(GenericEvent $event)
     {
         $core = $this->serviceManager->getService('zikula');
         ServiceUtil::getManager($core);
@@ -166,39 +171,39 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'core.preinit' event.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param GenericEvent $event The event handler.
      *
      * @return void
      */
-    public function setupSessions(Zikula_Event $event)
+    public function setupSessions(GenericEvent $event)
     {
-        $storageDef = new Zikula_ServiceManager_Definition('Zikula_Session_Storage_Legacy');
+        $storageDef = new Definition('Zikula_Session_Storage_Legacy');
         $this->serviceManager->registerService('session.storage', $storageDef);
-        $storageReference = new Zikula_ServiceManager_Reference('session.storage');
-        $session = new Zikula_ServiceManager_Definition('Zikula_Session', array($storageReference));
+        $storageReference = new Reference('session.storage');
+        $session = new Definition('Zikula_Session', array($storageReference));
         $this->serviceManager->registerService('session', $session);
     }
 
     /**
      * Listen on 'core.init' module.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function setupCsfrProtection(Zikula_Event $event)
+    public function setupCsfrProtection(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_MODS) {
-            $tokenStorageDef = new Zikula_ServiceManager_Definition('Zikula_Token_Storage_Session',
-                            array(new Zikula_ServiceManager_Reference('session')));
+        if ($event['stage'] & Zikula\Core\Core::STAGE_MODS) {
+            $tokenStorageDef = new Definition('Zikula\Core\Token\Storage\SessionStorage',
+                            array(new Reference('session')));
             $this->serviceManager->registerService('token.storage', $tokenStorageDef);
 
-            $tokenGeneratorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Generator',
-                            array(new Zikula_ServiceManager_Reference('token.storage'), System::getVar('signingkey')));
+            $tokenGeneratorDef = new Definition('Zikula\Core\Token\Generator',
+                            array(new Reference('token.storage'), System::getVar('signingkey')));
             $this->serviceManager->registerService('token.generator', $tokenGeneratorDef);
 
-            $tokenValidatorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Validate',
-                            array(new Zikula_ServiceManager_Reference('token.generator')));
+            $tokenValidatorDef = new Definition('Zikula_Token_Validate',
+                            array(new Reference('token.generator')));
             $this->serviceManager->registerService('token.validator', $tokenValidatorDef);
         }
     }
@@ -206,15 +211,15 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * If enabled and logged in, save login name of user in Apache session variable for Apache logs.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_SESSIONS.
+     * Implements 'core.init' event when Zikula\Core\Core::STAGE_SESSIONS.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param GenericEvent $event The event handler.
      *
      * @return void
      */
-    public function sessionLogging(Zikula_Event $event)
+    public function sessionLogging(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_SESSIONS) {
+        if ($event['stage'] & Zikula\Core\Core::STAGE_SESSIONS) {
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
             if (isset($GLOBALS['ZConfig']['Log']['log.apache_uname']) && ($GLOBALS['ZConfig']['Log']['log.apache_uname']) && UserUtil::isLoggedIn()) {
                 if (function_exists('apache_setenv')) {
@@ -229,11 +234,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'session.require'.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param GenericEvent $event The event handler.
      *
      * @return void
      */
-    public function requireSession(Zikula_Event $event)
+    public function requireSession(GenericEvent $event)
     {
         $session = $this->serviceManager->getService('session');
         try {
@@ -251,16 +256,16 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Initialise DB connection.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_DB.
+     * Implements 'core.init' event when Zikula\Core\Core::STAGE_DB.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param GenericEvent $event The event handler.
      *
      * @return void
      */
-    public function initDB(Zikula_Event $event)
+    public function initDB(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_DB) {
-            $dbEvent = new Zikula_Event('doctrine.init_connection');
+        if ($event['stage'] & Zikula\Core\Core::STAGE_DB) {
+            $dbEvent = new GenericEvent('doctrine.init_connection');
             $this->eventManager->notify($dbEvent);
         }
     }
@@ -272,11 +277,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * This is just here for legacy systeminit hooks.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param GenericEvent $event The event handler.
      *
      * @return void
      */
-    public function systemHooks(Zikula_Event $event)
+    public function systemHooks(GenericEvent $event)
     {
         if (!System::isInstalling() && System::isLegacyMode()) {
             // call system init hooks
@@ -292,15 +297,15 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Load system plugins.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_TABLES.
+     * Implements 'core.init' event when Zikula\Core\Core::STAGE_TABLES.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param GenericEvent $event The event handler.
      *
      * @return void
      */
-    public function systemPlugins(Zikula_Event $event)
+    public function systemPlugins(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_TABLES) {
+        if ($event['stage'] & Zikula\Core\Core::STAGE_TABLES) {
             if (!System::isInstalling()) {
                 ServiceUtil::loadPersistentServices();
                 PluginUtil::loadPlugins(realpath(realpath('.').'/plugins'), "SystemPlugin");
@@ -314,11 +319,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'setup.errorreporting' event.
      *
-     * @param Zikula_Event $event The event.
+     * @param GenericEvent $event The event.
      *
      * @return void
      */
-    public function defaultErrorReporting(Zikula_Event $event)
+    public function defaultErrorReporting(GenericEvent $event)
     {
         if (!$this->serviceManager['log.enabled']) {
             return;
@@ -328,9 +333,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
             return;
         }
 
-        $class = 'Zikula_ErrorHandler_Standard';
-        if ($event['stage'] & Zikula_Core::STAGE_AJAX) {
-            $class = 'Zikula_ErrorHandler_Ajax';
+        $class = 'Zikula\\Framework\\ErrorHandler\\Standard';
+        if ($event['stage'] & Zikula\Core\Core::STAGE_AJAX) {
+            $class = 'Zikula\\Framework\\ErrorHandler\\Ajax';
         }
 
         $errorHandler = new $class($this->serviceManager);
@@ -342,15 +347,15 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Establish the necessary instances for logging.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_CONFIG.
+     * Implements 'core.init' event when Zikula\Core\Core::STAGE_CONFIG.
      *
-     * @param Zikula_Event $event The event to log.
+     * @param GenericEvent $event The event to log.
      *
      * @return void
      */
-    public function setupLoggers(Zikula_Event $event)
+    public function setupLoggers(GenericEvent $event)
     {
-        if (!($event['stage'] & Zikula_Core::STAGE_CONFIG)) {
+        if (!($event['stage'] & Zikula\Core\Core::STAGE_CONFIG)) {
             return;
         }
 
@@ -384,13 +389,13 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'log' event.
      *
-     * @param Zikula_Event $event The log event to log.
+     * @param GenericEvent $event The log event to log.
      *
      * @throws Zikula_Exception_Fatal Thrown if the handler for the event is an instance of Zikula_ErrorHandler_Ajax.
      *
      * @return void
      */
-    public function errorLog(Zikula_Event $event)
+    public function errorLog(GenericEvent $event)
     {
         // Check for error supression.  if error @ supression was used.
         // $errno wil still contain the real error that triggered the handler - drak
@@ -447,11 +452,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * This listener logs the queries via Zend_Log to file / console.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function logSqlQueries(Zikula_Event $event)
+    public function logSqlQueries(GenericEvent $event)
     {
         if (!$this->serviceManager['log.enabled']) {
             return;
@@ -471,41 +476,41 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Debug toolbar startup.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_CONFIG in development mode.
+     * Implements 'core.init' event when Zikula\Core\Core::STAGE_CONFIG in development mode.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function setupDebugToolbar(Zikula_Event $event)
+    public function setupDebugToolbar(GenericEvent $event)
     {
-        if ($event['stage'] == Zikula_Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
+        if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
-            include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
+            include_once 'lib/Zikula/Framework/DebugToolbar/Panel/Log.php';
 
             // create definitions
-            $toolbar = new Zikula_ServiceManager_Definition(
-                            'Zikula_DebugToolbar',
-                            array(new Zikula_ServiceManager_Reference('zikula.eventmanager')),
+            $toolbar = new Definition(
+                            'Zikula\Framework\DebugToolbar\DebugToolbar',
+                            array(new Reference('zikula.eventmanager')),
                             array('addPanels' => array(0 => array(
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.version'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.config'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.memory'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.rendertime'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.sql'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.view'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.exec'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.logs'))))
+                                                    new Reference('debug.toolbar.panel.version'),
+                                                    new Reference('debug.toolbar.panel.config'),
+                                                    new Reference('debug.toolbar.panel.memory'),
+                                                    new Reference('debug.toolbar.panel.rendertime'),
+                                                    new Reference('debug.toolbar.panel.sql'),
+                                                    new Reference('debug.toolbar.panel.view'),
+                                                    new Reference('debug.toolbar.panel.exec'),
+                                                    new Reference('debug.toolbar.panel.logs'))))
             );
 
-            $versionPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Version');
-            $configPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Config');
-            $momoryPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Memory');
-            $rendertimePanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_RenderTime');
-            $sqlPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_SQL');
-            $viewPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_View');
-            $execPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Exec');
-            $logsPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Log');
+            $versionPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Version');
+            $configPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Config');
+            $momoryPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Memory');
+            $rendertimePanel = new Definition('Zikula\Framework\DebugToolbar\Panel\RenderTime');
+            $sqlPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\SQL');
+            $viewPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\View');
+            $execPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Exec');
+            $logsPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Log');
 
             // save start time (required by rendertime panel)
             $this->serviceManager->setArgument('debug.toolbar.panel.rendertime.start', microtime(true));
@@ -540,11 +545,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Debug toolbar rendering (listener for 'theme.prefetch' and 'theme.postfetch' events).
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function debugToolbarRendering(Zikula_Event $event)
+    public function debugToolbarRendering(GenericEvent $event)
     {
         if (!$event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
             if ($event->getName() == 'theme.prefetch') {
@@ -561,15 +566,15 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Adds an autoloader entry for the cached (generated) doctrine models.
      *
-     * Implements 'core.init' events when Zikula_Core::STAGE_CONFIG.
+     * Implements 'core.init' events when Zikula\Core\Core::STAGE_CONFIG.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function setupAutoloaderForGeneratedCategoryModels(Zikula_Event $event)
+    public function setupAutoloaderForGeneratedCategoryModels(GenericEvent $event)
     {
-        if ($event['stage'] == Zikula_Core::STAGE_CONFIG) {
+        if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG) {
             ZLoader::addAutoloader('GeneratedDoctrineModel', CacheUtil::getLocalDir('doctrinemodels'));
         }
     }
@@ -579,11 +584,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Listens for the 'installer.module.uninstalled' event.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function deleteGeneratedCategoryModelsOnModuleRemove(Zikula_Event $event)
+    public function deleteGeneratedCategoryModelsOnModuleRemove(GenericEvent $event)
     {
         $moduleName = $event['name'];
 
@@ -608,11 +613,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'pageutil.addvar_filter' event.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param GenericEvent $event The event handler.
      *
      * @return void
      */
-    public function coreStylesheetOverride(Zikula_Event $event)
+    public function coreStylesheetOverride(GenericEvent $event)
     {
         if ($event->getSubject() == 'stylesheet' && ($key = array_search('style/core.css', (array)$event->data)) !== false) {
             if (file_exists('config/style/core.css')) {
@@ -628,11 +633,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Listens for 'module_dispatch.postexecute' events.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param GenericEvent $event The event handler.
      *
      * @return void
      */
-    public function addHooksLink(Zikula_Event $event)
+    public function addHooksLink(GenericEvent $event)
     {
         // check if this is for this handler
         if (!($event['modfunc'][1] == 'getlinks' && $event['type'] == 'admin' && $event['api'] == true)) {
@@ -660,11 +665,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Listens for 'module_dispatch.postexecute' events.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param GenericEvent $event The event handler.
      *
      * @return void
      */
-    public function addServiceLink(Zikula_Event $event)
+    public function addServiceLink(GenericEvent $event)
     {
         // check if this is for this handler
         if (!($event['modfunc'][1] == 'getlinks' && $event['type'] == 'admin' && $event['api'] == true)) {
@@ -673,7 +678,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         // notify EVENT here to gather any system service links
         $args = array('modname' => $event->getArg('modname'));
-        $localevent = new Zikula_Event('module_dispatch.service_links', $event->getSubject(), $args);
+        $localevent = new GenericEvent('module_dispatch.service_links', $event->getSubject(), $args);
         $this->eventManager->notify($localevent);
         $sublinks = $localevent->getData();
 
@@ -689,11 +694,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Listens for 'bootstrap.getconfig'
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function getConfigFile(Zikula_Event $event)
+    public function getConfigFile(GenericEvent $event)
     {
         if (is_readable('config/config.php')) {
             include 'config/config.php';
@@ -719,11 +724,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Listens on the 'core.preinit' event.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function systemCheck(Zikula_Event $event)
+    public function systemCheck(GenericEvent $event)
     {
         $die = false;
 
@@ -745,8 +750,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         // check PHP version, shouldn't be necessary, but....
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
-        if (version_compare($phpVersion, Zikula_Core::PHP_MINIMUM_VERSION, '>=') == false) {
-            echo __f('Error! Zikula requires PHP version %1$s or greater. Your server seems to be using version %2$s.', array(Zikula_Core::PHP_MINIMUM_VERSION, $phpVersion));
+        if (version_compare($phpVersion, Zikula\Core\Core::PHP_MINIMUM_VERSION, '>=') == false) {
+            echo __f('Error! Zikula requires PHP version %1$s or greater. Your server seems to be using version %2$s.', array(Zikula\Core\Core::PHP_MINIMUM_VERSION, $phpVersion));
             $die = true;
         }
 
@@ -823,7 +828,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * @return void
      */
-    public function clickJackProtection(Zikula_Event $event)
+    public function clickJackProtection(GenericEvent $event)
     {
         header('X-Frames-Options: SAMEORIGIN');
         //header("X-Content-Security-Policy: frame-ancestors 'self'");
