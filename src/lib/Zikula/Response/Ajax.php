@@ -31,10 +31,10 @@ class Zikula_Response_Ajax extends Zikula_Response_Ajax_AbstractMediatorBase
         $this->messages = (array)$message;
         $this->options = $options;
         if ($this->newCsrfToken) {
-            if (System::isLegacyMode()) {
-                $this->authid = SecurityUtil::generateAuthKey(ModUtil::getName());
+            if (\System::isLegacyMode()) {
+                $this->authid = \SecurityUtil::generateAuthKey(ModUtil::getName());
             }
-            $this->csrfToken = SecurityUtil::generateCsrfToken();
+            $this->csrfToken = \SecurityUtil::generateCsrfToken();
         }
     }
 }
