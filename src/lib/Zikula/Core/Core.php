@@ -17,7 +17,7 @@ namespace Zikula\Core;
 use Zikula\Common\ServiceManager\ServiceManager;
 use Zikula\Common\EventManager\EventManager;
 use Zikula\Core\Event\GenericEvent;
-use Zikula_AbstractEventHandler;
+use Zikula\Framework\AbstractEventHandler;
 
 
 // Defines for access levels
@@ -301,13 +301,13 @@ class Core
     }
 
     /**
-     * Load and attach handlers for Zikula_AbstractEventHandler listeners.
+     * Load and attach handlers for AbstractEventHandler listeners.
      *
-     * Loads event handlers that extend Zikula_AbstractEventHandler
+     * Loads event handlers that extend AbstractEventHandler
      *
      * @param string $className The name of the class.
      *
-     * @throws \LogicException If class is not instance of Zikula_AbstractEventHandler.
+     * @throws \LogicException If class is not instance of AbstractEventHandler.
      *
      * @return void
      */
@@ -316,8 +316,8 @@ class Core
         $r = new \ReflectionClass($className);
         $handler = $r->newInstance($this->eventManager);
 
-        if (!$handler instanceof Zikula_AbstractEventHandler) {
-            throw new \LogicException(sprintf('Class %s must be an instance of Zikula_AbstractEventHandler', $className));
+        if (!$handler instanceof AbstractEventHandler) {
+            throw new \LogicException(sprintf('Class %s must be an instance of Zikula\Framework\AbstractEventHandler', $className));
         }
 
         $handler->setup();
