@@ -14,12 +14,12 @@
  */
 
 namespace Zikula\Core\Hook;
-use Zikula\Common\HookManager\AbstractHook;
+use Zikula\Common\HookManager\Hook;
 
 /**
  * Content validation hook.
  */
-class ValidationHook extends AbstractHook
+class ValidationHook extends Hook
 {
     /**
      * @var ValidationProviders

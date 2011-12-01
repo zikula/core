@@ -19,7 +19,7 @@ use Zikula\Common\EventManager\Event;
 /**
  * AbstractHook class.
  */
-class AbstractHook extends Event
+class Hook extends Event
 {
     /**
      * Subscriber object id.
