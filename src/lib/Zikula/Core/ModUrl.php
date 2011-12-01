@@ -65,7 +65,7 @@ class ModUrl
 
     public function getUrl($ssl = null, $fqurl = null, $forcelongurl = false, $forcelang=true)
     {
-        return ModUtil::url($this->application, $this->controller, $this->action, $this->args, $ssl, $this->fragment, $fqurl, $forcelongurl, $forcelang);
+        return \ModUtil::url($this->application, $this->controller, $this->action, $this->args, $ssl, $this->fragment, $fqurl, $forcelongurl, $forcelang);
     }
 
 //    public function getRoute()
