@@ -33,7 +33,7 @@ class ProcessHook extends AbstractHook
 
     public function __construct($name, $id, ModUrl $url=null)
     {
-        $this->name = $name;
+        $this->setName($name);
         $this->id = $id;
         $this->url = $url;
     }

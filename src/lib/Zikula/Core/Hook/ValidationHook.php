@@ -28,7 +28,7 @@ class ValidationHook extends AbstractHook
 
     public function __construct($name, ValidationProviders $validators)
     {
-        $this->name = $name;
+        $this->setName($name);
         $this->validators = $validators;
     }
 
