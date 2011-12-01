@@ -22,6 +22,6 @@ interface EventManagerInterface
 {
     function attach($name, $handler, $priority = 10);
     function detach($name, $handler);
-    function notify(EventInterface $event);
+    function notify(Event $event);
     function flushHandlers();
 }

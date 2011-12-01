@@ -126,11 +126,11 @@ class EventManager implements EventManagerInterface
     /**
      * Notify all handlers for given event name but stop if signalled.
      *
-     * @param EventInterface $event Event.
+     * @param Event $event Event.
      *
-     * @return EventInterface
+     * @return Event
      */
-    public function notify(EventInterface $event)
+    public function notify(Event $event)
     {
         $event->setEventManager($this);
         $handlers = $this->getHandlers($event->getName());
@@ -184,7 +184,7 @@ class EventManager implements EventManagerInterface
      *
      * @return void
      */
-    private function invoke($handler, EventInterface $event)
+    private function invoke($handler, Event $event)
     {
         if ($handler instanceof ServiceHandler) {
             $service = $this->serviceManager->getService($handler->getId());
