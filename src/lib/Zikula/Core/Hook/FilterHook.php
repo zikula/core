@@ -25,7 +25,7 @@ class FilterHook extends AbstractHook
 
     public function __construct($name, $data=null)
     {
-        $this->name = $name;
+        $this->setName($name);
         $this->data = $data;
     }
 

@@ -14,20 +14,13 @@
 
 namespace Zikula\Common\HookManager;
 
-use Zikula\Common\EventManager\EventManagerInterface;
+use Zikula\Common\EventManager\Event;
 
 /**
  * AbstractHook class.
  */
-class AbstractHook implements HookInterface
+class AbstractHook extends Event
 {
-    /**
-     * Name.
-     *
-     * @var string
-     */
-    protected $name;
-
     /**
      * Subscriber object id.
      *
@@ -48,20 +41,6 @@ class AbstractHook implements HookInterface
      * @var string
      */
     protected $caller;
-
-    /**
-     * Stop notification flag.
-     *
-     * @var boolean
-     */
-    protected $stopped = false;
-
-    /**
-     * EventManager instance.
-     *
-     * @var EventManagerInterface
-     */
-    protected $eventManager;
 
     /**
      * Get caller.
@@ -117,71 +96,5 @@ class AbstractHook implements HookInterface
     {
         $this->areaId = $areaId;
         return $this;
-    }
-
-    /**
-     * Stop futher notification.
-     *
-     * @return AbstractHook
-     */
-    public function stop()
-    {
-        $this->stopped = true;
-        return $this;
-    }
-
-    /**
-     * Has event stopped.
-     *
-     * @return boolean
-     */
-    public function isStopped()
-    {
-        return $this->stopped;
-    }
-
-    /**
-     * Get event name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set event name.
-     *
-     * @param string $name Hook event name.
-     *
-     * @return AbstractHook
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * Sets the EventManager property.
-     *
-     * @param EventManagerInterface $eventManager
-     *
-     * @return void
-     */
-    public function setEventManager(EventManagerInterface $eventManager)
-    {
-        $this->eventManager = $eventManager;
-    }
-
-    /**
-     * Gets the EventManager.
-     *
-     * @return EventManager
-     */
-    public function getEventManager()
-    {
-        return $this->eventManager;
     }
 }
