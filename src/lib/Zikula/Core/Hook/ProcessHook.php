@@ -14,7 +14,7 @@
  */
 
 namespace Zikula\Core\Hook;
-use Zikula\Common\HookManager\AbstractHook;
+use Zikula\Common\HookManager\Hook;
 
 /**
  * Event encapsulation class.
@@ -22,7 +22,7 @@ use Zikula\Common\HookManager\AbstractHook;
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class ProcessHook extends AbstractHook
+class ProcessHook extends Hook
 {
     /**
      * Url container.

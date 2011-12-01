@@ -14,12 +14,12 @@
  */
 
 namespace Zikula\Core\Hook;
-use Zikula\Common\HookManager\AbstractHook;
+use Zikula\Common\HookManager\Hook;
 
 /**
  * DisplayHook class.
  */
-class DisplayHook extends AbstractHook
+class DisplayHook extends Hook
 {
     /**
      * Responses.

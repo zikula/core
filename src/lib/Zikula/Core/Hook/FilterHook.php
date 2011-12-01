@@ -14,12 +14,12 @@
  */
 
 namespace Zikula\Core\Hook;
-use Zikula\Common\HookManager\AbstractHook;
+use Zikula\Common\HookManager\Hook;
 
 /**
  * Content filter hook.
  */
-class FilterHook extends AbstractHook
+class FilterHook extends Hook
 {
     private $data;
 
