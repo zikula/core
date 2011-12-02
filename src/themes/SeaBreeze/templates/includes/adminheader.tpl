@@ -3,7 +3,7 @@
     <div class="z-floatright">{blockposition name=search}</div>
 </div>
 <div id="header" class="z-clearfix">
-    <h1><a href="{homepage}">{$modvars.ZConfig.sitename}</a></h1>
+    <h1><a href="{homepage}" title="{$modvars.ZConfig.slogan}">{$modvars.ZConfig.sitename}</a></h1>
     <div id="navi" class="z-clearer">
         <ul id="nav">
             <li class="page_item">
