@@ -222,7 +222,7 @@ class Search_Controller_User extends Zikula_AbstractController
     public function recent()
     {
         // security check
-        if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ) || !UserUtil::isLoggedIn()) {
             return LogUtil::registerPermissionError();
         }
 
