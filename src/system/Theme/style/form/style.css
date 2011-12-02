@@ -12,16 +12,16 @@ div.contextMenu {
 }
 
 div.contextMenu ul {
-    padding: 0px;
+    padding: 0px !important;
     margin: 0px !important;
-    list-style-type: none;
+    list-style-type: none !important;
 }
 
 div.contextMenu ul li {
-    background-repeat: no-repeat;
-    background-position: 4px center;
-    margin: 0;
-    text-align: left;
+    background-repeat: no-repeat !important;
+    background-position: 4px center !important;
+    margin: 0 !important;
+    text-align: left !important;
 }
 
 div.contextMenu ul li.separator {
@@ -60,18 +60,18 @@ div.linktabs {
 }
 
 div.linktabs ul {
-    margin: 0px;
-    padding: 0px 0px 0px 10px;
-    list-style: none;
+    margin: 0px !important;
+    padding: 0px 0px 0px 10px !important
+    list-style: none !important;
 }
 
 div.linktabs li {
-    float: left;
-    list-style-image: none;
-    list-style-position: outside;
-    list-style-type: none;
-    margin: 0px;
-    padding: 0px;
+    float: left !important;
+    list-style-image: none !important;
+    list-style-position: outside !important;
+    list-style-type: none !important;
+    margin: 0px !important;
+    padding: 0px !important;
 }
 
 div.linktabs li.linktab {

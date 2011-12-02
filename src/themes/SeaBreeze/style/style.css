@@ -56,6 +56,44 @@ a:hover, a:active {
     color: #8CC63F;
 }
 
+p {
+    line-height: 160%;
+    margin: 12px 0;
+}
+
+ul {
+    margin: 14px 0 14px 7px;
+    padding: 0;
+    list-style: square;
+}
+
+ol {
+    margin: 14px 0 14px 7px;
+    padding: 0;
+    list-style: decimal;
+}
+
+li {
+    margin: 0 0 7px 21px;
+    padding: 0;
+}
+
+dl {
+    margin: 14px 0 14px 7px;
+    padding: 0;
+}
+
+dt {
+    font-weight: bold;
+    margin: 0 0 7px 0;
+    padding: 0;
+}
+
+dd {
+    margin: 0 0 7px 21px;
+    padding: 0;
+}
+
 /******************************************************************************
 * Theme styling for forms and input
 ******************************************************************************/
@@ -300,8 +338,8 @@ textarea:focus {
     font-weight: normal;
     border: 0;
     text-align: left;
-    padding-left: 0;
-    margin-left: 0;
+    padding: 0;
+    margin: 0;
     text-decoration: none;
 }
 
@@ -310,8 +348,8 @@ textarea:focus {
 }
 
 #leftcol #sidebar ul {
-    margin-left: 0;
-    padding-left: 0;
+    margin: 0;
+    padding: 0;
     list-style-type: none;
     text-decoration: none;
 }
@@ -418,8 +456,8 @@ textarea:focus {
     font-size: 12px;
     font-weight: normal;
     text-align: left;
-    padding-left: 0;
-    margin-left: 0;
+    padding: 0;
+    margin: 0;
     text-decoration: none;
 }
 
@@ -428,8 +466,8 @@ textarea:focus {
 }
 
 .z-blockposition-right ul {
-    margin-left: 0;
-    padding-left: 0;
+    margin: 0;
+    padding: 0;
     list-style-type: none;
     text-decoration: none;
 }
@@ -457,44 +495,6 @@ textarea:focus {
     display: block;
     background: #fff;
     margin: 10px 0;
-}
-
-#z-maincontent p {
-    line-height: 160%;
-    margin: 12px 0;
-}
-
-#z-maincontent ul {
-    margin: 14px 0 14px 7px;
-    padding: 0;
-    list-style: square;
-}
-
-#z-maincontent ol {
-    margin: 14px 0 14px 7px;
-    padding: 0;
-    list-style: decimal;
-}
-
-#z-maincontent li {
-    margin: 0 0 7px 21px;
-    padding: 0;
-}
-
-#z-maincontent dl {
-    margin: 14px 0 14px 7px;
-    padding: 0;
-}
-
-#z-maincontent dt {
-    font-weight: bold;
-    margin: 0 0 7px 0;
-    padding: 0;
-}
-
-#z-maincontent dd {
-    margin: 0 0 7px 21px;
-    padding: 0;
 }
 
 /******************************************************************************
