@@ -1,11 +1,11 @@
 {pageaddvar name="javascript" value="system/Search/javascript/search_user_form.js"}
-{gt text='Search keywords' assign='templatetitle' domain='zikula'}
+{gt text='Site search' assign='templatetitle' domain='zikula'}
 {include file='search_user_menu.tpl'}
 
 <form class="z-form" id="search_form" method="post" action="{modurl modname='Search' type='user' func='search'}">
     <fieldset>
         <div class="z-formrow">
-            <label for="search_q" id="search_q_label">{$templatetitle}</label>
+            <label for="search_q" id="search_q_label">{gt text='Search keywords' domain='zikula'}</label>
             <input type="text" id="search_q" name="q" size="20" maxlength="255" value="{$q|safetext}" />
         </div>
         <div class="z-formrow">
