@@ -20,7 +20,7 @@ namespace Zikula\Common\EventManager;
  */
 interface EventManagerInterface
 {
-    function attach($name, $handler, $priority = 10);
+    function attach($name, $handler, $priority = 0);
     function detach($name, $handler);
     function notify(Event $event);
     function flushHandlers();
