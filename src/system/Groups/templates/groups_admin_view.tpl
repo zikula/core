@@ -31,7 +31,9 @@
     <h3>{gt text="Groups list"}</h3>
 </div>
 
+{checkpermissionblock component='Groups::' instance='::' level=ACCESS_ADD}
 <a id="appendajax" onclick="groupappend();" style="margin-bottom: 1em;" class="z-floatleft z-icon-es-new z-hide" title="{gt text="Create new group"}" href="javascript:void(0);">{gt text="Create new group"}</a>
+{/checkpermissionblock}
 
 <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
 
