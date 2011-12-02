@@ -29,7 +29,7 @@ use Zikula\Common\EventManager\EventManager;
  *
  * The handler methods must be implemented as followes:
  *
- * public function handler(GenericEvent $event)
+ * public function handler(Event $event)
  */
 abstract class AbstractEventHandler
 {
@@ -91,8 +91,8 @@ abstract class AbstractEventHandler
      *
      * Example:
      * <Samp>
-     *    $this->addHandlerDefinition('some.event', 'handler', 10);
-     *    $this->addHandlerDefinition('some.event', 'handler2', 10);
+     *    $this->addHandlerDefinition('some.event', 'handler', 0);
+     *    $this->addHandlerDefinition('some.event', 'handler2', 0);
      * </Samp>
      *
      * @return void
@@ -104,13 +104,13 @@ abstract class AbstractEventHandler
      *
      * @param string  $name   Name of event.
      * @param string  $method Method to invoke when called.
-     * @param integer $weight Handler weight, defaults to 10.
+     * @param integer $weight Handler weight, defaults to 0.
      *
      * @throws \InvalidArgumentException If method specified is invalid.
      *
      * @return void
      */
-    protected function addHandlerDefinition($name, $method, $weight=10)
+    protected function addHandlerDefinition($name, $method, $weight=0)
     {
         if (!method_exists($this, $method)) {
             throw new \InvalidArgumentException(sprintf('Method %1$s does not exist in this EventHandler class %2$s', $method, get_class($this)));
