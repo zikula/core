@@ -19,7 +19,7 @@
     <dl class="theme_item">
         <dt><strong>{$theme.displayname}</strong></dt>
         <dt>
-            <a href="{$theme.largeImage}" title="{$theme.description|default:$theme.displayname}" rel="lightbox[plants]" >
+            <a href="{$theme.largeImage}" title="{$theme.description|default:$theme.displayname}" rel="lightbox[themes]" >
                 <img src="{$theme.previewImage}" alt="{$theme.displayname}" title="{$theme.description|default:$theme.displayname}" />
             </a>
         </dt>
