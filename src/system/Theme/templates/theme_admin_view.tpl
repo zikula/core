@@ -30,10 +30,13 @@
     </thead>
     <tbody>
         {foreach from=$themes item=theme}
-        {if $theme.admin eq true}
-        {modurl modname=Admin type=admin func=adminpanel theme=$theme.name assign='themeurl'}
+        {homepage assign='homepageurl'}
+        {if $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint neq 1}
+        {assign var='themeurl' value="`$homepageurl`/`$theme.name`"}
+        {elseif $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint eq 1}
+        {assign var='themeurl' value="`$homepageurl``$theme.name`"}
         {else}
-        {assign var='themeurl' value="`$modvars.ZConfig.entrypoint`?theme=`$theme.name`"}
+        {assign var='themeurl' value="`$homepageurl`?theme=`$theme.name`"}
         {/if}
         <tr class="{cycle values="z-odd,z-even}{if $theme.name|strtolower eq $currenttheme|strtolower} z-defaulttablerow{/if}">
             <td>
