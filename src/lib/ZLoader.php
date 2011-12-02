@@ -56,7 +56,7 @@ class ZLoader
         self::$autoloaders = new Zikula\Common\KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
         self::addAutoloader('Zikula', ZLOADER_PATH . '/legacy', '_');
-        self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
+        self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine1', '_');
         self::addAutoloader('Categories', 'system/Categories/lib');
         self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
         self::addAutoloader('Symfony', ZLOADER_PATH . '/vendor', '\\');
@@ -176,6 +176,7 @@ class ZLoader
                 'CookieUtil' => 'util',
                 'DataUtil' => 'util',
                 'DateUtil' => 'util',
+                'DoctrineHelper' => 'util',
                 'DoctrineUtil' => 'util',
                 'EventUtil' => 'util',
                 'FileUtil' => 'util',
@@ -199,7 +200,7 @@ class ZLoader
                 'UserUtil' => 'util',
                 'ValidationUtil' => 'util',
                 'Loader' => 'legacy',
-                'sfYaml' => 'vendor/Doctrine/Doctrine/Parser/sfYaml', // needed to use Doctrine_Parser since we dont use Doctrine's autoloader
+                'sfYaml' => 'vendor/Doctrine1/Doctrine/Parser/sfYaml', // needed to use Doctrine_Parser since we dont use Doctrine's autoloader
         );
     }
 

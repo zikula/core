@@ -11,25 +11,14 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Framework\Plugin\AlwaysOnInterface;
-use Zikula\Framework\AbstractPlugin;
-
 /**
  * Doctrine plugin definition.
  */
-class SystemPlugin_Doctrine_Plugin extends AbstractPlugin implements AlwaysOnInterface
+class DoctrineListener extends Zikula\Framework\AbstractEventHandler
 {
-    /**
-     * Get plugin meta data.
-     *
-     * @return array Meta data.
-     */
-    protected function getMeta()
+    public function setupHandlerDefinitions()
     {
-        return array('displayname' => $this->__('Doctrine'),
-                     'description' => $this->__('Provides Doctrine ORM, DBAL (2.1.3) and Common layers of Doctrine'),
-                     'version'     => '2.1.4'
-                      );
+        $this->addHandlerDefinition('core.preinit', 'initialize');
     }
 
     /**
@@ -39,18 +28,17 @@ class SystemPlugin_Doctrine_Plugin extends AbstractPlugin implements AlwaysOnInt
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(Zikula\Common\EventManager\Event $event)
     {
         // register namespace
         // Because the standard kernel classloader already has Doctrine registered as a namespace
         // we have to add a new loader onto the spl stack.
-        $autoloader = new Zikula_KernelClassLoader();
+        $autoloader = new Zikula\Common\KernelClassLoader();
         $autoloader->spl_autoload_register();
-        include 'lib/DoctrineHelper.php';
-        $autoloader->register('Doctrine', dirname(__FILE__) . '/lib/vendor', '\\');
+        $autoloader->register('Doctrine', ZLOADER_PATH . '/vendor', '\\');
         $autoloader->register('DoctrineProxy', 'ztemp/doctrinemodels', '\\');
 
-        $serviceManager = $this->eventManager->getServiceManager();
+        $serviceManager = $event->getEventManager()->getServiceManager();
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
         $dbConfig = array('host' => $config['host'],
                           'user' => $config['user'],
@@ -88,10 +76,9 @@ class SystemPlugin_Doctrine_Plugin extends AbstractPlugin implements AlwaysOnInt
         $ORMConfig->setQueryCacheImpl($dbCache);
         $ORMConfig->setProxyDir(CacheUtil::getLocalDir('doctrinemodels'));
         $ORMConfig->setProxyNamespace('DoctrineProxy');
-        //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
 
         if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
-            $ORMConfig->setSQLLogger(new \SystemPlugin_Doctrine_ZikulaSqlLogger());
+            $ORMConfig->setSQLLogger(new \Zikula\Core\Doctrine\Logger\ZikulaSqlLogger());
         }
 
         // setup doctrine eventmanager
@@ -103,7 +90,7 @@ class SystemPlugin_Doctrine_Plugin extends AbstractPlugin implements AlwaysOnInt
             $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
             $eventManager->addEventSubscriber($mysqlSessionInit);
 
-            $mysqlStorageEvent = new \SystemPlugin_Doctrine_MySqlGenerateSchemaListener($eventManager);
+            $mysqlStorageEvent = new \Zikula\Core\Doctrine\Listener\MySqlGenerateSchemaListener($eventManager);
         }
 
         // setup the doctrine entitymanager
