@@ -67,7 +67,7 @@ class SecurityCenter_Util
 
         // allow nofollow and imageviewer to be used as document relationships in the rel attribute
         // see http://htmlpurifier.org/live/configdoc/plain.html#Attr.AllowedRel
-        $config['Attr']['AllowedRel'] = array('nofollow' => true, 'imageviewer' => true);
+        $config['Attr']['AllowedRel'] = array('nofollow' => true, 'imageviewer' => true, 'lightbox' => true);
         
         // allow Youtube by default
         $config['Filter']['YouTube'] = false; // technically deprecated in favour of HTML.SafeEmbed and HTML.Object
