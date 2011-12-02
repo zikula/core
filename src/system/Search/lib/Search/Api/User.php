@@ -435,7 +435,9 @@ class Search_Api_User extends Zikula_AbstractApi
 
         if (SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url('Search', 'user', 'main', array()), 'text' => $this->__('New search'), 'class' => 'z-icon-es-search');
-            $links[] = array('url' => ModUtil::url('Search', 'user', 'recent', array()), 'text' => $this->__('Recent searches list'), 'class' => 'z-icon-es-view');
+            if (UserUtil::isLoggedIn()) {
+                $links[] = array('url' => ModUtil::url('Search', 'user', 'recent', array()), 'text' => $this->__('Recent searches list'), 'class' => 'z-icon-es-view');
+            }
         }
 
         return $links;
