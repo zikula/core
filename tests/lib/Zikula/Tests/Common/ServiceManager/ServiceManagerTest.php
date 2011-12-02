@@ -1,5 +1,9 @@
 <?php
-require_once __DIR__ . '/../../../bootstrap.php';
+
+namespace Zikula\Tests\Common\ServiceManager;
+use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Common\ServiceManager\Definition;
+use Zikula\Common\ServiceManager\Service;
 
 /**
  * Provider class for tests
@@ -43,11 +47,11 @@ class Store
 /**
  * ServiceManager test case.
  */
-class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
+class ServiceManagerTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Zikula_ServiceManager
+     * @var ServiceManager
      */
     private $serviceManager;
     private $services;
@@ -58,7 +62,7 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->serviceManager = new Zikula_ServiceManager();
+        $this->serviceManager = new ServiceManager();
     }
 
     /**
@@ -75,8 +79,8 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testAttachService()
     {
-        $class1 = new StdClass();
-        $class2 = new StdClass();
+        $class1 = new \StdClass();
+        $class2 = new \StdClass();
         $this->serviceManager->attachService('test.stdclass1', $class1);
         $this->serviceManager->attachService('test.stdclass2', $class2);
         $this->assertSame($class1, $this->serviceManager->getService('test.stdclass1'));
@@ -90,7 +94,7 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testAttachServiceException()
     {
-        $class1 = new StdClass();
+        $class1 = new \StdClass();
         $this->serviceManager->attachService('test.stdclass1', $class1);
         $this->serviceManager->attachService('test.stdclass1', $class1);
     }
@@ -100,8 +104,8 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testDetachService()
     {
-        $class1 = new StdClass();
-        $class2 = new StdClass();
+        $class1 = new \StdClass();
+        $class2 = new \StdClass();
         $this->serviceManager->attachService('test.stdclass1', $class1);
         $this->serviceManager->attachService('test.stdclass2', $class2);
         $this->serviceManager->detachService('test.stdclass1');
@@ -114,7 +118,7 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testDetachServiceException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('\InvalidArgumentException');
         $this->serviceManager->detachService('test.stdclass1');
     }
 
@@ -133,19 +137,19 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testGetService()
     {
-        $class1 = new StdClass();
-        $class2 = new StdClass();
+        $class1 = new \StdClass();
+        $class2 = new \StdClass();
         $this->serviceManager->attachService('test.stdclass1', $class1);
         $this->serviceManager->attachService('test.stdclass2', $class2);
         $this->assertSame($class2, $this->serviceManager->getService('test.stdclass2'));
 
-        $stdDefSingle = new Zikula_ServiceManager_Definition('StdClass');
+        $stdDefSingle = new Definition('StdClass');
         $this->serviceManager->registerService('test.singleinstance', $stdDefSingle);
         $service0 = $this->serviceManager->getService('test.singleinstance');
         $this->assertSame($service0, $this->serviceManager->getService('test.singleinstance'));
         $this->assertTrue($service0 instanceof StdClass);
 
-        $stdDefMultiple = new Zikula_ServiceManager_Definition('StdClass');
+        $stdDefMultiple = new Definition('StdClass');
         $this->serviceManager->registerService('test.multipleinstance', $stdDefMultiple, false);
         $service1 = $this->serviceManager->getService('test.multipleinstance');
         $service2 = $this->serviceManager->getService('test.multipleinstance');
@@ -159,7 +163,7 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
 
     public function testGetServiceTestClone()
     {
-        $class1 = new StdClass();
+        $class1 = new \StdClass();
         $this->serviceManager->attachService('test.clone', $class1, false);
         $clone = $this->serviceManager->getService('test.clone');
         // should be equal (same class).
@@ -174,39 +178,39 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
     public function testHasService()
     {
         $this->assertFalse($this->serviceManager->hasService('will.fail'));
-        $this->serviceManager->attachService('will.pass', new StdClass());
+        $this->serviceManager->attachService('will.pass', new \StdClass());
         $this->assertTrue($this->serviceManager->hasService('will.pass'));
     }
 
     public function testRegisterService()
     {
-        $definition = new Zikula_ServiceManager_Definition('StdClass');
-        $service = new Zikula_ServiceManager_Service('test.service', $definition);
+        $definition = new Definition('StdClass');
+        $service = new Service('test.service', $definition);
         $this->serviceManager->registerService('test.service', $definition);
-        $this->assertTrue($this->serviceManager->getService('test.service') instanceof StdClass);
+        $this->assertTrue($this->serviceManager->getService('test.service') instanceof \StdClass);
     }
 
     public function testRegisterServiceExceptionAlreadyRegistered()
     {
-        $definition = new Zikula_ServiceManager_Definition('StdClass');
-        $service = new Zikula_ServiceManager_Service('test.service', $definition);
-        $this->setExpectedException('InvalidArgumentException');
+        $definition = new Definition('StdClass');
+        $service = new Service('test.service', $definition);
+        $this->setExpectedException('\InvalidArgumentException');
         $this->serviceManager->registerService('test.service', $definition);
         $this->serviceManager->registerService('test.service', $definition);
     }
 
     public function testRegisterServiceExceptionNoDefinition()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('\InvalidArgumentException');
         $this->serviceManager->registerService('test.service');
         $this->serviceManager->registerService('test.service');
     }
 
     public function testUnregisterService()
     {
-        $definition = new Zikula_ServiceManager_Definition('StdClass');
-        $service1 = new Zikula_ServiceManager_Service('test.service1', $definition);
-        $service2 = new Zikula_ServiceManager_Service('test.service2', $definition);
+        $definition = new Definition('StdClass');
+        $service1 = new Service('test.service1', $definition);
+        $service2 = new Service('test.service2', $definition);
         $this->serviceManager->registerService('test.service1', $definition);
         $this->serviceManager->registerService('test.service2', $definition);
         $this->serviceManager->unregisterService('test.service1');
@@ -216,7 +220,7 @@ class Tests_Zikula_ServiceManagerTest extends PHPUnit_Framework_TestCase
 
     public function testUnregisterServiceException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('\InvalidArgumentException');
         $this->serviceManager->unregisterService('thisshouldcallanexceptionbecauseitdoestnexist');
     }
 

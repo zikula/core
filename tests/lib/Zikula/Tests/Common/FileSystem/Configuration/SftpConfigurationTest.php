@@ -5,10 +5,7 @@ namespace Zikula\Tests\Common\FileSystem\Configuration;
 use Zikula\Common\FileSystem\Configuration\SftpConfiguration;
 use Zikula\Common\FileSystem\Configuration\ConfigurationInterface;
 
-/**
- * Zikula_FileSystem_Configuration_Sftp test case.
- */
-class SftpTest extends PHPUnit_Framework_TestCase
+class SftpConfigurationTest extends \PHPUnit_Framework_TestCase
 {
 
     /**

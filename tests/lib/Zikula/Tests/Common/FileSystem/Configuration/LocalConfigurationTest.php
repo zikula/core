@@ -7,7 +7,7 @@ use Zikula\Common\FileSystem\Configuration\ConfigurationInterface;
 /**
  * Zikula_FileSystem_Configuration_Local test case.
  */
-class LocalTest extends PHPUnit_Framework_TestCase
+class LocalConfigurationTest extends \PHPUnit_Framework_TestCase
 {
 
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace Zikula\Tests\Common\FileSystem\Configuration;
+namespace Zikula\Tests\Common\FileSystem;
 
 use Zikula\Common\FileSystem\Ftp;
 use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
@@ -7,8 +7,11 @@ use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
 /**
  * Zikula_FileSystem_Ftp test case.
  */
-class FtpTest extends PHPUnit_Framework_TestCase
+class FtpTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \Zikula\Common\FileSystem\Ftp
+     */
     private $ftp;
 
     /**
