@@ -37,13 +37,6 @@ class Validate
     protected $secret;
 
     /**
-     * Max life of a token.
-     *
-     * @var integer
-     */
-    protected $maxlifetime;
-
-    /**
      * Storage driver.
      *
      * @var StorageInterface
@@ -54,14 +47,12 @@ class Validate
      * Constructor.
      *
      * @param Generator $tokenGenerator Token generator.
-     * @param integer   $maxlifetime    Max lifetime in seconds (default = 86400).
      */
-    public function __construct(Generator $tokenGenerator, $maxlifetime = 86400)
+    public function __construct(Generator $tokenGenerator)
     {
         $this->tokenGenerator = $tokenGenerator;
         $this->storage = $tokenGenerator->getStorage();
         $this->secret = $tokenGenerator->getSecret();
-        $this->maxlifetime = (int)$maxlifetime;
     }
 
     /**
@@ -77,7 +68,7 @@ class Validate
      *
      * @return boolean
      */
-    public function validate($token, $delete=true, $checkExpire=true)
+    public function validate($token, $delete = true, $checkExpire = true)
     {
         if (!$token) {
             return false;
@@ -85,6 +76,9 @@ class Validate
 
         list($id, $hash, $timestamp) = $this->tokenGenerator->decode($token);
         $decoded = array('id' => $id, 'timestamp' => $timestamp);
+
+        // Garbage collect the session.
+        $this->tokenGenerator->garbageCollection();
 
         // Check if token ID exists first.
         $stored = $this->storage->get($decoded['id']);
