@@ -23,9 +23,19 @@
                 <img src="{$theme.previewImage}" alt="{$theme.displayname}" title="{$theme.description|default:$theme.displayname}" />
             </a>
         </dt>
-        <dd><a class="z-icon-es-preview" href="?theme={$theme.name}">{gt text="Preview theme"}</a></dd>
+        {homepage assign='homepageurl'}
+        {if $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint neq 1}
+        {assign var='themeurl' value="`$homepageurl`/`$theme.name`"}
+        {elseif $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint eq 1}
+        {assign var='themeurl' value="`$homepageurl``$theme.name`"}
+        {else}
+        {assign var='themeurl' value="`$homepageurl`?theme=`$theme.name`"}
+        {/if}
+        <dd><a class="z-icon-es-preview" href="{$themeurl|safetext}">{gt text="Preview theme"}</a></dd>
         <dd><a class="z-icon-es-ok" href="?newtheme={$theme.name}">{gt text="Use theme"}</a></dd>
     </dl>
     {/if}
     {/foreach}
 </div>
+
+
