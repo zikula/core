@@ -3,7 +3,7 @@
     <div class="z-floatright">{blockposition name=search}</div>
 </div>
 <div id="header" class="z-clearfix">
-    <h1><a href="{homepage}">{$modvars.ZConfig.sitename}</a></h1>
+    <h1><a href="{homepage}" title="{$modvars.ZConfig.slogan}">{$modvars.ZConfig.sitename}</a></h1>
     {blockposition name='topnav' assign='topnavblock'}
     {if empty($topnavblock)}
     <div id="navi" class="z-clearer">
