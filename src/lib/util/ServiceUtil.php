@@ -12,9 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-use \Zikula\Common\ServiceManager\ServiceManager;
-use \Zikula\Common\ServiceManager\Service;
-use \Zikula\Common\ServiceManager\Definition;
+use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Common\ServiceManager\Service;
+use Zikula\Common\ServiceManager\Definition;
 
 /**
  * ServiceUtil

@@ -14,6 +14,7 @@
  */
 
 namespace Zikula\Common\EventManager;
+use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
 
 /**
  * Event encapsulation class.
@@ -21,22 +22,8 @@ namespace Zikula\Common\EventManager;
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Event implements EventInterface
+class Event extends \Symfony\Component\EventDispatcher\Event
 {
-    /**
-     * Name of the event.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * Signal to stop further notification.
-     *
-     * @var boolean
-     */
-    protected $stop = false;
-
     /**
      * EventManager instance.
      *
@@ -47,44 +34,25 @@ class Event implements EventInterface
     /**
      * Signal to stop further event notification.
      *
+     * @deprecated
+     *
      * @return void
      */
     public function stop()
     {
-        $this->stop = true;
+        $this->stopPropagation();
     }
 
     /**
      * Has the event been stopped.
      *
+     * @deprecated
+     *
      * @return boolean
      */
     public function isStopped()
     {
-        return $this->stop;
-    }
-
-    /**
-     * Get event name.
-     *
-     * @return string Name property.
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set event name.
-     *
-     * @param type $name Event Name.
-     *
-     * @return Event
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
+        return $this->isPropagationStopped();
     }
 
     /**
