@@ -8,35 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-13 08:15-0400\n"
+"POT-Creation-Date: 2011-12-02 06:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: javascript/helpers/Zikula.UI.js:850 javascript/helpers/Zikula.UI.js:933
-#: javascript/helpers/Zikula.UI.js:1097
-msgid "Ok"
-msgstr ""
-
-#: javascript/helpers/Zikula.UI.js:934 javascript/helpers/Zikula.UI.js:1053
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:42
-#: system/Categories/javascript/categories_admin_view.js:93
-#: system/Categories/javascript/categories_admin_view.js:104
-#: system/Categories/javascript/categories_admin_view.js:249
-msgid "Cancel"
-msgstr ""
-
-#: javascript/helpers/Zikula.UI.js:1052
-#: system/Categories/javascript/categories_admin_view.js:248
-msgid "Submit"
-msgstr ""
-
-#: javascript/helpers/Zikula.UI.js:1095
-msgid "Select multiple"
-msgstr ""
 
 #: javascript/helpers/Zikula.itemlist.js:236
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:46
@@ -48,20 +27,30 @@ msgstr ""
 msgid "You have unsaved changes!"
 msgstr ""
 
-#: javascript/helpers/Zikula.ImageViewer.js:68
-msgid "Close"
+#: javascript/helpers/Zikula.UI.js:945 javascript/helpers/Zikula.UI.js:1028
+#: javascript/helpers/Zikula.UI.js:1192
+msgid "Ok"
 msgstr ""
 
-#: javascript/helpers/Zikula.ImageViewer.js:69
-msgid "Next"
+#: javascript/helpers/Zikula.UI.js:1029 javascript/helpers/Zikula.UI.js:1148
+#: modules/Clip/javascript/Zikula.Clip.Container.js:613
+#: modules/Clip/javascript/Zikula.Clip.Container.js:645
+#: modules/Clip/javascript/Clip.Pubfields.js:59
+#: system/Categories/javascript/categories_admin_view.js:93
+#: system/Categories/javascript/categories_admin_view.js:104
+#: system/Categories/javascript/categories_admin_view.js:249
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:42
+msgid "Cancel"
 msgstr ""
 
-#: javascript/helpers/Zikula.ImageViewer.js:70
-msgid "Prev"
+#: javascript/helpers/Zikula.UI.js:1147
+#: modules/Clip/javascript/Zikula.Clip.Container.js:612
+#: system/Categories/javascript/categories_admin_view.js:248
+msgid "Submit"
 msgstr ""
 
-#: javascript/helpers/Zikula.ImageViewer.js:71
-msgid "Image #{index} of #{total}"
+#: javascript/helpers/Zikula.UI.js:1190
+msgid "Select multiple"
 msgstr ""
 
 #: javascript/helpers/Zikula.js:105
@@ -95,6 +84,276 @@ msgid_plural "hello my friends %s"
 msgstr[0] ""
 msgstr[1] ""
 
+#: javascript/helpers/Zikula.ImageViewer.js:68
+msgid "Close"
+msgstr ""
+
+#: javascript/helpers/Zikula.ImageViewer.js:69
+msgid "Next"
+msgstr ""
+
+#: javascript/helpers/Zikula.ImageViewer.js:70
+msgid "Prev"
+msgstr ""
+
+#: javascript/helpers/Zikula.ImageViewer.js:71
+msgid "Image #{index} of #{total}"
+msgstr ""
+
+#: modules/AddressList/javascript/AddressList_validation.js:8
+#: modules/ConstructionProjects/javascript/ConstructionProjects_validation.js:8
+msgid "No spaces"
+msgstr ""
+
+#: modules/AddressList/javascript/AddressList_validation.js:12
+#: modules/ConstructionProjects/javascript/ConstructionProjects_validation.js:12
+msgid "Please select a valid html colour code."
+msgstr ""
+
+#: modules/AddressList/javascript/AddressList_validation.js:16
+#: modules/AddressList/javascript/AddressList_validation.js:26
+#: modules/AddressList/javascript/AddressList_validation.js:36
+#: modules/ConstructionProjects/javascript/ConstructionProjects_validation.js:16
+#: modules/ConstructionProjects/javascript/ConstructionProjects_validation.js:26
+#: modules/ConstructionProjects/javascript/ConstructionProjects_validation.js:36
+msgid "Please select a value in the past."
+msgstr ""
+
+#: modules/AddressList/javascript/AddressList_validation.js:21
+#: modules/AddressList/javascript/AddressList_validation.js:31
+#: modules/AddressList/javascript/AddressList_validation.js:40
+#: modules/ConstructionProjects/javascript/ConstructionProjects_validation.js:21
+#: modules/ConstructionProjects/javascript/ConstructionProjects_validation.js:31
+#: modules/ConstructionProjects/javascript/ConstructionProjects_validation.js:40
+msgid "Please select a value in the future."
+msgstr ""
+
+#: modules/Tag/javascript/tag.js:56
+msgid "remove tag"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:409
+#: modules/Clip/javascript/Zikula.Clip.Container.js:446
+#: system/Categories/javascript/categories_admin_view.js:30
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:30
+msgid "Edit"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:418
+#: modules/Clip/javascript/Zikula.Clip.Container.js:644
+#: system/Categories/javascript/categories_admin_view.js:36
+#: system/Categories/javascript/categories_admin_view.js:92
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:31
+msgid "Delete"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:427
+msgid "Add group (after selected)); ?>"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:436
+msgid "Add subgroup (into selected)); ?>"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:457
+msgid "Fields"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:468
+msgid "Relations"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:479
+msgid "Code"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:491
+msgid "Editor list"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:502
+msgid "New publication"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:641
+msgid "Do you really want to delete this group?"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:651
+#: system/Categories/javascript/categories_admin_view.js:110
+#: system/PageLock/javascript/pagelock.js:27
+msgid "Confirmation prompt"
+msgstr ""
+
+#: modules/Clip/javascript/Clip.Pubfields.js:54
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:43
+msgid "Save"
+msgstr ""
+
+#: modules/Clip/javascript/Clip.Pubfields.js:65
+msgid "Plugin configuration"
+msgstr ""
+
+#: modules/News/javascript/news.js:121
+msgid ""
+"Picture/file operations not supported in 'Quick edit' mode. You must click "
+"the 'Save full edit' button to complete these operations."
+msgstr ""
+
+#: modules/News/javascript/news.js:331 modules/News/javascript/news.js:332
+msgid "Saving quick draft..."
+msgstr ""
+
+#: modules/News/javascript/news.js:345
+msgid "Save quick draft"
+msgstr ""
+
+#: modules/News/javascript/news.js:346
+msgid "Save quick draft failed"
+msgstr ""
+
+#: modules/News/javascript/news.js:353 modules/News/javascript/news.js:379
+msgid "Update quick draft"
+msgstr ""
+
+#: modules/News/javascript/news.js:370
+msgid ""
+"Picture/file operations not supported in 'Quick draft' mode. You must click "
+"the 'Save full draft' button to complete these operations."
+msgstr ""
+
+#: modules/News/javascript/news.js:409 modules/News/javascript/news.js:421
+#: modules/News/javascript/news.js:445
+msgid "Schedule"
+msgstr ""
+
+#: modules/News/javascript/news.js:419
+msgid "Publish"
+msgstr ""
+
+#: modules/News/javascript/news.js:438 modules/News/javascript/news.js:453
+#: modules/News/javascript/news.js:472 modules/News/javascript/news.js:481
+#: modules/News/javascript/news.js:495 modules/News/javascript/news.js:504
+msgid "Show"
+msgstr ""
+
+#: modules/News/javascript/news.js:442 modules/News/javascript/news.js:456
+#: modules/News/javascript/news.js:469 modules/News/javascript/news.js:484
+#: modules/News/javascript/news.js:507
+msgid "Hide"
+msgstr ""
+
+#: modules/News/javascript/news.js:562
+msgid "Author updated"
+msgstr ""
+
+#: modules/News/javascript/news_admin.js:40
+msgid "delete"
+msgstr ""
+
+#: modules/News/javascript/news_admin.js:41
+msgid "archive"
+msgstr ""
+
+#: modules/News/javascript/news_admin.js:42
+msgid "publish"
+msgstr ""
+
+#: modules/News/javascript/news_admin.js:43
+msgid "reject"
+msgstr ""
+
+#: modules/News/javascript/news_admin.js:44
+msgid "change categories for"
+msgstr ""
+
+#: modules/News/javascript/news_admin.js:47
+msgid "You cannot undo this operation!"
+msgstr ""
+
+#: modules/News/javascript/news_admin.js:65
+#, php-format
+msgid "Are you sure you want to %s the following article"
+msgid_plural "Are you sure you want to %s the following articles"
+msgstr[0] ""
+msgstr[1] ""
+
+#: modules/News/javascript/news_admin.js:70
+msgid "Confirm Bulk Action"
+msgstr ""
+
+#: modules/News/javascript/news_admin.js:87
+#, php-format
+msgid "Please select at least one article to %s."
+msgstr ""
+
+#: modules/News/javascript/news_admin.js:88
+msgid "Bulk action error"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:42
+msgid "Copy"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:48
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:28
+msgid "Activate"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:57
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:29
+msgid "Deactivate"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:66
+msgid "Add category (after selected)); ?>"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:72
+msgid "Add subcategory (into selected)); ?>"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:89
+msgid "Do you really want to delete this category?"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:97
+#, php-format
+msgid "It contains %s direct sub-categories."
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:99
+msgid "Please also choose what to do with this category's sub-categories."
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:102
+msgid "Delete all sub-categories"
+msgstr ""
+
+#: system/Categories/javascript/categories_admin_view.js:103
+msgid "Move all sub-categories"
+msgstr ""
+
+#: system/PageLock/javascript/pagelock.js:26
+msgid "Are you sure you want to break this lock?"
+msgstr ""
+
+#: system/PageLock/javascript/pagelock.js:130
+msgid "Back"
+msgstr ""
+
+#: system/PageLock/javascript/pagelock.js:131
+msgid "Check again"
+msgstr ""
+
+#: system/PageLock/javascript/pagelock.js:132
+msgid "Ignore Lock"
+msgstr ""
+
+#: system/Admin/javascript/admin_admin_ajax.js:418
+msgid "You must enter a name for the new category"
+msgstr ""
+
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:20
 msgid "Do you really want to delete this node and all of it child nodes?"
 msgstr ""
@@ -125,27 +384,6 @@ msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:27
 msgid "Active?"
-msgstr ""
-
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:28
-#: system/Categories/javascript/categories_admin_view.js:48
-msgid "Activate"
-msgstr ""
-
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:29
-#: system/Categories/javascript/categories_admin_view.js:57
-msgid "Deactivate"
-msgstr ""
-
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:30
-#: system/Categories/javascript/categories_admin_view.js:30
-msgid "Edit"
-msgstr ""
-
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:31
-#: system/Categories/javascript/categories_admin_view.js:36
-#: system/Categories/javascript/categories_admin_view.js:92
-msgid "Delete"
 msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:32
@@ -188,37 +426,12 @@ msgstr ""
 msgid "Use one for all langs"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:43
-msgid "Save"
-msgstr ""
-
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:44
 msgid "Please fill required fields"
 msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:45
 msgid "Marked fields are required"
-msgstr ""
-
-#: system/PageLock/javascript/pagelock.js:26
-msgid "Are you sure you want to break this lock?"
-msgstr ""
-
-#: system/PageLock/javascript/pagelock.js:27
-#: system/Categories/javascript/categories_admin_view.js:110
-msgid "Confirmation prompt"
-msgstr ""
-
-#: system/PageLock/javascript/pagelock.js:130
-msgid "Back"
-msgstr ""
-
-#: system/PageLock/javascript/pagelock.js:131
-msgid "Check again"
-msgstr ""
-
-#: system/PageLock/javascript/pagelock.js:132
-msgid "Ignore Lock"
 msgstr ""
 
 #: system/Users/javascript/Zikula.Users.PassMeter.js:154
@@ -244,41 +457,4 @@ msgstr ""
 
 #: system/Users/javascript/Zikula.Users.PassMeter.js:164
 msgid "Password can not match the username, choose a different password."
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:42
-msgid "Copy"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:66
-msgid "Add category (after selected)); ?>"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:72
-msgid "Add subcategory (into selected)); ?>"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:89
-msgid "Do you really want to delete this category?"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:97
-#, php-format
-msgid "It contains %s direct sub-categories."
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:99
-msgid "Please also choose what to do with this category's sub-categories."
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:102
-msgid "Delete all sub-categories"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:103
-msgid "Move all sub-categories"
-msgstr ""
-
-#: system/Admin/javascript/admin_admin_ajax.js:415
-msgid "You must enter a name for the new category"
 msgstr ""
