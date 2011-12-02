@@ -48,4 +48,12 @@ interface StorageInterface
      * @return void
      */
     function delete($id);
+
+    /**
+     * Initiate garbage collection.
+     *
+     * @param integer $lifetime
+     * @return void
+     */
+    function gc($lifetime);
 }
