@@ -17,7 +17,7 @@ use Zikula\Core\Event\GenericEvent;
 /**
  * Doctrine listeners.
  */
-class DoctrineListener extends Zikula_AbstractEventHandler
+class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
 {
     /**
      * The Doctrine Manager instance.

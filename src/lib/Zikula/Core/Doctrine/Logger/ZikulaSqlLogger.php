@@ -11,12 +11,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Doctrine\Logger;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Doctrine2 SQLLogger that sends sql queries to the zikula event manager.
  */
-class SystemPlugin_Doctrine_ZikulaSqlLogger implements Doctrine\DBAL\Logging\SQLLogger
+class ZikulaSqlLogger implements \Doctrine\DBAL\Logging\SQLLogger
 {
     private $currentQuery;
     private $start;
