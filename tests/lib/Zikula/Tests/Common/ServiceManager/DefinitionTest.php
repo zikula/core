@@ -1,12 +1,12 @@
 <?php
-
-require_once __DIR__ . '/../../../../bootstrap.php';
+namespace Zikula\Tests\Common\ServiceManager;
+use Zikula\Common\ServiceManager\Definition;
 
 
 /**
  * Definition test case.
  */
-class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestCase
+class DefinitionTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -20,7 +20,7 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
     protected function setUp()
     {
         parent::setUp();
-        $this->definition = new Zikula_ServiceManager_Definition('StdClass');
+        $this->definition = new Definition('\StdClass');
     }
 
     /**
@@ -37,7 +37,7 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
      */
     public function test__construct()
     {
-        $this->assertAttributeEquals('StdClass', 'className', $this->definition);
+        $this->assertAttributeEquals('\StdClass', 'className', $this->definition);
         $this->assertAttributeEquals(array(), 'constructorArgs', $this->definition);
         $this->assertAttributeEquals(array(), 'methods', $this->definition);
     }
@@ -47,7 +47,7 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
      */
     public function testGetClassName()
     {
-        $this->assertEquals('StdClass', 'StdClass', $this->definition->getClassName());
+        $this->assertEquals('\StdClass', '\StdClass', $this->definition->getClassName());
     }
 
     /**
@@ -85,7 +85,7 @@ class Tests_Zikula_ServiceManager_DefinitionTest extends PHPUnit_Framework_TestC
         $this->assertFalse($this->definition->hasConstructorArgs());
         $args = array();
         $args['setup'][] = array('var1' => 'var2');
-        $defintion = new Zikula_ServiceManager_Definition('StdClass', $args);
+        $defintion = new Definition('StdClass', $args);
         $this->assertTrue($defintion->hasConstructorArgs());
     }
 

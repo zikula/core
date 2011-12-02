@@ -51,8 +51,8 @@ abstract class AbstractDriver
     public function __construct(ConfigurationInterface $configuration)
     {
         // validate we get correct configuration class type.
-        $type = (string)preg_filter('/Zikula\\\FileSystem\\\Configuration\\\(\w+)Configuration/', '$1', get_class($this));
-        $validName = "Zikula\\FileSystem\\Configuration\\{$type}Configuration";
+        $type = (string)preg_filter('/Zikula\\\Common\\\FileSystem\\\Configuration\\\(\w+)Configuration/', '$1', get_class($this));
+        $validName = "Zikula\\Common\\FileSystem\\Configuration\\{$type}Configuration";
 
         if ($validName != get_class($configuration)) {
             throw new \InvalidArgumentException(

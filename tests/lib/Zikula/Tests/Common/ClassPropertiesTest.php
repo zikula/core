@@ -1,5 +1,6 @@
 <?php
 namespace Zikula\Tests\Common;
+use Zikula\Common\ClassProperties;
 
 class Foo
 {
@@ -43,7 +44,7 @@ class Foo
 /**
  * ClassProperties test case.
  */
-class ClassPropertiesTest extends PHPUnit_Framework_TestCase
+class ClassPropertiesTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Tests ClassProperties::setters()

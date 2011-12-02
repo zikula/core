@@ -1,19 +1,17 @@
 <?php
-require_once __DIR__ . '/../../../../bootstrap.php';
+namespace Zikula\Tests\Common\ServiceManager;
+use Zikula\Common\ServiceManager\Reference;
 
-/**
- * Test class for Zikula_ServiceManager_Reference.
- */
-class Tests_Zikula_ServiceManager_ReferenceTest extends PHPUnit_Framework_TestCase
+class ReferenceTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Zikula_ServiceManager_Reference
+     * @var Reference
      */
     protected $reference;
-    
+
     protected function setUp()
     {
-        $this->reference = new Zikula_ServiceManager_Reference('apple');
+        $this->reference = new Reference('apple');
     }
 
     protected function tearDown()

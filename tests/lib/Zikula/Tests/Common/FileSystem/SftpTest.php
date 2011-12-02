@@ -1,5 +1,5 @@
 <?php
-namespace Zikula\Tests\Common\FileSystem\Configuration;
+namespace Zikula\Tests\Common\FileSystem;
 
 use Zikula\Common\FileSystem\Sftp;
 use Zikula\Common\FileSystem\Configuration\SftpConfiguration;
@@ -7,7 +7,7 @@ use Zikula\Common\FileSystem\Configuration\SftpConfiguration;
 /**
  * Zikula_FileSystem_Sftp test case.
  */
-class SftpTest extends PHPUnit_Framework_TestCase
+class SftpTest extends \PHPUnit_Framework_TestCase
 {
     private $sftp;
 

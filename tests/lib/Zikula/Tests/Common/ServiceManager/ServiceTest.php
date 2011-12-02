@@ -1,14 +1,15 @@
 <?php
-require_once __DIR__ . '/../../../../bootstrap.php';
-
+namespace Zikula\Tests\Common\ServiceManager;
+use Zikula\Common\ServiceManager\Service;
+use Zikula\Common\ServiceManager\Definition;
 /**
  * Service test case.
  */
-class Tests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
+class ServiceTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Zikula_ServiceManager_Service
+     * @var Service
      */
     private $service;
 
@@ -18,8 +19,8 @@ class Tests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $definition = new Zikula_ServiceManager_Definition('StdClass');
-        $this->service = new Zikula_ServiceManager_Service('test.service', $definition, true);
+        $definition = new Definition('\StdClass');
+        $this->service = new Service('test.service', $definition, true);
     }
 
     /**
@@ -37,14 +38,14 @@ class Tests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
     public function test__construct()
     {
         $this->assertAttributeEquals('test.service', 'id', $this->service);
-        $this->assertAttributeEquals(new Zikula_ServiceManager_Definition('StdClass'), 'definition', $this->service);
+        $this->assertAttributeEquals(new Definition('\StdClass'), 'definition', $this->service);
         $this->assertAttributeSame(true, 'shared', $this->service);
         $this->assertAttributeSame(null, 'service', $this->service);
 
-        $definition = new Zikula_ServiceManager_Definition('\ArrayObject');
-        $this->service = new Zikula_ServiceManager_Service('test.service2', $definition, false);
+        $definition = new Definition('\ArrayObject');
+        $this->service = new Service('test.service2', $definition, false);
         $this->assertAttributeEquals('test.service2', 'id', $this->service);
-        $this->assertAttributeEquals(new Zikula_ServiceManager_Definition('\ArrayObject'), 'definition', $this->service);
+        $this->assertAttributeEquals(new Definition('\ArrayObject'), 'definition', $this->service);
         $this->assertAttributeSame(false, 'shared', $this->service);
     }
 
@@ -61,7 +62,7 @@ class Tests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
      */
     public function testGetDefinition()
     {
-        $this->assertEquals(new Zikula_ServiceManager_Definition('StdClass'), $this->service->getDefinition());
+        $this->assertEquals(new Definition('\StdClass'), $this->service->getDefinition());
     }
 
     public function testIsShared()
@@ -81,7 +82,7 @@ class Tests_Zikula_ServiceManager_Service extends PHPUnit_Framework_TestCase
 
     public function testSetService()
     {
-        $arrayObj = new ArrayObject();
+        $arrayObj = new \ArrayObject();
         $this->service->setService($arrayObj);
         $this->assertAttributeSame($arrayObj, 'service', $this->service);
         $this->assertAttributeEquals(null, 'definition', $this->service);

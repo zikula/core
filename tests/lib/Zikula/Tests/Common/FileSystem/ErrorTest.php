@@ -1,11 +1,11 @@
 <?php
-namespace Zikula\Tests\Common\FileSystem\Configuration;
+namespace Zikula\Tests\Common\FileSystem;
 
 use Zikula\Common\FileSystem\Error;
 use Zikula\Common\FileSystem\Ftp;
 use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
 
-class ErrorTest extends PHPUnit_Framework_TestCase
+class ErrorTest extends \PHPUnit_Framework_TestCase
 {
 
     private $error;

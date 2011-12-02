@@ -44,14 +44,14 @@ class KernelClassLoader
      * @param string $path      Path to the class namespace.
      * @param string $separator Namespace separator.
      *
-     * @throws LogicException If already registered.
+     * @throws \LogicException If already registered.
      *
      * @return void
      */
     public function register($namespace, $path = '', $separator = '\\')
     {
         if (isset($this->namespaces[$namespace])) {
-            throw new LogicException(sprintf('%s is already registered with this autoloader', $namespace));
+            throw new \LogicException(sprintf('%s is already registered with this autoloader', $namespace));
         }
 
         $this->namespaces[$namespace] = array('path' => str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $path)), 'separator' => $separator);
@@ -65,14 +65,14 @@ class KernelClassLoader
      *
      * @param string $namespace Namespace.
      *
-     * @throws LogicException If not registered.
+     * @throws \LogicException If not registered.
      *
      * @return void
      */
     public function unregister($namespace)
     {
         if (!isset($this->namespaces[$namespace])) {
-            throw new LogicException(sprintf('%s is not registered with this autoloader', $namespace));
+            throw new \LogicException(sprintf('%s is not registered with this autoloader', $namespace));
         }
 
         unset($this->namespaces[$namespace]);
@@ -93,7 +93,7 @@ class KernelClassLoader
     /**
      * Register this autoloader in the SPL autoload stack.
      *
-     * @throws LogicException If already registered.
+     * @throws \LogicException If already registered.
      *
      * @return void
      */
@@ -103,14 +103,14 @@ class KernelClassLoader
             spl_autoload_register(array($this, 'autoload'));
             $this->registered = true;
         } else {
-            throw new LogicException('Already registered on SPL autoloader stack');
+            throw new \LogicException('Already registered on SPL autoloader stack');
         }
     }
 
     /**
      * Register this autoloader in the SPL autoload stack.
      *
-     * @throws LogicException If not registered.
+     * @throws \LogicException If not registered.
      *
      * @return void
      */
@@ -120,7 +120,7 @@ class KernelClassLoader
             spl_autoload_unregister(array($this, 'autoload'));
             $this->registered = false;
         } else {
-            throw new LogicException('Not registered on SPL autoloader stack');
+            throw new \LogicException('Not registered on SPL autoloader stack');
         }
 
     }
