@@ -79,11 +79,11 @@ class HookManager
     /**
      * Notify hook handlers.
      *
-     * @param HookInterface $hook Hook instance.
+     * @param Hook $hook Hook instance.
      *
-     * @return HookInterface
+     * @return Hookt
      */
-    public function notify(HookInterface $hook)
+    public function notify(Hook $hook)
     {
         if (!$this->loaded) {
             // lazy load handlers for the first time

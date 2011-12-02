@@ -76,26 +76,6 @@ class GenericEvent extends Event implements \ArrayAccess
     }
 
     /**
-     * Signal to stop further event notification.
-     *
-     * @return void
-     */
-    public function stop()
-    {
-        $this->stop = true;
-    }
-
-    /**
-     * Has the event been stopped.
-     *
-     * @return boolean
-     */
-    public function isStopped()
-    {
-        return $this->stop;
-    }
-
-    /**
      * Set data.
      *
      * @param mixed $data Data to be saved.
