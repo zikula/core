@@ -39,12 +39,12 @@
 #ImageViewerTitle {
     text-align: left;
     float:left;
-    max-width: 49%;
+    max-width: 79%;
 }
 #ImageViewerPager {
     float: right;
     text-align: right;
-    max-width: 49%;
+    max-width: 19%;
 }
 #ImageViewerClose {
     position: absolute;
