@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../../bootstrap.php';
+namespace Zikula\Tests\Common;
 
 class Foo
 {
@@ -11,7 +11,7 @@ class Foo
 
     public function __construct($provider)
     {
-        Zikula_ClassProperties::load($this, $provider);
+        ClassProperties::load($this, $provider);
     }
 
     public function setData($data)
@@ -43,7 +43,7 @@ class Foo
 /**
  * ClassProperties test case.
  */
-class Tests_Zikula_ClassPropertiesTest extends PHPUnit_Framework_TestCase
+class ClassPropertiesTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Tests ClassProperties::setters()

@@ -1,16 +1,15 @@
 <?php
-require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+namespace Zikula\Tests\Common\FileSystem\Configuration;
+
+use Zikula\Common\FileSystem\Ftp;
+use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
 
 /**
  * Zikula_FileSystem_Ftp test case.
  */
-class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
+class FtpTest extends PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @var Zikula_FileSystem_Ftp
-     */
-    private $Zikula_FileSystem_Ftp;
+    private $ftp;
 
     /**
      * Prepares the environment before running a test.
@@ -18,27 +17,21 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $this->Zikula_FileSystem_Ftp = new Zikula_FileSystem_Ftp($config);
+        $config = new FtpConfiguration();
+        $this->ftp = new Ftp($config);
     }
 
-    /**
-     * Cleans up the environment after running a test.
-     */
     protected function tearDown()
     {
-        $this->Zikula_FileSystem_Ftp = null;
+        $this->ftp = null;
         parent::tearDown();
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->connect()
-     */
     public function testConnect()
     {
-        $config = new Zikula_FileSystem_Configuration_Ftp(1,2,3,4,5,6,true);
-        $fs = new Zikula_FileSystem_Ftp($config);
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $config = new FtpConfiguration(1,2,3,4,5,6,true);
+        $fs = new Ftp($config);
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('ssl_connect')
              ->will($this->returnValue(true));
@@ -54,9 +47,9 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $fs->setDriver($stub);
         $this->assertEquals(true, $fs->connect());
 
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $fs = new Zikula_FileSystem_Ftp($config);
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $config = new FtpConfiguration();
+        $fs = new Ftp($config);
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('connect')
              ->will($this->returnValue(true));
@@ -72,9 +65,9 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $fs->setDriver($stub);
         $this->assertEquals(true, $fs->connect());
 
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $fs = new Zikula_FileSystem_Ftp($config);
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $config = new FtpConfiguration();
+        $fs = new Ftp($config);
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('connect')
              ->will($this->returnValue(false));
@@ -90,9 +83,9 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $fs->setDriver($stub);
         $this->assertEquals(false, $fs->connect());
 
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $fs = new Zikula_FileSystem_Ftp($config);
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $config = new FtpConfiguration();
+        $fs = new Ftp($config);
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('connect')
              ->will($this->returnValue(true));
@@ -108,9 +101,9 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $fs->setDriver($stub);
         $this->assertEquals(false, $fs->connect());
 
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $fs = new Zikula_FileSystem_Ftp($config);
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $config = new FtpConfiguration();
+        $fs = new Ftp($config);
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('connect')
              ->will($this->returnValue(true));
@@ -126,9 +119,9 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $fs->setDriver($stub);
         $this->assertEquals(false, $fs->connect());
 
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $fs = new Zikula_FileSystem_Ftp($config);
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $config = new FtpConfiguration();
+        $fs = new Ftp($config);
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('connect')
              ->will($this->returnValue(true));
@@ -145,28 +138,25 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $fs->connect());
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->put()
-     */
     public function testPut()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('put')
              ->will($this->returnValue(true));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(true, $this->Zikula_FileSystem_Ftp->put(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(true, $this->ftp->put(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('put')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->put(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->put(1,2));
     }
 
     /**
@@ -175,180 +165,159 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
     public function testFput()
     {
         /// Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fput')
              ->will($this->returnValue(true));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(true, $this->Zikula_FileSystem_Ftp->fput(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(true, $this->ftp->fput(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fput')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->fput(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->fput(1,2));
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->get()
-     */
     public function testGet()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('get')
              ->will($this->returnValue(true));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(true, $this->Zikula_FileSystem_Ftp->get(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(true, $this->ftp->get(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('get')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->get(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->get(1,2));
 
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->fget()
-     */
     public function testFget()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fget')
              ->will($this->returnValue(true));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertInternalType('resource', $this->Zikula_FileSystem_Ftp->fget(1));
+        $this->ftp->setDriver($stub);
+        $this->assertInternalType('resource', $this->ftp->fget(1));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fget')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->fget(1));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->fget(1));
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->chmod()
-     */
     public function testChmod()
     {
         // Configure the stub.
         $perm = '777';
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('chmod')
              ->will($this->returnValue((int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT))));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals($perm, $this->Zikula_FileSystem_Ftp->chmod($perm,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals($perm, $this->ftp->chmod($perm,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('chmod')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->chmod(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->chmod(1,2));
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->ls()
-     */
     public function testLs()
     {
     	$array = array('1','2');
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('nlist')
              ->will($this->returnValue($array));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertInternalType('array', $this->Zikula_FileSystem_Ftp->ls(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertInternalType('array', $this->ftp->ls(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('nlist')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->ls(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->ls(1,2));
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->cd()
-     */
     public function testCd()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('chdir')
              ->will($this->returnValue(true));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(true, $this->Zikula_FileSystem_Ftp->cd(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(true, $this->ftp->cd(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('chdir')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->cd(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->cd(1,2));
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->mv()
-     */
     public function testMv()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('rename')
              ->will($this->returnValue(true));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(true, $this->Zikula_FileSystem_Ftp->mv(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(true, $this->ftp->mv(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('rename')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->mv(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->mv(1,2));
 
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->cp()
-     */
     public function testCp()
     {
         // Configure the stub.
         $handle = fopen('php://temp', 'r+');
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fget')
              ->will($this->returnValue($handle));
@@ -356,20 +325,20 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
              ->method('fput')
              ->will($this->returnValue(true));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(true, $this->Zikula_FileSystem_Ftp->cp(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(true, $this->ftp->cp(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fget')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->cp(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->cp(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fget')
              ->will($this->returnValue($handle));
@@ -377,55 +346,49 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
              ->method('fput')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->cp(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->cp(1,2));
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->rm()
-     */
     public function testRm()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('delete')
              ->will($this->returnValue(true));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(true, $this->Zikula_FileSystem_Ftp->rm(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(true, $this->ftp->rm(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('delete')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->rm(1,2));
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->rm(1,2));
     }
 
-    /**
-     * Tests Zikula_FileSystem_Ftp->isAlive()
-     */
     public function testIsAlive()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('systype')
              ->will($this->returnValue(true));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(true, $this->Zikula_FileSystem_Ftp->isAlive());
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(true, $this->ftp->isAlive());
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula_FileSystem_Facade_Ftp');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('systype')
              ->will($this->returnValue(false));
 
-        $this->Zikula_FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->Zikula_FileSystem_Ftp->isAlive());
+        $this->ftp->setDriver($stub);
+        $this->assertEquals(false, $this->ftp->isAlive());
     }
 }
