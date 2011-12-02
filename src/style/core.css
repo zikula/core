@@ -1909,7 +1909,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     list-style: none !important;
     font-size: 0.9em;
     text-align: left;
-    padding: 0.5em !important;
+    padding: 0.3em 0.4em !important;
     margin: 0 !important;
     cursor: pointer;
     text-decoration: none;
