@@ -15,7 +15,7 @@
 namespace Zikula\Core;
 
 use Zikula\Common\ServiceManager\ServiceManager;
-use Zikula\Common\EventManager\EventManager;
+use Zikula\Common\EventManager\ServiceManagerAwareEventManager as EventManager;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Framework\AbstractEventHandler;
 

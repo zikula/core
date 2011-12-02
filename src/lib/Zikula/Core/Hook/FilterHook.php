@@ -14,18 +14,18 @@
  */
 
 namespace Zikula\Core\Hook;
-use Zikula\Common\HookManager\AbstractHook;
+use Zikula\Common\HookManager\Hook;
 
 /**
  * Content filter hook.
  */
-class FilterHook extends AbstractHook
+class FilterHook extends Hook
 {
     private $data;
 
     public function __construct($name, $data=null)
     {
-        $this->name = $name;
+        $this->setName($name);
         $this->data = $data;
     }
 

@@ -14,12 +14,12 @@
  */
 
 namespace Zikula\Core\Hook;
-use Zikula\Common\HookManager\AbstractHook;
+use Zikula\Common\HookManager\Hook;
 
 /**
  * DisplayHook class.
  */
-class DisplayHook extends AbstractHook
+class DisplayHook extends Hook
 {
     /**
      * Responses.
@@ -37,7 +37,7 @@ class DisplayHook extends AbstractHook
 
     public function __construct($name, $id, ModUrl $url = null)
     {
-        $this->name = $name;
+        $this->setName($name);
         $this->id = $id;
         $this->url = $url;
     }
