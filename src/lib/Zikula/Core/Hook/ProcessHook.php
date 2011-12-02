@@ -14,7 +14,7 @@
  */
 
 namespace Zikula\Core\Hook;
-use Zikula\Common\HookManager\AbstractHook;
+use Zikula\Common\HookManager\Hook;
 
 /**
  * Event encapsulation class.
@@ -22,7 +22,7 @@ use Zikula\Common\HookManager\AbstractHook;
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class ProcessHook extends AbstractHook
+class ProcessHook extends Hook
 {
     /**
      * Url container.
@@ -33,7 +33,7 @@ class ProcessHook extends AbstractHook
 
     public function __construct($name, $id, ModUrl $url=null)
     {
-        $this->name = $name;
+        $this->setName($name);
         $this->id = $id;
         $this->url = $url;
     }

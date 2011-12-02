@@ -28,7 +28,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     protected function setupHandlerDefinitions()
     {
-        $this->addHandlerDefinition('bootstrap.getconfig', 'initialHandlerScan', -10);
+        $this->addHandlerDefinition('bootstrap.getconfig', 'initialHandlerScan', 100);
         $this->addHandlerDefinition('bootstrap.getconfig', 'getConfigFile');
         $this->addHandlerDefinition('setup.errorreporting', 'defaultErrorReporting');
         $this->addHandlerDefinition('core.preinit', 'systemCheck');
@@ -109,7 +109,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         $storageDef = new Definition('Zikula\Common\HookManager\Storage\Doctrine');
         $smRef = new Reference('zikula.servicemanager');
-        $eventManagerDef = new Definition('Zikula\Common\EventManager\EventManager', array($smRef));
+        $eventManagerDef = new Definition('Zikula\Common\EventManager\ServiceManagerAwareEventManager', array($smRef));
         $hookFactoryDef = new Definition('Zikula\Common\HookManager\ServiceFactory', array($smRef, 'zikula.eventmanager'));
         $hookManagerDef = new Definition('Zikula\Common\HookManager\HookManager', array($storageDef, $eventManagerDef, $hookFactoryDef));
         $this->serviceManager->registerService('zikula.hookmanager', $hookManagerDef);

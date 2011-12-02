@@ -36,7 +36,7 @@ class TemplateOverridesYaml extends Zikula_AbstractEventHandler
     protected function setupHandlerDefinitions()
     {
         // weight -5 ensures it's notified before any other handlers since this need to override anything else.
-        $this->addHandlerDefinition('zikula_view.template_override', 'handler', -5);
+        $this->addHandlerDefinition('zikula_view.template_override', 'handler', 5);
     }
 
     /**
