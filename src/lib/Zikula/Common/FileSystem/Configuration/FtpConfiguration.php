@@ -170,7 +170,7 @@ class FtpConfiguration implements ConfigurationInterface
      *
      * @return boolean True if SSL set.
      */
-    public function getSSL()
+    public function getSsl()
     {
         return $this->ssl;
     }

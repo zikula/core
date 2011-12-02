@@ -1,16 +1,14 @@
 <?php
-require_once dirname(__FILE__) . '/../../../../bootstrap.php';
+namespace Zikula\Tests\Common\FileSystem\Configuration;
 
-/**
- * Zikula_FileSystem_Error test case.
- */
-class Zikula_FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
+use Zikula\Common\FileSystem\Error;
+use Zikula\Common\FileSystem\Ftp;
+use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
+
+class ErrorTest extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * @var Zikula_FileSystem_Error
-     */
-    private $Zikula_FileSystem_Error;
+    private $error;
 
     /**
      * Prepares the environment before running a test.
@@ -18,10 +16,10 @@ class Zikula_FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $this->Zikula_FileSystem_Ftp = new Zikula_FileSystem_Ftp($config);
-        $this->Zikula_FileSystem_Ftp->getErrorHandler()->register('Error', 1);
-        $this->Zikula_FileSystem_Ftp->getErrorHandler()->register('Error2', 2);
+        $config = new FtpConfiguration();
+        $this->Ftp = new Ftp($config);
+        $this->Ftp->getErrorHandler()->register('Error', 1);
+        $this->Ftp->getErrorHandler()->register('Error2', 2);
 
     }
 
@@ -30,20 +28,17 @@ class Zikula_FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        $this->Zikula_FileSystem_Error = null;
+        $this->error = null;
         parent::tearDown();
     }
 
-    /**
-     * Tests Zikula_FileSystem_Error->error_get_last()
-     */
     public function testErrorGetLast()
     {
-        $this->assertInternalType('array', $this->Zikula_FileSystem_Ftp->getErrorHandler()->getLast());
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $fs = new Zikula_FileSystem_Ftp($config);
+        $this->assertInternalType('array', $this->Ftp->getErrorHandler()->getLast());
+        $config = new FtpConfiguration();
+        $fs = new Ftp($config);
         $this->assertEquals(false, $fs->getErrorHandler()->getLast());
-        $fs = new Zikula_FileSystem_Ftp($config);
+        $fs = new Ftp($config);
         $fs->getErrorHandler()->register('Error', 1);
         $fs->getErrorHandler()->register('Error2', 2);
         $this->assertInternalType('array', $fs->getErrorHandler()->getLast(true));
@@ -51,47 +46,35 @@ class Zikula_FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $fs->getErrorHandler()->getLast(true));
     }
 
-    /**
-     * Tests Zikula_FileSystem_Error->error_count()
-     */
     public function testErrorCount()
     {
-         $this->assertEquals(2, $this->Zikula_FileSystem_Ftp->getErrorHandler()->count());
+         $this->assertEquals(2, $this->Ftp->getErrorHandler()->count());
     }
 
-    /**
-     * Tests Zikula_FileSystem_Error->error_get_all()
-     */
     public function testErrorGetAll()
     {
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $fs = new Zikula_FileSystem_Ftp($config);
+        $config = new FtpConfiguration();
+        $fs = new Ftp($config);
         $fs->getErrorHandler()->register('Error', 1);
         $fs->getErrorHandler()->register('Error2', 2);
         $this->assertInternalType('array', $fs->getErrorHandler()->getAll(true));
         $this->assertEquals(array(), $fs->getErrorHandler()->getAll(true));
     }
 
-    /**
-     * Tests Zikula_FileSystem_Error->error_clear_all()
-     */
     public function testError_clear_all()
     {
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $fs = new Zikula_FileSystem_Ftp($config);
+        $config = new FtpConfiguration();
+        $fs = new Ftp($config);
         $fs->getErrorHandler()->register('Error', 1);
         $fs->getErrorHandler()->register('Error2', 2);
         $fs->getErrorHandler()->clearAll();
         $this->assertEquals(false, $fs->getErrorHandler()->getLast(true));
     }
 
-    /**
-     * Tests Zikula_FileSystem_Error->error_handler()
-     */
     public function testError_handler()
     {
-        $config = new Zikula_FileSystem_Configuration_Ftp();
-        $fs = new Zikula_FileSystem_Ftp($config);
+        $config = new FtpConfiguration();
+        $fs = new Ftp($config);
         $fs->getErrorHandler()->handler(0, 'Error', '1', '2');
         $this->assertInternalType('array', $fs->getErrorHandler()->getAll(false));
         $this->assertEquals(1, $fs->getErrorHandler()->count(true));
