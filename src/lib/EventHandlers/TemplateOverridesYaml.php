@@ -14,6 +14,7 @@
 
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\Yaml\Yaml;
+
 /**
  * Event handler to override templates.
  */
