@@ -14,6 +14,7 @@
  */
 
 namespace Zikula\Common\ServiceManager;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * ServiceManager class.
@@ -43,26 +44,35 @@ class ServiceManager implements \ArrayAccess
      */
     public function __construct($id = 'servicemanager')
     {
+        $this->container = new ContainerBuilder;
         $this->attachService($id, $this);
     }
+
+    public function __call($name, $arguments)
+    {
+        $this->container->$name($arguments);
+    }
+
     /**
      * Attach an existing service.
      *
      * @param string  $id      The ID of the service.
      * @param object  $service An already existing object.
-     * @param boolean $shared  True if this is a single instance (default).
      *
      * @throws \InvalidArgumentException If the service is already registered.
      *
      * @return object $service.
      */
-    public function attachService($id, $service, $shared = true)
+    public function attachService($id, $service)
     {
+        $this->container->set($id, $service, ContainerBuilder::SCOPE_CONTAINER);
+        return $service;
+
         if ($this->hasService($id)) {
             throw new \InvalidArgumentException(sprintf('Service %s is already attached', $id));
         }
 
-        $this->services[$id] = new Service($id, null, $shared);
+        $this->services[$id] = new Service($id, null, true);
         $this->services[$id]->setService($service);
         return $service;
     }
@@ -139,6 +149,10 @@ class ServiceManager implements \ArrayAccess
      */
     public function getService($id)
     {
+        if ($this->container->has($id)) {
+            return $this->container->get($id);
+        }
+
         if (!$this->hasService($id)) {
             throw new \InvalidArgumentException(sprintf('The service %s does not exist', $id));
         }
@@ -170,6 +184,9 @@ class ServiceManager implements \ArrayAccess
      */
     public function hasService($id)
     {
+        if ($this->container->has($id)) {
+            return true;
+        }
         return array_key_exists($id, $this->services);
     }
 
