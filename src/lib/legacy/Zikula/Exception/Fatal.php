@@ -16,6 +16,6 @@
 /**
  * Zikula_Exception_Fatal class.
  */
-class Zikula_Exception_Fatal extends Zikula\Framework\Exception\Fatal
+class Zikula_Exception_Fatal extends Zikula\Framework\Exception\FatalException
 {
 }

@@ -337,7 +337,7 @@ abstract class AbstractBase implements TranslatableInterface
      */
     protected function throwNotFound($message='', $code=0, $debug=null)
     {
-        throw new \Zikula\Framework\Exception\NotFound($message, $code, $debug);
+        throw new \Zikula\Framework\Exception\NotFoundException($message, $code, $debug);
     }
 
     /**
@@ -397,7 +397,7 @@ abstract class AbstractBase implements TranslatableInterface
      */
     protected function throwForbidden($message='', $code=0, $debug=null)
     {
-        throw new \Zikula\Framework\Exception\Forbidden($message, $code, $debug);
+        throw new \Zikula\Framework\Exception\ForbiddenException($message, $code, $debug);
     }
 
     /**
@@ -454,7 +454,7 @@ abstract class AbstractBase implements TranslatableInterface
      */
     protected function redirect($url, $type = 302)
     {
-        throw new \Zikula\Framework\Exception\Redirect($url, $type);
+        throw new \Zikula\Framework\Exception\RedirectException($url, $type);
     }
 
     /**
@@ -507,7 +507,7 @@ abstract class AbstractBase implements TranslatableInterface
     protected function registerStatus($message)
     {
         if (!isset($message) || empty($message)) {
-            throw new \Zikula\Framework\Exception($this->__f('Empty [%s] received.', 'message'));
+            throw new \Zikula\Framework\ExceptionException($this->__f('Empty [%s] received.', 'message'));
         }
 
         LogUtil::addStatusPopup($message);
@@ -573,7 +573,7 @@ abstract class AbstractBase implements TranslatableInterface
     protected function registerError($message, $type=null, $debug=null)
     {
         if (!isset($message) || empty($message)) {
-            throw new \Zikula\Framework\Exception($this->__f('Empty [%s] received.', 'message'));
+            throw new \Zikula\Framework\ExceptionException($this->__f('Empty [%s] received.', 'message'));
         }
 
         LogUtil::addErrorPopup($message);
@@ -727,7 +727,7 @@ abstract class AbstractBase implements TranslatableInterface
         }
 
         // Should we expire the session also? drak.
-        throw new \Zikula\Framework\Exception\Forbidden(__('Security token validation failed'));
+        throw new \Zikula\Framework\Exception\ForbiddenException(__('Security token validation failed'));
     }
 
     /**

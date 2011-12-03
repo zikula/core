@@ -16,21 +16,21 @@
 namespace Zikula\Framework\Exception;
 
 /**
- * NotFound exception class.
+ * Forbidden exception class.
  */
-class NotFound extends Exception
+class ForbiddenException extends Exception
 {
     /**
      * Constructor.
      *
      * @param string  $message Message default = ''.
-     * @param integer $code    Code default = 404.
+     * @param integer $code    Code default = 0.
      * @param mixed   $debug   Debug default = null.
      */
-    public function __construct($message='', $code=404, $debug=null)
+    public function __construct($message='', $code=0, $debug=null)
     {
         if (empty($message)) {
-            $message = __('The requested page could not be found or is not currently accessible.');
+            $message = __('Sorry! You have not been granted access to this page.');
         }
         parent::__construct($message, $code, $debug);
     }

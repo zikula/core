@@ -16,6 +16,6 @@
 /**
  * Zikula_Exception_NotFound class.
  */
-class Zikula_Exception_NotFound extends Zikula\Framework\Exception\NotFound
+class Zikula_Exception_NotFound extends Zikula\Framework\Exception\NotFoundException
 {
 }
