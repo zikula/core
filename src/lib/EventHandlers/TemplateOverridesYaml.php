@@ -13,7 +13,7 @@
  */
 
 use Zikula\Core\Event\GenericEvent;
-
+use Symfony\Component\Yaml\Yaml;
 /**
  * Event handler to override templates.
  */
@@ -47,7 +47,7 @@ class TemplateOverridesYaml extends Zikula_AbstractEventHandler
     public function setup()
     {
         if (is_readable('config/template_overrides.yml')) {
-            $this->overrideMap = Doctrine_Parser::load('config/template_overrides.yml', 'yml');
+            $this->overrideMap = Yaml::parse('config/template_overrides.yml');
         }
     }
 
