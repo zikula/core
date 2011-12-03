@@ -315,9 +315,9 @@ class HookManager
     /**
      * Decorate hook with required metadata.
      *
-     * @param HookInterface $hook
+     * @param Hook $hook
      */
-    private function decorateHook(HookInterface $hook)
+    private function decorateHook(Hook $hook)
     {
         $owningSide = $this->storage->getRuntimeMetaByEventName($hook->getName());
         if ($owningSide) {
