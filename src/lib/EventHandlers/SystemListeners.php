@@ -13,8 +13,9 @@
  */
 
 use Zikula\Core\Event\GenericEvent;
-use \Zikula\Common\ServiceManager\Definition;
-use \Zikula\Common\ServiceManager\Reference;
+use Zikula\Common\ServiceManager\Definition;
+use Zikula\Common\ServiceManager\Reference;
+use Zikula\Core\CoreEvents;
 
 /**
  * Event handler to override templates.
@@ -31,26 +32,26 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('bootstrap.getconfig', 'initialHandlerScan', 100);
         $this->addHandlerDefinition('bootstrap.getconfig', 'getConfigFile');
         $this->addHandlerDefinition('setup.errorreporting', 'defaultErrorReporting');
-        $this->addHandlerDefinition('core.preinit', 'systemCheck');
-        $this->addHandlerDefinition('core.preinit', 'setupSessions');
-        $this->addHandlerDefinition('core.init', 'setupLoggers');
+        $this->addHandlerDefinition(CoreEvents::PREINIT, 'systemCheck');
+        $this->addHandlerDefinition(CoreEvents::PREINIT, 'setupSessions');
+        $this->addHandlerDefinition(CoreEvents::INIT, 'setupLoggers');
         $this->addHandlerDefinition('log', 'errorLog');
-        $this->addHandlerDefinition('core.init', 'sessionLogging');
+        $this->addHandlerDefinition(CoreEvents::INIT, 'sessionLogging');
         $this->addHandlerDefinition('session.require', 'requireSession');
-        $this->addHandlerDefinition('core.init', 'systemPlugins');
-        $this->addHandlerDefinition('core.init', 'setupRequest');
-        $this->addHandlerDefinition('core.preinit', 'request');
-        $this->addHandlerDefinition('core.postinit', 'systemHooks');
-        $this->addHandlerDefinition('core.init', 'setupDebugToolbar');
+        $this->addHandlerDefinition(CoreEvents::INIT, 'systemPlugins');
+        $this->addHandlerDefinition(CoreEvents::INIT, 'setupRequest');
+        $this->addHandlerDefinition(CoreEvents::PREINIT, 'request');
+        $this->addHandlerDefinition(CoreEvents::POSTINIT, 'systemHooks');
+        $this->addHandlerDefinition(CoreEvents::INIT, 'setupDebugToolbar');
         $this->addHandlerDefinition('log.sql', 'logSqlQueries');
-        $this->addHandlerDefinition('core.init', 'setupAutoloaderForGeneratedCategoryModels');
+        $this->addHandlerDefinition(CoreEvents::INIT, 'setupAutoloaderForGeneratedCategoryModels');
         $this->addHandlerDefinition('installer.module.uninstalled', 'deleteGeneratedCategoryModelsOnModuleRemove');
         $this->addHandlerDefinition('pageutil.addvar_filter', 'coreStylesheetOverride');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
-        $this->addHandlerDefinition('core.init', 'initDB');
-        $this->addHandlerDefinition('core.preinit', 'setupHookManager');
-        $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
+        $this->addHandlerDefinition(CoreEvents::INIT, 'initDB');
+        $this->addHandlerDefinition(CoreEvents::PREINIT, 'setupHookManager');
+        $this->addHandlerDefinition(CoreEvents::INIT, 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
         $this->addHandlerDefinition('frontcontroller.predispatch', 'sessionExpired', 3);
         $this->addHandlerDefinition('frontcontroller.predispatch', 'siteOff', 7);
@@ -99,7 +100,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     }
 
     /**
-     * Listens on 'core.preinit' event.
+     * Listens on CoreEvents::PREINIT event.
      *
      * Sets up hookmanager.
      *
@@ -116,7 +117,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     }
 
     /**
-     * Listen for the 'core.preinit' event.
+     * Listen for the CoreEvents::PREINIT event.
      *
      * @param GenericEvent $event Event.
      *
@@ -130,7 +131,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     }
 
     /**
-     * Listen for the 'core.init' event & STAGE_DECODEURLS.
+     * Listen for the CoreEvents::INIT event & STAGE_DECODEURLS.
      *
      * This is basically a hack until the routing framework takes over (drak).
      *
@@ -169,7 +170,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Start sessions.
      *
-     * Implements 'core.preinit' event.
+     * Implements CoreEvents::PREINIT event.
      *
      * @param GenericEvent $event The event handler.
      *
@@ -185,7 +186,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     }
 
     /**
-     * Listen on 'core.init' module.
+     * Listen on CoreEvents::INIT module.
      *
      * @param GenericEvent $event Event.
      *
@@ -211,7 +212,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * If enabled and logged in, save login name of user in Apache session variable for Apache logs.
      *
-     * Implements 'core.init' event when Zikula\Core\Core::STAGE_SESSIONS.
+     * Implements CoreEvents::INIT event when Zikula\Core\Core::STAGE_SESSIONS.
      *
      * @param GenericEvent $event The event handler.
      *
@@ -256,7 +257,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Initialise DB connection.
      *
-     * Implements 'core.init' event when Zikula\Core\Core::STAGE_DB.
+     * Implements CoreEvents::INIT event when Zikula\Core\Core::STAGE_DB.
      *
      * @param GenericEvent $event The event handler.
      *
@@ -273,7 +274,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Call system hooks.
      *
-     * Implements 'core.postinit' event.
+     * Implements CoreEvents::POSTINIT event.
      *
      * This is just here for legacy systeminit hooks.
      *
@@ -297,7 +298,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Load system plugins.
      *
-     * Implements 'core.init' event when Zikula\Core\Core::STAGE_TABLES.
+     * Implements CoreEvents::INIT event when Zikula\Core\Core::STAGE_TABLES.
      *
      * @param GenericEvent $event The event handler.
      *
@@ -347,7 +348,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Establish the necessary instances for logging.
      *
-     * Implements 'core.init' event when Zikula\Core\Core::STAGE_CONFIG.
+     * Implements CoreEvents::INIT event when Zikula\Core\Core::STAGE_CONFIG.
      *
      * @param GenericEvent $event The event to log.
      *
@@ -476,7 +477,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Debug toolbar startup.
      *
-     * Implements 'core.init' event when Zikula\Core\Core::STAGE_CONFIG in development mode.
+     * Implements CoreEvents::INIT event when Zikula\Core\Core::STAGE_CONFIG in development mode.
      *
      * @param GenericEvent $event Event.
      *
@@ -566,7 +567,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Adds an autoloader entry for the cached (generated) doctrine models.
      *
-     * Implements 'core.init' events when Zikula\Core\Core::STAGE_CONFIG.
+     * Implements CoreEvents::INIT events when Zikula\Core\Core::STAGE_CONFIG.
      *
      * @param GenericEvent $event Event.
      *
@@ -722,7 +723,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Perform some checks that might result in a die() upon failure.
      *
-     * Listens on the 'core.preinit' event.
+     * Listens on the CoreEvents::PREINIT event.
      *
      * @param GenericEvent $event Event.
      *

@@ -366,7 +366,7 @@ class Core
      */
     public function init($stage = self::STAGE_ALL)
     {
-        $coreInitEvent = new GenericEvent('core.init', $this);
+        $coreInitEvent = new GenericEvent(CoreEvents::INIT, $this);
 
         // store the load stages in a global so other API's can check whats loaded
         $this->stage = $this->stage | $stage;
@@ -374,7 +374,7 @@ class Core
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
             \ModUtil::flushCache();
             \System::flushCache();
-            $this->eventManager->notify(new GenericEvent('core.preinit', $this));
+            $this->eventManager->notify(new GenericEvent(CoreEvents::PREINIT, $this));
         }
 
         // Initialise and load configuration
@@ -382,7 +382,7 @@ class Core
             // error reporting
             if (!\System::isInstalling()) {
                 // this is here because it depends on the config.php loading.
-                $event = new GenericEvent('setup.errorreporting', null, array('stage' => $stage));
+                $event = new GenericEvent(CoreEvents::ERRORREPORTING, null, array('stage' => $stage));
                 $this->eventManager->notify($event);
             }
 
@@ -399,7 +399,7 @@ class Core
 
         if ($stage & self::STAGE_DB) {
             try {
-                $dbEvent = new GenericEvent('core.init', $this, array('stage' => self::STAGE_DB));
+                $dbEvent = new GenericEvent(CoreEvents::INIT, $this, array('stage' => self::STAGE_DB));
                 $this->eventManager->notify($dbEvent);
             } catch (\PDOException $e) {
                 if (!System::isInstalling()) {
@@ -504,7 +504,7 @@ class Core
         }
 
         if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
-            $this->eventManager->notify(new GenericEvent('core.postinit', $this, array('stages' => $stage)));
+            $this->eventManager->notify(new GenericEvent(CoreEvents::POSTINIT, $this, array('stages' => $stage)));
         }
     }
 }
