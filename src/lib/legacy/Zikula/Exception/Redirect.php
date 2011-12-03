@@ -16,6 +16,6 @@
 /**
  * Zikula_Exception_Redirect class.
  */
-class Zikula_Exception_Redirect extends Zikula\Framework\Exception\Redirect
+class Zikula_Exception_Redirect extends Zikula\Framework\Exception\RedirectException
 {
 }

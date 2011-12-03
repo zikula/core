@@ -16,21 +16,21 @@
 namespace Zikula\Framework\Exception;
 
 /**
- * Forbidden exception class.
+ * Fatal exception class.
  */
-class Forbidden extends Exception
+class FatalException extends RuntimeException
 {
     /**
      * Constructor.
      *
      * @param string  $message Message default = ''.
-     * @param integer $code    Code default = 0.
+     * @param integer $code    Code default = 500.
      * @param mixed   $debug   Debug default = null.
      */
-    public function __construct($message='', $code=0, $debug=null)
+    public function __construct($message='', $code=500, $debug=null)
     {
         if (empty($message)) {
-            $message = __('Sorry! You have not been granted access to this page.');
+            $message = __('A fatal system error occured.');
         }
         parent::__construct($message, $code, $debug);
     }

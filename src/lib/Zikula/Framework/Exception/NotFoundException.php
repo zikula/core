@@ -16,21 +16,21 @@
 namespace Zikula\Framework\Exception;
 
 /**
- * Fatal exception class.
+ * NotFound exception class.
  */
-class Fatal extends Exception
+class NotFoundException extends Exception
 {
     /**
      * Constructor.
      *
      * @param string  $message Message default = ''.
-     * @param integer $code    Code default = 500.
+     * @param integer $code    Code default = 404.
      * @param mixed   $debug   Debug default = null.
      */
-    public function __construct($message='', $code=500, $debug=null)
+    public function __construct($message='', $code=404, $debug=null)
     {
         if (empty($message)) {
-            $message = __('A fatal system error occured.');
+            $message = __('The requested page could not be found or is not currently accessible.');
         }
         parent::__construct($message, $code, $debug);
     }

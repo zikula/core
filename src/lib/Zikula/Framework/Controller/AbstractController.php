@@ -15,7 +15,7 @@
 
 namespace Zikula\Framework\Controller;
 use Zikula\Framework\AbstractBase;
-use Zikula\Framework\Exception\NotFound;
+use Zikula\Framework\Exception\NotFoundException;
 use Zikula\Common\HookManager\HookInterface;
 use \Zikula\Core\Event\GenericEvent;
 use Zikula_View;
@@ -109,7 +109,7 @@ abstract class AbstractController extends AbstractBase
             return $event->getData();
         }
 
-        throw new NotFound(__f('%1$s::%2$s() does not exist.', array(get_class($this), $method)));
+        throw new NotFoundException(__f('%1$s::%2$s() does not exist.', array(get_class($this), $method)));
     }
 
     /**

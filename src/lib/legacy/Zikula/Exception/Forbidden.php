@@ -16,6 +16,6 @@
 /**
  * Zikula_Exception_Forbidden class.
  */
-class Zikula_Exception_Forbidden extends Zikula\Framework\Exception\Forbidden
+class Zikula_Exception_Forbidden extends Zikula\Framework\Exception\ForbiddenException
 {
 }
