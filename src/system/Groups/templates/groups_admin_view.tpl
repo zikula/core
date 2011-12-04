@@ -31,7 +31,9 @@
     <h3>{gt text="Groups list"}</h3>
 </div>
 
+{checkpermissionblock component='Groups::' instance='::' level=ACCESS_ADD}
 <a id="appendajax" onclick="groupappend();" style="margin-bottom: 1em;" class="z-floatleft z-icon-es-new z-hide" title="{gt text="Create new group"}" href="javascript:void(0);">{gt text="Create new group"}</a>
+{/checkpermissionblock}
 
 <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
 
@@ -109,16 +111,22 @@
                 </span>
                 {* *}
                 {assign var="options" value=$group.options}
+                {gt text='Edit: %s' tag1=$group.name assign=strEditGroup}
+                {gt text='Delete: %s' tag1=$group.name assign=strDeleteGroup}
+                {gt text='Membership of: %s' tag1=$group.name assign=strMembershipGroup}
+                {gt text='Save: %s' tag1=$group.name assign=strSaveGroup}
+                {gt text='Delete: %s' tag1=$group.name assign=strDeleteGroup}
+                {gt text='Cancel: %s' tag1=$group.name assign=strCancelGroup}
                 <span id="groupaction_{$group.gid}" class="z-itemcell z-w10">
-                    <button class="z-imagebutton z-hide tooltips" id="modifyajax_{$group.gid}" title="{gt text="Edit group: `$group.name`"}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
-                    <a id="modify_{$group.gid}"  href="{$group.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit group: `$group.name`" __alt="Edit" class='tooltips'}</a>
-                    <a id="delete_{$group.gid}"     href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.png modname=core set=icons/extrasmall __title="Delete group: `$group.name`" __alt="Delete" class='tooltips'}</a>
-                    <a id="members_{$group.gid}"  href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=group.png modname=core set=icons/extrasmall __title="Membership of group: `$group.name`" __alt="Group membership" class='tooltips'}</a>
+                    <button class="z-imagebutton z-hide tooltips" id="modifyajax_{$group.gid}" title="{$strEditGroup}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
+                    <a id="modify_{$group.gid}" href="{$group.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.png modname=core set=icons/extrasmall title=$strEditGroup alt="Edit" class='tooltips'}</a>
+                    <a id="delete_{$group.gid}" href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.png modname=core set=icons/extrasmall title=$strDeleteGroup __alt="Delete" class='tooltips'}</a>
+                    <a id="members_{$group.gid}" href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=group.png modname=core set=icons/extrasmall title=$strMembershipGroup __alt="Group membership" class='tooltips'}</a>
                 </span>
                 <span id="editgroupaction_{$group.gid}" class="z-itemcell z-w10 z-hide">
-                    <button class="z-imagebutton tooltips" id="groupeditsave_{$group.gid}"   title="{gt text="Save group: `$group.name`"}">{img src=button_ok.png modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
-                    <button class="z-imagebutton tooltips" id="groupeditdelete_{$group.gid}" title="{gt text="Delete group: `$group.name`"}">{img src=14_layer_deletelayer.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
-                    <button class="z-imagebutton tooltips" id="groupeditcancel_{$group.gid}" title="{gt text="Cancel group: `$group.name`"}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
+                    <button class="z-imagebutton tooltips" id="groupeditsave_{$group.gid}" title="{$strSaveGroup}">{img src=button_ok.png modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
+                    <button class="z-imagebutton tooltips" id="groupeditdelete_{$group.gid}" title="{$strDeleteGroup}">{img src=14_layer_deletelayer.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
+                    <button class="z-imagebutton tooltips" id="groupeditcancel_{$group.gid}" title="{$strCancelGroup}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                 </span>
             </div>
             <div id="groupinfo_{$group.gid}" class="z-hide z-groupinfo">

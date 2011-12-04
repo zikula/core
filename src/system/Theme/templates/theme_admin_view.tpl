@@ -30,10 +30,13 @@
     </thead>
     <tbody>
         {foreach from=$themes item=theme}
-        {if $theme.admin eq true}
-        {modurl modname=Admin type=admin func=adminpanel theme=$theme.name assign='themeurl'}
+        {homepage assign='homepageurl'}
+        {if $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint neq 1}
+        {assign var='themeurl' value="`$homepageurl`/`$theme.name`"}
+        {elseif $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint eq 1}
+        {assign var='themeurl' value="`$homepageurl``$theme.name`"}
         {else}
-        {assign var='themeurl' value="`$modvars.ZConfig.entrypoint`?theme=`$theme.name`"}
+        {assign var='themeurl' value="`$homepageurl`?theme=`$theme.name`"}
         {/if}
         <tr class="{cycle values="z-odd,z-even}{if $theme.name|strtolower eq $currenttheme|strtolower} z-defaulttablerow{/if}">
             <td>
@@ -50,15 +53,20 @@
             </td>
             <td>{$theme.description|default:$theme.displayname}</td>
             <td class="z-right z-nowrap">
-                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}">{icon type="preview" size="extrasmall" __alt="Preview" __title="Preview: `$theme.displayname`" class="tooltips"}</a>
-                <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{icon type="edit" size="extrasmall" __alt="Edit" __title="Edit: `$theme.displayname` " class="tooltips"}</a>
+                {gt text='Preview: %s' tag1=$theme.displayname assign=strPreviewTheme}
+                {gt text='Edit: %s' tag1=$theme.displayname assign=strEditTheme}
+                {gt text='Delete: %s' tag1=$theme.displayname assign=strDeleteTheme}
+                {gt text='Set as default: %s' tag1=$theme.displayname assign=strSetDefaultTheme}
+                {gt text='Credits: %s' tag1=$theme.displayname assign=strCreditsTheme}
+                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}">{icon type="preview" size="extrasmall" __alt="Preview" title=$strPreviewTheme class="tooltips"}</a>
+                <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{icon type="edit" size="extrasmall" __alt="Edit" title=$strEditTheme class="tooltips"}</a>
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
-                <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{icon type="delete" size="extrasmall" __alt="Delete" __title="Delete: `$theme.displayname`" class="tooltips"}</a>
+                <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{icon type="delete" size="extrasmall" __alt="Delete" title=$strDeleteTheme class="tooltips"}</a>
                 {/if}
                 {if $theme.name neq $currenttheme and $theme.user and $theme.state neq 2}
-                <a href="{modurl modname="Theme" type="admin" func="setasdefault" themename=$theme.name}">{icon type="ok" size="extrasmall" __alt="Set as default" __title="Set as default: `$theme.displayname`" class="tooltips"}</a>
+                <a href="{modurl modname="Theme" type="admin" func="setasdefault" themename=$theme.name}">{icon type="ok" size="extrasmall" __alt="Set as default" title=$strSetDefaultTheme class="tooltips"}</a>
                 {/if}
-                <a href="{modurl modname="Theme" type="admin" func="credits" themename=$theme.name}">{icon type="info" size="extrasmall" __alt="Credits" __title="Credits: `$theme.displayname`" class="tooltips"}</a>
+                <a href="{modurl modname="Theme" type="admin" func="credits" themename=$theme.name}">{icon type="info" size="extrasmall" __alt="Credits" title=$strCreditsTheme class="tooltips"}</a>
             </td>
         </tr>
         {foreachelse}

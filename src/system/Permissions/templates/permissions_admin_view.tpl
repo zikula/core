@@ -69,10 +69,12 @@
 </form>
 {/if}
 
+{checkpermissionblock component='Permissions::' instance='::' level=ACCESS_ADMIN}
 <div id="permissions-header" class="z-clearfix">
     <a id="appendajax" onclick="javascript:permappend();" class="z-floatleft z-icon-es-new z-hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
     <strong id="filterwarning" class="z-floatright z-icon-es-warning" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
 </div>
+{/checkpermissionblock}
 
 <div class="permbox">
 
