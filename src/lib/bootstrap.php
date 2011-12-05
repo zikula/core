@@ -25,7 +25,7 @@ if (version_compare($phpVersion, '5.3.2', '>=') == false) {
 include 'lib/ZLoader.php';
 ZLoader::register();
 
-$core = new Core();
+$core = new Core(__DIR__.'/Resources/config/core.xml');
 $core->boot();
 
 // Load system configuration

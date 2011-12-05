@@ -33,14 +33,12 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('bootstrap.getconfig', 'getConfigFile');
         $this->addHandlerDefinition('setup.errorreporting', 'defaultErrorReporting');
         $this->addHandlerDefinition(CoreEvents::PREINIT, 'systemCheck');
-        $this->addHandlerDefinition(CoreEvents::PREINIT, 'setupSessions');
         $this->addHandlerDefinition(CoreEvents::INIT, 'setupLoggers');
         $this->addHandlerDefinition('log', 'errorLog');
         $this->addHandlerDefinition(CoreEvents::INIT, 'sessionLogging');
         $this->addHandlerDefinition('session.require', 'requireSession');
         $this->addHandlerDefinition(CoreEvents::INIT, 'systemPlugins');
         $this->addHandlerDefinition(CoreEvents::INIT, 'setupRequest');
-        $this->addHandlerDefinition(CoreEvents::PREINIT, 'request');
         $this->addHandlerDefinition(CoreEvents::POSTINIT, 'systemHooks');
         $this->addHandlerDefinition(CoreEvents::INIT, 'setupDebugToolbar');
         $this->addHandlerDefinition('log.sql', 'logSqlQueries');
@@ -50,7 +48,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
         $this->addHandlerDefinition(CoreEvents::INIT, 'initDB');
-        $this->addHandlerDefinition(CoreEvents::PREINIT, 'setupHookManager');
         $this->addHandlerDefinition(CoreEvents::INIT, 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
         $this->addHandlerDefinition('frontcontroller.predispatch', 'sessionExpired', 3);
@@ -100,37 +97,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
     }
 
     /**
-     * Listens on CoreEvents::PREINIT event.
-     *
-     * Sets up hookmanager.
-     *
-     * @param GenericEvent $event Event.
-     */
-    public function setupHookManager(GenericEvent $event)
-    {
-        $storageDef = new Definition('Zikula\Common\HookManager\Storage\Doctrine');
-        $smRef = new Reference('zikula.servicemanager');
-        $eventManagerDef = new Definition('Zikula\Common\EventManager\ServiceManagerAwareEventManager', array($smRef));
-        $hookFactoryDef = new Definition('Zikula\Common\HookManager\ServiceFactory', array($smRef, 'zikula.eventmanager'));
-        $hookManagerDef = new Definition('Zikula\Common\HookManager\HookManager', array($storageDef, $eventManagerDef, $hookFactoryDef));
-        $this->serviceManager->registerService('zikula.hookmanager', $hookManagerDef);
-    }
-
-    /**
-     * Listen for the CoreEvents::PREINIT event.
-     *
-     * @param GenericEvent $event Event.
-     *
-     * @return void
-     */
-    public function request(GenericEvent $event)
-    {
-        $requestDef = new Definition('Zikula_Request_Http');
-        $requestDef->addMethod('setSession', array(new Reference('session')));
-        $this->serviceManager->registerService('request', $requestDef);
-    }
-
-    /**
      * Listen for the CoreEvents::INIT event & STAGE_DECODEURLS.
      *
      * This is basically a hack until the routing framework takes over (drak).
@@ -168,24 +134,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
     }
 
     /**
-     * Start sessions.
-     *
-     * Implements CoreEvents::PREINIT event.
-     *
-     * @param GenericEvent $event The event handler.
-     *
-     * @return void
-     */
-    public function setupSessions(GenericEvent $event)
-    {
-        $storageDef = new Definition('Zikula_Session_Storage_Legacy');
-        $this->serviceManager->registerService('session.storage', $storageDef);
-        $storageReference = new Reference('session.storage');
-        $session = new Definition('Zikula_Session', array($storageReference));
-        $this->serviceManager->registerService('session', $session);
-    }
-
-    /**
      * Listen on CoreEvents::INIT module.
      *
      * @param GenericEvent $event Event.
@@ -195,17 +143,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupCsfrProtection(GenericEvent $event)
     {
         if ($event['stage'] & Zikula\Core\Core::STAGE_MODS) {
-            $tokenStorageDef = new Definition('Zikula\Core\Token\Storage\SessionStorage',
-                            array(new Reference('session')));
-            $this->serviceManager->registerService('token.storage', $tokenStorageDef);
-
-            $tokenGeneratorDef = new Definition('Zikula\Core\Token\Generator',
-                            array(new Reference('token.storage'), System::getVar('signingkey')));
-            $this->serviceManager->registerService('token.generator', $tokenGeneratorDef);
-
-            $tokenValidatorDef = new Definition('Zikula_Token_Validate',
-                            array(new Reference('token.generator')));
-            $this->serviceManager->registerService('token.validator', $tokenValidatorDef);
+            $this->serviceManager->setArgument('signing.key', System::getVar('signingkey'));
         }
     }
 

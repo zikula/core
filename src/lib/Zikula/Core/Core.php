@@ -18,6 +18,8 @@ use Zikula\Common\ServiceManager\ServiceManager;
 use Zikula\Common\EventManager\ServiceManagerAwareEventManager as EventManager;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Framework\AbstractEventHandler;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\Config\FileLocator;
 
 
 // Defines for access levels
@@ -173,10 +175,11 @@ class Core
      *
      * @param string $handlerDir Directory where handlers are located.
      */
-    public function __construct($handlerDir = 'lib/EventHandlers')
+    public function __construct($coreConfig, $handlerDir = 'lib/EventHandlers')
     {
         $this->handlerDir = $handlerDir;
         $this->baseMemory = memory_get_usage();
+        $this->coreConfig = $coreConfig;
     }
 
     /**
@@ -198,7 +201,15 @@ class Core
         $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new EventManager($this->serviceManager));
         $this->serviceManager->attachService('zikula', $this);
 
+        $this->loadService($this->coreConfig);
         $this->attachHandlers($this->handlerDir);
+    }
+
+    public function loadService($path)
+    {
+        $fileLocator = new FileLocator(array($path));
+        $xmlFileLoader = new XmlFileLoader($this->getServiceManager()->getService('service_container'), $fileLocator);
+        $xmlFileLoader->load($path);
     }
 
     /**
