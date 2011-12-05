@@ -18,9 +18,9 @@ use Zikula\Core\Token\Generator;
 use Zikula\Core\Token\Storage\StoragInterface;
 
 /**
- * Zikula_Token_Validate class.
+ * Token Validator class.
  */
-class Validate
+class Validator
 {
     /**
      * Token generator.

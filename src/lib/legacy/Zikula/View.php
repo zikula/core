@@ -662,7 +662,12 @@ class Zikula_View extends Smarty implements TranslatableInterface
         }
 
         $event = new GenericEvent('view.postfetch', $this, array('template' => $template), $output);
-        return $this->eventManager->notify($event)->getData();
+        try {
+            $data = $this->eventManager->notify($event)->getData();
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        }
+        return $data;
     }
 
     /**

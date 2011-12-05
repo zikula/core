@@ -286,7 +286,7 @@ class ServiceManager implements \ArrayAccess
      */
     public function getArguments()
     {
-        return $this->arguments;
+        return $this->container->getParameterBag()->all();
     }
 
     /**
@@ -298,7 +298,8 @@ class ServiceManager implements \ArrayAccess
      */
     public function setArguments(array $array)
     {
-        $this->arguments = $array;
+        $this->container->getParameterBag()->clear();
+        $this->container->getParameterBag()->add($array);
     }
 
     /**
@@ -310,7 +311,7 @@ class ServiceManager implements \ArrayAccess
      */
     public function hasArgument($id)
     {
-        return array_key_exists($id, $this->arguments);
+        return $this->container->hasParameter($id);
     }
 
     /**
@@ -323,7 +324,7 @@ class ServiceManager implements \ArrayAccess
      */
     public function setArgument($id, $value)
     {
-        $this->arguments[$id] = $value;
+        $this->container->setParameter($id, $value);
     }
 
     /**
@@ -338,9 +339,10 @@ class ServiceManager implements \ArrayAccess
     public function getArgument($id)
     {
         if (!$this->hasArgument($id)) {
-            throw new \InvalidArgumentException(sprintf('No argument "%s" is registered with Zikula\Common\ServiceManager\ServiceManager', $id));
+            throw new \InvalidArgumentException(\sprintf('No argument "%s" is registered with \Zikula\Common\ServiceManager\ServiceManager', $id));
         }
-        return $this->arguments[$id];
+
+        return $this->container->getParameter($id);
     }
 
     /**
