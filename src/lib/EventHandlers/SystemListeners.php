@@ -39,7 +39,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('session.require', 'requireSession');
         $this->addHandlerDefinition(CoreEvents::INIT, 'systemPlugins');
         $this->addHandlerDefinition(CoreEvents::INIT, 'setupRequest');
-        $this->addHandlerDefinition(CoreEvents::POSTINIT, 'systemHooks');
         $this->addHandlerDefinition(CoreEvents::INIT, 'setupDebugToolbar');
         $this->addHandlerDefinition('log.sql', 'logSqlQueries');
         $this->addHandlerDefinition(CoreEvents::INIT, 'setupAutoloaderForGeneratedCategoryModels');
@@ -206,30 +205,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if ($event['stage'] & Zikula\Core\Core::STAGE_DB) {
             $dbEvent = new GenericEvent('doctrine.init_connection');
             $this->eventManager->notify($dbEvent);
-        }
-    }
-
-    /**
-     * Call system hooks.
-     *
-     * Implements CoreEvents::POSTINIT event.
-     *
-     * This is just here for legacy systeminit hooks.
-     *
-     * @param GenericEvent $event The event handler.
-     *
-     * @return void
-     */
-    public function systemHooks(GenericEvent $event)
-    {
-        if (!System::isInstalling() && System::isLegacyMode()) {
-            // call system init hooks
-            $systeminithooks = FormUtil::getPassedValue('systeminithooks', 'yes', 'GETPOST');
-            if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN) && (isset($systeminithooks) && $systeminithooks == 'no')) {
-                // omit system hooks if requested by an administrator
-            } else {
-                ModUtil::callHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
-            }
         }
     }
 
