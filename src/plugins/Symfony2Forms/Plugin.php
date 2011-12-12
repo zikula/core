@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-use SystemPlugin\Symfony2Forms\Renderer;
+use Zikula\Core\Forms\Renderer;
 
 /**
  * Symfony2 forms plugin definition.
@@ -33,17 +33,15 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
     
     public function initialize()
     {
-        ZLoader::addAutoloader("Symfony\\Component\\Form", __DIR__ . '/lib/vendor', '\\');
-        ZLoader::addAutoloader("Symfony\\Component\\EventDispatcher", __DIR__ . '/lib/vendor', '\\');
         ZLoader::addAutoloader("Symfony\\Bridge\\Doctrine", __DIR__ . '/lib/vendor', '\\');
-        ZLoader::addAutoloader("SystemPlugin\\Symfony2Forms", __DIR__ . '/lib', '\\');
+        ZLoader::addAutoloader("Zikla\\Core\\Forms", __DIR__ . '/lib', '\\');
         
-        $registry = new \SystemPlugin\Symfony2Forms\DoctrineRegistryImpl();
+        $registry = new \Zikula\Core\Forms\DoctrineRegistryImpl();
         
-        $csrf = new \Symfony\Component\Form\Extension\Csrf\CsrfExtension(new \SystemPlugin\Symfony2Forms\ZikulaCsrfProvider());
+        $csrf = new \Symfony\Component\Form\Extension\Csrf\CsrfExtension(new \Zikula\Core\Forms\ZikulaCsrfProvider());
         $core = new \Symfony\Component\Form\Extension\Core\CoreExtension();
-        $zkvalidator = new \SystemPlugin\Symfony2Forms\Validation\Form\ValidatorExtension();
-        $zk = new \SystemPlugin\Symfony2Forms\ZikulaExtension();
+        $zkvalidator = new \Zikula\Core\Forms\Validation\Form\ValidatorExtension();
+        $zk = new \Zikula\Core\Forms\ZikulaExtension();
         $doctrine = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
         
         $formFactory = new \Symfony\Component\Form\FormFactory(array($core, $csrf, $zkvalidator, $zk, $doctrine));
@@ -51,7 +49,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         $this->serviceManager->attachService('symfony.formfactory', $formFactory);
         
         
-        $formRenderer = new \SystemPlugin\Symfony2Forms\FormRenderer($this->eventManager);
+        $formRenderer = new \Zikula\Core\Forms\FormRenderer($this->eventManager);
         $this->serviceManager->attachService('symfony.formrenderer', $formRenderer);
     }
     
