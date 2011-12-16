@@ -27,7 +27,7 @@ class Theme_Api_Account extends Zikula_AbstractApi
         // check if theme switching is allowed
         if (System::getVar('theme_change')) {
             // create an array of links to return
-            $items['0'] = array('url' => ModUtil::url('Theme', 'user'),
+            $items['0'] = array('url' => ModUtil::url('Theme', 'user', 'main'),
                     'module' => 'Theme',
                     'title' => $this->__('Theme switcher'),
                     'icon' => 'admin.png');
