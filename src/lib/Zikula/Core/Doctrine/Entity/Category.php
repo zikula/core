@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="categories_category")
  */
-class Zikula_Doctrine2_Entity_Category extends EntityAccess
+class Category extends EntityAccess
 {
     /**
      * @ORM\Id
@@ -33,14 +33,14 @@ class Zikula_Doctrine2_Entity_Category extends EntityAccess
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Zikula\\Doctrine\\Core\\Entity\\Category", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @var Zikula_Doctrine2_Entity_Category
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Zikula\\Doctrine\\Core\\Entity\\Category", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\Category", mappedBy="parent")
      * @var \Zikula\Core\Doctrine\Entity\Category
      */
     private $children;

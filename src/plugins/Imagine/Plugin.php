@@ -41,7 +41,7 @@ class SystemPlugin_Imagine_Plugin extends AbstractPlugin implements AlwaysOnInte
      */
     public function initialize()
     {
-        $autoloader = new Zikula_KernelClassLoader();
+        $autoloader = new Zikula\Common\KernelClassLoader();
         $autoloader->spl_autoload_register();
         $autoloader->register('Imagine', dirname(__FILE__) . '/lib/vendor', '\\');
     }

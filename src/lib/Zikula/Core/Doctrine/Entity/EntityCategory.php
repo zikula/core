@@ -38,9 +38,9 @@ abstract class EntityCategory extends EntityAccess
     private $categoryRegistryId;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Zikula\\Doctrine\\Core\\Entity\\Category")
+     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category")
      * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
-     * @var Zikula_Doctrine2_Entity_Category
+     * @var Zikula\Core\Doctrine\Entity\Category
      */
     private $category;
 
