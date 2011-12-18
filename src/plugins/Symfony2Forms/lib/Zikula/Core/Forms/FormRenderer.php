@@ -5,6 +5,7 @@ namespace Zikula\Core\Forms;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Util\FormUtil;
+use Zikula\Common\EventManager\EventManagerInterface;
 
 /**
  * Symfony2 FormView Renderer.
@@ -17,7 +18,7 @@ class FormRenderer
     protected $varStack;
     protected $eventManager;
 
-    public function __construct(Zikula_EventManagerInterface $eventManager)
+    public function __construct(EventManagerInterface $eventManager)
     {
         $this->varStack = array();
         $this->renderer = null;

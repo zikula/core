@@ -12,6 +12,7 @@
  */
 
 use Zikula\Core\Forms\Renderer;
+use Zikula\Core\Event\GenericEvent;
 
 /**
  * Symfony2 forms plugin definition.
@@ -34,7 +35,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
     public function initialize()
     {
         ZLoader::addAutoloader("Symfony\\Bridge\\Doctrine", __DIR__ . '/lib/vendor', '\\');
-        ZLoader::addAutoloader("Zikla\\Core\\Forms", __DIR__ . '/lib', '\\');
+        ZLoader::addAutoloader("Zikula\\Core\\Forms", __DIR__ . '/lib', '\\');
         
         $registry = new \Zikula\Core\Forms\DoctrineRegistryImpl();
         
@@ -59,7 +60,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         $this->addHandlerDefinition('symfony.formrenderer.lookup', 'registerRenderer');
     }
     
-    public function initView(Zikula_Event $event) 
+    public function initView(GenericEvent $event) 
     {
         /* @var $view Zikula_View */
         $view = $event->getSubject();
