@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -101,14 +102,14 @@ class SftpConfiguration implements ConfigurationInterface
      * @param string  $priv_key   Path to the private key, must match $pub_key.
      * @param string  $passphrase The passphrase for the key (default = '').
      */
-    public function __construct($host = 'localhost', $user = 'Anonymous', $pass = '', $dir = './', $port = 22, $auth_type = "pass", $pub_key = "", $priv_key = "", $passphrase = "")
+    public function __construct($host = 'localhost', $user = 'Anonymous', $pass = '', $dir = './', $port = 22, $auth_type = 'pass', $pub_key = '', $priv_key = '', $passphrase = '')
     {
         $this->host = ($host == '' ? 'localhost' : $host);
         $this->user = $user;
         $this->pass = $pass;
         $this->dir = ($dir == '' ? './' : (substr($dir, 0, 1) == '/' || substr($dir, 0, 2) == './' ? $dir : "./$dir"));
-        $this->port = ($port == "" || !is_numeric($port) ? 22 : $port);
-        $this->auth_type = ($auth_type == "") ? "pass" : $auth_type;
+        $this->port = ($port == '' || !is_numeric($port) ? 22 : $port);
+        $this->auth_type = ($auth_type == '') ? 'pass' : $auth_type;
         $this->pub_key = $pub_key;
         $this->priv_key = $priv_key;
         $this->passphrase = $passphrase;
@@ -203,4 +204,5 @@ class SftpConfiguration implements ConfigurationInterface
     {
         return $this->passphrase;
     }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -15,7 +16,7 @@
 namespace Zikula\Common\FileSystem;
 
 /**
- * Zikula_FileSystem_Local is the standard driver for Local/Direct connections.
+ * Local is the standard driver for Local/Direct connections.
  */
 class Local extends AbstractDriver
 {
@@ -24,7 +25,7 @@ class Local extends AbstractDriver
      *
      * @var resource
      */
-    private $_resource;
+    private $resource;
 
     /**
      * Create local connection.
@@ -39,13 +40,15 @@ class Local extends AbstractDriver
      */
     public function connect()
     {
-        $this->_resource = stream_context_create();
+        $this->resource = stream_context_create();
         if ($this->configuration->getDir() == '') {
             return true;
         }
+
         if ($this->driver->chdir($this->configuration->getDir()) == true) {
             return true;
         }
+
         return false;
     }
 
@@ -78,12 +81,14 @@ class Local extends AbstractDriver
     public function fput($stream, $remote)
     {
         $this->errorHandler->start();
-        if (($bytes = $this->driver->putContents($remote, $stream, 0, $this->_resource)) !== false) {
+        if (($bytes = $this->driver->putContents($remote, $stream, 0, $this->resource)) !== false) {
             fclose($stream);
             $this->errorHandler->stop();
+
             return $bytes;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -97,11 +102,12 @@ class Local extends AbstractDriver
      */
     public function file_put_contents($contents, $remote)
     {
-        $stream = fopen('data://text/plain,' . $contents,'r');
+        $stream = fopen('data://text/plain,' . $contents, 'r');
+
         return $this->fput($stream, $remote);
     }
 
-	/**
+    /**
      * Get the contents of a file from the remote.
      *
      * @param string $remote   The pathname to the desired remote file.
@@ -152,12 +158,14 @@ class Local extends AbstractDriver
     public function fget($remote)
     {
         $this->errorHandler->start();
-        if (($handle = $this->driver->fileOpen($remote, 'r+', false, $this->_resource)) !== false) {
+        if (($handle = $this->driver->fileOpen($remote, 'r+', false, $this->resource)) !== false) {
             rewind($handle);
             $this->errorHandler->stop();
+
             return $handle;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -172,13 +180,15 @@ class Local extends AbstractDriver
     public function chmod($perm, $file)
     {
         $this->errorHandler->start();
-        $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
+        $perm = (int) octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
         if (($perm = $this->driver->chmod($file, $perm)) !== false) {
-            $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
+            $perm = (int) decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->errorHandler->stop();
+
             return $perm;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -193,10 +203,12 @@ class Local extends AbstractDriver
     {
         $dir = ($dir == '' ? getcwd() : $dir);
         $this->errorHandler->start();
-        if (($files = $this->driver->scandir($dir, 0, $this->_resource)) !== false) {
+        if (($files = $this->driver->scandir($dir, 0, $this->resource)) !== false) {
+
             return $files;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -212,9 +224,11 @@ class Local extends AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->chdir($dir)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -231,11 +245,13 @@ class Local extends AbstractDriver
     public function mv($sourcepath, $destpath)
     {
         $this->errorHandler->start();
-        if ($this->driver->rename($sourcepath, $destpath, $this->_resource)) {
+        if ($this->driver->rename($sourcepath, $destpath, $this->resource)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -252,11 +268,13 @@ class Local extends AbstractDriver
     public function cp($sourcepath, $destpath)
     {
         $this->errorHandler->start();
-        if ($this->driver->copy($sourcepath, $destpath, $this->_resource)) {
+        if ($this->driver->copy($sourcepath, $destpath, $this->resource)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -270,32 +288,37 @@ class Local extends AbstractDriver
     public function rm($sourcepath)
     {
         $this->errorHandler->start();
-        if ($this->driver->delete($sourcepath, $this->_resource)) {
+        if ($this->driver->delete($sourcepath, $this->resource)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
-	/**
+    /**
      * Check if a file is writable.
      *
      * @param string $sourcepath The path to the file to check if is writable.
      *
      * @return boolean True if is writable False if not.
      */
-    public function is_writable($sourcepath) {
+    public function is_writable($sourcepath)
+    {
         $this->errorHandler->start();
         if ($this->driver->is_writable($sourcepath)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
-	/**
+    /**
      * Determine if driver is available for use.
      *
      * @return boolean True if available, false if not.
@@ -304,4 +327,5 @@ class Local extends AbstractDriver
     {
         return true;
     }
+
 }

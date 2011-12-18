@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -15,7 +16,7 @@
 namespace Zikula\Common\FileSystem;
 
 /**
- * Zikula_FileSystem_Ftp is the standard driver for FTP connections.
+ * Ftp is the standard driver for FTP connections.
  *
  * @codeCoverageIgnore
  */
@@ -26,14 +27,14 @@ class Ftp extends AbstractDriver
      *
      * @var resource|boolean
      */
-    private $_resource;
+    private $resource;
 
     /**
      * The current working directory.
      *
      * @var string
      */
-    private $_dir = '/';
+    private $dir = '/';
 
     /**
      * Standard function for creating a FTP connection and logging in.
@@ -51,25 +52,27 @@ class Ftp extends AbstractDriver
 
         //create the connection
         if ($this->configuration->getSSL()) {
-            $this->_resource = $this->driver->sslConnect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
+            $this->resource = $this->driver->sslConnect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
         } else {
-            $this->_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
+            $this->resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
         }
 
-        if ($this->_resource !== false) {
+        if ($this->resource !== false) {
             //log in
-            if ($this->driver->login($this->_resource, $this->configuration->getUser(), $this->configuration->getPass())) {
+            if ($this->driver->login($this->resource, $this->configuration->getUser(), $this->configuration->getPass())) {
                 //change directory
-                if ($this->driver->pasv($this->_resource, $this->configuration->getPasv())) {
-                    if ($this->driver->chdir($this->_resource, $this->configuration->getDir())) {
-                        $this->_dir = ftp_pwd($this->_resource);
+                if ($this->driver->pasv($this->resource, $this->configuration->getPasv())) {
+                    if ($this->driver->chdir($this->resource, $this->configuration->getDir())) {
+                        $this->dir = ftp_pwd($this->resource);
                         $this->errorHandler->stop();
+
                         return true;
                     }
                 }
             }
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -89,11 +92,13 @@ class Ftp extends AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if ($this->driver->put($this->_resource, $remote, $local, FTP_BINARY)) {
+        if ($this->driver->put($this->resource, $remote, $local, FTP_BINARY)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -111,11 +116,13 @@ class Ftp extends AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if ($this->driver->fput($this->_resource, $remote, $stream, FTP_BINARY)) {
+        if ($this->driver->fput($this->resource, $remote, $stream, FTP_BINARY)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -129,11 +136,12 @@ class Ftp extends AbstractDriver
      */
     public function file_put_contents($contents, $remote)
     {
-        $stream = fopen('data://text/plain,' . $contents,'r');
+        $stream = fopen('data://text/plain,' . $contents, 'r');
+
         return $this->fput($stream, $remote);
     }
 
-	/**
+    /**
      * Get the contents of a file from the remote.
      *
      * @param string $remote   The pathname to the desired remote file.
@@ -161,11 +169,13 @@ class Ftp extends AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if ($this->driver->get($this->_resource, $local, $remote, FTP_BINARY)) {
+        if ($this->driver->get($this->resource, $local, $remote, FTP_BINARY)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -183,12 +193,14 @@ class Ftp extends AbstractDriver
         $this->isAlive(true);
         $this->errorHandler->start();
         $handle = fopen('php://temp', 'r+');
-        if ($this->driver->fget($this->_resource, $handle, $remote, FTP_BINARY)) {
+        if ($this->driver->fget($this->resource, $handle, $remote, FTP_BINARY)) {
             rewind($handle);
             $this->errorHandler->stop();
+
             return $handle;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -204,13 +216,15 @@ class Ftp extends AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
-        if (($perm = $this->driver->chmod($this->_resource, $perm, $file)) !== false) {
-            $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
+        $perm = (int) octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
+        if (($perm = $this->driver->chmod($this->resource, $perm, $file)) !== false) {
+            $perm = (int) decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->errorHandler->stop();
+
             return $perm;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -225,12 +239,14 @@ class Ftp extends AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        $dir = ($dir == '' ? ftp_pwd($this->_resource) : $dir);
-        if (($ls = $this->driver->nlist($this->_resource, $dir)) !== false) {
+        $dir = ($dir == '' ? ftp_pwd($this->resource) : $dir);
+        if (($ls = $this->driver->nlist($this->resource, $dir)) !== false) {
             $this->errorHandler->stop();
+
             return $ls;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -245,11 +261,13 @@ class Ftp extends AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if ($this->driver->chdir($this->_resource, $dir)) {
+        if ($this->driver->chdir($this->resource, $dir)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -267,11 +285,13 @@ class Ftp extends AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if ($this->driver->rename($this->_resource, $sourcepath, $destpath)) {
+        if ($this->driver->rename($this->resource, $sourcepath, $destpath)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -292,10 +312,12 @@ class Ftp extends AbstractDriver
         if (($handle = $this->fget($sourcepath)) !== false) {
             if ($this->fput($handle, $destpath)) {
                 $this->errorHandler->stop();
+
                 return true;
             };
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -310,11 +332,13 @@ class Ftp extends AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if (($this->driver->delete($this->_resource, $sourcepath)) !== false) {
+        if (($this->driver->delete($this->resource, $sourcepath)) !== false) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -331,16 +355,17 @@ class Ftp extends AbstractDriver
      */
     public function isAlive($reconnect = false)
     {
-        if (!$this->driver->systype($this->_resource)) {
+        if (!$this->driver->systype($this->resource)) {
             if ($reconnect) {
                 return $this->connect();
             }
             return false;
         }
+
         return true;
     }
 
-	/**
+    /**
      * Check if a file is writable.
      *
      * @param string $sourcepath The path to the file to check if is writable.
@@ -352,41 +377,41 @@ class Ftp extends AbstractDriver
         $this->errorHandler->start();
 
         //remove slashes at beginning and end of dir's, beginning of file
-        $dir  = substr($this->configuration->getDir(), 0, 1)  == '/' ? substr($this->configuration->getDir(), 1) : $this->configuration->getDir();
-        $dir  = substr($dir, -1, 1) == '/' ? substr($dir, 0, -1) : $dir;
-        $remote_file = substr($remote_file, 0, 1)  == '/' ? substr($remote_file, 1) : $remote_file;
+        $dir = substr($this->configuration->getDir(), 0, 1) == '/' ? substr($this->configuration->getDir(), 1) : $this->configuration->getDir();
+        $dir = substr($dir, -1, 1) == '/' ? substr($dir, 0, -1) : $dir;
+        $remote_file = substr($remote_file, 0, 1) == '/' ? substr($remote_file, 1) : $remote_file;
 
         //get path info setup properly.
-        $dirname = pathinfo('/'.$dir.'/'.$remote_file);
+        $dirname = pathinfo('/' . $dir . '/' . $remote_file);
         $dirname = $dirname['dirname'];
 
         //get a directory listing and check that the file in question is listed (workaround for file_exists)
-        $dirlist = $this->driver->nlist($this->_resource, $dirname);
-        if (is_array($dirlist) && in_array("/$dir/$remote_file", $dirlist))
-        {
+        $dirlist = $this->driver->nlist($this->resource, $dirname);
+        if (is_array($dirlist) && in_array("/$dir/$remote_file", $dirlist)) {
             //file exists, check if we can open the file for appending
-            if (!$handle = $this->driver->fopen($dir . '/' . $remote_file, 'a', $this->configuration))
-            {
+            if (!$handle = $this->driver->fopen($dir . '/' . $remote_file, 'a', $this->configuration)) {
                 $this->errorHandler->stop();
+
                 return false;
             }
 
             //attempt to do an empty append
-            if (!fwrite($handle,'') === FALSE)
-            {
+            if (!fwrite($handle, '') === FALSE) {
                 $this->errorHandler->stop();
+
                 return false;
             }
             $this->errorHandler->stop();
+
             return true;
         }
         //file not found, return false
         $this->errorHandler->stop();
+
         return false;
     }
 
-
-	/**
+    /**
      * Determine if driver is available for use.
      *
      * @return boolean True if available, false if not.
@@ -395,4 +420,5 @@ class Ftp extends AbstractDriver
     {
         return extension_loaded('ftp');
     }
+
 }

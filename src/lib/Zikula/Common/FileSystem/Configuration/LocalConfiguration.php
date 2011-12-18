@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -51,4 +52,5 @@ class LocalConfiguration implements ConfigurationInterface
     {
         return $this->dir;
     }
+
 }
