@@ -16,7 +16,6 @@
 namespace Zikula\Common\HookManager;
 
 use Zikula\Common\EventManager\EventManager;
-use Zikula\Common\HookManager\HookInterface;
 
 
 /**

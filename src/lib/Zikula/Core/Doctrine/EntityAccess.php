@@ -12,7 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-class Zikula_EntityAccess implements ArrayAccess
+namespace Zikula\Core\Doctrine;
+
+class EntityAccess implements \ArrayAccess
 {
     /**
      * @var ReflectionObject
@@ -30,7 +32,7 @@ class Zikula_EntityAccess implements ArrayAccess
             return $this->reflection;
         }
 
-        $this->reflection = new ReflectionObject($this);
+        $this->reflection = new \ReflectionObject($this);
         return $this->reflection;
     }
     
