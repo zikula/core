@@ -224,4 +224,14 @@ class Generator
             $this->storage->gc($this->maxLifetime);
         }
     }
+
+    /**
+     * Gets the max lifetime in seconds.
+     * 
+     * @return integer
+     */
+    public function getMaxLifetime()
+    {
+        return $this->maxLifetime;
+    }
 }
