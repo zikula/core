@@ -478,7 +478,7 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
      */
     public function isEnabled()
     {
-        if ($this instanceof Zikula\Framework\Plugin\AlwaysOnInterface) {
+        if ($this instanceof \Zikula\Framework\Plugin\AlwaysOnInterface) {
             return true;
         }
 
@@ -493,7 +493,7 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
      */
     public function isInstalled()
     {
-        if ($this instanceof Zikula\Framework\Plugin\AlwaysOnInterface) {
+        if ($this instanceof \Zikula\Framework\Plugin\AlwaysOnInterface) {
             return true;
         }
 
