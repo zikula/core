@@ -78,7 +78,7 @@ try {
 
     if (!$return) {
         // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
-        throw new Zikula\Framework\Exception\NotFound(__('Page not found.'));
+        throw new Zikula\Framework\Exception\NotFoundException(__('Page not found.'));
     }
     $httpCode = 200;
 
@@ -94,15 +94,15 @@ try {
         $httpCode = $event['httpcode'];
         $message = $event['message'];
     } else {
-        if ($e instanceof Zikula\Framework\Exception\NotFound) {
+        if ($e instanceof Zikula\Framework\Exception\NotFoundException) {
             $httpCode = 404;
             $message = $e->getMessage();
             $debug = array_merge($e->getDebug(), $e->getTrace());
-        } elseif ($e instanceof Zikula\Framework\Exception\Forbidden) {
+        } elseif ($e instanceof Zikula\Framework\Exception\ForbiddenException) {
             $httpCode = 403;
             $message = $e->getMessage();
             $debug = array_merge($e->getDebug(), $e->getTrace());
-        } elseif ($e instanceof Zikula\Framework\Exception\Redirect) {
+        } elseif ($e instanceof Zikula\Framework\Exception\RedirectException) {
             System::redirect($e->getUrl(), array(), $e->getType());
             System::shutDown();
         } elseif ($e instanceof PDOException) {
