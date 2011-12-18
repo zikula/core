@@ -95,7 +95,7 @@ class Validator
 
         // Check if token has expired.
         if ($checkExpire) {
-            $timeDiff = ((int)$decoded['timestamp'] + $this->maxlifetime) - time();
+            $timeDiff = ((int)$decoded['timestamp'] + $this->tokenGenerator->getMaxLifetime()) - time();
             if ($timeDiff < 0) {
                 $this->storage->delete($decoded['id']);
                 return false;
