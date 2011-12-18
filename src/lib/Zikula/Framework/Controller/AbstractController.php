@@ -16,7 +16,7 @@
 namespace Zikula\Framework\Controller;
 use Zikula\Framework\AbstractBase;
 use Zikula\Framework\Exception\NotFoundException;
-use Zikula\Common\HookManager\HookInterface;
+use Zikula\Common\HookManager\Hook;
 use \Zikula\Core\Event\GenericEvent;
 use Zikula_View;
 
@@ -86,7 +86,7 @@ abstract class AbstractController extends AbstractBase
      *
      * @return HookInterface
      */
-    public function notifyHooks(HookInterface $hook)
+    public function notifyHooks(Hook $hook)
     {
         return $this->getService('zikula.hookmanager')->notify($hook);
     }
