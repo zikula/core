@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -26,28 +27,28 @@ class Sftp extends AbstractDriver
      *
      * @var object
      */
-    private $_resource;
+    private $resource;
 
     /**
      * SSH Resource.
      *
      * @var object
      */
-    private $_ssh_resource;
+    private $sshResource;
 
     /**
      * Current working directory.
      *
      * @var string
      */
-    private $_dir;
+    private $dir;
 
     /**
      * Shell type to use when creating a ssh shell.
      *
      * @var string
      */
-    private $_terminal = 'xterm';
+    private $terminal = 'xterm';
 
     /**
      * Standard function for creating a SFTP connection and logging in.
@@ -66,27 +67,22 @@ class Sftp extends AbstractDriver
         if ($this->configuration->getAuthType() !== 'pass') {
             $methods['hostkey'] = $this->configuration->getAuthType();
         }
-        if (($this->_ssh_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort(), $methods)) !== false) {
+        if (($this->sshResource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort(), $methods)) !== false) {
             //connected
             if ($this->configuration->getAuthType() !== 'pass') {
                 $auth = $this->driver->authPubkey(
-                    $this->_ssh_resource,
-                    $this->configuration->getUser(),
-                    $this->configuration->getPubKey(),
-                    $this->configuration->getPrivKey(),
-                    $this->configuration->getPassphrase());
+                    $this->sshResource, $this->configuration->getUser(), $this->configuration->getPubKey(), $this->configuration->getPrivKey(), $this->configuration->getPassphrase());
             } else {
-                $auth = $this->driver->authPassword($this->_ssh_resource,
-                    $this->configuration->getUser(),
-                    $this->configuration->getPass());
+                $auth = $this->driver->authPassword($this->sshResource, $this->configuration->getUser(), $this->configuration->getPass());
             }
             if ($auth !== false) {
                 //logged in
-                if (($this->_resource = $this->driver->sftpStart($this->_ssh_resource)) !== false) {
+                if (($this->resource = $this->driver->sftpStart($this->sshResource)) !== false) {
                     //started sftp
-                    if (($this->_dir = $this->driver->realpath($this->_resource, $this->configuration->getDir())) !== false) {
+                    if (($this->dir = $this->driver->realpath($this->resource, $this->configuration->getDir())) !== false) {
                         //changed dir
                         $this->errorHandler->stop();
+
                         return true;
                     }
                     //could not enter dir
@@ -95,8 +91,10 @@ class Sftp extends AbstractDriver
             }
             //Could not log in
         }
+
         //Could not connect to host/port
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -115,11 +113,13 @@ class Sftp extends AbstractDriver
     public function put($local, $remote)
     {
         $this->errorHandler->start();
-        if ($this->driver->scpSend($this->_resource, $local, $remote)) {
+        if ($this->driver->scpSend($this->resource, $local, $remote)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -136,15 +136,17 @@ class Sftp extends AbstractDriver
     public function fput($stream, $remote)
     {
         if ($remote == '' || substr($remote, 0, 1) !== '/') {
-            $remote = $this->_dir . '/' . $remote;
+            $remote = $this->dir . '/' . $remote;
         }
         $this->errorHandler->start();
-        if (($bytes = $this->driver->putContents($this->_resource, $remote, $stream)) !== false) {
+        if (($bytes = $this->driver->putContents($this->resource, $remote, $stream)) !== false) {
             fclose($stream);
             $this->errorHandler->stop();
+
             return $bytes;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -158,11 +160,12 @@ class Sftp extends AbstractDriver
      */
     public function file_put_contents($contents, $remote)
     {
-        $stream = fopen('data://text/plain,' . $contents,'r');
+        $stream = fopen('data://text/plain,' . $contents, 'r');
+
         return $this->fput($stream, $remote);
     }
 
-	/**
+    /**
      * Get the contents of a file from the remote.
      *
      * @param string $remote   The pathname to the desired remote file.
@@ -189,11 +192,13 @@ class Sftp extends AbstractDriver
     public function get($local, $remote)
     {
         $this->errorHandler->start();
-        if ($this->driver->scpRecv($this->_resource, $remote, $local)) {
+        if ($this->driver->scpRecv($this->resource, $remote, $local)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -209,15 +214,17 @@ class Sftp extends AbstractDriver
     public function fget($remote)
     {
         if ($remote == '' || substr($remote, 0, 1) !== '/') {
-            $remote = $this->_dir . '/' . $remote;
+            $remote = $this->dir . '/' . $remote;
         }
         $this->errorHandler->start();
-        if (($handle = $this->driver->sftpFopen($this->_resource, $remote, 'r+')) !== false) {
+        if (($handle = $this->driver->sftpFopen($this->resource, $remote, 'r+')) !== false) {
             rewind($handle);
             $this->errorHandler->stop();
+
             return $handle;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -233,37 +240,42 @@ class Sftp extends AbstractDriver
     {
         $this->errorHandler->start();
         if ($file == '' || substr($file, 0, 1) !== '/') {
-            $file = $this->_dir . '/' . $file;
+            $file = $this->dir . '/' . $file;
         }
         //make sure that $perm is numeric, this also stops injection
         if (!is_numeric($perm)) {
             $this->errorHandler->register('permission "' . $perm . '" must be numeric.');
             return false;
         }
+
         $perm = intval($perm);
 
-        if (($file = $this->driver->realpath($this->_resource, $file)) === false) {
+        if (($file = $this->driver->realpath($this->resource, $file)) === false) {
             $this->errorHandler->stop(); //source file not found.
             return false;
         }
-        if (($shell = $this->driver->sshShell($this->_ssh_resource, $this->_terminal)) == false) {
+
+        if (($shell = $this->driver->sshShell($this->sshResource, $this->terminal)) == false) {
             return false; //could not get shell.
         }
+
         if ($this->driver->sshShellWrite($shell, "chmod $perm $file;echo :::$?:::" . PHP_EOL) === false) {
             return false; //couldnt write to shell
         }
+
         usleep(350000);
         if (($resp = $this->driver->sshShellRead($shell, 4096)) === false) {
             return false; //could not read from shell
         }
+
         fclose($shell); //the shell closes even if we dont put this, thats why next line is needed
         $this->connect(); //TODO we need a way to make sure that the connection is alive
         $matches = array();
         preg_match("/:::\d:::/", $resp, $matches);
         if (sizeof($matches) > 0) {
-            switch (intval(str_replace(':','',$matches[0]))) {
+            switch (intval(str_replace(':', '', $matches[0]))) {
                 case 1:
-                    $this->errorHandler->register('Chmod returned with Code 1: failure.',0);
+                    $this->errorHandler->register('Chmod returned with Code 1: failure.', 0);
                     $this->errorHandler->stop();
                     return false;
                 case 0:
@@ -277,6 +289,7 @@ class Sftp extends AbstractDriver
         //size of matches less then 1, there is no readable response
         $this->errorHandler->stop();
         $this->errorHandler->register('Did not get acknowledgment from host, chmod may or may not have succeeded.', 0);
+
         return false;
     }
 
@@ -290,26 +303,30 @@ class Sftp extends AbstractDriver
     public function ls($dir = '')
     {
         if ($dir == '' || substr($dir, 0, 1) !== '/') {
-            $dir = $this->_dir . '/' . $dir;
+            $dir = $this->dir . '/' . $dir;
         }
-        if ($this->driver->sftpIsDir($this->_resource, $dir)) {
-            $handle = $this->driver->sftpOpenDir($this->_resource, $dir);
+
+        if ($this->driver->sftpIsDir($this->resource, $dir)) {
+            $handle = $this->driver->sftpOpenDir($this->resource, $dir);
             $files = array();
             while (false !== ($file = $this->driver->sftpReadDir($handle))) {
                 if (substr("$file", 0, 1) != '.') {
                     $files[] = $file;
                 }
             }
+
             //finished searching the directory
             return $files;
         }
 
         //if IsDir fails that means its either not a directory or doesnt exist
-        if (!$this->driver->sftpFileExists($this->_resource,$dir)) {
+        if (!$this->driver->sftpFileExists($this->resource, $dir)) {
             $this->errorHandler->register("$dir does not exist.", 0);
             return false;
         }
+
         $this->errorHandler->register("$dir is not a directory", 0);
+
         return false;
     }
 
@@ -323,16 +340,19 @@ class Sftp extends AbstractDriver
     public function cd($dir = '')
     {
         if ($dir == '' || substr($dir, 0, 1) !== '/') {
-            $dir = $this->_dir . '/' . $dir;
+            $dir = $this->dir . '/' . $dir;
         }
 
         $this->errorHandler->start();
-        if (($dir = $this->driver->realpath($this->_resource, $dir)) !== false) {
-            $this->_dir = $dir;
+        if (($dir = $this->driver->realpath($this->resource, $dir)) !== false) {
+            $this->dir = $dir;
             $this->errorHandler->stop();
+
             return true;
         }
+
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -350,18 +370,22 @@ class Sftp extends AbstractDriver
     {
         $this->errorHandler->start();
         if ($sourcepath == '' || substr($sourcepath, 0, 1) !== '/') {
-            $sourcepath = $this->_dir . '/' . $sourcepath;
+            $sourcepath = $this->dir . '/' . $sourcepath;
         }
+
         if ($destpath == '' || substr($destpath, 0, 1) !== '/') {
-            $destpath = $this->_dir . '/' . $destpath;
+            $destpath = $this->dir . '/' . $destpath;
         }
-        if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
-            if (($this->driver->sftpRename($this->_resource, $sourcepath, $destpath)) !== false) {
+
+        if (($sourcepath = $this->driver->realpath($this->resource, $sourcepath)) !== false) {
+            if (($this->driver->sftpRename($this->resource, $sourcepath, $destpath)) !== false) {
                 $this->errorHandler->stop(); //renamed file
                 return true;
             }//could not rename file
         }//Could not get reapath of sourcefile, it does not exist
+
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -379,31 +403,37 @@ class Sftp extends AbstractDriver
     {
         $this->errorHandler->start();
         if ($sourcepath == '' || substr($sourcepath, 0, 1) !== '/') {
-            $sourcepath = $this->_dir . '/' . $sourcepath;
+            $sourcepath = $this->dir . '/' . $sourcepath;
         }
+
         if ($destpath == '' || substr($destpath, 0, 1) !== '/') {
-            $destpath = $this->_dir . '/' . $destpath;
+            $destpath = $this->dir . '/' . $destpath;
         }
-        if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) === false) {
+
+        if (($sourcepath = $this->driver->realpath($this->resource, $sourcepath)) === false) {
             $this->errorHandler->stop(); //source file not found.
             return false;
         }
-        if (($shell = $this->driver->sshShell($this->_ssh_resource, $this->_terminal)) == false) {
+
+        if (($shell = $this->driver->sshShell($this->sshResource, $this->terminal)) == false) {
             return false; //could not get shell.
         }
+
         if ($this->driver->sshShellWrite($shell, "cp $sourcepath $destpath;echo :::$?:::" . PHP_EOL) === false) {
             return false; //couldnt write to shell
         }
+
         usleep(350000);
         if (($resp = $this->driver->sshShellRead($shell, 4096)) === false) {
             return false; //could not read from shell
         }
+
         fclose($shell); //the shell closes even if we dont put this, thats why next line is needed
         $this->connect(); //TODO we need a way to make sure that the connection is alive
         $matches = array();
         preg_match("/:::\d:::/", $resp, $matches);
         if (sizeof($matches) > 0) {
-            switch (str_replace(':','',$matches[0])) {
+            switch (str_replace(':', '', $matches[0])) {
                 case 1:
                     $this->errorHandler->register('cp returned with Code 1: failure.', 0);
                     $this->errorHandler->stop();
@@ -416,8 +446,10 @@ class Sftp extends AbstractDriver
                     return false;
             }
         } //size of matches less then 1, there is no readable response
+
         $this->errorHandler->stop();
         $this->errorHandler->register('Did not get acknowledgment from host, cp may or may not have succeeded.', 0);
+
         return false;
     }
 
@@ -431,25 +463,28 @@ class Sftp extends AbstractDriver
     public function rm($sourcepath)
     {
         if ($sourcepath == '' || substr($sourcepath, 0, 1) !== '/') {
-            $sourcepath = $this->_dir . '/' . $sourcepath;
+            $sourcepath = $this->dir . '/' . $sourcepath;
         }
+
         //$sourcepath = ($sourcepath == '' || substr($sourcepath, 0, 1) !== '/' ? $this->_dir . '/' . $sourcepath : $sourcepath);
         $this->errorHandler->start();
         //check the file actauly exists.
-        if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
+        if (($sourcepath = $this->driver->realpath($this->resource, $sourcepath)) !== false) {
             //file exists
-            if ($this->driver->sftpDelete($this->_resource, $sourcepath)) {
+            if ($this->driver->sftpDelete($this->resource, $sourcepath)) {
                 //file deleted
                 $this->errorHandler->stop();
                 return true;
             } //file not deleted
         } //file does not exist.
+
         $this->errorHandler->stop();
         $this->errorHandler->register("Could not delete: $sourcepath", 0);
+
         return false;
     }
 
-	/**
+    /**
      * Check if a file is writable.
      *
      * @param string $sourcepath The path to the file to check if is writable.
@@ -461,14 +496,16 @@ class Sftp extends AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->is_writable($sourcepath)) {
             $this->errorHandler->stop();
+
             return true;
         }
+
         $this->errorHandler->stop();
+
         return false;
     }
 
-
-	/**
+    /**
      * Determine if driver is available for use.
      *
      * @return boolean True if available, false if not.
@@ -477,4 +514,5 @@ class Sftp extends AbstractDriver
     {
         return extension_loaded('ssh2');
     }
+
 }

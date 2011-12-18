@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -16,9 +17,11 @@
 namespace Zikula\Common\FileSystem\Facade;
 
 /**
- * Zikula_FileSystem_Facade_Ftp is a facade interface for FTP connections.
+ * FtpFacade is a facade interface for FTP connections.
  *
  * Created especially to allow easy unit testing.
+ *
+ * @codeCoverageIgnore
  */
 class FtpFacade
 {
@@ -33,9 +36,7 @@ class FtpFacade
      */
     public function connect($host, $port = 21, $timeout = 10)
     {
-        //@codeCoverageIgnoreStart
         return ftp_connect($host, $port, $timeout);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -49,9 +50,7 @@ class FtpFacade
      */
     public function sslConnect($host, $port = 21, $timeout = 10)
     {
-        //@codeCoverageIgnoreStart
         return ftp_ssl_connect($host, $port, $timeout);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -65,9 +64,7 @@ class FtpFacade
      */
     public function login($ftp_stream, $username, $password)
     {
-        //@codeCoverageIgnoreStart
         return ftp_login($ftp_stream, $username, $password);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -80,10 +77,9 @@ class FtpFacade
      */
     public function pasv($ftp_stream, $pasv)
     {
-        //@codeCoverageIgnoreStart
         return ftp_pasv($ftp_stream, $pasv);
-        //@codeCoverageIgnoreEnd
     }
+
     /**
      * Facade for ftp_put().
      *
@@ -97,9 +93,7 @@ class FtpFacade
      */
     public function put($ftp_stream, $remote_file, $local_file, $mode, $startpos=0)
     {
-        //@codeCoverageIgnoreStart
         return ftp_put($ftp_stream, $remote_file, $local_file, $mode, $startpos);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -114,9 +108,7 @@ class FtpFacade
      */
     public function fput($ftp_stream, $remote_file, $handle, $mode = FTP_BINARY)
     {
-        //@codeCoverageIgnoreStart
         return ftp_fput($ftp_stream, $remote_file, $handle, $mode);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -132,9 +124,7 @@ class FtpFacade
      */
     public function get($ftp_stream, $local_file, $remote_file, $mode, $resumepos = 0)
     {
-        //@codeCoverageIgnoreStart
         return ftp_fget($ftp_stream, $local_file, $remote_file, $mode, $resumepos);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -150,9 +140,7 @@ class FtpFacade
      */
     public function fget($ftp_stream, $handle, $remote_file, $mode, $resumepos = 0)
     {
-        //@codeCoverageIgnoreStart
         return ftp_fget($ftp_stream, $handle, $remote_file, $mode, $resumepos = 0);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -166,9 +154,7 @@ class FtpFacade
      */
     public function chmod($ftp_stream, $mode, $filename)
     {
-        //@codeCoverageIgnoreStart
         return ftp_chmod($ftp_stream, $mode, $filename);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -181,9 +167,7 @@ class FtpFacade
      */
     public function nlist($ftp_stream, $directory)
     {
-        //@codeCoverageIgnoreStart
         return ftp_nlist($ftp_stream, $directory);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -196,9 +180,7 @@ class FtpFacade
      */
     public function chdir($ftp_stream, $directory)
     {
-        //@codeCoverageIgnoreStart
         return ftp_chdir($ftp_stream, $directory);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -212,9 +194,7 @@ class FtpFacade
      */
     public function rename($ftp_stream, $oldname, $newname)
     {
-        //@codeCoverageIgnoreStart
         return ftp_rename($ftp_stream, $oldname, $newname);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -227,9 +207,7 @@ class FtpFacade
      */
     public function delete($ftp_stream, $path)
     {
-        //@codeCoverageIgnoreStart
         return delete($ftp_stream, $path);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -241,11 +219,8 @@ class FtpFacade
      */
     public function systype($ftp_stream)
     {
-        //@codeCoverageIgnoreStart
         return ftp_systype($ftp_stream);
-        //@codeCoverageIgnoreEnd
     }
-
 
     public function fopen($remote_file, $mode, Zikula_FileSystem_Configuration_Ftp $configuration)
     {

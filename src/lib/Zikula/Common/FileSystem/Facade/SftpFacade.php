@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -16,9 +17,11 @@
 namespace Zikula\Common\FileSystem\Facade;
 
 /**
- * Zikula_FileSystem_Facade_sFtp is a facade interface for SFTP connections.
+ * SftpFacade is a facade interface for SFTP connections.
  *
  * Created especially to allow easy unit testing.
+ *
+ * @codeCoverageIgnore
  */
 class SftpFacade
 {
@@ -35,9 +38,7 @@ class SftpFacade
      */
     public function connect($host, $port = 22, $methods = array())
     {
-        //@codeCoverageIgnoreStart
         return ssh2_connect($host, $port, $methods);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -51,9 +52,7 @@ class SftpFacade
      */
     public function authPassword($session, $username, $password)
     {
-        //@codeCoverageIgnoreStart
         return ssh2_auth_password($session, $username, $password);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -69,9 +68,7 @@ class SftpFacade
      */
     public function authPubkey($session, $username, $pubkey, $privkey, $passphrase)
     {
-        //@codeCoverageIgnoreStart
         return ssh2_auth_pubkey_file($session, $username, $pubkey, $privkey, $passphrase);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -83,9 +80,7 @@ class SftpFacade
      */
     public function sftpStart($session)
     {
-        //@codeCoverageIgnoreStart
         return ssh2_sftp($session);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -100,9 +95,7 @@ class SftpFacade
      */
     public function realpath($sftp, $filename)
     {
-        //@codeCoverageIgnoreStart
         return ssh2_sftp_realpath($sftp, $filename);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -117,9 +110,7 @@ class SftpFacade
      */
     public function scpSend($session, $local_file, $remote_file, $create_mode = 0644)
     {
-        //@codeCoverageIgnoreStart
         return ssh2_scp_send($session, $local_file, $remote_file, $create_mode);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -133,9 +124,7 @@ class SftpFacade
      */
     public function putContents($resource, $remote_file, $stream)
     {
-        //@codeCoverageIgnoreStart
         return file_put_contents("ssh2.sftp://$resource/$remote_file", $stream, 0);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -149,9 +138,7 @@ class SftpFacade
      */
     public function scpRecv($session, $remote_file, $local_file)
     {
-        //@codeCoverageIgnoreStart
         return ssh2_scp_recv($session, $remote_file, $local_file);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -165,9 +152,7 @@ class SftpFacade
      */
     public function sftpFopen($resource, $remote_file, $mode = 'r+')
     {
-        //@codeCoverageIgnoreStart
         return fopen("ssh2.sftp://$resource/$remote_file", $mode);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -180,10 +165,9 @@ class SftpFacade
      */
     public function sftpFileExists($resource, $dir)
     {
-        //@codeCoverageIgnoreStart
         $dir2 = "ssh2.sftp://$resource/$dir";
+
         return file_exists($dir2);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -196,10 +180,9 @@ class SftpFacade
      */
     public function sftpIsDir($resource, $dir)
     {
-        //@codeCoverageIgnoreStart
         $dir2 = "ssh2.sftp://$resource/$dir";
+
         return is_dir($dir2);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -212,10 +195,9 @@ class SftpFacade
      */
     public function sftpOpenDir($resource, $dir)
     {
-        //@codeCoverageIgnoreStart
         $dir2 = "ssh2.sftp://$resource/$dir";
+
         return opendir($dir2);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -229,9 +211,7 @@ class SftpFacade
      */
     public function sftpReadDir($handle)
     {
-        //@codeCoverageIgnoreStart
         return readdir($handle);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -245,9 +225,7 @@ class SftpFacade
      */
     public function sftpRename($resource, $source_path, $dest_path)
     {
-        //@codeCoverageIgnoreStart
         return ssh2_sftp_rename($resource, $source_path, $dest_path);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -260,9 +238,7 @@ class SftpFacade
      */
     public function sftpDelete($resource, $source_path)
     {
-        //@codeCoverageIgnoreStart
         return ssh2_sftp_unlink($resource, $source_path);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -275,9 +251,7 @@ class SftpFacade
      */
     public function sshShell($resource, $type = "xterm")
     {
-        //@codeCoverageIgnoreStart
         return ssh2_shell($resource, $type);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -290,9 +264,7 @@ class SftpFacade
      */
     public function sshShellWrite($resource, $command)
     {
-        //@codeCoverageIgnoreStart
         return fwrite($resource, $command);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -305,9 +277,7 @@ class SftpFacade
      */
     public function sshShellRead($resource, $length = 4096)
     {
-        //@codeCoverageIgnoreStart
         return fread($resource, $length);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -319,8 +289,7 @@ class SftpFacade
      */
     public function is_writable($filename)
     {
-        //@codeCoverageIgnoreStart
         return is_writable("ssh2.sftp://$resource/$remote_file");
-        //@codeCoverageIgnoreEnd
     }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2009-2010 Zikula Foundation - Zikula Application Framework
  *
@@ -16,9 +17,11 @@
 namespace Zikula\Common\FileSystem\Facade;
 
 /**
- * Zikula_FileSystem_Facade_Local is a facade interface for Local connections.
+ * LocalFacade is a facade interface for Local connections.
  *
  * Created especially to allow easy unit testing.
+ *
+ * @codeCoverageIgnore
  */
 class LocalFacade
 {
@@ -33,9 +36,7 @@ class LocalFacade
      */
     public function copy($source, $dest, $context)
     {
-        //@codeCoverageIgnoreStart
         return copy($source, $dest, $context);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -50,9 +51,7 @@ class LocalFacade
      */
     public function putContents($filename, $data, $flags = 0, $context)
     {
-        //@codeCoverageIgnoreStart
         return file_put_contents($filename, $data, $flags, $context);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -67,9 +66,7 @@ class LocalFacade
      */
     public function fileOpen($filename, $mode, $use_include_path = false, $context)
     {
-        //@codeCoverageIgnoreStart
         return fopen($filename, $mode, $use_include_path, $context);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -82,9 +79,7 @@ class LocalFacade
      */
     public function chmod($filename, $mode)
     {
-        //@codeCoverageIgnoreStart
         return chmod($filename, $mode);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -98,9 +93,7 @@ class LocalFacade
      */
     public function scandir($directory, $sorting_order = 0, $context)
     {
-        //@codeCoverageIgnoreStart
         return scandir($directory, $sorting_order, $context);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -112,9 +105,7 @@ class LocalFacade
      */
     public function chdir($dir)
     {
-        //@codeCoverageIgnoreStart
         return chdir($dir);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -128,9 +119,7 @@ class LocalFacade
      */
     public function rename($oldname, $newname, $context)
     {
-        //@codeCoverageIgnoreStart
         return rename($oldname, $newname, $context);
-        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -143,12 +132,10 @@ class LocalFacade
      */
     public function delete($filename, $context)
     {
-        //@codeCoverageIgnoreStart
         return unlink($filename, $context);
-        //@codeCoverageIgnoreEnd
     }
 
-	/**
+    /**
      * Facade for the is_writable function.
      *
      * @param string   $filename Path to check
@@ -157,9 +144,7 @@ class LocalFacade
      */
     public function is_writable($filename)
     {
-        //@codeCoverageIgnoreStart
         return is_writable($filename);
-        //@codeCoverageIgnoreEnd
     }
 
 }
