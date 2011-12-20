@@ -227,11 +227,13 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     public function newUser()
     {
+        // The user must have ADD access to submit a new user record.
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
             throw new Zikula_Exception_Forbidden();
         }
 
-        if ($this->getVar(Users_Constant::MODVAR_REGISTRATION_ENABLED, false) && !SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+        // When new user registration is disabled, the user must have ADMIN access instead of ADD access.
+        if (!$this->getVar(Users_Constant::MODVAR_REGISTRATION_ENABLED, false) && !SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $registrationUnavailableReason = $this->getVar(Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON, $this->__('Sorry! New user registration is currently disabled.'));
             $this->registerError($registrationUnavailableReason);
             // TODO - The home page typically does not display errors.
