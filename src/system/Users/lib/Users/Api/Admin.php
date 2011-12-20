@@ -339,7 +339,6 @@ class Users_Api_Admin extends Zikula_AbstractApi
     public function getLinks()
     {
         $links = array();
-        $submenulinks = array();
 
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view'), 'text' => $this->__('Users list'), 'class' => 'z-icon-es-view');
@@ -350,7 +349,17 @@ class Users_Api_Admin extends Zikula_AbstractApi
                 $links[] = array('url' => ModUtil::url($this->name, 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'class' => 'user-icon-adduser');
             }
         }
-        if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADD)) {
+
+        // To create a new user (or import users) when registration is enabled, ADD access is required.
+        // If registration is disabled, then ADMIN access required.
+        // ADMIN access is always required for exporting the users.
+        if ($this->getVar(Users_Constant::MODVAR_REGISTRATION_ENABLED, false)) {
+            $createUserAccessLevel = ACCESS_ADD;
+        } else {
+            $createUserAccessLevel = ACCESS_ADMIN;
+        }
+        if (SecurityUtil::checkPermission("{$this->name}::", '::', $createUserAccessLevel)) {
+            $submenulinks = array();
             $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'));
             $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'import'), 'text' => $this->__('Import users'));
             if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADMIN)) {
