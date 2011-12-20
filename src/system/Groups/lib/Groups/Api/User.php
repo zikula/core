@@ -51,8 +51,7 @@ class Groups_Api_User extends Zikula_AbstractApi
         $orderBy = "ORDER BY $groupcolumn[name]";
         $permFilter = array(array('realm' => 0,
                         'component_left' => 'Groups',
-                        'instance_left' => 'name',
-                        'instance_right' => 'gid',
+                        'instance_left' => 'gid',
                         'level' => ACCESS_READ));
         $objArray = DBUtil::selectObjectArray('groups', '', $orderBy, $args['startnum'] - 1, $args['numitems'], '', $permFilter);
 
