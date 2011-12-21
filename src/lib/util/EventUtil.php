@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * EventUtil
  */
@@ -20,7 +22,7 @@ class EventUtil
     /**
      * Singleton instance of EventManager.
      *
-     * @var Zikula_EventManager
+     * @var \Zikula\Common\EventManager\EventManager
      */
     public static $eventManager;
 
@@ -40,11 +42,11 @@ class EventUtil
     /**
      * Get EventManager instance.
      *
-     * @param Zikula_Core $core Core instance.
+     * @param Zikula\Core\Core $core Core instance.
      *
-     * @return Zikula_EventManager
+     * @return \Zikula\Common\EventManager\EventManager
      */
-    static public function getManager(Zikula_Core $core = null)
+    static public function getManager(Zikula\Core\Core $core = null)
     {
         if (self::$eventManager) {
             return self::$eventManager;
@@ -58,11 +60,11 @@ class EventUtil
     /**
      * Notify event.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
-     * @return Zikula_Event
+     * @return GenericEvent
      */
-    static public function notify(Zikula_Event $event)
+    static public function notify(GenericEvent $event)
     {
         return self::getManager()->notify($event);
     }
@@ -70,14 +72,27 @@ class EventUtil
     /**
      * Attach listener.
      *
-     * @param string       $name    Name of event.
-     * @param array|string $handler PHP Callable.
+     * @param string       $name     Name of event.
+     * @param array|string $handler  PHP Callable.
+     * @param integer      $priority Higher get's executed first, default = 0.
      *
      * @return void
      */
-    static public function attach($name, $handler)
+    static public function attach($name, $handler, $priority=0)
     {
-        self::getManager()->attach($name, $handler);
+        self::getManager()->attach($name, $handler, $priority=0);
+    }
+
+    /**
+     * Attach a service handler as an event listener.
+     *
+     * @param string         $name           Event name.
+     * @param ServiceHandler $serviceHandler ServiceHandler (serviceID, Method)
+     * @param string         $priority       Higher get's executed first, default = 0.
+     */
+    static public function attachListenerService($name, ServiceHandler $serviceHandler, $priority=0)
+    {
+        self::getManager()->attachListenerService($name, $serviceHandler, $priority);
     }
 
     /**
@@ -106,9 +121,9 @@ class EventUtil
     }
 
     /**
-     * Load and attach handlers for Zikula_AbstractEventHandler listeners.
+     * Load and attach handlers for Zikula\Framework\AbstractEventHandler listeners.
      *
-     * Loads event handlers that extend Zikula_AbstractEventHandler
+     * Loads event handlers that extend Zikula\Framework\AbstractEventHandler
      *
      * @param string $className The name of the class.
      *
@@ -177,12 +192,12 @@ class EventUtil
     }
 
     /**
-     * Register a Zikula_AbstractEventHandler as a persistent handler.
+     * Register a Zikula\Framework\AbstractEventHandler as a persistent handler.
      *
      * @param string $moduleName Module name.
-     * @param string $className  Class name (subclass of Zikula_AbstractEventHandler).
+     * @param string $className  Class name (subclass of Zikula\Framework\AbstractEventHandler).
      *
-     * @throws InvalidArgumentException If class is not available or not a subclass of Zikula_AbstractEventHandler.
+     * @throws InvalidArgumentException If class is not available or not a subclass of Zikula\Framework\AbstractEventHandler.
      *
      * @return void
      */
@@ -193,8 +208,8 @@ class EventUtil
         }
 
         $reflection = new ReflectionClass($className);
-        if (!$reflection->isSubclassOf('Zikula_AbstractEventHandler')) {
-            throw new InvalidArgumentException(sprintf('%s is not a subclass of Zikula_AbstractEventHandler', $className));
+        if (!$reflection->isSubclassOf('Zikula\Framework\AbstractEventHandler')) {
+            throw new InvalidArgumentException(sprintf('%s is not a subclass of Zikula\Framework\AbstractEventHandler', $className));
         }
 
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
@@ -203,10 +218,10 @@ class EventUtil
     }
 
     /**
-     * Unregister a Zikula_AbstractEventHandler event handler.
+     * Unregister a Zikula\Framework\AbstractEventHandler event handler.
      *
      * @param string $moduleName Module name.
-     * @param string $className  Class name (subclass of Zikula_AbstractEventHandler).
+     * @param string $className  Class name (subclass of Zikula\Framework\AbstractEventHandler).
      *
      * @return void
      */
@@ -271,23 +286,4 @@ class EventUtil
             }
         }
     }
-
-    /**
-     * Resolve the correct callable for a handler.
-     *
-     * @param array $handler Handler.
-     *
-     * @return array|Zikula_ServiceHandler
-     */
-    protected static function resolveCallable($handler)
-    {
-        if ($handler['serviceid']) {
-            $callable = new Zikula_ServiceHandler($handler['serviceid'], $handler['method']);
-        } else {
-            $callable = array($handler['classname'], $handler['method']);
-        }
-
-        return $callable;
-    }
-
 }

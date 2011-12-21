@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Groups_Api_Admin class.
  */
@@ -62,7 +64,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         $gid = $obj['gid'];
 
         // Let other modules know that we have created a new group.
-        $createEvent = new Zikula_Event('group.create', $obj);
+        $createEvent = new GenericEvent('group.create', $obj);
         $this->eventManager->notify($createEvent);
 
         // Return the id of the newly created item to the calling process
@@ -125,7 +127,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have deleted a group.
-        $deleteEvent = new Zikula_Event('group.delete', $item);
+        $deleteEvent = new GenericEvent('group.delete', $item);
         $this->eventManager->notify($deleteEvent);
 
         // Let the calling process know that we have finished successfully
@@ -194,7 +196,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have updated a group.
-        $updateEvent = new Zikula_Event('group.update', $object);
+        $updateEvent = new GenericEvent('group.update', $object);
         $this->eventManager->notify($updateEvent);
 
         // Let the calling process know that we have finished successfully
@@ -240,7 +242,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have updated a group.
-        $adduserEvent = new Zikula_Event('group.adduser', $object);
+        $adduserEvent = new GenericEvent('group.adduser', $object);
         $this->eventManager->notify($adduserEvent);
 
         // Let the calling process know that we have finished successfully
@@ -291,7 +293,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know we have updated a group
-        $removeuserEvent = new Zikula_Event('group.removeuser', array('gid' => $args['gid'],
+        $removeuserEvent = new GenericEvent('group.removeuser', array('gid' => $args['gid'],
                         'uid' => $args['uid']));
         $this->eventManager->notify($removeuserEvent);
 

@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 include 'lib/bootstrap.php';
 $core->init();
 
-$core->getEventManager()->notify(new Zikula_Event('frontcontroller.predispatch'));
+$core->getEventManager()->notify(new GenericEvent('frontcontroller.predispatch'));
 
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
@@ -49,10 +51,6 @@ $modinfo = ModUtil::getInfoFromName($module);
 if ($modinfo) {
     $module = $modinfo['url'];
 
-    if (System::isLegacyMode()) {
-        $type = (empty($type)) ? $type = 'user' : $type;
-        $func = (empty($func)) ? $func = 'main' : $func;
-    }
     if ($type == 'init' || $type == 'interactiveinstaller') {
         ModUtil::load($modinfo['name'], $type, true);
     }
@@ -80,7 +78,7 @@ try {
 
     if (!$return) {
         // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
-        throw new Zikula_Exception_NotFound(__('Page not found.'));
+        throw new Zikula\Framework\Exception\NotFoundException(__('Page not found.'));
     }
     $httpCode = 200;
 
@@ -89,22 +87,22 @@ try {
     }
 
 } catch (Exception $e) {
-    $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
+    $event = new GenericEvent('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
     $core->getEventManager()->notify($event);
 
     if ($event->isStopped()) {
         $httpCode = $event['httpcode'];
         $message = $event['message'];
     } else {
-        if ($e instanceof Zikula_Exception_NotFound) {
+        if ($e instanceof Zikula\Framework\Exception\NotFoundException) {
             $httpCode = 404;
             $message = $e->getMessage();
             $debug = array_merge($e->getDebug(), $e->getTrace());
-        } elseif ($e instanceof Zikula_Exception_Forbidden) {
+        } elseif ($e instanceof Zikula\Framework\Exception\ForbiddenException) {
             $httpCode = 403;
             $message = $e->getMessage();
             $debug = array_merge($e->getDebug(), $e->getTrace());
-        } elseif ($e instanceof Zikula_Exception_Redirect) {
+        } elseif ($e instanceof Zikula\Framework\Exception\RedirectException) {
             System::redirect($e->getUrl(), array(), $e->getType());
             System::shutDown();
         } elseif ($e instanceof PDOException) {

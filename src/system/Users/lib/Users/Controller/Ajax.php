@@ -12,7 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-/** 
+use Zikula\Core\Event\GenericEvent;
+
+/**
  * Access to actions initiated through AJAX for the Users module.
  */
 class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
@@ -125,9 +127,9 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
             }
         }
 
-        $event = new Zikula_Event("module.users.ui.validate_edit.{$eventType}", $userOrRegistration, array(), new Zikula_Hook_ValidationProviders());
+        $event = new GenericEvent("module.users.ui.validate_edit.{$eventType}", $userOrRegistration, array(), new Zikula_Hook_ValidationProviders());
         $validators = $this->eventManager->notify($event)->getData();
-            
+
         if (($eventType == 'new_user') || ($eventType == 'modify_user')) {
             $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', $validators);
         } else {

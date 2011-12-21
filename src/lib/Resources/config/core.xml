@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="servicemanagerawareeventmanager.class">Zikula\Common\EventManager\ServiceManagerAwareEventManager</parameter>
+
+        <parameter key="session.class">Zikula_Session</parameter>
+        <parameter key="session.storage.class">Zikula_Session_Storage_Legacy</parameter>
+
+        <parameter key="hookmanager.class">Zikula\Common\HookManager\HookManager</parameter>
+        <parameter key="hookmanager.storage.class">Zikula\Common\HookManager\Storage\Doctrine</parameter>
+        <parameter key="hookmanager.servicefactory.class">Zikula\Common\HookManager\ServiceFactory</parameter>
+
+        <parameter key="request.class">Zikula_Request_Http</parameter>
+
+        <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
+        <parameter key="token.storage.key">_tokens</parameter>
+        <parameter key="token.generator.class">Zikula\Core\Token\Generator</parameter>
+        <parameter key="token.validator.class">Zikula\Core\Token\Validator</parameter>
+        <parameter key="token.max_life">3600</parameter>
+        <parameter key="signing.key">to_be_injected_later</parameter>
+
+
+    </parameters>
+
+    <services>
+        <service id="request" class="%request.class%">
+            <call method="setSession">
+                <argument type="service" id="session" />
+            </call>
+        </service>
+
+        <service id="session" class="%session.class%">
+            <argument type="service" id="session.storage" />
+        </service>
+
+        <service id="session.storage" class="%session.storage.class%" public="false" />
+
+        <service id="token.storage" class="%token.storage.class%">
+            <argument type="service" id="session" />
+            <argument>%token.storage.key%</argument>
+        </service>
+
+        <service id="token.generator" class="%token.generator.class%">
+            <argument type="service" id="token.storage" />
+            <argument>%signing.key%</argument>
+            <argument>%token.max_life%</argument>
+        </service>
+
+        <service id="token.validator" class="%token.validator.class%">
+            <argument type="service" id="token.generator" />
+        </service>
+
+        <service id="hookmanager.storage" class="%hookmanager.storage.class%" public="false" />
+        <service id="hookmanager.servicefactory" class="%hookmanager.servicefactory.class%" public="false">
+            <argument type="service" id="zikula.servicemanager" />
+            <argument>zikula.eventmanager</argument>
+        </service>
+
+        <service id="zikula.hookmanager" class="%hookmanager.class%" public="false">
+            <argument type="service" id="hookmanager.storage" />
+            <argument type="service" id="zikula.eventmanager" />
+            <argument type="service" id="hookmanager.servicefactory" />
+        </service>
+
+
+
+    </services>
+</container>
