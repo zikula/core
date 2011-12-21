@@ -153,16 +153,18 @@ class FileUtil
     /**
      * Generate a file/directory listing (can be recusive).
      *
-     * @param string  $rootPath     The root-path we wish to start at.
-     * @param boolean $recurse      Whether or not to recurse directories (optional) (default=true).
-     * @param boolean $relativePath Whether or not to list relative (vs abolute) paths (optional) (default=true).
-     * @param string  $extensions   The file extension or array of extensions to scan for (optional) (default=null).
-     * @param string  $type         The type of object (file or directory or both) to return (optional) (default=null).
-     * @param boolean $nestedData   Whether or not to return a nested data set (optional) (default=false).
+     * @param string  $rootPath                  The root-path we wish to start at.
+     * @param boolean $recurse                   Whether or not to recurse directories (optional) (default=true).
+     * @param boolean $relativePath              Whether or not to list relative (vs abolute) paths (optional) (default=true).
+     * @param string  $extensions                The file extension or array of extensions to scan for (optional) (default=null).
+     * @param string  $type                      The type of object (file or directory or both) to return (optional) (default=null).
+     * @param boolean $nestedData                Whether or not to return a nested data set (optional) (default=false).
+     * @param boolean $regexpMatch               The regular expression matching test to apply to filenames (optional) (default=null).
+     * @param boolean $regexpMatchCaseSensitive  Wether or not the $regexpMatch is to be applied case sensitive (optional) (default=true)
      *
      * @return array The array of files in the given path.
      */
-    public static function getFiles($rootPath, $recurse=true, $relativePath=true, $extensions=null, $type=null, $nestedData=false)
+    public static function getFiles($rootPath, $recurse=true, $relativePath=true, $extensions=null, $type=null, $nestedData=false, $regexpMatch=null, $regexpMatchCaseSensitive=true)
     {
         $files = array();
         $type  = strtolower ($type);
@@ -177,8 +179,9 @@ class FileUtil
 
         $skiplist = array('.', '..', 'CVS', '.svn', '_svn', 'index.html', '.htaccess', '.DS_Store', '-vti-cnf');
 
-        $el = (is_string($extensions) ? strlen($extensions) : 0);
-        $dh = opendir($rootPath);
+        $el       = (is_string($extensions) ? strlen($extensions) : 0);
+        $dh       = opendir($rootPath);
+        $caseFlag = $regexpMatchCaseSensitive ? '' : 'i';
         while (($file = readdir($dh)) !== false) {
             $relativepath = $relativePath;
             if (!in_array($file, $skiplist)) {
@@ -213,19 +216,32 @@ class FileUtil
                                               (array)self::getFiles($path, $recurse, $relativepath, $extensions, $type, $nestedData));
                     }
 
-                } elseif (!$extensions) {
+                } elseif (!$extensions && !$regexpMatch) {
                     $files[] = $filenameToStore;
 
                 } elseif (is_array($extensions)) {
                     foreach ($extensions as $extension) {
                         if (substr($file, -strlen($extension)) == $extension) {
-                            $files[] = $filenameToStore;
-                            break;
+                            if ($regexpMatch) {
+                                if (preg_match("/$regexpMatch/$caseFlag", $file)) {
+                                    $files[] = $filenameToStore;
+                                    break;
+                                }
+                            } else {
+                                $files[] = $filenameToStore;
+                                break;
+                            }
                         }
                     }
 
                 } elseif (substr($file, -$el) == $extensions) {
-                    $files[] = $filenameToStore;
+                    if ($regexpMatch) {
+                        if (preg_match("/$regexpMatch/$caseFlag", $file)) {
+                            $files[] = $filenameToStore;
+                        }
+                    } else {
+                        $files[] = $filenameToStore;
+                    }
                 }
             }
         }
