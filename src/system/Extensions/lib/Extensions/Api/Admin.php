@@ -617,7 +617,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         // see if any modules have changed name since last generation
         foreach ($filemodules as $name => $modinfo) {
-            if (isset($modinfo['oldnames']) || !empty($modinfo['oldnames'])) {
+            if (isset($modinfo['oldnames']) && !empty($modinfo['oldnames'])) {
                 $tables = DBUtil::getTables();
                 foreach ($dbmodules as $dbname => $dbmodinfo) {
                     if (in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
