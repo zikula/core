@@ -16,6 +16,8 @@
 
 namespace Zikula\Common\FileSystem\Facade;
 
+use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
+
 /**
  * FtpFacade is a facade interface for FTP connections.
  *
@@ -222,7 +224,7 @@ class FtpFacade
         return ftp_systype($ftp_stream);
     }
 
-    public function fopen($remote_file, $mode, Zikula_FileSystem_Configuration_Ftp $configuration)
+    public function fopen($remote_file, $mode, FtpConfiguration $configuration)
     {
         return $handle = fopen('ftp://' .
             $configuration->getUser() . ':' .

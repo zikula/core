@@ -15,6 +15,9 @@
 
 namespace Zikula\Common\FileSystem;
 
+use Zikula\Common\FileSystem\Configuration\ConfigurationInterface;
+use Zikula\Common\FileSystem\Configuration\LocalConfiguration;
+
 /**
  * Local is the standard driver for Local/Direct connections.
  */
@@ -26,6 +29,18 @@ class Local extends AbstractDriver
      * @var resource
      */
     private $resource;
+
+    /**
+     * Constructor.
+     *
+     * @param ConfigurationInterface $configuration Defaults to a local connection.
+     */
+    public function __construct(ConfigurationInterface $configuration = null)
+    {
+        $configuration = $configuration ? $configuration : new LocalConfiguration();
+
+        parent::__construct($configuration);
+    }
 
     /**
      * Create local connection.

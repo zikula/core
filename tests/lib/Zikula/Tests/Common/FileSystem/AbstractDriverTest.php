@@ -1,6 +1,7 @@
 <?php
 namespace Zikula\Tests\Common\FileSystem;
 use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
+use Zikula\Common\FileSystem\Configuration\LocalConfiguration;
 use Zikula\Common\FileSystem\Ftp;
 
 /**
@@ -8,16 +9,12 @@ use Zikula\Common\FileSystem\Ftp;
  */
 class AbstractDriverTest extends \PHPUnit_Framework_TestCase
 {
-    public function test_construct()
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function test_constructException()
     {
-        try {
-            $config = new FtpConfiguration();
-            $driverAbstract = new Ftp($config);
-        } catch (\InvalidArgumentException $expected) {
-            $this->fail('Should not be an exception here');
-        }
-        $this->setExpectedException('\InvalidArgumentException');
-        $config = new FtpConfiguration();
+        $config = new LocalConfiguration();
         $driverAbstract = new Ftp($config);
     }
 }
