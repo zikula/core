@@ -40,7 +40,7 @@ class Ftp extends AbstractDriver
      * Standard function for creating a FTP connection and logging in.
      *
      * This must be called before any of the other functions in the
-     * Zikula_FileSystem_Interface. However the construct itself calles this
+     * Interface. However the construct itself calles this
      * function upon completion, which alleviates the need to ever call
      * this function manualy.
      *
@@ -359,6 +359,7 @@ class Ftp extends AbstractDriver
             if ($reconnect) {
                 return $this->connect();
             }
+
             return false;
         }
 
@@ -405,6 +406,7 @@ class Ftp extends AbstractDriver
 
             return true;
         }
+
         //file not found, return false
         $this->errorHandler->stop();
 
@@ -420,5 +422,4 @@ class Ftp extends AbstractDriver
     {
         return extension_loaded('ftp');
     }
-
 }

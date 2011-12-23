@@ -8,7 +8,6 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package FileSystem
- * @subpackage Zikula_FileSystem_Configuration
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,11 +17,6 @@ namespace Zikula\Common\FileSystem\Configuration;
 
 /**
  * FTP Configuration class.
- *
- * Configuration class for FTP driver. please see documentation for Zikula_FileSystem_Configuration
- * for more details on configuration classes. This class implements Zikula_FileSystem_Configuration.
- * The only purpose to this class is to provide a configuration object to be used by the
- * ftp driver.
  */
 class FtpConfiguration implements ConfigurationInterface
 {

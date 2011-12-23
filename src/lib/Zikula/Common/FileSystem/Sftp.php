@@ -16,7 +16,7 @@
 namespace Zikula\Common\FileSystem;
 
 /**
- * Zikula_FileSystem_SFtp is the standard driver for SFTP connections.
+ * Sftp is the standard driver for SFTP connections.
  *
  * @codeCoverageIgnore
  */
@@ -54,7 +54,7 @@ class Sftp extends AbstractDriver
      * Standard function for creating a SFTP connection and logging in.
      *
      * This must be called before any of the other functions in the
-     * Zikula_FileSystem_Interface. However the construct itself calles this function
+     * Interface. However the construct itself calles this function
      * upon completion, which alleviates the need to ever call this function
      * manually.
      *
@@ -245,6 +245,7 @@ class Sftp extends AbstractDriver
         //make sure that $perm is numeric, this also stops injection
         if (!is_numeric($perm)) {
             $this->errorHandler->register('permission "' . $perm . '" must be numeric.');
+
             return false;
         }
 
@@ -252,6 +253,7 @@ class Sftp extends AbstractDriver
 
         if (($file = $this->driver->realpath($this->resource, $file)) === false) {
             $this->errorHandler->stop(); //source file not found.
+
             return false;
         }
 
@@ -277,12 +279,15 @@ class Sftp extends AbstractDriver
                 case 1:
                     $this->errorHandler->register('Chmod returned with Code 1: failure.', 0);
                     $this->errorHandler->stop();
+
                     return false;
                 case 0:
                     $this->errorHandler->stop();
+
                     return $perm;
                 default:
                     $this->errorHandler->stop();
+
                     return false;
             }
         }
@@ -322,6 +327,7 @@ class Sftp extends AbstractDriver
         //if IsDir fails that means its either not a directory or doesnt exist
         if (!$this->driver->sftpFileExists($this->resource, $dir)) {
             $this->errorHandler->register("$dir does not exist.", 0);
+
             return false;
         }
 
@@ -380,6 +386,7 @@ class Sftp extends AbstractDriver
         if (($sourcepath = $this->driver->realpath($this->resource, $sourcepath)) !== false) {
             if (($this->driver->sftpRename($this->resource, $sourcepath, $destpath)) !== false) {
                 $this->errorHandler->stop(); //renamed file
+
                 return true;
             }//could not rename file
         }//Could not get reapath of sourcefile, it does not exist
@@ -412,6 +419,7 @@ class Sftp extends AbstractDriver
 
         if (($sourcepath = $this->driver->realpath($this->resource, $sourcepath)) === false) {
             $this->errorHandler->stop(); //source file not found.
+
             return false;
         }
 
@@ -437,12 +445,15 @@ class Sftp extends AbstractDriver
                 case 1:
                     $this->errorHandler->register('cp returned with Code 1: failure.', 0);
                     $this->errorHandler->stop();
+
                     return false;
                 case 0:
                     $this->errorHandler->stop();
+
                     return true;
                 default:
                     $this->errorHandler->stop();
+
                     return false;
             }
         } //size of matches less then 1, there is no readable response
@@ -466,7 +477,6 @@ class Sftp extends AbstractDriver
             $sourcepath = $this->dir . '/' . $sourcepath;
         }
 
-        //$sourcepath = ($sourcepath == '' || substr($sourcepath, 0, 1) !== '/' ? $this->_dir . '/' . $sourcepath : $sourcepath);
         $this->errorHandler->start();
         //check the file actauly exists.
         if (($sourcepath = $this->driver->realpath($this->resource, $sourcepath)) !== false) {
@@ -474,6 +484,7 @@ class Sftp extends AbstractDriver
             if ($this->driver->sftpDelete($this->resource, $sourcepath)) {
                 //file deleted
                 $this->errorHandler->stop();
+
                 return true;
             } //file not deleted
         } //file does not exist.
