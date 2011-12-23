@@ -17,8 +17,6 @@ namespace Zikula\Common\FileSystem;
 
 /**
  * Sftp is the standard driver for SFTP connections.
- *
- * @codeCoverageIgnore
  */
 class Sftp extends AbstractDriver
 {

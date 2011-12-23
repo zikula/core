@@ -17,8 +17,6 @@ namespace Zikula\Common\FileSystem;
 
 /**
  * Ftp is the standard driver for FTP connections.
- *
- * @codeCoverageIgnore
  */
 class Ftp extends AbstractDriver
 {
