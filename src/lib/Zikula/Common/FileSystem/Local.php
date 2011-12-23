@@ -157,7 +157,7 @@ class Local extends AbstractDriver
      * resource handle which can then be saved with fput(), or can be manipulated
      * in the same manner as any other file resouce handle.
      * <samp>
-     * $local = new Zikula_FileSystem_Local($config);
+     * $local = new LocalConfiguration($config);
      * $resource = $local->fget('filename.ext');
      * $local->fput($resource,'filename2.ext');
      *

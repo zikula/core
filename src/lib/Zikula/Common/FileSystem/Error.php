@@ -20,14 +20,6 @@ namespace Zikula\Common\FileSystem;
 class Error
 {
     /**
-     * Error level.
-     *
-     * @var integer
-     */
-    //private $error_level;
-
-
-    /**
      * Error container.
      *
      * @var array
@@ -49,6 +41,7 @@ class Error
 
         if ($clear) {
             $error = array_shift($this->errors);
+
             return $error;
         }
         return $this->errors[0];
@@ -79,6 +72,7 @@ class Error
         if ($clear) {
             $errors = $this->errors;
             $this->clearAll();
+
             return $errors;
         }
         return $this->errors;
@@ -101,9 +95,6 @@ class Error
      */
     public function start()
     {
-        // $this->error_level = error_reporting();
-        // error_reporting(EALL | EWARNING);
-        // return;
         //@codeCoverageIgnoreStart
         set_error_handler(array(
             $this,
@@ -119,7 +110,6 @@ class Error
     public function stop()
     {
         //@codeCoverageIgnoreStart
-        //   error_reporting($this->error_level);
         restore_error_handler();
         //@codeCoverageIgnoreEnd
     }
