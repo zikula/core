@@ -43,13 +43,13 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $fs->connect());
         $config = new LocalConfiguration('/dir');
         $fs = new Local($config);
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('chdir')
              ->will($this->returnValue(true));
         $fs->setDriver($stub);
         $this->assertEquals(true, $fs->connect());
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('chdir')
              ->will($this->returnValue(false));
@@ -63,7 +63,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
     public function testPut()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('copy')
              ->will($this->returnValue(true));
@@ -72,7 +72,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->local->put(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('copy')
              ->will($this->returnValue(false));
@@ -88,7 +88,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
     public function testFput()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('putContents')
              ->will($this->returnValue(333));
@@ -97,7 +97,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(333, $this->local->fput(1,2,3,4));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('putContents')
              ->will($this->returnValue(false));
@@ -113,7 +113,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
     public function testGet()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('copy')
              ->will($this->returnValue(true));
@@ -122,7 +122,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->local->get(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('copy')
              ->will($this->returnValue(false));
@@ -138,7 +138,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
     {
         // Configure the stub.
         $handle = fopen('php://temp', 'r+');
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('fileOpen')
              ->will($this->returnValue($handle));
@@ -147,7 +147,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('resource', $this->local->fget(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('fileOpen')
              ->will($this->returnValue(false));
@@ -164,7 +164,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
     	$perm = '777';
     	$perm2 = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('chmod')
              ->will($this->returnValue($perm2));
@@ -173,7 +173,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($perm, $this->local->chmod(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('chmod')
              ->will($this->returnValue(false));
@@ -190,7 +190,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
     {
         // Configure the stub.
         $array = array('1','2');
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('scandir')
              ->will($this->returnValue($array));
@@ -199,7 +199,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $this->local->ls(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('scandir')
              ->will($this->returnValue(false));
@@ -214,7 +214,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
     public function testCd()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('chdir')
              ->will($this->returnValue(true));
@@ -223,7 +223,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->local->cd(1));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('chdir')
              ->will($this->returnValue(false));
@@ -239,7 +239,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
     public function testMv()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('rename')
              ->will($this->returnValue(true));
@@ -248,7 +248,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->local->mv(1,2,3));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('rename')
              ->will($this->returnValue(false));
@@ -263,7 +263,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
     public function testCp()
     {
        // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('copy')
              ->will($this->returnValue(true));
@@ -272,7 +272,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->local->cp(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('copy')
              ->will($this->returnValue(false));
@@ -287,7 +287,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
     public function testRm()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('delete')
              ->will($this->returnValue(true));
@@ -296,7 +296,7 @@ class LocalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->local->rm(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facad\LocalFacade');
+        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\LocalFacade');
         $stub->expects($this->any())
              ->method('delete')
              ->will($this->returnValue(false));

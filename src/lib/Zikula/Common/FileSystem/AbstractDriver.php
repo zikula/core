@@ -51,18 +51,18 @@ abstract class AbstractDriver
     public function __construct(ConfigurationInterface $configuration)
     {
         // validate we get correct configuration class type.
-        $type = (string)preg_filter('/Zikula\\\Common\\\FileSystem\\\Configuration\\\(\w+)Configuration/', '$1', get_class($this));
+        $type = (string)preg_filter('/Zikula\\\Common\\\FileSystem\\\(\w+)$/', '$1', get_class($this));
         $validName = "Zikula\\Common\\FileSystem\\Configuration\\{$type}Configuration";
 
         if ($validName != get_class($configuration)) {
             throw new \InvalidArgumentException(
-                sprintf('Invalid configuration class for %1$s.  Expected %2$s but got %3$s instead.',
-                get_class($this), $validName, get_class($configuration)));
+                sprintf('Invalid configuration class for %1$s.  Expected %2$s but got %3$s instead. ::%4$s',
+                get_class($this), $validName, get_class($configuration), $type));
         }
 
         $this->configuration = $configuration;
 
-        $facade = "Zikula\\FileSystem\\Facade\\{$type}\\Facade";
+        $facade = "Zikula\\Common\\FileSystem\\Facade\\{$type}Facade";
         $this->driver = new $facade();
         $this->errorHandler = new Error();
     }
@@ -228,5 +228,8 @@ abstract class AbstractDriver
      *
      * @return boolean
      */
-    abstract public static function available();
+    public static function available()
+    {
+        return true;
+    }
 }
