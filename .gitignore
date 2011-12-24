@@ -5,6 +5,8 @@
 /.settings
 /.buildpath
 /.idea
+/src/vendor/
+/src/vendor/!\.htaccess
 
 # /src/config/
 /src/config/personal_config.php

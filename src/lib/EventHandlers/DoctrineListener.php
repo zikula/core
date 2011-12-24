@@ -35,7 +35,9 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
         // we have to add a new loader onto the spl stack.
         $autoloader = new Zikula\Common\KernelClassLoader();
         $autoloader->spl_autoload_register();
-        $autoloader->register('Doctrine', ZLOADER_PATH . '/vendor', '\\');
+        $autoloader->register('Doctrine\\Common', ZLOADER_PATH . '/../vendor/doctrine-common/lib', '\\');
+        $autoloader->register('Doctrine\\DBAL', ZLOADER_PATH . '/../vendor/doctrine-dbal/lib', '\\');
+        $autoloader->register('Doctrine\\ORM', ZLOADER_PATH . '/../vendor/doctrine/lib', '\\');
         $autoloader->register('DoctrineProxy', 'ztemp/doctrinemodels', '\\');
 
         $serviceManager = $event->getEventManager()->getServiceManager();
@@ -56,7 +58,7 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
         CacheUtil::createLocalDir('doctrinemodels');
 
         // setup annotations base
-        include_once 'lib/vendor/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
+        include_once ZLOADER_PATH . '/../vendor/doctrine/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
 
         // setup annotation reader
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();
