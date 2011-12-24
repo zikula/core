@@ -50,13 +50,12 @@
         <mkdir dir="${builddir}/patch" />
         <mkdir dir="${builddir}/tmp" />
         <mkdir dir="${builddir}/jsdoc" />
+        <echo msg="Downloading vendors..." />
+        <exec command="chmod 755 ${workspace}/source/bin/vendor;${workspace}/source/bin/vendor install --transport=git" />
     </target>
 
     <!-- Build archives -->
     <target name="build" depends="prepare">
-        <echo msg="Downloading vendors..." />
-        <exec command="chmod 755 ${workspace}/source/bin/vendor;${workspace}/source/bin/vendor install --transport=git" />    
-     
         <echo msg="Exporting for build..." />
         <!-- ATTN export urls require manual edit -->
         <exec command="cp -a ${workspace}/source/src ${packagepath}" />
