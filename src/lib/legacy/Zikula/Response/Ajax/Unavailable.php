@@ -23,7 +23,7 @@ class Zikula_Response_Ajax_Unavailable extends Zikula_Response_Ajax_Error
      *
      * @var integer
      */
-    protected $responseCode = 503;
+    protected $statusCode = 503;
 
     /**
      * Flag to create a new nonce.

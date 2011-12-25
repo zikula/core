@@ -23,7 +23,7 @@ class Zikula_Response_Ajax_Forbidden extends Zikula_Response_Ajax_Error
      *
      * @var integer
      */
-    protected $responseCode = 403;
+    protected $statusCode = 403;
 
     /**
      * Flag to create a new nonce.

@@ -23,5 +23,5 @@ class Zikula_Response_Ajax_BadData extends Zikula_Response_Ajax_Error
      *
      * @var integer
      */
-    protected $responseCode = 400;
+    protected $statusCode = 400;
 }

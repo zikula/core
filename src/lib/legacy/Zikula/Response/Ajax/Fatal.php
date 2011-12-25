@@ -23,7 +23,7 @@ class Zikula_Response_Ajax_Fatal extends Zikula_Response_Ajax_Error
      *
      * @var integer
      */
-    protected $responseCode = 500;
+    protected $statusCode = 500;
 
     /**
      * Flag to create a new nonce.

@@ -13,49 +13,17 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Ajax base class.
  */
-abstract class Zikula_Response_Ajax_AbstractBase
+abstract class Zikula_Response_Ajax_AbstractBase extends Response
 {
     /**
      * Response code.
      *
      * @var integer
      */
-    protected $responseCode = 200;
-
-    /**
-     * Create Http Response Header.
-     *
-     * @return string
-     */
-    protected function createHttpResponseHeader()
-    {
-        switch ($this->responseCode) {
-            case '200':
-                $response = '200 OK';
-                break;
-            case '400':
-                $response = '400 Bad data';
-                break;
-            case '403':
-                $response = '403 Forbidden';
-                break;
-            case '404':
-                $response = '404 Not found';
-                break;
-            case '503':
-                $response = '503 Temporarily unavailable';
-                break;
-            case '500':
-                $response = '500 Fatal error';
-                break;
-            default:
-                $response = '500 Fatal error';
-                break;
-        }
-
-        return "HTTP/1.1 $response";
-    }
+    protected $statusCode = 200;
 }

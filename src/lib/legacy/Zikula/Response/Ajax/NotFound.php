@@ -23,5 +23,5 @@ class Zikula_Response_Ajax_NotFound extends Zikula_Response_Ajax_Error
      *
      * @var integer
      */
-    protected $responseCode = 404;
+    protected $statusCode = 404;
 }

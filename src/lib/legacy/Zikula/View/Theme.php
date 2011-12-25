@@ -251,9 +251,6 @@ class Zikula_View_Theme extends Zikula_View
 
         $event = new GenericEvent('theme.init', $this);
         $this->eventManager->notify($event);
-
-        // Start the output buffering to capture module output
-        ob_start();
     }
 
     /**
@@ -295,15 +292,10 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Display the page output.
      *
-     * @access private
-     * @return void
+     * @return string
      */
-    public function themefooter()
+    public function themefooter($maincontent)
     {
-        // end output buffering and get module output
-        $maincontent = ob_get_contents();
-        ob_end_clean();
-
         // add the module wrapper
         if (!$this->themeinfo['system'] && (bool)$this->themeconfig['modulewrapper']) {
             $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
@@ -319,7 +311,7 @@ class Zikula_View_Theme extends Zikula_View
         $output = $this->fetch($this->themeconfig['page'], $this->cache_id);
 
         $event = new GenericEvent('theme.postfetch', $this, array(), $output);
-        echo $this->eventManager->notify($event)->getData();
+        return $this->eventManager->notify($event)->getData();
     }
 
     /**
