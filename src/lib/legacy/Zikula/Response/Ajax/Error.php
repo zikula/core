@@ -32,6 +32,8 @@ abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_AbstractM
             $this->authid = \SecurityUtil::generateAuthKey(ModUtil::getName());
             $this->csrfToken = \SecurityUtil::generateCsrfToken();
         }
+
+        parent::__construct('', $this->statusCode);
     }
 
     /**

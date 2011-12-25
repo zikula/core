@@ -26,6 +26,7 @@ class Zikula_Response_Ajax_Plain extends Zikula_Response_Ajax_AbstractBase
     public function __construct($payload)
     {
         $this->payload = $payload;
+        parent::__construct($payload, $this->statusCode);
     }
 
     /**
@@ -35,9 +36,9 @@ class Zikula_Response_Ajax_Plain extends Zikula_Response_Ajax_AbstractBase
      */
     public function __toString()
     {
-        header($this->createHttpResponseHeader());
-        header('Content-type: text/html');
-        return $this->payload;
+        $this->headers->set('Content-type', 'text/html');
+
+        return parent::__toString();
     }
 
 }

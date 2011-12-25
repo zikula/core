@@ -60,10 +60,10 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
      */
     public function __toString()
     {
-        $payload = json_encode($this->generatePayload());
-        header($this->createHttpResponseHeader());
-        header('Content-type: application/json');
-        return $payload;
+        $this->setContent(json_encode($this->generatePayload()));
+        $this->headers->set('Content-type', 'application/json');
+
+        return parent::__toString();
     }
 
     /**
@@ -74,8 +74,8 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
     protected function generatePayload()
     {
         return array(
-                'core' => $this->generateCoreData(),
-                'data' => $this->payload,
+            'core' => $this->generateCoreData(),
+            'data' => $this->payload,
         );
     }
 
@@ -95,11 +95,10 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
         }
 
         if ($this->csrfToken) {
-            $core['authid'] = $this->authid;
             $core['token'] = $this->csrfToken;
         }
-        $logUtilMessages = (array)\LogUtil::getStatusMessages();
-        $core['statusmsg'] = array_merge($this->messages,$logUtilMessages);
+        $logUtilMessages = (array) \LogUtil::getStatusMessages();
+        $core['statusmsg'] = array_merge($this->messages, $logUtilMessages);
 
         return $core;
     }

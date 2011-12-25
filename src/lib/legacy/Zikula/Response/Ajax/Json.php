@@ -26,6 +26,7 @@ class Zikula_Response_Ajax_Json extends Zikula_Response_Ajax_AbstractBase
     public function __construct($payload)
     {
         $this->payload = $payload;
+        parent::__construct('', $this->statusCode);
     }
 
     /**
@@ -35,9 +36,10 @@ class Zikula_Response_Ajax_Json extends Zikula_Response_Ajax_AbstractBase
      */
     public function __toString()
     {
-        header($this->createHttpResponseHeader());
-        header('Content-type: application/json');
-        return json_encode($this->payload);
+        $this->headers->set('Content-type', 'application/json');
+        $this->setContent(json_encode($this->payload));
+
+        return parent::__toString();
     }
 
 }
