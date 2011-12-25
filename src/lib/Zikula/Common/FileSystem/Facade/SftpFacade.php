@@ -286,7 +286,7 @@ class SftpFacade
      *
      * @return boolean True if is writable False if not.
      */
-    public function is_writable($filename)
+    public function isWritable($filename)
     {
         return is_writable("ssh2.sftp://$resource/$remote_file");
     }

@@ -146,7 +146,7 @@ abstract class AbstractDriver
      *
      * @return boolean|integer Number of bytes written on success, false on failure.
      */
-    abstract public function file_put_contents($contents, $remote);
+    abstract public function putContents($contents, $remote);
 
     /**
      * Interface file_get_contents function.
@@ -155,7 +155,7 @@ abstract class AbstractDriver
      *
      * @return string|boolean The string containing file contents on success false on fail.
      */
-    abstract public function file_get_contents($remote);
+    abstract public function getContents($remote);
 
     /**
      * Interface chmod function.
@@ -221,14 +221,14 @@ abstract class AbstractDriver
      *
      * @return boolean True if is writable False if not.
      */
-    abstract public function is_writable($remote_file);
+    abstract public function isWritable($remote_file);
 
     /**
      * Interface available function.
      *
      * @return boolean
      */
-    public static function available()
+    public static function isAvailable()
     {
         return true;
     }
