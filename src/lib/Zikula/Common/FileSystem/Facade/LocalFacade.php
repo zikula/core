@@ -141,7 +141,7 @@ class LocalFacade
      *
      * @return boolean True if is writable False if not.
      */
-    public function is_writable($filename)
+    public function isWritable($filename)
     {
         return is_writable($filename);
     }

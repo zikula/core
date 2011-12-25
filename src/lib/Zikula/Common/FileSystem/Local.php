@@ -115,7 +115,7 @@ class Local extends AbstractDriver
      *
      * @return boolean|integer Number of bytes written on success, false on failure.
      */
-    public function file_put_contents($contents, $remote)
+    public function putContents($contents, $remote)
     {
         $stream = fopen('data://text/plain,' . $contents, 'r');
 
@@ -129,7 +129,7 @@ class Local extends AbstractDriver
      *
      * @return string|boolean The string containing file contents on success false on fail.
      */
-    public function file_get_contents($remote)
+    public function getContents($remote)
     {
         return stream_get_contents($this->fget($remote));
     }
@@ -320,7 +320,7 @@ class Local extends AbstractDriver
      *
      * @return boolean True if is writable False if not.
      */
-    public function is_writable($sourcepath)
+    public function isWritable($sourcepath)
     {
         $this->errorHandler->start();
         if ($this->driver->is_writable($sourcepath)) {
@@ -338,7 +338,7 @@ class Local extends AbstractDriver
      *
      * @return boolean True if available, false if not.
      */
-    public static function available()
+    public static function isAvailable()
     {
         return true;
     }
