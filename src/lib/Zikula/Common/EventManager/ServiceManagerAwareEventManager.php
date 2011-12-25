@@ -134,9 +134,6 @@ class ServiceManagerAwareEventManager extends EventManager implements EventManag
             $event = new Event();
         }
 
-        $event->setName($name);
-        $event->setEventManager($this);
-
         $this->addServiceListeners($event->getName());
 
         parent::dispatch($event->getName(), $event);

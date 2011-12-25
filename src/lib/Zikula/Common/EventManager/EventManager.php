@@ -76,9 +76,6 @@ class EventManager extends EventDispatcher implements EventManagerInterface
             $event = new Event();
         }
 
-        $event->setName($name);
-        $event->setEventManager($this);
-
         parent::dispatch($event->getName(), $event);
 
         return $event;

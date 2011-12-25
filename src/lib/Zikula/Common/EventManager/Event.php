@@ -25,13 +25,6 @@ use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
 class Event extends \Symfony\Component\EventDispatcher\Event
 {
     /**
-     * EventManager instance.
-     *
-     * @var EventManagerInterface
-     */
-    protected $eventManager;
-
-    /**
      * Signal to stop further event notification.
      *
      * @deprecated
@@ -53,27 +46,5 @@ class Event extends \Symfony\Component\EventDispatcher\Event
     public function isStopped()
     {
         return $this->isPropagationStopped();
-    }
-
-    /**
-     * Sets the EventManager property.
-     *
-     * @param EventManagerInterface $eventManager
-     *
-     * @return void
-     */
-    public function setEventManager(EventManagerInterface $eventManager)
-    {
-        $this->eventManager = $eventManager;
-    }
-
-    /**
-     * Gets the EventManager.
-     *
-     * @return EventManager
-     */
-    public function getEventManager()
-    {
-        return $this->eventManager;
     }
 }

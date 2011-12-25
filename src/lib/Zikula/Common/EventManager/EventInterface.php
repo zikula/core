@@ -21,8 +21,6 @@ namespace Zikula\Common\EventManager;
 interface EventInterface
 {
     function getName();
-    function getEventManager();
-    function setEventManager(EventManagerInterface $eventManager);
     function stop();
     function isStopped();
 }
