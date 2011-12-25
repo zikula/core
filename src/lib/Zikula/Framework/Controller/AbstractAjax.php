@@ -14,7 +14,7 @@
  */
 
 namespace Zikula\Framework\Controller;
-use Zikula\Framework\Exception\Forbidden;
+use Zikula\Framework\Exception\ForbiddenException;
 
 /**
  * Abstract AJAX controller.
@@ -53,6 +53,6 @@ abstract class AbstractAjax extends AbstractController
         } catch (Forbidden $e) {
         }
 
-        throw new Forbidden(__('Ajax security checks failed.'));
+        throw new ForbiddenException(__('Ajax security checks failed.'));
     }
 }
