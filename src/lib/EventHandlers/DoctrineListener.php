@@ -40,7 +40,7 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
         $autoloader->register('Doctrine\\ORM', ZLOADER_PATH . '/../vendor/doctrine/lib', '\\');
         $autoloader->register('DoctrineProxy', 'ztemp/doctrinemodels', '\\');
 
-        $serviceManager = $event->getEventManager()->getServiceManager();
+        $serviceManager = $event->getDispatcher()->getServiceManager();
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
         $dbConfig = array('host' => $config['host'],
                           'user' => $config['user'],
