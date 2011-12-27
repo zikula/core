@@ -145,7 +145,7 @@ function smarty_function_pager($params, Zikula_View $view)
         $pager['module'] = !empty($module) ? $module : $name;
     }
 
-    $pager['func'] = isset($params['func']) ? $params['func'] : $view->getRequest()->attribute->get('_action');
+    $pager['func'] = isset($params['func']) ? $params['func'] : $view->getRequest()->attributes->get('_action');
     $pager['type'] = isset($params['type']) ? $params['type'] : $view->getRequest()->get('_controller');
 
     $pager['args'] = array();
