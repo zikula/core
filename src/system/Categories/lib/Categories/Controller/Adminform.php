@@ -30,25 +30,25 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
 
         $args = array();
 
-        if (FormUtil::getPassedValue('category_copy', null, 'POST')) {
+        if ($this->request->request->get('category_copy', null)) {
             $args['op'] = 'copy';
             $args['cid'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
-        if (FormUtil::getPassedValue('category_move', null, 'POST')) {
+        if ($this->request->request->get('category_move', null)) {
             $args['op'] = 'move';
             $args['cid'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
-        if (FormUtil::getPassedValue('category_delete', null, 'POST')) {
+        if ($this->request->request->get('category_delete', null)) {
             $args['op'] = 'delete';
             $args['cid'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
-        if (FormUtil::getPassedValue('category_user_edit', null, 'POST')) {
+        if ($this->request->request->get('category_user_edit', null)) {
             $_SESSION['category_referer'] = System::serverGetVar('HTTP_REFERER');
             $args['dr'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'user', 'edit', $args));
@@ -58,22 +58,22 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
         $data = $cat->getDataFromInput();
 
         if (!$cat->validate('admin')) {
-            $category = FormUtil::getPassedValue('category', null, 'POST');
+            $category = $this->request->request->get('category', null);
             $args['cid'] = $category['id'];
             $args['mode'] = 'edit';
             return System::redirect(ModUtil::url('Categories', 'admin', 'edit', $args));
         }
 
         $attributes = array();
-        $values = FormUtil::getPassedValue('attribute_value', 'POST');
-        foreach (FormUtil::getPassedValue('attribute_name', 'POST') as $index => $name) {
+        $values = $this->request->request->get('attribute_value');
+        foreach ($this->request->request->get('attribute_name') as $index => $name) {
             if (!empty($name)) $attributes[$name] = $values[$index];
         }
 
         $cat->setDataField('__ATTRIBUTES__', $attributes);
 
         // retrieve old category from DB
-        $category = FormUtil::getPassedValue('category', null, 'POST');
+        $category = $this->request->request->get('category', null);
         $oldCat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $category['id']);
 
         // update new category data
@@ -106,7 +106,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
 
         // submit button wasn't pressed -> category was chosen from dropdown
         // we now get the parent (security) category domains so we can inherit them
-        if (!FormUtil::getPassedValue('category_submit', null, 'POST')) {
+        if (!$this->request->request->get('category_submit', null)) {
             $newCat = $_POST['category'];
             $pcID = $newCat['parent_id'];
 
@@ -129,8 +129,8 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
         }
 
         $attributes = array();
-        $values = FormUtil::getPassedValue('attribute_value', array(), 'POST');
-        foreach (FormUtil::getPassedValue('attribute_name', array(), 'POST') as $index => $name) {
+        $values = $this->request->request->get('attribute_value', array());
+        foreach ($this->request->request->get('attribute_name', array()) as $index => $name) {
             if (!empty($name)) {
                 $attributes[$name] = $values[$index];
             }
@@ -161,11 +161,11 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        if (FormUtil::getPassedValue('category_cancel', null, 'POST')) {
+        if ($this->request->request->get('category_cancel', null)) {
             return System::redirect(ModUtil::url('Categories', 'admin', 'view'));
         }
 
-        $cid = FormUtil::getPassedValue('cid', null, 'POST');
+        $cid = $this->request->request->get('cid', null);
         $cat = new Categories_DBObject_Category ();
         $cat->get($cid);
 
@@ -193,11 +193,11 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        if (FormUtil::getPassedValue('category_cancel', null, 'POST')) {
+        if ($this->request->request->get('category_cancel', null)) {
             return System::redirect(ModUtil::url('Categories', 'admin', 'view'));
         }
 
-        $cid = FormUtil::getPassedValue('cid', null, 'POST');
+        $cid = $this->request->request->get('cid', null);
         $cat = new Categories_DBObject_Category ();
         $cat->get($cid);
 
@@ -219,11 +219,11 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        if (FormUtil::getPassedValue('category_cancel', null, 'POST')) {
+        if ($this->request->request->get('category_cancel', null)) {
             return System::redirect(ModUtil::url('Categories', 'admin', 'view'));
         }
 
-        $cid = FormUtil::getPassedValue('cid', null, 'POST');
+        $cid = $this->request->request->get('cid', null);
         $cat = new Categories_DBObject_Category ();
         $cat->get($cid);
         $cat->move($_POST['category']['parent_id']);
@@ -257,11 +257,11 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $id = FormUtil::getPassedValue('id', 0);
+        $id = $this->request->get('id', 0);
 
         $class = 'Categories_DBObject_Registry';
 
-        if (FormUtil::getPassedValue('mode', null, 'POST') == 'delete') {
+        if ($this->request->request->get('mode', null) == 'delete') {
             $obj = new $class();
             $obj->get($id);
             $obj->delete($id);
@@ -271,7 +271,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
         }
 
         $args = array();
-        if (!FormUtil::getPassedValue('category_submit', null, 'POST')) { // got here through selector auto-submit
+        if (!$this->request->request->get('category_submit', null)) { // got here through selector auto-submit
             $obj = new $class();
             $data = $obj->getDataFromInput($id);
             $args['category_registry'] = $data;
@@ -298,24 +298,24 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $userrootcat = FormUtil::getPassedValue('userrootcat', null);
+        $userrootcat = $this->request->get('userrootcat', null);
         if ($userrootcat) {
             $this->setVar('userrootcat', $userrootcat);
         }
 
-        $autocreateusercat = (int)FormUtil::getPassedValue('autocreateusercat', 0);
+        $autocreateusercat = (int)$this->request->get('autocreateusercat', 0);
         $this->setVar('autocreateusercat', $autocreateusercat);
 
-        $allowusercatedit = (int)FormUtil::getPassedValue('allowusercatedit', 0);
+        $allowusercatedit = (int)$this->request->get('allowusercatedit', 0);
         $this->setVar('allowusercatedit', $allowusercatedit);
 
-        $autocreateuserdefaultcat = FormUtil::getPassedValue('autocreateuserdefaultcat', 0);
+        $autocreateuserdefaultcat = $this->request->get('autocreateuserdefaultcat', 0);
         $this->setVar('autocreateuserdefaultcat', $autocreateuserdefaultcat);
 
-        $userdefaultcatname = FormUtil::getPassedValue('userdefaultcatname', 'Default');
+        $userdefaultcatname = $this->request->get('userdefaultcatname', 'Default');
         $this->setVar('userdefaultcatname', $userdefaultcatname);
 
-        $permissionsall = (int)FormUtil::getPassedValue('permissionsall', 0);
+        $permissionsall = (int)$this->request->get('permissionsall', 0);
         $this->setVar('permissionsall', $permissionsall);
 
         LogUtil::registerStatus(__('Done! Saved module configuration.'));

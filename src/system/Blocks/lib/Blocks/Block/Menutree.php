@@ -266,10 +266,10 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         $vars['menutree_anysettingsaccess'] = $vars['menutree_adminaccess'] || $vars['menutree_titlesaccess'] || $vars['menutree_displayaccess'] || $vars['menutree_settingsaccess'];
 
         // check if the users wants to add a new link via the "Add current url" link in the block
-        $addurl = FormUtil::getPassedValue('addurl', 0, 'GET');
+        $addurl = $this->request->query->get('addurl', 0);
 
         // or if we come from the normal "edit this block" link
-        $fromblock = FormUtil::getPassedValue('fromblock', null, 'GET');
+        $fromblock = $this->request->query->get('fromblock');
 
         $vars['redirect'] = '';
         $vars['menutree_newurl'] = '';
@@ -306,12 +306,12 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // check if import old menu
-        $menutree_menus = FormUtil::getPassedValue('menutree_menus', 'null');
+        $menutree_menus = $this->request->get('menutree_menus', 'null');
 
         if ($menutree_menus != 'null') {
             $vars['menutree_content'] = $this->_import_menu($menutree_menus);
         } else {
-            $vars['menutree_content'] = FormUtil::getPassedValue('menutree_content', '', 'POST');
+            $vars['menutree_content'] = $this->request->request->get('menutree_content', '');
             $vars['menutree_content'] = DataUtil::urlsafeJsonDecode($vars['menutree_content']);
         }
 
@@ -323,7 +323,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         uasort($vars['menutree_content'], array('Blocks_Block_Menutree','sort_menu'));
 
         // get other form data
-        $menutree_data = FormUtil::getPassedValue('menutree');
+        $menutree_data = $this->request->get('menutree');
 
         $vars['menutree_tpl'] = isset($menutree_data['tpl']) ? $menutree_data['tpl'] : '';
         if (empty($vars['menutree_tpl']) || !$this->view->template_exists($vars['menutree_tpl'])) {
@@ -560,7 +560,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
      *
      * @param array $a The first element to be compared, an array containing a MenuTree item definition (indexed by language).
      * @param array $b The second element to be compared, an array containing a MenuTree item definition (indexed by language).
-     * 
+     *
      * @return int 0 if the two operands are equal, -1 if $a's line number is less than $b's, 1 if $a's line number is greater than $b's.
      */
     private function sort_menu($a, $b)

@@ -155,16 +155,16 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
         } elseif (!empty($url)) {
             if ($url[0] == '{') {
                 $url = explode(':', substr($url, 1, - 1));
-                
+
                 // url[0] should be the module name
                 if (isset($url[0]) && !empty($url[0])) {
                     $modname = $url[0];
-                    
+
                     // default values
                     $type = 'user';
                     $func = 'main';
                     $params = array();
-                    
+
                     // url[1] can be a function or function&param=value
                     if (isset($url[1]) && !empty($url[1])) {
                         $urlparts = explode('&', $url[1]);
@@ -179,7 +179,7 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
                         // addon: url[2] can be the type parameter, default 'user'
                         $type = (isset($url[2]) && !empty($url[2])) ? $url[2] : 'user';
                     }
-                    
+
                     //  build the url
                     $url = ModUtil::url($modname, $type, $func, $params);
                 }
@@ -248,9 +248,9 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
      */
     public function update($blockinfo)
     {
-        $vars['displaymodules'] = FormUtil::getPassedValue('displaymodules');
-        $vars['style']          = FormUtil::getPassedValue('style');
-        $vars['stylesheet']     = FormUtil::getPassedValue('stylesheet');
+        $vars['displaymodules'] = $this->request->get('displaymodules');
+        $vars['style']          = $this->request->get('style');
+        $vars['stylesheet']     = $this->request->get('stylesheet');
 
         // Defaults
         if (empty($vars['displaymodules'])) {
@@ -267,11 +267,11 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
         $content = array();
         $c = 1;
 
-        $linkname   = FormUtil::getPassedValue('linkname');
-        $linkurl    = FormUtil::getPassedValue('linkurl');
-        $linkdesc   = FormUtil::getPassedValue('linkdesc');
-        $linkdelete = FormUtil::getPassedValue('linkdelete');
-        $linkinsert = FormUtil::getPassedValue('linkinsert');
+        $linkname   = $this->request->get('linkname');
+        $linkurl    = $this->request->get('linkurl');
+        $linkdesc   = $this->request->get('linkdesc');
+        $linkdelete = $this->request->get('linkdelete');
+        $linkinsert = $this->request->get('linkinsert');
 
         if (isset($linkname)) {
             foreach ($linkname as $v) {
@@ -284,11 +284,11 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
                 $c++;
             }
         }
-        
-        $new_linkname = FormUtil::getPassedValue('new_linkname');
-        $new_linkurl  = FormUtil::getPassedValue('new_linkurl');
-        $new_linkdesc = FormUtil::getPassedValue('new_linkdesc');
-        $new_linkinsert = (bool)FormUtil::getPassedValue('new_linkinsert');
+
+        $new_linkname = $this->request->get('new_linkname');
+        $new_linkurl  = $this->request->get('new_linkurl');
+        $new_linkdesc = $this->request->get('new_linkdesc');
+        $new_linkinsert = (bool)$this->request->get('new_linkinsert');
 
         if ($new_linkname) {
             $content[] = $new_linkurl . '|' . $new_linkname . '|' . $new_linkdesc;

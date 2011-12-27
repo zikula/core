@@ -17,102 +17,6 @@
  */
 class LogUtil
 {
-    /**
-     * Returns an array of status messages.
-     *
-     * @param boolean $delete   Whether to delete error messages (optional) (default=true).
-     * @param boolean $override Whether to override status messages with error messages (optional) (default=true).
-     * @param boolean $reverse  Whether to reverse order of messages (optional) (default=true).
-     *
-     * @return array of messages.
-     */
-    public static function getStatusMessages($delete = true, $override = true, $reverse = true)
-    {
-        $session = ServiceUtil::getManager()->getService('session');
-        $msgs = $session->getMessages(Zikula_Session::MESSAGE_STATUS);
-        $errs = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
-
-        if (!empty($errs) && $override) {
-            $msgs = $errs;
-        }
-
-        if ($delete) {
-            $session->clearMessages(Zikula_Session::MESSAGE_STATUS);
-            SessionUtil::delVar('_ZErrorMsgType');
-            $session->clearMessages(Zikula_Session::MESSAGE_ERROR);
-            SessionUtil::delVar('_ZStatusMsgType');
-        }
-
-        if ($reverse) {
-            $msgs = array_reverse($msgs, true);
-        }
-
-        return $msgs;
-    }
-
-    /**
-     * Returns a string of the available status messages, separated by the given delimeter.
-     *
-     * @param string  $delimiter The string to use as the delimeter between the array of messages.
-     * @param boolean $delete    True to delete.
-     * @param boolean $override  Whether to override status messages with error messages.
-     *
-     * @return string the generated error message.
-     */
-    public static function getStatusMessagesText($delimiter = '<br />', $delete = true, $override = true)
-    {
-        $msgs = self::getStatusMessages($delete, $override);
-        return implode($delimiter, $msgs);
-    }
-
-    /**
-     * Get an array of error messages.
-     *
-     * @param boolean $delete  True to delete error messages (optional)(default=true).
-     * @param boolean $reverse True to reverse error messages (optional)(default=true).
-     *
-     * @return array of messages
-     */
-    public static function getErrorMessages($delete = true, $reverse = true)
-    {
-        $session = ServiceUtil::getManager()->getService('session');
-        $msgs = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
-
-        if ($delete) {
-            $session->clearMessages(Zikula_Session::MESSAGE_ERROR);
-            SessionUtil::delVar('_ZErrorMsgType');
-        }
-
-        if ($reverse) {
-            $msgs = array_reverse($msgs, true);
-        }
-
-        return $msgs;
-    }
-
-    /**
-     * Get an error message text.
-     *
-     * @param string  $delimeter The string to use as the delimeter between the array of messages.
-     * @param boolean $delete    True to delete.
-     *
-     * @return string the generated error message.
-     */
-    public static function getErrorMessagesText($delimeter = '<br />', $delete = true)
-    {
-        $msgs = self::getErrorMessages($delete);
-        return implode($delimeter, $msgs);
-    }
-
-    /**
-     * get the error type.
-     *
-     * @return int error type.
-     */
-    public static function getErrorType()
-    {
-        return (int)SessionUtil::getVar('_ZErrorMsgType');
-    }
 
     /**
      * check if errors.
@@ -193,9 +97,9 @@ class LogUtil
         $session = ServiceUtil::getManager()->getService('session');
 
         if ($type === Zikula_AbstractErrorHandler::INFO) {
-            $session->addMessage(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
+            $session->addFlash(DataUtil::formatForDisplayHTML($message), Zikula_Session::MESSAGE_STATUS);
         } elseif ($type === E_USER_ERROR) {
-            $session->addMessage(Zikula_Session::MESSAGE_ERROR, DataUtil::formatForDisplayHTML($message));
+            $session->addFlash(DataUtil::formatForDisplayHTML($message), Zikula_Session::MESSAGE_ERROR);
         } else {
             throw new InvalidArgumentException(__f('Invalid type %s for LogUtil::_addPopup', $type));
         }
@@ -232,7 +136,7 @@ class LogUtil
             if (is_null($url)) {
                 $serviceManager = ServiceUtil::getManager();
                 $request = $serviceManager->getService('request');
-                
+
                 $loginArgs = array();
                 if ($request->isGet()) {
                     $loginArgs['returnpage'] = urlencode(System::getCurrentUri());
@@ -263,7 +167,8 @@ class LogUtil
 
         // check if we've got an error type
         if (isset($type) && is_numeric($type)) {
-            SessionUtil::setVar('_ZErrorMsgType', $type);
+            $session = ServiceUtil::getService('request')->getSession();
+            $session->hasFlashes(Zikula_Session::MESSAGE_ERROR);
         }
 
         // check if we want to redirect
@@ -364,7 +269,7 @@ class LogUtil
                 $perc = strpos($logfileSpec, '%s');
                 $start = substr($logfileSpec, 0, $perc + 2);
                 $end = substr($logfileSpec, $perc + 2);
-                $uid = SessionUtil::getVar('uid', 0);
+                $uid = ServiceUtil::getService('session')->get('uid', 0);
 
                 $logfileSpec = $start . '-%d' . $end;
                 $logfile = sprintf($logfileSpec, date($dateFormat), $uid);

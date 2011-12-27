@@ -88,7 +88,7 @@ abstract class AbstractBase implements TranslatableInterface
     /**
      * Request.
      *
-     * @var Zikula_Request_Http
+     * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request;
 
@@ -110,10 +110,8 @@ abstract class AbstractBase implements TranslatableInterface
         $this->eventManager = $this->getService('zikula.eventmanager');
 
         $this->request = $this->getService('request');
-        if ($this->hasService('doctrine.entitymanager')) {
-            // todo: remove this check post 1.3.0 release - drak
-            $this->entityManager = $this->getService('doctrine.entitymanager');
-        }
+        $this->entityManager = $this->getService('doctrine.entitymanager');
+
         $this->_configureBase();
         $this->initialize();
         $this->postInitialize();
@@ -713,7 +711,7 @@ abstract class AbstractBase implements TranslatableInterface
     public function checkCsrfToken($token=null)
     {
         if (is_null($token)) {
-            $token = $this->request->getPost()->get('csrftoken', false);
+            $token = $this->request->request->get('csrftoken', false);
         }
 
         $tokenValidator = $this->serviceManager->getService('token.validator');

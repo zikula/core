@@ -41,9 +41,9 @@ class Groups_Controller_User extends Zikula_AbstractController
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_OVERVIEW));
 
         // Get parameters from whatever input we need.
-        $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
-        $show = FormUtil::getPassedValue('show', null, 'GET');
-        $showgid = FormUtil::getPassedValue('showgid', null, 'GET');
+        $startnum = (int)$this->request->query->get('startnum', null);
+        $show = $this->request->query->get('show', null);
+        $showgid = $this->request->query->get('showgid', null);
 
         // we need this value multiple times, so we keep it
         $itemsperpage = $this->getVar('itemsperpage');
@@ -116,8 +116,8 @@ class Groups_Controller_User extends Zikula_AbstractController
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_OVERVIEW));
 
-        $gid = (int)FormUtil::getPassedValue('gid', null, 'GET');
-        $action = FormUtil::getPassedValue('action', null, 'GET');
+        $gid = (int)$this->request->query->get('gid', null);
+        $action = $this->request->query->get('action', null);
 
         if (empty($gid) || !is_numeric($gid) || empty($action)) {
             return LogUtil::registerArgsError();
@@ -177,10 +177,10 @@ class Groups_Controller_User extends Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        $gid = (int)FormUtil::getPassedValue('gid', null, 'POST');
-        $action = FormUtil::getPassedValue('action', null, 'POST');
-        $gtype = FormUtil::getPassedValue('gtype', null, 'POST');
-        $tag = FormUtil::getPassedValue('tag', null, 'POST');
+        $gid = (int)$this->request->request->get('gid', null);
+        $action = $this->request->request->get('action', null);
+        $gtype = $this->request->request->get('gtype', null);
+        $tag = $this->request->request->get('tag', null);
 
         if (empty($gid) || !is_numeric($gid) || empty($action)) {
             return LogUtil::registerArgsError();
@@ -190,7 +190,7 @@ class Groups_Controller_User extends Zikula_AbstractController
 
         $applytext = '';
         if ($action == 'subscribe' && $gtype == Groups_Helper_Common::GTYPE_PRIVATE) {
-            $applytext = FormUtil::getPassedValue('applytext', null, 'POST');
+            $applytext = $this->request->request->get('applytext', null);
         }
 
         $result = ModUtil::apiFunc('Groups', 'user', 'userupdate',
@@ -214,8 +214,8 @@ class Groups_Controller_User extends Zikula_AbstractController
      */
     public function memberslist()
     {
-        $gid = (int)FormUtil::getPassedValue('gid', null, 'GET');
-        $startnum = (int)FormUtil::getPassedValue('startnum', 1, 'GET');
+        $gid = (int)$this->request->query->get('gid', null);
+        $startnum = (int)$this->request->query->get('startnum', 1);
 
         if (!is_numeric($startnum)) {
             return LogUtil::registerArgsError();

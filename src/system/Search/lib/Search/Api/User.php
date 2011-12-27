@@ -83,6 +83,7 @@ class Search_Api_User extends Zikula_AbstractApi
             // Ask active modules to find their items and put them into $searchTable for the current user
             // At the same time convert modules list from numeric index to modname index
 
+            $session = $this->request->getSession();
             $searchModulesByName = array();
             foreach ($search_modules as $mod) {
                 // check we've a valid search plugin
@@ -105,11 +106,11 @@ class Search_Api_User extends Zikula_AbstractApi
 
             // Count number of found results
             $resultCount = DBUtil::selectObjectCount('search_result', $userResultWhere);
-            SessionUtil::setVar('searchResultCount', $resultCount);
-            SessionUtil::setVar('searchModulesByName', $searchModulesByName);
+            $session->set('searchResultCount', $resultCount);
+            $session->set('searchModulesByName', $searchModulesByName);
         } else {
-            $resultCount = SessionUtil::getVar('searchResultCount');
-            $searchModulesByName = SessionUtil::getVar('searchModulesByName');
+            $resultCount = $session->get('searchResultCount');
+            $searchModulesByName = $session->get('searchModulesByName');
         }
 
         // Fetch search result - do sorting and paging in database
@@ -312,7 +313,7 @@ class Search_Api_User extends Zikula_AbstractApi
         if (!isset($args['vars'])) {
             return LogUtil::registerArgsError();
         }
-        
+
         System::queryStringSetVar('type', 'user');
 
         // define the available user functions
@@ -356,7 +357,7 @@ class Search_Api_User extends Zikula_AbstractApi
      *
      * @param string $q the string to parse and split.
      * @param string $dbwildcard wrap each word in a DB wildcard character (%).
-     * 
+     *
      * @return array an array of words optionally surrounded by '%'
      */
     public static function split_query($q, $dbwildcard = true)

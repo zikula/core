@@ -25,7 +25,7 @@ class Categories_Controller_User extends Zikula_AbstractController
 
         $referer = System::serverGetVar('HTTP_REFERER');
         if (strpos($referer, 'module=Categories') === false) {
-            SessionUtil::setVar('categories_referer', $referer);
+            $this->request->getSession()->set('categories_referer', $referer);
         }
 
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
@@ -39,8 +39,8 @@ class Categories_Controller_User extends Zikula_AbstractController
      */
     public function edit()
     {
-        $docroot = FormUtil::getPassedValue('dr', 0);
-        $cid = FormUtil::getPassedValue('cid', 0);
+        $docroot = $this->request->get('dr', 0);
+        $cid = $this->request->get('cid', 0);
         $url = ModUtil::url('Categories', 'user', 'edit', array('dr' => $docroot));
 
         if (!SecurityUtil::checkPermission('Categories::category', "ID::$docroot", ACCESS_EDIT)) {
@@ -49,7 +49,7 @@ class Categories_Controller_User extends Zikula_AbstractController
 
         $referer = System::serverGetVar('HTTP_REFERER');
         if (strpos($referer, 'module=Categories') === false) {
-            SessionUtil::setVar('categories_referer', $referer);
+            $this->request->getSession()->set('categories_referer', $referer);
         }
 
         $rootCat = array();
@@ -225,8 +225,8 @@ class Categories_Controller_User extends Zikula_AbstractController
      */
     public function referBack()
     {
-        $referer = SessionUtil::getVar('categories_referer');
-        SessionUtil::DelVar('categories_referer');
+        $referer = $this->request->getSession()->get('categories_referer');
+        $this->request->getSession()->remove('categories_referer');
         $this->redirect($referer);
     }
 

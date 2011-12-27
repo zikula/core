@@ -68,7 +68,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        $category = FormUtil::getPassedValue('category', isset($args['category']) ? $args['category'] : null, 'POST');
+        $category = $this->request->request->get('category', isset($args['category']) ? $args['category'] : null);
 
         $cid = ModUtil::apiFunc('Admin', 'admin', 'create',
                 array('catname' => $category['catname'],
@@ -92,14 +92,14 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      */
     public function modify($args)
     {
-        $cid = FormUtil::getPassedValue('cid', isset($args['cid']) ? $args['cid'] : null, 'GET');
-        $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
+        $cid = $this->request->query->get('cid', isset($args['cid']) ? $args['cid'] : null);
+        $objectid = $this->request->query->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
 
         if (!empty($objectid)) {
             $cid = $objectid;
         }
 
-        $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
+        $category = ModUtil::apiFunc('Admin', 'admin', array('cid' => $cid));
 
         if ($category == false) {
             return LogUtil::registerError($this->__('Error! No such category found.'), 404);
@@ -128,7 +128,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        $category = FormUtil::getPassedValue('category', isset($args['category']) ? $args['category'] : null, 'POST');
+        $category = $this->request->request->get('category', isset($args['category']) ? $args['category'] : null);
         if (!empty($category['objectid'])) {
             $category['cid'] = $category['objectid'];
         }
@@ -163,14 +163,14 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      */
     public function delete($args)
     {
-        $cid = FormUtil::getPassedValue('cid', isset($args['cid']) ? $args['cid'] : null, 'REQUEST');
-        $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
-        $confirmation = FormUtil::getPassedValue('confirmation', null, 'POST');
+        $cid = $this->request->get('cid', isset($args['cid']) ? $args['cid'] : null);
+        $objectid = $this->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
+        $confirmation = $this->request->request->get('confirmation', null);
         if (!empty($objectid)) {
             $cid = $objectid;
         }
 
-        $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
+        $category = ModUtil::apiFunc('Admin', 'admin', array('cid' => $cid));
 
         if ($category == false) {
             return LogUtil::registerError($this->__('Error! No such category found.'), 404);
@@ -210,7 +210,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $startnum = FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GET');
+        $startnum = $this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : null);
 
         $categoryArray = ModUtil::apiFunc('Admin', 'admin', 'getall',
                                           array('startnum' => $startnum,
@@ -274,7 +274,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         // Now prepare the display of the admin panel by getting the relevant info.
 
         // Get parameters from whatever input we need.
-        $acid = FormUtil::getPassedValue('acid', (isset($args['acid']) ? $args['acid'] : null), 'GET');
+        $acid = $this->request->query->get('acid', (isset($args['acid']) ? $args['acid'] : null));
 
         // cid isn't set, so go to the default category
         if (empty($acid)) {
@@ -291,7 +291,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
 
         // Get Details on the selected category
         if ($acid > 0) {
-            $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $acid));
+            $category = ModUtil::apiFunc('Admin', 'admin', array('cid' => $acid));
         } else {
             $category = null;
         }
@@ -304,7 +304,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                 return LogUtil::registerPermissionError(System::getHomepageUrl());
             }
 
-            $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $acid));
+            $category = ModUtil::apiFunc('Admin', 'admin', array('cid' => $acid));
         }
 
         // assign the category
@@ -427,7 +427,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         }
 
         // get module vars
-        $modvars = FormUtil::getPassedValue('modvars', null, 'POST');
+        $modvars = $this->request->request->get('modvars', null);
 
         // check module vars
         $modvars['modulesperrow'] = isset($modvars['modulesperrow']) ? $modvars['modulesperrow'] : 5;
@@ -452,7 +452,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
 
         // get admin modules
         $adminmodules = ModUtil::getAdminMods();
-        $adminmods = FormUtil::getPassedValue('adminmods', null, 'POST');
+        $adminmods = $this->request->request->get('adminmods', null);
 
         foreach ($adminmodules as $adminmodule) {
             $category = $adminmods[$adminmodule['name']];
@@ -485,7 +485,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     public function categorymenu($args)
     {
         // get the current category
-        $acid = FormUtil::getPassedValue('acid', isset($args['acid']) ? $args['acid'] : $this->getVar('startcategory'), 'GET');
+        $acid = $this->request->query->get('acid', isset($args['acid']) ? $args['acid'] : $this->getVar('startcategory'));
 
         // Get all categories
         $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');

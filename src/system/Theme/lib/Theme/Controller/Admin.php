@@ -45,7 +45,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         if (isset($this->serviceManager['multisites.enabled']) && $this->serviceManager['multisites.enabled'] == 1){
             // only the main site can regenerate the themes list
-            if($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET')){
+            if($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)){
                 //return true but any action has been made
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
@@ -54,8 +54,8 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
 
         // get our input
-        $startnum = FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 1, 'GET');
-        $startlet = FormUtil::getPassedValue('startlet', isset($args['startlet']) ? $args['startlet'] : null, 'GET');
+        $startnum = $this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : 1);
+        $startlet = $this->request->query->get('startlet', isset($args['startlet']) ? $args['startlet'] : null);
 
         // we need this value multiple times, so we keep it
         $itemsperpage = $this->getVar('itemsperpage');
@@ -135,7 +135,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function modify($args)
     {
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
+        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -168,8 +168,8 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // get our input
-        $themeinfo = FormUtil::getPassedValue('themeinfo', isset($args['themeinfo']) ? $args['themeinfo'] : null, 'POST');
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
+        $themeinfo = $this->request->request->get('themeinfo', isset($args['themeinfo']) ? $args['themeinfo'] : null);
+        $themename = $this->request->request->get('themename', isset($args['themename']) ? $args['themename'] : null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -209,8 +209,8 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function variables($args)
     {
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
-        $filename  = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'GET');
+        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $filename  = $this->request->query->get('filename', isset($args['filename']) ? $args['filename'] : null);
 
         // check our input
         if (empty($themename)) {
@@ -259,13 +259,13 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // get our input
-        $variablesnames   = FormUtil::getPassedValue('variablesnames', isset($args['variablesnames']) ? $args['variablesnames'] : null, 'POST');
-        $variablesvalues  = FormUtil::getPassedValue('variablesvalues', isset($args['variablesvalues']) ? $args['variablesvalues'] : null, 'POST');
-        $newvariablename  = FormUtil::getPassedValue('newvariablename', isset($args['newvariablename']) ? $args['newvariablename'] : null, 'POST');
-        $newvariablevalue = FormUtil::getPassedValue('newvariablevalue', isset($args['newvariablevalue']) ? $args['newvariablevalue'] : null, 'POST');
+        $variablesnames   = $this->request->request->get('variablesnames', isset($args['variablesnames']) ? $args['variablesnames'] : null);
+        $variablesvalues  = $this->request->request->get('variablesvalues', isset($args['variablesvalues']) ? $args['variablesvalues'] : null);
+        $newvariablename  = $this->request->request->get('newvariablename', isset($args['newvariablename']) ? $args['newvariablename'] : null);
+        $newvariablevalue = $this->request->request->get('newvariablevalue', isset($args['newvariablevalue']) ? $args['newvariablevalue'] : null);
 
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
-        $filename  = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'POST');
+        $themename = $this->request->request->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $filename  = $this->request->request->get('filename', isset($args['filename']) ? $args['filename'] : null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -337,7 +337,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function palettes($args)
     {
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
+        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -373,22 +373,22 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // get our input
-        $palettes = FormUtil::getPassedValue('palettes', isset($args['palettes']) ? $args['palettes'] : null, 'POST');
-        $palettename = FormUtil::getPassedValue('palettename', isset($args['palettename']) ? $args['palettename'] : null, 'POST');
-        $bgcolor = FormUtil::getPassedValue('bgcolor', isset($args['bgcolor']) ? $args['bgcolor'] : null, 'POST');
-        $color1 = FormUtil::getPassedValue('color1', isset($args['color1']) ? $args['color1'] : null, 'POST');
-        $color2 = FormUtil::getPassedValue('color2', isset($args['color2']) ? $args['color2'] : null, 'POST');
-        $color3 = FormUtil::getPassedValue('color3', isset($args['color3']) ? $args['color3'] : null, 'POST');
-        $color4 = FormUtil::getPassedValue('color4', isset($args['color4']) ? $args['color4'] : null, 'POST');
-        $color5 = FormUtil::getPassedValue('color5', isset($args['color5']) ? $args['color5'] : null, 'POST');
-        $color6 = FormUtil::getPassedValue('color6', isset($args['color6']) ? $args['color6'] : null, 'POST');
-        $color7 = FormUtil::getPassedValue('color7', isset($args['color7']) ? $args['color7'] : null, 'POST');
-        $color8 = FormUtil::getPassedValue('color8', isset($args['color8']) ? $args['color8'] : null, 'POST');
-        $sepcolor = FormUtil::getPassedValue('sepcolor', isset($args['sepcolor']) ? $args['sepcolor'] : null, 'POST');
-        $link = FormUtil::getPassedValue('link', isset($args['link']) ? $args['link'] : null, 'POST');
-        $vlink = FormUtil::getPassedValue('vlink', isset($args['vlink']) ? $args['vlink'] : null, 'POST');
-        $hover = FormUtil::getPassedValue('hover', isset($args['hover']) ? $args['hover'] : null, 'POST');
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
+        $palettes = $this->request->request->get('palettes', isset($args['palettes']) ? $args['palettes'] : null);
+        $palettename = $this->request->request->get('palettename', isset($args['palettename']) ? $args['palettename'] : null);
+        $bgcolor = $this->request->request->get('bgcolor', isset($args['bgcolor']) ? $args['bgcolor'] : null);
+        $color1 = $this->request->request->get('color1', isset($args['color1']) ? $args['color1'] : null);
+        $color2 = $this->request->request->get('color2', isset($args['color2']) ? $args['color2'] : null);
+        $color3 = $this->request->request->get('color3', isset($args['color3']) ? $args['color3'] : null);
+        $color4 = $this->request->request->get('color4', isset($args['color4']) ? $args['color4'] : null);
+        $color5 = $this->request->request->get('color5', isset($args['color5']) ? $args['color5'] : null);
+        $color6 = $this->request->request->get('color6', isset($args['color6']) ? $args['color6'] : null);
+        $color7 = $this->request->request->get('color7', isset($args['color7']) ? $args['color7'] : null);
+        $color8 = $this->request->request->get('color8', isset($args['color8']) ? $args['color8'] : null);
+        $sepcolor = $this->request->request->get('sepcolor', isset($args['sepcolor']) ? $args['sepcolor'] : null);
+        $link = $this->request->request->get('link', isset($args['link']) ? $args['link'] : null);
+        $vlink = $this->request->request->get('vlink', isset($args['vlink']) ? $args['vlink'] : null);
+        $hover = $this->request->request->get('hover', isset($args['hover']) ? $args['hover'] : null);
+        $themename = $this->request->request->get('themename', isset($args['themename']) ? $args['themename'] : null);
 
         // check if this is a valid theme
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
@@ -443,7 +443,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function pageconfigurations($args)
     {
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
+        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -520,8 +520,8 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function modifypageconfigtemplates($args)
     {
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
-        $filename  = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'GET');
+        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $filename  = $this->request->query->get('filename', isset($args['filename']) ? $args['filename'] : null);
 
         // check our input
         if (empty($themename)) {
@@ -621,19 +621,19 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // get our input
-        $themename     = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
-        $filename      = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'POST');
-        $pagetemplate  = FormUtil::getPassedValue('pagetemplate', isset($args['pagetemplate']) ? $args['pagetemplate'] : '', 'POST');
-        $blocktemplate = FormUtil::getPassedValue('blocktemplate', isset($args['blocktemplate']) ? $args['blocktemplate'] : '', 'POST');
-        $pagepalette   = FormUtil::getPassedValue('pagepalette', isset($args['pagepalette']) ? $args['pagepalette'] : '', 'POST');
-        $modulewrapper = FormUtil::getPassedValue('modulewrapper', isset($args['modulewrapper']) ? $args['modulewrapper'] : 1, 'POST');
-        $blockwrapper  = FormUtil::getPassedValue('blockwrapper', isset($args['blockwrapper']) ? $args['blockwrapper'] : 1, 'POST');
+        $themename     = $this->request->request->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $filename      = $this->request->request->get('filename', isset($args['filename']) ? $args['filename'] : null);
+        $pagetemplate  = $this->request->request->get('pagetemplate', isset($args['pagetemplate']) ? $args['pagetemplate'] : '');
+        $blocktemplate = $this->request->request->get('blocktemplate', isset($args['blocktemplate']) ? $args['blocktemplate'] : '');
+        $pagepalette   = $this->request->request->get('pagepalette', isset($args['pagepalette']) ? $args['pagepalette'] : '');
+        $modulewrapper = $this->request->request->get('modulewrapper', isset($args['modulewrapper']) ? $args['modulewrapper'] : 1);
+        $blockwrapper  = $this->request->request->get('blockwrapper', isset($args['blockwrapper']) ? $args['blockwrapper'] : 1);
 
-        $blockinstancetemplates = FormUtil::getPassedValue('blockinstancetemplates', isset($args['blockinstancetemplates']) ? $args['blockinstancetemplates'] : null, 'POST');
-        $blocktypetemplates     = FormUtil::getPassedValue('blocktypetemplates', isset($args['blocktypetemplates']) ? $args['blocktypetemplates'] : null, 'POST');
-        $blockpositiontemplates = FormUtil::getPassedValue('blockpositiontemplates', isset($args['blockpositiontemplates']) ? $args['blockpositiontemplates'] : null, 'POST');
+        $blockinstancetemplates = $this->request->request->get('blockinstancetemplates', isset($args['blockinstancetemplates']) ? $args['blockinstancetemplates'] : null);
+        $blocktypetemplates     = $this->request->request->get('blocktypetemplates', isset($args['blocktypetemplates']) ? $args['blocktypetemplates'] : null);
+        $blockpositiontemplates = $this->request->request->get('blockpositiontemplates', isset($args['blockpositiontemplates']) ? $args['blockpositiontemplates'] : null);
 
-        $filters = FormUtil::getPassedValue('filters', isset($args['filters']) ? $args['filters'] : null, 'POST');
+        $filters = $this->request->request->get('filters', isset($args['filters']) ? $args['filters'] : null);
 
         // check our input
         if (empty($themename) || empty($pagetemplate)) {
@@ -721,8 +721,8 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function modifypageconfigurationassignment($args)
     {
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
-        $pcname    = FormUtil::getPassedValue('pcname', isset($args['pcname']) ? $args['pcname'] : null, 'GET');
+        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $pcname    = $this->request->query->get('pcname', isset($args['pcname']) ? $args['pcname'] : null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -814,14 +814,14 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'POST');
-        $pcname = FormUtil::getPassedValue('pcname', isset($args['pcname']) ? $args['pcname'] : null, 'POST');
-        $pagemodule = FormUtil::getPassedValue('pagemodule', isset($args['pagemodule']) ? $args['pagemodule'] : null, 'POST');
-        $pagetype = FormUtil::getPassedValue('pagetype', isset($args['pagetype']) ? $args['pagetype'] : 'user', 'POST');
-        $pagefunc = FormUtil::getPassedValue('pagefunc', isset($args['pagefunc']) ? $args['pagefunc'] : null, 'POST');
-        $pagecustomargs = FormUtil::getPassedValue('pagecustomargs', isset($args['pagecustomargs']) ? $args['pagecustomargs'] : null, 'POST');
-        $pageimportant = FormUtil::getPassedValue('pageimportant', isset($args['pageimportant']) ? $args['pageimportant'] : null, 'POST');
-        $filename = FormUtil::getPassedValue('filename', isset($args['filename']) ? $args['filename'] : null, 'POST');
+        $themename = $this->request->request->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $pcname = $this->request->request->get('pcname', isset($args['pcname']) ? $args['pcname'] : null);
+        $pagemodule = $this->request->request->get('pagemodule', isset($args['pagemodule']) ? $args['pagemodule'] : null);
+        $pagetype = $this->request->request->get('pagetype', isset($args['pagetype']) ? $args['pagetype'] : 'user');
+        $pagefunc = $this->request->request->get('pagefunc', isset($args['pagefunc']) ? $args['pagefunc'] : null);
+        $pagecustomargs = $this->request->request->get('pagecustomargs', isset($args['pagecustomargs']) ? $args['pagecustomargs'] : null);
+        $pageimportant = $this->request->request->get('pageimportant', isset($args['pageimportant']) ? $args['pageimportant'] : null);
+        $filename = $this->request->request->get('filename', isset($args['filename']) ? $args['filename'] : null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -892,9 +892,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      */
     public function deletepageconfigurationassignment($args)
     {
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'REQUEST');
-        $pcname = FormUtil::getPassedValue('pcname', isset($args['pcname']) ? $args['pcname'] : null, 'REQUEST');
-        $confirmation = FormUtil::getPassedValue('confirmation', null, 'POST');
+        $themename = $this->request->attributes>get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $pcname = $this->request->attributes>get('pcname', isset($args['pcname']) ? $args['pcname'] : null);
+        $confirmation = $this->request->request->get('confirmation', null);
 
         // Get the theme info
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
@@ -943,7 +943,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function credits($args)
     {
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
+        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -968,9 +968,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     public function setasdefault($args)
     {
         // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'REQUEST');
-        $confirmation = (int)FormUtil::getPassedValue ('confirmation', false, 'REQUEST');
-        $resetuserselected = FormUtil::getPassedValue('resetuserselected', isset($args['resetuserselected']) ? $args['resetuserselected'] : null, 'POST');
+        $themename = $this->request->attributes>get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $confirmation = (int)$this->request->attributes>get ('confirmation', false);
+        $resetuserselected = $this->request->request->get('resetuserselected', isset($args['resetuserselected']) ? $args['resetuserselected'] : null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -1014,9 +1014,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      */
     public function delete($args)
     {
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'REQUEST');
-        $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
-        $confirmation = FormUtil::getPassedValue('confirmation', null, 'POST');
+        $themename = $this->request->attributes>get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $objectid = $this->request->attributes>get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
+        $confirmation = $this->request->request->get('confirmation', null);
         if (!empty($objectid)) {
             $mid = $objectid;
         }
@@ -1047,7 +1047,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // If we get here it means that the user has confirmed the action
         $this->checkCsrfToken();
 
-        $deletefiles = FormUtil::getPassedValue('deletefiles', 0, 'POST');
+        $deletefiles = $this->request->request->get('deletefiles', 0);
 
         // Delete the admin message
         // The return value of the function is checked
@@ -1115,7 +1115,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
 
         // check if the theme cache was disabled and clean it if so
-        $enablecache = (bool)FormUtil::getPassedValue('enablecache', isset($args['enablecache']) ? $args['enablecache'] : false, 'POST');
+        $enablecache = (bool)$this->request->request->get('enablecache', isset($args['enablecache']) ? $args['enablecache'] : false);
 
         if ($this->getVar('enablecache') && !$enablecache) {
             $theme = Zikula_View_Theme::getInstance();
@@ -1125,62 +1125,62 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         // set our module variables
         $this->setVar('enablecache', $enablecache);
 
-        $modulesnocache = FormUtil::getPassedValue('modulesnocache', isset($args['modulesnocache']) ? $args['modulesnocache'] : array(), 'POST');
+        $modulesnocache = $this->request->request->get('modulesnocache', isset($args['modulesnocache']) ? $args['modulesnocache'] : array());
         $modulesnocache = implode(',', $modulesnocache);
         $this->setVar('modulesnocache', $modulesnocache);
 
-        $compile_check = (bool)FormUtil::getPassedValue('compile_check', isset($args['compile_check']) ? $args['compile_check'] : false, 'POST');
+        $compile_check = (bool)$this->request->request->get('compile_check', isset($args['compile_check']) ? $args['compile_check'] : false);
         $this->setVar('compile_check', $compile_check);
 
-        $cache_lifetime = (int)FormUtil::getPassedValue('cache_lifetime', isset($args['cache_lifetime']) ? $args['cache_lifetime'] : 3600, 'POST');
+        $cache_lifetime = (int)$this->request->request->get('cache_lifetime', isset($args['cache_lifetime']) ? $args['cache_lifetime'] : 3600);
         if ($cache_lifetime < -1) $cache_lifetime = 3600;
         $this->setVar('cache_lifetime', $cache_lifetime);
 
-        $force_compile = (bool)FormUtil::getPassedValue('force_compile', isset($args['force_compile']) ? $args['force_compile'] : false, 'POST');
+        $force_compile = (bool)$this->request->request->get('force_compile', isset($args['force_compile']) ? $args['force_compile'] : false);
         $this->setVar('force_compile', $force_compile);
 
-        $trimwhitespace = (bool)FormUtil::getPassedValue('trimwhitespace', isset($args['trimwhitespace']) ? $args['trimwhitespace'] : false, 'POST');
+        $trimwhitespace = (bool)$this->request->request->get('trimwhitespace', isset($args['trimwhitespace']) ? $args['trimwhitespace'] : false);
         $this->setVar('trimwhitespace', $trimwhitespace);
 
-        $maxsizeforlinks = (int)FormUtil::getPassedValue('maxsizeforlinks', isset($args['maxsizeforlinks']) ? $args['maxsizeforlinks'] : 30, 'POST');
+        $maxsizeforlinks = (int)$this->request->request->get('maxsizeforlinks', isset($args['maxsizeforlinks']) ? $args['maxsizeforlinks'] : 30);
         $this->setVar('maxsizeforlinks', $maxsizeforlinks);
 
-        $theme_change = (bool)FormUtil::getPassedValue('theme_change', isset($args['theme_change']) ? $args['theme_change'] : false, 'POST');
+        $theme_change = (bool)$this->request->request->get('theme_change', isset($args['theme_change']) ? $args['theme_change'] : false);
         System::setVar('theme_change', $theme_change);
 
-        $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', isset($args['itemsperpage']) ? $args['itemsperpage'] : 25, 'POST');
+        $itemsperpage = (int)$this->request->request->get('itemsperpage', isset($args['itemsperpage']) ? $args['itemsperpage'] : 25);
         if ($itemsperpage < 1) $itemsperpage = 25;
         $this->setVar('itemsperpage', $itemsperpage);
 
-        $cssjscombine = (bool)FormUtil::getPassedValue('cssjscombine', isset($args['cssjscombine']) ? $args['cssjscombine'] : false, 'POST');
+        $cssjscombine = (bool)$this->request->request->get('cssjscombine', isset($args['cssjscombine']) ? $args['cssjscombine'] : false);
         $this->setVar('cssjscombine', $cssjscombine);
 
-        $cssjsminify = (bool)FormUtil::getPassedValue('cssjsminify', isset($args['cssjsminify']) ? $args['cssjsminify'] : false, 'POST');
+        $cssjsminify = (bool)$this->request->request->get('cssjsminify', isset($args['cssjsminify']) ? $args['cssjsminify'] : false);
         $this->setVar('cssjsminify', $cssjsminify);
 
-        $cssjscompress = (bool)FormUtil::getPassedValue('cssjscompress', isset($args['cssjscompress']) ? $args['cssjscompress'] : false, 'POST');
+        $cssjscompress = (bool)$this->request->request->get('cssjscompress', isset($args['cssjscompress']) ? $args['cssjscompress'] : false);
         $this->setVar('cssjscompress', $cssjscompress);
 
-        $cssjscombine_lifetime = (int)FormUtil::getPassedValue('cssjscombine_lifetime', isset($args['cssjscombine_lifetime']) ? $args['cssjscombine_lifetime'] : 3600, 'POST');
+        $cssjscombine_lifetime = (int)$this->request->request->get('cssjscombine_lifetime', isset($args['cssjscombine_lifetime']) ? $args['cssjscombine_lifetime'] : 3600);
         if ($cssjscombine_lifetime < -1) $cssjscombine_lifetime = 3600;
         $this->setVar('cssjscombine_lifetime', $cssjscombine_lifetime);
 
 
         // render
-        $render_compile_check = (bool)FormUtil::getPassedValue('render_compile_check', isset($args['render_compile_check']) ? $args['render_compile_check'] : false, 'POST');
+        $render_compile_check = (bool)$this->request->request->get('render_compile_check', isset($args['render_compile_check']) ? $args['render_compile_check'] : false);
         $this->setVar('render_compile_check', $render_compile_check);
 
-        $render_force_compile = (bool)FormUtil::getPassedValue('render_force_compile', isset($args['render_force_compile']) ? $args['render_force_compile'] : false, 'POST');
+        $render_force_compile = (bool)$this->request->request->get('render_force_compile', isset($args['render_force_compile']) ? $args['render_force_compile'] : false);
         $this->setVar('render_force_compile', $render_force_compile);
 
-        $render_cache = (int)FormUtil::getPassedValue('render_cache', isset($args['render_cache']) ? $args['render_cache'] : false, 'POST');
+        $render_cache = (int)$this->request->request->get('render_cache', isset($args['render_cache']) ? $args['render_cache'] : false);
         $this->setVar('render_cache', $render_cache);
 
-        $render_lifetime = (int)FormUtil::getPassedValue('render_lifetime', isset($args['render_lifetime']) ? $args['render_lifetime'] : 3600, 'POST');
+        $render_lifetime = (int)$this->request->request->get('render_lifetime', isset($args['render_lifetime']) ? $args['render_lifetime'] : 3600);
         if ($render_lifetime < -1) $render_lifetime = 3600;
         $this->setVar('render_lifetime', $render_lifetime);
 
-        $render_expose_template = (bool)FormUtil::getPassedValue('render_expose_template', isset($args['render_expose_template']) ? $args['render_expose_template'] : false, 'POST');
+        $render_expose_template = (bool)$this->request->request->get('render_expose_template', isset($args['render_expose_template']) ? $args['render_expose_template'] : false);
         $this->setVar('render_expose_template', $render_expose_template);
 
         // The configuration has been changed, so we clear all caches for this module.
@@ -1201,7 +1201,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      */
     public function clear_compiled()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->attributes>get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -1229,7 +1229,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      */
     public function clear_cache()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->attributes>get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -1257,7 +1257,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      */
     public function clear_cssjscombinecache()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->attributes>get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -1280,7 +1280,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      */
     public function clear_config()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->attributes>get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -1308,7 +1308,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      */
     public function render_clear_compiled()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->attributes>get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -1335,7 +1335,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      */
     public function render_clear_cache()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->attributes>get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check

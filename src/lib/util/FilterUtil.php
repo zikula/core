@@ -171,7 +171,7 @@ class FilterUtil extends FilterUtil_AbstractBase
         );
 
         if (isset($parts[2]) && substr($parts[2], 0, 1) == '$') {
-            $value = FormUtil::getPassedValue(substr($parts[2], 1), null);
+            $value = ServiceUtil::getService('request')->get(substr($parts[2], 1), null);
             if (empty($value) && !is_numeric($value)) {
                 return false;
             }
@@ -325,7 +325,7 @@ class FilterUtil extends FilterUtil_AbstractBase
         $filter = array();
 
         // Get unnumbered filter string
-        $filterStr = FormUtil::getPassedValue($this->_varname, '');
+        $filterStr = ServiceUtil::getService('request')->get($this->_varname, '');
         if (!empty($filterStr)) {
             $filter[] = $filterStr;
         }
@@ -333,7 +333,7 @@ class FilterUtil extends FilterUtil_AbstractBase
         // Get filter1 ... filterN
         while (true) {
             $filterURLName = $this->_varname . "$i";
-            $filterStr = FormUtil::getPassedValue($filterURLName, '');
+            $filterStr = ServiceUtil::getService('request')->get($filterURLName, '');
 
             if (empty($filterStr)) {
                 break;

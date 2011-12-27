@@ -42,6 +42,7 @@ class BlockUtil
 
         ModUtil::dbInfoLoad('Blocks', 'Blocks');
 
+        $request = ServiceUtil::getService('request');
         // get the block position
         if (empty($positions)) {
             $positions = DBUtil::selectObjectArray('block_positions', null, null, -1, -1, 'name');
@@ -50,7 +51,7 @@ class BlockUtil
             return;
         }
         if (!isset($modname)) {
-            $modname = FormUtil::getPassedValue('module', '_homepage_', 'GETPOST', FILTER_SANITIZE_STRING);
+            $modname = filter_var($request->get('module', '_homepage_', FILTER_SANITIZE_STRING));
         }
 
         // get the blocks in this block position

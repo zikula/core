@@ -126,7 +126,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
     /**
      * Request object.
      *
-     * @var Zikula_Request_Http
+     * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request;
 
@@ -183,9 +183,9 @@ class Zikula_View extends Smarty implements TranslatableInterface
         $this->allow_php_tag = true;
 
         // get variables from input
-        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $type   = FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
-        $func   = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
+        $module = $this->request->attributes->get('_module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $type   = $this->request->attributes->get('_controller', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
+        $func   = $this->request->attributes->get('_action', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
 
         // set vars based on the module structures
         $this->homepage = empty($module) ? true : false;
@@ -617,7 +617,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
         $core['language'] = $this->language;
 
         // add userdata
-        $core['user']   = UserUtil::getVars(SessionUtil::getVar('uid'));
+        $core['user']   = UserUtil::getVars($this->request->getSession()->get('uid'));
 
         // Module vars
         parent::assign('coredata', $core);

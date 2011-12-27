@@ -39,7 +39,7 @@ class SecurityCenter_Controller_Adminform extends Zikula_AbstractController
         }
 
         // get paramters
-        $id = (int)FormUtil::getPassedValue('id', 0, 'GETPOST');
+        $id = (int)$this->request->get('id', 0);
 
         // sanity check
         if (!is_numeric($id)) {

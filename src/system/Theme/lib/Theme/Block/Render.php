@@ -188,9 +188,9 @@ class Theme_Block_Render extends Zikula_Controller_AbstractBlock
             return false;
         }
 
-        $module = FormUtil::getPassedValue('rmodule', null, 'POST');
-        $template = FormUtil::getPassedValue('rtemplate', null, 'POST');
-        $parameters = FormUtil::getPassedValue('rparameters', null, 'POST');
+        $module = $this->request->request->get('rmodule');
+        $template = $this->request->request->get('rtemplate');
+        $parameters = $this->request->request->get('rparameters');
 
         $blockinfo['content'] = BlockUtil::varsToContent(compact('module', 'template', 'parameters' ));
 
