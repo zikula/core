@@ -131,8 +131,8 @@ class Blocks_Block_Finclude extends Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // alter the corresponding variable
-        $vars['filo'] = FormUtil::getPassedValue('filo');
-        $vars['typo'] = FormUtil::getPassedValue('typo');
+        $vars['filo'] = $this->request->get('filo');
+        $vars['typo'] = $this->request->get('typo');
 
         // write back the new contents
         $blockinfo['content'] = BlockUtil::varsToContent($vars);

@@ -37,7 +37,7 @@ class Blocks_Controller_User extends Zikula_AbstractController
      */
     public function changestatus()
     {
-        $bid = FormUtil::getPassedValue('bid');
+        $bid = $this->request->get('bid');
         $uid = UserUtil::getVar('uid');
 
         $dbtable = DBUtil::getTables();

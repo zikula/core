@@ -130,13 +130,13 @@ function smarty_function_pagerabc($params, Zikula_View $view)
     if (isset($params['modname'])) {
         $pager['module'] = $params['modname'];
     } else {
-        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $name   = FormUtil::getPassedValue('name', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $module = $view->getRequest()->attributes->get('_module');
+        $name   = filter_var($view->getRequest()->get('name', null), FILTER_SANITIZE_STRING);
         $pager['module'] = !empty($module) ? $module : $name;
     }
 
-    $pager['func'] = isset($params['func']) ? $params['func'] : FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
-    $pager['type'] = isset($params['type']) ? $params['type'] : FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
+    $pager['func'] = isset($params['func']) ? $params['func'] : $view->getRequest()->attributes->get('_action');
+    $pager['type'] = isset($params['type']) ? $params['type'] : $view->getRequest()->attributes->get('_controller');
 
     $allVars = array_merge($_POST, $_GET);
 

@@ -25,7 +25,8 @@ class Errors_Controller_User extends Zikula_AbstractController
      */
     public function main($args)
     {
-        $type      = FormUtil::getPassedValue('errtype', isset($args['type']) ? $args['type'] : LogUtil::getErrorType(), 'GET');
+        $session = $this->request->getSession();
+        $type      = $this->request->query->get('errtype', isset($args['type']) ? $args['type'] : 500);
         $exception = isset($args['exception']) ? $args['exception'] : null;
         $message   = isset($args['message']) ? $args['message'] : '';
 
@@ -59,7 +60,7 @@ class Errors_Controller_User extends Zikula_AbstractController
                    ->assign('reportlevel', System::getVar('reportlevel'))
                    ->assign('funtext', System::getVar('funtext'));
 
-        $messages = LogUtil::getErrorMessages();
+        $messages = $session->popFlashes(Zikula_Session::MESSAGE_ERROR);
         // show the detailed error message for admins only
         if (System::isDevelopmentMode() || SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
             $message ? $messages[] = $message : null;

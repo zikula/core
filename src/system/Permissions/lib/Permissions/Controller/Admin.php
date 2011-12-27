@@ -58,11 +58,11 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need.
-        $permgrp = FormUtil::getPassedValue('permgrp', -1, 'REQUEST');
-        $testuser = FormUtil::getPassedValue('test_user', null, 'POST');
-        $testcomponent = FormUtil::getPassedValue('test_component', null, 'POST');
-        $testinstance = FormUtil::getPassedValue('test_instance', null, 'POST');
-        $testlevel = FormUtil::getPassedValue('test_level', null, 'POST');
+        $permgrp = $this->request->get('permgrp', -1);
+        $testuser = $this->request->request->get('test_user', null);
+        $testcomponent = $this->request->request->get('test_component', null);
+        $testinstance = $this->request->request->get('test_instance', null);
+        $testlevel = $this->request->request->get('test_level', null);
 
         $testresult = '';
         if (!empty($testuser) &&
@@ -233,7 +233,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      */
     public function inc()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // MMaes,2003-06-23: Added sec.check
@@ -242,9 +242,8 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters
-        // MMaes,2003-06-23: View permissions applying to single group; added permgrp
-        $pid = FormUtil::getPassedValue('pid', null, 'GET');
-        $permgrp = FormUtil::getPassedValue('permgrp', null, 'GET');
+        $pid = $this->request->query->get('pid', null);
+        $permgrp = $this->request->query->get('permgrp', null);
 
         if (empty($permgrp)) {
             // For group-permissions, make sure we return something sensible.
@@ -274,7 +273,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      */
     public function dec()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // MMaes,2003-06-23: Added sec.check
@@ -283,9 +282,8 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters
-        // MMaes,2003-06-23: View permissions applying to single group; added permgrp
-        $pid = FormUtil::getPassedValue('pid', null, 'GET');
-        $permgrp = FormUtil::getPassedValue('permgrp', null, 'GET');
+        $pid = $this->request->query->get('pid', null);
+        $permgrp = $this->request->query->get('permgrp', null);
 
         if (!isset($permgrp) || $permgrp == '') {
             // For group-permissions, make sure we return something sensible.
@@ -319,10 +317,10 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need.
-        $chgpid = FormUtil::getPassedValue('chgpid', null, 'GET');
-        $action = FormUtil::getPassedValue('action', null, 'GET');
-        $insseq = FormUtil::getPassedValue('insseq', null, 'GET');
-        $permgrp = FormUtil::getPassedValue('permgrp', null, 'REQUEST');
+        $chgpid = $this->request->query->get('chgpid', null);
+        $action = $this->request->query->get('action', null);
+        $insseq = $this->request->query->get('insseq', null);
+        $permgrp = $this->request->get('permgrp', null);
 
         // decide default view
         $rowview = is_null($this->getVar('rowview')) ? '25' : $this->getVar('rowview');
@@ -428,14 +426,14 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters
-        $pid = FormUtil::getPassedValue('pid', null, 'POST');
-        $seq = FormUtil::getPassedValue('seq', null, 'POST');
-        $oldseq = FormUtil::getPassedValue('oldseq', null, 'POST');
-        $realm = FormUtil::getPassedValue('realm', null, 'POST');
-        $id = FormUtil::getPassedValue('id', null, 'POST');
-        $component = FormUtil::getPassedValue('component', null, 'POST');
-        $instance = FormUtil::getPassedValue('instance', null, 'POST');
-        $level = FormUtil::getPassedValue('level', null, 'POST');
+        $pid = $this->request->request->get('pid', null);
+        $seq = $this->request->request->get('seq', null);
+        $oldseq = $this->request->request->get('oldseq', null);
+        $realm = $this->request->request->get('realm', null);
+        $id = $this->request->request->get('id', null);
+        $component = $this->request->request->get('component', null);
+        $instance = $this->request->request->get('instance', null);
+        $level = $this->request->request->get('level', null);
 
         // Since we're using TextAreas, make sure no carriage-returns etc get through unnoticed.
         $warnmsg = '';
@@ -491,12 +489,12 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters
-        $realm = FormUtil::getPassedValue('realm', null, 'POST');
-        $id = FormUtil::getPassedValue('id', null, 'POST');
-        $component = FormUtil::getPassedValue('component', null, 'POST');
-        $instance = FormUtil::getPassedValue('instance', null, 'POST');
-        $level = FormUtil::getPassedValue('level', null, 'POST');
-        $insseq = FormUtil::getPassedValue('insseq', null, 'POST');
+        $realm = $this->request->request->get('realm', null);
+        $id = $this->request->request->get('id', null);
+        $component = $this->request->request->get('component', null);
+        $instance = $this->request->request->get('instance', null);
+        $level = $this->request->request->get('level', null);
+        $insseq = $this->request->request->get('insseq', null);
 
         // Since we're using TextAreas, make sure no carriage-returns etc get through unnoticed.
         $warnmsg = '';
@@ -544,9 +542,9 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters
-        $permgrp = FormUtil::getPassedValue('permgrp', null, 'REQUEST');
-        $pid = FormUtil::getPassedValue('pid', null, 'REQUEST');
-        $confirmation = FormUtil::getPassedValue('confirmation', null, 'REQUEST');
+        $permgrp = $this->request->get('permgrp', null);
+        $pid = $this->request->get('pid', null);
+        $confirmation = $this->request->get('confirmation', null);
 
         // Check for confirmation.
         if (empty($confirmation)) {
@@ -607,7 +605,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      * showInstanceInformation.
      *
      * Show instance information gathered from blocks and modules.
-     * 
+     *
      * @return boolean
      */
     public function viewinstanceinfo()
@@ -660,19 +658,19 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         }
 
         $error = false;
-        $filter = (bool)FormUtil::getPassedValue('filter', false, 'POST');
+        $filter = (bool)$this->request->request->get('filter', false);
         $this->setVar('filter', $filter);
 
-        $rowview = (int)FormUtil::getPassedValue('rowview', 25, 'POST');
+        $rowview = (int)$this->request->request->get('rowview', 25);
         $this->setVar('rowview', $rowview);
 
-        $rowedit = (int)FormUtil::getPassedValue('rowedit', 35, 'POST');
+        $rowedit = (int)$this->request->request->get('rowedit', 35);
         $this->setVar('rowedit', $rowedit);
 
-        $lockadmin = (bool)FormUtil::getPassedValue('lockadmin', false, 'POST');
+        $lockadmin = (bool)$this->request->request->get('lockadmin', false);
         $this->setVar('lockadmin', $lockadmin);
 
-        $adminid = (int)FormUtil::getPassedValue('adminid', 1, 'POST');
+        $adminid = (int)$this->request->request->get('adminid', 1);
         if ($adminid <> 0) {
             $perm = DBUtil::selectObjectByID('group_perms', $adminid, 'pid');
             if ($perm == false) {
@@ -698,8 +696,8 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      */
     public function checkpermissions()
     {
-        $username = FormUtil::getPassedValue('username', null, 'POST');
-        $returnto = FormUtil::getPassedValue('returnto', System::getCurrentUri(), 'POST');
+        $username = $this->request->request->get('username', null);
+        $returnto = $this->request->request->get('returnto', System::getCurrentUri());
         $this->redirect($returnto);
     }
 

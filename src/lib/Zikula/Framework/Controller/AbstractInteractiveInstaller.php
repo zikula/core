@@ -58,7 +58,8 @@ abstract class AbstractInteractiveInstaller extends AbstractController
     public function preDispatch()
     {
         $this->throwForbiddenUnless(\SecurityUtil::checkPermission($this->getName() . '::', '::', \ACCESS_ADMIN), \LogUtil::getErrorMsgPermission());
-        $check = (bool)(SessionUtil::getVar('interactive_init') || \SessionUtil::getVar('interactive_upgrade') || \SessionUtil::getVar('interactive_remove'));
+        $session = $this->request->getSession();
+        $check = (bool)($session->get('interactive_init') || $session->get('interactive_upgrade') || $session->get('interactive_remove'));
         $this->throwForbiddenUnless($check, $this->__('This doesnt appear to be an interactive session.'));
     }
 }

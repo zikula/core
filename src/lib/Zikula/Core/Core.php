@@ -114,6 +114,13 @@ class Core
     protected $eventManager;
 
     /**
+     * EventDispatcher.
+     *
+     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
      * Booted flag.
      *
      * @var boolean
@@ -166,6 +173,16 @@ class Core
      * @return Zikula_Eventmanager
      */
     public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
+    /**
+     * Getter for eventmanager property.
+     *
+     * @return Zikula_Eventmanager
+     */
+    public function getDispatcher()
     {
         return $this->eventManager;
     }
@@ -510,7 +527,7 @@ class Core
                 //        then a new one is created on the reentry into index.php. The message
                 //        set by the registerStatus call below gets lost.
                 \LogUtil::registerStatus(__('You have been logged out.'));
-                \System::redirect(ModUtil::url('Users', 'user', 'login'));
+                \System::redirect(\ModUtil::url('Users', 'user', 'login'));
             }
         }
 

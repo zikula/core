@@ -907,6 +907,8 @@ class UserUtil
                 $authenticatedUid = ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'getUidForAuththenticationInfo', $authArgs, 'Zikula_Api_AbstractAuthentication');
             }
 
+            $session = ServiceUtil::getService('request')->getSession();
+
             $userObj = self::internalUserAccountValidation($authenticatedUid, true, isset($userObj) ? $userObj : null);
             if ($userObj && is_array($userObj)) {
                 // BEGIN ACTUAL LOGIN
@@ -931,7 +933,7 @@ class UserUtil
                     } elseif (isset($eventData['redirect_func'])) {
                         if (isset($eventData['redirect_func']['session'])) {
                             $sessionVarName = $eventData['redirect_func']['session']['var'];
-                            $sessionNamespace = isset($eventData['redirect_func']['session']['namespace']) ? $eventData['redirect_func']['session']['namespace'] : '/';
+                            $sessionNamespace = isset($eventData['redirect_func']['session']['namespace']) ? $eventData['redirect_func']['session']['namespace'] : '';
                         }
                         $redirectURL = ModUtil::url($eventData['redirect_func']['modname'], $eventData['redirect_func']['type'], $eventData['redirect_func']['func'], $eventData['redirect_func']['args']);
                     }
@@ -940,7 +942,7 @@ class UserUtil
                         if (isset($sessionVarName)) {
                             SessionUtil::requireSession();
 
-                            $sessionVars = SessionUtil::getVar('Users_User_Controller_login', array(), 'Zikula_Users', false, false);
+                            $sessionVars = $session->get('users/Users_User_Controller_login', array());
 
                             $sessionVars = array(
                                 'returnpage'            => isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : '',
@@ -949,7 +951,7 @@ class UserUtil
                                 'rememberme'            => $rememberMe,
                                 'user_obj'              => $userObj,
                             );
-                            SessionUtil::setVar($sessionVarName, $sessionVars, $sessionNamespace, true, true);
+                            $session->set("$sessionNamespace/$sessionVarName", $sessionVars);
                         }
                         $userObj = false;
                         //System::redirect($redirectURL);
@@ -1041,12 +1043,14 @@ class UserUtil
             SessionUtil::requireSession();
         }
 
+        $session = ServiceUtil::getService('request')->getSession();
+
         // Set session variables -- this is what really does the Zikula login
-        SessionUtil::setVar('uid', $userObj['uid']);
-        SessionUtil::setVar('authentication_method', $authenticationMethod, 'Zikula_Users');
+        $session->set('uid', $userObj['uid']);
+        $session->set('users/authentication_method', $authenticationMethod);
 
         if (!empty($rememberMe)) {
-            SessionUtil::setVar('rememberme', 1);
+            $session->set('rememberme', 1);
         }
 
         // now that we've logged in the permissions previously calculated (if any) are invalid
@@ -1062,9 +1066,10 @@ class UserUtil
     {
         if (self::isLoggedIn()) {
             $userObj = self::getVars(self::getVar('uid'));
-            $authenticationMethod = SessionUtil::delVar('authentication_method', array('modname' => '', 'method' => ''), 'Zikula_Users');
+            $session = ServiceUtil::getService('request')->getSession();
+            $authenticationMethod = $session->get('users/authentication_method', array('modname' => '', 'method' => ''));
 
-            session_destroy();
+            $session->invalidate();
         }
 
         return true;
@@ -1077,7 +1082,7 @@ class UserUtil
      */
     public static function isLoggedIn()
     {
-        return (bool)SessionUtil::getVar('uid');
+        return (bool)ServiceUtil::getService('request')->getSession()->get('uid');
     }
 
     /**
@@ -1332,7 +1337,7 @@ class UserUtil
         }
 
         if ($uid == -1) {
-            $uid = SessionUtil::getVar('uid');
+            $uid = ServiceUtil::getService('request')->getSession()->get('uid');
         }
         if (empty($uid)) {
             return null;
@@ -1448,7 +1453,7 @@ class UserUtil
         }
 
         if ($uid == -1) {
-            $uid = SessionUtil::getVar('uid');
+            $uid =ServiceUtil::getService('request')->getSession()->get('uid');
         }
         if (empty($uid)) {
             return false;
@@ -1789,7 +1794,7 @@ class UserUtil
         }
 
         if ($uid == -1) {
-            $uid = SessionUtil::getVar('uid');
+            $uid = ServiceUtil::getService('request')->getSession()->get('uid');
         }
         if (empty($uid)) {
             return false;
@@ -1890,9 +1895,9 @@ class UserUtil
         }
 
         // Page-specific theme
-        $pagetheme = FormUtil::getPassedValue('theme', null, 'GETPOST');
-        $type = FormUtil::getPassedValue('type', null, 'GETPOST');
-        $qstring = System::serverGetVar('QUERY_STRING');
+        $request = ServiceUtil::getService('request');
+        $pagetheme = $request->get('theme', null);
+        $type = $request->attributes->get('_controller', null);
         if (!empty($pagetheme)) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($pagetheme));
             if ($themeinfo['state'] == ThemeUtil::STATE_ACTIVE && ($themeinfo['user'] || $themeinfo['system'] || ($themeinfo['admin'] && ($type == 'admin'))) && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
@@ -1912,14 +1917,15 @@ class UserUtil
         }
 
         // set a new theme for the user
-        $newtheme = FormUtil::getPassedValue('newtheme', null, 'GETPOST');
+        $session = $request->getSession();
+        $newtheme = $request->get('newtheme');
         if (!empty($newtheme) && System::getVar('theme_change')) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($newtheme));
             if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                 if (self::isLoggedIn()) {
                     self::setVar('theme', $newtheme);
                 } else {
-                    SessionUtil::setVar('theme', $newtheme);
+                    $session->set('theme', $newtheme);
                 }
                 return self::_getThemeFilterEvent($themeinfo['name'], 'new-theme');
             }
@@ -1930,7 +1936,7 @@ class UserUtil
             if ((self::isLoggedIn())) {
                 $usertheme = self::getVar('theme');
             } else {
-                $usertheme = SessionUtil::getVar('theme');
+                $usertheme = $session->get('theme');
             }
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($usertheme));
             if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
@@ -2086,7 +2092,7 @@ class UserUtil
      */
     public static function isGuestUser()
     {
-        return !SessionUtil::getVar('uid', 0);
+        return !ServiceUtil::getService('request')->getSession()->get('uid', 0);
     }
 
     /**

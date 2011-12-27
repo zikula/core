@@ -15,15 +15,17 @@
 
 namespace Zikula\Core\Token\Storage;
 
+use Symfony\Component\HttpFoundation\SessionInterface;
+
 /**
- * Zikula_Token_Storage_Session class.
+ * Stores tokens in session.
  */
 class SessionStorage implements StorageInterface
 {
     /**
      * Session.
      *
-     * @var Zikula_Session
+     * @var SessionInterface
      */
     private $session;
 
@@ -37,9 +39,9 @@ class SessionStorage implements StorageInterface
     /**
      * Constructor.
      *
-     * @param \Zikula_Session $session SessionInterface instance.
+     * @param SessionInterface $session SessionInterface instance.
      */
-    public function __construct(\Zikula_Session $session, $key = '_tokens')
+    public function __construct(SessionInterface $session, $key = '_tokens')
     {
         $this->session = $session;
         $this->key = $key;

@@ -106,13 +106,20 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupRequest(GenericEvent $event)
     {
         if ($event['stage'] & Zikula\Core\Core::STAGE_DECODEURLS) {
-            $request = $this->serviceManager->getService('request');
-            // temporary workaround: reinitialize request information after having decoded short urls
-            $request->initialize();
+            $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+            $this->serviceManager->attachService('request', $request);
+
             $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
             $controller = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
             $action = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
-            $request->addRequest($module, $controller, $action);
+
+            $request->attributes->set('_module', $module);
+            $request->attributes->set('_controller', $controller);
+            $request->attributes->set('_action', $action);
+            $request->setLocale(ZLanguage::getLanguageCode());
+
+            $session = $this->serviceManager->getService('session');
+            $request->setSession($session);
         }
     }
 
@@ -178,6 +185,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function requireSession(GenericEvent $event)
     {
         $session = $this->serviceManager->getService('session');
+        $request = $this->serviceManager->getService('request');
+        $request->setSession($session);
+
         try {
             if (!$session->start()) {
                 throw new RuntimeException('Failed to start session');

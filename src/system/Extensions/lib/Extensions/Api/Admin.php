@@ -352,7 +352,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
                 // so we must check if the method actually exists by reflection - drak
                 if ($reflectionInteractive->hasMethod('upgrade')) {
-                    SessionUtil::setVar('interactive_remove', true);
+                    $this->request->getSession()->set('interactive_remove', true);
                     return call_user_func($interactive_func);
                 }
             }
@@ -377,7 +377,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         // remove the entry from the modules table
         if ($this->serviceManager['multisites.enabled'] == 1) {
             // who can access to the mainSite can delete the modules in any other site
-            $canDelete = (($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) ? 1 : 0;
+            $canDelete = (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) ? 1 : 0;
             //delete the module infomation only if it is not allowed, missign or invalid
             if ($canDelete == 1 || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
                 // remove the entry from the modules table
@@ -674,7 +674,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 }
                 if ($this->serviceManager['multisites.enabled'] == 1) {
                     // only the main site can regenerate the modules list
-                    if (($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+                    if (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
                         DBUtil::insertObject($modinfo, 'modules');
                     }
                 } else {
@@ -799,7 +799,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false) && is_callable($interactive_func)) {
             // so we must check if the method actually exists by reflection - drak
             if ($reflectionInteractive->hasMethod('install')) {
-                SessionUtil::setVar('interactive_init', true);
+                $this->request->getSession()->set('interactive_init', true);
                 return call_user_func($interactive_func);
             }
         }
@@ -910,7 +910,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
             // so we must check if the method actually exists by reflection - drak
             if ($reflectionInteractive->hasMethod('upgrade')) {
-                SessionUtil::setVar('interactive_upgrade', true);
+                $this->request->getSession()->set('interactive_upgrade', true);
                 return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
             }
         }
@@ -1060,8 +1060,8 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $links = array();
 
         // assign variables from input
-        $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
-        $letter = FormUtil::getPassedValue('letter', null, 'GET');
+        $startnum = (int)$this->request->query->get('startnum', null);
+        $letter = $this->request->query->get('letter', null);
 
         if (SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'view'),

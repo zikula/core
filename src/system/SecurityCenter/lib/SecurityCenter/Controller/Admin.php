@@ -118,7 +118,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         $validates = true;
 
         // Update module variables.
-        $updatecheck = (int)FormUtil::getPassedValue('updatecheck', 0, 'POST');
+        $updatecheck = (int)$this->request->request->get('updatecheck', 0);
         System::setVar('updatecheck', $updatecheck);
 
         // if update checks are disabled, reset values to force new update check if re-enabled
@@ -127,44 +127,44 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
             System::setVar('updatelastchecked', 0);
         }
 
-        $updatefrequency = (int)FormUtil::getPassedValue('updatefrequency', 30, 'POST');
+        $updatefrequency = (int)$this->request->request->get('updatefrequency', 30);
         System::setVar('updatefrequency', $updatefrequency);
 
-        $keyexpiry = (int)FormUtil::getPassedValue('keyexpiry', 0, 'POST');
+        $keyexpiry = (int)$this->request->request->get('keyexpiry', 0);
         if ($keyexpiry < 0 || $keyexpiry > 3600) {
             $keyexpiry = 0;
         }
         System::setVar('keyexpiry', $keyexpiry);
 
-        $sessionauthkeyua = (int)FormUtil::getPassedValue('sessionauthkeyua', 0, 'POST');
+        $sessionauthkeyua = (int)$this->request->request->get('sessionauthkeyua', 0);
         System::setVar('sessionauthkeyua', $sessionauthkeyua);
 
-        $secure_domain = FormUtil::getPassedValue('secure_domain', '', 'POST');
+        $secure_domain = $this->request->request->get('secure_domain', '');
         System::setVar('secure_domain', $secure_domain);
 
-        $signcookies = (int)FormUtil::getPassedValue('signcookies', 1, 'POST');
+        $signcookies = (int)$this->request->request->get('signcookies', 1);
         System::setVar('signcookies', $signcookies);
 
-        $signingkey = FormUtil::getPassedValue('signingkey', '', 'POST');
+        $signingkey = $this->request->request->get('signingkey', '');
         System::setVar('signingkey', $signingkey);
 
-        $seclevel = FormUtil::getPassedValue('seclevel', 'High', 'POST');
+        $seclevel = $this->request->request->get('seclevel', 'High');
         System::setVar('seclevel', $seclevel);
 
-        $secmeddays = (int)FormUtil::getPassedValue('secmeddays', 7, 'POST');
+        $secmeddays = (int)$this->request->request->get('secmeddays', 7);
         if ($secmeddays < 1 || $secmeddays > 365) {
             $secmeddays = 7;
         }
         System::setVar('secmeddays', $secmeddays);
 
-        $secinactivemins = (int)FormUtil::getPassedValue('secinactivemins', 20, 'POST');
+        $secinactivemins = (int)$this->request->request->get('secinactivemins', 20);
         if ($secinactivemins < 1 || $secinactivemins > 1440) {
             $secinactivemins = 7;
         }
         System::setVar('secinactivemins', $secinactivemins);
 
-        $sessionstoretofile = (int)FormUtil::getPassedValue('sessionstoretofile', 0, 'POST');
-        $sessionsavepath = FormUtil::getPassedValue('sessionsavepath', '', 'POST');
+        $sessionstoretofile = (int)$this->request->request->get('sessionstoretofile', 0);
+        $sessionsavepath = $this->request->request->get('sessionsavepath', '');
 
         // check session path config is writable (if method is being changed to session file storage)
         $cause_logout = false;
@@ -195,36 +195,36 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
             $cause_logout = true;
         }
 
-        $gc_probability = (int)FormUtil::getPassedValue('gc_probability', 100, 'POST');
+        $gc_probability = (int)$this->request->request->get('gc_probability', 100);
         if ($gc_probability < 1 || $gc_probability > 10000) {
             $gc_probability = 7;
         }
         System::setVar('gc_probability', $gc_probability);
 
-        $anonymoussessions = (int)FormUtil::getPassedValue('anonymoussessions', 1, 'POST');
+        $anonymoussessions = (int)$this->request->request->get('anonymoussessions', 1);
         System::setVar('anonymoussessions', $anonymoussessions);
 
-        $sessionrandregenerate = (int)FormUtil::getPassedValue('sessionrandregenerate', 1, 'POST');
+        $sessionrandregenerate = (int)$this->request->request->get('sessionrandregenerate', 1);
         System::setVar('sessionrandregenerate', $sessionrandregenerate);
 
-        $sessionregenerate = (int)FormUtil::getPassedValue('sessionregenerate', 1, 'POST');
+        $sessionregenerate = (int)$this->request->request->get('sessionregenerate', 1);
         System::setVar('sessionregenerate', $sessionregenerate);
 
-        $sessionregeneratefreq = (int)FormUtil::getPassedValue('sessionregeneratefreq', 10, 'POST');
+        $sessionregeneratefreq = (int)$this->request->request->get('sessionregeneratefreq', 10);
         if ($sessionregeneratefreq < 1 || $sessionregeneratefreq > 100) {
             $sessionregeneratefreq = 10;
         }
         System::setVar('sessionregeneratefreq', $sessionregeneratefreq);
 
-        $sessionipcheck = (int)FormUtil::getPassedValue('sessionipcheck', 0, 'POST');
+        $sessionipcheck = (int)$this->request->request->get('sessionipcheck', 0);
         System::setVar('sessionipcheck', $sessionipcheck);
 
-        $sessionname = FormUtil::getPassedValue('sessionname', 'ZSID', 'POST');
+        $sessionname = $this->request->request->get('sessionname', 'ZSID');
         if (strlen($sessionname) < 3) {
             $sessionname = 'ZSID';
         }
 
-        $sessioncsrftokenonetime = (int)FormUtil::getPassedValue('sessioncsrftokenonetime', 0, 'POST');
+        $sessioncsrftokenonetime = (int)$this->request->request->get('sessioncsrftokenonetime', 0);
         System::setVar('sessioncsrftokenonetime', $sessioncsrftokenonetime);
 
         // cause logout if we changed session name
@@ -235,10 +235,10 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         System::setVar('sessionname', $sessionname);
         System::setVar('sessionstoretofile', $sessionstoretofile);
 
-        $outputfilter = FormUtil::getPassedValue('outputfilter', 0, 'POST');
+        $outputfilter = $this->request->request->get('outputfilter', 0);
         System::setVar('outputfilter', $outputfilter);
 
-        $useids = (bool)FormUtil::getPassedValue('useids', 0, 'POST');
+        $useids = (bool)$this->request->request->get('useids', 0);
         System::setVar('useids', $useids);
 
         // create tmp directory for PHPIDS
@@ -249,16 +249,16 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
             }
         }
 
-        $idssoftblock = (bool)FormUtil::getPassedValue('idssoftblock', 1, 'POST');
+        $idssoftblock = (bool)$this->request->request->get('idssoftblock', 1);
         System::setVar('idssoftblock', $idssoftblock);
 
-        $idsmail = (bool)FormUtil::getPassedValue('idsmail', 1, 'POST');
+        $idsmail = (bool)$this->request->request->get('idsmail', 1);
         System::setVar('idsmail', $idsmail);
 
-        $idsfilter = FormUtil::getPassedValue('idsfilter', 'xml', 'POST');
+        $idsfilter = $this->request->request->get('idsfilter', 'xml');
         System::setVar('idsfilter', $idsfilter);
 
-        $idsrulepath = FormUtil::getPassedValue('idsrulepath', 'config/zikula_default.xml', 'POST');
+        $idsrulepath = $this->request->request->get('idsrulepath', 'config/zikula_default.xml');
         $idsrulepath = DataUtil::formatForOS($idsrulepath);
         if (is_readable($idsrulepath)) {
             System::setVar('idsrulepath', $idsrulepath);
@@ -267,22 +267,22 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
             $validates = false;
         }
 
-        $idsimpactthresholdone = (int)FormUtil::getPassedValue('idsimpactthresholdone', 1, 'POST');
+        $idsimpactthresholdone = (int)$this->request->request->get('idsimpactthresholdone', 1);
         System::setVar('idsimpactthresholdone', $idsimpactthresholdone);
 
-        $idsimpactthresholdtwo = (int)FormUtil::getPassedValue('idsimpactthresholdtwo', 10, 'POST');
+        $idsimpactthresholdtwo = (int)$this->request->request->get('idsimpactthresholdtwo', 10);
         System::setVar('idsimpactthresholdtwo', $idsimpactthresholdtwo);
 
-        $idsimpactthresholdthree = (int)FormUtil::getPassedValue('idsimpactthresholdthree', 25, 'POST');
+        $idsimpactthresholdthree = (int)$this->request->request->get('idsimpactthresholdthree', 25);
         System::setVar('idsimpactthresholdthree', $idsimpactthresholdthree);
 
-        $idsimpactthresholdfour = (int)FormUtil::getPassedValue('idsimpactthresholdfour', 75, 'POST');
+        $idsimpactthresholdfour = (int)$this->request->request->get('idsimpactthresholdfour', 75);
         System::setVar('idsimpactthresholdfour', $idsimpactthresholdfour);
 
-        $idsimpactmode = (int)FormUtil::getPassedValue('idsimpactmode', 1, 'POST');
+        $idsimpactmode = (int)$this->request->request->get('idsimpactmode', 1);
         System::setVar('idsimpactmode', $idsimpactmode);
 
-        $idshtmlfields = FormUtil::getPassedValue('idshtmlfields', '', 'POST');
+        $idshtmlfields = $this->request->request->get('idshtmlfields', '');
         $idshtmlfields = explode(PHP_EOL, $idshtmlfields);
         $idshtmlarray = array();
         foreach ($idshtmlfields as $idshtmlfield) {
@@ -293,7 +293,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         }
         System::setVar('idshtmlfields', $idshtmlarray);
 
-        $idsjsonfields = FormUtil::getPassedValue('idsjsonfields', '', 'POST');
+        $idsjsonfields = $this->request->request->get('idsjsonfields', '');
         $idsjsonfields = explode(PHP_EOL, $idsjsonfields);
         $idsjsonarray = array();
         foreach ($idsjsonfields as $idsjsonfield) {
@@ -304,7 +304,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         }
         System::setVar('idsjsonfields', $idsjsonarray);
 
-        $idsexceptions = FormUtil::getPassedValue('idsexceptions', '', 'POST');
+        $idsexceptions = $this->request->request->get('idsexceptions', '');
         $idsexceptions = explode(PHP_EOL, $idsexceptions);
         $idsexceptarray = array();
         foreach ($idsexceptions as $idsexception) {
@@ -338,7 +338,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
 
     /**
      * HTMLPurifier configuration.
-     * 
+     *
      * @return void
      */
     public function purifierconfig()
@@ -348,7 +348,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $reset = (bool)(FormUtil::getPassedValue('reset', null, 'GET') == 'default');
+        $reset = (bool)($this->request->get('reset', null) == 'default');
 
         $this->view->assign('itemsperpage', $this->getVar('itemsperpage'));
 
@@ -474,7 +474,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         $purifier = SecurityCenter_Util::getpurifier();
 
         // Update module variables.
-        $config = FormUtil::getPassedValue('purifierConfig', null, 'POST');
+        $config = $this->request->request->get('purifierConfig', null);
         $config = HTMLPurifier_Config::prepareArrayFromForm($config, false, true, true, $purifier->config->def);
 //echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n";
 
@@ -586,11 +586,11 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $sort = FormUtil::getPassedValue('sort', 'date DESC', 'GETPOST');
+        $sort = $this->request->get('sort', 'date DESC');
         $filterdefault = array('uid' => null, 'name' => null, 'tag' => null, 'value' => null, 'page' => null, 'ip' => null, 'impact' => null);
 
-        $filter = FormUtil::getPassedValue('filter', $filterdefault, 'GETPOST');
-        $startnum = (int)FormUtil::getPassedValue('startnum', 0, 'GET');
+        $filter = $this->request->get('filter', $filterdefault);
+        $startnum = (int)$this->request->get('startnum', 0);
         $pagesize = (int)$this->getVar('pagesize', 25);
 
         // instantiate object, generate where clause and select
@@ -634,16 +634,16 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         }
 
         // get input values
-        $confirmed = (int)FormUtil::getPassedValue('confirmed', (isset($args['confirmed']) ? $args['confirmed'] : 0), 'POST');
+        $confirmed = (int)$this->request->request->get('confirmed', (isset($args['confirmed']) ? $args['confirmed'] : 0));
 
         if ($confirmed == 1) {
 
             // export the titles ?
-            $exportTitles = FormUtil::getPassedValue('exportTitles', (isset($args['exportTitles']) ? $args['exportTitles'] : null), 'POST');
+            $exportTitles = $this->request->request->get('exportTitles', (isset($args['exportTitles']) ? $args['exportTitles'] : null));
             $exportTitles = (!isset($exportTitles) || $exportTitles !== '1') ? false : true;
 
             // name of the exported file
-            $exportFile = FormUtil::getPassedValue('exportFile', (isset($args['exportFile']) ? $args['exportFile'] : null), 'POST');
+            $exportFile = $this->request->request->get('exportFile', (isset($args['exportFile']) ? $args['exportFile'] : null));
             if (!isset($exportFile) || $exportFile == '') {
                 $exportFile = 'idslog.csv';
             }
@@ -652,7 +652,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
             }
 
             // delimeter
-            $delimiter = FormUtil::getPassedValue('delimiter', (isset($args['delimiter']) ? $args['delimiter'] : null), 'POST');
+            $delimiter = $this->request->request->get('delimiter', (isset($args['delimiter']) ? $args['delimiter'] : null));
             if (!isset($delimiter) || $delimiter == '') {
                 $delimiter = 1;
             }
@@ -741,7 +741,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $confirmation = FormUtil::getPassedValue('confirmation');
+        $confirmation = $this->request->get('confirmation');
 
         // Check for confirmation
         if (empty($confirmation)) {
@@ -805,7 +805,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         $allowedhtml = array();
         $htmltags = $this->_gethtmltags();
         foreach ($htmltags as $htmltag => $usagetag) {
-            $tagval = (int)FormUtil::getPassedValue('htmlallow' . $htmltag . 'tag', 0, 'POST');
+            $tagval = (int)$this->request->request->get('htmlallow' . $htmltag . 'tag', 0);
             if (($tagval != 1) && ($tagval != 2)) {
                 $tagval = 0;
             }
@@ -815,7 +815,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         System::setVar('AllowableHTML', $allowedhtml);
 
         // one additonal config var is set on this page
-        $htmlentities = FormUtil::getPassedValue('xhtmlentities', 0, 'POST');
+        $htmlentities = $this->request->request->get('xhtmlentities', 0);
         System::setVar('htmlentities', $htmlentities);
 
         // clear all cache and compile directories

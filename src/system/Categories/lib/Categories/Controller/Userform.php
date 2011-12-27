@@ -23,8 +23,8 @@ class Categories_Controller_Userform extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $cid = (int)FormUtil::getPassedValue('cid', 0, 'GETPOST');
-        $dr = (int)FormUtil::getPassedValue('dr', 0, 'GETPOST');
+        $cid = (int)$this->request->get('cid', 0);
+        $dr = (int)$this->request->get('dr', 0);
         $url = System::serverGetVar('HTTP_REFERER');
 
         if (!$dr) {
@@ -63,7 +63,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $dr = (int)FormUtil::getPassedValue('dr', 0, 'POST');
+        $dr = (int)$this->request->request->get('dr', 0);
         $ref = System::serverGetVar('HTTP_REFERER');
 
         $returnfunc = strpos($ref, "useredit") !== false ? 'useredit' : 'edit';
@@ -94,8 +94,8 @@ class Categories_Controller_Userform extends Zikula_AbstractController
         }
 
         $attributes = array();
-        $values = FormUtil::getPassedValue('attribute_value', 'POST');
-        foreach (FormUtil::getPassedValue('attribute_name', 'POST') as $index => $name) {
+        $values = $this->request->request->get('attribute_value');
+        foreach ($this->request->request->get('attribute_name') as $index => $name) {
             if (!empty($name)) $attributes[$name] = $values[$index];
         }
 
@@ -123,9 +123,9 @@ class Categories_Controller_Userform extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $cid = (int)FormUtil::getPassedValue('cid', 0, 'GET');
-        $dir = FormUtil::getPassedValue('direction', null, 'GET');
-        $dr = (int)FormUtil::getPassedValue('dr', 0, 'GET');
+        $cid = (int)$this->request->query->get('cid', 0);
+        $dir = $this->request->query->get('direction', null);
+        $dr = (int)$this->request->query->get('dr', 0);
         $url = System::serverGetVar('HTTP_REFERER');
 
         if (!$dr) {
@@ -166,7 +166,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $dr = (int)FormUtil::getPassedValue('dr', 0, 'POST');
+        $dr = (int)$this->request->request->get('dr', 0);
         $url = System::serverGetVar('HTTP_REFERER');
 
         if (!$dr) {
@@ -199,7 +199,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $dr = (int)FormUtil::getPassedValue('dr', 0, 'GET');
+        $dr = (int)$this->request->query->get('dr', 0);
         $url = System::serverGetVar('HTTP_REFERER');
 
         if (!$dr) {

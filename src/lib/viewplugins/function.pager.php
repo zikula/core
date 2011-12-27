@@ -101,7 +101,7 @@ function smarty_function_pager($params, Zikula_View $view)
 
     // current position
     $pager['posvar'] = (isset($params['posvar']) ? $params['posvar'] : 'pos');
-    $pager['pos'] = (int)FormUtil::getPassedValue($pager['posvar'], '', 'GET');
+    $pager['pos'] = (int)$view->getRequest()->query->get($pager['posvar'], '');
     if ($params['display'] == 'page') {
         $pager['pos'] = $pager['pos'] * $pager['perpage'];
         $pager['increment'] = 1;
@@ -140,13 +140,13 @@ function smarty_function_pager($params, Zikula_View $view)
     if (isset($params['modname'])) {
         $pager['module'] = $params['modname'];
     } else {
-        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $name   = FormUtil::getPassedValue('name', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $module = $view->getRequest()->attributes->get('_module');
+        $name   = filter_var($view->getRequest()->get('name', null), FILTER_SANITIZE_STRING);
         $pager['module'] = !empty($module) ? $module : $name;
     }
 
-    $pager['func'] = isset($params['func']) ? $params['func'] : FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
-    $pager['type'] = isset($params['type']) ? $params['type'] : FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
+    $pager['func'] = isset($params['func']) ? $params['func'] : $view->getRequest()->attribute->get('_action');
+    $pager['type'] = isset($params['type']) ? $params['type'] : $view->getRequest()->get('_controller');
 
     $pager['args'] = array();
     if (empty($pager['module'])) {

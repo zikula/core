@@ -929,7 +929,8 @@ class CategoryUtil
         $params['cid'] = $category['id'];
         $url = ModUtil::url('Categories', 'admin', 'edit', $params);
 
-        if (FormUtil::getPassedValue('type') == 'admin') {
+        $request = ServiceUtil::getService('request');
+        if ($request->attributes->get('_type') == 'admin') {
             $url .= '#top';
         }
 
@@ -1045,13 +1046,13 @@ class CategoryUtil
 
     /**
      * Internal callback function for int/string comparation.
-     * 
+     *
      * It is supposed to compate integer items numerically and string items as strings,
      * so integers will be before strings (unlike SORT_REGULAR flag for array sort functions).
-     * 
+     *
      * @param string $a The first value.
      * @param string $b The second value.
-     * 
+     *
      * @return int 0 if $a and $b are equal, 1 ir $a is greater then $b, -1 if $a is less than $b
      */
     private static function _tree_sort_cmp($a, $b)
@@ -1135,7 +1136,8 @@ class CategoryUtil
             $params['cid'] = $c['id'];
             $url = DataUtil::formatForDisplay(ModUtil::url('Categories', 'admin', 'edit', $params));
 
-            if (FormUtil::getPassedValue('type') == 'admin') {
+            $request = ServiceUtil::getService('request');
+            if ($request->attributes->get('_type') == 'admin') {
                 $url .= '#top';
             }
 

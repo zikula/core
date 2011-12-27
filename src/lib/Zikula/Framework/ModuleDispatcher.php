@@ -68,6 +68,7 @@ class ModuleDispatcher
             if (empty($module)) {
                 // we have a static homepage
                 $return = ' ';
+
             } elseif ($modinfo) {
                 // call the requested/homepage module
                 $return = \ModUtil::func($modinfo['name'], $type, $func, $arguments);
@@ -124,12 +125,13 @@ class ModuleDispatcher
             case ($httpCode == 403):
                 if (!\UserUtil::isLoggedIn()) {
                     $url = \ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(\System::getCurrentUri())));
-                    \LogUtil::registerError(LogUtil::getErrorMsgPermission(), $httpCode, $url);
+                    \LogUtil::registerError(\LogUtil::getErrorMsgPermission(), $httpCode, $url);
                     \System::shutDown();
                 }
             // there is no break here deliberately.
             case ($return === false):
-                if (!\LogUtil::hasErrors()) {
+                $session = \ServiceUtil::getService('session');
+                if (!$session->hasFlashes(\Zikula_Session::MESSAGE_ERROR)) {
                     \LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), $httpCode, null);
                 }
                 $return = \ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));

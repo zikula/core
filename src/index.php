@@ -22,7 +22,7 @@ $core->init();
 
 $core->getEventManager()->notify(new GenericEvent('frontcontroller.predispatch'));
 
-$request = Request::createFromGlobals();
+$request = $core->getServiceManager()->getService('request');
 
 $core->getEventManager()->addSubscriber(new Zikula\Core\Listener\ThemeListener());
 

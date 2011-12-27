@@ -44,12 +44,13 @@ class Search_Controller_User extends Zikula_AbstractController
         }
 
         // get parameter from input
-        $vars['q'] = strip_tags(FormUtil::getPassedValue('q', '', 'REQUEST'));
-        $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
-        $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
+        $session = $this->request->getSession();
+        $vars['q'] = strip_tags($this->request->query->get('q', ''));
+        $vars['searchtype'] = $this->request->query->get('searchtype', $session->get('searchtype'));
+        $vars['searchorder'] = $this->request->query->get('searchorder', $session->get('searchorder'));
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
-        $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'REQUEST');
-        $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
+        $vars['active'] = $this->request->query->get('active', $session->get('searchactive'));
+        $vars['modvar'] = $this->request->query->get('modvar', $session->get('searchmodvar'));
 
 
         // this var allows the headers to not be displayed
@@ -70,10 +71,10 @@ class Search_Controller_User extends Zikula_AbstractController
         }
 
         // reset the session vars for a new search
-        SessionUtil::delVar('searchtype');
-        SessionUtil::delVar('searchorder');
-        SessionUtil::delVar('searchactive');
-        SessionUtil::delVar('searchmodvar');
+        $session->remove('searchtype');
+        $session->remove('searchorder');
+        $session->remove('searchactive');
+        $session->remove('searchmodvar');
 
         // get all the search plugins
         $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
@@ -128,22 +129,23 @@ class Search_Controller_User extends Zikula_AbstractController
         }
 
         // get parameter from HTTP input
+        $session = $this->request->getSession();
         $vars = array();
-        $vars['q'] = strip_tags(FormUtil::getPassedValue('q', '', 'REQUEST'));
-        $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
-        $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
+        $vars['q'] = strip_tags($this->request->get('q', ''));
+        $vars['searchtype'] = $this->request->get('searchtype', $session->get('searchtype'));
+        $vars['searchorder'] = $this->request->get('searchorder', $session->get('searchorder'));
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
-        $vars['page'] = (int)FormUtil::getPassedValue('page', 1, 'REQUEST');
+        $vars['page'] = (int)$this->request->get('page', 1);
 
         // $firstpage is used to identify the very first result page
         // - and to disable calls to plugins on the following pages
-        $vars['firstPage'] = !isset($_REQUEST['page']);
+        $vars['firstPage'] = !($this->request->query->has('page') || $this->request->request->has('page'));
 
         // The modulename exists in this array as key, if the checkbox was filled
-        $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'REQUEST');
+        $vars['active'] = $this->request->get('active', $session->get('searchactive'));
 
         // All formular data from the modules search plugins is contained in:
-        $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
+        $vars['modvar'] = $this->request->get('modvar', $session->get('searchmodvar'));
 
         if (empty($vars['q'])) {
             LogUtil::registerError ($this->__('Error! You did not enter any keywords to search for.'));
@@ -169,29 +171,8 @@ class Search_Controller_User extends Zikula_AbstractController
         if (!isset($vars['modvar']) || !is_array($vars['modvar']) || empty($vars['modvar'])) {
             $vars['modvar'] = array();
         } else {
-            SessionUtil::setVar('searchmodvar', $vars['modvar']);
+            $session->set('searchmodvar', $vars['modvar']);
         }
-
-        /*
-        // FIXME: Cannot cache correctly while do not know
-        // the parameters passed to the search plugins, and
-        // build a complete cache_id
-
-        // setup an individual cache
-        $lifetime = ModUtil::getVar('Theme', 'render_lifetime');
-        $lifetime = $lifetime ? $lifetime : 3600;
-
-        $cacheid = md5($vars['q'].'-'.$vars['searchtype'].'-'.$vars['searchorder']).'/'.UserUtil::getGidCacheString().'/page'.$vars['page'];
-
-        $this->view->setCaching(Zikula_View::CACHE_INDIVIDUAL)
-                   ->setCacheLifetime($lifetime)
-                   ->setCacheId($cacheid);
-
-        // check if the contents are cached
-        if ($this->view->is_cached('search_user_results.tpl')) {
-            return $this->view->fetch('search_user_results.tpl');
-        }
-        */
 
         $result = ModUtil::apiFunc('Search', 'user', 'search', $vars);
 
@@ -227,7 +208,7 @@ class Search_Controller_User extends Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need.
-        $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
+        $startnum = (int)$this->request->query->get('startnum');
 
         // we need this value multiple times, so we keep it
         $itemsperpage = $this->getVar('itemsperpage');
