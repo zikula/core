@@ -63,7 +63,6 @@ class SessionUtil
     public static function regenerate($force = false)
     {
         $storage = ServiceUtil::getService('session');
-        die('bigrate');
         $storage->migrate();
     }
 

@@ -1349,7 +1349,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
     /**
      * Get the request.
      *
-     * @return Zikula_Request_Http
+     * @return \Symfony\Component\HttpFoundation\Request
      */
     public function getRequest()
     {
