@@ -48,7 +48,7 @@ class Users_Listener_ForcedPasswordChange
         $userMustChangePassword = UserUtil::getVar('_Users_mustChangePassword', $userObj['uid'], false);
 
         if ($userMustChangePassword && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
-            $event->stop();
+            $event->stopPropagation();
             $event->setData(array(
                 'redirect_func'  => array(
                     'modname'   => self::$modname,

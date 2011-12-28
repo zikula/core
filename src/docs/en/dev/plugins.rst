@@ -140,12 +140,12 @@ controller method would return the renderer output which you can pass back.
 
 instead of:
     $event->setData($view->fetch('anotherfunction.tpl'));
-    $event->stop();
+    $event->stopPropagation();
 
 One could do:
     $controller = new SystemPlugin_Example_Controller($this->serviceManager);
     $event->setData($controller->someview());
-    $event->stop();
+    $event->stopPropagation();
 
 This is nice because all renderer domains etc are preconfigured and you have access
 to the same Zikula_AbstractController conveniences like $this->__().

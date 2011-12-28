@@ -60,7 +60,7 @@ class TemplateOverrides extends Zikula_AbstractEventHandler
     {
         if (array_key_exists($event->data, $this->overrideMap)) {
             $event->data = $this->overrideMap[$event->data];
-            $event->stop();
+            $event->stopPropagation();
         }
     }
 }

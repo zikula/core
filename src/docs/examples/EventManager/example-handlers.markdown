@@ -49,7 +49,7 @@ The folllowing show an example of one of each kind of event handler, notify, not
          * responds.
          *
          * This handler should check to see if it should execute and if so it
-         * must call $event->stop();.
+         * must call $event->stopPropagation();.
          *
          * @param Event $event
          *
@@ -59,7 +59,7 @@ The folllowing show an example of one of each kind of event handler, notify, not
         public function handlerUntil(Event $event)
         {
             if ($event->getHas('foo')) {
-                $event->stop();
+                $event->stopPropagation();
             }
         }
 
@@ -106,7 +106,7 @@ The folllowing show an example of one of each kind of event handler, notify, not
             }
 
             $event->data++;
-            $event->stop();
+            $event->stopPropagation();
         }
     }
 

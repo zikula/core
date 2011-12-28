@@ -1049,7 +1049,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
         $event = new GenericEvent('zikula_view.template_override', null, array(), $template);
         EventUtil::getManager()->notify($event);
 
-        if ($event->isStopped()) {
+        if ($event->isPropagationStopped()) {
             $ostemplate = DataUtil::formatForOS($event->getData());
             if (is_readable($ostemplate)) {
                 return $ostemplate;
