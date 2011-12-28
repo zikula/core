@@ -229,7 +229,7 @@ class Extensions_HookUI
         }
 
         $event->setData($view->fetch('extensions_hookui_hooks.tpl'));
-        $event->stop();
+        $event->stopPropagation();
     }
 
     public static function moduleservices(GenericEvent $event)
@@ -255,6 +255,6 @@ class Extensions_HookUI
         $view->assign('sublinks', $sublinks);
 
         $event->setData($view->fetch('extensions_hookui_moduleservices.tpl'));
-        $event->stop();
+        $event->stopPropagation();
     }
 }

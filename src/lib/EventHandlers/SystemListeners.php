@@ -264,7 +264,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $errorHandler = new $class($this->serviceManager);
         $this->serviceManager->attachService('system.errorreporting', $errorHandler);
         set_error_handler(array($errorHandler, 'handler'));
-        $event->stop();
+        $event->stopPropagation();
     }
 
     /**
@@ -547,7 +547,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
                 $event->data[$key] = 'config/style/core.css';
             }
 
-            $event->stop();
+            $event->stopPropagation();
         }
     }
 
@@ -639,7 +639,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
             $event->getSubject()->getServiceManager()->loadArguments($config);
         }
 
-        $event->stop();
+        $event->stopPropagation();
     }
 
     /**

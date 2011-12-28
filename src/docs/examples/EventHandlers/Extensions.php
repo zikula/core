@@ -54,6 +54,6 @@ class Users_EventHandlers_Extensions extends Zikula_AbstractEventHandler
         $view->assign('themes', ThemeUtil::getAllThemes());
 
         $event->setData($view->fetch('users_admin_extensions.tpl'));
-        $event->stop();
+        $event->stopPropagation();
     }
 }

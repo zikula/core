@@ -39,7 +39,7 @@ $event['method'] is the method which didn't exist in the main class.
 $event['args'] is the arguments that were passed.
 The event subject is the class where the method was not found.
 Must exit if $event['method'] does not match whatever the handler expects.
-Modify $event->data and $event->stop().
+Modify $event->data and $event->stopPropagation().
 
 #### `core.preinit`
 Occurs after the config.php is loaded.
@@ -58,7 +58,7 @@ Receives arguments from `__call($method, argument)` as `$args`
 `$event['args']` is the arguments that were passed.
 The event subject is the class where the method was not found.
 Must exit if `$event['method']` does not match whatever the handler expects.
-Modify `$event->data` and `$event->stop()`
+Modify `$event->data` and `$event->stopPropagation()`
 
 #### `dbobject.pre/post*`
 Takes subject of $this.
@@ -110,7 +110,7 @@ This kind of eventhandler should
 1. Check $event['modfunc'] to see if it should run else exit silently.
 2. Do something like $result = {$event['modfunc']}({$event['args'});
 3. Save the result $event->setData($result).
-4. $event->stop().
+4. $event->stopPropagation().
 5. return void
 
 #### `module_dispatch.custom_classname`
@@ -118,7 +118,7 @@ In order to override the classname calculated in `ModUtil::exec()`
 In order to override a pre-existing controller/api method, use this event type to override the class name that is loaded.
 This allows to override the methods using inheritance.
 Receives no subject, args of `array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
-and 'event data' of `$className`.  This can be altered by setting `$event->setData()` followed by `$event->stop()`
+and 'event data' of `$className`.  This can be altered by setting `$event->setData()` followed by `$event->stopPropagation()`
 
 #### `module_dispatch.service_links`
 Occurs when building admin menu items. Adds sublinks to a Services menu that is appended to all modules if populated.
@@ -129,7 +129,7 @@ format data like so:
 
 #### `module.mailer.api.sendmessage`
 Invoked from `Mailer_Api_User#sendmessage`. Subject is `Mailer_Api_User` with `$args`.
-This is a notifyUntil event so the event must `$event->stop()` and set any
+This is a notifyUntil event so the event must `$event->stopPropagation()` and set any
 return data into `$event->data`, or `$event->setData()`
 
 #### `pageutil.addvar_filter`
@@ -330,7 +330,7 @@ This information is also passed back to the log-in process when the user is redi
 The Users module uses this method to handle users who have been forced by the administrator to change their password
 prior to logging in. The code used for the notification might look like the following example:
 
-    $event->stop();
+    $event->stopPropagation();
     $event->setData(array(
         'redirect_func'  => array(
             'modname'   => 'Users',
@@ -418,7 +418,7 @@ Occurs right after a successful logout. All handlers are notified.
 #### `user.gettheme`
 Called during UserUtil::getTheme() and is used to filter the results.  Receives arg['type']
 with the type of result to be filtered and the $themeName in the $event->data which can
-be modified.  Must $event->stop() if handler performs filter.
+be modified.  Must $event->stopPropagation() if handler performs filter.
 
 #### `user.account.create`
 Occurs after a user account is created. All handlers are notified. It does not apply to creation of a pending

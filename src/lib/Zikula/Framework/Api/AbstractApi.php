@@ -34,7 +34,7 @@ abstract class AbstractApi extends AbstractBase
     {
         $event = new GenericEvent('api.method_not_found', $this, array('method' => $method, 'args' => $args));
         $this->eventManager->notify($event);
-        if ($event->isStopped()) {
+        if ($event->isPropagationStopped()) {
             return $event->getData();
         }
 

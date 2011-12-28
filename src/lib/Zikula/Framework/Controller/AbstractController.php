@@ -105,7 +105,7 @@ abstract class AbstractController extends AbstractBase
     {
         $event = new GenericEvent('controller.method_not_found', $this, array('method' => $method, 'args' => $args));
         $this->eventManager->notify($event);
-        if ($event->isStopped()) {
+        if ($event->isPropagationStopped()) {
             return $event->getData();
         }
 
