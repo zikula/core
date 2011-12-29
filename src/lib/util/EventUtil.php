@@ -72,7 +72,8 @@ class EventUtil
     /**
      * Dispatch event.
      *
-     * @param Event $event Event.
+     * @param string $name  Event name.
+     * @param Event  $event Event.
      *
      * @return Event
      */
