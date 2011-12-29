@@ -238,8 +238,8 @@ class Core
      */
     public function reboot()
     {
-        $event = new GenericEvent('shutdown', $this);
-        $this->eventManager->notify($event);
+        $event = new GenericEvent($this);
+        $this->eventManager->dispatch('shutdown', $event);
 
         // flush handlers
         $this->eventManager->flushHandlers();
@@ -394,7 +394,7 @@ class Core
      */
     public function init($stage = self::STAGE_ALL)
     {
-        $coreInitEvent = new GenericEvent(CoreEvents::INIT, $this);
+        $coreInitEvent = new GenericEvent($this);
 
         // store the load stages in a global so other API's can check whats loaded
         $this->stage = $this->stage | $stage;
@@ -402,7 +402,7 @@ class Core
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
             \ModUtil::flushCache();
             \System::flushCache();
-            $this->eventManager->notify(new GenericEvent(CoreEvents::PREINIT, $this));
+            $this->eventManager->dispatch(CoreEvents::PREINIT, new GenericEvent($this));
         }
 
         // Initialise and load configuration
@@ -410,13 +410,13 @@ class Core
             // error reporting
             if (!\System::isInstalling()) {
                 // this is here because it depends on the config.php loading.
-                $event = new GenericEvent(CoreEvents::ERRORREPORTING, null, array('stage' => $stage));
-                $this->eventManager->notify($event);
+                $event = new GenericEvent(null, array('stage' => $stage));
+                $this->eventManager->dispatch(CoreEvents::ERRORREPORTING, $event);
             }
 
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArg('stage', self::STAGE_CONFIG);
-            $this->eventManager->notify($coreInitEvent);
+            $this->eventManager->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
         // Check that Zikula is installed before continuing
@@ -427,8 +427,8 @@ class Core
 
         if ($stage & self::STAGE_DB) {
             try {
-                $dbEvent = new GenericEvent(CoreEvents::INIT, $this, array('stage' => self::STAGE_DB));
-                $this->eventManager->notify($dbEvent);
+                $dbEvent = new GenericEvent($this, array('stage' => self::STAGE_DB));
+                $this->eventManager->dispatch(CoreEvents::INIT, $dbEvent);
             } catch (\PDOException $e) {
                 if (!System::isInstalling()) {
                     header('HTTP/1.1 503 Service Unavailable');
@@ -455,13 +455,13 @@ class Core
                 \ModUtil::registerAutoloaders();
             }
             $coreInitEvent->setArg('stage', self::STAGE_TABLES);
-            $this->eventManager->notify($coreInitEvent);
+            $this->eventManager->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
         if ($stage & self::STAGE_SESSIONS) {
             \SessionUtil::requireSession();
             $coreInitEvent->setArg('stage', self::STAGE_SESSIONS);
-            $this->eventManager->notify($coreInitEvent);
+            $this->eventManager->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
@@ -473,13 +473,13 @@ class Core
         if ($stage & self::STAGE_DECODEURLS) {
             \System::queryStringDecode();
             $coreInitEvent->setArg('stage', self::STAGE_DECODEURLS);
-            $this->eventManager->notify($coreInitEvent);
+            $this->eventManager->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
         if ($stage & self::STAGE_LANGS) {
             $lang->setup();
             $coreInitEvent->setArg('stage', self::STAGE_LANGS);
-            $this->eventManager->notify($coreInitEvent);
+            $this->eventManager->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
         // end block
 
@@ -492,7 +492,7 @@ class Core
             \ModUtil::load('SecurityCenter');
 
             $coreInitEvent->setArg('stage', self::STAGE_MODS);
-            $this->eventManager->notify($coreInitEvent);
+            $this->eventManager->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
         if ($stage & self::STAGE_THEME) {
@@ -515,7 +515,7 @@ class Core
             $this->serviceManager['zikula_view.metatags']['keywords'] = \System::getVar('metakeywords');
 
             $coreInitEvent->setArg('stage', self::STAGE_THEME);
-            $this->eventManager->notify($coreInitEvent);
+            $this->eventManager->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
         // check the users status, if not 1 then log him out
@@ -532,7 +532,7 @@ class Core
         }
 
         if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
-            $this->eventManager->notify(new GenericEvent(CoreEvents::POSTINIT, $this, array('stages' => $stage)));
+            $this->eventManager->dispatch(CoreEvents::POSTINIT, new GenericEvent($this, array('stages' => $stage)));
         }
     }
 }

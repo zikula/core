@@ -29,8 +29,8 @@ $core = new Core(__DIR__.'/Resources/config/core.xml');
 $core->boot();
 
 // Load system configuration
-$event = new GenericEvent('bootstrap.getconfig', $core);
-$core->getEventManager()->notify($event);
+$event = new GenericEvent($core);
+$core->getEventManager()->dispatch('bootstrap.getconfig', $event);
 
-$event = new GenericEvent('bootstrap.custom', $core);
-$core->getEventManager()->notify($event);
+$event = new GenericEvent($core);
+$core->getEventManager()->dispatch('bootstrap.custom', $event);

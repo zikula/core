@@ -31,8 +31,8 @@ each module:
 
     [php]
     // trigger event
-    $event = new \Zikula\Core\Event\GenericEvent('get.pending_content', new Zikula_Collection_Container('pending_content'));
-    $pendingCollection = EventUtil::getManager()->notify($event)->getSubject();
+    $event = new \Zikula\Core\Event\GenericEvent(new Zikula_Collection_Container('pending_content'));
+    $pendingCollection = EventUtil::getManager()->dispatch('get.pending_content', $event)->getSubject();
 
     // process results
     foreach ($pendingCollection as $collection) {
@@ -54,8 +54,8 @@ The following is a full example you can use to run and see how this would work i
     EventUtil::getManager()->attach('get.pending_content', array('News_Handlers', 'handler'));
 
     // trigger event
-    $event = new \Zikula\Core\Event\GenericEvent('get.pending_content', new Zikula_Collection_Container('pending_content'));
-    $pendingCollection = EventUtil::getManager()->notify($event)->getSubject();
+    $event = new \Zikula\Core\Event\GenericEvent(new Zikula_Collection_Container('pending_content'));
+    $pendingCollection = EventUtil::getManager()->dispatch('get.pending_content', $event)->getSubject();
 
     // process results
     foreach ($pendingCollection as $collection) {

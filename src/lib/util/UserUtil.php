@@ -919,8 +919,8 @@ class UserUtil
                     'authentication_method' => $authenticationMethod,
                     'uid'                   => $userObj['uid'],
                 );
-                $event = new GenericEvent('user.login.veto', $userObj, $eventArgs);
-                $event = EventUtil::notify($event);
+                $event = new GenericEvent($userObj, $eventArgs);
+                $event = EventUtil::dispatch('user.login.veto', $event);
 
                 if ($event->isPropagationStopped()) {
                     // The login attempt has been vetoed by one or more modules.
@@ -1523,7 +1523,7 @@ class UserUtil
                     'new_value' => $value,
                 );
                 $updateEvent = new GenericEvent($eventName, $updatedUserObj, $eventArgs, $eventData);
-                EventUtil::notify($updateEvent);
+                EventUtil::dispatch($eventName, $updateEvent);
             }
         }
 
@@ -1860,11 +1860,13 @@ class UserUtil
                     'old_value' => $oldValue,
                 );
                 if ($isRegistration) {
-                    $updateEvent = new GenericEvent('user.registration.update', $updatedUserObj, $eventArgs, $eventData);
+                    $updateEvent = new GenericEvent($updatedUserObj, $eventArgs, $eventData);
+                    EventUtil::dispatch('user.registration.update', $updateEvent);
                 } else {
-                    $updateEvent = new GenericEvent('user.account.update', $updatedUserObj, $eventArgs, $eventData);
+                    $updateEvent = new GenericEvent($updatedUserObj, $eventArgs, $eventData);
+                    EventUtil::dispatch('user.account.update', $updateEvent);
                 }
-                EventUtil::notify($updateEvent);
+                
             }
         }
 
@@ -1966,8 +1968,8 @@ class UserUtil
      */
     private static function _getThemeFilterEvent($themeName, $type)
     {
-        $event = new GenericEvent('user.gettheme', null, array('type' => $type), $themeName);
-        return EventUtil::notify($event)->getData();
+        $event = new GenericEvent(null, array('type' => $type), $themeName);
+        return EventUtil::dispatch('user.gettheme', $event)->getData();
     }
 
     /**

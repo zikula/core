@@ -84,8 +84,8 @@ class DebugToolbar
         \PageUtil::addVar('stylesheet', 'style/debugtoolbar.css');
 
         // allow modules and plugins to extend the toolbar
-        $event = new GenericEvent('debugtoolbar.init', $this);
-        $this->eventManager->notify($event);
+        $event = new GenericEvent($this);
+        $this->eventManager->dispatch('debugtoolbar.init', $event);
     }
 
     /**

@@ -254,7 +254,7 @@ class DataUtil
         static $outputfilter;
         static $event;
         if (!$event) {
-            $event = new GenericEvent('system.outputfilter');
+            $event = new GenericEvent();
         }
 
         if (!isset($allowedtags)) {
@@ -304,7 +304,7 @@ class DataUtil
             // Run additional filters
             if ($outputfilter > 0) {
                 $event->setData($var)->setArg('filter', $outputfilter);
-                $var = EventUtil::notify($event)->getData();
+                $var = EventUtil::dispatch('system.outputfilter', $event)->getData();
             }
 
             // Preparse var to mark the HTML that we want

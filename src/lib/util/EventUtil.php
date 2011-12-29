@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * EventUtil
@@ -60,13 +60,29 @@ class EventUtil
     /**
      * Notify event.
      *
-     * @param GenericEvent $event Event.
+     * @param Event $event Event.
      *
-     * @return GenericEvent
+     * @return Event
      */
-    static public function notify(GenericEvent $event)
+    static public function notify(Event $event)
     {
         return self::getManager()->notify($event);
+    }
+
+    /**
+     * Dispatch event.
+     *
+     * @param Event $event Event.
+     *
+     * @return Event
+     */
+    static public function dispatch($name, Event $event = null)
+    {
+        if (!$event) {
+            $event = new Event;
+        }
+
+        return self::getManager()->dispatch($name, $event);
     }
 
     /**

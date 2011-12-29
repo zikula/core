@@ -56,11 +56,11 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
         if (!$this->doctrineManager) {
             Doctrine_Core::debug(System::isDevelopmentMode());
             $this->doctrineManager = Doctrine_Manager::getInstance();
-            $internalEvent = new GenericEvent('doctrine.configure', $this->doctrineManager);
-            $this->eventManager->notify($internalEvent);
+            $internalEvent = new GenericEvent($this->doctrineManager);
+            $this->eventManager->dispatch('doctrine.configure', $internalEvent);
 
-            $internalEvent = new GenericEvent('doctrine.cache', $this->doctrineManager);
-            $this->eventManager->notify($internalEvent);
+            $internalEvent = new GenericEvent($this->doctrineManager);
+            $this->eventManager->dispatch('doctrine.cache', $internalEvent);
         }
 
         $lazyConnect = isset($event['lazy']) ? $event['lazy'] : false;
@@ -79,8 +79,8 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
                 $connection->setOption('username', $connectionInfo['user']);
                 $connection->setOption('password', $connectionInfo['password']);
             }
-            $internalEvent = new GenericEvent('doctrine.configure', $connection);
-            $this->eventManager->notify($internalEvent);
+            $internalEvent = new GenericEvent($connection);
+            $this->eventManager->dispatch('doctrine.configure', $internalEvent);
         } catch (PDOException $e) {
             throw new PDOException(__('Connection failed to database') . ': ' . $e->getMessage());
         }

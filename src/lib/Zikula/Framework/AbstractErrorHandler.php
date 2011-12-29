@@ -126,7 +126,7 @@ abstract class AbstractErrorHandler
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
-        $this->event = new GenericEvent('log', $this);
+        $this->event = new GenericEvent($this);
     }
 
     /**

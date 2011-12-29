@@ -200,8 +200,8 @@ class Users_Api_Admin extends Zikula_AbstractApi
                 }
 
                 // Let other modules know we have deleted an item
-                $deleteEvent = new GenericEvent('user.account.delete', $userObj);
-                $this->eventManager->notify($deleteEvent);
+                $deleteEvent = new GenericEvent($userObj);
+                $this->eventManager->dispatch('user.account.delete', $deleteEvent);
             }
         }
 
@@ -514,11 +514,11 @@ class Users_Api_Admin extends Zikula_AbstractApi
 
             foreach ($importValues as $value) {
                 if ($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) {
-                    $createEvent = new GenericEvent('user.account.create', $value);
-                    $this->eventManager->notify($createEvent);
+                    $createEvent = new GenericEvent($value);
+                    $this->eventManager->dispatch('user.account.create', $createEvent);
                 } else {
-                    $createEvent = new GenericEvent('user.registration.create', $value);
-                    $this->eventManager->notify($createEvent);
+                    $createEvent = new GenericEvent($value);
+                    $this->eventManager->dispatch('user.registration.create', $createEvent);
                 }
                 if ($value['activated'] && $value['sendmail']) {
                     $view->assign('email', $value['email']);

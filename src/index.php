@@ -20,7 +20,7 @@ use Zikula\Core\Event\GenericEvent;
 include 'lib/bootstrap.php';
 $core->init();
 
-$core->getEventManager()->notify(new GenericEvent('frontcontroller.predispatch'));
+$core->getEventManager()->dispatch('frontcontroller.predispatch', new GenericEvent());
 
 $request = $core->getServiceManager()->getService('request');
 

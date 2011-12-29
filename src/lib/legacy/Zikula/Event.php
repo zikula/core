@@ -21,4 +21,26 @@
  */
 class Zikula_Event extends Zikula\Core\Event\GenericEvent
 {
+    /**
+     * Encapsulate an event called $name with $subject.
+     *
+     * @param string $name    Name of the event.
+     * @param mixed  $subject Usually and object or other PHP callable.
+     * @param array  $args    Arguments to store in the event.
+     * @param mixed  $data    Convenience argument of data for optional processing.
+     *
+     * @throws \InvalidArgumentException When name is empty.
+     */
+    public function __construct($name, $subject = null, array $args = array(), $data = null)
+    {
+        // must have a name
+        if (empty($name)) {
+            throw new \InvalidArgumentException('Event name cannot be empty');
+        }
+
+        $this->setName($name);
+        $this->subject = $subject;
+        $this->args = $args;
+        $this->data = $data;
+    }
 }

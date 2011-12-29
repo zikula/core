@@ -97,8 +97,8 @@ class SessionUtil
      */
     public static function requireSession()
     {
-        $event = new GenericEvent('session.require');
-        EventUtil::getManager()->notify($event);
+        $event = new GenericEvent();
+        EventUtil::getManager()->dispatch('session.require', $event);
     }
     /**
      * Let session expire nicely
