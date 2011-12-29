@@ -45,7 +45,7 @@ class SystemPlugin_DoctrineExtensions_Plugin extends AbstractPlugin implements A
     {
         $autoloader = new Zikula\Common\KernelClassLoader();
         $autoloader->spl_autoload_register();
-        $autoloader->register('Gedmo', __DIR__ . '/lib/vendor/l3pp4rd/DoctrineExtensions/lib', '\\');
+        $autoloader->register('Gedmo', __DIR__ . '/doctrine-extensions/DoctrineExtensions/lib', '\\');
         $autoloader->register('DoctrineExtensions\\StandardFields', __DIR__ . '/lib', '\\');
         $autoloader->register('DoctrineExtensions', __DIR__ . '/lib/vendor/beberlei/DoctrineExtensions/lib', '\\');
 
