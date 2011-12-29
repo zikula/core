@@ -59,6 +59,7 @@ class ZLoader
         self::$autoloaders = new Zikula\Common\KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
         self::addAutoloader('Zikula', ZLOADER_PATH . '/legacy', '_');
+        self::addAutoloader('Twig', ZLOADER_PATH . '/../vendor/twig/lib', '_');
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine1', '_');
         self::addAutoloader('Categories', 'system/Categories/lib');
         self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
