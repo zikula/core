@@ -52,17 +52,19 @@ class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements Configur
         define('SWIFT_INIT_LOADED', true);
 
         // register namespace
-        \ZLoader::addAutoloader('Swift', dirname(__FILE__) . '/lib/vendor/SwiftMailer/classes');
+        \ZLoader::addAutoloader('Swift', dirname(__DIR__) . '/../vendor/swiftmailer/lib/classes');
+
+        $basePath = realpath(dirname(__DIR__) . '/../vendor/swiftmailer/lib');
 
         // initialize Swift
         //require_once realpath($this->baseDir . '/lib/vendor/SwiftMailer/swift_init.php'); // dont use this as it fails in virtual hosting environments with open_basedir restrictions
         // Load in dependency maps
-        require_once dirname(__FILE__) . '/lib/vendor/SwiftMailer/dependency_maps/cache_deps.php';
-        require_once dirname(__FILE__) . '/lib/vendor/SwiftMailer/dependency_maps/mime_deps.php';
-        require_once dirname(__FILE__) . '/lib/vendor/SwiftMailer/dependency_maps/transport_deps.php';
+        require_once $basePath . '/dependency_maps/cache_deps.php';
+        require_once $basePath . '/dependency_maps/mime_deps.php';
+        require_once $basePath . '/dependency_maps/transport_deps.php';
 
         // load configuration (todo: move this to persistence).
-        include dirname(__FILE__) . '/configuration/config.php';
+        include __DIR__ . '/configuration/config.php';
 
         $this->serviceManager['swiftmailer.preferences.sendmethod'] = $config['sendmethod'];
 

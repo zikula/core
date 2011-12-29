@@ -18,6 +18,6 @@
     git=http://github.com/fabpot/Twig.git
     version=origin/master
 
-[doctrine-extensions]
-    git=http://github.com/l3pp4rd/DoctrineExtensions.git
-    version=2.1.x
+[swiftmailer]
+    git=http://github.com/swiftmailer/swiftmailer.git
+    version=v4.1.4
