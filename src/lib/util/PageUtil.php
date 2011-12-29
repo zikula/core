@@ -317,8 +317,8 @@ class PageUtil
             $value = array_unique($value);
         }
 
-        $event = new GenericEvent('pageutil.addvar_filter', $varname, array(), $value);
-        $value = EventUtil::getManager()->notify($event)->getData();
+        $event = new GenericEvent($varname, array(), $value);
+        $value = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event)->getData();
 
         if ($_pageVars[$varname]['multivalue']) {
             if (is_array($value)) {

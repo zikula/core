@@ -651,7 +651,7 @@ class DBObject
      */
     public function insertPreProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobject.insertpreprocess', $this));
+        EventUtil::dispatch('dbobject.insertpreprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -666,7 +666,7 @@ class DBObject
      */
     public function insertPostProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobject.insertpostprocess', $this));
+        EventUtil::dispatch('dbobject.insertpostprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -701,7 +701,7 @@ class DBObject
      */
     public function updatePreProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobject.updatepreprocess', $this));
+        EventUtil::dispatch'dbobject.updatepreprocess', (new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -716,7 +716,7 @@ class DBObject
      */
     public function updatePostProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobject.updatepostprocess', $this));
+        EventUtil::dispatch('dbobject.updatepostprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -752,7 +752,7 @@ class DBObject
      */
     public function deletePreProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobject.deletepreprocess', $this));
+        EventUtil::dispatch('dbobject.deletepreprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -767,7 +767,7 @@ class DBObject
      */
     public function deletePostProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobject.deletepostprocess', $this));
+        EventUtil::dispatch('dbobject.deletepostprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -819,7 +819,7 @@ class DBObject
      */
     public function validatePreProcess($type = 'user', $data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobject.validatepreprocess', $this));
+        EventUtil::dispatch('dbobject.validatepreprocess', new GenericEvent($this));
         return true;
     }
 
@@ -835,7 +835,7 @@ class DBObject
      */
     public function validatePostProcess($type = 'user', $data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobject.validatepostprocess', $this));
+        EventUtil::dispatch('dbobject.validatepostprocess', new GenericEvent($this));
         return true;
     }
 

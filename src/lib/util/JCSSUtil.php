@@ -121,8 +121,10 @@ class JCSSUtil
     public static function prepareStylesheets($stylesheets)
     {
         // Add generic stylesheet as the first stylesheet.
-        $event = new GenericEvent('pageutil.addvar_filter', 'stylesheet', array(), array('style/core.css'));
-        $coreStyle = EventUtil::getManager()->notify($event)->getData();
+        $event = new GenericEvent('stylesheet', array(), array('style/core.css'));
+        $coreStyle = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event);
+        $coreStyle = $event->getData();
+
         if (is_array($stylesheets)) {
             array_unshift($stylesheets, $coreStyle[0]);
         } else {

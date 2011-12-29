@@ -601,8 +601,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
             // Force the reload of the user in the cache.
             $userObj = UserUtil::getVars($userObj['uid'], true, 'uid', true);
 
-            $createEvent = new GenericEvent('user.registration.create', $userObj);
-            $this->eventManager->notify($createEvent);
+            $createEvent = new GenericEvent($userObj);
+            $this->eventManager->dispatch('user.registration.create', $createEvent);
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $siteurl   = System::getBaseUrl();
@@ -859,8 +859,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
             // registration is created. It is not a "real" record until now, so it wasn't really
             // "created" until now. It is way down here so that the activated state can be properly
             // saved before the hook is fired.
-            $createEvent = new GenericEvent('user.account.create', $userObj);
-            $this->eventManager->notify($createEvent);
+            $createEvent = new GenericEvent($userObj);
+            $this->eventManager->dispatch('user.account.create', $createEvent);
 
             $regErrors = array();
 
@@ -1290,8 +1290,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
                     'changetype' => Users_Constant::VERIFYCHGTYPE_REGEMAIL,
                 ));
 
-                $deleteEvent = new GenericEvent('user.registration.delete', $registration);
-                $this->eventManager->notify($deleteEvent);
+                $deleteEvent = new GenericEvent($registration);
+                $this->eventManager->dispatch('user.registration.delete', $deleteEvent);
             }
         }
 
@@ -1333,8 +1333,8 @@ class Users_Api_Registration extends Zikula_AbstractApi
                         'changetype'=> Users_Constant::VERIFYCHGTYPE_REGEMAIL,
                     ));
 
-                    $deleteEvent = new GenericEvent('user.registration.delete', $registration);
-                    $this->eventManager->notify($deleteEvent);
+                    $deleteEvent = new GenericEvent($registration);
+                    $this->eventManager->dispatch('user.registration.delete', $deleteEvent);
                 }
             }
         }

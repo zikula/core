@@ -339,8 +339,8 @@ class Zikula_View extends Smarty implements TranslatableInterface
 
         parent::assign('metatags', $this->serviceManager['zikula_view.metatags']);
 
-        $event = new GenericEvent('view.init', $this);
-        $this->eventManager->notify($event);
+        $event = new GenericEvent($this);
+        $this->eventManager->dispatch('view.init', $event);
     }
 
     /**
@@ -661,9 +661,10 @@ class Zikula_View extends Smarty implements TranslatableInterface
             $output = "\n<!-- Start " . $this->template_dir . "/$template -->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
         }
 
-        $event = new GenericEvent('view.postfetch', $this, array('template' => $template), $output);
+        $event = new GenericEvent($this, array('template' => $template), $output);
         try {
-            $data = $this->eventManager->notify($event)->getData();
+            $this->eventManager->dispatch('view.postfetch', $event);
+            $data = $event->getData();
         } catch (Exception $e) {
             var_dump($e->getMessage());
         }
@@ -1046,8 +1047,8 @@ class Zikula_View extends Smarty implements TranslatableInterface
      */
     public static function getTemplateOverride($template)
     {
-        $event = new GenericEvent('zikula_view.template_override', null, array(), $template);
-        EventUtil::getManager()->notify($event);
+        $event = new GenericEvent(null, array(), $template);
+        EventUtil::getManager()->dispatch('zikula_view.template_override', $event);
 
         if ($event->isPropagationStopped()) {
             $ostemplate = DataUtil::formatForOS($event->getData());

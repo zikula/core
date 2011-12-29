@@ -59,8 +59,9 @@ class Blocks_Block_PendingContent extends Zikula_Controller_AbstractBlock
         }
 
         // trigger event
-        $event = new GenericEvent('get.pending_content', new Zikula_Collection_Container('pending_content'));
-        $pendingCollection = EventUtil::getManager()->notify($event)->getSubject();
+        $event = new GenericEvent(new Zikula_Collection_Container('pending_content'));
+        EventUtil::getManager()->dispatch('get.pending_content', $event);
+        $pendingCollection = $event->getSubject();
 
         $content = array();
         // process results

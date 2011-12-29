@@ -33,7 +33,7 @@ class ZikulaSqlLogger implements \Doctrine\DBAL\Logging\SQLLogger
         $query = $this->currentQuery;
         $query['time'] = microtime(true) - $this->start;
 
-        $zevent = new GenericEvent('log.sql', null, $query);
-        \EventUtil::notify($zevent);
+        $zevent = new GenericEvent(null, $query);
+        \EventUtil::dispatch('log.sql', $zevent);
     }
 }

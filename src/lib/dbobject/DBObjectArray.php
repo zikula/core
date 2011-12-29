@@ -672,7 +672,7 @@ class DBObjectArray
      */
     public function insertPreProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobjectarray.insertpreprocess', $this));
+        EventUtil::dispatch('dbobjectarray.insertpreprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -687,7 +687,7 @@ class DBObjectArray
      */
     public function insertPostProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobjectarray.insertpostprocess', $this));
+        EventUtil::dispatch'dbobjectarray.insertpostprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -726,7 +726,7 @@ class DBObjectArray
      */
     public function updatePreProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobjectarray.updatepreprocess', $this));
+        EventUtil::dispatch('dbobjectarray.updatepreprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -741,7 +741,7 @@ class DBObjectArray
      */
     public function updatePostProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobjectarray.updatepostprocess', $this));
+        EventUtil::dispatch('dbobjectarray.updatepostprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -780,7 +780,7 @@ class DBObjectArray
      */
     public function deletePreProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobjectarray.deletepreprocess', $this));
+        EventUtil::dispatch('dbobjectarray.deletepreprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -795,7 +795,7 @@ class DBObjectArray
      */
     public function deletePostProcess($data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobjectarray.deletepostprocess', $this));
+        EventUtil::dispatch('dbobjectarray.deletepostprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -895,7 +895,7 @@ class DBObjectArray
      */
     public function validatePreProcess($type = 'user', $data = null)
     {
-        EventUtil::notify(new GenericEvent('dbobjectarray.validatepreprocess', $this));
+        EventUtil::dispatch('dbobjectarray.validatepreprocess', new GenericEvent($this));
         return true;
     }
 
@@ -912,7 +912,7 @@ class DBObjectArray
     public function validatePostProcess($type = 'user', $data = null)
     {
         // empty function, should be implemented by child classes.
-        EventUtil::notify(new GenericEvent('dbobjectarray.validatepostprocess', $this));
+        EventUtil::dispatch('dbobjectarray.validatepostprocess', new GenericEvent($this));
         return true;
     }
 

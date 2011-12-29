@@ -800,8 +800,8 @@ class ModUtil
 
         self::_loadStyleSheets($modname, $api, $type);
 
-        $event = new GenericEvent('module_dispatch.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
-        EventUtil::notify($event);
+        $event = new GenericEvent(null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
+        EventUtil::dispatch('module_dispatch.postloadgeneric', $event);
 
         return $modname;
     }
@@ -876,8 +876,8 @@ class ModUtil
         $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname) . '_Controller_' . ucwords($type);
 
         // allow overriding the OO class (to override existing methods using inheritance).
-        $event = new GenericEvent('module_dispatch.custom_classname', null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
-        EventUtil::notify($event);
+        $event = new GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+        EventUtil::dispatch('module_dispatch.custom_classname', $event);
         if ($event->isPropagationStopped()) {
             $className = $event->getData();
         }
@@ -1036,11 +1036,11 @@ class ModUtil
         $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
         $eventManager = EventUtil::getManager();
         if ($loaded) {
-            $preExecuteEvent = new GenericEvent('module_dispatch.preexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-            $postExecuteEvent = new GenericEvent('module_dispatch.postexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $preExecuteEvent = new GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $postExecuteEvent = new GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
 
             if (is_callable($modfunc)) {
-                $eventManager->notify($preExecuteEvent);
+                $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
 
                 // Check $modfunc is an object instance (OO) or a function (old)
                 if (is_array($modfunc)) {
@@ -1062,7 +1062,7 @@ class ModUtil
                     $postExecuteEvent->setData($modfunc($args));
                 }
 
-                return $eventManager->notify($postExecuteEvent)->getData();
+                return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
             }
 
             // get the theme
@@ -1081,18 +1081,18 @@ class ModUtil
             if (file_exists($file = "config/functions/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
                 include_once $file;
                 if (is_callable($modfunc)) {
-                    $eventManager->notify($preExecuteEvent);
+                    $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
                     $postExecuteEvent->setData($modfunc($args));
-                    return $eventManager->notify($postExecuteEvent)->getData();
+                    return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
                 }
             }
 
             if (file_exists($file = "$path/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
                 include_once $file;
                 if (is_callable($modfunc)) {
-                    $eventManager->notify($preExecuteEvent);
+                    $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
                     $postExecuteEvent->setData($modfunc($args));
-                    return $eventManager->notify($postExecuteEvent)->getData();
+                    return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
                 }
             }
 
@@ -1104,8 +1104,8 @@ class ModUtil
             // 4. $event->setNotify().
             // return void
             // This event means that no $type was found
-            $event = new GenericEvent('module_dispatch.type_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
-            $eventManager->notify($event);
+            $event = new GenericEvent(null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
+            $eventManager->dispatch('module_dispatch.type_not_found', $event);
 
             if ($preExecuteEvent->isPropagationStopped()) {
                 return $preExecuteEvent->getData();
