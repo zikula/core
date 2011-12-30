@@ -701,7 +701,7 @@ class DBObject
      */
     public function updatePreProcess($data = null)
     {
-        EventUtil::dispatch'dbobject.updatepreprocess', (new GenericEvent($this));
+        EventUtil::dispatch('dbobject.updatepreprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
