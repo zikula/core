@@ -7,4 +7,4 @@ php:
 before_install:
   - phpenv rehash
 
-before_script: php vendors.php
+before_script: php bin/vendor install
