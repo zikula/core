@@ -18,7 +18,6 @@ namespace Zikula\Core\SessionStorage;
 
 use Symfony\Component\HttpFoundation\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\FlashBagInterface;
-use Symfony\Component\HttpFoundation\SessionStorage\AbstractSessionStorage;
 use Symfony\Component\HttpFoundation\SessionStorage\SessionSaveHandlerInterface;
 use \SessionUtil;
 use \System;
