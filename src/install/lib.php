@@ -13,6 +13,7 @@
  */
 
 use Zikula\Core\Event\GenericEvent;
+use Zikula\Core\Core;
 
 ini_set('memory_limit', '84M');
 ini_set('max_execution_time', 300);
@@ -22,9 +23,9 @@ ini_set('max_execution_time', 300);
  *
  * @return void
  */
-function install(Zikula_Core $core)
+function install(Core $core)
 {
-    define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
+    define('_ZINSTALLVER', Core::VERSION_NUM);
 
     $serviceManager = $core->getServiceManager();
     $eventManager = $core->getEventManager();
@@ -33,7 +34,7 @@ function install(Zikula_Core $core)
     $dbEvent = new GenericEvent(null, array('lazy' => true));
     $eventManager->dispatch('doctrine.init_connection', $dbEvent);
 
-    $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS);
+    $core->init(Core::STAGE_ALL & ~Core::STAGE_THEME & ~Core::STAGE_MODS & ~Core::STAGE_LANGS & ~Core::STAGE_DECODEURLS & ~Core::STAGE_SESSIONS);
 
     // Power users might have moved the temp folder out of the root and changed the config.php
     // accordingly. Make sure we respect this security related settings
@@ -557,7 +558,7 @@ function _check_requirements()
 
     $x = explode('.', str_replace('-', '.', phpversion()));
     $phpVersion = "$x[0].$x[1].$x[2]";
-    $results['phpsatisfied'] = version_compare($phpVersion, Zikula_Core::PHP_MINIMUM_VERSION, ">=");
+    $results['phpsatisfied'] = version_compare($phpVersion, Core::PHP_MINIMUM_VERSION, ">=");
     $results['datetimezone'] = ini_get('date.timezone');
 
     $results['pdo'] = extension_loaded('pdo');
