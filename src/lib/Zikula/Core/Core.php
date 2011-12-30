@@ -430,7 +430,7 @@ class Core
                 $dbEvent = new GenericEvent($this, array('stage' => self::STAGE_DB));
                 $this->eventManager->dispatch(CoreEvents::INIT, $dbEvent);
             } catch (\PDOException $e) {
-                if (!System::isInstalling()) {
+                if (!\System::isInstalling()) {
                     header('HTTP/1.1 503 Service Unavailable');
                     require_once \System::getSystemErrorTemplate('dbconnectionerror.tpl');
                     \System::shutDown();
