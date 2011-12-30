@@ -27,8 +27,8 @@
  *
  * @return string The modified output.
  */
-function smarty_modifier_paragraph($string,$br = 0) {
-
+function smarty_modifier_paragraph($string, $br = false)
+{
     if ($string != '') {
         $string = $string . "\n"; // just to make things a little easier, pad the end
         $string = preg_replace('|<br />\s*<br />|', "\n\n", $string);
@@ -47,9 +47,7 @@ function smarty_modifier_paragraph($string,$br = 0) {
         $string = preg_replace('!(</?(?:table|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*<br />!', "$1", $string);
         $string = preg_replace('!<br />(\s*</?(?:p|li|div|th|pre|td|ul|ol)>)!', '$1', $string);
         $string = preg_replace('/&([^#])(?![a-z]{1,8};)/', '&#038;$1', $string);
-
-        return $string;
-    } else {
-        return;
     }
+
+    return $string;
 }
