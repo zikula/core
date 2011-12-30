@@ -508,7 +508,7 @@ abstract class AbstractBase implements TranslatableInterface
             throw new \Zikula\Framework\ExceptionException($this->__f('Empty [%s] received.', 'message'));
         }
 
-        LogUtil::addStatusPopup($message);
+        \LogUtil::addStatusPopup($message);
 
         return $this;
     }
@@ -574,7 +574,7 @@ abstract class AbstractBase implements TranslatableInterface
             throw new \Zikula\Framework\ExceptionException($this->__f('Empty [%s] received.', 'message'));
         }
 
-        LogUtil::addErrorPopup($message);
+        \LogUtil::addErrorPopup($message);
 
         return $this;
     }
@@ -635,7 +635,7 @@ abstract class AbstractBase implements TranslatableInterface
      */
     public function setVar($key, $value='')
     {
-        ModUtil::setVar($this->name, $key, $value);
+        \ModUtil::setVar($this->name, $key, $value);
         return $this;
     }
 
