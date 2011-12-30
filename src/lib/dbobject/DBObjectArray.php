@@ -687,7 +687,7 @@ class DBObjectArray
      */
     public function insertPostProcess($data = null)
     {
-        EventUtil::dispatch'dbobjectarray.insertpostprocess', new GenericEvent($this));
+        EventUtil::dispatch('dbobjectarray.insertpostprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
