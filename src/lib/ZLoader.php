@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 if (!extension_loaded('xdebug')) {
     set_exception_handler('exception_handler');
 }
@@ -25,7 +24,6 @@ define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 
 include 'Smarty/Smarty.class.php';
-
 /**
  * ZLoader.
  */
@@ -37,10 +35,11 @@ class ZLoader
      * @var array
      */
     private static $map;
+
     /**
      * Autoloaders.
      *
-     * @var Zikula_KernelClassLoader
+     * @var \Zikula\Common\KernelClassLoader
      */
     private static $autoloaders;
 
@@ -51,19 +50,22 @@ class ZLoader
      */
     public static function register()
     {
-        self::$map = self::map();
         spl_autoload_register(array('ZLoader', 'autoload'));
         $autoloader = new Zikula\Common\KernelClassLoader();
         $autoloader->spl_autoload_register();
         $autoloader->register('Zikula', ZLOADER_PATH);
         self::$autoloaders = new Zikula\Common\KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
+        self::addAutoloader('Symfony', ZLOADER_PATH . '/../vendor/symfony/src', '\\');
+        self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine1', '_');
         self::addAutoloader('Zikula', ZLOADER_PATH . '/legacy', '_');
         self::addAutoloader('Twig', ZLOADER_PATH . '/../vendor/twig/lib', '_');
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine1', '_');
         self::addAutoloader('Categories', 'system/Categories/lib');
         self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
-        self::addAutoloader('Symfony', ZLOADER_PATH . '/../vendor/symfony/src', '\\');
+
+        $mapClassLoader = new \Symfony\Component\ClassLoader\MapClassLoader(self::map());
+        $mapClassLoader->register();
     }
 
     /**
@@ -93,15 +95,6 @@ class ZLoader
      */
     public static function autoload($class)
     {
-        // load from maps
-        $map = self::$map;
-        if (isset($map[$class])) {
-            $path = ZLOADER_PATH . "$map[$class]/$class.php";
-            if (file_exists($path)) {
-                return include $path;
-            }
-        }
-
         // Classloader for SystemPlugin
         if (strpos($class, 'SystemPlugin') === 0) {
             $array = explode('_', $class);
@@ -162,54 +155,53 @@ class ZLoader
     public static function map()
     {
         return array(
-                'ZLanguage' => 'i18n',
-                'ZI18n' => 'i18n',
-                'ZL10n' => 'i18n',
-                'ZLocale' => 'i18n',
-                'ZGettext' => 'i18n',
-                'ZMO' => 'i18n',
-                'ZLanguageBrowser' => 'i18n',
-                'DBObject' => 'dbobject',
-                'DBObjectArray' => 'dbobject',
-                'DBUtil' => 'util',
-                'BlockUtil' => 'util',
-                'AjaxUtil' => 'util',
-                'CacheUtil' => 'util',
-                'CategoryRegistryUtil' => 'util',
-                'CategoryUtil' => 'util',
-                'CookieUtil' => 'util',
-                'DataUtil' => 'util',
-                'DateUtil' => 'util',
-                'DoctrineHelper' => 'util',
-                'DoctrineUtil' => 'util',
-                'EventUtil' => 'util',
-                'FileUtil' => 'util',
-                'FilterUtil' => 'util',
-                'FormUtil' => 'util',
-                'HookUtil' => 'util',
-                'HtmlUtil' => 'util',
-                'JCSSUtil' => 'util',
-                'LogUtil' => 'util',
-                'ModUtil' => 'util',
-                'ObjectUtil' => 'util',
-                'PluginUtil' => 'util',
-                'PageUtil' => 'util',
-                'RandomUtil' => 'util',
-                'SecurityUtil' => 'util',
-                'ServiceUtil' => 'util',
-                'SessionUtil' => 'util',
-                'StringUtil' => 'util',
-                'System' => 'util',
-                'ThemeUtil' => 'util',
-                'UserUtil' => 'util',
-                'ValidationUtil' => 'util',
-                'Loader' => 'legacy',
-                'sfYaml' => 'vendor/Doctrine1/Doctrine/Parser/sfYaml', // needed to use Doctrine_Parser since we dont use Doctrine's autoloader
+            'ZLanguage' => ZLOADER_PATH . '/i18n/ZLanguage.php',
+            'ZI18n' => ZLOADER_PATH . '/i18n/ZI18n.php',
+            'ZL10n' => ZLOADER_PATH . '/i18n/ZL10n.php',
+            'ZLocale' => ZLOADER_PATH . '/i18n/ZLocale.php',
+            'ZGettext' => ZLOADER_PATH . '/i18n/ZGettext.php',
+            'ZMO' => ZLOADER_PATH . 'i18n/ZMO.php',
+            'ZLanguageBrowser' => ZLOADER_PATH . 'i18n/ZLanguageBrowser.php',
+            'DBObject' => ZLOADER_PATH . 'dbobject/DBObject.php',
+            'DBObjectArray' => ZLOADER_PATH . 'dbobject/DBObjctArray.php',
+            'DBUtil' => ZLOADER_PATH . 'util/DBUtil.php',
+            'BlockUtil' => ZLOADER_PATH . 'util/BlockUtil.php',
+            'AjaxUtil' => ZLOADER_PATH . 'util/AjaxUtil.php',
+            'CacheUtil' => ZLOADER_PATH . 'util/CacheUtil.php',
+            'CategoryRegistryUtil' => ZLOADER_PATH . 'util/CategoryRegistryUtil.php',
+            'CategoryUtil' => ZLOADER_PATH . 'util/CategoryUtil.php',
+            'CookieUtil' => ZLOADER_PATH . 'util/CookieUtil.php',
+            'DataUtil' => ZLOADER_PATH . 'util/DataUtil.php',
+            'DateUtil' => ZLOADER_PATH . 'util/DateUtil.php',
+            'DoctrineHelper' => ZLOADER_PATH . 'util/DoctrineHelper.php',
+            'DoctrineUtil' => ZLOADER_PATH . 'util/DoctrineUtil.php',
+            'EventUtil' => ZLOADER_PATH . 'util/EventUtil.php',
+            'FileUtil' => ZLOADER_PATH . 'util/FileUtil.php',
+            'FilterUtil' => ZLOADER_PATH . 'util/FilterUtil.php',
+            'FormUtil' => ZLOADER_PATH . 'util/FormUtil.php',
+            'HookUtil' => ZLOADER_PATH . 'util/HookUtil.php',
+            'HtmlUtil' => ZLOADER_PATH . 'util/HtmlUtil.php',
+            'JCSSUtil' => ZLOADER_PATH . 'util/JCSSUtil.php',
+            'LogUtil' => ZLOADER_PATH . 'util/LogUtil.php',
+            'ModUtil' => ZLOADER_PATH . 'util/ModUtil.php',
+            'ObjectUtil' => ZLOADER_PATH . 'util/ObjectUtil.php',
+            'PluginUtil' => ZLOADER_PATH . 'util/PluginUtil.php',
+            'PageUtil' => ZLOADER_PATH . 'util/PageUtil.php',
+            'RandomUtil' => ZLOADER_PATH . 'util/RandomUtil.php',
+            'SecurityUtil' => ZLOADER_PATH . 'util/SecurityUtil.php',
+            'ServiceUtil' => ZLOADER_PATH . 'util/ServiceUtil.php',
+            'SessionUtil' => ZLOADER_PATH . 'util/SessionUtil.php',
+            'StringUtil' => ZLOADER_PATH . 'util/StringUtil.php',
+            'System' => ZLOADER_PATH . 'util/System.php',
+            'ThemeUtil' => ZLOADER_PATH . 'util/ThemeUtil.php',
+            'UserUtil' => ZLOADER_PATH . 'util/UserUtil.php',
+            'ValidationUtil' => ZLOADER_PATH . 'util/ValidationUtil.php',
+            'Loader' => ZLOADER_PATH . 'legacy/Loader.php',
+            'sfYaml' => ZLOADER_PATH . 'vendor/Doctrine1/Doctrine/Parser/sfYaml/sfYaml.php', // needed to use Doctrine_Parser since we dont use Doctrine's autoloader
         );
     }
 
 }
-
 /**
  * Exit.
  *
