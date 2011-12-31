@@ -21,7 +21,7 @@ Requirements
 ------------
 
 This upgrade can only be performed on a Zikula Core 1.2.x installation.  If you
-are on a lower version, you must first upgrade sucessfully before proceeding to
+are on a lower version, you must first upgrade successfully before proceeding to
 this upgrade.
 
 
@@ -37,7 +37,7 @@ Theme naming considerations
    Themes must start with a capital letter and must not contain an underscore character _
    If you need to rename your theme, please follow the following steps:
 
-  - Change your theme to different theme in Zikula's administation.
+  - Change your theme to different theme in Zikula's administration.
 
   - Rename your theme folder with a capital letter.  If you are on a Windows machine,
     please note that Windows does not care about casing so you have to first
@@ -60,7 +60,7 @@ Module considerations
 ---------------------
 
   Make sure all your modules are compatible with Zikula 1.2.x and have been completely
-  converted to 'Gettext'.  Modules that are not will not function in Zikula 1.3.
+  converted to 'Gettext'. Modules that are not will not function in Zikula 1.3.
 
   Zikula 1.2.x compliant modules will work in Zikula Core 1.3.x
 
@@ -124,12 +124,12 @@ Prepare your existing installation
 Run the upgrade
 ---------------
 
-WARNING - the moment you run `upgrade.php`, preparitory changes will be made the
+WARNING - the moment you run `upgrade.php`, preparatory changes will be made the
 the database for the 1.3 upgrade.  Your system will no longer function until you
 then manually complete the remaining step.
 
 Run the upgrade.php from the browser `http://example.com/upgrade.php`
-Simply follow the instructions - this will involve chosing language, entering
+Simply follow the instructions - this will involve choosing language, entering
 your administrator login and pressing next a few times.
 
 All database changes that are necessary will be done automatically.
