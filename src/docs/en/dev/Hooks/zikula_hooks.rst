@@ -99,7 +99,7 @@ using "Subscriber Bundles".  This is done in the Version.php
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookSubscriberBundle($this->name, 'subscriber.blog.ui_hooks.articles', 'ui_hooks', $this->__('blog Article UI Hooks'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.blog.ui_hooks.articles', 'ui_hooks', $this->__('blog Article UI Hooks'));
         $bundle->addEvent('display_view', 'blog.ui_hooks.articles.display_view');
         $bundle->addEvent('form_edit', 'blog.ui_hooks.articles.form_edit');
         $bundle->addEvent('form_delete', 'blog.ui_hooks.articles.form_delete');
@@ -109,7 +109,7 @@ using "Subscriber Bundles".  This is done in the Version.php
         $bundle->addEvent('process_delete', 'blog.ui_hooks.articles.process_delete');
         $this->registerHookSubscriberBundle($bundle);
 
-        $bundle = new Zikula_Version_HookSubscriberBundle($this->name, 'subscriber.blog.filter_hooks.articles', 'filter_hooks', $this->__('blog Article Filter Hooks'));
+        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.blog.filter_hooks.articles', 'filter_hooks', $this->__('blog Article Filter Hooks'));
         $bundle->addEvent('filter', 'blog.filter_hooks.articles.filter');
         $this->registerHookSubscriberBundle($bundle);
     }
@@ -151,7 +151,7 @@ what areas are supported and describes the hook handlers.
 
     protected function setupHookBundles()
     {
-        $bundle = new Zikula_Version_HookProviderBundle($this->name, 'provider.ui_hooks.ratings.rating', 'ui_hooks', $this->__('Ratings Hook Poviders'));
+        $bundle = new Zikula_HookManager_ProviderBundle($this->name, 'provider.ui_hooks.ratings.rating', 'ui_hooks', $this->__('Ratings Hook Poviders'));
         $bundle->addServiceHandler('display_view', 'Ratings_HookHandler', 'displayView', 'ratings.rating');
         // add other hook handlers as needed
 
