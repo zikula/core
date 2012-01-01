@@ -48,7 +48,7 @@ function smarty_block_checkgroup($params, $content, Zikula_View $view)
         return false;
     }
 
-    $uid = SessionUtil::getVar('uid');
+    $uid = $view->getRequest()->getSession()->get('uid');
     if (empty($uid)) {
         return;
     }

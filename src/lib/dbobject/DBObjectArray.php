@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * DBObjectArray.
  */
@@ -296,7 +298,7 @@ class DBObjectArray
                 $data[] = $item;
             }
             $this->_objData = $data;
-        } 
+        }
 
         return $this->_objData;
     }
@@ -670,7 +672,7 @@ class DBObjectArray
      */
     public function insertPreProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobjectarray.insertpreprocess', $this));
+        EventUtil::dispatch('dbobjectarray.insertpreprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -685,7 +687,7 @@ class DBObjectArray
      */
     public function insertPostProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobjectarray.insertpostprocess', $this));
+        EventUtil::dispatch('dbobjectarray.insertpostprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -724,7 +726,7 @@ class DBObjectArray
      */
     public function updatePreProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobjectarray.updatepreprocess', $this));
+        EventUtil::dispatch('dbobjectarray.updatepreprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -739,7 +741,7 @@ class DBObjectArray
      */
     public function updatePostProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobjectarray.updatepostprocess', $this));
+        EventUtil::dispatch('dbobjectarray.updatepostprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -778,7 +780,7 @@ class DBObjectArray
      */
     public function deletePreProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobjectarray.deletepreprocess', $this));
+        EventUtil::dispatch('dbobjectarray.deletepreprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -793,7 +795,7 @@ class DBObjectArray
      */
     public function deletePostProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobjectarray.deletepostprocess', $this));
+        EventUtil::dispatch('dbobjectarray.deletepostprocess', new GenericEvent($this));
         return $this->_objData;
     }
 
@@ -893,7 +895,7 @@ class DBObjectArray
      */
     public function validatePreProcess($type = 'user', $data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobjectarray.validatepreprocess', $this));
+        EventUtil::dispatch('dbobjectarray.validatepreprocess', new GenericEvent($this));
         return true;
     }
 
@@ -910,7 +912,7 @@ class DBObjectArray
     public function validatePostProcess($type = 'user', $data = null)
     {
         // empty function, should be implemented by child classes.
-        EventUtil::notify(new Zikula_Event('dbobjectarray.validatepostprocess', $this));
+        EventUtil::dispatch('dbobjectarray.validatepostprocess', new GenericEvent($this));
         return true;
     }
 
@@ -935,12 +937,12 @@ class DBObjectArray
                 $res = $res && ValidationUtil::validateObjectPlain($this->_objPath, $v, $this->_objValidation);
                 if (!$res) {
                     break;
-                } 
-            } 
+                }
+            }
             if ($res) {
                 $res = $res && $this->validatePostProcess();
-            } 
-        } 
+            }
+        }
 
         return $res;
     }

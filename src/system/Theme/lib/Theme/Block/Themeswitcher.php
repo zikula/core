@@ -130,13 +130,13 @@ class Theme_Block_Themeswitcher extends Zikula_Controller_AbstractBlock
         return $this->view->fetch('theme_block_themeswitcher_modify.tpl');
     }
 
-    function update($blockinfo)
+    public function update($blockinfo)
     {
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // alter the corresponding variable
-        $vars['format'] = FormUtil::getPassedValue('format', 1, 'POST');
+        $vars['format'] = $this->request->request->get('format', 1);
 
         // write back the new contents
         $blockinfo['content'] = BlockUtil::varsToContent($vars);

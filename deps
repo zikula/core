@@ -1,0 +1,23 @@
+[symfony]
+    git=http://github.com/drak/symfony.git
+    version=origin/session_refactor
+
+[doctrine-common]
+    git=http://github.com/doctrine/common.git
+    version=2.1.4
+
+[doctrine-dbal]
+    git=http://github.com/doctrine/dbal.git
+    version=2.1.5
+
+[doctrine]
+    git=http://github.com/doctrine/doctrine2.git
+    version=2.1.5
+
+[twig]
+    git=http://github.com/fabpot/Twig.git
+    version=origin/master
+
+[swiftmailer]
+    git=http://github.com/swiftmailer/swiftmailer.git
+    version=v4.1.4

@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * DataUtil is the class used to manage datas and variables.
  */
@@ -252,7 +254,7 @@ class DataUtil
         static $outputfilter;
         static $event;
         if (!$event) {
-            $event = new Zikula_Event('system.outputfilter');
+            $event = new GenericEvent();
         }
 
         if (!isset($allowedtags)) {
@@ -302,7 +304,7 @@ class DataUtil
             // Run additional filters
             if ($outputfilter > 0) {
                 $event->setData($var)->setArg('filter', $outputfilter);
-                $var = EventUtil::notify($event)->getData();
+                $var = EventUtil::dispatch('system.outputfilter', $event)->getData();
             }
 
             // Preparse var to mark the HTML that we want
@@ -472,7 +474,7 @@ class DataUtil
             $var = mb_ereg_replace("[$value]", $permareplace[$key], $var);
         }
 
-        $var = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($var)); 
+        $var = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($var));
 
         // final clean
         $permalinksseparator = System::getVar('shorturlsseparator');

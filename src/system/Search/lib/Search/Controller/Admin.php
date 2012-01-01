@@ -99,12 +99,12 @@ class Search_Controller_Admin extends Zikula_AbstractController
         }
 
         // Update module variables.
-        $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 10, 'POST');
+        $itemsperpage = (int)$this->request->request->get('itemsperpage', 10);
         $this->setVar('itemsperpage', $itemsperpage);
-        $limitsummary = (int)FormUtil::getPassedValue('limitsummary', 255, 'POST');
+        $limitsummary = (int)$this->request->request->get('limitsummary', 255);
         $this->setVar('limitsummary', $limitsummary);
 
-        $disable = FormUtil::getPassedValue('disable', null, 'REQUEST');
+        $disable = $this->request->get('disable', null);
         // get the list of available plugins
         $plugins = ModUtil::apiFunc('Search', 'user', 'getallplugins', array('loadall' => true));
         // loop round the plugins

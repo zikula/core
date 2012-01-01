@@ -50,6 +50,9 @@
         <mkdir dir="${builddir}/patch" />
         <mkdir dir="${builddir}/tmp" />
         <mkdir dir="${builddir}/jsdoc" />
+        <echo msg="Downloading vendors..." />
+        <exec command="chmod 755 ${workspace}/source/bin/vendor;${workspace}/source/bin/vendor install --transport=git" />
+        <exec command="find -type d -iname .git | xargs rm -rf" />
     </target>
 
     <!-- Build archives -->

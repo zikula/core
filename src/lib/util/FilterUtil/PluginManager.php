@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Plugin manager class.
  */
@@ -129,9 +131,10 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
         // collect classes from other providers also allows for override
         // TODO A [This is only allowed for the module which owns this object.]
 
-        $event = new Zikula_Event('zikula.filterutil.get_plugin_classes');
+        $event = new GenericEvent();
         $event->setData($classNames);
-        $classNames = EventUtil::getManager()->notify($event)->getData();
+        EventUtil::getManager()->dispatch('zikula.filterutil.get_plugin_classes', $event);
+        $classNames = $event->getData();
 
         return $classNames;
     }

@@ -33,7 +33,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      * shows the module menu and returns or calls whatever the module
      * designer feels should be the default function (often this is the
      * view() function)
-     * 
+     *
      * @return string HTML output string
      */
     public function main()
@@ -71,7 +71,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
     public function view()
     {
         // Get parameters from whatever input we need.
-        $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
+        $startnum = (int)$this->request->request->get('startnum', null);
 
         // we need this value multiple times, so we keep it
         $itemsperpage = $this->getVar('itemsperpage');
@@ -202,13 +202,13 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Get parameters from whatever input we need.
-        $name = FormUtil::getPassedValue('name', isset($args['name']) ? $args['name'] : null, 'POST');
-        $gtype = FormUtil::getPassedValue('gtype', isset($args['gtype']) ? $args['gtype'] : null, 'POST');
-        $state = FormUtil::getPassedValue('state', isset($args['state']) ? $args['state'] : null, 'POST');
-        $nbumax = FormUtil::getPassedValue('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null, 'POST');
-        $description = FormUtil::getPassedValue('description', isset($args['description']) ? $args['description'] : null, 'POST');
+        $name = $this->request->request->get('name', isset($args['name']) ? $args['name'] : null);
+        $gtype = $this->request->request->get('gtype', isset($args['gtype']) ? $args['gtype'] : null);
+        $state = $this->request->request->get('state', isset($args['state']) ? $args['state'] : null);
+        $nbumax = $this->request->request->get('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null);
+        $description = $this->request->request->get('description', isset($args['description']) ? $args['description'] : null);
 
-        
+
         // The API function is called.
         $check = ModUtil::apiFunc('Groups', 'admin', 'getgidbyname',
                 array('name' => $name));
@@ -249,8 +249,8 @@ class Groups_Controller_Admin extends Zikula_AbstractController
     public function modify($args)
     {
         // Get parameters from whatever input we need.
-        $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'GET');
-        $objectid = (int)FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
+        $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
+        $objectid = (int)$this->request->query->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
 
         // At this stage we check to see if we have been passed $objectid
         if (!empty($objectid)) {
@@ -258,7 +258,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         }
 
         // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get',
+        $item = ModUtil::apiFunc('Groups', 'user',
                 array('gid' => $gid));
 
         if ($item == false) {
@@ -301,13 +301,13 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Get parameters from whatever input we need.
-        $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'POST');
-        $objectid = (int)FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'POST');
-        $name = FormUtil::getPassedValue('name', isset($args['name']) ? $args['name'] : null, 'POST');
-        $gtype = FormUtil::getPassedValue('gtype', isset($args['gtype']) ? $args['gtype'] : null, 'POST');
-        $state = FormUtil::getPassedValue('state', isset($args['state']) ? $args['state'] : null, 'POST');
-        $nbumax = FormUtil::getPassedValue('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null, 'POST');
-        $description = FormUtil::getPassedValue('description', isset($args['description']) ? $args['description'] : null, 'POST');
+        $gid = (int)$this->request->request->get('gid', isset($args['gid']) ? $args['gid'] : null);
+        $objectid = (int)$this->request->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
+        $name = $this->request->request->get('name', isset($args['name']) ? $args['name'] : null);
+        $gtype = $this->request->request->get('gtype', isset($args['gtype']) ? $args['gtype'] : null);
+        $state = $this->request->request->get('state', isset($args['state']) ? $args['state'] : null);
+        $nbumax = $this->request->request->get('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null);
+        $description = $this->request->request->get('description', isset($args['description']) ? $args['description'] : null);
 
         // At this stage we check to see if we have been passed $objectid
         if (!empty($objectid)) {
@@ -353,16 +353,16 @@ class Groups_Controller_Admin extends Zikula_AbstractController
     public function delete($args)
     {
         // Get parameters from whatever input we need.
-        $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'REQUEST');
-        $objectid = (int)FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
-        $confirmation = (bool)FormUtil::getPassedValue('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null, 'REQUEST');
+        $gid = (int)$this->request->get('gid', isset($args['gid']) ? $args['gid'] : null);
+        $objectid = (int)$this->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
+        $confirmation = (bool)$this->request->get('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null);
 
         if (!empty($objectid)) {
             $gid = $objectid;
         }
 
         // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get',
+        $item = ModUtil::apiFunc('Groups', 'user',
                 array('gid' => $gid));
 
         if ($item == false) {
@@ -419,17 +419,17 @@ class Groups_Controller_Admin extends Zikula_AbstractController
     public function groupmembership($args)
     {
         // Get parameters from whatever input we need.
-        $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'GET');
-        $objectid = (int)FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
-        $startnum = (int)FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GET');
-        $letter = FormUtil::getPassedValue('letter', isset($args['letter']) ? $args['letter'] : null, 'GET');
+        $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
+        $objectid = (int)$this->request->query->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
+        $startnum = (int)$this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : null);
+        $letter = $this->request->query->get('letter', isset($args['letter']) ? $args['letter'] : null);
 
         if (!empty($objectid)) {
             $gid = $objectid;
         }
 
         // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get',
+        $item = ModUtil::apiFunc('Groups', 'user',
                 array('gid' => $gid));
 
         // check for a letter parameter
@@ -444,7 +444,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         $this->view->assign($item);
 
         // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get',
+        $item = ModUtil::apiFunc('Groups', 'user',
                 array('gid'      => $gid,
                 'startnum' => $startnum,
                 'numitems' => $this->getVar('itemsperpage')));
@@ -494,7 +494,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         $this->view->assign('groupmembers', $groupmembers);
 
         // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get',
+        $item = ModUtil::apiFunc('Groups', 'user',
                 array('gid' => $gid));
 
         // Number of items to display per page
@@ -519,7 +519,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
 
         $allusers = array();
         foreach ($users as $user) {
-            if ($user['uid'] == 0 || strtolower($user['uname']) == 'anonymous' || strtolower($user['uname']) == 'guest'  
+            if ($user['uid'] == 0 || strtolower($user['uname']) == 'anonymous' || strtolower($user['uname']) == 'guest'
                     || $user['uname'] == $this->getVar(Users_Constant::MODVAR_ANONYMOUS_DISPLAY_NAME)
                     ) {
                 continue;
@@ -567,8 +567,8 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Get parameters from whatever input we need.
-        $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'POST');
-        $uid = FormUtil::getPassedValue('uid', isset($args['uid']) ? $args['uid'] : null, 'POST');
+        $gid = (int)$this->request->request->get('gid', isset($args['gid']) ? $args['gid'] : null);
+        $uid = $this->request->request->get('uid', isset($args['uid']) ? $args['uid'] : null);
 
 
         // The API function is called.
@@ -605,9 +605,9 @@ class Groups_Controller_Admin extends Zikula_AbstractController
     public function removeuser($args)
     {
         // Get parameters from whatever input we need.
-        $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'REQUEST');
-        $uid = (int)FormUtil::getPassedValue('uid', isset($args['uid']) ? $args['uid'] : null, 'REQUEST');
-        $confirmation = (bool)FormUtil::getPassedValue('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null, 'REQUEST');
+        $gid = (int)$this->request->get('gid', isset($args['gid']) ? $args['gid'] : null);
+        $uid = (int)$this->request->get('uid', isset($args['uid']) ? $args['uid'] : null);
+        $confirmation = (bool)$this->request->get('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null);
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_EDIT));
 
         // Check for confirmation.
@@ -615,7 +615,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
             // No confirmation yet - display a suitable form to obtain confirmation
             // of this action from the user
 
-            $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
+            $group = ModUtil::apiFunc('Groups', 'user', array('gid' => $gid));
 
             // Add a hidden variable for the item id.
             $this->view->assign('gid', $gid)
@@ -647,9 +647,9 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      */
     public function userpending()
     {
-        $gid = (int)FormUtil::getPassedValue('gid', null, 'GET');
-        $userid = (int)FormUtil::getPassedValue('userid', null, 'GET');
-        $action = FormUtil::getPassedValue('action', null, 'GET');
+        $gid = (int)$this->request->query->get('gid', null);
+        $userid = (int)$this->request->query->get('userid', null);
+        $action = $this->request->query->get('action', null);
 
         if (empty($gid) || empty($userid)) {
             return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'view'));
@@ -691,23 +691,23 @@ class Groups_Controller_Admin extends Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        $action = FormUtil::getPassedValue('action', null, 'POST');
+        $action = $this->request->request->get('action', null);
 
         if ($action != 'deny' && $action != 'accept') {
             return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'view'));
         }
 
-        $tag = FormUtil::getPassedValue('tag', null, 'POST');
-        $sendtag = FormUtil::getPassedValue('sendtag', null, 'POST');
-        $reason = FormUtil::getPassedValue('reason', null, 'POST');
-        $gid = (int)FormUtil::getPassedValue('gid', null, 'POST');
-        $userid = (int)FormUtil::getPassedValue('userid', null, 'POST');
+        $tag = $this->request->request->get('tag', null);
+        $sendtag = $this->request->request->get('sendtag', null);
+        $reason = $this->request->request->get('reason', null);
+        $gid = (int)$this->request->request->get('gid', null);
+        $userid = (int)$this->request->request->get('userid', null);
 
         if (empty($tag) || empty($gid) || empty($userid)) {
             return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'view'));
         }
 
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
+        $group = ModUtil::apiFunc('Groups', 'user', array('gid' => $gid));
 
         if ($action == 'deny') {
 
@@ -801,22 +801,22 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN));
 
         // Update module variables.
-        $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 25, 'POST');
+        $itemsperpage = (int)$this->request->request->get('itemsperpage', 25);
         $this->setVar('itemsperpage', $itemsperpage);
 
-        $defaultgroupid = (int)FormUtil::getPassedValue('defaultgroupid', 1, 'POST');
+        $defaultgroupid = (int)$this->request->request->get('defaultgroupid', 1);
         // convert id to name
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $defaultgroupid));
+        $group = ModUtil::apiFunc('Groups', 'user', array('gid' => $defaultgroupid));
         if($group == false) {
             LogUtil::registerError($this->__('Error! Could not save the module configuration.'));
             return System::redirect(ModUtil::url('Groups', 'admin', 'view'));
         }
         $this->setVar('defaultgroup', $group['gid']);
 
-        $mailwarning = (bool)FormUtil::getPassedValue('mailwarning', false, 'POST');
+        $mailwarning = (bool)$this->request->request->get('mailwarning', false);
         $this->setVar('mailwarning', $mailwarning);
 
-        $hideclosed = (bool)FormUtil::getPassedValue('hideclosed', false, 'POST');
+        $hideclosed = (bool)$this->request->request->get('hideclosed', false);
         $this->setVar('hideclosed', $hideclosed);
 
         // the module configuration has been updated successfuly

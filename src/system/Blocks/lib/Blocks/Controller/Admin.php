@@ -51,19 +51,19 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $sfilter = SessionUtil::getVar('filter', array(), '/Blocks');
-        $filter = FormUtil::getPassedValue('filter', $sfilter);
-        $clear = FormUtil::getPassedValue('clear', 0);
+        $sfilter = $this->request->getSession()->get('blocks/filter', array());
+        $filter = $this->request->get('filter', $sfilter);
+        $clear = $this->request->get('clear', 0);
         if ($clear) {
             $filter = array();
-            SessionUtil::setVar('filter', $filter, '/Blocks');
+            $this->request->getSession()->set('blocks/filter', $filter);
         }
 
         // sort and sortdir GET parameters override filter values
         $sort = (isset($filter['sort']) && !empty($filter['sort'])) ? strtolower($filter['sort']) : 'bid';
         $sortdir = (isset($filter['sortdir']) && !empty($filter['sortdir'])) ? strtoupper($filter['sortdir']) : 'ASC';
-        $filter['sort'] = FormUtil::getPassedValue('sort', $sort, 'GET');
-        $filter['sortdir'] = FormUtil::getPassedValue('sortdir', $sortdir, 'GET');
+        $filter['sort'] = $this->request->query->get('sort', $sort);
+        $filter['sortdir'] = $this->request->query->get('sortdir', $sortdir);
         if ($filter['sortdir'] != 'ASC' && $filter['sortdir'] != 'DESC') {
                 $filter['sortdir'] = 'ASC';
         }
@@ -191,8 +191,8 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
     public function deactivate()
     {
         // Get parameters
-        $bid = FormUtil::getPassedValue('bid');
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $bid = $this->request->get('bid');
+        $csrftoken = $this->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Pass to API
@@ -215,8 +215,8 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
     public function activate()
     {
         // Get parameters
-        $bid = FormUtil::getPassedValue('bid');
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $bid = $this->request->get('bid');
+        $csrftoken = $this->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Pass to API
@@ -239,7 +239,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
     public function modify()
     {
         // Get parameters
-        $bid = FormUtil::getPassedValue('bid');
+        $bid = $this->request->get('bid');
 
         // Get details on current block
         $blockinfo = BlockUtil::getBlockInfo($bid);
@@ -372,21 +372,21 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
     {
         $this->checkCsrfToken();
         // Get parameters
-        $bid = FormUtil::getPassedValue('bid');
-        $title = FormUtil::getPassedValue('title');
-        $description = FormUtil::getPassedValue('description');
-        $language = FormUtil::getPassedValue('language');
-        $collapsable = FormUtil::getPassedValue('collapsable', 0);
-        $defaultstate = FormUtil::getPassedValue('defaultstate', 1);
-        $content = FormUtil::getPassedValue('content');
-        $refresh = FormUtil::getPassedValue('refresh');
-        $positions = FormUtil::getPassedValue('positions');
-        $filter = FormUtil::getPassedValue('filters', array());
-        $returntoblock = FormUtil::getPassedValue('returntoblock');
+        $bid = $this->request->get('bid');
+        $title = $this->request->get('title');
+        $description = $this->request->get('description');
+        $language = $this->request->get('language');
+        $collapsable = $this->request->get('collapsable', 0);
+        $defaultstate = $this->request->get('defaultstate', 1);
+        $content = $this->request->get('content');
+        $refresh = $this->request->get('refresh');
+        $positions = $this->request->get('positions');
+        $filter = $this->request->get('filters', array());
+        $returntoblock = $this->request->get('returntoblock');
 
         // not stored in a block
-        $redirect = FormUtil::getPassedValue('redirect', null);
-        $cancel = FormUtil::getPassedValue('cancel', null);
+        $redirect = $this->request->get('redirect', null);
+        $cancel = $this->request->get('cancel', null);
 
         if (isset($cancel)) {
             if (isset($redirect) && !empty($redirect)) {
@@ -477,7 +477,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
             'collapsable' => 0,
             'defaultstate' => 1
         );
-        $inputblock = FormUtil::getPassedValue('block', $default);
+        $inputblock = $this->request->get('block', $default);
 
         // Block
         // Load all blocks
@@ -527,7 +527,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Get parameters
-        $block = FormUtil::getPassedValue('block');
+        $block = $this->request->get('block');
 
         if ($block['blockid'] == '') {
             $block['blockid'] = 'error';
@@ -571,8 +571,8 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
     public function delete()
     {
         // Get parameters
-        $bid = FormUtil::getPassedValue('bid');
-        $confirmation = FormUtil::getPassedValue('confirmation');
+        $bid = $this->request->get('bid');
+        $confirmation = $this->request->get('confirmation');
 
         // Get details on current block
         $blockinfo = BlockUtil::getBlockInfo($bid);
@@ -629,7 +629,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $name = FormUtil::getPassedValue('name', '');
+        $name = $this->request->get('name', '');
 
         // Return the output that has been generated by this function
         return $this->view->assign('name', $name)
@@ -651,7 +651,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters
-        $position = FormUtil::getPassedValue('position');
+        $position = $this->request->get('position');
 
         // check our vars
         if (!isset($position['name']) || !preg_match('/^[a-z0-9_-]*$/i', $position['name']) || !isset($position['description'])) {
@@ -677,7 +677,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
     public function modifyposition()
     {
         // get our input
-        $pid = FormUtil::getPassedValue('pid');
+        $pid = $this->request->get('pid');
 
         // get the block position
         $position = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $pid));
@@ -734,7 +734,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Get parameters
-        $position = FormUtil::getPassedValue('position');
+        $position = $this->request->get('position');
 
         // check our vars
         if (!isset($position['pid']) || !isset($position['name']) || !isset($position['description'])) {
@@ -762,9 +762,9 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      */
     public function deleteposition($args)
     {
-        $pid = FormUtil::getPassedValue('pid', isset($args['pid']) ? $args['pid'] : null, 'REQUEST');
-        $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
-        $confirmation = FormUtil::getPassedValue('confirmation', null, 'POST');
+        $pid = $this->request->get('pid', isset($args['pid']) ? $args['pid'] : null);
+        $objectid = $this->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
+        $confirmation = $this->request->request->get('confirmation', null);
         if (!empty($objectid)) {
             $pid = $objectid;
         }
@@ -830,7 +830,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $collapseable = FormUtil::getPassedValue('collapseable');
+        $collapseable = $this->request->get('collapseable');
 
         if (!isset($collapseable) || !is_numeric($collapseable)) {
             $collapseable = 0;

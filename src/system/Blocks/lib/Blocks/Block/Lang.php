@@ -106,9 +106,9 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
         }
 
         // prepare vars for ModUtil::url
-        $module = FormUtil::getPassedValue('module', null, 'GET', FILTER_SANITIZE_STRING);
-        $type = FormUtil::getPassedValue('type', null, 'GET', FILTER_SANITIZE_STRING);
-        $func = FormUtil::getPassedValue('func', null, 'GET', FILTER_SANITIZE_STRING);
+        $module = $this->request->attributes->get('_module');
+        $type = $this->request->attributes->get('_controller');
+        $func = $this->request->attributes->get('_action');
         $get = $_GET;
         if (isset($get['module'])) {
             unset($get['module']);
@@ -229,10 +229,10 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // Read inputs
-        $vars['format'] = FormUtil::getPassedValue('format');
+        $vars['format'] = $this->request->get('format');
 
         // Read inputs
-        $vars['fulltranslation'] = FormUtil::getPassedValue('fulltranslation');
+        $vars['fulltranslation'] = $this->request->get('fulltranslation');
 
         // Scan for languages and save cached version
         $vars['languages'] = $this->getAvailableLanguages();

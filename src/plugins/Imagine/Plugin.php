@@ -11,10 +11,13 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Plugin\AlwaysOnInterface;
+use Zikula\Framework\AbstractPlugin;
+
 /**
  * Doctrine plugin definition.
  */
-class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
+class SystemPlugin_Imagine_Plugin extends AbstractPlugin implements AlwaysOnInterface
 {
     /**
      * Get plugin meta data.
@@ -38,7 +41,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function initialize()
     {
-        $autoloader = new Zikula_KernelClassLoader();
+        $autoloader = new Zikula\Common\KernelClassLoader();
         $autoloader->spl_autoload_register();
         $autoloader->register('Imagine', dirname(__FILE__) . '/lib/vendor', '\\');
     }

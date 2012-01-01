@@ -46,7 +46,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function modify()
     {
-        $id = (int) FormUtil::getPassedValue('id', null, 'GET');
+        $id = (int) $this->request->query->get('id', null);
         if (!is_numeric($id)) {
             return LogUtil::registerArgsError(ModUtil::url('Extensions', 'admin', 'view'));
         }
@@ -62,11 +62,11 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $restore = (bool)FormUtil::getPassedValue('restore', false, 'GET');
+        $restore = (bool)$this->request->query->get('restore', false);
         if ($restore) {
             // load the version array
             $baseDir = ($obj['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-            
+
             // load gettext domain for 3rd party modules
             if ($baseDir == 'modules' && is_dir("modules/$obj[directory]/locale")) {
                 // This is required here since including pnversion automatically executes the pnversion code
@@ -74,7 +74,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                 // since loading is self contained in each zOO application.
                 ZLanguage::bindModuleDomain($obj['directory']);
             }
-            
+
             $modversion = Extensions_Util::getVersionMeta($obj['directory'], $baseDir);
 
             // load defaults
@@ -108,10 +108,10 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Get parameters
-        $id = (int) FormUtil::getPassedValue('id', null, 'POST');
-        $newdisplayname = FormUtil::getPassedValue('newdisplayname', null, 'POST');
-        $newdescription = FormUtil::getPassedValue('newdescription', null, 'POST');
-        $newurl = FormUtil::getPassedValue('newurl', null, 'POST');
+        $id = (int) $this->request->request->get('id', null);
+        $newdisplayname = $this->request->request->get('newdisplayname', null);
+        $newdescription = $this->request->request->get('newdescription', null);
+        $newurl = $this->request->request->get('newurl', null);
 
         // Pass to API
         if (ModUtil::apiFunc('Extensions', 'admin', 'update', array(
@@ -129,52 +129,6 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
     }
 
     /**
-     * Extensions_admin_update hooks
-     * update hooks for a module
-     * @param int 'id' module id
-     * @return bool true if successful, false otherwise
-     */
-    public function updatehooks()
-    {
-        $this->checkCsrfToken();
-
-        // Get parameters
-        $id = (int) FormUtil::getPassedValue('id', null, 'REQUEST');
-
-        // Pass to API
-        if (ModUtil::apiFunc('Extensions', 'admin', 'updatehooks', array(
-        'id' => $id))) {
-            // Success
-            LogUtil::registerStatus($this->__('Done! Saved module information.'));
-        }
-
-        $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
-    }
-
-    /**
-     * Extensions_admin_update hooks, extended version
-     * update hooks for a module
-     * @param int 'id' module id
-     * @return bool true if successful, false otherwise
-     */
-    public function extendedupdatehooks()
-    {
-        $this->checkCsrfToken();
-
-        // Get parameters
-        $id = (int) FormUtil::getPassedValue('id', null, 'REQUEST');
-
-        // Pass to API
-        if (ModUtil::apiFunc('Extensions', 'admin', 'extendedupdatehooks', array(
-        'id' => $id))) {
-            // Success
-            LogUtil::registerStatus($this->__('Done! Saved module information.'));
-        }
-
-        $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
-    }
-
-    /**
      * Extensions_admin_view - list modules and current settings
      * @return string HTML output string
      */
@@ -185,29 +139,30 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
+        $session = $this->request->getSession();
         // Get parameters from whatever input we need.
         $modinfo = $this->getModInfo();
-        $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
-        $letter = FormUtil::getPassedValue('letter', null, 'GET');
-        $state = FormUtil::getPassedValue('state', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('state', null), 'GETPOST');
-        $sort = FormUtil::getPassedValue('sort', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('sort', null), 'GET');
-        $sortdir = FormUtil::getPassedValue('sortdir', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('sortdir', null), 'GET');
+        $startnum = (int) $this->request->query->get('startnum', null);
+        $letter = $this->request->query->get('letter', null);
+        $state = $this->request->query->get('state', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : $session->get('state', null));
+        $sort = $this->request->query->get('sort', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : $session->get('sort', null));
+        $sortdir = $this->request->query->get('sortdir', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : $session->get('sortdir', null));
 
         // parameter for used sort order
         if ($sort != 'name' && $sort != 'displayname') $sort = 'name';
         if ($sortdir != 'ASC' && $sortdir != 'DESC') $sortdir = 'ASC';
 
         // save the current values
-        SessionUtil::setVar('state', $state);
-        SessionUtil::setVar('sort', $sort);
-        SessionUtil::setVar('sortdir', $sortdir);
+        $session->set('state', $state);
+        $session->set('sort', $sort);
+        $session->set('sortdir', $sortdir);
 
         // do some clean up
-        SessionUtil::delVar('interactive_init');
-        SessionUtil::delVar('interactive_remove');
-        SessionUtil::delVar('interactive_upgrade');
+        $session->remove('interactive_init');
+        $session->remove('interactive_remove');
+        $session->remove('interactive_upgrade');
 
-        if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+        if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
             // always regenerate modules list
             $filemodules = ModUtil::apiFunc('Extensions', 'admin', 'getfilemodules');
             $inconsistencies = ModUtil::apiFunc('Extensions', 'admin', 'checkconsistency', array('filemodules' => $filemodules));
@@ -220,7 +175,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             }
 
             // No inconsistencies, so we can regenerate modules
-            $defaults = (int) FormUtil::getPassedValue('defaults', false, 'GET');
+            $defaults = (int) $this->request->query->get('defaults', false);
             if (!ModUtil::apiFunc('Extensions', 'admin', 'regenerate', array('filemodules' => $filemodules, 'defaults' => $defaults))) {
                 LogUtil::registerError($this->__('Errors were detected regenerating the modules list from file system.'));
             }
@@ -261,14 +216,6 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                         'state' => $state)),
                                         'image' => 'folder_red.png',
                                         'title' => $this->__f('Deactivate \'%s\' module', $mod['name']));
-                            }
-
-                            if (System::isLegacyMode() && !ModUtil::isOO($mod['name'])) {
-                                $actions[] = array(
-                                        'url' => ModUtil::url('Extensions', 'admin', 'legacyhooks', array(
-                                        'id' => $mod['id'])),
-                                        'image' => 'attach.png',
-                                        'title' => $this->__f('Legacy hook settings for \'%s\'', $mod['name']));
                             }
 
                             if (PluginUtil::hasModulePlugins($mod['name'])) {
@@ -361,7 +308,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                         'state' => $state)),
                                         'image' => 'folder_new.png',
                                         'title' => $this->__f('Install \'%s\'', $mod['name']));
-//                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+//                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
 //                                    $actions[] = array(
 //                                            'url' => ModUtil::url('Extensions', 'admin', 'remove', array(
 //                                            'id' => $mod['id'],
@@ -481,22 +428,22 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
 
     /**
      * Initialise a module.
-     * 
+     *
      * @param int 'id' module id
      * @return bool true
      */
     public function initialise()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Get parameters from whatever input we need
-        $id = (int) FormUtil::getPassedValue('id', 0);
-        $objectid = (int) FormUtil::getPassedValue('objectid', 0);
-        $confirmation = (bool) FormUtil::getPassedValue('confirmation', false);
-        $startnum = (int) FormUtil::getPassedValue('startnum');
-        $letter = FormUtil::getPassedValue('letter');
-        $state = (int)FormUtil::getPassedValue('state');
+        $id = (int) $this->request->get('id', 0);
+        $objectid = (int) $this->request->get('objectid', 0);
+        $confirmation = (bool) $this->request->get('confirmation', false);
+        $startnum = (int) $this->request->get('startnum');
+        $letter = $this->request->get('letter');
+        $state = (int)$this->request->get('state');
         if ($objectid) {
             $id = $objectid;
         }
@@ -565,20 +512,22 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             }
         }
 
-        $interactive_init = SessionUtil::getVar('interactive_init');
+        $session = $this->request->getSession();
+
+        $interactive_init = $session->get('interactive_init');
         $interactive_init = (empty($interactive_init)) ? false : true;
         if ($interactive_init == false) {
-            SessionUtil::setVar('modules_id', $id);
-            SessionUtil::setVar('modules_startnum', $startnum);
-            SessionUtil::setVar('modules_letter', $letter);
-            SessionUtil::setVar('modules_state', $state);
+            $session->set('modules_id', $id);
+            $session->set('modules_startnum', $startnum);
+            $session->set('modules_letter', $letter);
+            $session->set('modules_state', $state);
             $activate = false;
         } else {
-            $id = SessionUtil::getVar('modules_id');
-            $startnum = SessionUtil::getVar('modules_startnum');
-            $letter = SessionUtil::getVar('modules_letter');
-            $state = SessionUtil::getVar('modules_state');
-            $activate = (bool) FormUtil::getPassedValue('activate');
+            $id = $session->get('modules_id');
+            $startnum = $session->get('modules_startnum');
+            $letter = $session->get('modules_letter');
+            $state = $session->get('modules_state');
+            $activate = (bool) $this->request->get('activate');
         }
 
         if (empty($id) || !is_numeric($id)) {
@@ -613,11 +562,11 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
 
         if (is_bool($res) && $res == true) {
             // Success
-            SessionUtil::delVar('modules_id');
-            SessionUtil::delVar('modules_startnum');
-            SessionUtil::delVar('modules_letter');
-            SessionUtil::delVar('modules_state');
-            SessionUtil::delVar('interactive_init');
+            $session->remove('modules_id');
+            $session->remove('modules_startnum');
+            $session->remove('modules_letter');
+            $session->remove('modules_state');
+            $session->remove('interactive_init');
             LogUtil::registerStatus($this->__('Done! Installed module.'));
 
             if ($activate == true) {
@@ -649,13 +598,13 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function activate()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
-        $id = (int) FormUtil::getPassedValue('id', null, 'GET');
-        $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
-        $letter = FormUtil::getPassedValue('letter', null, 'GET');
-        $state = FormUtil::getPassedValue('state', null, 'GET');
+        $id = (int) $this->request->query->get('id', null);
+        $startnum = (int) $this->request->query->get('startnum', null);
+        $letter = $this->request->query->get('letter', null);
+        $state = $this->request->query->get('state', null);
         if (empty($id) || !is_numeric($id)) {
             return LogUtil::registerError($this->__('Error! No module ID provided.'), 404, ModUtil::url('Extensions', 'admin', 'view'));
         }
@@ -690,27 +639,29 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function upgrade()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
-        $interactive_upgrade = SessionUtil::getVar('interactive_upgrade');
+        $session = $this->request->getSession();
+
+        $interactive_upgrade = $session->get('interactive_upgrade');
         $interactive_upgrade = (empty($interactive_upgrade)) ? false : true;
         if ($interactive_upgrade == false) {
-            $id = (int) FormUtil::getPassedValue('id', null, 'GET');
-            $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
-            $letter = FormUtil::getPassedValue('letter', null, 'GET');
-            $state = FormUtil::getPassedValue('state', null, 'GET');
-            SessionUtil::setVar('modules_id', $id);
-            SessionUtil::setVar('modules_startnum', $startnum);
-            SessionUtil::setVar('modules_letter', $letter);
-            SessionUtil::setVar('modules_state', $state);
+            $id = (int) $this->request->query->get('id', null);
+            $startnum = (int) $this->request->query->get('startnum', null);
+            $letter = $this->request->query->get('letter', null);
+            $state = $this->request->query->get('state', null);
+            $session->set('modules_id', $id);
+            $session->set('modules_startnum', $startnum);
+            $session->set('modules_letter', $letter);
+            $session->set('modules_state', $state);
             $activate = false;
         } else {
-            $id = SessionUtil::getVar('modules_id');
-            $startnum = SessionUtil::getVar('modules_startnum');
-            $letter = SessionUtil::getVar('modules_letter');
-            $state = SessionUtil::getVar('modules_state');
-            $activate = (bool) FormUtil::getPassedValue('activate', null, 'POST');
+            $id = $session->get('modules_id');
+            $startnum = $session->get('modules_startnum');
+            $letter = $session->get('modules_letter');
+            $state = $session->get('modules_state');
+            $activate = (bool) $this->request->request->get('activate', null);
         }
         if (empty($id) || !is_numeric($id)) {
             return LogUtil::registerError($this->__('Error! No module ID provided.'), 404, ModUtil::url('Extensions', 'admin', 'view'));
@@ -723,11 +674,11 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
 
         if (is_bool($res) && $res == true) {
             // Success
-            SessionUtil::delVar('modules_id');
-            SessionUtil::delVar('modules_startnum');
-            SessionUtil::delVar('modules_letter');
-            SessionUtil::delVar('modules_state');
-            SessionUtil::setVar('interactive_upgrade', false);
+            $session->remove('modules_id');
+            $session->remove('modules_startnum');
+            $session->remove('modules_letter');
+            $session->remove('modules_state');
+            $session->set('interactive_upgrade', false);
             LogUtil::registerStatus($this->__('New version'));
             if ($activate == true) {
                 if (ModUtil::apiFunc('Extensions', 'admin', 'setstate',
@@ -768,13 +719,13 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function deactivate()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
-        $id = (int) FormUtil::getPassedValue('id', null, 'GET');
-        $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
-        $letter = FormUtil::getPassedValue('letter', null, 'GET');
-        $state = FormUtil::getPassedValue('state', null, 'GET');
+        $id = (int) $this->request->query->get('id', null);
+        $startnum = (int) $this->request->query->get('startnum', null);
+        $letter = $this->request->query->get('letter', null);
+        $state = $this->request->query->get('state', null);
         if (empty($id) || !is_numeric($id)) {
             return LogUtil::registerError($this->__('Error! No module ID provided.'), 404, ModUtil::url('Extensions', 'admin', 'view'));
         }
@@ -815,30 +766,31 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
     public function remove()
     {
         // Get parameters from whatever input we need
-        $id = (int) FormUtil::getPassedValue('id', 0);
-        $objectid = (int) FormUtil::getPassedValue('objectid', 0);
-        $confirmation = (bool) FormUtil::getPassedValue('confirmation', false);
-        $dependents = (array) FormUtil::getPassedValue('dependents');
-        $startnum = (int) FormUtil::getPassedValue('startnum');
-        $letter = FormUtil::getPassedValue('letter');
-        $state = FormUtil::getPassedValue('state');
+        $id = (int) $this->request->get('id', 0);
+        $objectid = (int) $this->request->get('objectid', 0);
+        $confirmation = (bool) $this->request->get('confirmation', false);
+        $dependents = (array) $this->request->get('dependents');
+        $startnum = (int) $this->request->get('startnum');
+        $letter = $this->request->get('letter');
+        $state = $this->request->get('state');
         if ($objectid) {
             $id = $objectid;
         }
 
-        $interactive_remove = SessionUtil::getVar('interactive_remove');
+        $session = $this->request->getSession();
+        $interactive_remove = $session->get('interactive_remove');
         $interactive_remove = (empty($interactive_remove)) ? false : true;
 
         if ($interactive_remove == false) {
-            SessionUtil::setVar('modules_id', $id);
-            SessionUtil::setVar('modules_startnum', $startnum);
-            SessionUtil::setVar('modules_letter', $letter);
-            SessionUtil::setVar('modules_state', $state);
+            $session->set('modules_id', $id);
+            $session->set('modules_startnum', $startnum);
+            $session->set('modules_letter', $letter);
+            $session->set('modules_state', $state);
         } else {
-            $id = SessionUtil::getVar('modules_id');
-            $startnum = SessionUtil::getVar('modules_startnum');
-            $letter = SessionUtil::getVar('modules_letter');
-            $state = SessionUtil::getVar('modules_state');
+            $id = $session->get('modules_id');
+            $startnum = $session->get('modules_startnum');
+            $letter = $session->get('modules_letter');
+            $state = $session->get('modules_state');
             $confirmation = 1;
         }
 
@@ -879,7 +831,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
 
         // If we get here it means that the user has confirmed the action
 
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // remove dependent modules
@@ -913,11 +865,11 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                 'interactive_remove' => $interactive_remove));
         if (is_bool($res) && $res == true) {
             // Success
-            SessionUtil::delVar('modules_id');
-            SessionUtil::delVar('modules_startnum');
-            SessionUtil::delVar('modules_letter');
-            SessionUtil::delVar('modules_state');
-            SessionUtil::delVar('interactive_remove');
+            $session->remove('modules_id');
+            $session->remove('modules_startnum');
+            $session->remove('modules_letter');
+            $session->remove('modules_state');
+            $session->remove('interactive_remove');
             LogUtil::registerStatus($this->__('Done! Uninstalled module.'));
             $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                     'startnum' => $startnum,
@@ -931,90 +883,6 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         } else {
             return $res;
         }
-    }
-
-
-    /**
-     * Display available hooks.
-     *
-     * @param int 'id' module id.
-     *
-     * @return string HTML output string
-     */
-    public function legacyhooks()
-    {
-        // get our input
-        $id = (int) FormUtil::getPassedValue('id', null, 'GET');
-
-        // check the input
-        if (!is_numeric($id)) {
-            return LogUtil::registerArgsError(ModUtil::url('Extensions', 'admin', 'view'));
-        }
-
-        // get the modules information
-        $modinfo = ModUtil::getInfo($id);
-        if ($modinfo == false) {
-            return LogUtil::registerError($this->__('Error! No such module ID exists.'), 404, ModUtil::url('Extensions', 'admin', 'view'));
-        }
-
-        if (!SecurityUtil::checkPermission('Extensions::', "$modinfo[name]::$id", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // assign the modinfo to the template
-        $this->view->assign('modinfo', $modinfo);
-
-        // add module id to form
-        $this->view->assign('id', $id);
-
-        $hooks = ModUtil::apiFunc('Extensions', 'admin', 'getmoduleshooks', array(
-                'modid' => $id));
-
-        $this->view->assign('hooks', $hooks);
-
-        // Return the output that has been generated by this function
-        return $this->view->fetch('extensions_admin_hooks.tpl');
-
-    }
-
-    /**
-     * display available hooks, extended version
-     * @param int 'id' module id
-     * @return string HTML output string
-     */
-    public function extendedhooks()
-    {
-        // get our input
-        $id = (int) FormUtil::getPassedValue('id', null, 'GET');
-
-        // check the input
-        if (!is_numeric($id)) {
-            return LogUtil::registerArgsError(ModUtil::url('Extensions', 'admin', 'view'));
-        }
-
-        // get the modules information
-        $modinfo = ModUtil::getInfo($id);
-        if ($modinfo == false) {
-            return LogUtil::registerError($this->__('Error! No such module ID exists.'), 404, ModUtil::url('Extensions', 'admin', 'view'));
-        }
-
-        if (!SecurityUtil::checkPermission('Extensions::', "$modinfo[name]::$id", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // assign the modinfo to the template
-        $this->view->assign('modinfo', $modinfo);
-
-        // add module id to form
-        $this->view->assign('id', $id);
-
-        $grouped_hooks = ModUtil::apiFunc('Extensions', 'admin', 'getextendedmoduleshooks', array(
-                'modid' => $id));
-        $this->view->assign('grouped_hooks', $grouped_hooks);
-
-        // Return the output that has been generated by this function
-        return $this->view->fetch('extensions_admin_extendedhooks.tpl');
-
     }
 
     /**
@@ -1049,7 +917,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Update module variables.
-        $itemsperpage = (int) FormUtil::getPassedValue('itemsperpage', 25, 'POST');
+        $itemsperpage = (int) $this->request->request->get('itemsperpage', 25);
         if (!is_integer($itemsperpage) || $itemsperpage < 1) {
             LogUtil::registerError($this->__("Warning! The 'Items per page' setting must be a positive integer. The value you entered was corrected."));
             $itemsperpage = (int) $itemsperpage;
@@ -1076,10 +944,10 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
     public function compinfo()
     {
         // get our input
-        $id = (int) FormUtil::getPassedValue('id', null, 'GET');
-        $startnum = (int) FormUtil::getPassedValue('startnum');
-        $letter = FormUtil::getPassedValue('letter');
-        $state = (int) FormUtil::getPassedValue('state');
+        $id = (int) $this->request->get('id', null);
+        $startnum = (int) $this->request->get('startnum');
+        $letter = $this->request->get('letter');
+        $state = (int) $this->request->get('state');
 
         // check the input
         if (!is_numeric($id)) {
@@ -1122,10 +990,10 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $state = FormUtil::getPassedValue('state', -1, 'GETPOST');
-        $sort = FormUtil::getPassedValue('sort', null, 'GETPOST');
-        $module = FormUtil::getPassedValue('bymodule', null, 'GETPOST');
-        $systemplugins = FormUtil::getPassedValue('systemplugins', false, 'GETPOST')? true : null;
+        $state = $this->request->get('state', -1);
+        $sort = $this->request->get('sort', null);
+        $module = $this->request->get('bymodule', null);
+        $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         $this->view->assign('state', $state);
 
@@ -1327,7 +1195,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function initialisePlugin()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks
@@ -1336,11 +1204,11 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need
-        $plugin = FormUtil::getPassedValue('plugin', null);
-        $state = FormUtil::getPassedValue('state', -1);
-        $sort = FormUtil::getPassedValue('sort', null);
-        $module = FormUtil::getPassedValue('bymodule', null);
-        $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
+        $plugin = $this->request->get('plugin', null);
+        $state = $this->request->get('state', -1);
+        $sort = $this->request->get('sort', null);
+        $module = $this->request->get('bymodule', null);
+        $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Extensions', 'admin', 'viewPlugins'));
@@ -1372,11 +1240,11 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need
-        $plugin = FormUtil::getPassedValue('plugin', null);
-        $state = FormUtil::getPassedValue('state', -1);
-        $sort = FormUtil::getPassedValue('sort', null);
-        $module = FormUtil::getPassedValue('bymodule', null);
-        $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
+        $plugin = $this->request->get('plugin', null);
+        $state = $this->request->get('state', -1);
+        $sort = $this->request->get('sort', null);
+        $module = $this->request->get('bymodule', null);
+        $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Extensions', 'admin', 'viewPlugins'));
@@ -1407,11 +1275,11 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need
-        $plugin = FormUtil::getPassedValue('plugin', null);
-        $state = FormUtil::getPassedValue('state', -1);
-        $sort = FormUtil::getPassedValue('sort', null);
-        $module = FormUtil::getPassedValue('bymodule', null);
-        $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
+        $plugin = $this->request->get('plugin', null);
+        $state = $this->request->get('state', -1);
+        $sort = $this->request->get('sort', null);
+        $module = $this->request->get('bymodule', null);
+        $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Extensions', 'admin', 'viewPlugins'));
@@ -1434,7 +1302,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function removePlugin()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks
@@ -1443,11 +1311,11 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need
-        $plugin = FormUtil::getPassedValue('plugin', null);
-        $state = FormUtil::getPassedValue('state', -1);
-        $sort = FormUtil::getPassedValue('sort', null);
-        $module = FormUtil::getPassedValue('bymodule', null);
-        $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
+        $plugin = $this->request->get('plugin', null);
+        $state = $this->request->get('state', -1);
+        $sort = $this->request->get('sort', null);
+        $module = $this->request->get('bymodule', null);
+        $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Extensions', 'admin', 'viewPlugins'));
@@ -1470,7 +1338,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function upgradePlugin()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks
@@ -1479,11 +1347,11 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need
-        $plugin = FormUtil::getPassedValue('plugin', null);
-        $state = FormUtil::getPassedValue('state', -1);
-        $sort = FormUtil::getPassedValue('sort', null);
-        $module = FormUtil::getPassedValue('bymodule', null);
-        $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
+        $plugin = $this->request->get('plugin', null);
+        $state = $this->request->get('state', -1);
+        $sort = $this->request->get('sort', null);
+        $module = $this->request->get('bymodule', null);
+        $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         if(empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Extensions', 'admin', 'viewPlugins'));

@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Doctrine listeners.
  */
-class DoctrineListener extends Zikula_AbstractEventHandler
+class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
 {
     /**
      * The Doctrine Manager instance.
@@ -45,20 +47,20 @@ class DoctrineListener extends Zikula_AbstractEventHandler
      * boolean 'lazy'  - lazy connect.
      * string 'name' - connection name.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function doctrineInit(Zikula_Event $event)
+    public function doctrineInit(GenericEvent $event)
     {
         if (!$this->doctrineManager) {
             Doctrine_Core::debug(System::isDevelopmentMode());
             $this->doctrineManager = Doctrine_Manager::getInstance();
-            $internalEvent = new Zikula_Event('doctrine.configure', $this->doctrineManager);
-            $this->eventManager->notify($internalEvent);
+            $internalEvent = new GenericEvent($this->doctrineManager);
+            $this->eventManager->dispatch('doctrine.configure', $internalEvent);
 
-            $internalEvent = new Zikula_Event('doctrine.cache', $this->doctrineManager);
-            $this->eventManager->notify($internalEvent);
+            $internalEvent = new GenericEvent($this->doctrineManager);
+            $this->eventManager->dispatch('doctrine.cache', $internalEvent);
         }
 
         $lazyConnect = isset($event['lazy']) ? $event['lazy'] : false;
@@ -77,8 +79,8 @@ class DoctrineListener extends Zikula_AbstractEventHandler
                 $connection->setOption('username', $connectionInfo['user']);
                 $connection->setOption('password', $connectionInfo['password']);
             }
-            $internalEvent = new Zikula_Event('doctrine.configure', $connection);
-            $this->eventManager->notify($internalEvent);
+            $internalEvent = new GenericEvent($connection);
+            $this->eventManager->dispatch('doctrine.configure', $internalEvent);
         } catch (PDOException $e) {
             throw new PDOException(__('Connection failed to database') . ': ' . $e->getMessage());
         }
@@ -119,11 +121,11 @@ class DoctrineListener extends Zikula_AbstractEventHandler
      * Listens for 'doctrine.configure' events.
      * Subject is expected to be the Doctrine_Manager.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function configureCache(Zikula_Event $event)
+    public function configureCache(GenericEvent $event)
     {
         $manager = $event->getSubject();
         if (!System::isInstalling() && $this->serviceManager['dbcache.enable']) {
@@ -158,11 +160,11 @@ class DoctrineListener extends Zikula_AbstractEventHandler
      * Listens for 'doctrine.configure' events.
      * Subject is either Doctrine_Manager, Doctrine_Connection or Doctrine_Table.
      *
-     * @param Zikula_Event $event Event.
+     * @param GenericEvent $event Event.
      *
      * @return void
      */
-    public function configureDoctrine(Zikula_Event $event)
+    public function configureDoctrine(GenericEvent $event)
     {
         $object = $event->getSubject();
         if ($object instanceof Doctrine_Manager) {

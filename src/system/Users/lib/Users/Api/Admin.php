@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * The administrative system-level and database-level functions for the Users module.
  */
@@ -198,8 +200,8 @@ class Users_Api_Admin extends Zikula_AbstractApi
                 }
 
                 // Let other modules know we have deleted an item
-                $deleteEvent = new Zikula_Event('user.account.delete', $userObj);
-                $this->eventManager->notify($deleteEvent);
+                $deleteEvent = new GenericEvent($userObj);
+                $this->eventManager->dispatch('user.account.delete', $deleteEvent);
             }
         }
 
@@ -512,11 +514,11 @@ class Users_Api_Admin extends Zikula_AbstractApi
 
             foreach ($importValues as $value) {
                 if ($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) {
-                    $createEvent = new Zikula_Event('user.account.create', $value);
-                    $this->eventManager->notify($createEvent);
+                    $createEvent = new GenericEvent($value);
+                    $this->eventManager->dispatch('user.account.create', $createEvent);
                 } else {
-                    $createEvent = new Zikula_Event('user.registration.create', $value);
-                    $this->eventManager->notify($createEvent);
+                    $createEvent = new GenericEvent($value);
+                    $this->eventManager->dispatch('user.registration.create', $createEvent);
                 }
                 if ($value['activated'] && $value['sendmail']) {
                     $view->assign('email', $value['email']);

@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Administrative API functions for the Extensions module.
  */
@@ -295,11 +297,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        $oomod = ModUtil::isOO($modinfo['name']);
-
-        if ($oomod) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
-        }
+        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
 
         $version = Extensions_Util::getVersionMeta($osdir, $modpath);
 
@@ -314,11 +312,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
         }
 
-        // call any module delete hooks
-        if (System::isLegacyMode() && !$oomod) {
-            ModUtil::callHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
-        }
-
         // Get module database info
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
 
@@ -330,27 +323,25 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 }
             }
 
-            if ($oomod) {
-                $className = ucwords($modinfo['name']) . '_Installer';
-                $reflectionInstaller = new ReflectionClass($className);
-                if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+            $className = ucwords($modinfo['name']) . '_Installer';
+            $reflectionInstaller = new ReflectionClass($className);
+            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+            }
+            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
+            $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
+            $interactiveController = null;
+            if (class_exists($interactiveClass)) {
+                $reflectionInteractive = new ReflectionClass($interactiveClass);
+                if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
+                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
                 }
-                $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
-                $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
-                $interactiveController = null;
-                if (class_exists($interactiveClass)) {
-                    $reflectionInteractive = new ReflectionClass($interactiveClass);
-                    if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                        LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
-                    }
-                    $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
-                }
+                $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
             }
 
             // perform the actual deletion of the module
-            $func = ($oomod) ? array($installer, 'uninstall') : $modinfo['name'] . '_delete';
-            $interactive_func = ($oomod) ? array($interactiveController, 'uninstall') : $modinfo['name'] . '_init_interactivedelete';
+            $func = array($installer, 'uninstall');
+            $interactive_func = array($interactiveController, 'uninstall');
 
             // allow bypass of interactive removal during a new installation only.
             if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -358,17 +349,10 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
 
             if ((isset($args['interactive_remove']) && $args['interactive_remove'] == false) && is_callable($interactive_func)) {
-                if (is_array($interactive_func)) {
-                    // This must be an OO controller since callable is an array.
-                    // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
-                    // so we must check if the method actually exists by reflection - drak
-                    if ($reflectionInteractive->hasMethod('upgrade')) {
-                        SessionUtil::setVar('interactive_remove', true);
-                        return call_user_func($interactive_func);
-                    }
-                } else {
-                    // tnis is enclosed in the else so that if both conditions fail, execution will pass onto the non-interactive execution below.
-                    SessionUtil::setVar('interactive_remove', true);
+                // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
+                // so we must check if the method actually exists by reflection - drak
+                if ($reflectionInteractive->hasMethod('upgrade')) {
+                    $this->request->getSession()->set('interactive_remove', true);
                     return call_user_func($interactive_func);
                 }
             }
@@ -386,21 +370,14 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         // have missed
         DBUtil::deleteObjectByID('module_vars', $modinfo['name'], 'modname');
 
-        // clean up any hooks activated for this module
-        if (System::isLegacyMode()) {
-            DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
-        }
-
-        if ($oomod) {
-            HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
-            HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
-            EventUtil::unregisterPersistentModuleHandlers($modinfo['name']);
-        }
+        HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
+        HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
+        EventUtil::unregisterPersistentModuleHandlers($modinfo['name']);
 
         // remove the entry from the modules table
         if ($this->serviceManager['multisites.enabled'] == 1) {
             // who can access to the mainSite can delete the modules in any other site
-            $canDelete = (($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) ? 1 : 0;
+            $canDelete = (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) ? 1 : 0;
             //delete the module infomation only if it is not allowed, missign or invalid
             if ($canDelete == 1 || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
                 // remove the entry from the modules table
@@ -413,8 +390,8 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             DBUtil::deleteObjectByID('modules', $args['id'], 'id');
         }
 
-        $event = new Zikula_Event('installer.module.uninstalled', null, $modinfo);
-        $this->eventManager->notify($event);
+        $event = new GenericEvent(null, $modinfo);
+        $this->eventManager->dispatch('installer.module.uninstalled', $event);
 
         return true;
     }
@@ -475,37 +452,18 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
                     $name = $dir;
 
-                    // Get the module version
-                    if (!$modversion instanceof Zikula_AbstractVersion) {
-                        if (isset($modversion['profile']) && $modversion['profile']) {
-                            $modversion['capabilities']['profile'] = '1.0';
-                        }
-                        if (isset($modversion['message']) && $modversion['message']) {
-                            $modversion['capabilities']['message'] = '1.0';
-                        }
-                        // Work out if admin-capable
-                        if (file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin")) {
-                            $modversion['capabilities']['admin'] = '1.0';
-                        }
+                    // Work out if admin-capable
+                    if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
+                        $caps = $modversion['capabilities'];
+                        $caps['admin'] = array('version' => '1.0');
+                        $modversion['capabilities'] = $caps;
+                    }
 
-                        // Work out if user-capable
-                        if (file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser")) {
-                            $modversion['capabilities']['user'] = '1.0';
-                        }
-                    } elseif ($oomod) {
-                        // Work out if admin-capable
-                        if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
-                            $caps = $modversion['capabilities'];
-                            $caps['admin'] = array('version' => '1.0');
-                            $modversion['capabilities'] = $caps;
-                        }
-
-                        // Work out if user-capable
-                        if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
-                            $caps = $modversion['capabilities'];
-                            $caps['user'] = array('version' => '1.0');
-                            $modversion['capabilities'] = $caps;
-                        }
+                    // Work out if user-capable
+                    if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
+                        $caps = $modversion['capabilities'];
+                        $caps['user'] = array('version' => '1.0');
+                        $modversion['capabilities'] = $caps;
                     }
 
                     $version = $modversion['version'];
@@ -633,26 +591,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                         $dbname = $modinfo['name'];
                         $dbmodules[$dbname] = $save;
                         DBUtil::updateObject($dbmodules[$dbname], 'modules');
-
-                        // rename hooks in the hooks table.
-                        $hooksColumns = $tables['hooks_column'];
-                        $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[smodule] = '$save[name]'");
-                        if ($hooks) {
-                            foreach ($hooks as $hook) {
-                                $hook['smodule'] = $dbmodinfo['name'];
-                                DBUtil::updateObject($hook, 'hooks');
-                            }
-                        }
-
-                        $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[tmodule] = '$save[name]'");
-                        if ($hooks) {
-                            foreach ($hooks as $hook) {
-                                $hook['tmodule'] = $dbmodinfo['name'];
-                                DBUtil::updateObject($hook, 'hooks');
-                            }
-                        }
-
-                        DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
                     }
                 }
                 unset($tables);
@@ -736,7 +674,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 }
                 if ($this->serviceManager['multisites.enabled'] == 1) {
                     // only the main site can regenerate the modules list
-                    if (($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+                    if (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
                         DBUtil::insertObject($modinfo, 'modules');
                     }
                 } else {
@@ -819,11 +757,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        $oomod = ModUtil::isOO($modinfo['name']);
-
-        if ($oomod) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
-        }
+        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -836,34 +770,26 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
         }
 
-        if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
-            if (!include_once($file)) {
-                LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-            }
+        $className = ucwords($modinfo['name']) . '_Installer';
+        $reflectionInstaller = new ReflectionClass($className);
+        if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+            LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
-
-        if ($oomod) {
-            $className = ucwords($modinfo['name']) . '_Installer';
-            $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+        $installer = $reflectionInstaller->newInstance($this->serviceManager);
+        $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
+        $interactiveController = null;
+        if (class_exists($interactiveClass)) {
+            $reflectionInteractive = new ReflectionClass($interactiveClass);
+            if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
             }
-            $installer = $reflectionInstaller->newInstance($this->serviceManager);
-            $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
-            $interactiveController = null;
-            if (class_exists($interactiveClass)) {
-                $reflectionInteractive = new ReflectionClass($interactiveClass);
-                if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
-                }
-                $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
-            }
+            $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
         }
 
         // perform the actual install of the module
         // system or module
-        $func = ($oomod) ? array($installer, 'install') : $modinfo['name'] . '_init';
-        $interactive_func = ($oomod) ? array($interactiveController, 'install') : $modinfo['name'] . '_init_interactiveinit';
+        $func = array($installer, 'install');
+        $interactive_func = array($interactiveController, 'install');
 
         // allow bypass of interactive install during a new installation only.
         if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -871,17 +797,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false) && is_callable($interactive_func)) {
-            if (is_array($interactive_func)) {
-                // This must be an OO controller since callable is an array.
-                // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
-                // so we must check if the method actually exists by reflection - drak
-                if ($reflectionInteractive->hasMethod('install')) {
-                    SessionUtil::setVar('interactive_init', true);
-                    return call_user_func($interactive_func);
-                }
-            } else {
-                // tnis is enclosed in the else so that if both conditions fail, execution will pass onto the non-interactive execution below.
-                SessionUtil::setVar('interactive_init', true);
+            // so we must check if the method actually exists by reflection - drak
+            if ($reflectionInteractive->hasMethod('install')) {
+                $this->request->getSession()->set('interactive_init', true);
                 return call_user_func($interactive_func);
             }
         }
@@ -905,8 +823,8 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         // All went ok so issue installed event
-        $event = new Zikula_Event('installer.module.installed', null, $modinfo);
-        $this->eventManager->notify($event);
+        $event = new GenericEvent(null, $modinfo);
+        $this->eventManager->dispatch('installer.module.installed', $event);
 
         // Success
         return true;
@@ -950,11 +868,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        $oomod = ModUtil::isOO($modinfo['name']);
-
-        if ($oomod) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
-        }
+        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -967,33 +881,25 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
         }
 
-        if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
-            if (!include_once($file)) {
-                LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-            }
+        $className = ucwords($modinfo['name']) . '_Installer';
+        $reflectionInstaller = new ReflectionClass($className);
+        if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+            LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
-
-        if ($oomod) {
-            $className = ucwords($modinfo['name']) . '_Installer';
-            $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
+        $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
+        $interactiveController = null;
+        if (class_exists($interactiveClass)) {
+            $reflectionInteractive = new ReflectionClass($interactiveClass);
+            if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
             }
-            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
-            $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
-            $interactiveController = null;
-            if (class_exists($interactiveClass)) {
-                $reflectionInteractive = new ReflectionClass($interactiveClass);
-                if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
-                }
-                $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
-            }
+            $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
         }
 
         // perform the actual upgrade of the module
-        $func = ($oomod) ? array($installer, 'upgrade') : $modinfo['name'] . '_upgrade';
-        $interactive_func = ($oomod) ? array($interactiveController, 'upgrade') : $modinfo['name'] . '_init_interactiveupgrade';
+        $func = array($installer, 'upgrade');
+        $interactive_func = array($interactiveController, 'upgrade');
 
         // allow bypass of interactive upgrade during a new installation only.
         if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -1001,17 +907,10 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if (isset($args['interactive_upgrade']) && $args['interactive_upgrade'] == false && is_callable($interactive_func)) {
-            if (is_array($interactive_func)) {
-                // This must be an OO controller since callable is an array.
-                // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
-                // so we must check if the method actually exists by reflection - drak
-                if ($reflectionInteractive->hasMethod('upgrade')) {
-                    SessionUtil::setVar('interactive_upgrade', true);
-                    return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
-                }
-            } else {
-                // this is enclosed in the else so that if both conditions fail, execution will pass onto the non-interactive execution below.
-                SessionUtil::setVar('interactive_upgrade', true);
+            // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
+            // so we must check if the method actually exists by reflection - drak
+            if ($reflectionInteractive->hasMethod('upgrade')) {
+                $this->request->getSession()->set('interactive_upgrade', true);
                 return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
             }
         }
@@ -1052,24 +951,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         DBUtil::updateObject($obj, 'modules');
 
-        // legacy to be removed from 1.4 - remove hooks during upgrade since we cannot rely on
-        // module authors to do this - drak
-        if ($oomod) {
-            $tables = DBUtil::getTables();
-            $hooksCol = $tables['hooks_column'];
-            $where = "$hooksCol[smodule] = '$modinfo[name]' OR $hooksCol[tmodule] = '$modinfo[name]'";
-            $hooks = DBUtil::selectObjectArray('hooks', $where);
-            if ($hooks) {
-                foreach ($hooks as $hook) {
-                    DBUtil::deleteObject($hook, 'hooks');
-                }
-                LogUtil::registerStatus($this->__f("NOTICE! Legacy hook configurations for %s have been removed.", $modinfo['name']));
-            }
-        }
-
         // Upgrade succeeded, issue event.
-        $event = new Zikula_Event('installer.module.upgraded', null, $modinfo);
-        $this->eventManager->notify($event);
+        $event = new GenericEvent(null, $modinfo);
+        $this->eventManager->dispatch('installer.module.upgraded', $event);
 
         // Success
         return true;
@@ -1176,8 +1060,8 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $links = array();
 
         // assign variables from input
-        $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
-        $letter = FormUtil::getPassedValue('letter', null, 'GET');
+        $startnum = (int)$this->request->query->get('startnum', null);
+        $letter = $this->request->query->get('letter', null);
 
         if (SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'view'),
@@ -1227,11 +1111,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                                              array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::ENABLED)),
                                                    'text' => $this->__('Active'))
                                                ));
-
-            $legacyHooks = DBUtil::selectObjectArray('hooks');
-            if (System::isLegacyMode() && $legacyHooks) {
-                $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'legacyhooks', array('id' => 0)), 'text' => $this->__('Legacy hooks'), 'class' => 'z-icon-es-hook');
-            }
 
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
             //$filemodules = ModUtil::apiFunc('Extensions', 'admin', 'getfilemodules');
@@ -1397,416 +1276,4 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         return false;
     }
 
-    // from here is to be moved out into legacy
-
-    /**
-     * Update module hook information.
-     *
-     * @param array $args All parameters passed to this function.
-     *                      numeric $args['id'] The id number of the module to update.
-     *
-     * @deprected since 1.3.0
-     *
-     * @return boolean True on success, false on failure.
-     */
-    public function updatehooks($args)
-    {
-        // Argument check
-        if (!isset($args['id']) || !is_numeric($args['id'])) {
-            return LogUtil::registerArgsError();
-        }
-        // Security check
-        if (!SecurityUtil::checkPermission('Extensions::', "::$args[id]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // Rename operation
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
-
-        // Hooks
-        // Get module name
-        $modinfo = ModUtil::getInfo($args['id']);
-
-        // Delete hook regardless
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'
-                    AND $hookscolumn[tmodule] <> ''";
-
-        DBUtil::deleteWhere('hooks', $where);
-
-        $where = "WHERE $hookscolumn[smodule] = ''";
-        $orderBy = "ORDER BY $hookscolumn[tmodule], $hookscolumn[smodule] DESC";
-
-        $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
-        if ($objArray === false) {
-            return false;
-        }
-
-        $ak = array_keys($objArray);
-        foreach ($ak as $v) {
-            // Get selected value of hook
-            $hookvalue = FormUtil::getPassedValue('hooks_' . $objArray[$v]['tmodule']);
-            // See if this is checked and isn't in the database
-            if (isset($hookvalue) && empty($objArray[$v]['smodule'])) {
-                $objArray[$v]['smodule'] = $modinfo['name'];
-                if (DBUtil::insertObject($objArray[$v], 'hooks') === false) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Get a list of modules calling a particular hook module
-     *
-     * @copyright (C) 2003 by the Xaraya Development Team.
-     * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
-     *
-     * @param array $args All parameters passed to this function.
-     *                      string  $args['hookmodname'] The hook module we're looking for.
-     *                      numeric $args['hookobject']  The object of the hook (item, module, ...) (optional).
-     *                      string  $args['hookaction']  The action on that object (transform, display, ...) (optional).
-     *                      string  $args['hookarea']    The area we're dealing with (GUI, API) (optional).
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return array|boolean An array of modules calling this hook module; false on error.
-     */
-    public function gethookedmodules($args)
-    {
-        // Argument check
-        if (empty($args['hookmodname'])) {
-            return LogUtil::registerArgsError();
-        }
-
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
-
-        $where = "WHERE $hookscolumn[tmodule]='" . DataUtil::formatForStore($args['hookmodname']) . "'";
-        if (!empty($args['hookobject'])) {
-            $where .= " AND $hookscolumn[object]='" . DataUtil::formatForStore($args['hookobject']) . "'";
-        }
-        if (!empty($args['hookaction'])) {
-            $where .= " AND $$hookscolumn[action]='" . DataUtil::formatForStore($args['hookaction']) . "'";
-        }
-        if (!empty($args['hookarea'])) {
-            $where .= " AND $hookscolumn[tarea]='" . DataUtil::formatForStore($args['hookarea']) . "'";
-        }
-
-        $objArray = DBUtil::selectObjectArray('hooks', $where);
-
-        // Check for an error with the database
-        if ($objArray === false) {
-            return false;
-        }
-
-        // modlist will hold the hooked modules
-        static $modlist = array();
-        foreach ($objArray as $obj) {
-            $smod = $obj['smodule'];
-            if (empty($smod)) {
-                continue;
-            }
-
-            $styp = $obj['stype'];
-            if (empty($styp)) {
-                $styp = 0;
-            }
-
-            $modlist[$smod][$styp] = 1;
-        }
-
-        return $modlist;
-    }
-
-    /**
-     * Enable hooks between a caller module and a hook module.
-     *
-     * @copyright (C) 2003 by the Xaraya Development Team.
-     * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
-     *
-     * @param array $args All parameters passed to this function.
-     *                      string $args['callermodname'] The name of the caller module.
-     *                      string $args['hookmodname']   The name of the hook module.
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return bool True if successful; otherwise false.
-     */
-    public function enablehooks($args)
-    {
-        // Argument check
-        if (empty($args['callermodname']) || empty($args['hookmodname'])) {
-            return LogUtil::registerArgsError();
-        }
-
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
-
-        // Rename operation
-        // Delete hooks regardless
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($args['callermodname']) . "'
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
-
-        if (!DBUtil::deleteWhere('hooks', $where)) {
-            return false;
-        }
-
-        $where = "WHERE $hookscolumn[smodule] = ''
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
-
-        $objArray = DBUtil::selectObjectArray('hooks', $where, '', -1, -1, 'id');
-        if (!$objArray) {
-            return false;
-        }
-
-        $newHooks = array();
-        foreach ($objArray as $hook) {
-            unset($hook['id']);
-            $hook['smodule'] = $args['callermodname'];
-            $newHooks[] = $hook;
-        }
-
-        $result = DBUtil::insertObjectArray($newHooks, 'hooks');
-        if (!$result) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Disable hooks between a caller module and a hook module.
-     *
-     * @copyright (C) 2003 by the Xaraya Development Team.
-     * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
-     *
-     * @param array $args All parameters passed to this function.
-     *                      string $args['callermodname'] The name of the caller module.
-     *                      string $args['hookmodname']   The name of the hook module.
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return bool True if successful; otherwise false.
-     */
-    public function disablehooks($args)
-    {
-        // Argument check
-        if (empty($args['callermodname']) || empty($args['hookmodname'])) {
-            return LogUtil::registerArgsError();
-        }
-        if (empty($args['calleritemtype'])) {
-            $args['calleritemtype'] = '';
-        }
-
-        // Rename operation
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
-
-        // Delete hooks regardless
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($args['callermodname']) . "'
-                    AND $hookscolumn[stype]   = '" . DataUtil::formatForStore($args['calleritemtype']) . "'
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
-
-        return DBUtil::deleteWhere('hooks', $where);
-    }
-
-    /**
-     * Get a list of hooks for a given module.
-     *
-     * @param array $args All parameters sent to this function.
-     *                      numeric $args['modid'] The modules id.
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return array An array of hooks attached the module.
-     */
-    public function getmoduleshooks($args)
-    {
-        // Argument check
-        if (!isset($args['modid']) || !is_numeric($args['modid'])) {
-            return LogUtil::registerArgsError();
-        }
-
-        // check if module id is valid
-        $modinfo = ModUtil::getInfo($args['modid']);
-        if ($modinfo == false) {
-            return LogUtil::registerError($this->__('Error! No such module ID exists.'));
-        }
-
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
-
-        $where = "WHERE $hookscolumn[smodule] = ''
-                     OR $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
-        $orderBy = "ORDER BY $hookscolumn[tmodule], $hookscolumn[smodule] DESC";
-        $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
-
-        if ($objArray === false) {
-            return false;
-        }
-
-        $displayed = array();
-        $ak = array_keys($objArray);
-        $myArray = array();
-        foreach ($ak as $v) {
-            if (isset($displayed[$objArray[$v]['tmodule']])) {
-                continue;
-            }
-            $displayed[$objArray[$v]['tmodule']] = true;
-
-            if (!empty($objArray[$v]['smodule'])) {
-                $objArray[$v]['hookvalue'] = 1;
-            } else {
-                $objArray[$v]['hookvalue'] = 0;
-            }
-            array_push($myArray, $objArray[$v]);
-        }
-
-        return $myArray;
-    }
-
-    /**
-     * Get a extended list of hooks for a given module.
-     *
-     * @param array $args All parameters sent to this function.
-     *                      numeric $args['modid'] The module id.
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return array An array of hooks attached the module.
-     */
-    public function getextendedmoduleshooks($args)
-    {
-        // Argument check
-        if (!isset($args['modid']) || !is_numeric($args['modid'])) {
-            return LogUtil::registerArgsError();
-        }
-
-        // check if module id is valid
-        $modinfo = ModUtil::getInfo($args['modid']);
-        if ($modinfo == false) {
-            return LogUtil::registerError($this->__('Error! No such module ID exists.'));
-        }
-
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
-
-        $where = "WHERE $hookscolumn[smodule] = ''";
-        $orderBy = "ORDER BY $hookscolumn[action], $hookscolumn[sequence] ASC";
-        $hooksArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
-
-        // sort the hooks by action
-        $grouped_hooks = array();
-        foreach ($hooksArray as $hookobject) {
-            if (!array_key_exists($hookobject['action'], $grouped_hooks)) {
-                $grouped_hooks[$hookobject['action']] = array();
-            }
-            $hookobject['hookvalue'] = 0;
-            $grouped_hooks[$hookobject['action']][$hookobject['tmodule']] = $hookobject;
-        }
-        if ($grouped_hooks === false) {
-            return false;
-        }
-
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
-        $orderBy = "ORDER BY $hookscolumn[action], $hookscolumn[sequence] ASC";
-
-        $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
-        if ($objArray === false) {
-            return false;
-        }
-
-        $displayed = array();
-        $ak = array_keys($objArray);
-        foreach ($ak as $v) {
-            unset($grouped_hooks[$objArray[$v]['action']][$objArray[$v]['tmodule']]);
-            $objArray[$v]['hookvalue'] = 1;
-            $grouped_hooks[$objArray[$v]['action']][$objArray[$v]['tmodule']] = $objArray[$v];
-        }
-
-        return $grouped_hooks;
-    }
-
-    /**
-     * Update module hook information, extended version.
-     *
-     * @param array $args All parameters passed to this function.
-     *                      numeric $args['id'] The id number of the module to update.
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return boolean True on success, false on failure.
-     */
-    public function extendedupdatehooks($args)
-    {
-        // Argument check
-        if (!isset($args['id']) || !is_numeric($args['id'])) {
-            return LogUtil::registerArgsError();
-        }
-        // Security check
-        if (!SecurityUtil::checkPermission('Extensions::', "::$args[id]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // Rename operation
-        $dbtable = DBUtil::getTables();
-
-        $hookscolumn = $dbtable['hooks_column'];
-
-        // Hooks
-        // Get module information
-        $modinfo = ModUtil::getInfo($args['id']);
-
-        // Delete hook regardless
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'
-                    AND $hookscolumn[tmodule] <> ''";
-
-        DBUtil::deleteWhere('hooks', $where);
-
-        $where = "WHERE $hookscolumn[smodule] = ''";
-        $orderBy = "ORDER BY $hookscolumn[tmodule], $hookscolumn[smodule] DESC";
-
-        // read the hooks themselves - the entries in the database that are not connected
-        // with a module
-        $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
-        if ($objArray === false) {
-            return false;
-        }
-
-        // sort the hooks by action
-        $grouped_hooks = array();
-        foreach ($objArray as $hookobject) {
-            if (!array_key_exists($hookobject['action'], $grouped_hooks)) {
-                $grouped_hooks[$hookobject['action']] = array();
-            }
-            $grouped_hooks[$hookobject['action']][$hookobject['tmodule']] = $hookobject;
-        }
-
-        // get hookvalues. This is an array of hookactions with each one
-        // containing an array of hooks where the checkbox has been set
-        // in short: hookvalues only contains the hooks the that the user
-        // want s to activate for the selected module. As a side effect
-        // the hooks are sorted :-)
-        $hookvalues = FormUtil::getPassedValue('hooks');
-
-        // cycle throught the hookvalues
-        foreach ($hookvalues as $action => $actionarray) {
-            // reset the sequence
-            $sequence = 1;
-            foreach ($actionarray as $smodule => $value) {
-                $hookobject = $grouped_hooks[$action][$smodule];
-                $hookobject['sequence'] = $sequence;
-                $hookobject['smodule'] = $modinfo['name'];
-                if (DBUtil::insertObject($hookobject, 'hooks') === false) {
-                    return false;
-                }
-                $sequence++;
-            }
-        }
-
-        return true;
-    }
 }

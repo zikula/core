@@ -14,13 +14,13 @@ $_POST - do this without validation, but of course, sanitize and validate if
 the handler must execute.
 
 The handler must return it's output by doing `$event->setData($data)` and
-notify the fact it executed with `$event->stop()`. An example follows
+notify the fact it executed with `$event->stopPropagation()`. An example follows
 
     class Themes_Foo_EventHandler_Handlers
     {
         protected $eventNames = array('theme.ajax_request' => 'ajaxHandler');
 
-        public function ajaxHandler(Zikula_Event $event)
+        public function ajaxHandler(\Zikula\Core\Event\GenericEvent $event)
         {
             // check if we should execute
             if (!isset($_GET['sort'])) {
@@ -29,7 +29,7 @@ notify the fact it executed with `$event->stop()`. An example follows
 
             //... do something
             $event->setData($output);
-            $event->stop();
+            $event->stopPropagation();
         }
     }
 

@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Zikula page variables functions.
  *
@@ -41,7 +43,7 @@
  * <li>header</li>
  * <li>footer</li>
  * </ul>
- * 
+ *
  * In addition, if your system is operating in legacy compatibility mode, then
  * the variable 'rawtext' is reserved, and maps to 'header'. (When not operating in
  * legacy compatibility mode, 'rawtext' is not reserved and will not be rendered
@@ -64,7 +66,7 @@ class PageUtil
      * <li>header</li>
      * <li>footer</li>
      * </ul>
-     * 
+     *
      * In addition, if your system is operating in legacy compatibility mode, then
      * the variable 'rawtext' is reserved, and maps to 'header'. (When not operating in
      * legacy compatibility mode, 'rawtext' is not reserved and will not be rendered
@@ -299,7 +301,7 @@ class PageUtil
                     break;
             }
         }
-        
+
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
             $_pageVars = array();
@@ -315,8 +317,8 @@ class PageUtil
             $value = array_unique($value);
         }
 
-        $event = new Zikula_Event('pageutil.addvar_filter', $varname, array(), $value);
-        $value = EventUtil::getManager()->notify($event)->getData();
+        $event = new GenericEvent($varname, array(), $value);
+        $value = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event)->getData();
 
         if ($_pageVars[$varname]['multivalue']) {
             if (is_array($value)) {

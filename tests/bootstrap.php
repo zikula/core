@@ -6,14 +6,23 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once __DIR__ . '/ClassLoader.php';
 
 // Loader for all Zikula namespace
-$classLoader = new ClassLoader('Zikula', __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'lib', '_');
+$classLoader = new ClassLoader('Zikula', __DIR__.'/../src/lib', '\\');
 $classLoader->register();
 
-// Loader for all Zikula namespace
-$classLoader = new ClassLoader('Doctrine', __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'Doctrine', '_');
+$classLoader = new ClassLoader('Zikula', __DIR__.'/../src/lib/legacy', '_');
 $classLoader->register();
 
-$classLoader = new ClassLoader('Tests', __DIR__ . DIRECTORY_SEPARATOR . 'lib', '_');
+// Loader for all Doctrine 1 namespace
+$classLoader = new ClassLoader('Doctrine', __DIR__.'/../src/lib/vendor/Doctrine1', '_');
+$classLoader->register();
+
+$classLoader = new ClassLoader('Tests', __DIR__.'/lib', '_');
+$classLoader->register();
+
+$classLoader = new ClassLoader('Zikula\\Tests', __DIR__.'/lib', '\\');
+$classLoader->register();
+
+$classLoader = new ClassLoader('Symfony', __DIR__.'/../src/vendor/symfony', '\\');
 $classLoader->register();
 
 // Set include path to load the actual source libraries, this will be used by the autoloader when it resolve relative paths

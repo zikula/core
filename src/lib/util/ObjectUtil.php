@@ -714,7 +714,7 @@ class ObjectUtil
 
     /**
      * Delete all instances of the specified attribute for the given object type.
-     * 
+     *
      * This can be used to remove an attribute from the object attributes table when it is no longer defined by the object type.
      *
      * @param string $type          The type/tablename that defines the given attribute.

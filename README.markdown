@@ -6,4 +6,5 @@ Modules, plugins and themes.
 
 For more information visit http://zikula.org/
 
+You must run `bin/vendor install` to get the required dependencies.
 

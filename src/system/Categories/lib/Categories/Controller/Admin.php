@@ -38,7 +38,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
      */
     public function view()
     {
-        $root_id = FormUtil::getPassedValue('dr', 1);
+        $root_id = $this->request->get('dr', 1);
 
         if (!SecurityUtil::checkPermission('Categories::category', "ID::$root_id", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
@@ -72,9 +72,9 @@ class Categories_Controller_Admin extends Zikula_AbstractController
      */
     public function edit()
     {
-        $cid = FormUtil::getPassedValue('cid', 0);
-        $root_id = FormUtil::getPassedValue('dr', 1);
-        $mode = FormUtil::getPassedValue('mode', 'new');
+        $cid = $this->request->get('cid', 0);
+        $root_id = $this->request->get('dr', 1);
+        $mode = $this->request->get('mode', 'new');
         $allCats = '';
         $editCat = '';
 
@@ -160,9 +160,9 @@ class Categories_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $root_id = FormUtil::getPassedValue('dr', 1);
-        $id = FormUtil::getPassedValue('id', 0);
-        $ot = FormUtil::getPassedValue('ot', 'registry');
+        $root_id = $this->request->get('dr', 1);
+        $id = $this->request->get('id', 0);
+        $ot = $this->request->get('ot', 'registry');
 
         $class = "Categories_DBObject_" . ucwords($ot);
         $arrayClass = "Categories_DBObject_" . ucwords($ot) . 'Array';
@@ -196,8 +196,8 @@ class Categories_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $id = FormUtil::getPassedValue('id', 0);
-        $ot = FormUtil::getPassedValue('ot', 'registry');
+        $id = $this->request->get('id', 0);
+        $ot = $this->request->get('ot', 'registry');
 
         $class = "Categories_DBObject_" . ucwords($ot);
 
@@ -224,9 +224,9 @@ class Categories_Controller_Admin extends Zikula_AbstractController
      */
     public function op()
     {
-        $cid = FormUtil::getPassedValue('cid', 1);
-        $root_id = FormUtil::getPassedValue('dr', 1);
-        $op = FormUtil::getPassedValue('op', 'NOOP');
+        $cid = $this->request->get('cid', 1);
+        $root_id = $this->request->get('dr', 1);
+        $op = $this->request->get('op', 'NOOP');
 
         if (!SecurityUtil::checkPermission('Categories::category', "ID::$cid", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();

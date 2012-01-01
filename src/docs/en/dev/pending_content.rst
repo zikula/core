@@ -14,7 +14,7 @@ Here is an exmaple handler:
     // event handler
     class News_Handlers
     {
-        public static function handler(Zikula_Event $event)
+        public static function handler(\Zikula\Core\Event\GenericEvent $event)
         {
             $collection = new Zikula_Collection_Container('News');
             $collection->add(new Zikula_Provider_AggregateItem('submission', __('pending news'), 5, 'Admin', 'viewsubmissions'));
@@ -31,8 +31,8 @@ each module:
 
     [php]
     // trigger event
-    $event = new Zikula_Event('get.pending_content', new Zikula_Collection_Container('pending_content'));
-    $pendingCollection = EventUtil::getManager()->notify($event)->getSubject();
+    $event = new \Zikula\Core\Event\GenericEvent(new Zikula_Collection_Container('pending_content'));
+    $pendingCollection = EventUtil::getManager()->dispatch('get.pending_content', $event)->getSubject();
 
     // process results
     foreach ($pendingCollection as $collection) {
@@ -54,8 +54,8 @@ The following is a full example you can use to run and see how this would work i
     EventUtil::getManager()->attach('get.pending_content', array('News_Handlers', 'handler'));
 
     // trigger event
-    $event = new Zikula_Event('get.pending_content', new Zikula_Collection_Container('pending_content'));
-    $pendingCollection = EventUtil::getManager()->notify($event)->getSubject();
+    $event = new \Zikula\Core\Event\GenericEvent(new Zikula_Collection_Container('pending_content'));
+    $pendingCollection = EventUtil::getManager()->dispatch('get.pending_content', $event)->getSubject();
 
     // process results
     foreach ($pendingCollection as $collection) {
@@ -69,7 +69,7 @@ The following is a full example you can use to run and see how this would work i
     // event handler
     class News_Handlers
     {
-        public function handler(Zikula_Event $event)
+        public function handler(\Zikula\Core\Event\GenericEvent $event)
         {
             $collection = new Zikula_Collection_Container('News');
             $collection->add(new Zikula_Provider_AggregateItem('submission', __('pending news'), 5, 'Admin', 'viewsubmissions'));

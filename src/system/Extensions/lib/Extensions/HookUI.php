@@ -11,12 +11,14 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * HooksUI class.
  */
 class Extensions_HookUI
 {
-    public static function hooks(Zikula_Event $event)
+    public static function hooks(GenericEvent $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();
@@ -72,14 +74,14 @@ class Extensions_HookUI
                 $subscriberAreasToTitles[$subscriberArea] = $view->__($moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getTitle());
             }
             $view->assign('subscriberAreasToTitles', $subscriberAreasToTitles);
-            
+
             $subscriberAreasToCategories = array();
             foreach ($subscriberAreas as $subscriberArea) {
                 $category = $view->__($moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory());
                 $subscriberAreasToCategories[$subscriberArea] = $category;
             }
             $view->assign('subscriberAreasToCategories', $subscriberAreasToCategories);
-            
+
             $subscriberAreasAndCategories = array();
             foreach ($subscriberAreas as $subscriberArea) {
                 $category = $view->__($moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory());
@@ -121,7 +123,7 @@ class Extensions_HookUI
                     $hooksubscriberAreasToTitles[$hooksubscriberArea] = $view->__($hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getTitle());
                 }
                 $hooksubscribers[$i]['areasToTitles'] = $hooksubscriberAreasToTitles;
-                
+
                 // and get the categories
                 $hooksubscriberAreasToCategories = array();
                 foreach ($hooksubscriberAreas as $hooksubscriberArea) {
@@ -134,7 +136,7 @@ class Extensions_HookUI
             $view->assign('total_available_subscriber_areas', $total_available_subscriber_areas);
         }
 
-        // get providers that are already attached to the subscriber 
+        // get providers that are already attached to the subscriber
         // and providers that can attach to the subscriber
         if ($isSubscriber && !empty($subscriberAreas)) {
             // get current sorting
@@ -160,11 +162,11 @@ class Extensions_HookUI
 
                     // get hook provider from it's area
                     $sbaProviderModule = HookUtil::getOwnerByArea($areaname);
-                    
+
                     // create an instance of the provider's version
                     $sbaProviderModuleVersion = $sbaProviderModule.'_Version';
                     $sbaProviderModuleVersionObj = new $sbaProviderModuleVersion;
-                    
+
                     // get the bundle title
                     $currentSortingTitles[$areaname] = $view->__($sbaProviderModuleVersionObj->getHookProviderBundle($areaname)->getTitle());
                 }
@@ -172,7 +174,7 @@ class Extensions_HookUI
             $view->assign('areasSorting', $currentSorting);
             $view->assign('areasSortingTitles', $currentSortingTitles);
             $view->assign('total_attached_provider_areas', $total_attached_provider_areas);
-            
+
             // get available providers
             $hookproviders = HookUtil::getHookProviders();
             $total_hookproviders = count($hookproviders);
@@ -184,13 +186,13 @@ class Extensions_HookUI
                     unset($hookproviders[$i]);
                     continue;
                 }
-                
+
                 // does the user have admin permissions on the provider module?
                 if (!SecurityUtil::checkPermission($hookproviders[$i]['name']."::", '::', ACCESS_ADMIN)) {
                     unset($hookproviders[$i]);
                     continue;
                 }
-                
+
                 // create an instance of the provider's version
                 $hookproviderVersion = $hookproviders[$i]['name'].'_Version';
                 $hookproviderVersionObj = new $hookproviderVersion;
@@ -206,14 +208,14 @@ class Extensions_HookUI
                     $hookproviderAreasToTitles[$hookproviderArea] = $view->__($hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getTitle());
                 }
                 $hookproviders[$i]['areasToTitles'] = $hookproviderAreasToTitles;
-                
+
                 // and get the categories
                 $hookproviderAreasToCategories = array();
                 foreach ($hookproviderAreas as $hookproviderArea) {
                     $hookproviderAreasToCategories[$hookproviderArea] = $view->__($hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getCategory());
                 }
                 $hookproviders[$i]['areasToCategories'] = $hookproviderAreasToCategories;
-                
+
                 // and build array with category => areas
                 $hookproviderAreasAndCategories = array();
                 foreach ($hookproviderAreas as $hookproviderArea) {
@@ -227,10 +229,10 @@ class Extensions_HookUI
         }
 
         $event->setData($view->fetch('extensions_hookui_hooks.tpl'));
-        $event->stop();
+        $event->stopPropagation();
     }
 
-    public static function moduleservices(Zikula_Event $event)
+    public static function moduleservices(GenericEvent $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();
@@ -247,12 +249,12 @@ class Extensions_HookUI
         $view->assign('currentmodule', $moduleName);
 
         // notify EVENT here to gather any system service links
-        $localevent = new Zikula_Event('module_dispatch.service_links', $subject, array('modname' => $moduleName));
-        EventUtil::notify($localevent);
+        $localevent = new GenericEvent($subject, array('modname' => $moduleName));
+        EventUtil::dispatch('module_dispatch.service_links', $localevent);
         $sublinks = $localevent->getData();
         $view->assign('sublinks', $sublinks);
 
         $event->setData($view->fetch('extensions_hookui_moduleservices.tpl'));
-        $event->stop();
+        $event->stopPropagation();
     }
 }

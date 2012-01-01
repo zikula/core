@@ -55,7 +55,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
         }
 
         // get settings from form
-        $settings = FormUtil::getPassedValue('settings', null, 'POST');
+        $settings = $this->request->request->get('settings', null);
 
         // if this form wasnt posted to redirect back
         if ($settings === null) {
@@ -170,7 +170,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
                 'mlsettings_languageurl' => 'languageurl');
 
         // we can't detect language if multilingual feature is off so reset this to false
-        if (FormUtil::getPassedValue('mlsettings_multilingual', null, 'POST') == 0) {
+        if ($this->request->request->get('mlsettings_multilingual', null) == 0) {
             if (System::getVar('language_detect')) {
                 System::setVar('language_detect', 0);
                 unset($settings['mlsettings_language_detect']);
@@ -182,14 +182,14 @@ class Settings_Controller_Admin extends Zikula_AbstractController
 
         if (isset($deleteLangUrl)) {
             // reset language settings
-            SessionUtil::delVar('language');
+            $this->request->getSession()->remove('language');
             $url = preg_replace('#(.*)(&lang=[a-z-]{2,5})(.*)#i', '$1$3', $url);
         }
 
         // Write the vars
         $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
         foreach ($settings as $formname => $varname) {
-            $newvalue = FormUtil::getPassedValue($formname, null, 'POST');
+            $newvalue = $this->request->request->get($formname, null);
             $oldvalue = System::getVar($varname);
             if ($newvalue != $oldvalue) {
                 System::setVar($varname, $newvalue);
