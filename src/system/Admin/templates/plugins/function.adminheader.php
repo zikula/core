@@ -22,5 +22,5 @@
  */
 function smarty_function_adminheader($params, $view)
 {
-    return ModUtil::func('Admin', 'admin', 'adminheader');
+    return ModUtil::apiFunc('Admin', 'admin', 'adminheader');
 }
