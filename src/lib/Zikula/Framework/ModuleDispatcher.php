@@ -16,16 +16,17 @@
 
 namespace Zikula\Framework;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ModuleDispatcher
 {
-    public function dispatch()
+    public function dispatch(Request $request)
     {
-        $module = \FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
-        $type = \FormUtil::getPassedValue('type', '', 'GETPOST', FILTER_SANITIZE_STRING);
-        $func = \FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
+        $module = $request->attributes->get('_module');
+        $type = $request->attributes->get('_controller');
+        $func = $request->attributes->get('_action');
 
         $arguments = array();
 
@@ -68,7 +69,6 @@ class ModuleDispatcher
             if (empty($module)) {
                 // we have a static homepage
                 $return = ' ';
-
             } elseif ($modinfo) {
                 // call the requested/homepage module
                 $return = \ModUtil::func($modinfo['name'], $type, $func, $arguments);
@@ -108,11 +108,8 @@ class ModuleDispatcher
             }
         }
 
-        if ($return instanceof RedirectResponse) {
-            return $return;
-        }
-
         if ($return instanceof Response) {
+            // catches any Response and RedirectResponse
             return $return;
         }
 
@@ -138,7 +135,7 @@ class ModuleDispatcher
                 break;
 
             case ($httpCode == 200):
-
+                return new Response($return, $httpCode);
                 break;
 
             default:
@@ -147,7 +144,6 @@ class ModuleDispatcher
                 break;
         }
 
-        return new Response($return, $httpCode);
+        return $return;
     }
-
 }

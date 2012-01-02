@@ -16,42 +16,49 @@
 
 namespace Zikula\Framework;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Framework\Response\Ajax\NotFoundResponse;
+use Zikula\Framework\Response\Ajax\UnavailableResponse;
+use Zikula\Framework\Response\Ajax\ForbiddenResponse;
+use Zikula\Framework\Response\Ajax\FatalResponse;
+use Zikula\Framework\Exception\NotFoundException;
+use Zikula\Framework\Exception\FatalException;
+use Zikula\Framework\Exception\ForbiddenException;
 
 class AjaxModuleDispatcher
 {
-    public function dispatch()
+    public function dispatch(Request $request)
     {
-        // Get variables
-        $module = \FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
-        $type = \FormUtil::getPassedValue('type', 'ajax', 'GETPOST', FILTER_SANITIZE_STRING);
-        $func = \FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
+        $module = $request->attributes->get('_module');
+        $type = $request->attributes->get('_controller');
+        $func = $request->attributes->get('_action');
 
         // Check for site closed
         if (\System::getVar('siteoff') && !\SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
             if (\SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && \UserUtil::isLoggedIn()) {
                 \UserUtil::logout();
             }
-            $response = new \Zikula_Response_Ajax_Unavailable(__('The site is currently off-line.'));
+            $response = new UnavailableResponse(__('The site is currently off-line.'));
         }
 
         if (empty($func)) {
-            $response = new \Zikula_Response_Ajax_NotFound(__f("Missing parameter '%s'", 'func'));
+            $response = new NotFoundResponse(__f("Missing parameter '%s'", 'func'));
         }
 
         // get module information
         $modinfo = \ModUtil::getInfoFromName($module);
         if ($modinfo == false) {
-            $response = new \Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is unknown.", \DataUtil::formatForDisplay($module)));
+            $response = new NotFoundResponse(__f("Error! The '%s' module is unknown.", \DataUtil::formatForDisplay($module)));
         }
 
         if (!\ModUtil::available($modinfo['name'])) {
-            $response = new \Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is not available.", \DataUtil::formatForDisplay($module)));
+            $response = new NotFoundResponse(__f("Error! The '%s' module is not available.", \DataUtil::formatForDisplay($module)));
         }
 
         if (!\ModUtil::load($modinfo['name'], $type)) {
-            $response = new \Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is not available.", \DataUtil::formatForDisplay($module)));
+            $response = new NotFoundResponse(__f("Error! The '%s' module is not available.", \DataUtil::formatForDisplay($module)));
         }
 
         // Handle database transactions
@@ -63,21 +70,21 @@ class AjaxModuleDispatcher
         // Dispatch controller.
         try {
             $response = \ModUtil::func($modinfo['name'], $type, $func);
-        } catch (\Zikula_Exception_NotFound $e) {
-            $response = new \Zikula_Response_Ajax_NotFound($e->getMessage());
-        } catch (\Zikula_Exception_Forbidden $e) {
-            $response = new \Zikula_Response_Ajax_Forbidden($e->getMessage());
-        } catch (\Zikula_Exception_Fatal $e) {
-            $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
+        } catch (NotFoundException $e) {
+            $response = new NotFoundResponse($e->getMessage());
+        } catch (ForbiddenException $e) {
+            $response = new ForbiddenResponse($e->getMessage());
+        } catch (FatalException $e) {
+            $response = new FatalResponse($e->getMessage());
         } catch (\PDOException $e) {
-            $response = new \Zikula_Response_Ajax_Fatal($e->getMessage());
+            $response = new FatalResponse($e->getMessage());
         } catch (\Exception $e) {
-            $response = new \Zikula_Response_Ajax_Fatal($e->getMessage());
+            $response = new FatalResponse($e->getMessage());
         }
 
         // Handle database transactions
         if (\System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-            if (isset($e) && $e instanceof \Exception) {
+            if (isset($e)) {
                 $dbConn->rollback();
             } else {
                 $dbConn->commit();
