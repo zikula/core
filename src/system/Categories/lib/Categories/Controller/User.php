@@ -31,7 +31,7 @@ class Categories_Controller_User extends Zikula_AbstractController
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('allowusercatedit', $this->getVar('allowusercatedit', 0));
-        return $this->view->fetch('categories_user_editcategories.tpl');
+        return $this->response($this->view->fetch('categories_user_editcategories.tpl'));
     }
 
     /**
@@ -120,14 +120,14 @@ class Categories_Controller_User extends Zikula_AbstractController
 
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
-        return $this->view->assign('rootCat', $rootCat)
+        return $this->response($this->view->assign('rootCat', $rootCat)
                     ->assign('category', $editCat)
                     ->assign('attributes', $attributes)
                     ->assign('allCats', $allCats)
                     ->assign('languages', $languages)
                     ->assign('userlanguage', ZLanguage::getLanguageCode())
                     ->assign('referer', SessionUtil::getVar('categories_referer'))
-                    ->fetch('categories_user_edit.tpl');
+                    ->fetch('categories_user_edit.tpl'));
     }
 
     /**
@@ -217,7 +217,7 @@ class Categories_Controller_User extends Zikula_AbstractController
         }
 
         $url = ModUtil::url('Categories', 'user', 'edit', array('dr' => $dr));
-        $this->redirect($url);
+        return $this->redirect($url);
     }
 
     /**
@@ -227,7 +227,7 @@ class Categories_Controller_User extends Zikula_AbstractController
     {
         $referer = $this->request->getSession()->get('categories_referer');
         $this->request->getSession()->remove('categories_referer');
-        $this->redirect($referer);
+        return $this->redirect($referer);
     }
 
     /**

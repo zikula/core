@@ -36,7 +36,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     /**
@@ -202,7 +202,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         }
 
         // Redirect
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     /**
@@ -226,7 +226,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         }
 
         // Redirect
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     /**
@@ -390,9 +390,9 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
 
         if (isset($cancel)) {
             if (isset($redirect) && !empty($redirect)) {
-                $this->redirect(urldecode($redirect));
+                return $this->redirect(urldecode($redirect));
             }
-            $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+            return $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
 
@@ -433,7 +433,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         }
 
         if (!$blockinfo) {
-            $this->redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
+            return $this->redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
         }
 
         // Pass to API
@@ -443,16 +443,16 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         }
 
         if (isset($redirect) && !empty($redirect)) {
-            $this->redirect(urldecode($redirect));
+            return $this->redirect(urldecode($redirect));
         }
 
         if (!empty($returntoblock)) {
             // load the block config again
-            $this->redirect(ModUtil::url('Blocks', 'admin', 'modify',
+            return $this->redirect(ModUtil::url('Blocks', 'admin', 'modify',
                             array('bid' => $returntoblock)));
         }
 
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     /**
@@ -554,10 +554,10 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
 
         if ($bid != false) {
             LogUtil::registerStatus($this->__('Done! Block created.'));
-            $this->redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
+            return $this->redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
         }
 
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     /**
@@ -614,7 +614,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Block deleted.'));
         }
 
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     /**
@@ -666,7 +666,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         }
 
         // all done
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $pid), null, 'blockpositionform'));
+        return $this->redirect(ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $pid), null, 'blockpositionform'));
     }
 
     /**
@@ -748,7 +748,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Block position saved.'));
         }
 
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     /**
@@ -794,7 +794,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Block position deleted.'));
         }
 
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     /**
@@ -841,6 +841,6 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 }

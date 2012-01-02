@@ -22,7 +22,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in modifyconfig()
-        $this->redirect(ModUtil::url($this->name, 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url($this->name, 'admin', 'modifyconfig'));
     }
 
     /**
@@ -37,7 +37,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        return $this->view->fetch('settings_admin_modifyconfig.tpl');
+        return $this->response($this->view->fetch('settings_admin_modifyconfig.tpl'));
     }
 
     /**
@@ -59,7 +59,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
 
         // if this form wasnt posted to redirect back
         if ($settings === null) {
-            $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
+            return $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
         }
 
         // validate the entry point
@@ -124,7 +124,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
 
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
-        $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -143,7 +143,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
         $this->view->assign('timezone_server', DateUtil::getTimezone());
         $this->view->assign('timezone_server_abbr', DateUtil::getTimezoneAbbr());
 
-        return $this->view->fetch('settings_admin_multilingual.tpl');
+        return $this->response($this->view->fetch('settings_admin_multilingual.tpl'));
     }
 
     /**
@@ -187,7 +187,6 @@ class Settings_Controller_Admin extends Zikula_AbstractController
         }
 
         // Write the vars
-        $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
         foreach ($settings as $formname => $varname) {
             $newvalue = $this->request->request->get($formname, null);
             $oldvalue = System::getVar($varname);
@@ -202,7 +201,6 @@ class Settings_Controller_Admin extends Zikula_AbstractController
         // all done successfully
         LogUtil::registerStatus($this->__('Done! Saved localisation settings.'));
 
-        $this->redirect($url);
+        return $this->redirect($url);
     }
-
 }

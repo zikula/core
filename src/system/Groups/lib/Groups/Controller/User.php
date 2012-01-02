@@ -27,7 +27,7 @@ class Groups_Controller_User extends Zikula_AbstractController
     public function main()
     {
         // Security check will be done in view()
-        $this->redirect(ModUtil::url('Groups', 'user', 'view'));
+        return $this->redirect(ModUtil::url('Groups', 'user', 'view'));
     }
 
     /**
@@ -69,7 +69,7 @@ class Groups_Controller_User extends Zikula_AbstractController
         // failed then an appropriate message is posted.
         if ($groups == false) {
             $this->view->assign('nogroups', true);
-            return $this->view->fetch('groups_user_view.tpl');
+            return $this->response($this->view->fetch('groups_user_view.tpl'));
         }
 
         $groupitems = array();
@@ -105,7 +105,7 @@ class Groups_Controller_User extends Zikula_AbstractController
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countitems'),
                                            'itemsperpage' => $itemsperpage));
 
-        return $this->view->fetch('groups_user_view.tpl');
+        return $this->response($this->view->fetch('groups_user_view.tpl'));
     }
 
     /**
@@ -166,7 +166,7 @@ class Groups_Controller_User extends Zikula_AbstractController
                    ->assign('action',       $action)
                    ->assign('description',  $group['description']);
 
-        return $this->view->fetch('groups_user_membership.tpl');
+        return $this->response($this->view->fetch('groups_user_membership.tpl'));
     }
 
     /*
@@ -205,7 +205,7 @@ class Groups_Controller_User extends Zikula_AbstractController
 
         $this->view->clear_cache('groups_user_memberslist.tpl');
 
-        $this->redirect(ModUtil::url('Groups', 'user', 'view'));
+        return $this->redirect(ModUtil::url('Groups', 'user', 'view'));
     }
 
     /**
@@ -299,6 +299,6 @@ class Groups_Controller_User extends Zikula_AbstractController
         $profileModule = System::getVar('profilemodule', '');
         $this->view->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));
 
-        return $this->view->fetch('groups_user_memberslist.tpl');
+        return $this->response($this->view->fetch('groups_user_memberslist.tpl'));
     }
 }

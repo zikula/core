@@ -30,23 +30,6 @@ class Errors_Controller_User extends Zikula_AbstractController
         $exception = isset($args['exception']) ? $args['exception'] : null;
         $message   = isset($args['message']) ? $args['message'] : '';
 
-        // perform any error specific tasks
-        $protocol = System::serverGetVar('SERVER_PROTOCOL');
-        switch ($type) {
-            case 301:
-                header("{$protocol} 301 Moved Permanently");
-                break;
-            case 403:
-                header("{$protocol} 403 Access Denied");
-                break;
-            case 404:
-                header("{$protocol} 404 Not Found");
-                break;
-            case 500:
-                header("{$protocol} 500 Internal Server Error");
-            default:
-        }
-
         // load the stylesheet
         PageUtil::addVar('stylesheet', 'system/Errors/style/style.css');
 
@@ -81,9 +64,9 @@ class Errors_Controller_User extends Zikula_AbstractController
 
         // return the template output
         if ($this->view->template_exists($template = "errors_user_{$type}.tpl")) {
-            return $this->view->fetch($template);
+            return $this->response($this->view->fetch($template), $type);
         } else {
-            return $this->view->fetch('errors_user_main.tpl');
+            return $this->response($this->view->fetch('errors_user_main.tpl'), $type);
         }
     }
 
@@ -92,8 +75,8 @@ class Errors_Controller_User extends Zikula_AbstractController
      */
     public function system($args)
     {
-        return $this->view->setCaching(Zikula_View::CACHE_DISABLED)
+        return $this->response($this->view->setCaching(Zikula_View::CACHE_DISABLED)
                           ->assign($args)
-                          ->fetch('errors_user_system.tpl');
+                          ->fetch('errors_user_system.tpl'), 500);
     }
 }

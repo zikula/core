@@ -87,7 +87,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
 
         $msg = __f('Done! Saved the %s category.', $oldCat->_objData['name']);
         LogUtil::registerStatus($msg);
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     /**
@@ -147,7 +147,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
 
         $msg = __f('Done! Inserted the %s category.', $cat->_objData['name']);
         LogUtil::registerStatus($msg);
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view') . '#top');
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view') . '#top');
     }
 
     /**
@@ -179,7 +179,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
 
         $msg = __f('Done! Deleted the %s category.', $cat->_objData['name']);
         LogUtil::registerStatus($msg);
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     /**
@@ -205,7 +205,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
 
         $msg = __f('Done! Copied the %s category.', $cat->_objData['name']);
         LogUtil::registerStatus($msg);
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     /**
@@ -230,7 +230,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
 
         $msg = __f('Done! Moved the %s category.', $cat->_objData['name']);
         LogUtil::registerStatus($msg);
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     /**
@@ -246,7 +246,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
         CategoryUtil::rebuildPaths('ipath', 'id');
 
         LogUtil::registerStatus(__('Done! Rebuilt the category paths.'));
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     public function editregistry()
@@ -287,7 +287,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
 
         $obj->save();
         LogUtil::registerStatus(__('Done! Saved the category registry entry.'));
-        $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
     }
 
     public function preferences()
@@ -319,7 +319,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
         $this->setVar('permissionsall', $permissionsall);
 
         LogUtil::registerStatus(__('Done! Saved module configuration.'));
-        $this->redirect(ModUtil::url('Categories', 'admin', 'preferences'));
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'preferences'));
     }
 
 }
