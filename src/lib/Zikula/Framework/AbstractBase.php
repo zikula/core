@@ -93,6 +93,13 @@ abstract class AbstractBase implements TranslatableInterface
     protected $request;
 
     /**
+     * Session.
+     *
+     * @var \Symfony\Component\HttpFoundation\Session
+     */
+    protected $session;
+
+    /**
      * This object's reflection.
      *
      * @var \ReflectionObject
@@ -110,6 +117,7 @@ abstract class AbstractBase implements TranslatableInterface
         $this->eventManager = $this->getService('zikula.eventmanager');
 
         $this->request = $this->getService('request');
+        $this->session = $this->request->getSession();
         $this->entityManager = $this->getService('doctrine.entitymanager');
 
         $this->_configureBase();
@@ -318,177 +326,6 @@ abstract class AbstractBase implements TranslatableInterface
     public function _fn($sin, $plu, $n, $params)
     {
         return _fn($sin, $plu, $n, $params, $this->domain);
-    }
-
-    /**
-     * Throw Zikula_Exception_NotFound exception.
-     *
-     * Used to immediately halt execution.
-     *
-     * @param string       $message Default ''.
-     * @param string       $code    Default 0.
-     * @param string|array $debug   Debug information.
-     *
-     * @throws \Zikula\Framework\Exception\NotFound Exception.
-     *
-     * @return void
-     */
-    protected function throwNotFound($message='', $code=0, $debug=null)
-    {
-        throw new \Zikula\Framework\Exception\NotFoundException($message, $code, $debug);
-    }
-
-    /**
-     * Throw Zikula_Exception_NotFound exception if $condition.
-     *
-     * Used to immediately halt execution if $condition.
-     *
-     * @param bool         $condition Condition.
-     * @param string       $message   Default ''.
-     * @param string       $code      Default 0.
-     * @param string|array $debug     Debug information.
-     *
-     * @throws \Zikula\Framework\Exception\NotFound Exception.
-     *
-     * @return void
-     */
-    protected function throwNotFoundIf($condition, $message='', $code=0, $debug=null)
-    {
-        if ($condition) {
-            $this->throwNotFound($message, $code, $debug);
-        }
-    }
-
-    /**
-     * Throw Zikula_Exception_NotFound exception unless $condition.
-     *
-     * Used to immediately halt execution unless $condition.
-     *
-     * @param bool         $condition Condition.
-     * @param string       $message   Default ''.
-     * @param string       $code      Default 0.
-     * @param string|array $debug     Debug information.
-     *
-     * @throws \Zikula\Framework\Exception\NotFound Exception.
-     *
-     * @return void
-     */
-    protected function throwNotFoundUnless($condition, $message='', $code=0, $debug=null)
-    {
-        if (!$condition) {
-            $this->throwNotFound($message, $code, $debug);
-        }
-    }
-
-    /**
-     * Throw Zikula_Exception_Forbidden exception.
-     *
-     * Used to immediately halt execution.
-     *
-     * @param string       $message Default ''.
-     * @param string       $code    Default 0.
-     * @param string|array $debug   Debug information.
-     *
-     * @throws \Zikula\Framework\Exception\Forbidden Exception.
-     *
-     * @return void
-     */
-    protected function throwForbidden($message='', $code=0, $debug=null)
-    {
-        throw new \Zikula\Framework\Exception\ForbiddenException($message, $code, $debug);
-    }
-
-    /**
-     * Throw Zikula_Exception_Forbidden exception if $condition.
-     *
-     * Used to immediately halt execution if condition.
-     *
-     * @param bool         $condition Condition.
-     * @param string       $message   Default ''.
-     * @param string       $code      Default 0.
-     * @param string|array $debug     Debug information.
-     *
-     * @throws \Zikula\Framework\Exception\Forbidden Exception.
-     *
-     * @return void
-     */
-    protected function throwForbiddenIf($condition, $message='', $code=0, $debug=null)
-    {
-        if ($condition) {
-            $this->throwForbidden($message, $code, $debug);
-        }
-    }
-
-    /**
-     * Throw Zikula_Exception_Forbidden exception unless $condition.
-     *
-     * Used to immediately halt execution unless condition.
-     *
-     * @param bool         $condition Condition.
-     * @param string       $message   Default ''.
-     * @param string       $code      Default 0.
-     * @param string|array $debug     Debug information.
-     *
-     * @throws \Zikula\Framework\Exception\Forbidden Exception.
-     *
-     * @return void
-     */
-    protected function throwForbiddenUnless($condition, $message='', $code=0, $debug=null)
-    {
-        if (!$condition) {
-            $this->throwForbidden($message, $code, $debug);
-        }
-    }
-
-    /**
-     * Cause redirect by throwing exception which passes to front controller.
-     *
-     * @param string  $url  Url to redirect to.
-     * @param integer $type Redirect code, 302 default.
-     *
-     * @throws \Zikula\Framework\Exception\Redirect Causing redirect.
-     *
-     * @return void
-     */
-    protected function redirect($url, $type = 302)
-    {
-        throw new \Zikula\Framework\Exception\RedirectException($url, $type);
-    }
-
-    /**
-     * Cause redirect if $condition by throwing exception which passes to front controller.
-     *
-     * @param boolean $condition Condition.
-     * @param string  $url       Url to redirect to.
-     * @param integer $type      Redirect code, 302 default.
-     *
-     * @throws \Zikula\Framework\Exception\Redirect Causing redirect.
-     *
-     * @return void
-     */
-    protected function redirectIf($condition, $url, $type = 302)
-    {
-        if ($condition) {
-            $this->redirect($url, $type);
-        }
-    }
-
-    /**
-     * Cause redirect unless $condition by throwing exception which passes to front controller.
-     *
-     * @param boolean $condition Condition.
-     * @param string  $url       Url to redirect to.
-     * @param integer $type      Redirect code, 302 default.
-     *
-     * @throws \Zikula\Framework\Exception\Redirect Causing redirect.
-     *
-     * @return void
-     */
-    protected function redirectUnless($condition, $url, $type = 302)
-    {
-        if (!$condition) {
-            $this->redirect($url, $type);
-        }
     }
 
     /**
@@ -704,7 +541,7 @@ abstract class AbstractBase implements TranslatableInterface
      *
      * @param string $token The token, if not set, will pull from $_POST['csrftoken'].
      *
-     * @throws \Zikula\Framework\Exception\Forbidden If check fails.
+     * @throws \Zikula\Framework\Exception\ForbiddenException If check fails.
      *
      * @return void
      */

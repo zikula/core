@@ -17,8 +17,10 @@ namespace Zikula\Framework\Controller;
 use Zikula\Framework\AbstractBase;
 use Zikula\Framework\Exception\NotFoundException;
 use Zikula\Common\HookManager\Hook;
-use \Zikula\Core\Event\GenericEvent;
+use Zikula\Core\Event\GenericEvent;
 use Zikula_View;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Abstract controller for modules.
@@ -128,5 +130,32 @@ abstract class AbstractController extends AbstractBase
      */
     public function postDispatch()
     {
+    }
+
+    /**
+     * Return a response.
+     *
+     * @param string  $content
+     * @param integer $status
+     * @param array   $headers
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function response($content = '', $status = 200, $headers = array())
+    {
+        return new Response($content, $status, $headers);
+    }
+
+    /**
+     * Cause redirect by throwing exception which passes to front controller.
+     *
+     * @param string  $url  Url to redirect to.
+     * @param integer $type Redirect code, 302 default.
+     *
+     * @return void
+     */
+    protected function redirect($url, $type = 302)
+    {
+        return new RedirectResponse($url, $type);
     }
 }
