@@ -36,13 +36,13 @@ abstract class AbstractAjax extends AbstractController
      *
      * @param string $token Token, default null.
      *
-     * @throws Forbidden If the CSFR token fails.
+     * @throws ForbiddenException If the CSFR token fails.
      *
      * @return void
      */
     public function checkAjaxToken($token=null)
     {
-        $headerToken = isset($_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN']) ? $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] : null;
+        $headerToken = $this->request->headers->get('HTTP_X_ZIKULA_AJAX_TOKEN', null);
 
         if ($headerToken == session_id()) {
             return;
@@ -50,7 +50,7 @@ abstract class AbstractAjax extends AbstractController
 
         try {
             $this->checkCsrfToken($token);
-        } catch (Forbidden $e) {
+        } catch (\Exception $e) {
         }
 
         throw new ForbiddenException(__('Ajax security checks failed.'));
