@@ -1033,7 +1033,6 @@ class ModUtil
             }
         }
 
-        $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
         $eventManager = EventUtil::getManager();
         if ($loaded) {
             $preExecuteEvent = new GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
@@ -1042,24 +1041,19 @@ class ModUtil
             if (is_callable($modfunc)) {
                 $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
 
-                // Check $modfunc is an object instance (OO) or a function (old)
-                if (is_array($modfunc)) {
-                    if ($modfunc[0] instanceof Zikula_AbstractController) {
-                        $reflection = call_user_func(array($modfunc[0], 'getReflection'));
-                        $subclassOfReflection = new ReflectionClass($reflection->getParentClass());
-                        if ($subclassOfReflection->hasMethod($modfunc[1])) {
-                            // Don't allow front controller to access any public methods inside the controller's parents
-                            throw new Zikula_Exception_NotFound();
-                        }
-                        $modfunc[0]->preDispatch();
+                if ($modfunc[0] instanceof Zikula\Framework\Controller\AbstractController) {
+                    $reflection = call_user_func(array($modfunc[0], 'getReflection'));
+                    $subclassOfReflection = new ReflectionClass($reflection->getParentClass());
+                    if ($subclassOfReflection->hasMethod($modfunc[1])) {
+                        // Don't allow front controller to access any public methods inside the controller's parents
+                        throw new Zikula_Exception_NotFound();
                     }
+                    $modfunc[0]->preDispatch();
+                }
 
-                    $postExecuteEvent->setData(call_user_func($modfunc, $args));
-                    if ($modfunc[0] instanceof Zikula_AbstractController) {
-                        $modfunc[0]->postDispatch();
-                    }
-                } else {
-                    $postExecuteEvent->setData($modfunc($args));
+                $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                if ($modfunc[0] instanceof Zikula\Framework\Controller\AbstractController) {
+                    $modfunc[0]->postDispatch();
                 }
 
                 return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
@@ -1068,7 +1062,7 @@ class ModUtil
             // get the theme
             if (ServiceUtil::getManager()->getService('zikula')->getStage() & Zikula_Core::STAGE_THEME) {
                 $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
-                if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php") || file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
+                if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php")) {
                     include_once $file;
                     if (function_exists($modfunc)) {
                         EventUtil::notify($preExecuteEvent);
@@ -1087,7 +1081,7 @@ class ModUtil
                 }
             }
 
-            if (file_exists($file = "$path/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
+            if (file_exists($file = "$path/$modname/{$type}{$ftype}/$func.php")) {
                 include_once $file;
                 if (is_callable($modfunc)) {
                     $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
