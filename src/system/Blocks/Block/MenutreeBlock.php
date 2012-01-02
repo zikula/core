@@ -165,7 +165,6 @@ class Blocks_Block_MenutreeBlock extends Zikula_Controller_AbstractBlock
         $vars['menutree_content'] =         isset($vars['menutree_content']) ? $vars['menutree_content'] : array();
         $vars['menutree_tpl'] =             isset($vars['menutree_tpl']) ? $vars['menutree_tpl'] : '';
         $vars['menutree_stylesheet'] =      isset($vars['menutree_stylesheet']) ? $vars['menutree_stylesheet'] : '';
-        $vars['menutree_stylesheet'] =      isset($vars['menutree_stylesheet']) ? $vars['menutree_stylesheet'] : '';
         $vars['menutree_linkclass'] =       isset($vars['menutree_linkclass']) ? $vars['menutree_linkclass'] : false;
         $vars['menutree_linkclasses'] =     isset($vars['menutree_linkclasses']) ? $vars['menutree_linkclasses'] : array();
         $vars['menutree_titles'] =          isset($vars['menutree_titles']) ? $vars['menutree_titles'] : array();
