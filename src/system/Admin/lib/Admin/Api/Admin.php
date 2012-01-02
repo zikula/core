@@ -256,9 +256,9 @@ class Admin_Api_Admin extends Zikula_AbstractApi
         $values = array();
         $values['cid'] = $args['category'];
         $values['mid'] = $mid;
-        
+
         $values['order'] = ModUtil::apiFunc('Admin', 'admin', 'countModsInCat', array('cid' =>$args['category']));
-        
+
         if (!DBUtil::insertObject($values, 'admin_module')) {
             return false;
         }
@@ -318,7 +318,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
         if (!isset($args['mid'])) {
             return LogUtil::registerArgsError();
         }
-        
+
         // retrieve the admin module object array
         //$result = DBUtil::selectObject('admin_module', );
         $result = DBUtil::selectObjectByID('admin_module', (int)$args['mid'], 'mid');
@@ -326,12 +326,12 @@ class Admin_Api_Admin extends Zikula_AbstractApi
             return false;
         }
         return $result['order'];
-      
+
     }
-    
-    
-    
-    
+
+
+
+
     /**
      * Get the category a module belongs to
      * @return array of categories
@@ -414,13 +414,31 @@ class Admin_Api_Admin extends Zikula_AbstractApi
 
         return $links;
     }
-    
-    public function countModsInCat($args) 
+
+    public function countModsInCat($args)
     {
         if (!isset($args['cid'])) {
             return LogUtil::registerArgsError();
         }
-        
+
         return DBUtil::selectObjectCountByID('admin_module', $args['cid'], 'cid');
+    }
+
+    /**
+     * Open the admin container
+     */
+    public function adminheader()
+    {
+        $view = Zikula_View::getInstance('Admin');
+        return $view->fetch('admin_admin_header.tpl');
+    }
+
+    /**
+     * Close the admin container
+     */
+    public function adminfooter()
+    {
+        $view = Zikula_View::getInstance('Admin');
+        return $view->fetch('admin_admin_footer.tpl');
     }
 }

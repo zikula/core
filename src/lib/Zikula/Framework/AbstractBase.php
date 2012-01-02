@@ -598,7 +598,7 @@ abstract class AbstractBase implements TranslatableInterface
      * @param string       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
-     * @throws \Zikula\Framework\Exception\NotFound Exception.
+     * @throws \Zikula\Framework\Exception\NotFoundException Exception.
      *
      * @return void
      */
@@ -617,7 +617,7 @@ abstract class AbstractBase implements TranslatableInterface
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws \Zikula\Framework\Exception\NotFound Exception.
+     * @throws \Zikula\Framework\Exception\NotFoundException Exception.
      *
      * @return void
      */
@@ -638,7 +638,7 @@ abstract class AbstractBase implements TranslatableInterface
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws \Zikula\Framework\Exception\NotFound Exception.
+     * @throws \Zikula\Framework\Exception\NotFoundException Exception.
      *
      * @return void
      */
@@ -658,7 +658,7 @@ abstract class AbstractBase implements TranslatableInterface
      * @param string       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
-     * @throws \Zikula\Framework\Exception\Forbidden Exception.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Exception.
      *
      * @return void
      */
@@ -677,7 +677,7 @@ abstract class AbstractBase implements TranslatableInterface
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws \Zikula\Framework\Exception\Forbidden Exception.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Exception.
      *
      * @return void
      */
@@ -698,7 +698,7 @@ abstract class AbstractBase implements TranslatableInterface
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws \Zikula\Framework\Exception\Forbidden Exception.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Exception.
      *
      * @return void
      */
@@ -715,7 +715,7 @@ abstract class AbstractBase implements TranslatableInterface
      * @param string  $url  Url to redirect to.
      * @param integer $type Redirect code, 302 default.
      *
-     * @throws \Zikula\Framework\Exception\Redirect Causing redirect.
+     * @throws \Zikula\Framework\Exception\RedirectException Causing redirect.
      *
      * @return void
      */
@@ -731,7 +731,7 @@ abstract class AbstractBase implements TranslatableInterface
      * @param string  $url       Url to redirect to.
      * @param integer $type      Redirect code, 302 default.
      *
-     * @throws \Zikula\Framework\Exception\Redirect Causing redirect.
+     * @throws \Zikula\Framework\Exception\RedirectException Causing redirect.
      *
      * @return void
      */
@@ -749,7 +749,7 @@ abstract class AbstractBase implements TranslatableInterface
      * @param string  $url       Url to redirect to.
      * @param integer $type      Redirect code, 302 default.
      *
-     * @throws \Zikula\Framework\Exception\Redirect Causing redirect.
+     * @throws \Zikula\Framework\Exception\RedirectException Causing redirect.
      *
      * @return void
      */
