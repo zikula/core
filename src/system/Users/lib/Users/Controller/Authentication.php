@@ -38,11 +38,11 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
      * -------------------------------------
      * - string $args['form_type'] An indicator of the type of form the form fields will appear on.
      * - string $args['method']    The authentication method for which a selector should be returned.
-     * 
+     *
      * @param array $args The parameters for this function.
      *
      * @return string The rendered template.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if the $args array is invalid, or contains an invalid value.
      */
     public function getLoginFormFields(array $args)
@@ -79,25 +79,25 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
                     }
                 }
             }
-            
-            return $this->view->assign('authentication_method', $args['method'])
-                    ->fetch($templateName);
+
+            return $this->response($this->view->assign('authentication_method', $args['method'])
+                    ->fetch($templateName));
         }
     }
 
     /**
      * Renders the template that displays the authentication module's icon in the Users module's login block.
-     * 
+     *
      * Parameters passed in the $args array:
      * -------------------------------------
      * - string $args['form_type']   An indicator of the type of form on which the selector will appear.
      * - string $args['form_action'] The URL to which the selector form should submit.
      * - string $args['method']      The authentication method for which a selector should be returned.
-     * 
+     *
      * @param array $args The parameters for this function.
      *
      * @return string The rendered template.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if the $args array is invalid, or contains an invalid value.
      */
     public function getAuthenticationMethodSelector(array $args)
@@ -136,7 +136,7 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
                 'form_type'             => $args['form_type'],
                 'form_action'           => $args['form_action'],
             );
-            
+
             $templateName = mb_strtolower("users_auth_authenticationmethodselector_{$args['form_type']}_{$args['method']}.tpl");
             if (!$this->view->template_exists($templateName)) {
                 $templateName = mb_strtolower("users_auth_authenticationmethodselector_default_{$args['method']}.tpl");
@@ -151,52 +151,53 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
                 }
             }
 
-            return $this->view->assign($templateVars)
-                    ->fetch($templateName);
+            return $this->response(
+                $this->view->assign($templateVars)
+                     ->fetch($templateName));
         }
     }
-    
+
     /**
      * Performs initial user-interface level validation on the user name and password received by the user from the login process.
-     * 
+     *
      * Parameters passed in the $args array:
      * -------------------------------------
      * - array $args['authenticationMethod'] The authentication method (selected either by the user or by the system) for which
-     *                                          the credentials in $authenticationInfo were entered by the user. For the Users 
+     *                                          the credentials in $authenticationInfo were entered by the user. For the Users
      *                                          module, the 'modname' element should contain 'Users' and the 'method' element
      *                                          should contain either 'uname' or 'email'.
      * - array $args['authenticationInfo']   The user's credentials, as supplied by him on a log-in form on the log-in screen,
      *                                          log-in block, or some other equivalent control. For the Users module, it should
      *                                          contain the elements 'login_id' and 'pass'.
-     * 
+     *
      * @param array $args The parameters for this function.
-     * 
+     *
      * @return boolean True if the authentication information (the user's credentials) pass initial user-interface level validation;
      *                  otherwise false and an error status message is set.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if no authentication module name or method is specified, or if the module name or method
      *                                  is invalid for this module.
      */
     public function validateAuthenticationInformation(array $args)
     {
         $validates = false;
-        
+
         $authenticationMethod = isset($args['authenticationMethod']) ? $args['authenticationMethod'] : array();
         $authenticationInfo   = isset($args['authenticationInfo']) ? $args['authenticationInfo'] : array();
-        
+
         if (!is_array($authenticationMethod) || empty($authenticationMethod) || !isset($authenticationMethod['modname'])) {
             throw new Zikula_Exception_Fatal($this->__('The authentication module name was not specified during an attempt to validate user authentication information.'));
         } elseif ($authenticationMethod['modname'] != 'Users') {
             throw new Zikula_Exception_Fatal($this->__f('Attempt to validate authentication information with incorrect authentication module. Credentials should be validated with the \'%1$s\' module instead.', array($authenticationMethod['modname'])));
         }
-        
+
         if (!isset($authenticationMethod['method'])) {
             throw new Zikula_Exception_Fatal($this->__('The authentication method name was not specified during an attempt to validate user authentication information.'));
         } elseif (($authenticationMethod['method'] != 'uname') && ($authenticationMethod['method'] != 'email')) {
             throw new Zikula_Exception_Fatal($this->__f('Unknown authentication method (\'%1$s\') while attempting to validate user authentication information in the Users module.', array($authenticationMethod['method'])));
         }
-        
-        if (!is_array($authenticationInfo) || empty($authenticationInfo) || !isset($authenticationInfo['login_id']) 
+
+        if (!is_array($authenticationInfo) || empty($authenticationInfo) || !isset($authenticationInfo['login_id'])
                 || !is_string($authenticationInfo['login_id'])
                 ) {
             // This is an internal error that the user cannot recover from, and should not happen (it is an exceptional situation).
@@ -234,7 +235,7 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
                 $this->registerError($this->__('Please provide an e-mail address.'));
             }
         }
-        
+
         return $validates;
     }
 }

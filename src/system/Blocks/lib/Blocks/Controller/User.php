@@ -56,7 +56,7 @@ class Blocks_Controller_User extends Zikula_AbstractController
         }
 
         // now lets get back to where we came from
-        $this->redirect(System::serverGetVar('HTTP_REFERER'));
+        return $this->redirect(System::serverGetVar('HTTP_REFERER'));
     }
 
 }

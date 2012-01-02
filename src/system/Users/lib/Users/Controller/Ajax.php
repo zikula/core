@@ -13,6 +13,7 @@
  */
 
 use Zikula\Core\Event\GenericEvent;
+use Zikula\Framework\Response\Ajax\PlainResponse;
 
 /**
  * Access to actions initiated through AJAX for the Users module.
@@ -26,7 +27,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * ---------------------------
      * string fragment A partial user name entered by the user.
      *
-     * @return string Zikula_Response_Ajax_Plain with list of users matching the criteria.
+     * @return string PlainReponse with list of users matching the criteria.
      */
     public function getUsers()
     {
@@ -34,7 +35,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $view = Zikula_View::getInstance($this->name);
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            $fragment = $this->request->getGet()->get('fragment', $this->request->getPost()->get('fragment'));
+            $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
 
             ModUtil::dbInfoLoad($this->name);
             $tables = DBUtil::getTables();
@@ -49,7 +50,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
 
         $output = $view->fetch('users_ajax_getusers.tpl');
 
-        return new Zikula_Response_Ajax_Plain($output);
+        return new PlainResponse($output);
     }
 
     /**
