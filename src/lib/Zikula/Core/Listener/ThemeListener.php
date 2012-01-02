@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ThemeListener implements EventSubscriberInterface
 {
@@ -30,6 +30,11 @@ class ThemeListener implements EventSubscriberInterface
         }
 
         $response = $event->getResponse();
+        if ($response instanceof RedirectResponse) {
+            // dont theme redirects
+            return;
+        }
+
         $content = $response->getContent();
         $code = $response->getStatusCode();
 
