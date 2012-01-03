@@ -17,6 +17,7 @@ final class ORM extends BaseAdapterORM implements StandardFieldsAdapter
      */
     public function getUserIdValue(ClassMetadata $meta, $field)
     {
-        return \UserUtil::getVar('uid');
+        $uid = \UserUtil::getVar('uid');
+        return $uid == null? 0 : $uid;
     }
 }
