@@ -15,6 +15,7 @@
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; // Add a behavous
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -41,6 +42,7 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
      *
      * @ORM\Column(length=30)
      * @Gedmo\Sluggable
+     * @Assert\NotBlank()
      */
     private $username;
 
@@ -48,6 +50,7 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
      * Annotation for this field definition.
      *
      * @ORM\Column(length=30)
+     * @Assert\NotBlank()
      */
     private $password;
 

@@ -1,10 +1,10 @@
 <?php
 
-class ExampleDoctrine_Form_MetadataType extends \Symfony\Component\Form\AbstractType
+class ExampleDoctrine_Form_UserMetadataType extends \Symfony\Component\Form\AbstractType
 {
     public function buildForm(Symfony\Component\Form\FormBuilder $builder, array $options)
     {
-        $builder->add('keywords')
+        $builder->add('comment')
                 ->add('publisher');
     }
 

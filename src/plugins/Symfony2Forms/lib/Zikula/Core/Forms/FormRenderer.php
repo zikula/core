@@ -165,8 +165,10 @@ class FormRenderer
             );
         }
 
+        $out = '[';
         do {
             $types[$typeIndex] .= '_' . $section;
+            $out .= $types[$typeIndex] . ',';
 
             if (isset($renderer[$types[$typeIndex]])) {
 
@@ -179,6 +181,9 @@ class FormRenderer
                 }
 
                 unset($this->varStack[$template]);
+
+                $out .= ']<br/>';
+                echo $out;
 
                 return $html;
             }

@@ -13,6 +13,8 @@
 
 use Zikula\Core\Forms\Renderer;
 use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\Config\FileLocator;
 
 /**
  * Symfony2 forms plugin definition.
@@ -34,18 +36,26 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
     
     public function initialize()
     {
+        // class loading
         ZLoader::addAutoloader("Symfony\\Bridge\\Doctrine", __DIR__ . '/lib/vendor', '\\');
         ZLoader::addAutoloader("Zikula\\Core\\Forms", __DIR__ . '/lib', '\\');
-        
+
+        // register symfony validation annorations
+        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Symfony\\Component\\Validator\\Constraints', __DIR__ . '/../../vendor/symfony/src');
+
+        // register validator service
+        $fileLocator = new FileLocator(array(__DIR__ . '/Resources/config/validator.xml'));
+        $xmlFileLoader = new XmlFileLoader($this->serviceManager->getService('service_container'), $fileLocator);
+        $xmlFileLoader->load(__DIR__ . '/Resources/config/validator.xml');
+
+        // setup symfony forms
         $registry = new \Zikula\Core\Forms\DoctrineRegistryImpl();
-        
         $csrf = new \Symfony\Component\Form\Extension\Csrf\CsrfExtension(new \Zikula\Core\Forms\ZikulaCsrfProvider());
         $core = new \Symfony\Component\Form\Extension\Core\CoreExtension();
-        $zkvalidator = new \Zikula\Core\Forms\Validation\Form\ValidatorExtension();
+        $validator = new \Symfony\Component\Form\Extension\Validator\ValidatorExtension($this->serviceManager->getService("validator"));
         $zk = new \Zikula\Core\Forms\ZikulaExtension();
         $doctrine = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
-        
-        $formFactory = new \Symfony\Component\Form\FormFactory(array($core, $csrf, $zkvalidator, $zk, $doctrine));
+        $formFactory = new \Symfony\Component\Form\FormFactory(array($core, $csrf, $validator, $zk, $doctrine));
         
         $this->serviceManager->attachService('symfony.formfactory', $formFactory);
         
