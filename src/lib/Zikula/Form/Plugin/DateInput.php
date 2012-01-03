@@ -101,7 +101,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
     {
         $this->includeTime = (array_key_exists('includeTime', $params) ? $params['includeTime'] : 0);
         $this->daFormat = (array_key_exists('daFormat', $params) ? $params['daFormat'] : ($this->includeTime ? __('%A, %B %d, %Y - %I:%M %p') : __('%A, %B %d, %Y')));
-        $this->ifFormat = (array_key_exists('ifFormat', $params) ? $params['ifFormat'] : ($this->includeTime ? __('%A, %B %d, %Y - %I:%M %p') : __('%A, %B %d, %Y')));
+        $this->ifFormat = (array_key_exists('ifFormat', $params) ? $params['ifFormat'] : ($this->includeTime ? __('%Y-%m-%d %H:%M') : __('%Y-%m-%d')));
 
         $this->defaultValue = (array_key_exists('defaultValue', $params) ? $params['defaultValue'] : null);
         $this->initDate = (array_key_exists('initDate', $params) ? $params['initDate'] : 0);
