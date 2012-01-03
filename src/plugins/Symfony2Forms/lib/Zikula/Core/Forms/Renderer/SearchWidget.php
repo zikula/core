@@ -3,8 +3,8 @@
 namespace Zikula\Core\Forms\Renderer;
 
 use Symfony\Component\Form\FormView;
-use SystemPlugin\Symfony2Forms\RendererInterface;
-use SystemPlugin\Symfony2Forms\FormRenderer;
+use Zikula\Core\Forms\RendererInterface;
+use Zikula\Core\Forms\FormRenderer;
 
 /**
  *
