@@ -1,8 +1,7 @@
-todo symfony form:
-    
 {sform form=$form}
     <fieldset>
-        <legend>Contact</legend>
+        <legend>{gt text='New user'}</legend>
+
         {sform_all_errors form=$form}
 
         {sform_widget form=$form}
