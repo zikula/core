@@ -55,9 +55,9 @@ class ExampleDoctrine_Controller_User extends Zikula_AbstractController
      * @return string|boolean Output.
      */
     public function edit() {
-//        if (!SecurityUtil::checkPermission('ExampleDoctrine::', '::', ACCESS_ADD)) {
-//           return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'main'));
-//        }
+        if (!SecurityUtil::checkPermission('ExampleDoctrine::', '::', ACCESS_ADD)) {
+           return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'main'));
+        }
 
         $id = $this->request->query->getInt('id');
         if ($id) {
@@ -87,6 +87,6 @@ class ExampleDoctrine_Controller_User extends Zikula_AbstractController
         }
 
         return $this->view->assign('form', $form->createView())
-                          ->fetch('exampledoctrine_user_form.tpl');
+                          ->fetch('exampledoctrine_user_edit.tpl');
     }
 }
