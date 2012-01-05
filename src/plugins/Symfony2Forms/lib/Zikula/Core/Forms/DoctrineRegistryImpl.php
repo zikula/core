@@ -5,69 +5,61 @@ namespace Zikula\Core\Forms;
 use Symfony\Component\Form\FormView;
 
 /**
- *
+ * Doctrine RegistryInterface implementation required by symfony2 forms.
  */
-class DoctrineRegistryImpl implements \Symfony\Bridge\Doctrine\RegistryInterface
+class DoctrineRegistryImpl extends \Symfony\Bridge\Doctrine\ManagerRegistry implements \Symfony\Bridge\Doctrine\RegistryInterface
 {
-
-    public function getConnection($name = null)
+    public function __construct()
     {
-        
+        parent::__construct('ORM', array('main' => 'doctrine.connection'), array('main' => 'doctrine.entitymanager'), 'main', 'main', 'Doctrine\ORM\Proxy\Proxy');
     }
 
-    public function getConnectionNames()
+    protected function getService($name)
     {
-        
+        if($name == 'doctrine.entitymanager') {
+            return \ServiceUtil::getService($name);
+        } else if($name == 'doctrine.connection') {
+            return \ServiceUtil::getService('doctrine.entitymanager')->getConnection();
+        } else {
+            return null;
+        }
     }
 
-    public function getConnections()
+    function getAliasNamespace($alias)
     {
-        
     }
 
-    public function getDefaultConnectionName()
+    function getDefaultEntityManagerName()
     {
-        
+        return $this->getDefaultManagerName();
     }
 
-    public function getDefaultEntityManagerName()
+    function getEntityManager($name = null)
     {
-        
+        return $this->getManager($name);
     }
 
-    public function getEntityManager($name = null)
+    function getEntityManagers()
     {
-        return \ServiceUtil::getService('doctrine.entitymanager');
+        return $this->getManagers();
     }
 
-    public function getEntityManagerForClass($class)
+    function resetEntityManager($name = null)
     {
-        return \ServiceUtil::getService('doctrine.entitymanager');
+        $this->resetEntityManager($name);
     }
 
-    public function getEntityManagerNames()
+    function getEntityNamespace($alias)
     {
-        
     }
 
-    public function getEntityManagers()
+    function getEntityManagerNames()
     {
-        return array(\ServiceUtil::getService('doctrine.entitymanager'));
+        return $this->getManagerNames();
     }
 
-    public function getEntityNamespace($alias)
+    function getEntityManagerForClass($class)
     {
-        
+        return $this->getManagerForClass($class);
     }
-
-    public function getRepository($entityName, $entityManagerName = null)
-    {
-        
-    }
-
-    public function resetEntityManager($name = null)
-    {
-        
-    }
-
 }

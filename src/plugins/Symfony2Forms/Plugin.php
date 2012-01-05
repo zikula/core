@@ -37,7 +37,6 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
     public function initialize()
     {
         // class loading
-        ZLoader::addAutoloader("Symfony\\Bridge\\Doctrine", __DIR__ . '/lib/vendor', '\\');
         ZLoader::addAutoloader("Zikula\\Core\\Forms", __DIR__ . '/lib', '\\');
 
         // register symfony validation annorations
