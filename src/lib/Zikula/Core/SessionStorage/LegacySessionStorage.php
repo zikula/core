@@ -19,6 +19,7 @@ namespace Zikula\Core\SessionStorage;
 use Symfony\Component\HttpFoundation\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\FlashBagInterface;
 use Symfony\Component\HttpFoundation\SessionStorage\SessionSaveHandlerInterface;
+use Symfony\Component\HttpFoundation\SessionStorage\AbstractSessionStorage;
 use \SessionUtil;
 use \System;
 use \DataUtil;
@@ -64,7 +65,22 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
             'vars' => '',
         );
 
-        $options = array('use_cookies' => 1);
+        $path = System::getBaseUri();
+        if (empty($path)) {
+            $path = '/';
+        } elseif (substr($path, -1, 1) != '/') {
+            $path .= '/';
+        }
+
+        $options = array_merge(array(
+            'auto_start' => 0,
+            'use_cookies' => 1,
+            'gc_probability' => System::getVar('gc_probability'),
+            'gc_divisor' => 10000,
+            'gc_maxlifetime' => System::getVar('secinactivemins') * 60,
+            'hash_function' => 1,
+            'cookie_path' => $path,
+            ), $options);
 
         parent::__construct($attributes, $flashes, $options);
     }
@@ -76,13 +92,6 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
     {
         if ($this->started && !$this->closed) {
             return true;
-        }
-
-        $path = System::getBaseUri();
-        if (empty($path)) {
-            $path = '/';
-        } elseif (substr($path, -1, 1) != '/') {
-            $path .= '/';
         }
 
         $host = System::serverGetVar('HTTP_HOST');
@@ -99,7 +108,6 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
                 // Session lasts duration of browser
                 $lifetime = 0;
                 // Referer check
-                // ini_set('session.referer_check', $host.$path);
                 ini_set('session.referer_check', $host);
                 break;
             case 'Medium':
@@ -113,19 +121,8 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
                 $lifetime = 788940000;
                 break;
         }
+
         ini_set('session.cookie_lifetime', $lifetime);
-
-        // domain and path settings for session cookie
-        // if (System::getVar('intranet') == false) {
-        // Cookie path
-        ini_set('session.cookie_path', $path);
-
-        // Garbage collection
-        ini_set('session.gc_probability', System::getVar('gc_probability'));
-        ini_set('session.gc_divisor', 10000);
-        ini_set('session.gc_maxlifetime', System::getVar('secinactivemins') * 60); // Inactivity timeout for user sessions
-
-        ini_set('session.hash_function', 1);
 
         // create IP finger print
         $current_ipaddr = '';
@@ -162,7 +159,7 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
                     // expired or user decided not to remember themself and inactivity timeout
                     // OR max number of days have elapsed without logging back in
                     if ((!$rememberme && $lastused < $inactive) || ($lastused < $daysold) || ($uid == '0' && $lastused < $inactive)) {
-                        //die('xpire');//$this->expire();
+                        //$this->expire();
                     }
 
                     break;
@@ -404,5 +401,4 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
         $res = DBUtil::deleteWhere('session_info', $where);
         return (bool)$res;
     }
-
 }
