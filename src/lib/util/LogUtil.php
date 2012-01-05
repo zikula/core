@@ -138,7 +138,7 @@ class LogUtil
                 $request = $serviceManager->getService('request');
 
                 $loginArgs = array();
-                if ($request->isGet()) {
+                if ($request->getMethod() == 'GET') {
                     $loginArgs['returnpage'] = urlencode(System::getCurrentUri());
                 }
                 $url = ModUtil::url('Users', 'user', 'login', $loginArgs);
