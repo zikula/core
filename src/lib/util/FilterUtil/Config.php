@@ -450,9 +450,9 @@ class FilterUtil_Config
         // stores the tables => dynaalias
         $t = array();
         $a = 'dynajoin1';
-        foreach ($joins as $alias => $join) {
-            $jtable = substr($join, 0, strpos($join, ':'));
-            $t[$jtable] = $a;
+        foreach ($joins as $join) {
+            $alias = substr($join, 0, strpos($join, ':'));
+            $t[$alias] = $a;
             // add the dynamic left join
             $this->_doctrineQuery->leftJoin("{$main}.$alias $a");
             $a++;

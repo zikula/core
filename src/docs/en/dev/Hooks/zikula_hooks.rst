@@ -119,7 +119,7 @@ persistence layer using:
 
     HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
 
-The `addType()` method used in setting up hook bundles is how a subscriber
+The `addEvent()` method used in setting up hook bundles is how a subscriber
 indicates what hookable events are available (understood) by the module.
 The first parameter is the hook type (e.g., `'display_view'`). The second parameter
 is the event name that is triggered by *THIS* module (e.g., `'blog.ui_hooks.articles.display_view'`).
@@ -228,7 +228,7 @@ In the module controllers, you will need to implement the process and or validat
 hook types.  This can be done as follows (example of a process hook).
 
     $url = new Zikula_ModUrl(....); // describes how to retrieve this object by URL metadata
-    $hook = new Zikula_Process('blog.ui_hooks.articles.process_create', $id, $url);
+    $hook = new Zikula_ProcessHook('blog.ui_hooks.articles.process_edit', $id, $url);
     $this->notifyHooks->notify($hook);
 
 
@@ -289,7 +289,7 @@ redirect simply do not make sense when it can be done easily in one controller m
 
 ### Creating a new item
 
-When when we create an item, essentially, we visit an edit page with no id in the request.
+When we create an item, essentially, we visit an edit page with no id in the request.
 From this we know that the action is not an edit, but a 'create new'.  We can determine
 if it's a brand new form or a submitted form by reading the form submit property.
 Accordingly, we can notify the system of the hook events.
@@ -302,7 +302,7 @@ When displaying a new empty form, we simply trigger a `form_edit` in the templat
 When we come to validate a new create form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a `validate_edit` hook with
 
-    $hook = new Zikula_ValidationHook('...validate_edit', new Zikula_Collection_HookValidationProviders());
+    $hook = new Zikula_ValidationHook('...validate_edit', new Zikula_Hook_ValidationProviders());
     $this->notifyHooks($hook);
     $validators = $hook->getValidators();
 

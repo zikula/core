@@ -537,7 +537,7 @@ function upgrade_getColumnsForTable($connection, $tableName)
     }
 
     try {
-        return $connection->import->listTableColumns($GLOBALS['ZConfig']['System']['prefix'] . "_$tableName");
+        return $connection->import->listTableColumns(($GLOBALS['ZConfig']['System']['prefix'] ? $GLOBALS['ZConfig']['System']['prefix'].'_' : '').$tableName);
     } catch (Exception $e) {
         // TODO - do something with the exception here?
     }
