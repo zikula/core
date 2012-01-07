@@ -1,26 +1,26 @@
 [symfony]
     git=http://github.com/drak/symfony.git
-    version=origin/session_refactor
+    version=origin/session_refactor2
 
 [doctrine-common]
     git=http://github.com/doctrine/common.git
-    version=2.1.4
+    version=2.2.0-RC4
 
 [doctrine-dbal]
     git=http://github.com/doctrine/dbal.git
-    version=2.1.5
+    version=2.2.0-BETA2
 
 [doctrine]
     git=http://github.com/doctrine/doctrine2.git
-    version=2.1.5
+    version=2.2.0-BETA2
 
 [gedmo-doctrine-extensions]
     git=http://github.com/l3pp4rd/DoctrineExtensions.git
-    version=2.1.x
+    version=origin/master
 
 [twig]
     git=http://github.com/fabpot/Twig.git
-    version=v1.5.0
+    version=v1.5.1
 
 [swiftmailer]
     git=http://github.com/swiftmailer/swiftmailer.git
