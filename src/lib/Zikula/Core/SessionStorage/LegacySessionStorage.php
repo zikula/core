@@ -144,7 +144,6 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
             $inactive = ($now - (int)(System::getVar('secinactivemins') * 60));
             $daysold = ($now - (int)(System::getVar('secmeddays') * 86400));
             $lastused = $this->object['lastused'];
-            $this->attributeBag->set('lastused', date('Y-m-d H:i:s', time()));
             $this->attributeBag->set('uid', $this->object['uid']);
             $rememberme = $this->attributeBag->get('rememberme', 0);
 
