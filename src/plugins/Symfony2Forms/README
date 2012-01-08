@@ -1,0 +1,36 @@
+================================
+ Symfony2 forms
+================================
+
+This extension integrates symfony2 form into zikula.
+
+Symfony2 form documentation
+===========================
+see http://symfony.com/doc/current/book/forms.html
+
+
+Example
+=======
+The ExampleDoctrine module in src/docs/examples/modules/ExampleDoctrine uses symfony2 forms.
+
+
+Zikula specific changes
+=======================
+This extension provides new smarty functions:
+* sform_enctype     (in symfony documentation (twig) it's: form_enctype)
+* sform_row         (in symfony documentation (twig) it's: form_row)
+* sform_label       (in symfony documentation (twig) it's: form_label)
+* sform_errors      (in symfony documentation (twig) it's: form_errors)
+* sform_widget      (in symfony documentation (twig) it's: form_widget)
+* sform_rest        (in symfony documentation (twig) it's: form_rest)
+* sform_all_errors  (new in zikula, renders all errors (even field-specific errors))
+* sform             (new in zikula, renders <form> tag)
+
+
+Add rendering of new form types
+===============================
+steps to do:
+1. implement Zikula\Core\Forms\RendererInterface,
+   go to src/plugins/Symfony2Forms/lib/Zikula/Core/Forms/Renderer/*.php to see examples
+2. create an zikula event handler and listen to this event: symfony.formrenderer.lookup
+3. implement the event handler like this: $event->getSubject()->append(new MyNewFormFieldTypeRenderer());
