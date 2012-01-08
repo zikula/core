@@ -41,7 +41,6 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
      * Annotation for this field definition.
      *
      * @ORM\Column(length=30)
-     * @Gedmo\Sluggable
      * @Assert\NotBlank()
      */
     private $username;
@@ -55,7 +54,7 @@ class ExampleDoctrine_Entity_User extends Zikula_EntityAccess
     private $password;
 
     /**
-     * @Gedmo\Slug
+     * @Gedmo\Slug(fields={"username"})
      * @ORM\Column(length=64, unique=true)
      */
     private $slug;
