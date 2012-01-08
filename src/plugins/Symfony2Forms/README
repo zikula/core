@@ -27,6 +27,20 @@ This extension provides new smarty functions:
 * sform             (new in zikula, renders <form> tag)
 
 
+Zikula Categories integration
+-----------------------------
+in your form type:
+    public function buildForm(Symfony\Component\Form\FormBuilder $builder, array $options)
+    {
+        // other code
+        $builder->add('categories', 'categories', array('module' => 'YouModule',
+                                                        'entity' => 'YourEntity',
+                                                        'entityCategoryClass' => 'YouModule_Entity_YourEntityCategory'));
+    }
+
+see ExampleDoctrine module to see working example
+
+
 Add rendering of new form types
 ===============================
 steps to do:
