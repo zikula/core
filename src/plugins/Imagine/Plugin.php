@@ -25,7 +25,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     {
         return array('displayname' => $this->__('Imagine'),
                      'description' => $this->__('Provides Imagine image manipulation library'),
-                     'version'     => '1.0.0'
+                     'version'     => '0.2.7'
                       );
     }
 

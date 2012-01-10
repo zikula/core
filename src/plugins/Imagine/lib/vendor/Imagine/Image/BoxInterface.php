@@ -30,7 +30,7 @@ interface BoxInterface
     /**
      * Creates new BoxInterface instance with ratios applied to both sides
      *
-     * @param integer $ratio
+     * @param float $ratio
      *
      * @return Imagine\Image\BoxInterface
      */
@@ -40,6 +40,8 @@ interface BoxInterface
      * Creates new BoxInterface, adding given size to both sides
      *
      * @param integer $size
+     *
+     * @return Imagine\Image\BoxInterface
      */
     function increase($size);
 
