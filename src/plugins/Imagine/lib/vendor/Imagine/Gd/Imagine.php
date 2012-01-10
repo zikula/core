@@ -90,19 +90,21 @@ final class Imagine implements ImagineInterface
             imageantialias($resource, true);
         }
 
-        $color = imagecolorallocatealpha(
+        $index = imagecolorallocatealpha(
             $resource, $color->getRed(), $color->getGreen(), $color->getBlue(),
             round(127 * $color->getAlpha() / 100)
         );
 
-        if (false === $color) {
+        if (false === $index) {
             throw new RuntimeException('Unable to allocate color');
         }
 
-        if (false === imagefilledrectangle(
-            $resource, 0, 0, $width, $height, $color
-        )) {
+        if (false === imagefill($resource, 0, 0, $index)) {
             throw new RuntimeException('Could not set background color fill');
+        }
+
+        if ($color->getAlpha() >= 95) {
+            imagecolortransparent($resource, $index);
         }
 
         return new Image($resource, $this);
@@ -154,14 +156,18 @@ final class Imagine implements ImagineInterface
 
         $resource = call_user_func('imagecreatefrom'.$format, $path);
 
-        //Active in php development version 5.3, surelly true in 5.4
-        //Inactivate for compatibility
-        if( "gif" === $format and false){
-            $index = imagecolortransparent($resource);
-            if($index != (-1)){
-                $color = ImageColorsForIndex($resource, $index);
-                imagecolorset( $resource, $index, $color['red'], $color['green'], $color['blue'], 127 );
-            }
+        if (!imageistruecolor($resource)) {
+            // create transparent truecolor canvas
+            $truecolor   = imagecreatetruecolor($width, $height);
+            $transparent = imagecolorallocatealpha($truecolor, 255, 255, 255, 127);
+
+            imagefill($truecolor, 0, 0, $transparent);
+            imagecolortransparent($truecolor, $transparent);
+
+            imagecopymerge($truecolor, $resource, 0, 0, 0, 0, $width, $height, 100);
+
+            imagedestroy($resource);
+            $resource = $truecolor;
         }
 
         if (!is_resource($resource)) {
@@ -208,6 +214,19 @@ final class Imagine implements ImagineInterface
         }
 
         return new Image($resource);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Imagine\Image\ImagineInterface::read()
+     */
+    public function read($resource)
+    {
+        if (!is_resource($resource)) {
+            throw new InvalidArgumentException('Variable does not contain a stream resource');
+        }
+
+        return $this->load(stream_get_contents($resource));
     }
 
     /**

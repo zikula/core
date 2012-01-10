@@ -28,7 +28,7 @@ class SystemPlugin_Imagine_Plugin extends AbstractPlugin implements AlwaysOnInte
     {
         return array('displayname' => $this->__('Imagine'),
                      'description' => $this->__('Provides Imagine image manipulation library'),
-                     'version'     => '1.0.0'
+                     'version'     => '0.2.7'
                       );
     }
 
